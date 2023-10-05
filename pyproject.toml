@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blueprints"
+authors = [
+    { name = "Blueprints", url = "https://github.com/BlueprintsEngineering" },
+]
+maintainers = [
+    { name = "Enrique García Méndez", email = "enriquegarcia@live.nl" },
+    { name = "Blueprints Maintainers", url = "https://github.com/orgs/BlueprintsEngineering/people" },
+]
+description = "Blueprints: Python AEC library."
+requires-python = ">=3.10"
+keywords = ["Civil engineering", "Material properties", "Structural engineering", "Structural analysis", "Eurocodes", "Dutch building codes"]
+license = { text = "LGPL-2.1" }
+classifiers = [
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+]
+dynamic = ["version", "readme", "dependencies", "optional-dependencies"]
+
+[project.urls]
+"Homepage" = "https://github.com/BlueprintsEngineering/blueprints"
+"Issues" = "https://github.com/BlueprintsEngineering/blueprints/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "blueprints._version.__version__" }
+readme = { file = "README.md", content-type = "text/markdown" }
+dependencies = { file = "requirements.txt" }
+
+[tool.setuptools.dynamic.optional-dependencies]
+minimal_requirements = { file = "requirements.txt" }
+plot = { file = "requirements_plot.txt" }
+test = { file = "requirements_test.txt" }
+dev = { file = "requirements_dev.txt" }
+docs = { file = "docs/requirements_docs.txt" }
+
+[project.urls]
+homepage = "https://github.com/BlueprintsEngineering/blueprints"
+documentation = "https://blueprints.readthedocs.io"
+
+[tool.setuptools]
+packages = [
+    "blueprints",
+]
+
+[tool.mypy]
+packages = "blueprints"
+python_version = "3.10"
+
+[[tool.mypy.overrides]]
+module = [
+    "matplotlib.*",
+]
+ignore_missing_imports = true
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 150
+
+[tool.black]
+line-length = 150
+
+
+[tool.isort]
+profile = "black"
+line_length = 150
+known_third_party = ["matplotlib", "munch", "numpy", "pandas", "pygal", "scipy", "shapely", "pytz", "typing_extensions"]
