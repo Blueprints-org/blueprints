@@ -29,7 +29,7 @@ dynamic = ["version", "readme", "dependencies", "optional-dependencies"]
 "Issues" = "https://github.com/BlueprintsEngineering/blueprints/issues"
 
 [tool.setuptools.dynamic]
-version = { attr = "blueprints._version.__version__" }
+version = { attr = "blueprints.__version__" }
 readme = { file = "README.md", content-type = "text/markdown" }
 dependencies = { file = "requirements.txt" }
 
