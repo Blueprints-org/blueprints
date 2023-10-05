@@ -1,0 +1,41 @@
+name: Python tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  min_build:
+    name: Run Code Checks and Tests with Minimum Dependencies
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install .[minimal_requirements]
+          pip install .[plot]
+          pip install .[test]
+          pip install pandas-stubs
+      - name: Run linting check with pylint
+        run: |
+          pylint --rcfile pyproject.toml ./open_source_sdk
+      - name: Run formatting checks with black
+        run: |
+          black --check .
+      - name: Run type checks with mypy
+        run: |
+          mypy -p open_source_sdk
+      - name: Run tests with pytest
+        run: |
+          python -m pytest --pspec tests/ --verbose
