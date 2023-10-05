@@ -1,0 +1,43 @@
+# .pre-commit-config.yaml
+# This file configures the pre-commit hooks that will be run before each commit.
+# See https://pre-commit.com for more information.
+# See https://pre-commit.com/hooks.html for more hooks.
+
+# To use these hooks:
+# 1. Install pre-commit (https://pre-commit.com/#install).
+#    In most cases, this will involve running `pip install pre-commit`.
+# 2. In your terminal, navigate to your repository and run `pre-commit install`.
+#    This will install the hooks.
+# 3. Now, the hooks will automatically run every time you try to make a commit.
+#    If any of the hooks fail, the commit will be aborted.
+# 4. If a hook fails and you see errors, fix them and try to commit again.
+#    The hooks will run again and the commit will only be made if they all pass.
+# 5. If you want to manually run all hooks on all files, run `pre-commit run --all-files`.
+# 6. To update to the latest versions of the hooks, run `pre-commit autoupdate`.
+
+repos:
+-   repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+    - id: black
+      language_version: python3.11
+
+-   repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+    - id: isort
+      name: isort
+      language_version: python3.11
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.1
+    hooks:
+    - id: mypy
+      args: ["--ignore-missing-imports"]
+      language_version: python3.11
+
+-   repo: https://github.com/pycqa/pylint
+    rev: v3.0.0a7
+    hooks:
+    - id: pylint
+      language_version: python3.11
