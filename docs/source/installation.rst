@@ -3,11 +3,11 @@ Installation
 
 These instructions will get you a copy of ....
 
-Installing *Open Source SDK*
+Installing *Blueprints*
 -------------------------------
 
-`Open Source SDK <https://github.com/opencivilengineering/section-opensourcesdk>`_ text....
+`Blueprints <hhttps://github.com/BlueprintsEngineering/blueprints>`_ text....
 
 .. code-block:: console
 
-  pip install open-source-sdk
+  pip install blue-prints

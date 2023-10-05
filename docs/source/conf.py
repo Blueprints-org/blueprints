@@ -17,13 +17,13 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../../"))
-from open_source_sdk._version import __version__
+from blueprints import __version__
 
 # -- Project information -----------------------------------------------------
 
-project = "Open Source SDK"
-copyright = "2023, Open Source SDK"
-author = "Open Source SDK"
+project = "Blueprints"
+copyright = "2023, Blueprints"
+author = "Blueprints"
 
 # The full version, including alpha/beta/rc tags
 version = f"v{__version__}"

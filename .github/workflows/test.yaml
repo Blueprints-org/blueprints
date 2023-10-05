@@ -29,13 +29,13 @@ jobs:
           pip install pandas-stubs
       - name: Run linting check with pylint
         run: |
-          pylint --rcfile pyproject.toml ./open_source_sdk
+          pylint --rcfile pyproject.toml ./blueprints
       - name: Run formatting checks with black
         run: |
           black --check .
       - name: Run type checks with mypy
         run: |
-          mypy -p open_source_sdk
+          mypy -p blueprints
       - name: Run tests with pytest
         run: |
           python -m pytest --pspec tests/ --verbose

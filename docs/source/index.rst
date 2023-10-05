@@ -1,6 +1,6 @@
 .. image:: _static/placeholder.png
  :width: 100 %
- :alt: open-source-sdk
+ :alt: blueprints
  :align: left
 
 
@@ -18,7 +18,7 @@ Placeholder text:
 
 
 A list of the `current features of the package and implementation goals for future
-releases <https://github.com/opencivilengineering/opensourcesdk/blob/main/README.md>`_
+releases <https://github.com/BlueprintsEngineering/blueprints/blob/main/README.md>`_
 can be found in the README file on github.
 
 

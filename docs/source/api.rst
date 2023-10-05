@@ -10,4 +10,4 @@ Package Modules
     :template: custom-module-template.rst
     :recursive:
 
-    open_source_sdk.main
+    blueprints

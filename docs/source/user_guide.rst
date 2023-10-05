@@ -1,8 +1,8 @@
 User Guide
 ==========
 
-The ``open-source-sdk`` user guide lists the assumptions adopted in ``open-source-sdk`` and provide an overview of each step in the
-``open-source-sdk`` workflow.
+The ``blueprints`` user guide lists the assumptions adopted in ``blueprints`` and provide an overview of each step in the
+``blueprints`` workflow.
 
 .. toctree::
    :maxdepth: 1
