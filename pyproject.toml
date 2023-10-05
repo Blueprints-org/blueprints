@@ -38,7 +38,7 @@ docs = { file = "docs/requirements_docs.txt" }
 
 [project.urls]
 homepage = "https://github.com/BlueprintsEngineering/blueprints"
-documentation = "https://blue-prints.readthedocs.io"
+documentation = "https://blueprints.readthedocs.io"
 issues = "https://github.com/BlueprintsEngineering/blueprints/issues"
 
 [tool.setuptools]

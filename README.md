@@ -1,5 +1,5 @@
 [![Run Tests](https://github.com/BlueprintsEngineering/blueprints/actions/workflows/test.yaml/badge.svg)](https://github.com/BlueprintsEngineering/blueprints/actions/workflows/test.yaml)
-[![Documentation Status](https://readthedocs.org/projects/blue-prints/badge/?version=latest)](https://blue-prints.readthedocs.io/en/latest/?badge=latest) 
+[![Documentation Status](https://readthedocs.org/projects/blue-prints/badge/?version=latest)](https://blueprints.readthedocs.io/en/latest/?badge=latest) 
 [![codecov](https://codecov.io/gh/BlueprintsEngineering/blueprints/branch/main/graph/badge.svg?token=vwYQBShr9q)](https://codecov.io/gh/BlueprintsEngineering/blueprints)
 [![PyPI](https://img.shields.io/pypi/v/blue-prints?color=green)](https://pypi.org/project/blue-prints/)
 [![GitHub](https://img.shields.io/github/license/BlueprintsEngineering/blueprints?color=green)](https://github.com/BlueprintsEngineering/blueprints/blob/main/LICENSE)
