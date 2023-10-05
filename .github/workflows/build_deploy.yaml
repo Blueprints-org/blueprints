@@ -61,7 +61,7 @@ jobs:
           --wheel
           --outdir dist/
           .
-      - name: Publish distribution to PyPI (https://pypi.org/project/blueprints)
+      - name: Publish distribution to PyPI (https://pypi.org/project/blue-prints)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
