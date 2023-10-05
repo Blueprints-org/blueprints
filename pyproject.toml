@@ -24,10 +24,6 @@ classifiers = [
 ]
 dynamic = ["version", "readme", "dependencies", "optional-dependencies"]
 
-[project.urls]
-"Homepage" = "https://github.com/BlueprintsEngineering/blueprints"
-"Issues" = "https://github.com/BlueprintsEngineering/blueprints/issues"
-
 [tool.setuptools.dynamic]
 version = { attr = "blueprints.__version__" }
 readme = { file = "README.md", content-type = "text/markdown" }
@@ -41,8 +37,9 @@ dev = { file = "requirements_dev.txt" }
 docs = { file = "docs/requirements_docs.txt" }
 
 [project.urls]
-homepage = "https://github.com/BlueprintsEngineering/blueprints"
-documentation = "https://blueprints.readthedocs.io"
+"Homepage" = "https://github.com/BlueprintsEngineering/blueprints"
+"Documentation" = "https://blueprints.readthedocs.io"
+"Issues" = "https://github.com/BlueprintsEngineering/blueprints/issues"
 
 [tool.setuptools]
 packages = [
