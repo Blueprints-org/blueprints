@@ -11,7 +11,7 @@ We enforce a code of conduct for all maintainers and contributors. For more deta
 ### Reporting Bugs
 
 1. **Check existing issues:** Before creating a new issue, please check the existing open and closed issues to see if someone else has had the same issue.
-2. **File a new issue:** If you're sure your issue is new, open a new issue, providing as much detail as you can. [Submit an issue here](https://github.com/opencivilengineering/opensourcesdk/issues).
+2. **File a new issue:** If you're sure your issue is new, open a new issue, providing as much detail as you can. [Submit an issue here](https://github.com/Blueprints-org/blueprints/issues).
 
 ### Feature Requests
 
