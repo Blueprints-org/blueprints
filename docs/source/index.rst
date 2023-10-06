@@ -18,7 +18,7 @@ Placeholder text:
 
 
 A list of the `current features of the package and implementation goals for future
-releases <https://github.com/BlueprintsEngineering/blueprints/blob/main/README.md>`_
+releases <https://github.com/Blueprints-org/blueprints/blob/main/README.md>`_
 can be found in the README file on github.
 
 

@@ -37,9 +37,9 @@ dev = { file = "requirements_dev.txt" }
 docs = { file = "docs/requirements_docs.txt" }
 
 [project.urls]
-homepage = "https://github.com/BlueprintsEngineering/blueprints"
+homepage = "https://github.com/Blueprints-org/blueprints"
 documentation = "https://blueprints.readthedocs.io"
-issues = "https://github.com/BlueprintsEngineering/blueprints/issues"
+issues = "https://github.com/Blueprints-org/blueprints/issues"
 
 [tool.setuptools]
 packages = [
