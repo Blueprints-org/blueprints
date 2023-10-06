@@ -4,7 +4,7 @@ Firstly, thank you for considering contributing to our project! Your help is ver
 
 ## Code of Conduct
 
-We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](CODE_OF_CONDUCT.md).
+We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](.github/CODE_OF_CONDUCT.md).
 
 ## How to Contribute
 
