@@ -24,9 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install .
           pip install .[minimal_requirements]
-          pip install .[plot]
           pip install .[dev]
-          pip install .[test]
           pip install pandas-stubs
       - name: Run linting check with pylint
         run: |

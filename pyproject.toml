@@ -31,8 +31,6 @@ dependencies = { file = "requirements.txt" }
 
 [tool.setuptools.dynamic.optional-dependencies]
 minimal_requirements = { file = "requirements.txt" }
-plot = { file = "requirements_plot.txt" }
-test = { file = "requirements_test.txt" }
 dev = { file = "requirements_dev.txt" }
 docs = { file = "docs/requirements_docs.txt" }
 

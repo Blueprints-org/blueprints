@@ -30,8 +30,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install .
-          pip install .[test]
+          pip install .[minimal_requirements]
+          pip install .[dev]
       
       - name: Run linting check with pylint
         run: |
