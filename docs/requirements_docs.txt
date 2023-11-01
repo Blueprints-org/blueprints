@@ -1,5 +1,5 @@
 matplotlib
-Sphinx>=5.3,<6.0
+Sphinx>=5.3,<8.0
 sphinx_rtd_theme
 sphinx_autodoc_typehints
 sphinx_autorun
