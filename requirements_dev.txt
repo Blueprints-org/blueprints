@@ -3,6 +3,7 @@ mypy>=1.5.1
 pylint>=2.17.5
 isort>=5.12.0
 pytest==7.4.0
+pre-commit>=3.5.0
 pytest-describe==2.1.0
 pytest-pspec==0.0.4
 pytest-raises==0.11
