@@ -1,3 +1,1 @@
-
-
-TABLE_C_1_NEN_EN_1992_1_1 = {}
+"""This package represents the Eurocode 2 1992-1-1 code - Chapter 2."""

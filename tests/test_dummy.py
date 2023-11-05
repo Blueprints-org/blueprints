@@ -1,22 +1,9 @@
-import pytest
+"""
+This function is intended to be used with pytest to ensure that the
+testing environment is set up correctly. It does not test any actual code logic.
+"""
 
 
-def dummy_function():
-    """A function that returns True."""
-    return True
-
-
-def test_dummy_function():
-    """
-    Test if dummy_function returns True.
-
-    This is a dummy test intended to always pass to check if the testing environment is correctly set up.
-
-    Raises
-    ------
-    AssertionError
-        If the function does not return True.
-    """
-    # Calling dummy_function and checking its return value
-    result = dummy_function()
-    assert result == True, "Should return True"
+def test_always_passes():
+    """A dummy test that always passes."""
+    assert True  # This assertion will always be true, hence the test will always pass

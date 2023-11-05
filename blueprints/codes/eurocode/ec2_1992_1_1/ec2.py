@@ -1,6 +1,1 @@
-
-class EC2:
-
-    def __init__(self, version: str = "2004") -> None:
-
-        pass
+"""This package represents the Eurocode 2 1992-1-1 code."""
