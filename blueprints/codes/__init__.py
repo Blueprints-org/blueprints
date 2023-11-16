@@ -9,8 +9,7 @@ class Equation(ABC):
 
     @property
     def equation_number(self) -> str:
-        """
-        Property for the equation number.
+        """Property for the equation number.
 
         Returns
         -------
@@ -22,8 +21,7 @@ class Equation(ABC):
 
     @property
     def source_document(self) -> str:
-        """
-        Property for the source document.
+        """Property for the source document.
 
         Returns
         -------
@@ -34,10 +32,22 @@ class Equation(ABC):
         raise NotImplementedError
 
     @property
+    def detailed_result(self) -> dict:
+        """Property for providing the detailed result of the equation.
+
+        Returns
+        -------
+        dict
+            The detailed result of the equation.
+            keys are strings representing the name of the partial or intermediate result.
+            Values types will depend on the specific implementation, but must be a serializable type.
+        """
+        raise NotImplementedError
+
+    @property
     @abstractmethod
     def result(self):
-        """
-        Abstract property for the result of the equation.
+        """Abstract property for the result of the equation.
 
         Returns
         -------
