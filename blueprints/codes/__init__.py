@@ -8,6 +8,7 @@ class Equation(ABC):
     """
 
     @property
+    @abstractmethod
     def equation_number(self) -> str:
         """Property for the equation number.
 
@@ -17,9 +18,9 @@ class Equation(ABC):
             The number associated with the equation.
             This method can be optionally overridden in subclasses.
         """
-        raise NotImplementedError
 
     @property
+    @abstractmethod
     def source_document(self) -> str:
         """Property for the source document.
 
@@ -29,7 +30,6 @@ class Equation(ABC):
             The reference to the document where the equation originates.
             This method can be optionally overridden in subclasses.
         """
-        raise NotImplementedError
 
     @property
     def detailed_result(self) -> dict:
