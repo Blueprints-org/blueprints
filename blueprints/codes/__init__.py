@@ -9,14 +9,14 @@ class Equation(ABC):
 
     @property
     @abstractmethod
-    def equation_number(self) -> str:
-        """Property for the equation number.
+    def equation_label(self) -> str:
+        """Property for the equation label.
 
         Returns
         -------
         str
-            The number associated with the equation.
-            This method can be optionally overridden in subclasses.
+            The label/number associated with the equation.
+            This is an abstract method and must be implemented in all subclasses.
         """
 
     @property
@@ -28,7 +28,7 @@ class Equation(ABC):
         -------
         str
             The reference to the document where the equation originates.
-            This method can be optionally overridden in subclasses.
+            This is an abstract method and must be implemented in all subclasses.
         """
 
     @property
