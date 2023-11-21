@@ -1,4 +1,4 @@
-**NEN-EN 1997- 1+C1+A1 - Juni 2016
+**NEN-EN 1997- 1+C1+A1 - June 2016
 Eurocode 7: Geotechnical design
 Part 1: General rules**
 
