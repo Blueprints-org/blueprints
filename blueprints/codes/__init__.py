@@ -2,20 +2,25 @@
 from abc import ABC, abstractmethod
 
 
-class Equation(ABC):
+class Formula(float, ABC):
     """
-    Abstract base class for equations used in the code.
+    Abstract base class for formulas used in the codes.
     """
+
+    def __new__(cls, *args, **kwargs) -> "Formula":
+        """Method for creating a new instance of the class."""
+        result = cls.evaluate(*args, **kwargs)
+        return float.__new__(cls, result)
 
     @property
     @abstractmethod
-    def equation_label(self) -> str:
-        """Property for the equation label.
+    def formula_label(self) -> str:
+        """Property for the formula label.
 
         Returns
         -------
         str
-            The label/number associated with the equation.
+            The label/number associated with the formula.
             This is an abstract method and must be implemented in all subclasses.
         """
 
@@ -27,30 +32,31 @@ class Equation(ABC):
         Returns
         -------
         str
-            The reference to the document where the equation originates.
+            The reference to the document where the formula originates.
             This is an abstract method and must be implemented in all subclasses.
         """
 
     @property
     def detailed_result(self) -> dict:
-        """Property for providing the detailed result of the equation.
+        """Property for providing the detailed result of the formula.
 
         Returns
         -------
         dict
-            The detailed result of the equation.
-            keys are strings representing the name of the partial or intermediate result.
+            The detailed result of the formula.
+            Keys are strings representing the name of the partial or intermediate result.
             Values types will depend on the specific implementation, but must be a serializable type.
         """
         raise NotImplementedError
 
-    @property
+    @staticmethod
     @abstractmethod
-    def result(self):
-        """Abstract property for the result of the equation.
+    def evaluate(*args, **kwargs) -> float:
+        """Abstract method for the logic of the formula.
 
         Returns
         -------
-        The result of the equation. The return type will depend on the specific implementation.
-        This is an abstract method and must be implemented in all subclasses.
+        float
+            The result of the formula.
+            This is an abstract method and must be implemented in all subclasses.
         """
