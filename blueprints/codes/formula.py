@@ -14,7 +14,7 @@ class Formula(float, ABC):
 
     @property
     @abstractmethod
-    def formula_label(self) -> str:
+    def label(self) -> str:
         """Property for the formula label.
 
         Returns
