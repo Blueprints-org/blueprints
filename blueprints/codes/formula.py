@@ -9,7 +9,7 @@ class Formula(float, ABC):
 
     def __new__(cls, *args, **kwargs) -> "Formula":
         """Method for creating a new instance of the class."""
-        result = cls.evaluate(*args, **kwargs)
+        result = cls._evaluate(*args, **kwargs)
         return float.__new__(cls, result)
 
     @property
@@ -51,7 +51,7 @@ class Formula(float, ABC):
 
     @staticmethod
     @abstractmethod
-    def evaluate(*args, **kwargs) -> float:
+    def _evaluate(*args, **kwargs) -> float:
         """Abstract method for the logic of the formula.
 
         Returns
