@@ -17,6 +17,8 @@ class Formula(float, ABC):
     def label(self) -> str:
         """Property for the formula label.
 
+        For example, "5.2" for formula 5.2.
+
         Returns
         -------
         str
@@ -28,6 +30,9 @@ class Formula(float, ABC):
     @abstractmethod
     def source_document(self) -> str:
         """Property for the source document.
+
+        For example, "NEN-EN 1992-1-1+C2:2011"
+        Try to use the official and complete name of the document including publishing year, if possible.
 
         Returns
         -------
