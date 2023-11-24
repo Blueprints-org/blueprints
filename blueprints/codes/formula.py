@@ -10,7 +10,28 @@ class Formula(float, ABC):
     def __new__(cls, *args, **kwargs) -> "Formula":
         """Method for creating a new instance of the class."""
         result = cls._evaluate(*args, **kwargs)
-        return float.__new__(cls, result)
+        instance = float.__new__(cls, result)
+        instance._initialized = False
+        return instance
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._initialized = True
+
+    def __setattr__(self, name, value):
+        """
+        Override the __setattr__ method to prevent modifications after initialization.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : Any
+            The value to be assigned to the attribute.
+        """
+        if getattr(self, "_initialized", False) and name in self.__dict__:
+            raise AttributeError(f"Attribute '{name}' of '{type(self).__name__}' object is read-only and cannot be modified after initialization.")
+        super().__setattr__(name, value)
 
     @property
     @abstractmethod
