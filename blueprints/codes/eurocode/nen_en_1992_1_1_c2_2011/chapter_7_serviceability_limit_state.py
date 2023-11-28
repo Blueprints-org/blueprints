@@ -23,12 +23,12 @@ class Form7Dot3CoefficientKc(Formula):
         Parameters
         ----------
         f_cr : KN
-            Absolute value of the tensile force within the flange immediately before cracking due to the cracking moment calculated with fct,eff [kN].
+            [Fcr] Absolute value of the tensile force within the flange immediately before cracking due to the cracking moment calculated with fct,eff [kN].
         a_ct : MM2
-            Area of the concrete within the tension zone. The tension zone is that part of the cross-section that, according to the calculation,
+            [Act] Area of the concrete within the tension zone. The tension zone is that part of the cross-section that, according to the calculation,
             is under tension just before the first crack occurs [mm²].
         f_ct_eff : MPA
-            Average value of the tensile strength of the concrete at the time when the first cracks can be expected [MPa].
+            [fc,eff] Average value of the tensile strength of the concrete at the time when the first cracks can be expected [MPa].
         """
         super().__init__()
         self.f_cr = f_cr
