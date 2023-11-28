@@ -1,5 +1,6 @@
 """Module including all formulas from chapter 7 of NEN-EN 1992-1-1+C2:2011."""
 # pylint: disable=arguments-differ
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import KN, MM2, MPA
 from blueprints.unit_conversion import KN_TO_N
@@ -9,7 +10,7 @@ class Form7Dot3CoefficientKc(Formula):
     """Class representing the formula 7.3 for the coefficient kc for flanges of tubular cross-sections and T-sections [-]."""
 
     label = "7.3"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
         self,
