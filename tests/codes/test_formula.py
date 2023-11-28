@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.formula import Formula
 
 
-class DummyTestingFormula(Formula):
+class TestFormula(Formula):
     """Dummy formula for testing purposes."""
 
     label = "Dummy testing formula"
@@ -35,7 +35,7 @@ def test_raise_error_when_changing_value_after_initialization() -> None:
     # example values
     a = 1
     b = 2
-    dummy_testing_formula = DummyTestingFormula(a=a, b=b)
+    dummy_testing_formula = TestFormula(a=a, b=b)
     with pytest.raises(AttributeError):
         dummy_testing_formula.a = 3
 
@@ -45,6 +45,6 @@ def test_raise_not_implemented_error_detailed_result() -> None:
     # example values
     a = 1
     b = 2
-    dummy_testing_formula = DummyTestingFormula(a=a, b=b)
+    dummy_testing_formula = TestFormula(a=a, b=b)
     with pytest.raises(NotImplementedError):
         _ = dummy_testing_formula.detailed_result
