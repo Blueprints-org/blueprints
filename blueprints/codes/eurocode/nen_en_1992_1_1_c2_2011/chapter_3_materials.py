@@ -61,3 +61,29 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
     def _evaluate(s: float, t: int) -> float:
         """For more detailed documentation see the class docstring."""
         return np.exp(s * (1 - (28 / t) ** (1 / 2)))
+
+
+class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
+    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by tensile splitting strength [MPa]."""
+
+    label = "3.3"
+    source_document = "NEN-EN 1992-1-1+C2:2011"
+
+    def __init__(self, f_ct_sp: float) -> None:
+        """Calculates fct, the approximated axial tensile strength when tensile strength is determined as coefficient
+        which is dependent of the age of concrete [MPa].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2
+
+        Parameters
+        ----------
+        f_ct_sp: float
+            [fct,sp] tensile splitting strength [MPa].
+        """
+        super().__init__()
+        self.f_ct_sp = f_ct_sp
+
+    @staticmethod
+    def _evaluate(f_ct_sp: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        return 0.9 * f_ct_sp
