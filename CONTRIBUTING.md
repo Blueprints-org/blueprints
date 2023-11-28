@@ -1,6 +1,8 @@
 # Contributing to Blueprints
 
-Firstly, thank you for considering contributing to our project! Your help is very valuable and it's what makes the open-source community such a fantastic place to learn, inspire, and create. By contributing to this project, you are helping to advance the field of civil engineering. Engineers around the world will be thankful for your contribution.
+Firstly, thank you for considering contributing to Blueprints! Your help is very valuable and it's what makes the open-source community such a
+fantastic place to learn, inspire, and create. By contributing to this project, you are helping to advance the field of civil engineering. Engineers
+around the world will be thankful for your contribution.
 
 ## Code of Conduct
 
@@ -10,8 +12,10 @@ We enforce a code of conduct for all maintainers and contributors. For more deta
 
 ### Reporting Bugs
 
-1. **Check existing issues:** Before creating a new issue, please check the existing open and closed issues to see if someone else has had the same issue.
-2. **File a new issue:** If you're sure your issue is new, open a new issue, providing as much detail as you can. [Submit an issue here](https://github.com/Blueprints-org/blueprints/issues).
+1. **Check existing issues:** Before creating a new issue, please check the existing open and closed issues to see if someone else has had the same
+   issue.
+2. **File a new issue:** If you're sure your issue is new, open a new issue, providing as much detail as you
+   can. [Submit an issue here](https://github.com/Blueprints-org/blueprints/issues).
 
 ### Feature Requests
 
@@ -28,7 +32,8 @@ We enforce a code of conduct for all maintainers and contributors. For more deta
 
 ## Code Quality Tools
 
-We use black, isort, pylint, and mypy to enforce code quality. Make sure to run these before submitting a PR. We encourage you to use our pre-commit hooks, you can find instructions in this [file](.pre-commit-config.yaml).
+We use black, isort, pylint, and mypy to enforce code quality. Make sure to run these before submitting a PR. We encourage you to use our pre-commit
+hooks, you can find instructions in this [file](.pre-commit-config.yaml).
 
 ## Branching Strategy
 
@@ -52,7 +57,8 @@ We use Git flow for our branching strategy. Only create branches from issues/fea
 
 ## Issues
 
-Any contributor can create an issue. No contribution is too small. If you think something is missing or could be improved, please don't hesitate to submit an issue or a pull request. This is intended to be a central open library for civil engineering, and your input is invaluable.
+Any contributor can create an issue. No contribution is too small. If you think something is missing or could be improved, please don't hesitate to
+submit an issue or a pull request. This is intended to be a central open library for civil engineering, and your input is invaluable.
 
 ## Contact
 
