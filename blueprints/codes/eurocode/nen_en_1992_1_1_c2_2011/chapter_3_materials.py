@@ -122,3 +122,34 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
         if alpha in (1, 2 / 3):
             return beta_cc_t**alpha * f_ctm
         raise ValueError("Wrong value for alpha: alpha = 1 for t < 28 days, alpha = 2/3 for t >= 28 days")
+
+
+class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
+    """Class representing formula 3.5 for the approximation of the elastic modulus, Ecm(t) at day t."""
+
+    label = "3.5"
+    source_document = "NEN-EN 1992-1-1+C2:2011"
+
+    def __init__(self, f_cm_t: float, f_cm: float, e_cm: float) -> None:
+        """Calculates Ecm(t), the approximated elastic modulus at day t [MPa].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.3
+
+        Parameters
+        ----------
+        f_cm_t: float
+            [fcm(t)] compressive strength concrete at t days [MPa].
+        f_cm: float
+            [fcm] average concrete compressive strength on day 28 based on table 3.1 [MPa].
+        e_cm: float
+            [Ecm] average elastic modulus on day 28 [MPa]
+        """
+        super().__init__()
+        self.f_cm_t = f_cm_t
+        self.f_cm = f_cm
+        self.e_cm = e_cm
+
+    @staticmethod
+    def _evaluate(f_cm_t: float, f_cm: float, e_cm: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        return (f_cm_t / f_cm) ** 0.3 * e_cm
