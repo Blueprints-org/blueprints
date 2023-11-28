@@ -87,3 +87,38 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
     def _evaluate(f_ct_sp: float) -> float:
         """For more detailed documentation see the class docstring."""
         return 0.9 * f_ct_sp
+
+
+class Form3Dot4DevelopmentTensileStrength(Formula):
+    """Class representing formula 3.4 for an initial estimation of the tensile strength, fctm(t), after t days [MPa]."""
+
+    label = "3.4"
+    source_document = "NEN-EN 1992-1-1+C2:2011"
+
+    def __init__(self, beta_cc_t: float, alpha: float, f_ctm: float) -> None:
+        """Calculates fctm(t), the initial estimation of the tensile strength after t days [MPa].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2
+
+        Parameters
+        ----------
+        beta_cc_t: float
+            [beta_cc(t)] coefficient dependent of the age of concrete [-].
+        alpha: float
+            [alpha] factor dependent of the age of concrete [-]
+            alpha = 1 for t < 28 days
+            alpha = 2/3 for t >= 28 days
+        f_ctm: float
+            [fctm] Tensile strength from table 3.1 [MPa]
+        """
+        super().__init__()
+        self.beta_cc_t = beta_cc_t
+        self.alpha = alpha
+        self.f_ctm = f_ctm
+
+    @staticmethod
+    def _evaluate(beta_cc_t: float, alpha: float, f_ctm: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        if alpha in (1, 2 / 3):
+            return beta_cc_t**alpha * f_ctm
+        raise ValueError("Wrong value for alpha: alpha = 1 for t < 28 days, alpha = 2/3 for t >= 28 days")
