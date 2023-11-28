@@ -153,3 +153,34 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
     def _evaluate(f_cm_t: float, f_cm: float, e_cm: float) -> float:
         """For more detailed documentation see the class docstring."""
         return (f_cm_t / f_cm) ** 0.3 * e_cm
+
+
+class Form3Dot6CreepDeformationOfConcrete(Formula):
+    """Class representing formula 3.6 for the calculation of creep deformation of concrete."""
+
+    label = "3.6"
+    source_document = "NEN-EN 1992-1-1+C2:2011"
+
+    def __init__(self, phi_inf_t0: float, sigma_c: float, e_c: float) -> None:
+        """Calculates epsilon_cc(inf,t0), the creep deformation of concrete [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4
+
+        Parameters
+        ----------
+        phi_inf_t0: float
+            [phi(inf,t0)] creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
+        sigma_c: float
+            [sigma_c] concrete compressive stress [MPa].
+        e_c: float
+            [Ec] tangent modulus = 1.05 * Ecm [MPa].
+        """
+        super().__init__()
+        self.phi_inf_t0 = phi_inf_t0
+        self.sigma_c = sigma_c
+        self.e_c = e_c
+
+    @staticmethod
+    def _evaluate(phi_inf_t0: float, sigma_c: float, e_c: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        return phi_inf_t0 * sigma_c / e_c
