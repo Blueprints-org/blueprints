@@ -1,1 +1,1 @@
-"""This package represents the Eurocode 2 1992-1-1 code."""
+"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011."""
