@@ -1,7 +1,8 @@
 """Module including all formulas from chapter 7 of NEN-EN 1992-1-1+C2:2011."""
 # pylint: disable=arguments-differ
 from blueprints.codes.formula import Formula
-from blueprints.typehints import KN, KN_TO_N, MM2, MPA
+from blueprints.type_alias import KN, MM2, MPA
+from blueprints.unit_conversion import KN_TO_N
 
 
 class Form7Dot3CoefficientKc(Formula):
