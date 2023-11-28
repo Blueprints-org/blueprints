@@ -212,3 +212,31 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
     def _evaluate(phi_inf_t0: float, k_sigma: float) -> float:
         """For more detailed documentation see the class docstring."""
         return phi_inf_t0 * np.exp(1.5 * (k_sigma - 0.45))
+
+
+class Form3Dot8TotalShrinkage(Formula):
+    """Class representing formula 3.8 for the calculation of the total shrinkage."""
+
+    label = "3.8"
+    source_document = "NEN-EN 1992-1-1+C2:2011"
+
+    def __init__(self, epsilon_cd: float, epsilon_ca: float) -> None:
+        """Calculates epsilon_cs, the total shrinkage [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4
+
+        Parameters
+        ----------
+        epsilon_cd: float
+            [epsilon_cd] drying shrinkage [-].
+        epsilon_ca: float
+            [epsilon_ca] autogene shrinkage [-].
+        """
+        super().__init__()
+        self.epsilon_cd = epsilon_cd
+        self.epsilon_ca = epsilon_ca
+
+    @staticmethod
+    def _evaluate(epsilon_cd: float, epsilon_ca: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        return epsilon_cd + epsilon_ca
