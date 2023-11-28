@@ -30,14 +30,17 @@ repos:
       language_version: python3.11
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.7.0
+    rev: v1.7.1
     hooks:
     - id: mypy
       args: ["--ignore-missing-imports"]
       language_version: python3.11
 
--   repo: https://github.com/pycqa/pylint
-    rev: v3.0.1
+-   repo: local
     hooks:
     - id: pylint
-      language_version: python3.11
+      name: pylint
+      entry: pylint
+      language: system
+      types: [python]
+      args: ["--rcfile=pyproject.toml"]
