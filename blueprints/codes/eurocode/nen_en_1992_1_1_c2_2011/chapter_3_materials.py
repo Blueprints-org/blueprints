@@ -184,3 +184,31 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
     def _evaluate(phi_inf_t0: float, sigma_c: float, e_c: float) -> float:
         """For more detailed documentation see the class docstring."""
         return phi_inf_t0 * sigma_c / e_c
+
+
+class Form3Dot7NonLinearCreepCoefficient(Formula):
+    """Class representing formula 3.7 for the calculation of the non-linear creep coefficient."""
+
+    label = "3.7"
+    source_document = "NEN-EN 1992-1-1+C2:2011"
+
+    def __init__(self, phi_inf_t0: float, k_sigma: float) -> None:
+        """Calculates phi_nl(inf,t0), the non-linear creep coefficient [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4
+
+        Parameters
+        ----------
+        phi_inf_t0: float
+            [phi(inf,t0)] creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
+        k_sigma: float
+            [k_sigma] stress-strength ratio (sigma_c / f_ck(t0)) [-].
+        """
+        super().__init__()
+        self.phi_inf_t0 = phi_inf_t0
+        self.k_sigma = k_sigma
+
+    @staticmethod
+    def _evaluate(phi_inf_t0: float, k_sigma: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        return phi_inf_t0 * np.exp(1.5 * (k_sigma - 0.45))
