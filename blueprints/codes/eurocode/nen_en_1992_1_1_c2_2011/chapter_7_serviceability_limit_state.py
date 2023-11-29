@@ -1,4 +1,4 @@
-"""Module including all formulas from chapter 7 of NEN-EN 1992-1-1+C2:2011."""
+"""Module including all formulas from chapter 7 - Serviceability Limit State of NEN-EN 1992-1-1+C2:2011."""
 # pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -18,9 +18,9 @@ class Form7Dot3CoefficientKc(Formula):
         a_ct: MM2,
         f_ct_eff: MPA,
     ) -> None:
-        """Calculates kc for flanges of tubular cross-sections and T-sections [-].
+        """[kc] Calculates kc for flanges of tubular cross-sections and T-sections [-].
 
-        NEN-EN 1992-1-1:2011 art.7.3
+        NEN-EN 1992-1-1:2011 art.7.3.2(2) - Formula (7.3)
 
         Parameters
         ----------
