@@ -1,11 +1,10 @@
-"""This package represents the formulas in NEN-EN 1992-1-1+C2:2011 - Chapter 3."""
+"""Module including all formulas from chapter 3 - Materials of NEN-EN 1992-1-1+C2:2011."""
+# pylint: disable=arguments-differ
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MPA
-
-# pylint: disable=arguments-differ
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
@@ -41,6 +40,10 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         f_cm: MPA,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method"""
+        if beta_cc_t < 0:
+            raise ValueError(f"Negative beta_cc_t: {beta_cc_t}. beta_cc_t cannot be negative")
+        if f_cm < 0:
+            raise ValueError(f"Negative f_cm: {f_cm}. f_cm cannot be negative")
         return beta_cc_t * f_cm
 
 
@@ -63,6 +66,10 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         ----------
         s: float
             [s] Coefficient dependent on the kind of cement [-].
+            = 0.20 for cement of strength classes CEM 42.5 R, CEM 52.5 N, and CEM 52.5 R (class R);
+            = 0.25 for cement of strength classes CEM 32.5 R, CEM 42.5 N (class N);
+            = 0.38 for cement of strength class CEM 32.5 N (class S).
+            Use your own implementation of this formula or use the SubForm3Dot2CoefficientTypeOfCementS class.
         t: int
             [t] Age of concrete in days [days].
         """
@@ -76,6 +83,10 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         t: int,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
+        if s not in (0.20, 0.25, 0.38):
+            raise ValueError(f"Invalid s coefficient: {s}. Options: 0.20, 0.25 or 0.38")
+        if t < 0:
+            raise ValueError(f"Negative t: {t}. t cannot be negative")
         return np.exp(s * (1 - (28 / t) ** (1 / 2)))
 
 
@@ -118,4 +129,4 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
             case "S":
                 return 0.38
             case _:
-                raise ValueError(f"Invalid cement class: {cement_class}")
+                raise ValueError(f"Invalid cement class: {cement_class}. Options: R, N or S")

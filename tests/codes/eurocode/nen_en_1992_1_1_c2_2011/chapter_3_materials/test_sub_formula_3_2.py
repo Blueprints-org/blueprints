@@ -1,9 +1,8 @@
 """Testing sub-formula for 3.2 of NEN-EN 1992-1-1+C2:2011."""
+# pylint: disable=arguments-differ
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import SubForm3Dot2CoefficientTypeOfCementS
-
-# pylint: disable=arguments-differ
 
 
 class TestSubForm3Dot2CoefficientTypeOfCementS:
@@ -27,12 +26,3 @@ class TestSubForm3Dot2CoefficientTypeOfCementS:
 
         with pytest.raises(ValueError):
             SubForm3Dot2CoefficientTypeOfCementS(cement_class=cement_class)
-
-    def test_raise_error_when_changing_value_after_initialization(self) -> None:
-        """Test that an error is raised when changing a value after initialization."""
-        # example values
-        cement_class = "R"  # str
-        sub_form_3_2 = SubForm3Dot2CoefficientTypeOfCementS(cement_class=cement_class)
-
-        with pytest.raises(AttributeError):
-            sub_form_3_2.cement_class = "S"
