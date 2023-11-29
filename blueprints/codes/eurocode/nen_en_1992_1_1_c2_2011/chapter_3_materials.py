@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import MM, MM2, MPA
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
@@ -138,7 +138,10 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
     label = "3.3"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, f_ct_sp: float) -> None:
+    def __init__(
+        self,
+        f_ct_sp: MPA,
+    ) -> None:
         """[fct] The approximated axial tensile strength when tensile strength is determined as coefficient
         which is dependent of the age of concrete [MPa].
 
@@ -146,15 +149,17 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
 
         Parameters
         ----------
-        f_ct_sp: float
+        f_ct_sp : float
             [fct,sp] Tensile splitting strength [MPa].
         """
         super().__init__()
         self.f_ct_sp = f_ct_sp
 
     @staticmethod
-    def _evaluate(f_ct_sp: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        f_ct_sp: MPA,
+    ) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method"""
         if f_ct_sp < 0:
             raise ValueError(f"Negative f_ct_sp: {f_ct_sp}. f_ct_sp cannot be negative")
         return 0.9 * f_ct_sp
@@ -166,20 +171,25 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
     label = "3.4"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, beta_cc_t: float, alpha: float, f_ctm: float) -> None:
+    def __init__(
+        self,
+        beta_cc_t: float,
+        alpha: float,
+        f_ctm: MPA,
+    ) -> None:
         """[fctm(t)] The initial estimation of the tensile strength after t days [MPa].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - Formula (3.4)
 
         Parameters
         ----------
-        beta_cc_t: float
+        beta_cc_t : float
             [βcc(t)] Coefficient dependent of the age of concrete [-].
-        alpha: float
+        alpha : float
             [α] Factor dependent of the age of concrete [-]
             alpha = 1 for t < 28 days
             alpha = 2/3 for t >= 28 days
-        f_ctm: float
+        f_ctm : MPA
             [fctm] Tensile strength from table 3.1 [MPa]
         """
         super().__init__()
@@ -188,8 +198,12 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
         self.f_ctm = f_ctm
 
     @staticmethod
-    def _evaluate(beta_cc_t: float, alpha: float, f_ctm: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        beta_cc_t: float,
+        alpha: float,
+        f_ctm: MPA,
+    ) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method"""
         if beta_cc_t < 0:
             raise ValueError(f"Negative beta_cc_t: {beta_cc_t}. beta_cc_t cannot be negative")
         if alpha not in (1, 2 / 3):
@@ -205,18 +219,23 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
     label = "3.5"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, f_cm_t: float, f_cm: float, e_cm: float) -> None:
+    def __init__(
+        self,
+        f_cm_t: MPA,
+        f_cm: MPA,
+        e_cm: MPA,
+    ) -> None:
         """[Ecm(t)] The approximated elastic modulus at day t [MPa].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.3(3) - Formula (3.5)
 
         Parameters
         ----------
-        f_cm_t: float
+        f_cm_t : MPA
             [fcm(t)] Compressive strength concrete at t days [MPa].
-        f_cm: float
+        f_cm : MPA
             [fcm] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
-        e_cm: float
+        e_cm : MPA
             [Ecm] Average elastic modulus on day 28 [MPa]
         """
         super().__init__()
@@ -225,8 +244,12 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
         self.e_cm = e_cm
 
     @staticmethod
-    def _evaluate(f_cm_t: float, f_cm: float, e_cm: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        f_cm_t: MPA,
+        f_cm: MPA,
+        e_cm: MPA,
+    ) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method"""
         if f_cm_t < 0:
             raise ValueError(f"Negative f_cm_t: {f_cm_t}. f_cm_t cannot be negative")
         if f_cm < 0:
@@ -242,18 +265,23 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
     label = "3.6"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, phi_inf_t0: float, sigma_c: float, e_c: float) -> None:
+    def __init__(
+        self,
+        phi_inf_t0: float,
+        sigma_c: MPA,
+        e_c: MPA,
+    ) -> None:
         """εcc(inf,t0) The creep deformation of concrete [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(3) - Formula (3.6)
 
         Parameters
         ----------
-        phi_inf_t0: float
-            [φ(inf, t0)] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
-        sigma_c: float
+        phi_inf_t0 : float
+            [φ(inf, t0)] Creep coefficient if high accuracy is not required use figure 3.1 else use appendix B [-].
+        sigma_c : MPA
             [σc] Concrete compressive stress [MPa].
-        e_c: float
+        e_c : MPA
             [Ec] tangent modulus = 1.05 * Ecm [MPa].
         """
         super().__init__()
@@ -262,8 +290,18 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         self.e_c = e_c
 
     @staticmethod
-    def _evaluate(phi_inf_t0: float, sigma_c: float, e_c: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        phi_inf_t0: float,
+        sigma_c: MPA,
+        e_c: MPA,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if phi_inf_t0 < 0:
+            raise ValueError(f"Negative phi_inf_t0: {phi_inf_t0}. phi_inf_t0 cannot be negative")
+        if sigma_c < 0:
+            raise ValueError(f"Negative sigma_c: {sigma_c}. sigma_c cannot be negative")
+        if e_c < 0:
+            raise ValueError(f"Negative e_c: {e_c}. e_c cannot be negative")
         return phi_inf_t0 * sigma_c / e_c
 
 
@@ -273,16 +311,20 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
     label = "3.7"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, phi_inf_t0: float, k_sigma: float) -> None:
+    def __init__(
+        self,
+        phi_inf_t0: float,
+        k_sigma: float,
+    ) -> None:
         """[φnl(inf,t0)] The non-linear creep coefficient [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(4) - Formula (3.7)
 
         Parameters
         ----------
-        phi_inf_t0: float
+        phi_inf_t0 : float
             [φ(inf, t0)] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
-        k_sigma: float
+        k_sigma : float
             [kσ] Stress-strength ratio (σc / fck(t0)) [-].
         """
         super().__init__()
@@ -290,8 +332,15 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
         self.k_sigma = k_sigma
 
     @staticmethod
-    def _evaluate(phi_inf_t0: float, k_sigma: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        phi_inf_t0: float,
+        k_sigma: float,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if phi_inf_t0 < 0:
+            raise ValueError(f"Negative phi_inf_t0: {phi_inf_t0}. phi_inf_t0 cannot be negative")
+        if k_sigma < 0:
+            raise ValueError(f"Negative k_sigma: {k_sigma}. k_sigma cannot be negative")
         return phi_inf_t0 * np.exp(1.5 * (k_sigma - 0.45))
 
 
@@ -301,16 +350,20 @@ class Form3Dot8TotalShrinkage(Formula):
     label = "3.8"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, epsilon_cd: float, epsilon_ca: float) -> None:
+    def __init__(
+        self,
+        epsilon_cd: float,
+        epsilon_ca: float,
+    ) -> None:
         """[εcs] The total shrinkage [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.8)
 
         Parameters
         ----------
-        epsilon_cd: float
+        epsilon_cd : float
             [εcd] Drying shrinkage [-].
-        epsilon_ca: float
+        epsilon_ca : float
             [εca] Autogene shrinkage [-].
         """
         super().__init__()
@@ -318,8 +371,11 @@ class Form3Dot8TotalShrinkage(Formula):
         self.epsilon_ca = epsilon_ca
 
     @staticmethod
-    def _evaluate(epsilon_cd: float, epsilon_ca: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        epsilon_cd: float,
+        epsilon_ca: float,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
         return epsilon_cd + epsilon_ca
 
 
@@ -329,7 +385,12 @@ class Form3Dot9DryingShrinkage(Formula):
     label = "3.9"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, beta_ds_tt_s: float, k_h: float, epsilon_cd_0: float) -> None:
+    def __init__(
+        self,
+        beta_ds_tt_s: float,
+        k_h: float,
+        epsilon_cd_0: float,
+    ) -> None:
         """[εcd(t)] Development of the drying shrinkage [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.9)
@@ -339,11 +400,11 @@ class Form3Dot9DryingShrinkage(Formula):
         beta_ds_tt_s : float
             [βds(t, ts)] Coefficient that depends on the age t (in days) of the concrete for the drying shrinkage [-].
         k_h : float
-            [kh] Coefficient depending on the fictional thickness h0 following table 3.9 [-].
-                h0 = 100 -> kh = 1.0
-                h0 = 200 -> kh = 0.85
-                h0 = 300 -> kh = 0.75
-                h0 >= 500 -> kh = 0.70
+            [kh] Coefficient depending on the fictional thickness h0 following table 3.3 [-].
+            h0 = 100 -> kh = 1.0
+            h0 = 200 -> kh = 0.85
+            h0 = 300 -> kh = 0.75
+            h0 >= 500 -> kh = 0.70
         epsilon_cd_0 : float
             [εcd,0] Nominal unobstructed drying shrinkage, formula in appendix B or use table 3.2 [-]
         """
@@ -353,11 +414,17 @@ class Form3Dot9DryingShrinkage(Formula):
         self.epsilon_cd_0 = epsilon_cd_0
 
     @staticmethod
-    def _evaluate(beta_ds_tt_s: float, k_h: float, epsilon_cd_0: float) -> float:
-        """For more detailed documentation see the class docstring."""
-        if k_h in (1.0, 0.85, 0.75, 0.70):
-            return beta_ds_tt_s * k_h * epsilon_cd_0
-        raise ValueError(f"kh = {k_h:.2f}, this is not following table 3.9")
+    def _evaluate(
+        beta_ds_tt_s: float,
+        k_h: float,
+        epsilon_cd_0: float,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if beta_ds_tt_s < 0:
+            raise ValueError(f"Negative beta_ds_tt_s: {beta_ds_tt_s}. beta_ds_tt_s cannot be negative")
+        if k_h < 0:
+            raise ValueError(f"Negative k_h: {k_h}. k_h cannot be negative")
+        return beta_ds_tt_s * k_h * epsilon_cd_0
 
 
 class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
@@ -366,7 +433,12 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
     label = "3.10"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, t: int, t_s: int, h_0: float) -> None:
+    def __init__(
+        self,
+        t: int,
+        t_s: int,
+        h_0: MM,
+    ) -> None:
         """[βds(t,ts)] Coefficient for drying shrinkage due to age of concrete [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.10)
@@ -377,7 +449,7 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
             [t] Age in days of the concrete at the considered moment [days].
         t_s : int
             [t] Age in days of the concrete at the start of the drying shrinkage [days].
-        h_0 : float
+        h_0 : MM
             [h0] fictional thickness of cross-section [mm].
             = 2 * Ac / u
             Use your own implementation of this formula or use the SubForm3Dot10FictionalCrossSection class.
@@ -388,8 +460,20 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
         self.h_0 = h_0
 
     @staticmethod
-    def _evaluate(t: int, t_s: int, h_0: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        t: int,
+        t_s: int,
+        h_0: MM,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if t <= 0:
+            raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
+        if t_s < 0:
+            raise ValueError(f"Negative t_s: {t_s}. t_s cannot be negative")
+        if t <= t_s:
+            raise ValueError("Invalid t and t_s combination. t has to be larger than t_s")
+        if h_0 <= 0:
+            raise ValueError(f"Invalid h_0: {h_0}. h_0 cannot be negative or zero")
         return (t - t_s) / ((t - t_s) + 0.04 * np.sqrt(h_0**3))
 
 
@@ -399,16 +483,20 @@ class SubForm3Dot10FictionalCrossSection(Formula):
     label = "3.10"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, a_c: float, u: float) -> None:
+    def __init__(
+        self,
+        a_c: MM2,
+        u: MM,
+    ) -> None:
         """[h0] Fictional thickness of the cross-section [mm].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - h0
 
         Parameters
         ----------
-        a_c : float
+        a_c : MM2
             [a_c] Area of the cross-section of the concrete [mm²].
-        u : float
+        u : MM
             [u] Circumference of part that is subjected to drying [mm].
         """
         super().__init__()
@@ -416,6 +504,13 @@ class SubForm3Dot10FictionalCrossSection(Formula):
         self.u = u
 
     @staticmethod
-    def _evaluate(a_c: float, u: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        a_c: MM2,
+        u: MM,
+    ) -> MM:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if a_c <= 0:
+            raise ValueError(f"Invalid a_c: {a_c}. a_c cannot be negative or zero")
+        if u <= 0:
+            raise ValueError(f"Invalid u: {u}. u cannot be negative or zero")
         return 2 * a_c / u
