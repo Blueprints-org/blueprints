@@ -1,14 +1,14 @@
-"""This package represents the formulas in NEN-EN 1992-1-1+C2:2011 - Chapter 3."""
+"""Module including all formulas from chapter 3 - Materials of NEN-EN 1992-1-1+C2:2011."""
+# pylint: disable=arguments-differ
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-
-# pylint: disable=arguments-differ
+from blueprints.type_alias import MPA
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
-    """Class representing formula 3.1 for the estimation of the concrete compressive strength, f_cm(t),  after t days
+    """Class representing formula 3.1 for the estimation of the concrete compressive strength, fcm(t),  after t days
     with an average temperature of 20 degrees Celsius [MPa]."""
 
     label = "3.1"
@@ -17,7 +17,7 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
     def __init__(
         self,
         beta_cc_t: float,
-        f_cm: float,
+        f_cm: MPA,
     ) -> None:
         """[fcm(t)] The estimated concrete compressive strength [MPa].
 
@@ -35,13 +35,20 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         self.f_cm = f_cm
 
     @staticmethod
-    def _evaluate(beta_cc_t: float, f_cm: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        beta_cc_t: float,
+        f_cm: MPA,
+    ) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if beta_cc_t < 0:
+            raise ValueError(f"Negative beta_cc_t: {beta_cc_t}. beta_cc_t cannot be negative")
+        if f_cm < 0:
+            raise ValueError(f"Negative f_cm: {f_cm}. f_cm cannot be negative")
         return beta_cc_t * f_cm
 
 
 class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
-    """Class representing formula 3.2 for the coefficient which is dependent of the age of concrete, beta_cc(t) [-]."""
+    """Class representing formula 3.2 for the coefficient βcc(t) which is dependent of the age of concrete [-]."""
 
     label = "3.2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -59,6 +66,10 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         ----------
         s: float
             [s] Coefficient dependent on the kind of cement [-].
+            = 0.20 for cement of strength classes CEM 42.5 R, CEM 52.5 N, and CEM 52.5 R (class R);
+            = 0.25 for cement of strength classes CEM 32.5 R, CEM 42.5 N (class N);
+            = 0.38 for cement of strength class CEM 32.5 N (class S).
+            Use your own implementation of this formula or use the SubForm3Dot2CoefficientTypeOfCementS class.
         t: int
             [t] Age of concrete in days [days].
         """
@@ -67,8 +78,15 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         self.t = t
 
     @staticmethod
-    def _evaluate(s: float, t: int) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        s: float,
+        t: int,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if s not in (0.20, 0.25, 0.38):
+            raise ValueError(f"Invalid s coefficient: {s}. Options: 0.20, 0.25 or 0.38")
+        if t < 0:
+            raise ValueError(f"Negative t: {t}. t cannot be negative")
         return np.exp(s * (1 - (28 / t) ** (1 / 2)))
 
 
@@ -99,8 +117,10 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
         self.cement_class = cement_class
 
     @staticmethod
-    def _evaluate(cement_class: str) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        cement_class: str,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
         match cement_class:
             case "R":
                 return 0.20
@@ -109,7 +129,7 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
             case "S":
                 return 0.38
             case _:
-                raise ValueError(f"Invalid cement class: {cement_class}")
+                raise ValueError(f"Invalid cement class: {cement_class}. Options: R, N or S")
 
 
 class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
