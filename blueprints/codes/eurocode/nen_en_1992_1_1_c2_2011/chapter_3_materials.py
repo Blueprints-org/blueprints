@@ -155,6 +155,8 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
     @staticmethod
     def _evaluate(f_ct_sp: float) -> float:
         """For more detailed documentation see the class docstring."""
+        if f_ct_sp < 0:
+            raise ValueError(f"Negative f_ct_sp: {f_ct_sp}. f_ct_sp cannot be negative")
         return 0.9 * f_ct_sp
 
 
@@ -188,9 +190,13 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
     @staticmethod
     def _evaluate(beta_cc_t: float, alpha: float, f_ctm: float) -> float:
         """For more detailed documentation see the class docstring."""
-        if alpha in (1, 2 / 3):
-            return beta_cc_t**alpha * f_ctm
-        raise ValueError("Wrong value for alpha: alpha = 1 for t < 28 days, alpha = 2/3 for t >= 28 days")
+        if beta_cc_t < 0:
+            raise ValueError(f"Negative beta_cc_t: {beta_cc_t}. beta_cc_t cannot be negative")
+        if alpha not in (1, 2 / 3):
+            raise ValueError("Wrong value for alpha: alpha = 1 for t < 28 days, alpha = 2/3 for t >= 28 days")
+        if f_ctm < 0:
+            raise ValueError(f"Negative f_ctm: {f_ctm}. f_ctm cannot be negative")
+        return beta_cc_t**alpha * f_ctm
 
 
 class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
@@ -221,6 +227,12 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
     @staticmethod
     def _evaluate(f_cm_t: float, f_cm: float, e_cm: float) -> float:
         """For more detailed documentation see the class docstring."""
+        if f_cm_t < 0:
+            raise ValueError(f"Negative f_cm_t: {f_cm_t}. f_cm_t cannot be negative")
+        if f_cm < 0:
+            raise ValueError(f"Negative f_cm: {f_cm}. f_cm cannot be negative")
+        if e_cm < 0:
+            raise ValueError(f"Negative e_cm: {e_cm}. e_cm cannot be negative")
         return (f_cm_t / f_cm) ** 0.3 * e_cm
 
 
