@@ -1,7 +1,7 @@
 # This workflow will make sure that incoming changes via pull requests
 # will not decrease the code coverage to less than 97%.
 
-name: Assure a minimum code coverage of 95%
+name: Assure a minimum code coverage of 97%
 
 on:
   pull_request:
