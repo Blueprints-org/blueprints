@@ -240,3 +240,40 @@ class Form3Dot8TotalShrinkage(Formula):
     def _evaluate(epsilon_cd: float, epsilon_ca: float) -> float:
         """For more detailed documentation see the class docstring."""
         return epsilon_cd + epsilon_ca
+
+
+class Form3Dot9DryingShrinkage(Formula):
+    """Class representing formula 3.9 for the calculation of the drying shrinkage."""
+
+    label = "3.9"
+    source_document = "NEN-EN 1992-1-1+C2:2011"
+
+    def __init__(self, beta_ds_tt_s: float, k_h: float, epsilon_cd_0: float) -> None:
+        """[εcd(t)] Development of the drying shrinkage [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.9)
+
+        Parameters
+        ----------
+        beta_ds_tt_s : float
+            [βds(t, ts)] Coefficient that depends on the age t (in days) of the concrete for the drying shrinkage [-].
+        k_h : float
+            [kh] Coefficient depending on the fictional thickness h0 following table 3.9 [-].
+                h0 = 100 -> kh = 1.0
+                h0 = 200 -> kh = 0.85
+                h0 = 300 -> kh = 0.75
+                h0 >= 500 -> kh = 0.70
+        epsilon_cd_0 : float
+            [εcd,0] Nominal unobstructed drying shrinkage, formula in appendix B or use table 3.2 [-]
+        """
+        super().__init__()
+        self.beta_ds_tt_s = beta_ds_tt_s
+        self.k_h = k_h
+        self.epsilon_cd_0 = epsilon_cd_0
+
+    @staticmethod
+    def _evaluate(beta_ds_tt_s: float, k_h: float, epsilon_cd_0: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        if k_h in (1.0, 0.85, 0.75, 0.70):
+            return beta_ds_tt_s * k_h * epsilon_cd_0
+        raise ValueError(f"kh = {k_h:.2f}, this is not following table 3.9")
