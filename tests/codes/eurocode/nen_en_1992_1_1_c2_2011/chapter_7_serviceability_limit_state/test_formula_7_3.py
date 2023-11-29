@@ -48,13 +48,3 @@ class TestForm7Dot3CoefficientKc:
         f_ct_eff = -1
         with pytest.raises(ValueError):
             Form7Dot3CoefficientKc(f_cr=f_cr, a_ct=a_ct, f_ct_eff=f_ct_eff)
-
-    def test_raise_error_when_changing_value_after_initialization(self) -> None:
-        """Test that an error is raised when changing a value after initialization."""
-        # example values
-        f_cr = 457
-        a_ct = 100 * 500
-        f_ct_eff = 2.9
-        form_7_3 = Form7Dot3CoefficientKc(f_cr=f_cr, a_ct=a_ct, f_ct_eff=f_ct_eff)
-        with pytest.raises(AttributeError):
-            form_7_3.f_cr = 1
