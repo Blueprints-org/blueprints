@@ -1,21 +1,12 @@
 name: '✨ Feature request'
 description: Suggest a new feature or enhancement for Blueprints
 title: "[✨ Feature request]: Add a short title to your request here."
-labels: [enhancement]
+labels: [ enhancement ]
 
 body:
   - type: markdown
     attributes:
       value: "## Blueprints Feature Request Template"
-
-  - type: textarea
-    id: title
-    attributes:
-      label: "Title"
-      description: "Provide a brief and descriptive title for the feature."
-      placeholder: "Add ConcreteMaterial Class to Handle Material Properties"
-    validations:
-      required: true
 
   - type: textarea
     id: description

@@ -14,6 +14,7 @@
 #    The hooks will run again and the commit will only be made if they all pass.
 # 5. If you want to manually run all hooks on all files, run `pre-commit run --all-files`.
 # 6. To update to the latest versions of the hooks, run `pre-commit autoupdate`.
+# 7. Make sure to also install pylint in your local environment. Use the command `pip install pylint`.
 
 repos:
 -   repo: https://github.com/psf/black
@@ -30,7 +31,7 @@ repos:
       language_version: python3.11
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.7.1
+    rev: v1.7.0
     hooks:
     - id: mypy
       args: ["--ignore-missing-imports"]
