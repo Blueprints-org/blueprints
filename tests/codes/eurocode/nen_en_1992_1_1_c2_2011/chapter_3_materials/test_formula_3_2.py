@@ -29,10 +29,10 @@ class TestForm3Dot2CoefficientDependentOfConcreteAge:
         with pytest.raises(ValueError):
             Form3Dot2CoefficientDependentOfConcreteAge(s=s, t=t)
 
-    def test_raise_error_when_invalid_s_is_given(self) -> None:
+    def test_raise_error_when_negative_s_is_given(self) -> None:
         """Test the evaluation of the result."""
         # Example values
-        s = 0.9  # -
+        s = -0.9  # -
         t = 10  # days
 
         with pytest.raises(ValueError):
