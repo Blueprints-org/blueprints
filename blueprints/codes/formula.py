@@ -3,9 +3,7 @@ from abc import ABC, abstractmethod
 
 
 class Formula(float, ABC):
-    """
-    Abstract base class for formulas used in the codes.
-    """
+    """Abstract base class for formulas used in the codes."""
 
     def __new__(cls, *args, **kwargs) -> "Formula":
         """Method for creating a new instance of the class."""
@@ -19,8 +17,7 @@ class Formula(float, ABC):
         self._initialized = True
 
     def __setattr__(self, name, value):
-        """
-        Override the __setattr__ method to prevent modifications after initialization.
+        """Override the __setattr__ method to prevent modifications after initialization.
 
         Parameters
         ----------
