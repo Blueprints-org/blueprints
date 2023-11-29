@@ -22,7 +22,7 @@ class TestForm3Dot5ApproximationVarianceElasticModulusOverTime:
         assert form_3_5 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_f_cm_t_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test a negative value."""
         # Example values
         f_cm_t = -2.34  # MPa
         f_cm = 3.4  # MPa
@@ -32,7 +32,7 @@ class TestForm3Dot5ApproximationVarianceElasticModulusOverTime:
             Form3Dot5ApproximationVarianceElasticModulusOverTime(f_cm_t=f_cm_t, f_cm=f_cm, e_cm=e_cm)
 
     def test_raise_error_when_negative_f_cm_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test a negative value."""
         # Example values
         f_cm_t = 2.34  # MPa
         f_cm = -3.4  # MPa
@@ -42,7 +42,7 @@ class TestForm3Dot5ApproximationVarianceElasticModulusOverTime:
             Form3Dot5ApproximationVarianceElasticModulusOverTime(f_cm_t=f_cm_t, f_cm=f_cm, e_cm=e_cm)
 
     def test_raise_error_when_negative_e_cm_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test a negative value."""
         # Example values
         f_cm_t = 2.34  # MPa
         f_cm = 3.4  # MPa
