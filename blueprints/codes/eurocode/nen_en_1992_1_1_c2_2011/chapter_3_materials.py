@@ -3,12 +3,13 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.type_alias import MPA
 
 # pylint: disable=arguments-differ
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
-    """Class representing formula 3.1 for the estimation of the concrete compressive strength, f_cm(t),  after t days
+    """Class representing formula 3.1 for the estimation of the concrete compressive strength, fcm(t),  after t days
     with an average temperature of 20 degrees Celsius [MPa]."""
 
     label = "3.1"
@@ -17,7 +18,7 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
     def __init__(
         self,
         beta_cc_t: float,
-        f_cm: float,
+        f_cm: MPA,
     ) -> None:
         """[fcm(t)] The estimated concrete compressive strength [MPa].
 
@@ -35,13 +36,16 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         self.f_cm = f_cm
 
     @staticmethod
-    def _evaluate(beta_cc_t: float, f_cm: float) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        beta_cc_t: float,
+        f_cm: MPA,
+    ) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method"""
         return beta_cc_t * f_cm
 
 
 class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
-    """Class representing formula 3.2 for the coefficient which is dependent of the age of concrete, beta_cc(t) [-]."""
+    """Class representing formula 3.2 for the coefficient βcc(t) which is dependent of the age of concrete [-]."""
 
     label = "3.2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -67,8 +71,11 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         self.t = t
 
     @staticmethod
-    def _evaluate(s: float, t: int) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        s: float,
+        t: int,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
         return np.exp(s * (1 - (28 / t) ** (1 / 2)))
 
 
@@ -99,8 +106,10 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
         self.cement_class = cement_class
 
     @staticmethod
-    def _evaluate(cement_class: str) -> float:
-        """For more detailed documentation see the class docstring."""
+    def _evaluate(
+        cement_class: str,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
         match cement_class:
             case "R":
                 return 0.20
