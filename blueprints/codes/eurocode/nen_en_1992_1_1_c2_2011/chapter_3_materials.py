@@ -122,11 +122,11 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
         match cement_class.lower():
-            case "R":
+            case "r":
                 return 0.20
-            case "N":
+            case "n":
                 return 0.25
-            case "S":
+            case "s":
                 return 0.38
             case _:
                 raise ValueError(f"Invalid cement class: {cement_class}. Options: R, N or S")
