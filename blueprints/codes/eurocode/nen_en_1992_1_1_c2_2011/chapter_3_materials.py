@@ -1,6 +1,7 @@
 """This package represents the formulas in NEN-EN 1992-1-1+C2:2011 - Chapter 3."""
 import numpy as np
 
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 
 # pylint: disable=arguments-differ
@@ -11,19 +12,23 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
     with an average temperature of 20 degrees Celsius [MPa]."""
 
     label = "3.1"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, beta_cc_t: float, f_cm: float) -> None:
-        """Calculates fcm(t), the estimated concrete compressive strength [MPa].
+    def __init__(
+        self,
+        beta_cc_t: float,
+        f_cm: float,
+    ) -> None:
+        """[fcm(t)] The estimated concrete compressive strength [MPa].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.2
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - Formula (3.1)
 
         Parameters
         ----------
         beta_cc_t: float
-            [beta_cc(t)] coefficient dependent of the age of concrete [-].
+            [βcc(t)] Coefficient dependent of the age of concrete [-].
         f_cm: float
-            [fcm] average concrete compressive strength on day 28 based on table 3.1 [MPa].
+            [fcm] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
         """
         super().__init__()
         self.beta_cc_t = beta_cc_t
@@ -39,19 +44,23 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
     """Class representing formula 3.2 for the coefficient which is dependent of the age of concrete, beta_cc(t) [-]."""
 
     label = "3.2"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, s: float, t: int) -> None:
+    def __init__(
+        self,
+        s: float,
+        t: int,
+    ) -> None:
         """Calculates beta_cc(t) coefficient which is dependent of the age of concrete in days [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.2
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - Formula (3.2)
 
         Parameters
         ----------
         s: float
-            [s] coefficient dependent on the kind of cement [-].
+            [s] Coefficient dependent on the kind of cement [-].
         t: int
-            [t] age of concrete in days [days].
+            [t] Age of concrete in days [days].
         """
         super().__init__()
         self.s = s
@@ -61,3 +70,43 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
     def _evaluate(s: float, t: int) -> float:
         """For more detailed documentation see the class docstring."""
         return np.exp(s * (1 - (28 / t) ** (1 / 2)))
+
+
+class SubForm3Dot2CoefficientTypeOfCementS(Formula):
+    """Class representing sub-formula for formula 3.2, which calculates the coefficient s which is dependent on the cement class"""
+
+    source_document = NEN_EN_1992_1_1_C2_2011
+    label = "3.2"
+
+    def __init__(
+        self,
+        cement_class: str,
+    ) -> None:
+        """[s] Coefficient that depends on the type of cement [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - s
+
+        Parameters
+        ----------
+        cement_class : str
+            [cement_class] Class of the cement.
+                = 'R' for cement of strength classes CEM 42.5 R, CEM 52.5 N, and CEM 52.5 R (class R);
+                = 'N' for cement of strength classes CEM 32.5 R, CEM 42.5 N (class N);
+                = 'S' for cement of strength class CEM 32.5 N (class S).
+
+        """
+        super().__init__()
+        self.cement_class = cement_class
+
+    @staticmethod
+    def _evaluate(cement_class: str) -> float:
+        """For more detailed documentation see the class docstring."""
+        match cement_class:
+            case "R":
+                return 0.20
+            case "N":
+                return 0.25
+            case "S":
+                return 0.38
+            case _:
+                raise ValueError(f"Invalid cement class: {cement_class}")
