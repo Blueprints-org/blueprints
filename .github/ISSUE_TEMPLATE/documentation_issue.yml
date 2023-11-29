@@ -9,14 +9,6 @@ body:
     attributes:
       value: "## 📚 Blueprints Issue Template"
 
-  - type: textarea
-    id: issue-title
-    attributes:
-      label: "Issue Title"
-      placeholder: "Inconsistent explanation of ConcreteMaterial properties"
-    validations:
-      required: true
-
   - type: checkboxes
     id: preliminary-checks
     attributes:

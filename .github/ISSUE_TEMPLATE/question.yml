@@ -8,14 +8,6 @@ body:
     attributes:
       value: "## Blueprints Question Template"
 
-  - type: textarea
-    id: question-title
-    attributes:
-      label: "Question Title"
-      placeholder: "How to use ConcreteMaterial Class?"
-    validations:
-      required: true
-
   - type: checkboxes
     id: preliminary-checks
     attributes:
