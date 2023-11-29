@@ -25,9 +25,9 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
 
         Parameters
         ----------
-        beta_cc_t: float
+        beta_cc_t : float
             [βcc(t)] Coefficient dependent of the age of concrete [-].
-        f_cm: float
+        f_cm : MPA
             [fcm] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
         """
         super().__init__()
@@ -64,13 +64,13 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
 
         Parameters
         ----------
-        s: float
+        s : float
             [s] Coefficient dependent on the kind of cement [-].
             = 0.20 for cement of strength classes CEM 42.5 R, CEM 52.5 N, and CEM 52.5 R (class R);
             = 0.25 for cement of strength classes CEM 32.5 R, CEM 42.5 N (class N);
             = 0.38 for cement of strength class CEM 32.5 N (class S).
             Use your own implementation of this formula or use the SubForm3Dot2CoefficientTypeOfCementS class.
-        t: int
+        t : int
             [t] Age of concrete in days [days].
         """
         super().__init__()
@@ -83,10 +83,10 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         t: int,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
-        if s not in (0.20, 0.25, 0.38):
-            raise ValueError(f"Invalid s coefficient: {s}. Options: 0.20, 0.25 or 0.38")
-        if t < 0:
-            raise ValueError(f"Negative t: {t}. t cannot be negative")
+        if s < 0:
+            raise ValueError(f"Invalid s: {s}. s cannot be negative")
+        if t <= 0:
+            raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
         return np.exp(s * (1 - (28 / t) ** (1 / 2)))
 
 
@@ -121,7 +121,7 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
         cement_class: str,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
-        match cement_class:
+        match cement_class.lower():
             case "R":
                 return 0.20
             case "N":
