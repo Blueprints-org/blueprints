@@ -116,18 +116,18 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
     """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by tensile splitting strength [MPa]."""
 
     label = "3.3"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, f_ct_sp: float) -> None:
-        """Calculates fct, the approximated axial tensile strength when tensile strength is determined as coefficient
+        """[fct] The approximated axial tensile strength when tensile strength is determined as coefficient
         which is dependent of the age of concrete [MPa].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.2
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2(8) - Formula (3.3)
 
         Parameters
         ----------
         f_ct_sp: float
-            [fct,sp] tensile splitting strength [MPa].
+            [fct,sp] Tensile splitting strength [MPa].
         """
         super().__init__()
         self.f_ct_sp = f_ct_sp
@@ -142,19 +142,19 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
     """Class representing formula 3.4 for an initial estimation of the tensile strength, fctm(t), after t days [MPa]."""
 
     label = "3.4"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, beta_cc_t: float, alpha: float, f_ctm: float) -> None:
-        """Calculates fctm(t), the initial estimation of the tensile strength after t days [MPa].
+        """[fctm(t)] The initial estimation of the tensile strength after t days [MPa].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.2
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - Formula (3.4)
 
         Parameters
         ----------
         beta_cc_t: float
-            [beta_cc(t)] coefficient dependent of the age of concrete [-].
+            [βcc(t)] Coefficient dependent of the age of concrete [-].
         alpha: float
-            [alpha] factor dependent of the age of concrete [-]
+            [α] Factor dependent of the age of concrete [-]
             alpha = 1 for t < 28 days
             alpha = 2/3 for t >= 28 days
         f_ctm: float
@@ -177,21 +177,21 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
     """Class representing formula 3.5 for the approximation of the elastic modulus, Ecm(t) at day t."""
 
     label = "3.5"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, f_cm_t: float, f_cm: float, e_cm: float) -> None:
-        """Calculates Ecm(t), the approximated elastic modulus at day t [MPa].
+        """[Ecm(t)] The approximated elastic modulus at day t [MPa].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.3
+        NEN-EN 1992-1-1+C2:2011 art.3.1.3(3) - Formula (3.5)
 
         Parameters
         ----------
         f_cm_t: float
-            [fcm(t)] compressive strength concrete at t days [MPa].
+            [fcm(t)] Compressive strength concrete at t days [MPa].
         f_cm: float
-            [fcm] average concrete compressive strength on day 28 based on table 3.1 [MPa].
+            [fcm] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
         e_cm: float
-            [Ecm] average elastic modulus on day 28 [MPa]
+            [Ecm] Average elastic modulus on day 28 [MPa]
         """
         super().__init__()
         self.f_cm_t = f_cm_t
@@ -208,19 +208,19 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
     """Class representing formula 3.6 for the calculation of creep deformation of concrete."""
 
     label = "3.6"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, phi_inf_t0: float, sigma_c: float, e_c: float) -> None:
-        """Calculates epsilon_cc(inf,t0), the creep deformation of concrete [-].
+        """εcc(inf,t0) The creep deformation of concrete [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.4
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(3) - Formula (3.6)
 
         Parameters
         ----------
         phi_inf_t0: float
-            [phi(inf,t0)] creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
+            [φ(inf, t0)] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
         sigma_c: float
-            [sigma_c] concrete compressive stress [MPa].
+            [σc] Concrete compressive stress [MPa].
         e_c: float
             [Ec] tangent modulus = 1.05 * Ecm [MPa].
         """
@@ -239,19 +239,19 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
     """Class representing formula 3.7 for the calculation of the non-linear creep coefficient."""
 
     label = "3.7"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, phi_inf_t0: float, k_sigma: float) -> None:
-        """Calculates phi_nl(inf,t0), the non-linear creep coefficient [-].
+        """[φnl(inf,t0)] The non-linear creep coefficient [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.4
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(4) - Formula (3.7)
 
         Parameters
         ----------
         phi_inf_t0: float
-            [phi(inf,t0)] creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
+            [φ(inf, t0)] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
         k_sigma: float
-            [k_sigma] stress-strength ratio (sigma_c / f_ck(t0)) [-].
+            [kσ] Stress-strength ratio (σc / fck(t0)) [-].
         """
         super().__init__()
         self.phi_inf_t0 = phi_inf_t0
@@ -267,19 +267,19 @@ class Form3Dot8TotalShrinkage(Formula):
     """Class representing formula 3.8 for the calculation of the total shrinkage."""
 
     label = "3.8"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, epsilon_cd: float, epsilon_ca: float) -> None:
-        """Calculates epsilon_cs, the total shrinkage [-].
+        """[εcs] The total shrinkage [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.1.4
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.8)
 
         Parameters
         ----------
         epsilon_cd: float
-            [epsilon_cd] drying shrinkage [-].
+            [εcd] Drying shrinkage [-].
         epsilon_ca: float
-            [epsilon_ca] autogene shrinkage [-].
+            [εca] Autogene shrinkage [-].
         """
         super().__init__()
         self.epsilon_cd = epsilon_cd
@@ -295,7 +295,7 @@ class Form3Dot9DryingShrinkage(Formula):
     """Class representing formula 3.9 for the calculation of the drying shrinkage."""
 
     label = "3.9"
-    source_document = "NEN-EN 1992-1-1+C2:2011"
+    source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, beta_ds_tt_s: float, k_h: float, epsilon_cd_0: float) -> None:
         """[εcd(t)] Development of the drying shrinkage [-].
