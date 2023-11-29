@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import MM, MM2, MPA
+from blueprints.type_alias import DAYS, MM, MM2, MPA
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
@@ -211,6 +211,41 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
         if f_ctm < 0:
             raise ValueError(f"Negative f_ctm: {f_ctm}. f_ctm cannot be negative")
         return beta_cc_t**alpha * f_ctm
+
+
+class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
+    """Class representing sub-formula for formula 3.4 for the coefficient alpha
+    which is dependent of the age of concrete [-]."""
+
+    label = "3.4"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        t: DAYS,
+    ) -> None:
+        """[α] Factor dependent of the age of concrete [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - α
+
+        Parameters
+        ----------
+        t : DAYS
+            [t] Age of concrete in days [days].
+        """
+        super().__init__()
+        self.t = t
+
+    @staticmethod
+    def _evaluate(
+        t: int,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if t <= 0:
+            raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
+        if t < 28:
+            return 1
+        return 2 / 3
 
 
 class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
