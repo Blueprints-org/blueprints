@@ -326,3 +326,64 @@ class Form3Dot9DryingShrinkage(Formula):
         if k_h in (1.0, 0.85, 0.75, 0.70):
             return beta_ds_tt_s * k_h * epsilon_cd_0
         raise ValueError(f"kh = {k_h:.2f}, this is not following table 3.9")
+
+
+class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
+    """Class representing formula 3.10 for the calculation of the coefficient for drying shrinkage due to age."""
+
+    label = "3.10"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(self, t: int, t_s: int, h_0: float) -> None:
+        """[βds(t,ts)] Coefficient for drying shrinkage due to age of concrete [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.10)
+
+        Parameters
+        ----------
+        t : int
+            [t] Age in days of the concrete at the considered moment [days].
+        t_s : int
+            [t] Age in days of the concrete at the start of the drying shrinkage [days].
+        h_0 : float
+            [h0] fictional thickness of cross-section [mm].
+            = 2 * Ac / u
+            Use your own implementation of this formula or use the SubForm3Dot10FictionalCrossSection class.
+        """
+        super().__init__()
+        self.t = t
+        self.t_s = t_s
+        self.h_0 = h_0
+
+    @staticmethod
+    def _evaluate(t: int, t_s: int, h_0: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        return (t - t_s) / ((t - t_s) + 0.04 * np.sqrt(h_0**3))
+
+
+class SubForm3Dot10FictionalCrossSection(Formula):
+    """Class representing sub-formula for formula 3.10 for the calculation of fictional thickness of the cross-section."""
+
+    label = "3.10"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(self, a_c: float, u: float) -> None:
+        """[h0] Fictional thickness of the cross-section [mm].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - h0
+
+        Parameters
+        ----------
+        a_c : float
+            [a_c] Area of the cross-section of the concrete [mm²].
+        u : float
+            [u] Circumference of part that is subjected to drying [mm].
+        """
+        super().__init__()
+        self.a_c = a_c
+        self.u = u
+
+    @staticmethod
+    def _evaluate(a_c: float, u: float) -> float:
+        """For more detailed documentation see the class docstring."""
+        return 2 * a_c / u
