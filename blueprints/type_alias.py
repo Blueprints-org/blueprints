@@ -2,3 +2,5 @@
 KN = float
 MM2 = float
 MPA = float
+PERCENTAGE = float
+HOURS = float
