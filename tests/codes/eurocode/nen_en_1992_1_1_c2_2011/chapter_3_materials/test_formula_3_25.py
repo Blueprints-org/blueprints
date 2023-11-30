@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import Form3Dot25IncreasedCharacteristicCompressiveStrength
 
 
-class TestForm3Dot24IncreasedCharacteristicCompressiveStrength:
+class TestForm3Dot25IncreasedCharacteristicCompressiveStrength:
     """Validation for formula 3.25 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -14,12 +14,12 @@ class TestForm3Dot24IncreasedCharacteristicCompressiveStrength:
         f_ck = 12.2  # MPa
         sigma_2 = 0.08 * f_ck  # MPa
 
-        form_3_24 = Form3Dot25IncreasedCharacteristicCompressiveStrength(f_ck=f_ck, sigma_2=sigma_2)
+        form_3_25 = Form3Dot25IncreasedCharacteristicCompressiveStrength(f_ck=f_ck, sigma_2=sigma_2)
 
         # Expected result, manually calculated
         manually_calculated_result = 16.165
 
-        assert form_3_24 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+        assert form_3_25 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_f_ck_is_given(self) -> None:
         """Test a negative value."""
