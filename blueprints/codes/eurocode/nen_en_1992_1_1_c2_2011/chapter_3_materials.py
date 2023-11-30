@@ -179,5 +179,37 @@ class Form3Dot17CompressiveStressConcrete(Formula):
         if epsilon_c < 0:
             raise ValueError(f"Invalid epsilon_c: {epsilon_c}. epsilon_c cannot be negative")
         if epsilon_c > epsilon_c2:
-            raise ValueError(f"epsilon_c: {epsilon_c} > epsilon_c2: {epsilon_c2}. Try using Form3Dot18 class.")
+            raise ValueError(f"epsilon_c: {epsilon_c} > epsilon_c2: {epsilon_c2}. Try using Form3Dot18CompressiveStressConcrete class.")
         return f_cd * (1 - (1 - (epsilon_c / epsilon_c2)) ** n)
+
+
+class Form3Dot18CompressiveStressConcrete(Formula):
+    """Class representing formula 3.18 for the calculation of compressive stress in concrete using stress-strain diagram of figure 3.3."""
+
+    label = "3.18"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        f_cd: MPA,
+    ) -> None:
+        """[σc] Compressive stress in concrete using stress-strain diagram of figure 3.3 [MPa].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.7(1) - Formula (3.18)
+
+        Parameters
+        ----------
+        f_cd : MPA
+            [fcd] Design value compressive strength concrete [MPa]
+        """
+        super().__init__()
+        self.f_cd = f_cd
+
+    @staticmethod
+    def _evaluate(
+        f_cd: MPA,
+    ) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if f_cd < 0:
+            raise ValueError(f"Invalid f_cd: {f_cd}. f_cd cannot be negative")
+        return f_cd
