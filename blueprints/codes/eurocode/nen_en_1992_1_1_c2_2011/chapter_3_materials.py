@@ -132,7 +132,7 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
                 raise ValueError(f"Invalid cement class: {cement_class}. Options: R, N or S")
 
 
-class Form3Dot16DesignValueTensileStrength(Formula):
+class Form3Dot17CompressiveStressConcrete(Formula):
     """Class representing formula 3.17 for the calculation of compressive stress in concrete using stress-strain diagram of figure 3.3."""
 
     label = "3.17"
@@ -180,4 +180,4 @@ class Form3Dot16DesignValueTensileStrength(Formula):
             raise ValueError(f"Invalid epsilon_c: {epsilon_c}. epsilon_c cannot be negative")
         if epsilon_c > epsilon_c2:
             raise ValueError(f"epsilon_c: {epsilon_c} > epsilon_c2: {epsilon_c2}. Try using Form3Dot18 class.")
-        return f_cd * (1 - (1 - (epsilon_c / epsilon_c2) ** n))
+        return f_cd * (1 - (1 - (epsilon_c / epsilon_c2)) ** n)
