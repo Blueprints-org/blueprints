@@ -578,7 +578,7 @@ class Form3Dot11AutogeneShrinkage(Formula):
             = 1 - exp(-0.2 * t^0.5)
             Use your own implementation of this formula or use the Form3Dot13CoefficientTimeAutogeneShrinkage class
         epsilon_ca_inf : float
-            [εca] Autogene shrinkage at infinity [-].
+            [εca(∞)] Autogene shrinkage at infinity [-].
             = 2.5 * (fck - 10) E-6
             Use your own implementation of this formula or use the Form3Dot12AutogeneShrinkageInfinity class.
         """
@@ -681,11 +681,11 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
         k : float
             [k] [-].
             = 1.05 * Ecm * |εc1| / fcm
-            Use your own implementation of this formula or use the Sub2Form3Dot14K class.
+            Use your own implementation of this formula or use the SubForm3Dot14K class.
         eta : float
             [η] Strain - peak-strain ratio [-].
             = εc / εc1
-            Use your own implementation of this formula or use the Sub1Form3Dot14Eta class.
+            Use your own implementation of this formula or use the SubForm3Dot14Eta class.
         """
         super().__init__()
         self.k = k
@@ -704,7 +704,7 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
         return (k * eta - eta**2) / (1 + (k - 2) * eta)
 
 
-class Sub1Form3Dot14Eta(Formula):
+class SubForm3Dot14Eta(Formula):
     """Class representing sub-formula 1 for formula 3.14, which calculates eta"""
 
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -739,7 +739,7 @@ class Sub1Form3Dot14Eta(Formula):
         return epsilon_c / epsilon_c1
 
 
-class Sub2Form3Dot14K(Formula):
+class SubForm3Dot14K(Formula):
     """Class representing sub-formula 2 for formula 3.14, which calculates k"""
 
     source_document = NEN_EN_1992_1_1_C2_2011

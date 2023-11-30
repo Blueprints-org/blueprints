@@ -2,7 +2,7 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import Sub1Form3Dot14Eta
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import SubForm3Dot14Eta
 
 
 class TestSub1Form3Dot14Eta:
@@ -14,7 +14,7 @@ class TestSub1Form3Dot14Eta:
         epsilon_c = 0.16  # -
         epsilon_c1 = 0.43  # -
 
-        sub_1_form_3_14 = Sub1Form3Dot14Eta(epsilon_c=epsilon_c, epsilon_c1=epsilon_c1)
+        sub_1_form_3_14 = SubForm3Dot14Eta(epsilon_c=epsilon_c, epsilon_c1=epsilon_c1)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.37209
@@ -27,7 +27,7 @@ class TestSub1Form3Dot14Eta:
         epsilon_c = 0.3  # -
         epsilon_c1 = 0.2  # -
 
-        sub_1_form_3_14 = Sub1Form3Dot14Eta(epsilon_c=epsilon_c, epsilon_c1=epsilon_c1)
+        sub_1_form_3_14 = SubForm3Dot14Eta(epsilon_c=epsilon_c, epsilon_c1=epsilon_c1)
 
         # Expected result, manually calculated
         manually_calculated_result = 1.5
