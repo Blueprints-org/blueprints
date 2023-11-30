@@ -150,7 +150,9 @@ class Form3Dot11AutogeneShrinkage(Formula):
         Parameters
         ----------
         beta_as_t : float
-            [as(t)] Coefficient dependent on time in days for autogene shrinkage [-].
+            [βas(t)] Coefficient dependent on time in days for autogene shrinkage [-].
+            = 1 - exp(-0.2 * t^0.5)
+            Use your own implementation of this formula or use the Form3Dot13CoefficientTimeAutogeneShrinkage class
         epsilon_ca_inf : float
             [εca] Autogene shrinkage at infinity [-].
             = 2.5 * (fck - 10) E-6
@@ -199,3 +201,33 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         return 2.5 * (f_ck - 10) * 10**-6
+
+
+class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
+    """Class representing formula 3.13, which calculates the coefficient dependent on time for the autogene shrinkage"""
+
+    source_document = NEN_EN_1992_1_1_C2_2011
+    label = "3.13"
+
+    def __init__(
+        self,
+        t: int,
+    ) -> None:
+        """[βas(t)] Coefficient dependent on time in days for autogene shrinkage [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.13)
+
+        Parameters
+        ----------
+        t : int
+            [t] Time in days [-].
+        """
+        super().__init__()
+        self.t = t
+
+    @staticmethod
+    def _evaluate(t: int) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if t < 0:
+            raise ValueError(f"Invalid t: {t}. t cannot be negative")
+        return 1 - np.exp(-0.2 * t**0.5)
