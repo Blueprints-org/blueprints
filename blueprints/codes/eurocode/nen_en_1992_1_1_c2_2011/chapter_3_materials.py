@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DAYS, MPA
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
@@ -213,7 +213,7 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
 
     def __init__(
         self,
-        t: float,
+        t: DAYS,
     ) -> None:
         """[βas(t)] Coefficient dependent on time in days for autogene shrinkage [-].
 
@@ -221,15 +221,15 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
 
         Parameters
         ----------
-        t : float
-            [t] Time in days [-].
+        t : DAYS
+            [t] Time in days [days].
         """
         super().__init__()
         self.t = t
 
     @staticmethod
     def _evaluate(
-        t: float,
+        t: DAYS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
         if t < 0:
