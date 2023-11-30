@@ -216,7 +216,7 @@ class Form3Dot18CompressiveStressConcrete(Formula):
 
 
 class Form3Dot19And20EffectivePressureZoneHeight(Formula):
-    """Class representing formula 3.19 for the calculation of the lambda factor for the effective pressure zone height."""
+    """Class representing formula 3.19 and 3.20 for the calculation of the lambda factor for the effective pressure zone height."""
 
     label = "3.19-20"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -246,4 +246,38 @@ class Form3Dot19And20EffectivePressureZoneHeight(Formula):
             return 0.8
         if f_ck <= 90:
             return 0.8 - (f_ck - 50) / 400
+        raise ValueError(f"Invalid f_ck: {f_ck}. Maximum of f_ck is 90 MPa")
+
+
+class Form3Dot21And22EffectiveStrength(Formula):
+    """Class representing formula 3.21 and 3.22 for the calculation of the eta factor for the effective strength."""
+
+    label = "3.21-22"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        f_ck: MPA,
+    ) -> None:
+        """[η] Factor effective strength [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.7(3) - Formula (3.21) and (3.22)
+
+        Parameters
+        ----------
+        f_ck : MPA
+            [fck] Characteristic compressive strength concrete [MPa]
+        """
+        super().__init__()
+        self.f_ck = f_ck
+
+    @staticmethod
+    def _evaluate(
+        f_ck: MPA,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if f_ck <= 50:
+            return 1.0
+        if f_ck <= 90:
+            return 1.0 - (f_ck - 50) / 200
         raise ValueError(f"Invalid f_ck: {f_ck}. Maximum of f_ck is 90 MPa")
