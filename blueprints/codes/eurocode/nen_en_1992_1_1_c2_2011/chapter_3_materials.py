@@ -91,7 +91,8 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
 
 
 class SubForm3Dot2CoefficientTypeOfCementS(Formula):
-    """Class representing sub-formula for formula 3.2, which calculates the coefficient s which is dependent on the cement class"""
+    """Class representing sub-formula for formula 3.2, which calculates the coefficient 's'
+    which is dependent on the cement class"""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.2"
@@ -133,7 +134,8 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
 
 
 class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
-    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by tensile splitting strength."""
+    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by
+    tensile splitting strength."""
 
     label = "3.3"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -215,7 +217,8 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
 
 
 class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
-    """Class representing sub-formula for formula 3.4 for the coefficient alpha which is dependent of the age of concrete."""
+    """Class representing sub-formula for formula 3.4 for the coefficient 'α' which
+    is dependent of the age of concrete."""
 
     label = "3.4"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -352,14 +355,14 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
         phi_inf_t0: float,
         k_sigma: float,
     ) -> None:
-        """[φnl(inf,t0)] The non-linear creep coefficient [-].
+        """[φnl(∞,t0)] The non-linear creep coefficient [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(4) - Formula (3.7)
 
         Parameters
         ----------
         phi_inf_t0 : float
-            [φ(inf, t0)] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
+            [φ(∞, t0)] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
         k_sigma : float
             [kσ] Stress-strength ratio (σc / fck(t0)) [-].
         """
@@ -514,7 +517,8 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
 
 
 class SubForm3Dot10FictionalCrossSection(Formula):
-    """Class representing sub-formula for formula 3.10 for the calculation of fictional thickness of the cross-section."""
+    """Class representing sub-formula for formula 3.10 for the calculation of fictional
+    thickness of the cross-section."""
 
     label = "3.10"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -531,7 +535,7 @@ class SubForm3Dot10FictionalCrossSection(Formula):
         Parameters
         ----------
         a_c : MM2
-            [a_c] Area of the cross-section of the concrete [mm²].
+            [Ac] Area of the cross-section of the concrete [mm²].
         u : MM
             [u] Circumference of part that is subjected to drying [mm].
         """
