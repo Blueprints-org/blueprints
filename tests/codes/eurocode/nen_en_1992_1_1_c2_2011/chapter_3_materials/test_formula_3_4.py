@@ -21,11 +21,11 @@ class TestForm3Dot4DevelopmentTensileStrength:
 
         assert form_3_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_when_alpha_is_unequal_to_1_or_2d3(self) -> None:
-        """Test that an error is raised when alpha is unequal to 1 or 2/3."""
+    def test_raise_error_when_negative_alpha_is_given(self) -> None:
+        """Test that an error is raised when alpha is negative."""
         # Example values
-        beta_cc_t = 0.32  # - -> Positive
-        alpha = 1 / 3  # - -> Unequal to 1 or 2/3
+        beta_cc_t = 0.32  # -> Positive
+        alpha = -0.4  # -> Negative
         f_ctm = 3.45  # MPa -> Positive
 
         with pytest.raises(ValueError):

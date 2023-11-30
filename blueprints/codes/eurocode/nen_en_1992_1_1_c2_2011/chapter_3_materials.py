@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import MM, MM2, MPA
+from blueprints.type_alias import DAYS, MM, MM2, MPA
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
@@ -150,7 +150,7 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
         Parameters
         ----------
         f_ct_sp : float
-            [fct,sp] Tensile splitting strength [MPa].
+            [fct,sp] Tensile strength determined by tensile splitting strength [MPa].
         """
         super().__init__()
         self.f_ct_sp = f_ct_sp
@@ -189,6 +189,7 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
             [α] Factor dependent of the age of concrete [-]
             alpha = 1 for t < 28 days
             alpha = 2/3 for t >= 28 days
+            Use your own implementation of this value or use the SubForm3Dot4CoefficientAgeConcreteAlpha class.
         f_ctm : MPA
             [fctm] Tensile strength from table 3.1 [MPa]
         """
@@ -206,11 +207,46 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
         """Evaluates the formula, for more information see the __init__ method"""
         if beta_cc_t < 0:
             raise ValueError(f"Negative beta_cc_t: {beta_cc_t}. beta_cc_t cannot be negative")
-        if alpha not in (1, 2 / 3):
-            raise ValueError("Wrong value for alpha: alpha = 1 for t < 28 days, alpha = 2/3 for t >= 28 days")
         if f_ctm < 0:
             raise ValueError(f"Negative f_ctm: {f_ctm}. f_ctm cannot be negative")
+        if alpha < 0:
+            raise ValueError(f"Negative alpha: {alpha}. alpha cannot be negative")
         return beta_cc_t**alpha * f_ctm
+
+
+class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
+    """Class representing sub-formula for formula 3.4 for the coefficient alpha
+    which is dependent of the age of concrete [-]."""
+
+    label = "3.4"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        t: DAYS,
+    ) -> None:
+        """[α] Factor dependent of the age of concrete [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - α
+
+        Parameters
+        ----------
+        t : DAYS
+            [t] Age of concrete in days [days].
+        """
+        super().__init__()
+        self.t = t
+
+    @staticmethod
+    def _evaluate(
+        t: int,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if t <= 0:
+            raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
+        if t < 28:
+            return 1
+        return 2 / 3
 
 
 class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
@@ -271,18 +307,19 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         sigma_c: MPA,
         e_c: MPA,
     ) -> None:
-        """εcc(inf,t0) The creep deformation of concrete [-].
+        """εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete compressive
+        stress σc applied at time t0 [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(3) - Formula (3.6)
 
         Parameters
         ----------
         phi_inf_t0 : float
-            [φ(inf, t0)] Creep coefficient if high accuracy is not required use figure 3.1 else use appendix B [-].
+            [φ(∞, t0)] Creep coefficient if high accuracy is not required use figure 3.1 else use appendix B [-].
         sigma_c : MPA
             [σc] Concrete compressive stress [MPa].
         e_c : MPA
-            [Ec] tangent modulus = 1.05 * Ecm [MPa].
+            [Ec] tangent modulus = 1.05 * Ecm. According to art.3.1.4(2) [MPa].
         """
         super().__init__()
         self.phi_inf_t0 = phi_inf_t0
