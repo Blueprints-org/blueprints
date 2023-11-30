@@ -211,7 +211,7 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
 
     def __init__(
         self,
-        t: int,
+        t: float,
     ) -> None:
         """[βas(t)] Coefficient dependent on time in days for autogene shrinkage [-].
 
@@ -219,14 +219,14 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
 
         Parameters
         ----------
-        t : int
+        t : float
             [t] Time in days [-].
         """
         super().__init__()
         self.t = t
 
     @staticmethod
-    def _evaluate(t: int) -> float:
+    def _evaluate(t: float) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
         if t < 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative")
