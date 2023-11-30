@@ -166,6 +166,6 @@ class Form3Dot24IncreasedCharacteristicCompressiveStrength(Formula):
         """Evaluates the formula, for more information see the __init__ method"""
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
-        if sigma_2 > 0.05:
+        if sigma_2 > 0.05 * f_ck:
             raise ValueError(f"Invalid sigma_2: {sigma_2}. Try using Form3Dot25IncreasedCharacteristicCompressiveStrength class.")
         return f_ck * (1.000 + 5.0 * sigma_2 / f_ck)
