@@ -9,7 +9,7 @@ from blueprints.type_alias import DAYS, MM, MM2, MPA
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
     """Class representing formula 3.1 for the estimation of the concrete compressive strength, fcm(t),  after t days
-    with an average temperature of 20 degrees Celsius [MPa]."""
+    with an average temperature of 20 degrees Celsius."""
 
     label = "3.1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -48,7 +48,7 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
 
 
 class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
-    """Class representing formula 3.2 for the coefficient βcc(t) which is dependent of the age of concrete [-]."""
+    """Class representing formula 3.2 for the coefficient βcc(t) which is dependent of the age of concrete."""
 
     label = "3.2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -133,7 +133,7 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
 
 
 class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
-    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by tensile splitting strength [MPa]."""
+    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by tensile splitting strength."""
 
     label = "3.3"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -166,7 +166,7 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
 
 
 class Form3Dot4DevelopmentTensileStrength(Formula):
-    """Class representing formula 3.4 for an initial estimation of the tensile strength, fctm(t), after t days [MPa]."""
+    """Class representing formula 3.4 for an initial estimation of the tensile strength, fctm(t), after t days."""
 
     label = "3.4"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -215,8 +215,7 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
 
 
 class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
-    """Class representing sub-formula for formula 3.4 for the coefficient alpha
-    which is dependent of the age of concrete [-]."""
+    """Class representing sub-formula for formula 3.4 for the coefficient alpha which is dependent of the age of concrete."""
 
     label = "3.4"
     source_document = NEN_EN_1992_1_1_C2_2011
