@@ -196,7 +196,9 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
         self.f_ck = f_ck
 
     @staticmethod
-    def _evaluate(f_ck: MPA) -> float:
+    def _evaluate(
+        f_ck: MPA,
+    ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
@@ -226,8 +228,53 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
         self.t = t
 
     @staticmethod
-    def _evaluate(t: float) -> float:
+    def _evaluate(
+        t: float,
+    ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
         if t < 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative")
         return 1 - np.exp(-0.2 * t**0.5)
+
+
+class Form3Dot14StressStrainForShortTermLoading(Formula):
+    """Class representing formula 3.14, which calculates the compressive stress-strength ratio"""
+
+    source_document = NEN_EN_1992_1_1_C2_2011
+    label = "3.14"
+
+    def __init__(
+        self,
+        k: float,
+        eta: float,
+    ) -> None:
+        """[σc / fcm] Compressive stress-strength ratio [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.5(1) - Formula (3.14)
+
+        Parameters
+        ----------
+        k : float
+            [k] [-].
+            = 1.05 * Ecm * |εc1| / fcm
+            Use your own implementation of this formula or use the Sub2Form3Dot14 class.  # TODO make this class and add name
+        eta : float
+            [η] Strain - peak-strain ratio [-].
+            = εc / εc1
+            Use your own implementation of this formula or use the Sub1Form3Dot14 class.  # TODO make this class and add name
+        """
+        super().__init__()
+        self.k = k
+        self.eta = eta
+
+    @staticmethod
+    def _evaluate(
+        k: float,
+        eta: float,
+    ) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if k < 0:
+            raise ValueError(f"Invalid k: {k}. k cannot be negative")
+        if eta < 0:
+            raise ValueError(f"Invalid eta: {eta}. eta cannot be negative")
+        return (k * eta - eta**2) / (1 + (k - 2) * eta)
