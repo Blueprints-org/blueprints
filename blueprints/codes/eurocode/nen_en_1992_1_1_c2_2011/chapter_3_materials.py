@@ -239,13 +239,13 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
 
     @staticmethod
     def _evaluate(
-        t: int,
+        t: DAYS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
         if t <= 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
         if t < 28:
-            return 1
+            return 1.0
         return 2 / 3
 
 
