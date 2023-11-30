@@ -133,7 +133,7 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
 
 
 class Form3Dot15DesignValueCompressiveStrength(Formula):
-    """Class representing formula 3.15 for the calculation of the concrete compressive strength design value [MPa]."""
+    """Class representing formula 3.15 for the calculation of the concrete compressive strength design value."""
 
     label = "3.15"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -180,7 +180,7 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
 
 
 class Form3Dot16DesignValueTensileStrength(Formula):
-    """Class representing formula 3.16 for the calculation of the concrete tensile strength design value [MPa]."""
+    """Class representing formula 3.16 for the calculation of the concrete tensile strength design value."""
 
     label = "3.16"
     source_document = NEN_EN_1992_1_1_C2_2011
