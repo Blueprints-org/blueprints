@@ -13,6 +13,7 @@ class TestForm3Dot14StressStrainForShortTermLoading:
         # Example values
         k = 0.38  # -
         eta = 0.88  # -
+
         form_3_14 = Form3Dot14StressStrainForShortTermLoading(k=k, eta=eta)
 
         # Expected result, manually calculated
