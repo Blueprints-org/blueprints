@@ -154,10 +154,10 @@ class Form3Dot11AutogeneShrinkage(Formula):
         epsilon_ca_inf : float
             [εca] Autogene shrinkage at infinity [-].
             = 2.5 * (fck - 10) E-6
-            Use your own implementation of this formula or use the Form3Dot12AutogeneShrinkageInfinity class.  # TODO Make this class
+            Use your own implementation of this formula or use the Form3Dot12AutogeneShrinkageInfinity class.
         """
         super().__init__()
-        self.beta_as_t = (beta_as_t,)
+        self.beta_as_t = beta_as_t
         self.epsilon_ca_inf = epsilon_ca_inf
 
     @staticmethod
@@ -169,3 +169,33 @@ class Form3Dot11AutogeneShrinkage(Formula):
         if beta_as_t < 0:
             raise ValueError(f"Invalid beta_as_t: {beta_as_t}. beta_as_t cannot be negative")
         return beta_as_t * epsilon_ca_inf
+
+
+class Form3Dot12AutogeneShrinkageInfinity(Formula):
+    """Class representing formula 3.12, which calculates the autogene shrinkage at infinity"""
+
+    source_document = NEN_EN_1992_1_1_C2_2011
+    label = "3.12"
+
+    def __init__(
+        self,
+        f_ck: MPA,
+    ) -> None:
+        """[εca(∞)] Autogene shrinkage at infinity [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.12)
+
+        Parameters
+        ----------
+        f_ck : MPA
+            [fck] Compressive strength concrete [MPa].
+        """
+        super().__init__()
+        self.f_ck = f_ck
+
+    @staticmethod
+    def _evaluate(f_ck: MPA) -> float:
+        """Evaluates the formula, for more information see the __init__ method"""
+        if f_ck < 0:
+            raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
+        return 2.5 * (f_ck - 10) * 10**-6
