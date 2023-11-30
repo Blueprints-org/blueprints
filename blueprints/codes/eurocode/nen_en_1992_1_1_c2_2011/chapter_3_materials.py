@@ -56,7 +56,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
     def __init__(
         self,
         s: float,
-        t: int,
+        t: DAYS,
     ) -> None:
         """Calculates beta_cc(t) coefficient which is dependent of the age of concrete in days [-].
 
@@ -70,7 +70,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
             = 0.25 for cement of strength classes CEM 32.5 R, CEM 42.5 N (class N);
             = 0.38 for cement of strength class CEM 32.5 N (class S).
             Use your own implementation of this formula or use the SubForm3Dot2CoefficientTypeOfCementS class.
-        t : int
+        t : DAYS
             [t] Age of concrete in days [days].
         """
         super().__init__()
@@ -80,7 +80,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
     @staticmethod
     def _evaluate(
         s: float,
-        t: int,
+        t: DAYS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
         if s < 0:
@@ -472,8 +472,8 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
 
     def __init__(
         self,
-        t: int,
-        t_s: int,
+        t: DAYS,
+        t_s: DAYS,
         h_0: MM,
     ) -> None:
         """[βds(t,ts)] Coefficient for drying shrinkage due to age of concrete [-].
@@ -482,9 +482,9 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
 
         Parameters
         ----------
-        t : int
+        t : DAYS
             [t] Age in days of the concrete at the considered moment [days].
-        t_s : int
+        t_s : DAYS
             [t] Age in days of the concrete at the start of the drying shrinkage [days].
         h_0 : MM
             [h0] fictional thickness of cross-section [mm].
@@ -498,8 +498,8 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
 
     @staticmethod
     def _evaluate(
-        t: int,
-        t_s: int,
+        t: DAYS,
+        t_s: DAYS,
         h_0: MM,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
