@@ -2,7 +2,7 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_25 import Form3Dot25IncreasedCharacteristicCompressiveStrength
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_25 import Form3Dot25IncreasedCharacteristicCompressiveStrength
 
 
 class TestForm3Dot25IncreasedCharacteristicCompressiveStrength:
