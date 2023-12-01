@@ -1,4 +1,4 @@
-"""Module including all formulas from chapter 7 - Serviceability Limit State of NEN-EN 1992-1-1+C2:2011."""
+"""Formula 7.3 from NEN-EN 1992-1-1+C2:2011: Chapter 7 - Serviceability limit state (SLS)."""
 # pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
