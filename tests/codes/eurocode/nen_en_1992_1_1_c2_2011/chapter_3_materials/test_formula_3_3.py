@@ -2,7 +2,9 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import Form3Dot3AxialTensileStrengthFromTensileSplittingStrength
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_3 import (
+    Form3Dot3AxialTensileStrengthFromTensileSplittingStrength,
+)
 
 
 class TestForm3Dot3AxialTensileStrengthFromTensileSplittingStrength:
