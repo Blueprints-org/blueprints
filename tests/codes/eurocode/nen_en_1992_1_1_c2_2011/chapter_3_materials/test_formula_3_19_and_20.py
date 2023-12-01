@@ -2,7 +2,7 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import Form3Dot19And20EffectivePressureZoneHeight
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_19_20 import Form3Dot19And20EffectivePressureZoneHeight
 
 
 class TestForm3Dot19And20EffectivePressureZoneHeight:
