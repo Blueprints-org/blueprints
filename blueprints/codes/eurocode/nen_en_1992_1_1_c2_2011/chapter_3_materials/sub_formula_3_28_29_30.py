@@ -17,7 +17,7 @@ class SubForm3Dot282930Mu(Formula):
         sigma_pi: MPA,
         f_pk: MPA,
     ) -> None:
-        """[μ] Division of σpi and fpk [-].
+        """[μ] Ratio between initial pre-stress and characteristic tensile strength  (σpi / fpk) [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.3.2(7) - μ
 
