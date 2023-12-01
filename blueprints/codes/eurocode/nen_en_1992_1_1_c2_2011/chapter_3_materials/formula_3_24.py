@@ -26,7 +26,7 @@ class Form3Dot24IncreasedCharacteristicCompressiveStrength(Formula):
             [fck] Characteristic compressive strength [MPa]
         sigma_2 : MPA
             [σ2] Effective compressive stress in transverse direction [MPa]
-            <= 0.05 * fck
+            σ2 <= 0.05 * fck
 
         Returns
         -------
