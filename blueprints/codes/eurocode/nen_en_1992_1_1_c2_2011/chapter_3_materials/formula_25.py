@@ -27,6 +27,10 @@ class Form3Dot25IncreasedCharacteristicCompressiveStrength(Formula):
         sigma_2 : MPA
             [σ2] Effective compressive stress in transverse direction [MPa]
             > 0.05 * fck
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_ck = f_ck

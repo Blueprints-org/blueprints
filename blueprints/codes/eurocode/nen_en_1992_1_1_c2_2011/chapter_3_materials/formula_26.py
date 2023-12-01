@@ -30,6 +30,10 @@ class Form3Dot26IncreasedStrainAtMaxStrength(Formula):
             See classes Form3Dot24IncreasedCharacteristicCompressiveStrength and/or Form3Dot25IncreasedCharacteristicCompressiveStrength
         epsilon_c2 : float
             [εc2] Strain at maximum strength [-]
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_ck = f_ck

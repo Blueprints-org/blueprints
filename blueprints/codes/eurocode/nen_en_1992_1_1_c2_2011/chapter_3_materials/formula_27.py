@@ -29,6 +29,10 @@ class Form3Dot27IncreasedStrainLimitValue(Formula):
             [σ2] Effective compressive stress in transverse direction [MPa]
         epsilon_cu2 : float
             [εcu2] Strain limit value [-]
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_ck = f_ck
