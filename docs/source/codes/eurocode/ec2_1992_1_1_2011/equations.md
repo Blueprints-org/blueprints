@@ -23,8 +23,8 @@ Total of 304 formulas present.
 | 3.12           |        :x:         |         |                                                           |
 | 3.13           |        :x:         |         |                                                           |
 | 3.14           |        :x:         |         |                                                           |
-| 3.15           |        :x:         |         |                                                           |
-| 3.16           |        :x:         |         |                                                           |
+| 3.15           | :heavy_check_mark: |         | Form3Dot15DesignValueCompressiveStrength                  |
+| 3.16           | :heavy_check_mark: |         | Form3Dot16DesignValueTensileStrength                      |
 | 3.17           |        :x:         |         |                                                           |
 | 3.18           |        :x:         |         |                                                           |
 | 3.19           |        :x:         |         |                                                           |
