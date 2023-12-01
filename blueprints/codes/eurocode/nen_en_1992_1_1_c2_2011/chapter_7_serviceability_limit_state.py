@@ -7,7 +7,7 @@ from blueprints.unit_conversion import KN_TO_N
 
 
 class Form7Dot3CoefficientKc(Formula):
-    """Class representing the formula 7.3 for the coefficient kc for flanges of tubular cross-sections and T-sections [-]."""
+    """Class representing the formula 7.3 for the coefficient kc for flanges of tubular cross-sections and T-sections."""
 
     label = "7.3"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -44,7 +44,7 @@ class Form7Dot3CoefficientKc(Formula):
         a_ct: MM2,
         f_ct_eff: MPA,
     ) -> float:
-        """Evaluates the formula, for more infor see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method"""
         if a_ct <= 0:
             raise ValueError("The value of a_ct must be greater than zero.")
         if f_ct_eff <= 0:
