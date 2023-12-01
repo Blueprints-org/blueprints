@@ -29,7 +29,11 @@ class Form3Dot16DesignValueTensileStrength(Formula):
         f_ctk_0_05 : MPA
             [fctk,0,05] Characteristic tensile strength 5% [MPa].
         gamma_c : float
-            [γc] Partial safety factor concrete, see 2.4.2.4 [-]
+            [γc] Partial safety factor concrete, see 2.4.2.4 [-].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.alpha_ct = alpha_ct

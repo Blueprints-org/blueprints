@@ -29,7 +29,11 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
         f_ck : MPA
             [fck] Characteristic compressive strength [MPa].
         gamma_c : float
-            [γc] Partial safety factor concrete, see 2.4.2.4 [-]
+            [γc] Partial safety factor concrete, see 2.4.2.4 [-].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.alpha_cc = alpha_cc
