@@ -6,7 +6,7 @@ from blueprints.type_alias import MPA
 
 
 class Form3Dot19And20EffectivePressureZoneHeight(Formula):
-    """Class representing formula 3.19 and 3.20 for the calculation of the lambda factor for the effective pressure zone height."""
+    """Class representing formula 3.19 and 3.20 for the calculation of the λ factor for the effective pressure zone height."""
 
     label = "3.19 - 3.20"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,6 +23,7 @@ class Form3Dot19And20EffectivePressureZoneHeight(Formula):
         ----------
         f_ck : MPA
             [fck] Characteristic compressive strength concrete [MPa].
+            Valid range: f_ck <= 90.
 
         Returns
         -------

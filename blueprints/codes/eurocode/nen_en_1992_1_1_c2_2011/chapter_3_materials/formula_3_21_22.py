@@ -6,7 +6,7 @@ from blueprints.type_alias import MPA
 
 
 class Form3Dot21And22EffectiveStrength(Formula):
-    """Class representing formula 3.21 and 3.22 for the calculation of the eta factor for the effective strength."""
+    """Class representing formula 3.21 and 3.22 for the calculation of the η factor for the effective strength."""
 
     label = "3.21 - 3.22"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,6 +23,7 @@ class Form3Dot21And22EffectiveStrength(Formula):
         ----------
         f_ck : MPA
             [fck] Characteristic compressive strength concrete [MPa].
+            Valid range: f_ck <= 90.
 
         Returns
         -------
