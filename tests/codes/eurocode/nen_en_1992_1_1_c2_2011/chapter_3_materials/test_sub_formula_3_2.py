@@ -10,17 +10,29 @@ class TestSubForm3Dot2CoefficientTypeOfCementS:
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
-        # Example values
+        # Example value 1
         cement_class = "R"  # str
         sub_form_3_2 = SubForm3Dot2CoefficientTypeOfCementS(cement_class=cement_class)
-
         # Expected result, manually calculated
         manually_result = 0.20
+        assert sub_form_3_2 == pytest.approx(expected=manually_result, rel=1e-4)
 
+        # Example value 2
+        cement_class = "N"  # str
+        sub_form_3_2 = SubForm3Dot2CoefficientTypeOfCementS(cement_class=cement_class)
+        # Expected result, manually calculated
+        manually_result = 0.25
+        assert sub_form_3_2 == pytest.approx(expected=manually_result, rel=1e-4)
+
+        # Example value 3
+        cement_class = "S"  # str
+        sub_form_3_2 = SubForm3Dot2CoefficientTypeOfCementS(cement_class=cement_class)
+        # Expected result, manually calculated
+        manually_result = 0.38
         assert sub_form_3_2 == pytest.approx(expected=manually_result, rel=1e-4)
 
     def test_raise_error_when_invalid_cement_class_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test an invalid cement class."""
         # Example values
         cement_class = "V"  # str
 
