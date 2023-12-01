@@ -5,8 +5,9 @@ from blueprints.codes.formula import Formula
 from blueprints.type_alias import MM, MPA
 
 
-class Form3Dot23TensileBendingStrength(Formula):
-    """Class representing formula 3.23 for the calculation of the average tensile bending strength."""
+class Form3Dot23FlexuralTensileStrength(Formula):
+    """Class representing formula 3.23 for the calculation of the mean flexural tensile strength
+    of reinforced concrete members."""
 
     label = "3.23"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -16,16 +17,16 @@ class Form3Dot23TensileBendingStrength(Formula):
         h: MM,
         f_ctm: MPA,
     ) -> None:
-        """[fctm,fl] Average tensile bending strength [MPa].
+        """[fctm,fl] Mean flexural tensile strength of reinforced concrete members  [MPa].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.8(1) - Formula (3.23)
 
         Parameters
         ----------
         h : MM
-            [h] Total element height [mm].
+            [h] Total member depth [mm].
         f_ctm : MPA
-            [fctm] Average axial tensile strength following table 3.1 [MPa].
+            [fctm] Mean axial tensile strength following from table 3.1 [MPa].
 
         Returns
         -------
