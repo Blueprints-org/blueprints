@@ -25,12 +25,12 @@ Total of 304 formulas present.
 | 3.14           |        :x:         |         |                                                           |
 | 3.15           |        :x:         |         |                                                           |
 | 3.16           |        :x:         |         |                                                           |
-| 3.17           |        :x:         |         |                                                           |
-| 3.18           |        :x:         |         |                                                           |
-| 3.19           |        :x:         |         |                                                           |
-| 3.20           |        :x:         |         |                                                           |
-| 3.21           |        :x:         |         |                                                           |
-| 3.22           |        :x:         |         |                                                           |
+| 3.17           | :heavy_check_mark: |         | Form3Dot17CompressiveStressConcrete                       |
+| 3.18           | :heavy_check_mark: |         | Form3Dot18CompressiveStressConcrete                       |
+| 3.19           | :heavy_check_mark: |         | Form3Dot19And20EffectivePressureZoneHeight                |
+| 3.20           | :heavy_check_mark: |         | Form3Dot19And20EffectivePressureZoneHeight                |
+| 3.21           | :heavy_check_mark: |         | Form3Dot21And22EffectiveStrength                          |
+| 3.22           | :heavy_check_mark: |         | Form3Dot21And22EffectiveStrength                          |
 | 3.23           |        :x:         |         |                                                           |
 | 3.24           |        :x:         |         |                                                           |
 | 3.25           |        :x:         |         |                                                           |
