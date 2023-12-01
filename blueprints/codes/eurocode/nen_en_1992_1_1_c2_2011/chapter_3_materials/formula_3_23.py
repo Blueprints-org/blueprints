@@ -23,9 +23,13 @@ class Form3Dot23TensileBendingStrength(Formula):
         Parameters
         ----------
         h : MM
-            [h] Total element height [mm]
+            [h] Total element height [mm].
         f_ctm : MPA
-            [fctm] Average axial tensile strength following table 3.1 [MPa]
+            [fctm] Average axial tensile strength following table 3.1 [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.h = h
