@@ -41,7 +41,7 @@ class Form3Dot23FlexuralTensileStrength(Formula):
         h: MM,
         f_ctm: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if h < 0:
             raise ValueError(f"Invalid h: {h}. h cannot be negative")
         if f_ctm < 0:
