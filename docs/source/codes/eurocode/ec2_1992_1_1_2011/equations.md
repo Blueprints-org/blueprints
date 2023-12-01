@@ -32,10 +32,10 @@ Total of 304 formulas present.
 | 3.21           |        :x:         |         |                                                           |
 | 3.22           |        :x:         |         |                                                           |
 | 3.23           |        :x:         |         |                                                           |
-| 3.24           |        :x:         |         |                                                           |
-| 3.25           |        :x:         |         |                                                           |
-| 3.26           |        :x:         |         |                                                           |
-| 3.27           |        :x:         |         |                                                           |
+| 3.24           | :heavy_check_mark: |         | Form3Dot24IncreasedCharacteristicCompressiveStrength      |
+| 3.25           | :heavy_check_mark: |         | Form3Dot25IncreasedCharacteristicCompressiveStrength      |
+| 3.26           | :heavy_check_mark: |         | Form3Dot26IncreasedStrainAtMaxStrength                    |
+| 3.27           | :heavy_check_mark: |         | Form3Dot27IncreasedStrainLimitValue                       |
 | 3.28           |        :x:         |         |                                                           |
 | 3.29           |        :x:         |         |                                                           |
 | 3.30           |        :x:         |         |                                                           |
