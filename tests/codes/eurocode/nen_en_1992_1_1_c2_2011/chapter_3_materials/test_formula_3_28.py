@@ -2,7 +2,7 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import Form3Dot28RatioLossOfPreStressClass1
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_28 import Form3Dot28RatioLossOfPreStressClass1
 
 
 class TestForm3Dot28RatioLossOfPreStressClass1:
