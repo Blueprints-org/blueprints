@@ -25,13 +25,17 @@ class Form3Dot17CompressiveStressConcrete(Formula):
         Parameters
         ----------
         f_cd : MPA
-            [fcd] Design value compressive strength concrete [MPa]
+            [fcd] Design value compressive strength concrete [MPa].
         epsilon_c : float
             [εc] Strain in concrete [-].
         epsilon_c2 : float
-            [εc2] Strain in concrete when reaching maximum strength following table 3.1 [-]
+            [εc2] Strain in concrete when reaching maximum strength following table 3.1 [-].
         n : float
-            Exponent following table 3.1
+            Exponent following table 3.1.
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_cd = f_cd

@@ -22,7 +22,11 @@ class Form3Dot21And22EffectiveStrength(Formula):
         Parameters
         ----------
         f_ck : MPA
-            [fck] Characteristic compressive strength concrete [MPa]
+            [fck] Characteristic compressive strength concrete [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_ck = f_ck

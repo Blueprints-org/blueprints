@@ -22,7 +22,11 @@ class Form3Dot18CompressiveStressConcrete(Formula):
         Parameters
         ----------
         f_cd : MPA
-            [fcd] Design value compressive strength concrete [MPa]
+            [fcd] Design value compressive strength concrete [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_cd = f_cd
