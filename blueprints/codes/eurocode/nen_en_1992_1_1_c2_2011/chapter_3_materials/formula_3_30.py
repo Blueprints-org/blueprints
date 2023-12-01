@@ -30,8 +30,13 @@ class Form3Dot30RatioLossOfPreStressClass3(Formula):
         mu : float
             [μ] Ratio between initial pre-stress and characteristic tensile strength [-]
             = σpi / fpk
+            Use your own implementation of this formula or use sub_formula_3_28_39_30 class SubForm3Dot282930Mu.
         t : HOURS
             [t] Time after prestressing [hours]
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.rho_1000 = rho_1000

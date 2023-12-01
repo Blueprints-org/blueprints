@@ -1,5 +1,5 @@
 """Formula 3.29 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
-# pylint: disable=arguments-differ
+# pylint: disable=arguments-differ, duplicate-code
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -30,8 +30,13 @@ class Form3Dot29RatioLossOfPreStressClass2(Formula):
         mu : float
             [μ] Ratio between initial pre-stress and characteristic tensile strength [-]
             = σpi / fpk
+            Use your own implementation of this formula or use sub_formula_3_28_39_30 class SubForm3Dot282930Mu.
         t : HOURS
             [t] Time after prestressing [hours]
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.rho_1000 = rho_1000
