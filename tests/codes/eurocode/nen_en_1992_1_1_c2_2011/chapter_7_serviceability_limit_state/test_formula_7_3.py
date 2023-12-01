@@ -2,7 +2,7 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state import Form7Dot3CoefficientKc
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_3 import Form7Dot3CoefficientKc
 
 
 class TestForm7Dot3CoefficientKc:

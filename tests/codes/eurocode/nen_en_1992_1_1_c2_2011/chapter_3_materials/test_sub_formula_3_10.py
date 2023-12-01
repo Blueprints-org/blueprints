@@ -2,7 +2,7 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials import SubForm3Dot10FictionalCrossSection
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_10 import SubForm3Dot10FictionalCrossSection
 
 
 class TestSubForm3Dot10FictionalCrossSection:
