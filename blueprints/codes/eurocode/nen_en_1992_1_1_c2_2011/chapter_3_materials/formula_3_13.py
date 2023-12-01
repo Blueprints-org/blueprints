@@ -25,6 +25,10 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
         ----------
         t : DAYS
             [t] Time in days [days].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.t = t

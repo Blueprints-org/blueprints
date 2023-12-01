@@ -27,6 +27,10 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
             [βcc(t)] Coefficient dependent of the age of concrete [-].
         f_cm : MPA
             [fcm] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.beta_cc_t = beta_cc_t

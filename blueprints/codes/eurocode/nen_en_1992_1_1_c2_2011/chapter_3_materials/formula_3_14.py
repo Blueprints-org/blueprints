@@ -30,6 +30,10 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
             [η] Strain - peak-strain ratio [-].
             = εc / εc1
             Use your own implementation of this formula or use the SubForm3Dot14Eta class.
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.k = k

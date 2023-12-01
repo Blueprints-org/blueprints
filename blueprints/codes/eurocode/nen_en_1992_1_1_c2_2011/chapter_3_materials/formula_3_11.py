@@ -29,6 +29,10 @@ class Form3Dot11AutogeneShrinkage(Formula):
             [εca(∞)] Autogene shrinkage at infinity [-].
             = 2.5 * (fck - 10) E-6
             Use your own implementation of this formula or use the Form3Dot12AutogeneShrinkageInfinity class.
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.beta_as_t = beta_as_t

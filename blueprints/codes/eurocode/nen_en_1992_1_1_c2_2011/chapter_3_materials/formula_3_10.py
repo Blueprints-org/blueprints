@@ -33,6 +33,10 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
             [h0] fictional thickness of cross-section [mm].
             = 2 * Ac / u
             Use your own implementation of this formula or use the SubForm3Dot10FictionalCrossSection class.
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.t = t

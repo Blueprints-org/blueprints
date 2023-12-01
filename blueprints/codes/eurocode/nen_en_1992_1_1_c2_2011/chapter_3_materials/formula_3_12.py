@@ -23,6 +23,10 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
         ----------
         f_ck : MPA
             [fck] Compressive strength concrete [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_ck = f_ck
