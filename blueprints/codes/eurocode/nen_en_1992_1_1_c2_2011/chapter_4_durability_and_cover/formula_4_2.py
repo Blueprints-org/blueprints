@@ -1,4 +1,4 @@
-"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 4 - formula (4.2)."""
+"""Formula 4.2 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement."""
 # pylint: disable=arguments-differ
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
