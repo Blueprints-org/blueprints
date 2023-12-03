@@ -31,7 +31,7 @@ Total of 304 formulas present.
 | 3.20           |        :x:         |         |                                                           |
 | 3.21           |        :x:         |         |                                                           |
 | 3.22           |        :x:         |         |                                                           |
-| 3.23           | :heavy_check_mark: |         | Form3Dot23FlexuralTensileStrengt                          |
+| 3.23           | :heavy_check_mark: |         | Form3Dot23FlexuralTensileStrength                         |
 | 3.24           |        :x:         |         |                                                           |
 | 3.25           |        :x:         |         |                                                           |
 | 3.26           |        :x:         |         |                                                           |
@@ -43,7 +43,7 @@ Total of 304 formulas present.
 | 4.2            |        :x:         |         |                                                           |
 | 4.3N           |        :x:         |         |                                                           |
 | 4.4N           |        :x:         |         |                                                           |
-| 5.1            |        :x:         |         |                                                           |
+| 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
 | 5.2            |        :x:         |         |                                                           |
 | 5.3a           |        :x:         |         |                                                           |
 | 5.3b           |        :x:         |         |                                                           |
