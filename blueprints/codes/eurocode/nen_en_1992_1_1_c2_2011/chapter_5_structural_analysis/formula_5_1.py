@@ -30,15 +30,11 @@ class Form5Dot1Imperfections(Formula):
             Note: The value of Θ0 for use in a Country may be found in its National Annex.
             The recommended value is 1/200
         alpha_h : float
-            [αh] Reduction factor for length or heigh [-].
+            [αh] Reduction factor for length or height [-].
             Use your own implementation of this value or use the SubForm5Dot1ReductionFactorLengthOrHeight class.
         alpha_m : float
             [αm] Reduction factor for number of members [-].
             Use your own implementation of this value or use the SubForm5Dot1ReductionFactorNumberOfMembers class.
-
-        Returns
-        -------
-        None
         """
         super().__init__()
         self.theta_0 = theta_0
@@ -81,10 +77,6 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
         ----------
         l : M
             [l] Length or height, see art.5.2(6) [m].
-
-        Returns
-        -------
-        None
         """
         super().__init__()
         self.l = l
@@ -94,8 +86,8 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
         l: M,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
-        if l < 0:
-            raise ValueError(f"Negative l: {l}. l cannot be negative")
+        if l <= 0:
+            raise ValueError(f"Invalid l: {l}. l cannot be negative or zero")
         # the value of alpha_h is between 2/3 and 1.0
         alpha_h = 2 / np.sqrt(l)
         if alpha_h < 2 / 3:
@@ -123,10 +115,6 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
         ----------
         m : int
             [m] Number of vertical members contributing to the total effect [-].
-
-        Returns
-        -------
-        None
         """
         super().__init__()
         self.m = m
@@ -136,7 +124,7 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
         m: int,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
-        if m < 0:
-            raise ValueError(f"Negative m: {m}. m cannot be negative")
+        if m <= 0:
+            raise ValueError(f"Invalid m: {m}. m cannot be negative or zero")
         # the value of alpha_m is between 1.0 and 1.5
         return np.sqrt(0.5 * (1 + 1 / m))
