@@ -19,10 +19,10 @@ Total of 304 formulas present.
 | 3.8            | :heavy_check_mark: |         | Form3Dot8TotalShrinkage                                   |
 | 3.9            | :heavy_check_mark: |         | Form3Dot9DryingShrinkage                                  |
 | 3.10           | :heavy_check_mark: |         | Form3Dot10CoefficientAgeConcreteDryingShrinkage           |
-| 3.11           |        :x:         |         |                                                           |
-| 3.12           |        :x:         |         |                                                           |
-| 3.13           |        :x:         |         |                                                           |
-| 3.14           |        :x:         |         |                                                           |
+| 3.11           | :heavy_check_mark: |         | Form3Dot11AutogeneShrinkage                |
+| 3.12           | :heavy_check_mark: |         | Form3Dot12AutogeneShrinkageInfinity        |
+| 3.13           | :heavy_check_mark: |         | Form3Dot13CoefficientTimeAutogeneShrinkage |
+| 3.14           | :heavy_check_mark: |         | Form3Dot14StressStrainForShortTermLoading  |
 | 3.15           |        :x:         |         |                                                           |
 | 3.16           |        :x:         |         |                                                           |
 | 3.17           |        :x:         |         |                                                           |

@@ -25,6 +25,10 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
         ----------
         f_ct_sp : float
             [fct,sp] Tensile strength determined by tensile splitting strength [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_ct_sp = f_ct_sp
