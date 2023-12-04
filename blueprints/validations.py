@@ -20,7 +20,7 @@ def raise_if_less_or_equal_to_zero(**kwargs) -> None:
 
     Raises
     ------
-    ValueError
+    NonPositiveValueError
         If any value is greater than zero.
 
     """
@@ -40,7 +40,7 @@ def raise_if_negative(**kwargs) -> None:
 
     Raises
     ------
-    ValueError
+    NegativeValueError
         If any value is greater than or equal to zero.
 
     """
