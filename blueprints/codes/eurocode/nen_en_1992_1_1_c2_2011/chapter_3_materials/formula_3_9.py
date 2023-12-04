@@ -31,7 +31,11 @@ class Form3Dot9DryingShrinkage(Formula):
             h0 = 300 -> kh = 0.75
             h0 >= 500 -> kh = 0.70
         epsilon_cd_0 : float
-            [εcd,0] Nominal unobstructed drying shrinkage, formula in appendix B or use table 3.2 [-]
+            [εcd,0] Nominal unobstructed drying shrinkage, formula in appendix B or use table 3.2 [-].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.beta_ds_tt_s = beta_ds_tt_s
