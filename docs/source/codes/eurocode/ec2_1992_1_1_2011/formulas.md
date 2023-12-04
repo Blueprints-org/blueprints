@@ -36,9 +36,9 @@ Total of 304 formulas present.
 | 3.25           | :heavy_check_mark: |         | Form3Dot25IncreasedCharacteristicCompressiveStrength      |
 | 3.26           | :heavy_check_mark: |         | Form3Dot26IncreasedStrainAtMaxStrength                    |
 | 3.27           | :heavy_check_mark: |         | Form3Dot27IncreasedStrainLimitValue                       |
-| 3.28           |        :x:         |         |                                                           |
-| 3.29           |        :x:         |         |                                                           |
-| 3.30           |        :x:         |         |                                                           |
+| 3.28           | :heavy_check_mark: |         | Form3Dot28RatioLossOfPreStressClass1                      |
+| 3.29           | :heavy_check_mark: |         | Form3Dot29RatioLossOfPreStressClass2                      |
+| 3.30           | :heavy_check_mark: |         | Form3Dot30RatioLossOfPreStressClass3                      |
 | 4.1            |        :x:         |         |                                                           |
 | 4.2            |        :x:         |         |                                                           |
 | 4.3N           |        :x:         |         |                                                           |
