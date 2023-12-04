@@ -19,16 +19,16 @@ class Form6Dot1DesignShearStrength(Formula):
     ) -> None:
         """[V_Rd] Design shear resistance of an element with shear reinforcement.
 
-        NEN-EN 1992-1-1+C2:2011 art.6.1(2) - Formula (6.1)
+        NEN-EN 1992-1-1+C2:2011 art.6.2.1(2) - Formula (6.1)
 
         Parameters
         ----------
         v_rd_s : KN
-            [V_Rd,s] Design shear resistance of an element with shear reinforcement [kN].
+            [VRd,s] Design shear resistance of an element with shear reinforcement [kN].
         v_ccd : KN
-            [V_ccd] Design value of the shear force component in the compression area in case of a change in height [kN].
+            [Vccd] Design value of the shear force component in the compression area in case of a change in height [kN].
         v_td : KN
-            [V_td] Design value of the shear force component of the tensile force in the reinforcement in case of a change in height [kN].
+            [Vtd] Design value of the shear force component of the tensile force in the reinforcement in case of a change in height [kN].
         """
         super().__init__()
         self.v_rd_s = v_rd_s
