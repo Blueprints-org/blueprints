@@ -17,7 +17,7 @@ class Form6Dot1DesignShearStrength(Formula):
         v_ccd: KN,
         v_td: KN,
     ) -> None:
-        """[V_Rd] Design shear resistance of an element with shear reinforcement.
+        """[VRd] Design shear resistance of an element with shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.1(2) - Formula (6.1)
 
