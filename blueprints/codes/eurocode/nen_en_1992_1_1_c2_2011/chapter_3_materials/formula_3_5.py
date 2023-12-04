@@ -28,7 +28,11 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
         f_cm : MPA
             [fcm] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
         e_cm : MPA
-            [Ecm] Average elastic modulus on day 28 [MPa]
+            [Ecm] Average elastic modulus on day 28 [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.f_cm_t = f_cm_t
