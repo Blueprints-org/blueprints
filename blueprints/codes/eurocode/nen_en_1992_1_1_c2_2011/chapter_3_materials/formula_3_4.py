@@ -31,7 +31,11 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
             alpha = 2/3 for t >= 28 days
             Use your own implementation of this value or use the SubForm3Dot4CoefficientAgeConcreteAlpha class.
         f_ctm : MPA
-            [fctm] Tensile strength from table 3.1 [MPa]
+            [fctm] Tensile strength from table 3.1 [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.beta_cc_t = beta_cc_t

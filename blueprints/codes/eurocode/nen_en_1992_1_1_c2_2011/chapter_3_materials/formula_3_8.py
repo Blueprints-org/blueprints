@@ -25,6 +25,10 @@ class Form3Dot8TotalShrinkage(Formula):
             [εcd] Drying shrinkage [-].
         epsilon_ca : float
             [εca] Autogene shrinkage [-].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.epsilon_cd = epsilon_cd
