@@ -39,12 +39,12 @@ Total of 304 formulas present.
 | 3.28           | :heavy_check_mark: |         | Form3Dot28RatioLossOfPreStressClass1                      |
 | 3.29           | :heavy_check_mark: |         | Form3Dot29RatioLossOfPreStressClass2                      |
 | 3.30           | :heavy_check_mark: |         | Form3Dot30RatioLossOfPreStressClass3                      |
-| 4.1            |        :x:         |         |                                                           |
-| 4.2            |        :x:         |         |                                                           |
+| 4.1            | :heavy_check_mark: |         | Form4Dot1NominalConcreteCover                             |
+| 4.2            | :heavy_check_mark: |         | Form4Dot2MinimumConcreteCover                             |
 | 4.3N           |        :x:         |         |                                                           |
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            |        :x:         |         |                                                           |
-| 5.2            |        :x:         |         |                                                           |
+| 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
 | 5.3a           |        :x:         |         |                                                           |
 | 5.3b           |        :x:         |         |                                                           |
 | 5.4            |        :x:         |         |                                                           |
