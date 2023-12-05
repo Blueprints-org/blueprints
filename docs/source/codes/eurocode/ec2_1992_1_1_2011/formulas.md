@@ -44,7 +44,7 @@ Total of 304 formulas present.
 | 4.3N           |        :x:         |         |                                                           |
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            |        :x:         |         |                                                           |
-| 5.2            |        :x:         |         |                                                           |
+| 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
 | 5.3a           |        :x:         |         |                                                           |
 | 5.3b           |        :x:         |         |                                                           |
 | 5.4            |        :x:         |         |                                                           |
