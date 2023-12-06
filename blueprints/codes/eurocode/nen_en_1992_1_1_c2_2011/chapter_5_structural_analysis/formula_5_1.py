@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import M
+from blueprints.type_alias import DIMENSIONLESS, M
 
 
 class Form5Dot1Imperfections(Formula):
@@ -15,9 +15,9 @@ class Form5Dot1Imperfections(Formula):
 
     def __init__(
         self,
-        theta_0: float,
-        alpha_h: float,
-        alpha_m: float,
+        theta_0: DIMENSIONLESS,
+        alpha_h: DIMENSIONLESS,
+        alpha_m: DIMENSIONLESS,
     ) -> None:
         """[Θi] Initial inclination imperfections, Θi, is a ratio between height and inclination of the member [-].
 
@@ -43,10 +43,10 @@ class Form5Dot1Imperfections(Formula):
 
     @staticmethod
     def _evaluate(
-        theta_0: float,
-        alpha_h: float,
-        alpha_m: float,
-    ) -> float:
+        theta_0: DIMENSIONLESS,
+        alpha_h: DIMENSIONLESS,
+        alpha_m: DIMENSIONLESS,
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method"""
         if theta_0 < 0:
             raise ValueError(f"Negative theta_0: {theta_0}. theta_0 cannot be negative")
@@ -84,7 +84,7 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
     @staticmethod
     def _evaluate(
         l: M,
-    ) -> float:
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method"""
         if l <= 0:
             raise ValueError(f"Invalid l: {l}. l cannot be negative or zero")
@@ -121,8 +121,8 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
 
     @staticmethod
     def _evaluate(
-        m: int,
-    ) -> float:
+        m: M,
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method"""
         if m <= 0:
             raise ValueError(f"Invalid m: {m}. m cannot be negative or zero")
