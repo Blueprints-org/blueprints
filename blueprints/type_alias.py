@@ -13,7 +13,7 @@ RAD = float
 
 # <editor-fold desc="WEIGHTS">
 KG = float
-GRAM = float
+G = float
 # </editor-fold>
 
 # <editor-fold desc="FORCES">
