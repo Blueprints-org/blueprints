@@ -30,6 +30,10 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
             [σc] Concrete compressive stress [MPa].
         e_c : MPA
             [Ec] tangent modulus = 1.05 * Ecm. According to art.3.1.4(2) [MPa].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.phi_inf_t0 = phi_inf_t0
