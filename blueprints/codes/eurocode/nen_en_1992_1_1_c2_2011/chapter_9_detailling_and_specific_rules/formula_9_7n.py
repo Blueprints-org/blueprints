@@ -35,7 +35,7 @@ class Form9Dot7NMaximumDistanceBentUpBars(Formula):
         self.alpha = alpha
 
     @staticmethod
-    def _evaluate(d: MM, alpha: DEG) -> float:
+    def _evaluate(d: MM, alpha: DEG) -> MM:
         """For more detailed documentation see the class docstring."""
         if d < 0:
             raise ValueError(f"Negative d: {d}. d cannot be negative")
