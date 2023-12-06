@@ -20,7 +20,7 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
         theta: DEG,
         alpha: DEG,
     ) -> None:
-        """[a_l] Shift in the moment diagram of an element with shear reinforcement [mm].
+        """[al] Shift in the moment diagram of an element with shear reinforcement [mm].
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.1.3 (2) - Formula (9.2)
 
@@ -31,7 +31,7 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
             shear force calculation of reinforced concrete without axial force, the approximate value z = 0.9d may generally be used [mm].
         alpha: DEG
             [α] The angle between the shear reinforcement and the axis of the beam [deg].
-        theta as defined in 6.2.3 [C1]: DEG
+        theta: DEG
             [θ] The angle between the shear compression strut and the axis of the beam 6.2.3 [C1] [deg].
         """
         super().__init__()
