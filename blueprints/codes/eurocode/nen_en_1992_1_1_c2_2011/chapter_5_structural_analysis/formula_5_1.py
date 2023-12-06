@@ -5,6 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS, M
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form5Dot1Imperfections(Formula):
@@ -48,12 +49,7 @@ class Form5Dot1Imperfections(Formula):
         alpha_m: DIMENSIONLESS,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method"""
-        if theta_0 < 0:
-            raise ValueError(f"Negative theta_0: {theta_0}. theta_0 cannot be negative")
-        if alpha_h < 0:
-            raise ValueError(f"Negative alpha_h: {alpha_h}. alpha_h cannot be negative")
-        if alpha_m < 0:
-            raise ValueError(f"Negative alpha_m: {alpha_m}. alpha_m cannot be negative")
+        raise_if_negative(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)
         return theta_0 * alpha_h * alpha_m
 
 
@@ -86,8 +82,7 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
         l: M,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method"""
-        if l <= 0:
-            raise ValueError(f"Invalid l: {l}. l cannot be negative or zero")
+        raise_if_less_or_equal_to_zero(l=l)
         # the value of alpha_h is between 2/3 and 1.0
         alpha_h = 2 / np.sqrt(l)
         if alpha_h < 2 / 3:
@@ -124,7 +119,6 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
         m: M,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method"""
-        if m <= 0:
-            raise ValueError(f"Invalid m: {m}. m cannot be negative or zero")
+        raise_if_less_or_equal_to_zero(m=m)
         # the value of alpha_m is between 1.0 and 1.5
         return np.sqrt(0.5 * (1 + 1 / m))
