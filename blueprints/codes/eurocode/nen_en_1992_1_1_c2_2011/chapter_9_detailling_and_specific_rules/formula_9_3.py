@@ -23,7 +23,7 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
     ) -> None:
         """[FEd] Force to be anchored according to the shift rule [kN].
 
-        NEN-EN 1992-1-1+C2:2011 art.9.2.1.4 (2) - Formula (9.3)
+        NEN-EN 1992-1-1+C2:2011 art.9.2.1.4(2) - Formula (9.3)
 
         Parameters
         ----------

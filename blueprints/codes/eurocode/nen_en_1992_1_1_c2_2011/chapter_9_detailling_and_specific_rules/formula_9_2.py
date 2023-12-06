@@ -22,7 +22,7 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
     ) -> None:
         """[al] Shift in the moment diagram of an element with shear reinforcement [mm].
 
-        NEN-EN 1992-1-1+C2:2011 art.9.2.1.3 (2) - Formula (9.2)
+        NEN-EN 1992-1-1+C2:2011 art.9.2.1.3(2) - Formula (9.2)
 
         Parameters
         ----------

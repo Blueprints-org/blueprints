@@ -21,7 +21,7 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
     ) -> None:
         """[As,min] Calculates the minimum required tensile reinforcement area in longitudinal direction for beams [mm²].
 
-        NEN-EN 1992-1-1+C2:2011 art.9.2.1.1 (1) - Formula (9.1N)
+        NEN-EN 1992-1-1+C2:2011 art.9.2.1.1(1) - Formula (9.1N)
 
         Parameters
         ----------
