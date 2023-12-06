@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_1 import Form5Dot1Imperfections
+from blueprints.validations import NegativeValueError
 
 
 class TestForm5Dot1Imperfections:
@@ -30,7 +31,7 @@ class TestForm5Dot1Imperfections:
         alpha_h = 0.8
         alpha_m = 0.9
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form5Dot1Imperfections(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)
 
     def test_raise_error_when_negative_alpha_h_is_given(self) -> None:
@@ -40,7 +41,7 @@ class TestForm5Dot1Imperfections:
         alpha_h = -0.8
         alpha_m = 0.9
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form5Dot1Imperfections(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)
 
     def test_raise_error_when_negative_alpha_m_is_given(self) -> None:
@@ -50,5 +51,5 @@ class TestForm5Dot1Imperfections:
         alpha_h = 0.8
         alpha_m = -0.9
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form5Dot1Imperfections(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)

@@ -6,6 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_anal
     SubForm5Dot1ReductionFactorLengthOrHeight,
     SubForm5Dot1ReductionFactorNumberOfMembers,
 )
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestSubForm5Dot1ReductionFactorLengthOrHeight:
@@ -29,7 +30,7 @@ class TestSubForm5Dot1ReductionFactorLengthOrHeight:
         # Example values
         l = -3.5
 
-        with pytest.raises(ValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             SubForm5Dot1ReductionFactorLengthOrHeight(l=l)
 
     def test_raise_error_when_l_is_zero(self) -> None:
@@ -37,7 +38,7 @@ class TestSubForm5Dot1ReductionFactorLengthOrHeight:
         # Example values
         l = 0
 
-        with pytest.raises(ValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             SubForm5Dot1ReductionFactorLengthOrHeight(l=l)
 
     def test_alpha_h_is_between_two_thirds_when_l_is_high(self) -> None:
@@ -82,7 +83,7 @@ class TestSubForm5Dot1ReductionFactorNumberOfMembers:
         # Example values
         m = -5
 
-        with pytest.raises(ValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             SubForm5Dot1ReductionFactorNumberOfMembers(m=m)
 
     def test_raise_error_when_m_is_zero(self) -> None:
@@ -90,5 +91,5 @@ class TestSubForm5Dot1ReductionFactorNumberOfMembers:
         # Example values
         m = 0
 
-        with pytest.raises(ValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             SubForm5Dot1ReductionFactorNumberOfMembers(m=m)
