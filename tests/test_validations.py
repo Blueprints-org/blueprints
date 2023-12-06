@@ -8,7 +8,7 @@ It includes tests for:
 
 import pytest
 
-from blueprints.validations import NegativeValueError, NonPositiveValueError, raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError, raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 def test_raise_if_less_or_equal_to_zero_with_positive_values() -> None:
@@ -18,13 +18,13 @@ def test_raise_if_less_or_equal_to_zero_with_positive_values() -> None:
 
 def test_raise_if_less_or_equal_to_zero_with_zero() -> None:
     """Test that NonPositiveValueError is raised for zero values."""
-    with pytest.raises(NonPositiveValueError):
+    with pytest.raises(LessOrEqualToZeroError):
         raise_if_less_or_equal_to_zero(a=0)
 
 
 def test_raise_if_less_or_equal_to_zero_with_negative() -> None:
     """Test that NonPositiveValueError is raised for negative values."""
-    with pytest.raises(NonPositiveValueError):
+    with pytest.raises(LessOrEqualToZeroError):
         raise_if_less_or_equal_to_zero(a=-1)
 
 
