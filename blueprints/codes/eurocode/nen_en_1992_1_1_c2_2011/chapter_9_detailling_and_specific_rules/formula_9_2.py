@@ -30,7 +30,7 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
             [z] The internal lever arm for an element with constant height, corresponding to the bending moment in the considered element. In the
             shear force calculation of reinforced concrete without axial force, the approximate value z = 0.9d may generally be used [mm].
         alpha: DEG
-            [α] The angle between the shear reinforcement and the axis of the beam [deg].
+            [α] The angle between the shear reinforcement and the longitudinal axis of the beam (see 9.2.2(1)) [deg].
         theta: DEG
             [θ] The angle between the shear compression strut and the axis of the beam 6.2.3 [C1] [deg].
         """
