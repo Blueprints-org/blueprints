@@ -1,4 +1,4 @@
-"""Testing formula 9.3 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 9.5N of NEN-EN 1992-1-1+C2:2011."""
 # pylint: disable=arguments-differ
 import pytest
 
