@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_3 import Form9Dot3ShiftInMomentDiagram
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot3ShiftInMomentDiagram:
@@ -35,7 +36,7 @@ class TestForm9Dot3ShiftInMomentDiagram:
         z = -250  # mm
         n_ed = 500  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot3ShiftInMomentDiagram(
                 v_ed=v_ed,
                 a_l=a_l,
@@ -51,7 +52,7 @@ class TestForm9Dot3ShiftInMomentDiagram:
         z = 250  # mm
         n_ed = 500  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot3ShiftInMomentDiagram(
                 v_ed=v_ed,
                 a_l=a_l,

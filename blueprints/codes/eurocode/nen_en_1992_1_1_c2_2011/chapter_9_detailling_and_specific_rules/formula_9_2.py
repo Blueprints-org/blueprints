@@ -6,6 +6,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DEG, MM
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot2ShiftInMomentDiagram(Formula):
@@ -46,10 +47,9 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
         alpha: DEG,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
-        if z < 0:
-            raise ValueError(f"Negative z: {z}. z cannot be negative")
-        if alpha == 0:
-            raise ValueError("Alpha = 0. alpha cannot be zero")
+        raise_if_negative(z=z)
         if theta == 0:
-            raise ValueError("Theta = 0. theta cannot be zero")
+            raise ValueError("theta=0, theta cannot be 0")
+        if alpha == 0:
+            raise ValueError("alpha=0, alpha cannot be 0")
         return z * ((1 / np.tan(theta * np.pi / 180)) - (1 / np.tan(alpha * np.pi / 180))) / 2

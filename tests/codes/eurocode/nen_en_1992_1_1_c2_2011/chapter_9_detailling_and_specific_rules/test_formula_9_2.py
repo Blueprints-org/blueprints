@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_2 import Form9Dot2ShiftInMomentDiagram
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot2ShiftInMomentDiagram:
@@ -28,7 +29,7 @@ class TestForm9Dot2ShiftInMomentDiagram:
         theta = 30  # deg
         alpha = 85  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha)
 
     def test_raise_error_when_alpha_is_zero(self) -> None:

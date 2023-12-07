@@ -5,6 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_8n import (
     Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks,
 )
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks:
@@ -36,5 +37,5 @@ class TestForm9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks:
         """Test the evaluation of the result."""
         d = -100  # mm
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks(d=d)

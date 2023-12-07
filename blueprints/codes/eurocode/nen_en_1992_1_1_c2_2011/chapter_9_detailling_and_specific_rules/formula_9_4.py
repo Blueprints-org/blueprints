@@ -6,6 +6,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DEG, MM, MM2
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot4ShearReinforcementRatio(Formula):
@@ -50,10 +51,5 @@ class Form9Dot4ShearReinforcementRatio(Formula):
         alpha: DEG,
     ) -> float:
         """For more detailed documentation see the class docstring."""
-        if a_sw < 0:
-            raise ValueError(f"Negative a_sw: {a_sw}. a_sw cannot be negative")
-        if s < 0:
-            raise ValueError(f"Negative s: {s}. s cannot be negative")
-        if b_w < 0:
-            raise ValueError(f"Negative b_w: {b_w}. b_w cannot be negative")
+        raise_if_negative(a_sw=a_sw, s=s, b_w=b_w)
         return a_sw / (s * b_w * np.sin(alpha * np.pi / 180))

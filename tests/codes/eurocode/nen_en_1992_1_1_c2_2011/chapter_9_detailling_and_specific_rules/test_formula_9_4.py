@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_4 import Form9Dot4ShearReinforcementRatio
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot4ShearReinforcementRatio:
@@ -34,7 +35,7 @@ class TestForm9Dot4ShearReinforcementRatio:
         b_w = 150  # mm
         alpha = 85  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot4ShearReinforcementRatio(
                 a_sw=a_sw,
                 s=s,
@@ -49,7 +50,7 @@ class TestForm9Dot4ShearReinforcementRatio:
         b_w = 150  # mm
         alpha = 85  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot4ShearReinforcementRatio(
                 a_sw=a_sw,
                 s=s,
@@ -64,7 +65,7 @@ class TestForm9Dot4ShearReinforcementRatio:
         b_w = -150  # mm
         alpha = 85  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot4ShearReinforcementRatio(
                 a_sw=a_sw,
                 s=s,

@@ -6,6 +6,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import KN, MM
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot3ShiftInMomentDiagram(Formula):
@@ -51,8 +52,5 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
         n_ed: KN,
     ) -> KN:
         """For more detailed documentation see the class docstring."""
-        if z < 0:
-            raise ValueError(f"Negative z: {z}. z cannot be negative")
-        if a_l < 0:
-            raise ValueError(f"Negative a_l: {a_l}. a_l cannot be negative")
+        raise_if_negative(z=z, a_l=a_l)
         return np.abs(v_ed) * a_l / z + n_ed
