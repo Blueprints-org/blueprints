@@ -7,7 +7,7 @@ from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot13TensileForceToBeAnchored:
-    """Validation for formula 9.12N from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 9.13 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
