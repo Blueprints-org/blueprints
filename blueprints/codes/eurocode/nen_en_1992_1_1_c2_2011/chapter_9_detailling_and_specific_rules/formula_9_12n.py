@@ -5,6 +5,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import KN, MM2, MPA
 from blueprints.unit_conversion import KN_TO_N
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot12NMinimumLongitudinalReinforcementColumns(Formula):
@@ -44,10 +45,5 @@ class Form9Dot12NMinimumLongitudinalReinforcementColumns(Formula):
         a_c: MM2,
     ) -> MM2:
         """For more detailed documentation see the class docstring."""
-        if n_ed < 0:
-            raise ValueError(f"Negative n_ed: {n_ed}. n_ed cannot be negative")
-        if f_yd < 0:
-            raise ValueError(f"Negative f_yd: {f_yd}. f_yd cannot be negative")
-        if a_c < 0:
-            raise ValueError(f"Negative a_c: {a_c}. a_c cannot be negative")
+        raise_if_negative(n_ed=n_ed, f_yd=f_yd, a_c=a_c)
         return max(0.1 * n_ed * KN_TO_N / f_yd, 0.002 * a_c)
