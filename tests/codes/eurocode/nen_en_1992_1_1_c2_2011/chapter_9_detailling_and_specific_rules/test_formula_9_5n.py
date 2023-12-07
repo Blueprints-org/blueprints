@@ -5,6 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_5n import (
     Form9Dot5NMinimumShearReinforcementRatio,
 )
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot5NMinimumShearReinforcementRatio:
@@ -27,7 +28,7 @@ class TestForm9Dot5NMinimumShearReinforcementRatio:
         f_ck = -30  # MPa
         f_yk = 500  # MPa
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot5NMinimumShearReinforcementRatio(f_ck=f_ck, f_yk=f_yk)
 
     def test_raise_error_when_negative_f_yk_is_given(self) -> None:
@@ -35,5 +36,5 @@ class TestForm9Dot5NMinimumShearReinforcementRatio:
         f_ck = 30  # MPa
         f_yk = -500  # MPa
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot5NMinimumShearReinforcementRatio(f_ck=f_ck, f_yk=f_yk)

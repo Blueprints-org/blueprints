@@ -5,6 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_1n import (
     Form9Dot1NMinimumTensileReinforcementBeam,
 )
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot1NMinimumTensileReinforcementBeam:
@@ -46,7 +47,7 @@ class TestForm9Dot1NMinimumTensileReinforcementBeam:
         b_t = 50  # mm
         d = 150  # mm
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
 
     def test_raise_error_when_negative_f_yk_is_given(self) -> None:
@@ -57,7 +58,7 @@ class TestForm9Dot1NMinimumTensileReinforcementBeam:
         b_t = 50  # mm
         d = 150  # mm
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
 
     def test_raise_error_when_negative_b_t_is_given(self) -> None:
@@ -68,7 +69,7 @@ class TestForm9Dot1NMinimumTensileReinforcementBeam:
         b_t = -50  # mm
         d = 150  # mm
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
 
     def test_raise_error_when_negative_d_is_given(self) -> None:
@@ -79,5 +80,5 @@ class TestForm9Dot1NMinimumTensileReinforcementBeam:
         b_t = 50  # mm
         d = -150  # mm
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)

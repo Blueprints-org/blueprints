@@ -4,6 +4,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MM, MM2, MPA
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
@@ -49,12 +50,5 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
         d: MM,
     ) -> MM2:
         """For more detailed documentation see the class docstring."""
-        if f_ctm < 0:
-            raise ValueError(f"Negative f_ctm: {f_ctm}. f_ctm cannot be negative")
-        if f_yk < 0:
-            raise ValueError(f"Negative f_yk: {f_yk}. f_yk cannot be negative")
-        if b_t < 0:
-            raise ValueError(f"Negative b_t: {b_t}. b_t cannot be negative")
-        if d < 0:
-            raise ValueError(f"Negative d: {d}. d cannot be negative")
+        raise_if_negative(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
         return max(0.26 * f_ctm * b_t * d / f_yk, 0.0013 * b_t * d)

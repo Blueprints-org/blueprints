@@ -6,6 +6,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MPA
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot5NMinimumShearReinforcementRatio(Formula):
@@ -37,8 +38,5 @@ class Form9Dot5NMinimumShearReinforcementRatio(Formula):
     @staticmethod
     def _evaluate(f_ck: MPA, f_yk: MPA) -> float:
         """For more detailed documentation see the class docstring."""
-        if f_ck < 0:
-            raise ValueError(f"Negative f_ck: {f_ck}. f_ck cannot be negative")
-        if f_yk < 0:
-            raise ValueError(f"Negative f_yk: {f_yk}. f_yk cannot be negative")
+        raise_if_negative(f_ck=f_ck, f_yk=f_yk)
         return (0.08 * np.sqrt(f_ck)) / f_yk

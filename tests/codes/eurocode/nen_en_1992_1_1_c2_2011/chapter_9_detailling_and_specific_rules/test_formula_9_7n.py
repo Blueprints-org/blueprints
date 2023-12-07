@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_7n import Form9Dot7NMaximumDistanceBentUpBars
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot7NMaximumDistanceBentUpBars:
@@ -25,5 +26,5 @@ class TestForm9Dot7NMaximumDistanceBentUpBars:
         d = -100  # mm
         alpha = 85  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot7NMaximumDistanceBentUpBars(d=d, alpha=alpha)

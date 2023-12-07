@@ -7,6 +7,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DEG, MM
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot7NMaximumDistanceBentUpBars(Formula):
@@ -38,6 +39,5 @@ class Form9Dot7NMaximumDistanceBentUpBars(Formula):
     @staticmethod
     def _evaluate(d: MM, alpha: DEG) -> MM:
         """For more detailed documentation see the class docstring."""
-        if d < 0:
-            raise ValueError(f"Negative d: {d}. d cannot be negative")
+        raise_if_negative(d=d)
         return 0.6 * d * (1 + (1 / np.tan(alpha * np.pi / 180)))
