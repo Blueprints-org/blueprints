@@ -1,5 +1,6 @@
 """This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 9 - formula (9.7N)."""
 # pylint: disable=arguments-differ
+# pylint: disable=duplicate-code
 
 import numpy as np
 
