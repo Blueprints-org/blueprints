@@ -7,7 +7,7 @@ KM = float
 # </editor-fold>
 
 # <editor-fold desc="ROTATIONS">
-DEGREE = float
+DEG = float
 RAD = float
 # </editor-fold>
 
