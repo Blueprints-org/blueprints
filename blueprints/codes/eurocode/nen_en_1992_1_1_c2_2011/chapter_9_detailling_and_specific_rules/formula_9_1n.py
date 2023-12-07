@@ -1,9 +1,11 @@
-"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 9 - formula (9.1N)."""
+"""Formula 9.1N from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
 # pylint: disable=arguments-differ
+# pylint: disable=invalid-name
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MM, MM2, MPA
+from blueprints.validations import raise_if_negative
 
 
 class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
@@ -23,14 +25,19 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.1.1(1) - Formula (9.1N)
 
+        Notes
+        -----
+        As,min is no less than 0,0013 * bt * d
+
         Parameters
         ----------
         f_ctm: MPA
-            [fctm] Average axial tensile stress concrete [MPa].
+            [fctm] Mean axial tensile stress concrete [MPa].
+            Should be determined with respect to the relevant strength class according to Table 3.1
         f_yk: MPA
             [fyk] Characteristic yield strength reinforcement steel [MPa].
         b_t: MM
-            [bt] Average width concrete tension zone, for T-beams with a flange under compression only the width of the web is considered for
+            [bt] Mean width of the concrete tension zone, for T-beams with a flange under compression only the width of the web is considered for
             calculating bt [mm].
         d: MM
             [d] Effective height of the cross-section [mm].
@@ -49,12 +56,5 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
         d: MM,
     ) -> MM2:
         """For more detailed documentation see the class docstring."""
-        if f_ctm < 0:
-            raise ValueError(f"Negative f_ctm: {f_ctm}. f_ctm cannot be negative")
-        if f_yk < 0:
-            raise ValueError(f"Negative f_yk: {f_yk}. f_yk cannot be negative")
-        if b_t < 0:
-            raise ValueError(f"Negative b_t: {b_t}. b_t cannot be negative")
-        if d < 0:
-            raise ValueError(f"Negative d: {d}. d cannot be negative")
-        return max(0.26 * f_ctm * b_t * d / f_yk, 0.0013 * b_t * d)
+        raise_if_negative(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
+        return max(0.26 * (f_ctm / f_yk) * b_t * d, 0.0013 * b_t * d)
