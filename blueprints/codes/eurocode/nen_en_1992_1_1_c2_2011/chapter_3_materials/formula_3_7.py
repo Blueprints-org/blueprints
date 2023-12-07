@@ -27,6 +27,10 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
             [φ(∞, t0)] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [-].
         k_sigma : float
             [kσ] Stress-strength ratio (σc / fck(t0)) [-].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.phi_inf_t0 = phi_inf_t0
