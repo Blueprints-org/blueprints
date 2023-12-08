@@ -18,7 +18,7 @@ class NegativeValueError(Exception):
 
 
 class GreaterThan90Error(Exception):
-    """Raised when a value greater than 90."""
+    """Raised when a value is greater than 90."""
 
     def __init__(self, value_name: str, value: float) -> None:
         message = f"Invalid value for '{value_name}': {value}. Values for '{value_name}' cannot be greater than 90."
