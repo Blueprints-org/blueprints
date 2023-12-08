@@ -1,4 +1,4 @@
-"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 9 - formula (9.13)."""
+"""Formula 9.13 from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailling and specific rules"""
 # pylint: disable=arguments-differ
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -28,9 +28,9 @@ class Form9Dot13TensileForceToBeAnchored(Formula):
         r: MM
             [R] The resultant of ground pressure within x from figure 9.13 [mm].
         z_e: MM
-            [ze] The external lever arm, see figure 9.13[mm].
+            [ze] The external lever arm, see figure 9.13, i.e. distance between the reinforcement and the horizontal force Fc [mm].
         z_i: MM
-            [zi] Internal lever arm, see figure 9.13 [mm].
+            [zi] Internal lever arm, see figure 9.13, i.e. distance between R and the vertical force NEd [mm].
         """
         super().__init__()
         self.r = r
