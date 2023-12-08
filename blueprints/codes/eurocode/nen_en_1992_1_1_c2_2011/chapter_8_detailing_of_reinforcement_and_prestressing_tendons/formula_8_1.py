@@ -38,6 +38,7 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
             [Φ] Diameter of reinforcing bar [mm].
         f_cd: MPA
             [fcd] Design value of concrete compressive stress [MPa].
+            Note: The value of fcd should not be taken greater than that for concrete class C55/67.
         """
         super().__init__()
         self.f_bt = f_bt
