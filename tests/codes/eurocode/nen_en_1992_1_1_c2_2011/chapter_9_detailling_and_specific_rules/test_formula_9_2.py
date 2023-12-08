@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_2 import Form9Dot2ShiftInMomentDiagram
-from blueprints.validations import NegativeValueError
+from blueprints.validations import GreaterThan90Error, NegativeValueError
 
 
 class TestForm9Dot2ShiftInMomentDiagram:
@@ -23,7 +23,7 @@ class TestForm9Dot2ShiftInMomentDiagram:
         assert form_9_2 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_z_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test if error is raised when z is negative"""
         # Example values
         z = -250  # mm
         theta = 30  # deg
@@ -32,22 +32,42 @@ class TestForm9Dot2ShiftInMomentDiagram:
         with pytest.raises(NegativeValueError):
             Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha)
 
-    def test_raise_error_when_alpha_is_zero(self) -> None:
-        """Test the evaluation of the result."""
+    def test_raise_error_when_alpha_is_negative(self) -> None:
+        """Test if error is raised when alpha is negative"""
         # Example values
         z = 250  # mm
         theta = 30  # deg
-        alpha = 0  # deg
+        alpha = -50  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha)
 
-    def test_raise_error_when_theta_is_zero(self) -> None:
-        """Test the evaluation of the result."""
+    def test_raise_error_when_alpha_is_greater_90(self) -> None:
+        """Test if error is raised when alpha is greater than 90"""
         # Example values
         z = 250  # mm
-        theta = 0  # deg
-        alpha = 90  # deg
+        theta = 30  # deg
+        alpha = 95  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(GreaterThan90Error):
+            Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha)
+
+    def test_raise_error_when_theta_is_negative(self) -> None:
+        """Test if error is raised when theta is negative"""
+        # Example values
+        z = 250  # mm
+        theta = -30  # deg
+        alpha = 50  # deg
+
+        with pytest.raises(NegativeValueError):
+            Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha)
+
+    def test_raise_error_when_theta_is_greater_90(self) -> None:
+        """Test if error is raised when theta is greater than 90"""
+        # Example values
+        z = 250  # mm
+        theta = 95  # deg
+        alpha = 85  # deg
+
+        with pytest.raises(GreaterThan90Error):
             Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha)

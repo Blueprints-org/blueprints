@@ -15,7 +15,7 @@ class TestForm9Dot3ShiftInMomentDiagram:
         v_ed = -200  # kN
         a_l = 200  # mm
         z = 250  # mm
-        n_ed = 500  # deg
+        n_ed = 500  # kN
         form_9_3 = Form9Dot3ShiftInMomentDiagram(
             v_ed=v_ed,
             a_l=a_l,
@@ -29,12 +29,12 @@ class TestForm9Dot3ShiftInMomentDiagram:
         assert form_9_3 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_z_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test if error is raised when z is negative"""
         # Example values
         v_ed = -200  # kN
         a_l = 200  # mm
         z = -250  # mm
-        n_ed = 500  # deg
+        n_ed = 500  # kN
 
         with pytest.raises(NegativeValueError):
             Form9Dot3ShiftInMomentDiagram(
@@ -45,12 +45,12 @@ class TestForm9Dot3ShiftInMomentDiagram:
             )
 
     def test_raise_error_when_negative_a_l_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test if error is raised when a_l is negative"""
         # Example values
         v_ed = -200  # kN
         a_l = -200  # mm
         z = 250  # mm
-        n_ed = 500  # deg
+        n_ed = 500  # kN
 
         with pytest.raises(NegativeValueError):
             Form9Dot3ShiftInMomentDiagram(

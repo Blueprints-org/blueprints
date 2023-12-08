@@ -24,7 +24,7 @@ class TestForm9Dot5NMinimumShearReinforcementRatio:
         assert form_9_5n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_f_ck_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test if error is raised when f_ck is negative"""
         f_ck = -30  # MPa
         f_yk = 500  # MPa
 
@@ -32,7 +32,7 @@ class TestForm9Dot5NMinimumShearReinforcementRatio:
             Form9Dot5NMinimumShearReinforcementRatio(f_ck=f_ck, f_yk=f_yk)
 
     def test_raise_error_when_negative_f_yk_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test if error is raised when f_yk is negative"""
         f_ck = 30  # MPa
         f_yk = -500  # MPa
 

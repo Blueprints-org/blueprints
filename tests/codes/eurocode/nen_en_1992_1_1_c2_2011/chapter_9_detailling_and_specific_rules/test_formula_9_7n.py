@@ -22,7 +22,7 @@ class TestForm9Dot7NMaximumDistanceBentUpBars:
         assert form_9_7n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_d_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test if error is raised when d is negative"""
         d = -100  # mm
         alpha = 85  # deg
 
