@@ -204,7 +204,7 @@ Total of 304 formulas present.
 | 7.21           |        :x:         |         |                                                           |
 | 8.1            |        :x:         |         |                                                           |
 | 8.2            |        :x:         |         |                                                           |
-| 8.3            |        :x:         |         |                                                           |
+| 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
 | 8.4            |        :x:         |         |                                                           |
 | 8.5            |        :x:         |         |                                                           |
 | 8.6            |        :x:         |         |                                                           |
