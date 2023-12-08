@@ -6,7 +6,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MM2
-from blueprints.validations import raise_if_greater_90, raise_if_negative
+from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
 class Form9Dot4ShearReinforcementRatio(Formula):
@@ -52,7 +52,7 @@ class Form9Dot4ShearReinforcementRatio(Formula):
     ) -> DIMENSIONLESS:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(a_sw=a_sw, s=s, b_w=b_w, alpha=alpha)
-        raise_if_greater_90(alpha=alpha)
+        raise_if_greater_than_90(alpha=alpha)
 
         # Convert the angle from degrees to radians
         alpha_radians = np.deg2rad(alpha)

@@ -63,7 +63,7 @@ def raise_if_negative(**kwargs: float) -> None:
             raise NegativeValueError(value_name=key, value=value)
 
 
-def raise_if_greater_90(**kwargs: float) -> None:
+def raise_if_greater_than_90(**kwargs: float) -> None:
     """Raise a GreaterThan90Error if any of the given keyword arguments are greater than 90.
 
     Parameters
