@@ -19,7 +19,7 @@ class TestForm8Dot2UltimateBondStress:
         eta_1 = 1  # -
         eta_2 = 1  # −
         f_ctd = 20  # MPa
-        form_8_2 = Form8Dot2UltimateBondStress(eta_1, eta_2, f_ctd)
+        form_8_2 = Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
 
         # Expected result, manually calculated
         manually_calculated_result = 45  # MPa
@@ -34,7 +34,7 @@ class TestForm8Dot2UltimateBondStress:
         f_ctd = 20  # MPa
 
         with pytest.raises(NegativeValueError):
-            Form8Dot2UltimateBondStress(eta_1, eta_2, f_ctd)
+            Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
 
     def test_raise_error_when_negative_eta_2_is_given(self) -> None:
         """Test if NegativeValueError is raised when a negative value is given for eta_2."""
@@ -44,7 +44,7 @@ class TestForm8Dot2UltimateBondStress:
         f_ctd = 20  # MPa
 
         with pytest.raises(NegativeValueError):
-            Form8Dot2UltimateBondStress(eta_1, eta_2, f_ctd)
+            Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
 
     def test_raise_error_when_negative_f_ctd_is_given(self) -> None:
         """Test if NegativeValueError is raised when a negative value is given for f_ctd."""
@@ -54,7 +54,7 @@ class TestForm8Dot2UltimateBondStress:
         f_ctd = -20  # MPa
 
         with pytest.raises(NegativeValueError):
-            Form8Dot2UltimateBondStress(eta_1, eta_2, f_ctd)
+            Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
 
     def test_integration_with_sub_formula_8_2_coefficient_quality_of_bond(self) -> None:
         """Test the integration with sub-formula 8.2 for the coefficient for quality of bond η1."""
@@ -64,7 +64,7 @@ class TestForm8Dot2UltimateBondStress:
         f_ctd = 20  # MPa
 
         # Object to test
-        form_8_2 = Form8Dot2UltimateBondStress(eta_1, eta_2, f_ctd)
+        form_8_2 = Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
 
         # Expected result, manually calculated
         manually_calculated_result = 45
@@ -79,7 +79,7 @@ class TestForm8Dot2UltimateBondStress:
         f_ctd = 20  # MPa
 
         # Object to test
-        form_8_2 = Form8Dot2UltimateBondStress(eta_1, eta_2, f_ctd)
+        form_8_2 = Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
 
         # Expected result, manually calculated
         manually_calculated_result = 45

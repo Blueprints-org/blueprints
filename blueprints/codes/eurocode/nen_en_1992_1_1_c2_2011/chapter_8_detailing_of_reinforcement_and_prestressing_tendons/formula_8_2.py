@@ -21,7 +21,7 @@ class Form8Dot2UltimateBondStress(Formula):
     ) -> None:
         """[fbd] The design value of the ultimate bond stress for ribbed bars [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.5.4.2(2) - Formula (8.2)
+        NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) - Formula (8.2)
 
         Parameters
         ----------
@@ -87,7 +87,7 @@ class SubForm8Dot2CoefficientQualityOfBond(Formula):
             case "other":
                 return 0.7
             case _:
-                raise ValueError(f"Invalid bond quality: {bond_quality}. Options: good or other")
+                raise ValueError(f"Invalid bond quality: {bond_quality}. Options: 'good' or 'other'")
 
 
 class SubForm8Dot2CoefficientBarDiameter(Formula):
