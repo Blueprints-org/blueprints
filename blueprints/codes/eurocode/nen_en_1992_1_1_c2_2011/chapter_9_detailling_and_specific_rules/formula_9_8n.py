@@ -17,7 +17,7 @@ class Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks(Formula):
     def __init__(self, d: MM) -> None:
         """[st,max] Maximum distance in transverse direction between legs in a series of shear links [mm].
 
-        NEN-EN 1992-1-1+C2:2011 art.9.2.2(7) - Formula (9.8N)
+        NEN-EN 1992-1-1+C2:2011 art.9.2.2(8) - Formula (9.8N)
 
         Parameters
         ----------
