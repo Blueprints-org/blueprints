@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_9 import Form9Dot9MaximumSpacingSeriesOfLinks
+from blueprints.validations import NegativeValueError
 
 
 class TestForm9Dot9MaximumSpacingSeriesOfLinks:
@@ -21,9 +22,9 @@ class TestForm9Dot9MaximumSpacingSeriesOfLinks:
         assert form_9_9 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_d_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test if error is given when d is negative"""
         d = -100  # mm
         alpha = 85  # deg
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form9Dot9MaximumSpacingSeriesOfLinks(d=d, alpha=alpha)
