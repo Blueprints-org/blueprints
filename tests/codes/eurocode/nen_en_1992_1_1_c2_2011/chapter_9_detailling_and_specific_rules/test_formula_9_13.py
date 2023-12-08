@@ -23,7 +23,7 @@ class TestForm9Dot13TensileForceToBeAnchored:
         assert form_9_13 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_r_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test whether negative value error is raised if r is negative."""
         r = -100  # mm
         z_e = 50  # mm
         z_i = 20  # mm
@@ -32,7 +32,7 @@ class TestForm9Dot13TensileForceToBeAnchored:
             Form9Dot13TensileForceToBeAnchored(r=r, z_e=z_e, z_i=z_i)
 
     def test_raise_error_when_negative_z_e_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test whether negative value error is raised if z_e is negative."""
         r = 100  # mm
         z_e = -50  # mm
         z_i = 20  # mm
@@ -41,7 +41,7 @@ class TestForm9Dot13TensileForceToBeAnchored:
             Form9Dot13TensileForceToBeAnchored(r=r, z_e=z_e, z_i=z_i)
 
     def test_raise_error_when_negative_z_i_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test whether negative value error is raised if z_i is negative."""
         r = 100  # mm
         z_e = 50  # mm
         z_i = -20  # mm

@@ -25,7 +25,7 @@ class TestForm9Dot12NMinimumLongitudinalReinforcementColumns:
         assert form_9_12n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_evaluation_upper_limit(self) -> None:
-        """Test the evaluation of the result."""
+        """Test the evaluation of the result if the upper limit is reached."""
         # Example values
         n_ed = 200  # kN
         f_yd = 500  # MPa
@@ -38,7 +38,7 @@ class TestForm9Dot12NMinimumLongitudinalReinforcementColumns:
         assert form_9_12n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_n_ed_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test whether negative value error is raised if n_ed is negative."""
         n_ed = -200  # kN
         f_yd = 500  # MPa
         a_c = 5000  # mm²
@@ -47,7 +47,7 @@ class TestForm9Dot12NMinimumLongitudinalReinforcementColumns:
             Form9Dot12NMinimumLongitudinalReinforcementColumns(n_ed=n_ed, f_yd=f_yd, a_c=a_c)
 
     def test_raise_error_when_negative_f_yd_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test whether negative value error is raised if f_yd is negative."""
         n_ed = 200  # kN
         f_yd = -500  # MPa
         a_c = 5000  # mm²
@@ -56,7 +56,7 @@ class TestForm9Dot12NMinimumLongitudinalReinforcementColumns:
             Form9Dot12NMinimumLongitudinalReinforcementColumns(n_ed=n_ed, f_yd=f_yd, a_c=a_c)
 
     def test_raise_error_when_negative_a_c_is_given(self) -> None:
-        """Test the evaluation of the result."""
+        """Test whether negative value error is raised if a_c is negative."""
         n_ed = 200  # kN
         f_yd = 500  # MPa
         a_c = -5000  # mm²
