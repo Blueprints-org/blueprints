@@ -1,4 +1,4 @@
-"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 9 - formula (9.2)."""
+"""Formula 9.2 from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
 # pylint: disable=arguments-differ
 
 import numpy as np
@@ -6,7 +6,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DEG, MM
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_greater_90, raise_if_negative
 
 
 class Form9Dot2ShiftInMomentDiagram(Formula):
@@ -47,9 +47,15 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
         alpha: DEG,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
-        raise_if_negative(z=z)
-        if theta == 0:
-            raise ValueError("theta=0, theta cannot be 0")
-        if alpha == 0:
-            raise ValueError("alpha=0, alpha cannot be 0")
-        return z * ((1 / np.tan(theta * np.pi / 180)) - (1 / np.tan(alpha * np.pi / 180))) / 2
+        raise_if_negative(z=z, theta=theta, alpha=alpha)
+        raise_if_greater_90(theta=theta, alpha=alpha)
+
+        # Convert the angle from degrees to radians
+        theta_radians = np.deg2rad(theta)
+        alpha_radians = np.deg2rad(alpha)
+
+        # Calculate the cotangent
+        cot_theta = 1 / np.tan(theta_radians)
+        cot_alpha = 1 / np.tan(alpha_radians)
+
+        return z * (cot_theta - cot_alpha) / 2

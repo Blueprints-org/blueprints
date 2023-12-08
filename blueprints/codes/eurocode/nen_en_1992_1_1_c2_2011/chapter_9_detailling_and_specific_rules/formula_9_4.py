@@ -1,12 +1,12 @@
-"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 9 - formula (9.3)."""
+"""Formula 9.4 from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
 # pylint: disable=arguments-differ
 
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import DEG, MM, MM2
-from blueprints.validations import raise_if_negative
+from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MM2
+from blueprints.validations import raise_if_greater_90, raise_if_negative
 
 
 class Form9Dot4ShearReinforcementRatio(Formula):
@@ -49,7 +49,12 @@ class Form9Dot4ShearReinforcementRatio(Formula):
         s: MM,
         b_w: MM,
         alpha: DEG,
-    ) -> float:
+    ) -> DIMENSIONLESS:
         """For more detailed documentation see the class docstring."""
-        raise_if_negative(a_sw=a_sw, s=s, b_w=b_w)
-        return a_sw / (s * b_w * np.sin(alpha * np.pi / 180))
+        raise_if_negative(a_sw=a_sw, s=s, b_w=b_w, alpha=alpha)
+        raise_if_greater_90(alpha=alpha)
+
+        # Convert the angle from degrees to radians
+        alpha_radians = np.deg2rad(alpha)
+
+        return a_sw / (s * b_w * np.sin(alpha_radians))

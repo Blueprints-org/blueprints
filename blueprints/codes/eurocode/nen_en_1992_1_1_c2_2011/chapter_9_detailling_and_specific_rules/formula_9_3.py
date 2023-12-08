@@ -1,7 +1,6 @@
-"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 9 - formula (9.3)."""
+"""Formula 9.3 from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
 # pylint: disable=arguments-differ
 
-import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -32,6 +31,7 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
             [VEd] Design value shear force [kN].
         a_l: MM
             [al] Shift in the moment diagram of an element with shear reinforcement based on art. 9.2.1.3 (2) [mm].
+            Use your own implementation of this value or use the Form9Dot2ShiftInMomentDiagram class.
         z: MM
             [z] The internal lever arm for an element with constant height, corresponding to the bending moment in the considered element. In the
             shear force calculation of reinforced concrete without axial force, the approximate value z = 0.9d may generally be used [mm].
@@ -53,4 +53,4 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
     ) -> KN:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(z=z, a_l=a_l)
-        return np.abs(v_ed) * a_l / z + n_ed
+        return abs(v_ed) * a_l / z + n_ed
