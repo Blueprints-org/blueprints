@@ -94,4 +94,4 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
             case "s":
                 return 0.38
             case _:
-                raise ValueError(f"Invalid cement class: {cement_class}. Options: R, N or S")
+                raise ValueError(f"Invalid cement class: {cement_class}. Options: 'R', 'N' or 'S'")
