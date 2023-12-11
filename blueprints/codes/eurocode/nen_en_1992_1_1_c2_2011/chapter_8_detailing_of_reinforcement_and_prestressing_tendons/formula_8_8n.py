@@ -6,6 +6,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS, KN, MM, MPA
+from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_negative
 
 
@@ -64,7 +65,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
             sigma_td=sigma_td,
             f_wd=f_wd,
         )
-        return min(l_td * phi_t * sigma_td, f_wd)
+        return min(l_td * phi_t * sigma_td * N_TO_KN, f_wd)
 
 
 class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
