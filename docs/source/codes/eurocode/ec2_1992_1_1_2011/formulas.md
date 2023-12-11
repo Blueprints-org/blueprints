@@ -203,7 +203,7 @@ Total of 304 formulas present.
 | 7.20           |        :x:         |         |                                                           |
 | 7.21           |        :x:         |         |                                                           |
 | 8.1            |        :x:         |         |                                                           |
-| 8.2            |        :x:         |         |                                                           |
+| 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            |        :x:         |         |                                                           |
 | 8.4            |        :x:         |         |                                                           |
 | 8.5            |        :x:         |         |                                                           |
@@ -223,14 +223,14 @@ Total of 304 formulas present.
 | 8.19           |        :x:         |         |                                                           |
 | 8.20           |        :x:         |         |                                                           |
 | 8.21           |        :x:         |         |                                                           |
-| 9.1N           |        :x:         |         |                                                           |
-| 9.2            |        :x:         |         |                                                           |
-| 9.3            |        :x:         |         |                                                           |
-| 9.4            |        :x:         |         |                                                           |
-| 9.5N           |        :x:         |         |                                                           |
-| 9.6N           |        :x:         |         |                                                           |
-| 9.7N           |        :x:         |         |                                                           |
-| 9.8N           |        :x:         |         |                                                           |
+| 9.1N           |       :heavy_check_mark:        |         | Form9Dot1NMinimumTensileReinforcementBeam                                                                       |
+| 9.2            |       :heavy_check_mark:        |         | Form9Dot2ShiftInMomentDiagram                                                                                   |
+| 9.3            |       :heavy_check_mark:        |         | Form9Dot3ShiftInMomentDiagram                                                                                   |
+| 9.4            |       :heavy_check_mark:        |         | Form9Dot4ShearReinforcementRatio                                                                                |
+| 9.5N           |       :heavy_check_mark:        |         | Form9Dot5NMinimumShearReinforcementRatio                                                                        |
+| 9.6N           |       :heavy_check_mark:        |         | Form9Dot6NMaximumDistanceShearReinforcement                                                                     |
+| 9.7N           |       :heavy_check_mark:        |         | Form9Dot7NMaximumDistanceBentUpBars                                                                             |
+| 9.8N           |       :heavy_check_mark:        |         | Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks                                                         |
 | 9.9            |        :x:         |         |                                                           |
 | 9.10           |        :x:         |         |                                                           |
 | 9.11           |        :x:         |         |                                                           |
