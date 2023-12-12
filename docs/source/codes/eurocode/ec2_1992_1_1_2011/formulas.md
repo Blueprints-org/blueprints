@@ -237,7 +237,7 @@ Total of 304 formulas present.
 | 9.12N          |       :heavy_check_mark        |         | Form9Dot12NMinimumLongitudinalReinforcementColumns                                                         |
 | 9.13           |       :heavy_check_mark:       |         | Form9Dot13TensileForceToBeAnchored                                                                         |
 | 9.14           |      :heavy_check_mark:          |         | Form9Dot14SplittingForceColumnOnRock                                                        |
-| 9.15           |              :x:               |         |                                                                                                            |
+| 9.15           |       :heavy_check_mark:        |         | Form9Dot15MinimumResistancePeripheralTie                                                                                                         |
 | 9.16           |              :x:               |         |                                                                                                            |
 | 10.1           |              :x:               |         |                                                                                                            |
 | 10.2           |              :x:               |         |                                                                                                            |
