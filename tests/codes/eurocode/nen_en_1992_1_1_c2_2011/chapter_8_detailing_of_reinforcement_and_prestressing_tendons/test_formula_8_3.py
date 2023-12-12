@@ -6,7 +6,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_3 import (
     Form8Dot3RequiredAnchorageLength,
 )
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot3RequiredAnchorageLength:
@@ -51,5 +51,15 @@ class TestForm8Dot3RequiredAnchorageLength:
         sigma_sd = 435  # MPA
         f_bd = -1  # MPA
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(LessOrEqualToZeroError):
+            Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+
+    def test_raise_error__zero_f_bd(self) -> None:
+        """Test that an error is raised when f_bd is zero."""
+        # example values
+        phi = 12  # mm
+        sigma_sd = 435  # MPA
+        f_bd = 0  # MPA
+
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)

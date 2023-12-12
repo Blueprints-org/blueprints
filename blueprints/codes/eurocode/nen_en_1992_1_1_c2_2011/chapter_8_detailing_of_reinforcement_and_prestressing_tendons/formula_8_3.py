@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MM, MPA
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot3RequiredAnchorageLength(Formula):
@@ -44,5 +44,6 @@ class Form8Dot3RequiredAnchorageLength(Formula):
         f_bd: MPA,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method"""
-        raise_if_negative(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+        raise_if_negative(phi=phi, sigma_sd=sigma_sd)
+        raise_if_less_or_equal_to_zero(f_bd=f_bd)
         return (phi / 4) * (sigma_sd / f_bd)
