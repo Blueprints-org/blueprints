@@ -202,7 +202,7 @@ Total of 304 formulas present.
 | 7.19           |              :x:               |         |                                                                                                            |
 | 7.20           |              :x:               |         |                                                                                                            |
 | 7.21           |              :x:               |         |                                                                                                            |
-| 8.1            |              :x:               |         |                                                                                                            |
+| 8.1            |              :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                                                                                                            |
 | 8.2            |              :heavy_check_mark: |         | Form8Dot2UltimateBondStress                                                                                                            |
 | 8.3            |              :x:               |         |                                                                                                            |
 | 8.4            |              :x:               |         |                                                                                                            |
