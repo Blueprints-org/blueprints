@@ -55,8 +55,9 @@ class Form8Dot10DesignLapLength(Formula):
             Where: p = transverse pressure at ultimate limit state along lbd [MPa].
         alpha_6 : DIMENSIONLESS
             [α6] Coefficient for the effect of reinforcement ratio [-].
-            = (ρl/25)^0.5 <= 1.5 with a minimum of 1.0.
-            Where: ρl = reinforcement percentage lapped within 0,65 l0 from the centre of the lap length considered (see figure 8.8) [-].
+            = (ρ1/25)^0.5 <= 1.5 with a minimum of 1.0.
+            Where: ρ1 = reinforcement percentage lapped within 0,65 l0 from the centre of the lap length considered (see figure 8.8) [-].
+            Use your own implementation of this formula or use the SubForm8Dot8Alpha6 class.
         l_b_rqd : MM
             [lbrqd] Required anchorage length from formula 8.3 [mm].
             = (Φ/4) * (σsd/fbd)
@@ -96,3 +97,30 @@ class Form8Dot10DesignLapLength(Formula):
             l_0_min=l_0_min,
         )
         return max(alpha_1 * alpha_2 * alpha_3 * alpha_5 * alpha_6 * l_b_rqd, l_0_min)
+
+
+class SubForm8Dot8Alpha6(Formula):
+    """Class representing the formula for the calculation of the coefficient α6."""
+
+    label = "8.8"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(self, rho_1: DIMENSIONLESS) -> None:
+        """[α6] Coefficient for the effect of reinforcement ratio [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.8.7.3(1) - Formula (8.8)
+
+        Parameters
+        ----------
+        rho_1 : DIMENSIONLESS
+            [ρ1] Reinforcement percentage lapped within 0,65 * l0 from the centre of the lap length considered (see figure 8.8) [-].
+        """
+        super().__init__()
+        self.rho_1 = rho_1
+
+    @staticmethod
+    def _evaluate(rho_1: DIMENSIONLESS) -> DIMENSIONLESS:
+        """Evaluates the formula, for more information see the __init__ method"""
+        raise_if_negative(rho_l=rho_1)
+        value_max_1_5 = min((rho_1 / 25) ** 0.5, 1.5)
+        return max(value_max_1_5, 1)

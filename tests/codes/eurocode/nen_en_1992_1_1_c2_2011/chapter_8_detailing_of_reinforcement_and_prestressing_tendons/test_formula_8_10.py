@@ -9,6 +9,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_re
 )
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_10 import (
     Form8Dot10DesignLapLength,
+    SubForm8Dot8Alpha6,
 )
 from blueprints.validations import NegativeValueError
 
@@ -249,5 +250,33 @@ class TestForm8Dot10DesignLapLength:
             l_b_rqd=l_b_rqd,
             l_0_min=l_0_min,
         ) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_integration_with_sub_form_8_10(self) -> None:
+        """Test the integration with sub formula 8.10."""
+        # example values
+        alpha_1 = 1  # [-]
+        alpha_2 = 1  # [-]
+        alpha_3 = 1  # [-]
+        alpha_5 = 1  # [-]
+        l_b_rqd = 450  # mm
+        l_0_min = 200  # mm
+        rho_1 = 0.5  # [-]
+        alpha_6 = SubForm8Dot8Alpha6(
+            rho_1=rho_1,
+        )
+        form_8_10 = Form8Dot10DesignLapLength(
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            alpha_3=alpha_3,
+            alpha_5=alpha_5,
+            alpha_6=alpha_6,
+            l_b_rqd=l_b_rqd,
+            l_0_min=l_0_min,
+        )
+
+        # manually calculated result
+        manually_calculated_result = 450  # mm
+
+        assert form_8_10 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
         # TODO INTEGRATION TEST WITH FORMULA 8.11 WHEN MERGED
