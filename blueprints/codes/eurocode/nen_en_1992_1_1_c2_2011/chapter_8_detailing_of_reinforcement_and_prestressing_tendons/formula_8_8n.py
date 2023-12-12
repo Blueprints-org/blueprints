@@ -168,9 +168,9 @@ class SubForm8Dot8NConcreteStress(Formula):
         raise_if_negative(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
-            y=y,
             f_cd=f_cd,
         )
+        raise_if_less_or_equal_to_zero(y=y)
         return min((f_ctd + sigma_cm) / y, 3 * f_cd)
 
 
