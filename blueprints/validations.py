@@ -17,6 +17,14 @@ class NegativeValueError(Exception):
         super().__init__(message)
 
 
+class GreaterThan90Error(Exception):
+    """Raised when a value is greater than 90."""
+
+    def __init__(self, value_name: str, value: float) -> None:
+        message = f"Invalid value for '{value_name}': {value}. Values for '{value_name}' cannot be greater than 90."
+        super().__init__(message)
+
+
 def raise_if_less_or_equal_to_zero(**kwargs: float) -> None:
     """Raise a LessOrEqualToZeroError if any of the given keyword arguments are less than or equal to zero.
 
@@ -53,3 +61,22 @@ def raise_if_negative(**kwargs: float) -> None:
     for key, value in kwargs.items():
         if value < 0:
             raise NegativeValueError(value_name=key, value=value)
+
+
+def raise_if_greater_than_90(**kwargs: float) -> None:
+    """Raise a GreaterThan90Error if any of the given keyword arguments are greater than 90.
+
+    Parameters
+    ----------
+    **kwargs : dict[str, float]
+        A dictionary of keyword arguments where keys are parameter names, and values are the values to validate.
+
+    Raises
+    ------
+    GreaterThan90Error
+        If any value is greater than 90.
+
+    """
+    for key, value in kwargs.items():
+        if value > 90:
+            raise GreaterThan90Error(value_name=key, value=value)
