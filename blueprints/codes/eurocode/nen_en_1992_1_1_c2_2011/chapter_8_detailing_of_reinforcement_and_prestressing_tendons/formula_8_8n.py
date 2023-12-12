@@ -22,7 +22,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
         l_td: MM,
         phi_t: MM,
         sigma_td: MPA,
-        f_wd: MPA,
+        f_wd: KN,
     ) -> None:
         """[Fbtd] Anchorage capacity of welded transverse bar, welded on the inside of the main bar [kN].
             Note: Value may be found in National Annex.
@@ -41,9 +41,9 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
             [σtd] Concrete stress [MPa].
             = (fctd+σcm)/y <= 3*fcd
             Use your own implementation of this formula or use the SubForm8Dot8NConcreteStress class.
-        f_wd: MPA
-            [fwd] Design shear strength of weld (specified as a factor times As*fyd; say 0.5*As*fyd where As is the cross-section of the anchored bar
-            and fyd is its design yield strength)  [MPa].
+        f_wd: KN
+            [Fwd] Design shear strength of weld (specified as a factor times As*fyd; say 0.5*As*fyd where As is the cross-section of the anchored bar
+            and fyd is its design yield strength)  [kN].
         """
         super().__init__()
         self.l_td = l_td
@@ -56,7 +56,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
         l_td: MM,
         phi_t: MM,
         sigma_td: MPA,
-        f_wd: MPA,
+        f_wd: KN,
     ) -> KN:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(
