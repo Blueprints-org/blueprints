@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 class Form8Dot7MinimumCompressionAnchorage(Formula):
     """Class representing formula 8.7 for the calculation of the minimum anchorage length if no other limitation is applied for anchorage in
-    tension."""
+    compression."""
 
     label = "8.7"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,7 +20,7 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
         l_b_rqd: MM,
         phi: MM,
     ) -> None:
-        """[lb,min] Minimum anchorage length if no other limitation is applied for anchorage in tension. [mm].
+        """[lb,min] Minimum anchorage length if no other limitation is applied for anchorage in compression. [mm].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.7)
 
