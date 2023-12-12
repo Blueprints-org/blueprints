@@ -24,7 +24,7 @@ class Form8Dot10DesignLapLength(Formula):
     ) -> None:
         """[l0] Design lap length [mm].
 
-        NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.4)
+        NEN-EN 1992-1-1+C2:2011 art.8.7.3(1) - Formula (8.11)
 
         Parameters
         ----------
