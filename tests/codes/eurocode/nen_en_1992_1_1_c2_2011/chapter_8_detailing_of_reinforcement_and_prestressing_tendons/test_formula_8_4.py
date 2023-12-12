@@ -1,5 +1,5 @@
 """Testing formula 8.4 of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ, duplicate-code
+# pylint: disable=arguments-differ, duplicate-code, fixme
 
 
 import pytest
@@ -207,4 +207,4 @@ class TestForm8Dot4DesignAnchorageLength:
             l_b_min=l_b_min,
         ) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-        # INTEGRATION TEST WITH FORMULAS 8.6 AND 8.7 WHEN THEY ARE MERGED
+        # TODO INTEGRATION TEST WITH FORMULAS 8.6 AND 8.7 WHEN THEY ARE MERGED
