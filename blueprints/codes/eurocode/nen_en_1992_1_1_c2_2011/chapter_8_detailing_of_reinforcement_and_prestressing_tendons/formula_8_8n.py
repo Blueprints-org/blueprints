@@ -239,5 +239,6 @@ class SubForm8Dot8NFunctionX(Formula):
         phi_t: MM,
     ) -> DIMENSIONLESS:
         """For more detailed documentation see the class docstring."""
-        raise_if_negative(c=c, phi_t=phi_t)
+        raise_if_negative(c=c)
+        raise_if_less_or_equal_to_zero(phi_t=phi_t)
         return 2 * (c / phi_t) + 1
