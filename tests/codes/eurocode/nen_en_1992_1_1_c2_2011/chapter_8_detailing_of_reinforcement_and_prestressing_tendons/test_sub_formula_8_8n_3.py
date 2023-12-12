@@ -1,4 +1,4 @@
-"""Testing sub-formula 2 for 8.8N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing sub-formula 3 for 8.8N of NEN-EN 1992-1-1+C2:2011."""
 # pylint: disable=arguments-differ
 import pytest
 

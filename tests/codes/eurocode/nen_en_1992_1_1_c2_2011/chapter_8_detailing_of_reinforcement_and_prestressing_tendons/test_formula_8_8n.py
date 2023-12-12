@@ -1,5 +1,6 @@
 """Testing formula 8.8n of NEN-EN 1992-1-1+C2:2011."""
 # pylint: disable=arguments-differ
+# pylint: disable=duplicate-code
 
 import pytest
 
