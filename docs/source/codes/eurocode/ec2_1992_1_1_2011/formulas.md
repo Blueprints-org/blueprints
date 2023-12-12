@@ -2,8 +2,8 @@
 Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings**
 
-The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status (:x: or 
-:heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status ( :x: or
+:heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 304 formulas present.
 
@@ -202,7 +202,7 @@ Total of 304 formulas present.
 | 7.19           |        :x:         |         |                                                           |
 | 7.20           |        :x:         |         |                                                           |
 | 7.21           |        :x:         |         |                                                           |
-| 8.1            |        :x:         |         |                                                           |
+| 8.1            | :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                   |
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
 | 8.4            |        :x:         |         |                                                           |
@@ -231,14 +231,14 @@ Total of 304 formulas present.
 | 9.6N           | :heavy_check_mark: |         | Form9Dot6NMaximumDistanceShearReinforcement               |
 | 9.7N           | :heavy_check_mark: |         | Form9Dot7NMaximumDistanceBentUpBars                       |
 | 9.8N           | :heavy_check_mark: |         | Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks   |
-| 9.9            |        :x:         |         |                                                           |
-| 9.10           |        :x:         |         |                                                           |
+| 9.9            | :heavy_check_mark: |         | Form9Dot9MaximumSpacingSeriesOfLinks                      |
+| 9.10           | :heavy_check_mark: |         | Form9Dot10MaximumSpacingBentUpBars                        |
 | 9.11           |        :x:         |         |                                                           |
-| 9.12N          |        :x:         |         |                                                           |
-| 9.13           |        :x:         |         |                                                           |
-| 9.14           |        :x:         |         |                                                           |
-| 9.15           |        :x:         |         |                                                           |
-| 9.16           |        :x:         |         |                                                           |
+| 9.12N          | :heavy_check_mark  |         | Form9Dot12NMinimumLongitudinalReinforcementColumns        |
+| 9.13           | :heavy_check_mark: |         | Form9Dot13TensileForceToBeAnchored                        |
+| 9.14           | :heavy_check_mark: |         | Form9Dot14SplittingForceColumnOnRock                      |
+| 9.15           | :heavy_check_mark: |         | Form9Dot15MinimumResistancePeripheralTie                  |
+| 9.16           | :heavy_check_mark: |         | Form9Dot16MinimumForceOnInternalBeamLine                  |
 | 10.1           |        :x:         |         |                                                           |
 | 10.2           |        :x:         |         |                                                           |
 | 10.3           |        :x:         |         |                                                           |
