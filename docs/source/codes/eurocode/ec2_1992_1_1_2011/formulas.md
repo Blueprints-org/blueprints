@@ -2,7 +2,7 @@
 Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings**
 
-The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status (:x: or 
+The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status (:x: or
 :heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 304 formulas present.
@@ -202,7 +202,7 @@ Total of 304 formulas present.
 | 7.19           |        :x:         |         |                                                           |
 | 7.20           |        :x:         |         |                                                           |
 | 7.21           |        :x:         |         |                                                           |
-| 8.1            |        :x:         |         |                                                           |
+| 8.1            | :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                   |
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            |        :x:         |         |                                                           |
 | 8.4            |        :x:         |         |                                                           |
@@ -223,14 +223,14 @@ Total of 304 formulas present.
 | 8.19           |        :x:         |         |                                                           |
 | 8.20           |        :x:         |         |                                                           |
 | 8.21           |        :x:         |         |                                                           |
-| 9.1N           |       :heavy_check_mark:        |         | Form9Dot1NMinimumTensileReinforcementBeam                                                                       |
-| 9.2            |       :heavy_check_mark:        |         | Form9Dot2ShiftInMomentDiagram                                                                                   |
-| 9.3            |       :heavy_check_mark:        |         | Form9Dot3ShiftInMomentDiagram                                                                                   |
-| 9.4            |       :heavy_check_mark:        |         | Form9Dot4ShearReinforcementRatio                                                                                |
-| 9.5N           |       :heavy_check_mark:        |         | Form9Dot5NMinimumShearReinforcementRatio                                                                        |
-| 9.6N           |       :heavy_check_mark:        |         | Form9Dot6NMaximumDistanceShearReinforcement                                                                     |
-| 9.7N           |       :heavy_check_mark:        |         | Form9Dot7NMaximumDistanceBentUpBars                                                                             |
-| 9.8N           |       :heavy_check_mark:        |         | Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks                                                         |
+| 9.1N           | :heavy_check_mark: |         | Form9Dot1NMinimumTensileReinforcementBeam                 |
+| 9.2            | :heavy_check_mark: |         | Form9Dot2ShiftInMomentDiagram                             |
+| 9.3            | :heavy_check_mark: |         | Form9Dot3ShiftInMomentDiagram                             |
+| 9.4            | :heavy_check_mark: |         | Form9Dot4ShearReinforcementRatio                          |
+| 9.5N           | :heavy_check_mark: |         | Form9Dot5NMinimumShearReinforcementRatio                  |
+| 9.6N           | :heavy_check_mark: |         | Form9Dot6NMaximumDistanceShearReinforcement               |
+| 9.7N           | :heavy_check_mark: |         | Form9Dot7NMaximumDistanceBentUpBars                       |
+| 9.8N           | :heavy_check_mark: |         | Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks   |
 | 9.9            |        :x:         |         |                                                           |
 | 9.10           |        :x:         |         |                                                           |
 | 9.11           |        :x:         |         |                                                           |
