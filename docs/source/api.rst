@@ -1,8 +1,8 @@
 API Reference
 =============
 
-Package Modules
----------------
+``Blueprints`` Modules
+-----------------------------
 
 .. autosummary::
     :toctree: gen
