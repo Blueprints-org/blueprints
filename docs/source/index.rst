@@ -1,4 +1,4 @@
-.. image:: _static/placeholder.png
+.. image:: _static/blueprints_banner.png
  :width: 100 %
  :alt: blueprints
  :align: left

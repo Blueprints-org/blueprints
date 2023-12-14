@@ -61,8 +61,8 @@ html_theme = "furo"
 html_static_path = ["_static"]
 html_favicon = "_static/light_favicon.ico"
 html_theme_options = {
-    "light_logo": "placeholder-logo-light.png",  # add light mode logo
-    "dark_logo": "placeholder-logo-dark.png",  # add dark mode logo
+    "light_logo": "logo-light-mode.png",  # add light mode logo
+    "dark_logo": "logo-dark-mode.png",  # add dark mode logo
     "sidebar_hide_name": True,  # hide name of project in sidebar (already in logo)
     "source_repository": "https://github.com/Blueprints-org/blueprints",
     "source_branch": "main",
