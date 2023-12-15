@@ -17,8 +17,8 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
     def __init__(
         self,
         f_wd: KN,
-        phi_t: MM,
-        phi_l: MM,
+        diameter_t: MM,
+        diameter_l: MM,
         a_s: MM2,
         f_cd: MPA,
     ) -> None:
@@ -31,10 +31,10 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
         f_wd : KN
             [Fwd] Design shear strength of weld (specified as a factor times As*fyd; say 0.5*As*fyd where As is the cross-section of the anchored bar
             and fyd is its design yield strength)  [kN].
-        phi_t : MM
+        diameter_t : MM
             [Φt] Diameter of the transverse bar [mm].
             Note: Φt =< 12 mm.
-        phi_l : MM
+        diameter_l : MM
             [Φl] Diameter of the bar to be anchored [mm].
             Note: Φl =< 12 mm.
         a_s : MM2
@@ -44,25 +44,25 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
         """
         super().__init__()
         self.f_wd = f_wd
-        self.phi_t = phi_t
-        self.phi_l = phi_l
+        self.diameter_t = diameter_t
+        self.diameter_l = diameter_l
         self.a_s = a_s
         self.f_cd = f_cd
 
     @staticmethod
     def _evaluate(
         f_wd: KN,
-        phi_t: MM,
-        phi_l: MM,
+        diameter_t: MM,
+        diameter_l: MM,
         a_s: MM2,
         f_cd: MPA,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method"""
         raise_if_negative(
             f_wd=f_wd,
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             a_s=a_s,
             f_cd=f_cd,
         )
-        raise_if_less_or_equal_to_zero(phi_l=phi_l)
-        return min(f_wd, N_TO_KN * 16 * a_s * f_cd * (phi_t / phi_l))
+        raise_if_less_or_equal_to_zero(diameter_l=diameter_l)
+        return min(f_wd, N_TO_KN * 16 * a_s * f_cd * (diameter_t / diameter_l))

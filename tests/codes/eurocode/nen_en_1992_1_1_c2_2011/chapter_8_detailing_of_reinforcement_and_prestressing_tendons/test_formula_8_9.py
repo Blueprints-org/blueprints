@@ -16,14 +16,14 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
         """Test the evaluation of the result."""
         # example values
         f_wd = 15  # kN
-        phi_t = 8  # mm
-        phi_l = 10  # mm
+        diameter_t = 8  # mm
+        diameter_l = 10  # mm
         a_s = 78.5  # mm²
         f_cd = 20  # MPa
         form_8_9 = Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
             f_wd=f_wd,
-            phi_t=phi_t,
-            phi_l=phi_l,
+            diameter_t=diameter_t,
+            diameter_l=diameter_l,
             a_s=a_s,
             f_cd=f_cd,
         )
@@ -37,14 +37,14 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
         # example values
         # example values
         f_wd = 25  # kN
-        phi_t = 8  # mm
-        phi_l = 10  # mm
+        diameter_t = 8  # mm
+        diameter_l = 10  # mm
         a_s = 78.5  # mm²
         f_cd = 20  # MPa
         form_8_9 = Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
             f_wd=f_wd,
-            phi_t=phi_t,
-            phi_l=phi_l,
+            diameter_t=diameter_t,
+            diameter_l=diameter_l,
             a_s=a_s,
             f_cd=f_cd,
         )
@@ -57,70 +57,70 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
         """Test if the correct error is raised for a negative f_wd."""
         # example values
         f_wd = -15  # kN
-        phi_t = 8  # mm
-        phi_l = 10  # mm
+        diameter_t = 8  # mm
+        diameter_l = 10  # mm
         a_s = 78.5  # mm²
         f_cd = 20  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
                 f_wd=f_wd,
-                phi_t=phi_t,
-                phi_l=phi_l,
+                diameter_t=diameter_t,
+                diameter_l=diameter_l,
                 a_s=a_s,
                 f_cd=f_cd,
             )
 
-    def test_if_error_is_raised_for_negative_phi_t(self) -> None:
-        """Test if the correct error is raised for a negative phi_t."""
+    def test_if_error_is_raised_for_negative_diameter_t(self) -> None:
+        """Test if the correct error is raised for a negative diameter_t."""
         # example values
         f_wd = 15  # kN
-        phi_t = -8  # mm
-        phi_l = 10  # mm
+        diameter_t = -8  # mm
+        diameter_l = 10  # mm
         a_s = 78.5  # mm²
         f_cd = 20  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
                 f_wd=f_wd,
-                phi_t=phi_t,
-                phi_l=phi_l,
+                diameter_t=diameter_t,
+                diameter_l=diameter_l,
                 a_s=a_s,
                 f_cd=f_cd,
             )
 
-    def test_if_error_is_raised_for_negative_phi_l(self) -> None:
-        """Test if the correct error is raised for a negative phi_l."""
+    def test_if_error_is_raised_for_negative_diameter_l(self) -> None:
+        """Test if the correct error is raised for a negative diameter_l."""
         # example values
         f_wd = 15  # kN
-        phi_t = 8  # mm
-        phi_l = -10  # mm
+        diameter_t = 8  # mm
+        diameter_l = -10  # mm
         a_s = 78.5  # mm²
         f_cd = 20  # MPa
 
         with pytest.raises(LessOrEqualToZeroError):
             Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
                 f_wd=f_wd,
-                phi_t=phi_t,
-                phi_l=phi_l,
+                diameter_t=diameter_t,
+                diameter_l=diameter_l,
                 a_s=a_s,
                 f_cd=f_cd,
             )
 
-    def test_if_error_is_raised_for_zero_phi_l(self) -> None:
-        """Test if the correct error is raised for a zero phi_l."""
+    def test_if_error_is_raised_for_zero_diameter_l(self) -> None:
+        """Test if the correct error is raised for a zero diameter_l."""
         # example values
         f_wd = 15  # kN
-        phi_t = 8  # mm
-        phi_l = 0  # mm
+        diameter_t = 8  # mm
+        diameter_l = 0  # mm
         a_s = 78.5  # mm²
         f_cd = 20  # MPa
 
         with pytest.raises(LessOrEqualToZeroError):
             Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
                 f_wd=f_wd,
-                phi_t=phi_t,
-                phi_l=phi_l,
+                diameter_t=diameter_t,
+                diameter_l=diameter_l,
                 a_s=a_s,
                 f_cd=f_cd,
             )
@@ -129,16 +129,16 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
         """Test if the correct error is raised for a negative a_s."""
         # example values
         f_wd = 15  # kN
-        phi_t = 8  # mm
-        phi_l = 10  # mm
+        diameter_t = 8  # mm
+        diameter_l = 10  # mm
         a_s = -78.5  # mm²
         f_cd = 20  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
                 f_wd=f_wd,
-                phi_t=phi_t,
-                phi_l=phi_l,
+                diameter_t=diameter_t,
+                diameter_l=diameter_l,
                 a_s=a_s,
                 f_cd=f_cd,
             )
@@ -147,16 +147,16 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
         """Test if the correct error is raised for a negative f_cd."""
         # example values
         f_wd = 15  # kN
-        phi_t = 8  # mm
-        phi_l = 10  # mm
+        diameter_t = 8  # mm
+        diameter_l = 10  # mm
         a_s = 78.5  # mm²
         f_cd = -20  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
                 f_wd=f_wd,
-                phi_t=phi_t,
-                phi_l=phi_l,
+                diameter_t=diameter_t,
+                diameter_l=diameter_l,
                 a_s=a_s,
                 f_cd=f_cd,
             )
