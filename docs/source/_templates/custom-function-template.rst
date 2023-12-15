@@ -2,5 +2,4 @@
 
 .. currentmodule:: {{ module }}
 
-.. autoclass:: {{ objname }}
-    :members:
+.. auto{{ objtype }}:: {{ objname }}
