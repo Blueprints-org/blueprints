@@ -24,7 +24,7 @@ class Form8Dot10DesignLapLength(Formula):
     ) -> None:
         """[l0] Design lap length [mm].
 
-        NEN-EN 1992-1-1+C2:2011 art.8.7.3(1) - Formula (8.11)
+        NEN-EN 1992-1-1+C2:2011 art.8.7.3(1) - Formula (8.10)
 
         Parameters
         ----------
@@ -32,14 +32,14 @@ class Form8Dot10DesignLapLength(Formula):
             [α1] Coefficient for the effect of the form of the bars assuming adequate cover (see figure 8.1) [-].
             = 1.0 for bars in compression.
             = 1.0 for straight bars in tension.
-            = 1.0 if cd <= 3 * Φ for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
-            = 0.7 if cd > 3 * Φ for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            = 1.0 if cd <= 3 * Ø for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            = 0.7 if cd > 3 * Ø for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
             Note: see figure 8.3 for values of cd.
         alpha_2 : DIMENSIONLESS
             [α2] Coefficient for the effect of minimum concrete cover (see figure 8.3) [-].
             = 1.0 for bars in compression.
-            = 1 - 0.15 * (cd - Φ) / Φ <= 1 with a minimum of 0.7 for straight bars in tension.
-            = 1 - 0.15 * (cd - 3 * Φ) / Φ <= 1 with a minimum of 0.7 for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            = 1 - 0.15 * (cd - Ø) / Ø <= 1 with a minimum of 0.7 for straight bars in tension.
+            = 1 - 0.15 * (cd - 3 * Ø) / Ø <= 1 with a minimum of 0.7 for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
             Note: see figure 8.3 for values of cd.
         alpha_3 : DIMENSIONLESS
             [α3] Coefficient for the effect of confinement by transverse reinforcement [-].
@@ -57,14 +57,14 @@ class Form8Dot10DesignLapLength(Formula):
             [α6] Coefficient for the effect of reinforcement ratio [-].
             = (ρ1/25)^0.5 <= 1.5 with a minimum of 1.0.
             Where: ρ1 = reinforcement percentage lapped within 0,65 l0 from the centre of the lap length considered (see figure 8.8) [-].
-            Use your own implementation of this formula or use the SubForm8Dot8Alpha6 class.
+            Use your own implementation of this formula or use the SubForm8Dot10Alpha6 class.
         l_b_rqd : MM
-            [lbrqd] Required anchorage length from formula 8.3 [mm].
-            = (Φ/4) * (σsd/fbd)
-            Use your own implementation of this formula or use the Form8Dot3RequiredAnchorageLength class.
+            [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant
+            bond stress (formula 8.3) [mm].
+            Use your own implementation for this value or use the Form8Dot3RequiredAnchorageLength class.
         l_0_min : MM
             [l0min] Minimum design lap length [mm].
-            = max(0.3 * alpha_6 * l_b_rqd, 15 * Φ, 200) (formula 8.11).
+            = max(0.3 * alpha_6 * l_b_rqd, 15 * Ø, 200) (formula 8.11).
             Use your own implementation of this formula or use Form8Dot11MinimumDesignLapLength class.
         """
         super().__init__()
@@ -99,7 +99,7 @@ class Form8Dot10DesignLapLength(Formula):
         return max(alpha_1 * alpha_2 * alpha_3 * alpha_5 * alpha_6 * l_b_rqd, l_0_min)
 
 
-class SubForm8Dot8Alpha6(Formula):
+class SubForm8Dot10Alpha6(Formula):
     """Class representing the formula for the calculation of the coefficient α6."""
 
     label = "8.8"

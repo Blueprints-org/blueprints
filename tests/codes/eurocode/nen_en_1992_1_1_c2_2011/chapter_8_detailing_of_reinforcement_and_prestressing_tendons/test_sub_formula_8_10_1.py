@@ -2,7 +2,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_10 import (
-    SubForm8Dot8Alpha6,
+    SubForm8Dot10Alpha6,
 )
 from blueprints.validations import NegativeValueError
 
@@ -16,7 +16,7 @@ class TestSubFormula8Dot8Alpha6:
         """Test the evaluation of the result."""
         # example values
         rho_1 = 32.5  # [-]
-        sub_form_8_8_alpha_6 = SubForm8Dot8Alpha6(rho_1=rho_1)
+        sub_form_8_8_alpha_6 = SubForm8Dot10Alpha6(rho_1=rho_1)
 
         # manually calculated result
         manually_calculated_result = 1.140175  # [-]
@@ -27,7 +27,7 @@ class TestSubFormula8Dot8Alpha6:
         """Test the evaluation of the result if the minimum is reached."""
         # example values
         rho_1 = 62.5  # [-]
-        sub_form_8_8_alpha_6 = SubForm8Dot8Alpha6(rho_1=rho_1)
+        sub_form_8_8_alpha_6 = SubForm8Dot10Alpha6(rho_1=rho_1)
 
         # manually calculated result
         manually_calculated_result = 1.5  # [-]
@@ -38,7 +38,7 @@ class TestSubFormula8Dot8Alpha6:
         """Test the evaluation of the result if the minimum is reached."""
         # example values
         rho_1 = 0.625  # [-]
-        sub_form_8_8_alpha_6 = SubForm8Dot8Alpha6(rho_1=rho_1)
+        sub_form_8_8_alpha_6 = SubForm8Dot10Alpha6(rho_1=rho_1)
 
         # manually calculated result
         manually_calculated_result = 1  # [-]
@@ -51,4 +51,4 @@ class TestSubFormula8Dot8Alpha6:
         rho_1 = -0.01  # [-]
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8Alpha6(rho_1=rho_1)
+            SubForm8Dot10Alpha6(rho_1=rho_1)
