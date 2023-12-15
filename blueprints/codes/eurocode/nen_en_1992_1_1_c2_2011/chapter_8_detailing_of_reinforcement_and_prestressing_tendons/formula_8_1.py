@@ -22,7 +22,7 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         diameter: MM,
         f_cd: MPA,
     ) -> None:
-        """[Φm,min] minimum mandrel diameter if it needs to be checked to avoid concrete failure [MM].
+        """[Øm,min] minimum mandrel diameter if it needs to be checked to avoid concrete failure [MM].
 
         NEN-EN 1992-1-1+C2:2011 art.8.3(3) - Formula (8.1)
 
@@ -33,9 +33,9 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         a_b: MM
             [ab] Half of the centre-to-centre distance between bars (or groups of bars) perpendicular
             to the plane of the bend for a given bar (or group of bars in contact).
-            For a bar or group of bars adjacent to the face of the member, 'ab' should be taken as the cover plus Φ/2 [mm].
+            For a bar or group of bars adjacent to the face of the member, 'ab' should be taken as the cover plus Ø/2 [mm].
         diameter: MM
-            [Φ] Diameter of reinforcing bar [mm].
+            [Ø] Diameter of reinforcing bar [mm].
         f_cd: MPA
             [fcd] Design value of concrete compressive stress [MPa].
             Note: The value of fcd should not be taken greater than that for concrete class C55/67.

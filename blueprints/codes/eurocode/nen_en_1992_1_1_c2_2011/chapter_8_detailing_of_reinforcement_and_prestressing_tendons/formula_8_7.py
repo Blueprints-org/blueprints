@@ -28,10 +28,10 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
         ----------
         l_b_rqd: MM
             [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant bond stress fbd. [mm].
-            = (Φ/4) * (σsd/fbd)
+            = (Ø/4) * (σsd/fbd)
             Use your own implementation for this value or use the Form8Dot3RequiredAnchorageLength class.
         diameter: MM
-            [Φ] Diameter of the bar [mm].
+            [Ø] Diameter of the bar [mm].
         """
         super().__init__()
         self.l_b_rqd = l_b_rqd
