@@ -10,6 +10,12 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_re
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_4 import (
     Form8Dot4DesignAnchorageLength,
 )
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_6 import (
+    Form8Dot6MinimumTensionAnchorage,
+)
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_7 import (
+    Form8Dot7MinimumCompressionAnchorage,
+)
 from blueprints.validations import NegativeValueError
 
 
@@ -185,14 +191,39 @@ class TestForm8Dot4DesignAnchorageLength:
         alpha_4 = 1  # [-]
         alpha_5 = 1  # [-]
         l_b_min = 200  # mm
-        phi = 16  # mm
+        diameter = 16  # mm
         sigma_sd = 500  # MPa
         f_bd = 2.5  # MPa
         l_b_rqd = Form8Dot3RequiredAnchorageLength(
-            phi=phi,
+            diameter=diameter,
             sigma_sd=sigma_sd,
             f_bd=f_bd,
         )
+
+        # manually calculated result
+        manually_calculated_result = 800
+
+        assert Form8Dot4DesignAnchorageLength(
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            alpha_3=alpha_3,
+            alpha_4=alpha_4,
+            alpha_5=alpha_5,
+            l_b_rqd=l_b_rqd,
+            l_b_min=l_b_min,
+        ) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_integration_with_form_8_6(self) -> None:
+        """Test the integration with formula 8.6."""
+        # example values
+        alpha_1 = 1  # [-]
+        alpha_2 = 1  # [-]
+        alpha_3 = 1  # [-]
+        alpha_4 = 1  # [-]
+        alpha_5 = 1  # [-]
+        l_b_rqd = 450  # mm
+        diameter = 16  # mm
+        l_b_min = Form8Dot6MinimumTensionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
 
         # manually calculated result
         manually_calculated_result = 450
@@ -207,4 +238,27 @@ class TestForm8Dot4DesignAnchorageLength:
             l_b_min=l_b_min,
         ) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-        # TODO INTEGRATION TEST WITH FORMULAS 8.6 AND 8.7 WHEN THEY ARE MERGED
+    def test_integration_with_form_8_7(self) -> None:
+        """Test the integration with formula 8.7."""
+        # example values
+        alpha_1 = 1  # [-]
+        alpha_2 = 1  # [-]
+        alpha_3 = 1  # [-]
+        alpha_4 = 1  # [-]
+        alpha_5 = 1  # [-]
+        l_b_rqd = 200  # mm
+        diameter = 32  # mm
+        l_b_min = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
+
+        # manually calculated result
+        manually_calculated_result = 320
+
+        assert Form8Dot4DesignAnchorageLength(
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            alpha_3=alpha_3,
+            alpha_4=alpha_4,
+            alpha_5=alpha_5,
+            l_b_rqd=l_b_rqd,
+            l_b_min=l_b_min,
+        ) == pytest.approx(expected=manually_calculated_result, rel=1e-4)

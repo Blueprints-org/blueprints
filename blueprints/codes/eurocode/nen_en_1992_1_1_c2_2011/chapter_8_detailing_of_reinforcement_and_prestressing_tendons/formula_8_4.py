@@ -32,14 +32,14 @@ class Form8Dot4DesignAnchorageLength(Formula):
             [α1] Coefficient for the effect of the form of the bars assuming adequate cover (see figure 8.1) [-].
             = 1.0 for bars in compression.
             = 1.0 for straight bars in tension.
-            = 1.0 if cd <= 3 * Φ for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
-            = 0.7 if cd > 3 * Φ for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            = 1.0 if cd <= 3 * Ø for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            = 0.7 if cd > 3 * Ø for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
             Note: see figure 8.3 for values of cd.
         alpha_2 : DIMENSIONLESS
             [α2] Coefficient for the effect of minimum concrete cover (see figure 8.3) [-].
             = 1.0 for bars in compression.
-            = 1 - 0.15 * (cd - Φ) / Φ <= 1 with a minimum of 0.7 for straight bars in tension.
-            = 1 - 0.15 * (cd - 3 * Φ) / Φ <= 1 with a minimum of 0.7 for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            = 1 - 0.15 * (cd - Ø) / Ø <= 1 with a minimum of 0.7 for straight bars in tension.
+            = 1 - 0.15 * (cd - 3 * Ø) / Ø <= 1 with a minimum of 0.7 for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
             Note: see figure 8.3 for values of cd.
         alpha_3 : DIMENSIONLESS
             [α3] Coefficient for the effect of confinement by transverse reinforcement [-].
@@ -49,20 +49,20 @@ class Form8Dot4DesignAnchorageLength(Formula):
             Where: ΣAst,min = cross-sectional area of the minimum transverse reinforcement = 0,25 As for beams and 0 for slabs.
             Note: see figure 8.4 for values of K, As and Ast.
         alpha_4 : DIMENSIONLESS
-            [α4] Coefficient for the influence of one or more welded transverse bars (Φt > 0,6 Φ) along the design anchorage length lbd (see 8.6) [-].
+            [α4] Coefficient for the influence of one or more welded transverse bars (Øt > 0,6 Ø) along the design anchorage length lbd (see 8.6) [-].
             = 0.7 for all types, position and size as specified in figure 8.6 (e) in both tension and compression.
         alpha_5 : DIMENSIONLESS
             [α5] Coefficient for the effect of the pressure transverse to the plane of splitting along the design anchorage length lbd (see 8.6) [-].
             = 1 - 0.04 * p <= 1 with a minimum of 0.7 for all types of anchorage in compression.
             Where: p = transverse pressure at ultimate limit state along lbd [MPa].
-        l_b_rqd : MM
-            [lbrqd] Required anchorage length from formula 8.3 [mm].
-            = (Φ/4) * (σsd/fbd)
-            Use your own implementation of this formula or use the Form8Dot3RequiredAnchorageLength class.
+        l_b_rqd: MM
+            [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant
+            bond stress (formula 8.3) [mm].
+            Use your own implementation for this value or use the Form8Dot3RequiredAnchorageLength class.
         l_b_min : MM
             [lbmin] Minimum anchorage length if no other limitation is applied [mm].
-            = max(0.3 * l_b_rqd, 10 * Φ, 100) for tension anchorage (formula 8.6).
-            = max(0.6 * l_b_rqd, 10 * Φ, 100) for compression anchorage (formula 8.7).
+            = max(0.3 * l_b_rqd, 10 * Ø, 100) for tension anchorage (formula 8.6).
+            = max(0.6 * l_b_rqd, 10 * Ø, 100) for compression anchorage (formula 8.7).
             Use your own implementation of this formula or use the Form8Dot6MinimumTensionAnchorage class for tension or
             Form8Dot7MinimumCompressionAnchorage for compression.
 
