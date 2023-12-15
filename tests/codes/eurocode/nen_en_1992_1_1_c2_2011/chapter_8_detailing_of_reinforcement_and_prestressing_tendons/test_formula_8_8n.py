@@ -19,12 +19,12 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         """Test the evaluation of the result."""
         # Example values
         l_td = 100  # mm
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
         sigma_td = 60  # MPa
         f_wd = 400  # kN
         form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             sigma_td=sigma_td,
             f_wd=f_wd,
         )
@@ -38,12 +38,12 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         """Test the evaluation of the result if the maximum is reached."""
         # Example values
         l_td = 100  # mm
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
         sigma_td = 60  # MPa
         f_wd = 50  # kN
         form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             sigma_td=sigma_td,
             f_wd=f_wd,
         )
@@ -57,30 +57,30 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         """Test if NegativeValueError is raised when l_td is negative"""
         # Example values
         l_td = -100  # mm
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
         sigma_td = 60  # MPa
         f_wd = 50  # kN
 
         with pytest.raises(NegativeValueError):
             Form8Dot8NAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
-                phi_t=phi_t,
+                diameter_t=diameter_t,
                 sigma_td=sigma_td,
                 f_wd=f_wd,
             )
 
-    def test_raise_error_when_negative_phi_t_is_given(self) -> None:
-        """Test if NegativeValueError is raised when phi_t is negative"""
+    def test_raise_error_when_negative_diameter_t_is_given(self) -> None:
+        """Test if NegativeValueError is raised when diameter_t is negative"""
         # Example values
         l_td = 100  # mm
-        phi_t = -16  # mm
+        diameter_t = -16  # mm
         sigma_td = 60  # MPa
         f_wd = 50  # kN
 
         with pytest.raises(NegativeValueError):
             Form8Dot8NAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
-                phi_t=phi_t,
+                diameter_t=diameter_t,
                 sigma_td=sigma_td,
                 f_wd=f_wd,
             )
@@ -89,14 +89,14 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         """Test if NegativeValueError is raised when sigma_td is negative"""
         # Example values
         l_td = 100  # mm
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
         sigma_td = -60  # MPa
         f_wd = 50  # kN
 
         with pytest.raises(NegativeValueError):
             Form8Dot8NAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
-                phi_t=phi_t,
+                diameter_t=diameter_t,
                 sigma_td=sigma_td,
                 f_wd=f_wd,
             )
@@ -105,14 +105,14 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         """Test if NegativeValueError is raised when f_wd is negative"""
         # Example values
         l_td = 100  # mm
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
         sigma_td = 60  # MPa
         f_wd = -50  # kN
 
         with pytest.raises(NegativeValueError):
             Form8Dot8NAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
-                phi_t=phi_t,
+                diameter_t=diameter_t,
                 sigma_td=sigma_td,
                 f_wd=f_wd,
             )
@@ -120,13 +120,13 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
     def test_integration_with_sub_formula_8_8_design_length_of_transverse_bar(self) -> None:
         """Test the integration with sub-formula 8.8 for calculating design length of transverse bar ltd."""
         # Example values
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
         sigma_td = 60  # MPa
         f_wd = 150  # kN
         f_yd = 500  # MPa
         l_t = 100  # mm
         l_td = SubForm8Dot8NDesignLengthOfTransverseBar(
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             f_yd=f_yd,
             sigma_td=sigma_td,
             l_t=l_t,
@@ -135,7 +135,7 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         # Object to test
         form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             sigma_td=sigma_td,
             f_wd=f_wd,
         )
@@ -148,7 +148,7 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
     def test_integration_with_sub_formula_8_8_concrete_stress(self) -> None:
         """Test the integration with sub-formula 8.8 for calculating concrete stress σtd."""
         # Example values
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
         f_wd = 150  # kN
         l_td = 80  # mm
         f_ctd = 3  # MPa
@@ -165,7 +165,7 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         # Object to test
         form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             sigma_td=sigma_td,
             f_wd=f_wd,
         )

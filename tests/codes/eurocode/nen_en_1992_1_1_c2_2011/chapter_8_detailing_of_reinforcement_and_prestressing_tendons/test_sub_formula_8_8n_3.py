@@ -36,8 +36,8 @@ class TestSubForm8Dot8NFunctionY:
         """Test the integration with sub-formula 8.8 for calculating function x."""
         # Example values
         c = 60  # mm
-        phi_t = 16  # mm
-        x = SubForm8Dot8NFunctionX(c=c, phi_t=phi_t)
+        diameter_t = 16  # mm
+        x = SubForm8Dot8NFunctionX(c=c, diameter_t=diameter_t)
         sub_form_8_8n_3 = SubForm8Dot8NFunctionY(x=x)
 
         # Expected result, manually calculated

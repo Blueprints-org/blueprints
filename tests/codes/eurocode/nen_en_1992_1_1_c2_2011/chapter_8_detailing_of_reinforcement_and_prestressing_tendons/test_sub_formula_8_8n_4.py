@@ -15,9 +15,9 @@ class TestSubForm8Dot8NFunctionX:
         """Test the evaluation of the result."""
         # Example values
         c = 60  # mm
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
 
-        sub_form_8_8n_4 = SubForm8Dot8NFunctionX(c=c, phi_t=phi_t)
+        sub_form_8_8n_4 = SubForm8Dot8NFunctionX(c=c, diameter_t=diameter_t)
 
         # Expected result, manually calculated
         manually_result = 8.5
@@ -28,25 +28,25 @@ class TestSubForm8Dot8NFunctionX:
         """Test if a NegativeValueError is raised when c is negative."""
         # Example values
         c = -60  # mm
-        phi_t = 16  # mm
+        diameter_t = 16  # mm
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NFunctionX(c=c, phi_t=phi_t)
+            SubForm8Dot8NFunctionX(c=c, diameter_t=diameter_t)
 
-    def test_raise_error_when_phi_t_is_negative(self) -> None:
-        """Test if a LessOrEqualToZeroError is raised when phi_t is negative."""
+    def test_raise_error_when_diameter_t_is_negative(self) -> None:
+        """Test if a LessOrEqualToZeroError is raised when diameter_t is negative."""
         # Example values
         c = 60  # mm
-        phi_t = -16  # mm
+        diameter_t = -16  # mm
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NFunctionX(c=c, phi_t=phi_t)
+            SubForm8Dot8NFunctionX(c=c, diameter_t=diameter_t)
 
-    def test_raise_error_when_phi_t_is_zero(self) -> None:
-        """Test if a LessOrEqualToZeroError is raised when phi_t is zero."""
+    def test_raise_error_when_diameter_t_is_zero(self) -> None:
+        """Test if a LessOrEqualToZeroError is raised when diameter_t is zero."""
         # Example values
         c = 60  # mm
-        phi_t = 0  # mm
+        diameter_t = 0  # mm
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NFunctionX(c=c, phi_t=phi_t)
+            SubForm8Dot8NFunctionX(c=c, diameter_t=diameter_t)

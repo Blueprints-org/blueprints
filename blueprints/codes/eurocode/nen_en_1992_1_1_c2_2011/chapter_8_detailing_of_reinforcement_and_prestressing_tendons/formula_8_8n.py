@@ -20,7 +20,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
     def __init__(
         self,
         l_td: MM,
-        phi_t: MM,
+        diameter_t: MM,
         sigma_td: MPA,
         f_wd: KN,
     ) -> None:
@@ -33,9 +33,9 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
         ----------
         l_td: MM
             [ltd] Design length of transverse bar [mm].
-            = 1.16 * phit (fyd/σtd)^0.5 <= lt
+            = 1.16 * diametert (fyd/σtd)^0.5 <= lt
             Use your own implementation of this formula or use the SubForm8Dot8NDesignLengthOfTransverseBar class.
-        phi_t: MM
+        diameter_t: MM
             [Φt] Diameter of transverse bar [mm].
         sigma_td: MPA
             [σtd] Concrete stress [MPa].
@@ -47,25 +47,25 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
         """
         super().__init__()
         self.l_td = l_td
-        self.phi_t = phi_t
+        self.diameter_t = diameter_t
         self.sigma_td = sigma_td
         self.f_wd = f_wd
 
     @staticmethod
     def _evaluate(
         l_td: MM,
-        phi_t: MM,
+        diameter_t: MM,
         sigma_td: MPA,
         f_wd: KN,
     ) -> KN:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(
             l_td=l_td,
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             sigma_td=sigma_td,
             f_wd=f_wd,
         )
-        return min(l_td * phi_t * sigma_td * N_TO_KN, f_wd)
+        return min(l_td * diameter_t * sigma_td * N_TO_KN, f_wd)
 
 
 class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
@@ -76,7 +76,7 @@ class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
 
     def __init__(
         self,
-        phi_t: MM,
+        diameter_t: MM,
         f_yd: MPA,
         sigma_td: MPA,
         l_t: MM,
@@ -87,7 +87,7 @@ class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
 
         Parameters
         ----------
-        phi_t: MM
+        diameter_t: MM
             [Φt] Diameter of transverse bar [mm].
         f_yd: MPA
             [fyd] Design yield strength of bar [MPa].
@@ -99,26 +99,26 @@ class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
             [lt] Length of transverse bar, but not more than the spacing of bars to be anchored [mm].
         """
         super().__init__()
-        self.phi_t = phi_t
+        self.diameter_t = diameter_t
         self.f_yd = f_yd
         self.sigma_td = sigma_td
         self.l_t = l_t
 
     @staticmethod
     def _evaluate(
-        phi_t: MM,
+        diameter_t: MM,
         f_yd: MPA,
         sigma_td: MPA,
         l_t: MM,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(
-            phi_t=phi_t,
+            diameter_t=diameter_t,
             f_yd=f_yd,
             l_t=l_t,
         )
         raise_if_less_or_equal_to_zero(sigma_td=sigma_td)
-        return min(1.16 * phi_t * (f_yd / sigma_td) ** 0.5, l_t)
+        return min(1.16 * diameter_t * (f_yd / sigma_td) ** 0.5, l_t)
 
 
 class SubForm8Dot8NConcreteStress(Formula):
@@ -192,7 +192,7 @@ class SubForm8Dot8NFunctionY(Formula):
         ----------
         x: DIMENSIONLESS
             [x] A function accounting for the geometry [-]
-            = 2 * (c/phit) + 1
+            = 2 * (c/diametert) + 1
             Use your own implementation of this formula or use the SubForm8Dot8NFunctionX class.
         """
         super().__init__()
@@ -216,7 +216,7 @@ class SubForm8Dot8NFunctionX(Formula):
     def __init__(
         self,
         c: MM,
-        phi_t: MM,
+        diameter_t: MM,
     ) -> None:
         """[x] A function accounting for the geometry [-]
 
@@ -226,19 +226,19 @@ class SubForm8Dot8NFunctionX(Formula):
         ----------
         c: MM
             [c] Concrete cover perpendicular to both bars [mm].
-        phi_t: MM
+        diameter_t: MM
             [Φt] Diameter of transverse bar [mm].
         """
         super().__init__()
         self.c = c
-        self.phi_t = phi_t
+        self.diameter_t = diameter_t
 
     @staticmethod
     def _evaluate(
         c: MM,
-        phi_t: MM,
+        diameter_t: MM,
     ) -> DIMENSIONLESS:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(c=c)
-        raise_if_less_or_equal_to_zero(phi_t=phi_t)
-        return 2 * (c / phi_t) + 1
+        raise_if_less_or_equal_to_zero(diameter_t=diameter_t)
+        return 2 * (c / diameter_t) + 1
