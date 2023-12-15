@@ -25,7 +25,7 @@ class Form8Dot3RequiredAnchorageLength(Formula):
         Parameters
         ----------
         diameter: MM
-            [Φ] Diameter of the bar [mm].
+            [Ø] Diameter of the bar [mm].
         sigma_sd: MPA
             [σsd] design stress of the bar at the position from where the anchorage is measured from [MPa].
         f_bd: MPA

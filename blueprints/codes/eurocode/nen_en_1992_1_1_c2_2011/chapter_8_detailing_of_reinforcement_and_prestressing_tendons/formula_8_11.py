@@ -30,10 +30,10 @@ class Form8Dot11MinimumDesignLapLength(Formula):
             Where: ρl = reinforcement percentage lapped within 0,65 l0 from the centre of the lap length considered (see figure 8.8) [-].
         l_b_rqd : MM
             [lbrqd] Required anchorage length from formula 8.3 [mm].
-            = (Φ/4) * (σsd/fbd)
+            = (Ø/4) * (σsd/fbd)
             Use your own implementation of this formula or use the Form8Dot3RequiredAnchorageLength class.
         diameter : MM
-            [Φ] Diameter of the bar [mm].
+            [Ø] Diameter of the bar [mm].
         """
         super().__init__()
         self.alpha_6 = alpha_6
