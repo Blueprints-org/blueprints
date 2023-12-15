@@ -1,4 +1,4 @@
-"""Formula 8.7 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons"""
+"""Formula 8.6 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons"""
 # pylint: disable=arguments-differ
 # pylint: disable=duplicate-code
 
@@ -8,11 +8,11 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 
-class Form8Dot7MinimumCompressionAnchorage(Formula):
-    """Class representing formula 8.7 for the calculation of the minimum anchorage length if no other limitation is applied for anchorage in
-    compression."""
+class Form8Dot6MinimumTensionAnchorage(Formula):
+    """Class representing formula 8.6 for the calculation of the minimum anchorage length if no other limitation is applied for anchorage in
+    tension."""
 
-    label = "8.7"
+    label = "8.6"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
@@ -20,9 +20,9 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
         l_b_rqd: MM,
         diameter: MM,
     ) -> None:
-        """[lb,min] Minimum anchorage length if no other limitation is applied for anchorage in compression. [mm].
+        """[lb,min] Minimum anchorage length if no other limitation is applied for anchorage in tension. [mm].
 
-        NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.7)
+        NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.6)
 
         Parameters
         ----------
@@ -41,4 +41,4 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
     def _evaluate(l_b_rqd: MM, diameter: MM) -> MM:
         """Evaluates the formula, for more information see the __init__ method"""
         raise_if_negative(diameter=diameter, l_b_rqd=l_b_rqd)
-        return max(0.6 * l_b_rqd, 10 * diameter, 100)
+        return max(0.3 * l_b_rqd, 10 * diameter, 100)
