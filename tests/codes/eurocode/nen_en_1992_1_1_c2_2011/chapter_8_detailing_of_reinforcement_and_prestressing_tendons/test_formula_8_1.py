@@ -16,12 +16,12 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
         # Example values
         f_bt = 80  # kN
         a_b = 200  # mm
-        phi = 16  # mm
+        diameter = 16  # mm
         f_cd = 30  # MPa
         form_8_1 = Form8Dot1RequiredMinimumMandrelDiameter(
             f_bt=f_bt,
             a_b=a_b,
-            phi=phi,
+            diameter=diameter,
             f_cd=f_cd,
         )
         # Expected result, manually calculated
@@ -34,14 +34,14 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
         # Example values
         f_bt = -80  # kN
         a_b = 200  # mm
-        phi = 16  # mm
+        diameter = 16  # mm
         f_cd = 30  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot1RequiredMinimumMandrelDiameter(
                 f_bt=f_bt,
                 a_b=a_b,
-                phi=phi,
+                diameter=diameter,
                 f_cd=f_cd,
             )
 
@@ -50,30 +50,30 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
         # Example values
         f_bt = 80  # kN
         a_b = -200  # mm
-        phi = 16  # mm
+        diameter = 16  # mm
         f_cd = 30  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot1RequiredMinimumMandrelDiameter(
                 f_bt=f_bt,
                 a_b=a_b,
-                phi=phi,
+                diameter=diameter,
                 f_cd=f_cd,
             )
 
-    def test_raise_error_when_negative_phi_is_given(self) -> None:
-        """Tests if NegativeValueError is raised when phi is negative."""
+    def test_raise_error_when_negative_diameter_is_given(self) -> None:
+        """Tests if NegativeValueError is raised when diameter is negative."""
         # Example values
         f_bt = 80  # kN
         a_b = 200  # mm
-        phi = -16  # mm
+        diameter = -16  # mm
         f_cd = 30  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot1RequiredMinimumMandrelDiameter(
                 f_bt=f_bt,
                 a_b=a_b,
-                phi=phi,
+                diameter=diameter,
                 f_cd=f_cd,
             )
 
@@ -82,13 +82,13 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
         # Example values
         f_bt = 80  # kN
         a_b = 200  # mm
-        phi = 16  # mm
+        diameter = 16  # mm
         f_cd = -30  # MPa
 
         with pytest.raises(NegativeValueError):
             Form8Dot1RequiredMinimumMandrelDiameter(
                 f_bt=f_bt,
                 a_b=a_b,
-                phi=phi,
+                diameter=diameter,
                 f_cd=f_cd,
             )
