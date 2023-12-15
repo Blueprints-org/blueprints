@@ -15,51 +15,51 @@ class TestForm8Dot3RequiredAnchorageLength:
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
         # example values
-        phi = 12  # mm
+        diameter = 12  # mm
         sigma_sd = 435  # MPA
         f_bd = 2.9  # MPA
-        form_8_3 = Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+        form_8_3 = Form8Dot3RequiredAnchorageLength(diameter=diameter, sigma_sd=sigma_sd, f_bd=f_bd)
 
         manually_calculated_result = 450  # mm
 
         assert form_8_3 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_negative_phi(self) -> None:
-        """Test that an error is raised when phi is negative."""
+    def test_raise_error_negative_diameter(self) -> None:
+        """Test that an error is raised when diameter is negative."""
         # example values
-        phi = -1  # mm
+        diameter = -1  # mm
         sigma_sd = 435  # MPA
         f_bd = 2.9  # MPA
 
         with pytest.raises(NegativeValueError):
-            Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+            Form8Dot3RequiredAnchorageLength(diameter=diameter, sigma_sd=sigma_sd, f_bd=f_bd)
 
     def test_raise_error_negative_sigma_sd(self) -> None:
         """Test that an error is raised when sigma_sd is negative."""
         # example values
-        phi = 12  # mm
+        diameter = 12  # mm
         sigma_sd = -1  # MPA
         f_bd = 2.9  # MPA
 
         with pytest.raises(NegativeValueError):
-            Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+            Form8Dot3RequiredAnchorageLength(diameter=diameter, sigma_sd=sigma_sd, f_bd=f_bd)
 
     def test_raise_error_negative_f_bd(self) -> None:
         """Test that an error is raised when f_bd is negative."""
         # example values
-        phi = 12  # mm
+        diameter = 12  # mm
         sigma_sd = 435  # MPA
         f_bd = -1  # MPA
 
         with pytest.raises(LessOrEqualToZeroError):
-            Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+            Form8Dot3RequiredAnchorageLength(diameter=diameter, sigma_sd=sigma_sd, f_bd=f_bd)
 
     def test_raise_error__zero_f_bd(self) -> None:
         """Test that an error is raised when f_bd is zero."""
         # example values
-        phi = 12  # mm
+        diameter = 12  # mm
         sigma_sd = 435  # MPA
         f_bd = 0  # MPA
 
         with pytest.raises(LessOrEqualToZeroError):
-            Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+            Form8Dot3RequiredAnchorageLength(diameter=diameter, sigma_sd=sigma_sd, f_bd=f_bd)
