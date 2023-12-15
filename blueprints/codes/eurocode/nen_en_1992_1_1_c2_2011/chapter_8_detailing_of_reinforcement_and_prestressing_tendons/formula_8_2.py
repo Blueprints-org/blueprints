@@ -33,7 +33,7 @@ class Form8Dot2UltimateBondStress(Formula):
         eta_2 : DIMENSIONLESS
             [η2] A factor related to the bar diameter [-].
             = 1 for bars with a diameter ≤ 32 mm;
-            = (132 - Φ) / 100 for bars with a diameter > 32 mm.
+            = (132 - Ø) / 100 for bars with a diameter > 32 mm.
             Use your own implementation of this value or use the SubForm8Dot2CoefficientBarDiameter class.
         f_ctd : MPA
             [fctd] Design tensile strength of concrete according to art.3.1.6(2) [MPa].
@@ -104,7 +104,7 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
         Parameters
         ----------
         phi : MM
-            [Φ] Diameter of the bar [mm].
+            [Ø] Diameter of the bar [mm].
         """
         super().__init__()
         self.phi = phi
