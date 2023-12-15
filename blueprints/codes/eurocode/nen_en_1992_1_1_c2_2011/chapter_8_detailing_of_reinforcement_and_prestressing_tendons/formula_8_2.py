@@ -96,23 +96,23 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "8.2"
 
-    def __init__(self, phi: MM) -> None:
+    def __init__(self, diameter: MM) -> None:
         """[η2] Coefficient that depends on the bar diameter [-].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) - η2
 
         Parameters
         ----------
-        phi : MM
+        diameter : MM
             [Ø] Diameter of the bar [mm].
         """
         super().__init__()
-        self.phi = phi
+        self.diameter = diameter
 
     @staticmethod
-    def _evaluate(phi: MM) -> DIMENSIONLESS:
+    def _evaluate(diameter: MM) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method"""
-        raise_if_negative(phi=phi)
-        if phi <= 32:
+        raise_if_negative(diameter=diameter)
+        if diameter <= 32:
             return 1
-        return (132 - phi) / 100
+        return (132 - diameter) / 100

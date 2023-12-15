@@ -19,7 +19,7 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         self,
         f_bt: KN,
         a_b: MM,
-        phi: MM,
+        diameter: MM,
         f_cd: MPA,
     ) -> None:
         """[Øm,min] minimum mandrel diameter if it needs to be checked to avoid concrete failure [MM].
@@ -34,7 +34,7 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
             [ab] Half of the centre-to-centre distance between bars (or groups of bars) perpendicular
             to the plane of the bend for a given bar (or group of bars in contact).
             For a bar or group of bars adjacent to the face of the member, 'ab' should be taken as the cover plus Ø/2 [mm].
-        phi: MM
+        diameter: MM
             [Ø] Diameter of reinforcing bar [mm].
         f_cd: MPA
             [fcd] Design value of concrete compressive stress [MPa].
@@ -43,21 +43,21 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         super().__init__()
         self.f_bt = f_bt
         self.a_b = a_b
-        self.phi = phi
+        self.diameter = diameter
         self.f_cd = f_cd
 
     @staticmethod
     def _evaluate(
         f_bt: KN,
         a_b: MM,
-        phi: MM,
+        diameter: MM,
         f_cd: MPA,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(
             f_bt=f_bt,
             a_b=a_b,
-            phi=phi,
+            diameter=diameter,
             f_cd=f_cd,
         )
-        return f_bt * KN_TO_N * ((1 / a_b) + 1 / (2 * phi)) / f_cd
+        return f_bt * KN_TO_N * ((1 / a_b) + 1 / (2 * diameter)) / f_cd
