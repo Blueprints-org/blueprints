@@ -18,7 +18,7 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
     def __init__(
         self,
         l_b_rqd: MM,
-        phi: MM,
+        diameter: MM,
     ) -> None:
         """[lb,min] Minimum anchorage length if no other limitation is applied for anchorage in compression. [mm].
 
@@ -30,15 +30,15 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
             [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant bond stress fbd. [mm].
             = (Φ/4) * (σsd/fbd)
             Use your own implementation for this value or use the Form8Dot3RequiredAnchorageLength class.
-        phi: MM
+        diameter: MM
             [Φ] Diameter of the bar [mm].
         """
         super().__init__()
         self.l_b_rqd = l_b_rqd
-        self.phi = phi
+        self.diameter = diameter
 
     @staticmethod
-    def _evaluate(l_b_rqd: MM, phi: MM) -> MM:
+    def _evaluate(l_b_rqd: MM, diameter: MM) -> MM:
         """Evaluates the formula, for more information see the __init__ method"""
-        raise_if_negative(phi=phi, l_b_rqd=l_b_rqd)
-        return max(0.6 * l_b_rqd, 10 * phi, 100)
+        raise_if_negative(diameter=diameter, l_b_rqd=l_b_rqd)
+        return max(0.6 * l_b_rqd, 10 * diameter, 100)

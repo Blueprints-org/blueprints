@@ -13,8 +13,8 @@ class TestSubForm8Dot2CoefficientBarDiameter:
 
     def test_evaluation_small_diameter(self) -> None:
         """Test the evaluation of the result for diameters smaller than 32 mm."""
-        phi = 16  # str
-        sub_form_8_2_3 = SubForm8Dot2CoefficientBarDiameter(phi=phi)
+        diameter = 16  # str
+        sub_form_8_2_3 = SubForm8Dot2CoefficientBarDiameter(diameter=diameter)
 
         # Expected result, manually calculated
         manually_result = 1
@@ -22,17 +22,17 @@ class TestSubForm8Dot2CoefficientBarDiameter:
 
     def test_evaluation_large_diameter(self) -> None:
         """Test the evaluation of the result for diameters larger than 32 mm."""
-        phi = 40  # str
-        sub_form_8_2_4 = SubForm8Dot2CoefficientBarDiameter(phi=phi)
+        diameter = 40  # str
+        sub_form_8_2_4 = SubForm8Dot2CoefficientBarDiameter(diameter=diameter)
 
         # Expected result, manually calculated
         manually_result = 0.92
         assert sub_form_8_2_4 == pytest.approx(expected=manually_result, rel=1e-4)
 
-    def test_raise_error_when_negative_phi_is_given(self) -> None:
+    def test_raise_error_when_negative_diameter_is_given(self) -> None:
         """Test an invalid bond quality."""
         # Example values
-        phi = -1  # mm
+        diameter = -1  # mm
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot2CoefficientBarDiameter(phi=phi)
+            SubForm8Dot2CoefficientBarDiameter(diameter=diameter)

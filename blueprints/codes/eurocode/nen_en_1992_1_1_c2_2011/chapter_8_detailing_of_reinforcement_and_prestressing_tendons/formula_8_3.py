@@ -14,7 +14,7 @@ class Form8Dot3RequiredAnchorageLength(Formula):
 
     def __init__(
         self,
-        phi: MM,
+        diameter: MM,
         sigma_sd: MPA,
         f_bd: MPA,
     ) -> None:
@@ -24,7 +24,7 @@ class Form8Dot3RequiredAnchorageLength(Formula):
 
         Parameters
         ----------
-        phi: MM
+        diameter: MM
             [Φ] Diameter of the bar [mm].
         sigma_sd: MPA
             [σsd] design stress of the bar at the position from where the anchorage is measured from [MPa].
@@ -33,17 +33,17 @@ class Form8Dot3RequiredAnchorageLength(Formula):
             Use your own implementation for this value or use the Form8Dot2UltimateBondStress class.
         """
         super().__init__()
-        self.phi = phi
+        self.diameter = diameter
         self.sigma_sd = sigma_sd
         self.f_bd = f_bd
 
     @staticmethod
     def _evaluate(
-        phi: MM,
+        diameter: MM,
         sigma_sd: MPA,
         f_bd: MPA,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method"""
-        raise_if_negative(phi=phi, sigma_sd=sigma_sd)
+        raise_if_negative(diameter=diameter, sigma_sd=sigma_sd)
         raise_if_less_or_equal_to_zero(f_bd=f_bd)
-        return (phi / 4) * (sigma_sd / f_bd)
+        return (diameter / 4) * (sigma_sd / f_bd)

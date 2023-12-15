@@ -20,8 +20,8 @@ class TestForm8Dot7MinimumCompressionAnchorage:
         """Test the evaluation of the result if the first term is decisive."""
         # example values
         l_b_rqd = 500  # mm
-        phi = 8  # mm
-        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, phi=phi)
+        diameter = 8  # mm
+        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
 
         manually_calculated_result = 300  # mm
 
@@ -31,8 +31,8 @@ class TestForm8Dot7MinimumCompressionAnchorage:
         """Test the evaluation of the result if the second term is decisive."""
         # example values
         l_b_rqd = 200  # mm
-        phi = 16  # mm
-        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, phi=phi)
+        diameter = 16  # mm
+        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
 
         manually_calculated_result = 160  # mm
 
@@ -42,9 +42,9 @@ class TestForm8Dot7MinimumCompressionAnchorage:
         """Test the evaluation of the result if the third term is decisive."""
         # example values
         l_b_rqd = 150  # mm
-        phi = 8  # mm
+        diameter = 8  # mm
 
-        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, phi=phi)
+        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
 
         manually_calculated_result = 100  # mm
 
@@ -54,29 +54,29 @@ class TestForm8Dot7MinimumCompressionAnchorage:
         """Test if NegativeValueError is raised for negative l_b_rqd."""
         # example values
         l_b_rqd = -500  # mm
-        phi = 8  # mm
+        diameter = 8  # mm
 
         with pytest.raises(NegativeValueError):
-            Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, phi=phi)
+            Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
 
-    def test_evaluation_negative_phi(self) -> None:
-        """Test if NegativeValueError is raised for negative phi."""
+    def test_evaluation_negative_diameter(self) -> None:
+        """Test if NegativeValueError is raised for negative diameter."""
         # example values
         l_b_rqd = 500  # mm
-        phi = -8  # mm
+        diameter = -8  # mm
 
         with pytest.raises(NegativeValueError):
-            Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, phi=phi)
+            Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
 
     def test_integration_with_form_8_3(self) -> None:
         """Test the integration with Form8Dot3RequiredAnchorageLength."""
         # example values
-        phi = 12  # mm
+        diameter = 12  # mm
         sigma_sd = 435  # MPA
         f_bd = 2.9  # MPA
-        l_b_rqd = Form8Dot3RequiredAnchorageLength(phi=phi, sigma_sd=sigma_sd, f_bd=f_bd)
+        l_b_rqd = Form8Dot3RequiredAnchorageLength(diameter=diameter, sigma_sd=sigma_sd, f_bd=f_bd)
 
-        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, phi=phi)
+        form_8_7 = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter)
 
         manually_calculated_result = 270  # mm
 
