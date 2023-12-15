@@ -16,7 +16,7 @@ class Form8Dot11MinimumDesignLapLength(Formula):
         self,
         alpha_6: DIMENSIONLESS,
         l_b_rqd: MM,
-        phi: MM,
+        diameter: MM,
     ) -> None:
         """[l0,min] Design minimum lap length [mm].
 
@@ -32,24 +32,24 @@ class Form8Dot11MinimumDesignLapLength(Formula):
             [lbrqd] Required anchorage length from formula 8.3 [mm].
             = (Φ/4) * (σsd/fbd)
             Use your own implementation of this formula or use the Form8Dot3RequiredAnchorageLength class.
-        phi : MM
+        diameter : MM
             [Φ] Diameter of the bar [mm].
         """
         super().__init__()
         self.alpha_6 = alpha_6
         self.l_b_rqd = l_b_rqd
-        self.phi = phi
+        self.diameter = diameter
 
     @staticmethod
     def _evaluate(
         alpha_6: DIMENSIONLESS,
         l_b_rqd: MM,
-        phi: MM,
+        diameter: MM,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method"""
         raise_if_negative(
             alpha_6=alpha_6,
             l_b_rqd=l_b_rqd,
-            phi=phi,
+            diameter=diameter,
         )
-        return max(0.3 * alpha_6 * l_b_rqd, 15 * phi, 200)
+        return max(0.3 * alpha_6 * l_b_rqd, 15 * diameter, 200)

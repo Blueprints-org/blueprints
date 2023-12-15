@@ -21,11 +21,11 @@ class TestForm8Dot11MinimumDesignLapLength:
         # example values
         alpha_6 = 1  # [-]
         l_b_rqd = 1200  # mm
-        phi = 16  # mm
+        diameter = 16  # mm
         form_8_11 = Form8Dot11MinimumDesignLapLength(
             alpha_6=alpha_6,
             l_b_rqd=l_b_rqd,
-            phi=phi,
+            diameter=diameter,
         )
 
         # manually calculated result
@@ -38,11 +38,11 @@ class TestForm8Dot11MinimumDesignLapLength:
         # example values
         alpha_6 = 1  # [-]
         l_b_rqd = 450  # mm
-        phi = 32  # mm
+        diameter = 32  # mm
         form_8_11 = Form8Dot11MinimumDesignLapLength(
             alpha_6=alpha_6,
             l_b_rqd=l_b_rqd,
-            phi=phi,
+            diameter=diameter,
         )
 
         # manually calculated result
@@ -55,11 +55,11 @@ class TestForm8Dot11MinimumDesignLapLength:
         # example values
         alpha_6 = 1  # [-]
         l_b_rqd = 450  # mm
-        phi = 8  # mm
+        diameter = 8  # mm
         form_8_11 = Form8Dot11MinimumDesignLapLength(
             alpha_6=alpha_6,
             l_b_rqd=l_b_rqd,
-            phi=phi,
+            diameter=diameter,
         )
 
         # manually calculated result
@@ -72,13 +72,13 @@ class TestForm8Dot11MinimumDesignLapLength:
         # example values
         alpha_6 = -1  # [-]
         l_b_rqd = 450  # mm
-        phi = 8  # mm
+        diameter = 8  # mm
 
         with pytest.raises(NegativeValueError):
             Form8Dot11MinimumDesignLapLength(
                 alpha_6=alpha_6,
                 l_b_rqd=l_b_rqd,
-                phi=phi,
+                diameter=diameter,
             )
 
     def test_raise_error_if_l_b_rqd_is_negative(self) -> None:
@@ -86,38 +86,38 @@ class TestForm8Dot11MinimumDesignLapLength:
         # example values
         alpha_6 = 1  # [-]
         l_b_rqd = -450  # mm
-        phi = 8  # mm
+        diameter = 8  # mm
 
         with pytest.raises(NegativeValueError):
             Form8Dot11MinimumDesignLapLength(
                 alpha_6=alpha_6,
                 l_b_rqd=l_b_rqd,
-                phi=phi,
+                diameter=diameter,
             )
 
-    def test_raise_error_if_phi_is_negative(self) -> None:
-        """Test that a NegativeValueError is raised if phi is negative."""
+    def test_raise_error_if_diameter_is_negative(self) -> None:
+        """Test that a NegativeValueError is raised if diameter is negative."""
         # example values
         alpha_6 = 1  # [-]
         l_b_rqd = 450  # mm
-        phi = -8  # mm
+        diameter = -8  # mm
 
         with pytest.raises(NegativeValueError):
             Form8Dot11MinimumDesignLapLength(
                 alpha_6=alpha_6,
                 l_b_rqd=l_b_rqd,
-                phi=phi,
+                diameter=diameter,
             )
 
     def test_integration_with_form_8_3(self) -> None:
         """Test the integration with formula 8.3."""
         # example values
-        phi = 8  # mm
+        diameter = 8  # mm
         alpha_6 = 1  # [-]
         sigma_sd = 500  # MPa
         f_bd = 2.5  # MPa
         l_b_rqd = Form8Dot3RequiredAnchorageLength(
-            phi=phi,
+            diameter=diameter,
             sigma_sd=sigma_sd,
             f_bd=f_bd,
         )
@@ -125,7 +125,7 @@ class TestForm8Dot11MinimumDesignLapLength:
         form_8_11 = Form8Dot11MinimumDesignLapLength(
             alpha_6=alpha_6,
             l_b_rqd=l_b_rqd,
-            phi=phi,
+            diameter=diameter,
         )
 
         # manually calculated result
