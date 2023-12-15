@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 class Form8Dot12AdditionalShearReinforcement(Formula):
     """Class representing formula 8.12 for the calculation of the minimum additional shear reinforcement in the anchorage zones where transverse
-    compression is not present for straight anchorage lengths."""
+    compression is not present for straight anchorage lengths, in the direction parallel to the tension face."""
 
     label = "8.12"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,7 +19,7 @@ class Form8Dot12AdditionalShearReinforcement(Formula):
         n_1: DIMENSIONLESS,
     ) -> None:
         """[:math:`A_{sh}`] Minimum additional shear reinforcement in the anchorage zones where transverse compression is not present for straight
-        anchorage lengths [mm²].
+        anchorage lengths, in the direction parallel to the tension face [mm²].
 
         NEN-EN 1992-1-1+C2:2011 art.8.8(6) - Formula (8.12)
 
