@@ -40,7 +40,7 @@ class TestForm8Dot14EquivalentDiameterBundledBars:
     def test_raise_error_if_diameter_is_negative(self) -> None:
         """Test that a NegativeValueError is raised if diameter is negative."""
         # example values
-        diameter = 32  # mm
+        diameter = -32  # mm
         n_b = 4  # [-]
 
         with pytest.raises(NegativeValueError):
