@@ -102,7 +102,7 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
 
         form_8_15 = Form8Dot15PrestressTransferStress(eta_p1=eta_p1, eta_1=eta_1, f_ctd_t=f_ctd_t)
 
-        manually_calculated_result = 1.16  # MPa
+        manually_calculated_result = 1.16666666666666666666  # MPa
 
         assert form_8_15 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
