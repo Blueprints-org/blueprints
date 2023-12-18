@@ -1,8 +1,9 @@
-"""Formula 5.1 from NEN-EN 1992-1-1+C2:2011: Chapter Structural Analysis."""
+"""Formula 5.1 from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
 # pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import M
+from blueprints.type_alias import DIMENSIONLESS, M
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form5Dot2Eccentricity(Formula):
@@ -13,7 +14,7 @@ class Form5Dot2Eccentricity(Formula):
 
     def __init__(
         self,
-        theta_i: float,
+        theta_i: DIMENSIONLESS,
         l_0: M,
     ) -> None:
         """[ei] Eccentricity, ei, for isolated members [m].
@@ -22,11 +23,11 @@ class Form5Dot2Eccentricity(Formula):
 
         Parameters
         ----------
-        theta_i : float
-            [Θi] Eccentricity [m].
-        theta_i : float
-            [Θi] Initial inclination imperfections, Θi, is a ratio between height and inclination of the member [-].
+        theta_i : DIMENSIONLESS
+            [Θi] Eccentricity, initial inclination imperfections [-].
             Use your own implementation of this value or use the Form5Dot1Imperfections class.
+        l_0 : M
+            [l0] Effective length of the member, see 5.8.3.2 [m].
         """
         super().__init__()
         self.theta_i = theta_i
@@ -38,8 +39,6 @@ class Form5Dot2Eccentricity(Formula):
         l_0: M,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method"""
-        if theta_i < 0:
-            raise ValueError(f"Negative theta_i: {theta_i}. theta_i cannot be negative")
-        if l_0 <= 0:
-            raise ValueError(f"Invalid l_0: {l_0}. l_0 cannot be negative or zero")
+        raise_if_negative(theta_i=theta_i)
+        raise_if_less_or_equal_to_zero(l_0=l_0)
         return theta_i * l_0 / 2

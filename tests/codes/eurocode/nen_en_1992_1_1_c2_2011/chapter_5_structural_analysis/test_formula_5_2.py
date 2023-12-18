@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_2 import Form5Dot2Eccentricity
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm5Dot2Eccentricity:
@@ -26,7 +27,7 @@ class TestForm5Dot2Eccentricity:
         theta_i = -0.003  # -
         l_0 = 5  # m
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form5Dot2Eccentricity(theta_i=theta_i, l_0=l_0)
 
     def test_raise_error_when_negative_l_0_is_given(self) -> None:
@@ -35,5 +36,5 @@ class TestForm5Dot2Eccentricity:
         theta_i = 0.003  # -
         l_0 = -5  # m
 
-        with pytest.raises(ValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             Form5Dot2Eccentricity(theta_i=theta_i, l_0=l_0)
