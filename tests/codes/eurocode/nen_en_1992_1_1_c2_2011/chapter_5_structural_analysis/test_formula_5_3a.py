@@ -13,10 +13,10 @@ class TestForm5Dot3ATransverseForceUnbracedMembers:
         """Test the evaluation of the result."""
         # Example values
         theta_i = 0.003  # -
-        n = 5  # kN
+        n_axial_force = 5  # kN
 
         # Object to test
-        form_5_3a = Form5Dot3ATransverseForceUnbracedMembers(theta_i=theta_i, n=n)
+        form_5_3a = Form5Dot3ATransverseForceUnbracedMembers(theta_i=theta_i, n_axial_force=n_axial_force)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.015  # kN
@@ -27,16 +27,16 @@ class TestForm5Dot3ATransverseForceUnbracedMembers:
         """Test a negative value for theta_i."""
         # Example values
         theta_i = -0.003
-        n = 5
+        n_axial_force = 5
 
         with pytest.raises(NegativeValueError):
-            Form5Dot3ATransverseForceUnbracedMembers(theta_i=theta_i, n=n)
+            Form5Dot3ATransverseForceUnbracedMembers(theta_i=theta_i, n_axial_force=n_axial_force)
 
     def test_raise_error_when_negative_n_is_given(self) -> None:
         """Test a negative value for n."""
         # Example values
         theta_i = 0.003
-        n = -5
+        n_axial_force = -5
 
         with pytest.raises(NegativeValueError):
-            Form5Dot3ATransverseForceUnbracedMembers(theta_i=theta_i, n=n)
+            Form5Dot3ATransverseForceUnbracedMembers(theta_i=theta_i, n_axial_force=n_axial_force)
