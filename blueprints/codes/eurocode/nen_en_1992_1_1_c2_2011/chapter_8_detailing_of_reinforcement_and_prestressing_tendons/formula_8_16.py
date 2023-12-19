@@ -75,3 +75,34 @@ class Form8Dot16BasicTransmissionLength(Formula):
         )
         raise_if_less_or_equal_to_zero(f_bpt=f_bpt)
         return alpha_1 * alpha_2 * diameter * sigma_pm0 / f_bpt
+
+
+class SubForm8Dot16Alpha1(Formula):
+    """Class representing sub-formula 8.16 for the calculation of the coefficient :math:`α_{1}`."""
+
+    label = "8.16"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(self, release_type: str) -> None:
+        """[:math:`α_{1}`] Coefficient taking account of the type of release [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.8.10.2.2(2) - Formula (8.16)
+
+        Parameters
+        ----------
+        release_type : str
+            Type of release, either "gradual" or "sudden".
+        """
+        super().__init__()
+        self.release_type = release_type
+
+    @staticmethod
+    def _evaluate(release_type: str) -> DIMENSIONLESS:
+        """Evaluates the formula, for more information see the __init__ method"""
+        match release_type.lower():
+            case "gradual":
+                return 1.0
+            case "sudden":
+                return 1.25
+            case _:
+                raise ValueError(f"Invalid release type: {release_type}. Valid values are 'gradual' or 'sudden'.")
