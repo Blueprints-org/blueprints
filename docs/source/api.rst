@@ -1,8 +1,7 @@
-API Reference
-=============
+API
+===
 
-``Blueprints`` Modules
------------------------------
+Welcome to the ``Blueprints`` API Reference.
 
 .. autosummary::
     :toctree: gen
@@ -10,4 +9,7 @@ API Reference
     :template: custom-module-template.rst
     :recursive:
 
-    blueprints
+    blueprints.codes
+    blueprints.type_alias
+    blueprints.unit_conversion
+    blueprints.validations
