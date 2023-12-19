@@ -67,6 +67,11 @@ html_theme_options = {
     "source_repository": "https://github.com/Blueprints-org/blueprints",
     "source_branch": "main",
     "source_directory": "docs/",
+    # "announcement": "<em>Important</em> announcement!",
 }
+html_title = f"Blueprints v{__version__}"
+html_css_files = [
+    "custom_style.css",
+]
 pygments_style = "sphinx"
 pygments_dark_style = "monokai"
