@@ -15,9 +15,9 @@ class TestSubForm8Dot8NFunctionY:
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
         # Example values
-        x = 2
+        x_function = 2
 
-        sub_form_8_8n_3 = SubForm8Dot8NFunctionY(x=x)
+        sub_form_8_8n_3 = SubForm8Dot8NFunctionY(x_function=x_function)
 
         # Expected result, manually calculated
         manually_result = 0.112675
@@ -27,18 +27,18 @@ class TestSubForm8Dot8NFunctionY:
     def test_raise_error_when_x_is_negative(self) -> None:
         """Test if a NegativeValueError is raised when x is negative."""
         # Example values
-        x = -2
+        x_function = -2
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NFunctionY(x=x)
+            SubForm8Dot8NFunctionY(x_function=x_function)
 
     def test_integration_with_sub_form_8_8n_function_x(self) -> None:
         """Test the integration with sub-formula 8.8 for calculating function x."""
         # Example values
-        c = 60  # mm
+        cover = 60  # mm
         diameter_t = 16  # mm
-        x = SubForm8Dot8NFunctionX(c=c, diameter_t=diameter_t)
-        sub_form_8_8n_3 = SubForm8Dot8NFunctionY(x=x)
+        x_function = SubForm8Dot8NFunctionX(cover=cover, diameter_t=diameter_t)
+        sub_form_8_8n_3 = SubForm8Dot8NFunctionY(x_function=x_function)
 
         # Expected result, manually calculated
         manually_result = 0.045314993

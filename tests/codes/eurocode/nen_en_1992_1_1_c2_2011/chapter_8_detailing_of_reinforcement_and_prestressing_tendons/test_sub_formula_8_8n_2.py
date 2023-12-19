@@ -16,12 +16,12 @@ class TestSubForm8Dot8NConcreteStress:
         """Test the evaluation of the result."""
         f_ctd = 2.6  # MPa
         sigma_cm = 15  # MPa
-        y = 0.5  # -
+        y_function = 0.5  # -
         f_cd = 25  # MPa
         sub_form_8_8n_2 = SubForm8Dot8NConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
-            y=y,
+            y_function=y_function,
             f_cd=f_cd,
         )
         # Expected result, manually calculated
@@ -32,12 +32,12 @@ class TestSubForm8Dot8NConcreteStress:
         """Test the evaluation of the result if the upper limit is reached."""
         f_ctd = 2.6  # MPa
         sigma_cm = 15  # MPa
-        y = 0.05  # -
+        y_function = 0.05  # -
         f_cd = 20  # MPa
         sub_form_8_8n_2 = SubForm8Dot8NConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
-            y=y,
+            y_function=y_function,
             f_cd=f_cd,
         )
         # Expected result, manually calculated
@@ -49,14 +49,14 @@ class TestSubForm8Dot8NConcreteStress:
         # Example values
         f_ctd = -2.6  # MPa
         sigma_cm = 15  # MPa
-        y = 0.5  # -
+        y_function = 0.5  # -
         f_cd = 25  # MPa
 
         with pytest.raises(NegativeValueError):
             SubForm8Dot8NConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
-                y=y,
+                y_function=y_function,
                 f_cd=f_cd,
             )
 
@@ -65,14 +65,14 @@ class TestSubForm8Dot8NConcreteStress:
         # Example values
         f_ctd = 2.6  # MPa
         sigma_cm = -15  # MPa
-        y = 0.5  # -
+        y_function = 0.5  # -
         f_cd = 25  # MPa
 
         with pytest.raises(NegativeValueError):
             SubForm8Dot8NConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
-                y=y,
+                y_function=y_function,
                 f_cd=f_cd,
             )
 
@@ -81,14 +81,14 @@ class TestSubForm8Dot8NConcreteStress:
         # Example values
         f_ctd = 2.6  # MPa
         sigma_cm = 15  # MPa
-        y = -0.5  # -
+        y_function = -0.5  # -
         f_cd = 25  # MPa
 
         with pytest.raises(LessOrEqualToZeroError):
             SubForm8Dot8NConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
-                y=y,
+                y_function=y_function,
                 f_cd=f_cd,
             )
 
@@ -97,14 +97,14 @@ class TestSubForm8Dot8NConcreteStress:
         # Example values
         f_ctd = 2.6  # MPa
         sigma_cm = 15  # MPa
-        y = 0  # -
+        y_function = 0  # -
         f_cd = 25  # MPa
 
         with pytest.raises(LessOrEqualToZeroError):
             SubForm8Dot8NConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
-                y=y,
+                y_function=y_function,
                 f_cd=f_cd,
             )
 
@@ -113,14 +113,14 @@ class TestSubForm8Dot8NConcreteStress:
         # Example values
         f_ctd = 2.6  # MPa
         sigma_cm = 15  # MPa
-        y = 0.5  # -
+        y_function = 0.5  # -
         f_cd = -25  # MPa
 
         with pytest.raises(NegativeValueError):
             SubForm8Dot8NConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
-                y=y,
+                y_function=y_function,
                 f_cd=f_cd,
             )
 
@@ -130,14 +130,14 @@ class TestSubForm8Dot8NConcreteStress:
         f_ctd = 2.6  # MPa
         sigma_cm = 15  # MPa
         f_cd = 50  # MPa
-        x = 1.5  # -
-        y = SubForm8Dot8NFunctionY(x=x)
+        x_function = 1.5  # -
+        y_function = SubForm8Dot8NFunctionY(x_function=x_function)
 
         # Object to test
         sub_form_8_8n_2 = SubForm8Dot8NConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
-            y=y,
+            y_function=y_function,
             f_cd=f_cd,
         )
 

@@ -153,12 +153,12 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         l_td = 80  # mm
         f_ctd = 3  # MPa
         sigma_cm = 15  # MPa
-        y = 0.5  # -
+        y_function = 0.5  # -
         f_cd = 25  # MPa
         sigma_td = SubForm8Dot8NConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
-            y=y,
+            y_function=y_function,
             f_cd=f_cd,
         )
 
