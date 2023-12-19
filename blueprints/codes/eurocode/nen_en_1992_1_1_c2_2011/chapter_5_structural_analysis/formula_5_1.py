@@ -1,4 +1,4 @@
-"""Formula 5.1 from NEN-EN 1992-1-1+C2:2011: Chapter Structural Analysis."""
+"""Formula 5.1 from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
 # pylint: disable=arguments-differ
 import numpy as np
 
