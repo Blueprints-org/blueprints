@@ -1,3 +1,4 @@
+"""Latex formula representation."""
 from dataclasses import dataclass
 
 
@@ -53,4 +54,3 @@ class LatexFormula:
 
     def __str__(self):
         return self.complete
-

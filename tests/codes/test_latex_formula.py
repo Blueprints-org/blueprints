@@ -1,4 +1,5 @@
 import pytest
+
 from blueprints.codes.latex_formula import LatexFormula
 
 
