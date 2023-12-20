@@ -1,5 +1,4 @@
-import pytest
-
+"""Tests for the LatexFormula class."""
 from blueprints.codes.latex_formula import LatexFormula
 
 
