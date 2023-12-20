@@ -21,6 +21,7 @@ class LatexFormula:
         The label for the comparison operators between the return symbol and the result.
         Could be changed for inequalities.
     """
+
     return_symbol: str
     result: str
     equation: str = ""
