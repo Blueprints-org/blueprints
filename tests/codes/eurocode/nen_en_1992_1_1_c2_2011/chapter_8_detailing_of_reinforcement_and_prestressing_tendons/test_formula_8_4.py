@@ -72,17 +72,18 @@ class TestForm8Dot4DesignAnchorageLength:
 
         assert form_8_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_if_alpha_1_is_negative(self) -> None:
-        """Test that a NegativeValueError is raised if alpha_1 is negative."""
-        # example values
-        alpha_1 = -1  # [-]
-        alpha_2 = 1  # [-]
-        alpha_3 = 1  # [-]
-        alpha_4 = 1  # [-]
-        alpha_5 = 1  # [-]
-        l_b_rqd = 450  # mm
-        l_b_min = 200  # mm
-
+    @pytest.mark.parametrize(
+        "alpha_1, alpha_2, alpha_3, alpha_4, alpha_5",
+        [
+            (-1, 1, 1, 1, 1),  # alpha_1 is negative
+            (1, -1, 1, 1, 1),  # alpha_2 is negative
+            (1, 1, -1, 1, 1),  # alpha_3 is negative
+            (1, 1, 1, -1, 1),  # alpha_4 is negative
+            (1, 1, 1, 1, -1),  # alpha_5 is negative
+        ],
+    )
+    def test_negative_alpha(self, alpha_1: float, alpha_2: float, alpha_3: float, alpha_4: float, alpha_5: float) -> None:
+        """Test the evaluation of the result if one of the alpha values is negative."""
         with pytest.raises(NegativeValueError):
             Form8Dot4DesignAnchorageLength(
                 alpha_1=alpha_1,
@@ -90,96 +91,8 @@ class TestForm8Dot4DesignAnchorageLength:
                 alpha_3=alpha_3,
                 alpha_4=alpha_4,
                 alpha_5=alpha_5,
-                l_b_rqd=l_b_rqd,
-                l_b_min=l_b_min,
-            )
-
-    def test_raise_error_if_alpha_2_is_negative(self) -> None:
-        """Test that a NegativeValueError is raised if alpha_2 is negative."""
-        # example values
-        alpha_1 = 1  # [-]
-        alpha_2 = -1  # [-]
-        alpha_3 = 1  # [-]
-        alpha_4 = 1  # [-]
-        alpha_5 = 1  # [-]
-        l_b_rqd = 450  # mm
-        l_b_min = 200  # mm
-
-        with pytest.raises(NegativeValueError):
-            Form8Dot4DesignAnchorageLength(
-                alpha_1=alpha_1,
-                alpha_2=alpha_2,
-                alpha_3=alpha_3,
-                alpha_4=alpha_4,
-                alpha_5=alpha_5,
-                l_b_rqd=l_b_rqd,
-                l_b_min=l_b_min,
-            )
-
-    def test_raise_error_if_alpha_3_is_negative(self) -> None:
-        """Test that a NegativeValueError is raised if alpha_3 is negative."""
-        # example values
-        alpha_1 = 1  # [-]
-        alpha_2 = 1  # [-]
-        alpha_3 = -1  # [-]
-        alpha_4 = 1  # [-]
-        alpha_5 = 1  # [-]
-        l_b_rqd = 450  # mm
-        l_b_min = 200  # mm
-
-        with pytest.raises(NegativeValueError):
-            Form8Dot4DesignAnchorageLength(
-                alpha_1=alpha_1,
-                alpha_2=alpha_2,
-                alpha_3=alpha_3,
-                alpha_4=alpha_4,
-                alpha_5=alpha_5,
-                l_b_rqd=l_b_rqd,
-                l_b_min=l_b_min,
-            )
-
-    def test_raise_error_if_alpha_4_is_negative(self) -> None:
-        """Test that a NegativeValueError is raised if alpha_4 is negative."""
-        # example values
-        alpha_1 = 1  # [-]
-        alpha_2 = 1  # [-]
-        alpha_3 = 1  # [-]
-        alpha_4 = -1  # [-]
-        alpha_5 = 1  # [-]
-        l_b_rqd = 450  # mm
-        l_b_min = 200  # mm
-
-        with pytest.raises(NegativeValueError):
-            Form8Dot4DesignAnchorageLength(
-                alpha_1=alpha_1,
-                alpha_2=alpha_2,
-                alpha_3=alpha_3,
-                alpha_4=alpha_4,
-                alpha_5=alpha_5,
-                l_b_rqd=l_b_rqd,
-                l_b_min=l_b_min,
-            )
-
-    def test_raise_error_if_alpha_5_is_negative(self) -> None:
-        """Test that a NegativeValueError is raised if alpha_5 is negative."""
-        # example values
-        alpha_1 = 1  # [-]
-        alpha_2 = 1  # [-]
-        alpha_3 = 1  # [-]
-        alpha_4 = 1  # [-]
-        alpha_5 = -1  # [-]
-        l_b_rqd = 450  # mm
-        l_b_min = 200  # mm
-
-        with pytest.raises(NegativeValueError):
-            Form8Dot4DesignAnchorageLength(
-                alpha_1=alpha_1,
-                alpha_2=alpha_2,
-                alpha_3=alpha_3,
-                alpha_4=alpha_4,
-                alpha_5=alpha_5,
-                l_b_rqd=l_b_rqd,
-                l_b_min=l_b_min,
+                l_b_rqd=450,  # mm
+                l_b_min=200,  # mm
             )
 
     def test_integration_with_form_8_3(self) -> None:
