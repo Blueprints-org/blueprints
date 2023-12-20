@@ -2,8 +2,8 @@
 Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings**
 
-The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status (:x: or 
-:heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status ( :x: or
+:heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 304 formulas present.
 
@@ -19,32 +19,32 @@ Total of 304 formulas present.
 | 3.8            | :heavy_check_mark: |         | Form3Dot8TotalShrinkage                                   |
 | 3.9            | :heavy_check_mark: |         | Form3Dot9DryingShrinkage                                  |
 | 3.10           | :heavy_check_mark: |         | Form3Dot10CoefficientAgeConcreteDryingShrinkage           |
-| 3.11           |        :x:         |         |                                                           |
-| 3.12           |        :x:         |         |                                                           |
-| 3.13           |        :x:         |         |                                                           |
-| 3.14           |        :x:         |         |                                                           |
-| 3.15           |        :x:         |         |                                                           |
-| 3.16           |        :x:         |         |                                                           |
-| 3.17           |        :x:         |         |                                                           |
-| 3.18           |        :x:         |         |                                                           |
-| 3.19           |        :x:         |         |                                                           |
-| 3.20           |        :x:         |         |                                                           |
-| 3.21           |        :x:         |         |                                                           |
-| 3.22           |        :x:         |         |                                                           |
-| 3.23           | :heavy_check_mark: |         | Form3Dot23FlexuralTensileStrengt                          |
-| 3.24           |        :x:         |         |                                                           |
-| 3.25           |        :x:         |         |                                                           |
-| 3.26           |        :x:         |         |                                                           |
-| 3.27           |        :x:         |         |                                                           |
-| 3.28           |        :x:         |         |                                                           |
-| 3.29           |        :x:         |         |                                                           |
-| 3.30           |        :x:         |         |                                                           |
-| 4.1            |        :x:         |         |                                                           |
-| 4.2            |        :x:         |         |                                                           |
+| 3.11           | :heavy_check_mark: |         | Form3Dot11AutogeneShrinkage                               |
+| 3.12           | :heavy_check_mark: |         | Form3Dot12AutogeneShrinkageInfinity                       |
+| 3.13           | :heavy_check_mark: |         | Form3Dot13CoefficientTimeAutogeneShrinkage                |
+| 3.14           | :heavy_check_mark: |         | Form3Dot14StressStrainForShortTermLoading                 |
+| 3.15           | :heavy_check_mark: |         | Form3Dot15DesignValueCompressiveStrength                  |
+| 3.16           | :heavy_check_mark: |         | Form3Dot16DesignValueTensileStrength                      |
+| 3.17           | :heavy_check_mark: |         | Form3Dot17CompressiveStressConcrete                       |
+| 3.18           | :heavy_check_mark: |         | Form3Dot18CompressiveStressConcrete                       |
+| 3.19           | :heavy_check_mark: |         | Form3Dot19And20EffectivePressureZoneHeight                |
+| 3.20           | :heavy_check_mark: |         | Form3Dot19And20EffectivePressureZoneHeight                |
+| 3.21           | :heavy_check_mark: |         | Form3Dot21And22EffectiveStrength                          |
+| 3.22           | :heavy_check_mark: |         | Form3Dot21And22EffectiveStrength                          |
+| 3.23           | :heavy_check_mark: |         | Form3Dot23FlexuralTensileStrength                         |
+| 3.24           | :heavy_check_mark: |         | Form3Dot24IncreasedCharacteristicCompressiveStrength      |
+| 3.25           | :heavy_check_mark: |         | Form3Dot25IncreasedCharacteristicCompressiveStrength      |
+| 3.26           | :heavy_check_mark: |         | Form3Dot26IncreasedStrainAtMaxStrength                    |
+| 3.27           | :heavy_check_mark: |         | Form3Dot27IncreasedStrainLimitValue                       |
+| 3.28           | :heavy_check_mark: |         | Form3Dot28RatioLossOfPreStressClass1                      |
+| 3.29           | :heavy_check_mark: |         | Form3Dot29RatioLossOfPreStressClass2                      |
+| 3.30           | :heavy_check_mark: |         | Form3Dot30RatioLossOfPreStressClass3                      |
+| 4.1            | :heavy_check_mark: |         | Form4Dot1NominalConcreteCover                             |
+| 4.2            | :heavy_check_mark: |         | Form4Dot2MinimumConcreteCover                             |
 | 4.3N           |        :x:         |         |                                                           |
 | 4.4N           |        :x:         |         |                                                           |
-| 5.1            |        :x:         |         |                                                           |
-| 5.2            |        :x:         |         |                                                           |
+| 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
+| 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
 | 5.3a           |        :x:         |         |                                                           |
 | 5.3b           |        :x:         |         |                                                           |
 | 5.4            |        :x:         |         |                                                           |
@@ -97,7 +97,7 @@ Total of 304 formulas present.
 | 5.46           |        :x:         |         |                                                           |
 | 5.47           |        :x:         |         |                                                           |
 | 5.48           |        :x:         |         |                                                           |
-| 6.1            |        :x:         |         |                                                           |
+| 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
 | 6.2.a          |        :x:         |         |                                                           |
 | 6.2.b          |        :x:         |         |                                                           |
 | 6.3N           |        :x:         |         |                                                           |
@@ -202,9 +202,9 @@ Total of 304 formulas present.
 | 7.19           |        :x:         |         |                                                           |
 | 7.20           |        :x:         |         |                                                           |
 | 7.21           |        :x:         |         |                                                           |
-| 8.1            |        :x:         |         |                                                           |
-| 8.2            |        :x:         |         |                                                           |
-| 8.3            |        :x:         |         |                                                           |
+| 8.1            | :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                   |
+| 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
+| 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
 | 8.4            |        :x:         |         |                                                           |
 | 8.5            |        :x:         |         |                                                           |
 | 8.6            |        :x:         |         |                                                           |
@@ -223,22 +223,22 @@ Total of 304 formulas present.
 | 8.19           |        :x:         |         |                                                           |
 | 8.20           |        :x:         |         |                                                           |
 | 8.21           |        :x:         |         |                                                           |
-| 9.1N           |        :x:         |         |                                                           |
-| 9.2            |        :x:         |         |                                                           |
-| 9.3            |        :x:         |         |                                                           |
-| 9.4            |        :x:         |         |                                                           |
-| 9.5N           |        :x:         |         |                                                           |
-| 9.6N           |        :x:         |         |                                                           |
-| 9.7N           |        :x:         |         |                                                           |
-| 9.8N           |        :x:         |         |                                                           |
-| 9.9            |        :x:         |         |                                                           |
-| 9.10           |        :x:         |         |                                                           |
+| 9.1N           | :heavy_check_mark: |         | Form9Dot1NMinimumTensileReinforcementBeam                 |
+| 9.2            | :heavy_check_mark: |         | Form9Dot2ShiftInMomentDiagram                             |
+| 9.3            | :heavy_check_mark: |         | Form9Dot3ShiftInMomentDiagram                             |
+| 9.4            | :heavy_check_mark: |         | Form9Dot4ShearReinforcementRatio                          |
+| 9.5N           | :heavy_check_mark: |         | Form9Dot5NMinimumShearReinforcementRatio                  |
+| 9.6N           | :heavy_check_mark: |         | Form9Dot6NMaximumDistanceShearReinforcement               |
+| 9.7N           | :heavy_check_mark: |         | Form9Dot7NMaximumDistanceBentUpBars                       |
+| 9.8N           | :heavy_check_mark: |         | Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks   |
+| 9.9            | :heavy_check_mark: |         | Form9Dot9MaximumSpacingSeriesOfLinks                      |
+| 9.10           | :heavy_check_mark: |         | Form9Dot10MaximumSpacingBentUpBars                        |
 | 9.11           |        :x:         |         |                                                           |
-| 9.12N          |        :x:         |         |                                                           |
-| 9.13           |        :x:         |         |                                                           |
-| 9.14           |        :x:         |         |                                                           |
-| 9.15           |        :x:         |         |                                                           |
-| 9.16           |        :x:         |         |                                                           |
+| 9.12N          | :heavy_check_mark  |         | Form9Dot12NMinimumLongitudinalReinforcementColumns        |
+| 9.13           | :heavy_check_mark: |         | Form9Dot13TensileForceToBeAnchored                        |
+| 9.14           | :heavy_check_mark: |         | Form9Dot14SplittingForceColumnOnRock                      |
+| 9.15           | :heavy_check_mark: |         | Form9Dot15MinimumResistancePeripheralTie                  |
+| 9.16           | :heavy_check_mark: |         | Form9Dot16MinimumForceOnInternalBeamLine                  |
 | 10.1           |        :x:         |         |                                                           |
 | 10.2           |        :x:         |         |                                                           |
 | 10.3           |        :x:         |         |                                                           |

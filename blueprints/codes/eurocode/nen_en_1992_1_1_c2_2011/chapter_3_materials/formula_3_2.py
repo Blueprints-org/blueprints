@@ -32,6 +32,10 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
             Use your own implementation of this formula or use the SubForm3Dot2CoefficientTypeOfCementS class.
         t : DAYS
             [t] Age of concrete in days [days].
+
+        Returns
+        -------
+        None
         """
         super().__init__()
         self.s = s
@@ -90,4 +94,4 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
             case "s":
                 return 0.38
             case _:
-                raise ValueError(f"Invalid cement class: {cement_class}. Options: R, N or S")
+                raise ValueError(f"Invalid cement class: {cement_class}. Options: 'R', 'N' or 'S'")
