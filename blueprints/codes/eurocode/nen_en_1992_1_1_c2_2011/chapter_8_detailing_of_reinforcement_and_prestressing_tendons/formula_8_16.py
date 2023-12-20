@@ -2,7 +2,7 @@
 # pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -16,7 +16,7 @@ class Form8Dot16BasicTransmissionLength(Formula):
         self,
         alpha_1: DIMENSIONLESS,
         alpha_2: DIMENSIONLESS,
-        diameter: DIMENSIONLESS,
+        diameter: MM,
         sigma_pm0: MPA,
         f_bpt: MPA,
     ) -> None:
@@ -42,7 +42,7 @@ class Form8Dot16BasicTransmissionLength(Formula):
             = 0.19 for 3 and 7-wire strands.
 
             Use your own implementation for this value or use :class:`SubForm8Dot16Alpha2` class.
-        diameter : DIMENSIONLESS
+        diameter : MM
             [:math:`Ø`] Nominal diameter of the tendon [:math:`mm`].
         sigma_pm0 : MPA
             [:math:`σ_{pm0}`] Tendon stress at time of release [:math:`MPa`].
@@ -62,7 +62,7 @@ class Form8Dot16BasicTransmissionLength(Formula):
     def _evaluate(
         alpha_1: DIMENSIONLESS,
         alpha_2: DIMENSIONLESS,
-        diameter: DIMENSIONLESS,
+        diameter: MM,
         sigma_pm0: MPA,
         f_bpt: MPA,
     ) -> MPA:
