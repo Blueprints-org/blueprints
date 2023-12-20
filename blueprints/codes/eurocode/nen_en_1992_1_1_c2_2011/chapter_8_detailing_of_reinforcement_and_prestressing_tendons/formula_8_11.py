@@ -7,7 +7,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form8Dot11MinimumDesignLapLength(Formula):
-    """Class representing formula 8.11 for the calculation of the minimum design lap length l0,min [mm]."""
+    """Class representing formula 8.11 for the calculation of the minimum design lap length :math:`l_{0,min}` [mm]."""
 
     label = "8.11"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,22 +18,23 @@ class Form8Dot11MinimumDesignLapLength(Formula):
         l_b_rqd: MM,
         diameter: MM,
     ) -> None:
-        """[l0,min] Design minimum lap length [mm].
+        """[:math:`l0,min`] Design minimum lap length [mm].
 
         NEN-EN 1992-1-1+C2:2011 art.8.7.3(1) - Formula (8.11)
 
         Parameters
         ----------
         alpha_6 : DIMENSIONLESS
-            [α6] Coefficient for the effect of reinforcement ratio [-].
-            = (ρl/25)^0.5 <= 1.5 with a minimum of 1.0.
-            Where: ρl = reinforcement percentage lapped within 0,65 l0 from the centre of the lap length considered (see figure 8.8) [-].
+            [:math:`α_6`] Coefficient for the effect of reinforcement ratio [-].
+            = :math:`(\frac{ρ_l}{25})^{0.5} ≤ 1.5` with a minimum of :math:`1.0`.
+            Where: :math:`ρ_l` = reinforcement percentage lapped within :math:`0,65 l_0` from the centre of the lap length
+            considered (see figure 8.8) [-].
         l_b_rqd: MM
-            [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant
+            [:math:`l{b,rqd}`] Basic required anchorage length, for anchoring the force :math:`A_s σ_{sd}` in a straight bar assuming constant
             bond stress (formula 8.3) [mm].
             Use your own implementation for this value or use the Form8Dot3RequiredAnchorageLength class.
         diameter : MM
-            [Ø] Diameter of the bar [mm].
+            [:math:`Ø`] Diameter of the bar [mm].
         """
         super().__init__()
         self.alpha_6 = alpha_6
