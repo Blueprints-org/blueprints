@@ -30,9 +30,9 @@ class Form8Dot11MinimumDesignLapLength(Formula):
             Where: ρl = reinforcement percentage lapped within 0,65 l0 from the centre of the lap length considered (see figure 8.8) [-].
             Use your own implementation for this value or use the SubForm8Dot10Alpha6 class.
         l_b_rqd : MM
-            [lbrqd] Required anchorage length from formula 8.3 [mm].
-            = (Ø/4) * (σsd/fbd)
-            Use your own implementation of this formula or use the Form8Dot3RequiredAnchorageLength class.
+            [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant
+            bond stress (formula 8.3) [mm].
+            Use your own implementation for this value or use the Form8Dot3RequiredAnchorageLength class.
         diameter : MM
             [Ø] Diameter of the bar [mm].
         """
