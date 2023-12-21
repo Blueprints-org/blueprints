@@ -5,7 +5,27 @@
 [![GitHub](https://img.shields.io/github/license/Blueprints-org/blueprints?color=green)](https://github.com/Blueprints-org/blueprints/blob/main/LICENSE)
 [![Python versions](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue?style=flat&logo=python)](https://badge.fury.io/py/blueprints)
 
-# Blueprints
+
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/source/_static/blueprints_banner.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/source/_static/blueprints_banner.png">
+  <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
+</picture>
+
+Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike. Blueprints is a collaborative, open-source initiative designed to serve as a comprehensive library of code, tools, and best practices, aiming to streamline and innovate the workflows within the built environment sector.
+
+## Vision
+
+Our vision with Blueprints is to create an accessible, reliable, and community-driven resource that supports engineers, and developers in their daily challenges. By harnessing the collective expertise of the industry, Blueprints strives to pave the way for a future where collaboration and open source can drive the field of civil engineering to new heights.
+
+## Mission
+
+Our mission is to:
+
+- Foster a community where sharing knowledge and best practices is the norm, not the exception.
+- Provide a solid foundation of code and documentation that adheres to the highest quality standards (100% code coverage).
+- Offer a robust suite of tools and libraries that encapsulate common and advanced engineering tasks.
 
 ## Installation
 
@@ -20,6 +40,7 @@ For the actively developed version:
 ```shell
 pip install git+https://github.com/Blueprints-org/blueprints.git
 ```
+Documentation is available at [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/).
 
 ## Quick Reference to Blueprint's Objects
 
