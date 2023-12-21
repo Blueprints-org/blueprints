@@ -67,7 +67,7 @@ class Form8Dot10DesignLapLength(Formula):
             Note: see figure 8.4 for values of :math:`K, A_{s}` and :math:`A_{st}`.
         alpha_5 : DIMENSIONLESS
             [:math:`α_{5}`] Coefficient for the effect of the pressure transverse to the plane of splitting along the design
-            anchorage length :math:l_{bd} (see 8.6) [-].
+            anchorage length :math:`l_{bd}` (see 8.6) [-].
 
             :math:`= 1 - 0.04 ⋅ p <= 1` with a minimum of 0.7 for all types of anchorage in compression.
 
