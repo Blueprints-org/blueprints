@@ -28,6 +28,7 @@ class Form8Dot11MinimumDesignLapLength(Formula):
             [α6] Coefficient for the effect of reinforcement ratio [-].
             = (ρl/25)^0.5 <= 1.5 with a minimum of 1.0.
             Where: ρl = reinforcement percentage lapped within 0,65 l0 from the centre of the lap length considered (see figure 8.8) [-].
+            Use your own implementation for this value or use the SubForm8Dot10Alpha6 class.
         l_b_rqd : MM
             [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant
             bond stress (formula 8.3) [mm].
