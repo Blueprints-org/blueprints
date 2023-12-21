@@ -7,7 +7,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form8Dot11MinimumDesignLapLength(Formula):
-    """Class representing formula 8.11 for the calculation of the minimum design lap length :math:`l_{0,min}` [mm]."""
+    """Class representing formula 8.11 for the calculation of the minimum design lap length :math:`l_{0,min}` [:math:`mm`]."""
 
     label = "8.11"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -31,6 +31,8 @@ class Form8Dot11MinimumDesignLapLength(Formula):
 
             Where: :math:`ρ_l` = reinforcement percentage lapped within :math:`0.65 ⋅ l_0` from the centre of the lap length
             considered (see figure 8.8) [-].
+
+            Use your own implementation for this value or use the :class:`SubForm8Dot10Alpha6` class.
         l_b_rqd: MM
             [:math:`l_{b,rqd}`] Basic required anchorage length, for anchoring the force :math:`A_s ⋅ σ_{sd}` in a straight bar assuming constant
             bond stress (formula 8.3) [:math:`mm`].
