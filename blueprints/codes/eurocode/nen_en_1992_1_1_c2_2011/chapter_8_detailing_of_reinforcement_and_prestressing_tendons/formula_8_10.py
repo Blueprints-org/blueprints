@@ -1,5 +1,5 @@
 """Formula 8.10 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons"""
-# pylint: disable=arguments-differ
+# pylint: disable=arguments-differ, duplicate-code
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS, MM
@@ -67,7 +67,7 @@ class Form8Dot10DesignLapLength(Formula):
             Note: see figure 8.4 for values of :math:`K, A_{s}` and :math:`A_{st}`.
         alpha_5 : DIMENSIONLESS
             [:math:`α_{5}`] Coefficient for the effect of the pressure transverse to the plane of splitting along the design
-            anchorage length :math:l_{bd} (see 8.6) [-].
+            anchorage length :math:`l_{bd}` (see 8.6) [-].
 
             :math:`= 1 - 0.04 ⋅ p <= 1` with a minimum of 0.7 for all types of anchorage in compression.
 
