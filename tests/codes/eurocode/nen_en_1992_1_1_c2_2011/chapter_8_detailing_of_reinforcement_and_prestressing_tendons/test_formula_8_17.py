@@ -16,7 +16,7 @@ class TestForm8Dot17DesignValueTransmissionLength1:
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
         # example values
-        l_pt = 140  # mm
+        l_pt = 120  # mm
         form_8_17 = Form8Dot17DesignValueTransmissionLength1(l_pt=l_pt)
         # manually calculated result
         manually_calculated_result = 96  # mm
