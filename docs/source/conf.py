@@ -1,4 +1,5 @@
 """Blueprints docs configuration."""
+# pylint: disable=invalid-name, wrong-import-position, redefined-builtin
 import os
 import sys
 from datetime import datetime
@@ -59,7 +60,7 @@ intersphinx_mapping = {
 html_theme = "furo"
 # html_logo = "_static/placeholder-logo.png"
 html_static_path = ["_static"]
-html_favicon = "_static/light_favicon.ico"
+html_favicon = "_static/favicon.ico"
 html_theme_options = {
     "light_logo": "logo-light-mode.png",  # add light mode logo
     "dark_logo": "logo-dark-mode.png",  # add dark mode logo
