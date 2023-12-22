@@ -45,7 +45,7 @@ Total of 304 formulas present.
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
 | 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
-| 5.3a           |        :x:         |         |                                                           |
+| 5.3a           | :heavy_check_mark: |         | Form5Dot3ATransverseForceUnbracedMembers                  |
 | 5.3b           |        :x:         |         |                                                           |
 | 5.4            |        :x:         |         |                                                           |
 | 5.5            |        :x:         |         |                                                           |
@@ -205,19 +205,19 @@ Total of 304 formulas present.
 | 8.1            | :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                   |
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
-| 8.4            |        :x:         |         |                                                           |
+| 8.4            | :heavy_check_mark: |         | Form8Dot4DesignAnchorageLength                            |
 | 8.5            |        :x:         |         |                                                           |
-| 8.6            |        :x:         |         |                                                           |
-| 8.7            |        :x:         |         |                                                           |
-| 8.8N           |        :x:         |         |                                                           |
-| 8.9            |        :x:         |         |                                                           |
-| 8.10           |        :x:         |         |                                                           |
-| 8.11           |        :x:         |         |                                                           |
-| 8.12           |        :x:         |         |                                                           |
-| 8.13           |        :x:         |         |                                                           |
-| 8.14           |        :x:         |         |                                                           |
-| 8.15           |        :x:         |         |                                                           |
-| 8.16           |        :x:         |         |                                                           |
+| 8.6            | :heavy_check_mark: |         | Form8Dot6MinimumTensionAnchorage                          |
+| 8.7            | :heavy_check_mark: |         | Form8Dot7MinimumCompressionAnchorage                      |
+| 8.8N           | :heavy_check_mark: |         | Form8Dot8NAnchorageCapacityWeldedTransverseBar            |
+| 8.9            | :heavy_check_mark: |         | Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiamet  |
+| 8.10           | :heavy_check_mark: |         | Form8Dot10DesignLapLength                                 |
+| 8.11           | :heavy_check_mark: |         | Form8Dot11MinimumDesignLapLength                          |
+| 8.12           | :heavy_check_mark: |         | Form8Dot12AdditionalShearReinforcement                    |
+| 8.13           | :heavy_check_mark: |         | Form8Dot13AdditionalShearReinforcement                    |
+| 8.14           | :heavy_check_mark: |         | Form8Dot14EquivalentDiameterBundledBars                   |
+| 8.15           | :heavy_check_mark: |         | Form8Dot15PrestressTransferStress                         |
+| 8.16           | :heavy_check_mark: |         | Form8Dot16BasicTransmissionLength                         |
 | 8.17           |        :x:         |         |                                                           |
 | 8.18           |        :x:         |         |                                                           |
 | 8.19           |        :x:         |         |                                                           |
