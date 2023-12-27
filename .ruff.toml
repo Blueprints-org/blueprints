@@ -58,7 +58,6 @@ ignore = [
     "ANN101", # missing-type-self
 
     # flake8-pytest-style
-    "PT006", # pytest-parametrize-names-wrong-type
     "PT011", # pytest-raises-too-broad
 
     # pylint

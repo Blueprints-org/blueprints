@@ -70,7 +70,7 @@ class TestForm8Dot4DesignAnchorageLength:
         assert form_8_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        "alpha_1, alpha_2, alpha_3, alpha_4, alpha_5",
+        ("alpha_1", "alpha_2", "alpha_3", "alpha_4", "alpha_5"),
         [
             (-1, 1, 1, 1, 1),  # alpha_1 is negative
             (1, -1, 1, 1, 1),  # alpha_2 is negative
