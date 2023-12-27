@@ -1,8 +1,8 @@
 """Blueprints docs configuration."""
-# pylint: disable=invalid-name, wrong-import-position, redefined-builtin
+# ruff: noqa: E402, A001
 import os
 import sys
-from datetime import datetime
+import datetime
 
 sys.path.insert(0, os.path.abspath("../../"))
 from blueprints import __version__
@@ -10,7 +10,7 @@ from blueprints import __version__
 # project information
 project = "Blueprints"
 author = "Blueprints"
-copyright = f"{datetime.now().year}, Blueprints v{__version__}"
+copyright = f"{datetime.datetime.now(tz=datetime.UTC).year}, Blueprints v{__version__}"
 
 # sphinx config
 templates_path = ["_templates"]
