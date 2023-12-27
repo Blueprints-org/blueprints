@@ -33,7 +33,6 @@ repos:
     rev: v1.8.0
     hooks:
     - id: mypy
-      args: ["--ignore-missing-imports"]
       language_version: python3.11
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
