@@ -1,5 +1,4 @@
 """Testing formula 3.9 of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_9 import Form3Dot9DryingShrinkage
@@ -22,7 +21,7 @@ class TestForm3Dot9DryingShrinkage:
         assert form_3_9 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_beta_ds_tt_s_is_given(self) -> None:
-        """Test that an error is raised when beta_ds_tt_s is negative"""
+        """Test that an error is raised when beta_ds_tt_s is negative."""
         # Example values
         beta_ds_tt_s = -0.25  # -
         k_h = 0.75  # -
@@ -32,7 +31,7 @@ class TestForm3Dot9DryingShrinkage:
             Form3Dot9DryingShrinkage(beta_ds_tt_s=beta_ds_tt_s, k_h=k_h, epsilon_cd_0=epsilon_cd_0)
 
     def test_raise_error_when_negative_k_h_is_given(self) -> None:
-        """Test that an error is raised when k_h is negative"""
+        """Test that an error is raised when k_h is negative."""
         # Example values
         beta_ds_tt_s = 0.25  # -
         k_h = -0.75  # -

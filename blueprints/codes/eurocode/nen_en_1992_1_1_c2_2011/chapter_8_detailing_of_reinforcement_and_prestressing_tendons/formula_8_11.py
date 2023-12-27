@@ -1,5 +1,4 @@
-"""Formula 8.11 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons"""
-# pylint: disable=arguments-differ
+"""Formula 8.11 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS, MM
@@ -52,7 +51,7 @@ class Form8Dot11MinimumDesignLapLength(Formula):
         l_b_rqd: MM,
         diameter: MM,
     ) -> MM:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             alpha_6=alpha_6,
             l_b_rqd=l_b_rqd,

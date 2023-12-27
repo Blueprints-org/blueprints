@@ -1,2 +1,2 @@
-"""Blueprints version"""
+"""Blueprints version."""
 __version__ = "0.0.2"

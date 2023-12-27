@@ -1,7 +1,4 @@
 """Testing formula 8.8n of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ
-# pylint: disable=duplicate-code
-
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
@@ -54,7 +51,7 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         assert form_8_8n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_l_td_is_given(self) -> None:
-        """Test if NegativeValueError is raised when l_td is negative"""
+        """Test if NegativeValueError is raised when l_td is negative."""
         # Example values
         l_td = -100  # mm
         diameter_t = 16  # mm
@@ -70,7 +67,7 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
             )
 
     def test_raise_error_when_negative_diameter_t_is_given(self) -> None:
-        """Test if NegativeValueError is raised when diameter_t is negative"""
+        """Test if NegativeValueError is raised when diameter_t is negative."""
         # Example values
         l_td = 100  # mm
         diameter_t = -16  # mm
@@ -86,7 +83,7 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
             )
 
     def test_raise_error_when_negative_sigma_td_is_given(self) -> None:
-        """Test if NegativeValueError is raised when sigma_td is negative"""
+        """Test if NegativeValueError is raised when sigma_td is negative."""
         # Example values
         l_td = 100  # mm
         diameter_t = 16  # mm
@@ -102,7 +99,7 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
             )
 
     def test_raise_error_when_negative_f_wd_is_given(self) -> None:
-        """Test if NegativeValueError is raised when f_wd is negative"""
+        """Test if NegativeValueError is raised when f_wd is negative."""
         # Example values
         l_td = 100  # mm
         diameter_t = 16  # mm

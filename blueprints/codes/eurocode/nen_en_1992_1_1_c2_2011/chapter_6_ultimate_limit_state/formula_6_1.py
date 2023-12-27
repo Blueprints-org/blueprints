@@ -1,5 +1,4 @@
 """Formula 6.1 from NEN-EN 1992-1-1+C2:2011: Chapter 6 - Ultimate limit state."""
-# pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import KN
@@ -41,7 +40,7 @@ class Form6Dot1DesignShearStrength(Formula):
         v_ccd: KN,
         v_td: KN,
     ) -> KN:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if v_rd_s < 0:
             raise ValueError(f"Negative v_rd_s: {v_rd_s}. v_rd_s cannot be negative")
         if v_ccd < 0:

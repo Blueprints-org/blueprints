@@ -1,6 +1,4 @@
 """Testing formula 8.9 of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ
-
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_9 import (

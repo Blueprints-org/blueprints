@@ -1,5 +1,4 @@
 """Formula 3.5 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
-# pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MPA
@@ -45,7 +44,7 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
         f_cm: MPA,
         e_cm: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_cm_t < 0:
             raise ValueError(f"Negative f_cm_t: {f_cm_t}. f_cm_t cannot be negative")
         if f_cm < 0:

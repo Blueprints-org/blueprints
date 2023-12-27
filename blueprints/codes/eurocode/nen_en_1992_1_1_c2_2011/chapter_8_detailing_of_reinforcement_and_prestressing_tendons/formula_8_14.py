@@ -1,7 +1,6 @@
-"""Formula 8.14 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons"""
+"""Formula 8.14 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 import numpy as np
 
-# pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS, MM
@@ -19,7 +18,7 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
         diameter: MM,
         n_b: DIMENSIONLESS,
     ) -> None:
-        """[:math:`Ø_{n}`] Equivalent diameter of bundled bars [:math:`mm`]
+        """[:math:`Ø_{n}`] Equivalent diameter of bundled bars [:math:`mm`].
 
         NEN-EN 1992-1-1+C2:2011 art.8.9.1(2) - Formula (8.14)
 
@@ -40,7 +39,7 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
 
     @staticmethod
     def _evaluate(diameter: MM, n_b: DIMENSIONLESS) -> MM:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             diameter=diameter,
             n_b=n_b,

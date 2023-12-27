@@ -1,5 +1,4 @@
 """Formula 3.2 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
-# pylint: disable=arguments-differ
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -46,7 +45,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         s: float,
         t: DAYS,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if s < 0:
             raise ValueError(f"Invalid s: {s}. s cannot be negative")
         if t <= 0:
@@ -56,7 +55,8 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
 
 class SubForm3Dot2CoefficientTypeOfCementS(Formula):
     """Class representing sub-formula for formula 3.2, which calculates the coefficient 's'
-    which is dependent on the cement class"""
+    which is dependent on the cement class.
+    """
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.2"
@@ -85,7 +85,7 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
     def _evaluate(
         cement_class: str,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         match cement_class.lower():
             case "r":
                 return 0.20
