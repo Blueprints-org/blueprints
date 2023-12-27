@@ -62,7 +62,7 @@ class TestForm5Dot1Imperfections:
         """Test the integration with sub-formula 5.1 for the reduction factor for length or height, αh."""
         # Example values
         theta_0 = 0.005
-        alpha_h = SubForm5Dot1ReductionFactorLengthOrHeight(l=5.3)
+        alpha_h = SubForm5Dot1ReductionFactorLengthOrHeight(length=5.3)
         alpha_m = 0.9
 
         # Object to test
