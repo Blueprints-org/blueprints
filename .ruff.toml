@@ -78,6 +78,11 @@ ignore = [
     "RUF003", # ambiguous-unicode-character-comment
 ]
 
+[format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
 [pylint]
 max-args = 8
 
