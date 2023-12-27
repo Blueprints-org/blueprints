@@ -78,7 +78,7 @@ class TestForm5Dot1Imperfections:
         # Example values
         theta_0 = 0.005
         alpha_h = 0.8
-        alpha_m = SubForm5Dot1ReductionFactorNumberOfMembers(m=3)
+        alpha_m = SubForm5Dot1ReductionFactorNumberOfMembers(members=3)
 
         # Object to test
         form_5_1 = Form5Dot1Imperfections(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)
