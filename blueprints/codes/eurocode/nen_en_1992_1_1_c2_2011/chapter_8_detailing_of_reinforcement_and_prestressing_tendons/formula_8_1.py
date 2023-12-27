@@ -8,7 +8,8 @@ from blueprints.validations import raise_if_negative
 
 class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
     """Class representing formula 8.1 for the calculation of the required minimum mandrel diameter if it needs to be checked to avoid
-    concrete failure."""
+    concrete failure.
+    """
 
     label = "8.1"
     source_document = NEN_EN_1992_1_1_C2_2011
