@@ -12,18 +12,19 @@ class Formula(float, ABC):
         instance._initialized = False
         return instance
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
+        """Method for initializing a new instance of the class."""
         super().__init__(*args, **kwargs)
         self._initialized = True
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: str | float) -> None:
         """Override the __setattr__ method to prevent modifications after initialization.
 
         Parameters
         ----------
         name : str
             The name of the attribute.
-        value : Any
+        value : str | float
             The value to be assigned to the attribute.
         """
         if getattr(self, "_initialized", False) and name in self.__dict__:
