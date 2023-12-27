@@ -25,10 +25,12 @@ class Form5Dot3ATransverseForceUnbracedMembers(Formula):
         Parameters
         ----------
         theta_i : DIMENSIONLESS
-            [:math:`Θ_{i}`] Eccentricity, initial inclination imperfections [-].\n
-            Use your own implementation of this value or use the Form5Dot1Imperfections class.
+            [:math:`Θ_{i}`] Eccentricity, initial inclination imperfections [-].
+
+            Use your own implementation of this value or use the :class:`Form5Dot1Imperfections` class.
         n_axial_force : KN
-            [:math:`N`] Axial force [:math:`kN`].\n
+            [:math:`N`] Axial force [:math:`kN`].
+
             Positive values for compression, tension is not allowed.
 
         Notes
