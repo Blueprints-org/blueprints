@@ -9,7 +9,7 @@ class Formula(float, ABC):
         """Method for creating a new instance of the class."""
         result = cls._evaluate(*args, **kwargs)
         instance = float.__new__(cls, result)
-        instance._initialized = False
+        instance._initialized = False  # noqa: SLF001
         return instance
 
     def __init__(self, *args, **kwargs) -> None:
