@@ -6,7 +6,7 @@ from blueprints.type_alias import MPA
 
 
 class Form3Dot14StressStrainForShortTermLoading(Formula):
-    """Class representing formula 3.14, which calculates the compressive stress-strength ratio"""
+    """Class representing formula 3.14, which calculates the compressive stress-strength ratio."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.14"
@@ -44,7 +44,7 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
         k: float,
         eta: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if k < 0:
             raise ValueError(f"Invalid k: {k}. k cannot be negative")
         if eta < 0:
@@ -53,7 +53,7 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
 
 
 class SubForm3Dot14Eta(Formula):
-    """Class representing sub-formula 1 for formula 3.14, which calculates eta"""
+    """Class representing sub-formula 1 for formula 3.14, which calculates eta."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.14"
@@ -83,12 +83,12 @@ class SubForm3Dot14Eta(Formula):
         epsilon_c: float,
         epsilon_c1: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         return epsilon_c / epsilon_c1
 
 
 class SubForm3Dot14K(Formula):
-    """Class representing sub-formula 2 for formula 3.14, which calculates k"""
+    """Class representing sub-formula 2 for formula 3.14, which calculates k."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.14"
@@ -118,7 +118,7 @@ class SubForm3Dot14K(Formula):
         epsilon_c1: float,
         f_cm: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if e_cm < 0:
             raise ValueError(f"Invalid e_cm: {e_cm}. e_cm cannot be negative")
         if f_cm <= 0:

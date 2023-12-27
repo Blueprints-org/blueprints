@@ -1,4 +1,4 @@
-"""This module is testing sub-formula 1 from 8.15 from NEN-EN 1992-1-1+C2:2011"""
+"""This module is testing sub-formula 1 from 8.15 from NEN-EN 1992-1-1+C2:2011."""
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_15 import (

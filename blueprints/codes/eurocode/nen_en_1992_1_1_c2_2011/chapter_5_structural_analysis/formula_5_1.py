@@ -48,7 +48,7 @@ class Form5Dot1Imperfections(Formula):
         alpha_h: DIMENSIONLESS,
         alpha_m: DIMENSIONLESS,
     ) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)
         return theta_0 * alpha_h * alpha_m
 
@@ -81,7 +81,7 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
     def _evaluate(
         l: M,
     ) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(l=l)
         # the value of alpha_h is between 2/3 and 1.0
         alpha_h = 2 / np.sqrt(l)
@@ -118,7 +118,7 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
     def _evaluate(
         m: M,
     ) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(m=m)
         # the value of alpha_m is between 1.0 and 1.5
         return np.sqrt(0.5 * (1 + 1 / m))

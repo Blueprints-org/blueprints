@@ -22,7 +22,7 @@ class TestForm9Dot9MaximumSpacingSeriesOfLinks:
         assert form_9_9 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_d_is_given(self) -> None:
-        """Test if error is given when d is negative"""
+        """Test if error is given when d is negative."""
         d = -100  # mm
         alpha = 85  # deg
 

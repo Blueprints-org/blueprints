@@ -46,7 +46,7 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         sigma_c: MPA,
         e_c: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if phi_inf_t0 < 0:
             raise ValueError(f"Negative phi_inf_t0: {phi_inf_t0}. phi_inf_t0 cannot be negative")
         if sigma_c < 0:

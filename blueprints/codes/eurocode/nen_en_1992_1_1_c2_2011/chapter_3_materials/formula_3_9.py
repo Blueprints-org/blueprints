@@ -48,7 +48,7 @@ class Form3Dot9DryingShrinkage(Formula):
         k_h: float,
         epsilon_cd_0: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if beta_ds_tt_s < 0:
             raise ValueError(f"Negative beta_ds_tt_s: {beta_ds_tt_s}. beta_ds_tt_s cannot be negative")
         if k_h < 0:

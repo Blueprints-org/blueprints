@@ -41,7 +41,7 @@ class SubForm3Dot282930Mu(Formula):
         sigma_pi: MPA,
         f_pk: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_pk < 0:
             raise ValueError(f"Invalid f_pk: {f_pk}. f_pk cannot be negative")
         return sigma_pi / f_pk

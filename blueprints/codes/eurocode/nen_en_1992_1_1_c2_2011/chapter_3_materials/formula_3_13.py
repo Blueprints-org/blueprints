@@ -8,7 +8,7 @@ from blueprints.type_alias import DAYS
 
 
 class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
-    """Class representing formula 3.13, which calculates the coefficient dependent on time for the autogene shrinkage"""
+    """Class representing formula 3.13, which calculates the coefficient dependent on time for the autogene shrinkage."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.13"
@@ -37,7 +37,7 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
     def _evaluate(
         t: DAYS,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if t < 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative")
         return 1 - np.exp(-0.2 * t**0.5)

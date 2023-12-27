@@ -7,7 +7,7 @@ from blueprints.type_alias import MM
 
 
 class Form4Dot1NominalConcreteCover(Formula):
-    """Class representing the formula 4.1 for the calculation of the nominal concrete cover"""
+    """Class representing the formula 4.1 for the calculation of the nominal concrete cover."""
 
     label = "4.1"
     source_document = NEN_EN_1992_1_1_C2_2011

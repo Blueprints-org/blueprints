@@ -36,7 +36,7 @@ class Form3Dot19And20EffectivePressureZoneHeight(Formula):
     def _evaluate(
         f_ck: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_ck <= 50:
             return 0.8
         if f_ck <= 90:

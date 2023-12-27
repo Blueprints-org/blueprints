@@ -12,7 +12,8 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
     """Class representing the formula 8.8N for the calculation of the anchorage capacity of welded transverse bar, welded on the inside of the main
-    bar"""
+    bar.
+    """
 
     label = "8.8N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -74,7 +75,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
 
 
 class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
-    """Class representing sub-formula for formula 8.8N, which calculates the design length of the transverse bar"""
+    """Class representing sub-formula for formula 8.8N, which calculates the design length of the transverse bar."""
 
     label = "8.8N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -129,7 +130,7 @@ class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
 
 
 class SubForm8Dot8NConcreteStress(Formula):
-    """Class representing sub-formula for formula 8.8N, which calculates the concrete stress"""
+    """Class representing sub-formula for formula 8.8N, which calculates the concrete stress."""
 
     label = "8.8N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -184,7 +185,7 @@ class SubForm8Dot8NConcreteStress(Formula):
 
 
 class SubForm8Dot8NFunctionY(Formula):
-    """Class representing sub-formula for formula 8.8N, which calculates the function y"""
+    """Class representing sub-formula for formula 8.8N, which calculates the function y."""
 
     label = "8.8N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -193,7 +194,7 @@ class SubForm8Dot8NFunctionY(Formula):
         self,
         x_function: DIMENSIONLESS,
     ) -> None:
-        """[y] A function [-]
+        """[y] A function [-].
 
         NEN-EN 1992-1-1+C2:2011 art.8.6(2) - y
 
@@ -219,7 +220,7 @@ class SubForm8Dot8NFunctionY(Formula):
 
 
 class SubForm8Dot8NFunctionX(Formula):
-    """Class representing sub-formula for formula 8.8N, which calculates the function x"""
+    """Class representing sub-formula for formula 8.8N, which calculates the function x."""
 
     label = "8.8N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -229,7 +230,7 @@ class SubForm8Dot8NFunctionX(Formula):
         cover: MM,
         diameter_t: MM,
     ) -> None:
-        """[x] A function accounting for the geometry [-]
+        """[x] A function accounting for the geometry [-].
 
         NEN-EN 1992-1-1+C2:2011 art.8.6(2) - x
 

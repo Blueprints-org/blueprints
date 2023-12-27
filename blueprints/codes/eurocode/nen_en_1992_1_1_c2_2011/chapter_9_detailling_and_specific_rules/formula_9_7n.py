@@ -11,7 +11,7 @@ from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
 class Form9Dot7NMaximumDistanceBentUpBars(Formula):
-    """Class representing the formula 9.7N for the calculation of the maximum distance between bent-up bars in longitudinal direction"""
+    """Class representing the formula 9.7N for the calculation of the maximum distance between bent-up bars in longitudinal direction."""
 
     label = "9.7N"
     source_document = NEN_EN_1992_1_1_C2_2011

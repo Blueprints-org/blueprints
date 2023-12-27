@@ -7,7 +7,8 @@ from blueprints.type_alias import MPA
 
 class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
     """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by
-    tensile splitting strength."""
+    tensile splitting strength.
+    """
 
     label = "3.3"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -37,7 +38,7 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
     def _evaluate(
         f_ct_sp: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_ct_sp < 0:
             raise ValueError(f"Negative f_ct_sp: {f_ct_sp}. f_ct_sp cannot be negative")
         return 0.9 * f_ct_sp

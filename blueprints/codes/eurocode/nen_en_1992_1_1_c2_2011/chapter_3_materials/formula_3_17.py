@@ -50,7 +50,7 @@ class Form3Dot17CompressiveStressConcrete(Formula):
         epsilon_c2: float,
         n: float,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_cd < 0:
             raise ValueError(f"Invalid f_cd: {f_cd}. f_cd cannot be negative")
         if epsilon_c < 0:

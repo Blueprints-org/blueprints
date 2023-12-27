@@ -35,7 +35,7 @@ class Form3Dot18CompressiveStressConcrete(Formula):
     def _evaluate(
         f_cd: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_cd < 0:
             raise ValueError(f"Invalid f_cd: {f_cd}. f_cd cannot be negative")
         return f_cd

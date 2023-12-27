@@ -8,7 +8,8 @@ from blueprints.validations import raise_if_negative
 
 class Form5Dot3ATransverseForceUnbracedMembers(Formula):
     """Class representing formula 5.3a for the calculation of the transverse force for unbraced members, :math:`H_{i}`.
-    See Figure 5.1 a1."""
+    See Figure 5.1 a1.
+    """
 
     label = "5.3a"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -46,6 +47,6 @@ class Form5Dot3ATransverseForceUnbracedMembers(Formula):
         theta_i: DIMENSIONLESS,
         n_axial_force: KN,
     ) -> KN:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(theta_i=theta_i, n_axial_force=n_axial_force)
         return theta_i * n_axial_force

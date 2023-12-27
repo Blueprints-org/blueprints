@@ -38,7 +38,7 @@ class Form5Dot2Eccentricity(Formula):
         theta_i: float,
         l_0: M,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(theta_i=theta_i)
         raise_if_less_or_equal_to_zero(l_0=l_0)
         return theta_i * l_0 / 2

@@ -12,7 +12,8 @@ from blueprints.validations import raise_if_negative
 
 class Form9Dot9MaximumSpacingSeriesOfLinks(Formula):
     """Class representing the formula 9.9 for the calculation of the maximum distance between successive series of links in longitudinal direction
-    for slabs"""
+    for slabs.
+    """
 
     label = "9.9"
     source_document = NEN_EN_1992_1_1_C2_2011

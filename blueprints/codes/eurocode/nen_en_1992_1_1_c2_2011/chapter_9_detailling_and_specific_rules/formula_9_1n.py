@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
-    """Class representing the formula 9.1N for the calculation of minimum tensile reinforcement area in longitudinal direction for beams"""
+    """Class representing the formula 9.1N for the calculation of minimum tensile reinforcement area in longitudinal direction for beams."""
 
     label = "9.1N"
     source_document = NEN_EN_1992_1_1_C2_2011

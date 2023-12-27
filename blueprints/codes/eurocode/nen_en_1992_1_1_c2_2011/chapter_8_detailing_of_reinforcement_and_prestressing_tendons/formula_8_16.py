@@ -1,4 +1,4 @@
-"""Formula 8.16 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons"""
+"""Formula 8.16 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 # pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -66,7 +66,7 @@ class Form8Dot16BasicTransmissionLength(Formula):
         sigma_pm0: MPA,
         f_bpt: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             alpha_1=alpha_1,
             alpha_2=alpha_2,
@@ -98,7 +98,7 @@ class SubForm8Dot16Alpha1(Formula):
 
     @staticmethod
     def _evaluate(release_type: str) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         match release_type.lower():
             case "gradual":
                 return 1.0
@@ -136,7 +136,7 @@ class SubForm8Dot16Alpha2(Formula):
 
     @staticmethod
     def _evaluate(type_of_wire: str) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         match type_of_wire.lower():
             case "circular":
                 return 0.25

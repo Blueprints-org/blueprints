@@ -36,7 +36,7 @@ class Form3Dot21And22EffectiveStrength(Formula):
     def _evaluate(
         f_ck: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_ck <= 50:
             return 1.0
         if f_ck <= 90:

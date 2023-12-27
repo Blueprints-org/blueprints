@@ -9,7 +9,8 @@ from blueprints.validations import raise_if_negative
 
 class Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks(Formula):
     """Class representing the formula 9.8N for the calculation of the maximum distance in transverse direction between legs in a series of shear
-    links"""
+    links.
+    """
 
     label = "9.8N"
     source_document = NEN_EN_1992_1_1_C2_2011

@@ -6,7 +6,7 @@ from blueprints.type_alias import MPA
 
 
 class Form3Dot12AutogeneShrinkageInfinity(Formula):
-    """Class representing formula 3.12, which calculates the autogene shrinkage at infinity"""
+    """Class representing formula 3.12, which calculates the autogene shrinkage at infinity."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.12"
@@ -35,7 +35,7 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
     def _evaluate(
         f_ck: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         return 2.5 * (f_ck - 10) * 10**-6

@@ -51,13 +51,13 @@ class Form8Dot2UltimateBondStress(Formula):
         eta_2: DIMENSIONLESS,
         f_ctd: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
         return 2.25 * eta_1 * eta_2 * f_ctd
 
 
 class SubForm8Dot2CoefficientQualityOfBond(Formula):
-    """Class representing sub-formula for formula 8.2, which calculates the coefficient 'η1' which is dependent on the quality of the bond"""
+    """Class representing sub-formula for formula 8.2, which calculates the coefficient 'η1' which is dependent on the quality of the bond."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "8.2"
@@ -80,7 +80,7 @@ class SubForm8Dot2CoefficientQualityOfBond(Formula):
 
     @staticmethod
     def _evaluate(bond_quality: str) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         match bond_quality.lower():
             case "good":
                 return 1
@@ -91,7 +91,7 @@ class SubForm8Dot2CoefficientQualityOfBond(Formula):
 
 
 class SubForm8Dot2CoefficientBarDiameter(Formula):
-    """Class representing sub-formula for formula 8.2, which calculates the coefficient 'η2' which is dependent on the bar diameter"""
+    """Class representing sub-formula for formula 8.2, which calculates the coefficient 'η2' which is dependent on the bar diameter."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "8.2"
@@ -111,7 +111,7 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
 
     @staticmethod
     def _evaluate(diameter: MM) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(diameter=diameter)
         if diameter <= 32:
             return 1

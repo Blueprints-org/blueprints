@@ -46,7 +46,7 @@ class Form3Dot26IncreasedStrainAtMaxStrength(Formula):
         f_ck_c: MPA,
         epsilon_c2: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         if f_ck_c < 0:

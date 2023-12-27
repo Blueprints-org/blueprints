@@ -48,7 +48,7 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
         alpha: float,
         f_ctm: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if beta_cc_t < 0:
             raise ValueError(f"Negative beta_cc_t: {beta_cc_t}. beta_cc_t cannot be negative")
         if f_ctm < 0:
@@ -60,7 +60,8 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
 
 class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
     """Class representing sub-formula for formula 3.4 for the coefficient 'α' which
-    is dependent of the age of concrete."""
+    is dependent of the age of concrete.
+    """
 
     label = "3.4"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -85,7 +86,7 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
     def _evaluate(
         t: DAYS,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if t <= 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
         if t < 28:

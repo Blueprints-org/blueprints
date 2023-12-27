@@ -41,7 +41,7 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
         phi_inf_t0: float,
         k_sigma: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if phi_inf_t0 < 0:
             raise ValueError(f"Negative phi_inf_t0: {phi_inf_t0}. phi_inf_t0 cannot be negative")
         if k_sigma < 0:

@@ -44,7 +44,7 @@ class Form7Dot3CoefficientKc(Formula):
         a_ct: MM2,
         f_ct_eff: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if a_ct <= 0:
             raise ValueError("The value of a_ct must be greater than zero.")
         if f_ct_eff <= 0:

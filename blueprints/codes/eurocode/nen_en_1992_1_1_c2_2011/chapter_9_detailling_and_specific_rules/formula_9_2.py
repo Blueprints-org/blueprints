@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
 class Form9Dot2ShiftInMomentDiagram(Formula):
-    """Class representing the formula 9.2 for the calculation of the shift in the moment diagram for elements with shear reinforcement"""
+    """Class representing the formula 9.2 for the calculation of the shift in the moment diagram for elements with shear reinforcement."""
 
     label = "9.2"
     source_document = NEN_EN_1992_1_1_C2_2011

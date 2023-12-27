@@ -5,7 +5,7 @@ from blueprints.codes.formula import Formula
 
 
 class Form3Dot11AutogeneShrinkage(Formula):
-    """Class representing formula 3.11, which calculates the autogene shrinkage"""
+    """Class representing formula 3.11, which calculates the autogene shrinkage."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.11"
@@ -43,7 +43,7 @@ class Form3Dot11AutogeneShrinkage(Formula):
         beta_as_t: float,
         epsilon_ca_inf: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if beta_as_t < 0:
             raise ValueError(f"Invalid beta_as_t: {beta_as_t}. beta_as_t cannot be negative")
         return beta_as_t * epsilon_ca_inf

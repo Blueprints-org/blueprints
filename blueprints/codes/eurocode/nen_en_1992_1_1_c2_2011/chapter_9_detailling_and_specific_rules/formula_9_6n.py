@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
 class Form9Dot6NMaximumDistanceShearReinforcement(Formula):
-    """Class representing the formula 9.6N for the calculation of the maximum distance between shear reinforcement in longitudinal direction"""
+    """Class representing the formula 9.6N for the calculation of the maximum distance between shear reinforcement in longitudinal direction."""
 
     label = "9.6N"
     source_document = NEN_EN_1992_1_1_C2_2011

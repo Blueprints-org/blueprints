@@ -1,4 +1,4 @@
-"""This module is testing formula 8.15 from NEN-EN 1992-1-1+C2:2011"""
+"""This module is testing formula 8.15 from NEN-EN 1992-1-1+C2:2011."""
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_2 import (
@@ -74,7 +74,7 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
             )
 
     def test_integration_with_sub_form_8_15_1(self) -> None:
-        """Test the integration with sub-formula 8.15"""
+        """Test the integration with sub-formula 8.15."""
         # example values
         eta_1 = 1  # [-]
         f_ctd_t = 2.5  # MPa
@@ -87,7 +87,7 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
         assert form_8_15 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_integration_with_sub_form_8_15_2(self) -> None:
-        """Test the integration with sub-formula 8.15"""
+        """Test the integration with sub-formula 8.15."""
         # example values
         eta_p1 = 1  # [-]
         eta_1 = 1  # [-]
@@ -107,7 +107,7 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
         assert form_8_15 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_integration_with_sub_form_8_2_coefficient_of_bond(self) -> None:
-        """Test the integration with sub-formula 8.2"""
+        """Test the integration with sub-formula 8.2."""
         # example values
         eta_p1 = 1
         eta_1 = SubForm8Dot2CoefficientQualityOfBond(bond_quality="good")

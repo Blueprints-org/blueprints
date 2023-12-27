@@ -49,7 +49,7 @@ class Form3Dot29RatioLossOfPreStressClass2(Formula):
         mu: float,
         t: HOURS,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if rho_1000 < 0:
             raise ValueError(f"Invalid rho_1000: {rho_1000}. rho_1000 cannot be negative")
         if t < 0:

@@ -41,7 +41,7 @@ class Form6Dot1DesignShearStrength(Formula):
         v_ccd: KN,
         v_td: KN,
     ) -> KN:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if v_rd_s < 0:
             raise ValueError(f"Negative v_rd_s: {v_rd_s}. v_rd_s cannot be negative")
         if v_ccd < 0:

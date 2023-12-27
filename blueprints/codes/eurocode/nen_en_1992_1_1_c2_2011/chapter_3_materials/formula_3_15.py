@@ -46,7 +46,7 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
         f_ck: MPA,
         gamma_c: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if alpha_cc < 0:
             raise ValueError(f"Invalid alpha_cc: {alpha_cc}. alpha_cc cannot be negative")
         if f_ck < 0:

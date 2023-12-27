@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form9Dot5NMinimumShearReinforcementRatio(Formula):
-    """Class representing the formula 9.5N for the calculation of the minimum shear reinforcement ratio for beams"""
+    """Class representing the formula 9.5N for the calculation of the minimum shear reinforcement ratio for beams."""
 
     label = "9.5N"
     source_document = NEN_EN_1992_1_1_C2_2011

@@ -46,7 +46,7 @@ class Form3Dot16DesignValueTensileStrength(Formula):
         f_ctk_0_05: MPA,
         gamma_c: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if alpha_ct < 0:
             raise ValueError(f"Invalid alpha_ct: {alpha_ct}. alpha_ct cannot be negative")
         if f_ctk_0_05 < 0:

@@ -1,4 +1,4 @@
-"""Formula 8.15 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons"""
+"""Formula 8.15 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 # pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -8,7 +8,8 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 class Form8Dot15PrestressTransferStress(Formula):
     """Class representing formula 8.15 for the calculation of the constant bond stress at which prestress is assumed to be transferred to the
-    concrete, at the release of tendons."""
+    concrete, at the release of tendons.
+    """
 
     label = "8.15"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -59,7 +60,7 @@ class Form8Dot15PrestressTransferStress(Formula):
         eta_1: DIMENSIONLESS,
         f_ctd_t: MPA,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             eta_p1=eta_p1,
             eta_1=eta_1,
@@ -70,7 +71,8 @@ class Form8Dot15PrestressTransferStress(Formula):
 
 class SubForm8Dot15EtaP1(Formula):
     """Class representing sub-formula 8.15 for the calculation of the coefficient that takes into account the type of tendon and the bond situation
-    at release."""
+    at release.
+    """
 
     label = "8.15"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -97,7 +99,7 @@ class SubForm8Dot15EtaP1(Formula):
 
     @staticmethod
     def _evaluate(type_of_wire: str) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         match type_of_wire.lower():
             case "indented":
                 return 2.7
@@ -109,7 +111,8 @@ class SubForm8Dot15EtaP1(Formula):
 
 class SubForm8Dot15TensileStrengthAtRelease(Formula):
     """Class representing sub-formula 8.15 for the calculation of the design tensile value of strength at time of release (see  3.1.2(8) and
-    3.1.6(2)P)."""
+    3.1.6(2)P).
+    """
 
     label = "8.15"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -149,7 +152,7 @@ class SubForm8Dot15TensileStrengthAtRelease(Formula):
         f_ctm_t: MPA,
         gamma_c: DIMENSIONLESS,
     ) -> MPA:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(alpha_ct=alpha_ct, f_ctm_t=f_ctm_t)
         raise_if_less_or_equal_to_zero(gamma_c=gamma_c)
         return alpha_ct * 0.7 * f_ctm_t / gamma_c

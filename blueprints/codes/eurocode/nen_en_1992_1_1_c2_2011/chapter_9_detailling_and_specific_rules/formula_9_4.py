@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
 class Form9Dot4ShearReinforcementRatio(Formula):
-    """Class representing the formula 9.4 for the calculation of the shear reinforcement ratio"""
+    """Class representing the formula 9.4 for the calculation of the shear reinforcement ratio."""
 
     label = "9.4"
     source_document = NEN_EN_1992_1_1_C2_2011

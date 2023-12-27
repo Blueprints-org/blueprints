@@ -39,5 +39,5 @@ class Form3Dot8TotalShrinkage(Formula):
         epsilon_cd: float,
         epsilon_ca: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         return epsilon_cd + epsilon_ca

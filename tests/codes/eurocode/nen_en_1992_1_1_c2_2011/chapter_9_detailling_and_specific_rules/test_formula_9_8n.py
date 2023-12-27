@@ -34,7 +34,7 @@ class TestForm9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks:
         assert form_9_8n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_d_is_given(self) -> None:
-        """Test if error is raised when d is negative"""
+        """Test if error is raised when d is negative."""
         d = -100  # mm
 
         with pytest.raises(NegativeValueError):

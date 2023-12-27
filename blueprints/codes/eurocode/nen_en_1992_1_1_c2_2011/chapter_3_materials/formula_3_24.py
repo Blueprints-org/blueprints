@@ -41,7 +41,7 @@ class Form3Dot24IncreasedCharacteristicCompressiveStrength(Formula):
         f_ck: MPA,
         sigma_2: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         if sigma_2 > 0.05 * f_ck:

@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form9Dot10MaximumSpacingBentUpBars(Formula):
-    """Class representing the formula 9.10 for the calculation of the maximum longitudinal spacing of bent up bars for slabs"""
+    """Class representing the formula 9.10 for the calculation of the maximum longitudinal spacing of bent up bars for slabs."""
 
     label = "9.10"
     source_document = NEN_EN_1992_1_1_C2_2011

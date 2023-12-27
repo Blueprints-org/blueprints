@@ -45,7 +45,7 @@ class Form3Dot27IncreasedStrainLimitValue(Formula):
         sigma_2: MPA,
         epsilon_cu2: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         return epsilon_cu2 + 0.2 * sigma_2 / f_ck

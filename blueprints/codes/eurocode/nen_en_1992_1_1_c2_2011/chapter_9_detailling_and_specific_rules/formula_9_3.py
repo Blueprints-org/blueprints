@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form9Dot3ShiftInMomentDiagram(Formula):
-    """Class representing the formula 9.3 for the calculation of anchorage length of bottom reinforcement at an end support using the shift rule"""
+    """Class representing the formula 9.3 for the calculation of anchorage length of bottom reinforcement at an end support using the shift rule."""
 
     label = "9.3"
     source_document = NEN_EN_1992_1_1_C2_2011
