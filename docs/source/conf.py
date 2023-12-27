@@ -1,8 +1,8 @@
 """Blueprints docs configuration."""
-# ruff: noqa: E402, A001
+# ruff: noqa: E402, A001, I001
+import datetime
 import os
 import sys
-import datetime
 
 sys.path.insert(0, os.path.abspath("../../"))
 from blueprints import __version__
@@ -58,7 +58,6 @@ intersphinx_mapping = {
 
 # html theme
 html_theme = "furo"
-# html_logo = "_static/placeholder-logo.png"
 html_static_path = ["_static"]
 html_favicon = "_static/favicon.ico"
 html_theme_options = {
@@ -68,7 +67,6 @@ html_theme_options = {
     "source_repository": "https://github.com/Blueprints-org/blueprints",
     "source_branch": "main",
     "source_directory": "docs/",
-    # "announcement": "<em>Important</em> announcement!",
 }
 html_title = f"Blueprints v{__version__}"
 html_css_files = [
