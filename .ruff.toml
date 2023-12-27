@@ -49,7 +49,6 @@ select = [
 
 ignore = [
     # pydocstyle
-    "D104", # undocumented-public-package
     "D205", # blank-line-after-summary
     "D401", # non-imperative-mood
 
