@@ -52,7 +52,6 @@ ignore = [
     "D100", # undocumented-public-module
     "D104", # undocumented-public-package
     "D205", # blank-line-after-summary
-    "D301", # escape-sequence-in-docstring
     "D401", # non-imperative-mood
     "D404", # docstring-starts-with-this
 
