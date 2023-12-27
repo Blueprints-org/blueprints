@@ -1,5 +1,4 @@
 """Module for testing the Formula class."""
-# pylint: disable=arguments-differ
 import pytest
 
 from blueprints.codes.formula import Formula

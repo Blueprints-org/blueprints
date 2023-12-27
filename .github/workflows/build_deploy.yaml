@@ -33,13 +33,10 @@ jobs:
           pip install .[minimal_requirements]
           pip install .[dev]
       
-      - name: Run linting check with pylint
+      - name: Run linting checks with ruff
         run: |
-          pylint --rcfile pyproject.toml ./blueprints
-      
-      - name: Run formatting checks with black
-        run: |
-          black --check .
+          ruff check .
+          ruff format .
       
       - name: Run type checks with mypy
         run: |

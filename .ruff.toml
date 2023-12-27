@@ -1,0 +1,90 @@
+line-length = 150
+
+[lint]
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle (Errors)
+    "W", # pycodestyle (Warnings)
+    "C90", # mccabe (complexity)
+    "I", # isort
+    "N", # pep8 naming
+    "D", # pydocstyle
+    "UP", # pyupgrade
+    "ANN", # flake8-annotations
+    "ASYNC", # flake8-async
+    "A", # flake8-builtins
+    "COM", # flake8-commas
+    "C4", # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "EXE", # flake8-executable
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "INP", # flake8-no-pep420
+    "PIE", # flake8-pie
+    "T20", # flake8-print
+    "PYI", # flake8-pyi
+    "PT", # flake8-pytest-style
+    "Q", # flake8-quotes
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SLF", # flake8-self
+    "SLOT", # flake8-slot
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+    "INT", # flake8-gettext
+    "ARG", # flake8-unused-arguments
+    "TD", # flake8-todos
+    "FIX", # flake8-fixme
+    "ERA", # eradicate
+    "PD", # pandas-vet
+    "PGH", # pygrep-hooks
+    "PL", # pylint
+    "TRY", # tryceratops
+    "FLY", # flyint
+    "NPY", # NumPy-specific rules
+    "AIR", # Airflow
+    "PERF", # Perflint
+    "RUF", # Ruff-specific rules
+]
+
+ignore = [
+    # pydocstyle
+    "D100", # undocumented-public-module
+    "D104", # undocumented-public-package
+    "D205", # blank-line-after-summary
+    "D209", # new-line-after-last-paragraph
+    "D210", # surrounding-whitespace
+    "D301", # escape-sequence-in-docstring
+    "D401", # non-imperative-mood
+    "D404", # docstring-starts-with-this
+
+    # flake8-annotations
+    "ANN002", # missing-type-args
+    "ANN003", # missing-type-kwargs
+    "ANN101", # missing-type-self
+
+    # flake8-pytest-style
+    "PT006", # pytest-parametrize-names-wrong-type
+    "PT011", # pytest-raises-too-broad
+
+    # pylint
+    "PLR2004", # magic-value-comparison
+
+    # tryceratops
+    "TRY003", # raise-vanilla-args
+
+    # Ruff-specific rules
+    "RUF002", # ambiguous-unicode-character-docstring
+    "RUF003", # ambiguous-unicode-character-comment
+]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[pylint]
+max-args = 8
+
+[pydocstyle]
+convention = "numpy"

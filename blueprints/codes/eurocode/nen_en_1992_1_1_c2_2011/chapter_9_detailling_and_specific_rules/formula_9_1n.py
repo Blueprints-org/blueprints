@@ -1,7 +1,4 @@
 """Formula 9.1N from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
-# pylint: disable=arguments-differ
-# pylint: disable=invalid-name
-
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MM, MM2, MPA
@@ -9,7 +6,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
-    """Class representing the formula 9.1N for the calculation of minimum tensile reinforcement area in longitudinal direction for beams"""
+    """Class representing the formula 9.1N for the calculation of minimum tensile reinforcement area in longitudinal direction for beams."""
 
     label = "9.1N"
     source_document = NEN_EN_1992_1_1_C2_2011

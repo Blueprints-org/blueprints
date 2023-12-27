@@ -1,5 +1,4 @@
 """Testing formula 9.3 of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_3 import Form9Dot3ShiftInMomentDiagram
@@ -29,7 +28,7 @@ class TestForm9Dot3ShiftInMomentDiagram:
         assert form_9_3 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_z_is_given(self) -> None:
-        """Test if error is raised when z is negative"""
+        """Test if error is raised when z is negative."""
         # Example values
         v_ed = -200  # kN
         a_l = 200  # mm
@@ -45,7 +44,7 @@ class TestForm9Dot3ShiftInMomentDiagram:
             )
 
     def test_raise_error_when_negative_a_l_is_given(self) -> None:
-        """Test if error is raised when a_l is negative"""
+        """Test if error is raised when a_l is negative."""
         # Example values
         v_ed = -200  # kN
         a_l = -200  # mm
