@@ -54,9 +54,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
 
 
 class SubForm3Dot2CoefficientTypeOfCementS(Formula):
-    """Class representing sub-formula for formula 3.2, which calculates the coefficient 's'
-    which is dependent on the cement class.
-    """
+    """Class representing sub-formula for formula 3.2, which calculates the coefficient 's' which is dependent on the cement class."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.2"

@@ -61,9 +61,7 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
 
 
 class SubForm3Dot10FictionalCrossSection(Formula):
-    """Class representing sub-formula for formula 3.10 for the calculation of fictional
-    thickness of the cross-section.
-    """
+    """Class representing sub-formula for formula 3.10 for the calculation of fictional thickness of the cross-section."""
 
     label = "3.10"
     source_document = NEN_EN_1992_1_1_C2_2011

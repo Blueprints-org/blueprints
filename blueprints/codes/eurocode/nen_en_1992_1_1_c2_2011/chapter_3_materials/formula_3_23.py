@@ -5,9 +5,7 @@ from blueprints.type_alias import MM, MPA
 
 
 class Form3Dot23FlexuralTensileStrength(Formula):
-    """Class representing formula 3.23 for the calculation of the mean flexural tensile strength
-    of reinforced concrete members.
-    """
+    """Class representing formula 3.23 for the calculation of the mean flexural tensile strength of reinforced concrete members."""
 
     label = "3.23"
     source_document = NEN_EN_1992_1_1_C2_2011

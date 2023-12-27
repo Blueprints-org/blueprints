@@ -16,8 +16,7 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         sigma_c: MPA,
         e_c: MPA,
     ) -> None:
-        """εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete compressive
-        stress σc applied at time t0 [-].
+        """εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete compressive stress σc applied at time t0 [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(3) - Formula (3.6)
 
