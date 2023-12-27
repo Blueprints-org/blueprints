@@ -1,6 +1,4 @@
 """Testing formula 9.1N of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ
-# pylint: disable=invalid-name
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_1n import (
