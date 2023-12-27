@@ -26,9 +26,9 @@ jobs:
           pip install .[minimal_requirements]
           pip install .[dev]
           pip install pandas-stubs
-      - name: Run linting check with pylint
+      - name: Run linting checks with ruff
         run: |
-          pylint --rcfile pyproject.toml ./blueprints
+          ruff check .
       - name: Run formatting checks with black
         run: |
           black --check .
