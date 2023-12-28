@@ -6,7 +6,7 @@ from blueprints.validations import NegativeValueError
 
 
 class TestForm2Dot2CharacteristicValueResistance:
-    """ "Validation for formula 2.2 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 2.2 from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
