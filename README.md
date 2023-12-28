@@ -47,11 +47,11 @@ Documentation is available at [blueprints.readthedocs.io](https://blueprints.rea
 This table serves as a quick navigator to the key elements of the code within Blueprints, offering immediate links to its equations, tables, and
 figures for streamlined access and reference.
 
-| Document                   | Description                                                                                 |                            Formulas                             |                            Tables                            |                            Figures                             |
-|:---------------------------|:--------------------------------------------------------------------------------------------|:---------------------------------------------------------------:|:------------------------------------------------------------:|:--------------------------------------------------------------:|
+| Document                   | Description                                                                                 |                             Formulas                             |                            Tables                            |                            Figures                             |
+|:---------------------------|:--------------------------------------------------------------------------------------------|:----------------------------------------------------------------:|:------------------------------------------------------------:|:--------------------------------------------------------------:|
 | NEN-EN 1992-1-1+C2:2011    | Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings | [304](docs/source/codes/eurocode/ec2_1992_1_1_2011/formulas.md) | [38](docs/source/codes/eurocode/ec2_1992_1_1_2011/tables.md) | [104](docs/source/codes/eurocode/ec2_1992_1_1_2011/figures.md) |
 | NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings    | [108](docs/source/codes/eurocode/ec3_1993_1_1_2016/formulas.md) | [20](docs/source/codes/eurocode/ec3_1993_1_1_2016/tables.md) | [28](docs/source/codes/eurocode/ec3_1993_1_1_2016/figures.md)  |
-| NEN-EN 9997-1+C2:2017      | Eurocode 7: Geotechnical design - Part 1: General rules                                     |  [88](docs/source/codes/eurocode/ec7_1997_1_2016/formulas.md)   |  [11](docs/source/codes/eurocode/ec7_1997_1_2016/tables.md)  |  [25](docs/source/codes/eurocode/ec7_1997_1_2016/figures.md)   |
+| NEN 9997-1+C2:2017         | Eurocode 7: Geotechnical design of structures - Part 1: General rules                       |  [102](docs/source/codes/eurocode/nen_9997_1_c2_2017/formulas.md)  |  [11](docs/source/codes/eurocode/nen_9997_1_c2_2017/tables.md)  |  [25](docs/source/codes/eurocode/nen_9997_1_c2_2017/figures.md)   |
 
 ## Contributing
 
