@@ -1,5 +1,4 @@
 """Testing formula 9.4 of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_4 import Form9Dot4ShearReinforcementRatio
@@ -29,7 +28,7 @@ class TestForm9Dot4ShearReinforcementRatio:
         assert form_9_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_raise_error_when_negative_a_sw_is_given(self) -> None:
-        """Test if error is raised when a_sw is negative"""
+        """Test if error is raised when a_sw is negative."""
         a_sw = -100  # mm²
         s = 200  # mm
         b_w = 150  # mm
@@ -44,7 +43,7 @@ class TestForm9Dot4ShearReinforcementRatio:
             )
 
     def test_raise_error_when_negative_s_is_given(self) -> None:
-        """Test if error is raised when s is negative"""
+        """Test if error is raised when s is negative."""
         a_sw = 100  # mm²
         s = -200  # mm
         b_w = 150  # mm
@@ -59,7 +58,7 @@ class TestForm9Dot4ShearReinforcementRatio:
             )
 
     def test_raise_error_when_negative_b_w_is_given(self) -> None:
-        """Test if error is raised when b_w is negative"""
+        """Test if error is raised when b_w is negative."""
         a_sw = 100  # mm²
         s = 200  # mm
         b_w = -150  # mm
@@ -74,7 +73,7 @@ class TestForm9Dot4ShearReinforcementRatio:
             )
 
     def test_raise_error_when_negative_alpha_is_given(self) -> None:
-        """Test if error is raised when alpha is negative"""
+        """Test if error is raised when alpha is negative."""
         a_sw = 100  # mm²
         s = 200  # mm
         b_w = 150  # mm
@@ -89,7 +88,7 @@ class TestForm9Dot4ShearReinforcementRatio:
             )
 
     def test_raise_error_when_alpha_is_greater_90(self) -> None:
-        """Test if error is raised when alpha is negative"""
+        """Test if error is raised when alpha is negative."""
         a_sw = 100  # mm²
         s = 200  # mm
         b_w = 150  # mm

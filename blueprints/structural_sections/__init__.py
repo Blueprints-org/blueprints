@@ -1,0 +1,1 @@
+"""Structural sections package."""

@@ -1,5 +1,4 @@
 """Formula 5.1 from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
-# pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS, M
@@ -38,7 +37,7 @@ class Form5Dot2Eccentricity(Formula):
         theta_i: float,
         l_0: M,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(theta_i=theta_i)
         raise_if_less_or_equal_to_zero(l_0=l_0)
         return theta_i * l_0 / 2

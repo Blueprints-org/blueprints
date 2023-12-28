@@ -1,6 +1,4 @@
-"""This package represents the Eurocode NEN-EN 1992-1-1+C2:2011 code - Chapter 9 - formula (9.14)."""
-# pylint: disable=arguments-differ
-
+"""Formula 9.14 from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing and specific rules."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import KN, MM

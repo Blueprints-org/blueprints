@@ -1,7 +1,8 @@
 """Blueprints docs configuration."""
+# ruff: noqa: E402, A001, I001
+import datetime
 import os
 import sys
-from datetime import datetime
 
 sys.path.insert(0, os.path.abspath("../../"))
 from blueprints import __version__
@@ -9,7 +10,7 @@ from blueprints import __version__
 # project information
 project = "Blueprints"
 author = "Blueprints"
-copyright = f"{datetime.now().year}, Blueprints v{__version__}"
+copyright = f"{datetime.datetime.now(tz=datetime.UTC).year}, Blueprints v{__version__}"
 
 # sphinx config
 templates_path = ["_templates"]
@@ -57,9 +58,8 @@ intersphinx_mapping = {
 
 # html theme
 html_theme = "furo"
-# html_logo = "_static/placeholder-logo.png"
 html_static_path = ["_static"]
-html_favicon = "_static/light_favicon.ico"
+html_favicon = "_static/favicon.ico"
 html_theme_options = {
     "light_logo": "logo-light-mode.png",  # add light mode logo
     "dark_logo": "logo-dark-mode.png",  # add dark mode logo
@@ -67,7 +67,6 @@ html_theme_options = {
     "source_repository": "https://github.com/Blueprints-org/blueprints",
     "source_branch": "main",
     "source_directory": "docs/",
-    # "announcement": "<em>Important</em> announcement!",
 }
 html_title = f"Blueprints v{__version__}"
 html_css_files = [

@@ -1,5 +1,4 @@
 """Formula 5.1 from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
-# pylint: disable=arguments-differ
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -48,7 +47,7 @@ class Form5Dot1Imperfections(Formula):
         alpha_h: DIMENSIONLESS,
         alpha_m: DIMENSIONLESS,
     ) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)
         return theta_0 * alpha_h * alpha_m
 
@@ -61,7 +60,7 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
 
     def __init__(
         self,
-        l: M,
+        length: M,
     ) -> None:
         """[αh] Reduction factor for length or height [-].
 
@@ -71,20 +70,20 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
 
         Parameters
         ----------
-        l : M
-            [l] Length or height, see art.5.2(6) [m].
+        length : M
+            [length] Length or height, see art.5.2(6) [m].
         """
         super().__init__()
-        self.l = l
+        self.length = length
 
     @staticmethod
     def _evaluate(
-        l: M,
+        length: M,
     ) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
-        raise_if_less_or_equal_to_zero(l=l)
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_less_or_equal_to_zero(length=length)
         # the value of alpha_h is between 2/3 and 1.0
-        alpha_h = 2 / np.sqrt(l)
+        alpha_h = 2 / np.sqrt(length)
         if alpha_h < 2 / 3:
             return 2 / 3
         if alpha_h > 1:
@@ -100,7 +99,7 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
 
     def __init__(
         self,
-        m: int,
+        members: int,
     ) -> None:
         """[αm] Reduction factor for number of members [-].
 
@@ -108,17 +107,17 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
 
         Parameters
         ----------
-        m : int
+        members : int
             [m] Number of vertical members contributing to the total effect [-].
         """
         super().__init__()
-        self.m = m
+        self.members = members
 
     @staticmethod
     def _evaluate(
-        m: M,
+        members: int,
     ) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method"""
-        raise_if_less_or_equal_to_zero(m=m)
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_less_or_equal_to_zero(members=members)
         # the value of alpha_m is between 1.0 and 1.5
-        return np.sqrt(0.5 * (1 + 1 / m))
+        return np.sqrt(0.5 * (1 + 1 / members))
