@@ -1,13 +1,11 @@
 """Formula 3.23 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
-# pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MM, MPA
 
 
 class Form3Dot23FlexuralTensileStrength(Formula):
-    """Class representing formula 3.23 for the calculation of the mean flexural tensile strength
-    of reinforced concrete members."""
+    """Class representing formula 3.23 for the calculation of the mean flexural tensile strength of reinforced concrete members."""
 
     label = "3.23"
     source_document = NEN_EN_1992_1_1_C2_2011

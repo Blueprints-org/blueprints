@@ -1,6 +1,4 @@
 """Formula 8.1 from NEN-EN 1992-1-1+C2:2011: Chapter 8 Detailing of reinforcement and prestressing tendons."""
-# pylint: disable=arguments-differ
-
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import KN, MM, MPA
@@ -10,7 +8,8 @@ from blueprints.validations import raise_if_negative
 
 class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
     """Class representing formula 8.1 for the calculation of the required minimum mandrel diameter if it needs to be checked to avoid
-    concrete failure."""
+    concrete failure.
+    """
 
     label = "8.1"
     source_document = NEN_EN_1992_1_1_C2_2011

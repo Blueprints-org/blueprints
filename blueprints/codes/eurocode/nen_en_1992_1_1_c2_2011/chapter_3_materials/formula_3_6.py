@@ -1,5 +1,4 @@
 """Formula 3.6 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
-# pylint: disable=arguments-differ
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MPA
@@ -17,8 +16,7 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         sigma_c: MPA,
         e_c: MPA,
     ) -> None:
-        """εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete compressive
-        stress σc applied at time t0 [-].
+        """εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete compressive stress σc applied at time t0 [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(3) - Formula (3.6)
 
@@ -46,7 +44,7 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         sigma_c: MPA,
         e_c: MPA,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if phi_inf_t0 < 0:
             raise ValueError(f"Negative phi_inf_t0: {phi_inf_t0}. phi_inf_t0 cannot be negative")
         if sigma_c < 0:

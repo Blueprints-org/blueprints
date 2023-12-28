@@ -1,5 +1,4 @@
 """Testing test formula for 3.28, 3.29 and 3.30 of NEN-EN 1992-1-1+C2:2011."""
-# pylint: disable=arguments-differ
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.sub_formula_3_28_29_30 import SubForm3Dot282930Mu

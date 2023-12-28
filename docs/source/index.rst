@@ -1,16 +1,33 @@
-.. image:: _static/blueprints_banner.png
- :width: 100 %
- :alt: blueprints
- :align: left
-
 .. toctree::
     :hidden:
     :maxdepth: 2
 
     api
 
-Blueprints
-==========
+.. image:: _static/blueprints_banner.png
+    :width: 100 %
+    :alt: blueprints
+    :align: left
+
+Welcome to Blueprints
+=====================
+
+The cornerstone repository for civil engineering professionals and enthusiasts alike. Blueprints is a collaborative, open-source initiative
+designed to serve as a comprehensive library of code, tools, and best practices, aiming to streamline and innovate the workflows within the built environment sector.
+
+Vision
+------
+
+Our vision with Blueprints is to create an accessible, reliable, and community-driven resource that supports engineers, and developers in their daily challenges. By harnessing the collective expertise of the industry, Blueprints strives to pave the way for a future where collaboration and open source can drive the field of civil engineering to new heights.
+
+Mission
+-------
+
+Our mission is to:
+
+- Foster a community where sharing knowledge and best practices is the norm, not the exception.
+- Provide a solid foundation of code and documentation that adheres to the highest quality standards (100% code coverage).
+- Offer a robust suite of tools and libraries that encapsulate common and advanced engineering tasks.
 
 Installation
 ------------

@@ -19,7 +19,7 @@ G = float
 # <editor-fold desc="FORCES">
 N = float
 KN = float
-KN_M = float  # pylint: disable=invalid-name
+KN_M = float
 # </editor-fold>
 
 # <editor-fold desc="MOMENTS">

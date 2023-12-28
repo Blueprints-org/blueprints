@@ -1,5 +1,4 @@
 """Formula 3.10 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
-# pylint: disable=arguments-differ
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -49,7 +48,7 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
         t_s: DAYS,
         h_0: MM,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if t <= 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
         if t_s < 0:
@@ -62,8 +61,7 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
 
 
 class SubForm3Dot10FictionalCrossSection(Formula):
-    """Class representing sub-formula for formula 3.10 for the calculation of fictional
-    thickness of the cross-section."""
+    """Class representing sub-formula for formula 3.10 for the calculation of fictional thickness of the cross-section."""
 
     label = "3.10"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -93,7 +91,7 @@ class SubForm3Dot10FictionalCrossSection(Formula):
         a_c: MM2,
         u: MM,
     ) -> MM:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if a_c <= 0:
             raise ValueError(f"Invalid a_c: {a_c}. a_c cannot be negative or zero")
         if u <= 0:

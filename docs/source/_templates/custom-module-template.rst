@@ -4,7 +4,6 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    :inherited-members:
 
 {% block modules %}
 {% if modules %}

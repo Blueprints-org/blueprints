@@ -1,5 +1,4 @@
 """Formula 3.7 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
-# pylint: disable=arguments-differ
 import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -41,7 +40,7 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
         phi_inf_t0: float,
         k_sigma: float,
     ) -> float:
-        """Evaluates the formula, for more information see the __init__ method"""
+        """Evaluates the formula, for more information see the __init__ method."""
         if phi_inf_t0 < 0:
             raise ValueError(f"Negative phi_inf_t0: {phi_inf_t0}. phi_inf_t0 cannot be negative")
         if k_sigma < 0:
