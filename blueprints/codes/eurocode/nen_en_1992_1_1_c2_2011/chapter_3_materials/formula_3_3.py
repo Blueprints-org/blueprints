@@ -5,9 +5,7 @@ from blueprints.type_alias import MPA
 
 
 class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
-    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by
-    tensile splitting strength.
-    """
+    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by tensile splitting strength."""
 
     label = "3.3"
     source_document = NEN_EN_1992_1_1_C2_2011

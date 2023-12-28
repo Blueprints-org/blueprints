@@ -2,6 +2,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MPA
+from blueprints.validations import raise_if_negative
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
@@ -42,8 +43,5 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         f_cm: MPA,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        if beta_cc_t < 0:
-            raise ValueError(f"Negative beta_cc_t: {beta_cc_t}. beta_cc_t cannot be negative")
-        if f_cm < 0:
-            raise ValueError(f"Negative f_cm: {f_cm}. f_cm cannot be negative")
+        raise_if_negative(beta_cc_t=beta_cc_t, f_cm=f_cm)
         return beta_cc_t * f_cm

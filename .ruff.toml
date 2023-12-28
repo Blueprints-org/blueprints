@@ -49,14 +49,8 @@ select = [
 
 ignore = [
     # pydocstyle
-    "D100", # undocumented-public-module
-    "D104", # undocumented-public-package
     "D205", # blank-line-after-summary
-    "D209", # new-line-after-last-paragraph
-    "D210", # surrounding-whitespace
-    "D301", # escape-sequence-in-docstring
     "D401", # non-imperative-mood
-    "D404", # docstring-starts-with-this
 
     # flake8-annotations
     "ANN002", # missing-type-args
@@ -64,7 +58,6 @@ ignore = [
     "ANN101", # missing-type-self
 
     # flake8-pytest-style
-    "PT006", # pytest-parametrize-names-wrong-type
     "PT011", # pytest-raises-too-broad
 
     # pylint

@@ -1,5 +1,5 @@
 """
-This module contains pytest tests for validation functions in Blueprints.
+Pytest tests for validation functions in Blueprints.
 
 It includes tests for:
 - raise_if_less_or_equal_to_zero: Ensuring it raises an exception for non-positive values.

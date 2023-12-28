@@ -58,9 +58,7 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
 
 
 class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
-    """Class representing sub-formula for formula 3.4 for the coefficient 'α' which
-    is dependent of the age of concrete.
-    """
+    """Class representing sub-formula for formula 3.4 for the coefficient 'α' which is dependent of the age of concrete."""
 
     label = "3.4"
     source_document = NEN_EN_1992_1_1_C2_2011
