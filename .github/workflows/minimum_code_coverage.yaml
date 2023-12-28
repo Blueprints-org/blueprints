@@ -29,8 +29,6 @@ jobs:
     - name: Install package
       run: python -m pip install -e .[dev]
 
-    - name: Check code coverage is at least 99.7%
+    - name: Check code coverage is 100%
       run: |
-        pip install pytest
-        pip install pytest-cov
-        pytest --cov=./blueprints --cov-fail-under=99.7
+        pytest --cov=./blueprints --cov-fail-under=100
