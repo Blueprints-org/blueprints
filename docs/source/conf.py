@@ -10,7 +10,7 @@ from blueprints import __version__
 # project information
 project = "Blueprints"
 author = "Blueprints"
-copyright = f"{datetime.datetime.now(tz=datetime.UTC).year}, Blueprints v{__version__}"
+copyright = f"{datetime.datetime.now(tz=datetime.UTC).year}, Blueprints v{__version__}"  # type: ignore[attr-defined]
 
 # sphinx config
 templates_path = ["_templates"]

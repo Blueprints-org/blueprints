@@ -13,27 +13,21 @@ def fixture_latex_formula() -> LatexFormula:
 class TestLatexFormula:
     """Test for LatexFormula."""
 
-    def test_short(self,
-                   fixture_latex_formula) -> None:
+    def test_short(self, fixture_latex_formula: LatexFormula) -> None:
         """Test the short representation."""
-
         # Expected result
         expected_result = "E = 500"
 
         assert fixture_latex_formula.short == expected_result
 
-    def test_complete(self,
-                      fixture_latex_formula) -> None:
+    def test_complete(self, fixture_latex_formula: LatexFormula) -> None:
         """Test the complete representation."""
-
         # Expected result
         expected_result = "E = mc^2 = 5*10^2 = 500"
         assert fixture_latex_formula.complete == expected_result
 
-    def test_str(self,
-                 fixture_latex_formula) -> None:
+    def test_str(self, fixture_latex_formula: LatexFormula) -> None:
         """Test the string representation."""
-
         # Expected result
         expected_result = "E = mc^2 = 5*10^2 = 500"
         assert str(fixture_latex_formula) == expected_result
