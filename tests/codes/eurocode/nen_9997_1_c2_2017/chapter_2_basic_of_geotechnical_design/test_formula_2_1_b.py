@@ -28,11 +28,3 @@ class TestForm2Dot1BRepresentativeValue:
 
         with pytest.raises(NegativeValueError):
             Form2Dot1BRepresentativeValue(psi=psi, f_k=f_k)
-
-    def test_raise_error_if_negative_f_k(self) -> None:
-        """Test that a NegativeValueError is raised when a negative value is passed for f_k."""
-        psi = 1.2
-        f_k = -100
-
-        with pytest.raises(NegativeValueError):
-            Form2Dot1BRepresentativeValue(psi=psi, f_k=f_k)

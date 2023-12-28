@@ -33,5 +33,5 @@ class Form2Dot1BRepresentativeValue(Formula):
         f_k: float,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(psi=psi, f_k=f_k)
+        raise_if_negative(psi=psi)
         return psi * f_k
