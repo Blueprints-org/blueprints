@@ -1,11 +1,11 @@
-**NEN-EN 1997- 1+C1+A1 - June 2016
+**NEN-EN 9997-1+C2 - November 2017
 Eurocode 7: Geotechnical design
 Part 1: General rules**
 
 The table presents a list of equations from the Eurocode 7 standards for geotechnical design, tracking their implementation status (:x: or :
 heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
-Total of 102 equations present.
+Total of 88 equations present.
 
 | Equation number | Done | Remarks | Object name |
 |:----------------|:----:|:--------|:------------|
@@ -67,19 +67,6 @@ Total of 102 equations present.
 | 8.14            | :x:  |         |             |
 | 9.1             | :x:  |         |             |
 | 9.2             | :x:  |         |             |
-| A.9             | :x:  |         |             |
-| A.10            | :x:  |         |             |
-| A.11            | :x:  |         |             |
-| A.12            | :x:  |         |             |
-| A.13            | :x:  |         |             |
-| A.14            | :x:  |         |             |
-| A.15            | :x:  |         |             |
-| A.16            | :x:  |         |             |
-| A.17            | :x:  |         |             |
-| A.18            | :x:  |         |             |
-| A.19            | :x:  |         |             |
-| A.20            | :x:  |         |             |
-| A.21            | :x:  |         |             |
 | B.1             | :x:  |         |             |
 | B.2             | :x:  |         |             |
 | B.3.1           | :x:  |         |             |
