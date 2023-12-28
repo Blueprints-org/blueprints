@@ -1,39 +1,39 @@
 """Tests for the LatexFormula class."""
+import pytest
+
 from blueprints.codes.latex_formula import LatexFormula
+
+
+@pytest.fixture()
+def fixture_latex_formula() -> LatexFormula:
+    """Fixture for testing."""
+    return LatexFormula(return_symbol="E", result="500", equation="mc^2", numeric_equation="5*10^2", comparison_operator_label="=")
 
 
 class TestLatexFormula:
     """Test for LatexFormula."""
 
-    @staticmethod
-    def fixture_1() -> LatexFormula:
-        """Fixture for testing."""
-        return LatexFormula(return_symbol="E", result="500", equation="mc^2", numeric_equation="5*10^2", comparison_operator_label="=")
-
-    def test_short(self) -> None:
+    def test_short(self,
+                   fixture_latex_formula) -> None:
         """Test the short representation."""
-        # Example values
-        formula = self.fixture_1()
 
         # Expected result
         expected_result = "E = 500"
 
-        assert formula.short == expected_result
+        assert fixture_latex_formula.short == expected_result
 
-    def test_complete(self) -> None:
+    def test_complete(self,
+                      fixture_latex_formula) -> None:
         """Test the complete representation."""
-        # Example values
-        formula = self.fixture_1()
 
         # Expected result
         expected_result = "E = mc^2 = 5*10^2 = 500"
-        assert formula.complete == expected_result
+        assert fixture_latex_formula.complete == expected_result
 
-    def test_str(self) -> None:
+    def test_str(self,
+                 fixture_latex_formula) -> None:
         """Test the string representation."""
-        # Example values
-        formula = self.fixture_1()
 
         # Expected result
         expected_result = "E = mc^2 = 5*10^2 = 500"
-        assert str(formula) == expected_result
+        assert str(fixture_latex_formula) == expected_result

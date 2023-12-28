@@ -3,9 +3,8 @@ import os
 import sys
 from datetime import datetime
 
-from blueprints import __version__
-
 sys.path.insert(0, os.path.abspath("../../"))
+from blueprints import __version__
 
 # project information
 project = "Blueprints"
