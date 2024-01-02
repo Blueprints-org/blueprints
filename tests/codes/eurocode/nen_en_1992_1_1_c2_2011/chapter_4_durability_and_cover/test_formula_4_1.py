@@ -36,3 +36,13 @@ class TestForm4Dot1NominalConcreteCover:
 
         with pytest.raises(ValueError):
             Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev)
+
+
+def test_latex() -> None:
+    """Test the latex implementation."""
+    c_min = 60  # mm
+    delta_c_dev = 5  # mm
+    form = Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev)
+    assert form.latex().complete == "c_{nom} = c_{min} + Δc_{dev} = 60 + 5 = 65.0"
+    assert form.latex().short == "c_{nom} = 65.0"
+    assert str(form.latex()) == "c_{nom} = c_{min} + Δc_{dev} = 60 + 5 = 65.0"
