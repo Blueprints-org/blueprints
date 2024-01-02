@@ -2,6 +2,40 @@
 from dataclasses import dataclass
 
 
+def value_to_latex_text(value: str | float) -> str:
+    r"""Convert value to a latex text string (\text{variable}).
+
+    Parameters
+    ----------
+    value: str | float
+        The variable name of the variable to be converted to latex text string.
+
+    Returns
+    -------
+    str
+        The latex text
+
+    """
+    return f"\\text{{{value}}}"
+
+
+def max_curly_brackets_latex(*args: str) -> str:
+    """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex.
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the max function.
+
+    Returns
+    -------
+    str
+        The latex string
+
+    """
+    return f"max \\left\\{{{'; '.join(args)}\\right\\}}"
+
+
 @dataclass(frozen=True)
 class LatexFormula:
     """Latex formula representation.

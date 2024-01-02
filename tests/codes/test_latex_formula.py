@@ -1,7 +1,7 @@
 """Tests for the LatexFormula class."""
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets_latex, value_to_latex_text
 
 
 @pytest.fixture()
@@ -31,3 +31,27 @@ class TestLatexFormula:
         # Expected result
         expected_result = "E = mc^2 = 5*10^2 = 500"
         assert str(fixture_latex_formula) == expected_result
+
+
+def test_value_to_latex_text() -> None:
+    """Test the value_to_latex_text function."""
+    # Example values
+    value = 5.0
+
+    # Expected result
+    expected_result = r"\text{5.0}"
+
+    assert value_to_latex_text(value=value) == expected_result
+
+
+def test_max_curly_brackets_latex() -> None:
+    """Test the max_curly_brackets_latex function."""
+    # Example values
+    arg_1 = r"\text{a} + \text{b}"
+    arg_2 = r"\text{500}"
+    arg_3 = r"\text{c-d}"
+
+    # Expected result
+    expected_result = r"max \left\{\text{a} + \text{b}; \text{500}; \text{c-d}\right\}"
+
+    assert max_curly_brackets_latex(arg_1, arg_2, arg_3) == expected_result
