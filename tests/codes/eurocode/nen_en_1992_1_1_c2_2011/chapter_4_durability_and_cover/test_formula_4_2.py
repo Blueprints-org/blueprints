@@ -135,8 +135,8 @@ class TestForm4Dot1NominalConcreteCover:
         )
 
         assert form.latex().complete == (
-            r"c_{min} = max \left\{c_{min,b}; c_{min,dur} + \Delta c_{dur,\gamma} - \Delta c_{dur,st} - "
-            r"\Delta c_{dur,add}; \text{10 mm}\right\} = max \left\{\text{15}; \text{10}+\text{5}-\text{5}-\text{0}; "
+            r"c_{min} = \max \left\{c_{min,b}; c_{min,dur} + \Delta c_{dur,\gamma} - \Delta c_{dur,st} - "
+            r"\Delta c_{dur,add}; \text{10 mm}\right\} = \max \left\{\text{15}; \text{10}+\text{5}-\text{5}-\text{0}; "
             r"\text{10}\right\} = \text{15.0}"
         )
         assert form.latex().short == r"c_{min} = \text{15.0}"

@@ -64,7 +64,7 @@ class Form4Dot2MinimumConcreteCover(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 4.2."""
-        arg_1 = value_to_latex_text(self.c_min_b)
+        arg_1 = self.c_min_b
         arg_2 = str(
             value_to_latex_text(self.c_min_dur)
             + "+"
@@ -74,7 +74,7 @@ class Form4Dot2MinimumConcreteCover(Formula):
             + "-"
             + value_to_latex_text(self.delta_c_dur_add),
         )
-        arg_3 = value_to_latex_text(10)
+        arg_3 = 10
 
         return LatexFormula(
             return_symbol=r"c_{min}",
