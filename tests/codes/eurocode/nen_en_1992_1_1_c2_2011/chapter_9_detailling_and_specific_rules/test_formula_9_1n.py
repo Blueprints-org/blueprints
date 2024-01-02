@@ -81,19 +81,3 @@ class TestForm9Dot1NMinimumTensileReinforcementBeam:
 
         with pytest.raises(NegativeValueError):
             Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
-
-    def test_latex(self) -> None:
-        """Test the latex representation."""
-        # Example values
-        f_ctm = 2  # MPa
-        f_yk = 355  # MPa
-        b_t = 50  # mm
-        d = 150  # mm
-        form = Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
-
-        assert form.latex().complete == (
-            r"A_{s,min} = \max \left\{\text{0.26}\cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; \text{0.0013}\cdot b_t "
-            r"\cdot d\right\} = \max \left\{\text{0.26}\cdot\frac{2}{355}\cdot\text{50}\cdot\text{150}; \text{0.0013}"
-            r"\cdot\text{50}\cdot\text{150}\right\} = \text{10.985915492957748}"
-        )
-        assert form.latex().short == r"A_{s,min} = \text{10.985915492957748}"

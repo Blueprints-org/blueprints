@@ -1,7 +1,6 @@
 """Formula 9.1N from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, max_curly_brackets_latex, value_to_latex_text
 from blueprints.type_alias import MM, MM2, MPA
 from blueprints.validations import raise_if_negative
 
@@ -58,25 +57,3 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
         return max(0.26 * (f_ctm / f_yk) * b_t * d, 0.0013 * b_t * d)
-
-    def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 9.1N."""
-        return LatexFormula(
-            return_symbol="A_{s,min}",
-            result=value_to_latex_text(self),
-            equation=max_curly_brackets_latex(
-                value_to_latex_text(0.26) + r"\cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d",
-                value_to_latex_text(0.0013) + r"\cdot b_t \cdot d",
-            ),
-            numeric_equation=max_curly_brackets_latex(
-                value_to_latex_text(0.26)
-                + r"\cdot"
-                + latex_fraction(self.f_ctm, self.f_yk)
-                + r"\cdot"
-                + value_to_latex_text(self.b_t)
-                + r"\cdot"
-                + value_to_latex_text(self.d),
-                value_to_latex_text(0.0013) + r"\cdot" + value_to_latex_text(self.b_t) + r"\cdot" + value_to_latex_text(self.d),
-            ),
-            comparison_operator_label="=",
-        )
