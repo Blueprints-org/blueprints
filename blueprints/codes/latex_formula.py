@@ -19,7 +19,7 @@ def value_to_latex_text(value: str | float) -> str:
     return f"\\text{{{value}}}"
 
 
-def max_curly_brackets_latex(*args: str) -> str:
+def max_curly_brackets_latex(*args: str | float) -> str:
     """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex.
 
     Parameters
@@ -33,7 +33,36 @@ def max_curly_brackets_latex(*args: str) -> str:
         The latex string
 
     """
-    return f"max \\left\\{{{'; '.join(args)}\\right\\}}"
+    arguments = []
+    for arg in args:
+        max_operation_argument = arg
+        if isinstance(arg, (int, float)):  # check if arg is float or int, so it can be converted to latex text
+            max_operation_argument = value_to_latex_text(arg)
+        arguments.append(str(max_operation_argument))
+    return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
+
+
+def latex_fraction(numerator: str | float, denominator: str | float) -> str:
+    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
+
+    Parameters
+    ----------
+    numerator: str | float
+        The numerator of the fraction.
+    denominator: str | float
+        The denominator of the fraction.
+
+    Returns
+    -------
+    str
+        The latex string
+
+    """
+    if isinstance(numerator, float):
+        numerator = value_to_latex_text(numerator)
+    if isinstance(denominator, float):
+        denominator = value_to_latex_text(denominator)
+    return f"\\frac{{{numerator}}}{{{denominator}}}"
 
 
 @dataclass(frozen=True)
