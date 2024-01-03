@@ -1,7 +1,7 @@
 """Tests for the LatexFormula class."""
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets_latex, value_to_latex_text
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, max_curly_brackets_latex, value_to_latex_text
 
 
 @pytest.fixture()
@@ -44,14 +44,31 @@ def test_value_to_latex_text() -> None:
     assert value_to_latex_text(value=value) == expected_result
 
 
-def test_max_curly_brackets_latex() -> None:
+@pytest.mark.parametrize(
+    ("arg_1", "arg_2", "arg_3", "expected_output"),
+    [
+        (r"a+b", r"\text{500}", r"c-d", r"\max \left\{a+b; \text{500}; c-d\right\}"),
+        (r"a+b", 500, r"c-d", r"\max \left\{a+b; \text{500}; c-d\right\}"),
+    ],
+)
+def test_max_curly_brackets_latex(
+    arg_1: str | float,
+    arg_2: str | float,
+    arg_3: str | float,
+    expected_output: str,
+) -> None:
     """Test the max_curly_brackets_latex function."""
+    result = max_curly_brackets_latex(arg_1, arg_2, arg_3)
+    assert result == expected_output
+
+
+def test_latex_fraction() -> None:
+    """Test the latex_fraction function."""
     # Example values
-    arg_1 = r"\text{a} + \text{b}"
-    arg_2 = r"\text{500}"
-    arg_3 = r"\text{c-d}"
+    numerator = 5.0
+    denominator = 10.0
 
     # Expected result
-    expected_result = r"max \left\{\text{a} + \text{b}; \text{500}; \text{c-d}\right\}"
+    expected_result = r"\frac{\text{5.0}}{\text{10.0}}"
 
-    assert max_curly_brackets_latex(arg_1, arg_2, arg_3) == expected_result
+    assert latex_fraction(numerator=numerator, denominator=denominator) == expected_result
