@@ -2,13 +2,14 @@
 from dataclasses import dataclass
 
 
-def value_to_latex_text(value: str | float) -> str:
-    r"""Convert value to a latex text string (\text{variable}).
+def latex_value_to_text(value: str | float) -> str:
+    r"""Convert string to a latex text string (\text{variable}). All characters that are not used as a variable in the corresponding documents
+    should be text strings.
 
     Parameters
     ----------
     value: str | float
-        The variable name of the variable to be converted to latex text string.
+        The float, int or string to be converted to latex text string.
 
     Returns
     -------
@@ -19,8 +20,28 @@ def value_to_latex_text(value: str | float) -> str:
     return f"\\text{{{value}}}"
 
 
-def max_curly_brackets_latex(*args: str | float) -> str:
-    """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex.
+def latex_variable_with_subscript(variable: str, subscript: str) -> str:
+    r"""Return a string which will output: variable_{\text{subscript}} in latex.
+
+    Parameters
+    ----------
+    variable: str
+        The variable name.
+    subscript: str
+        The subscript of the variable.
+
+    Returns
+    -------
+    str
+        The latex representation of the variable with subscript.
+
+    """
+    return f"{variable}_{{\\text{{{subscript}}}}}"
+
+
+def latex_max_curly_brackets(*args: str | float) -> str:
+    """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
 
     Parameters
     ----------
@@ -30,14 +51,14 @@ def max_curly_brackets_latex(*args: str | float) -> str:
     Returns
     -------
     str
-        The latex string
+        The latex representation of the max operator.
 
     """
     arguments = []
     for arg in args:
         max_operation_argument = arg
         if isinstance(arg, (int, float)):  # check if arg is float or int, so it can be converted to latex text
-            max_operation_argument = value_to_latex_text(arg)
+            max_operation_argument = latex_value_to_text(arg)
         arguments.append(str(max_operation_argument))
     return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
 
@@ -59,9 +80,9 @@ def latex_fraction(numerator: str | float, denominator: str | float) -> str:
 
     """
     if isinstance(numerator, float):
-        numerator = value_to_latex_text(numerator)
+        numerator = latex_value_to_text(numerator)
     if isinstance(denominator, float):
-        denominator = value_to_latex_text(denominator)
+        denominator = latex_value_to_text(denominator)
     return f"\\frac{{{numerator}}}{{{denominator}}}"
 
 
