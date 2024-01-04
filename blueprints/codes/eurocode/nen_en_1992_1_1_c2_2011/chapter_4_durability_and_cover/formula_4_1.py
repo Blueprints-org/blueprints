@@ -1,7 +1,7 @@
 """Formula 4.1 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, value_to_latex_text
+from blueprints.codes.latex_formula import LatexFormula, latex_value_to_text, latex_variable_with_subscript
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -43,10 +43,11 @@ class Form4Dot1NominalConcreteCover(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 4.1."""
+        latex_delta_c_dev = latex_variable_with_subscript(r"\Delta c", "dev")
         return LatexFormula(
-            return_symbol="c_{nom}",
-            result=value_to_latex_text(self),
-            equation="c_{min} + Δc_{dev}",
-            numeric_equation=f"{value_to_latex_text(self.c_min)} + {value_to_latex_text(self.delta_c_dev)}",
+            return_symbol=latex_variable_with_subscript("c", "nom"),
+            result=latex_value_to_text(self),
+            equation=f"{latex_variable_with_subscript('c', 'min')}+{latex_delta_c_dev}",
+            numeric_equation=f"{latex_value_to_text(self.c_min)}+{latex_value_to_text(self.delta_c_dev)}",
             comparison_operator_label="=",
         )
