@@ -16,7 +16,6 @@ class TestForm2Dot1ADesignValueLoad:
             (1.35, 100, 135),
             (1.35, 0.0, 0.0),
             (1.35, -100, -135),
-            (-1.35, 1.0, None),
         ],
     )
     def test_formula_2_1_a(
@@ -26,11 +25,12 @@ class TestForm2Dot1ADesignValueLoad:
         expected_result: float,
     ) -> None:
         """Method to test formula 2.1a from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
-        if expected_result is None:
-            with pytest.raises(NegativeValueError):
-                Form2Dot1ADesignValueLoad(gamma_f=gamma_f, f_rep=f_rep)
-        else:
-            assert Form2Dot1ADesignValueLoad(gamma_f=gamma_f, f_rep=f_rep) == pytest.approx(expected_result, rel=1e-9)
+        assert Form2Dot1ADesignValueLoad(gamma_f=gamma_f, f_rep=f_rep) == pytest.approx(expected_result, rel=1e-9)
+
+    def test_raise_error_if_gamma_f_is_negative(self) -> None:
+        """Test if an error is raised when gamma_f is negative."""
+        with pytest.raises(NegativeValueError):
+            Form2Dot1ADesignValueLoad(gamma_f=-1.35, f_rep=100)
 
     def test_integration_with_2_1_b(self) -> None:
         """Test the integration of formula 2.1a with 2.1b."""

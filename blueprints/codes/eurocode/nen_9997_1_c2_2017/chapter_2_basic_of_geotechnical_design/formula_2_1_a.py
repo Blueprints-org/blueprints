@@ -22,7 +22,8 @@ class Form2Dot1ADesignValueLoad(Formula):
             [:math:`γ_{F}`] partial factor for actions for persistent and transient situations defined in annex A [-].
         f_rep : float
             [:math:`F_{rep}`] Representative value of actions.
-            Use your own implementation for this value or use Form2Dot1BRepresentativeValue.
+
+            Use your own implementation for this value or use :class:`Form2Dot1BRepresentativeValue`.
         """
         super().__init__()
         self.gamma_f = gamma_f
