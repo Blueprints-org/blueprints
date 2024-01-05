@@ -140,10 +140,3 @@ class TestForm4Dot1NominalConcreteCover:
         assert form.latex().complete == expected_latex_formula
 
         assert form.latex().short == r"c_{\text{min}} = \text{15.0}"
-
-        # Possible way to display the latex string and check if it is correct
-        # import matplotlib.pyplot as plt
-        # ax = plt.axes((0, 0, 1, 1))
-        # ax.axis('off')
-        # plt.text(0, 0.5, '$%s$' % expected_latex_formula, size=15, color="black")
-        # plt.show()
