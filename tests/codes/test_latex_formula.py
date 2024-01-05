@@ -1,7 +1,7 @@
 """Tests for the LatexFormula class."""
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_value_to_text, latex_variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, fraction, max_curly_brackets, to_text, variable_with_subscript
 
 
 @pytest.fixture()
@@ -41,7 +41,7 @@ def test_latex_value_to_text() -> None:
     # Expected result
     expected_result = r"\text{5.0}"
 
-    assert latex_value_to_text(value=value) == expected_result
+    assert to_text(value=value) == expected_result
 
 
 @pytest.mark.parametrize(
@@ -58,7 +58,7 @@ def test_latex_max_curly_brackets(
     expected_output: str,
 ) -> None:
     """Test the latex_max_curly_brackets function."""
-    result = latex_max_curly_brackets(arg_1, arg_2, arg_3)
+    result = max_curly_brackets(arg_1, arg_2, arg_3)
     assert result == expected_output
 
 
@@ -71,7 +71,7 @@ def test_latex_fraction() -> None:
     # Expected result
     expected_result = r"\frac{\text{5.0}}{\text{10.0}}"
 
-    assert latex_fraction(numerator=numerator, denominator=denominator) == expected_result
+    assert fraction(numerator=numerator, denominator=denominator) == expected_result
 
 
 def test_latex_variable_with_subscript() -> None:
@@ -83,4 +83,4 @@ def test_latex_variable_with_subscript() -> None:
     # Expected result
     expected_result = r"a_{\text{b}}"
 
-    assert latex_variable_with_subscript(variable=base, subscript=subscript) == expected_result
+    assert variable_with_subscript(variable=base, subscript=subscript) == expected_result

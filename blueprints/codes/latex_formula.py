@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 
-def latex_value_to_text(value: str | float) -> str:
+def to_text(value: str | float) -> str:
     r"""Convert string to a latex text string (\text{variable}). All characters that are not used as a variable in the corresponding documents
     should be text strings.
 
@@ -20,7 +20,7 @@ def latex_value_to_text(value: str | float) -> str:
     return f"\\text{{{value}}}"
 
 
-def latex_variable_with_subscript(variable: str, subscript: str) -> str:
+def variable_with_subscript(variable: str, subscript: str) -> str:
     r"""Return a string which will output: variable_{\text{subscript}} in latex.
 
     Parameters
@@ -39,7 +39,7 @@ def latex_variable_with_subscript(variable: str, subscript: str) -> str:
     return f"{variable}_{{\\text{{{subscript}}}}}"
 
 
-def latex_max_curly_brackets(*args: str | float) -> str:
+def max_curly_brackets(*args: str | float) -> str:
     """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex and it will also automatically ensure floats are converted to latex
     text.
 
@@ -58,12 +58,12 @@ def latex_max_curly_brackets(*args: str | float) -> str:
     for arg in args:
         max_operation_argument = arg
         if isinstance(arg, (int, float)):  # check if arg is float or int, so it can be converted to latex text
-            max_operation_argument = latex_value_to_text(arg)
+            max_operation_argument = to_text(arg)
         arguments.append(str(max_operation_argument))
     return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
 
 
-def latex_fraction(numerator: str | float, denominator: str | float) -> str:
+def fraction(numerator: str | float, denominator: str | float) -> str:
     r"""Return a string which will output: \frac{numerator}{denominator} in latex.
 
     Parameters
@@ -80,9 +80,9 @@ def latex_fraction(numerator: str | float, denominator: str | float) -> str:
 
     """
     if isinstance(numerator, float):
-        numerator = latex_value_to_text(numerator)
+        numerator = to_text(numerator)
     if isinstance(denominator, float):
-        denominator = latex_value_to_text(denominator)
+        denominator = to_text(denominator)
     return f"\\frac{{{numerator}}}{{{denominator}}}"
 
 
