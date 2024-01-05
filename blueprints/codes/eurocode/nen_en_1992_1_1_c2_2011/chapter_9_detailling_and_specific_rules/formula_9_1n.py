@@ -1,7 +1,7 @@
 """Formula 9.1N from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_value_to_text, latex_variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, fraction, max_curly_brackets, to_text, variable_with_subscript
 from blueprints.type_alias import MM, MM2, MPA
 from blueprints.validations import raise_if_negative
 
@@ -59,20 +59,20 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 9.1N."""
-        latex_f_ctm = latex_variable_with_subscript(variable="f", subscript="ctm")
-        latex_f_yk = latex_variable_with_subscript(variable="f", subscript="yk")
-        latex_b_t = latex_variable_with_subscript(variable="b", subscript="t")
+        latex_f_ctm = variable_with_subscript(variable="f", subscript="ctm")
+        latex_f_yk = variable_with_subscript(variable="f", subscript="yk")
+        latex_b_t = variable_with_subscript(variable="b", subscript="t")
         return LatexFormula(
-            return_symbol=latex_variable_with_subscript(variable="A", subscript="s,min"),
-            result=latex_value_to_text(self),
-            equation=latex_max_curly_brackets(
-                rf"{latex_value_to_text(0.26)} \cdot {latex_fraction(latex_f_ctm, latex_f_yk)} \cdot {latex_b_t} \cdot d",
-                rf"{latex_value_to_text(0.0013)} \cdot {latex_b_t} \cdot d",
+            return_symbol=variable_with_subscript(variable="A", subscript="s,min"),
+            result=to_text(self),
+            equation=max_curly_brackets(
+                rf"{to_text(0.26)} \cdot {fraction(latex_f_ctm, latex_f_yk)} \cdot {latex_b_t} \cdot d",
+                rf"{to_text(0.0013)} \cdot {latex_b_t} \cdot d",
             ),
-            numeric_equation=latex_max_curly_brackets(
-                rf"{latex_value_to_text(0.26)} \cdot {latex_fraction(self.f_ctm, self.f_yk)} \cdot {latex_value_to_text(self.b_t)} \cdot "
-                f"{latex_value_to_text(self.d)}",
-                rf"{latex_value_to_text(0.0013)} \cdot {latex_value_to_text(self.b_t)} \cdot {latex_value_to_text(self.d)}",
+            numeric_equation=max_curly_brackets(
+                rf"{to_text(0.26)} \cdot {fraction(self.f_ctm, self.f_yk)} \cdot {to_text(self.b_t)} \cdot "
+                f"{to_text(self.d)}",
+                rf"{to_text(0.0013)} \cdot {to_text(self.b_t)} \cdot {to_text(self.d)}",
             ),
             comparison_operator_label="=",
         )
