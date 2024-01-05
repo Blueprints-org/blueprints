@@ -6,9 +6,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
-    """Class representing the formula 9.1N for the calculation of minimum tensile reinforcement area in longitudinal direction for beams
-    :math:`A_{s,min}` [:math:`mm^2`].
-    """
+    """Class representing the formula 9.1N for the calculation of minimum tensile reinforcement area in longitudinal direction for beams."""
 
     label = "9.1N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,7 +18,7 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
         b_t: MM,
         d: MM,
     ) -> None:
-        """[:math:`A_{s,min}`] Calculates the minimum required tensile reinforcement area in longitudinal direction for beams [:math:`mm^2`].
+        """[As,min] Calculates the minimum required tensile reinforcement area in longitudinal direction for beams [mm²].
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.1.1(1) - Formula (9.1N)
 
@@ -31,15 +29,15 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
         Parameters
         ----------
         f_ctm: MPA
-            [:math:`f_{ctm}`] Mean axial tensile stress concrete [:math:`MPa`].
+            [fctm] Mean axial tensile stress concrete [MPa].
             Should be determined with respect to the relevant strength class according to Table 3.1
         f_yk: MPA
-            [:math:`f_{yk}`] Characteristic yield strength reinforcement steel [:math:`MPa`].
+            [fyk] Characteristic yield strength reinforcement steel [MPa].
         b_t: MM
-            [:math:`b_t`] Mean width of the concrete tension zone, for T-beams with a flange under compression only the width of the web is considered
-            for calculating bt [:math:`mm`].
+            [bt] Mean width of the concrete tension zone, for T-beams with a flange under compression only the width of the web is considered for
+            calculating bt [mm].
         d: MM
-            [:math:`d`] Effective height of the cross-section [:math:`mm`].
+            [d] Effective height of the cross-section [mm].
         """
         super().__init__()
         self.f_ctm = f_ctm
