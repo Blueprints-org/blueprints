@@ -39,10 +39,8 @@ homepage = "https://github.com/Blueprints-org/blueprints"
 documentation = "https://blueprints.readthedocs.io"
 issues = "https://github.com/Blueprints-org/blueprints/issues"
 
-[tool.setuptools]
-packages = [
-    "blueprints",
-]
+[tool.setuptools.packages.find]
+include = ["blueprints*"]
 
 [tool.mypy]
 packages = "blueprints"
