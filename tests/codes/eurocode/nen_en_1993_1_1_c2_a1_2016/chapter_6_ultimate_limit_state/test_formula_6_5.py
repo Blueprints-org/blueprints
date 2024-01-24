@@ -19,7 +19,7 @@ class TestForm6Dot5UnityCheckTensileStrength:
 
         # Expected result, manually calculated
         expected = 0.7
-        
+
         assert form == expected
 
     def test_raise_error_when_negative_n_ed_is_given(self):
