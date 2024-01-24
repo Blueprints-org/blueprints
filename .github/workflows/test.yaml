@@ -32,7 +32,7 @@ jobs:
       - name: Run linting checks with ruff
         run: |
           ruff check .
-          ruff format .
+          ruff format . --check
 
       - name: Run type checks with mypy
         run: |
