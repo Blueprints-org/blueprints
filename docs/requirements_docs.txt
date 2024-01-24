@@ -1,10 +1,11 @@
 furo==2023.9.10
-ipykernel==6.28.0
-ipython==8.19.0
+ipykernel==6.29.0
+ipython==8.20.0
 ipywidgets==8.1.1
-nbconvert==7.13.1
+nbconvert==7.14.2
 nbsphinx==0.9.3
 sphinx==7.2.6
 sphinx-click==5.1.0
 sphinx-copybutton==0.5.2
 sphinxext-opengraph==0.9.1
+matplotlib>=3.7.2
