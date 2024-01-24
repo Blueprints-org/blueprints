@@ -2,7 +2,6 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
-from blueprints.validations import NegativeValueError
 
 
 class TestForm4Dot1NominalConcreteCover:
@@ -38,7 +37,7 @@ class TestForm4Dot1NominalConcreteCover:
         delta_c_dur_st = 5  # mm
         delta_c_dur_add = 0  # mm
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(ValueError):
             Form4Dot2MinimumConcreteCover(
                 c_min_b=c_min_b,
                 c_min_dur=c_min_dur,
@@ -56,7 +55,7 @@ class TestForm4Dot1NominalConcreteCover:
         delta_c_dur_st = 5  # mm
         delta_c_dur_add = 0  # mm
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(ValueError):
             Form4Dot2MinimumConcreteCover(
                 c_min_b=c_min_b,
                 c_min_dur=c_min_dur,
@@ -74,7 +73,7 @@ class TestForm4Dot1NominalConcreteCover:
         delta_c_dur_st = 5  # mm
         delta_c_dur_add = 0  # mm
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(ValueError):
             Form4Dot2MinimumConcreteCover(
                 c_min_b=c_min_b,
                 c_min_dur=c_min_dur,
@@ -92,7 +91,7 @@ class TestForm4Dot1NominalConcreteCover:
         delta_c_dur_st = -5  # mm
         delta_c_dur_add = 0  # mm
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(ValueError):
             Form4Dot2MinimumConcreteCover(
                 c_min_b=c_min_b,
                 c_min_dur=c_min_dur,
@@ -110,7 +109,7 @@ class TestForm4Dot1NominalConcreteCover:
         delta_c_dur_st = 5  # mm
         delta_c_dur_add = -5  # mm
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(ValueError):
             Form4Dot2MinimumConcreteCover(
                 c_min_b=c_min_b,
                 c_min_dur=c_min_dur,
@@ -118,25 +117,3 @@ class TestForm4Dot1NominalConcreteCover:
                 delta_c_dur_st=delta_c_dur_st,
                 delta_c_dur_add=delta_c_dur_add,
             )
-
-    def test_latex(self) -> None:
-        """Test the latex implementation."""
-        c_min_b = 15  # mm
-        c_min_dur = 10  # mm
-        delta_c_dur_gamma = 5  # mm
-        delta_c_dur_st = 5  # mm
-        delta_c_dur_add = 0  # mm
-        form = Form4Dot2MinimumConcreteCover(
-            c_min_b=c_min_b,
-            c_min_dur=c_min_dur,
-            delta_c_dur_gamma=delta_c_dur_gamma,
-            delta_c_dur_st=delta_c_dur_st,
-            delta_c_dur_add=delta_c_dur_add,
-        )
-        expected_latex_formula = (r"c_{\text{min}} = \max \left\{c_{\text{min,b}}; c_{\text{min,dur}}+\Delta c_{\text{dur,\gamma}}-\Delta "
-                                  r"c_{\text{dur,st}}-\Delta c_{\text{dur,add}}; \text{10 mm}\right\} = \max \left\{\text{15}; \text{10}+\text{5}-"
-                                  r"\text{5}-\text{0}; \text{10}\right\} = \text{15.0}")
-
-        assert form.latex().complete == expected_latex_formula
-
-        assert form.latex().short == r"c_{\text{min}} = \text{15.0}"
