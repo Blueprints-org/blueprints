@@ -34,9 +34,12 @@ jobs:
           pip install .[dev]
           pip install build
 
-      - name: Run linting checks with ruff
+      - name: Run checks with ruff
         run: |
           ruff check .
+
+      - name: Check if code is formatted correctly
+        run: |
           ruff format . --check
 
       - name: Run type checks with mypy
