@@ -35,7 +35,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
     def _evaluate(
         n_ed: KN,
         n_t_rd: KN,
-    ) -> None:
+    ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if n_t_rd <= 0:
             raise ValueError(f"Negative or zero n_t_rd: {n_t_rd}. n_t_rd cannot zero or be negative")
