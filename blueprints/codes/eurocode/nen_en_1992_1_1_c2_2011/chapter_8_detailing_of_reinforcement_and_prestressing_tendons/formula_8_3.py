@@ -1,34 +1,36 @@
 """Formula 8.3 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula, to_text, fraction, variable_with_subscript
 from blueprints.type_alias import MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot3RequiredAnchorageLength(Formula):
-    """Class representing formula 8.3 for the calculation of the basic required anchorage length, assuming constant bond stress fbd."""
+    """Class representing formula 8.3 for the calculation of the basic required anchorage length, assuming constant bond stress :math:`f_{bd}`."""
 
     label = "8.3"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
-        self,
-        diameter: MM,
-        sigma_sd: MPA,
-        f_bd: MPA,
+            self,
+            diameter: MM,
+            sigma_sd: MPA,
+            f_bd: MPA,
     ) -> None:
-        """[lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant bond stress fbd. [mm].
+        """[:math:`l_{b,rqd}`] Basic required anchorage length, for anchoring the force :math:`A_{s} \\cdot σ_{sd}` in a straight bar assuming
+        constant bond stress :math:`f_{bd}`. [mm].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.3(2) - Formula (8.3)
 
         Parameters
         ----------
         diameter: MM
-            [Ø] Diameter of the bar [mm].
+            [:math:`Ø`] Diameter of the bar [mm].
         sigma_sd: MPA
-            [σsd] design stress of the bar at the position from where the anchorage is measured from [MPa].
+            [:math:`σ_{sd}`] design stress of the bar at the position from where the anchorage is measured from [MPa].
         f_bd: MPA
-            [fbd] Design value ultimate bond stress [MPa].
+            [:math:`f_{bd}`] Design value ultimate bond stress [MPa].
             Use your own implementation for this value or use the Form8Dot2UltimateBondStress class.
         """
         super().__init__()
@@ -38,11 +40,24 @@ class Form8Dot3RequiredAnchorageLength(Formula):
 
     @staticmethod
     def _evaluate(
-        diameter: MM,
-        sigma_sd: MPA,
-        f_bd: MPA,
+            diameter: MM,
+            sigma_sd: MPA,
+            f_bd: MPA,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(diameter=diameter, sigma_sd=sigma_sd)
         raise_if_less_or_equal_to_zero(f_bd=f_bd)
         return (diameter / 4) * (sigma_sd / f_bd)
+
+    def latex(self) -> LatexFormula:
+        """Returns a LatexFormula object for this formula."""
+        latex_diameter = r'Ø'
+        latex_sigma_sd = variable_with_subscript(r'\sigma', 'sd')
+        latex_f_bd = variable_with_subscript(r'f', 'bd')
+        return LatexFormula(
+            return_symbol=variable_with_subscript('l', 'b,rqd'),
+            result=to_text(self),
+            equation=rf'{fraction(latex_diameter, to_text(4))} \cdot {fraction(latex_sigma_sd, latex_f_bd)}',
+            numeric_equation=rf'{fraction(to_text(self.diameter), to_text(4))} \cdot {fraction(to_text(self.sigma_sd), to_text(self.f_bd))}',
+            comparison_operator_label='='
+        )
