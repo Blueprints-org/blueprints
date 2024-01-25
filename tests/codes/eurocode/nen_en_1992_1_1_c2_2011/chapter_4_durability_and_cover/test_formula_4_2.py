@@ -138,5 +138,5 @@ class TestForm4Dot1NominalConcreteCover:
                                   r"\text{5}-\text{0}; \text{10}\right\} = \text{15.0}")
 
         assert form.latex().complete == expected_latex_formula
-
         assert form.latex().short == r"c_{\text{min}} = \text{15.0}"
+        assert str(form.latex()) == expected_latex_formula
