@@ -97,3 +97,8 @@ class TestForm9Dot1NMinimumTensileReinforcementBeam:
             r"\text{50} \cdot \text{150}\right\} = \text{10.985915492957748}"
         )
         assert form.latex().short == r"A_{\text{s,min}} = \text{10.985915492957748}"
+        assert str(form.latex()) == (
+            r"A_{\text{s,min}} = \max \left\{\text{0.26} \cdot \frac{f_{\text{ctm}}}{f_{\text{yk}}} \cdot b_{\text{t}} \cdot d; \text{0.0013} \cdot "
+            r"b_{\text{t}} \cdot d\right\} = \max \left\{\text{0.26} \cdot \frac{2}{355} \cdot \text{50} \cdot \text{150}; \text{0.0013} \cdot "
+            r"\text{50} \cdot \text{150}\right\} = \text{10.985915492957748}"
+        )
