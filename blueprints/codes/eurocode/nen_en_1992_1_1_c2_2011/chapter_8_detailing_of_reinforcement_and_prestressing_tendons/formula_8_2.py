@@ -1,7 +1,7 @@
 """Formula 8.2 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, to_text, variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, conditional, to_text, variable_with_subscript
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_negative
 
@@ -127,3 +127,18 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
         if diameter <= 32:
             return 1
         return (132 - diameter) / 100
+
+    def latex(self) -> LatexFormula:
+        """Returns a LatexFormula object for this formula."""
+        numerical_equation = to_text(1.0) if self.diameter <= 32 else f"({to_text(132)} - {to_text(self.diameter)}) / {to_text(100)}"
+
+        return LatexFormula(
+            return_symbol=variable_with_subscript(r"\eta", "2"),
+            result=to_text(self),
+            equation=conditional(
+                [1.0, f'{to_text("Ø")} ≤ {to_text(32)}'],
+                [f'({to_text(132)} - {to_text("Ø")}) / {to_text(100)}', f'{to_text("Ø")} > {to_text(32)}'],
+            ),
+            numeric_equation=numerical_equation,
+            comparison_operator_label="=",
+        )

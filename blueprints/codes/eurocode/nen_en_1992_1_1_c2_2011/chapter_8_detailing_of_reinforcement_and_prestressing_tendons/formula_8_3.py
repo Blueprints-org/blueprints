@@ -57,7 +57,7 @@ class Form8Dot3RequiredAnchorageLength(Formula):
         return LatexFormula(
             return_symbol=variable_with_subscript("l", "b,rqd"),
             result=to_text(self),
-            equation=rf"{fraction(latex_diameter, to_text(4))} \cdot {fraction(latex_sigma_sd, latex_f_bd)}",
-            numeric_equation=rf"{fraction(to_text(self.diameter), to_text(4))} \cdot {fraction(to_text(self.sigma_sd), to_text(self.f_bd))}",
+            equation=rf"{fraction(latex_diameter, 4)} \cdot {fraction(latex_sigma_sd, latex_f_bd)}",
+            numeric_equation=rf"{fraction(self.diameter, 4)} \cdot {fraction(self.sigma_sd, self.f_bd)}",
             comparison_operator_label="=",
         )
