@@ -1,6 +1,7 @@
 """Formula 8.2 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula, variable_with_subscript, to_text
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_negative
 
@@ -12,31 +13,32 @@ class Form8Dot2UltimateBondStress(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
-        self,
-        eta_1: DIMENSIONLESS,
-        eta_2: DIMENSIONLESS,
-        f_ctd: MPA,
+            self,
+            eta_1: DIMENSIONLESS,
+            eta_2: DIMENSIONLESS,
+            f_ctd: MPA,
     ) -> None:
-        """[fbd] The design value of the ultimate bond stress for ribbed bars [-].
+        """[:math:`f_{bd}`] The design value of the ultimate bond stress for ribbed bars [-].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) - Formula (8.2)
 
         Parameters
         ----------
         eta_1 : DIMENSIONLESS
-            [η1] coefficient related to the quality of the bond condition and the position of the bar during concreting (see Figure 8.2) [-].
-            = 1 when ‘good’ conditions are obtained;
-            = 0.7 other cases and for bars in structural elements built with slip-forms, unless it can be shown that ‘good’ bond conditions exist;
+            [:math:`η_1`] coefficient related to the quality of the bond condition and the position of the bar during concreting (see Figure 8.2) [-].
+            = :math:`1` when ‘good’ conditions are obtained;
+            = :math:`1` other cases and for bars in structural elements built with slip-forms, unless it can be shown that ‘good’ bond conditions
+            exist;
             Use your own implementation of this formula or use the SubForm8Dot2CoefficientQualityOfBond class.
         eta_2 : DIMENSIONLESS
-            [η2] A factor related to the bar diameter [-].
-            = 1 for bars with a diameter ≤ 32 mm;
-            = (132 - Ø) / 100 for bars with a diameter > 32 mm.
+            [:math:`η_2`] A factor related to the bar diameter [-].
+            = :math:`1` for bars with a diameter ≤ :math:`32 \text{mm}`;
+            = :math:`(132 - Ø) / 100` for bars with a diameter > :math:`32 \text{mm}`.
             Use your own implementation of this value or use the SubForm8Dot2CoefficientBarDiameter class.
         f_ctd : MPA
-            [fctd] Design tensile strength of concrete according to art.3.1.6(2) [MPa].
-            Due to the increasing brittleness of higher strength concrete, fctk,0,05 should be limited here to the value for C60/75, unless it can be
-            verified that the average bond strength increases above this limit.
+            [:math:`f_{ctd}`] Design tensile strength of concrete according to art.3.1.6(2) [MPa].
+            Due to the increasing brittleness of higher strength concrete, :math:`f_{ctk,0,05}` should be limited here to the value for C60/75, unless
+            it can be verified that the average bond strength increases above this limit.
         """
         super().__init__()
         self.eta_1 = eta_1
@@ -45,13 +47,24 @@ class Form8Dot2UltimateBondStress(Formula):
 
     @staticmethod
     def _evaluate(
-        eta_1: DIMENSIONLESS,
-        eta_2: DIMENSIONLESS,
-        f_ctd: MPA,
+            eta_1: DIMENSIONLESS,
+            eta_2: DIMENSIONLESS,
+            f_ctd: MPA,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
         return 2.25 * eta_1 * eta_2 * f_ctd
+
+    def latex(self) -> LatexFormula:
+        """Returns a representation of the formula in LaTeX format."""
+        return LatexFormula(
+            return_symbol=variable_with_subscript(variable='f', subscript='bd'),
+            result=to_text(self),
+            equation=rf"{to_text(2.25)} \cdot {variable_with_subscript(variable='η', subscript='1')} \cdot "
+                     rf"{variable_with_subscript(variable='η', subscript='2')} \cdot {variable_with_subscript(variable='f', subscript='ctd')}",
+            numeric_equation=rf"{to_text(2.25)} \cdot {self.eta_1} \cdot {self.eta_2} \cdot {self.f_ctd}",
+            comparison_operator_label='='
+        )
 
 
 class SubForm8Dot2CoefficientQualityOfBond(Formula):
@@ -95,14 +108,14 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
     label = "8.2"
 
     def __init__(self, diameter: MM) -> None:
-        """[η2] Coefficient that depends on the bar diameter [-].
+        """[:math:`η_2`] Coefficient that depends on the bar diameter [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) - η2
+        NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) - :math:`η_2`
 
         Parameters
         ----------
         diameter : MM
-            [Ø] Diameter of the bar [mm].
+            [:math:`Ø`] Diameter of the bar [mm].
         """
         super().__init__()
         self.diameter = diameter
