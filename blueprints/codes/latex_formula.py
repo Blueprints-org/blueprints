@@ -86,6 +86,30 @@ def fraction(numerator: str | float, denominator: str | float) -> str:
     return f"\\frac{{{numerator}}}{{{denominator}}}"
 
 
+def conditional(*args: list[float | str]) -> str:
+    """Return a string which will output a conditional statement with curly brackets with the given arguments and conditions in latex.
+
+    Parameters
+    ----------
+    args: list[float|str]
+        A list of length 2, where the first element is the value and the second value is the condition.
+
+    Returns
+    -------
+    str
+        The latex string
+    """
+    string_parts = []
+    for value, condition in args:
+        string_value = to_text(value) if isinstance(value, (int, float)) else value
+        string_parts.append(f"{string_value} & \\text{{voor }}{condition} \\\\ ")
+
+    output = r"\left{\matrix{"
+    output += "".join(string_parts)
+    output = output[:-3]
+    return output + r"}\right."
+
+
 @dataclass(frozen=True)
 class LatexFormula:
     """Latex formula representation.

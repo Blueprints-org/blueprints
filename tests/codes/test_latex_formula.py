@@ -1,7 +1,7 @@
 """Tests for the LatexFormula class."""
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, fraction, max_curly_brackets, to_text, variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, conditional, fraction, max_curly_brackets, to_text, variable_with_subscript
 
 
 @pytest.fixture()
@@ -84,3 +84,8 @@ def test_latex_variable_with_subscript() -> None:
     expected_result = r"a_{\text{b}}"
 
     assert variable_with_subscript(variable=base, subscript=subscript) == expected_result
+
+
+def test_conditional() -> None:
+    """Test the conditional function."""
+    assert conditional([1, "a > 0"], [2, "a < 0"]) == r"\left{\matrix{\text{1} & \text{voor }a > 0 \\ \text{2} & \text{voor }a < 0 }\right."
