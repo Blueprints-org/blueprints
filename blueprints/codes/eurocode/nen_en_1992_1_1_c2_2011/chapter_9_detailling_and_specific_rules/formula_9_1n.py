@@ -62,6 +62,7 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
         latex_f_ctm = variable_with_subscript(variable="f", subscript="ctm")
         latex_f_yk = variable_with_subscript(variable="f", subscript="yk")
         latex_b_t = variable_with_subscript(variable="b", subscript="t")
+
         return LatexFormula(
             return_symbol=variable_with_subscript(variable="A", subscript="s,min"),
             result=to_text(self),
@@ -70,8 +71,7 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
                 rf"{to_text(0.0013)} \cdot {latex_b_t} \cdot d",
             ),
             numeric_equation=max_curly_brackets(
-                rf"{to_text(0.26)} \cdot {fraction(self.f_ctm, self.f_yk)} \cdot {to_text(self.b_t)} \cdot "
-                f"{to_text(self.d)}",
+                rf"{to_text(0.26)} \cdot {fraction(self.f_ctm, self.f_yk)} \cdot {to_text(self.b_t)} \cdot {to_text(self.d)}",
                 rf"{to_text(0.0013)} \cdot {to_text(self.b_t)} \cdot {to_text(self.d)}",
             ),
             comparison_operator_label="=",
