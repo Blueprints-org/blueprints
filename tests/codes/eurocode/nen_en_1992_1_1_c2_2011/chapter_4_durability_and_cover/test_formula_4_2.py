@@ -133,9 +133,11 @@ class TestForm4Dot1NominalConcreteCover:
             delta_c_dur_st=delta_c_dur_st,
             delta_c_dur_add=delta_c_dur_add,
         )
-        expected_latex_formula = (r"c_{\text{min}} = \max \left\{c_{\text{min,b}}; c_{\text{min,dur}}+\Delta c_{\text{dur,\gamma}}-\Delta "
-                                  r"c_{\text{dur,st}}-\Delta c_{\text{dur,add}}; \text{10 mm}\right\} = \max \left\{\text{15}; \text{10}+\text{5}-"
-                                  r"\text{5}-\text{0}; \text{10}\right\} = \text{15.0}")
+        expected_latex_formula = (
+            r"c_{\text{min}} = \max \left\{c_{\text{min,b}}; c_{\text{min,dur}}+\Delta c_{\text{dur,\gamma}}-\Delta "
+            r"c_{\text{dur,st}}-\Delta c_{\text{dur,add}}; \text{10 mm}\right\} = \max \left\{\text{15}; \text{10}+\text{5}-"
+            r"\text{5}-\text{0}; \text{10}\right\} = \text{15.0}"
+        )
 
         assert form.latex().complete == expected_latex_formula
         assert form.latex().short == r"c_{\text{min}} = \text{15.0}"

@@ -65,10 +65,7 @@ class Form4Dot2MinimumConcreteCover(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 4.2."""
         arg_1 = self.c_min_b
-        arg_2 = (
-            f"{to_text(self.c_min_dur)}+{to_text(self.delta_c_dur_gamma)}-{to_text(self.delta_c_dur_st)}"
-            f"-{to_text(self.delta_c_dur_add)}"
-        )
+        arg_2 = f"{to_text(self.c_min_dur)}+{to_text(self.delta_c_dur_gamma)}-{to_text(self.delta_c_dur_st)}-{to_text(self.delta_c_dur_add)}"
         arg_3 = 10
 
         latex_c_min_dur = variable_with_subscript("c", "min,dur")
@@ -79,9 +76,11 @@ class Form4Dot2MinimumConcreteCover(Formula):
         return LatexFormula(
             return_symbol=variable_with_subscript("c", "min"),
             result=to_text(self),
-            equation=max_curly_brackets(variable_with_subscript("c", "min,b"),
-                                        f"{latex_c_min_dur}+{latex_delta_c_dur_gamma}-{latex_delta_c_dur_st}-{latex_delta_c_dur_add}",
-                                        to_text("10 mm")),
+            equation=max_curly_brackets(
+                variable_with_subscript("c", "min,b"),
+                f"{latex_c_min_dur}+{latex_delta_c_dur_gamma}-{latex_delta_c_dur_st}-{latex_delta_c_dur_add}",
+                to_text("10 mm"),
+            ),
             numeric_equation=max_curly_brackets(arg_1, arg_2, arg_3),
             comparison_operator_label="=",
         )

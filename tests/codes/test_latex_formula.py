@@ -52,10 +52,10 @@ def test_latex_value_to_text() -> None:
     ],
 )
 def test_latex_max_curly_brackets(
-        arg_1: str | float,
-        arg_2: str | float,
-        arg_3: str | float,
-        expected_output: str,
+    arg_1: str | float,
+    arg_2: str | float,
+    arg_3: str | float,
+    expected_output: str,
 ) -> None:
     """Test the latex_max_curly_brackets function."""
     result = max_curly_brackets(arg_1, arg_2, arg_3)
