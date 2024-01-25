@@ -84,3 +84,19 @@ class TestForm8Dot2UltimateBondStress:
         manually_calculated_result = 45
 
         assert form_8_2 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_latex(self) -> None:
+        """Test the LaTeX representation."""
+        eta_1 = 1  # -
+        eta_2 = 1  # −
+        f_ctd = 20  # MPa
+        latex_representation = Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd).latex()
+        assert latex_representation.short == r"f_{\text{bd}} = \text{45.0}"
+        assert latex_representation.complete == (
+            r"f_{\text{bd}} = \text{2.25} \cdot η_{\text{1}} \cdot η_{\text{2}} \cdot f_{\text{ctd}} = "
+            r"\text{2.25} \cdot 1 \cdot 1 \cdot 20 = \text{45.0}"
+        )
+        assert str(latex_representation) == (
+            r"f_{\text{bd}} = \text{2.25} \cdot η_{\text{1}} \cdot η_{\text{2}} \cdot f_{\text{ctd}} = \text{2.25} "
+            r"\cdot 1 \cdot 1 \cdot 20 = \text{45.0}"
+        )
