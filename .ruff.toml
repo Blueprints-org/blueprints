@@ -60,6 +60,12 @@ ignore = [
     # flake8-pytest-style
     "PT011", # pytest-raises-too-broad
 
+    # flake8-implicit-str-concat
+    "ISC001", # single-line-implicit-string-concatenation
+
+    # flake8-commas
+    "COM812", # missing-trailing-comma
+
     # pylint
     "PLR2004", # magic-value-comparison
 
