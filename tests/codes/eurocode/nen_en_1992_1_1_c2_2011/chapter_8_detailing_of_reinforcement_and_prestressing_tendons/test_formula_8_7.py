@@ -78,3 +78,20 @@ class TestForm8Dot7MinimumCompressionAnchorage:
         manually_calculated_result = 270  # mm
 
         assert form_8_7 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_latex(self) -> None:
+        """Test the latex representation."""
+        # example values
+        l_b_rqd = 500
+        diameter = 8
+        latex = Form8Dot7MinimumCompressionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter).latex()
+
+        assert latex.complete == (
+            r"l_{b,min} = \max \left\{0.6 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.6 \cdot 500.00;"
+            r" 10 \cdot 8; 100\right\} = 300.00"
+        )
+        assert latex.short == r"l_{b,min} = 300.00"
+        assert str(latex) == (
+            r"l_{b,min} = \max \left\{0.6 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.6 \cdot 500.00;"
+            r" 10 \cdot 8; 100\right\} = 300.00"
+        )
