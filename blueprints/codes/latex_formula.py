@@ -2,43 +2,6 @@
 from dataclasses import dataclass
 
 
-def to_text(value: str | float) -> str:
-    r"""Convert string to a latex text string (\text{variable}). All characters that are not used as a variable in the corresponding documents
-    should be text strings.
-
-    Parameters
-    ----------
-    value: str | float
-        The float, int or string to be converted to latex text string.
-
-    Returns
-    -------
-    str
-        The latex text
-
-    """
-    return f"\\text{{{value}}}"
-
-
-def variable_with_subscript(variable: str, subscript: str) -> str:
-    r"""Return a string which will output: variable_{\text{subscript}} in latex.
-
-    Parameters
-    ----------
-    variable: str
-        The variable name.
-    subscript: str
-        The subscript of the variable.
-
-    Returns
-    -------
-    str
-        The latex representation of the variable with subscript.
-
-    """
-    return f"{variable}_{{\\text{{{subscript}}}}}"
-
-
 def max_curly_brackets(*args: str | float) -> str:
     """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex and it will also automatically ensure floats are converted to latex
     text.
@@ -54,12 +17,7 @@ def max_curly_brackets(*args: str | float) -> str:
         The latex representation of the max operator.
 
     """
-    arguments = []
-    for arg in args:
-        max_operation_argument = arg
-        if isinstance(arg, (int, float)):  # check if arg is float or int, so it can be converted to latex text
-            max_operation_argument = to_text(arg)
-        arguments.append(str(max_operation_argument))
+    arguments = [str(arg) for arg in args]
     return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
 
 
@@ -79,10 +37,6 @@ def fraction(numerator: str | float, denominator: str | float) -> str:
         The latex string
 
     """
-    if isinstance(numerator, float):
-        numerator = to_text(numerator)
-    if isinstance(denominator, float):
-        denominator = to_text(denominator)
     return f"\\frac{{{numerator}}}{{{denominator}}}"
 
 

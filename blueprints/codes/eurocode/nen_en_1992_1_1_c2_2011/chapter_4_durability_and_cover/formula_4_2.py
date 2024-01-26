@@ -1,7 +1,7 @@
 """Formula 4.2 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets, to_text, variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -64,23 +64,18 @@ class Form4Dot2MinimumConcreteCover(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 4.2."""
-        arg_1 = self.c_min_b
-        arg_2 = f"{to_text(self.c_min_dur)}+{to_text(self.delta_c_dur_gamma)}-{to_text(self.delta_c_dur_st)}-{to_text(self.delta_c_dur_add)}"
-        arg_3 = 10
-
-        latex_c_min_dur = variable_with_subscript("c", "min,dur")
-        latex_delta_c_dur_gamma = variable_with_subscript(r"\Delta c", r"dur,\gamma")
-        latex_delta_c_dur_st = variable_with_subscript(r"\Delta c", "dur,st")
-        latex_delta_c_dur_add = variable_with_subscript(r"\Delta c", "dur,add")
-
         return LatexFormula(
-            return_symbol=variable_with_subscript("c", "min"),
-            result=to_text(self),
+            return_symbol=r"c_{min}",
+            result=str(self),
             equation=max_curly_brackets(
-                variable_with_subscript("c", "min,b"),
-                f"{latex_c_min_dur}+{latex_delta_c_dur_gamma}-{latex_delta_c_dur_st}-{latex_delta_c_dur_add}",
-                to_text("10 mm"),
+                r"c_{min,b}",
+                r"\Delta c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}",
+                r"10 \ \text{mm}",
             ),
-            numeric_equation=max_curly_brackets(arg_1, arg_2, arg_3),
+            numeric_equation=max_curly_brackets(
+                self.c_min_b,
+                f"{self.c_min_dur}+{self.delta_c_dur_gamma}-{self.delta_c_dur_st}-{self.delta_c_dur_add}",
+                10,
+            ),
             comparison_operator_label="=",
         )

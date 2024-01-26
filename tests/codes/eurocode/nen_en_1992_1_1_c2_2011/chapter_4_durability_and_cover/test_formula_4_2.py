@@ -126,19 +126,19 @@ class TestForm4Dot1NominalConcreteCover:
         delta_c_dur_gamma = 5  # mm
         delta_c_dur_st = 5  # mm
         delta_c_dur_add = 0  # mm
-        form = Form4Dot2MinimumConcreteCover(
+        latex = Form4Dot2MinimumConcreteCover(
             c_min_b=c_min_b,
             c_min_dur=c_min_dur,
             delta_c_dur_gamma=delta_c_dur_gamma,
             delta_c_dur_st=delta_c_dur_st,
             delta_c_dur_add=delta_c_dur_add,
+        ).latex()
+        assert latex.complete == (
+            r"c_{min} = \max \left\{c_{min,b}; \Delta c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-"
+            r"\Delta c_{dur,add}; 10 \ \text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0"
         )
-        expected_latex_formula = (
-            r"c_{\text{min}} = \max \left\{c_{\text{min,b}}; c_{\text{min,dur}}+\Delta c_{\text{dur,\gamma}}-\Delta "
-            r"c_{\text{dur,st}}-\Delta c_{\text{dur,add}}; \text{10 mm}\right\} = \max \left\{\text{15}; \text{10}+\text{5}-"
-            r"\text{5}-\text{0}; \text{10}\right\} = \text{15.0}"
+        assert latex.short == r"c_{min} = 15.0"
+        assert str(latex) == (
+            r"c_{min} = \max \left\{c_{min,b}; \Delta c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-"
+            r"\Delta c_{dur,add}; 10 \ \text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0"
         )
-
-        assert form.latex().complete == expected_latex_formula
-        assert form.latex().short == r"c_{\text{min}} = \text{15.0}"
-        assert str(form.latex()) == expected_latex_formula

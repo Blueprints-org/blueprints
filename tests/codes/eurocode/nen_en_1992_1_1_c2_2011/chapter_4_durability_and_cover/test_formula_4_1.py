@@ -45,6 +45,6 @@ def test_latex() -> None:
     delta_c_dev = 5  # mm
     form = Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev)
 
-    assert form.latex().complete == r"c_{\text{nom}} = c_{\text{min}}+\Delta c_{\text{dev}} = \text{60}+\text{5} = \text{65.0}"
-    assert form.latex().short == r"c_{\text{nom}} = \text{65.0}"
-    assert str(form.latex()) == r"c_{\text{nom}} = c_{\text{min}}+\Delta c_{\text{dev}} = \text{60}+\text{5} = \text{65.0}"
+    assert form.latex().complete == r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"
+    assert form.latex().short == r"c_{nom} = 65.0"
+    assert str(form.latex()) == r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"
