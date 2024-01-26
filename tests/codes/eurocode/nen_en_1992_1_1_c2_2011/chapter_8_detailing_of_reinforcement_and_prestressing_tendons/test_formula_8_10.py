@@ -329,6 +329,6 @@ class TestForm8Dot10DesignLapLength:
         ).latex()
         assert latex.complete == (
             r"l_{0} = \max \left\{\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_5 \cdot \alpha_6 \cdot l_{b,rqd}; "
-            r"l_{0,min}\right\} = \max \left\{1 \cdot 1 \cdot 1 \cdot 1 \cdot 1 \cdot 200.00; 400.00\right\} = 400.00"
+            r"l_{0,min}\right\} = \max \left\{1 \cdot 1 \cdot 1 \cdot 1 \cdot 1.00 \cdot 200.00; 400.00\right\} = 400.00"
         )
         assert latex.short == r"l_{0} = 400.00"

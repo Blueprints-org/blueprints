@@ -50,3 +50,16 @@ class TestSubFormula8Dot8Alpha6:
 
         with pytest.raises(NegativeValueError):
             SubForm8Dot10Alpha6(rho_1=rho_1)
+
+    def test_latex_formula(self) -> None:
+        """Test the LaTeX representation of the formula."""
+        # example values
+        rho_1 = 32.5
+
+        latex = SubForm8Dot10Alpha6(rho_1=rho_1).latex()
+
+        assert latex.complete == (
+            r"\alpha_6 = \max \left\{\min \left\{\left(\frac{\rho_1}{25}\right)^{0.5}; 1.5\right\}; 1\right\} = "
+            r"\max \left\{\min \left\{\left(\frac{32.50}{25}\right)^{0.5}; 1.5\right\}; 1\right\} = 1.14"
+        )
+        assert latex.short == r"\alpha_6 = 1.14"

@@ -1,7 +1,7 @@
 """Formula 8.10 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets, min_curly_brackets
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
@@ -164,3 +164,15 @@ class SubForm8Dot10Alpha6(Formula):
         raise_if_negative(rho_l=rho_1)
         value_max_1_5 = min((rho_1 / 25) ** 0.5, 1.5)
         return max(value_max_1_5, 1)
+
+    def latex(self) -> LatexFormula:
+        """Returns a LatexFormula representation of the formula."""
+        argument_1_formula = r"\left(\frac{\rho_1}{25}\right)^{0.5}"
+        numerical_argument_1 = rf"\left(\frac{{{self.rho_1:.2f}}}{{25}}\right)^{{0.5}}"
+        return LatexFormula(
+            return_symbol=r"\alpha_6",
+            result=f"{self:.2f}",
+            equation=f'{max_curly_brackets(min_curly_brackets(argument_1_formula, "1.5"), "1")}',
+            numeric_equation=f'{max_curly_brackets(min_curly_brackets(numerical_argument_1, "1.5"), "1")}',
+            comparison_operator_label="=",
+        )

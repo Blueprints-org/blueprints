@@ -3,8 +3,13 @@ from dataclasses import dataclass
 
 
 def max_curly_brackets(*args: str | float) -> str:
-    """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex and it will also automatically ensure floats are converted to latex
+    r"""Return a string which will output: max{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
     text.
+
+    Examples
+    --------
+    >>> max_curly_brackets(1, 2)
+    str(\max \left\{1; 2\right\})
 
     Parameters
     ----------
@@ -14,15 +19,44 @@ def max_curly_brackets(*args: str | float) -> str:
     Returns
     -------
     str
-        The latex representation of the max operator.
+        The latex representation of the max function.
 
     """
     arguments = [str(arg) for arg in args]
     return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
 
 
+def min_curly_brackets(*args: str | float) -> str:
+    r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
+
+    Examples
+    --------
+    >>> min_curly_brackets(1, 2)
+    str(\min \left\{1; 2\right\})
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the min function.
+
+    Returns
+    -------
+    str
+        The latex representation of the min function.
+
+    """
+    arguments = [str(arg) for arg in args]
+    return f"\\min \\left\\{{{'; '.join(arguments)}\\right\\}}"
+
+
 def fraction(numerator: str | float, denominator: str | float) -> str:
     r"""Return a string which will output: \frac{numerator}{denominator} in latex.
+
+    Examples
+    --------
+    >>> fraction(1, 2)
+    str(\frac{1}{2})
 
     Parameters
     ----------
@@ -41,7 +75,12 @@ def fraction(numerator: str | float, denominator: str | float) -> str:
 
 
 def conditional(*args: list[float | str]) -> str:
-    """Return a string which will output a conditional statement with curly brackets with the given arguments and conditions in latex.
+    r"""Return a string which will output a conditional statement with curly brackets with the given arguments and conditions in latex.
+
+    Examples
+    --------
+    >>> conditional([1, "a > 0"], [2, "a < 0"]
+    str(\left{\matrix{1 & \text{voor }a > 0 \\ 2 & \text{voor }a < 0 }\right.)
 
     Parameters
     ----------
