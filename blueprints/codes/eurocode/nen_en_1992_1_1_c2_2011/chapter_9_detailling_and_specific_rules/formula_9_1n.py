@@ -1,7 +1,7 @@
 """Formula 9.1N from NEN-EN 1992-1-1+C2:2011: Chapter 9 - Detailing of members and particular rules."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, fraction, max_curly_brackets, to_text, variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, fraction, max_curly_brackets
 from blueprints.type_alias import MM, MM2, MPA
 from blueprints.validations import raise_if_negative
 
@@ -59,20 +59,16 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 9.1N."""
-        latex_f_ctm = variable_with_subscript(variable="f", subscript="ctm")
-        latex_f_yk = variable_with_subscript(variable="f", subscript="yk")
-        latex_b_t = variable_with_subscript(variable="b", subscript="t")
-
         return LatexFormula(
-            return_symbol=variable_with_subscript(variable="A", subscript="s,min"),
-            result=to_text(self),
+            return_symbol=r"A_{s,min}",
+            result=f"{self:.2f}",
             equation=max_curly_brackets(
-                rf"{to_text(0.26)} \cdot {fraction(latex_f_ctm, latex_f_yk)} \cdot {latex_b_t} \cdot d",
-                rf"{to_text(0.0013)} \cdot {latex_b_t} \cdot d",
+                rf"0.26 \cdot {fraction(r'f_{ctm}', r'f_{yk}')} \cdot b_t \cdot d",
+                r"0.0013 \cdot b_t \cdot d",
             ),
             numeric_equation=max_curly_brackets(
-                rf"{to_text(0.26)} \cdot {fraction(self.f_ctm, self.f_yk)} \cdot {to_text(self.b_t)} \cdot {to_text(self.d)}",
-                rf"{to_text(0.0013)} \cdot {to_text(self.b_t)} \cdot {to_text(self.d)}",
+                rf"0.26 \cdot {fraction(f'{self.f_ctm:.2f}', f'{self.f_yk:.2f}')} \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
+                rf"0.0013 \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
             ),
             comparison_operator_label="=",
         )

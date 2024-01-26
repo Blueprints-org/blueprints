@@ -89,16 +89,16 @@ class TestForm9Dot1NMinimumTensileReinforcementBeam:
         f_yk = 355  # MPa
         b_t = 50  # mm
         d = 150  # mm
-        form = Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
+        latex = Form9Dot1NMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d).latex()
 
-        assert form.latex().complete == (
-            r"A_{\text{s,min}} = \max \left\{\text{0.26} \cdot \frac{f_{\text{ctm}}}{f_{\text{yk}}} \cdot b_{\text{t}} \cdot d; \text{0.0013} \cdot "
-            r"b_{\text{t}} \cdot d\right\} = \max \left\{\text{0.26} \cdot \frac{2}{355} \cdot \text{50} \cdot \text{150}; \text{0.0013} \cdot "
-            r"\text{50} \cdot \text{150}\right\} = \text{10.985915492957748}"
+        assert latex.complete == (
+            r"A_{s,min} = \max \left\{0.26 \cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; 0.0013 \cdot b_t \cdot d\right\} "
+            r"= \max \left\{0.26 \cdot \frac{2.00}{355.00} \cdot 50.00 \cdot 150.00; 0.0013 \cdot 50.00 \cdot 150.00\right\} "
+            r"= 10.99"
         )
-        assert form.latex().short == r"A_{\text{s,min}} = \text{10.985915492957748}"
-        assert str(form.latex()) == (
-            r"A_{\text{s,min}} = \max \left\{\text{0.26} \cdot \frac{f_{\text{ctm}}}{f_{\text{yk}}} \cdot b_{\text{t}} \cdot d; \text{0.0013} \cdot "
-            r"b_{\text{t}} \cdot d\right\} = \max \left\{\text{0.26} \cdot \frac{2}{355} \cdot \text{50} \cdot \text{150}; \text{0.0013} \cdot "
-            r"\text{50} \cdot \text{150}\right\} = \text{10.985915492957748}"
+        assert latex.short == r"A_{s,min} = 10.99"
+        assert str(latex) == (
+            r"A_{s,min} = \max \left\{0.26 \cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; 0.0013 \cdot b_t \cdot d\right\} "
+            r"= \max \left\{0.26 \cdot \frac{2.00}{355.00} \cdot 50.00 \cdot 150.00; 0.0013 \cdot 50.00 \cdot 150.00\right\} "
+            r"= 10.99"
         )
