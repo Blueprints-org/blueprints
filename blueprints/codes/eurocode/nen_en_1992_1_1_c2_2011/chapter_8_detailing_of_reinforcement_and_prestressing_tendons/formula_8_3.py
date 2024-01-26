@@ -1,7 +1,7 @@
 """Formula 8.3 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, fraction, to_text, variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, fraction
 from blueprints.type_alias import MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -52,11 +52,11 @@ class Form8Dot3RequiredAnchorageLength(Formula):
     def latex(self) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
         latex_diameter = r"Ø"
-        latex_sigma_sd = variable_with_subscript(r"\sigma", "sd")
-        latex_f_bd = variable_with_subscript(r"f", "bd")
+        latex_sigma_sd = r"\sigma_{sd}"
+        latex_f_bd = r"f_{bd}"
         return LatexFormula(
-            return_symbol=variable_with_subscript("l", "b,rqd"),
-            result=to_text(self),
+            return_symbol=r"l_{b,rqd}",
+            result=f"{self:.2f}",
             equation=rf"{fraction(latex_diameter, 4)} \cdot {fraction(latex_sigma_sd, latex_f_bd)}",
             numeric_equation=rf"{fraction(self.diameter, 4)} \cdot {fraction(self.sigma_sd, self.f_bd)}",
             comparison_operator_label="=",

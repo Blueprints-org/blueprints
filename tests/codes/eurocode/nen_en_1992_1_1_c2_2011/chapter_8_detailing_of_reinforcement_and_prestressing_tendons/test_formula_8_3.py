@@ -68,12 +68,10 @@ class TestForm8Dot3RequiredAnchorageLength:
         f_bd = 2.9  # MPa
         sigma_sd = 435  # MPa
         latex_representation = Form8Dot3RequiredAnchorageLength(diameter=diameter, f_bd=f_bd, sigma_sd=sigma_sd).latex()
-        assert latex_representation.short == r"l_{\text{b,rqd}} = \text{450.0}"
+        assert latex_representation.short == r"l_{b,rqd} = 450.00"
         assert latex_representation.complete == (
-            r"l_{\text{b,rqd}} = \frac{Ø}{\text{4}} \cdot \frac{\sigma_{\text{sd}}}{f_{\text{bd}}} = "
-            r"\frac{\text{12}}{\text{4}} \cdot \frac{\text{435}}{\text{2.9}} = \text{450.0}"
+            r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.00"
         )
         assert str(latex_representation) == (
-            r"l_{\text{b,rqd}} = \frac{Ø}{\text{4}} \cdot \frac{\sigma_{\text{sd}}}{f_{\text{bd}}} = "
-            r"\frac{\text{12}}{\text{4}} \cdot \frac{\text{435}}{\text{2.9}} = \text{450.0}"
+            r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.00"
         )
