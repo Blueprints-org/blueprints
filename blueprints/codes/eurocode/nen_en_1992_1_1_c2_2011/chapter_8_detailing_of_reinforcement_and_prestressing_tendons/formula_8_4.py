@@ -130,10 +130,10 @@ class Form8Dot4DesignAnchorageLength(Formula):
         """Returns a LatexFormula representation of the formula."""
         return LatexFormula(
             return_symbol=r"l_{bd}",
-            result=str(self),
+            result=f"{self:.2f}",
             equation=max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}", r"l_{b,min}"),
             numeric_equation=max_curly_brackets(
-                rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_4} \cdot {self.alpha_5} \cdot {self.l_b_rqd}",
+                rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_4} \cdot {self.alpha_5} \cdot {self.l_b_rqd:.2f}",
                 self.l_b_min,
             ),
             comparison_operator_label="=",

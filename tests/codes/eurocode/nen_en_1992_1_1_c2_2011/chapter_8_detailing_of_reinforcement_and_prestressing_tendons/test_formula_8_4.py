@@ -193,6 +193,6 @@ class TestForm8Dot4DesignAnchorageLength:
         ).latex()
         assert latex.complete == (
             r"l_{bd} = \max \left\{\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}; "
-            r"l_{b,min}\right\} = \max \left\{1 \cdot 1 \cdot 1 \cdot 1 \cdot 1 \cdot 200; \text{400}\right\} = 400.0"
+            r"l_{b,min}\right\} = \max \left\{1 \cdot 1 \cdot 1 \cdot 1 \cdot 1 \cdot 200.00; 400\right\} = 400.00"
         )
-        assert latex.short == r"l_{bd} = 400.0"
+        assert latex.short == r"l_{bd} = 400.00"
