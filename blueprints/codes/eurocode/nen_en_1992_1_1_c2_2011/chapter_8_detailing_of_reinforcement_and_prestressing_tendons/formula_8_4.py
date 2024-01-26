@@ -1,12 +1,13 @@
 """Formula 8.4 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
 
 class Form8Dot4DesignAnchorageLength(Formula):
-    """Class representing formula 8.4 for the calculation of the design anchorage length :math:`l_{bd}` [:math:`mm`]."""
+    """Class representing formula 8.4 for the calculation of the design anchorage length :math:`l_{bd}` [mm]."""
 
     label = "8.4"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -67,7 +68,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
             [:math:`α_{4}`] Coefficient for the influence of one or more welded transverse bars :math:`(Ø_{t} > 0,6 Ø)` along the design anchorage
             length :math:`l_{bd}` (see 8.6) [-].
 
-            = 0.7 for all types, position and size as specified in figure 8.6 (e) in both tension and compression.
+            :math:`= 0.7` for all types, position and size as specified in figure 8.6 (e) in both tension and compression.
 
         alpha_5 : DIMENSIONLESS
             [:math:`α_{5}`] Coefficient for the effect of the pressure transverse to the plane of splitting
@@ -124,3 +125,16 @@ class Form8Dot4DesignAnchorageLength(Formula):
             l_b_min=l_b_min,
         )
         return max(alpha_1 * alpha_2 * alpha_3 * alpha_4 * alpha_5 * l_b_rqd, l_b_min)
+
+    def latex(self) -> LatexFormula:
+        """Returns a LatexFormula representation of the formula."""
+        return LatexFormula(
+            return_symbol=r"l_{bd}",
+            result=str(self),
+            equation=max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}", r"l_{b,min}"),
+            numeric_equation=max_curly_brackets(
+                rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_4} \cdot {self.alpha_5} \cdot {self.l_b_rqd}",
+                self.l_b_min,
+            ),
+            comparison_operator_label="=",
+        )
