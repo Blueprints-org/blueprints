@@ -1,7 +1,7 @@
 """Formula 8.2 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, conditional, to_text, variable_with_subscript
+from blueprints.codes.latex_formula import LatexFormula, conditional
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_negative
 
@@ -58,11 +58,10 @@ class Form8Dot2UltimateBondStress(Formula):
     def latex(self) -> LatexFormula:
         """Returns a representation of the formula in LaTeX format."""
         return LatexFormula(
-            return_symbol=variable_with_subscript(variable="f", subscript="bd"),
-            result=to_text(self),
-            equation=rf"{to_text(2.25)} \cdot {variable_with_subscript(variable='η', subscript='1')} \cdot "
-            rf"{variable_with_subscript(variable='η', subscript='2')} \cdot {variable_with_subscript(variable='f', subscript='ctd')}",
-            numeric_equation=rf"{to_text(2.25)} \cdot {self.eta_1} \cdot {self.eta_2} \cdot {self.f_ctd}",
+            return_symbol=r"f_{bd}",
+            result=f"{self:.2f}",
+            equation=r"2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd}",
+            numeric_equation=rf"2.25 \cdot {self.eta_1:.2f} \cdot {self.eta_2:.2f} \cdot {self.f_ctd:.2f}",
             comparison_operator_label="=",
         )
 
@@ -130,14 +129,14 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
-        numerical_equation = to_text(1.0) if self.diameter <= 32 else f"({to_text(132)} - {to_text(self.diameter)}) / {to_text(100)}"
+        numerical_equation = str(1.0) if self.diameter <= 32 else f"(132 - {self.diameter}) / 100"
 
         return LatexFormula(
-            return_symbol=variable_with_subscript(r"\eta", "2"),
-            result=to_text(self),
+            return_symbol=r"\eta_2",
+            result=f"{self:.2f}",
             equation=conditional(
-                [1.0, f'{to_text("Ø")} ≤ {to_text(32)}'],
-                [f'({to_text(132)} - {to_text("Ø")}) / {to_text(100)}', f'{to_text("Ø")} > {to_text(32)}'],
+                [1.0, "Ø ≤ 32"],
+                ["(132 - Ø) / 100", "Ø > 32"],
             ),
             numeric_equation=numerical_equation,
             comparison_operator_label="=",

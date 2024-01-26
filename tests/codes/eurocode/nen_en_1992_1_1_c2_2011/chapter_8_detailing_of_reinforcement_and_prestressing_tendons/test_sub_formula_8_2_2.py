@@ -38,25 +38,14 @@ class TestSubForm8Dot2CoefficientBarDiameter:
 
     def test_latex(self) -> None:
         """Test the latex representation."""
-        # Example values
-        assert SubForm8Dot2CoefficientBarDiameter(diameter=16).latex().complete == (
-            r"\eta_{\text{2}} = \left{\matrix{\text{1.0} & \text{voor }"
-            r"\text{Ø} ≤ \text{32} \\ (\text{132} - \text{Ø}) / \text{100} & "
-            r"\text{voor }\text{Ø} > \text{32} }\right. = \text{1.0} = "
-            r"\text{1.0}"
+        latex_16 = SubForm8Dot2CoefficientBarDiameter(diameter=16).latex()
+        latex_64 = SubForm8Dot2CoefficientBarDiameter(diameter=64).latex()
+        assert latex_16.complete == r"\eta_2 = \left{\matrix{1.0 & \text{voor }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{voor }Ø > 32 }\right. = 1.0 = 1.00"
+
+        assert str(latex_16) == r"\eta_2 = \left{\matrix{1.0 & \text{voor }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{voor }Ø > 32 }\right. = 1.0 = 1.00"
+
+        assert latex_64.complete == (
+            r"\eta_2 = \left{\matrix{1.0 & \text{voor }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{voor }Ø > 32 }\right. = (132 - 64) / 100 = 0.68"
         )
 
-        assert str(SubForm8Dot2CoefficientBarDiameter(diameter=16).latex()) == (
-            r"\eta_{\text{2}} = \left{\matrix{\text{1.0} & \text{voor }\text{Ø} "
-            r"≤ \text{32} \\ (\text{132} - \text{Ø}) / \text{100} & \text{voor }"
-            r"\text{Ø} > \text{32} }\right. = \text{1.0} = \text{1.0}"
-        )
-
-        assert SubForm8Dot2CoefficientBarDiameter(diameter=64).latex().complete == (
-            r"\eta_{\text{2}} = \left{\matrix{\text{1.0} & \text{voor }"
-            r"\text{Ø} ≤ \text{32} \\ (\text{132} - \text{Ø}) / \text{100} & "
-            r"\text{voor }\text{Ø} > \text{32} }\right. = (\text{132} - "
-            r"\text{64}) / \text{100} = \text{0.68}"
-        )
-
-        assert SubForm8Dot2CoefficientBarDiameter(diameter=16).latex().short == r"\eta_{\text{2}} = \text{1.0}"
+        assert latex_16.short == r"\eta_2 = 1.00"
