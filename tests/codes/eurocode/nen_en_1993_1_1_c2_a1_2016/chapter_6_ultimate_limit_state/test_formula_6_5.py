@@ -2,7 +2,9 @@
 # pylint: disable=arguments-differ
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_5 import Form6Dot5UnityCheckTensileStrength
+from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_5 import (
+    Form6Dot5UnityCheckTensileStrength,
+)
 from blueprints.validations import NegativeValueError, LessOrEqualToZeroError
 
 # pylint: disable=arguments-differ
