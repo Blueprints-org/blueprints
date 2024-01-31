@@ -27,11 +27,10 @@ class TestForm6Dot5UnityCheckTensileStrength:
         ("n_ed", "n_t_rd"),
         [
             (-7, 10),  # n_ed is negative
-            (7, -10),  # n_t_rd is negative
         ],
     )
-    def test_raise_error_when_negative_is_given(self, n_ed: float, n_t_rd: float) -> None:
-        """Test a negative value for n_ed or n_t_rd."""
+    def test_raise_error_when_negative_n_ed_is_given(self, n_ed: float, n_t_rd: float) -> None:
+        """Test a negative value for n_ed."""
         with pytest.raises(NegativeValueError):
             Form6Dot5UnityCheckTensileStrength(
                 n_ed=n_ed,
@@ -42,9 +41,10 @@ class TestForm6Dot5UnityCheckTensileStrength:
         ("n_ed", "n_t_rd"),
         [
             (7, 0),  # n_ed is negative
+            (7, -10),  # n_t_rd is negative
         ],
     )
-    def test_raise_error_when_zero_n_t_rd_is_given(self, n_ed: float, n_t_rd: float) -> None:
+    def test_raise_error_when_negative_or_zero_n_t_rd_is_given(self, n_ed: float, n_t_rd: float) -> None:
         """Test a zero value for n_t_rd."""
         with pytest.raises(LessOrEqualToZeroError):
             Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
