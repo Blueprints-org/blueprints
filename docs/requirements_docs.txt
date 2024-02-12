@@ -1,5 +1,5 @@
 furo==2023.9.10
-ipykernel==6.29.0
+ipykernel==6.29.2
 ipython==8.20.0
 ipywidgets==8.1.1
 nbconvert==7.14.2
