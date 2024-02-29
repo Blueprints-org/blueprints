@@ -29,7 +29,7 @@ Total of 108 equations present.
 | 6.2             | :x:  |         |             |
 | 6.3             | :x:  |         |             |
 | 6.4             | :x:  |         |             |
-| 6.5             | :x:  |         |             |
+| 6.5             | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength |
 | 6.6             | :x:  |         |             |
 | 6.7             | :x:  |         |             |
 | 6.8             | :x:  |         |             |
