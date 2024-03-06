@@ -82,8 +82,8 @@ quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
 
-[pylint]
+[lint.pylint]
 max-args = 8
 
-[pydocstyle]
+[lint.pydocstyle]
 convention = "numpy"
