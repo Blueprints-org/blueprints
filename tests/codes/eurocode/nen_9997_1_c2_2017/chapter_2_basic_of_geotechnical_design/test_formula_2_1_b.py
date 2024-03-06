@@ -1,4 +1,4 @@
-""" "Testing Formula 2.1b from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
+"""Testing Formula 2.1b from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
 
 import pytest
 
