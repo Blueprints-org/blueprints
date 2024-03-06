@@ -3,7 +3,7 @@ Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings**
 
 The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status ( :x: or
-:heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+:heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints. 
 
 Total of 304 formulas present.
 
