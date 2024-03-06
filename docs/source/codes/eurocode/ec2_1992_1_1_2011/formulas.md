@@ -3,7 +3,7 @@ Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings**
 
 The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status ( :x: or
-:heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+:heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints. 
 
 Total of 304 formulas present.
 
@@ -234,7 +234,7 @@ Total of 304 formulas present.
 | 9.9            | :heavy_check_mark: |         | Form9Dot9MaximumSpacingSeriesOfLinks                      |
 | 9.10           | :heavy_check_mark: |         | Form9Dot10MaximumSpacingBentUpBars                        |
 | 9.11           |        :x:         |         |                                                           |
-| 9.12N          | :heavy_check_mark  |         | Form9Dot12NMinimumLongitudinalReinforcementColumns        |
+| 9.12N          | :heavy_check_mark: |         | Form9Dot12NMinimumLongitudinalReinforcementColumns        |
 | 9.13           | :heavy_check_mark: |         | Form9Dot13TensileForceToBeAnchored                        |
 | 9.14           | :heavy_check_mark: |         | Form9Dot14SplittingForceColumnOnRock                      |
 | 9.15           | :heavy_check_mark: |         | Form9Dot15MinimumResistancePeripheralTie                  |
