@@ -1,4 +1,5 @@
 """Testing formula 2.2 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 2: Basis of design."""
+
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_2_basic_of_design.formula_2_2 import Form2Dot2CharacteristicValueResistance

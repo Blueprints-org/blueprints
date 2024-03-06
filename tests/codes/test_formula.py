@@ -1,4 +1,5 @@
 """Module for testing the Formula class."""
+
 import pytest
 
 from blueprints.codes.formula import Formula

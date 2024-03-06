@@ -1,4 +1,5 @@
 """Formula 2.1b from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
+
 from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS

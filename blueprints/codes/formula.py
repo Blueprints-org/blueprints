@@ -1,4 +1,5 @@
 """Module for the abstract base class Formula."""
+
 from abc import ABC, abstractmethod
 
 

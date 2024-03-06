@@ -1,4 +1,5 @@
 """Module contains tests for formula 2.1a from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
+
 import pytest
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1_a import Form2Dot1ADesignValueLoad
