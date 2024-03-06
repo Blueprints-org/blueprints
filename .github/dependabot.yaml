@@ -5,8 +5,17 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values 
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Amsterdam"
+    versioning-strategy: increase
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: weekly
       day: "monday"
