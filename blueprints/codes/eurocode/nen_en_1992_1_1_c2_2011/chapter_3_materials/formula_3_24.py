@@ -1,4 +1,5 @@
 """Formula 3.24 from NEN-EN 1992-1-1+C2:2011: Chapter 3 - Materials."""
+
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import MPA

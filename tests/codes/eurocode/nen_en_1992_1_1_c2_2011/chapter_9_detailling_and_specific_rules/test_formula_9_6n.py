@@ -1,4 +1,5 @@
 """Testing formula 9.6N of NEN-EN 1992-1-1+C2:2011."""
+
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_9_detailling_and_specific_rules.formula_9_6n import (

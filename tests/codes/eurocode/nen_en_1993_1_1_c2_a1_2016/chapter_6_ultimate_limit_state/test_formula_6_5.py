@@ -1,4 +1,5 @@
 """Testing formula 6.5 of NEN-EN 1993-1-1+C2+A1:2016."""
+
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_5 import (
