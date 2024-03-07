@@ -1,4 +1,5 @@
 """Formula 2.2 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 2: Basis of design."""
+
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import DIMENSIONLESS

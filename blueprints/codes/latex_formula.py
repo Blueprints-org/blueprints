@@ -1,4 +1,5 @@
 """Latex formula representation."""
+
 from dataclasses import dataclass
 
 
