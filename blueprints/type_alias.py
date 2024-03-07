@@ -1,4 +1,5 @@
 """Module to keep track of type aliases used in Blueprints."""
+
 # <editor-fold desc="DISTANCES">
 MM = float
 CM = float

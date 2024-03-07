@@ -1,4 +1,5 @@
 """Testing formula 3.1 of NEN-EN 1992-1-1+C2:2011."""
+
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_1 import Form6Dot1DesignShearStrength
