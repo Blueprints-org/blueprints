@@ -1,4 +1,5 @@
 """Blueprints docs configuration."""
+
 # ruff: noqa: E402, A001, I001
 import datetime
 import os
