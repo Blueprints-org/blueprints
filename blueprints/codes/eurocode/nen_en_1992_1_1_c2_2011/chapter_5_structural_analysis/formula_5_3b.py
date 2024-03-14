@@ -59,8 +59,8 @@ class Form5Dot3BTransverseForceBracedMembers(Formula):
         """Returns LatexFormula object for formula 5.3b."""
         return LatexFormula(
             return_symbol=r"H_{i}",
-            result=f"{self:.2f}",
+            result=f"{self:.3f}",
             equation=r"2\theta_{i}N",
-            numeric_equation=rf"2\cdot{self.theta_i:.2f}\cdot{self.n_axial_force:.2f}",
+            numeric_equation=rf"2\cdot{self.theta_i:.3f}\cdot{self.n_axial_force:.2f}",
             comparison_operator_label="=",
         )
