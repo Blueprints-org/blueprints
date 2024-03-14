@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.validations import raise_if_negative
 
@@ -53,3 +54,13 @@ class Form5Dot3BTransverseForceBracedMembers(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(theta_i=theta_i, n_axial_force=n_axial_force)
         return 2 * theta_i * n_axial_force
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 5.3b."""
+        return LatexFormula(
+            return_symbol=r"H_{i}",
+            result=f"{self:.2f}",
+            equation=r"2\theta_{i}N",
+            numeric_equation=rf"2\cdot{self.theta_i:.2f}\cdot{self.n_axial_force:.2f}",
+            comparison_operator_label="=",
+        )
