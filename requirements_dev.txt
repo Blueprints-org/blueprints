@@ -1,8 +1,8 @@
-mypy==1.8.0
-ruff==0.3.1
+mypy==1.9.0
+ruff==0.3.2
 isort==5.13.2
 pre-commit==3.6.2
-pytest==8.0.2
+pytest==8.1.1
 pytest-cov==4.1.0
 pytest-describe==2.2.0
 pytest-pspec==0.0.4
