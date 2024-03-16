@@ -33,7 +33,7 @@ class Form5Dot6TransverseForceEffectRoofDiaphragm(Formula):
 
         Notes
         -----
-        where :math:`N_{a} and :math:`N_{b}` are longitudinal forces contributing to :math:`H_{i}`.
+        where :math:`N_{a} is a longitudinal force contributing to :math:`H_{i}`.
         Positive values for compression, tension is not allowed.
         """
         super().__init__()
