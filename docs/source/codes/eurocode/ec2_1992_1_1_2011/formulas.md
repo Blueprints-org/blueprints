@@ -49,7 +49,7 @@ Total of 304 formulas present.
 | 5.3b           |        :x:         |         |                                                           |
 | 5.4            |        :x:         |         |                                                           |
 | 5.5            |        :x:         |         |                                                           |
-| 5.6            |        :x:         |         |                                                           |
+| 5.6            | :heavy_check_mark: |         | Form5Dot6TransverseForceEffectRoofDiaphragm               |
 | 5.7            |        :x:         |         |                                                           |
 | 5.7a           |        :x:         |         |                                                           |
 | 5.7b           |        :x:         |         |                                                           |
