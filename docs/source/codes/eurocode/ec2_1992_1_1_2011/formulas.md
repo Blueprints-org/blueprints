@@ -48,7 +48,7 @@ Total of 304 formulas present.
 | 5.3a           | :heavy_check_mark: |         | Form5Dot3ATransverseForceUnbracedMembers                  |
 | 5.3b           |        :x:         |         |                                                           |
 | 5.4            |        :x:         |         |                                                           |
-| 5.5            |        :x:         |         |                                                           |
+| 5.5            | :heavy_check_mark: |         | Form5Dot5TTransverseForceEffectFloorDiaphragm             |
 | 5.6            |        :x:         |         |                                                           |
 | 5.7            |        :x:         |         |                                                           |
 | 5.7a           |        :x:         |         |                                                           |
