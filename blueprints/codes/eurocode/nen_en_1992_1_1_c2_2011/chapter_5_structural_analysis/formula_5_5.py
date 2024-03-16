@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.validations import raise_if_negative
 
 
-class Form5Dot5TTransverseForceEffectFloorDiaphragm(Formula):
+class Form5Dot5TransverseForceEffectFloorDiaphragm(Formula):
     """Class representing formula 5.5 for the calculation of the effect of the inclination on floor diaphragm, :math:`H_{i}`.
 
     See Figure 5.1 c1.

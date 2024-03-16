@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_5 import Form5Dot5TTransverseForceEffectFloorDiaphragm
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_5 import Form5Dot5TransverseForceEffectFloorDiaphragm
 from blueprints.validations import NegativeValueError
 
 
-class TestForm5Dot5TTransverseForceEffectFloorDiaphragm:
+class TestForm5Dot5TransverseForceEffectFloorDiaphragm:
     """Validation for formula 5.5 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -17,7 +17,7 @@ class TestForm5Dot5TTransverseForceEffectFloorDiaphragm:
         n_b = 10  # kN
 
         # Object to test
-        form_5_4 = Form5Dot5TTransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
+        form_5_4 = Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.0225  # kN
@@ -32,7 +32,7 @@ class TestForm5Dot5TTransverseForceEffectFloorDiaphragm:
         n_b = 10
 
         with pytest.raises(NegativeValueError):
-            Form5Dot5TTransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
+            Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
     def test_raise_error_when_negative_n_a_is_given(self) -> None:
         """Test a negative value for n_a."""
@@ -42,7 +42,7 @@ class TestForm5Dot5TTransverseForceEffectFloorDiaphragm:
         n_b = 10
 
         with pytest.raises(NegativeValueError):
-            Form5Dot5TTransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
+            Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
     def test_raise_error_when_negative_n_b_is_given(self) -> None:
         """Test a negative value for n_b."""
@@ -52,7 +52,7 @@ class TestForm5Dot5TTransverseForceEffectFloorDiaphragm:
         n_b = -10
 
         with pytest.raises(NegativeValueError):
-            Form5Dot5TTransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
+            Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
     def test_latex(self) -> None:
         """Test the latex representation of the formula."""
@@ -62,7 +62,7 @@ class TestForm5Dot5TTransverseForceEffectFloorDiaphragm:
         n_b = 10  # kN
 
         # Object to test
-        form_5_5_latex = Form5Dot5TTransverseForceEffectFloorDiaphragm(
+        form_5_5_latex = Form5Dot5TransverseForceEffectFloorDiaphragm(
             theta_i=theta_i,
             n_a=n_a,
             n_b=n_b,
