@@ -6,7 +6,7 @@ from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.validations import raise_if_negative
 
 
-class Form5Dot3ATransverseForceUnbracedMembers(Formula):
+class Form5Dot3aTransverseForceUnbracedMembers(Formula):
     """Class representing formula 5.3a for the calculation of the transverse force for unbraced members, :math:`H_{i}`.
 
     See Figure 5.1 a1.
