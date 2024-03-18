@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.validations import raise_if_negative
 
 
-class Form5Dot3BTransverseForceBracedMembers(Formula):
+class Form5Dot3bTransverseForceBracedMembers(Formula):
     """Class representing formula 5.3b for the calculation of the transverse force for braced members, :math:`H_{i}`.
 
     See Figure 5.1 a2.
@@ -21,7 +21,7 @@ class Form5Dot3BTransverseForceBracedMembers(Formula):
         theta_i: DIMENSIONLESS,
         n_axial_force: KN,
     ) -> None:
-        """[:math:`H_{i}`] Transverse force for unbraced members [:math:`kN`].
+        """[:math:`H_{i}`] Transverse force for braced members [:math:`kN`].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(7) - Formula (5.3b)
 
