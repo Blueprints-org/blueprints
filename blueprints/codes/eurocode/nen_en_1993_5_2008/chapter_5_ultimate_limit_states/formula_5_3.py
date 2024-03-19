@@ -1,6 +1,6 @@
 """Formula 5.3 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit state."""
 
-from blueprints.codes.eurocode import NEN_EN_1993_5_2008
+from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KNM, MM3, MPA
