@@ -1,6 +1,7 @@
 """Formula 5.2 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit state."""
 from blueprints.codes.eurocode import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KNM, MM3, MPA
 from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero
@@ -49,3 +50,13 @@ class Form5Dot2DesignMomentResistanceClass1Or2(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(beta_b=beta_b, w_pl=w_pl, f_y=f_y, gamma_m_0=gamma_m_0)
         return (beta_b * w_pl * f_y / gamma_m_0) * N_TO_KN
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 5.2."""
+        return LatexFormula(
+            return_symbol=r"M_{c,Rd}",
+            result=str(self),
+            equation=r"\beta_B W_{pl} f_y / \gamma_{M0}",
+            numeric_equation=rf"{self.beta_b} \cdot {self.w_pl} \cdot {self.f_y} / {self.gamma_m_0} / 1000",
+            comparison_operator_label="=",
+        )
