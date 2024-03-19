@@ -39,3 +39,15 @@ class TestForm5Dot2DesignMomentResistanceClass1Or2:
         """Test a zero value for n_t_rd."""
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot2DesignMomentResistanceClass1Or2(beta_b=beta_b, w_pl=w_pl, f_y=f_y, gamma_m_0=gamma_m_0)
+
+    def test_latex_output(self) -> None:
+        """Test the latex implementation."""
+        beta_b = 0.5  # Dimensionless
+        w_pl = 20  # MM3
+        f_y = 200  # MPA
+        gamma_m_0 = 0.8  # Dimensionless
+
+        form = Form5Dot2DesignMomentResistanceClass1Or2(beta_b=beta_b, w_pl=w_pl, f_y=f_y, gamma_m_0=gamma_m_0)
+        assert form.latex().complete == r"M_{c,Rd} = \beta_B W_{pl} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000 = 2.5"
+        assert form.latex().short == r"M_{c,Rd} = 2.5"
+        assert str(form.latex()) == r"M_{c,Rd} = \beta_B W_{pl} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000 = 2.5"
