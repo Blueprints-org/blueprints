@@ -37,7 +37,7 @@ class TestForm5Dot2DesignMomentResistanceClass1Or2:
         ],
     )
     def test_raise_error_when_negative_or_zero_n_t_rd_is_given(self, beta_b: float, w_pl: float, f_y: float, gamma_m_0: float) -> None:
-        """Test a zero value for n_t_rd."""
+        """Test a negative and zero value for parameters beta_b, w_pl, f_y, gamma_m_0."""
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot2DesignMomentResistanceClass1Or2(beta_b=beta_b, w_pl=w_pl, f_y=f_y, gamma_m_0=gamma_m_0)
 
