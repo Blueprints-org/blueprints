@@ -3,6 +3,30 @@
 from dataclasses import dataclass
 
 
+def fraction(numerator: str | float, denominator: str | float) -> str:
+    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
+
+    Examples
+    --------
+    >>> fraction(1, 2)
+    str(\frac{1}{2})
+
+    Parameters
+    ----------
+    numerator: str | float
+        The numerator of the fraction.
+    denominator: str | float
+        The denominator of the fraction.
+
+    Returns
+    -------
+    str
+        The latex string
+
+    """
+    return f"\\frac{{{numerator}}}{{{denominator}}}"
+
+
 @dataclass(frozen=True)
 class LatexFormula:
     """Latex formula representation.
