@@ -35,7 +35,7 @@ class TestForm5Dot5PlasticShearResistance:
         ],
     )
     def test_raise_error_when_negative_or_zero_n_t_rd_is_given(self, a_v: float, f_y: float, gamma_m_0: float) -> None:
-        """Test a zero value for n_t_rd."""
+        """Test a zero value for parameters a_v, f_y and gamma_m_0."""
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot5PlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m_0=gamma_m_0)
 
