@@ -1,4 +1,4 @@
-"""Testing formula 5.2 of NEN-EN 1993-5:2008."""
+"""Testing formula 5.3 of NEN-EN 1993-5:2008."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm5Dot3DesignMomentResistanceClass3:
-    """Validation for formula 5.2 from NEN-EN 1993-5:2008."""
+    """Validation for formula 5.3 from NEN-EN 1993-5:2008."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -37,7 +37,7 @@ class TestForm5Dot3DesignMomentResistanceClass3:
         ],
     )
     def test_raise_error_when_negative_or_zero_n_t_rd_is_given(self, beta_b: float, w_el: float, f_y: float, gamma_m_0: float) -> None:
-        """Test a zero value for n_t_rd."""
+        """Test a negative and zero value for parameters beta-b, w_el, f_y, gamma_m_0."""
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot3DesignMomentResistanceClass3(beta_b=beta_b, w_el=w_el, f_y=f_y, gamma_m_0=gamma_m_0)
 
