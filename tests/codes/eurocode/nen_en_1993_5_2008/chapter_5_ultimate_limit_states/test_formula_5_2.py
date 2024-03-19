@@ -1,4 +1,5 @@
 """Testing formula 5.2 of NEN-EN 1993-5:2008."""
+
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states.formula_5_2 import Form5Dot2DesignMomentResistanceClass1Or2
