@@ -19,16 +19,16 @@ class Form5Dot6ProjectedShearArea(Formula):
         tf: MM,  # Flange thickness
         tw: MM,  # Web thickness
     ) -> None:
-        """Calculate the projected shear area based on formula 5.6 from NEN-EN 1993-5:2007(E) art. 5.2.2(5).
+        """[Av] Calculate the projected shear area based on formula 5.6 from NEN-EN 1993-5:2007(E) art. 5.2.2(5).
 
         Parameters
         ----------
         h : MM
-            Overall height in [mm].
+            [h] Overall height in [mm].
         tf : MM
-            Flange thickness in [mm].
+            [tf] Flange thickness in [mm].
         tw : MM
-            Web thickness in [mm].
+            [tw] Web thickness in [mm].
         """
         super().__init__()
         self.h: float = h
