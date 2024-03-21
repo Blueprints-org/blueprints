@@ -18,14 +18,15 @@ class Form5Dot10ReductionFactorShear(Formula):
         v_ed: KN,  # Design shear force
         v_pl_rd: KN,  # Plastic shear resistance
     ) -> None:
-        """Calculate the reduction factor for shear resistance of the cross-section based on formula 5.10 from NEN-EN 1993-5:2007(E) art. 5.2.2(9).
+        """[ρ] Calculate the reduction factor for shear resistance of the cross-section based on formula 5.10 from NEN-EN 1993-5:2007(E) art.
+        5.2.2(9).
 
         Parameters
         ----------
         v_ed : KN
-            Design shear force in [kN/m].
+            [VEd] Design shear force in [kN/m].
         v_pl_rd : KN
-            Plastic shear resistance in [kN/m].
+            [Vpl,rd] Plastic shear resistance in [kN/m].
         """
         super().__init__()
         self.v_ed: float = v_ed
