@@ -45,8 +45,8 @@ Total of 304 formulas present.
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
 | 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
-| 5.3a           | :heavy_check_mark: |         | Form5Dot3ATransverseForceUnbracedMembers                  |
-| 5.3b           |        :x:         |         |                                                           |
+| 5.3a           | :heavy_check_mark: |         | Form5Dot3aTransverseForceUnbracedMembers                  |
+| 5.3b           | :heavy_check_mark: |         | Form5Dot3bTransverseForceBracedMembers                    |
 | 5.4            | :heavy_check_mark: |         | Form5Dot4TransverseForceEffectBracingSystem               |
 | 5.5            |        :x:         |         |                                                           |
 | 5.6            |        :x:         |         |                                                           |
