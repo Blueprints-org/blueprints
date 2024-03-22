@@ -2,8 +2,6 @@
 
 from dataclasses import dataclass
 
-from blueprints.codes.formula import Formula
-
 
 def min_curly_brackets(*args: str | float) -> str:
     r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
@@ -50,44 +48,6 @@ def fraction(numerator: str | float, denominator: str | float) -> str:
 
     """
     return f"\\frac{{{numerator}}}{{{denominator}}}"
-
-
-def latex_to_numeric_equation(instance: Formula, latex_equation: str, **kwargs: str) -> str:
-    r"""
-    Transform a LaTeX equation into a numeric equation with variable substitution.
-
-    Examples
-    --------
-    >>> class Example:
-    ...     alpha = 2
-    ...     beta = 5
-    >>> test_instance = Example()
-    >>> latex_equation = r"\frac{\alpha}{\beta}"
-    >>> numeric_equation = latex_to_numeric_equation(test_instance, latex_equation, alpha=r"\alpha", beta=r"\beta")
-    >>> print(numeric_equation)
-    \frac{2}{5}
-
-    Parameters
-    ----------
-    instance: Any
-        An instance of the class containing variables to be substituted.
-    latex_equation: str
-        The LaTeX equation string.
-    **kwargs: raw str
-        Keyword arguments specifying the mappings between instance attribute names and LaTeX variable names.
-
-    Returns
-    -------
-    str
-        The numeric equation with variable values substituted.
-
-    """
-    # Replace variables in the LaTeX equation string with their corresponding values
-    for instance_var, latex_var in kwargs.items():
-        value = getattr(instance, instance_var)
-        latex_equation = latex_equation.replace(latex_var, str(value))
-
-    return latex_equation
 
 
 @dataclass(frozen=True)
