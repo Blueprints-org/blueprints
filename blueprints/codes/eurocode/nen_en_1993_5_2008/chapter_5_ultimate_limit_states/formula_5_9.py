@@ -86,7 +86,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.9."""
         latex_equation = min_curly_brackets(
-            r"\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot " r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}"
+            r"\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot \frac{f_y}{\gamma_{M0}}, M_{c,Rd}"
         )
         return LatexFormula(
             return_symbol=r"M_{V,Rd}",
