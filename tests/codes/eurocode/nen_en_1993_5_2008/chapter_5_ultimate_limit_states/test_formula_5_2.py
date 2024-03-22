@@ -63,7 +63,10 @@ class TestForm5Dot2DesignMomentResistanceClass1Or2:
         gamma_m_0 = 0.8  # Dimensionless
 
         form_5_2_latex = Form5Dot2DesignMomentResistanceClass1Or2(
-            beta_b=beta_b, w_pl=w_pl, f_y=f_y, gamma_m_0=gamma_m_0
+            beta_b=beta_b,
+            w_pl=w_pl,
+            f_y=f_y,
+            gamma_m_0=gamma_m_0,
         ).latex()
 
         actual = {
@@ -72,6 +75,4 @@ class TestForm5Dot2DesignMomentResistanceClass1Or2:
             "string": str(form_5_2_latex),
         }
 
-        assert (
-            actual[representation] == expected
-        ), f"{representation} representation failed."
+        assert actual[representation] == expected, f"{representation} representation failed."
