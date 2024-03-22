@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_4 import Form5Dot4TTransverseForceEffectBracingSystem
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_4 import Form5Dot4TransverseForceEffectBracingSystem
 from blueprints.validations import NegativeValueError
 
 
-class TestForm5Dot4TTransverseForceEffectBracingSystem:
+class TestForm5Dot4TransverseForceEffectBracingSystem:
     """Validation for formula 5.4 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -17,7 +17,7 @@ class TestForm5Dot4TTransverseForceEffectBracingSystem:
         n_b = 10  # kN
 
         # Object to test
-        form_5_4 = Form5Dot4TTransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
+        form_5_4 = Form5Dot4TransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.015  # kN
@@ -32,7 +32,7 @@ class TestForm5Dot4TTransverseForceEffectBracingSystem:
         n_b = 10
 
         with pytest.raises(NegativeValueError):
-            Form5Dot4TTransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
+            Form5Dot4TransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
     def test_raise_error_when_negative_n_a_is_given(self) -> None:
         """Test a negative value for n_a."""
@@ -42,7 +42,7 @@ class TestForm5Dot4TTransverseForceEffectBracingSystem:
         n_b = 10
 
         with pytest.raises(NegativeValueError):
-            Form5Dot4TTransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
+            Form5Dot4TransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
     def test_raise_error_when_negative_n_b_is_given(self) -> None:
         """Test a negative value for n_b."""
@@ -52,7 +52,7 @@ class TestForm5Dot4TTransverseForceEffectBracingSystem:
         n_b = -10
 
         with pytest.raises(NegativeValueError):
-            Form5Dot4TTransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
+            Form5Dot4TransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
     def test_latex(self) -> None:
         """Test the latex representation of the formula."""
@@ -62,7 +62,7 @@ class TestForm5Dot4TTransverseForceEffectBracingSystem:
         n_b = 10  # kN
 
         # Object to test
-        form_5_4_latex = Form5Dot4TTransverseForceEffectBracingSystem(
+        form_5_4_latex = Form5Dot4TransverseForceEffectBracingSystem(
             theta_i=theta_i,
             n_a=n_a,
             n_b=n_b,
