@@ -24,35 +24,22 @@ class TestForm5Dot5TransverseForceEffectFloorDiaphragm:
 
         assert form_5_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_when_negative_theta_i_is_given(self) -> None:
-        """Test a negative value for theta_i."""
-        # Example values
-        theta_i = -0.003
-        n_a = 5
-        n_b = 10
-
+    @pytest.mark.parametrize(
+        ("theta_i", "n_a", "n_b"),
+        [
+            (-0.003, 5, 10),
+            (0.003, -5, 10),
+            (0.003, 5, -10),
+        ],
+    )
+    def test_raise_error_when_negative_theta_i_is_given(
+        self, theta_i: float, n_a: float, n_b: float
+    ) -> None:
+        """Test negative values for theta_i, n_a and n_b."""
         with pytest.raises(NegativeValueError):
-            Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
-
-    def test_raise_error_when_negative_n_a_is_given(self) -> None:
-        """Test a negative value for n_a."""
-        # Example values
-        theta_i = 0.003
-        n_a = -5
-        n_b = 10
-
-        with pytest.raises(NegativeValueError):
-            Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
-
-    def test_raise_error_when_negative_n_b_is_given(self) -> None:
-        """Test a negative value for n_b."""
-        # Example values
-        theta_i = 0.003
-        n_a = 5
-        n_b = -10
-
-        with pytest.raises(NegativeValueError):
-            Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
+            Form5Dot5TransverseForceEffectFloorDiaphragm(
+                theta_i=theta_i, n_a=n_a, n_b=n_b
+            )
 
     def test_latex(self) -> None:
         """Test the latex representation of the formula."""
