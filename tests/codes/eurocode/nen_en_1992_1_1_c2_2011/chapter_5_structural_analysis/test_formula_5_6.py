@@ -44,9 +44,9 @@ class TestForm5Dot6TransverseForceEffectRoofDiaphragm:
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
-            ("complete", "H_{i} = Θ_{i} \cdot N_{a} = 0.003 \cdot 5.000 = 0.015"),
+            ("complete", r"H_{i} = Θ_{i} \cdot N_{a} = 0.003 \cdot 5.000 = 0.015"),
             ("short", "H_{i} = 0.015"),
-            ("string", "H_{i} = Θ_{i} \cdot N_{a} = 0.003 \cdot 5.000 = 0.015"),
+            ("string", r"H_{i} = Θ_{i} \cdot N_{a} = 0.003 \cdot 5.000 = 0.015"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:
@@ -67,6 +67,4 @@ class TestForm5Dot6TransverseForceEffectRoofDiaphragm:
             "string": str(form_5_6_latex),
         }
 
-        assert (
-            actual[representation] == expected_result
-        ), f"{representation} representation failed."
+        assert actual[representation] == expected_result, f"{representation} representation failed."
