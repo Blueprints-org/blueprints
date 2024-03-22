@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_to_numeric_equation, min_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, fraction, min_curly_brackets
 from blueprints.type_alias import CM3, DEG, DIMENSIONLESS, KNM, MM, MM2, MPA
 from blueprints.unit_conversion import CM3_TO_MM3, NMM_TO_KNM
 from blueprints.validations import raise_if_less_or_equal_to_zero
@@ -92,18 +92,11 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
             return_symbol=r"M_{V,Rd}",
             result=str(self),
             equation=latex_equation,
-            numeric_equation=latex_to_numeric_equation(
-                self,
-                latex_equation,
-                beta_b=r"\beta_b",
-                w_pl=r"W_{pl}",
-                rho=r"\rho",
-                a_v=r"A_v",
-                t_w=r"t_w",
-                alpha=r"\alpha",
-                f_y=r"f_y",
-                gamma_m_0=r"\gamma_{M0}",
-                mc_rd=r"M_{c,Rd}",
+            numeric_equation=(
+                min_curly_brackets(
+                    rf"\left({self.beta_b} \cdot {self.w_pl} \cdot 10^3 - \frac{{{self.rho} \cdot {self.a_v}^2}}{{4 \cdot {self.t_w} \cdot "
+                    rf"\sin({self.alpha})}}\right) \cdot {fraction(self.f_y, self.gamma_m_0)} \cdot 10^{{-6}}, {self.mc_rd}"
+                )
             ),
             comparison_operator_label="=",
         )

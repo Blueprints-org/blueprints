@@ -84,13 +84,13 @@ class TestForm5Dot9ReducedBendingMomentResistance:
         assert (
             form.latex().complete
             == r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot \frac{f_y}"
-            r"{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.8 \cdot 500 - \frac{0.25 \cdot 100^2}{4 \cdot 10 \cdot \sin(45)}\right) \cdot "
-            r"\frac{250}{1.0}, 400\right\} = " + str(form)
+            r"{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.8 \cdot 500 \cdot 10^3 - \frac{0.25 \cdot 100^2}{4 \cdot 10 \cdot "
+            r"\sin(45)}\right) \cdot \frac{250}{1.0} \cdot 10^{-6}, 400\right\} = " + str(form)
         )
         assert form.latex().short == r"M_{V,Rd} = " + str(form)
         assert (
-            form.latex().complete
+            str(form.latex())
             == r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot \frac{f_y}"
-            r"{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.8 \cdot 500 - \frac{0.25 \cdot 100^2}{4 \cdot 10 \cdot \sin(45)}\right) \cdot "
-            r"\frac{250}{1.0}, 400\right\} = " + str(form)
+            r"{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.8 \cdot 500 \cdot 10^3 - \frac{0.25 \cdot 100^2}{4 \cdot 10 \cdot "
+            r"\sin(45)}\right) \cdot \frac{250}{1.0} \cdot 10^{-6}, 400\right\} = " + str(form)
         )
