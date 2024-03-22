@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot2DesignMomentResistanceClass1Or2(Formula):
-    """Class representing a formula 5.2 for design moment resistance for Class 1 or 2 cross-sections."""
+    """Class representing formula 5.2 for design moment resistance for Class 1 or 2 cross-sections."""
 
     label = "5.2"
     source_document = NEN_EN_1993_5_2008
