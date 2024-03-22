@@ -54,7 +54,21 @@ class TestForm5Dot4TTransverseForceEffectBracingSystem:
         with pytest.raises(NegativeValueError):
             Form5Dot4TTransverseForceEffectBracingSystem(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"H_{i} = Θ_{i} \cdot (N_{b} - N_{a}) = 0.003 \cdot (10.000 - 5.000) = 0.015",
+            ),
+            ("short", r"H_{i} = 0.015"),
+            (
+                "string",
+                r"H_{i} = Θ_{i} \cdot (N_{b} - N_{a}) = 0.003 \cdot (10.000 - 5.000) = 0.015",
+            ),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
         theta_i = 0.003  # -
@@ -68,30 +82,12 @@ class TestForm5Dot4TTransverseForceEffectBracingSystem:
             n_b=n_b,
         ).latex()
 
-        # Expected result
-        latex_complete = r"H_{i} = Θ_{i} \cdot (N_{b} - N_{a}) = 0.003 \cdot (10.000 - 5.000) = 0.015"
-        latex_short = r"H_{i} = 0.015"
-
-        latex_test_sample = {
-            "complete": {
-                "expected": latex_complete,
-                "actual": form_5_4_latex.complete,
-            },
-            "short": {"expected": latex_short, "actual": form_5_4_latex.short},
-            "string": {"expected": latex_complete, "actual": str(form_5_4_latex)},
+        actual = {
+            "complete": form_5_4_latex.complete,
+            "short": form_5_4_latex.short,
+            "string": str(form_5_4_latex),
         }
 
-        assertion_errors = []
-
-        # A try-except block inside a loop is considered bad practice by Ruff
-        # However, the documentation states that ignoring this will only have a negligible impact on performance
-        # https://docs.astral.sh/ruff/rules/try-except-in-loop/
-        # In this case, the desired behavior is to collect all the errors and raise them at once
-        for representation, values in latex_test_sample.items():
-            try:
-                assert values["expected"] == values["actual"]
-            except AssertionError as error_message:  # noqa: PERF203
-                assertion_errors.append(rf"Error in {representation} representation. {error_message}")
-
-        if assertion_errors:
-            raise AssertionError("{} errors occurred:\n{}".format(len(assertion_errors), "\n".join(assertion_errors)))
+        assert (
+            actual[representation] == expected
+        ), f"{representation} representation failed."
