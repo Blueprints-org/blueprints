@@ -59,6 +59,6 @@ class Form5Dot2DesignMomentResistanceClass1Or2(Formula):
             return_symbol=r"M_{c,Rd}",
             result=str(self),
             equation=r"\beta_B W_{pl} f_y / \gamma_{M0}",
-            numeric_equation=rf"{self.beta_b} \cdot {self.w_pl} \cdot {self.f_y} / {self.gamma_m_0} / 1000",
+            numeric_equation=rf"{self.beta_b} \cdot {self.w_pl} \cdot {self.f_y} / {self.gamma_m_0} / 1000000",
             comparison_operator_label="=",
         )
