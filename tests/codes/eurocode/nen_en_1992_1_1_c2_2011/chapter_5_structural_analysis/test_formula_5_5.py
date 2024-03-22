@@ -32,26 +32,22 @@ class TestForm5Dot5TransverseForceEffectFloorDiaphragm:
             (0.003, 5, -10),
         ],
     )
-    def test_raise_error_when_negative_theta_i_is_given(
-        self, theta_i: float, n_a: float, n_b: float
-    ) -> None:
+    def test_raise_error_when_negative_theta_i_is_given(self, theta_i: float, n_a: float, n_b: float) -> None:
         """Test negative values for theta_i, n_a and n_b."""
         with pytest.raises(NegativeValueError):
-            Form5Dot5TransverseForceEffectFloorDiaphragm(
-                theta_i=theta_i, n_a=n_a, n_b=n_b
-            )
+            Form5Dot5TransverseForceEffectFloorDiaphragm(theta_i=theta_i, n_a=n_a, n_b=n_b)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                "H_{i} = Θ_{i} \cdot (N_{b} + N_{a}) / 2 = 0.003 \cdot (10.000 + 5.000) / 2 = 0.022",
+                r"H_{i} = Θ_{i} \cdot (N_{b} + N_{a}) / 2 = 0.003 \cdot (10.000 + 5.000) / 2 = 0.022",
             ),
             ("short", "H_{i} = 0.022"),
             (
                 "string",
-                "H_{i} = Θ_{i} \cdot (N_{b} + N_{a}) / 2 = 0.003 \cdot (10.000 + 5.000) / 2 = 0.022",
+                r"H_{i} = Θ_{i} \cdot (N_{b} + N_{a}) / 2 = 0.003 \cdot (10.000 + 5.000) / 2 = 0.022",
             ),
         ],
     )
@@ -75,6 +71,4 @@ class TestForm5Dot5TransverseForceEffectFloorDiaphragm:
             "string": str(form_5_5_latex),
         }
 
-        assert (
-            actual[representation] == expected
-        ), f"{representation} representation failed."
+        assert actual[representation] == expected, f"{representation} representation failed."
