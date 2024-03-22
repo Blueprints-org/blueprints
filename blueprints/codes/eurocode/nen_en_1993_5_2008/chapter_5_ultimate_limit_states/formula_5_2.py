@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KNM, MM3, MPA
-from blueprints.unit_conversion import N_TO_KN
+from blueprints.unit_conversion import MM3_TO_M3, MPA_TO_KPA
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
@@ -50,8 +50,13 @@ class Form5Dot2DesignMomentResistanceClass1Or2(Formula):
         gamma_m_0: DIMENSIONLESS,
     ) -> KNM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(beta_b=beta_b, w_pl=w_pl, f_y=f_y, gamma_m_0=gamma_m_0)
-        return (beta_b * w_pl * f_y / gamma_m_0) * N_TO_KN
+        raise_if_less_or_equal_to_zero(
+            beta_b=beta_b,
+            w_pl=w_pl,
+            f_y=f_y,
+            gamma_m_0=gamma_m_0,
+        )
+        return beta_b * (w_pl * MM3_TO_M3) * (f_y * MPA_TO_KPA) / gamma_m_0
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.2."""
