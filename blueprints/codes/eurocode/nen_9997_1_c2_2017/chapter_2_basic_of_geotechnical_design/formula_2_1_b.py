@@ -6,7 +6,7 @@ from blueprints.type_alias import DIMENSIONLESS
 from blueprints.validations import raise_if_negative
 
 
-class Form2Dot1BRepresentativeValue(Formula):
+class Form2Dot1bRepresentativeValue(Formula):
     """Class representing formula 2.1b for the calculation of the representative value :math:`F_{rep}` of actions."""
 
     label = "2.1b"

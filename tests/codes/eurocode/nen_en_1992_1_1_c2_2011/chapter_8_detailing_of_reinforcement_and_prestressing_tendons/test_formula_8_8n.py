@@ -10,7 +10,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_re
 from blueprints.validations import NegativeValueError
 
 
-class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
+class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
     """Validation for formula 8.8n from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -115,7 +115,9 @@ class TestForm8Dot8NForm8Dot8NAnchorageCapacityWeldedTransverseBar:
                 f_wd=f_wd,
             )
 
-    def test_integration_with_sub_formula_8_8_design_length_of_transverse_bar(self) -> None:
+    def test_integration_with_sub_formula_8_8_design_length_of_transverse_bar(
+        self,
+    ) -> None:
         """Test the integration with sub-formula 8.8 for calculating design length of transverse bar ltd."""
         # Example values
         diameter_t = 16  # mm
