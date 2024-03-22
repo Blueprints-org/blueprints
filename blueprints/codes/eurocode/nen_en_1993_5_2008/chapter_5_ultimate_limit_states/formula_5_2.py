@@ -1,4 +1,4 @@
-"""Formula 5.2 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit state."""
+"""Formula 5.2 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit states."""
 
 from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
