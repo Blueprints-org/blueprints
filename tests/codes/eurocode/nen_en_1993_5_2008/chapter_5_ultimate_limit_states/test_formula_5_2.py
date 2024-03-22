@@ -19,7 +19,7 @@ class TestForm5Dot2DesignMomentResistanceClass1Or2:
         form = Form5Dot2DesignMomentResistanceClass1Or2(beta_b=beta_b, w_pl=w_pl, f_y=f_y, gamma_m_0=gamma_m_0)
 
         # Expected result, manually calculated
-        expected = 2.5
+        expected = 0.0025  # KNM
 
         assert form == pytest.approx(expected)
 
