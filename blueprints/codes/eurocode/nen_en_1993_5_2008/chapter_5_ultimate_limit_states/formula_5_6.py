@@ -1,6 +1,5 @@
 """Formula 5.6 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit state."""
-
-from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states import NEN_EN_1993_5_2008
+from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM, MM2
@@ -15,20 +14,22 @@ class Form5Dot6ProjectedShearArea(Formula):
 
     def __init__(
         self,
-        h: MM,  # Overall height
-        t_f: MM,  # Flange thickness
-        t_w: MM,  # Web thickness
+        h: MM,
+        t_f: MM,
+        t_w: MM,
     ) -> None:
-        """[Av] Calculate the projected shear area based on formula 5.6 from NEN-EN 1993-5:2007(E) art. 5.2.2(5).
+        """[:math:`A_{v}`] Calculate the projected shear area for each web of a U-profile or Z-profile in [:math:`mm²`].
+
+        NEN-EN 1993-5:2008(E) art.5.2.2(5) - Formula (5.6)
 
         Parameters
         ----------
         h : MM
-            [h] Overall height in [mm].
+            [:math:`h`] Overall height in [:math:`mm`].
         t_f : MM
-            [tf] Flange thickness in [mm].
+            [:math:`t_{f}`] Flange thickness in [:math:`mm`].
         t_w : MM
-            [tw] Web thickness in [mm].
+            [:math:`t_{w}`] Web thickness in [:math:`mm`].
         """
         super().__init__()
         self.h: float = h
@@ -51,6 +52,6 @@ class Form5Dot6ProjectedShearArea(Formula):
             return_symbol=r"A_v",
             result=str(self),
             equation=r"t_w \left(h - t_f \right)",
-            numeric_equation=rf"{self.tw} \cdot \left({self.h} - {self.tf} \right)",
+            numeric_equation=rf"{self.t_w} \cdot \left({self.h} - {self.t_f} \right)",
             comparison_operator_label="=",
         )
