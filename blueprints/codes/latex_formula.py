@@ -3,30 +3,6 @@
 from dataclasses import dataclass
 
 
-def fraction(numerator: str | float, denominator: str | float) -> str:
-    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
-
-    Examples
-    --------
-    >>> fraction(1, 2)
-    str(\frac{1}{2})
-
-    Parameters
-    ----------
-    numerator: str | float
-        The numerator of the fraction.
-    denominator: str | float
-        The denominator of the fraction.
-
-    Returns
-    -------
-    str
-        The latex string
-
-    """
-    return f"\\frac{{{numerator}}}{{{denominator}}}"
-
-
 @dataclass(frozen=True)
 class LatexFormula:
     """Latex formula representation.
@@ -63,7 +39,12 @@ class LatexFormula:
             Return symbol = equation = numeric_equation = result
 
         """
-        all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, self.result]
+        all_sub_equations = [
+            self.return_symbol,
+            self.equation,
+            self.numeric_equation,
+            self.result,
+        ]
         return f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
 
     @property
@@ -81,3 +62,27 @@ class LatexFormula:
     def __str__(self) -> str:
         """String representation of the formula."""
         return self.complete
+
+
+def latex_fraction(numerator: str | float, denominator: str | float) -> str:
+    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
+
+    Examples
+    --------
+    >>> latex_fraction(1, 2)
+    str(\frac{1}{2})
+
+    Parameters
+    ----------
+    numerator: str | float
+        The numerator of the fraction.
+    denominator: str | float
+        The denominator of the fraction.
+
+    Returns
+    -------
+    str
+        The latex string
+
+    """
+    return f"\\frac{{{numerator}}}{{{denominator}}}"

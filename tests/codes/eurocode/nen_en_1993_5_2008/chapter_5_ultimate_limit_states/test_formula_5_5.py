@@ -1,6 +1,5 @@
 """Testing formula 5.5 of NEN-EN 1993-5:2008."""
 
-import numpy as np
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states.formula_5_5 import Form5Dot5PlasticShearResistance
@@ -19,7 +18,7 @@ class TestForm5Dot5PlasticShearResistance:
         form = Form5Dot5PlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m_0=gamma_m_0)
 
         # Expected result, manually calculated
-        expected = 40000 / np.sqrt(3) / 1000
+        expected = 23.0940  # KN
 
         assert form == pytest.approx(expected)
 
@@ -35,17 +34,40 @@ class TestForm5Dot5PlasticShearResistance:
         ],
     )
     def test_raise_error_when_negative_or_zero_n_t_rd_is_given(self, a_v: float, f_y: float, gamma_m_0: float) -> None:
-        """Test a zero value for parameters a_v, f_y and gamma_m_0."""
+        """Test a negative and zero value for parameters a_v, f_y and gamma_m_0."""
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot5PlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m_0=gamma_m_0)
 
-    def test_latex_output(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = 23.09401076758503",
+            ),
+            ("short", r"V_{pl,Rd} = 23.09401076758503"),
+            (
+                "string",
+                r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = 23.09401076758503",
+            ),
+        ],
+    )
+    def test_latex_output(self, representation: str, expected: str) -> None:
         """Test the latex implementation."""
         a_v = 200  # MM2
         f_y = 100  # MPA
         gamma_m_0 = 0.5  # DIMENSIONLESS
 
-        form = Form5Dot5PlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m_0=gamma_m_0)
-        assert form.latex().complete == r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = " + str(form)
-        assert form.latex().short == r"V_{pl,Rd} = " + str(form)
-        assert str(form.latex()) == r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = " + str(form)
+        form = Form5Dot5PlasticShearResistance(
+            a_v=a_v,
+            f_y=f_y,
+            gamma_m_0=gamma_m_0,
+        ).latex()
+
+        actual = {
+            "complete": form.complete,
+            "short": form.short,
+            "string": str(form),
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
