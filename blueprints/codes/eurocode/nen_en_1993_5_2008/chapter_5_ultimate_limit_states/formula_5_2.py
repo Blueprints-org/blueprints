@@ -23,7 +23,7 @@ class Form5Dot2DesignMomentResistanceClass1Or2(Formula):
     ) -> None:
         """(:math:`M_{c,Rd}`) Calculate design moment resistance of the cross-section (class 1 or 2) in [:math:`kNm/m`].
 
-        NEN-EN 1993-5:2008(E) art.5.2.2(2) - Formula (5.2.)
+        NEN-EN 1993-5:2008(E) art.5.2.2(2) - Formula (5.2)
 
         Parameters
         ----------
