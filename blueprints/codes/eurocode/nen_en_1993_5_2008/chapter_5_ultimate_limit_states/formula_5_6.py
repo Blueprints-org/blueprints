@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot6ProjectedShearArea(Formula):
-    """Class representing formula 5.6 for the projected shear area."""
+    """Class representing formula 5.6 for the projected shear area for each web of a U-profile or Z-profile."""
 
     label = "5.6"
     source_document = NEN_EN_1993_5_2008
