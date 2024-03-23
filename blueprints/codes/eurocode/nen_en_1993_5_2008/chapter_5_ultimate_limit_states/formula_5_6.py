@@ -32,8 +32,8 @@ class Form5Dot6ProjectedShearArea(Formula):
         """
         super().__init__()
         self.h: float = h
-        self.tf: float = tf
-        self.tw: float = tw
+        self.t_f: float = t_f
+        self.t_w: float = t_w
 
     @staticmethod
     def _evaluate(
