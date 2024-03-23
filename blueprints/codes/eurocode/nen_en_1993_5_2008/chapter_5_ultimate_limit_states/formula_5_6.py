@@ -27,7 +27,7 @@ class Form5Dot6ProjectedShearArea(Formula):
             [h] Overall height in [mm].
         t_f : MM
             [tf] Flange thickness in [mm].
-        tw : MM
+        t_w : MM
             [tw] Web thickness in [mm].
         """
         super().__init__()
