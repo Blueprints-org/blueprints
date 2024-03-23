@@ -16,8 +16,8 @@ class Form5Dot6ProjectedShearArea(Formula):
     def __init__(
         self,
         h: MM,  # Overall height
-        tf: MM,  # Flange thickness
-        tw: MM,  # Web thickness
+        t_f: MM,  # Flange thickness
+        t_w: MM,  # Web thickness
     ) -> None:
         """[Av] Calculate the projected shear area based on formula 5.6 from NEN-EN 1993-5:2007(E) art. 5.2.2(5).
 
