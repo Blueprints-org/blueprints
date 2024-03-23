@@ -38,8 +38,8 @@ class Form5Dot6ProjectedShearArea(Formula):
     @staticmethod
     def _evaluate(
         h: MM,
-        tf: MM,
-        tw: MM,
+        t_f: MM,
+        t_w: MM,
     ) -> MM2:
         """Evaluates the formula for projected shear area."""
         raise_if_less_or_equal_to_zero(h=h, tf=tf, tw=tw)
