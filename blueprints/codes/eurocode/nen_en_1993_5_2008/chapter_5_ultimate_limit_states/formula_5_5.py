@@ -43,7 +43,7 @@ class Form5Dot5PlasticShearResistance(Formula):
         a_v: MM2,
         f_y: MPA,
         gamma_m_0: DIMENSIONLESS,
-    ) -> KNM:
+    ) -> KN:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(a_v=a_v, f_y=f_y, gamma_m_0=gamma_m_0)
         return (a_v * f_y / (np.sqrt(3) * gamma_m_0)) * N_TO_KN
