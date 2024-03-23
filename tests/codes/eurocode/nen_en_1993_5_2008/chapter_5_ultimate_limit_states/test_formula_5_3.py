@@ -16,10 +16,15 @@ class TestForm5Dot3DesignMomentResistanceClass3:
         w_el = 20  # MM3
         f_y = 200  # MPA
         gamma_m_0 = 0.8  # Dimensionless
-        form = Form5Dot3DesignMomentResistanceClass3(beta_b=beta_b, w_el=w_el, f_y=f_y, gamma_m_0=gamma_m_0)
+        form = Form5Dot3DesignMomentResistanceClass3(
+            beta_b=beta_b,
+            w_el=w_el,
+            f_y=f_y,
+            gamma_m_0=gamma_m_0,
+        )
 
         # Expected result, manually calculated
-        expected = 2.5
+        expected = 0.0025  # KNM
 
         assert form == pytest.approx(expected)
 
@@ -36,19 +41,43 @@ class TestForm5Dot3DesignMomentResistanceClass3:
             (1, 1, 1, 0),  # gamma_m_0 is zero
         ],
     )
-    def test_raise_error_when_negative_or_zero_n_t_rd_is_given(self, beta_b: float, w_el: float, f_y: float, gamma_m_0: float) -> None:
+    def test_raise_error_when_negative_or_zero_is_given(self, beta_b: float, w_el: float, f_y: float, gamma_m_0: float) -> None:
         """Test a negative and zero value for parameters beta_b, w_el, f_y, gamma_m_0."""
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot3DesignMomentResistanceClass3(beta_b=beta_b, w_el=w_el, f_y=f_y, gamma_m_0=gamma_m_0)
 
-    def test_latex_output(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000000 = 0.0025",
+            ),
+            ("short", r"M_{c,Rd} = 0.0025"),
+            (
+                "string",
+                r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000000 = 0.0025",
+            ),
+        ],
+    )
+    def test_latex_output(self, representation: str, expected: str) -> None:
         """Test the latex implementation."""
         beta_b = 0.5  # Dimensionless
         w_el = 20  # MM3
         f_y = 200  # MPA
         gamma_m_0 = 0.8  # Dimensionless
 
-        form = Form5Dot3DesignMomentResistanceClass3(beta_b=beta_b, w_el=w_el, f_y=f_y, gamma_m_0=gamma_m_0)
-        assert form.latex().complete == r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000 = 2.5"
-        assert form.latex().short == r"M_{c,Rd} = 2.5"
-        assert str(form.latex()) == r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000 = 2.5"
+        form_5_2_latex = Form5Dot3DesignMomentResistanceClass3(
+            beta_b=beta_b,
+            w_el=w_el,
+            f_y=f_y,
+            gamma_m_0=gamma_m_0,
+        ).latex()
+
+        actual = {
+            "complete": form_5_2_latex.complete,
+            "short": form_5_2_latex.short,
+            "string": str(form_5_2_latex),
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
