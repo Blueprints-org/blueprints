@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, fraction
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction
 
 
 @pytest.fixture()
@@ -43,4 +43,4 @@ def test_latex_fraction() -> None:
     # Expected result
     expected_result = r"\frac{5.0}{10.0}"
 
-    assert fraction(numerator=numerator, denominator=denominator) == expected_result
+    assert latex_fraction(numerator=numerator, denominator=denominator) == expected_result
