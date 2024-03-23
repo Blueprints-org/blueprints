@@ -25,7 +25,7 @@ class Form5Dot6ProjectedShearArea(Formula):
         ----------
         h : MM
             [h] Overall height in [mm].
-        tf : MM
+        t_f : MM
             [tf] Flange thickness in [mm].
         tw : MM
             [tw] Web thickness in [mm].
