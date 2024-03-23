@@ -42,8 +42,8 @@ class Form5Dot6ProjectedShearArea(Formula):
         t_w: MM,
     ) -> MM2:
         """Evaluates the formula for projected shear area."""
-        raise_if_less_or_equal_to_zero(h=h, tf=tf, tw=tw)
-        return tw * (h - tf)
+        raise_if_less_or_equal_to_zero(h=h, t_f=t_f, t_w=t_w)
+        return t_w * (h - t_f)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.6."""
