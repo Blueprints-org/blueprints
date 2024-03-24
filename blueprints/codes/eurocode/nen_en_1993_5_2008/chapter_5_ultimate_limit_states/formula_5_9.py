@@ -103,7 +103,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
             equation=latex_equation,
             numeric_equation=(
                 min_curly_brackets(
-                    rf"\left({self.beta_b} \cdot {self.w_pl} \cdot 10^3 - \frac{{{self.rho} \cdot {self.a_v}^2}}{{4 \cdot {self.t_w} \cdot "
+                    rf"\left({self.beta_b} \cdot {self.w_pl} - \frac{{{self.rho} \cdot {self.a_v}^2}}{{4 \cdot {self.t_w} \cdot "
                     rf"\sin({self.alpha})}}\right) \cdot {latex_fraction(self.f_y, self.gamma_m_0)} \cdot 10^{{-6}}, {self.mc_rd}"
                 )
             ),
