@@ -2,9 +2,9 @@
 
 import numpy as np
 
-from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states import NEN_EN_1993_5_2008
+from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, fraction, min_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, min_curly_brackets
 from blueprints.type_alias import CM3, DEG, DIMENSIONLESS, KNM, MM, MM2, MPA
 from blueprints.unit_conversion import CM3_TO_MM3, NMM_TO_KNM
 from blueprints.validations import raise_if_less_or_equal_to_zero
@@ -18,41 +18,43 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
 
     def __init__(  # noqa: PLR0913
         self,
-        beta_b: DIMENSIONLESS,  # Reduction factor for bending resistance
-        w_pl: CM3,  # Plastic section modulus
-        rho: DIMENSIONLESS,  # Reduction factor for shear resistance
-        a_v: MM2,  # Projected shear area for each web
-        t_w: MM,  # Thickness of the web
-        alpha: DEG,  # Inclination of the web
-        f_y: MPA,  # Yield strength
-        gamma_m_0: DIMENSIONLESS,  # Partial factor for material properties
-        mc_rd: KNM,  # Design moment resistance
+        beta_b: DIMENSIONLESS,
+        w_pl: CM3,
+        rho: DIMENSIONLESS,
+        a_v: MM2,
+        t_w: MM,
+        alpha: DEG,
+        f_y: MPA,
+        gamma_m_0: DIMENSIONLESS,
+        mc_rd: KNM,
     ) -> None:
-        """(Mv,Rd) Calculate reduced design bending moment resistance of the cross-section allowing for the shear force in [kNm/m].
+        """(:math:`M_{V,Rd}`) Calculate reduced design bending moment resistance of the cross-section allowing for the shear force in [:math:`kNm`].
 
-         based on NEN-EN 1993-5:2007(E) art. 5.2.2(9) formula 5.9.
+        NEN-EN 1993-5:2008(E) art.5.2.2(9) - Formula (5.9)
 
         Parameters
         ----------
         beta_b : DIMENSIONLESS
-            (β_b) Reduction factor for the bending resistance of the cross-section in [-].
+            (:math:`β_{b}`) Reduction factor for the bending resistance of the cross-section in [-].
             Defined in NEN-EN 1993-5:2007(E) art. 5.2.2(2) or CUR166, part 2, par. 3.3.2.
         w_pl : CM3
-            (Wpl) Plastic section modulus in [cm³/m].
+            (:math:`W_{pl}`) Plastic section modulus in [:math:`cm³`].
         rho : DIMENSIONLESS
-            (ρ) Reduction factor for shear resistance of the cross-section, according NEN-EN 1993-5:2007(E) art. 5.2.2(9) formula 5.10.
+            (:math:`ρ`) Reduction factor for shear resistance of the cross-section, according NEN-EN 1993-5:2007(E) art. 5.2.2(9) formula 5.10 [-].
         a_v : MM2
-            (Av) Projected shear area for each web, acting in the same direction as VEd in [mm²/m].
+            (:math:`A_{V}`) Projected shear area for each web, acting in the same direction as VEd in [:math:`mm²`].
         t_w : MM
-            (t_w) Thickness of the web in [mm].
+            (:math:`t_{w}`) Thickness of the web in [:math:`mm`].
         alpha : DEGREE
-            (α) the inclination of the web according to NEN-EN 1993-5:2007(E) Figure 5-1 in [degrees].
+            (:math:`α`) the inclination of the web according to NEN-EN 1993-5:2007(E) Figure 5-1 in [degrees].
         f_y : MPA
-            (fy) Yield strength in [MPa].
+            (:math:`f_{y}`) Yield strength in [:math:`MPa`].
         gamma_m_0 : DIMENSIONLESS
-            (γ_M0) Partial factor for material properties in [-].
+            (:math:`γ_{M0}`) Partial factor for material properties in [-].
         mc_rd : KNM
-            (Mc,Rd) Design moment resistance of the cross-section in [kNm/m]. (Mv,Rd <= Mc,Rd).
+            (:math:`M_{c,Rd}`) Design moment resistance of the cross-section in [:math:`kNm`].
+
+            :math:`M_{v,Rd} <= M_{c,Rd}`
         """
         super().__init__()
         self.beta_b: float = beta_b
@@ -79,9 +81,8 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
     ) -> KNM:
         """Evaluates the formula for reduced bending moment resistance."""
         raise_if_less_or_equal_to_zero(beta_b=beta_b, w_pl=w_pl, rho=rho, a_v=a_v, t_w=t_w, alpha=alpha, f_y=f_y, gamma_m_0=gamma_m_0, mc_rd=mc_rd)
-        return min(
-            ((beta_b * w_pl * CM3_TO_MM3) - ((rho * a_v**2) / (4.0 * t_w * np.sin(np.deg2rad(alpha))))) * (f_y / gamma_m_0) * NMM_TO_KNM, mc_rd
-        )
+        m_v_rd = ((beta_b * w_pl * CM3_TO_MM3) - ((rho * a_v**2) / (4.0 * t_w * np.sin(np.deg2rad(alpha))))) * (f_y / gamma_m_0) * NMM_TO_KNM
+        return min(m_v_rd, mc_rd)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.9."""
@@ -95,7 +96,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
             numeric_equation=(
                 min_curly_brackets(
                     rf"\left({self.beta_b} \cdot {self.w_pl} \cdot 10^3 - \frac{{{self.rho} \cdot {self.a_v}^2}}{{4 \cdot {self.t_w} \cdot "
-                    rf"\sin({self.alpha})}}\right) \cdot {fraction(self.f_y, self.gamma_m_0)} \cdot 10^{{-6}}, {self.mc_rd}"
+                    rf"\sin({self.alpha})}}\right) \cdot {latex_fraction(self.f_y, self.gamma_m_0)} \cdot 10^{{-6}}, {self.mc_rd}"
                 )
             ),
             comparison_operator_label="=",
