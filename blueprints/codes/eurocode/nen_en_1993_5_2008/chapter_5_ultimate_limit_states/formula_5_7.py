@@ -38,7 +38,7 @@ class Form5Dot7ShearBucklingResistance(Formula):
             [:math:`f_{bv}`] Shear buckling strength according to Table 6-1 of EN 1993-1-3 for a web without stiffening
             at the support and for a relative web slenderness [:math:`MPa`]
 
-            Use your own implementation for this value or use :class:`Form5Dot8RelativeSlenderness` class.
+            Use your own implementation for this value or use :class:`Form5Dot8RelativeWebSlenderness` class.
         gamma_m_0 : float
             [:math:`γ_{M0}`] Partial factor for material properties [-].
         """
