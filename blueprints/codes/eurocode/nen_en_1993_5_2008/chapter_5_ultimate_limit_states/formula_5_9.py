@@ -30,6 +30,8 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
     ) -> None:
         """(:math:`M_{V,Rd}`) Calculate reduced design bending moment resistance of the cross-section allowing for the shear force in [:math:`kNm`].
 
+        This calculation is specifically for sheet pile cross-sections, particularly U-profiles and Z-profiles.
+
         NEN-EN 1993-5:2008(E) art.5.2.2(9) - Formula (5.9)
 
         Parameters
