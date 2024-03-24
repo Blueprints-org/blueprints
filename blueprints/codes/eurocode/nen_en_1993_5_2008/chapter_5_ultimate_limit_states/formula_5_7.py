@@ -1,9 +1,10 @@
 """Formula 5.7 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit state."""
 
-from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states import NEN_EN_1993_5_2008
+from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, fraction
-from blueprints.type_alias import KN, MM
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction
+from blueprints.type_alias import DIMENSIONLESS, KN, MM, MPA
+from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
@@ -15,52 +16,64 @@ class Form5Dot7ShearBucklingResistance(Formula):
 
     def __init__(
         self,
-        h: MM,  # Height of the web
-        tf: MM,  # Thickness of the flange
-        tw: MM,  # Thickness of the web
-        f_bv: KN,  # Shear buckling strength
-        gamma_m_0: float,  # Partial factor for material properties
+        h: MM,
+        t_f: MM,
+        t_w: MM,
+        f_bv: MPA,
+        gamma_m_0: DIMENSIONLESS,
     ) -> None:
-        """[Vb,Rd] Calculate the shear buckling resistance based on formula 5.7 from NEN-EN 1993-5:2007(E) art. 5.2.2(7).
+        """[:math:`V_{b,Rd}`] Calculate the shear buckling resistance [:math:`kN`].
+
+        NEN-EN 1993-5:2008(E) art.5.2.2(7) - Formula (5.7)
 
         Parameters
         ----------
         h : MM
-            [h] Height of the web in [mm].
-        tf : MM
-            [tf] Thickness of the flange in [mm].
-        tw : MM
-            [tw] Thickness of the web in [mm].
-        f_bv : KN
-            [fbv] Shear buckling strength in [kN].
+            [:math:`h`] Height of the web in [:math:`mm`].
+        t_f : MM
+            [:math:`t_{f}`] Thickness of the flange in [:math:`mm`].
+        t_w : MM
+            [:math:`t_{w}`] Thickness of the web in [:math:`mm`].
+        f_bv : MPA
+            [:math:`f_{bv}`] Shear buckling strength according to Table 6-1 of EN 1993-1-3 for a web without stiffening
+            at the support and for a relative web slenderness [:math:`MPa`]
         gamma_m_0 : float
-            [γM0] Partial factor for material properties.
+            [:math:`γ_{M0}`] Partial factor for material properties [-].
         """
         super().__init__()
         self.h: float = h
-        self.tf: float = tf
-        self.tw: float = tw
+        self.t_f: float = t_f
+        self.t_w: float = t_w
         self.f_bv: float = f_bv
         self.gamma_m_0: float = gamma_m_0
 
     @staticmethod
     def _evaluate(
         h: MM,
-        tf: MM,
-        tw: MM,
+        t_f: MM,
+        t_w: MM,
         f_bv: KN,
         gamma_m_0: float,
     ) -> KN:
         """Evaluates the formula for shear buckling resistance."""
-        raise_if_less_or_equal_to_zero(h=h, tf=tf, tw=tw, f_bv=f_bv, gamma_m_0=gamma_m_0)
-        return (h - tf) * tw * f_bv / gamma_m_0
+        raise_if_less_or_equal_to_zero(
+            h=h,
+            t_f=t_f,
+            t_w=t_w,
+            f_bv=f_bv,
+            gamma_m_0=gamma_m_0,
+        )
+        return ((h - t_f) * t_w * f_bv / gamma_m_0) * N_TO_KN
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.7."""
         return LatexFormula(
             return_symbol=r"V_{b,Rd}",
             result=str(self),
-            equation=fraction(r"\left(h - t_f \right) t_w f_{bv}", r"\gamma_{M0}"),
-            numeric_equation=fraction(rf"({self.h} - {self.tf}) \cdot {self.tw} \cdot {self.f_bv}", self.gamma_m_0),
+            equation=latex_fraction(numerator=r"\left(h - t_f \right) t_w f_{bv}", denominator=r"\gamma_{M0}"),
+            numeric_equation=latex_fraction(
+                numerator=rf"({self.h} - {self.t_f}) \cdot {self.t_w} \cdot {self.f_bv}",
+                denominator=self.gamma_m_0,
+            ),
             comparison_operator_label="=",
         )

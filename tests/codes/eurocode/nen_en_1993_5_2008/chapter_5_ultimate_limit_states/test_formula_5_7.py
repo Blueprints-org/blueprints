@@ -18,7 +18,7 @@ class TestForm5Dot7ShearBucklingResistance:
         f_bv = 300  # kN
         gamma_m_0 = 1.1
 
-        form = Form5Dot7ShearBucklingResistance(h=h, tf=tf, tw=tw, f_bv=f_bv, gamma_m_0=gamma_m_0)
+        form = Form5Dot7ShearBucklingResistance(h=h, t_f=tf, t_w=tw, f_bv=f_bv, gamma_m_0=gamma_m_0)
 
         # Expected result, manually calculated
         expected = 1309090.909
@@ -38,7 +38,7 @@ class TestForm5Dot7ShearBucklingResistance:
     def test_raise_error_when_negative_or_zero_values_are_given(self, h: float, tf: float, tw: float, f_bv: float, gamma_m_0: float) -> None:
         """Test a zero and negative value for parameters h, tf, tw, f_bv, and gamma_m_0."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form5Dot7ShearBucklingResistance(h=h, tf=tf, tw=tw, f_bv=f_bv, gamma_m_0=gamma_m_0)
+            Form5Dot7ShearBucklingResistance(h=h, t_f=tf, t_w=tw, f_bv=f_bv, gamma_m_0=gamma_m_0)
 
     def test_latex_output(self) -> None:
         """Test the latex implementation."""
@@ -48,7 +48,7 @@ class TestForm5Dot7ShearBucklingResistance:
         f_bv = 300  # kN
         gamma_m_0 = 1.1
 
-        form = Form5Dot7ShearBucklingResistance(h=h, tf=tf, tw=tw, f_bv=f_bv, gamma_m_0=gamma_m_0)
+        form = Form5Dot7ShearBucklingResistance(h=h, t_f=tf, t_w=tw, f_bv=f_bv, gamma_m_0=gamma_m_0)
         assert form.latex().complete == (
             r"V_{b,Rd} = \frac{\left(h - t_f \right) t_w f_{bv}}{\gamma_{M0}} = \frac{(500 - 20) \cdot 10 \cdot 300}{1.1} = "
         ) + str(form)
