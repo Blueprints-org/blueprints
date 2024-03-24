@@ -1,8 +1,9 @@
-""""Test formula 1.0.1 from NEN 9997-1+C2:2017: Chapter 1: General rules."""
+"""Test formula 1.0.1 from NEN 9997-1+C2:2017: Chapter 1: General rules."""
+
 import pytest
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_1_general_rules.formula_1_0_1 import Form1Dot0Dot1EquivalentPilePointCenterline
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm1Dot0Dot1EquivalentPilePointCenterline:
@@ -21,26 +22,15 @@ class TestForm1Dot0Dot1EquivalentPilePointCenterline:
 
         assert form_1_0_1 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_if_negative_b(self) -> None:
-        """Test that a NegativeValueError is raised when a negative value is passed for b."""
-        a = 0.3
-        b = -0.45
-
-        with pytest.raises(NegativeValueError):
-            Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b)
-
-    def test_raise_error_if_a_is_zero(self) -> None:
-        """Test that a NegativeValueError is raised when 0 is passed for a."""
-        a = 0
-        b = 0.45
-
-        with pytest.raises(LessOrEqualToZeroError):
-            Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b)
-
-    def test_raise_error_if_a_is_negative(self) -> None:
-        """Test that a NegativeValueError is raised when a negative value is passed for a."""
-        a = -0.3
-        b = 0.45
-
+    @pytest.mark.parametrize(
+        ("a", "b"),
+        [
+            (-0.3, 0.45),
+            (0.3, -0.45),
+            (0.3, 0),
+        ],
+    )
+    def test_raise_error_if_zero_or_negative(self, a: float, b: float) -> None:
+        """Test if zero or negative values are given."""
         with pytest.raises(LessOrEqualToZeroError):
             Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b)
