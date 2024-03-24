@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, min_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_min_curly_brackets
 from blueprints.type_alias import CM3, DEG, DIMENSIONLESS, KNM, MM, MM2, MPA
 from blueprints.unit_conversion import NMM_TO_KNM
 from blueprints.validations import raise_if_less_or_equal_to_zero
@@ -94,7 +94,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.9."""
-        latex_equation = min_curly_brackets(
+        latex_equation = latex_min_curly_brackets(
             r"\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot \frac{f_y}{\gamma_{M0}}, M_{c,Rd}"
         )
         return LatexFormula(
@@ -102,7 +102,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
             result=str(self),
             equation=latex_equation,
             numeric_equation=(
-                min_curly_brackets(
+                latex_min_curly_brackets(
                     rf"\left({self.beta_b} \cdot {self.w_pl} - \frac{{{self.rho} \cdot {self.a_v}^2}}{{4 \cdot {self.t_w} \cdot "
                     rf"\sin({self.alpha})}}\right) \cdot {latex_fraction(self.f_y, self.gamma_m_0)} \cdot 10^{{-6}}, {self.mc_rd}"
                 )
