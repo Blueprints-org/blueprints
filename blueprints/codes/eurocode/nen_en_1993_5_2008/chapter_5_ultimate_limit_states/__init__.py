@@ -1,3 +1,1 @@
-"""Eurocode NEN-EN 1993-5:2008."""
-
-NEN_EN_1993_5_2008 = "NEN-EN 1995-5:2008"
+"""Module containing all formulas from 1993-5:2008 Chapter 5 - Ultimate limit states."""

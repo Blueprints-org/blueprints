@@ -6,7 +6,7 @@ from blueprints.type_alias import DIMENSIONLESS
 from blueprints.validations import raise_if_negative
 
 
-class Form2Dot1ADesignValueLoad(Formula):
+class Form2Dot1aDesignValueLoad(Formula):
     """Class representing formula 2.1a for the calculation of the design value :math:`F_{d}` of actions."""
 
     label = "2.1a"
@@ -24,7 +24,7 @@ class Form2Dot1ADesignValueLoad(Formula):
         f_rep : float
             [:math:`F_{rep}`] Representative value of actions.
 
-            Use your own implementation for this value or use :class:`Form2Dot1BRepresentativeValue`.
+            Use your own implementation for this value or use :class:`Form2Dot1bRepresentativeValue`.
         """
         super().__init__()
         self.gamma_f = gamma_f
