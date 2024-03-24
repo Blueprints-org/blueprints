@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_fraction, min_curly_brackets
 from blueprints.type_alias import CM3, DEG, DIMENSIONLESS, KNM, MM, MM2, MPA
-from blueprints.unit_conversion import CM3_TO_MM3, NMM_TO_KNM
+from blueprints.unit_conversion import NMM_TO_KNM
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
@@ -37,8 +37,8 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         beta_b : DIMENSIONLESS
             (:math:`β_{b}`) Reduction factor for the bending resistance of the cross-section in [-].
             Defined in NEN-EN 1993-5:2007(E) art. 5.2.2(2) or CUR166, part 2, par. 3.3.2.
-        w_pl : CM3
-            (:math:`W_{pl}`) Plastic section modulus in [:math:`cm³`].
+        w_pl : MM3
+            (:math:`W_{pl}`) Plastic section modulus in [:math:`mm³`].
         rho : DIMENSIONLESS
             (:math:`ρ`) Reduction factor for shear resistance of the cross-section, according NEN-EN 1993-5:2007(E) art. 5.2.2(9) formula 5.10 [-].
         a_v : MM2
@@ -81,7 +81,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
     ) -> KNM:
         """Evaluates the formula for reduced bending moment resistance."""
         raise_if_less_or_equal_to_zero(beta_b=beta_b, w_pl=w_pl, rho=rho, a_v=a_v, t_w=t_w, alpha=alpha, f_y=f_y, gamma_m_0=gamma_m_0, mc_rd=mc_rd)
-        m_v_rd = ((beta_b * w_pl * CM3_TO_MM3) - ((rho * a_v**2) / (4.0 * t_w * np.sin(np.deg2rad(alpha))))) * (f_y / gamma_m_0) * NMM_TO_KNM
+        m_v_rd = ((beta_b * w_pl) - ((rho * a_v**2) / (4.0 * t_w * np.sin(np.deg2rad(alpha))))) * (f_y / gamma_m_0) * NMM_TO_KNM
         return min(m_v_rd, mc_rd)
 
     def latex(self) -> LatexFormula:
