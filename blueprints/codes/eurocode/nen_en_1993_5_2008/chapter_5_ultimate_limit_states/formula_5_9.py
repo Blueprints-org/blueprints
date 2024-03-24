@@ -39,17 +39,17 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         beta_b : DIMENSIONLESS
             (:math:`β_{b}`) Reduction factor for the bending resistance of the cross-section, which takes account of
             possible lack of shear force transmission in the interlocks [-].
-            Defined in NEN-EN 1993-5:2007(E) art. 5.2.2(2) or CUR166, part 2, par. 3.3.2.
+            Defined in NEN-EN 1993-5:2008(E) art. 5.2.2(2) or CUR166, part 2, par. 3.3.2.
         w_pl : MM3
             (:math:`W_{pl}`) Plastic section modulus in [:math:`mm³`].
         rho : DIMENSIONLESS
-            (:math:`ρ`) Reduction factor for shear resistance of the cross-section, according NEN-EN 1993-5:2007(E) art. 5.2.2(9) formula 5.10 [-].
+            (:math:`ρ`) Reduction factor for shear resistance of the cross-section, according NEN-EN 1993-5:2008(E) art. 5.2.2(9) formula 5.10 [-].
         a_v : MM2
             (:math:`A_{V}`) Projected shear area for each web, acting in the same direction as VEd in [:math:`mm²`].
         t_w : MM
             (:math:`t_{w}`) Thickness of the web in [:math:`mm`].
         alpha : DEGREE
-            (:math:`α`) the inclination of the web according to NEN-EN 1993-5:2007(E) Figure 5-1 in [degrees].
+            (:math:`α`) the inclination of the web according to NEN-EN 1993-5:2008(E) Figure 5-1 in [degrees].
         f_y : MPA
             (:math:`f_{y}`) Yield strength in [:math:`MPa`].
         gamma_m_0 : DIMENSIONLESS
