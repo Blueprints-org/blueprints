@@ -5,7 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
 from blueprints.codes.formula import Formula
 from blueprints.type_alias import M
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form1Dot0Dot1EquivalentPilePointCenterline(Formula):
@@ -38,7 +38,6 @@ class Form1Dot0Dot1EquivalentPilePointCenterline(Formula):
         b: M,
     ) -> M:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(b=b)
-        raise_if_less_or_equal_to_zero(a=a)
+        raise_if_less_or_equal_to_zero(a=a, b=b)
         b_calc = min(b, 1.5 * a)
         return 1.13 * a * np.sqrt(b_calc / a)
