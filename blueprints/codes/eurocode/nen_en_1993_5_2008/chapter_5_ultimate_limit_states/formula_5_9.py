@@ -35,7 +35,8 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         Parameters
         ----------
         beta_b : DIMENSIONLESS
-            (:math:`β_{b}`) Reduction factor for the bending resistance of the cross-section in [-].
+            (:math:`β_{b}`) Reduction factor for the bending resistance of the cross-section, which takes account of
+            possible lack of shear force transmission in the interlocks [-].
             Defined in NEN-EN 1993-5:2007(E) art. 5.2.2(2) or CUR166, part 2, par. 3.3.2.
         w_pl : MM3
             (:math:`W_{pl}`) Plastic section modulus in [:math:`mm³`].
