@@ -34,3 +34,36 @@ class TestForm1Dot0Dot1EquivalentPilePointCenterline:
         """Test if zero or negative values are given."""
         with pytest.raises(LessOrEqualToZeroError):
             Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"D_{eq} = 1.13 \cdot a \cdot \sqrt{\frac{min(b, 1.5 \cdot a)}{a}} = 1.13 \cdot 0.3 \cdot "
+                r"\sqrt\frac{0.45}{0.3} = 0.4151885114017486",
+            ),
+            ("short", "D_{eq} = 0.4151885114017486"),
+            (
+                "string",
+                r"D_{eq} = 1.13 \cdot a \cdot \sqrt{\frac{min(b, 1.5 \cdot a)}{a}} = 1.13 \cdot 0.3 \cdot "
+                r"\sqrt\frac{0.45}{0.3} = 0.4151885114017486",
+            ),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        a = 0.3  # m
+        b = 0.45  # m
+
+        # Object to test
+        form = Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b).latex()
+
+        actual = {
+            "complete": form.complete,
+            "short": form.short,
+            "string": str(form),
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."
