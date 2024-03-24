@@ -1,15 +1,15 @@
-"""Formula 5.8 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit state."""
+"""Formula 5.8 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit states."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states import NEN_EN_1993_5_2008
+from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, fraction
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form5Dot8RelativeSlenderness(Formula):
+class Form5Dot8RelativeWebSlenderness(Formula):
     """Class representing formula 5.8 for relative slenderness of the web."""
 
     label = "5.8"
@@ -22,18 +22,20 @@ class Form5Dot8RelativeSlenderness(Formula):
         f_y: MPA,  # Yield strength
         e: MPA,  # Young's modulus
     ) -> None:
-        """[λ] Calculate the relative slenderness of the web based on formula 5.8 from NEN-EN 1993-5:2007(E) art. 5.2.2(7).
+        r"""[:math:`\overline{\lambda}`] Calculate the relative slenderness of the web [-].
+
+        NEN-EN 1993-5:2008(E) art.5.2.2(7) - Formula (5.8)
 
         Parameters
         ----------
         c : MM
-            [c] Length of the web in [mm].
+            [:math:`c`] Length of the web in [:math:`mm`].
         t_w : MM
-            [tw] Thickness of the web in [mm].
+            [:math:`t_{w}`] Thickness of the web in [:math:`mm`].
         f_y : MPA
-            [fy] Yield strength in [MPa].
+            [:math:`f_{y}`] Yield strength in [:math:`MPa`].
         e : MPA
-            [e] Young's modulus in [MPa].
+            [:math:`E`] Young's modulus in [:math:`MPa`].
         """
         super().__init__()
         self.c: float = c
@@ -57,7 +59,8 @@ class Form5Dot8RelativeSlenderness(Formula):
         return LatexFormula(
             return_symbol=r"\overline{\lambda}",
             result=str(self),
-            equation=rf"0.346 \cdot {fraction('c', 't_w')} \sqrt{{{fraction('f_y', 'E')}}}",
-            numeric_equation=rf"0.346 \cdot {fraction(self.c, self.t_w)} \sqrt{{{fraction(self.f_y, self.e)}}}",
+            equation=rf"0.346 \cdot {latex_fraction(numerator='c', denominator='t_w')} \sqrt{{{latex_fraction(numerator='f_y', denominator='E')}}}",
+            numeric_equation=rf"0.346 \cdot {latex_fraction(numerator=self.c, denominator=self.t_w)} \sqrt{{"
+            rf"{latex_fraction(numerator=self.f_y, denominator=self.e)}}}",
             comparison_operator_label="=",
         )
