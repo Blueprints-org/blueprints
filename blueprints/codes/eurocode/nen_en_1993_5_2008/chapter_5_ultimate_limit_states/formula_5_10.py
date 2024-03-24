@@ -1,6 +1,6 @@
 """Formula 5.10 from NEN-EN 1993-5:2008 Chapter 5 - Ultimate limit state."""
 
-from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states import NEN_EN_1993_5_2008
+from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KN
@@ -15,18 +15,19 @@ class Form5Dot10ReductionFactorShear(Formula):
 
     def __init__(
         self,
-        v_ed: KN,  # Design shear force
-        v_pl_rd: KN,  # Plastic shear resistance
+        v_ed: KN,
+        v_pl_rd: KN,
     ) -> None:
-        """[ρ] Calculate the reduction factor for shear resistance of the cross-section based on formula 5.10 from NEN-EN 1993-5:2007(E) art.
-        5.2.2(9).
+        """[:math:`ρ`] Calculate the reduction factor for shear resistance of the cross-section [-].
+
+        NEN-EN 1993-5:2008(E) art.5.2.2(9) - Formula (5.10)
 
         Parameters
         ----------
         v_ed : KN
-            [VEd] Design shear force in [kN/m].
+            [:math:`V_{Ed}`] Design shear force in [:math:`kN`].
         v_pl_rd : KN
-            [Vpl,rd] Plastic shear resistance in [kN/m].
+            [:math:`V_{pl,rd}`] Plastic shear resistance in [:math:`kN`].
         """
         super().__init__()
         self.v_ed: float = v_ed
