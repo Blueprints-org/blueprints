@@ -120,26 +120,42 @@ class TestForm4Dot1NominalConcreteCover:
                 delta_c_dur_add=delta_c_dur_add,
             )
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 \ "
+                r"\text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0",
+            ),
+            ("short", "c_{min} = 15.0"),
+            (
+                "string",
+                r"c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 \ "
+                r"\text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0",
+            ),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
         """Test the latex implementation."""
         c_min_b = 15  # mm
         c_min_dur = 10  # mm
         delta_c_dur_gamma = 5  # mm
         delta_c_dur_st = 5  # mm
         delta_c_dur_add = 0  # mm
-        latex = Form4Dot2MinimumConcreteCover(
+
+        form = Form4Dot2MinimumConcreteCover(
             c_min_b=c_min_b,
             c_min_dur=c_min_dur,
             delta_c_dur_gamma=delta_c_dur_gamma,
             delta_c_dur_st=delta_c_dur_st,
             delta_c_dur_add=delta_c_dur_add,
         ).latex()
-        assert latex.complete == (
-            r"c_{min} = \max \left\{c_{min,b}; \Delta c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-"
-            r"\Delta c_{dur,add}; 10 \ \text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0"
-        )
-        assert latex.short == r"c_{min} = 15.0"
-        assert str(latex) == (
-            r"c_{min} = \max \left\{c_{min,b}; \Delta c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-"
-            r"\Delta c_{dur,add}; 10 \ \text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0"
-        )
+
+        actual = {
+            "complete": form.complete,
+            "short": form.short,
+            "string": str(form),
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."
