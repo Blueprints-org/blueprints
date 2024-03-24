@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -68,12 +68,12 @@ class Form4Dot2MinimumConcreteCover(Formula):
         return LatexFormula(
             return_symbol=r"c_{min}",
             result=str(self),
-            equation=max_curly_brackets(
+            equation=latex_max_curly_brackets(
                 r"c_{min,b}",
                 r"\Delta c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}",
                 r"10 \ \text{mm}",
             ),
-            numeric_equation=max_curly_brackets(
+            numeric_equation=latex_max_curly_brackets(
                 self.c_min_b,
                 f"{self.c_min_dur}+{self.delta_c_dur_gamma}-{self.delta_c_dur_st}-{self.delta_c_dur_add}",
                 10,
