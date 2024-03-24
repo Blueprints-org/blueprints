@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, fraction, min_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction
 
 
 @pytest.fixture()
@@ -34,12 +34,6 @@ class TestLatexFormula:
         assert str(fixture_latex_formula) == expected_result
 
 
-def test_latex_min_curly_brackets() -> None:
-    """Test the latex_max_curly_brackets function."""
-    result = min_curly_brackets(r"a+b", r"500", r"c-d")
-    assert result == r"\min \left\{a+b; 500; c-d\right\}"
-
-
 def test_latex_fraction() -> None:
     """Test the latex_fraction function."""
     # Example values
@@ -49,4 +43,4 @@ def test_latex_fraction() -> None:
     # Expected result
     expected_result = r"\frac{5.0}{10.0}"
 
-    assert fraction(numerator=numerator, denominator=denominator) == expected_result
+    assert latex_fraction(numerator=numerator, denominator=denominator) == expected_result

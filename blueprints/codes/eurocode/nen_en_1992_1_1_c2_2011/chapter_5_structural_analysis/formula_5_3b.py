@@ -1,18 +1,19 @@
-"""Formula 5.3a from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
+"""Formula 5.3b from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.validations import raise_if_negative
 
 
-class Form5Dot3aTransverseForceUnbracedMembers(Formula):
-    """Class representing formula 5.3a for the calculation of the transverse force for unbraced members, :math:`H_{i}`.
+class Form5Dot3bTransverseForceBracedMembers(Formula):
+    """Class representing formula 5.3b for the calculation of the transverse force for braced members, :math:`H_{i}`.
 
-    See Figure 5.1 a1.
+    See Figure 5.1 a2.
     """
 
-    label = "5.3a"
+    label = "5.3b"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
@@ -20,9 +21,9 @@ class Form5Dot3aTransverseForceUnbracedMembers(Formula):
         theta_i: DIMENSIONLESS,
         n_axial_force: KN,
     ) -> None:
-        """[:math:`H_{i}`] Transverse force for unbraced members [:math:`kN`].
+        """[:math:`H_{i}`] Transverse force for braced members [:math:`kN`].
 
-        NEN-EN 1992-1-1+C2:2011 art.5.2(7) - Formula (5.3a)
+        NEN-EN 1992-1-1+C2:2011 art.5.2(7) - Formula (5.3b)
 
         Parameters
         ----------
@@ -52,4 +53,14 @@ class Form5Dot3aTransverseForceUnbracedMembers(Formula):
     ) -> KN:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(theta_i=theta_i, n_axial_force=n_axial_force)
-        return theta_i * n_axial_force
+        return 2 * theta_i * n_axial_force
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 5.3b."""
+        return LatexFormula(
+            return_symbol=r"H_{i}",
+            result=f"{self:.3f}",
+            equation=r"2\theta_{i}N",
+            numeric_equation=rf"2\cdot{self.theta_i:.3f}\cdot{self.n_axial_force:.2f}",
+            comparison_operator_label="=",
+        )
