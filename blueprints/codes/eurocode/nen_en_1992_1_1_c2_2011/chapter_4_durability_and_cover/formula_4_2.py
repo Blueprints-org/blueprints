@@ -23,6 +23,8 @@ class Form4Dot2MinimumConcreteCover(Formula):
     ) -> None:
         """[:math:`c_{min}`] Calculates the minimum concrete cover [:math:`mm`].
 
+        A minimum concrete cover of 10 mm is required, even if the calculated value is lower.
+
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.2 (2) - formula (4.2)
 
         Parameters
@@ -61,7 +63,8 @@ class Form4Dot2MinimumConcreteCover(Formula):
             delta_c_dur_st=delta_c_dur_st,
             delta_c_dur_add=delta_c_dur_add,
         )
-        return max(c_min_b, c_min_dur + delta_c_dur_gamma - delta_c_dur_st - delta_c_dur_add, 10)
+        minimum_cover = 10  # mm
+        return max(c_min_b, c_min_dur + delta_c_dur_gamma - delta_c_dur_st - delta_c_dur_add, minimum_cover)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 4.2."""
