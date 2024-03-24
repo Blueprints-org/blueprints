@@ -39,13 +39,24 @@ class TestForm4Dot1NominalConcreteCover:
         with pytest.raises(NegativeValueError):
             Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev)
 
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            ("complete", r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"),
+            ("short", "c_{nom} = 65.0"),
+            ("string", r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
+        """Test the latex implementation."""
+        c_min = 60  # mm
+        delta_c_dev = 5  # mm
+        form = Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev).latex()
 
-def test_latex() -> None:
-    """Test the latex implementation."""
-    c_min = 60  # mm
-    delta_c_dev = 5  # mm
-    form = Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev)
+        actual = {
+            "complete": form.complete,
+            "short": form.short,
+            "string": str(form),
+        }
 
-    assert form.latex().complete == r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"
-    assert form.latex().short == r"c_{nom} = 65.0"
-    assert str(form.latex()) == r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"
+        assert actual[representation] == expected_result, f"{representation} representation failed."
