@@ -1,4 +1,5 @@
-""""Formula 1.0.1 from NEN 9997-1+C2:2017: Chapter 1: General rules."""
+"""Formula 1.0.1 from NEN 9997-1+C2:2017: Chapter 1: General rules."""
+
 import numpy as np
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
@@ -21,9 +22,10 @@ class Form1Dot0Dot1EquivalentPilePointCenterline(Formula):
         Parameters
         ----------
         a : M
-            [:math:`a`] minor dimension of the largest cross-section at the pile tip [m].
+            [:math:`a`] minor dimension of the largest cross-section at the pile tip [:math:`m`].
         b : M
-            [:math:`b`] major dimension of the largest cross-section at the pile tip [m].
+            [:math:`b`] major dimension of the largest cross-section at the pile tip [:math:`m`].
+
             Where: b ≤ 1.5 * a
         """
         super().__init__()
@@ -38,4 +40,5 @@ class Form1Dot0Dot1EquivalentPilePointCenterline(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(b=b)
         raise_if_less_or_equal_to_zero(a=a)
-        return 1.13 * a * np.sqrt(b / a)
+        b_calc = min(b, 1.5 * a)
+        return 1.13 * a * np.sqrt(b_calc / a)
