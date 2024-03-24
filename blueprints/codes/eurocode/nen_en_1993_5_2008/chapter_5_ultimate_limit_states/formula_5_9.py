@@ -57,6 +57,11 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         mc_rd : KNM
             (:math:`M_{c,Rd}`) Design moment resistance of the cross-section in [:math:`kNm`].
 
+            The `mc_rd` parameter represents the design moment resistance of the cross-section.
+            In the context of the formula for reduced bending moment resistance, it serves as an upper bound.
+            The formula calculates the reduced design bending moment resistance (`m_v_rd`) and then returns the minimum of `m_v_rd` and `mc_rd`.
+            This means that the result of the formula will never exceed `mc_rd`, making `mc_rd` an upper bound for this formula.
+
             :math:`M_{v,Rd} <= M_{c,Rd}`
         """
         super().__init__()
