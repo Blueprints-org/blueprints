@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form5Dot10ReductionFactorShear(Formula):
+class Form5Dot10ReductionFactorShearArea(Formula):
     """Class representing formula 5.10 for reduction factor for shear area."""
 
     label = "5.10"

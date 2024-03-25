@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states.formula_5_10 import Form5Dot10ReductionFactorShear
+from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states.formula_5_10 import Form5Dot10ReductionFactorShearArea
 from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestForm5Dot10ReductionFactorShear:
+class TestForm5Dot10ReductionFactorShearArea:
     """Validation for formula 5.10 from NEN-EN 1993-5:2008."""
 
     def test_evaluation(self) -> None:
@@ -15,7 +15,7 @@ class TestForm5Dot10ReductionFactorShear:
         v_ed = 100  # kN
         v_pl_rd = 400  # kN
 
-        form = Form5Dot10ReductionFactorShear(v_ed=v_ed, v_pl_rd=v_pl_rd)
+        form = Form5Dot10ReductionFactorShearArea(v_ed=v_ed, v_pl_rd=v_pl_rd)
 
         # Expected result, manually calculated
         expected = 0.25
@@ -34,7 +34,7 @@ class TestForm5Dot10ReductionFactorShear:
     def test_raise_error_when_negative_or_zero_values_are_given(self, v_ed: float, v_pl_rd: float) -> None:
         """Test a zero and negative value for parameters v_ed and v_pl_rd."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form5Dot10ReductionFactorShear(v_ed=v_ed, v_pl_rd=v_pl_rd)
+            Form5Dot10ReductionFactorShearArea(v_ed=v_ed, v_pl_rd=v_pl_rd)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -56,7 +56,7 @@ class TestForm5Dot10ReductionFactorShear:
         v_ed = 100  # kN
         v_pl_rd = 400  # kN
 
-        form = Form5Dot10ReductionFactorShear(v_ed=v_ed, v_pl_rd=v_pl_rd).latex()
+        form = Form5Dot10ReductionFactorShearArea(v_ed=v_ed, v_pl_rd=v_pl_rd).latex()
 
         actual = {
             "complete": form.complete,
