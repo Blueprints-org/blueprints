@@ -57,3 +57,73 @@ class LatexFormula:
     def __str__(self) -> str:
         """String representation of the formula."""
         return self.complete
+
+
+def latex_fraction(numerator: str | float, denominator: str | float) -> str:
+    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
+
+    Examples
+    --------
+    >>> latex_fraction(1, 2)
+    str(\frac{1}{2})
+
+    Parameters
+    ----------
+    numerator: str | float
+        The numerator of the fraction.
+    denominator: str | float
+        The denominator of the fraction.
+
+    Returns
+    -------
+    str
+        The latex string
+
+    """
+    return f"\\frac{{{numerator}}}{{{denominator}}}"
+
+
+def latex_min_curly_brackets(*args: str | float) -> str:
+    r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
+
+    Examples
+    --------
+    >>> latex_min_curly_brackets(1, 2)
+    str(\min \left\{1; 2\right\})
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the min function.
+
+    Returns
+    -------
+    str
+        The latex representation of the min function.
+    """
+    arguments = [str(arg) for arg in args]
+    return f"\\min \\left\\{{{'; '.join(arguments)}\\right\\}}"
+
+
+def latex_max_curly_brackets(*args: str | float) -> str:
+    r"""Return a string which will output: max{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
+
+    Examples
+    --------
+    >>> latex_max_curly_brackets(1, 2)
+    str(\max \left\{1; 2\right\})
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the max function.
+
+    Returns
+    -------
+    str
+        The latex representation of the max function.
+    """
+    arguments = [str(arg) for arg in args]
+    return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
