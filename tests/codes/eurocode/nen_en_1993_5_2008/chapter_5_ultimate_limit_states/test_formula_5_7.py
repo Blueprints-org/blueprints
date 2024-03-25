@@ -68,7 +68,7 @@ class TestForm5Dot7ShearBucklingResistance:
         h = 500  # MM
         t_f = 20  # MM
         t_w = 10  # MM
-        f_bv = 300  # kN
+        f_bv = 300  # MPA
         gamma_m_0 = 1.1
 
         form = Form5Dot7ShearBucklingResistance(
