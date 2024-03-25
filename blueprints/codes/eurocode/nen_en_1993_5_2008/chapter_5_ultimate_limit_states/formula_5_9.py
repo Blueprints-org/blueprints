@@ -5,7 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_min_curly_brackets
-from blueprints.type_alias import CM3, DEG, DIMENSIONLESS, KNM, MM, MM2, MPA
+from blueprints.type_alias import DEG, DIMENSIONLESS, KNM, MM, MM2, MM3, MPA
 from blueprints.unit_conversion import NMM_TO_KNM
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
@@ -19,7 +19,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
     def __init__(  # noqa: PLR0913
         self,
         beta_b: DIMENSIONLESS,
-        w_pl: CM3,
+        w_pl: MM3,
         rho: DIMENSIONLESS,
         a_v: MM2,
         t_w: MM,
@@ -78,7 +78,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
     @staticmethod
     def _evaluate(  # noqa: PLR0913
         beta_b: DIMENSIONLESS,
-        w_pl: CM3,
+        w_pl: MM3,
         rho: DIMENSIONLESS,
         a_v: MM2,
         t_w: MM,
@@ -99,12 +99,12 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         )
         return LatexFormula(
             return_symbol=r"M_{V,Rd}",
-            result=str(self),
+            result=f"{self:.3f}",
             equation=latex_equation,
             numeric_equation=(
                 latex_min_curly_brackets(
-                    rf"\left({self.beta_b} \cdot {self.w_pl} - \frac{{{self.rho} \cdot {self.a_v}^2}}{{4 \cdot {self.t_w} \cdot "
-                    rf"\sin({self.alpha})}}\right) \cdot {latex_fraction(self.f_y, self.gamma_m_0)} \cdot 10^{{-6}}, {self.mc_rd}"
+                    rf"\left({self.beta_b:.2f} \cdot {self.w_pl:.2f} - \frac{{{self.rho:.2f} \cdot {self.a_v:.2f}^2}}{{4 \cdot {self.t_w:.2f} \cdot "
+                    rf"\sin({self.alpha:.2f})}}\right) \cdot {latex_fraction(f"{self.f_y:.2f}", f"{self.gamma_m_0:.2f}")} \cdot 10^{{-6}}, {self.mc_rd:.2f}"
                 )
             ),
             comparison_operator_label="=",
