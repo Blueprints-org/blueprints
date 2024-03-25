@@ -18,7 +18,7 @@ class Form5Dot10ReductionFactorShearArea(Formula):
         v_ed: KN,
         v_pl_rd: KN,
     ) -> None:
-        """[:math:`ρ`] Calculate the reduction factor for shear resistance of the cross-section [-].
+        """[:math:`ρ`] Calculate the reduction factor for shear area of the cross-section [-].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(9) - Formula (5.10)
 
