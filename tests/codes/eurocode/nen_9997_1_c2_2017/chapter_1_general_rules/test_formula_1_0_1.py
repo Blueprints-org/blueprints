@@ -45,14 +45,12 @@ class TestForm1Dot0Dot1EquivalentPilePointCenterline:
         [
             (
                 "complete",
-                r"D_{eq} = 1.13 \cdot a \cdot \sqrt{\frac{min(b, 1.5 \cdot a)}{a}} = 1.13 \cdot 0.3 \cdot "
-                r"\sqrt\frac{0.45}{0.3} = 0.4151885114017486",
+                r"D_{eq} = 1.13 \cdot a \cdot \sqrt{\frac{min(b, 1.5 \cdot a)}{a}} = 1.13 \cdot 0.3 \cdot \sqrt\frac{0.2}{0.3} = 0.277",
             ),
-            ("short", "D_{eq} = 0.4151885114017486"),
+            ("short", "D_{eq} = 0.277"),
             (
                 "string",
-                r"D_{eq} = 1.13 \cdot a \cdot \sqrt{\frac{min(b, 1.5 \cdot a)}{a}} = 1.13 \cdot 0.3 \cdot "
-                r"\sqrt\frac{0.45}{0.3} = 0.4151885114017486",
+                r"D_{eq} = 1.13 \cdot a \cdot \sqrt{\frac{min(b, 1.5 \cdot a)}{a}} = 1.13 \cdot 0.3 \cdot \sqrt\frac{0.2}{0.3} = 0.277",
             ),
         ],
     )
@@ -60,7 +58,7 @@ class TestForm1Dot0Dot1EquivalentPilePointCenterline:
         """Test the latex representation of the formula."""
         # Example values
         a = 0.3  # m
-        b = 0.45  # m
+        b = 0.2  # m
 
         # Object to test
         form = Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b).latex()
