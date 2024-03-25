@@ -13,12 +13,12 @@ class TestForm1Dot0Dot1EquivalentPilePointCenterline:
         """Test the evaluation of the result."""
         # example values
         a = 0.3  # m
-        b = 0.45  # m
+        b = 0.2  # m
 
         form_1_0_1 = Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b)
 
         # manually calculated result
-        manually_calculated_result = 0.415188
+        manually_calculated_result = 0.2767923
 
         assert form_1_0_1 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
