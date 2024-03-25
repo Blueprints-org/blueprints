@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, fraction, max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets
 from blueprints.type_alias import MM, MM2, MPA
 from blueprints.validations import raise_if_negative
 
@@ -63,12 +63,12 @@ class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
         return LatexFormula(
             return_symbol=r"A_{s,min}",
             result=f"{self:.2f}",
-            equation=max_curly_brackets(
-                rf"0.26 \cdot {fraction(r'f_{ctm}', r'f_{yk}')} \cdot b_t \cdot d",
+            equation=latex_max_curly_brackets(
+                rf"0.26 \cdot {latex_fraction(r'f_{ctm}', r'f_{yk}')} \cdot b_t \cdot d",
                 r"0.0013 \cdot b_t \cdot d",
             ),
-            numeric_equation=max_curly_brackets(
-                rf"0.26 \cdot {fraction(f'{self.f_ctm:.2f}', f'{self.f_yk:.2f}')} \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
+            numeric_equation=latex_max_curly_brackets(
+                rf"0.26 \cdot {latex_fraction(f'{self.f_ctm:.2f}', f'{self.f_yk:.2f}')} \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
                 rf"0.0013 \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
             ),
             comparison_operator_label="=",
