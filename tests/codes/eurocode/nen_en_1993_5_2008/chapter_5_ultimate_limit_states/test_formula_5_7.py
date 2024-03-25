@@ -15,7 +15,7 @@ class TestForm5Dot7ShearBucklingResistance:
         h = 500  # MM
         t_f = 20  # MM
         t_w = 10  # MM
-        f_bv = 300  # kN
+        f_bv = 300  # MPA
         gamma_m_0 = 1.1
 
         form = Form5Dot7ShearBucklingResistance(
@@ -54,12 +54,12 @@ class TestForm5Dot7ShearBucklingResistance:
         [
             (
                 "complete",
-                r"V_{b,Rd} = \frac{\left(h - t_f \right) t_w f_{bv}}{\gamma_{M0}} = \frac{(500 - 20) \cdot 10 \cdot 300}{1.1} = 1309.090909090909",
+                r"V_{b,Rd} = \frac{\left(h - t_f \right) t_w f_{bv}}{\gamma_{M0}} = \frac{(500.00 - 20.00) \cdot 10 \cdot 300.000}{1.1} = 1309.091",
             ),
-            ("short", r"V_{b,Rd} = 1309.090909090909"),
+            ("short", r"V_{b,Rd} = 1309.091"),
             (
                 "string",
-                r"V_{b,Rd} = \frac{\left(h - t_f \right) t_w f_{bv}}{\gamma_{M0}} = \frac{(500 - 20) \cdot 10 \cdot 300}{1.1} = 1309.090909090909",
+                r"V_{b,Rd} = \frac{\left(h - t_f \right) t_w f_{bv}}{\gamma_{M0}} = \frac{(500.00 - 20.00) \cdot 10 \cdot 300.000}{1.1} = 1309.091",
             ),
         ],
     )

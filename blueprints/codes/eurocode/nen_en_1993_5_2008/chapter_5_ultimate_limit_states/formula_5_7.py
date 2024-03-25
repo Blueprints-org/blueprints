@@ -69,7 +69,7 @@ class Form5Dot7ShearBucklingResistance(Formula):
         """Returns LatexFormula object for formula 5.7."""
         return LatexFormula(
             return_symbol=r"V_{b,Rd}",
-            result=f"{self:.3f}",,
+            result=f"{self:.3f}",
             equation=latex_fraction(numerator=r"\left(h - t_f \right) t_w f_{bv}", denominator=r"\gamma_{M0}"),
             numeric_equation=latex_fraction(
                 numerator=rf"({self.h:.2f} - {self.t_f:.2f}) \cdot {self.t_w} \cdot {self.f_bv:.3f}",
