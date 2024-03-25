@@ -209,7 +209,7 @@ Total of 304 formulas present.
 | 8.5            |        :x:         |         |                                                           |
 | 8.6            | :heavy_check_mark: |         | Form8Dot6MinimumTensionAnchorage                          |
 | 8.7            | :heavy_check_mark: |         | Form8Dot7MinimumCompressionAnchorage                      |
-| 8.8N           | :heavy_check_mark: |         | Form8Dot8NAnchorageCapacityWeldedTransverseBar            |
+| 8.8N           | :heavy_check_mark: |         | Form8Dot8nAnchorageCapacityWeldedTransverseBar            |
 | 8.9            | :heavy_check_mark: |         | Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiamet  |
 | 8.10           | :heavy_check_mark: |         | Form8Dot10DesignLapLength                                 |
 | 8.11           | :heavy_check_mark: |         | Form8Dot11MinimumDesignLapLength                          |
