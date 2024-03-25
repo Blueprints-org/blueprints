@@ -63,15 +63,15 @@ class TestForm5Dot9ReducedBendingMomentResistance:
             (
                 "complete",
                 r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
-                r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.9 \cdot 3070000.0 - \frac{0.01 \cdot 7805^2}{4 \cdot 12.2 \cdot "
-                r"\sin(55)}\right) \cdot \frac{355}{0.81} \cdot 10^{-6}, 1500\right\} = 1204.2655464972363",
+                r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
+                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.266",
             ),
-            ("short", r"M_{V,Rd} = 1204.2655464972363"),
+            ("short", r"M_{V,Rd} = 1204.266"),
             (
                 "string",
                 r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
-                r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.9 \cdot 3070000.0 - \frac{0.01 \cdot 7805^2}{4 \cdot 12.2 \cdot "
-                r"\sin(55)}\right) \cdot \frac{355}{0.81} \cdot 10^{-6}, 1500\right\} = 1204.2655464972363",
+                r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} = \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
+                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.266",
             ),
         ],
     )
