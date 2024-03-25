@@ -6,7 +6,7 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 
-class Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks(Formula):
+class Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks(Formula):
     """Class representing the formula 9.8N for the calculation of the maximum distance in transverse direction between legs in a series of shear
     links.
     """

@@ -7,7 +7,7 @@ from blueprints.unit_conversion import KN_TO_N
 from blueprints.validations import raise_if_negative
 
 
-class Form9Dot12NMinimumLongitudinalReinforcementColumns(Formula):
+class Form9Dot12nMinimumLongitudinalReinforcementColumns(Formula):
     """Class representing the formula 9.12N for the calculation of the minimum longitudinal reinforcement for columns."""
 
     label = "9.12N"
