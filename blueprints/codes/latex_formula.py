@@ -113,17 +113,17 @@ def latex_max_curly_brackets(*args: str | float) -> str:
     Examples
     --------
     >>> latex_max_curly_brackets(1, 2)
-    str(\min \left\{1; 2\right\})
+    str(\max \left\{1; 2\right\})
 
     Parameters
     ----------
     args: str
-        The arguments of the min function.
+        The arguments of the max function.
 
     Returns
     -------
     str
-        The latex representation of the min function.
+        The latex representation of the max function.
     """
     arguments = [str(arg) for arg in args]
     return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
