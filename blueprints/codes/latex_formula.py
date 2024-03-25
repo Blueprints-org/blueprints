@@ -104,3 +104,26 @@ def latex_min_curly_brackets(*args: str | float) -> str:
     """
     arguments = [str(arg) for arg in args]
     return f"\\min \\left\\{{{'; '.join(arguments)}\\right\\}}"
+
+
+def latex_max_curly_brackets(*args: str | float) -> str:
+    r"""Return a string which will output: max{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
+
+    Examples
+    --------
+    >>> latex_max_curly_brackets(1, 2)
+    str(\min \left\{1; 2\right\})
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the min function.
+
+    Returns
+    -------
+    str
+        The latex representation of the min function.
+    """
+    arguments = [str(arg) for arg in args]
+    return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
