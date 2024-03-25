@@ -2,13 +2,13 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1_a import Form2Dot1ADesignValueLoad
-from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1_b import Form2Dot1BRepresentativeValue
+from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1_a import Form2Dot1aDesignValueLoad
+from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1_b import Form2Dot1bRepresentativeValue
 from blueprints.type_alias import DIMENSIONLESS
 from blueprints.validations import NegativeValueError
 
 
-class TestForm2Dot1ADesignValueLoad:
+class TestForm2Dot1aDesignValueLoad:
     """Class containing tests for formula 2.1a from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
 
     @pytest.mark.parametrize(
@@ -26,17 +26,17 @@ class TestForm2Dot1ADesignValueLoad:
         expected_result: float,
     ) -> None:
         """Method to test formula 2.1a from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
-        assert Form2Dot1ADesignValueLoad(gamma_f=gamma_f, f_rep=f_rep) == pytest.approx(expected_result, rel=1e-9)
+        assert Form2Dot1aDesignValueLoad(gamma_f=gamma_f, f_rep=f_rep) == pytest.approx(expected_result, rel=1e-9)
 
     def test_raise_error_if_gamma_f_is_negative(self) -> None:
         """Test if an error is raised when gamma_f is negative."""
         with pytest.raises(NegativeValueError):
-            Form2Dot1ADesignValueLoad(gamma_f=-1.35, f_rep=100)
+            Form2Dot1aDesignValueLoad(gamma_f=-1.35, f_rep=100)
 
     def test_integration_with_2_1_b(self) -> None:
         """Test the integration of formula 2.1a with 2.1b."""
-        f_rep = Form2Dot1BRepresentativeValue(psi=2, f_k=50)
+        f_rep = Form2Dot1bRepresentativeValue(psi=2, f_k=50)
         gamma_f = 1.35
-        result = Form2Dot1ADesignValueLoad(gamma_f=gamma_f, f_rep=f_rep)
+        result = Form2Dot1aDesignValueLoad(gamma_f=gamma_f, f_rep=f_rep)
 
         assert result == pytest.approx(expected=135, rel=1e-9)

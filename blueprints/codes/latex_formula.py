@@ -3,106 +3,6 @@
 from dataclasses import dataclass
 
 
-def max_curly_brackets(*args: str | float) -> str:
-    r"""Return a string which will output: max{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
-    text.
-
-    Examples
-    --------
-    >>> max_curly_brackets(1, 2)
-    str(\max \left\{1; 2\right\})
-
-    Parameters
-    ----------
-    args: str
-        The arguments of the max function.
-
-    Returns
-    -------
-    str
-        The latex representation of the max function.
-
-    """
-    arguments = [str(arg) for arg in args]
-    return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
-
-
-def min_curly_brackets(*args: str | float) -> str:
-    r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
-    text.
-
-    Examples
-    --------
-    >>> min_curly_brackets(1, 2)
-    str(\min \left\{1; 2\right\})
-
-    Parameters
-    ----------
-    args: str
-        The arguments of the min function.
-
-    Returns
-    -------
-    str
-        The latex representation of the min function.
-
-    """
-    arguments = [str(arg) for arg in args]
-    return f"\\min \\left\\{{{'; '.join(arguments)}\\right\\}}"
-
-
-def fraction(numerator: str | float, denominator: str | float) -> str:
-    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
-
-    Examples
-    --------
-    >>> fraction(1, 2)
-    str(\frac{1}{2})
-
-    Parameters
-    ----------
-    numerator: str | float
-        The numerator of the fraction.
-    denominator: str | float
-        The denominator of the fraction.
-
-    Returns
-    -------
-    str
-        The latex string
-
-    """
-    return f"\\frac{{{numerator}}}{{{denominator}}}"
-
-
-def conditional(*args: list[float | str]) -> str:
-    r"""Return a string which will output a conditional statement with curly brackets with the given arguments and conditions in latex.
-
-    Examples
-    --------
-    >>> conditional([1, "a > 0"], [2, "a < 0"]
-    str(\left{\matrix{1 & \text{voor }a > 0 \\ 2 & \text{voor }a < 0 }\right.)
-
-    Parameters
-    ----------
-    args: list[float|str]
-        A list of length 2, where the first element is the value and the second value is the condition.
-
-    Returns
-    -------
-    str
-        The latex string
-    """
-    string_parts = []
-    for value, condition in args:
-        string_parts.append(f"{value} & \\text{{voor }}{condition} \\\\ ")
-
-    output = r"\left{\matrix{"
-    output += "".join(string_parts)
-    output = output[:-3]
-    return output + r"}\right."
-
-
 @dataclass(frozen=True)
 class LatexFormula:
     """Latex formula representation.
@@ -157,3 +57,157 @@ class LatexFormula:
     def __str__(self) -> str:
         """String representation of the formula."""
         return self.complete
+
+
+def latex_fraction(numerator: str | float, denominator: str | float) -> str:
+    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
+
+    Examples
+    --------
+    >>> latex_fraction(1, 2)
+    str(\frac{1}{2})
+
+    Parameters
+    ----------
+    numerator: str | float
+        The numerator of the fraction.
+    denominator: str | float
+        The denominator of the fraction.
+
+    Returns
+    -------
+    str
+        The latex string
+
+    """
+    return f"\\frac{{{numerator}}}{{{denominator}}}"
+
+
+def latex_min_curly_brackets(*args: str | float) -> str:
+    r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
+
+    Examples
+    --------
+    >>> latex_min_curly_brackets(1, 2)
+    str(\min \left\{1; 2\right\})
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the min function.
+
+    Returns
+    -------
+    str
+        The latex representation of the min function.
+    """
+    arguments = [str(arg) for arg in args]
+    return f"\\min \\left\\{{{'; '.join(arguments)}\\right\\}}"
+
+
+def latex_max_curly_brackets(*args: str | float) -> str:
+    r"""Return a string which will output: max{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
+
+    Examples
+    --------
+    >>> latex_max_curly_brackets(1, 2)
+    str(\max \left\{1; 2\right\})
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the max function.
+
+    Returns
+    -------
+    str
+        The latex representation of the max function.
+    """
+    arguments = [str(arg) for arg in args]
+    return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
+
+
+def to_text(value: str | float) -> str:
+    r"""Convert string to a latex text string (\text{variable}). All characters that are not used as a variable in the corresponding documents
+    should be text strings.
+
+    Parameters
+    ----------
+    value: str | float
+        The float, int or string to be converted to latex text string.
+
+    Returns
+    -------
+    str
+        The latex text
+
+    """
+    return f"\\text{{{value}}}"
+
+
+def variable_with_subscript(variable: str, subscript: str) -> str:
+    r"""Return a string which will output: variable_{\text{subscript}} in latex.
+
+    Parameters
+    ----------
+    variable: str
+        The variable name.
+    subscript: str
+        The subscript of the variable.
+
+    Returns
+    -------
+    str
+        The latex representation of the variable with subscript.
+
+    """
+    return f"{variable}_{{\\text{{{subscript}}}}}"
+
+
+def max_curly_brackets(*args: str | float) -> str:
+    """Return a string which will output: max{arg_1, arg_2, ..., arg_N} in latex and it will also automatically ensure floats are converted to latex
+    text.
+
+    Parameters
+    ----------
+    args: str
+        The arguments of the max function.
+
+    Returns
+    -------
+    str
+        The latex representation of the max operator.
+
+    """
+    arguments = []
+    for arg in args:
+        max_operation_argument = arg
+        if isinstance(arg, (int, float)):  # check if arg is float or int, so it can be converted to latex text
+            max_operation_argument = to_text(arg)
+        arguments.append(str(max_operation_argument))
+    return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
+
+
+def fraction(numerator: str | float, denominator: str | float) -> str:
+    r"""Return a string which will output: \frac{numerator}{denominator} in latex.
+
+    Parameters
+    ----------
+    numerator: str | float
+        The numerator of the fraction.
+    denominator: str | float
+        The denominator of the fraction.
+
+    Returns
+    -------
+    str
+        The latex string
+
+    """
+    if isinstance(numerator, float):
+        numerator = to_text(numerator)
+    if isinstance(denominator, float):
+        denominator = to_text(denominator)
+    return f"\\frac{{{numerator}}}{{{denominator}}}"
