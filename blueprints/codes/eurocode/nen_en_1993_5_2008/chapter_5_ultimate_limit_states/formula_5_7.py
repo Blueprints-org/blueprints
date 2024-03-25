@@ -54,7 +54,7 @@ class Form5Dot7ShearBucklingResistance(Formula):
         h: MM,
         t_f: MM,
         t_w: MM,
-        f_bv: KN,
+        f_bv: MPA,
         gamma_m_0: float,
     ) -> KN:
         """Evaluates the formula for shear buckling resistance."""
