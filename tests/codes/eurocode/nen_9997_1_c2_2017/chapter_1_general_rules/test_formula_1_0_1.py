@@ -35,6 +35,11 @@ class TestForm1Dot0Dot1EquivalentPilePointCenterline:
         with pytest.raises(LessOrEqualToZeroError):
             Form1Dot0Dot1EquivalentPilePointCenterline(a=a, b=b)
 
+    def test_raise_error_if_b_greater_than_1_5_times_a(self) -> None:
+        """Test if b is greater than 1.5 times a."""
+        with pytest.raises(ValueError):
+            Form1Dot0Dot1EquivalentPilePointCenterline(a=0.3, b=0.5)
+
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
