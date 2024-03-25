@@ -39,12 +39,7 @@ class LatexFormula:
             Return symbol = equation = numeric_equation = result
 
         """
-        all_sub_equations = [
-            self.return_symbol,
-            self.equation,
-            self.numeric_equation,
-            self.result,
-        ]
+        all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, self.result]
         return f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
 
     @property
