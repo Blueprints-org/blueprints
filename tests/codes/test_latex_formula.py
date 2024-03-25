@@ -2,13 +2,19 @@
 
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets
 
 
 @pytest.fixture()
 def fixture_latex_formula() -> LatexFormula:
     """Fixture for testing."""
-    return LatexFormula(return_symbol="E", result="500", equation="mc^2", numeric_equation="5*10^2", comparison_operator_label="=")
+    return LatexFormula(
+        return_symbol="E",
+        result="500",
+        equation="mc^2",
+        numeric_equation="5*10^2",
+        comparison_operator_label="=",
+    )
 
 
 class TestLatexFormula:
@@ -50,3 +56,9 @@ def test_latex_max_curly_brackets() -> None:
     """Test the latex_max_curly_brackets function."""
     result = latex_max_curly_brackets(r"a+b", r"500", r"c-d")
     assert result == r"\max \left\{a+b; 500; c-d\right\}"
+
+
+def test_min_curly_brackets() -> None:
+    """Test the latex_min_curly_brackets function."""
+    result = latex_min_curly_brackets(r"a+b", r"500", r"c-d")
+    assert result == r"\min \left\{a+b; 500; c-d\right\}"
