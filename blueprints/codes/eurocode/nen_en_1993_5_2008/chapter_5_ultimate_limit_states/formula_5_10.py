@@ -38,7 +38,7 @@ class Form5Dot10ReductionFactorShearArea(Formula):
         v_ed: KN,
         v_pl_rd: KN,
     ) -> DIMENSIONLESS:
-        """Evaluates the formula for reduction factor for shear resistance."""
+        """Evaluates the formula for reduction factor for shear area."""
         raise_if_less_or_equal_to_zero(v_ed=v_ed, v_pl_rd=v_pl_rd)
         return (2 * v_ed / v_pl_rd - 1) ** 2
 
