@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot10ReductionFactorShear(Formula):
-    """Class representing formula 5.10 for reduction factor for shear resistance of the cross-section."""
+    """Class representing formula 5.10 for reduction factor for shear area."""
 
     label = "5.10"
     source_document = NEN_EN_1993_5_2008
