@@ -49,6 +49,11 @@ class TestForm5Dot7ShearBucklingResistance:
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot7ShearBucklingResistance(h=h, t_f=t_f, t_w=t_w, f_bv=f_bv, gamma_m_0=gamma_m_0)
 
+    def test_t_f_not_greater_than_h(self) -> None:
+        """Test if the thickness of the flange is not greater than the height of the web."""
+        with pytest.raises(ValueError):
+            Form5Dot7ShearBucklingResistance(h=500, t_f=600, t_w=10, f_bv=300, gamma_m_0=1.1)
+
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [

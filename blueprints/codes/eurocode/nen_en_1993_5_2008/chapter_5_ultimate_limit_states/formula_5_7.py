@@ -63,6 +63,8 @@ class Form5Dot7ShearBucklingResistance(Formula):
             f_bv=f_bv,
             gamma_m_0=gamma_m_0,
         )
+        if t_f >= h:
+            raise ValueError("The thickness of the flange should be less than the height of the web.")
         return ((h - t_f) * t_w * f_bv / gamma_m_0) * N_TO_KN
 
     def latex(self) -> LatexFormula:
