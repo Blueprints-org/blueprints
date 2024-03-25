@@ -40,8 +40,9 @@ class Form1Dot0Dot1EquivalentPilePointCenterline(Formula):
     ) -> M:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(a=a, b=b)
-        b_calc = min(b, 1.5 * a)
-        return 1.13 * a * np.sqrt(b_calc / a)
+        if b > 1.5 * a:
+            raise ValueError("b must be less than or equal to 1.5 * a")
+        return 1.13 * a * np.sqrt(b / a)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 1.0.1."""
