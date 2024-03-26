@@ -1,17 +1,17 @@
-"""Testing formula 8.8n of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 8.8N of NEN-EN 1992-1-1+C2:2011."""
 
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
-    Form8Dot8NAnchorageCapacityWeldedTransverseBar,
-    SubForm8Dot8NConcreteStress,
-    SubForm8Dot8NDesignLengthOfTransverseBar,
+    Form8Dot8nAnchorageCapacityWeldedTransverseBar,
+    SubForm8Dot8nConcreteStress,
+    SubForm8Dot8nDesignLengthOfTransverseBar,
 )
 from blueprints.validations import NegativeValueError
 
 
-class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
-    """Validation for formula 8.8n from NEN-EN 1992-1-1+C2:2011."""
+class TestForm8Dot8nAnchorageCapacityWeldedTransverseBar:
+    """Validation for formula 8.8N from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -20,7 +20,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         diameter_t = 16  # mm
         sigma_td = 60  # MPa
         f_wd = 400  # kN
-        form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+        form_8_8n = Form8Dot8nAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
             diameter_t=diameter_t,
             sigma_td=sigma_td,
@@ -39,7 +39,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         diameter_t = 16  # mm
         sigma_td = 60  # MPa
         f_wd = 50  # kN
-        form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+        form_8_8n = Form8Dot8nAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
             diameter_t=diameter_t,
             sigma_td=sigma_td,
@@ -60,7 +60,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         f_wd = 50  # kN
 
         with pytest.raises(NegativeValueError):
-            Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+            Form8Dot8nAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
                 diameter_t=diameter_t,
                 sigma_td=sigma_td,
@@ -76,7 +76,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         f_wd = 50  # kN
 
         with pytest.raises(NegativeValueError):
-            Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+            Form8Dot8nAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
                 diameter_t=diameter_t,
                 sigma_td=sigma_td,
@@ -92,7 +92,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         f_wd = 50  # kN
 
         with pytest.raises(NegativeValueError):
-            Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+            Form8Dot8nAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
                 diameter_t=diameter_t,
                 sigma_td=sigma_td,
@@ -108,7 +108,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         f_wd = -50  # kN
 
         with pytest.raises(NegativeValueError):
-            Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+            Form8Dot8nAnchorageCapacityWeldedTransverseBar(
                 l_td=l_td,
                 diameter_t=diameter_t,
                 sigma_td=sigma_td,
@@ -125,7 +125,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         f_wd = 150  # kN
         f_yd = 500  # MPa
         l_t = 100  # mm
-        l_td = SubForm8Dot8NDesignLengthOfTransverseBar(
+        l_td = SubForm8Dot8nDesignLengthOfTransverseBar(
             diameter_t=diameter_t,
             f_yd=f_yd,
             sigma_td=sigma_td,
@@ -133,7 +133,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         )
 
         # Object to test
-        form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+        form_8_8n = Form8Dot8nAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
             diameter_t=diameter_t,
             sigma_td=sigma_td,
@@ -155,7 +155,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         sigma_cm = 15  # MPa
         y_function = 0.5  # -
         f_cd = 25  # MPa
-        sigma_td = SubForm8Dot8NConcreteStress(
+        sigma_td = SubForm8Dot8nConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
             y_function=y_function,
@@ -163,7 +163,7 @@ class TestForm8Dot8NAnchorageCapacityWeldedTransverseBar:
         )
 
         # Object to test
-        form_8_8n = Form8Dot8NAnchorageCapacityWeldedTransverseBar(
+        form_8_8n = Form8Dot8nAnchorageCapacityWeldedTransverseBar(
             l_td=l_td,
             diameter_t=diameter_t,
             sigma_td=sigma_td,
