@@ -83,23 +83,30 @@ class TestForm9Dot1nMinimumTensileReinforcementBeam:
         with pytest.raises(NegativeValueError):
             Form9Dot1nMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"A_{s,min} = \max \left\{0.26 \cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; 0.0013 \cdot b_t \cdot d\right\} = "
+                r"\max \left\{0.26 \cdot \frac{2.00}{355.00} \cdot 50.00 \cdot 150.00; 0.0013 \cdot 50.00 \cdot 150.00\right\} = 10.99",
+            ),
+            ("short", "A_{s,min} = 10.99"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
         """Test the latex representation."""
         # Example values
         f_ctm = 2  # MPa
         f_yk = 355  # MPa
         b_t = 50  # mm
         d = 150  # mm
+
         latex = Form9Dot1nMinimumTensileReinforcementBeam(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d).latex()
 
-        assert latex.complete == (
-            r"A_{s,min} = \max \left\{0.26 \cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; 0.0013 \cdot b_t \cdot d\right\} "
-            r"= \max \left\{0.26 \cdot \frac{2.00}{355.00} \cdot 50.00 \cdot 150.00; 0.0013 \cdot 50.00 \cdot 150.00\right\} "
-            r"= 10.99"
-        )
-        assert latex.short == r"A_{s,min} = 10.99"
-        assert str(latex) == (
-            r"A_{s,min} = \max \left\{0.26 \cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; 0.0013 \cdot b_t \cdot d\right\} "
-            r"= \max \left\{0.26 \cdot \frac{2.00}{355.00} \cdot 50.00 \cdot 150.00; 0.0013 \cdot 50.00 \cdot 150.00\right\} "
-            r"= 10.99"
-        )
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."
