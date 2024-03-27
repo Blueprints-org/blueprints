@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, fraction
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction
 from blueprints.type_alias import MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -58,7 +58,7 @@ class Form8Dot3RequiredAnchorageLength(Formula):
         return LatexFormula(
             return_symbol=r"l_{b,rqd}",
             result=f"{self:.2f}",
-            equation=rf"{fraction(latex_diameter, 4)} \cdot {fraction(latex_sigma_sd, latex_f_bd)}",
-            numeric_equation=rf"{fraction(self.diameter, 4)} \cdot {fraction(self.sigma_sd, self.f_bd)}",
+            equation=rf"{latex_fraction(latex_diameter, 4)} \cdot {latex_fraction(latex_sigma_sd, latex_f_bd)}",
+            numeric_equation=rf"{latex_fraction(self.diameter, 4)} \cdot {latex_fraction(self.sigma_sd, self.f_bd)}",
             comparison_operator_label="=",
         )

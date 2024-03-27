@@ -310,7 +310,18 @@ class TestForm8Dot10DesignLapLength:
 
         assert form_8_10 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"l_{0} = \max \left\{\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_5 \cdot \alpha_6 \cdot l_{b,rqd};"
+                r" l_{0,min}\right\} = \max \left\{1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00 \cdot 200.00; 400.00\right\} = 400.00",
+            ),
+            ("short", "l_{0} = 400.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
         """Test latex representation of the formula."""
         alpha_1 = 1  # [-]
         alpha_2 = 1  # [-]
@@ -319,6 +330,7 @@ class TestForm8Dot10DesignLapLength:
         alpha_6 = 1  # [-]
         l_b_rqd = 200  # mm
         l_0_min = 400  # mm
+
         latex = Form8Dot10DesignLapLength(
             alpha_1=alpha_1,
             alpha_2=alpha_2,
@@ -328,8 +340,10 @@ class TestForm8Dot10DesignLapLength:
             l_b_rqd=l_b_rqd,
             l_0_min=l_0_min,
         ).latex()
-        assert latex.complete == (
-            r"l_{0} = \max \left\{\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_5 \cdot \alpha_6 \cdot l_{b,rqd}; "
-            r"l_{0,min}\right\} = \max \left\{1 \cdot 1 \cdot 1 \cdot 1 \cdot 1.00 \cdot 200.00; 400.00\right\} = 400.00"
-        )
-        assert latex.short == r"l_{0} = 400.00"
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."

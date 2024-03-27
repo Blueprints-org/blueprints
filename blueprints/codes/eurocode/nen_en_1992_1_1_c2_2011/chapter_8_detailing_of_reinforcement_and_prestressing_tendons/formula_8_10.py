@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets, min_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets, latex_min_curly_brackets
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
@@ -130,9 +130,10 @@ class Form8Dot10DesignLapLength(Formula):
         return LatexFormula(
             return_symbol=r"l_{0}",
             result=f"{self:.2f}",
-            equation=max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_5 \cdot \alpha_6 \cdot l_{b,rqd}", r"l_{0,min}"),
-            numeric_equation=max_curly_brackets(
-                rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_5} \cdot {self.alpha_6:.2f} \cdot {self.l_b_rqd:.2f}",
+            equation=latex_max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_5 \cdot \alpha_6 \cdot l_{b,rqd}", r"l_{0,min}"),
+            numeric_equation=latex_max_curly_brackets(
+                rf"{self.alpha_1:.2f} \cdot {self.alpha_2:.2f} \cdot {self.alpha_3:.2f} \cdot "
+                rf"{self.alpha_5:.2f} \cdot {self.alpha_6:.2f} \cdot {self.l_b_rqd:.2f}",
                 f"{self.l_0_min:.2f}",
             ),
             comparison_operator_label="=",
@@ -173,7 +174,7 @@ class SubForm8Dot10Alpha6(Formula):
         return LatexFormula(
             return_symbol=r"\alpha_6",
             result=f"{self:.2f}",
-            equation=f'{max_curly_brackets(min_curly_brackets(argument_1_formula, "1.5"), "1")}',
-            numeric_equation=f'{max_curly_brackets(min_curly_brackets(numerical_argument_1, "1.5"), "1")}',
+            equation=f'{latex_max_curly_brackets(latex_min_curly_brackets(argument_1_formula, "1.5"), "1")}',
+            numeric_equation=f'{latex_max_curly_brackets(latex_min_curly_brackets(numerical_argument_1, "1.5"), "1")}',
             comparison_operator_label="=",
         )

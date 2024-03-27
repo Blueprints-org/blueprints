@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
@@ -74,7 +74,7 @@ class Form8Dot11MinimumDesignLapLength(Formula):
         return LatexFormula(
             return_symbol=r"l_{0,min}",
             result=f"{self:.2f}",
-            equation=f"{max_curly_brackets(arg_1_equation, arg_2_equation, arg_3_equation)}",
-            numeric_equation=f"{max_curly_brackets(arg_1_numerical_equation, arg_2_numerical_equation, arg_3_numerical_equation)}",
+            equation=f"{latex_max_curly_brackets(arg_1_equation, arg_2_equation, arg_3_equation)}",
+            numeric_equation=f"{latex_max_curly_brackets(arg_1_numerical_equation, arg_2_numerical_equation, arg_3_numerical_equation)}",
             comparison_operator_label="=",
         )
