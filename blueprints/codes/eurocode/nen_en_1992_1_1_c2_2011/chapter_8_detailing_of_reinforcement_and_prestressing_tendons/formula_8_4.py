@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
@@ -132,8 +132,8 @@ class Form8Dot4DesignAnchorageLength(Formula):
         return LatexFormula(
             return_symbol=r"l_{bd}",
             result=f"{self:.2f}",
-            equation=max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}", r"l_{b,min}"),
-            numeric_equation=max_curly_brackets(
+            equation=latex_max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}", r"l_{b,min}"),
+            numeric_equation=latex_max_curly_brackets(
                 rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_4} \cdot {self.alpha_5} \cdot {self.l_b_rqd:.2f}",
                 self.l_b_min,
             ),
