@@ -63,16 +63,27 @@ class TestForm8Dot3RequiredAnchorageLength:
         with pytest.raises(LessOrEqualToZeroError):
             Form8Dot3RequiredAnchorageLength(diameter=diameter, sigma_sd=sigma_sd, f_bd=f_bd)
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.00",
+            ),
+            ("short", "l_{b,rqd} = 450.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
         """Test the LaTeX representation."""
         diameter = 12  # MPa
         f_bd = 2.9  # MPa
         sigma_sd = 435  # MPa
-        latex_representation = Form8Dot3RequiredAnchorageLength(diameter=diameter, f_bd=f_bd, sigma_sd=sigma_sd).latex()
-        assert latex_representation.short == r"l_{b,rqd} = 450.00"
-        assert latex_representation.complete == (
-            r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.00"
-        )
-        assert str(latex_representation) == (
-            r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.00"
-        )
+
+        latex = Form8Dot3RequiredAnchorageLength(diameter=diameter, f_bd=f_bd, sigma_sd=sigma_sd).latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."
