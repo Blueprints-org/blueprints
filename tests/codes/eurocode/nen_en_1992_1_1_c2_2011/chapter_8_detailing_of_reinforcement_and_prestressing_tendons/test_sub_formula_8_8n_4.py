@@ -3,12 +3,12 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
-    SubForm8Dot8NFunctionX,
+    SubForm8Dot8nFunctionX,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestSubForm8Dot8NFunctionX:
+class TestSubForm8Dot8nFunctionX:
     """Validation for sub-formula 8.8N from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -17,7 +17,7 @@ class TestSubForm8Dot8NFunctionX:
         cover = 60  # mm
         diameter_t = 16  # mm
 
-        sub_form_8_8n_4 = SubForm8Dot8NFunctionX(cover=cover, diameter_t=diameter_t)
+        sub_form_8_8n_4 = SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t)
 
         # Expected result, manually calculated
         manually_result = 8.5
@@ -31,7 +31,7 @@ class TestSubForm8Dot8NFunctionX:
         diameter_t = 16  # mm
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NFunctionX(cover=cover, diameter_t=diameter_t)
+            SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t)
 
     def test_raise_error_when_diameter_t_is_negative(self) -> None:
         """Test if a LessOrEqualToZeroError is raised when diameter_t is negative."""
@@ -40,7 +40,7 @@ class TestSubForm8Dot8NFunctionX:
         diameter_t = -16  # mm
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NFunctionX(cover=cover, diameter_t=diameter_t)
+            SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t)
 
     def test_raise_error_when_diameter_t_is_zero(self) -> None:
         """Test if a LessOrEqualToZeroError is raised when diameter_t is zero."""
@@ -49,4 +49,4 @@ class TestSubForm8Dot8NFunctionX:
         diameter_t = 0  # mm
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NFunctionX(cover=cover, diameter_t=diameter_t)
+            SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t)

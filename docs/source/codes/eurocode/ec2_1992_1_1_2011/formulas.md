@@ -45,11 +45,11 @@ Total of 304 formulas present.
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
 | 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
-| 5.3a           | :heavy_check_mark: |         | Form5Dot3ATransverseForceUnbracedMembers                  |
-| 5.3b           |        :x:         |         |                                                           |
-| 5.4            |        :x:         |         |                                                           |
-| 5.5            |        :x:         |         |                                                           |
-| 5.6            |        :x:         |         |                                                           |
+| 5.3a           | :heavy_check_mark: |         | Form5Dot3aTransverseForceUnbracedMembers                  |
+| 5.3b           | :heavy_check_mark: |         | Form5Dot3bTransverseForceBracedMembers                    |
+| 5.4            | :heavy_check_mark: |         | Form5Dot4TransverseForceEffectBracingSystem               |
+| 5.5            | :heavy_check_mark: |         | Form5Dot5TransverseForceEffectFloorDiaphragm              |
+| 5.6            | :heavy_check_mark: |         | Form5Dot6TransverseForceEffectRoofDiaphragm               |
 | 5.7            |        :x:         |         |                                                           |
 | 5.7a           |        :x:         |         |                                                           |
 | 5.7b           |        :x:         |         |                                                           |
@@ -209,7 +209,7 @@ Total of 304 formulas present.
 | 8.5            |        :x:         |         |                                                           |
 | 8.6            | :heavy_check_mark: |         | Form8Dot6MinimumTensionAnchorage                          |
 | 8.7            | :heavy_check_mark: |         | Form8Dot7MinimumCompressionAnchorage                      |
-| 8.8N           | :heavy_check_mark: |         | Form8Dot8NAnchorageCapacityWeldedTransverseBar            |
+| 8.8N           | :heavy_check_mark: |         | Form8Dot8nAnchorageCapacityWeldedTransverseBar            |
 | 8.9            | :heavy_check_mark: |         | Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiamet  |
 | 8.10           | :heavy_check_mark: |         | Form8Dot10DesignLapLength                                 |
 | 8.11           | :heavy_check_mark: |         | Form8Dot11MinimumDesignLapLength                          |
@@ -223,18 +223,18 @@ Total of 304 formulas present.
 | 8.19           |        :x:         |         |                                                           |
 | 8.20           |        :x:         |         |                                                           |
 | 8.21           |        :x:         |         |                                                           |
-| 9.1N           | :heavy_check_mark: |         | Form9Dot1NMinimumTensileReinforcementBeam                 |
+| 9.1N           | :heavy_check_mark: |         | Form9Dot1nMinimumTensileReinforcementBeam                 |
 | 9.2            | :heavy_check_mark: |         | Form9Dot2ShiftInMomentDiagram                             |
 | 9.3            | :heavy_check_mark: |         | Form9Dot3ShiftInMomentDiagram                             |
 | 9.4            | :heavy_check_mark: |         | Form9Dot4ShearReinforcementRatio                          |
-| 9.5N           | :heavy_check_mark: |         | Form9Dot5NMinimumShearReinforcementRatio                  |
-| 9.6N           | :heavy_check_mark: |         | Form9Dot6NMaximumDistanceShearReinforcement               |
-| 9.7N           | :heavy_check_mark: |         | Form9Dot7NMaximumDistanceBentUpBars                       |
-| 9.8N           | :heavy_check_mark: |         | Form9Dot8NMaximumTransverseDistanceLegsSeriesShearLinks   |
+| 9.5N           | :heavy_check_mark: |         | Form9Dot5nMinimumShearReinforcementRatio                  |
+| 9.6N           | :heavy_check_mark: |         | Form9Dot6nMaximumDistanceShearReinforcement               |
+| 9.7N           | :heavy_check_mark: |         | Form9Dot7nMaximumDistanceBentUpBars                       |
+| 9.8N           | :heavy_check_mark: |         | Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks   |
 | 9.9            | :heavy_check_mark: |         | Form9Dot9MaximumSpacingSeriesOfLinks                      |
 | 9.10           | :heavy_check_mark: |         | Form9Dot10MaximumSpacingBentUpBars                        |
 | 9.11           |        :x:         |         |                                                           |
-| 9.12N          | :heavy_check_mark: |         | Form9Dot12NMinimumLongitudinalReinforcementColumns        |
+| 9.12N          | :heavy_check_mark: |         | Form9Dot12nMinimumLongitudinalReinforcementColumns        |
 | 9.13           | :heavy_check_mark: |         | Form9Dot13TensileForceToBeAnchored                        |
 | 9.14           | :heavy_check_mark: |         | Form9Dot14SplittingForceColumnOnRock                      |
 | 9.15           | :heavy_check_mark: |         | Form9Dot15MinimumResistancePeripheralTie                  |

@@ -8,7 +8,7 @@ from blueprints.type_alias import MPA
 from blueprints.validations import raise_if_negative
 
 
-class Form9Dot5NMinimumShearReinforcementRatio(Formula):
+class Form9Dot5nMinimumShearReinforcementRatio(Formula):
     """Class representing the formula 9.5N for the calculation of the minimum shear reinforcement ratio for beams."""
 
     label = "9.5N"

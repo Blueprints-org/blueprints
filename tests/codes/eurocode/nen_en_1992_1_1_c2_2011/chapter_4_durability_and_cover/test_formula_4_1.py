@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
+from blueprints.validations import NegativeValueError
 
 
 class TestForm4Dot1NominalConcreteCover:
@@ -26,7 +27,7 @@ class TestForm4Dot1NominalConcreteCover:
         c_min = -60  # mm
         delta_c_dev = 5  # mm
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev)
 
     def test_raise_error_when_negative_delta_c_dev_is_given(self) -> None:
@@ -35,5 +36,27 @@ class TestForm4Dot1NominalConcreteCover:
         c_min = 60  # mm
         delta_c_dev = -5  # mm
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            ("complete", r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"),
+            ("short", "c_{nom} = 65.0"),
+            ("string", r"c_{nom} = c_{min}+\Delta c_{dev} = 60+5 = 65.0"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
+        """Test the latex implementation."""
+        c_min = 60  # mm
+        delta_c_dev = 5  # mm
+        form = Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=delta_c_dev).latex()
+
+        actual = {
+            "complete": form.complete,
+            "short": form.short,
+            "string": str(form),
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."
