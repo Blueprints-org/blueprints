@@ -132,31 +132,3 @@ def latex_max_curly_brackets(*args: str | float) -> str:
     """
     arguments = [str(arg) for arg in args]
     return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
-
-
-def latex_conditional(*args: list[float | str]) -> str:
-    r"""Return a string which will output a conditional statement with curly brackets with the given arguments and conditions in latex.
-
-    Examples
-    --------
-    >>> latex_conditional([1, "a > 0"], [2, "a < 0"]
-    str(\left{\matrix{1 & \text{voor }a > 0 \\ 2 & \text{voor }a < 0 }\right.)
-
-    Parameters
-    ----------
-    args: list[float|str]
-        A list of length 2, where the first element is the value and the second value is the condition.
-
-    Returns
-    -------
-    str
-        The latex string
-    """
-    string_parts = []
-    for value, condition in args:
-        string_parts.append(f"{value} & \\text{{voor }}{condition} \\\\ ")
-
-    output = r"\left{\matrix{"
-    output += "".join(string_parts)
-    output = output[:-3]
-    return output + r"}\right."

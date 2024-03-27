@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, latex_conditional, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets
 
 
 @pytest.fixture()
@@ -62,8 +62,3 @@ def test_latex_min_curly_brackets() -> None:
     """Test the latex_max_curly_brackets function."""
     result = latex_min_curly_brackets(r"a+b", r"500", r"c-d")
     assert result == r"\min \left\{a+b; 500; c-d\right\}"
-
-
-def test_latex_conditional() -> None:
-    """Test the conditional function."""
-    assert latex_conditional([1, "a > 0"], [2, "a < 0"]) == r"\left{\matrix{1 & \text{voor }a > 0 \\ 2 & \text{voor }a < 0 }\right."

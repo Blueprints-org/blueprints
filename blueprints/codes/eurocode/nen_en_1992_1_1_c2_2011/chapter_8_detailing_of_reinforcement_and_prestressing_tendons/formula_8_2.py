@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_conditional
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_negative
 
@@ -130,15 +130,12 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
-        numerical_equation = str(1.0) if self.diameter <= 32 else f"(132 - {self.diameter}) / 100"
+        numerical_equation = "1.00" if self.diameter <= 32 else f"(132 - {self.diameter}) / 100"
 
         return LatexFormula(
             return_symbol=r"\eta_2",
             result=f"{self:.2f}",
-            equation=latex_conditional(
-                [1.0, "Ø ≤ 32"],
-                ["(132 - Ø) / 100", "Ø > 32"],
-            ),
+            equation=r"\begin{matrix} 1.0 & \text{voor }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{voor }Ø > 32  \end{matrix}",
             numeric_equation=numerical_equation,
             comparison_operator_label="=",
         )
