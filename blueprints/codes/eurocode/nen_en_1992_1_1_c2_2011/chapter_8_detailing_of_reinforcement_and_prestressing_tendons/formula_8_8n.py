@@ -9,7 +9,7 @@ from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
+class Form8Dot8nAnchorageCapacityWeldedTransverseBar(Formula):
     """Class representing the formula 8.8N for the calculation of the anchorage capacity of welded transverse bar, welded on the inside of the main
     bar.
     """
@@ -37,7 +37,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
 
             :math:`= 1.16 ⋅ ø_{t} ⋅ (f_{yd}/σ_{td})^{0.5} ≤ l_{t}`
 
-            Use your own implementation of this formula or use the SubForm8Dot8NDesignLengthOfTransverseBar class.
+            Use your own implementation of this formula or use the SubForm8Dot8nDesignLengthOfTransverseBar class.
         diameter_t: MM
             [:math:`ø_{t}`] Diameter of transverse bar [:math:`mm`].
         sigma_td: MPA
@@ -45,7 +45,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
 
             :math:`=(f_{ctd}+σ_{cm})/y ≤ 3⋅f_{cd}`
 
-            Use your own implementation of this formula or use the SubForm8Dot8NConcreteStress class.
+            Use your own implementation of this formula or use the SubForm8Dot8nConcreteStress class.
         f_wd: KN
             [:math:`F_{wd}`] Design shear strength of weld (specified as a factor times :math:`A_{s}⋅f_{yd}`; say :math:`0.5⋅A_{s}⋅f_{yd}` where
             :math:`A_{s}` is the cross-section of the anchored bar and fyd is its design yield strength)  [kN].
@@ -73,7 +73,7 @@ class Form8Dot8NAnchorageCapacityWeldedTransverseBar(Formula):
         return min(l_td * diameter_t * sigma_td * N_TO_KN, f_wd)
 
 
-class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
+class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
     """Class representing sub-formula for formula 8.8N, which calculates the design length of the transverse bar."""
 
     label = "8.8N"
@@ -101,7 +101,7 @@ class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
 
             :math:`=(f_{ctd}+σ_{cm})/y ≤ 3⋅f_{cd}`
 
-            Use your own implementation of this formula or use the SubForm8Dot8NConcreteStress class.
+            Use your own implementation of this formula or use the SubForm8Dot8nConcreteStress class.
         l_t: MM
             [:math:`l_{t}`] Length of transverse bar, but not more than the spacing of bars to be anchored [:math:`mm`].
         """
@@ -128,7 +128,7 @@ class SubForm8Dot8NDesignLengthOfTransverseBar(Formula):
         return min(1.16 * diameter_t * (f_yd / sigma_td) ** 0.5, l_t)
 
 
-class SubForm8Dot8NConcreteStress(Formula):
+class SubForm8Dot8nConcreteStress(Formula):
     """Class representing sub-formula for formula 8.8N, which calculates the concrete stress."""
 
     label = "8.8N"
@@ -156,7 +156,7 @@ class SubForm8Dot8NConcreteStress(Formula):
 
             :math:`= 0.015 + 0.14 ⋅ exp(-0.18⋅x)`
 
-            Use your own implementation of this formula or use the SubForm8Dot8NFunctionY class.
+            Use your own implementation of this formula or use the SubForm8Dot8nFunctionY class.
         f_cd: MPA
             [:math:`f_{cd}`] Design value compressive strength of concrete [:math:`MPa`].
         """
@@ -183,7 +183,7 @@ class SubForm8Dot8NConcreteStress(Formula):
         return min((f_ctd + sigma_cm) / y_function, 3 * f_cd)
 
 
-class SubForm8Dot8NFunctionY(Formula):
+class SubForm8Dot8nFunctionY(Formula):
     """Class representing sub-formula for formula 8.8N, which calculates the function y."""
 
     label = "8.8N"
@@ -204,7 +204,7 @@ class SubForm8Dot8NFunctionY(Formula):
 
             :math:`= 2⋅(c/ø_{t}) + 1`
 
-            Use your own implementation of this formula or use the SubForm8Dot8NFunctionX class.
+            Use your own implementation of this formula or use the SubForm8Dot8nFunctionX class.
         """
         super().__init__()
         self.x_function = x_function
@@ -218,7 +218,7 @@ class SubForm8Dot8NFunctionY(Formula):
         return 0.015 + 0.14 * np.exp(-0.18 * x_function)
 
 
-class SubForm8Dot8NFunctionX(Formula):
+class SubForm8Dot8nFunctionX(Formula):
     """Class representing sub-formula for formula 8.8N, which calculates the function x."""
 
     label = "8.8N"

@@ -3,13 +3,13 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
-    SubForm8Dot8NFunctionX,
-    SubForm8Dot8NFunctionY,
+    SubForm8Dot8nFunctionX,
+    SubForm8Dot8nFunctionY,
 )
 from blueprints.validations import NegativeValueError
 
 
-class TestSubForm8Dot8NFunctionY:
+class TestSubForm8Dot8nFunctionY:
     """Validation for sub-formula 8.8N from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -17,7 +17,7 @@ class TestSubForm8Dot8NFunctionY:
         # Example values
         x_function = 2
 
-        sub_form_8_8n_3 = SubForm8Dot8NFunctionY(x_function=x_function)
+        sub_form_8_8n_3 = SubForm8Dot8nFunctionY(x_function=x_function)
 
         # Expected result, manually calculated
         manually_result = 0.112675
@@ -30,15 +30,15 @@ class TestSubForm8Dot8NFunctionY:
         x_function = -2
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NFunctionY(x_function=x_function)
+            SubForm8Dot8nFunctionY(x_function=x_function)
 
     def test_integration_with_sub_form_8_8n_function_x(self) -> None:
         """Test the integration with sub-formula 8.8 for calculating function x."""
         # Example values
         cover = 60  # mm
         diameter_t = 16  # mm
-        x_function = SubForm8Dot8NFunctionX(cover=cover, diameter_t=diameter_t)
-        sub_form_8_8n_3 = SubForm8Dot8NFunctionY(x_function=x_function)
+        x_function = SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t)
+        sub_form_8_8n_3 = SubForm8Dot8nFunctionY(x_function=x_function)
 
         # Expected result, manually calculated
         manually_result = 0.045314993

@@ -8,7 +8,7 @@ from blueprints.type_alias import DEG, MM
 from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
-class Form9Dot7NMaximumDistanceBentUpBars(Formula):
+class Form9Dot7nMaximumDistanceBentUpBars(Formula):
     """Class representing the formula 9.7N for the calculation of the maximum distance between bent-up bars in longitudinal direction."""
 
     label = "9.7N"

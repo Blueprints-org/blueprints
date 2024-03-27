@@ -3,13 +3,13 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
-    SubForm8Dot8NConcreteStress,
-    SubForm8Dot8NFunctionY,
+    SubForm8Dot8nConcreteStress,
+    SubForm8Dot8nFunctionY,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestSubForm8Dot8NConcreteStress:
+class TestSubForm8Dot8nConcreteStress:
     """Validation for sub-formula 8.8N from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -18,7 +18,7 @@ class TestSubForm8Dot8NConcreteStress:
         sigma_cm = 15  # MPa
         y_function = 0.5  # -
         f_cd = 25  # MPa
-        sub_form_8_8n_2 = SubForm8Dot8NConcreteStress(
+        sub_form_8_8n_2 = SubForm8Dot8nConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
             y_function=y_function,
@@ -34,7 +34,7 @@ class TestSubForm8Dot8NConcreteStress:
         sigma_cm = 15  # MPa
         y_function = 0.05  # -
         f_cd = 20  # MPa
-        sub_form_8_8n_2 = SubForm8Dot8NConcreteStress(
+        sub_form_8_8n_2 = SubForm8Dot8nConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
             y_function=y_function,
@@ -53,7 +53,7 @@ class TestSubForm8Dot8NConcreteStress:
         f_cd = 25  # MPa
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NConcreteStress(
+            SubForm8Dot8nConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
                 y_function=y_function,
@@ -69,7 +69,7 @@ class TestSubForm8Dot8NConcreteStress:
         f_cd = 25  # MPa
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NConcreteStress(
+            SubForm8Dot8nConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
                 y_function=y_function,
@@ -85,7 +85,7 @@ class TestSubForm8Dot8NConcreteStress:
         f_cd = 25  # MPa
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NConcreteStress(
+            SubForm8Dot8nConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
                 y_function=y_function,
@@ -101,7 +101,7 @@ class TestSubForm8Dot8NConcreteStress:
         f_cd = 25  # MPa
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NConcreteStress(
+            SubForm8Dot8nConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
                 y_function=y_function,
@@ -117,7 +117,7 @@ class TestSubForm8Dot8NConcreteStress:
         f_cd = -25  # MPa
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NConcreteStress(
+            SubForm8Dot8nConcreteStress(
                 f_ctd=f_ctd,
                 sigma_cm=sigma_cm,
                 y_function=y_function,
@@ -131,10 +131,10 @@ class TestSubForm8Dot8NConcreteStress:
         sigma_cm = 15  # MPa
         f_cd = 50  # MPa
         x_function = 1.5  # -
-        y_function = SubForm8Dot8NFunctionY(x_function=x_function)
+        y_function = SubForm8Dot8nFunctionY(x_function=x_function)
 
         # Object to test
-        sub_form_8_8n_2 = SubForm8Dot8NConcreteStress(
+        sub_form_8_8n_2 = SubForm8Dot8nConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
             y_function=y_function,
