@@ -3,13 +3,13 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
-    SubForm8Dot8NConcreteStress,
-    SubForm8Dot8NDesignLengthOfTransverseBar,
+    SubForm8Dot8nConcreteStress,
+    SubForm8Dot8nDesignLengthOfTransverseBar,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestSubForm8Dot8NDesignLengthOfTransverseBar:
+class TestSubForm8Dot8nDesignLengthOfTransverseBar:
     """Validation for sub-formula 8.8N from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -18,7 +18,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         f_yd = 500  # MPa
         sigma_td = 60  # MPa
         l_t = 100  # mm
-        sub_form_8_8n_1 = SubForm8Dot8NDesignLengthOfTransverseBar(
+        sub_form_8_8n_1 = SubForm8Dot8nDesignLengthOfTransverseBar(
             diameter_t=diameter_t,
             f_yd=f_yd,
             sigma_td=sigma_td,
@@ -34,7 +34,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         f_yd = 500  # MPa
         sigma_td = 60  # MPa
         l_t = 50  # mm
-        sub_form_8_8n_1 = SubForm8Dot8NDesignLengthOfTransverseBar(
+        sub_form_8_8n_1 = SubForm8Dot8nDesignLengthOfTransverseBar(
             diameter_t=diameter_t,
             f_yd=f_yd,
             sigma_td=sigma_td,
@@ -53,7 +53,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         l_t = 100  # mm
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NDesignLengthOfTransverseBar(
+            SubForm8Dot8nDesignLengthOfTransverseBar(
                 diameter_t=diameter_t,
                 f_yd=f_yd,
                 sigma_td=sigma_td,
@@ -69,7 +69,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         l_t = 100  # mm
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NDesignLengthOfTransverseBar(
+            SubForm8Dot8nDesignLengthOfTransverseBar(
                 diameter_t=diameter_t,
                 f_yd=f_yd,
                 sigma_td=sigma_td,
@@ -85,7 +85,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         l_t = 100  # mm
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NDesignLengthOfTransverseBar(
+            SubForm8Dot8nDesignLengthOfTransverseBar(
                 diameter_t=diameter_t,
                 f_yd=f_yd,
                 sigma_td=sigma_td,
@@ -101,7 +101,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         l_t = 100  # mm
 
         with pytest.raises(LessOrEqualToZeroError):
-            SubForm8Dot8NDesignLengthOfTransverseBar(
+            SubForm8Dot8nDesignLengthOfTransverseBar(
                 diameter_t=diameter_t,
                 f_yd=f_yd,
                 sigma_td=sigma_td,
@@ -117,7 +117,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         l_t = -100  # mm
 
         with pytest.raises(NegativeValueError):
-            SubForm8Dot8NDesignLengthOfTransverseBar(
+            SubForm8Dot8nDesignLengthOfTransverseBar(
                 diameter_t=diameter_t,
                 f_yd=f_yd,
                 sigma_td=sigma_td,
@@ -134,7 +134,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         sigma_cm = 15  # MPa
         y_function = 0.5  # -
         f_cd = 25  # MPa
-        sigma_td = SubForm8Dot8NConcreteStress(
+        sigma_td = SubForm8Dot8nConcreteStress(
             f_ctd=f_ctd,
             sigma_cm=sigma_cm,
             y_function=y_function,
@@ -142,7 +142,7 @@ class TestSubForm8Dot8NDesignLengthOfTransverseBar:
         )
 
         # Object to test
-        form_8_8n = SubForm8Dot8NDesignLengthOfTransverseBar(
+        form_8_8n = SubForm8Dot8nDesignLengthOfTransverseBar(
             diameter_t=diameter_t,
             f_yd=f_yd,
             sigma_td=sigma_td,
