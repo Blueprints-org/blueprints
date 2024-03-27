@@ -86,12 +86,27 @@ class TestForm8Dot2UltimateBondStress:
 
         assert form_8_2 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"f_{bd} = 2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd} = 2.25 \cdot 1.00 \cdot 1.00 \cdot 20.00 = 45.00",
+            ),
+            ("short", "f_{bd} = 45.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
         """Test the LaTeX representation."""
         eta_1 = 1  # -
         eta_2 = 1  # −
         f_ctd = 20  # MPa
+
         latex = Form8Dot2UltimateBondStress(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd).latex()
-        assert latex.short == r"f_{bd} = 45.00"
-        assert latex.complete == r"f_{bd} = 2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd} = 2.25 \cdot 1.00 \cdot 1.00 \cdot 20.00 = 45.00"
-        assert str(latex) == r"f_{bd} = 2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd} = 2.25 \cdot 1.00 \cdot 1.00 \cdot 20.00 = 45.00"
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."
