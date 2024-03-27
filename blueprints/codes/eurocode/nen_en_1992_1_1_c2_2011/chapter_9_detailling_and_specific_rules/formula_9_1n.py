@@ -6,7 +6,7 @@ from blueprints.type_alias import MM, MM2, MPA
 from blueprints.validations import raise_if_negative
 
 
-class Form9Dot1NMinimumTensileReinforcementBeam(Formula):
+class Form9Dot1nMinimumTensileReinforcementBeam(Formula):
     """Class representing the formula 9.1N for the calculation of minimum tensile reinforcement area in longitudinal direction for beams."""
 
     label = "9.1N"

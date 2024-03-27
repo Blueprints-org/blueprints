@@ -8,7 +8,7 @@ from blueprints.type_alias import DEG, MM
 from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
-class Form9Dot6NMaximumDistanceShearReinforcement(Formula):
+class Form9Dot6nMaximumDistanceShearReinforcement(Formula):
     """Class representing the formula 9.6N for the calculation of the maximum distance between shear reinforcement in longitudinal direction."""
 
     label = "9.6N"
