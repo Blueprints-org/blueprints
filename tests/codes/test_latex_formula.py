@@ -64,6 +64,6 @@ def test_latex_min_curly_brackets() -> None:
     assert result == r"\min \left\{a+b; 500; c-d\right\}"
 
 
-def test_conditional() -> None:
+def test_latex_conditional() -> None:
     """Test the conditional function."""
     assert latex_conditional([1, "a > 0"], [2, "a < 0"]) == r"\left{\matrix{1 & \text{voor }a > 0 \\ 2 & \text{voor }a < 0 }\right."
