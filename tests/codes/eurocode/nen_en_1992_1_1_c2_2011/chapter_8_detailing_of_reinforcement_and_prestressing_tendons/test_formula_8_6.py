@@ -80,19 +80,27 @@ class TestForm8Dot6MinimumTensionAnchorage:
 
         assert form_8_7 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.3 \cdot 500.00; 10 \cdot 8; "
+                r"100\right\} = 150.00",
+            ),
+            ("short", "l_{b,min} = 150.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
         """Test the latex representation."""
         # example values
         l_b_rqd = 500
         diameter = 8
         latex = Form8Dot6MinimumTensionAnchorage(l_b_rqd=l_b_rqd, diameter=diameter).latex()
 
-        assert latex.complete == (
-            r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.3 \cdot 500.00;"
-            r" 10 \cdot 8; 100\right\} = 150.00"
-        )
-        assert latex.short == r"l_{b,min} = 150.00"
-        assert str(latex) == (
-            r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.3 \cdot 500.00;"
-            r" 10 \cdot 8; 100\right\} = 150.00"
-        )
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."
