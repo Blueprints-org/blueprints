@@ -36,3 +36,32 @@ class TestSubForm8Dot2CoefficientBarDiameter:
 
         with pytest.raises(NegativeValueError):
             SubForm8Dot2CoefficientBarDiameter(diameter=diameter)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete_latex_16",
+                r"\eta_2 = \begin{matrix} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{matrix} = 1.00 = 1.00",
+            ),
+            ("short_latex_16", r"\eta_2 = 1.00"),
+            (
+                "complete_latex_64",
+                r"\eta_2 = \begin{matrix} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{matrix} = (132 - 64) / 100 = 0.68",
+            ),
+            ("short_latex_64", r"\eta_2 = 0.68"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
+        """Test the latex representation."""
+        latex_16 = SubForm8Dot2CoefficientBarDiameter(diameter=16).latex()
+        latex_64 = SubForm8Dot2CoefficientBarDiameter(diameter=64).latex()
+
+        actual = {
+            "complete_latex_16": latex_16.complete,
+            "short_latex_16": latex_16.short,
+            "complete_latex_64": latex_64.complete,
+            "short_latex_64": latex_64.short,
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."

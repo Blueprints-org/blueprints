@@ -130,3 +130,34 @@ class TestForm8Dot11MinimumDesignLapLength:
         manually_calculated_result = 200  # mm
 
         assert form_8_11 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            (
+                "complete",
+                r"l_{0,min} = \max \left\{0.3 \cdot \alpha_6 \cdot l_{b,rqd}; 15 \cdot Ø; 200 \ \text{mm}\right\} = \max \left\{0.3 \cdot 1.00 "
+                r"\cdot 450.00; 15 \cdot 8; 200\right\} = 200.00",
+            ),
+            ("short", "l_{0,min} = 200.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
+        """Test the LaTeX representation."""
+        # example values
+        alpha_6 = 1
+        l_b_rqd = 450
+        diameter = 8
+
+        latex = Form8Dot11MinimumDesignLapLength(
+            alpha_6=alpha_6,
+            l_b_rqd=l_b_rqd,
+            diameter=diameter,
+        ).latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert actual[representation] == expected_result, f"{representation} representation failed."

@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -41,3 +42,17 @@ class Form8Dot6MinimumTensionAnchorage(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(diameter=diameter, l_b_rqd=l_b_rqd)
         return max(0.3 * l_b_rqd, 10 * diameter, 100)
+
+    def latex(self) -> LatexFormula:
+        """Returns a LatexFormula object for this formula."""
+        return LatexFormula(
+            return_symbol=r"l_{b,min}",
+            result=f"{self:.2f}",
+            equation=latex_max_curly_brackets(r"0.3 \cdot l_{b,rqd}", r"10 \cdot Ø", r"100 \ \text{mm}"),
+            numeric_equation=latex_max_curly_brackets(
+                rf"0.3 \cdot {self.l_b_rqd:.2f}",
+                rf"10 \cdot {self.diameter}",
+                r"100",
+            ),
+            comparison_operator_label="=",
+        )

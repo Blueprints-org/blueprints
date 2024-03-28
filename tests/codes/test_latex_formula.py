@@ -58,7 +58,7 @@ def test_latex_max_curly_brackets() -> None:
     assert result == r"\max \left\{a+b; 500; c-d\right\}"
 
 
-def test_min_curly_brackets() -> None:
-    """Test the latex_min_curly_brackets function."""
+def test_latex_min_curly_brackets() -> None:
+    """Test the latex_max_curly_brackets function."""
     result = latex_min_curly_brackets(r"a+b", r"500", r"c-d")
     assert result == r"\min \left\{a+b; 500; c-d\right\}"
