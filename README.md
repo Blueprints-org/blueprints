@@ -44,7 +44,7 @@ Documentation is available at [blueprints.readthedocs.io](https://blueprints.rea
 
 ## Quick Reference to Blueprint's Objects
 
-This table serves as a quick navigator to the key elements of the code within Blueprints, offering immediate links to its equations, tables, and
+This table serves as a quick navigator to the key elements of the code within Blueprints, offering immediate links to its formulas, tables, and
 figures for streamlined access and reference.
 
 | Document                   | Description                                                                                 |                            Formulas                             |                            Tables                            |                            Figures                             |
