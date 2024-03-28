@@ -2,10 +2,10 @@
 Eurocode 3: Design of steel structures
 Part 1-1: General rules and rules for buildings**
 
-The table presents a list of equations from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :
+The table presents a list of formulas from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :
 heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
-Total of 108 equations present.
+Total of 108 formulas present.
 
 | Equation number | Done | Remarks | Object name |
 |:----------------|:----:|:--------|:------------|
