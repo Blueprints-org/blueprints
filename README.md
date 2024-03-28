@@ -13,11 +13,15 @@
   <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
 </picture>
 
-Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike. Blueprints is a collaborative, open-source initiative designed to serve as a comprehensive library of code, tools, and best practices, aiming to streamline and innovate the workflows within the built environment sector.
+Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike. Blueprints is a collaborative,
+open-source initiative designed to serve as a comprehensive library of code, tools, and best practices, aiming to streamline and innovate the
+workflows within the built environment sector.
 
 ## Vision
 
-Our vision with Blueprints is to create an accessible, reliable, and community-driven resource that supports engineers, and developers in their daily challenges. By harnessing the collective expertise of the industry, Blueprints strives to pave the way for a future where collaboration and open source can drive the field of civil engineering to new heights.
+Our vision with Blueprints is to create an accessible, reliable, and community-driven resource that supports engineers, and developers in their daily
+challenges. By harnessing the collective expertise of the industry, Blueprints strives to pave the way for a future where collaboration and open
+source can drive the field of civil engineering to new heights.
 
 ## Mission
 
@@ -40,6 +44,7 @@ For the actively developed version:
 ```shell
 pip install git+https://github.com/Blueprints-org/blueprints.git
 ```
+
 Documentation is available at [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/).
 
 ## Quick Reference to Blueprint's Objects
@@ -47,11 +52,12 @@ Documentation is available at [blueprints.readthedocs.io](https://blueprints.rea
 This table serves as a quick navigator to the key elements of the code within Blueprints, offering immediate links to its formulas, tables, and
 figures for streamlined access and reference.
 
-| Document                   | Description                                                                                 |                            Formulas                             |                            Tables                            |                            Figures                             |
-|:---------------------------|:--------------------------------------------------------------------------------------------|:---------------------------------------------------------------:|:------------------------------------------------------------:|:--------------------------------------------------------------:|
-| NEN-EN 1992-1-1+C2:2011    | Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings | [304](docs/source/codes/eurocode/ec2_1992_1_1_2011/formulas.md) | [38](docs/source/codes/eurocode/ec2_1992_1_1_2011/tables.md) | [104](docs/source/codes/eurocode/ec2_1992_1_1_2011/figures.md) |
-| NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings    | [108](docs/source/codes/eurocode/ec3_1993_1_1_2016/formulas.md) | [20](docs/source/codes/eurocode/ec3_1993_1_1_2016/tables.md) | [28](docs/source/codes/eurocode/ec3_1993_1_1_2016/figures.md)  |
-| NEN 9997-1+C2:2017         | Eurocode 7: Geotechnical design of structures - Part 1: General rules                       | [88](docs/source/codes/eurocode/nen_9997_1_c2_2017/formulas.md) |  [11](docs/source/codes/eurocode/nen_9997_1_c2_2017/tables.md)  |  [25](docs/source/codes/eurocode/nen_9997_1_c2_2017/figures.md)   |
+| Document                   | Description                                                                                 |                            Formulas                             |                            Tables                             |                            Figures                             |
+|:---------------------------|:--------------------------------------------------------------------------------------------|:---------------------------------------------------------------:|:-------------------------------------------------------------:|:--------------------------------------------------------------:|
+| NEN-EN 1992-1-1+C2:2011    | Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings | [304](docs/source/codes/eurocode/ec2_1992_1_1_2011/formulas.md) | [38](docs/source/codes/eurocode/ec2_1992_1_1_2011/tables.md)  | [104](docs/source/codes/eurocode/ec2_1992_1_1_2011/figures.md) |
+| NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings    | [108](docs/source/codes/eurocode/ec3_1993_1_1_2016/formulas.md) | [20](docs/source/codes/eurocode/ec3_1993_1_1_2016/tables.md)  | [28](docs/source/codes/eurocode/ec3_1993_1_1_2016/figures.md)  |
+| NEN 9997-1+C2:2017         | Eurocode 7: Geotechnical design of structures - Part 1: General rules                       | [88](docs/source/codes/eurocode/nen_9997_1_c2_2017/formulas.md) | [11](docs/source/codes/eurocode/nen_9997_1_c2_2017/tables.md) | [25](docs/source/codes/eurocode/nen_9997_1_c2_2017/figures.md) |
+| NEN-EN 1993-5:2008         | Eurocode 3: Design of steel structures – Part 5: Piling                                     | [63](docs/source/codes/eurocode/nen_en_1993_5_2008/formulas.md) | [0](docs/source/codes/eurocode/nen_en_1993_5_2008/tables.md)  | [0](docs/source/codes/eurocode/nen_en_1993_5_2008/figures.md)  |
 
 ## Contributing
 
