@@ -4,6 +4,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, M
+from blueprints.validations import raise_if_negative
 
 
 class Form5Dot9DesignSupportMomentReduction(Formula):
@@ -47,6 +48,10 @@ class Form5Dot9DesignSupportMomentReduction(Formula):
         t: M,
     ) -> KN:
         """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(
+            f_ed_sup=f_ed_sup,
+            t=t,
+        )
         return f_ed_sup * t / 8
 
     def latex(self) -> LatexFormula:
