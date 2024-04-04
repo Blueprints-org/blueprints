@@ -30,7 +30,7 @@ class TestForm5Dot9DesignSupportMomentReduction:
             (100, -0.3),
         ],
     )
-    def test_raise_error_when_negative_values_are_given(self, f_ed_sup: int, t: float) -> None:
+    def test_raise_error_when_negative_values_are_given(self, f_ed_sup: float, t: float) -> None:
         """Test negative values."""
         with pytest.raises(NegativeValueError):
             Form5Dot9DesignSupportMomentReduction(f_ed_sup=f_ed_sup, t=t)
