@@ -60,15 +60,16 @@ class Form9Dot1nMinimumTensileReinforcementBeam(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 9.1N."""
+        fraction = latex_fraction(numerator=f"{self.f_ctm:.2f}", denominator=f"{self.f_yk:.2f}")
         return LatexFormula(
             return_symbol=r"A_{s,min}",
             result=f"{self:.2f}",
             equation=latex_max_curly_brackets(
-                rf"0.26 \cdot {latex_fraction(r'f_{ctm}', r'f_{yk}')} \cdot b_t \cdot d",
+                rf"0.26 \cdot {latex_fraction(numerator=r'f_{ctm}', denominator=r'f_{yk}')} \cdot b_t \cdot d",
                 r"0.0013 \cdot b_t \cdot d",
             ),
             numeric_equation=latex_max_curly_brackets(
-                rf"0.26 \cdot {latex_fraction(f'{self.f_ctm:.2f}', f'{self.f_yk:.2f}')} \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
+                rf"0.26 \cdot {fraction} \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
                 rf"0.0013 \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
             ),
             comparison_operator_label="=",
