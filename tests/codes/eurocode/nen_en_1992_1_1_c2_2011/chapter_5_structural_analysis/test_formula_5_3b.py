@@ -32,7 +32,7 @@ class TestForm5Dot3bTransverseForceBracedMembers:
             (-0.003, -5),
         ],
     )
-    def test_raise_error_when_negative_theta_i_is_given(self, theta_i: float, n_axial_force: float) -> None:
+    def test_raise_error_when_negative_values_are_given(self, theta_i: float, n_axial_force: float) -> None:
         """Test negative values."""
         with pytest.raises(NegativeValueError):
             Form5Dot3bTransverseForceBracedMembers(theta_i=theta_i, n_axial_force=n_axial_force)
