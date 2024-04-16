@@ -58,7 +58,7 @@ Total of 304 formulas present.
 | 5.10a          |        :x:         |         |                                                           |
 | 5.10b          |        :x:         |         |                                                           |
 | 5.11N          | :heavy_check_mark: |         | Form5Dot11nShearSlendernessCorrectionFactor               |
-| 5.12N          |        :x:         |         |                                                           |
+| 5.12N          | :heavy_check_mark: |         | Form5Dot12nRatioDistancePointZeroAndMaxMoment             |
 | 5.13N          |        :x:         |         |                                                           |
 | 5.14           |        :x:         |         |                                                           |
 | 5.15           |        :x:         |         |                                                           |
