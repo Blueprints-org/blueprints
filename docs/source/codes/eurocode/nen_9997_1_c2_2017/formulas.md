@@ -2,13 +2,13 @@
 Eurocode 7: Geotechnical design
 Part 1: General rules**
 
-The table presents a list of formulas from the Eurocode 7 standards for geotechnical design, tracking their implementation status (:x: or :
-heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+The table presents a list of formulas from the Eurocode 7 standards for geotechnical design, tracking their implementation status 
+(:x: or :heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 88 formulas present.
 
 | Formula number |        Done        | Remarks | Object name                               |
-| :------------- | :----------------: | :------ | :---------------------------------------- |
+|:---------------|:------------------:|:--------|:------------------------------------------|
 | 2.1a           | :heavy_check_mark: |         | Form2Dot1aDesignValueLoad                 |
 | 2.1b           | :heavy_check_mark: |         | Form2Dot1bRepresentativeValue             |
 | 2.2            | :heavy_check_mark: |         | Form2Dot2DesignValueGeotechnicalParameter |
