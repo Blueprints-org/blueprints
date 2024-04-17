@@ -161,3 +161,6 @@ cython_debug/
 
 # VS Code
 .vscode/
+
+# ENV file
+.ENV
