@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_2 import Form2Dot2DesignValueGeotechnicalParameter
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm2Dot2DesignValueGeotechnicalParameter:
@@ -13,9 +13,9 @@ class TestForm2Dot2DesignValueGeotechnicalParameter:
         """Test the evaluation of the result."""
         assert Form2Dot2DesignValueGeotechnicalParameter(x_k=25.0, gamma_m=1.45) == pytest.approx(expected=17.241, abs=0.001)
 
-    def test_raise_error_if_negative_gamma(self) -> None:
-        """Test that a NegativeValueError is raised when a negative value is passed for gamma_m."""
-        with pytest.raises(NegativeValueError):
+    def test_raise_error_if_negative_or_zero_gamma(self) -> None:
+        """Test that a LessOrEqualToZeroError is raised when a negative or zero value is passed for gamma_m."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form2Dot2DesignValueGeotechnicalParameter(x_k=25.0, gamma_m=-1.0)
 
     @pytest.mark.parametrize(

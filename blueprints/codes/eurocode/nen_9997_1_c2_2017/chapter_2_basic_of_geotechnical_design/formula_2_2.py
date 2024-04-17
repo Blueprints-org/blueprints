@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_fraction
 from blueprints.type_alias import DIMENSIONLESS
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form2Dot2DesignValueGeotechnicalParameter(Formula):
@@ -35,7 +35,7 @@ class Form2Dot2DesignValueGeotechnicalParameter(Formula):
         gamma_m: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(gamma_m=gamma_m)
+        raise_if_less_or_equal_to_zero(gamma_m=gamma_m)
         return x_k / gamma_m
 
     def latex(self) -> LatexFormula:
