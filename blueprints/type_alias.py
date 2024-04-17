@@ -68,4 +68,5 @@ YEARS = float
 RATIO = float
 PERCENTAGE = float
 DIMENSIONLESS = float
+PER_MILLE = float
 # </editor-fold>
