@@ -54,7 +54,7 @@ Total of 304 formulas present.
 | 5.7a           |        :x:         |         |                                                           |
 | 5.7b           |        :x:         |         |                                                           |
 | 5.8            | :heavy_check_mark: |         | Form5Dot8EffectiveSpan                                    |
-| 5.9            |        :x:         |         |                                                           |
+| 5.9            | :heavy_check_mark: |         | Form5Dot9DesignSupportMomentReduction                     |
 | 5.10a          |        :x:         |         |                                                           |
 | 5.10b          |        :x:         |         |                                                           |
 | 5.11N          | :heavy_check_mark: |         | Form5Dot11nShearSlendernessCorrectionFactor               |
