@@ -7,7 +7,7 @@ from blueprints.type_alias import M
 from blueprints.validations import raise_if_negative
 
 
-class Form5Dot6EffectiveFlangeWidth(Formula):
+class Form5Dot7EffectiveFlangeWidth(Formula):
     """Class representing formula 5.7 for the calculation of effective flange width [:math:`b_{eff}`] for a T beam or L beam.
     See Figure 5.3.
     """

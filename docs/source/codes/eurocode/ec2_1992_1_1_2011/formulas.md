@@ -50,7 +50,7 @@ Total of 304 formulas present.
 | 5.4            | :heavy_check_mark: |         | Form5Dot4TransverseForceEffectBracingSystem               |
 | 5.5            | :heavy_check_mark: |         | Form5Dot5TransverseForceEffectFloorDiaphragm              |
 | 5.6            | :heavy_check_mark: |         | Form5Dot6TransverseForceEffectRoofDiaphragm               |
-| 5.7            |        :x:         |         |                                                           |
+| 5.7            | :heavy_check_mark: |         | Form5Dot7EffectiveFlangeWidth                             |
 | 5.7a           |        :x:         |         |                                                           |
 | 5.7b           |        :x:         |         |                                                           |
 | 5.8            | :heavy_check_mark: |         | Form5Dot8EffectiveSpan                                    |
