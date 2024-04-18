@@ -9,18 +9,24 @@ from blueprints.validations import NegativeValueError
 class TestForm5Dot7EffectiveFlangeWidth:
     """Validation for formula 5.7 from NEN-EN 1992-1-1+C2:2011."""
 
-    def test_evaluation(self) -> None:
+    @pytest.mark.parametrize(
+        ("b", "b_eff"),
+        [
+            (0.8, 0.6),
+            (0.55, 0.55),
+        ],
+    )
+    def test_evaluation(self, b: float, b_eff: float) -> None:
         """Test the evaluation of the result."""
         # Example values
         b_eff_i = [0.2, 0.25]  # M
         b_w = 0.15  # M
-        b = 0.8  # M
 
         # Object to test
         form_5_7 = Form5Dot7EffectiveFlangeWidth(*b_eff_i, b_w=b_w, b=b)
 
         # Expected result, manually calculated
-        manually_calculated_result = 0.6  # M
+        manually_calculated_result = b_eff  # M
 
         assert form_5_7 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
