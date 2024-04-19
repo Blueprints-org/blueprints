@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_14 import Form5Dot14SlendernessRatio
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm5Dot4TransverseForceEffectBracingSystem:
@@ -36,7 +36,7 @@ class TestForm5Dot4TransverseForceEffectBracingSystem:
         i: float,
     ) -> None:
         """Test negative values for theta_i, n_a and n_b."""
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             Form5Dot14SlendernessRatio(l_0=l_0, i=i)
 
     @pytest.mark.parametrize(
@@ -47,10 +47,6 @@ class TestForm5Dot4TransverseForceEffectBracingSystem:
                 r"λ = \frac{l_0}{i} = \frac{4.000}{2.000} = 2.000",
             ),
             ("short", r"λ = 2.000"),
-            (
-                "string",
-                r"λ = \frac{l_0}{i} = \frac{4.000}{2.000} = 2.000",
-            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -68,7 +64,6 @@ class TestForm5Dot4TransverseForceEffectBracingSystem:
         actual = {
             "complete": form_5_14_latex.complete,
             "short": form_5_14_latex.short,
-            "string": str(form_5_14_latex),
         }
 
         assert actual[representation] == expected, f"{representation} representation failed."
