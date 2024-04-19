@@ -127,7 +127,7 @@ class ConcreteMaterial:
         self._aggregate_type: ConcreteAggregateType = aggregate_type
         self._aggregate_size: MM = aggregate_size
         self._plain_concrete_diagram: bool = plain_concrete_diagram
-        self._material_factor: float = material_factor
+        self._material_factor: UNITLESS = material_factor
         self._thermal_coefficient = thermal_coefficient
         self._cement_type: CementType = cement_type
 
