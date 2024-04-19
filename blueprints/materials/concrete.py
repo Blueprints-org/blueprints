@@ -125,7 +125,7 @@ class ConcreteMaterial:
         self._density: KG_M3 = density
         self._diagram_type: DiagramType = diagram_type
         self._aggregate_type: ConcreteAggregateType = aggregate_type
-        self._aggregate_size: float = aggregate_size
+        self._aggregate_size: MM = aggregate_size
         self._plain_concrete_diagram: bool = plain_concrete_diagram
         self._material_factor: float = material_factor
         self._thermal_coefficient = thermal_coefficient
