@@ -82,7 +82,7 @@ class ConcreteMaterial:
         diagram_type: DiagramType = DiagramType.BILINEAR,
         aggregate_type: ConcreteAggregateType = ConcreteAggregateType.QUARTZITE,
         aggregate_size: MM = 16.0,
-        plain_concrete_diagram: bool = False,
+        use_plain_concrete_diagram: bool = False,
         material_factor: DIMENSIONLESS = 1.5,
         thermal_coefficient: DIMENSIONLESS = 1e-5,
         cement_type: CementType = CementType.CEM_III,
