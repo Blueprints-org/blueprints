@@ -78,7 +78,7 @@ class ConcreteMaterial:
         name: str = "",
         e_c: MPA | None = None,
         cement_class: CementClass = CementClass.N,
-        density: KG = 2500.0,
+        density: KG_M3 = 2500.0,
         diagram_type: DiagramType = DiagramType.BILINEAR,
         aggregate_type: ConcreteAggregateType = ConcreteAggregateType.QUARTZITE,
         aggregate_size: MM = 16.0,
