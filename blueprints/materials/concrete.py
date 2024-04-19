@@ -2,10 +2,10 @@
 
 import math
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
-from blueprints.type_alias import DIMENSIONLESS, KG, MM, MPA, PER_MILLE, PERCENTAGE
+from blueprints.type_alias import DIMENSIONLESS, KG_M3, MM, MPA, PER_DEGREE, PER_MILLE, PERCENTAGE
 from blueprints.unit_conversion import GPA_TO_MPA
 
 
@@ -66,70 +66,53 @@ class CementType(Enum):
     CEM_V = "CEM V"
 
 
-@dataclass
+@dataclass(frozen=True)
 class ConcreteMaterial:
     """Representation of the strength and deformation characteristics for concrete material based on the analytical
     relation shown on tabel 3.1 from NEN-EN 1992-1-1.
+
+    Parameters
+    ----------
+    concrete_class: ConcreteStrengthClass
+        Enumeration of concrete strength classes (default: C30/37)
+    cement_class: CementClass
+        Cement class needed for calculation of Creep and shrinkage strain (Annex B from NEN-EN 1992-1-1). Classes are S, N and R. (default= N)
+    density: KG_M3
+        Unit mass of concrete [kg/m3] (default= 2500.0 for regular reinforced concrete)
+    diagram_type: DiagramType
+        Type of stress-strain diagram (Figures 3.2, 3.3 and 3.4 from NEN-EN 1992-1-1) (default= Bi-Linear)
+    aggregate_type: ConcreteAggregateType
+        Type of aggregate in the concrete material (NEN-EN 1992-1-1) (default= Quartzite)
+    aggregate_size: MM
+        Largest nominal maximum aggregate size [mm] (NEN-EN 1992-1-1) (default= 16.0)
+    use_plain_concrete_diagram: bool
+        Use a Stress-strain diagram for plain or lightly reinforced concrete (NEN-EN 1992-1-1) (default= False)
+    material_factor: DIMENSIONLESS
+        Partial safety factor (yc) for concrete according to NEN-EN 1992-1-1 art.2.4.2.4 [-] (default= 1.5)
+    thermal_coefficient: PER_DEGREE
+        Thermal coefficient of the material [-] (default= 1e-5)
+    cement_type: CementType
+        Type of cement in the concrete material (NEN-EN 1992-1-1) (default= CEM III)
+    custom_name: str
+        Use a custom name for the concrete material (default= concrete class name)
+    custom_e_c: MPA
+        Use a custom modulus of elasticity of concrete [MPa]
+        If no custom value is given, the value :math:`E_cm` from table 3.1 of NEN-EN 1992-1-1 is used.
+
     """
 
-    def __init__(  # noqa: PLR0913
-        self,
-        concrete_class: ConcreteStrengthClass = ConcreteStrengthClass.C30_37,
-        name: str = "",
-        e_c: MPA | None = None,
-        cement_class: CementClass = CementClass.N,
-        density: KG = 2500.0,
-        diagram_type: DiagramType = DiagramType.BILINEAR,
-        aggregate_type: ConcreteAggregateType = ConcreteAggregateType.QUARTZITE,
-        aggregate_size: MM = 16.0,
-        plain_concrete_diagram: bool = False,
-        material_factor: DIMENSIONLESS = 1.5,
-        thermal_coefficient: DIMENSIONLESS = 1e-5,
-        cement_type: CementType = CementType.CEM_III,
-    ) -> None:
-        """Initializes a ConcreteMaterial object.
-
-        Parameters
-        ----------
-        concrete_class: ConcreteStrengthClass
-            Enumeration of concrete strength classes (default: C30/37)
-        name: str
-            Name of the concrete material (default= concrete class name)
-        e_c: MPA
-            Use a custom modulus of elasticity of concrete [MPa]
-            If none is given the value from table 3.1 (Ecm) of NEN-EN 1992-1-1 is used.
-        cement_class: CementClass
-            Enumeration of cement class (default= N)
-        density: KG
-            Density in [kg/m³] (default= 2500.0)
-        diagram_type: DiagramType
-            Enumeration of diagram types of stress-strain relations (default= Bi-Linear)
-        aggregate_type: ConcreteAggregateType
-            Enumeration of concrete aggregate types (default= Quartzite)
-        aggregate_size: MM
-            Largest nominal maximum aggregate size [mm] (NEN-EN 1992-1-1) (default= 16.0)
-        plain_concrete_diagram: bool
-            Use a Stress-strain diagram for plain or lightly reinforced concrete (NEN-EN 1992-1-1) (default= False)
-        material_factor: DIMENSIONLESS
-            Partial safety factor (yc) for concrete according to NEN-EN 1992-1-1 art.2.4.2.4 (default= 1.5)
-        thermal_coefficient: DIMENSIONLESS
-            Thermal coefficient of the material [-] (default= 1e-5)
-        cement_type: CementType
-            Cement types (default= CEM I)
-
-        """
-        self._e_c = e_c
-        self._cement_class: CementClass = cement_class
-        self._concrete_class: ConcreteStrengthClass = concrete_class
-        self._name: str = name
-        self._density: float = density
-        self._diagram_type: DiagramType = diagram_type
-        self._aggregate_type: ConcreteAggregateType = aggregate_type
-        self._aggregate_size: float = aggregate_size
-        self._plain_concrete_diagram: bool = plain_concrete_diagram
-        self._material_factor: float = material_factor
-        self._thermal_coefficient = thermal_coefficient
-        self._cement_type: CementType = cement_type
+    concrete_class: ConcreteStrengthClass = field(default=ConcreteStrengthClass.C30_37)
+    cement_class: CementClass = field(default=CementClass.N)
+    density: KG_M3 = field(default=2500.0, metadata={"unit": "kg/m³"})
+    diagram_type: DiagramType = field(default=DiagramType.BILINEAR)
+    aggregate_type: ConcreteAggregateType = field(default=ConcreteAggregateType.QUARTZITE)
+    aggregate_size: MM = field(default=16.0, metadata={"unit": "mm"})
+    use_plain_concrete_diagram: bool = field(default=False)
+    material_factor: DIMENSIONLESS = field(default=1.5)
+    thermal_coefficient: PER_DEGREE = field(default=1e-5, metadata={"unit": "1/°C"})
+    cement_type: CementType = field(default=CementType.CEM_III)
+    custom_name: str | None = field(default=None, compare=False)
+    custom_e_c: MPA | None = field(default=None, metadata={"unit": "MPa"})
 
     @property
     def name(self) -> str:
@@ -140,89 +123,56 @@ class ConcreteMaterial:
         str
             Example: "C30/37"
         """
-        if self._name:
-            return self._name
-        return self._concrete_class.value
+        if self.custom_name:
+            return self.custom_name
+        return self.concrete_class.value
 
     @property
     def e_c(self) -> MPA:
-        """Modulus of elasticity of concrete [MPa].
+        """[:math:`E_c`] Modulus of elasticity of concrete [MPa].
 
-        If no custom value is given, the value from table 3.1 of NEN-EN 1992-1-1 is used.
+        If no custom value is given, the value :math:`E_cm` from table 3.1 of NEN-EN 1992-1-1 is used.
 
         Returns
         -------
         MPA
             Example: 32836 (for C30/37)
         """
-        if self._e_c:
-            return self._e_c
+        if self.custom_e_c:
+            return self.custom_e_c
         return self.e_cm
 
     @property
-    def concrete_class(self) -> ConcreteStrengthClass:
-        """Concrete class of the ConcreteMaterial object.
-
-        Returns
-        -------
-        ConcreteStrengthClass
-            Example: "ConcreteStrengthClass.C30_37"
-        """
-        return self._concrete_class
-
-    @property
-    def material_factor(self) -> DIMENSIONLESS:
-        """Partial safety factor (yc) for concrete according to NEN-EN 1992-1-1 art.2.4.2.4[-].
-
-        Returns
-        -------
-        DIMENSIONLESS
-            Example: 1.5
-        """
-        return self._material_factor
-
-    @property
-    def thermal_coefficient(self) -> DIMENSIONLESS:
-        """Thermal coefficient of the material [-].
-
-        Returns
-        -------
-        DIMENSIONLESS
-            Example: 1e-5
-        """
-        return self._thermal_coefficient
-
-    @property
     def f_ck(self) -> MPA:
-        """Characteristic compressive cylinder strength of concrete at 28 days [MPa].
+        """[:math:`f_ck`] Characteristic compressive cylinder strength of concrete at 28 days [MPa].
 
         Returns
         -------
         MPA
             Example: 30 (for C30/37)
         """
-        value = self._concrete_class.value
+        value = self.concrete_class.value
         match = re.search(pattern=r"C(\d+)/", string=value)
         assert match
         return int(match.group(1))
 
     @property
     def f_ck_cube(self) -> MPA:
-        """Characteristic compressive cubic strength of concrete_checks at 28 days [MPa].
+        """[:math:`f_{ck,cube}`] Characteristic compressive cubic strength of concrete at 28 days [MPa].
 
         Returns
         -------
         MPA
             Example: 37 (for C30/37)
         """
-        value = self._concrete_class.value
+        value = self.concrete_class.value
         match = re.search(pattern=r"/(\d+)", string=value)
         assert match
         return int(match.group(1))
 
     @property
     def f_cd(self) -> MPA:
-        """Design compressive cylinder strength of concrete_checks at 28 days (NEN-EN 1992-1-1 art.3.1.6 (1)) [MPa].
+        """[:math:`f_cd`] Design value of concrete compressive strength (NEN-EN 1992-1-1 art.3.1.6 (1)) [MPa].
 
         Returns
         -------
@@ -233,7 +183,7 @@ class ConcreteMaterial:
 
     @property
     def f_cm(self) -> MPA:
-        """Mean value of concrete cylinder compressive strength [MPa].
+        """[:math:`f_cm`] Mean value of concrete cylinder compressive strength [MPa].
 
         Returns
         -------
@@ -244,7 +194,7 @@ class ConcreteMaterial:
 
     @property
     def f_cm_cube(self) -> MPA:
-        """Mean value of concrete_checks cubic compressive strength [MPa].
+        """[:math:`f_{cm,cube}`] Mean value of concrete cubic compressive strength [MPa].
 
         Returns
         -------
@@ -255,7 +205,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctm(self) -> MPA:
-        """Mean value of axial tensile strength of concrete [MPa].
+        """[:math:`f_ctm`] Mean value of axial tensile strength of concrete [MPa].
 
         Returns
         -------
@@ -268,7 +218,7 @@ class ConcreteMaterial:
 
     @property
     def sigma_cr(self) -> MPA:
-        """Crack tensile stress (long term) equal to 0.6 * fctm [MPa].
+        r"""[:math:`σ_{cr}`] Crack tensile stress (long term) equal to :math:`0.6 \cdot f_{ctm}` [MPa].
 
         Returns
         -------
@@ -279,7 +229,7 @@ class ConcreteMaterial:
 
     @property
     def strain_cr(self) -> MPA:
-        """Strain at crack tensile stress (long term) equal to sigma_cr / Ecm [MPa].
+        """[:math:`ε_{cr}`] Strain at crack tensile stress (long term) equal to :math:`σ_{cr} / E_{cm}` [MPa].
 
         Returns
         -------
@@ -290,7 +240,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctk_0_05(self) -> MPA:
-        """Mean value of axial tensile strength of concrete, 5% fractile [MPa].
+        """[:math:`f_{ctk,0.05}`] Mean value of axial tensile strength of concrete, 5% fractile [MPa].
 
         Returns
         -------
@@ -301,7 +251,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctd(self) -> MPA:
-        """Design value of tensile strength of concrete [MPa].
+        """[:math:`f_ctd`] Design value of tensile strength of concrete [MPa].
 
         Returns
         -------
@@ -312,7 +262,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctk_0_95(self) -> MPA:
-        """Mean value of axial tensile strength of concrete, 95% fractile [MPa].
+        """[:math:`f_{ctk,0.95}`] Mean value of axial tensile strength of concrete, 95% fractile [MPa].
 
         Returns
         -------
@@ -323,7 +273,7 @@ class ConcreteMaterial:
 
     @property
     def e_cm(self) -> MPA:
-        """Secant modulus of elasticity of concrete [MPa].
+        """[:math:`E_cm`] Secant modulus of elasticity of concrete [MPa].
 
         Returns
         -------
@@ -334,7 +284,7 @@ class ConcreteMaterial:
 
     @property
     def custom_e_c_present(self) -> bool:
-        """Checks if the value of Ec equal is to the value from table 3.1 of NEN-EN 1992-1-1.
+        """Checks if the value of :math:`E_c` equal is to the value of :math:`E_cm` from table 3.1 of NEN-EN 1992-1-1.
 
         Returns
         -------
@@ -347,7 +297,7 @@ class ConcreteMaterial:
 
     @property
     def eps_c1(self) -> PER_MILLE:
-        """Compressive strain in the concrete_checks at the peak stress fc [‰ (per mille)]. Value with a maximum of 2.8 ‰.
+        """[:math:`ε_{c1}`] Compressive strain in the concrete at the peak stress :math:`f_c` [‰ (per mille)]. Value with a maximum of 2.8 ‰.
         Check Figure 3.2 of NEN-EN 1992-1-1.
 
         Returns
@@ -359,7 +309,7 @@ class ConcreteMaterial:
 
     @property
     def eps_cu1(self) -> PER_MILLE:
-        """Nominal ultimate compressive strain in the concrete_checks [‰ (per mille)]. Check Figure 3.2 of NEN-EN 1992-1-1.
+        """[:math:`ε_{cu1}`] Nominal ultimate compressive strain in the concrete [‰ (per mille)]. Check Figure 3.2 of NEN-EN 1992-1-1.
 
         Returns
         -------
@@ -372,7 +322,8 @@ class ConcreteMaterial:
 
     @property
     def eps_c2(self) -> PER_MILLE:
-        """Compressive strain at reaching the maximum strength according to Table 3.1 [‰ (per mille)]. Check Figure 3.3 of NEN-EN 1992-1-1.
+        """[:math:`ε_{c2}`] Compressive strain at reaching the maximum strength according to Table 3.1 [‰ (per mille)].
+        Check Figure 3.3 of NEN-EN 1992-1-1.
 
         Returns
         -------
@@ -385,7 +336,8 @@ class ConcreteMaterial:
 
     @property
     def eps_cu2(self) -> PER_MILLE:
-        """Nominal ultimate compressive strain in the concrete_checks according to Table 3.1 [‰ (per mille)]. Check Figure 3.3 of NEN-EN 1992-1-1.
+        """[:math:`ε_{cu2}`]Nominal ultimate compressive strain in the concrete according to Table 3.1 [‰ (per mille)].
+        Check Figure 3.3 of NEN-EN 1992-1-1.
 
         Returns
         -------
@@ -398,7 +350,7 @@ class ConcreteMaterial:
 
     @property
     def n_factor(self) -> DIMENSIONLESS:
-        """N factor from table 3.1 of NEN-EN 1992-1-1 [-].
+        """[:math:`n`] factor from table 3.1 of NEN-EN 1992-1-1 [-].
 
         Returns
         -------
@@ -411,7 +363,7 @@ class ConcreteMaterial:
 
     @property
     def eps_c3(self) -> PER_MILLE:
-        """Compressive strain at reaching the maximum strength according to a Bi-linear stress-strain relation [‰ (per mille)].
+        """[:math:`ε_{c3}`]Compressive strain at reaching the maximum strength according to a Bi-linear stress-strain relation [‰ (per mille)].
 
         Check Figure 3.4 of NEN-EN 1992-1-1.
 
@@ -426,7 +378,7 @@ class ConcreteMaterial:
 
     @property
     def eps_cu3(self) -> PER_MILLE:
-        """Nominal ultimate compressive strain in the concrete_checks according to a Bi-linear stress-strain relation [‰ (per mille)].
+        """[:math:`ε_{cu3}`]Nominal ultimate compressive strain in the concrete according to a Bi-linear stress-strain relation [‰ (per mille)].
 
         Check Figure 3.4 of NEN-EN 1992-1-1.
 
@@ -439,74 +391,8 @@ class ConcreteMaterial:
             return 2.6 + 35 * ((90 - self.f_ck) / 100) ** 4
         return 3.5
 
-    @property
-    def cement_class(self) -> CementClass:
-        """Cement class needed for calculation of Creep and shrinkage strain (Annex B from NEN-EN 1992-1-1). Classes are S, N and R.
-
-        Returns
-        -------
-        CementClass
-            Example: "N" (standard value)
-        """
-        return self._cement_class
-
-    @property
-    def density(self) -> KG:
-        """Unit mass of concrete [kg/m3].
-
-        Returns
-        -------
-        KG
-            Example: 2500.0 (for regular reinforced concrete)
-        """
-        return self._density
-
-    @property
-    def diagram_type(self) -> DiagramType:
-        """Type of stress-strain diagram (Figures 3.2, 3.3 and 3.4 from NEN-EN 1992-1-1).
-
-        Returns
-        -------
-        DiagramType
-            Example: DiagramType.BI-LINEAR
-        """
-        return self._diagram_type
-
-    @property
-    def aggregate_type(self) -> ConcreteAggregateType:
-        """Type of aggregate in the concrete material (NEN-EN 1992-1-1).
-
-        Returns
-        -------
-        ConcreteAggregateType
-            Example: "Kwartsiet" (standard value)
-        """
-        return self._aggregate_type
-
-    @property
-    def aggregate_size(self) -> MM:
-        """Largest nominal maximum aggregate size [mm] (NEN-EN 1992-1-1).
-
-        Returns
-        -------
-        MM
-            Example: 16.0 (standard value)
-        """
-        return self._aggregate_size
-
-    @property
-    def plain_concrete_diagram(self) -> bool:
-        """Use a Stress-strain diagram for plain or lightly reinforced concrete (NEN-EN 1992-1-1). (True or False).
-
-        Returns
-        -------
-        bool
-            Example: False (standard value)
-        """
-        return self._plain_concrete_diagram
-
     def rho_min(self, f_yd: MPA) -> PERCENTAGE:
-        """Minimum reinforcement ratio (CB2, 7de druk 2011, pag.55) [%].
+        """[:math:`ρ_{min}`] Minimum reinforcement ratio (CB2, 7de druk 2011, pag.55) [%].
 
         Parameters
         ----------
@@ -518,30 +404,3 @@ class ConcreteMaterial:
         PERCENTAGE
         """
         return (0.223 * (self.f_ctm / f_yd)) * 100
-
-    @property
-    def cement_type(self) -> CementType:
-        """Type of cement in the concrete material (NEN-EN 1992-1-1).
-
-        Returns
-        -------
-        CementType
-            Example: CementType.CEM_I
-        """
-        return self._cement_type
-
-    def __eq__(self, other: object) -> bool:
-        """Check if two ConcreteMaterial objects are equal."""
-        if not isinstance(other, ConcreteMaterial):
-            raise NotImplementedError
-        properties_self = {
-            attribute: self.__getattribute__(attribute)
-            for attribute in dir(self)
-            if not attribute.startswith("_") and attribute not in ["id", "name", "rho_min"]
-        }
-        properties_other = {
-            attribute: other.__getattribute__(attribute)
-            for attribute in dir(self)
-            if not attribute.startswith("_") and attribute not in ["id", "name", "rho_min"]
-        }
-        return properties_self == properties_other
