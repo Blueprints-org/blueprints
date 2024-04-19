@@ -100,7 +100,7 @@ class ConcreteMaterial:
             If none is given the value from table 3.1 (Ecm) of NEN-EN 1992-1-1 is used.
         cement_class: CementClass
             Enumeration of cement class (default= N)
-        density: KG
+        density: KG_M3
             Density in [kg/m³] (default= 2500.0)
         diagram_type: DiagramType
             Enumeration of diagram types of stress-strain relations (default= Bi-Linear)
