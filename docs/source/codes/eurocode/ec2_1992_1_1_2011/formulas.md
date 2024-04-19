@@ -2,8 +2,8 @@
 Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings**
 
-The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status ( :x: or
-:heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints. 
+The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status 
+( :x: or :heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 304 formulas present.
 
@@ -60,7 +60,7 @@ Total of 304 formulas present.
 | 5.11N          | :heavy_check_mark: |         | Form5Dot11nShearSlendernessCorrectionFactor               |
 | 5.12N          | :heavy_check_mark: |         | Form5Dot12nRatioDistancePointZeroAndMaxMoment             |
 | 5.13N          |        :x:         |         |                                                           |
-| 5.14           |        :x:         |         |                                                           |
+| 5.14           | :heavy_check_mark: |         | Form5Dot14SlendernessRatio                                |
 | 5.15           |        :x:         |         |                                                           |
 | 5.16           |        :x:         |         |                                                           |
 | 5.17           |        :x:         |         |                                                           |
