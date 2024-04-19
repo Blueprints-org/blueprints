@@ -122,7 +122,7 @@ class ConcreteMaterial:
         self._cement_class: CementClass = cement_class
         self._concrete_class: ConcreteStrengthClass = concrete_class
         self._name: str = name
-        self._density: float = density
+        self._density: KG_M3 = density
         self._diagram_type: DiagramType = diagram_type
         self._aggregate_type: ConcreteAggregateType = aggregate_type
         self._aggregate_size: float = aggregate_size
