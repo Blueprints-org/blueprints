@@ -1,6 +1,6 @@
 """Module for reinforcement steel material properties."""
 
-from dataclasses import field
+from dataclasses import dataclass, field
 from enum import Enum
 
 from blueprints.type_alias import DIMENSIONLESS, KG_M3, MPA, PER_MILLE
@@ -61,6 +61,7 @@ class ReinforcementDiagramType(Enum):
     USER = "User-defined"
 
 
+@dataclass(frozen=True)
 class ReinforcementSteelMaterial:
     """Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
 
