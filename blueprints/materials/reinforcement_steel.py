@@ -83,7 +83,7 @@ class ReinforcementSteelMaterial:
         Type of stress-strain diagram (default=ReinforcementDiagramType.BILINEAR_INCLINED)
     custom_name: str
         User-defined name of the material (default= name of steel quality; example: 'B500B')
-    custom_e_mod: MPA
+    custom_e_s: MPA
         User-defined Young's modulus of the material, if not provided the default value is used (default=200000)
 
     """
@@ -95,10 +95,10 @@ class ReinforcementSteelMaterial:
     steel_fabrication: SteelFabrication = field(default=SteelFabrication.HOT_ROLLED)
     diagram_type: ReinforcementDiagramType = field(default=ReinforcementDiagramType.BILINEAR_NOT_INCLINED)
     custom_name: str | None = field(default=None, compare=False)
-    custom_e_mod: MPA | None = field(default=None)
+    custom_e_s: MPA | None = field(default=None, metadata={"unit": "MPa"})
 
     @property
-    def e_mod(self) -> MPA:
+    def e_s(self) -> MPA:
         """Reinforcement steel Young's modulus [MPa].
 
         Returns
@@ -106,8 +106,8 @@ class ReinforcementSteelMaterial:
         MPA
             Example: 200000.0 (for B500B)
         """
-        if self.custom_e_mod:
-            return self.custom_e_mod
+        if self.custom_e_s:
+            return self.custom_e_s
         return 200000.0
 
     @property
@@ -145,7 +145,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def ductility_factor_k(self) -> DIMENSIONLESS:
-        """Ductility factor k [-] -> (f_tk / f_yk) tabel C.1 Annex C from NEN-EN 1992-1-1.
+        """Ductility factor k [-] -> (:math:`f_tk` / :math:`f_yk`) tabel C.1 Annex C from NEN-EN 1992-1-1.
 
         * 1.05 for steel class A
         * 1.08 for steel class B
