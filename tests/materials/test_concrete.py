@@ -46,6 +46,15 @@ class TestConcreteMaterial:
         """Tests the f_ck property."""
         assert fixture_concrete_material_c30_37.f_ck == 30
 
+    def test_f_ck_raises_value_error(self) -> None:
+        """Tests the f_ck property raises a ValueError when the ConcreteStrengthClass is invalid."""
+        invalid_concrete_strength_class = type(
+            "InvalidConcreteStrengthClass", (), {"value": "invalid_value"}
+        )()
+        invalid_concrete_material = ConcreteMaterial(invalid_concrete_strength_class)
+        with pytest.raises(ValueError):
+            invalid_concrete_material.f_ck
+
     def test_f_ck_cube(self, fixture_concrete_material_c30_37: ConcreteMaterial) -> None:
         """Tests the f_ck_cube property."""
         assert fixture_concrete_material_c30_37.f_ck_cube == 37
