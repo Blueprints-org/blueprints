@@ -27,7 +27,7 @@ class CementClass(Enum):
 
 
 class ConcreteStrengthClass(Enum):
-    """Enumeration of concrete strength classes based on tabel 3.1 from NEN-EN 1992-1-1."""
+    """Enumeration of concrete strength classes based on table 3.1 from NEN-EN 1992-1-1."""
 
     C12_15 = "C12/15"
     C16_20 = "C16/20"
