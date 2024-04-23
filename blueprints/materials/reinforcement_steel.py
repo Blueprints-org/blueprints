@@ -98,6 +98,19 @@ class ReinforcementSteelMaterial:
     custom_e_s: MPA | None = field(default=None, metadata={"unit": "MPa"})
 
     @property
+    def name(self) -> str:
+        """Name of the reinforcement steel material.
+
+        Returns
+        -------
+        str
+            Example: "B500B"
+        """
+        if self.custom_name:
+            return self.custom_name
+        return self.steel_quality.value
+
+    @property
     def e_s(self) -> MPA:
         """Reinforcement steel Young's modulus [MPa].
 
