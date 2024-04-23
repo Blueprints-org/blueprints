@@ -15,6 +15,7 @@ RAD = float
 # <editor-fold desc="WEIGHTS">
 KG = float
 G = float
+KG_M3 = float
 # </editor-fold>
 
 # <editor-fold desc="FORCES">
@@ -68,4 +69,6 @@ YEARS = float
 RATIO = float
 PERCENTAGE = float
 DIMENSIONLESS = float
+PER_MILLE = float
+PER_DEGREE = float
 # </editor-fold>
