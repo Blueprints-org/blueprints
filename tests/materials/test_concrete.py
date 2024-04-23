@@ -1,5 +1,7 @@
 """Test Concrete material from table 3.1 of NEN-EN 1992-1-1+C2:2011."""
 
+import pytest
+
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 
 
@@ -48,9 +50,7 @@ class TestConcreteMaterial:
 
     def test_f_ck_raises_value_error(self) -> None:
         """Tests the f_ck property raises a ValueError when the ConcreteStrengthClass is invalid."""
-        invalid_concrete_strength_class = type(
-            "InvalidConcreteStrengthClass", (), {"value": "invalid_value"}
-        )()
+        invalid_concrete_strength_class = type("InvalidConcreteStrengthClass", (), {"value": "invalid_value"})()
         invalid_concrete_material = ConcreteMaterial(invalid_concrete_strength_class)
         with pytest.raises(ValueError):
             invalid_concrete_material.f_ck
@@ -61,9 +61,7 @@ class TestConcreteMaterial:
 
     def test_f_ck_cube_raises_value_error(self) -> None:
         """Tests the f_ck_cube property raises a ValueError when the ConcreteStrengthClass is invalid."""
-        invalid_concrete_strength_class = type(
-            "InvalidConcreteStrengthClass", (), {"value": "invalid_value"}
-        )()
+        invalid_concrete_strength_class = type("InvalidConcreteStrengthClass", (), {"value": "invalid_value"})()
         invalid_concrete_material = ConcreteMaterial(invalid_concrete_strength_class)
         with pytest.raises(ValueError):
             invalid_concrete_material.f_ck_cube
