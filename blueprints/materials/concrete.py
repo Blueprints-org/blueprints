@@ -210,7 +210,7 @@ class ConcreteMaterial:
         Returns
         -------
         MPA
-            Example: 2,9 (for C30/37)
+            Example: 2.896468153816889 (for C30/37)
         """
         if self.f_ck <= 50:
             return 0.30 * self.f_ck ** (2 / 3)
