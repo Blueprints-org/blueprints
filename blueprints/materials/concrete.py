@@ -166,9 +166,9 @@ class ConcreteMaterial:
             Example: 37 (for C30/37)
         """
         value = self.concrete_class.value
-        match = re.search(pattern=r"/(\d+)", string=value)
-        assert match
-        return int(match.group(1))
+        if match := re.search(pattern=r"/(\d+)", string=value):
+            return int(match.group(1))
+        raise ValueError("No match found for f_ck_cube. Concrete class is invalid.")
 
     @property
     def f_cd(self) -> MPA:
