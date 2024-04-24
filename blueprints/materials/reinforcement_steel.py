@@ -54,7 +54,7 @@ class SteelFabrication(Enum):
 
 
 class ReinforcementDiagramType(Enum):
-    """Enumeration of types stress-strain diagrams."""
+    """Enumeration of types of stress-strain diagrams."""
 
     BILINEAR_INCLINED = "Bi-linear with inclined branch"
     BILINEAR_NOT_INCLINED = "Bi-linear with horizontal branch"
