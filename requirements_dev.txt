@@ -1,5 +1,5 @@
 mypy==1.9.0
-ruff==0.4.1
+ruff==0.4.2
 isort==5.13.2
 pre-commit==3.7.0
 pytest==8.1.1
