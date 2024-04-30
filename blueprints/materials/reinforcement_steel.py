@@ -121,7 +121,7 @@ class ReinforcementSteelMaterial:
         """
         if self.custom_e_s:
             return self.custom_e_s
-        return 200000.0
+        return 200_000.0
 
     @property
     def f_yk(self) -> MPA:
