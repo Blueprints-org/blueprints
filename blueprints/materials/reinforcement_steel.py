@@ -133,7 +133,7 @@ class ReinforcementSteelMaterial:
         MPA
             Example: 500.0 (for B500B)
         """
-        return float(self.steel_quality.value[1:4])
+        return float(self.steel_quality.value[1:-1])
 
     @property
     def steel_class(self) -> str:
@@ -144,7 +144,7 @@ class ReinforcementSteelMaterial:
         str
             Example: "B" (for B500B)
         """
-        return self.steel_quality.value[-1:]
+        return self.steel_quality.value[-1]
 
     @property
     def f_tk(self) -> MPA:
