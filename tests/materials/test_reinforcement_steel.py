@@ -1,5 +1,7 @@
 """Test class for the reinforcement steel material object."""
 
+import pytest
+
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
 
 
@@ -42,10 +44,42 @@ class TestReinforcementSteelMaterial:
         """Tests the f_tk property."""
         assert fixture_reinforcement_steel_material_b500b.f_tk == 540
 
-    def test_ductility_factor_k(self, fixture_reinforcement_steel_material_b500b: ReinforcementSteelMaterial) -> None:
+    @pytest.mark.parametrize(
+        ("steel_quality", "expected"),
+        [
+            (ReinforcementSteelQuality.B500A, 1.05),
+            (ReinforcementSteelQuality.B500B, 1.08),
+            (ReinforcementSteelQuality.B500C, 1.15),
+        ],
+    )
+    def test_ductility_factor_k(self, steel_quality: ReinforcementSteelQuality, expected: str) -> None:
         """Tests the ductility_factor_k property."""
-        assert fixture_reinforcement_steel_material_b500b.ductility_factor_k == 1.08
+        steel_material = ReinforcementSteelMaterial(steel_quality=steel_quality)
+        assert steel_material.ductility_factor_k == expected
 
-    def test_eps_uk(self, fixture_reinforcement_steel_material_b500b: ReinforcementSteelMaterial) -> None:
+    def test_ductility_factor_k_raises_value_error(self) -> None:
+        """Tests the ductility_factor_k property raises a ValueError when the ReinforcementSteelQuality is invalid."""
+        invalid_steel_quality = type("InvalidReinforcementSteelQuality", (), {"value": "invalid_value"})()
+        invalid_steel_material = ReinforcementSteelMaterial(steel_quality=invalid_steel_quality)
+        with pytest.raises(ValueError):
+            invalid_steel_material.ductility_factor_k
+
+    @pytest.mark.parametrize(
+        ("steel_quality", "expected"),
+        [
+            (ReinforcementSteelQuality.B500A, 250),
+            (ReinforcementSteelQuality.B500B, 500),
+            (ReinforcementSteelQuality.B500C, 750),
+        ],
+    )
+    def test_eps_uk(self, steel_quality: ReinforcementSteelQuality, expected: str) -> None:
         """Tests the eps_uk property."""
-        assert fixture_reinforcement_steel_material_b500b.eps_uk == 500
+        steel_material = ReinforcementSteelMaterial(steel_quality=steel_quality)
+        assert steel_material.eps_uk == expected
+
+    def test_eps_uk_raises_value_error(self) -> None:
+        """Tests the eps_uk property raises a ValueError when the ReinforcementSteelQuality is invalid."""
+        invalid_steel_quality = type("InvalidReinforcementSteelQuality", (), {"value": "invalid_value"})()
+        invalid_steel_material = ReinforcementSteelMaterial(steel_quality=invalid_steel_quality)
+        with pytest.raises(ValueError):
+            invalid_steel_material.eps_uk
