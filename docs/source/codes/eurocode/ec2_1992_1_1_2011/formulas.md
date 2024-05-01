@@ -51,8 +51,8 @@ Total of 304 formulas present.
 | 5.5            | :heavy_check_mark: |         | Form5Dot5TransverseForceEffectFloorDiaphragm              |
 | 5.6            | :heavy_check_mark: |         | Form5Dot6TransverseForceEffectRoofDiaphragm               |
 | 5.7            | :heavy_check_mark: |         | Form5Dot7EffectiveFlangeWidth                             |
-| 5.7a           |        :x:         |         |                                                           |
-| 5.7b           |        :x:         |         |                                                           |
+| 5.7a           | :heavy_check_mark: |         | Form5Dot7aFlangeEffectiveFlangeWidth                      |
+| 5.7b           | :heavy_check_mark: |         | Form5Dot7bFlangeEffectiveFlangeWidth                      |
 | 5.8            | :heavy_check_mark: |         | Form5Dot8EffectiveSpan                                    |
 | 5.9            | :heavy_check_mark: |         | Form5Dot9DesignSupportMomentReduction                     |
 | 5.10a          |        :x:         |         |                                                           |
