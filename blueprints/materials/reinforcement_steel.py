@@ -170,8 +170,15 @@ class ReinforcementSteelMaterial:
         DIMENSIONLESS
             Example: 1.08 (for B500B)
         """
-        _ductility_factors = {"A": 1.05, "B": 1.08, "C": 1.15}
-        return _ductility_factors[self.steel_class]
+        match self.steel_class.lower():
+            case "a":
+                return 1.05
+            case "b":
+                return 1.08
+            case "c":
+                return 1.15
+            case _:
+                raise ValueError(f"Unknown steel class: {self.steel_class}")
 
     @property
     def eps_uk(self) -> PER_MILLE:
@@ -186,5 +193,12 @@ class ReinforcementSteelMaterial:
         PER_MILLE
             Example: 500 (for B500B)
         """
-        _strain = {"A": 250, "B": 500, "C": 750}
-        return _strain[self.steel_class]
+        match self.steel_class.lower():
+            case "a":
+                return 250
+            case "b":
+                return 500
+            case "c":
+                return 750
+            case _:
+                raise ValueError(f"Unknown steel class: {self.steel_class}")
