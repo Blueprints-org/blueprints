@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
+from blueprints.materials.constants import STEEL_YOUNG_MODULUS
 from blueprints.type_alias import DIMENSIONLESS, KG_M3, MPA, PER_MILLE
 
 
@@ -121,7 +122,7 @@ class ReinforcementSteelMaterial:
         """
         if self.custom_e_s:
             return self.custom_e_s
-        return 200_000.0
+        return STEEL_YOUNG_MODULUS
 
     @property
     def f_yk(self) -> MPA:
