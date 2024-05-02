@@ -13,6 +13,18 @@ updates:
       time: "08:00"
       timezone: "Europe/Amsterdam"
     versioning-strategy: increase
+    groups:
+      dev-dependencies: # name of group
+        patterns:
+          - "mypy"
+          - "ruff"
+          - "isort"
+          - "pre-commit"
+          - "pytest"
+          - "pytest-cov" 
+          - "pytest-describe"
+          - "pytest-pspec"
+          - "pytest-raises"
 
   - package-ecosystem: "github-actions"
     directory: "/"
