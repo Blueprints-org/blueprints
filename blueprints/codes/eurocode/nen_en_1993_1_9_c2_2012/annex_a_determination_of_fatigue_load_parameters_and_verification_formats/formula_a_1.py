@@ -43,8 +43,7 @@ class FormADot1DamageDuringDesignLife(Formula):
         N_R: list[DIMENSIONLESS],
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_list_is_empty(n_E=n_E)
-        raise_if_list_is_empty(N_R=N_R)
+        raise_if_list_is_empty(n_E=n_E, N_R=N_R)
         raise_if_lists_differ_in_length(n_E=n_E, N_R=N_R)
         raise_if_negative(n_E_min=min(n_E))
         raise_if_less_or_equal_to_zero(N_R_min=min(N_R))
