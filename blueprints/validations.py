@@ -25,6 +25,23 @@ class GreaterThan90Error(Exception):
         super().__init__(message)
 
 
+class ListsNotSameLengthError(Exception):
+    """Raised when two lists are not of the same length."""
+
+    def __init__(self, list_name_1: str, list_name_2: str, length_1: int, length_2: int) -> None:
+        message = (f"The lists '{list_name_1}' and '{list_name_2}' are not of the same length. "
+                   f"'{list_name_1}' length: {length_1}, '{list_name_2}' length: {length_2}.")
+        super().__init__(message)
+
+
+class EmptyListError(Exception):
+    """Raised when a list is empty."""
+
+    def __init__(self, list_name: str) -> None:
+        message = f"The list '{list_name}' is empty. It should have at least one element."
+        super().__init__(message)
+
+
 def raise_if_less_or_equal_to_zero(**kwargs: float) -> None:
     """Raise a LessOrEqualToZeroError if any of the given keyword arguments are less than or equal to zero.
 
@@ -80,3 +97,46 @@ def raise_if_greater_than_90(**kwargs: float) -> None:
     for key, value in kwargs.items():
         if value > 90:
             raise GreaterThan90Error(value_name=key, value=value)
+
+
+def raise_if_lists_differ_in_length(**kwargs: list) -> None:
+    """Check if all provided lists are of the same length.
+
+    Parameters
+    ----------
+    **kwargs : dict[str, list]
+        A dictionary of keyword arguments where keys are list names and values are the lists to check.
+
+    Raises
+    ------
+    ListsNotSameLengthError
+        If any two lists are not of the same length.
+    """
+    # Convert the kwargs items to a list of (name, list) tuples
+    lists = list(kwargs.items())
+    
+    # Compare each list with the first list
+    first_list_name, first_list = lists[0]
+    first_length = len(first_list)
+    
+    for list_name, lst in lists[1:]:
+        if len(lst) != first_length:
+            raise ListsNotSameLengthError(first_list_name, list_name, first_length, len(lst))
+
+
+def raise_if_list_is_empty(**kwargs: list) -> None:
+    """Check if all provided lists have a non-zero length.
+
+    Parameters
+    ----------
+    **kwargs : dict[str, list]
+        A dictionary of keyword arguments where keys are list names and values are the lists to check.
+
+    Raises
+    ------
+    EmptyListError
+        If any list has a length of zero.
+    """
+    for list_name, lst in kwargs.items():
+        if len(lst) == 0:
+            raise EmptyListError(list_name)
