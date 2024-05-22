@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class FormADot2CriteriaBasedOnDamageAccumulation(Formula):
-    """Class representing formula A.2 for the calculation of the damage during the design life :math:`D_d`."""
+    """Class representing formula A.2 for the calculation of the damage during the design life."""
 
     label = "A.2"
     source_document = NEN_EN_1993_1_9_C2_2012
@@ -17,7 +17,7 @@ class FormADot2CriteriaBasedOnDamageAccumulation(Formula):
         self,
         d_d: DIMENSIONLESS,
     ) -> None:
-        """[:math:`OK?`] Criteria met, based on damage accumulation [:math:`-`].
+        """[:math:`OK?`] Criteria met, based on damage accumulation.
 
         NEN-EN 1993-1-9+C2:2012 art.A.5 - Formula (A.1)
 
