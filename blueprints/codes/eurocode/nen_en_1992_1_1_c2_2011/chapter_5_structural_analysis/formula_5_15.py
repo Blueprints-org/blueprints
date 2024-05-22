@@ -26,7 +26,7 @@ class Form5Dot15EffectiveLengthBraced(Formula):
             [:math:`k_{1}`] Relative flexibility of rotational constraint at end 1 [:math:`-`].
         k_2 : -
             [:math:`k_{1}`] Relative flexibility of rotational constraint at end 2 [:math:`-`].
-        l : M
+        height : M
             [:math:`l`] Clear height of compression member between end restraints [:math:`M`].
         """
         super().__init__()
