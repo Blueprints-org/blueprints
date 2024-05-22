@@ -50,7 +50,7 @@ class Form5Dot15EffectiveLengthBraced(Formula):
             return_symbol=r"l_0",
             result=f"{self:.3f}",
             equation=r"0.5 \cdot l \cdot \sqrt{(1+\frac{k_1}{0.45 \cdot k_1}) \cdot (1 + \frac{k_2}{0.45 \cdot k_2})}",
-            numeric_equation=rf"0.5 \cdot {self.height:.3f} \cdot \sqrt{{(1+\frac{{{self.k_1:.3f}}}{{0.45\cdot "
-            rf"/ {self.k_1:.3f}}}) \cdot (1 + \frac{{{self.k_2:.3f}}}{{0.45 \cdot {self.k_2:.3f}}})}}",
+            numeric_equation=rf"0.5 \cdot {self.height:.3f} \cdot \sqrt{{(1+\frac{{{self.k_1:.3f}}}{{0.45 \cdot "
+            rf"{self.k_1:.3f}}}) \cdot (1 + \frac{{{self.k_2:.3f}}}{{0.45 \cdot {self.k_2:.3f}}})}}",
             comparison_operator_label="=",
         )
