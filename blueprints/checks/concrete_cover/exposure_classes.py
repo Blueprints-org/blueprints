@@ -79,7 +79,7 @@ class Exposure(Enum):
         return [m._value_ for m in cls.__members__.values()]
 
     @staticmethod
-    def description() -> str:
+    def exposure_class_description() -> str:
         """Description of subclasses to be implemented in each subclass.
 
         Returns
@@ -88,6 +88,16 @@ class Exposure(Enum):
             description of the specific exposure class
         """
         raise NotImplementedError("The description method must be implemented in the subclass!")
+
+    def description_of_the_environment(self) -> str:
+        """Description of the environment based on the instance.
+
+        Returns
+        -------
+        str
+            description of the environment based on the instance
+        """
+        raise NotImplementedError("The description_of_the_environment method must be implemented in the subclass!")
 
 
 @total_ordering
@@ -101,7 +111,7 @@ class Carbonation(Exposure):
     XC4 = "XC4"
 
     @staticmethod
-    def description() -> str:
+    def exposure_class_description() -> str:
         """Static method which returns the description of this exposure class.
 
         Returns
@@ -110,6 +120,28 @@ class Carbonation(Exposure):
             description of this exposure class
         """
         return "Corrosion induced by carbonation"
+
+    def description_of_the_environment(self) -> str:
+        """Description of the environment based on the instance.
+
+        Returns
+        -------
+        str
+            description of the environment based on the instance
+        """
+        match self.value:
+            case "XC1":
+                return "Dry or permanently wet"
+            case "XC2":
+                return "Wet, rarely dry"
+            case "XC3":
+                return "Moderate humidity"
+            case "XC4":
+                return "Cyclic wet and dry"
+            case "Not applicable":
+                return "Not applicable"
+            case _:
+                raise ValueError("Invalid exposure class")
 
 
 @total_ordering
@@ -122,7 +154,7 @@ class Chloride(Exposure):
     XD3 = "XD3"
 
     @staticmethod
-    def description() -> str:
+    def exposure_class_description() -> str:
         """Static method which returns the description of this exposure class.
 
         Returns
@@ -131,6 +163,26 @@ class Chloride(Exposure):
             description of this exposure class
         """
         return "Corrosion induced by chlorides other than by sea water"
+
+    def description_of_the_environment(self) -> str:
+        """Description of the environment based on the instance.
+
+        Returns
+        -------
+        str
+            description of the environment based on the instance
+        """
+        match self.value:
+            case "XD1":
+                return "Moderate humidity"
+            case "XD2":
+                return "Wet, rarely dry"
+            case "XD3":
+                return "Cyclic wet and dry"
+            case "Not applicable":
+                return "Not applicable"
+            case _:
+                raise ValueError("Invalid exposure class")
 
 
 @total_ordering
@@ -143,7 +195,7 @@ class ChlorideSeawater(Exposure):
     XS3 = "XS3"
 
     @staticmethod
-    def description() -> str:
+    def exposure_class_description() -> str:
         """Static method which returns the description of this exposure class.
 
         Returns
@@ -153,9 +205,29 @@ class ChlorideSeawater(Exposure):
         """
         return "Corrosion induced by chlorides from sea water"
 
+    def description_of_the_environment(self) -> str:
+        """Description of the environment based on the instance.
+
+        Returns
+        -------
+        str
+            description of the environment based on the instance
+        """
+        match self.value:
+            case "XS1":
+                return "Exposed to airborne salt but not in direct contact with sea water"
+            case "XS2":
+                return "Permanently submerged"
+            case "XS3":
+                return "Tidal, splash and spray zones"
+            case "Not applicable":
+                return "Not applicable"
+            case _:
+                raise ValueError("Invalid exposure class")
+
 
 @total_ordering
-class Freeze(Exposure):
+class FreezeThaw(Exposure):
     """Enum Class which indicates the classification of freeze/thaw attack with or without de-icing agents."""
 
     NA = "Not applicable"
@@ -165,7 +237,7 @@ class Freeze(Exposure):
     XF4 = "XF4"
 
     @staticmethod
-    def description() -> str:
+    def exposure_class_description() -> str:
         """Static method which returns the description of this exposure class.
 
         Returns
@@ -174,6 +246,28 @@ class Freeze(Exposure):
             description of this exposure class
         """
         return "Freeze/thaw attack with or without de-icing agents"
+
+    def description_of_the_environment(self) -> str:
+        """Description of the environment based on the instance.
+
+        Returns
+        -------
+        str
+            description of the environment based on the instance
+        """
+        match self.value:
+            case "XF1":
+                return "Moderate water saturation, without de-icing agent"
+            case "XF2":
+                return "Moderate water saturation, with de-icing agent"
+            case "XF3":
+                return "High water saturation, without de-icing agents"
+            case "XF4":
+                return "High water saturation with de-icing agents or sea water"
+            case "Not applicable":
+                return "Not applicable"
+            case _:
+                raise ValueError("Invalid exposure class")
 
 
 @total_ordering
@@ -186,7 +280,7 @@ class Chemical(Exposure):
     XA3 = "XA3"
 
     @staticmethod
-    def description() -> str:
+    def exposure_class_description() -> str:
         """Static method which returns the description of this exposure class.
 
         Returns
@@ -196,6 +290,26 @@ class Chemical(Exposure):
         """
         return "Chemical attack"
 
+    def description_of_the_environment(self) -> str:
+        """Description of the environment based on the instance.
+
+        Returns
+        -------
+        str
+            description of the environment based on the instance
+        """
+        match self.value:
+            case "XA1":
+                return "Slightly aggressive chemical environment according to EN 206-1, Table 2"
+            case "XA2":
+                return "Moderately aggressive chemical environment according to EN 206-1, Table 2"
+            case "XA3":
+                return "Highly aggressive chemical environment according to EN 206-1, Table 2"
+            case "Not applicable":
+                return "Not applicable"
+            case _:
+                raise ValueError("Invalid exposure class")
+
 
 class ExposureClasses(NamedTuple):
     """Named tuple, collects all the different exposure classes of a surface."""
@@ -203,7 +317,7 @@ class ExposureClasses(NamedTuple):
     carbonation: Carbonation = Carbonation("Not applicable")
     chloride: Chloride = Chloride("Not applicable")
     chloride_seawater: ChlorideSeawater = ChlorideSeawater("Not applicable")
-    freeze: Freeze = Freeze("Not applicable")
+    freeze: FreezeThaw = FreezeThaw("Not applicable")
     chemical: Chemical = Chemical("Not applicable")
 
     def __str__(self) -> str:
@@ -214,8 +328,21 @@ class ExposureClasses(NamedTuple):
         str
             String representation of the ExposureClasses object
         """
-        return ", ".join(
-            enum.value
-            for enum in self
-            if enum.value != "Not applicable"  # pylint: disable=not-an-iterable
-        )
+        if self.no_risk:
+            return "X0"
+        return ", ".join(enum.value for enum in self if enum.value != "Not applicable")
+
+    @property
+    def no_risk(self) -> bool:
+        """Check if all exposure classes are 'Not applicable'.
+
+        This represents X0 class designation according to table 4.1 from NEN-EN 1992-1-1+C2:2011.
+
+        Returns
+        -------
+        bool
+            True if all exposure classes are 'Not applicable'
+        """
+        if all(exposure_class.value == "Not applicable" for exposure_class in self):
+            return True
+        return False
