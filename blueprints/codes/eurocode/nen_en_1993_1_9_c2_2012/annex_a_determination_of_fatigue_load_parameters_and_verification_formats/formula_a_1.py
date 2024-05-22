@@ -50,7 +50,7 @@ class FormADot1DamageDuringDesignLife(Formula):
         return LatexFormula(
             return_symbol=r"D_d",
             result=f"{self:.3f}",
-            equation=r"\sum_{i}^{n} \frac{n_{Ei}}{n_ri}",
+            equation=r"\sum_{i}^{n} \frac{n_{Ei}}{N_Ri}",
             numeric_equation="".join(rf"\frac{{{self.n_e[i]:.3f}}}{{{self.n_r[i]:.3f}}} + " for i in range(len(self.n_r)))[:-3],
             comparison_operator_label="=",
         )

@@ -56,9 +56,9 @@ class TestFormADot1DamageDuringDesignLife:
         [
             (
                 "complete",
-                r"d_d = \sum_{i}^{n} \frac{n_{Ei}}{n_ri} = \frac{5.000}{10.000} + \frac{4.000}{20.000} + \frac{3.000}{30.000} = 0.800",
+                r"D_d = \sum_{i}^{n} \frac{n_{Ei}}{N_Ri} = \frac{5.000}{10.000} + \frac{4.000}{20.000} + \frac{3.000}{30.000} = 0.800",
             ),
-            ("short", r"d_d = 0.800"),
+            ("short", r"D_d = 0.800"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
