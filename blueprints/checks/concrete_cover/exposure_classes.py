@@ -129,19 +129,17 @@ class Carbonation(Exposure):
         str
             description of the environment based on the instance
         """
-        match self.value:
-            case "XC1":
+        match self:
+            case Carbonation.XC1:
                 return "Dry or permanently wet"
-            case "XC2":
+            case Carbonation.XC2:
                 return "Wet, rarely dry"
-            case "XC3":
+            case Carbonation.XC3:
                 return "Moderate humidity"
-            case "XC4":
+            case Carbonation.XC4:
                 return "Cyclic wet and dry"
-            case "Not applicable":
+            case Carbonation.NA:
                 return "Not applicable"
-            case _:
-                raise ValueError("Invalid exposure class")
 
 
 @total_ordering
@@ -172,17 +170,15 @@ class Chloride(Exposure):
         str
             description of the environment based on the instance
         """
-        match self.value:
-            case "XD1":
+        match self:
+            case Chloride.XD1:
                 return "Moderate humidity"
-            case "XD2":
+            case Chloride.XD2:
                 return "Wet, rarely dry"
-            case "XD3":
+            case Chloride.XD3:
                 return "Cyclic wet and dry"
-            case "Not applicable":
+            case Chloride.NA:
                 return "Not applicable"
-            case _:
-                raise ValueError("Invalid exposure class")
 
 
 @total_ordering
@@ -213,17 +209,15 @@ class ChlorideSeawater(Exposure):
         str
             description of the environment based on the instance
         """
-        match self.value:
-            case "XS1":
+        match self:
+            case ChlorideSeawater.XS1:
                 return "Exposed to airborne salt but not in direct contact with sea water"
-            case "XS2":
+            case ChlorideSeawater.XS2:
                 return "Permanently submerged"
-            case "XS3":
+            case ChlorideSeawater.XS3:
                 return "Tidal, splash and spray zones"
-            case "Not applicable":
+            case ChlorideSeawater.NA:
                 return "Not applicable"
-            case _:
-                raise ValueError("Invalid exposure class")
 
 
 @total_ordering
@@ -255,19 +249,17 @@ class FreezeThaw(Exposure):
         str
             description of the environment based on the instance
         """
-        match self.value:
-            case "XF1":
+        match self:
+            case FreezeThaw.XF1:
                 return "Moderate water saturation, without de-icing agent"
-            case "XF2":
+            case FreezeThaw.XF2:
                 return "Moderate water saturation, with de-icing agent"
-            case "XF3":
+            case FreezeThaw.XF3:
                 return "High water saturation, without de-icing agents"
-            case "XF4":
+            case FreezeThaw.XF4:
                 return "High water saturation with de-icing agents or sea water"
-            case "Not applicable":
+            case FreezeThaw.NA:
                 return "Not applicable"
-            case _:
-                raise ValueError("Invalid exposure class")
 
 
 @total_ordering
@@ -298,17 +290,15 @@ class Chemical(Exposure):
         str
             description of the environment based on the instance
         """
-        match self.value:
-            case "XA1":
+        match self:
+            case Chemical.XA1:
                 return "Slightly aggressive chemical environment according to EN 206-1, Table 2"
-            case "XA2":
+            case Chemical.XA2:
                 return "Moderately aggressive chemical environment according to EN 206-1, Table 2"
-            case "XA3":
+            case Chemical.XA3:
                 return "Highly aggressive chemical environment according to EN 206-1, Table 2"
-            case "Not applicable":
+            case Chemical.NA:
                 return "Not applicable"
-            case _:
-                raise ValueError("Invalid exposure class")
 
 
 class ExposureClasses(NamedTuple):

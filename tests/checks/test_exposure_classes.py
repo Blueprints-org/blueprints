@@ -25,18 +25,6 @@ class DummyExposureSubclass(Exposure):
         """Return the description of the DummyExposureSubclass."""
         return "Dummy exposure subclass"
 
-    def description_of_the_environment(self) -> str:
-        """Return the description of the environment."""
-        match self.value:
-            case "Dummy1":
-                return "Dummy1 description"
-            case "Dummy2":
-                return "Dummy2 description"
-            case "Dummy3":
-                return "Dummy3 description"
-            case _:
-                raise ValueError("Invalid exposure class")
-
 
 class TestExposure:
     """Testing Exposure parent class."""
@@ -91,17 +79,13 @@ class TestExposure:
             Exposure.exposure_class_description()
 
     def test_description_implemented(self) -> None:
-        """Check if the description method returns the description of the subclass."""
+        """Check if the exposure_class_description method returns the description of the subclass."""
         assert DummyExposureSubclass.exposure_class_description() == "Dummy exposure subclass"
 
-    def test_description_of_the_environment(self) -> None:
-        """Check if the description_of_the_environment method returns the description of the environment."""
-        exposure = DummyExposureSubclass(DummyExposureSubclass.DUMMY1)
-        assert exposure.description_of_the_environment() == "Dummy1 description"
-        exposure = DummyExposureSubclass(DummyExposureSubclass.DUMMY2)
-        assert exposure.description_of_the_environment() == "Dummy2 description"
-        exposure = DummyExposureSubclass(DummyExposureSubclass.DUMMY3)
-        assert exposure.description_of_the_environment() == "Dummy3 description"
+    def test_description_of_the_environment_not_implemented(self) -> None:
+        """Check if the description_of_the_environment method raises NotImplementedError if it is not implemented."""
+        with pytest.raises(NotImplementedError):
+            DummyExposureSubclass.DUMMY1.description_of_the_environment()
 
 
 class TestCarbonation:
@@ -117,14 +101,11 @@ class TestCarbonation:
 
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
-        exposure = Carbonation(Carbonation.XC1)
-        assert exposure.description_of_the_environment() == "Dry or permanently wet"
-        exposure = Carbonation(Carbonation.XC2)
-        assert exposure.description_of_the_environment() == "Wet, rarely dry"
-        exposure = Carbonation(Carbonation.XC3)
-        assert exposure.description_of_the_environment() == "Moderate humidity"
-        exposure = Carbonation(Carbonation.XC4)
-        assert exposure.description_of_the_environment() == "Cyclic wet and dry"
+        assert Carbonation.XC1.description_of_the_environment() == "Dry or permanently wet"
+        assert Carbonation.XC2.description_of_the_environment() == "Wet, rarely dry"
+        assert Carbonation.XC3.description_of_the_environment() == "Moderate humidity"
+        assert Carbonation.XC4.description_of_the_environment() == "Cyclic wet and dry"
+        assert Carbonation.NA.description_of_the_environment() == "Not applicable"
 
 
 class TestChloride:
@@ -140,12 +121,10 @@ class TestChloride:
 
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
-        exposure = Chloride(Chloride.XD1)
-        assert exposure.description_of_the_environment() == "Moderate humidity"
-        exposure = Chloride(Chloride.XD2)
-        assert exposure.description_of_the_environment() == "Wet, rarely dry"
-        exposure = Chloride(Chloride.XD3)
-        assert exposure.description_of_the_environment() == "Cyclic wet and dry"
+        assert Chloride.XD1.description_of_the_environment() == "Moderate humidity"
+        assert Chloride.XD2.description_of_the_environment() == "Wet, rarely dry"
+        assert Chloride.XD3.description_of_the_environment() == "Cyclic wet and dry"
+        assert Chloride.NA.description_of_the_environment() == "Not applicable"
 
 
 class TestChlorideSeawater:
@@ -161,12 +140,10 @@ class TestChlorideSeawater:
 
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
-        exposure = ChlorideSeawater(ChlorideSeawater.XS1)
-        assert exposure.description_of_the_environment() == "Exposed to airborne salt but not in direct contact with sea water"
-        exposure = ChlorideSeawater(ChlorideSeawater.XS2)
-        assert exposure.description_of_the_environment() == "Permanently submerged"
-        exposure = ChlorideSeawater(ChlorideSeawater.XS3)
-        assert exposure.description_of_the_environment() == "Tidal, splash and spray zones"
+        assert ChlorideSeawater.XS1.description_of_the_environment() == "Exposed to airborne salt but not in direct contact with sea water"
+        assert ChlorideSeawater.XS2.description_of_the_environment() == "Permanently submerged"
+        assert ChlorideSeawater.XS3.description_of_the_environment() == "Tidal, splash and spray zones"
+        assert ChlorideSeawater.NA.description_of_the_environment() == "Not applicable"
 
 
 class TestFreeze:
@@ -182,14 +159,11 @@ class TestFreeze:
 
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
-        exposure = FreezeThaw(FreezeThaw.XF1)
-        assert exposure.description_of_the_environment() == "Moderate water saturation, without de-icing agent"
-        exposure = FreezeThaw(FreezeThaw.XF2)
-        assert exposure.description_of_the_environment() == "Moderate water saturation, with de-icing agent"
-        exposure = FreezeThaw(FreezeThaw.XF3)
-        assert exposure.description_of_the_environment() == "High water saturation, without de-icing agents"
-        exposure = FreezeThaw(FreezeThaw.XF4)
-        assert exposure.description_of_the_environment() == "High water saturation with de-icing agents or sea water"
+        assert FreezeThaw.XF1.description_of_the_environment() == "Moderate water saturation, without de-icing agent"
+        assert FreezeThaw.XF2.description_of_the_environment() == "Moderate water saturation, with de-icing agent"
+        assert FreezeThaw.XF3.description_of_the_environment() == "High water saturation, without de-icing agents"
+        assert FreezeThaw.XF4.description_of_the_environment() == "High water saturation with de-icing agents or sea water"
+        assert FreezeThaw.NA.description_of_the_environment() == "Not applicable"
 
 
 class TestChemical:
@@ -205,12 +179,10 @@ class TestChemical:
 
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
-        exposure = Chemical(Chemical.XA1)
-        assert exposure.description_of_the_environment() == "Slightly aggressive chemical environment according to EN 206-1, Table 2"
-        exposure = Chemical(Chemical.XA2)
-        assert exposure.description_of_the_environment() == "Moderately aggressive chemical environment according to EN 206-1, Table 2"
-        exposure = Chemical(Chemical.XA3)
-        assert exposure.description_of_the_environment() == "Highly aggressive chemical environment according to EN 206-1, Table 2"
+        assert Chemical.XA1.description_of_the_environment() == "Slightly aggressive chemical environment according to EN 206-1, Table 2"
+        assert Chemical.XA2.description_of_the_environment() == "Moderately aggressive chemical environment according to EN 206-1, Table 2"
+        assert Chemical.XA3.description_of_the_environment() == "Highly aggressive chemical environment according to EN 206-1, Table 2"
+        assert Chemical.NA.description_of_the_environment() == "Not applicable"
 
 
 class TestExposureClasses:
