@@ -80,11 +80,11 @@ class TestFormADot1DamageDuringDesignLife:
         N_R = [10, 20, 30]  # [-]
 
         # Object to test
-        form_5_14_latex = FormADot1DamageDuringDesignLife(n_E=n_E, N_R=N_R).latex()
+        form_A_1_latex = FormADot1DamageDuringDesignLife(n_E=n_E, N_R=N_R).latex()
 
         actual = {
-            "complete": form_5_14_latex.complete,
-            "short": form_5_14_latex.short,
+            "complete": form_A_1_latex.complete,
+            "short": form_A_1_latex.short,
         }
 
         assert actual[representation] == expected, f"{representation} representation failed."
