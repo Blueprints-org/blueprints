@@ -4,16 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "blue-prints"
-authors = [
-    { name = "Blueprints" },
-]
+authors = [{ name = "Blueprints" }]
 maintainers = [
     { name = "Enrique García Méndez", email = "enriquegarcia@live.nl" },
-    { name = "Blueprints Maintainers"},
+    { name = "Blueprints Maintainers" },
 ]
 description = "Blueprints: Python AEC library."
 requires-python = ">=3.10"
-keywords = ["Civil engineering", "Material properties", "Structural engineering", "Structural analysis", "Eurocodes", "Dutch building codes"]
+keywords = [
+    "Civil engineering",
+    "Material properties",
+    "Structural engineering",
+    "Structural analysis",
+    "Eurocodes",
+    "Dutch building codes",
+]
 license = { text = "LGPL-2.1" }
 classifiers = [
     "Topic :: Scientific/Engineering",
@@ -47,12 +52,5 @@ packages = "blueprints"
 python_version = "3.10"
 
 [[tool.mypy.overrides]]
-module = [
-    "matplotlib.*",
-]
+module = ["matplotlib.*"]
 ignore_missing_imports = true
-
-[tool.isort]
-profile = "black"
-line_length = 150
-known_third_party = ["matplotlib", "munch", "numpy", "pandas", "pygal", "scipy", "shapely", "pytz", "typing_extensions"]
