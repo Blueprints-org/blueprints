@@ -11,14 +11,12 @@ import pytest
 from blueprints.validations import (
     GreaterThan90Error,
     LessOrEqualToZeroError,
-    NegativeValueError,
     ListsNotSameLengthError,
-    EmptyListError,
+    NegativeValueError,
     raise_if_greater_than_90,
     raise_if_less_or_equal_to_zero,
-    raise_if_negative,
     raise_if_lists_differ_in_length,
-    raise_if_list_is_empty
+    raise_if_negative,
 )
 
 
@@ -77,17 +75,6 @@ def test_raise_if_lists_differ_in_length_with_equal_lengths() -> None:
 
 
 def test_raise_if_lists_differ_in_length_with_different_lengths() -> None:
-    """Test that ListsNotSameLengthError is raised for lists with different length"""
+    """Test that ListsNotSameLengthError is raised for lists with different length."""
     with pytest.raises(ListsNotSameLengthError):
         raise_if_lists_differ_in_length(a=[1, 2], b=[3, 4], c=[5, 6, 7])
-
-
-def test_raise_if_list_is_empty_with_equal_lengths() -> None:
-    """Test that no exception is raised for lists with length nonzero."""
-    raise_if_list_is_empty(a=[1, 2], b=[3, 4])
-
-
-def test_raise_if_list_is_empty_with_different_lengths() -> None:
-    """Test that EmptyListError is raised when empty list is submitted"""
-    with pytest.raises(EmptyListError):
-        raise_if_list_is_empty(a=[1, 2], b=[])
