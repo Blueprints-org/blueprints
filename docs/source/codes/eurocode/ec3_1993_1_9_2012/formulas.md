@@ -18,5 +18,5 @@ Total of 11 formulas present.
 | 8.2            | :x:  |         |             |
 | 8.3            | :x:  |         |             |
 | A.1            | :heavy_check_mark: |         | FormADot1DamageDuringDesignLife |
-| A.2            | :x:  |         |             |
+| A.2            | :heavy_check_mark: |         | FormADot2CriteriaBasedOnDamageAccumulation |
 | A.3            | :x:  |         |             |
