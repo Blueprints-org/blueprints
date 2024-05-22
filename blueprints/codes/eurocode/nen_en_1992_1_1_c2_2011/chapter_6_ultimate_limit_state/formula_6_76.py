@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form6Dot76DesignFatigueStrengthConcrete(Formula):
-    """Class representing formula 6.1 for the design fatigue strength of concrete, f_cdfat."""
+    """Class representing formula 6.76 for the design fatigue strength of concrete, f_cdfat."""
 
     label = "6.76"
     source_document = NEN_EN_1992_1_1_C2_2011
