@@ -87,7 +87,7 @@ class Exposure(Enum):
         str
             description of the specific exposure class
         """
-        return "Not implemented"
+        raise NotImplementedError("The description method must be implemented in the subclass!")
 
 
 @total_ordering
