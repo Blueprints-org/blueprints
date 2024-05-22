@@ -3,7 +3,7 @@ ipykernel==6.29.4
 ipython==8.24.0
 ipywidgets==8.1.2
 nbconvert==7.16.4
-nbsphinx==0.9.3
+nbsphinx==0.9.4
 sphinx==7.3.7
 sphinx-click==6.0.0
 sphinx-copybutton==0.5.2
