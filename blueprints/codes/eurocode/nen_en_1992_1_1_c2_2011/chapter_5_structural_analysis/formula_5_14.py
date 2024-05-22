@@ -26,6 +26,7 @@ class Form5Dot14SlendernessRatio(Formula):
         ----------
         l_0 : M
             [:math:`l_{0}`] Effective length [:math:`m`].
+            Use your own implementation of this value or use :class: `Form5Dot15EffectiveLengthBraced`.
         i : M
             [:math:`i`] Radius of gyration of the uncracked concrete section [:math:`m`].
         """
