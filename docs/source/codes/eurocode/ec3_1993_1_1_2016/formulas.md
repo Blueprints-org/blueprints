@@ -95,7 +95,7 @@ Total of 108 formulas present.
 | 6.68           | :x:  |         |             |
 | 6.69           | :x:  |         |             |
 | 6.70           | :x:  |         |             |
-| 6.71           | :x:  |         |             |
+| 6.71           | :heavy_check_mark:  |         | FormADot2CriteriaBasedOnStressRangeLHS and FormADot2CriteriaBasedOnStressRangeRHS            |
 | 6.72           | :x:  |         |             |
 | 6.73           | :x:  |         |             |
 | 6.74           | :x:  |         |             |
