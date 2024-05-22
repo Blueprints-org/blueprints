@@ -304,7 +304,10 @@ class Chemical(Exposure):
 
 
 class ExposureClasses(NamedTuple):
-    """Named tuple, collects all the different exposure classes of a surface."""
+    """Implementation of tabel 4.1 from NEN-EN 1992-1-1+C2:2011.
+
+    Exposure classes related to environmental conditions in accordance with EN 206-1
+    """
 
     carbonation: Carbonation = Carbonation("Not applicable")
     chloride: Chloride = Chloride("Not applicable")
