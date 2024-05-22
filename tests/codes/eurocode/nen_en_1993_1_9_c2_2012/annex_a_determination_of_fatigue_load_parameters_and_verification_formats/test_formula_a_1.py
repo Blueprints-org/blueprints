@@ -30,17 +30,15 @@ class TestFormADot1DamageDuringDesignLife:
         with pytest.raises(NegativeValueError):
             FormADot1DamageDuringDesignLife(n_e=n_e, n_r=n_r)
 
-    def test_raise_error_if_negative_n_r(self) -> None:
+    @pytest.mark.parametrize(
+        ("n_e", "n_r"),
+        [
+            ([5.0, 4.0, 3.0], [10.0, -20.0, 30.0]),
+            ([5.0, 4.0, 3.0], [10.0, 20.0, 0.0]),
+        ],
+    )
+    def test_raise_error_if_negative_n_r(self, n_e: list[float], n_r: list[float]) -> None:
         """Test that a LessOrEqualToZeroError is raised when a negative value is passed for n_r."""
-        n_e = [5.0, 4.0, 3.0]  # [-]
-        n_r = [10.0, -20.0, 30.0]  # [-]
-        with pytest.raises(LessOrEqualToZeroError):
-            FormADot1DamageDuringDesignLife(n_e=n_e, n_r=n_r)
-
-    def test_raise_error_if_zero_n_r(self) -> None:
-        """Test that a LessOrEqualToZeroError is raised when a zero value is passed for n_r."""
-        n_e = [5.0, 4.0, 3.0]  # [-]
-        n_r = [10.0, 20.0, 0.0]  # [-]
         with pytest.raises(LessOrEqualToZeroError):
             FormADot1DamageDuringDesignLife(n_e=n_e, n_r=n_r)
 
