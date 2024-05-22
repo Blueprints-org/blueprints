@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class FormADot2CriteriaBasedOnStressRangeLHS(Formula):
@@ -47,12 +47,12 @@ class FormADot2CriteriaBasedOnStressRangeLHS(Formula):
         return gamma_f_fat * delta_sigma_s_equ_n_star
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for left hand side formula A.2."""
+        """Returns LatexFormula object for left hand side formula 6.71."""
         return LatexFormula(
-            return_symbol=r"Δσ_E",
+            return_symbol=r"\Delta \sigma_E",
             result=f"{self:.3f}",
-            equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N*)",
-            numeric_equation=rf"{self.gamma_f_fat} \cdot {self.delta_sigma_s_equ_n_star}",
+            equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*)",
+            numeric_equation=rf"{self.gamma_f_fat:.3f} \cdot {self.delta_sigma_s_equ_n_star:.3f}",
             comparison_operator_label=r"=",
         )
 
@@ -90,15 +90,16 @@ class FormADot2CriteriaBasedOnStressRangeRHS(Formula):
     @staticmethod
     def _evaluate(gamma_s_fat: DIMENSIONLESS, delta_sigma_rsk_n_star: MPA) -> MPA:
         """Evaluates the right hand side formula, for more information see the __init__ method."""
-        raise_if_negative(gamma_s_fat=gamma_s_fat, delta_sigma_rsk_n_star=delta_sigma_rsk_n_star)
+        raise_if_negative(delta_sigma_rsk_n_star=delta_sigma_rsk_n_star)
+        raise_if_less_or_equal_to_zero(gamma_s_fat=gamma_s_fat)
         return delta_sigma_rsk_n_star / gamma_s_fat
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for right hand side formula A.2."""
+        """Returns LatexFormula object for right hand side formula 6.71."""
         return LatexFormula(
-            return_symbol=r"Δσ_R",
+            return_symbol=r"\Delta \sigma_R",
             result=f"{self:.3f}",
-            equation=r"\frac{\Delta \sigma_{Rsk} (N*)}{\gamma_{s,fat}}",
-            numeric_equation=rf"\frac{{{self.delta_sigma_rsk_n_star}}}{{{self.gamma_s_fat}}}",
+            equation=r"\frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
+            numeric_equation=rf"\frac{{{self.delta_sigma_rsk_n_star:.3f}}}{{{self.gamma_s_fat:.3f}}}",
             comparison_operator_label=r"=",
         )
