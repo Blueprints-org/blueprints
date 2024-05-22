@@ -2,7 +2,15 @@
 
 import pytest
 
-from blueprints.checks.concrete_cover.exposure_classes import Carbonation, Chemical, Chloride, ChlorideSeawater, Exposure, ExposureClasses, FreezeThaw
+from blueprints.checks.concrete_cover.exposure_classes import (
+    Carbonation,
+    Chemical,
+    Chloride,
+    ChlorideSeawater,
+    Exposure,
+    ExposureClasses,
+    FreezeThaw,
+)
 
 
 class DummyExposureSubclass(Exposure):
@@ -225,6 +233,22 @@ class TestExposureClasses:
         """
         exposureclasses = ExposureClasses()
         assert str(exposureclasses) == "X0"
+
+    def test_no_risk(self) -> None:
+        """Check if the no_risk method returns True if the exposure classes are all not applicable."""
+        exposureclasses = ExposureClasses()
+        assert exposureclasses.no_risk is True
+
+    def test_no_risk_false(self) -> None:
+        """Check if the no_risk method returns False if at least one exposure class is applicable."""
+        exposureclasses = ExposureClasses(
+            carbonation=Carbonation("XC3"),
+            chloride=Chloride("XD2"),
+            chloride_seawater=ChlorideSeawater("Not applicable"),
+            freeze=FreezeThaw("XF2"),
+            chemical=Chemical("XA2"),
+        )
+        assert exposureclasses.no_risk is False
 
 
 def test_comparing_different_types_raises_error() -> None:
