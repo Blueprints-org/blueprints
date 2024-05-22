@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.checks.concrete_cover.exposure_classes import (
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,

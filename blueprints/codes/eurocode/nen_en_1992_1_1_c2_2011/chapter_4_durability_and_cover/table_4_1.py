@@ -1,4 +1,6 @@
-"""Module for the concrete exposure classes."""
+"""Module for the concrete exposure classes
+according to Table 4.1 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement.
+"""
 
 from enum import Enum
 from functools import total_ordering
