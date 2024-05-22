@@ -21,10 +21,10 @@ class FormADot1DamageDuringDesignLife(Formula):
         Parameters
         ----------
         n_e : list[DIMENSIONLESS]
-            [:math:`n_E`] Contains number of cycles associated with the stress range γ_Ff·Δδ_i for each band i in the factored spectrum [:math:`-`].
+            [:math:`n_E`] Contains number of cycles associated with the stress range γ_Ff·Δσ_i for each band i in the factored spectrum [:math:`-`].
         n_r : list[DIMENSIONLESS]
-            [:math:`N_R`] Contains the endurance (in cycles) obtained from the factored Δδ_C/γ_Mf-n_r curve for each stress range of
-            γ_Ff·Δδ_i [:math:`-`]
+            [:math:`N_R`] Contains the endurance (in cycles) obtained from the factored Δσ_C/γ_Mf-n_r curve for each stress range of
+            γ_Ff·Δ_i [:math:`-`]
 
         Returns
         -------
