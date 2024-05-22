@@ -1,0 +1,104 @@
+"""Formula 6.71 from NEN-EN 1992-1-1+C2:2011: Chapter 6 - Ultimate limit state."""
+
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
+from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
+from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.validations import raise_if_negative
+
+
+class FormADot2CriteriaBasedOnStressRangeLHS(Formula):
+    """Class representing Left Hand Side of formula 6.71 for the calculation of the fatigue criteria based on stress range."""
+
+    label = "6.71 (LHS)"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        gamma_f_fat: DIMENSIONLESS,
+        delta_sigma_s_equ_n_star: MPA,
+    ) -> None:
+        """[:math:`σ_E`] Loading side of equation [:math:`MPa`].
+
+        NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
+
+        Parameters
+        ----------
+        gamma_f_fat : DIMENSIONLESS
+            [:math:`γ_{F,fat}`] Partial factor for fatigue actions [:math:`-`].
+        delta_sigma_s_equ_n_star : MPA
+            [:math:`Δσ_{s,equ}(N*)`] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [:math:`MPa`].
+
+        Returns
+        -------
+        None
+        """
+        super().__init__()
+        self.gamma_f_fat = gamma_f_fat
+        self.delta_sigma_s_equ_n_star = delta_sigma_s_equ_n_star
+
+    @staticmethod
+    def _evaluate(
+        gamma_f_fat: DIMENSIONLESS,
+        delta_sigma_s_equ_n_star: MPA,
+    ) -> MPA:
+        """Evaluates the left hand side formula, for more information see the __init__ method."""
+        raise_if_negative(gamma_f_fat=gamma_f_fat, delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star)
+        return gamma_f_fat * delta_sigma_s_equ_n_star
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for left hand side formula A.2."""
+        return LatexFormula(
+            return_symbol=r"Δσ_E",
+            result=f"{self:.3f}",
+            equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N*)",
+            numeric_equation=rf"{self.gamma_f_fat} \cdot {self.delta_sigma_s_equ_n_star}",
+            comparison_operator_label=r"=",
+        )
+
+
+class FormADot2CriteriaBasedOnStressRangeRHS(Formula):
+    """Class representing Right Hand Side of formula 6.71 for the calculation of the fatigue criteria based on stress range."""
+
+    label = "6.71 (RHS)"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        delta_sigma_rsk_n_star: MPA,
+        gamma_s_fat: DIMENSIONLESS,
+    ) -> None:
+        """[:math:`σ_R`] Resistance side of equation [:math:`MPa`].
+
+        NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
+
+        Parameters
+        ----------
+        delta_sigma_rsk_n_star : MPA
+            [:math:`Δσ_{Rsk}(N*)`] Stress range at N* cycles from the S-N curve in Figure 6.30 [:math:`MPa`].
+        gamma_s_fat : DIMENSIONLESS
+            [:math:`γ_{S,fat}`] Partial factor for reinforcing or presetressing steel under fatigue loading [:math:`-`].
+
+        Returns
+        -------
+        None
+        """
+        super().__init__()
+        self.delta_sigma_rsk_n_star = delta_sigma_rsk_n_star
+        self.gamma_s_fat = gamma_s_fat
+
+    @staticmethod
+    def _evaluate(gamma_s_fat: DIMENSIONLESS, delta_sigma_rsk_n_star: MPA) -> MPA:
+        """Evaluates the right hand side formula, for more information see the __init__ method."""
+        raise_if_negative(gamma_s_fat=gamma_s_fat, delta_sigma_rsk_n_star=delta_sigma_rsk_n_star)
+        return delta_sigma_rsk_n_star / gamma_s_fat
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for right hand side formula A.2."""
+        return LatexFormula(
+            return_symbol=r"Δσ_R",
+            result=f"{self:.3f}",
+            equation=r"\frac{\Delta \sigma_{Rsk} (N*)}{\gamma_{s,fat}}",
+            numeric_equation=rf"\frac{{{self.delta_sigma_rsk_n_star}}}{{{self.gamma_s_fat}}}",
+            comparison_operator_label=r"=",
+        )
