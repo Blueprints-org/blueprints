@@ -18,7 +18,7 @@ class FormADot2CriteriaBasedOnStressRangeLHS(Formula):
         gamma_f_fat: DIMENSIONLESS,
         delta_sigma_s_equ_n_star: MPA,
     ) -> None:
-        """[:math:`σ_E`] Loading side of equation [:math:`MPa`].
+        """[:math:`Δσ_{Ed}`] Loading side of equation [:math:`MPa`].
 
         NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
 
@@ -49,7 +49,7 @@ class FormADot2CriteriaBasedOnStressRangeLHS(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for left hand side formula 6.71."""
         return LatexFormula(
-            return_symbol=r"\Delta \sigma_E",
+            return_symbol=r"\Delta \sigma_{Ed}",
             result=f"{self:.3f}",
             equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*)",
             numeric_equation=rf"{self.gamma_f_fat:.3f} \cdot {self.delta_sigma_s_equ_n_star:.3f}",
@@ -68,7 +68,7 @@ class FormADot2CriteriaBasedOnStressRangeRHS(Formula):
         delta_sigma_rsk_n_star: MPA,
         gamma_s_fat: DIMENSIONLESS,
     ) -> None:
-        """[:math:`σ_R`] Resistance side of equation [:math:`MPa`].
+        """[:math:`Δσ_{Rd}`] Resistance side of equation [:math:`MPa`].
 
         NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
 
@@ -97,7 +97,7 @@ class FormADot2CriteriaBasedOnStressRangeRHS(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for right hand side formula 6.71."""
         return LatexFormula(
-            return_symbol=r"\Delta \sigma_R",
+            return_symbol=r"\Delta \sigma_{Rd}",
             result=f"{self:.3f}",
             equation=r"\frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
             numeric_equation=rf"\frac{{{self.delta_sigma_rsk_n_star:.3f}}}{{{self.gamma_s_fat:.3f}}}",

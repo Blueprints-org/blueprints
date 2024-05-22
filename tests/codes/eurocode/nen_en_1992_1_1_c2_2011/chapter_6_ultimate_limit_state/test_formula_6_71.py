@@ -41,9 +41,9 @@ class TestFormADot2CriteriaBasedOnStressRangeLHS:
         [
             (
                 "complete",
-                r"\Delta \sigma_E = \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) = 1.500 \cdot 10.000 = 15.000",
+                r"\Delta \sigma_{Ed} = \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) = 1.500 \cdot 10.000 = 15.000",
             ),
-            ("short", r"\Delta \sigma_E = 15.000"),
+            ("short", r"\Delta \sigma_{Ed} = 15.000"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -104,9 +104,9 @@ class TestFormADot2CriteriaBasedOnStressRangeRHS:
         [
             (
                 "complete",
-                r"\Delta \sigma_R = \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} = \frac{10.000}{2.000} = 5.000",
+                r"\Delta \sigma_{Rd} = \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} = \frac{10.000}{2.000} = 5.000",
             ),
-            ("short", r"\Delta \sigma_R = 5.000"),
+            ("short", r"\Delta \sigma_{Rd} = 5.000"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
