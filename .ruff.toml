@@ -89,7 +89,7 @@ max-args = 8
 convention = "numpy"
 
 [lint.isort]
-known_third_party = [
+known-third-party = [
     "matplotlib",
     "munch",
     "numpy",
