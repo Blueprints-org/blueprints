@@ -11,27 +11,17 @@ from blueprints.validations import NegativeValueError
 class TestFormADot2CriteriaBasedOnDamageAccumulation:
     """Validation for formula A.2 from NEN-EN 1993-1-9+C2:2012."""
 
-    def test_evaluation_if_ok(self) -> None:
+    @pytest.mark.parametrize(
+        ("d_d", "result_manual"),
+        [
+            (0.8, True),
+            (1.1, False),
+        ],
+    )
+    def test_evaluation(self, d_d: float, result_manual: bool) -> None:
         """Test the evaluation of the result."""
-        # example values
-        d_d = 0.8  # -
-
         form_a_1 = FormADot2CriteriaBasedOnDamageAccumulation(d_d=d_d)
-        # manually calculated result
-        manually_calculated_result = True
-
-        assert form_a_1 == pytest.approx(expected=manually_calculated_result, rel=1e-9)
-
-    def test_evaluation_if_not_ok(self) -> None:
-        """Test the evaluation of the result."""
-        # example values
-        d_d = 1.1  # -
-
-        form_a_1 = FormADot2CriteriaBasedOnDamageAccumulation(d_d=d_d)
-        # manually calculated result
-        manually_calculated_result = False
-
-        assert form_a_1 == pytest.approx(expected=manually_calculated_result, rel=1e-9)
+        assert form_a_1 == pytest.approx(expected=result_manual, rel=1e-9)
 
     def test_raise_error_if_negative_n_e(self) -> None:
         """Test that a NegativeValueError is raised when a negative value is passed for n_E."""
@@ -44,9 +34,9 @@ class TestFormADot2CriteriaBasedOnDamageAccumulation:
         [
             (
                 "complete",
-                r"OK? \rightarrow D_d \leq 1.0 \rightarrow 0.800 \leq 1.0 \rightarrow True",
+                r"OK / NOT OK \rightarrow D_d \leq 1.0 \rightarrow 0.800 \leq 1.0 \rightarrow OK",
             ),
-            ("short", r"OK? \rightarrow True"),
+            ("short", r"OK / NOT OK \rightarrow OK"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
