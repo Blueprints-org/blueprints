@@ -49,8 +49,8 @@ class Form5Dot15EffectiveLengthBraced(Formula):
         return LatexFormula(
             return_symbol=r"l_0",
             result=f"{self:.3f}",
-            equation=r"0.5 \cdot l \cdot \sqrt{\left(1+\frac{k_1}{0.45 \cdot k_1}\right) \cdot \left(1 + \frac{k_2}{0.45 \cdot k_2}\right)}",
-            numeric_equation=rf"0.5 \cdot {self.height:.3f} \cdot \sqrt{{\left(1+\frac{{{self.k_1:.3f}}}{{0.45 \cdot "
-            rf"{self.k_1:.3f}}}\right) \cdot \left(1 + \frac{{{self.k_2:.3f}}}{{0.45 \cdot {self.k_2:.3f}}}\right)}}",
+            equation=r"0.5 \cdot l \cdot \sqrt{\left(1+\frac{k_1}{0.45 + k_1}\right) \cdot \left(1 + \frac{k_2}{0.45 + k_2}\right)}",
+            numeric_equation=rf"0.5 \cdot {self.height:.3f} \cdot \sqrt{{\left(1+\frac{{{self.k_1:.3f}}}{{0.45 + "
+            rf"{self.k_1:.3f}}}\right) \cdot \left(1 + \frac{{{self.k_2:.3f}}}{{0.45 + {self.k_2:.3f}}}\right)}}",
             comparison_operator_label="=",
         )
