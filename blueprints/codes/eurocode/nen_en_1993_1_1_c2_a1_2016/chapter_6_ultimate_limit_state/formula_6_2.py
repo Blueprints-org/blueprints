@@ -9,14 +9,14 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot2UtilizationRatio(Formula):
-    """Class representing form 6.2 for the calculation of the utilization ratio :math:`uc`."""
+    """Class representing form 6.2 for the calculation of the utilization ratio :math:`UC`."""
 
     label = "6.2"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
 
     def __init__(self, n_ed: KN, n_rd: KN, m_y_ed: KNM, m_y_rd: KNM, m_z_ed: KNM, m_z_rd: KNM) -> None:
         """
-        [:math:`u_c`] The calculation of the utilization ratio [:math:`-`].
+        [:math:`UC`] The calculation of the utilization ratio [:math:`-`].
 
         NEN-EN 1993-1-1+C2+A1:2016 art.6.2.1(7) - Formula (6.2)
 
