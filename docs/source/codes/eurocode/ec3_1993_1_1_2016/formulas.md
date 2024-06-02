@@ -26,7 +26,7 @@ Total of 108 formulas present.
 | 5.13           | :x:  |         |             |
 | 5.14           | :x:  |         |             |
 | 6.1            | :x:  |         |             |
-| 6.2            | :heavy_check_mark:  |         |             |
+| 6.2            | :heavy_check_mark:  |         | Form6Dot2UtilizationRatio            |
 | 6.3            | :x:  |         |             |
 | 6.4            | :x:  |         |             |
 | 6.5            | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength |
