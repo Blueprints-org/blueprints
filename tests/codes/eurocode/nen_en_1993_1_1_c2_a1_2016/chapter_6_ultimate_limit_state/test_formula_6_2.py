@@ -60,7 +60,7 @@ class TestForm6Dot2UtilizationRatio:
             (
                 "complete",
                 (
-                    r"uc = \frac{N_{Ed}}{N_{Rd}} + \frac{M_{y,Ed}}{M_{y,Rd}} + \frac{M_{z,Ed}}{M_{z,Rd}} ="
+                    r"UC = \frac{N_{Ed}}{N_{Rd}} + \frac{M_{y,Ed}}{M_{y,Rd}} + \frac{M_{z,Ed}}{M_{z,Rd}} ="
                     r" \frac{5.000}{10.000} + \frac{4.000}{20.000} + \frac{3.000}{30.000} = 0.800"
                 ),
             ),
