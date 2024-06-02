@@ -64,7 +64,7 @@ class TestForm6Dot2UtilizationRatio:
                     r" \frac{5.000}{10.000} + \frac{4.000}{20.000} + \frac{3.000}{30.000} = 0.800"
                 ),
             ),
-            ("short", r"uc = 0.800"),
+            ("short", r"UC = 0.800"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
