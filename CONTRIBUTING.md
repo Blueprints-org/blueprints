@@ -32,7 +32,7 @@ We enforce a code of conduct for all maintainers and contributors. For more deta
 
 ## Code Quality Tools
 
-We use ruff, isort, and mypy to enforce code quality. Make sure to run these before submitting a PR. We encourage you to use our pre-commit
+We use ruff and mypy to enforce code quality. Make sure to run these before submitting a PR. We encourage you to use our pre-commit
 hooks, you can find instructions in this [file](.pre-commit-config.yaml).
 
 ## Branching Strategy

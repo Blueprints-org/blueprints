@@ -176,7 +176,7 @@ Total of 304 formulas present.
 | 6.73           |        :x:         |         |                                                           |
 | 6.74           |        :x:         |         |                                                           |
 | 6.75           |        :x:         |         |                                                           |
-| 6.76           |        :x:         |         |                                                           |
+| 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
 | 6.77           |        :x:         |         |                                                           |
 | 6.78           |        :x:         |         |                                                           |
 | 6.79           |        :x:         |         |                                                           |

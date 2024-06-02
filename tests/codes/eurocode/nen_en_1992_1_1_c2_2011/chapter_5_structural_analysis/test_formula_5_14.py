@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_anal
 from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestForm5Dot4TransverseForceEffectBracingSystem:
+class TestForm5Dot14TransverseForceEffectBracingSystem:
     """Validation for formula 5.14 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
