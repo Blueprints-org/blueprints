@@ -3,12 +3,12 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS, KN
+from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form6Dot76DesignFatigueStrengthConcrete(Formula):
-    """Class representing formula 6.76 for the design fatigue strength of concrete, f_cdfat."""
+    """Class representing formula 6.76 for the design fatigue strength of concrete, :math:`f_{cd,fat}`."""
 
     label = "6.76"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -17,24 +17,24 @@ class Form6Dot76DesignFatigueStrengthConcrete(Formula):
         self,
         k_1: DIMENSIONLESS,
         beta_cc_t0: DIMENSIONLESS,
-        f_cd: KN,
-        f_ck: KN,
+        f_cd: MPA,
+        f_ck: MPA,
     ) -> None:
-        """[:math: f_{cd,fat}] Design fatigue strength of concrete in KN.
+        """[:math:`f_{cd,fat}`] Design fatigue strength of concrete in :math:`MPa`.
 
-        NEN-EN 1992-1-1+C2:2011 art. 6.8.7 - Formula (6.76)
+        NEN-EN 1992-1-1+C2:2011 art. 6.8.7(1) - Formula (6.76)
 
         Parameters
         ----------
-        k_1 : -
-            [:math:`k_{1}`] k1 factor
-        beta_cc_t0 : -
-            [:math:`β_{cc}(t0)`] Coefficient for concrete strength at first load application see (3.1.2 (6)).
-            [:math:`t_{0}`] The time of the start of the cyclic loading in concrete in days.
-        f_cd : KN
-            [:math:`f_{cd}`] Design strength of concrete
-        f_ck : KN
-            [:math:`f_{ck}`] Characteristic strength of concrete
+        k_1 : DIMENSIONLESS
+            [:math:`k_{1}`] k1 factor (:math:`-`)
+        beta_cc_t0 : DIMENSIONLESS
+            [:math:`β_{cc}(t_0)`] Coefficient for concrete strength at first load application see (3.1.2 (6)) (:math:`-`).
+            [:math:`t_0`] The time of the start of the cyclic loading in concrete in days.
+        f_cd : MPA
+            [:math:`f_{cd}`] Design strength of concrete (:math:`MPa`)
+        f_ck : MPA
+            [:math:`f_{ck}`] Characteristic strength of concrete (:math:`MPa`)
 
         """
         super().__init__()
@@ -47,8 +47,8 @@ class Form6Dot76DesignFatigueStrengthConcrete(Formula):
     def _evaluate(
         k_1: DIMENSIONLESS,
         beta_cc_t0: DIMENSIONLESS,
-        f_cd: KN,
-        f_ck: KN,
+        f_cd: MPA,
+        f_ck: MPA,
     ) -> KN:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(k_1=k_1, beta_cc_t0=beta_cc_t0, f_cd=f_cd, f_ck=f_ck)
