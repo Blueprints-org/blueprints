@@ -70,7 +70,7 @@ class Form6Dot2UtilizationRatio(Formula):
             rf"\frac{{{self.m_z_ed:.3f}}}{{{self.m_z_rd:.3f}}}"
         )
         return LatexFormula(
-            return_symbol=r"uc",
+            return_symbol=r"UC",
             result=f"{self:.3f}",
             equation=r"\frac{N_{Ed}}{N_{Rd}} + \frac{M_{y,Ed}}{M_{y,Rd}} + \frac{M_{z,Ed}}{M_{z,Rd}}",
             numeric_equation=numeric_equation,
