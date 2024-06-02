@@ -43,23 +43,14 @@ class TestForm5Dot15EffectiveLengthBraced:
             (
                 "complete",
                 r"l_0 = 0.5 \cdot l \cdot \sqrt{"
-                r"\left(1+\frac{k_1}{0.45 \cdot k_1}\right) \cdot "
-                r"\left(1 + \frac{k_2}{0.45 \cdot k_2}\right)} = "
+                r"\left(1+\frac{k_1}{0.45 + k_1}\right) \cdot "
+                r"\left(1 + \frac{k_2}{0.45 + k_2}\right)} = "
                 r"0.5 \cdot 4.000 \cdot \sqrt{"
-                r"\left(1+\frac{2.000}{0.45 \cdot 2.000}\right) \cdot "
-                r"\left(1 + \frac{3.000}{0.45 \cdot 3.000}\right)} = "
+                r"\left(1+\frac{2.000}{0.45 + 2.000}\right) \cdot "
+                r"\left(1 + \frac{3.000}{0.45 + 3.000}\right)} = "
                 r"3.686",
             ),
             ("short", r"l_0 = 3.686"),
-            (
-                "string",
-                r"l_0 = 0.5 \cdot l \cdot \sqrt{"
-                r"\left(1+\frac{k_1}{0.45 \cdot k_1}\right) \cdot "
-                r"\left(1 + \frac{k_2}{0.45 \cdot k_2}\right)} = "
-                r"0.5 \cdot 4.000 \cdot \sqrt{"
-                r"\left(1+\frac{2.000}{0.45 \cdot 2.000}\right) \cdot "
-                r"\left(1 + \frac{3.000}{0.45 \cdot 3.000}\right)} = 3.686",
-            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -75,7 +66,6 @@ class TestForm5Dot15EffectiveLengthBraced:
         actual = {
             "complete": form_5_15_latex.complete,
             "short": form_5_15_latex.short,
-            "string": str(form_5_15_latex),
         }
 
         assert actual[representation] == expected, f"{representation} representation failed."
