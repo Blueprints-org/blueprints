@@ -49,7 +49,7 @@ class Form6Dot76DesignFatigueStrengthConcrete(Formula):
         beta_cc_t0: DIMENSIONLESS,
         f_cd: MPA,
         f_ck: MPA,
-    ) -> KN:
+    ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(k_1=k_1, beta_cc_t0=beta_cc_t0, f_cd=f_cd, f_ck=f_ck)
 
