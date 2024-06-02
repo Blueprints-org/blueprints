@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, M
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot15EffectiveLengthBraced(Formula):
@@ -25,7 +25,7 @@ class Form5Dot15EffectiveLengthBraced(Formula):
         k_1 : DIMENSIONLESS
             [:math:`k_{1}`] Relative flexibility of rotational constraint at end 1 [:math:`-`].
         k_2 : DIMENSIONLESS
-            [:math:`k_{1}`] Relative flexibility of rotational constraint at end 2 [:math:`-`].
+            [:math:`k_{2}`] Relative flexibility of rotational constraint at end 2 [:math:`-`].
         height : M
             [:math:`l`] Clear height of compression member between end restraints [:math:`m`].
         """
@@ -41,7 +41,7 @@ class Form5Dot15EffectiveLengthBraced(Formula):
         height: M,
     ) -> M:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(k_1=k_1, k_2=k_2, height=height)
+        raise_if_less_or_equal_to_zero(k_1=k_1, k_2=k_2, height=height)
         return 0.5 * height * math.sqrt((1 + k_1 / (0.45 + k_1)) * (1 + k_2 / (0.45 + k_2)))
 
     def latex(self) -> LatexFormula:
