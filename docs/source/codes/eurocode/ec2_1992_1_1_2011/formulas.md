@@ -61,8 +61,8 @@ Total of 304 formulas present.
 | 5.12N          | :heavy_check_mark: |         | Form5Dot12nRatioDistancePointZeroAndMaxMoment             |
 | 5.13N          |        :x:         |         |                                                           |
 | 5.14           | :heavy_check_mark: |         | Form5Dot14SlendernessRatio                                |
-| 5.15           |        :x:         |         |                                                           |
-| 5.16           |        :x:         |         |                                                           |
+| 5.15           | :heavy_check_mark: |         | Form5Dot15EffectiveLengthBraced                           |
+| 5.16           | :heavy_check_mark: |         | Form5Dot16EffectiveLengthUnbraced                         |
 | 5.17           |        :x:         |         |                                                           |
 | 5.18           |        :x:         |         |                                                           |
 | 5.19           |        :x:         |         |                                                           |
@@ -176,7 +176,7 @@ Total of 304 formulas present.
 | 6.73           |        :x:         |         |                                                           |
 | 6.74           |        :x:         |         |                                                           |
 | 6.75           |        :x:         |         |                                                           |
-| 6.76           |        :x:         |         |                                                           |
+| 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
 | 6.77           |        :x:         |         |                                                           |
 | 6.78           |        :x:         |         |                                                           |
 | 6.79           |        :x:         |         |                                                           |
