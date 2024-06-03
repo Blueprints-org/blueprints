@@ -51,10 +51,10 @@ class Form5Dot16EffectiveLengthUnbraced(Formula):
             result=f"{self:.3f}",
             equation=r"l \cdot max\left\{"
             r"\sqrt{1+10 \cdot \frac{k_1 \cdot k_2}{k_1+k_2}}; "
-            r"\left(1+\frac{k_1}{1 \cdot k_1}\right) \cdot \left(1 + \frac{k_2}{1 \cdot k_2}\right) \right\}",
+            r"\left(1+\frac{k_1}{1 + k_1}\right) \cdot \left(1 + \frac{k_2}{1 + k_2}\right) \right\}",
             numeric_equation=rf"{self.height:.3f} \cdot max\left\{{"
             rf"\sqrt{{1+10 \cdot \frac{{{self.k_1:.3f} \cdot {self.k_2:.3f}}}{{{self.k_1:.3f}+{self.k_2:.3f}}}}}; "
-            rf"\left(1+\frac{{{self.k_1:.3f}}}{{1 \cdot {self.k_1:.3f}}}\right) \cdot "
-            rf"\left(1 + \frac{{{self.k_2:.3f}}}{{1 \cdot {self.k_2:.3f}}}\right) \right\}}",
+            rf"\left(1+\frac{{{self.k_1:.3f}}}{{1 + {self.k_1:.3f}}}\right) \cdot "
+            rf"\left(1 + \frac{{{self.k_2:.3f}}}{{1 + {self.k_2:.3f}}}\right) \right\}}",
             comparison_operator_label="=",
         )
