@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, M
-from blueprints.validations import raise_if_less_or_equal_to_zero
+from blueprints.validations import raise_if_negative
 
 
 class Form5Dot16EffectiveLengthUnbraced(Formula):
@@ -41,7 +41,7 @@ class Form5Dot16EffectiveLengthUnbraced(Formula):
         height: M,
     ) -> M:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(k_1=k_1, k_2=k_2, height=height)
+        raise_if_negative(k_1=k_1, k_2=k_2, height=height)
         return height * max(math.sqrt(1.0 + 10 * (k_1 * k_2 / (k_1 + k_2))), (1.0 + k_1 / (1.0 + k_1)) * (1.0 + k_2 / (1.0 + k_2)))
 
     def latex(self) -> LatexFormula:

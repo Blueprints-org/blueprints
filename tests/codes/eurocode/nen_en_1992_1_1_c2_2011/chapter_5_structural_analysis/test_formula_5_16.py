@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_16 import Form5Dot16EffectiveLengthUnbraced
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import NegativeValueError
 
 
 class TestForm5Dot16EffectiveLengthUnbraced:
@@ -49,7 +49,7 @@ class TestForm5Dot16EffectiveLengthUnbraced:
     )
     def test_raise_error_when_negative_theta_i_is_given(self, k_1: float, k_2: float, height: float) -> None:
         """Test negative values for theta_i, n_a and n_b."""
-        with pytest.raises(LessOrEqualToZeroError):
+        with pytest.raises(NegativeValueError):
             Form5Dot16EffectiveLengthUnbraced(k_1=k_1, k_2=k_2, height=height)
 
     @pytest.mark.parametrize(
