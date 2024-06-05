@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class FormADot2CriteriaBasedOnStressRangeLHS(Formula):
+class Form6Dot71CriteriaBasedOnStressRangeLHS(Formula):
     """Class representing Left Hand Side of formula 6.71 for the calculation of the fatigue criteria based on stress range."""
 
     label = "6.71 (LHS)"
@@ -57,7 +57,7 @@ class FormADot2CriteriaBasedOnStressRangeLHS(Formula):
         )
 
 
-class FormADot2CriteriaBasedOnStressRangeRHS(Formula):
+class Form6Dot71CriteriaBasedOnStressRangeRHS(Formula):
     """Class representing Right Hand Side of formula 6.71 for the calculation of the fatigue criteria based on stress range."""
 
     label = "6.71 (RHS)"
