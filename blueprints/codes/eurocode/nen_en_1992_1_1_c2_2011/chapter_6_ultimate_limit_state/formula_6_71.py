@@ -77,7 +77,7 @@ class Form6Dot71CriteriaBasedOnStressRangeRHS(Formula):
         delta_sigma_rsk_n_star : MPA
             [:math:`Δσ_{Rsk}(N*)`] Stress range at N* cycles from the S-N curve in Figure 6.30 [:math:`MPa`].
         gamma_s_fat : DIMENSIONLESS
-            [:math:`γ_{S,fat}`] Partial factor for reinforcing or presetressing steel under fatigue loading [:math:`-`].
+            [:math:`γ_{S,fat}`] Partial factor for reinforcing or prestressing steel under fatigue loading [:math:`-`].
 
         Returns
         -------
@@ -102,4 +102,68 @@ class Form6Dot71CriteriaBasedOnStressRangeRHS(Formula):
             equation=r"\frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
             numeric_equation=rf"\frac{{{self.delta_sigma_rsk_n_star:.3f}}}{{{self.gamma_s_fat:.3f}}}",
             comparison_operator_label=r"=",
+        )
+
+
+class Form6Dot71CriteriaBasedOnStressRange(Formula):
+    """Class representing formula 6.71 for the calculation of the fatigue criteria based on stress range."""
+
+    label = "6.71"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        gamma_f_fat: DIMENSIONLESS,
+        delta_sigma_s_equ_n_star: MPA,
+        delta_sigma_rsk_n_star: MPA,
+        gamma_s_fat: DIMENSIONLESS,
+    ) -> None:
+        """[:math:`OK / NOT OK`] Criteria met, based on damage accumulation.
+
+        NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
+
+        Parameters
+        ----------
+        gamma_f_fat : DIMENSIONLESS
+            [:math:`γ_{F,fat}`] Partial factor for fatigue actions [:math:`-`].
+        delta_sigma_s_equ_n_star : MPA
+            [:math:`Δσ_{s,equ}(N*)`] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [:math:`MPa`].
+        delta_sigma_rsk_n_star : MPA
+            [:math:`Δσ_{Rsk}(N*)`] Stress range at N* cycles from the S-N curve in Figure 6.30 [:math:`MPa`].
+        gamma_s_fat : DIMENSIONLESS
+            [:math:`γ_{S,fat}`] Partial factor for reinforcing or prestressing steel under fatigue loading [:math:`-`].
+
+        Returns
+        -------
+        None
+        """
+        super().__init__()
+        self.gamma_f_fat = gamma_f_fat
+        self.delta_sigma_s_equ_n_star = delta_sigma_s_equ_n_star
+        self.delta_sigma_rsk_n_star = delta_sigma_rsk_n_star
+        self.gamma_s_fat = gamma_s_fat
+
+    @staticmethod
+    def _evaluate(
+        gamma_f_fat: DIMENSIONLESS,
+        delta_sigma_s_equ_n_star: MPA,
+        gamma_s_fat: DIMENSIONLESS,
+        delta_sigma_rsk_n_star: MPA,
+    ) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method."""
+        lhs = Form6Dot71CriteriaBasedOnStressRangeLHS(gamma_f_fat=gamma_f_fat, delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star)
+        rhs = Form6Dot71CriteriaBasedOnStressRangeRHS(gamma_s_fat=gamma_s_fat, delta_sigma_rsk_n_star=delta_sigma_rsk_n_star)
+        return lhs <= rhs
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 6.71."""
+        return LatexFormula(
+            return_symbol=r"OK / NOT OK",
+            result="OK" if self else "NOT OK",
+            equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) \leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
+            numeric_equation=(
+                rf"{self.gamma_f_fat:.3f} \cdot {self.delta_sigma_s_equ_n_star:.3f} "
+                rf"\leq \frac{{{self.delta_sigma_rsk_n_star:.3f}}}{{{self.gamma_s_fat:.3f}}}"
+            ),
+            comparison_operator_label=r"\rightarrow",
         )

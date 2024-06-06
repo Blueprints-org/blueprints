@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_71 import (
+    Form6Dot71CriteriaBasedOnStressRange,
     Form6Dot71CriteriaBasedOnStressRangeLHS,
     Form6Dot71CriteriaBasedOnStressRangeRHS,
 )
@@ -117,6 +118,108 @@ class TestForm6Dot71CriteriaBasedOnStressRangeRHS:
 
         # Object to test
         form_latex = Form6Dot71CriteriaBasedOnStressRangeRHS(gamma_s_fat=gamma_s_fat, delta_sigma_rsk_n_star=delta_sigma_rsk_n_star).latex()
+
+        actual = {
+            "complete": form_latex.complete,
+            "short": form_latex.short,
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
+
+class TestForm6Dot71CriteriaBasedOnStressRange:
+    """Validation for formula 6.71 from NEN-EN 1992-1-1+C2:2011."""
+
+    @pytest.mark.parametrize(
+        ("gamma_f_fat", "delta_sigma_s_equ_n_star", "gamma_s_fat", "delta_sigma_rsk_n_star", "result_manual"),
+        [
+            (1.5, 10.0, 2.0, 40.0, True),
+            (1.5, 10.0, 2.0, 30.0, True),
+            (1.5, 10.0, 2.0, 20.0, False),
+        ],
+    )
+    def test_evaluation(
+        self, gamma_f_fat: float, delta_sigma_s_equ_n_star: float, gamma_s_fat: float, delta_sigma_rsk_n_star: float, result_manual: bool
+    ) -> None:
+        """Test the evaluation of the result."""
+        form = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        )
+
+        # Expected result, manually calculated
+        expected = result_manual
+
+        assert form == expected
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"OK / NOT OK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
+                    r"\leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} \rightarrow "
+                    r"1.500 \cdot 10.000 \leq \frac{10.000}{2.000} \rightarrow NOT OK"
+                ),
+            ),
+            ("short", r"OK / NOT OK \rightarrow NOT OK"),
+        ],
+    )
+    def test_latex_not_ok(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        gamma_f_fat = 1.5  # -
+        delta_sigma_s_equ_n_star = 10.0  # MPa
+        gamma_s_fat = 2.0  # -
+        delta_sigma_rsk_n_star = 10.0  # MPa
+
+        # Object to test
+        form_latex = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        ).latex()
+
+        actual = {
+            "complete": form_latex.complete,
+            "short": form_latex.short,
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"OK / NOT OK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
+                    r"\leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} \rightarrow "
+                    r"1.500 \cdot 10.000 \leq \frac{40.000}{2.000} \rightarrow OK"
+                ),
+            ),
+            ("short", r"OK / NOT OK \rightarrow OK"),
+        ],
+    )
+    def test_latex_ok(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        gamma_f_fat = 1.5  # -
+        delta_sigma_s_equ_n_star = 10.0  # MPa
+        gamma_s_fat = 2.0  # -
+        delta_sigma_rsk_n_star = 40.0  # MPa
+
+        # Object to test
+        form_latex = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        ).latex()
 
         actual = {
             "complete": form_latex.complete,
