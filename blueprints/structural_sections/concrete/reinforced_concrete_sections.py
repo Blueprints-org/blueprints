@@ -9,15 +9,12 @@ from typing import Protocol
 import numpy as np
 import plotly.graph_objects as go
 from matplotlib import pyplot as plt
-from matplotlib.axes import Axes
-from matplotlib.patches import ArrowStyle
-from matplotlib.patches import Circle as CirclePatch
-from matplotlib.patches import Rectangle as RectanglePatch
 from shapely import Point, Polygon
 
 from blueprints.geometry.line import Line, Reference
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
+from blueprints.structural_sections.plotter import rcs
 from blueprints.type_alias import DIMENSIONLESS, KG_M, KG_M3, M3_M, MM, MM2, MM2_M
 from blueprints.unit_conversion import M_TO_MM, MM2_TO_M2, MM3_TO_M3
 
@@ -801,9 +798,9 @@ class ReinforcedCrossSection(ABC):
     ) -> None:
         self.cross_section = cross_section
         self.concrete_material = concrete_material
-        self._single_longitudinal_rebars: list[Rebar] = []
-        self._reinforcement_layer_in_line: list[ReinforcementInLine] = []
-        self._reinforcement_by_quantity_on_edge: list[ReinforcementByQuantity] = []
+        self.single_longitudinal_rebars: list[Rebar] = []
+        self.reinforcement_layer_in_line: list[ReinforcementInLine] = []
+        self.reinforcement_by_quantity_on_edge: list[ReinforcementByQuantity] = []
         self._reinforcement_by_distance_on_edge: list[ReinforcementByDistance] = []
         self.stirrups: list[Stirrup] = []
         self.name = name if name else f"RCS {self.cross_section.name}"
@@ -812,16 +809,16 @@ class ReinforcedCrossSection(ABC):
     def longitudinal_rebars(self) -> list[Rebar]:
         """Return a list of all longitudinal rebars."""
         rebars = []
-        rebars.extend(self._single_longitudinal_rebars)
-        if self._reinforcement_layer_in_line:
-            for layer in self._reinforcement_layer_in_line:
+        rebars.extend(self.single_longitudinal_rebars)
+        if self.reinforcement_layer_in_line:
+            for layer in self.reinforcement_layer_in_line:
                 rebars.extend(layer.bars)
-        if self._reinforcement_by_quantity_on_edge:
+        if self.reinforcement_by_quantity_on_edge:
             rebars.extend(
                 [
                     rebar
-                    for layer in self._reinforcement_by_quantity_on_edge
-                    for rebar in self._get_rebars_from_reinforcement_configuration(configuration=layer)
+                    for layer in self.reinforcement_by_quantity_on_edge
+                    for rebar in self.get_rebars_from_reinforcement_configuration(configuration=layer)
                 ]
             )
         if self._reinforcement_by_distance_on_edge:
@@ -829,7 +826,7 @@ class ReinforcedCrossSection(ABC):
                 [
                     rebar
                     for layer in self._reinforcement_by_distance_on_edge
-                    for rebar in self._get_rebars_from_reinforcement_configuration(configuration=layer)
+                    for rebar in self.get_rebars_from_reinforcement_configuration(configuration=layer)
                 ]
             )
         if rebars:
@@ -929,7 +926,7 @@ class ReinforcedCrossSection(ABC):
         self.cross_section.contains_point(x=rebar.x, y=rebar.y)
 
         # add the rebar to the list of longitudinal rebars
-        self._single_longitudinal_rebars.append(rebar)
+        self.single_longitudinal_rebars.append(rebar)
 
         return rebar
 
@@ -1003,7 +1000,7 @@ class ReinforcedCrossSection(ABC):
         )
 
         # add the reinforcement in line to the list of reinforcement layers
-        self._reinforcement_layer_in_line.append(reinforcement_in_line)
+        self.reinforcement_layer_in_line.append(reinforcement_in_line)
 
         return reinforcement_in_line
 
@@ -1061,7 +1058,7 @@ class ReinforcedCrossSection(ABC):
         )
 
         # add the reinforcement by quantity to the list of reinforcement layers
-        self._reinforcement_by_quantity_on_edge.append(reinforcement_by_quantity)
+        self.reinforcement_by_quantity_on_edge.append(reinforcement_by_quantity)
 
         return reinforcement_by_quantity
 
@@ -1077,7 +1074,7 @@ class ReinforcedCrossSection(ABC):
         reinforcement by distance configuration inside the cross-section.
         """
 
-    def _get_rebars_from_reinforcement_configuration(self, configuration: ReinforcementByQuantity | ReinforcementByDistance) -> list[Rebar]:
+    def get_rebars_from_reinforcement_configuration(self, configuration: ReinforcementByQuantity | ReinforcementByDistance) -> list[Rebar]:
         """Gets a list of rebars from a reinforcement configuration."""
         if not isinstance(configuration, (ReinforcementByQuantity, ReinforcementByDistance)):
             msg = f"{configuration} is not a valid input for _get_rebars_from_reinforcement_configuration()"
@@ -1135,6 +1132,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             else f"RectangularReinforcedCrossSection {self.width}x{self.height}mm|{self.concrete_material.name}|{self.steel_material.name}"
         )
         self.covers = covers
+        self.plotter = rcs.RectangularCrossSectionPlotter(self)
 
     def set_covers(
         self,
@@ -1492,243 +1490,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         -------
         Figure
         """
-        # define Matplotlib figure and axis
-        fig, ax = plt.subplots(1, 1, figsize=figure_size)
-
-        plot_rectangular_cross_section_on_axis(
-            cross_section=self,
-            ax=ax,
-            include_legend=include_legend,
-            title=title,
-            font_size_title=font_size_title,
-            font_size_dimension=font_size_dimension,
-            font_size_legend=font_size_legend,
-            custom_legend_text=custom_legend_text,
-            custom_width_text=custom_width_text,
-            custom_height_text=custom_height_text,
-            offset_width_line=offset_width_line,
-            offset_height_line=offset_height_line,
-        )
-
-        return fig
-
-
-# IDEA Constants
-IDEA_CROSS_SECTION_COLOR = (0.98, 0.98, 0.824)
-IDEA_REBAR_COLOR = (0.50, 0, 0)
-IDEA_STIRRUP_COLOR = (0.412, 0.412, 0.412)
-
-
-def plot_rectangular_cross_section_on_axis(
-    cross_section: RectangularReinforcedCrossSection,
-    include_legend: bool = True,
-    title: str = "",
-    font_size_title: float = 18.0,
-    font_size_dimension: float = 12.0,
-    font_size_legend: float = 10.0,
-    custom_legend_text: str = "",
-    custom_width_text: str = "",
-    custom_height_text: str = "",
-    offset_width_line: float = 1.25,
-    offset_height_line: float = 1.2,
-    ax: Axes | None = None,
-) -> Axes:
-    """Plots the cross-section on a matplotlib axes.
-
-    Parameters
-    ----------
-    cross_section: RectangularReinforcedCrossSection
-        Reinforced cross-section to plot.
-    include_legend: bool
-        Include legend in the plot.
-    title: str
-        Title of the plot.
-    font_size_title: float
-        Font size of the title.
-    font_size_dimension: float
-        Font size of the dimensions.
-    font_size_legend: float
-        Font size of the legend.
-    custom_legend_text: str
-        Custom legend text.
-    custom_width_text: str
-        Custom width text.
-    custom_height_text: str
-        Custom height text.
-    offset_width_line: float
-        Offset of the width line.
-    offset_height_line: float
-        Offset of the height line.
-    ax: Axes
-        Matplotlib axes.
-
-    Returns
-    -------
-    Axes
-        Matplotlib axes.
-    """
-    # initiate the axes if not provided
-    if ax is None:
-        fig, ax = plt.subplots(1, 1)
-
-    # add rectangle to plot
-    ax.add_patch(
-        RectanglePatch(
-            xy=(-cross_section.width / 2, -cross_section.height / 2),
-            width=cross_section.width,
-            height=cross_section.height,
-            edgecolor="black",
-            facecolor=IDEA_CROSS_SECTION_COLOR,
-            fill=True,
-            lw=1,
-        )
-    )
-
-    # plot center lines
-    center_line_style = {"arrowstyle": "-", "linewidth": 0.8, "color": "gray", "linestyle": "dashdot"}
-    offset_center_line = 1.05
-    ax.annotate(
-        text="z",
-        xy=(0, (-cross_section.height / 2) * offset_center_line),
-        xytext=(0, (cross_section.height / 2) * offset_center_line),
-        arrowprops=center_line_style,
-        verticalalignment="bottom",
-        horizontalalignment="center",
-    )
-    ax.annotate(
-        text="y",
-        xy=((cross_section.width / 2) * offset_center_line, 0),
-        xytext=((-cross_section.width / 2) * offset_center_line, 0),
-        arrowprops=center_line_style,
-        verticalalignment="center",
-        horizontalalignment="right",
-    )
-
-    # plot diameter lines
-    diameter_line_style = {"arrowstyle": ArrowStyle("<->", head_length=0.5, head_width=0.5)}
-    offset_width = (-cross_section.height / 2) * offset_width_line
-    ax.annotate(
-        text="",
-        xy=(-cross_section.width / 2, offset_width),
-        xytext=(cross_section.width / 2, offset_width),
-        verticalalignment="center",
-        horizontalalignment="center",
-        arrowprops=diameter_line_style,
-        annotation_clip=False,
-    )
-    ax.text(
-        s=custom_width_text if custom_width_text else f"{cross_section.width:.0f} mm",
-        x=0,
-        y=offset_width,
-        verticalalignment="bottom",
-        horizontalalignment="center",
-        fontsize=font_size_dimension,
-    )
-
-    offset_height = (-cross_section.width / 2) * offset_height_line
-    ax.annotate(
-        text="",
-        xy=(offset_height, cross_section.height / 2),
-        xytext=(offset_height, -cross_section.height / 2),
-        verticalalignment="center",
-        horizontalalignment="center",
-        arrowprops=diameter_line_style,
-        rotation=90,
-        annotation_clip=False,
-    )
-    ax.text(
-        s=custom_height_text if custom_height_text else f"{cross_section.height:.0f} mm",
-        x=offset_height,
-        y=0,
-        verticalalignment="center",
-        horizontalalignment="right",
-        fontsize=font_size_dimension,
-        rotation=90,
-    )
-
-    # start building legend
-    legend_text = f"{cross_section.concrete_material.concrete_class.value} - {cross_section.steel_material.name}"
-
-    # add stirrups to plot and legend
-    if cross_section.stirrups:
-        legend_text += f"\nStirrups ({sum(stirrup.as_w for stirrup in cross_section.stirrups):.0f}mm²/m):"
-        for stirrup in cross_section.stirrups:
-            legend_text += f"\n  ⌀{stirrup.diameter}-{stirrup.distance} mm (b:{stirrup.ctc_distance_legs:.0f} mm) ({stirrup.as_w:.0f} mm²/m)"
-            left_bottom = stirrup.coordinates[1]  # left bottom point of the stirrup (center line)
-            ax.add_patch(
-                RectanglePatch(
-                    xy=(left_bottom.x - stirrup.diameter / 2, left_bottom.y - stirrup.diameter / 2),
-                    width=stirrup.ctc_distance_legs + stirrup.diameter,
-                    height=cross_section.height - cross_section.covers.upper - cross_section.covers.lower,
-                    facecolor=IDEA_STIRRUP_COLOR,
-                    fill=True,
-                )
-            )
-            ax.add_patch(
-                RectanglePatch(
-                    xy=(left_bottom.x + stirrup.diameter / 2, left_bottom.y + stirrup.diameter / 2),
-                    width=stirrup.ctc_distance_legs - stirrup.diameter,
-                    height=cross_section.height - cross_section.covers.upper - cross_section.covers.lower - 2 * stirrup.diameter,
-                    facecolor=IDEA_CROSS_SECTION_COLOR,
-                    fill=True,
-                )
-            )
-
-    # add longitudinal_rebars to plot and legend
-    if cross_section.longitudinal_rebars:
-        legend_text += f"\nReinforcement ({sum(rebar.area for rebar in cross_section.longitudinal_rebars):.0f}mm²/m): "
-        for rebar in cross_section.longitudinal_rebars:
-            ax.add_patch(CirclePatch(xy=(rebar.x, rebar.y), radius=rebar.radius, linewidth=1, color=IDEA_REBAR_COLOR))
-
-    # add single longitudinal_rebar to legend
-    if cross_section._single_longitudinal_rebars:
-        rebar_diameters: dict[float, list[Rebar]] = {}
-        for rebar in cross_section._single_longitudinal_rebars:
-            try:
-                rebar_diameters[rebar.diameter].append(rebar)
-            except KeyError:
-                rebar_diameters[rebar.diameter] = [rebar]
-        for _diameter, _rebars in rebar_diameters.items():
-            legend_text += f"\n  {len(_rebars)}⌀{round(_diameter, 2)} ({int(sum(rebar.area for rebar in _rebars))} mm²/m)"
-
-    # add rebar configurations to legend (quantity on edge) (if present)
-    if cross_section._reinforcement_by_quantity_on_edge:
-        for configuration in cross_section._reinforcement_by_quantity_on_edge:
-            position = ""
-            if configuration.edge in [Edges.LEFT_SIDE, Edges.RIGHT_SIDE]:
-                y_position = cross_section._get_rebars_from_reinforcement_configuration(configuration)[0].x
-                position += f"[y:{y_position:.0f}mm]"
-            if configuration.edge in [Edges.UPPER_SIDE, Edges.LOWER_SIDE]:
-                z_position = cross_section._get_rebars_from_reinforcement_configuration(configuration)[0].y
-                position += f"[z:{z_position:.0f}mm]"
-            legend_text += f"\n  {position} {configuration.n}⌀{configuration.diameter} ({configuration.area:.0f} mm²/m)"
-
-    # add rebar configurations to legend (quantity in line) (if present)
-    if cross_section._reinforcement_layer_in_line:
-        for line_configuration in cross_section._reinforcement_layer_in_line:
-            legend_text += f"\n  {line_configuration.n}⌀{line_configuration.diameter} ({line_configuration.area:.0f} mm²/m)"
-
-    # plot legend
-    if include_legend:
-        if cross_section.stirrups or cross_section.longitudinal_rebars:
-            legend_text += "\n" + cross_section.covers.get_covers_info()
-        if custom_legend_text:
-            legend_text = custom_legend_text
-        ax.annotate(
-            text=legend_text,
-            xy=((cross_section.width / 2) * offset_center_line, -cross_section.height / 2),
-            verticalalignment="bottom",
-            horizontalalignment="left",
-            fontsize=font_size_legend,
-            annotation_clip=False,
-        )
-
-    # set limits and title
-    ax.axis("off")
-    ax.axis("equal")
-    ax.set_title(title, fontdict={"fontsize": font_size_title})
-
-    return ax
+        return self.plotter.plot(show=True)
 
 
 if __name__ == "__main__":
@@ -1807,5 +1569,3 @@ if __name__ == "__main__":
     )
 
     cs.plot()
-
-    plt.show()

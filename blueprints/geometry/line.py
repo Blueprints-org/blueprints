@@ -2,7 +2,7 @@
 # ruff: noqa: TRY004
 
 from enum import Enum
-from typing import Self
+from typing import Self  # type: ignore[attr-defined]
 
 import numpy as np
 from shapely import Point
