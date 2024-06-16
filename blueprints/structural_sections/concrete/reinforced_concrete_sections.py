@@ -1472,25 +1472,70 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
 
     def plot(
         self,
-        figure_size: tuple[float, float] = (15.0, 8.0),
-        include_legend: bool = True,
-        title: str = "",
+        figsize: tuple[float, float] = (15.0, 8.0),
+        title: str | None = None,
         font_size_title: float = 18.0,
-        font_size_dimension: float = 12.0,
         font_size_legend: float = 10.0,
-        custom_legend_text: str = "",
-        custom_width_text: str = "",
-        custom_height_text: str = "",
-        offset_width_line: float = 1.25,
-        offset_height_line: float = 1.2,
+        include_legend: bool = True,
+        font_size_dimension: float = 12.0,
+        custom_text_legend: str | None = None,
+        custom_text_width: str | None = None,
+        custom_text_height: str | None = None,
+        offset_line_width: float = 1.25,
+        offset_line_height: float = 1.2,
+        show: bool = False,
+        axes_i: int = 0,
     ) -> plt.Figure:
         """Get matplotlib figure plot of the reinforced cross-section including longitudinal_rebars and stirrups.
 
+        Parameters
+        ----------
+        figsize: tuple[float, float]
+            Size of the plot window.
+        title: str
+            Title of the plot.
+        font_size_title: float
+            Font size of the title.
+        font_size_legend: float
+            Font size of the legend.
+        include_legend: bool
+            Include legend in the plot.
+        font_size_dimension: float
+            Font size of the dimensions.
+        custom_text_legend: str
+            Custom text for the legend.
+        custom_text_width: str
+            Custom text for the width dimension. Replaces the width of the cross-section with the custom text.
+        custom_text_height: str
+            Custom text for the height dimension. Replaces the height of the cross-section with the custom text.
+        offset_line_width: float
+            Offset of the width line.
+        offset_line_height: float
+            Offset of the height line.
+        show: bool
+            Show the plot.
+        axes_i: int
+            Index of the axes to plot on. Default is 0.
+
         Returns
         -------
-        Figure
+        plt.Figure
         """
-        return self.plotter.plot(show=True)
+        return self.plotter.plot(
+            figsize=figsize,
+            title=title,
+            font_size_title=font_size_title,
+            font_size_legend=font_size_legend,
+            include_legend=include_legend,
+            font_size_dimension=font_size_dimension,
+            custom_text_legend=custom_text_legend,
+            custom_text_width=custom_text_width,
+            custom_text_height=custom_text_height,
+            offset_line_width=offset_line_width,
+            offset_line_height=offset_line_height,
+            show=show,
+            axes_i=axes_i,
+        )
 
 
 if __name__ == "__main__":
@@ -1568,4 +1613,4 @@ if __name__ == "__main__":
         material=steel,
     )
 
-    cs.plot()
+    cs.plot(show=True)

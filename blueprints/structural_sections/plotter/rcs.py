@@ -31,11 +31,17 @@ class RectangularCrossSectionPlotter:
 
     def plot(
         self,
-        figsize: tuple[float, float] = (8, 6),
+        figsize: tuple[float, float] = (15.0, 8.0),
         title: str | None = None,
         font_size_title: float = 18.0,
         font_size_legend: float = 10.0,
         include_legend: bool = True,
+        font_size_dimension: float = 12.0,
+        custom_text_legend: str | None = None,
+        custom_text_width: str | None = None,
+        custom_text_height: str | None = None,
+        offset_line_width: float = 1.25,
+        offset_line_height: float = 1.2,
         show: bool = False,
         axes_i: int = 0,
     ) -> plt.Figure:
@@ -53,6 +59,18 @@ class RectangularCrossSectionPlotter:
             Font size of the legend.
         include_legend: bool
             Include legend in the plot.
+        font_size_dimension: float
+            Font size of the dimensions.
+        custom_text_legend: str
+            Custom text for the legend.
+        custom_text_width: str
+            Custom text for the width dimension. Replaces the width of the cross-section with the custom text.
+        custom_text_height: str
+            Custom text for the height dimension. Replaces the height of the cross-section with the custom text.
+        offset_line_width: float
+            Offset of the width line.
+        offset_line_height: float
+            Offset of the height line.
         show: bool
             Show the plot.
         axes_i: int
@@ -66,7 +84,14 @@ class RectangularCrossSectionPlotter:
         self._start_plot(figsize=figsize)
         self._add_rectangle(axes_i=axes_i)
         self._add_center_lines(axes_i=axes_i)
-        self._add_dimension_lines(axes_i=axes_i)
+        self._add_dimension_lines(
+            axes_i=axes_i,
+            font_size_dimension=font_size_dimension,
+            custom_text_height=custom_text_height,
+            custom_text_width=custom_text_width,
+            offset_line_width=offset_line_width,
+            offset_line_height=offset_line_height,
+        )
         self._add_stirrups(axes_i=axes_i)
         self._add_longitudinal_rebars(axes_i=axes_i)
 
@@ -79,12 +104,16 @@ class RectangularCrossSectionPlotter:
         )
 
         if include_legend:
-            self._add_legend(axes_i=axes_i, font_size_legend=font_size_legend)
+            self._add_legend(
+                axes_i=axes_i,
+                font_size_legend=font_size_legend,
+                custom_legend_text=custom_text_legend,
+            )
         if show:
             plt.show()
         return self.fig
 
-    def _start_plot(self, figsize: tuple[float, float] = (8, 6)) -> tuple[float, float]:
+    def _start_plot(self, figsize: tuple[float, float] = (15.0, 8.0)) -> tuple[float, float]:
         """Starts the plot by initialising a matplotlib plot window of the given size.
 
         Parameters
@@ -155,8 +184,8 @@ class RectangularCrossSectionPlotter:
         self,
         axes_i: int = 0,
         style: mplpatches.ArrowStyle | None = None,
-        offset_width_line: float = 1.25,
-        offset_height_line: float = 1.2,
+        offset_line_width: float = 1.25,
+        offset_line_height: float = 1.2,
         custom_text_width: str | None = None,
         custom_text_height: str | None = None,
         font_size_dimension: float = 12.0,
@@ -169,9 +198,9 @@ class RectangularCrossSectionPlotter:
             Index of the axes to plot on. Default is 0.
         style: dict[str, float]
             Style of the dimension lines. Check matplotlib documentation for more information (Annotation-arrowprops).
-        offset_width_line: float
+        offset_line_width: float
             Offset of the width line.
-        offset_height_line: float
+        offset_line_height: float
             Offset of the height line.
         custom_text_width: str
             Custom text for the width dimension. Replaces the width of the cross-section with the custom text.
@@ -184,7 +213,7 @@ class RectangularCrossSectionPlotter:
         diameter_line_style = {
             "arrowstyle": style or mplpatches.ArrowStyle(stylename="<->", head_length=0.5, head_width=0.5),
         }
-        offset_width = (-self.cross_section.height / 2) * offset_width_line
+        offset_width = (-self.cross_section.height / 2) * offset_line_width
         self.axes[axes_i].annotate(
             text="",
             xy=(-self.cross_section.width / 2, offset_width),
@@ -204,7 +233,7 @@ class RectangularCrossSectionPlotter:
         )
 
         # add the height dimension line
-        offset_height = (-self.cross_section.width / 2) * offset_height_line
+        offset_height = (-self.cross_section.width / 2) * offset_line_height
         self.axes[axes_i].annotate(
             text="",
             xy=(offset_height, self.cross_section.height / 2),
