@@ -111,6 +111,7 @@ class RectangularCrossSectionPlotter:
             )
         if show:
             plt.show()
+        assert self.fig is not None
         return self.fig
 
     def _start_plot(self, figsize: tuple[float, float] = (15.0, 8.0)) -> tuple[float, float]:
