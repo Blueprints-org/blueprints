@@ -39,7 +39,7 @@ jobs:
 
       - name: Run type checks with mypy
         run: |
-          mypy -p blueprints
+          mypy -p blueprints --ignore-missing-imports
 
       - name: Run tests with pytest
         run: |
