@@ -8,6 +8,8 @@ from shapely import Point, Polygon
 
 from blueprints.type_alias import MM, MM2
 
+RCS_CROSS_SECTION_COLOR = (0.98, 0.98, 0.824)
+
 
 class Edges(Enum):
     """Enumeration of possible edges of square, rectangular or circular cross-sections. X direction is in the length axis of the cross-section."""
@@ -236,6 +238,3 @@ class CrossSection(Protocol):
 
     def contains_point(self, x: MM, y: MM) -> bool:
         """Check if a point (x, y) is inside the cross-section."""
-
-
-RCS_CROSS_SECTION_COLOR = (0.98, 0.98, 0.824)
