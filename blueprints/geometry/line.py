@@ -106,26 +106,25 @@ class Line:
         Point
             Point within the line in a given distance from the reference point.
         """
-        if not isinstance(distance, (int, float)):
-            msg = "Distance must be a number (integer or float)"
-            raise ValueError(msg)
         if distance > self.length:
             msg = f"Distance from start point must be equal or less than total length of the line. Length={self.length}"
             raise ValueError(msg)
         if distance < 0:
             msg = "Given Distance must be a positive number."
             raise ValueError(msg)
-        if reference_point not in [Reference.START, Reference.END]:
-            msg = "Invalid input for 'reference_point', use Reference.START or Reference.END"
-            raise ValueError(msg)
 
-        internal_x_coordinate = self.start_point.x + (distance / self.length) * (self.end_point.x - self.start_point.x)
-        internal_y_coordinate = self.start_point.y + (distance / self.length) * (self.end_point.y - self.start_point.y)
-        internal_z_coordinate = self.start_point.z + (distance / self.length) * (self.end_point.z - self.start_point.z)
-        if reference_point == Reference.END:
-            internal_x_coordinate = self.end_point.x + (distance / self.length) * (self.start_point.x - self.end_point.x)
-            internal_y_coordinate = self.end_point.y + (distance / self.length) * (self.start_point.y - self.end_point.y)
-            internal_z_coordinate = self.end_point.z + (distance / self.length) * (self.start_point.z - self.end_point.z)
+        match reference_point:
+            case Reference.START:
+                internal_x_coordinate = self.start_point.x + (distance / self.length) * (self.end_point.x - self.start_point.x)
+                internal_y_coordinate = self.start_point.y + (distance / self.length) * (self.end_point.y - self.start_point.y)
+                internal_z_coordinate = self.start_point.z + (distance / self.length) * (self.end_point.z - self.start_point.z)
+            case Reference.END:
+                internal_x_coordinate = self.end_point.x + (distance / self.length) * (self.start_point.x - self.end_point.x)
+                internal_y_coordinate = self.end_point.y + (distance / self.length) * (self.start_point.y - self.end_point.y)
+                internal_z_coordinate = self.end_point.z + (distance / self.length) * (self.start_point.z - self.end_point.z)
+            case _:
+                msg = "Invalid input for 'reference_point', use Reference.START or Reference.END"
+                raise ValueError(msg)
         return Point(internal_x_coordinate, internal_y_coordinate, internal_z_coordinate)
 
     def extend(self, extra_length: float, direction: Reference = Reference.END) -> None:
@@ -143,20 +142,20 @@ class Line:
         None
             It overrides the end point of the line. It does not have a return
         """
-        if direction not in [Reference.START, Reference.END]:
-            msg = "Invalid input for 'direction', use Reference.START or Reference.END"
-            raise ValueError(msg)
-
-        if direction == Reference.END:
-            extra_x_coordinate = self.start_point.x + ((self.length + extra_length) / self.length) * (self.end_point.x - self.start_point.x)
-            extra_y_coordinate = self.start_point.y + ((self.length + extra_length) / self.length) * (self.end_point.y - self.start_point.y)
-            extra_z_coordinate = self.start_point.z + ((self.length + extra_length) / self.length) * (self.end_point.z - self.start_point.z)
-            self.end_point = Point(extra_x_coordinate, extra_y_coordinate, extra_z_coordinate)
-        if direction == Reference.START:
-            extra_x_coordinate = self.end_point.x + ((self.length + extra_length) / self.length) * (self.start_point.x - self.end_point.x)
-            extra_y_coordinate = self.end_point.y + ((self.length + extra_length) / self.length) * (self.start_point.y - self.end_point.y)
-            extra_z_coordinate = self.end_point.z + ((self.length + extra_length) / self.length) * (self.start_point.z - self.end_point.z)
-            self.start_point = Point(extra_x_coordinate, extra_y_coordinate, extra_z_coordinate)
+        match direction:
+            case Reference.END:
+                extra_x_coordinate = self.start_point.x + ((self.length + extra_length) / self.length) * (self.end_point.x - self.start_point.x)
+                extra_y_coordinate = self.start_point.y + ((self.length + extra_length) / self.length) * (self.end_point.y - self.start_point.y)
+                extra_z_coordinate = self.start_point.z + ((self.length + extra_length) / self.length) * (self.end_point.z - self.start_point.z)
+                self.end_point = Point(extra_x_coordinate, extra_y_coordinate, extra_z_coordinate)
+            case Reference.START:
+                extra_x_coordinate = self.end_point.x + ((self.length + extra_length) / self.length) * (self.start_point.x - self.end_point.x)
+                extra_y_coordinate = self.end_point.y + ((self.length + extra_length) / self.length) * (self.start_point.y - self.end_point.y)
+                extra_z_coordinate = self.end_point.z + ((self.length + extra_length) / self.length) * (self.start_point.z - self.end_point.z)
+                self.start_point = Point(extra_x_coordinate, extra_y_coordinate, extra_z_coordinate)
+            case _:
+                msg = "Invalid input for 'direction', use Reference.START or Reference.END"
+                raise ValueError(msg)
 
     def get_evenly_spaced_points(self, n: int = 2) -> list[Point]:
         """Return a list of evenly spaced internal points of the line from start to end point with an n number of desired points.

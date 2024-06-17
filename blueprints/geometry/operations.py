@@ -45,26 +45,26 @@ def calculate_rotation_angle(
     if start_point == end_point:
         msg = f"Start and end point can't be equal. start={start_point} | end={end_point}"
         raise ValueError(msg)
-    if coordinate_system not in [CoordinateSystemOptions.XY, CoordinateSystemOptions.XZ, CoordinateSystemOptions.YZ]:
-        msg = f"{coordinate_system} not supported yet."
-        raise ValueError(msg)
 
-    # get coordinates, XY is standard
-    horizontal_1, vertical_1, _ = start_point
-    horizontal_2, vertical_2, _ = end_point
-    dx = abs(horizontal_1 - horizontal_2)
-    dy = abs(vertical_1 - vertical_2)
-
-    if coordinate_system == CoordinateSystemOptions.XZ:
-        horizontal_1, _, vertical_1 = start_point
-        horizontal_2, _, vertical_2 = end_point
-        dx = abs(horizontal_1 - horizontal_2)
-        dy = abs(vertical_1 - vertical_2)
-    if coordinate_system == CoordinateSystemOptions.YZ:
-        _, horizontal_1, vertical_1 = start_point
-        _, horizontal_2, vertical_2 = end_point
-        dx = abs(horizontal_1 - horizontal_2)
-        dy = abs(vertical_1 - vertical_2)
+    match coordinate_system:
+        case CoordinateSystemOptions.XY:
+            horizontal_1, vertical_1 = start_point.x, start_point.y
+            horizontal_2, vertical_2 = end_point.x, end_point.y
+            dx = abs(horizontal_1 - horizontal_2)
+            dy = abs(vertical_1 - vertical_2)
+        case CoordinateSystemOptions.XZ:
+            horizontal_1, vertical_1 = start_point.x, start_point.z
+            horizontal_2, vertical_2 = end_point.x, end_point.z
+            dx = abs(horizontal_1 - horizontal_2)
+            dy = abs(vertical_1 - vertical_2)
+        case CoordinateSystemOptions.YZ:
+            horizontal_1, vertical_1 = start_point.y, start_point.z
+            horizontal_2, vertical_2 = end_point.y, end_point.z
+            dx = abs(horizontal_1 - horizontal_2)
+            dy = abs(vertical_1 - vertical_2)
+        case _:
+            msg = f"Invalid coordinate system. '{coordinate_system}' not supported yet."
+            raise ValueError(msg)
 
     # calculate rotation
     if horizontal_1 < horizontal_2 and vertical_1 < vertical_2:
