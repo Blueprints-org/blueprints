@@ -22,7 +22,7 @@ cs = RectangularReinforcedCrossSection(
 )
 
 # Change the covers of the cross-section ( if necessary )
-cs.set_covers(upper_edge=60, lower_edge=45)
+cs.set_covers(upper=60, lower=45)
 
 # Add reinforcement to the cross-section
 cs.add_longitudinal_reinforcement_by_quantity_on_edge(

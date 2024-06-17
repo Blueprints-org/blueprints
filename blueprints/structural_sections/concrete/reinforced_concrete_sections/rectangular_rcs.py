@@ -70,28 +70,28 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
 
     def set_covers(
         self,
-        upper_edge: MM | None = None,
-        right_edge: MM | None = None,
-        lower_edge: MM | None = None,
-        left_edge: MM | None = None,
+        upper: MM | None = None,
+        right: MM | None = None,
+        lower: MM | None = None,
+        left: MM | None = None,
     ) -> None:
         """Method to change covers in the cross-section.
 
         Parameters
         ----------
-        upper_edge: MM | None, default None
+        upper: MM | None, default None
             New reinforcement coverage for the upper side of the cross-section [mm]
-        right_edge: MM | None, default None
+        right: MM | None, default None
             New reinforcement coverage for the right side of the cross-section [mm]
-        lower_edge: MM | None, default None
+        lower: MM | None, default None
             New reinforcement coverage for the lower side of the cross-section [mm]
-        left_edge: MM | None, default None
+        left: MM | None, default None
             New reinforcement coverage for the left side of the cross-section [mm]
         """
-        self.covers.upper = upper_edge if upper_edge else self.covers.upper
-        self.covers.right = right_edge if right_edge else self.covers.right
-        self.covers.lower = lower_edge if lower_edge else self.covers.lower
-        self.covers.left = left_edge if left_edge else self.covers.left
+        self.covers.upper = upper if upper else self.covers.upper
+        self.covers.right = right if right else self.covers.right
+        self.covers.lower = lower if lower else self.covers.lower
+        self.covers.left = left if left else self.covers.left
 
     def add_stirrups(
         self,
