@@ -227,3 +227,66 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
         }
 
         assert actual[representation] == expected, f"{representation} representation failed."
+
+    def test_property_lhs(self) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        gamma_f_fat = 1.5  # -
+        delta_sigma_s_equ_n_star = 10.0  # MPa
+        gamma_s_fat = 2.0  # -
+        delta_sigma_rsk_n_star = 40.0  # MPa
+
+        # Object to test
+        form = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        ).left_hand_side
+
+        # Expected result, manually calculated
+        expected = 15.0
+
+        assert form == expected
+
+    def test_property_rhs(self) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        gamma_f_fat = 1.5  # -
+        delta_sigma_s_equ_n_star = 10.0  # MPa
+        gamma_s_fat = 2.0  # -
+        delta_sigma_rsk_n_star = 40.0  # MPa
+
+        # Object to test
+        form = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        ).right_hand_side
+
+        # Expected result, manually calculated
+        expected = 20.0
+
+        assert form == expected
+
+    def test_property_ratio(self) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        gamma_f_fat = 1.5  # -
+        delta_sigma_s_equ_n_star = 10.0  # MPa
+        gamma_s_fat = 2.0  # -
+        delta_sigma_rsk_n_star = 40.0  # MPa
+
+        # Object to test
+        form = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        ).ratio
+
+        # Expected result, manually calculated
+        expected = 0.75
+
+        assert form == expected

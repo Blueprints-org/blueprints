@@ -143,6 +143,51 @@ class Form6Dot71CriteriaBasedOnStressRange(Formula):
         self.delta_sigma_rsk_n_star = delta_sigma_rsk_n_star
         self.gamma_s_fat = gamma_s_fat
 
+    @property
+    def left_hand_side(self) -> MPA:
+        """Calculate the left hand side of the equation.
+
+        Parameters
+        ----------
+        gamma_f_fat : DIMENSIONLESS
+            [:math:`γ_{F,fat}`] Partial factor for fatigue actions [:math:`-`].
+        delta_sigma_s_equ_n_star : MPA
+            [:math:`Δσ_{s,equ}(N*)`] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [:math:`MPa`].
+
+        Returns
+        -------
+            MPA: Left hand side, loading side of the equation
+        """
+        return Form6Dot71CriteriaBasedOnStressRangeLHS(
+            gamma_f_fat=self.gamma_f_fat,
+            delta_sigma_s_equ_n_star=self.delta_sigma_s_equ_n_star,
+        )
+
+    @property
+    def right_hand_side(self) -> MPA:
+        """Calculate the left hand side of the equation.
+
+        Parameters
+        ----------
+        delta_sigma_rsk_n_star : MPA
+            [:math:`Δσ_{Rsk}(N*)`] Stress range at N* cycles from the S-N curve in Figure 6.30 [:math:`MPa`].
+        gamma_s_fat : DIMENSIONLESS
+            [:math:`γ_{S,fat}`] Partial factor for reinforcing or prestressing steel under fatigue loading [:math:`-`].
+
+        Returns
+        -------
+            MPA: Right hand side, resistance side of the equation
+        """
+        return Form6Dot71CriteriaBasedOnStressRangeRHS(
+            gamma_s_fat=self.gamma_s_fat,
+            delta_sigma_rsk_n_star=self.delta_sigma_rsk_n_star,
+        )
+
+    @property
+    def ratio(self) -> DIMENSIONLESS:
+        """Ratio between left hand side and right hand side of the formula, commonly referred to as unity check."""
+        return self.left_hand_side / self.right_hand_side
+
     @staticmethod
     def _evaluate(
         gamma_f_fat: DIMENSIONLESS,
