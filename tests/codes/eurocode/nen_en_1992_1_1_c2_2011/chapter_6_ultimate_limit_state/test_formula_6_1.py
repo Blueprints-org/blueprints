@@ -50,3 +50,24 @@ class TestForm6Dot1DesignShearStrength:
 
         with pytest.raises(ValueError):
             Form6Dot1DesignShearStrength(v_rd_s=v_rd_s, v_ccd=v_ccd, v_td=v_td)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            ("complete", r"V_{Rd} = V_{Rd,s} + V_{ccd} + V_{td} = 2.000 + 3.000 + 4.000 = 9.000"),
+            ("short", r"V_{Rd} = 9.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        v_rd_s = 2.0
+        v_ccd = 3.0
+        v_td = 4.0
+
+        # Object to test
+        form_6_1_latex = Form6Dot1DesignShearStrength(v_rd_s=v_rd_s, v_ccd=v_ccd, v_td=v_td).latex()
+
+        actual = {"complete": form_6_1_latex.complete, "short": form_6_1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
