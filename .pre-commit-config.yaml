@@ -17,7 +17,7 @@
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.9
+    rev: v0.4.7
     hooks:
       # Run the linter.
       - id: ruff
@@ -29,4 +29,4 @@ repos:
       rev: v1.10.0
       hooks:
       - id: mypy
-        language_version: python3.12
+        language_version: python3.11
