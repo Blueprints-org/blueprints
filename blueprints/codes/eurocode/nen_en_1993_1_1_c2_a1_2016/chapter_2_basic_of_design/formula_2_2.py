@@ -44,4 +44,3 @@ class Form2Dot2CharacteristicValueResistance(Formula):
             numeric_equation=rf"{self.r_d :.2f} \cdot {self.gamma_mi :.2f}",
             comparison_operator_label="=",
         )
-
