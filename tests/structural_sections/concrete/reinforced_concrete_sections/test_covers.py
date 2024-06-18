@@ -22,15 +22,15 @@ class TestCoversRectangular:
         # Upper and left covers are equal
         covers = CoversRectangular(upper=50.0, right=60.0, lower=50.0, left=70.0)
         expected_output = "Cover:\n  upper|lower: 50 mm\n  right: 60 mm\n  left: 70 mm"
-        assert covers.get_covers_info == expected_output
+        assert covers.get_covers_info() == expected_output
 
         # Upper and right covers are equal adnd lower and left covers are equal
         covers = CoversRectangular(upper=50.0, right=50.0, lower=60.0, left=60.0)
         expected_output = "Cover:\n  upper|right: 50 mm\n  lower|left: 60 mm"
-        assert covers.get_covers_info == expected_output
+        assert covers.get_covers_info() == expected_output
 
     def test_get_covers_info_with_three_equal_covers(self) -> None:
         """Test if the method `get_covers_info` returns the correct string when three covers are equal."""
         covers = CoversRectangular(upper=50.0, right=50.0, lower=50.0, left=60.0)
         expected_output = "Cover:\n  upper|lower|right: 50 mm\n  left: 60 mm"
-        assert covers.get_covers_info == expected_output
+        assert covers.get_covers_info() == expected_output
