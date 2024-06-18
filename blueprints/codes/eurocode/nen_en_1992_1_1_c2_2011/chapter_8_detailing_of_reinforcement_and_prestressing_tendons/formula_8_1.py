@@ -64,7 +64,7 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         return f_bt * KN_TO_N * ((1 / a_b) + 1 / (2 * diameter)) / f_cd
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.1."""
+        """Returns LatexFormula object for formula 8.1."""
         return LatexFormula(
             return_symbol=r"\Phi_{m,min}",
             result=f"{self:.2f}",

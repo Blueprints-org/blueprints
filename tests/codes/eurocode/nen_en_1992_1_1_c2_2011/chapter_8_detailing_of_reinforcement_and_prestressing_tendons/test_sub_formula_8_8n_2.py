@@ -145,3 +145,37 @@ class TestSubForm8Dot8nConcreteStress:
         manually_result = 144.412473
 
         assert sub_form_8_8n_2 == pytest.approx(expected=manually_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"\sigma_{td} = \min\left( 3 \cdot f_{cd}, \frac{f_{cd} \cdot \sigma_{cm}}{y} \right)"
+                    r" = \min\left(3 \cdot 50.00, \frac{50.00 \cdot 15.00}{0.12} \right) = 144.41"
+                ),
+            ),
+            ("short", r"\sigma_{td} = 144.41"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_ctd = 2.6  # MPa
+        sigma_cm = 15  # MPa
+        f_cd = 50  # MPa
+        x_function = 1.5  # -
+        y_function = SubForm8Dot8nFunctionY(x_function=x_function)
+
+        # Object to test
+        sub_form_8_8n_2_latex = SubForm8Dot8nConcreteStress(
+            f_ctd=f_ctd,
+            sigma_cm=sigma_cm,
+            y_function=y_function,
+            f_cd=f_cd,
+        ).latex()
+
+        actual = {"complete": sub_form_8_8n_2_latex.complete, "short": sub_form_8_8n_2_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
