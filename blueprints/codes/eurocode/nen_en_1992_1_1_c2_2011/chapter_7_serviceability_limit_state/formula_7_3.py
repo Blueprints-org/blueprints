@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, MM2, MPA
 from blueprints.unit_conversion import KN_TO_N
 
@@ -50,3 +51,13 @@ class Form7Dot3CoefficientKc(Formula):
         if f_ct_eff <= 0:
             raise ValueError("The value of f_ct_eff must be greater than zero.")
         return max(0.9 * (abs(f_cr) * KN_TO_N / (a_ct * f_ct_eff)), 0.5)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 7.3."""
+        return LatexFormula(
+            return_symbol=r"k_c",
+            result=f"{self:.3f}",
+            equation=r"\max\left(0.9 \cdot \frac{F_{cr}}{A_{ct} \cdot f_{ct,eff}}, 0.5\right)",
+            numeric_equation=rf"\max\left(0.9 \cdot \frac{{{self.f_cr:.3f}}}{{{self.a_ct:.3f} \cdot {self.f_ct_eff:.3f}}}, 0.5\right)",
+            comparison_operator_label="=",
+        )
