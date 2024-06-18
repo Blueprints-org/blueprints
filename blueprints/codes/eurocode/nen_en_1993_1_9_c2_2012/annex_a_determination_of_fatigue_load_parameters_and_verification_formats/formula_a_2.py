@@ -17,7 +17,7 @@ class FormADot2CriteriaBasedOnDamageAccumulation(Formula):
         self,
         d_d: DIMENSIONLESS,
     ) -> None:
-        """[:math:`OK / NOT OK`] Criteria met, based on damage accumulation.
+        """[:math:`CHECK`] Criteria met, based on damage accumulation.
 
         NEN-EN 1993-1-9+C2:2012 art.A.5 - Formula (A.1)
 
@@ -44,8 +44,8 @@ class FormADot2CriteriaBasedOnDamageAccumulation(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula A.2."""
         return LatexFormula(
-            return_symbol=r"OK / NOT OK",
-            result="OK" if self <= 1 else "NOT OK",
+            return_symbol=r"CHECK",
+            result="OK" if self <= 1 else r"NOT\;OK",
             equation=r"D_d \leq 1.0",
             numeric_equation=rf"{self.d_d:.3f} \leq 1.0",
             comparison_operator_label=r"\rightarrow",

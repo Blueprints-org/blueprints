@@ -160,12 +160,12 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
             (
                 "complete",
                 (
-                    r"OK / NOT OK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
+                    r"CHECK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
                     r"\leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} \rightarrow "
-                    r"1.500 \cdot 10.000 \leq \frac{10.000}{2.000} \rightarrow NOT OK"
+                    r"1.500 \cdot 10.000 \leq \frac{10.000}{2.000} \rightarrow NOT\;OK"
                 ),
             ),
-            ("short", r"OK / NOT OK \rightarrow NOT OK"),
+            ("short", r"CHECK \rightarrow NOT\;OK"),
         ],
     )
     def test_latex_not_ok(self, representation: str, expected: str) -> None:
@@ -197,12 +197,12 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
             (
                 "complete",
                 (
-                    r"OK / NOT OK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
+                    r"CHECK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
                     r"\leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} \rightarrow "
                     r"1.500 \cdot 10.000 \leq \frac{40.000}{2.000} \rightarrow OK"
                 ),
             ),
-            ("short", r"OK / NOT OK \rightarrow OK"),
+            ("short", r"CHECK \rightarrow OK"),
         ],
     )
     def test_latex_ok(self, representation: str, expected: str) -> None:

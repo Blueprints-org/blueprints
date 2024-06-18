@@ -118,7 +118,7 @@ class Form6Dot71CriteriaBasedOnStressRange(Formula):
         delta_sigma_rsk_n_star: MPA,
         gamma_s_fat: DIMENSIONLESS,
     ) -> None:
-        """[:math:`OK / NOT OK`] Criteria met, based on damage accumulation.
+        """[:math:`CHECK`] Criteria met, based on damage accumulation.
 
         NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
 
@@ -203,8 +203,8 @@ class Form6Dot71CriteriaBasedOnStressRange(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.71."""
         return LatexFormula(
-            return_symbol=r"OK / NOT OK",
-            result="OK" if self else "NOT OK",
+            return_symbol=r"CHECK",
+            result="OK" if self else r"NOT\;OK",
             equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) \leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
             numeric_equation=(
                 rf"{self.gamma_f_fat:.3f} \cdot {self.delta_sigma_s_equ_n_star:.3f} "
