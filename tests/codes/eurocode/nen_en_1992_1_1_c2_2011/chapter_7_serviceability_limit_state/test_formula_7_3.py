@@ -48,3 +48,28 @@ class TestForm7Dot3CoefficientKc:
         f_ct_eff = -1
         with pytest.raises(ValueError):
             Form7Dot3CoefficientKc(f_cr=f_cr, a_ct=a_ct, f_ct_eff=f_ct_eff)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"k_c = \max\left(0.9 \cdot \frac{F_{cr}}{A_{ct} \cdot f_{ct,eff}}, 0.5\right) = "
+                r"\max\left(0.9 \cdot \frac{457.000}{50000.000 \cdot 2.900}, 0.5\right) = 2.837",
+            ),
+            ("short", r"k_c = 2.837"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_cr = 457
+        a_ct = 100 * 500
+        f_ct_eff = 2.9
+
+        # Object to test
+        form_7_3_latex = Form7Dot3CoefficientKc(f_cr=f_cr, a_ct=a_ct, f_ct_eff=f_ct_eff).latex()
+
+        actual = {"complete": form_7_3_latex.complete, "short": form_7_3_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
