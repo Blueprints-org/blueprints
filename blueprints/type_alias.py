@@ -27,6 +27,7 @@ KN_M = float
 # <editor-fold desc="MOMENTS">
 NM = float
 KNM = float
+KNM_M = float
 # </editor-fold>
 
 # <editor-fold desc="STRESSES">
