@@ -88,10 +88,10 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         left: MM | None, default None
             New reinforcement coverage for the left side of the cross-section [mm]
         """
-        self.covers.upper = upper if upper else self.covers.upper
-        self.covers.right = right if right else self.covers.right
-        self.covers.lower = lower if lower else self.covers.lower
-        self.covers.left = left if left else self.covers.left
+        self.covers.upper = upper or self.covers.upper
+        self.covers.right = right or self.covers.right
+        self.covers.lower = lower or self.covers.lower
+        self.covers.left = left or self.covers.left
 
     def add_stirrups(
         self,
