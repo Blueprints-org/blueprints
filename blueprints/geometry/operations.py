@@ -1,5 +1,5 @@
 """Geometry operations module."""
-# ruff: noqa: C901, PLR0911
+# ruff: noqa: C901, PLR0911, PLR0912
 
 import math
 from enum import Enum
@@ -40,11 +40,35 @@ def calculate_rotation_angle(
     float
         rotation of end point relative to begin node in radians in the given plane [rad].
 
+    Raises
+    ------
+    TypeError
+        If parameters are not of the expected type.
+    ValueError
+        If start_point and end_point are the same.
+        If start_point or end_point do not have z value when rotation angle in XZ or YZ plane
+        is requested.
     """
-    # get wrong input
+    # Check types of parameters
+    if not isinstance(start_point, Point):
+        raise TypeError(f"Expected 'shapely.Point' type for 'start_point', but got '{type(start_point)}'.")
+
+    if not isinstance(end_point, Point):
+        raise TypeError(f"Expected 'shapely.Point' type for 'end_point', but got '{type(end_point)}'.")
+
+    if not isinstance(coordinate_system, CoordinateSystemOptions):
+        raise TypeError(f"Expected 'CoordinateSystemOptions' type for 'coordinate_system', but got '{type(coordinate_system)}'.")
+
+    # Check that start point and end point are not equal
     if start_point == end_point:
-        msg = f"Start and end point can't be equal. start={start_point} | end={end_point}"
-        raise ValueError(msg)
+        raise ValueError(f"Start and end point can't be equal. start={start_point} | end={end_point}")
+
+    # Check that start point and end point have z value if coordinate_system is XZ or YZ.
+    if coordinate_system != CoordinateSystemOptions.XY:
+        if not start_point.has_z:
+            raise ValueError(f"Coordinate system {coordinate_system} requires z value in 'start_point'.")
+        if not end_point.has_z:
+            raise ValueError(f"Coordinate system {coordinate_system} requires z value in 'end_point'.")
 
     match coordinate_system:
         case CoordinateSystemOptions.XY:
@@ -62,9 +86,6 @@ def calculate_rotation_angle(
             horizontal_2, vertical_2 = end_point.y, end_point.z
             dx = abs(horizontal_1 - horizontal_2)
             dy = abs(vertical_1 - vertical_2)
-        case _:
-            msg = f"Invalid coordinate system. '{coordinate_system}' not supported yet."
-            raise ValueError(msg)
 
     # calculate rotation
     if horizontal_1 < horizontal_2 and vertical_1 < vertical_2:
