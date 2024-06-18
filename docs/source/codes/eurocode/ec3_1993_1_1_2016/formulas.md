@@ -10,7 +10,7 @@ Total of 108 formulas present.
 | Formula number | Done | Remarks | Object name |
 |:---------------|:----:|:--------|:------------|
 | 2.1            | :x:  |         |             |
-| 2.2            | :x:  |         |             |
+| 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance |
 | 5.1            | :x:  |         |             |
 | 5.2            | :x:  |         |             |
 | 5.3            | :x:  |         |             |

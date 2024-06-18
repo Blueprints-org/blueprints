@@ -34,3 +34,10 @@ class TestForm2Dot2CharacteristicValueResistance:
         gamma_mi = -1.1
         with pytest.raises(NegativeValueError):
             Form2Dot2CharacteristicValueResistance(r_d=r_d, gamma_mi=gamma_mi)
+
+    def test_latex_complete(self) -> None:
+        """Tests the latex representation of the formula."""
+        r_d = 100
+        gamma_mi = 1.1
+        form_2_2 = Form2Dot2CharacteristicValueResistance(r_d=r_d, gamma_mi=gamma_mi)
+        assert form_2_2.latex().complete == r"R_{k} = R_d \cdot \gamma_{Mi} = 100.00 \cdot 1.10 = 110.00"
