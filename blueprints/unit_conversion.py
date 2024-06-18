@@ -4,6 +4,7 @@ import math
 
 # <editor-fold desc="Forces conversion">
 KN_TO_N = 1e3
+KNM_TO_NMM = 1e6
 N_TO_KN = 1e-3
 MM3_TO_M3 = 1e-9
 MPA_TO_KPA = 1e3
