@@ -1,5 +1,6 @@
 """Cross-section shapes for reinforced concrete sections."""
 
+import math
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Protocol
@@ -60,7 +61,7 @@ class CircularCrossSection:
         float
             The area of the circle.
         """
-        return self.circle.area
+        return math.pi * self.radius**2.0
 
     @property
     def perimeter(self) -> MM:
@@ -72,7 +73,7 @@ class CircularCrossSection:
         float
             The perimeter of the circle.
         """
-        return self.circle.length
+        return math.pi * self.radius * 2.0
 
     @property
     def centroid(self) -> Point:
