@@ -57,8 +57,8 @@ class TestSubForm8Dot16Alpha1:
         release_type = "gradual"
 
         # Object to test
-        form_8_15_p1_latex = SubForm8Dot16Alpha1(release_type=release_type).latex()
+        form_8_16_p1_latex = SubForm8Dot16Alpha1(release_type=release_type).latex()
 
-        actual = {"complete": form_8_15_p1_latex.complete, "short": form_8_15_p1_latex.short}
+        actual = {"complete": form_8_16_p1_latex.complete, "short": form_8_16_p1_latex.short}
 
         assert actual[representation] == expected, f"{representation} representation failed."
