@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
@@ -46,3 +47,13 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
             n_b=n_b,
         )
         return min(diameter * np.sqrt(n_b), 55)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.14."""
+        return LatexFormula(
+            return_symbol=r"\Phi_n",
+            result=f"{self:.2f}",
+            equation=r"\min \left(55, \Phi \cdot \sqrt{n_b} \right)",
+            numeric_equation=rf"\min \left(55, {self.diameter:.2f} \cdot \sqrt{{{self.n_b:.2f}}} \right)",
+            comparison_operator_label="=",
+        )
