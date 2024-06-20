@@ -68,7 +68,7 @@ class TestForm8Dot3RequiredAnchorageLength:
         [
             (
                 "complete",
-                r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.00",
+                r"l_{b,rqd} = \frac{\Phi}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.00",
             ),
             ("short", "l_{b,rqd} = 450.00"),
         ],

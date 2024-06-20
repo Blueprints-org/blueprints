@@ -52,7 +52,7 @@ class Form8Dot3RequiredAnchorageLength(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
-        latex_diameter = r"Ø"
+        latex_diameter = r"\Phi"
         latex_sigma_sd = r"\sigma_{sd}"
         latex_f_bd = r"f_{bd}"
         return LatexFormula(
