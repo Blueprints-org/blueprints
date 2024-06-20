@@ -40,3 +40,25 @@ class TestSubForm8Dot16Alpha1:
 
         with pytest.raises(ValueError):
             SubForm8Dot16Alpha1(release_type=release_type)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (r"\alpha_1 \rightarrow release\;type \rightarrow gradual \rightarrow 1.00"),
+            ),
+            ("short", r"\alpha_1 \rightarrow 1.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # example values
+        release_type = "gradual"
+
+        # Object to test
+        form_8_15_p1_latex = SubForm8Dot16Alpha1(release_type=release_type).latex()
+
+        actual = {"complete": form_8_15_p1_latex.complete, "short": form_8_15_p1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

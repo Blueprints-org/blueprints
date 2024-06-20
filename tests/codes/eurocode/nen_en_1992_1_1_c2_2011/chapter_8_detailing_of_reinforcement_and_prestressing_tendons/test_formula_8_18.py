@@ -46,7 +46,37 @@ class TestForm8Dot18DesignValueTransmissionLength2:
             f_bpt=f_bpt,
         )
 
-        form_8_17 = Form8Dot18DesignValueTransmissionLength2(l_pt=l_pt)
+        form_8_18 = Form8Dot18DesignValueTransmissionLength2(l_pt=l_pt)
         manually_calculated_result = 168  # mm
 
-        assert form_8_17 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+        assert form_8_18 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            ("complete", r"l_{pt1} = 1.2 \cdot l_{pt} = 1.2 \cdot 140.00 = 168.00"),
+            ("short", r"l_{pt1} = 168.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # example values
+        alpha_1 = 1  # [-]
+        alpha_2 = 0.25  # [-]
+        diameter = 8  # mm
+        sigma_pm0 = 350  # MPa
+        f_bpt = 5  # MPa
+        l_pt = Form8Dot16BasicTransmissionLength(
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            diameter=diameter,
+            sigma_pm0=sigma_pm0,
+            f_bpt=f_bpt,
+        )
+
+        # Object to test
+        form_8_18_latex = Form8Dot18DesignValueTransmissionLength2(l_pt=l_pt).latex()
+
+        actual = {"complete": form_8_18_latex.complete, "short": form_8_18_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

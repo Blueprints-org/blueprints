@@ -179,7 +179,7 @@ class SubForm8Dot15TensileStrengthAtRelease(Formula):
         return alpha_ct * 0.7 * f_ctm_t / gamma_c
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for the first subformula of formula 8.15."""
+        """Returns LatexFormula object for the second subformula of formula 8.15."""
         return LatexFormula(
             return_symbol=r"f_{ctd}(t)",
             result=f"{self:.2f}",
