@@ -29,7 +29,7 @@ class Line:
     end_point : Point
         End point
     name : str
-        Name of the Point; will get 'Line_{id}' if none is given
+        Name of the Line; will get 'Line_{id}' if '' is given
     """
 
     id: int = 0
