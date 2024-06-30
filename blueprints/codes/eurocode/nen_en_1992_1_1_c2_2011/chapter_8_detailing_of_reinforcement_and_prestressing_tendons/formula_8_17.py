@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -35,3 +36,13 @@ class Form8Dot17DesignValueTransmissionLength1(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(l_pt=l_pt)
         return 0.8 * l_pt
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.17."""
+        return LatexFormula(
+            return_symbol=r"l_{pt1}",
+            result=f"{self:.2f}",
+            equation=r"0.8 \cdot l_{pt}",
+            numeric_equation=rf"0.8 \cdot {self.l_pt:.2f}",
+            comparison_operator_label="=",
+        )

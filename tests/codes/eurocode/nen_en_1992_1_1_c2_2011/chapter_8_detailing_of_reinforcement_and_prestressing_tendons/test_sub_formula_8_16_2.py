@@ -40,3 +40,25 @@ class TestSubForm8Dot16Alpha2:
 
         with pytest.raises(ValueError):
             SubForm8Dot16Alpha2(type_of_wire=type_of_wire)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (r"\alpha_2 \rightarrow type\;of\;wire \rightarrow circular \rightarrow 0.25"),
+            ),
+            ("short", r"\alpha_2 \rightarrow 0.25"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # example values
+        type_of_wire = "circular"
+
+        # Object to test
+        form_8_16_p2_latex = SubForm8Dot16Alpha2(type_of_wire=type_of_wire).latex()
+
+        actual = {"complete": form_8_16_p2_latex.complete, "short": form_8_16_p2_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

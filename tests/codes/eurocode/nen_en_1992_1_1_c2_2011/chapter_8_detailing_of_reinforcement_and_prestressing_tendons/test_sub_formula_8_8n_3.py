@@ -44,3 +44,24 @@ class TestSubForm8Dot8nFunctionY:
         manually_result = 0.045314993
 
         assert sub_form_8_8n_3 == pytest.approx(expected=manually_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            ("complete", r"y = 0.015 + 0.14 \cdot e^{-0.18 \cdot x} = 0.015 + 0.14 \cdot e^{-0.18 \cdot 8.50} = 0.045"),
+            ("short", r"y = 0.045"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        cover = 60  # mm
+        diameter_t = 16  # mm
+        x_function = SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t)
+
+        # Object to test
+        sub_form_8_8n_3_latex = SubForm8Dot8nFunctionY(x_function=x_function).latex()
+
+        actual = {"complete": sub_form_8_8n_3_latex.complete, "short": sub_form_8_8n_3_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

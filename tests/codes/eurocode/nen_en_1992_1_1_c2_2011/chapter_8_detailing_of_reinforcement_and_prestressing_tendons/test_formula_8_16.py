@@ -127,3 +127,38 @@ class TestForm8Dot16BasicTransmissionLength:
                 sigma_pm0=sigma_pm0,
                 f_bpt=f_bpt,
             )
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"l_{pt} = \alpha_1 \cdot \alpha_2 \cdot \Phi \cdot \frac{\sigma_{pm0}}{f_{bpt}} = "
+                    r"1.00 \cdot 0.25 \cdot 8.00 \cdot \frac{350.00}{5.00} = 140.00"
+                ),
+            ),
+            ("short", r"l_{pt} = 140.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # example values
+        alpha_1 = 1  # [-]
+        alpha_2 = 0.25  # [-]
+        diameter = 8  # mm
+        sigma_pm0 = 350  # MPa
+        f_bpt = 5  # MPa
+
+        # Object to test
+        form_8_16_latex = Form8Dot16BasicTransmissionLength(
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            diameter=diameter,
+            sigma_pm0=sigma_pm0,
+            f_bpt=f_bpt,
+        ).latex()
+
+        actual = {"complete": form_8_16_latex.complete, "short": form_8_16_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
