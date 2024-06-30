@@ -16,7 +16,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
     label = "5.9"
     source_document = NEN_EN_1993_5_2008
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         beta_b: DIMENSIONLESS,
         w_pl: MM3,
@@ -76,7 +76,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         self.mc_rd: float = mc_rd
 
     @staticmethod
-    def _evaluate(  # noqa: PLR0913
+    def _evaluate(
         beta_b: DIMENSIONLESS,
         w_pl: MM3,
         rho: DIMENSIONLESS,
