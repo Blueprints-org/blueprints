@@ -338,6 +338,4 @@ class ExposureClasses(NamedTuple):
         bool
             True if all exposure classes are 'Not applicable'
         """
-        if all(exposure_class.value == "Not applicable" for exposure_class in self):
-            return True
-        return False
+        return all(exposure_class.value == "Not applicable" for exposure_class in self)
