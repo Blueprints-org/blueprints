@@ -291,9 +291,7 @@ class ConcreteMaterial:
         bool
             Example: False if ConcreteMaterial.e_cm is equal to 32836 (for C30/37)
         """
-        if self.e_c == self.e_cm:
-            return False
-        return True
+        return self.e_c != self.e_cm
 
     @property
     def eps_c1(self) -> PER_MILLE:

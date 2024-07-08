@@ -8,10 +8,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: weekly
-      day: "monday"
-      time: "08:00"
-      timezone: "Europe/Amsterdam"
+      interval: monthly
     versioning-strategy: increase
     groups:
       dev-dependencies: # name of group
@@ -28,7 +25,4 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: weekly
-      day: "monday"
-      time: "08:00"
-      timezone: "Europe/Amsterdam"
+      interval: monthly
