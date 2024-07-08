@@ -1,7 +1,7 @@
 """Geometry operations module."""
 
 import math
-from enum import Enum
+from enum import Enum, auto
 
 from shapely import Point
 
@@ -11,9 +11,9 @@ from blueprints.type_alias import RAD
 class CoordinateSystemOptions(Enum):
     """Enum of the coordinate system options."""
 
-    XY = 0
-    XZ = 1
-    YZ = 2
+    XY = auto()
+    XZ = auto()
+    YZ = auto()
 
 
 def calculate_rotation_angle(
