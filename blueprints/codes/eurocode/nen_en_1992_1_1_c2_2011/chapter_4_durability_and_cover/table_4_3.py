@@ -6,79 +6,32 @@ from __future__ import annotations
 
 from typing_extensions import Self
 
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chloride,
     ChlorideSeawater,
     ExposureClasses,
 )
+from blueprints.codes.eurocode.structural_class import AbstractConcreteStructuralClassCalculator, ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 
-DEFAULT_STRUCTURAL_CLASS = 4
+"""Design working life in years as defined in table 4.3 of NEN-EN 1992-1-1+C2:2011."""
 DESIGN_WORKING_LIFE_DEFAULT = 50
 DESIGN_WORKING_LIFE_75 = 75
 DESIGN_WORKING_LIFE_100 = 100
 
 
-class ConcreteStructuralClassBase(int):
-    """Structural class base of the concrete element.
-
-    This Class can be used to keep track of the operations of the structural class of the concrete element.
+class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculator):
+    """Implementation of the structural class calculator of the concrete element.
 
     In accordance with:
-    NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
+    NEN-EN 1992-1-1+C2:2011 Concrete - General
     """
 
-    def __new__(
-        cls,
-        value: int,
-        *args,  # noqa: ARG003
-        **kwargs,  # noqa: ARG003
-    ) -> Self:
-        """Constructor of the StructuralClass class.
-
-        Args:
-            value (int): The value of the structural class
-
-        Returns
-        -------
-            StructuralClass: The instance of the StructuralClass class
-        """
-        return super().__new__(cls, value)
-
-    def __init__(
-        self,
-        value: int,  # noqa: ARG002
-        explanation: str = "",
-    ) -> None:
-        """Initializer of the StructuralClass class.
-
-        Args:
-            value (int): The value of the structural class
-            explanation (str): The explanation of the structural class calculation. Defaults "".
-        """
-        super().__init__()
-        self.explanation = explanation
-
-    def __str__(self) -> str:
-        """Returns a string representation of the object.
-
-        Overrides the default __str__ method to include the prefix 'S' before the string representation
-        of the superclass.
-
-        Returns
-        -------
-            str: The string representation of the object.
-        """
-        return f"S{super().__str__()}"
-
-
-class ConcreteStructuralClassBuilder:
-    """Structural class delta of the concrete element.
-
-    In accordance with:
-    NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
-    """
+    source_document = NEN_EN_1992_1_1_C2_2011
+    DEFAULT_STRUCTURAL_CLASS = 4
+    DEFAULT_EXPLANATION = "Default structural class (S4)"
 
     def __init__(
         self,
@@ -88,84 +41,41 @@ class ConcreteStructuralClassBuilder:
         plate_geometry: bool = False,
         quality_control: bool = False,
     ) -> None:
-        """Initializer of the ConcreteStructuralClassDelta class.
-
-        This class should be used to calculate the structural class. This has to be used with the
-        StructuralClassBase class. The StructuralClassBase is able to keep track of the explanation of all operations.
+        """Initializer of the ConcreteStructuralClassCalculator class.
 
         Parameters
         ----------
-            value (int): The value of the structural class
-            explanation (str): The explanation of the structural class
+        exposure_classes : ExposureClasses
+            The exposure classes of the concrete element
+        design_working_life : float, optional
+            The design working life of the concrete element, by default DESIGN_WORKING_LIFE_DEFAULT
+        concrete_material : ConcreteMaterial, optional
+            The concrete material of the concrete element, by default ConcreteMaterial()
+        plate_geometry : bool, optional
+            True if the concrete element has a plate geometry, False otherwise, by default False
+        quality_control : bool, optional
+            True if the quality control of the concrete element is ensured, False otherwise, by default False
         """
-        self.exposure_classes = exposure_classes
-        self.design_working_life = design_working_life
-        self.concrete_material = concrete_material
-        self.plate_geometry = plate_geometry
-        self.quality_control = quality_control
-        self._structural_class = DEFAULT_STRUCTURAL_CLASS
-        self._explanation: str = "Default structural class (S4)"
-        self._calculated = False
-
-    @property
-    def structural_class(self) -> ConcreteStructuralClassBase:
-        """Property which returns the structural class."""
-        if not self._calculated:
-            raise ValueError("The structural class has not been calculated yet.")
-        return ConcreteStructuralClassBase(self._structural_class, self._explanation)
-
-    def update_structural_class(self, delta: int, explanation: str) -> None:
-        """Update the structural class with the given delta and explanation.
-
-        Parameters
-        ----------
-            delta (int): The delta to be added to the structural class.
-            explanation (str): The explanation of the structural class calculation.
-        """
-        if not isinstance(delta, int):
-            raise TypeError(f"unsupported delta type(s) for the update operation: '{type(delta)}'")
-        unit_suffix = "classes" if abs(delta) > 1 else "class"
-        operator_symbol = "+" if delta >= 0 else "-"
-        self._structural_class += delta
-        self._explanation = f"{self._explanation} {operator_symbol} {abs(delta)} {unit_suffix} ({explanation})"
-
-    def calculate_structural_class(
-        self,
-    ) -> None:
-        """Property which calculates the structural class.
-
-        Based on the actual exposure classes according to Table 4.3N of
-        EN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
-
-        Returns
-        -------
-            ConcreteStructuralClass: the calculated structural class
-        """
-        if not self._calculated:
-            self._structural_class_delta_design_working_life()
-            self._structural_class_delta_concrete_grade()
-            self._structural_class_delta_plate_geometry()
-            self._structural_class_delta_quality_control()
-            self._calculated = True
+        super().__init__(exposure_classes, design_working_life, concrete_material, plate_geometry, quality_control)
 
     def _structural_class_delta_design_working_life(self) -> None:
         """Calculates the addition to the structural class based on the design working life.
 
         In accordance with:
-        NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
+        NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
         if DESIGN_WORKING_LIFE_75 <= self.design_working_life < DESIGN_WORKING_LIFE_100:
-            self.update_structural_class(1, f"{DESIGN_WORKING_LIFE_75} jr.")
+            self.update_structural_class(1, f"{DESIGN_WORKING_LIFE_75} years")
         elif self.design_working_life >= DESIGN_WORKING_LIFE_100:
-            self.update_structural_class(2, f"{DESIGN_WORKING_LIFE_100} jr.")
+            self.update_structural_class(2, f"{DESIGN_WORKING_LIFE_100} years")
         else:
-            self.update_structural_class(0, f"{DESIGN_WORKING_LIFE_DEFAULT} jr.")
+            self.update_structural_class(0, f"{DESIGN_WORKING_LIFE_DEFAULT} years")
 
     def _structural_class_delta_quality_control(self) -> None:
         """Calculates the addition to the structural class based on the quality control.
 
         In accordance with:
-        NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
+        NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
         if quality_control:
             self.update_structural_class(-1, "quality control")
@@ -176,7 +86,7 @@ class ConcreteStructuralClassBuilder:
         """Calculates the addition to the structural class based on the plate geometry.
 
         In accordance with:
-        NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
+        NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
         if plate_geometry:
             self.update_structural_class(-1, "plate geometry")
@@ -187,7 +97,7 @@ class ConcreteStructuralClassBuilder:
         """Calculates the addition to the structural class based on the concrete grade.
 
         In accordance with:
-        NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
+        NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
         decisive_exposure_classes = {
             ConcreteStrengthClass("C45/55"): {Chloride.XD3.value, ChlorideSeawater.XS2.value, ChlorideSeawater.XS3.value},
@@ -217,7 +127,7 @@ class ConcreteStructuralClass(ConcreteStructuralClassBase):
     This Class keeps track of the operations of the structural class of the concrete element.
 
     In accordance with:
-    NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 Concrete - General
+    NNEN-EN 1992-1-1+C2:2011 Concrete - General
     """
 
     def __new__(
@@ -235,37 +145,40 @@ class ConcreteStructuralClass(ConcreteStructuralClassBase):
         -------
             Self (ConcreteStructuralClass): The instance of the ConcreteStructuralClass class
         """
-        builder = ConcreteStructuralClassBuilder(*args, **kwargs)
-        builder.calculate_structural_class()
-        structural_class = builder.structural_class
-        new_instance = super().__new__(cls, structural_class)
-        new_instance.explanation = structural_class.explanation
-        return new_instance
+        return super().__new__(cls, ConcreteStructuralClassCalculator, *args, **kwargs)
 
     def __init__(
         self,
         exposure_classes: ExposureClasses,
-        design_working_life: float = DESIGN_WORKING_LIFE_DEFAULT,
-        concrete_material: ConcreteMaterial = ConcreteMaterial(),
-        plate_geometry: bool = False,
-        quality_control: bool = False,
+        design_working_life: float,
+        concrete_material: ConcreteMaterial,
+        plate_geometry: bool,
+        quality_control: bool,
     ) -> None:
-        """Initializer of the StructuralClass class.
+        """Initializer of the ConcreteStructuralClass class.
 
         Parameters
         ----------
-            value (int): The value of the structural class
-            explanation (str): The explanation of the structural class calculation. Defaults "".
+        exposure_classes : ExposureClasses
+            The exposure classes of the concrete element
+        design_working_life : float
+            The design working life of the concrete element
+        concrete_material : ConcreteMaterial
+            The concrete material of the concrete element
+        plate_geometry : bool
+            True if the concrete element has a plate geometry, False otherwise
+        quality_control : bool
+            True if the quality control of the concrete element is ensured, False otherwise
         """
 
 
 if __name__ == "__main__":
     # Example of the usage of the ConcreteStructuralClass class
     exposure_classes = ExposureClasses(Carbonation.XC2, Chloride.XD1)
-    design_working_life = 75
+    design_working_life = 100
     concrete_material = ConcreteMaterial(ConcreteStrengthClass("C40/50"))
-    plate_geometry = False
-    quality_control = False
+    plate_geometry = True
+    quality_control = True
 
     structural_class = ConcreteStructuralClass(
         exposure_classes,
@@ -277,3 +190,4 @@ if __name__ == "__main__":
     print(structural_class)  # noqa: T201
     print(type(structural_class))  # noqa: T201
     print(structural_class.explanation)  # noqa: T201
+    structural_class.explanation = "New explanation"
