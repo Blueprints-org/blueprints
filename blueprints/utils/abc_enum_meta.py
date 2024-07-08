@@ -21,10 +21,10 @@ class ABCEnumMeta(ABCMeta, EnumMeta):
         # Only check abstractions if members were defined.
         if abstract_enum_cls._member_map_:
             try:  # Handle existence of undefined abstract methods.
-                absmethods = list(abstract_enum_cls.__abstractmethods__)
-                if absmethods:
-                    missing = ", ".join(f"{method!r}" for method in absmethods)
-                    plural = "s" if len(absmethods) > 1 else ""
+                abstract_methods = list(abstract_enum_cls.__abstractmethods__)
+                if abstract_methods:
+                    missing = ", ".join(f"{method!r}" for method in abstract_methods)
+                    plural = "s" if len(abstract_methods) > 1 else ""
                     raise TypeError(
                         f"Can't instantiate abstract class {abstract_enum_cls.__name__!r}"
                         f" without an implementation for abstract method{plural} {missing}"

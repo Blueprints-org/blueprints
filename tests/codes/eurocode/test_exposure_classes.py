@@ -43,11 +43,7 @@ class DummyCarbonation(CarbonationBase):
 
     def description_of_the_environment(self) -> str:
         """Return the description of the environment."""
-        match self:
-            case DummyCarbonation.XC1:
-                return "Dry or permanently wet"
-            case DummyCarbonation.NA:
-                return "Not applicable"
+        return "Dummy environment"
 
 
 class DummyChloride(ChlorideBase):
@@ -63,11 +59,7 @@ class DummyChloride(ChlorideBase):
 
     def description_of_the_environment(self) -> str:
         """Return the description of the environment."""
-        match self:
-            case DummyChloride.XD1:
-                return "Moderate humidity"
-            case DummyChloride.NA:
-                return "Not applicable"
+        return "Dummy environment"
 
 
 class DummyChlorideSeawater(ChlorideSeawaterBase):
@@ -83,11 +75,7 @@ class DummyChlorideSeawater(ChlorideSeawaterBase):
 
     def description_of_the_environment(self) -> str:
         """Return the description of the environment."""
-        match self:
-            case DummyChlorideSeawater.XS1:
-                return "Wet, rarely dry"
-            case DummyChlorideSeawater.NA:
-                return "Not applicable"
+        return "Dummy environment"
 
 
 class DummyFreezeThaw(FreezeThawBase):
@@ -103,11 +91,7 @@ class DummyFreezeThaw(FreezeThawBase):
 
     def description_of_the_environment(self) -> str:
         """Return the description of the environment."""
-        match self:
-            case DummyFreezeThaw.XF1:
-                return "Cyclic wet and dry"
-            case DummyFreezeThaw.NA:
-                return "Not applicable"
+        return "Dummy environment"
 
 
 class DummyChemical(ChemicalBase):
@@ -123,11 +107,7 @@ class DummyChemical(ChemicalBase):
 
     def description_of_the_environment(self) -> str:
         """Return the description of the environment."""
-        match self:
-            case DummyChemical.XA1:
-                return "Moderate humidity"
-            case DummyChemical.NA:
-                return "Not applicable"
+        return "Dummy environment"
 
 
 class TestExposure:
@@ -177,7 +157,7 @@ class TestExposure:
         """Check if the options method returns all the possible options within an exposure class."""
         assert DummyExposureSubclass.options() == ["Dummy1", "Dummy2", "Dummy3"]
 
-    def test_description_implemented(self) -> None:
+    def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
         assert DummyExposureSubclass.exposure_class_description() == "Dummy exposure subclass"
 
@@ -194,6 +174,14 @@ class TestCarbonation:
         with pytest.raises(TypeError):
             _ = CarbonationBase()  # type: ignore[abstract, call-arg]
 
+    def test_exposure_class_description_implemented(self) -> None:
+        """Check if the exposure_class_description method returns the description of the subclass."""
+        assert DummyCarbonation.exposure_class_description() == "Dummy carbonation subclass"
+
+    def test_description_of_the_environment(self) -> None:
+        """Check if the description_of_the_environment method returns the description of the environment."""
+        assert DummyCarbonation.XC1.description_of_the_environment() == "Dummy environment"
+
 
 class TestChloride:
     """Testing ChlorideBase class."""
@@ -202,6 +190,14 @@ class TestChloride:
         """Check if initiating the ChlorideBase class raises a TypeError."""
         with pytest.raises(TypeError):
             _ = ChlorideBase()  # type: ignore[abstract, call-arg]
+
+    def test_exposure_class_description_implemented(self) -> None:
+        """Check if the exposure_class_description method returns the description of the subclass."""
+        assert DummyChloride.exposure_class_description() == "Dummy chloride subclass"
+
+    def test_description_of_the_environment(self) -> None:
+        """Check if the description_of_the_environment method returns the description of the environment."""
+        assert DummyChloride.XD1.description_of_the_environment() == "Dummy environment"
 
 
 class TestChlorideSeawater:
@@ -212,6 +208,14 @@ class TestChlorideSeawater:
         with pytest.raises(TypeError):
             _ = ChlorideSeawaterBase()  # type: ignore[abstract, call-arg]
 
+    def test_exposure_class_description_implemented(self) -> None:
+        """Check if the exposure_class_description method returns the description of the subclass."""
+        assert DummyChlorideSeawater.exposure_class_description() == "Dummy chloride seawater subclass"
+
+    def test_description_of_the_environment(self) -> None:
+        """Check if the description_of_the_environment method returns the description of the environment."""
+        assert DummyChlorideSeawater.XS1.description_of_the_environment() == "Dummy environment"
+
 
 class TestFreezeThaw:
     """Testing FreezeThawBase class."""
@@ -221,6 +225,14 @@ class TestFreezeThaw:
         with pytest.raises(TypeError):
             _ = FreezeThawBase()  # type: ignore[abstract, call-arg]
 
+    def test_exposure_class_description_implemented(self) -> None:
+        """Check if the exposure_class_description method returns the description of the subclass."""
+        assert DummyFreezeThaw.exposure_class_description() == "Dummy freeze thaw subclass"
+
+    def test_description_of_the_environment(self) -> None:
+        """Check if the description_of_the_environment method returns the description of the environment."""
+        assert DummyFreezeThaw.XF1.description_of_the_environment() == "Dummy environment"
+
 
 class TestChemical:
     """Testing ChemicalBase class."""
@@ -229,6 +241,14 @@ class TestChemical:
         """Check if initiating the ChemicalBase class raises a TypeError."""
         with pytest.raises(TypeError):
             _ = ChemicalBase()  # type: ignore[abstract, call-arg]
+
+    def test_exposure_class_description_implemented(self) -> None:
+        """Check if the exposure_class_description method returns the description of the subclass."""
+        assert DummyChemical.exposure_class_description() == "Dummy chemical subclass"
+
+    def test_description_of_the_environment(self) -> None:
+        """Check if the description_of_the_environment method returns the description of the environment."""
+        assert DummyChemical.XA1.description_of_the_environment() == "Dummy environment"
 
 
 class TestExposureClasses:
