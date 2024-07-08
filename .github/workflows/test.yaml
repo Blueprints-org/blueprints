@@ -28,6 +28,7 @@ jobs:
           pip install .[minimal_requirements]
           pip install .[dev]
           pip install pandas-stubs
+          pip install types-shapely
 
       - name: Run checks with ruff
         run: |
