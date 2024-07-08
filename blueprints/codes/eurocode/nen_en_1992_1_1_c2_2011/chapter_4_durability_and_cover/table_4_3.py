@@ -9,9 +9,11 @@ from typing_extensions import Self
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
+    Chemical,
     Chloride,
     ChlorideSeawater,
     ExposureClasses,
+    FreezeThaw,
 )
 from blueprints.codes.eurocode.structural_class import AbstractConcreteStructuralClassCalculator, ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
@@ -174,7 +176,9 @@ class ConcreteStructuralClass(ConcreteStructuralClassBase):
 
 if __name__ == "__main__":
     # Example of the usage of the ConcreteStructuralClass class
-    exposure_classes = ExposureClasses(Carbonation.XC2, Chloride.XD1)
+    exposure_classes = ExposureClasses(
+        carbonation=Carbonation.XC2, chloride=Chloride.XD1, chloride_seawater=ChlorideSeawater.XS1, freeze=FreezeThaw.NA, chemical=Chemical.NA
+    )
     design_working_life = 100
     concrete_material = ConcreteMaterial(ConcreteStrengthClass("C40/50"))
     plate_geometry = True
@@ -190,4 +194,3 @@ if __name__ == "__main__":
     print(structural_class)  # noqa: T201
     print(type(structural_class))  # noqa: T201
     print(structural_class.explanation)  # noqa: T201
-    structural_class.explanation = "New explanation"

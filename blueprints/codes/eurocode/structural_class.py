@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 
 from typing_extensions import Self
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import ExposureClasses
+from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase as ExposureClasses
 from blueprints.materials.concrete import ConcreteMaterial
 
 
@@ -29,21 +29,22 @@ class ConcreteStructuralClassBase(int):
 
         Parameters
         ----------
-            concrete_structural_class_calculator: type[AbstractConcreteStructuralClassCalculator]
-                The calculator class for the structural class of the concrete element
-            *args
-                Arguments for initiating the calculator instance
-            **kwargs
-                Keyword arguments for initiating the calculator instance
+        concrete_structural_class_calculator: type[AbstractConcreteStructuralClassCalculator]
+            The calculator class for the structural class of the concrete element
+        *args
+            Arguments for initiating the calculator instance
+        **kwargs
+            Keyword arguments for initiating the calculator instance
 
         Raises
         ------
-            TypeError
-                If concrete_structural_class_calculator is not a subclass of AbstractConcreteStructuralClassCalculator
+        TypeError
+            If concrete_structural_class_calculator is not a subclass of AbstractConcreteStructuralClassCalculator
 
         Returns
         -------
-            StructuralClass: The instance of the ConcreteStructuralClassBase class
+        StructuralClass
+            The instance of the ConcreteStructuralClassBase class
         """
         if not issubclass(concrete_structural_class_calculator, AbstractConcreteStructuralClassCalculator):
             raise TypeError(f"unsupported calculator type(s) for the ConcreteStructuralClassBase class: '{concrete_structural_class_calculator}'")
