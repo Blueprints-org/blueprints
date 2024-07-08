@@ -59,6 +59,10 @@ figures for streamlined access and reference.
 | NEN 9997-1+C2:2017         | Eurocode 7: Geotechnical design of structures - Part 1: General rules ([code](blueprints/codes/eurocode/nen_9997_1_c2_2017))                      | [88](docs/source/codes/eurocode/nen_9997_1_c2_2017/formulas.md) | [11](docs/source/codes/eurocode/nen_9997_1_c2_2017/tables.md) | [25](docs/source/codes/eurocode/nen_9997_1_c2_2017/figures.md) |
 | NEN-EN 1993-5:2008         | Eurocode 3: Design of steel structures – Part 5: Piling ([code](blueprints/codes/eurocode/nen_en_1993_5_2008))                                    | [63](docs/source/codes/eurocode/nen_en_1993_5_2008/formulas.md) | [0](docs/source/codes/eurocode/nen_en_1993_5_2008/tables.md)  | [0](docs/source/codes/eurocode/nen_en_1993_5_2008/figures.md)  |
 
+## Examples
+
+Blueprints provides some examples to demonstrate the use of its tools. These examples are available in the [documentation](https://blueprints.readthedocs.io/en/latest/examples.html).
+
 ## Contributing
 
 Contributions are very welcome. To learn more, see the [Contributor Guide](CONTRIBUTING.md).

@@ -1,1 +1,0 @@
-"""Reinforced concrete sections module."""
