@@ -56,7 +56,7 @@ class Form6Dot76DesignFatigueStrengthConcrete(Formula):
         return k_1 * beta_cc_t0 * f_cd * (1 - f_ck / 250)
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 5.14."""
+        """Returns LatexFormula object for formula 6.76."""
         return LatexFormula(
             return_symbol=r"f_{cd,fat}",
             result=f"{self:.3f}",
