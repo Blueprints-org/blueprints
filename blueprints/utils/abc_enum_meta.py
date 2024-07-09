@@ -18,17 +18,13 @@ class ABCEnumMeta(ABCMeta, EnumMeta):
         If so, we raise a TypeError.
         """
         abstract_enum_cls = super().__new__(cls, *args, **kwarg)
-        # Only check abstractions if members were defined.
-        if abstract_enum_cls._member_map_:
-            try:  # Handle existence of undefined abstract methods.
-                absmethods = list(abstract_enum_cls.__abstractmethods__)
-                if absmethods:
-                    missing = ", ".join(f"{method!r}" for method in absmethods)
-                    plural = "s" if len(absmethods) > 1 else ""
-                    raise TypeError(
-                        f"Can't instantiate abstract class {abstract_enum_cls.__name__!r}"
-                        f" without an implementation for abstract method{plural} {missing}"
-                    )
-            except AttributeError:
-                pass
+        # Enum classes have a _member_map_ attribute that is a dictionary of the enum members.
+        # If the class has abstract methods and the _member_map_ attribute is not empty, we check if the abstract methods are implemented.
+        if getattr(abstract_enum_cls, "_member_map_", False) and getattr(abstract_enum_cls, "__abstractmethods__", False):
+            abstract_methods = list(abstract_enum_cls.__abstractmethods__)
+            missing = ", ".join(f"{method!r}" for method in abstract_methods)
+            plural = "s" if len(abstract_methods) > 1 else ""
+            raise TypeError(
+                f"Can't instantiate abstract class {abstract_enum_cls.__name__!r}" f" without an implementation for abstract method{plural} {missing}"
+            )
         return abstract_enum_cls
