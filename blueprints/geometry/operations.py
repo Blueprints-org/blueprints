@@ -41,7 +41,7 @@ def calculate_rotation_angle(
     Returns
     -------
     RAD
-        rotation of end point relative to begin node in radians in the given plane [rad].
+        rotation of end point relative to the start point in radians in the given plane [rad].
 
     Raises
     ------
@@ -49,7 +49,7 @@ def calculate_rotation_angle(
         If start_point and end_point are the same.
         If start_point or end_point do not have z value when rotation angle in XZ or YZ plane is requested.
     """
-    if list(start_point.coords) == list(end_point.coords):
+    if start_point.equals_exact(other=end_point, tolerance=0):
         msg = f"Start and end point can't be equal. start={start_point} | end={end_point}"
         raise ValueError(msg)
 

@@ -1,1 +1,1 @@
-"""Fixtures for geometry tests."""
+"""Geometry tests."""
