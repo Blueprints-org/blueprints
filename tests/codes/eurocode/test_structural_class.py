@@ -142,6 +142,29 @@ class TestConcreteStructuralClassBase:
 class TestAbstractConcreteStructuralClassCalculator:
     """Test class for the AbstractConcreteStructuralClassCalculator."""
 
+    @pytest.mark.parametrize(
+        ("attribute", "calculated"),
+        [
+            ("exposure_classes", False),
+            ("design_working_life", False),
+            ("concrete_material", False),
+            ("plate_geometry", False),
+            ("quality_control", False),
+            ("non_affecting_attribute", True),
+        ],
+    )
+    def test_setattr_attribute_affecting_calculation(
+        self, attribute: str, calculated: bool, calculator: MockConcreteStructuralClassCalculator
+    ) -> None:
+        """Test case to check if the right attributes affecting calculation trigger recalculation
+        and those not affecting do not trigger recalculation.
+        """
+        calculator.calculate_structural_class()
+        assert calculator._calculated  # noqa: SLF001
+
+        setattr(calculator, attribute, 0)
+        assert calculator._calculated == calculated  # noqa: SLF001
+
     def test_source_document(self, calculator: MockConcreteStructuralClassCalculator) -> None:
         """Test case to check the source document."""
         assert calculator.source_document == "Mock"

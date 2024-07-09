@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 from typing_extensions import Self
 
 from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase as ExposureClasses
 from blueprints.materials.concrete import ConcreteMaterial
+from blueprints.type_alias import YEARS
 
 
 class ConcreteStructuralClassBase(int):
@@ -114,7 +116,7 @@ class AbstractConcreteStructuralClassCalculator(ABC):
     def __init__(
         self,
         exposure_classes: ExposureClasses,
-        design_working_life: float,
+        design_working_life: YEARS,
         concrete_material: ConcreteMaterial,
         plate_geometry: bool,
         quality_control: bool,
@@ -127,7 +129,7 @@ class AbstractConcreteStructuralClassCalculator(ABC):
         ----------
         exposure_classes : ExposureClasses
             The exposure classes of the concrete element
-        design_working_life : float
+        design_working_life : YEARS
             The design working life of the concrete element
         concrete_material : ConcreteMaterial
             The concrete material of the concrete element
@@ -144,6 +146,23 @@ class AbstractConcreteStructuralClassCalculator(ABC):
         self._calculated = False
         self._structural_class = self.DEFAULT_STRUCTURAL_CLASS
         self._explanation = self.DEFAULT_EXPLANATION
+
+    def __setattr__(self, name: str, value: Any) -> None:  # noqa: ANN401
+        """Setter for the attributes of the class.
+
+        This method is used to set the attributes of the class and check if the structural class needs to be recalculated.
+
+        Parameters
+        ----------
+        name: str
+            The name of the attribute
+        value: Any
+            The value of the attribute
+        """
+        attributes_affecting_calculation = {"exposure_classes", "design_working_life", "concrete_material", "plate_geometry", "quality_control"}
+        if name in attributes_affecting_calculation and getattr(self, name, None) != value:
+            self._calculated = False
+        super().__setattr__(name, value)
 
     @property
     @abstractmethod

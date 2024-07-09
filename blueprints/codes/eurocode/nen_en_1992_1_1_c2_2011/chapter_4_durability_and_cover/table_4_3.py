@@ -9,14 +9,13 @@ from typing_extensions import Self
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
-    Chemical,
     Chloride,
     ChlorideSeawater,
     ExposureClasses,
-    FreezeThaw,
 )
 from blueprints.codes.eurocode.structural_class import AbstractConcreteStructuralClassCalculator, ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
+from blueprints.type_alias import YEARS
 
 """Design working life in years as defined in table 4.3 of NEN-EN 1992-1-1+C2:2011."""
 DESIGN_WORKING_LIFE_DEFAULT = 50
@@ -38,10 +37,10 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
     def __init__(
         self,
         exposure_classes: ExposureClasses,
-        design_working_life: float = DESIGN_WORKING_LIFE_DEFAULT,
-        concrete_material: ConcreteMaterial = ConcreteMaterial(),
-        plate_geometry: bool = False,
-        quality_control: bool = False,
+        design_working_life: YEARS,
+        concrete_material: ConcreteMaterial,
+        plate_geometry: bool,
+        quality_control: bool,
     ) -> None:
         """Initializer of the ConcreteStructuralClassCalculator class.
 
@@ -49,14 +48,14 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
         ----------
         exposure_classes : ExposureClasses
             The exposure classes of the concrete element
-        design_working_life : float, optional
-            The design working life of the concrete element, by default DESIGN_WORKING_LIFE_DEFAULT
+        design_working_life : YEARS, optional
+            The design working life of the concrete element
         concrete_material : ConcreteMaterial, optional
-            The concrete material of the concrete element, by default ConcreteMaterial()
+            The concrete material of the concrete element
         plate_geometry : bool, optional
-            True if the concrete element has a plate geometry, False otherwise, by default False
+            True if the concrete element has a plate geometry, False otherwise
         quality_control : bool, optional
-            True if the quality control of the concrete element is ensured, False otherwise, by default False
+            True if the quality control of the concrete element is ensured, False otherwise
         """
         super().__init__(exposure_classes, design_working_life, concrete_material, plate_geometry, quality_control)
 
@@ -79,7 +78,7 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
         In accordance with:
         NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
-        if quality_control:
+        if self.quality_control:
             self.update_structural_class(-1, "quality control")
         else:
             self.update_structural_class(0, "no quality control")
@@ -90,7 +89,7 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
         In accordance with:
         NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
-        if plate_geometry:
+        if self.plate_geometry:
             self.update_structural_class(-1, "plate geometry")
         else:
             self.update_structural_class(0, "no plate geometry")
@@ -113,12 +112,12 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
             if decisive_exposure_class.intersection(exposure_classes):
                 return (
                     self.update_structural_class(0, "no reduction with respect to concrete grade")
-                    if concrete_material.f_ck < ConcreteMaterial(concrete_grade).f_ck
+                    if self.concrete_material.f_ck < ConcreteMaterial(concrete_grade).f_ck
                     else self.update_structural_class(-1, f"concrete grade >= {concrete_grade.value}")
                 )
         return (
             self.update_structural_class(0, "no reduction with respect to concrete grade")
-            if concrete_material.f_ck < ConcreteMaterial(ConcreteStrengthClass("C30/37")).f_ck
+            if self.concrete_material.f_ck < ConcreteMaterial(ConcreteStrengthClass("C30/37")).f_ck
             else self.update_structural_class(-1, "concrete grade >= C30/37")
         )
 
@@ -152,7 +151,7 @@ class ConcreteStructuralClass(ConcreteStructuralClassBase):
     def __init__(
         self,
         exposure_classes: ExposureClasses,
-        design_working_life: float,
+        design_working_life: YEARS,
         concrete_material: ConcreteMaterial,
         plate_geometry: bool,
         quality_control: bool,
@@ -163,7 +162,7 @@ class ConcreteStructuralClass(ConcreteStructuralClassBase):
         ----------
         exposure_classes : ExposureClasses
             The exposure classes of the concrete element
-        design_working_life : float
+        design_working_life : YEARS
             The design working life of the concrete element
         concrete_material : ConcreteMaterial
             The concrete material of the concrete element
@@ -172,25 +171,3 @@ class ConcreteStructuralClass(ConcreteStructuralClassBase):
         quality_control : bool
             True if the quality control of the concrete element is ensured, False otherwise
         """
-
-
-if __name__ == "__main__":
-    # Example of the usage of the ConcreteStructuralClass class
-    exposure_classes = ExposureClasses(
-        carbonation=Carbonation.XC2, chloride=Chloride.XD1, chloride_seawater=ChlorideSeawater.XS1, freeze=FreezeThaw.NA, chemical=Chemical.NA
-    )
-    design_working_life = 100
-    concrete_material = ConcreteMaterial(ConcreteStrengthClass("C40/50"))
-    plate_geometry = True
-    quality_control = True
-
-    structural_class = ConcreteStructuralClass(
-        exposure_classes,
-        design_working_life,
-        concrete_material,
-        plate_geometry,
-        quality_control,
-    )
-    print(structural_class)  # noqa: T201
-    print(type(structural_class))  # noqa: T201
-    print(structural_class.explanation)  # noqa: T201

@@ -1,4 +1,6 @@
-"""Tests for the Exposure classes."""
+"""Tests for the Exposure classes
+according to Table 4.1 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement.
+"""
 
 import pytest
 
