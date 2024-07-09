@@ -33,6 +33,7 @@ jobs:
           pip install .[minimal_requirements]
           pip install .[dev]
           pip install build
+          pip install types-shapely
 
       - name: Run checks with ruff
         run: |
