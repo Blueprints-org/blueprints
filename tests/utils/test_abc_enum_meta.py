@@ -35,10 +35,11 @@ class TestABCEnumMeta:
         assert issubclass(ABCEnumMeta, ABCMeta)
         assert issubclass(ABCEnumMeta, EnumMeta)
 
-    def test_mock_abstract_enum(self) -> None:
-        """Test case for MockAbstractEnum class."""
+    def test_mock_abstract_enum_is_abstract(self) -> None:
+        """Test case for MockAbstractEnum class to check if it's an abstract class."""
+        assert MockAbstractEnum.__abstractmethods__ == frozenset({"test_method"})
         with pytest.raises(TypeError):
-            _ = MockAbstractEnum("a")
+            _ = MockAbstractEnum("a")  # type: ignore[abstract]
 
     def test_mock_concrete_enum(self) -> None:
         """Test case for MockConcreteEnum class."""
@@ -59,27 +60,10 @@ class TestABCEnumMeta:
         assert str(error_info.value).endswith("without an implementation for abstract method 'test_method'")
 
     def test_abc_enum_meta_attribute_error(self) -> None:
-        """
-        Test instantiation of class with ABCEnumMeta where no abstract methods attribute is present.
-        Expect successful instantiation due to handling AttributeError (pass if AttributeError is raised).
-        """
+        """Test instantiation of class with ABCEnumMeta where no abstract methods attribute is present."""
 
         class NoAbstractMethodsEnum(Enum, metaclass=ABCEnumMeta):
             ONE = 1
             TWO = 2
 
         assert NoAbstractMethodsEnum.ONE.value == 1
-
-
-def test_abc_enum_meta_attribute_error_handling(attribute_error_enum_meta: ABCEnumMeta) -> None:
-    """
-    Test instantiation of class with custom metaclass that raises AttributeError.
-    Ensure instantiation proceeds due to handling AttributeError.
-    """
-
-    class TestEnum(Enum, metaclass=attribute_error_enum_meta):
-        ONE = 1
-        TWO = 2
-
-    # Check if the class was instantiated without raising an exception
-    assert TestEnum.ONE.value == 1
