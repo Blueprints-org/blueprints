@@ -113,14 +113,14 @@ class TestChemical:
 def test_comparing_different_types_raises_error() -> None:
     """Check if comparing different exposure class types, raises TypeError."""
     with pytest.raises(TypeError):
-        Carbonation.XC2 > Chloride.XD1
+        _ = Carbonation.XC2 > Chloride.XD1
     with pytest.raises(TypeError):
-        Chloride.NA == Chemical.NA
+        _ = Chloride.NA == Chemical.NA
     with pytest.raises(TypeError):
-        FreezeThaw.XF1 <= ChlorideSeawater.XS2
+        _ = FreezeThaw.XF1 <= ChlorideSeawater.XS2
     with pytest.raises(TypeError):
-        ChlorideSeawater.XS3 >= Chloride.XD3
+        _ = ChlorideSeawater.XS3 >= Chloride.XD3
     with pytest.raises(TypeError):
-        Chemical.XA1 < Carbonation.XC2
+        _ = Chemical.XA1 < Carbonation.XC2
     with pytest.raises(TypeError):
-        Chemical.NA != FreezeThaw.XF1
+        _ = Chemical.NA != FreezeThaw.XF1
