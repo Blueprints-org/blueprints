@@ -69,22 +69,22 @@ class MockConcreteStructuralClass(ConcreteStructuralClassBase):
 def structural_class() -> MockConcreteStructuralClass:
     """Fixture that returns an instance of the structural class for testing."""
     exposure_classes = ExposureClasses(
-        DummyCarbonation.XC1,
-        DummyChloride.NA,
-        DummyChlorideSeawater.NA,
-        DummyFreezeThaw.NA,
-        DummyChemical.XA1,
+        carbonation=DummyCarbonation.XC1,
+        chloride=DummyChloride.NA,
+        chloride_seawater=DummyChlorideSeawater.NA,
+        freeze=DummyFreezeThaw.NA,
+        chemical=DummyChemical.XA1,
     )
     design_working_life = 50.0
     concrete_material = ConcreteMaterial()
     plate_geometry = True
     quality_control = True
     return MockConcreteStructuralClass(
-        exposure_classes,
-        design_working_life,
-        concrete_material,
-        plate_geometry,
-        quality_control,
+        exposure_classes=exposure_classes,
+        design_working_life=design_working_life,
+        concrete_material=concrete_material,
+        plate_geometry=plate_geometry,
+        quality_control=quality_control,
     )
 
 
@@ -92,22 +92,22 @@ def structural_class() -> MockConcreteStructuralClass:
 def calculator() -> MockConcreteStructuralClassCalculator:
     """Fixture that returns an instance of the calculator for testing."""
     exposure_classes = ExposureClasses(
-        DummyCarbonation.XC1,
-        DummyChloride.NA,
-        DummyChlorideSeawater.NA,
-        DummyFreezeThaw.NA,
-        DummyChemical.XA1,
+        carbonation=DummyCarbonation.XC1,
+        chloride=DummyChloride.NA,
+        chloride_seawater=DummyChlorideSeawater.NA,
+        freeze=DummyFreezeThaw.NA,
+        chemical=DummyChemical.XA1,
     )
     design_working_life = 50.0
     concrete_material = ConcreteMaterial()
     plate_geometry = True
     quality_control = True
     return MockConcreteStructuralClassCalculator(
-        exposure_classes,
-        design_working_life,
-        concrete_material,
-        plate_geometry,
-        quality_control,
+        exposure_classes=exposure_classes,
+        design_working_life=design_working_life,
+        concrete_material=concrete_material,
+        plate_geometry=plate_geometry,
+        quality_control=quality_control,
     )
 
 

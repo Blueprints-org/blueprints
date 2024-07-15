@@ -215,7 +215,7 @@ class Chemical(ChemicalBase):
                 return "Not applicable"
 
 
-class ExposureClasses(ExposureClassesBase):
+class Table4Dot1ExposureClasses(ExposureClassesBase):
     """Implementation of table 4.1 from NEN-EN 1992-1-1+C2:2011.
 
     Exposure classes related to environmental conditions in accordance with EN 206-1

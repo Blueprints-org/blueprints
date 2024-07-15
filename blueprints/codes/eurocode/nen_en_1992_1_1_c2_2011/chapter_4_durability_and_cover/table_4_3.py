@@ -2,8 +2,6 @@
 according to Table 4.3 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement.
 """
 
-from __future__ import annotations
-
 from typing_extensions import Self
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -11,7 +9,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     Carbonation,
     Chloride,
     ChlorideSeawater,
-    ExposureClasses,
+    Table4Dot1ExposureClasses,
 )
 from blueprints.codes.eurocode.structural_class import AbstractConcreteStructuralClassCalculator, ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
@@ -36,7 +34,7 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
 
     def __init__(
         self,
-        exposure_classes: ExposureClasses,
+        exposure_classes: Table4Dot1ExposureClasses,
         design_working_life: YEARS,
         concrete_material: ConcreteMaterial,
         plate_geometry: bool,
@@ -122,13 +120,10 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
         )
 
 
-class ConcreteStructuralClass(ConcreteStructuralClassBase):
-    """Structural class of the concrete element.
+class Table4Dot3ConcreteStructuralClass(ConcreteStructuralClassBase):
+    """Implementation of table 4.3 from NEN-EN 1992-1-1+C2:2011 Concrete - General.
 
-    This Class keeps track of the operations of the structural class of the concrete element.
-
-    In accordance with:
-    NNEN-EN 1992-1-1+C2:2011 Concrete - General
+    Structural class of the concrete element.
     """
 
     def __new__(
@@ -150,7 +145,7 @@ class ConcreteStructuralClass(ConcreteStructuralClassBase):
 
     def __init__(
         self,
-        exposure_classes: ExposureClasses,
+        exposure_classes: Table4Dot1ExposureClasses,
         design_working_life: YEARS,
         concrete_material: ConcreteMaterial,
         plate_geometry: bool,

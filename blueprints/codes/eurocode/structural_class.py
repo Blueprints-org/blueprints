@@ -13,7 +13,7 @@ from blueprints.type_alias import YEARS
 
 
 class ConcreteStructuralClassBase(int):
-    """Structural class base of the concrete element.
+    """Base class for the Structural class of the concrete element.
 
     This Class can be used to keep track of the operations of the structural class of the concrete element.
 
