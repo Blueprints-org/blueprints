@@ -1,5 +1,7 @@
 """Module for unit conversions inside of Blueprints."""
 
+import math
+
 # <editor-fold desc="Forces conversion">
 KN_TO_N = 1e3
 N_TO_KN = 1e-3
@@ -14,4 +16,11 @@ CM3_TO_MM3 = 1e3
 
 # <editor-fold desc="Moments conversion">
 NMM_TO_KNM = 1e-6
+# </editor-fold>
+
+# <editor-fold desc="ROTATIONAL CONVERSION">
+RAD_TO_MRAD = 1e3
+MRAD_TO_RAD = 1e-3
+RAD_TO_DEG = 180 / math.pi
+DEG_TO_RAD = math.pi / 180
 # </editor-fold>
