@@ -109,7 +109,7 @@ class Line:
         )
 
     @property
-    def _unit_vector(self) -> np.array:
+    def _unit_vector(self) -> np.ndarray:
         """Return the unit vector of the line."""
         vector = self._end - self._start
         magnitude = np.linalg.norm(vector)
