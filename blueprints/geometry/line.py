@@ -153,31 +153,36 @@ class Line:
                 raise ValueError(msg)
         return Point(internal_point)
 
-    def extend(self, extra_length: float, direction: Literal["start", "end"] = "end") -> None:
-        """Extends the line in a given direction. The end of the line is the default direction. By using a negative value, the line can be shortened.
+    def adjust_length(self, distance: float, direction: Literal["start", "end"] = "end") -> Point:
+        """Extends or shortens the line in a given direction. The end of the line is the default direction.
 
         Parameters
         ----------
-        extra_length : float
-            Distance to add to the total length of the line.
+        distance : float
+            Distance to extend or shorten the line. Positive number extends the line, negative number shortens the line.
         direction: Literal["start", "end"]
             Given direction where the line needs to be extended. Default towards the end of the line.
 
         Returns
         -------
-        None
-            It overrides the end point of the line. It does not have a return
+        Point
+            Extended/shortened point of the line.
         """
+        if distance < 0 and abs(distance) >= self.length:
+            msg = "When shortening the line, the absolute value of the extra length must be less than the total length of the line."
+            raise ValueError(msg)
+
         match direction.lower():
             case "end":
-                extended_end_point = self._end + extra_length * self._unit_vector
-                self.end_point = Point(extended_end_point)
+                new_point = self._end + distance * self._unit_vector
+                self.end_point = Point(new_point)
             case "start":
-                extended_start_point = self._start - extra_length * self._unit_vector
-                self.start_point = Point(extended_start_point)
+                new_point = self._start - distance * self._unit_vector
+                self.start_point = Point(new_point)
             case _:
-                msg = "Invalid input for 'direction', use Reference.START or Reference.END"
+                msg = "Invalid input for 'direction', use 'start' or 'end'."
                 raise ValueError(msg)
+        return Point(new_point)
 
     def get_evenly_spaced_points(self, n: int = 2) -> list[Point]:
         """Return a list of evenly spaced internal points of the line from start to end point with an n number of desired points.
@@ -221,9 +226,4 @@ class Line:
         """Return True if the lines are equal."""
         if not isinstance(other, Line):
             raise NotImplementedError
-        return all(
-            [
-                self._start == other._start,
-                self._end == other._end,
-            ]
-        )
+        return np.array_equal(self._start, other._start) and np.array_equal(self._end, other._end)
