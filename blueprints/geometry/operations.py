@@ -50,7 +50,7 @@ def calculate_rotation_angle(
         If start_point or end_point do not have z value when rotation angle in XZ or YZ plane is requested.
     """
     if list(start_point.coords) == list(end_point.coords):
-        msg = f"Start and end point can't be equal. start={start_point} | end={end_point}"
+        msg = f"Start and end point can't be equal. {start_point=} | {end_point=}"
         raise ValueError(msg)
 
     if coordinate_system != CoordinateSystemOptions.XY and (not start_point.has_z or not end_point.has_z):
