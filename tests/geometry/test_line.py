@@ -77,18 +77,18 @@ class TestLine:
             line.get_internal_point(distance=100_000)
 
     @pytest.mark.parametrize(
-        ("distance", "direction", "x", "y", "z"),
+        ("distance", "direction", "expected_line"),
         [
-            (-3.5355, "start", 1.5, 2.0, 2.5),
-            (-3.5355, "end", 1.5, 2.0, 2.5),
-            (1.0, "start", -0.424, -0.5656, -0.7071),
-            (1.0, "end", 3.4242, 4.5656, 5.7071),
+            (-3.5355, "start", Line(Point(1.5, 2.0, 2.5), Point(3, 4, 5))),
+            (-3.5355, "end", Line(Point(0, 0, 0), Point(1.5, 2.0, 2.5))),
+            (1.0, "start", Line(Point(-0.42426, -0.565685, -0.707106), Point(3, 4, 5))),
+            (1.0, "end", Line(Point(0, 0, 0), Point(3.424264, 4.565685, 5.707106))),
         ],
     )
-    def test_adjust_length(self, line: Line, distance: float, direction: Literal["start", "end"], x: float, y: float, z: float) -> None:
+    def test_adjust_length(self, line: Line, distance: float, direction: Literal["start", "end"], expected_line: Line) -> None:
         """Test the adjustment of the length."""
-        new_point = line.adjust_length(distance=distance, direction=direction)
-        assert (new_point.x, new_point.y, new_point.z) == pytest.approx(expected=(x, y, z), rel=1e-3)
+        adjusted_line = line.adjust_length(distance=distance, direction=direction)
+        assert adjusted_line == expected_line
 
     def test_adjust_length_error(self, line: Line) -> None:
         """Test the adjustment of the length error."""

@@ -5,6 +5,7 @@ from typing import Literal
 
 import numpy as np
 from shapely import Point
+from typing_extensions import Self
 
 from blueprints.geometry.operations import CoordinateSystemOptions, calculate_rotation_angle
 from blueprints.type_alias import DEG
@@ -32,12 +33,43 @@ class Line:
     id: int = 0
 
     def __init__(self, start_point: Point, end_point: Point) -> None:
-        self.start_point = start_point
-        self.end_point = end_point
-        self._start = np.array(start_point.coords)
-        self._end = np.array(end_point.coords)
+        """Initialize the line."""
+        self._start_point = start_point
+        self._end_point = end_point
         self._validate_points()
         Line.id += 1
+
+    @property
+    def start_point(self) -> Point:
+        """Return the start point."""
+        return self._start_point
+
+    @start_point.setter
+    def start_point(self, value: Point) -> None:
+        """Set the start point."""
+        self._start_point = value
+        self._validate_points()
+
+    @property
+    def end_point(self) -> Point:
+        """Return the end point."""
+        return self._end_point
+
+    @end_point.setter
+    def end_point(self, value: Point) -> None:
+        """Set the end point."""
+        self._end_point = value
+        self._validate_points()
+
+    @property
+    def _start(self) -> np.ndarray:
+        """Return the start point as a numpy array."""
+        return np.array(self._start_point.coords)
+
+    @property
+    def _end(self) -> np.ndarray:
+        """Return the end point as a numpy array."""
+        return np.array(self._end_point.coords)
 
     def _validate_points(self) -> None:
         """Validate if the points are different."""
@@ -49,10 +81,8 @@ class Line:
         # if points have no z value, then declare zero as default
         if not self.start_point.has_z:
             self.start_point = Point(self.start_point.x, self.start_point.y, 0.0)
-            self._start = np.array(self.start_point.coords)
         if not self.end_point.has_z:
             self.end_point = Point(self.end_point.x, self.end_point.y, 0.0)
-            self._end = np.array(self.end_point.coords)
 
     @property
     def midpoint(self) -> Point:
@@ -77,9 +107,7 @@ class Line:
     @property
     def length(self) -> float:
         """Return the total length of the line."""
-        return np.sqrt(
-            (self.end_point.x - self.start_point.x) ** 2 + (self.end_point.y - self.start_point.y) ** 2 + (self.end_point.z - self.start_point.z) ** 2
-        )
+        return float(np.linalg.norm(self._end - self._start))
 
     def angle(self, coordinate_system: CoordinateSystemOptions = CoordinateSystemOptions.XY) -> DEG:
         """
@@ -109,11 +137,9 @@ class Line:
         )
 
     @property
-    def _unit_vector(self) -> np.ndarray:
+    def unit_vector(self) -> np.ndarray:
         """Return the unit vector of the line."""
-        vector = self._end - self._start
-        magnitude = np.linalg.norm(vector)
-        return vector / magnitude
+        return (self._end - self._start) / self.length
 
     def get_internal_point(self, distance: float, reference: Literal["start", "end"] = "start") -> Point:
         """Return an internal point within the line in a given distance from the reference point.
@@ -145,15 +171,15 @@ class Line:
 
         match reference.lower():
             case "start":
-                internal_point = self._start + distance * self._unit_vector
+                internal_point = self._start + distance * self.unit_vector
             case "end":
-                internal_point = self._end - distance * self._unit_vector
+                internal_point = self._end - distance * self.unit_vector
             case _:
                 msg = f"'{reference}' is an invalid input for 'reference_point', use 'start' or 'end'."
                 raise ValueError(msg)
         return Point(internal_point)
 
-    def adjust_length(self, distance: float, direction: Literal["start", "end"] = "end") -> Point:
+    def adjust_length(self, distance: float, direction: Literal["start", "end"] = "end") -> Self:
         """Extends or shortens the line in a given direction. The end of the line is the default direction.
 
         Parameters
@@ -165,24 +191,23 @@ class Line:
 
         Returns
         -------
-        Point
-            Extended/shortened point of the line.
+        Line
+            The new line with the adjusted length.
         """
         if distance < 0 and abs(distance) >= self.length:
-            msg = "When shortening the line, the absolute value of the extra length must be less than the total length of the line."
-            raise ValueError(msg)
+            raise ValueError("When shortening the line, the absolute value of the extra length must be less than the total length of the line.")
 
         match direction.lower():
             case "end":
-                new_point = self._end + distance * self._unit_vector
+                new_point = self._end + distance * self.unit_vector
                 self.end_point = Point(new_point)
             case "start":
-                new_point = self._start - distance * self._unit_vector
+                new_point = self._start - distance * self.unit_vector
                 self.start_point = Point(new_point)
             case _:
                 msg = "Invalid input for 'direction', use 'start' or 'end'."
                 raise ValueError(msg)
-        return Point(new_point)
+        return self
 
     def get_evenly_spaced_points(self, n: int = 2) -> list[Point]:
         """Return a list of evenly spaced internal points of the line from start to end point with an n number of desired points.
@@ -202,7 +227,7 @@ class Line:
         # Create a list of evenly spaced points
         evenly_spaced_points = np.linspace(start=0, stop=self.length, num=n, endpoint=True)
 
-        return [Point(self._start + distance * self._unit_vector) for distance in evenly_spaced_points]
+        return [Point(self._start + distance * self.unit_vector) for distance in evenly_spaced_points]
 
     def divide_into_n_lines(self, n: int = 2) -> list["Line"]:
         """Return a list of evenly divided lines.
@@ -226,4 +251,8 @@ class Line:
         """Return True if the lines are equal."""
         if not isinstance(other, Line):
             raise NotImplementedError("Line can only be compared to other Line object")
-        return np.array_equal(self._start, other._start) and np.array_equal(self._end, other._end)
+        return np.allclose(self._start, other._start) and np.allclose(self._end, other._end)
+
+    def __repr__(self) -> str:
+        """Return the representation of the line."""
+        return f"Line({self.start_point}, {self.end_point})"
