@@ -137,3 +137,7 @@ class TestLine:
         """Test the equality."""
         with pytest.raises(NotImplementedError):
             line == "Line"
+
+    def test_repr(self, line: Line) -> None:
+        """Test the representation."""
+        assert repr(line) == "Line(POINT Z (0 0 0), POINT Z (3 4 5))"
