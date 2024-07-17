@@ -225,5 +225,5 @@ class Line:
     def __eq__(self, other: object) -> bool:
         """Return True if the lines are equal."""
         if not isinstance(other, Line):
-            raise NotImplementedError
+            raise NotImplementedError("Line can only be compared to other Line object")
         return np.array_equal(self._start, other._start) and np.array_equal(self._end, other._end)
