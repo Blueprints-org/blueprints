@@ -12,7 +12,6 @@ from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_
 class Form5Dot17EffectiveLengthBucklingLoad(Formula):
     """Class representing formula 5.17 for the calculation of effective length of unbraced members, in the
     case where criteria (2) and (3) do not apply such as by variable loading, :math:`l_0`."""
-
     label = "5.17"
     source_document = NEN_EN_1992_1_1_C2_2011
 

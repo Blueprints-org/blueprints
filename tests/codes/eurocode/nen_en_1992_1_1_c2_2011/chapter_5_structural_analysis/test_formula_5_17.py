@@ -8,14 +8,12 @@ from blueprints.validations import NegativeValueError, LessOrEqualToZeroError
 
 class TestForm5Dot16EffectiveLengthUnbraced:
     """Validation for formula 5.17 from NEN-EN 1992-1-1+C2:2011."""
-
     @pytest.fixture()
     def form_5_17(self):
         yield Form5Dot17EffectiveLengthBucklingLoad(ei=1_000_000, n_b=5)
 
     def test_evaluation(self, form_5_17) -> None:
         """Test the evaluation of the result."""
-
         # Expected result, manually calculated
         manually_calculated_result = 1404.96  # M
         assert form_5_17 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
@@ -35,7 +33,6 @@ class TestForm5Dot16EffectiveLengthUnbraced:
 
     def test_raise_error_when_negative_pars_are_given(self) -> None:
         """Test negative values for ei, n_b."""
-
         ei = 1_000_000
         n_b = 0
         with pytest.raises(LessOrEqualToZeroError):
@@ -53,7 +50,6 @@ class TestForm5Dot16EffectiveLengthUnbraced:
     )
     def test_latex(self, form_5_17, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
-
         # Object to test
         form_5_17_latex = form_5_17.latex()
         actual = {"complete": form_5_17_latex.complete, "short": form_5_17_latex.short}
