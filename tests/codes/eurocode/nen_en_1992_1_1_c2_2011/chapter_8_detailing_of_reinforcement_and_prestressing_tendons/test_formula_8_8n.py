@@ -174,3 +174,43 @@ class TestForm8Dot8nAnchorageCapacityWeldedTransverseBar:
         manually_calculated_result = 46.080000
 
         assert form_8_8n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"F_{btd} = \min\left( l_{td} \cdot Ø_t \cdot \sigma_{td}, F_{wd} \right)"
+                r" = \min\left( 80.00 \cdot 16.00 \cdot 36.00 / 1000, 150.00 \right) = 46.08",
+            ),
+            ("short", r"F_{btd} = 46.08"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        diameter_t = 16  # mm
+        f_wd = 150  # kN
+        l_td = 80  # mm
+        f_ctd = 3  # MPa
+        sigma_cm = 15  # MPa
+        y_function = 0.5  # -
+        f_cd = 25  # MPa
+        sigma_td = SubForm8Dot8nConcreteStress(
+            f_ctd=f_ctd,
+            sigma_cm=sigma_cm,
+            y_function=y_function,
+            f_cd=f_cd,
+        )
+
+        # Object to test
+        form_8_8n_latex = Form8Dot8nAnchorageCapacityWeldedTransverseBar(
+            l_td=l_td,
+            diameter_t=diameter_t,
+            sigma_td=sigma_td,
+            f_wd=f_wd,
+        ).latex()
+
+        actual = {"complete": form_8_8n_latex.complete, "short": form_8_8n_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

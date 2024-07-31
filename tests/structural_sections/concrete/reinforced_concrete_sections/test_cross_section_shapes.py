@@ -1,7 +1,6 @@
 """Tests for cross section shapes."""
 
 import pytest
-from shapely import Point
 
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.cross_section_shapes import CircularCrossSection, RectangularCrossSection
 
@@ -12,7 +11,7 @@ class TestCircularCrossSection:
     @pytest.fixture()
     def circular_cross_section(self) -> CircularCrossSection:
         """Return a CircularCrossSection instance."""
-        return CircularCrossSection(radius=100.0, x=0.0, y=0.0)
+        return CircularCrossSection(diameter=200.0, x=0.0, y=0.0)
 
     def test_area(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the area property of the CircularCrossSection class."""
@@ -35,11 +34,6 @@ class TestCircularCrossSection:
         assert len(vertices) == 65
         assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(100.0, 0.0), rel=1e-6)
         assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(100.0, 0.0), rel=1e-6)
-
-    def test_contains_point(self, circular_cross_section: CircularCrossSection) -> None:
-        """Test the contains_point method of the CircularCrossSection class."""
-        point = Point(0.5, 0.5)
-        assert circular_cross_section.contains_point(x=point.x, y=point.y) is True
 
 
 class TestRectangularCrossSection:
@@ -71,8 +65,3 @@ class TestRectangularCrossSection:
         assert len(vertices) == 5
         assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(-50.0, -100.00), rel=1e-6)
         assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(-50.0, -100.00), rel=1e-6)
-
-    def test_contains_point(self, rectangular_cross_section: RectangularCrossSection) -> None:
-        """Test the contains_point method of the RectangularCrossSection class."""
-        point = Point(0.5, 0.5)
-        assert rectangular_cross_section.contains_point(x=point.x, y=point.y) is True

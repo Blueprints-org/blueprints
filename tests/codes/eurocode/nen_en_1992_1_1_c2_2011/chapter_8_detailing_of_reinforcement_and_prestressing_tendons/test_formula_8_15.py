@@ -117,3 +117,28 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
         manually_calculated_result = 2.5  # MPa
 
         assert form_8_15 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (r"f_{bpt} = \eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t) = 2.70 \cdot 1.00 \cdot 2.50 = 6.75"),
+            ),
+            ("short", r"f_{bpt} = 6.75"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # example values
+        eta_1 = 1  # [-]
+        f_ctd_t = 2.5  # MPa
+        type_of_wire = "indented"
+        eta_p1 = SubForm8Dot15EtaP1(type_of_wire=type_of_wire)  # [-]
+
+        # Object to test
+        form_8_15_latex = Form8Dot15PrestressTransferStress(eta_p1=eta_p1, eta_1=eta_1, f_ctd_t=f_ctd_t).latex()
+
+        actual = {"complete": form_8_15_latex.complete, "short": form_8_15_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
