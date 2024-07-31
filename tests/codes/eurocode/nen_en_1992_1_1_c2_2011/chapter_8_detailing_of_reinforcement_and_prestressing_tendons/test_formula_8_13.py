@@ -39,3 +39,23 @@ class TestForm8Dot13AdditionalShearReinforcement:
 
         with pytest.raises(NegativeValueError):
             Form8Dot13AdditionalShearReinforcement(a_s=a_s, n_2=n_2)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            ("complete", r"A_{sv} = 0.25 \cdot A_s \cdot n_2 = 0.25 \cdot 100.00 \cdot 2.00 = 50.00"),
+            ("short", r"A_{sv} = 50.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # example values
+        a_s = 100  # mm²
+        n_2 = 2  # -
+
+        # Object to test
+        form_8_13_latex = Form8Dot13AdditionalShearReinforcement(a_s=a_s, n_2=n_2).latex()
+
+        actual = {"complete": form_8_13_latex.complete, "short": form_8_13_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
