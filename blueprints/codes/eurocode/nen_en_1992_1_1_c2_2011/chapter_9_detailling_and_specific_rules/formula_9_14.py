@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, MM
 from blueprints.validations import raise_if_negative
 
@@ -45,3 +46,13 @@ class Form9Dot14SplittingForceColumnOnRock(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(c=c, h=h, n_ed=n_ed)
         return 0.25 * (1 - (c / h)) * n_ed
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.14."""
+        return LatexFormula(
+            return_symbol=r"F_s",
+            result=f"{self:.3f}",
+            equation=r"0.25 \cdot ( 1 - c / h ) \cdot N_{Ed}",
+            numeric_equation=rf"0.25 \cdot ( 1 - {self.c:.3f} / {self.h:.3f} ) \cdot {self.n_ed:.3f}",
+            comparison_operator_label="=",
+        )

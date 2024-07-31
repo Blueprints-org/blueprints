@@ -102,3 +102,33 @@ class TestForm9Dot4ShearReinforcementRatio:
                 b_w=b_w,
                 alpha=alpha,
             )
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\rho_w = \frac{A_{sw}}{s \cdot b_w \cdot sin(\alpha)} = \frac{100.000}{200.000 \cdot 150.000 \cdot sin(85.000)} = 0.003346",
+            ),
+            ("short", r"\rho_w = 0.003346"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        a_sw = 100  # mm²
+        s = 200  # mm
+        b_w = 150  # mm
+        alpha = 85  # deg
+
+        # Object to test
+        form_9_4_latex = Form9Dot4ShearReinforcementRatio(
+            a_sw=a_sw,
+            s=s,
+            b_w=b_w,
+            alpha=alpha,
+        ).latex()
+
+        actual = {"complete": form_9_4_latex.complete, "short": form_9_4_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -39,3 +39,24 @@ class TestForm9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks:
 
         with pytest.raises(NegativeValueError):
             Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks(d=d)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"s_{t,max} = min(0.75 \cdot d, 600 \text{mm}) = min(0.75 \cdot 500.000, 600 \text{mm}) = 375.000",
+            ),
+            ("short", r"s_{t,max} = 375.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        d = 500  # mm
+
+        # Object to test
+        form_9_8n_latex = Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks(d=d).latex()
+
+        actual = {"complete": form_9_8n_latex.complete, "short": form_9_8n_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -50,3 +50,27 @@ class TestForm9Dot14SplittingForceColumnOnRock:
 
         with pytest.raises(NegativeValueError):
             Form9Dot14SplittingForceColumnOnRock(c=c, h=h, n_ed=n_ed)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"F_s = 0.25 \cdot ( 1 - c / h ) \cdot N_{Ed} = 0.25 \cdot ( 1 - 50.000 / 100.000 ) \cdot 200.000 = 25.000",
+            ),
+            ("short", r"F_s = 25.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        c = 50  # mm
+        h = 100  # mm
+        n_ed = 200  # kN
+
+        # Object to test
+        form_9_14_latex = Form9Dot14SplittingForceColumnOnRock(c=c, h=h, n_ed=n_ed).latex()
+
+        actual = {"complete": form_9_14_latex.complete, "short": form_9_14_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

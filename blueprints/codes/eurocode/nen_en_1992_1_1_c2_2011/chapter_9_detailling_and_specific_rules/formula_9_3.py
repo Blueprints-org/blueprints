@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, MM
 from blueprints.validations import raise_if_negative
 
@@ -52,3 +53,13 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(z=z, a_l=a_l)
         return abs(v_ed) * a_l / z + n_ed
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.3."""
+        return LatexFormula(
+            return_symbol=r"F_E",
+            result=f"{self:.3f}",
+            equation=r"|V_{Ed}| \cdot a_l / z + N_{Ed}",
+            numeric_equation=rf"|{self.v_ed:.3f}| \cdot {self.a_l:.3f} / {self.z:.3f} + {self.n_ed:.3f}",
+            comparison_operator_label="=",
+        )

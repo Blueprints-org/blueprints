@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -30,3 +31,13 @@ class Form9Dot10MaximumSpacingBentUpBars(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(d=d)
         return d
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.10."""
+        return LatexFormula(
+            return_symbol=r"s_{max}",
+            result=f"{self:.3f}",
+            equation=r"d",
+            numeric_equation=rf"{self.d:.3f}",
+            comparison_operator_label="=",
+        )

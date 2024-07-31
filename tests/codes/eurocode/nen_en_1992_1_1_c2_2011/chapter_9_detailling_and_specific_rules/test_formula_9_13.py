@@ -48,3 +48,27 @@ class TestForm9Dot13TensileForceToBeAnchored:
 
         with pytest.raises(NegativeValueError):
             Form9Dot13TensileForceToBeAnchored(r=r, z_e=z_e, z_i=z_i)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"F_s = R \cdot z_e / z_i = 100.000 \cdot 50.000 / 20.000 = 250.000",
+            ),
+            ("short", r"F_s = 250.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        r = 100  # mm
+        z_e = 50  # mm
+        z_i = 20  # mm
+
+        # Object to test
+        form_9_13_latex = Form9Dot13TensileForceToBeAnchored(r=r, z_e=z_e, z_i=z_i).latex()
+
+        actual = {"complete": form_9_13_latex.complete, "short": form_9_13_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

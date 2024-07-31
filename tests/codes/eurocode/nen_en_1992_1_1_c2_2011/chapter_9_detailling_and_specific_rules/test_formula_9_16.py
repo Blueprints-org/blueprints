@@ -107,3 +107,33 @@ class TestForm9Dot16MinimumForceOnInternalBeamLine:
                 l_2=l_2,
                 q_4=q_4,
             )
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (r"F_{tie} = min((l_1 + l_2) / 2 \cdot q_3, q_4) = min((4.500 + 4.000) / 2 \cdot 20.000, 70.000) = 85.000"),
+            ),
+            ("short", r"F_{tie} = 85.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        q_3 = 20  # kN/m,
+        l_1 = 4.5  # m,
+        l_2 = 4  # m,
+        q_4 = 70  # kN,
+
+        # Object to test
+        form_9_16_latex = Form9Dot16MinimumForceOnInternalBeamLine(
+            q_3=q_3,
+            l_1=l_1,
+            l_2=l_2,
+            q_4=q_4,
+        ).latex()
+
+        actual = {"complete": form_9_16_latex.complete, "short": form_9_16_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

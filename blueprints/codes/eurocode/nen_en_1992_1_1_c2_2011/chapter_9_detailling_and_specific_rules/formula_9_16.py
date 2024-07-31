@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, KN_M, M
 from blueprints.validations import raise_if_negative
 
@@ -50,3 +51,13 @@ class Form9Dot16MinimumForceOnInternalBeamLine(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(q_3=q_3, l_1=l_1, l_2=l_2, q_4=q_4)
         return max(q_3 * (l_1 + l_2) / 2, q_4)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.16."""
+        return LatexFormula(
+            return_symbol=r"F_{tie}",
+            result=f"{self:.3f}",
+            equation=r"min((l_1 + l_2) / 2 \cdot q_3, q_4)",
+            numeric_equation=rf"min(({self.l_1:.3f} + {self.l_2:.3f}) / 2 \cdot {self.q_3:.3f}, {self.q_4:.3f})",
+            comparison_operator_label="=",
+        )

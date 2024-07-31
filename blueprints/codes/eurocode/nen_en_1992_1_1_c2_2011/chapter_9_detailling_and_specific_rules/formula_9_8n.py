@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -32,3 +33,13 @@ class Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(d=d)
         return min(0.75 * d, 600)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.8N."""
+        return LatexFormula(
+            return_symbol=r"s_{t,max}",
+            result=f"{self:.3f}",
+            equation=r"min(0.75 \cdot d, 600 \text{mm})",
+            numeric_equation=rf"min(0.75 \cdot {self.d:.3f}, 600 \text{{mm}})",
+            comparison_operator_label="=",
+        )

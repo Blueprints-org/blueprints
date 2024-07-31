@@ -38,3 +38,26 @@ class TestForm9Dot5nMinimumShearReinforcementRatio:
 
         with pytest.raises(NegativeValueError):
             Form9Dot5nMinimumShearReinforcementRatio(f_ck=f_ck, f_yk=f_yk)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\rho_{w,min} = \left( 0.08 \cdot \sqrt{f_{ck}} \right) / f_{yk} = \left( 0.08 \cdot \sqrt{30.000} \right) / 500.000 = 0.000876",
+            ),
+            ("short", r"\rho_{w,min} = 0.000876"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_ck = 30  # MPa
+        f_yk = 500  # MPa
+
+        # Object to test
+        form_9_5n_latex = Form9Dot5nMinimumShearReinforcementRatio(f_ck=f_ck, f_yk=f_yk).latex()
+
+        actual = {"complete": form_9_5n_latex.complete, "short": form_9_5n_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

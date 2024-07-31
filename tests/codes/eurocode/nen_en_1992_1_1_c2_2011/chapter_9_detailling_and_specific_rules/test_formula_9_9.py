@@ -28,3 +28,26 @@ class TestForm9Dot9MaximumSpacingSeriesOfLinks:
 
         with pytest.raises(NegativeValueError):
             Form9Dot9MaximumSpacingSeriesOfLinks(d=d, alpha=alpha)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"s_{max} = 0.75 \cdot d \cdot \left( 1 + cot(\alpha) \right) = 0.75 \cdot 100.000 \cdot \left( 1 + cot(85.000) \right) = 81.562",
+            ),
+            ("short", r"s_{max} = 81.562"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        d = 100  # mm
+        alpha = 85  # deg
+
+        # Object to test
+        form_9_9n_latex = Form9Dot9MaximumSpacingSeriesOfLinks(d=d, alpha=alpha).latex()
+
+        actual = {"complete": form_9_9n_latex.complete, "short": form_9_9n_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
