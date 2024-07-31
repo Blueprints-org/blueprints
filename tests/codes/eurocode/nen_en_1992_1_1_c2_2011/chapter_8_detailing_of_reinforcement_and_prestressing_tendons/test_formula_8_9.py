@@ -159,3 +159,38 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
                 a_s=a_s,
                 f_cd=f_cd,
             )
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"F_{btd} = \min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right) = "
+                    r"\min \left( 15.00, 1000 \cdot 16 \cdot 78.50 \cdot 20.00 \cdot \frac{8.00}{10.00} \right) = 15.00"
+                ),
+            ),
+            ("short", r"F_{btd} = 15.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # example values
+        f_wd = 15  # kN
+        diameter_t = 8  # mm
+        diameter_l = 10  # mm
+        a_s = 78.5  # mm²
+        f_cd = 20  # MPa
+
+        # Object to test
+        form_8_9_latex = Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(
+            f_wd=f_wd,
+            diameter_t=diameter_t,
+            diameter_l=diameter_l,
+            a_s=a_s,
+            f_cd=f_cd,
+        ).latex()
+
+        actual = {"complete": form_8_9_latex.complete, "short": form_8_9_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
