@@ -35,14 +35,11 @@ class Form5Dot17EffectiveLengthBucklingLoad(Formula):
         self.n_b = n_b
 
     @staticmethod
-    def _evaluate(
-        ei: KN_M2,
-        n_b: KN
-    ) -> M:
+    def _evaluate(ei: KN_M2, n_b: KN) -> M:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(ei=ei, n_b=n_b)
         raise_if_less_or_equal_to_zero(n_b=n_b)
-        return math.pi * math.sqrt(ei/n_b)
+        return math.pi * math.sqrt(ei / n_b)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
