@@ -1,7 +1,7 @@
 """Cross-section shapes for reinforced concrete sections."""
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Protocol
 
 from shapely import Point, Polygon
@@ -9,31 +9,54 @@ from shapely import Point, Polygon
 from blueprints.type_alias import MM, MM2
 
 
-@dataclass
+@dataclass(frozen=True)
 class CircularCrossSection:
     """
     Class to represent a circular cross-section using shapely for geometric calculations.
 
     Parameters
     ----------
-    radius : MM
-        The radius of the circular cross-section.
+    diameter : MM
+        The diameter of the circular cross-section [mm].
     x : MM
         The x-coordinate of the circle's center.
     y : MM
         The y-coordinate of the circle's center.
     """
 
-    radius: MM
+    diameter: MM
     x: MM
     y: MM
 
     def __post_init__(self) -> None:
-        """Post-initialization to create a shapely Point and buffer it to create a circular polygon."""
-        # Create a Point at the specified origin (x, y)
-        self.center = Point(self.x, self.y)
-        # Create a circular polygon with the given radius
-        self.circle = self.center.buffer(self.radius)
+        """Post-initialization to validate the diameter."""
+        if self.diameter <= 0:
+            msg = f"Diameter must be a positive value, but got {self.diameter}"
+            raise ValueError(msg)
+
+    @property
+    def radius(self) -> MM:
+        """
+        Calculate the radius of the circular cross-section [mm].
+
+        Returns
+        -------
+        MM
+            The radius of the circle.
+        """
+        return self.diameter / 2.0
+
+    @property
+    def geometry(self) -> Polygon:
+        """
+        Shapely Polygon representing the circular cross-section.
+
+        Returns
+        -------
+        Polygon
+            The shapely Polygon representing the circle.
+        """
+        return self.centroid.buffer(self.radius)
 
     @property
     def area(self) -> MM2:
@@ -42,7 +65,7 @@ class CircularCrossSection:
 
         Returns
         -------
-        float
+        MM2
             The area of the circle.
         """
         return math.pi * self.radius**2.0
@@ -54,7 +77,7 @@ class CircularCrossSection:
 
         Returns
         -------
-        float
+        MM
             The perimeter of the circle.
         """
         return math.pi * self.radius * 2.0
@@ -69,34 +92,22 @@ class CircularCrossSection:
         Point
             The centroid of the circle.
         """
-        return self.circle.centroid
+        return Point(self.x, self.y)
 
     @property
     def vertices(self) -> list[Point]:
-        """Vertices of the circular cross-section."""
-        return [Point(x, y) for x, y in self.circle.exterior.coords]
-
-    def contains_point(self, x: MM, y: MM) -> bool:
         """
-        Check if a point (x, y) is inside the circular cross-section.
-
-        Parameters
-        ----------
-        x : MM
-            The x-coordinate of the point [mm].
-        y : MM
-            The y-coordinate of the point [mm].
+        Vertices of the circular cross-section.
 
         Returns
         -------
-        bool
-            True if the point is inside the circle, False otherwise.
+        list[Point]
+            The vertices of the circle.
         """
-        # Check if the point is within the circular polygon
-        return self.circle.contains(Point(x, y))
+        return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
 
-@dataclass
+@dataclass(frozen=True)
 class RectangularCrossSection:
     """
     Class to represent a rectangular cross-section for geometric calculations.
@@ -107,30 +118,38 @@ class RectangularCrossSection:
         The width of the rectangular cross-section.
     height : MM
         The height of the rectangular cross-section.
-    origin : Point
-        The centroid of the rectangle, given as a shapely Point. Default is (0, 0).
+    x : MM
+        The x-coordinate of the centroid of the rectangle. Default is 0.
+    y : MM
+        The y-coordinate of the centroid of the rectangle. Default is 0.
     """
 
     width: MM
     height: MM
-    origin: Point = field(default_factory=lambda: Point(0, 0))
+    x: MM = 0
+    y: MM = 0
 
-    def __post_init__(self) -> None:
+    @property
+    def geometry(self) -> Polygon:
         """
-        Post-initialization to create a shapely Polygon representing the rectangle
-        with the origin as the centroid.
-        """
-        # Calculate the bottom-left corner coordinates based on the centroid (origin)
-        self.x = self.origin.x - self.width / 2
-        self.y = self.origin.y - self.height / 2
+        Shapely Polygon representing the rectangular cross-section. Defines the coordinates of the rectangle based on width, height, x,
+        and y. Counter-clockwise order.
 
-        # Define the coordinates of the rectangle based on width, height, x, and y. Counter-clockwise order.
-        self.rectangle = Polygon(
+        Returns
+        -------
+        Polygon
+            The shapely Polygon representing the rectangle.
+        """
+        left_lower = (self.x - self.width / 2, self.y - self.height / 2)
+        right_lower = (self.x + self.width / 2, self.y - self.height / 2)
+        right_upper = (self.x + self.width / 2, self.y + self.height / 2)
+        left_upper = (self.x - self.width / 2, self.y + self.height / 2)
+        return Polygon(
             [
-                (self.x, self.y),
-                (self.x + self.width, self.y),
-                (self.x + self.width, self.y + self.height),
-                (self.x, self.y + self.height),
+                left_lower,
+                right_lower,
+                right_upper,
+                left_upper,
             ]
         )
 
@@ -144,7 +163,7 @@ class RectangularCrossSection:
         MM2
             The area of the rectangle.
         """
-        return self.rectangle.area
+        return self.geometry.area
 
     @property
     def perimeter(self) -> MM:
@@ -156,7 +175,7 @@ class RectangularCrossSection:
         MM
             The perimeter of the rectangle.
         """
-        return self.rectangle.length
+        return self.geometry.length
 
     @property
     def centroid(self) -> Point:
@@ -168,35 +187,27 @@ class RectangularCrossSection:
         Point
             The centroid of the rectangle.
         """
-        return self.rectangle.centroid
+        return self.geometry.centroid
 
     @property
     def vertices(self) -> list[Point]:
-        """Vertices of the rectangular cross-section. Counter-clockwise order starting from the bottom-left corner."""
-        return [Point(x, y) for x, y in self.rectangle.exterior.coords]
-
-    def contains_point(self, x: MM, y: MM) -> bool:
         """
-        Check if a point (x, y) is inside the rectangular cross-section.
-
-        Parameters
-        ----------
-        x : MM
-            The x-coordinate of the point.
-        y : MM
-            The y-coordinate of the point.
+        Vertices of the rectangular cross-section. Counter-clockwise order starting from the bottom-left corner.
 
         Returns
         -------
-        bool
-            True if the point is inside the rectangle, False otherwise.
+        list[Point]
+            The vertices of the rectangle.
         """
-        # Check if the point is within the rectangular polygon
-        return self.rectangle.contains(Point(x, y))
+        return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
 
 class CrossSection(Protocol):
     """Protocol for a cross-section."""
+
+    @property
+    def geometry(self) -> Polygon:
+        """Shapely Polygon representing the cross-section."""
 
     @property
     def area(self) -> MM2:
@@ -213,6 +224,3 @@ class CrossSection(Protocol):
     @property
     def vertices(self) -> list[Point]:
         """Vertices of the cross-section."""
-
-    def contains_point(self, x: MM, y: MM) -> bool:
-        """Check if a point (x, y) is inside the cross-section."""
