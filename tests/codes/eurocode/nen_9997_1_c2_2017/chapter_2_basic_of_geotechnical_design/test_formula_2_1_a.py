@@ -40,3 +40,26 @@ class TestForm2Dot1aDesignValueLoad:
         result = Form2Dot1aDesignValueLoad(gamma_f=gamma_f, f_rep=f_rep)
 
         assert result == pytest.approx(expected=135, rel=1e-9)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"F_d = \gamma_F \cdot F_{rep} = 1.200 \cdot 100.000 = 120.000",
+            ),
+            ("short", r"F_d = 120.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        gamma_f = 1.2  # [-]
+        f_rep = 100  # kN
+
+        # Object to test
+        form_2_1_a_latex = Form2Dot1aDesignValueLoad(gamma_f=gamma_f, f_rep=f_rep).latex()
+
+        actual = {"complete": form_2_1_a_latex.complete, "short": form_2_1_a_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
