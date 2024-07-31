@@ -72,7 +72,7 @@ class Form8Dot11MinimumDesignLapLength(Formula):
         arg_3_numerical_equation = r"200"
 
         return LatexFormula(
-            return_symbol=r"l_{0,min}",
+            return_symbol=r"l_{Ø,min}",
             result=f"{self:.2f}",
             equation=f"{latex_max_curly_brackets(arg_1_equation, arg_2_equation, arg_3_equation)}",
             numeric_equation=f"{latex_max_curly_brackets(arg_1_numerical_equation, arg_2_numerical_equation, arg_3_numerical_equation)}",
