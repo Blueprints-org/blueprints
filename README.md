@@ -13,23 +13,22 @@
   <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
 </picture>
 
-Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike. Blueprints is a collaborative,
-open-source initiative designed to serve as a comprehensive library of code, tools, and best practices, aiming to streamline and innovate the
-workflows within the built environment sector.
+Can someone explain to me why eurocode is not publicly available in code and that all of us are coding eurocode with massive maintenance costs 
+and shortages in technical personel? Well, no longer!
 
-## Vision
+Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike!
 
-Our vision with Blueprints is to create an accessible, reliable, and community-driven resource that supports engineers, and developers in their daily
-challenges. By harnessing the collective expertise of the industry, Blueprints strives to pave the way for a future where collaboration and open
-source can drive the field of civil engineering to new heights.
+Blueprints is a collaboration of several engineering companies which contains programmable eurocode information such as tables, figures and 
+formulas. It also provides materials, geometry and even section checks. The basis as well as the implemented usecases provide all key 
+necessities for the civil engineer.
 
 ## Mission
 
 Our mission is to:
 
+- Offer a robust suite of tools and libraries that encapsulate common and advanced engineering tasks.
 - Foster a community where sharing knowledge and best practices is the norm, not the exception.
 - Provide a solid foundation of code and documentation that adheres to the highest quality standards (100% code coverage).
-- Offer a robust suite of tools and libraries that encapsulate common and advanced engineering tasks.
 
 ## Installation
 
@@ -44,6 +43,8 @@ For the actively developed version:
 ```shell
 pip install git+https://github.com/Blueprints-org/blueprints.git
 ```
+
+## Read the docs!
 
 Documentation is available at [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/).
 
