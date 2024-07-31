@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MM, MM2
+from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 
@@ -15,7 +15,7 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
 
     def __init__(
         self,
-        diameter: MM2,
+        diameter: MM,
         nominal_max_aggregate_size_greater_than_32_mm: bool,
     ) -> None:
         """[:math:`c_{nom}`] Calculates the minimum concrete cover with regard to bond [:math:`mm`].
@@ -24,8 +24,8 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
 
         Parameters
         ----------
-        diameter: MM2
-            Diameter of the reinforcement [:math:`mm2`].
+        diameter: MM
+            Diameter of the reinforcement [:math:`mm`].
             In case of bundled bars, the equivalent diameter [:math:`phi_{d}`] should be used. See 8.9.1.
         nominal_max_aggregate_size_greater_than_32_mm: bool
             Is the nominal maximum aggregate size greater than 32 [:math:`mm`]?
@@ -36,7 +36,7 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
 
     @staticmethod
     def _evaluate(
-        diameter: MM2,
+        diameter: MM,
         nominal_max_aggregate_size_greater_than_32_mm: bool,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
