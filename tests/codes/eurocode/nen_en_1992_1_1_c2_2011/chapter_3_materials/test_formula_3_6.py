@@ -50,3 +50,27 @@ class TestForm3Dot6CreepDeformationOfConcrete:
 
         with pytest.raises(ValueError):
             Form3Dot6CreepDeformationOfConcrete(phi_inf_t0=phi_inf_t0, sigma_c=sigma_c, e_c=e_c)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\epsilon_{cc}(\infty, t_0) = \phi(\infty, t_0) \cdot ( \sigma_c / E_c ) = 0.340 \cdot ( 0.750 / 2.450 ) = 0.104",
+            ),
+            ("short", r"\epsilon_{cc}(\infty, t_0) = 0.104"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        phi_inf_t0 = 0.34  # -
+        sigma_c = 0.75  # MPa
+        e_c = 2.45  # MPa
+
+        # Object to test
+        form_3_6_latex = Form3Dot6CreepDeformationOfConcrete(phi_inf_t0=phi_inf_t0, sigma_c=sigma_c, e_c=e_c).latex()
+
+        actual = {"complete": form_3_6_latex.complete, "short": form_3_6_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

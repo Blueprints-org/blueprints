@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DAYS
 
 
@@ -53,6 +54,16 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
             raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")
         return np.exp(s * (1 - (28 / t) ** (1 / 2)))
 
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.2."""
+        return LatexFormula(
+            return_symbol=r"\beta_{ss}(t)",
+            result=f"{self:.3f}",
+            equation=r"\exp \left( s \cdot \left( 1 - \left( \frac{28}{t} \right) ^{1/2} \right) \right)",
+            numeric_equation=rf"\exp \left( {self.s:.3f} \cdot \left( 1 - \left( \frac{{28}}{{{self.t:.3f}}} \right) ^{{1/2}} \right) \right)",
+            comparison_operator_label="=",
+        )
+
 
 class SubForm3Dot2CoefficientTypeOfCementS(Formula):
     """Class representing sub-formula for formula 3.2, which calculates the coefficient 's' which is dependent on the cement class."""
@@ -94,3 +105,13 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
                 return 0.38
             case _:
                 raise ValueError(f"Invalid cement class: {cement_class}. Options: 'R', 'N' or 'S'")
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.2s."""
+        return LatexFormula(
+            return_symbol=r"s",
+            result=f"{self:.3f}",
+            equation=r"\text{cement class}",
+            numeric_equation=rf"{self.cement_class}",
+            comparison_operator_label=r"\rightarrow",
+        )

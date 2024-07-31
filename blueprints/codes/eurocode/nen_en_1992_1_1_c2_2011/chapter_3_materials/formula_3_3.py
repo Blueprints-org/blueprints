@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -40,3 +41,13 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
         if f_ct_sp < 0:
             raise ValueError(f"Negative f_ct_sp: {f_ct_sp}. f_ct_sp cannot be negative")
         return 0.9 * f_ct_sp
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.3."""
+        return LatexFormula(
+            return_symbol=r"f_{ct}",
+            result=f"{self:.3f}",
+            equation=r"0.9 \cdot f_{ct,sp}",
+            numeric_equation=rf"0.9 \cdot {self.f_ct_sp:.3f}",
+            comparison_operator_label="=",
+        )

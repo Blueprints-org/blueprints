@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 
 
 class Form3Dot7NonLinearCreepCoefficient(Formula):
@@ -47,3 +48,13 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
         if k_sigma < 0:
             raise ValueError(f"Negative k_sigma: {k_sigma}. k_sigma cannot be negative")
         return phi_inf_t0 * np.exp(1.5 * (k_sigma - 0.45))
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.7."""
+        return LatexFormula(
+            return_symbol=r"\phi_k(\infty, t_0)",
+            result=f"{self:.3f}",
+            equation=r"\phi(\infty, t_0) \cdot \exp( 1.5 ( k_{\sigma} - 0.45))",
+            numeric_equation=rf"{self.phi_inf_t0:.3f} \cdot \exp( 1.5 ( {self.k_sigma:.3f} - 0.45))",
+            comparison_operator_label="=",
+        )

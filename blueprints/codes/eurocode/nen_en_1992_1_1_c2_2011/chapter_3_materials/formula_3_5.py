@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -53,3 +54,13 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
         if e_cm < 0:
             raise ValueError(f"Negative e_cm: {e_cm}. e_cm cannot be negative")
         return (f_cm_t / f_cm) ** 0.3 * e_cm
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.5."""
+        return LatexFormula(
+            return_symbol=r"E_{cm}(t)",
+            result=f"{self:.3f}",
+            equation=r"( f_{cm}(t) / f{cm} )^{0.3} \cdot E_{cm}",
+            numeric_equation=rf"( {self.f_cm_t:.3f} / {self.f_cm:.3f} )^{{0.3}} \cdot {self.e_cm:.3f}",
+            comparison_operator_label="=",
+        )

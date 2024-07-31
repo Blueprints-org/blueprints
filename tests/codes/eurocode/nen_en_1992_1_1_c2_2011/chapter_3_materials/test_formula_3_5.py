@@ -50,3 +50,27 @@ class TestForm3Dot5ApproximationVarianceElasticModulusOverTime:
 
         with pytest.raises(ValueError):
             Form3Dot5ApproximationVarianceElasticModulusOverTime(f_cm_t=f_cm_t, f_cm=f_cm, e_cm=e_cm)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"E_{cm}(t) = ( f_{cm}(t) / f{cm} )^{0.3} \cdot E_{cm} = ( 2.340 / 3.400 )^{0.3} \cdot 2.900 = 2.593",
+            ),
+            ("short", r"E_{cm}(t) = 2.593"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_cm_t = 2.34  # MPa
+        f_cm = 3.4  # MPa
+        e_cm = 2.9  # MPa
+
+        # Object to test
+        form_3_5_latex = Form3Dot5ApproximationVarianceElasticModulusOverTime(f_cm_t=f_cm_t, f_cm=f_cm, e_cm=e_cm).latex()
+
+        actual = {"complete": form_3_5_latex.complete, "short": form_3_5_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -37,3 +37,26 @@ class TestForm3Dot7NonLinearCreepCoefficient:
 
         with pytest.raises(ValueError):
             Form3Dot7NonLinearCreepCoefficient(phi_inf_t0=phi_inf_t0, k_sigma=k_sigma)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\phi_k(\infty, t_0) = \phi(\infty, t_0) \cdot \exp( 1.5 ( k_{\sigma} - 0.45)) = 0.250 \cdot \exp( 1.5 ( 2.470 - 0.45)) = 5.174",
+            ),
+            ("short", r"\phi_k(\infty, t_0) = 5.174"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        phi_inf_t0 = 0.25  # -
+        k_sigma = 2.47  # days
+
+        # Object to test
+        form_3_7_latex = Form3Dot7NonLinearCreepCoefficient(phi_inf_t0=phi_inf_t0, k_sigma=k_sigma).latex()
+
+        actual = {"complete": form_3_7_latex.complete, "short": form_3_7_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

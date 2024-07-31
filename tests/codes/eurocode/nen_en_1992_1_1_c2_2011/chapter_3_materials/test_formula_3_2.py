@@ -37,3 +37,27 @@ class TestForm3Dot2CoefficientDependentOfConcreteAge:
 
         with pytest.raises(ValueError):
             Form3Dot2CoefficientDependentOfConcreteAge(s=s, t=t)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\beta_{ss}(t) = \exp \left( s \cdot \left( 1 - \left( \frac{28}{t} \right) ^{1/2} \right) \right) = "
+                r"\exp \left( 0.250 \cdot \left( 1 - \left( \frac{28}{10.000} \right) ^{1/2} \right) \right) = 0.845",
+            ),
+            ("short", r"\beta_{ss}(t) = 0.845"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        s = 0.25  # -
+        t = 10  # days
+
+        # Object to test
+        form_3_2_latex = Form3Dot2CoefficientDependentOfConcreteAge(s=s, t=t).latex()
+
+        actual = {"complete": form_3_2_latex.complete, "short": form_3_2_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
