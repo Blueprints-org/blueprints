@@ -48,7 +48,7 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
         return LatexFormula(
             return_symbol=r"l_{b,min}",
             result=f"{self:.2f}",
-            equation=latex_max_curly_brackets(r"0.6 \cdot l_{b,rqd}", r"10 \cdot \Phi", r"100 \ \text{mm}"),
+            equation=latex_max_curly_brackets(r"0.6 \cdot l_{b,rqd}", r"10 \cdot Ø", r"100 \ \text{mm}"),
             numeric_equation=latex_max_curly_brackets(
                 rf"0.6 \cdot {self.l_b_rqd:.2f}",
                 rf"10 \cdot {self.diameter}",
