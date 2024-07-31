@@ -38,7 +38,7 @@ class TestABCEnumMeta:
     def test_mock_abstract_enum_is_abstract(self) -> None:
         """Test case for MockAbstractEnum class to check if it's an abstract class."""
         assert MockAbstractEnum.__abstractmethods__ == frozenset({"test_method"})
-        with pytest.raises(TypeError):
+        with pytest.raises(ValueError):
             _ = MockAbstractEnum("a")  # type: ignore[abstract]
 
     def test_mock_concrete_enum(self) -> None:
