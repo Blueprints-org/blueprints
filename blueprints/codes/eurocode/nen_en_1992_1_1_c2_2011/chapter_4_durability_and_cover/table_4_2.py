@@ -26,7 +26,8 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
         ----------
         diameter: MM
             Diameter of the reinforcement [:math:`mm`].
-            In case of bundled bars, the equivalent diameter [:math:`phi_{d}`] should be used. See 8.9.1.
+            In case of bundled bars, the equivalent diameter [:math:`Ø_{n}`] as defined in par. 8.9.1 should be used.
+            Use your own implementation of this value or use the :class:`Form8Dot14EquivalentDiameterBundledBars` class.
         nominal_max_aggregate_size_greater_than_32_mm: bool
             Is the nominal maximum aggregate size greater than 32 [:math:`mm`]?
         """
@@ -50,7 +51,7 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
         suffix = " + 5" if self.nominal_max_aggregate_size_greater_than_32_mm else ""
         return LatexFormula(
             return_symbol=r"c_{min,b}",
-            result=f"{self:.0f}",
+            result=f"{self:.1f}",
             equation=r"(equivalent) diameter" + suffix,
             numeric_equation=f"{self.diameter}" + suffix,
             comparison_operator_label="=",

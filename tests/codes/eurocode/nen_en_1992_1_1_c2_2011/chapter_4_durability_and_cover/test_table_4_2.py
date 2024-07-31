@@ -3,6 +3,9 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_14 import (
+    Form8Dot14EquivalentDiameterBundledBars,
+)
 from blueprints.type_alias import MM
 from blueprints.validations import NegativeValueError
 
@@ -21,11 +24,21 @@ class TestTable4Dot2MinimumCoverWithRegardToBond:
     )
     def test_evaluation(self, diameter: MM, nominal_max_aggregate_size_greater_than_32_mm: bool, expected_result: MM) -> None:
         """Test the evaluation of the result."""
-        # Example values
         form_4_2 = Table4Dot2MinimumCoverWithRegardToBond(
             diameter=diameter,
             nominal_max_aggregate_size_greater_than_32_mm=nominal_max_aggregate_size_greater_than_32_mm,
         )
+
+        assert form_4_2 == pytest.approx(expected=expected_result, rel=1e-4)
+
+    def test_evaluation_using_form_8_14(self) -> None:
+        """Test the evaluation of the result using formula 8.14 (Form8Dot14EquivalentDiameterBundledBars)."""
+        form_4_2 = Table4Dot2MinimumCoverWithRegardToBond(
+            diameter=Form8Dot14EquivalentDiameterBundledBars(diameter=20, n_b=4),
+            nominal_max_aggregate_size_greater_than_32_mm=True,
+        )
+
+        expected_result = 45
 
         assert form_4_2 == pytest.approx(expected=expected_result, rel=1e-4)
 
@@ -58,10 +71,10 @@ class TestTable4Dot2MinimumCoverWithRegardToBond:
     @pytest.mark.parametrize(
         ("nominal_max_aggregate_size_greater_than_32_mm", "representation", "expected_result"),
         [
-            (True, "complete", r"c_{min,b} = (equivalent) diameter + 5 = 20 + 5 = 25"),
-            (True, "short", "c_{min,b} = 25"),
-            (False, "complete", r"c_{min,b} = (equivalent) diameter = 20 = 20"),
-            (False, "short", "c_{min,b} = 20"),
+            (True, "complete", r"c_{min,b} = (equivalent) diameter + 5 = 20 + 5 = 25.0"),
+            (True, "short", "c_{min,b} = 25.0"),
+            (False, "complete", r"c_{min,b} = (equivalent) diameter = 20 = 20.0"),
+            (False, "short", "c_{min,b} = 20.0"),
         ],
     )
     def test_latex(self, nominal_max_aggregate_size_greater_than_32_mm: bool, representation: str, expected_result: str) -> None:
