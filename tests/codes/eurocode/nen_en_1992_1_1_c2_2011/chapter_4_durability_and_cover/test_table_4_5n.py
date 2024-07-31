@@ -1,4 +1,4 @@
-"""Testing formula 4.4N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 4.5N of NEN-EN 1992-1-1+C2:2011."""
 
 import pytest
 
@@ -15,12 +15,14 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     ConcreteStrengthClass,
     Table4Dot3ConcreteStructuralClass,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_4n import Table4Dot4nMinimumCoverWithRegardToDurability
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_5n import (
+    Table4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel,
+)
 from blueprints.type_alias import MM
 
 
-class TestTable4Dot4nMinimumCoverWithRegardToDurability:
-    """Validation for table 4.4 from NEN-EN 1992-1-1+C2:2011."""
+class TestTable4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel:
+    """Validation for table 4.5N from NEN-EN 1992-1-1+C2:2011."""
 
     @pytest.mark.parametrize(
         ("exposure_classes", "structural_class", "expected_result"),
@@ -28,17 +30,17 @@ class TestTable4Dot4nMinimumCoverWithRegardToDurability:
             (
                 Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.XD1, ChlorideSeawater.XS3, FreezeThaw.XF4, Chemical.XA1),
                 6,
-                50,
+                55,
             ),
             (
                 Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.XD3, ChlorideSeawater.XS2, FreezeThaw.XF4, Chemical.XA1),
                 5,
-                45,
+                50,
             ),
             (
                 Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.XD1, ChlorideSeawater.XS2, FreezeThaw.XF4, Chemical.XA1),
                 5,
-                45,
+                50,
             ),
             (
                 Table4Dot1ExposureClasses(Carbonation.NA, Chloride.NA, ChlorideSeawater.NA, FreezeThaw.NA, Chemical.NA),
@@ -48,17 +50,17 @@ class TestTable4Dot4nMinimumCoverWithRegardToDurability:
             (
                 Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.NA, ChlorideSeawater.NA, FreezeThaw.XF4, Chemical.XA1),
                 3,
-                20,
+                25,
             ),
             (
                 Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.XD1, ChlorideSeawater.NA, FreezeThaw.XF4, Chemical.XA1),
                 2,
-                25,
+                30,
             ),
             (
                 Table4Dot1ExposureClasses(Carbonation.XC4, Chloride.NA, ChlorideSeawater.NA, FreezeThaw.XF4, Chemical.XA1),
                 1,
-                15,
+                20,
             ),
         ],
     )
@@ -66,18 +68,18 @@ class TestTable4Dot4nMinimumCoverWithRegardToDurability:
         self, exposure_classes: Table4Dot1ExposureClasses, structural_class: Table4Dot3ConcreteStructuralClass, expected_result: MM
     ) -> None:
         """Test the evaluation of the result."""
-        table_4_4 = Table4Dot4nMinimumCoverWithRegardToDurability(
+        table_4_5 = Table4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel(
             exposure_classes=exposure_classes,
             structural_class=structural_class,
         )
 
-        assert table_4_4 == pytest.approx(expected=expected_result, rel=1e-4)
+        assert table_4_5 == pytest.approx(expected=expected_result, rel=1e-4)
 
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
-            ("complete", r"c_{min,dur} = structural class S3 & exposure classes (XC2, XF4, XA1) = 20"),
-            ("short", "c_{min,dur} = 20"),
+            ("complete", r"c_{min,dur} = structural class S3 & exposure classes (XC2, XF4, XA1) = 25"),
+            ("short", "c_{min,dur} = 25"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:
@@ -86,7 +88,7 @@ class TestTable4Dot4nMinimumCoverWithRegardToDurability:
         exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.NA, ChlorideSeawater.NA, FreezeThaw.XF4, Chemical.XA1)
         structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, ConcreteMaterial(ConcreteStrengthClass("C20/25")), True, False)
 
-        c_min_dur = Table4Dot4nMinimumCoverWithRegardToDurability(
+        c_min_dur = Table4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel(
             exposure_classes=exposure_classes,
             structural_class=structural_class,
         ).latex()
