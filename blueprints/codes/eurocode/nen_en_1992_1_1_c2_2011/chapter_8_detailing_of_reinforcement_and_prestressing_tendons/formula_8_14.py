@@ -51,9 +51,9 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 8.14."""
         return LatexFormula(
-            return_symbol=r"\Phi_n",
+            return_symbol=r"Ø_n",
             result=f"{self:.2f}",
-            equation=r"\min \left(55, \Phi \cdot \sqrt{n_b} \right)",
-            numeric_equation=rf"\min \left(55, {self.diameter:.2f} \cdot \sqrt{{{self.n_b:.2f}}} \right)",
+            equation=r"\min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right)",
+            numeric_equation=rf"\min \left(55 \ \text{mm}, {self.diameter:.2f} \cdot \sqrt{{{self.n_b:.2f}}} \right)",
             comparison_operator_label="=",
         )

@@ -85,7 +85,7 @@ class TestForm8Dot6MinimumTensionAnchorage:
         [
             (
                 "complete",
-                r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot \Phi; 100 \ \text{mm}\right\} = \max \left\{0.3 \cdot 500.00; 10 \cdot 8; "
+                r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.3 \cdot 500.00; 10 \cdot 8; "
                 r"100\right\} = 150.00",
             ),
             ("short", "l_{b,min} = 150.00"),

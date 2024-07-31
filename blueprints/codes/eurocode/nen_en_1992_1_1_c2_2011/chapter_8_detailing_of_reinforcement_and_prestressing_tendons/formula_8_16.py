@@ -82,7 +82,7 @@ class Form8Dot16BasicTransmissionLength(Formula):
         return LatexFormula(
             return_symbol=r"l_{pt}",
             result=f"{self:.2f}",
-            equation=r"\alpha_1 \cdot \alpha_2 \cdot \Phi \cdot \frac{\sigma_{pm0}}{f_{bpt}}",
+            equation=r"\alpha_1 \cdot \alpha_2 \cdot Ø \cdot \frac{\sigma_{pm0}}{f_{bpt}}",
             numeric_equation=(
                 rf"{self.alpha_1:.2f} \cdot {self.alpha_2:.2f} \cdot {self.diameter:.2f} \cdot \frac{{{self.sigma_pm0:.2f}}}{{{self.f_bpt:.2f}}}"
             ),

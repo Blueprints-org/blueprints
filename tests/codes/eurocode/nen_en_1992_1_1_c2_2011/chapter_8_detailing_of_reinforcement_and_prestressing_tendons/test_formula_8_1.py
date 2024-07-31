@@ -99,7 +99,7 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
             (
                 "complete",
                 (
-                    r"\Phi_{m,min} = \frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot \Phi} \right) }{f_{cd}} "
+                    r"Ø_{m,min} = \frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}} "
                     r"= \frac{80.00 \cdot 1000 \cdot \left( \frac{1}{200.00} + \frac{1}{2 \cdot 16.00} \right)}{30.00} = 96.67"
                 ),
             ),

@@ -136,10 +136,10 @@ class TestForm8Dot11MinimumDesignLapLength:
         [
             (
                 "complete",
-                r"l_{\Phi,min} = \max \left\{0.3 \cdot \alpha_6 \cdot l_{b,rqd}; 15 \cdot \Phi; 200 \ \text{mm}\right\} = \max \left\{0.3 \cdot 1.00 "
+                r"l_{Ø,min} = \max \left\{0.3 \cdot \alpha_6 \cdot l_{b,rqd}; 15 \cdot Ø; 200 \ \text{mm}\right\} = \max \left\{0.3 \cdot 1.00 "
                 r"\cdot 450.00; 15 \cdot 8; 200\right\} = 200.00",
             ),
-            ("short", r"l_{\Phi,min} = 200.00"),
+            ("short", r"l_{Ø,min} = 200.00"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:

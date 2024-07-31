@@ -54,7 +54,7 @@ class TestSubForm8Dot8nFunctionX:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"x = 2 \cdot \frac{c}{\Phi_t} = 2 \cdot \frac{60.00}{16.00} = 8.50"),
+            ("complete", r"x = 2 \cdot \frac{c}{Ø_t} = 2 \cdot \frac{60.00}{16.00} = 8.50"),
             ("short", r"x = 8.50"),
         ],
     )

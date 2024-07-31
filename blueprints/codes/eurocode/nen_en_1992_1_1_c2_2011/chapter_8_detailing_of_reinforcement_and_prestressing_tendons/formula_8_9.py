@@ -76,7 +76,7 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
         return LatexFormula(
             return_symbol=r"F_{btd}",
             result=f"{self:.2f}",
-            equation=r"\min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{\Phi_t}{\Phi_l} \right)",
+            equation=r"\min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right)",
             numeric_equation=(
                 rf"\min \left( {self.f_wd:.2f}, 1000 \cdot 16 \cdot {self.a_s:.2f} \cdot {self.f_cd:.2f} \cdot "
                 rf"\frac{{{self.diameter_t:.2f}}}{{{self.diameter_l:.2f}}} \right)"

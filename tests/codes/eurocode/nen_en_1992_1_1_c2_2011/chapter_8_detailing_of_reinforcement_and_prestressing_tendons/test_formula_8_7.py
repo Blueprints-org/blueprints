@@ -85,8 +85,7 @@ class TestForm8Dot7MinimumCompressionAnchorage:
         [
             (
                 "complete",
-                r"l_{b,min} = \max \left\{0.6 \cdot l_{b,rqd}; 10 \cdot \Phi; 100 \ \text{mm}\right\} = \max \left\{0.6 \cdot 500.00; "
-                r"10 \cdot 8; 100\right\} = 300.00",
+                r"l_{b,min} = \max \left\{0.6 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.6 \cdot 500.00; 10 \cdot 8; 100\right\} = 300.00",
             ),
             ("short", "l_{b,min} = 300.00"),
         ],

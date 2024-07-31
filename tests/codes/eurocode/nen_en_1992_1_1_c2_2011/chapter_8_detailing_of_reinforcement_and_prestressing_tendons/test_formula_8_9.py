@@ -166,7 +166,7 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
             (
                 "complete",
                 (
-                    r"F_{btd} = \min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{\Phi_t}{\Phi_l} \right) = "
+                    r"F_{btd} = \min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right) = "
                     r"\min \left( 15.00, 1000 \cdot 16 \cdot 78.50 \cdot 20.00 \cdot \frac{8.00}{10.00} \right) = 15.00"
                 ),
             ),

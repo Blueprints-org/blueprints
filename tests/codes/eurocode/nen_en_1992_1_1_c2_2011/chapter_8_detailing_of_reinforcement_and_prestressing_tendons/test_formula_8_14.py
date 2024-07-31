@@ -58,7 +58,7 @@ class TestForm8Dot14EquivalentDiameterBundledBars:
         [
             (
                 "complete",
-                (r"\Phi_n = \min \left(55, \Phi \cdot \sqrt{n_b} \right) = \min \left(55, 16.00 \cdot \sqrt{4.00} \right) = 32.00"),
+                (r"Ø_n = \min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right) = \min \left(55 \ \text{mm}, 16.00 \cdot \sqrt{4.00} \right) = 32.00"),
             ),
             ("short", r"\Phi_n = 32.00"),
         ],

@@ -78,7 +78,7 @@ class Form8Dot8nAnchorageCapacityWeldedTransverseBar(Formula):
         return LatexFormula(
             return_symbol=r"F_{btd}",
             result=f"{self:.2f}",
-            equation=r"\min\left( l_{td} \cdot \Phi_t \cdot \sigma_{td}, F_{wd} \right)",
+            equation=r"\min\left( l_{td} \cdot Ø_t \cdot \sigma_{td}, F_{wd} \right)",
             numeric_equation=rf"\min\left( {self.l_td:.2f} \cdot {self.diameter_t:.2f} \cdot {self.sigma_td:.2f} / 1000, {self.f_wd:.2f} \right)",
             comparison_operator_label="=",
         )
@@ -141,9 +141,9 @@ class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 8.8N transverse bar."""
         return LatexFormula(
-            return_symbol=r"F_{wd}",
+            return_symbol=r"l_{td}",
             result=f"{self:.2f}",
-            equation=r"\min\left(l_t, 1.16 \cdot Phi_t \cdot \sqrt{\frac{f_{yd}}{\sigma_{td}}} \right)",
+            equation=r"\min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right)",
             numeric_equation=(
                 rf"\min\left({self.l_t:.2f}, 1.16 \cdot {self.diameter_t:.2f} \cdot ({{\frac{{{self.f_yd:.2f}}}{{{self.sigma_td:.2f}}}}})^{{0.5}} \right)"
             ),
@@ -210,9 +210,9 @@ class SubForm8Dot8nConcreteStress(Formula):
         return LatexFormula(
             return_symbol=r"\sigma_{td}",
             result=f"{self:.2f}",
-            equation=r"\min\left( 3 \cdot f_{cd}, \frac{f_{cd} \cdot \sigma_{cm}}{y} \right)",
+            equation=r"\min\left( 3 \cdot f_{cd}, \frac{f_{ctd} + \sigma_{cm}}{y} \right)",
             numeric_equation=(
-                rf"\min\left(3 \cdot {self.f_cd:.2f}, \frac{{{self.f_cd:.2f} " rf"\cdot {self.sigma_cm:.2f}}}{{{self.y_function:.2f}}} \right)"
+                rf"\min\left(3 \cdot {self.f_cd:.2f}, \frac{{{self.f_ctd:.2f} " rf"+ {self.sigma_cm:.2f}}}{{{self.y_function:.2f}}} \right)"
             ),
             comparison_operator_label="=",
         )

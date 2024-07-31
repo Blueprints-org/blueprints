@@ -159,8 +159,8 @@ class TestSubForm8Dot8nDesignLengthOfTransverseBar:
             (
                 "complete",
                 (
-                    r"F_{wd} = \min\left(l_t, 1.16 \cdot Phi_t \cdot \sqrt{\frac{f_{yd}}{\sigma_{td}}} \right) = "
-                    r"\min\left(100.00, 1.16 \cdot 16.00 \cdot \sqrt{\frac{500.00}{35.20}} \right) = 69.95"
+                    r"l_{td} = \min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right) = "
+                    r"\min\left(100.00, 1.16 \cdot 16.00 \cdot ({\frac{500.00}{35.20}})^{0.5} \right) = 69.95"
                 ),
             ),
             ("short", r"F_{wd} = 69.95"),

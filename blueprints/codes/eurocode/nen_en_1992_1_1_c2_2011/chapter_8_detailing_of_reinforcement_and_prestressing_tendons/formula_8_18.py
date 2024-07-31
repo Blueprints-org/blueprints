@@ -40,7 +40,7 @@ class Form8Dot18DesignValueTransmissionLength2(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 8.18."""
         return LatexFormula(
-            return_symbol=r"l_{pt1}",
+            return_symbol=r"l_{pt2}",
             result=f"{self:.2f}",
             equation=r"1.2 \cdot l_{pt}",
             numeric_equation=rf"1.2 \cdot {self.l_pt:.2f}",
