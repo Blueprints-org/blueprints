@@ -54,6 +54,6 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
             return_symbol=r"Ø_n",
             result=f"{self:.2f}",
             equation=r"\min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right)",
-            numeric_equation=rf"\min \left(55 \ \text{mm}, {self.diameter:.2f} \cdot \sqrt{{{self.n_b:.2f}}} \right)",
+            numeric_equation=rf"\min \left(55 \ \text{{mm}}, {self.diameter:.2f} \cdot \sqrt{{{self.n_b:.2f}}} \right)",
             comparison_operator_label="=",
         )

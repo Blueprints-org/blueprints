@@ -103,7 +103,7 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
                     r"= \frac{80.00 \cdot 1000 \cdot \left( \frac{1}{200.00} + \frac{1}{2 \cdot 16.00} \right)}{30.00} = 96.67"
                 ),
             ),
-            ("short", r"\Phi_{m,min} = 96.67"),
+            ("short", r"Ø_{m,min} = 96.67"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

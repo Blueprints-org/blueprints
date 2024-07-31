@@ -145,7 +145,8 @@ class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
             result=f"{self:.2f}",
             equation=r"\min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right)",
             numeric_equation=(
-                rf"\min\left({self.l_t:.2f}, 1.16 \cdot {self.diameter_t:.2f} \cdot ({{\frac{{{self.f_yd:.2f}}}{{{self.sigma_td:.2f}}}}})^{{0.5}} \right)"
+                rf"\min\left({self.l_t:.2f}, 1.16 \cdot {self.diameter_t:.2f} \cdot "
+                rf"({{\frac{{{self.f_yd:.2f}}}{{{self.sigma_td:.2f}}}}})^{{0.5}} \right)"
             ),
             comparison_operator_label="=",
         )
@@ -304,7 +305,7 @@ class SubForm8Dot8nFunctionX(Formula):
         return LatexFormula(
             return_symbol=r"x",
             result=f"{self:.2f}",
-            equation=r"2 \cdot \frac{c}{\Phi_t}",
+            equation=r"2 \cdot \frac{c}{Ø_t}",
             numeric_equation=rf"2 \cdot \frac{{{self.cover:.2f}}}{{{self.diameter_t:.2f}}}",
             comparison_operator_label="=",
         )

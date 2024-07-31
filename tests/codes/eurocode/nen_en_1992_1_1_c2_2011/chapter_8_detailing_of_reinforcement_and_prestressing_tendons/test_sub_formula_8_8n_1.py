@@ -163,7 +163,7 @@ class TestSubForm8Dot8nDesignLengthOfTransverseBar:
                     r"\min\left(100.00, 1.16 \cdot 16.00 \cdot ({\frac{500.00}{35.20}})^{0.5} \right) = 69.95"
                 ),
             ),
-            ("short", r"F_{wd} = 69.95"),
+            ("short", r"l_{td} = 69.95"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

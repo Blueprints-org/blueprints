@@ -60,7 +60,7 @@ class TestForm8Dot14EquivalentDiameterBundledBars:
                 "complete",
                 (r"Ø_n = \min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right) = \min \left(55 \ \text{mm}, 16.00 \cdot \sqrt{4.00} \right) = 32.00"),
             ),
-            ("short", r"\Phi_n = 32.00"),
+            ("short", r"Ø_n = 32.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

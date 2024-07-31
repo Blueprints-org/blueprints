@@ -47,8 +47,7 @@ class TestSubForm8Dot2CoefficientBarDiameter:
             ("short_latex_16", r"\eta_2 = 1.00"),
             (
                 "complete_latex_64",
-                r"\eta_2 = \begin{matrix} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & "
-                r"\text{for }Ø > 32  \end{matrix} = (132 - 64) / 100 = 0.68",
+                r"\eta_2 = \begin{matrix} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & " r"\text{for }Ø > 32  \end{matrix} = (132 - 64) / 100 = 0.68",
             ),
             ("short_latex_64", r"\eta_2 = 0.68"),
         ],
