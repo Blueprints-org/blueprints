@@ -33,7 +33,7 @@ class Rebar(CircularCrossSection):
         """Post-initialization to validate the diameter."""
         super().__post_init__()
         if not 0.0 <= self.relative_end_position <= 1.0:
-            msg = f"Relative start position of the rebar must be between 0.0 and 1.0, but got {self.relative_end_position}"
+            msg = f"Relative end position of the rebar must be between 0.0 and 1.0, but got {self.relative_end_position}"
             raise ValueError(msg)
 
         if not 0.0 <= self.relative_start_position <= 1.0:
