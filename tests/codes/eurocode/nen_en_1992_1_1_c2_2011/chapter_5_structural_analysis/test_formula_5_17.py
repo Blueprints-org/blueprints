@@ -2,17 +2,20 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_17 import Form5Dot17EffectiveLengthBucklingLoad
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_17 import \
+    Form5Dot17EffectiveLengthBucklingLoad
 from blueprints.validations import NegativeValueError, LessOrEqualToZeroError
 
 
 class TestForm5Dot16EffectiveLengthUnbraced:
     """Validation for formula 5.17 from NEN-EN 1992-1-1+C2:2011."""
-    @pytest.fixture()
-    def form_5_17(self):
-        yield Form5Dot17EffectiveLengthBucklingLoad(ei=1_000_000, n_b=5)
 
-    def test_evaluation(self, form_5_17) -> None:
+    @pytest.fixture()
+    def form_5_17(self) -> Form5Dot17EffectiveLengthBucklingLoad:
+        """Setup and teardown for test"""
+        return Form5Dot17EffectiveLengthBucklingLoad(ei=1_000_000, n_b=5)
+
+    def test_evaluation(self, form_5_17: Form5Dot17EffectiveLengthBucklingLoad) -> None:
         """Test the evaluation of the result."""
         # Expected result, manually calculated
         manually_calculated_result = 1404.96  # M
@@ -48,7 +51,7 @@ class TestForm5Dot16EffectiveLengthUnbraced:
             ("short", r"l_0 = 1404.963"),
         ],
     )
-    def test_latex(self, form_5_17, representation: str, expected: str) -> None:
+    def test_latex(self, form_5_17: Form5Dot17EffectiveLengthBucklingLoad, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Object to test
         form_5_17_latex = form_5_17.latex()

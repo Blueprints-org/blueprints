@@ -5,13 +5,15 @@ import math
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS, M, KN_M2, KN
+from blueprints.type_alias import M, KN_M2, KN
 from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_zero
 
 
 class Form5Dot17EffectiveLengthBucklingLoad(Formula):
     """Class representing formula 5.17 for the calculation of effective length of unbraced members, in the
-    case where criteria (2) and (3) do not apply such as by variable loading, :math:`l_0`."""
+    case where criteria (2) and (3) do not apply such as by variable loading, :math:`l_0`.
+    """
+
     label = "5.17"
     source_document = NEN_EN_1992_1_1_C2_2011
 
