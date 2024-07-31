@@ -13,13 +13,13 @@
   <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
 </picture>
 
-Can someone explain to me why eurocode is not publicly available in code and that all of us are coding eurocode with massive maintenance costs 
-and shortages in technical personel? Well, no longer!
+Can someone explain to me why Eurocode is not publicly available in code and that all of us are coding eurocode with massive maintenance costs 
+and shortages in technical personnel? Well, no longer!
 
 Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike!
 
 Blueprints is a collaboration of several engineering companies which contains programmable eurocode information such as tables, figures and 
-formulas. It also provides materials, geometry and even section checks. The basis as well as the implemented usecases provide all key 
+formulas. It also provides materials, geometry and even section checks. The basis as well as the implemented use cases provide all key 
 necessities for the civil engineer.
 
 ## Mission
