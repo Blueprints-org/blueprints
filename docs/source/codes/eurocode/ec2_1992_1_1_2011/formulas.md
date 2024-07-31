@@ -63,7 +63,7 @@ Total of 304 formulas present.
 | 5.14           | :heavy_check_mark: |         | Form5Dot14SlendernessRatio                                |
 | 5.15           | :heavy_check_mark: |         | Form5Dot15EffectiveLengthBraced                           |
 | 5.16           | :heavy_check_mark: |         | Form5Dot16EffectiveLengthUnbraced                         |
-| 5.17           |        :x:         |         |                                                           |
+| 5.17           | :heavy_check_mark: |         | Form5Dot17EffectiveLengthBucklingLoad                     |
 | 5.18           |        :x:         |         |                                                           |
 | 5.19           |        :x:         |         |                                                           |
 | 5.20           |        :x:         |         |                                                           |
