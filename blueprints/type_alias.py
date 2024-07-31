@@ -49,6 +49,7 @@ KM2 = float
 MM3 = float
 CM3 = float
 M3 = float
+M3_M = float
 # </editor-fold>
 
 # <editor-fold desc="BI-QUADRATIC">
