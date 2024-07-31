@@ -7,7 +7,7 @@ from blueprints.type_alias import MM, MM2
 from blueprints.validations import raise_if_negative
 
 
-class TAble4Dot2MinimumCoverWithRegardToBond(Formula):
+class Table4Dot2MinimumCoverWithRegardToBond(Formula):
     """Class representing the table 4.2 for the calculation of the minimum cover :math:`c_{min,b}` [:math:`mm`] requirements with regard to bond."""
 
     label = "4.2"
@@ -41,6 +41,8 @@ class TAble4Dot2MinimumCoverWithRegardToBond(Formula):
     ) -> MM:
         """For more detailed documentation see the class docstring."""
         raise_if_negative(diameter=diameter)
+        if not isinstance(nominal_max_aggregate_size_greater_than_32_mm, bool):
+            raise TypeError("The parameter 'nominal_max_aggregate_size_greater_than_32_mm' must be a boolean.")
         return diameter + 5 * nominal_max_aggregate_size_greater_than_32_mm
 
     def latex(self) -> LatexFormula:
@@ -48,7 +50,7 @@ class TAble4Dot2MinimumCoverWithRegardToBond(Formula):
         suffix = " + 5" if self.nominal_max_aggregate_size_greater_than_32_mm else ""
         return LatexFormula(
             return_symbol=r"c_{min,b}",
-            result=str(self),
+            result=f"{self:.0f}",
             equation=r"(equivalent) diameter" + suffix,
             numeric_equation=f"{self.diameter}" + suffix,
             comparison_operator_label="=",
