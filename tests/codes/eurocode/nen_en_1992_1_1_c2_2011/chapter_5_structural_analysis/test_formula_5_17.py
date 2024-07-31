@@ -4,7 +4,7 @@ import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_17 import \
     Form5Dot17EffectiveLengthBucklingLoad
-from blueprints.validations import NegativeValueError, LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm5Dot16EffectiveLengthUnbraced:
@@ -12,7 +12,7 @@ class TestForm5Dot16EffectiveLengthUnbraced:
 
     @pytest.fixture()
     def form_5_17(self) -> Form5Dot17EffectiveLengthBucklingLoad:
-        """Setup and teardown for test"""
+        """Setup and teardown for test."""
         return Form5Dot17EffectiveLengthBucklingLoad(ei=1_000_000, n_b=5)
 
     def test_evaluation(self, form_5_17: Form5Dot17EffectiveLengthBucklingLoad) -> None:

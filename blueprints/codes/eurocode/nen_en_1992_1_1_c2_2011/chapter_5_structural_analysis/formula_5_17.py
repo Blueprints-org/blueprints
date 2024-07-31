@@ -5,8 +5,8 @@ import math
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import M, KN_M2, KN
-from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_zero
+from blueprints.type_alias import KN, KN_M2, M
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form5Dot17EffectiveLengthBucklingLoad(Formula):
