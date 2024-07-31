@@ -2,8 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_17 import \
-    Form5Dot17EffectiveLengthBucklingLoad
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_17 import Form5Dot17EffectiveLengthBucklingLoad
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
