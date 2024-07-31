@@ -145,7 +145,7 @@ class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
             result=f"{self:.2f}",
             equation=r"\min\left(l_t, 1.16 \cdot Phi_t \cdot \sqrt{\frac{f_{yd}}{\sigma_{td}}} \right)",
             numeric_equation=(
-                rf"\min\left({self.l_t:.2f}, 1.16 \cdot {self.diameter_t:.2f} \cdot \sqrt{{\frac{{{self.f_yd:.2f}}}{{{self.sigma_td:.2f}}}}} \right)"
+                rf"\min\left({self.l_t:.2f}, 1.16 \cdot {self.diameter_t:.2f} \cdot ({{\frac{{{self.f_yd:.2f}}}{{{self.sigma_td:.2f}}}}})^{{0.5}} \right)"
             ),
             comparison_operator_label="=",
         )
