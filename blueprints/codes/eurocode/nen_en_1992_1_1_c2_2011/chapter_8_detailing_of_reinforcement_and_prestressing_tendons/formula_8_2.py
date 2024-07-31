@@ -135,7 +135,7 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
         return LatexFormula(
             return_symbol=r"\eta_2",
             result=f"{self:.2f}",
-            equation=r"\begin{matrix} 1.0 & \text{for }\Phi ≤ 32 \\ (132 - \Phi) / 100 & \text{for }\Phi > 32  \end{matrix}",
+            equation=r"\begin{matrix} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{matrix}",
             numeric_equation=numerical_equation,
             comparison_operator_label="=",
         )
