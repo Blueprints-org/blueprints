@@ -16,6 +16,7 @@ RAD = float
 KG = float
 G = float
 KG_M3 = float
+KG_M = float
 # </editor-fold>
 
 # <editor-fold desc="FORCES">
