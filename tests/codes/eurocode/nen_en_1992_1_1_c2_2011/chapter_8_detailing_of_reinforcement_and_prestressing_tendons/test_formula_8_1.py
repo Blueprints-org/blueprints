@@ -92,3 +92,36 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
                 diameter=diameter,
                 f_cd=f_cd,
             )
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"Ø_{m,min} = \frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}} "
+                    r"= \frac{80.00 \cdot 1000 \cdot \left( \frac{1}{200.00} + \frac{1}{2 \cdot 16.00} \right)}{30.00} = 96.67"
+                ),
+            ),
+            ("short", r"Ø_{m,min} = 96.67"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_bt = 80  # kN
+        a_b = 200  # mm
+        diameter = 16  # mm
+        f_cd = 30  # MPa
+
+        # Object to test
+        form_8_1_latex = Form8Dot1RequiredMinimumMandrelDiameter(
+            f_bt=f_bt,
+            a_b=a_b,
+            diameter=diameter,
+            f_cd=f_cd,
+        ).latex()
+
+        actual = {"complete": form_8_1_latex.complete, "short": form_8_1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
