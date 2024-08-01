@@ -8,7 +8,7 @@ from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
 
 
-class Table4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel(Formula):
+class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
     """Class representing the table 4.5N
     for the calculation of the minimum cover :math:`c_{min,dur}` [:math:`mm`] requirements with regard to durability
     for prestressing steel.

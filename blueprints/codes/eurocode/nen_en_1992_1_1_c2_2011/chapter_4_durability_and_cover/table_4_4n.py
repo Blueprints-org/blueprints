@@ -8,7 +8,7 @@ from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
 
 
-class Table4Dot4nMinimumCoverWithRegardToDurability(Formula):
+class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
     """Class representing the table 4.4N
     for the calculation of the minimum cover :math:`c_{min,dur}` [:math:`mm`] requirements with regard to durability.
     """

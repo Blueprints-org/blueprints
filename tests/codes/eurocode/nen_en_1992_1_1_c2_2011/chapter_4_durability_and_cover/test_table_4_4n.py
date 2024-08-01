@@ -15,11 +15,13 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     ConcreteStrengthClass,
     Table4Dot3ConcreteStructuralClass,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_4n import Table4Dot4nMinimumCoverWithRegardToDurability
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_4n import (
+    Table4Dot4nMinimumCoverDurabilityReinforcementSteel,
+)
 from blueprints.type_alias import MM
 
 
-class TestTable4Dot4nMinimumCoverWithRegardToDurability:
+class TestTable4Dot4nMinimumCoverDurabilityReinforcementSteel:
     """Validation for table 4.4 from NEN-EN 1992-1-1+C2:2011."""
 
     @pytest.mark.parametrize(
@@ -66,7 +68,7 @@ class TestTable4Dot4nMinimumCoverWithRegardToDurability:
         self, exposure_classes: Table4Dot1ExposureClasses, structural_class: Table4Dot3ConcreteStructuralClass, expected_result: MM
     ) -> None:
         """Test the evaluation of the result."""
-        table_4_4 = Table4Dot4nMinimumCoverWithRegardToDurability(
+        table_4_4 = Table4Dot4nMinimumCoverDurabilityReinforcementSteel(
             exposure_classes=exposure_classes,
             structural_class=structural_class,
         )
@@ -86,7 +88,7 @@ class TestTable4Dot4nMinimumCoverWithRegardToDurability:
         exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.NA, ChlorideSeawater.NA, FreezeThaw.XF4, Chemical.XA1)
         structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, ConcreteMaterial(ConcreteStrengthClass("C20/25")), True, False)
 
-        c_min_dur = Table4Dot4nMinimumCoverWithRegardToDurability(
+        c_min_dur = Table4Dot4nMinimumCoverDurabilityReinforcementSteel(
             exposure_classes=exposure_classes,
             structural_class=structural_class,
         ).latex()

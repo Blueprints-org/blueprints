@@ -16,12 +16,12 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     Table4Dot3ConcreteStructuralClass,
 )
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_5n import (
-    Table4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel,
+    Table4Dot5nMinimumCoverDurabilityPrestressingSteel,
 )
 from blueprints.type_alias import MM
 
 
-class TestTable4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel:
+class TestTable4Dot5nMinimumCoverDurabilityPrestressingSteel:
     """Validation for table 4.5N from NEN-EN 1992-1-1+C2:2011."""
 
     @pytest.mark.parametrize(
@@ -68,7 +68,7 @@ class TestTable4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel:
         self, exposure_classes: Table4Dot1ExposureClasses, structural_class: Table4Dot3ConcreteStructuralClass, expected_result: MM
     ) -> None:
         """Test the evaluation of the result."""
-        table_4_5 = Table4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel(
+        table_4_5 = Table4Dot5nMinimumCoverDurabilityPrestressingSteel(
             exposure_classes=exposure_classes,
             structural_class=structural_class,
         )
@@ -88,7 +88,7 @@ class TestTable4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel:
         exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.NA, ChlorideSeawater.NA, FreezeThaw.XF4, Chemical.XA1)
         structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, ConcreteMaterial(ConcreteStrengthClass("C20/25")), True, False)
 
-        c_min_dur = Table4Dot5nMinimumCoverWithRegardToDurabilityForPrestressingSteel(
+        c_min_dur = Table4Dot5nMinimumCoverDurabilityPrestressingSteel(
             exposure_classes=exposure_classes,
             structural_class=structural_class,
         ).latex()
