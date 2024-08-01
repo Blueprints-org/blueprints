@@ -62,6 +62,11 @@ class TestTable4Dot4nMinimumCoverDurabilityReinforcementSteel:
                 1,
                 15,
             ),
+            (
+                Table4Dot1ExposureClasses(Carbonation.XC1, Chloride.NA, ChlorideSeawater.NA, FreezeThaw.XF2, Chemical.XA1),
+                5,
+                20,
+            ),
         ],
     )
     def test_evaluation(
