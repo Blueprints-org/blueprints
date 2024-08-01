@@ -1,4 +1,4 @@
-"""Table 4.4N from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement."""
+"""Table 4.5N from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement."""
 
 from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -22,16 +22,16 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
         exposure_classes: ExposureClassesBase,
         structural_class: ConcreteStructuralClassBase,
     ) -> None:
-        """[:math:`c_{nom}`] Calculates the minimum concrete cover with regard to bond [:math:`mm`].
+        """[:math:`c_{min,dur}`] Calculates the minimum concrete cover with regard to durability [:math:`mm`] for prestressing steel.
 
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.2 (5) - Table (4.5N)
 
         Parameters
         ----------
         exposure_classes: ExposureClassesBase
-            The exposure class of the concrete.
+            The exposure classes of the concrete. Use the :class:`Table4Dot1ExposureClasses` class.
         structural_class: ConcreteStructuralClassBase
-            The structural class of the concrete.
+            The structural class of the concrete. Use the :class:`Table4Dot3ConcreteStructuralClass` class.
         """
         super().__init__()
         self.exposure_classes = exposure_classes
@@ -43,8 +43,10 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
         structural_class: ConcreteStructuralClassBase,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
-        calculated_cover = 10
+        if not isinstance(structural_class, int):
+            raise TypeError(f"Structural class must be (a subclass of) an integer, not {type(structural_class)}.")
 
+        calculated_cover = 10
         if exposure_classes.chloride.value in [
             "XD3",
             "XD2",

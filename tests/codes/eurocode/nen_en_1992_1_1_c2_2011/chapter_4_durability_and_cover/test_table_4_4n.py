@@ -75,6 +75,21 @@ class TestTable4Dot4nMinimumCoverDurabilityReinforcementSteel:
 
         assert table_4_4 == pytest.approx(expected=expected_result, rel=1e-4)
 
+    def test_evaluation_valid_structural_class_type(self) -> None:
+        """Test if the evaluation raises TypeError when the structural class is not an integer."""
+        exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.XD1, ChlorideSeawater.XS3, FreezeThaw.XF4, Chemical.XA1)
+        structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, ConcreteMaterial(ConcreteStrengthClass("C20/25")), True, False)
+
+        assert Table4Dot4nMinimumCoverDurabilityReinforcementSteel(exposure_classes, structural_class) == 35
+
+    def test_evaluation_invalid_structural_class_type(self) -> None:
+        """Test if the evaluation raises TypeError when the structural class is not an integer."""
+        exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.XD1, ChlorideSeawater.XS3, FreezeThaw.XF4, Chemical.XA1)
+        structural_class = "S4"
+
+        with pytest.raises(TypeError):
+            Table4Dot4nMinimumCoverDurabilityReinforcementSteel(exposure_classes, structural_class)  # type: ignore[arg-type]
+
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
