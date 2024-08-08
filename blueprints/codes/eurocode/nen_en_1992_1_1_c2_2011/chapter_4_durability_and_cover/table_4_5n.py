@@ -46,7 +46,6 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
         if not isinstance(structural_class, int):
             raise TypeError(f"Structural class must be (a subclass of) an integer, not {type(structural_class)}.")
 
-        calculated_cover = 10
         if exposure_classes.chloride.value in [
             "XD3",
             "XD2",
