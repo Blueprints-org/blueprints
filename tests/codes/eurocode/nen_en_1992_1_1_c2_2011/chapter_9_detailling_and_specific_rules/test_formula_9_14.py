@@ -56,9 +56,9 @@ class TestForm9Dot14SplittingForceColumnOnRock:
         [
             (
                 "complete",
-                r"F_s = 0.25 \cdot ( 1 - c / h ) \cdot N_{Ed} = 0.25 \cdot ( 1 - 50.000 / 100.000 ) \cdot 200.000 = 25.000",
+                r"F_s = 0.25 \cdot ( 1 - c / h ) \cdot N_{Ed} = 0.25 \cdot ( 1 - 50.00 / 100.00 ) \cdot 200.00 = 25.00",
             ),
-            ("short", r"F_s = 25.000"),
+            ("short", r"F_s = 25.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
