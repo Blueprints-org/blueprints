@@ -79,10 +79,10 @@ class TestForm9Dot2ShiftInMomentDiagram:
                 "complete",
                 (
                     r"a_l = z \cdot \left( \cot(\theta) - \cot(\alpha) \right) / 2 = "
-                    r"250.000 \cdot \left( \cot(30.000) - \cot(85.000) \right) / 2 = 205.570"
+                    r"250.00 \cdot \left( \cot(30.00) - \cot(85.00) \right) / 2 = 205.57"
                 ),
             ),
-            ("short", r"a_l = 205.570"),
+            ("short", r"a_l = 205.57"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

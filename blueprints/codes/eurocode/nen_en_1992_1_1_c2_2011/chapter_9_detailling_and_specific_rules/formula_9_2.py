@@ -64,8 +64,8 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
         """Returns LatexFormula object for formula 9.2."""
         return LatexFormula(
             return_symbol=r"a_l",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"z \cdot \left( \cot(\theta) - \cot(\alpha) \right) / 2",
-            numeric_equation=rf"{self.z:.3f} \cdot \left( \cot({self.theta:.3f}) - \cot({self.alpha:.3f}) \right) / 2",
+            numeric_equation=rf"{self.z:.2f} \cdot \left( \cot({self.theta:.2f}) - \cot({self.alpha:.2f}) \right) / 2",
             comparison_operator_label="=",
         )
