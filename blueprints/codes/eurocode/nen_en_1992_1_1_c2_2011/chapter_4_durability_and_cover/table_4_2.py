@@ -41,7 +41,7 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
         nominal_max_aggregate_size_greater_than_32_mm: bool,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
-        raise_if_negative(diameter=diameter)
+        raise_if_less_or_equal_to_zero(diameter=diameter)
         if not isinstance(nominal_max_aggregate_size_greater_than_32_mm, bool):
             raise TypeError("The parameter 'nominal_max_aggregate_size_greater_than_32_mm' must be a boolean.")
         return diameter + 5 * nominal_max_aggregate_size_greater_than_32_mm
