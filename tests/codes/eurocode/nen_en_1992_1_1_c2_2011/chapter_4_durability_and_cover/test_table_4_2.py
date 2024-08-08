@@ -48,7 +48,7 @@ class TestTable4Dot2MinimumCoverWithRegardToBond:
         diameter = -7
         nominal_max_aggregate_size_greater_than_32_mm = False
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             Table4Dot2MinimumCoverWithRegardToBond(
                 diameter=diameter,
                 nominal_max_aggregate_size_greater_than_32_mm=nominal_max_aggregate_size_greater_than_32_mm,
