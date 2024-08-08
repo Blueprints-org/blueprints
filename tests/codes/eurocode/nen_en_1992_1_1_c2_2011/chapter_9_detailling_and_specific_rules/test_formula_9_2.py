@@ -71,3 +71,30 @@ class TestForm9Dot2ShiftInMomentDiagram:
 
         with pytest.raises(GreaterThan90Error):
             Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"a_l = z \cdot \left( \cot(\theta) - \cot(\alpha) \right) / 2 = "
+                    r"250.00 \cdot \left( \cot(30.00) - \cot(85.00) \right) / 2 = 205.57"
+                ),
+            ),
+            ("short", r"a_l = 205.57"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        z = 250  # mm
+        theta = 30  # deg
+        alpha = 85  # deg
+
+        # Object to test
+        form_9_2_latex = Form9Dot2ShiftInMomentDiagram(z=z, theta=theta, alpha=alpha).latex()
+
+        actual = {"complete": form_9_2_latex.complete, "short": form_9_2_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
