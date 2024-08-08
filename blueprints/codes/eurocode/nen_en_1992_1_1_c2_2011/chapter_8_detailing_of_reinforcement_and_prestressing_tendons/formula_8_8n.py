@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KN, MM, MPA
 from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
@@ -72,6 +73,16 @@ class Form8Dot8nAnchorageCapacityWeldedTransverseBar(Formula):
         )
         return min(l_td * diameter_t * sigma_td * N_TO_KN, f_wd)
 
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.8N."""
+        return LatexFormula(
+            return_symbol=r"F_{btd}",
+            result=f"{self:.2f}",
+            equation=r"\min\left( l_{td} \cdot Ø_t \cdot \sigma_{td}, F_{wd} \right)",
+            numeric_equation=rf"\min\left( {self.l_td:.2f} \cdot {self.diameter_t:.2f} \cdot {self.sigma_td:.2f} / 1000, {self.f_wd:.2f} \right)",
+            comparison_operator_label="=",
+        )
+
 
 class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
     """Class representing sub-formula for formula 8.8N, which calculates the design length of the transverse bar."""
@@ -126,6 +137,19 @@ class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
         )
         raise_if_less_or_equal_to_zero(sigma_td=sigma_td)
         return min(1.16 * diameter_t * (f_yd / sigma_td) ** 0.5, l_t)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.8N transverse bar."""
+        return LatexFormula(
+            return_symbol=r"l_{td}",
+            result=f"{self:.2f}",
+            equation=r"\min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right)",
+            numeric_equation=(
+                rf"\min\left({self.l_t:.2f}, 1.16 \cdot {self.diameter_t:.2f} \cdot "
+                rf"({{\frac{{{self.f_yd:.2f}}}{{{self.sigma_td:.2f}}}}})^{{0.5}} \right)"
+            ),
+            comparison_operator_label="=",
+        )
 
 
 class SubForm8Dot8nConcreteStress(Formula):
@@ -182,6 +206,18 @@ class SubForm8Dot8nConcreteStress(Formula):
         raise_if_less_or_equal_to_zero(y_function=y_function)
         return min((f_ctd + sigma_cm) / y_function, 3 * f_cd)
 
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.8N concrete stress."""
+        return LatexFormula(
+            return_symbol=r"\sigma_{td}",
+            result=f"{self:.2f}",
+            equation=r"\min\left( 3 \cdot f_{cd}, \frac{f_{ctd} + \sigma_{cm}}{y} \right)",
+            numeric_equation=(
+                rf"\min\left(3 \cdot {self.f_cd:.2f}, \frac{{{self.f_ctd:.2f} " rf"+ {self.sigma_cm:.2f}}}{{{self.y_function:.2f}}} \right)"
+            ),
+            comparison_operator_label="=",
+        )
+
 
 class SubForm8Dot8nFunctionY(Formula):
     """Class representing sub-formula for formula 8.8N, which calculates the function y."""
@@ -216,6 +252,16 @@ class SubForm8Dot8nFunctionY(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(x_function=x_function)
         return 0.015 + 0.14 * np.exp(-0.18 * x_function)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.8N y-function."""
+        return LatexFormula(
+            return_symbol=r"y",
+            result=f"{self:.3f}",
+            equation=r"0.015 + 0.14 \cdot e^{-0.18 \cdot x}",
+            numeric_equation=rf"0.015 + 0.14 \cdot e^{{-0.18 \cdot {self.x_function:.2f}}}",
+            comparison_operator_label="=",
+        )
 
 
 class SubForm8Dot8nFunctionX(Formula):
@@ -253,3 +299,13 @@ class SubForm8Dot8nFunctionX(Formula):
         raise_if_negative(cover=cover)
         raise_if_less_or_equal_to_zero(diameter_t=diameter_t)
         return 2 * (cover / diameter_t) + 1
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.8N x-function."""
+        return LatexFormula(
+            return_symbol=r"x",
+            result=f"{self:.2f}",
+            equation=r"2 \cdot \frac{c}{Ø_t}",
+            numeric_equation=rf"2 \cdot \frac{{{self.cover:.2f}}}{{{self.diameter_t:.2f}}}",
+            comparison_operator_label="=",
+        )
