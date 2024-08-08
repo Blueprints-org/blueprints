@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS
 from blueprints.validations import raise_if_negative
 
@@ -38,3 +39,13 @@ class Form2Dot1aDesignValueLoad(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(gamma_f=gamma_f)
         return gamma_f * f_rep
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 2.1a."""
+        return LatexFormula(
+            return_symbol=r"F_d",
+            result=f"{self:.2f}",
+            equation=r"\gamma_F \cdot F_{rep}",
+            numeric_equation=rf"{self.gamma_f:.2f} \cdot {self.f_rep:.2f}",
+            comparison_operator_label="=",
+        )
