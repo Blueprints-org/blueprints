@@ -58,8 +58,8 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
         """Returns LatexFormula object for formula 9.3."""
         return LatexFormula(
             return_symbol=r"F_E",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"|V_{Ed}| \cdot a_l / z + N_{Ed}",
-            numeric_equation=rf"|{self.v_ed:.3f}| \cdot {self.a_l:.3f} / {self.z:.3f} + {self.n_ed:.3f}",
+            numeric_equation=rf"|{self.v_ed:.2f}| \cdot {self.a_l:.2f} / {self.z:.2f} + {self.n_ed:.2f}",
             comparison_operator_label="=",
         )

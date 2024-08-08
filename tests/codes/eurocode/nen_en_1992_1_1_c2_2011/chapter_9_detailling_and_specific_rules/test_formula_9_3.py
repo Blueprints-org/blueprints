@@ -65,9 +65,9 @@ class TestForm9Dot3ShiftInMomentDiagram:
         [
             (
                 "complete",
-                r"F_E = |V_{Ed}| \cdot a_l / z + N_{Ed} = |-200.000| \cdot 200.000 / 250.000 + 500.000 = 660.000",
+                r"F_E = |V_{Ed}| \cdot a_l / z + N_{Ed} = |-200.00| \cdot 200.00 / 250.00 + 500.00 = 660.00",
             ),
-            ("short", r"F_E = 660.000"),
+            ("short", r"F_E = 660.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
