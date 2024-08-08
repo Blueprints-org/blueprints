@@ -113,9 +113,9 @@ class TestForm9Dot16MinimumForceOnInternalBeamLine:
         [
             (
                 "complete",
-                (r"F_{tie} = min((l_1 + l_2) / 2 \cdot q_3, q_4) = min((4.500 + 4.000) / 2 \cdot 20.000, 70.000) = 85.000"),
+                (r"F_{tie} = min(q_3 \cdot (l_1 + l_2) / 2, Q_4) = min(20.00 \cdot (4.50 + 4.00) / 2, 70.00) = 85.00"),
             ),
-            ("short", r"F_{tie} = 85.000"),
+            ("short", r"F_{tie} = 85.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -56,8 +56,8 @@ class Form9Dot16MinimumForceOnInternalBeamLine(Formula):
         """Returns LatexFormula object for formula 9.16."""
         return LatexFormula(
             return_symbol=r"F_{tie}",
-            result=f"{self:.3f}",
-            equation=r"min((l_1 + l_2) / 2 \cdot q_3, q_4)",
-            numeric_equation=rf"min(({self.l_1:.3f} + {self.l_2:.3f}) / 2 \cdot {self.q_3:.3f}, {self.q_4:.3f})",
+            result=f"{self:.2f}",
+            equation=r"min(q_3 \cdot (l_1 + l_2) / 2, q_4)",
+            numeric_equation=rf"min({self.q_3:.2f} /cdot ({self.l_1:.2f} + {self.l_2:.2f}) / 2, {self.q_4:.2f})",
             comparison_operator_label="=",
         )
