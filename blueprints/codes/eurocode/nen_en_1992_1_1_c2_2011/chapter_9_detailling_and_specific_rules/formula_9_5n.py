@@ -47,6 +47,6 @@ class Form9Dot5nMinimumShearReinforcementRatio(Formula):
             return_symbol=r"\rho_{w,min}",
             result=f"{self:.6f}",
             equation=r"\left( 0.08 \cdot \sqrt{f_{ck}} \right) / f_{yk}",
-            numeric_equation=rf"\left( 0.08 \cdot \sqrt{{{self.f_ck:.3f}}} \right) / {self.f_yk:.3f}",
+            numeric_equation=rf"\left( 0.08 \cdot \sqrt{{{self.f_ck:.2f}}} \right) / {self.f_yk:.2f}",
             comparison_operator_label="=",
         )

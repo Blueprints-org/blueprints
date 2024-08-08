@@ -44,7 +44,7 @@ class TestForm9Dot5nMinimumShearReinforcementRatio:
         [
             (
                 "complete",
-                r"\rho_{w,min} = \left( 0.08 \cdot \sqrt{f_{ck}} \right) / f_{yk} = \left( 0.08 \cdot \sqrt{30.000} \right) / 500.000 = 0.000876",
+                r"\rho_{w,min} = \left( 0.08 \cdot \sqrt{f_{ck}} \right) / f_{yk} = \left( 0.08 \cdot \sqrt{30.00} \right) / 500.00 = 0.000876",
             ),
             ("short", r"\rho_{w,min} = 0.000876"),
         ],
