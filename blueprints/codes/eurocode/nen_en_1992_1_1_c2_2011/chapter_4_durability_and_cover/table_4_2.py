@@ -18,7 +18,7 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
         diameter: MM,
         nominal_max_aggregate_size_greater_than_32_mm: bool,
     ) -> None:
-        """[:math:`c_{nom}`] Calculates the minimum concrete cover with regard to bond [:math:`mm`].
+        """[:math:`c_{min,b}`] Calculates the minimum concrete cover with regard to bond [:math:`mm`].
 
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.2 (3) - Table (4.2)
 
