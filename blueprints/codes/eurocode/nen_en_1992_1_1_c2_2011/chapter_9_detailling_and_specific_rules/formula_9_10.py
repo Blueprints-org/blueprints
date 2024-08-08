@@ -36,8 +36,8 @@ class Form9Dot10MaximumSpacingBentUpBars(Formula):
         """Returns LatexFormula object for formula 9.10."""
         return LatexFormula(
             return_symbol=r"s_{max}",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"d",
-            numeric_equation=rf"{self.d:.3f}",
+            numeric_equation=rf"{self.d:.2f}",
             comparison_operator_label="=",
         )

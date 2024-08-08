@@ -32,9 +32,9 @@ class TestForm9Dot10MaximumSpacingBentUpBars:
         [
             (
                 "complete",
-                r"s_{max} = d = 100.000 = 100.000",
+                r"s_{max} = d = 100.00 = 100.00",
             ),
-            ("short", r"s_{max} = 100.000"),
+            ("short", r"s_{max} = 100.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
