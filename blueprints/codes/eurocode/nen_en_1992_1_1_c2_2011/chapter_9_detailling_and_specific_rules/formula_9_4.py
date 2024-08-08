@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MM2
 from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
@@ -57,3 +58,13 @@ class Form9Dot4ShearReinforcementRatio(Formula):
         alpha_radians = np.deg2rad(alpha)
 
         return a_sw / (s * b_w * np.sin(alpha_radians))
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.4."""
+        return LatexFormula(
+            return_symbol=r"\rho_w",
+            result=f"{self:.6f}",
+            equation=r"\frac{A_{sw}}{s \cdot b_w \cdot sin(\alpha)}",
+            numeric_equation=rf"\frac{{{self.a_sw:.2f}}}{{{self.s:.2f} \cdot {self.b_w:.2f} \cdot sin({self.alpha:.2f})}}",
+            comparison_operator_label="=",
+        )
