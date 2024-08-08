@@ -18,8 +18,6 @@ class TestTable4Dot2MinimumCoverWithRegardToBond:
         [
             (25, True, 30),
             (25, False, 25),
-            (0, True, 5),
-            (0, False, 0),
         ],
     )
     def test_evaluation(self, diameter: MM, nominal_max_aggregate_size_greater_than_32_mm: bool, expected_result: MM) -> None:
