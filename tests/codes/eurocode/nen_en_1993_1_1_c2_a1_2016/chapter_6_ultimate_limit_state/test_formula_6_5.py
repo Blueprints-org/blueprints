@@ -43,3 +43,26 @@ class TestForm6Dot5UnityCheckTensileStrength:
         """Test a zero value for n_t_rd."""
         with pytest.raises(LessOrEqualToZeroError):
             Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"N_{Ed}/N_{t,Rd} = N_{Ed} / N_{t,Rd} = 7.00 / 10.00 = 0.70",
+            ),
+            ("short", r"N_{Ed}/N_{t,Rd} = 0.70"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        n_ed = 7  # kN
+        n_t_rd = 10  # kN
+
+        # Object to test
+        form_6_5_latex = Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd).latex()
+
+        actual = {"complete": form_6_5_latex.complete, "short": form_6_5_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
