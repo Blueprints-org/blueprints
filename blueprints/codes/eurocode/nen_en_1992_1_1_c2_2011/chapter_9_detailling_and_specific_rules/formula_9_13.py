@@ -51,8 +51,8 @@ class Form9Dot13TensileForceToBeAnchored(Formula):
         """Returns LatexFormula object for formula 9.13."""
         return LatexFormula(
             return_symbol=r"F_s",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"R \cdot z_e / z_i",
-            numeric_equation=rf"{self.r:.3f} \cdot {self.z_e:.3f} / {self.z_i:.3f}",
+            numeric_equation=rf"{self.r:.2f} \cdot {self.z_e:.2f} / {self.z_i:.2f}",
             comparison_operator_label="=",
         )

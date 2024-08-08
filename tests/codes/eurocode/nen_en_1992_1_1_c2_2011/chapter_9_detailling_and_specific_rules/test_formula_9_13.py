@@ -54,9 +54,9 @@ class TestForm9Dot13TensileForceToBeAnchored:
         [
             (
                 "complete",
-                r"F_s = R \cdot z_e / z_i = 100.000 \cdot 50.000 / 20.000 = 250.000",
+                r"F_s = R \cdot z_e / z_i = 100.00 \cdot 50.00 / 20.00 = 250.00",
             ),
-            ("short", r"F_s = 250.000"),
+            ("short", r"F_s = 250.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
