@@ -49,9 +49,9 @@ class TestForm6Dot5UnityCheckTensileStrength:
         [
             (
                 "complete",
-                r"N_{Ed}/N_{t,Rd} = N_{Ed} / N_{t,Rd} = 7.000 / 10.000 = 0.700",
+                r"N_{Ed}/N_{t,Rd} = N_{Ed} / N_{t,Rd} = 7.00 / 10.00 = 0.70",
             ),
-            ("short", r"N_{Ed}/N_{t,Rd} = 0.700"),
+            ("short", r"N_{Ed}/N_{t,Rd} = 0.70"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

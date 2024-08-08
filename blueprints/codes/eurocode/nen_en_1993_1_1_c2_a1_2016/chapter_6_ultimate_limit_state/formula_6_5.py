@@ -48,8 +48,8 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         """Returns LatexFormula object for formula 6.5."""
         return LatexFormula(
             return_symbol=r"N_{Ed}/N_{t,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"N_{Ed} / N_{t,Rd}",
-            numeric_equation=rf"{self.n_ed:.3f} / {self.n_t_rd:.3f}",
+            numeric_equation=rf"{self.n_ed:.2f} / {self.n_t_rd:.2f}",
             comparison_operator_label="=",
         )
