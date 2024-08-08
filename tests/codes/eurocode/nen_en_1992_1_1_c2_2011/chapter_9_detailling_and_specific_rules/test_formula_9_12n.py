@@ -74,7 +74,7 @@ class TestForm9Dot12nMinimumLongitudinalReinforcementColumns:
                     r"\max( \frac{0.10 \cdot 200.00}{500.00}, 0.002 \cdot 25000.00 ) = 50.00"
                 ),
             ),
-            ("short", r"A_{s,min} = 50.000"),
+            ("short", r"A_{s,min} = 50.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -50,9 +50,9 @@ class TestForm9Dot7nMaximumDistanceBentUpBars:
         [
             (
                 "complete",
-                r"s_{b,max} = 0.6 \cdot d \cdot \left( 1 + cot(\alpha) \right) = 0.6 \cdot 100.00 \cdot \left( 1 + cot(85.00) \right) = 65.24",
+                r"s_{b,max} = 0.6 \cdot d \cdot \left( 1 + cot(\alpha) \right) = 0.6 \cdot 100.00 \cdot \left( 1 + cot(85.00) \right) = 65.25",
             ),
-            ("short", r"s_{b,max} = 65.24"),
+            ("short", r"s_{b,max} = 65.25"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -57,7 +57,7 @@ class Form9Dot16MinimumForceOnInternalBeamLine(Formula):
         return LatexFormula(
             return_symbol=r"F_{tie}",
             result=f"{self:.2f}",
-            equation=r"min(q_3 \cdot (l_1 + l_2) / 2, q_4)",
-            numeric_equation=rf"min({self.q_3:.2f} /cdot ({self.l_1:.2f} + {self.l_2:.2f}) / 2, {self.q_4:.2f})",
+            equation=r"min(q_3 \cdot (l_1 + l_2) / 2, Q_4)",
+            numeric_equation=rf"min({self.q_3:.2f} \cdot ({self.l_1:.2f} + {self.l_2:.2f}) / 2, {self.q_4:.2f})",
             comparison_operator_label="=",
         )
