@@ -53,8 +53,8 @@ class Form9Dot6nMaximumDistanceShearReinforcement(Formula):
         """Returns LatexFormula object for formula 9.6N."""
         return LatexFormula(
             return_symbol=r"s_{l,max}",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"0.75 \cdot d \cdot \left( 1 + cot(\alpha) \right)",
-            numeric_equation=rf"0.75 \cdot {self.d:.3f} \cdot \left( 1 + cot({self.alpha:.3f}) \right)",
+            numeric_equation=rf"0.75 \cdot {self.d:.2f} \cdot \left( 1 + cot({self.alpha:.2f}) \right)",
             comparison_operator_label="=",
         )
