@@ -71,7 +71,7 @@ class TestForm9Dot12nMinimumLongitudinalReinforcementColumns:
                 "complete",
                 (
                     r"A_{s,min} = \max( \frac{0.10 \cdot N_{Ed}}{f_{yd}}, 0.002 \cdot A_c ) = "
-                    r"\max( \frac{0.10 \cdot 200.000}{500.000}, 0.002 \cdot 25000.000 ) = 50.000"
+                    r"\max( \frac{0.10 \cdot 200.00}{500.00}, 0.002 \cdot 25000.00 ) = 50.00"
                 ),
             ),
             ("short", r"A_{s,min} = 50.000"),

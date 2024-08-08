@@ -52,8 +52,8 @@ class Form9Dot12nMinimumLongitudinalReinforcementColumns(Formula):
         """Returns LatexFormula object for formula 9.12N."""
         return LatexFormula(
             return_symbol=r"A_{s,min}",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"\max( \frac{0.10 \cdot N_{Ed}}{f_{yd}}, 0.002 \cdot A_c )",
-            numeric_equation=rf"\max( \frac{{0.10 \cdot {self.n_ed:.3f}}}{{{self.f_yd:.3f}}}, 0.002 \cdot {self.a_c:.3f} )",
+            numeric_equation=rf"\max( \frac{{0.10 \cdot {self.n_ed:.2f}}}{{{self.f_yd:.2f}}}, 0.002 \cdot {self.a_c:.2f} )",
             comparison_operator_label="=",
         )
