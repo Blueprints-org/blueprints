@@ -46,3 +46,26 @@ class TestForm9Dot6nMaximumDistanceShearReinforcement:
 
         with pytest.raises(GreaterThan90Error):
             Form9Dot6nMaximumDistanceShearReinforcement(d=d, alpha=alpha)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"s_{l,max} = 0.75 \cdot d \cdot \left( 1 + cot(\alpha) \right) = 0.75 \cdot 100.00 \cdot \left( 1 + cot(85.00) \right) = 81.56",
+            ),
+            ("short", r"s_{l,max} = 81.56"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        d = 100  # mm
+        alpha = 85  # deg
+
+        # Object to test
+        form_9_6n_latex = Form9Dot6nMaximumDistanceShearReinforcement(d=d, alpha=alpha).latex()
+
+        actual = {"complete": form_9_6n_latex.complete, "short": form_9_6n_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

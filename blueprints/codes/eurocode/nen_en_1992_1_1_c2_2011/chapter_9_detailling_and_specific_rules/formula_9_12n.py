@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, MM2, MPA
 from blueprints.unit_conversion import KN_TO_N
 from blueprints.validations import raise_if_negative
@@ -46,3 +47,13 @@ class Form9Dot12nMinimumLongitudinalReinforcementColumns(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(n_ed=n_ed, f_yd=f_yd, a_c=a_c)
         return max(0.1 * n_ed * KN_TO_N / f_yd, 0.002 * a_c)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.12N."""
+        return LatexFormula(
+            return_symbol=r"A_{s,min}",
+            result=f"{self:.2f}",
+            equation=r"\max( \frac{0.10 \cdot N_{Ed}}{f_{yd}}, 0.002 \cdot A_c )",
+            numeric_equation=rf"\max( \frac{{0.10 \cdot {self.n_ed:.2f}}}{{{self.f_yd:.2f}}}, 0.002 \cdot {self.a_c:.2f} )",
+            comparison_operator_label="=",
+        )

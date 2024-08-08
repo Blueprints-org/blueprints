@@ -59,3 +59,33 @@ class TestForm9Dot3ShiftInMomentDiagram:
                 z=z,
                 n_ed=n_ed,
             )
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"F_E = |V_{Ed}| \cdot a_l / z + N_{Ed} = |-200.00| \cdot 200.00 / 250.00 + 500.00 = 660.00",
+            ),
+            ("short", r"F_E = 660.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        v_ed = -200  # kN
+        a_l = 200  # mm
+        z = 250  # mm
+        n_ed = 500  # kN
+
+        # Object to test
+        form_9_3_latex = Form9Dot3ShiftInMomentDiagram(
+            v_ed=v_ed,
+            a_l=a_l,
+            z=z,
+            n_ed=n_ed,
+        ).latex()
+
+        actual = {"complete": form_9_3_latex.complete, "short": form_9_3_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
