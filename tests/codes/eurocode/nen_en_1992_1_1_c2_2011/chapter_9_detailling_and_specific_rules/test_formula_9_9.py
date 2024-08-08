@@ -34,9 +34,9 @@ class TestForm9Dot9MaximumSpacingSeriesOfLinks:
         [
             (
                 "complete",
-                r"s_{max} = 0.75 \cdot d \cdot \left( 1 + cot(\alpha) \right) = 0.75 \cdot 100.000 \cdot \left( 1 + cot(85.000) \right) = 81.562",
+                r"s_{max} = 0.75 \cdot d \cdot \left( 1 + cot(\alpha) \right) = 0.75 \cdot 100.00 \cdot \left( 1 + cot(85.00) \right) = 81.56",
             ),
-            ("short", r"s_{max} = 81.562"),
+            ("short", r"s_{max} = 81.56"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
