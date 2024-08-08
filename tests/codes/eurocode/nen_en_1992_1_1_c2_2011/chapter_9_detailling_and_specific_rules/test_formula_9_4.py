@@ -108,7 +108,7 @@ class TestForm9Dot4ShearReinforcementRatio:
         [
             (
                 "complete",
-                r"\rho_w = \frac{A_{sw}}{s \cdot b_w \cdot sin(\alpha)} = \frac{100.000}{200.000 \cdot 150.000 \cdot sin(85.000)} = 0.003346",
+                r"\rho_w = \frac{A_{sw}}{s \cdot b_w \cdot sin(\alpha)} = \frac{100.00}{200.00 \cdot 150.00 \cdot sin(85.00)} = 0.003346",
             ),
             ("short", r"\rho_w = 0.003346"),
         ],

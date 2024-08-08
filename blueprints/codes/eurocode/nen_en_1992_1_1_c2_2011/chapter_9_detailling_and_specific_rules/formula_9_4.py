@@ -65,6 +65,6 @@ class Form9Dot4ShearReinforcementRatio(Formula):
             return_symbol=r"\rho_w",
             result=f"{self:.6f}",
             equation=r"\frac{A_{sw}}{s \cdot b_w \cdot sin(\alpha)}",
-            numeric_equation=rf"\frac{{{self.a_sw:.3f}}}{{{self.s:.3f} \cdot {self.b_w:.3f} \cdot sin({self.alpha:.3f})}}",
+            numeric_equation=rf"\frac{{{self.a_sw:.2f}}}{{{self.s:.2f} \cdot {self.b_w:.2f} \cdot sin({self.alpha:.2f})}}",
             comparison_operator_label="=",
         )
