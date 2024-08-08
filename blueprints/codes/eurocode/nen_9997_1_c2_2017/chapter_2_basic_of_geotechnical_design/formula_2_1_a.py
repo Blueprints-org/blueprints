@@ -44,8 +44,8 @@ class Form2Dot1aDesignValueLoad(Formula):
         """Returns LatexFormula object for formula 2.1a."""
         return LatexFormula(
             return_symbol=r"F_d",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"\gamma_F \cdot F_{rep}",
-            numeric_equation=rf"{self.gamma_f:.3f} \cdot {self.f_rep:.3f}",
+            numeric_equation=rf"{self.gamma_f:.2f} \cdot {self.f_rep:.2f}",
             comparison_operator_label="=",
         )

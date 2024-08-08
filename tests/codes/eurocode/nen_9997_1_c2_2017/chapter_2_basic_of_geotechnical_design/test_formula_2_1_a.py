@@ -46,9 +46,9 @@ class TestForm2Dot1aDesignValueLoad:
         [
             (
                 "complete",
-                r"F_d = \gamma_F \cdot F_{rep} = 1.200 \cdot 100.000 = 120.000",
+                r"F_d = \gamma_F \cdot F_{rep} = 1.20 \cdot 100.00 = 120.00",
             ),
-            ("short", r"F_d = 120.000"),
+            ("short", r"F_d = 120.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
