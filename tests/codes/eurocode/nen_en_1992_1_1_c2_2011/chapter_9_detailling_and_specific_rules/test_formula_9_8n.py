@@ -45,9 +45,9 @@ class TestForm9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks:
         [
             (
                 "complete",
-                r"s_{t,max} = min(0.75 \cdot d, 600 \text{mm}) = min(0.75 \cdot 500.000, 600 \text{mm}) = 375.000",
+                r"s_{t,max} = min(0.75 \cdot d, 600 \text{mm}) = min(0.75 \cdot 500.00, 600 \text{mm}) = 375.00",
             ),
-            ("short", r"s_{t,max} = 375.000"),
+            ("short", r"s_{t,max} = 375.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

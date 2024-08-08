@@ -38,8 +38,8 @@ class Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks(Formula):
         """Returns LatexFormula object for formula 9.8N."""
         return LatexFormula(
             return_symbol=r"s_{t,max}",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"min(0.75 \cdot d, 600 \text{mm})",
-            numeric_equation=rf"min(0.75 \cdot {self.d:.3f}, 600 \text{{mm}})",
+            numeric_equation=rf"min(0.75 \cdot {self.d:.2f}, 600 \text{{mm}})",
             comparison_operator_label="=",
         )
