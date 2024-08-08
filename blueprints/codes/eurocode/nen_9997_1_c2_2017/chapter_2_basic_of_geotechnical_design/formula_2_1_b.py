@@ -42,8 +42,8 @@ class Form2Dot1bRepresentativeValue(Formula):
         """Returns LatexFormula object for formula 2.1b."""
         return LatexFormula(
             return_symbol=r"F_{rep}",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"\psi \cdot F_k",
-            numeric_equation=rf"{self.psi:.3f} \cdot {self.f_k:.3f}",
+            numeric_equation=rf"{self.psi:.2f} \cdot {self.f_k:.2f}",
             comparison_operator_label="=",
         )

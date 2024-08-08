@@ -35,9 +35,9 @@ class TestForm2Dot1bRepresentativeValue:
         [
             (
                 "complete",
-                r"F_{rep} = \psi \cdot F_k = 1.200 \cdot 100.000 = 120.000",
+                r"F_{rep} = \psi \cdot F_k = 1.20 \cdot 100.00 = 120.00",
             ),
-            ("short", r"F_{rep} = 120.000"),
+            ("short", r"F_{rep} = 120.00"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
