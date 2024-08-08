@@ -13,23 +13,22 @@
   <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
 </picture>
 
-Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike. Blueprints is a collaborative,
-open-source initiative designed to serve as a comprehensive library of code, tools, and best practices, aiming to streamline and innovate the
-workflows within the built environment sector.
+Can someone explain to me why Eurocode is not publicly available in code and that all of us are coding Eurocode with massive maintenance costs 
+and shortages in technical personnel? Well, no longer!
 
-## Vision
+Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike!
 
-Our vision with Blueprints is to create an accessible, reliable, and community-driven resource that supports engineers, and developers in their daily
-challenges. By harnessing the collective expertise of the industry, Blueprints strives to pave the way for a future where collaboration and open
-source can drive the field of civil engineering to new heights.
+Blueprints is a collaboration of several engineering companies which contains programmable Eurocode information such as tables, figures and 
+formulas. It also provides materials, geometry and even section checks. The basis as well as the implemented use cases provide all key 
+necessities for the civil engineer.
 
 ## Mission
 
 Our mission is to:
 
+- Offer a robust suite of tools and libraries that encapsulate common and advanced engineering tasks.
 - Foster a community where sharing knowledge and best practices is the norm, not the exception.
 - Provide a solid foundation of code and documentation that adheres to the highest quality standards (100% code coverage).
-- Offer a robust suite of tools and libraries that encapsulate common and advanced engineering tasks.
 
 ## Installation
 
@@ -44,6 +43,8 @@ For the actively developed version:
 ```shell
 pip install git+https://github.com/Blueprints-org/blueprints.git
 ```
+
+## Read the docs!
 
 Documentation is available at [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/).
 
@@ -78,3 +79,17 @@ Alternatively you can get support on the [discussions](https://github.com/orgs/B
 Blueprints is an open source engineering tool that continues to benefit from the collaboration of many contributors. Although efforts have been
 made to ensure the that relevant engineering theories have been correctly implemented, it remains the user's responsibility to confirm and accept
 the output. Refer to the [license](LICENSE) for clarification of the conditions of use.
+
+By using the Blueprints package, you are agreeing to the following:
+
+1. **Usage Risk**: The usage (i.e. downloading, installing, running, modifying the code, or some or all of the above) of Blueprints is entirely at your own risk as a user and/or contributor. All maintainers and contributors to Blueprints are not responsible for and cannot be held responsible or liable for any direct or indirect damages, injuries, death, faults, mistakes, or omissions that result from the usage of the package.
+
+2. **Adherence to Laws and Regulations**: At all times, the user is fully responsible for the adherence to (local) laws and regulations. It is the user's responsibility to ensure that their use of Blueprints complies with all relevant legal and regulatory requirements.
+
+3. **Outdated Results**: Results may be outdated due to circumstances, changes in rules and regulations, and/or changes in the Eurocodes and/or national annexes. Users should always verify the results and not solely rely on the output from the Blueprints package.
+
+4. **Agreement to Terms**: When using Blueprints, you agree to the terms and conditions of the [license](LICENSE) and this disclaimer. If you do not agree with these terms, please do not use the Blueprints package.
+
+5. **Warrenties**: The Blueprins package is provided as is without any warrenties of any kind, either expressed or implied.
+
+Please note that this disclaimer is intended to be as broad and inclusive as permitted by the law of the jurisdiction in which you reside. If any portion of this disclaimer is held invalid, the remainder shall continue in full legal force and effect.
