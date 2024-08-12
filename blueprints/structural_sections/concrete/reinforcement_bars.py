@@ -1,1 +1,0 @@
-"""Reinforcemnet bars module."""
