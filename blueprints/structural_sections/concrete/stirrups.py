@@ -15,8 +15,8 @@ class Stirrup:
 
     Parameters
     ----------
-    coordinates: list[Point]
-        List of nodes that describe the centerline of the stirrup (clockwise or counterclockwise).
+    geometry: Polygon
+        Line that represents the center-line of the stirrup configuration (clockwise or counterclockwise).
     diameter: MM
         Diameter of the rebar making the stirrup [mm].
     distance: MM
@@ -45,7 +45,7 @@ class Stirrup:
 
     def __init__(  # noqa: PLR0913
         self,
-        coordinates: list[Point],
+        geometry: Polygon,
         diameter: MM,
         distance: MM,
         material: ReinforcementSteelMaterial,
@@ -60,7 +60,7 @@ class Stirrup:
         cover_used: MM | None = None,
     ) -> None:
         """Initialisation of the stirrup."""
-        self.coordinates = coordinates
+        self.geometry = geometry
         self.diameter = diameter
         self.distance = distance
         self.material = material
@@ -105,23 +105,20 @@ class Stirrup:
     @property
     def centroid(self) -> Point:
         """Centroid of the stirrup bar [mm]."""
-        return Point(
-            round(sum(c.x for c in self.coordinates) / len(self.coordinates), 2),
-            round(sum(c.y for c in self.coordinates) / len(self.coordinates), 2),
-        )
+        return self.geometry.centroid
 
     @property
     def weight_per_meter(self) -> KG_M3:
         """Total mass of the stirrup per meter length in the longitudinal direction (concrete+reinforcement) [kg/m³]
         (Weight of a single stirrup x amount of stirrups present in one meter length).
         """
-        polygon = Polygon(self.coordinates)
-        return self.material.density * polygon.length * self.area * MM3_TO_M3 * M_TO_MM / self.distance
+        return self.material.density * self.geometry.length * self.area * MM3_TO_M3 * M_TO_MM / self.distance
 
     @property
     def ctc_distance_legs(self) -> MM:
         """Distance between the legs of the stirrup taken form the center lines of the rebar [mm]."""
-        return max(point.x for point in self.coordinates) - min(point.x for point in self.coordinates)
+        min_x, max_x = self.geometry.bounds[0], self.geometry.bounds[2]
+        return max_x - min_x
 
     @property
     def cover_used(self) -> float:
