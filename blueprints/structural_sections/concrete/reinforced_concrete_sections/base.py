@@ -6,11 +6,11 @@ from shapely import LineString
 
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.structural_sections.concrete.rebar import Rebar
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.cross_section_shapes import CrossSection
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import (
     ReinforcementConfiguration,
 )
 from blueprints.structural_sections.concrete.stirrups import Stirrup
+from blueprints.structural_sections.cross_section_shapes import CrossSection
 from blueprints.type_alias import KG_M, KG_M3, M3_M, MM2_M
 from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
 
