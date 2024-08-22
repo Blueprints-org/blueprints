@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -68,6 +69,16 @@ class Form8Dot15PrestressTransferStress(Formula):
         )
         return eta_p1 * eta_1 * f_ctd_t
 
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.15."""
+        return LatexFormula(
+            return_symbol=r"f_{bpt}",
+            result=f"{self:.2f}",
+            equation=r"\eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t)",
+            numeric_equation=rf"{self.eta_p1:.2f} \cdot {self.eta_1:.2f} \cdot {self.f_ctd_t:.2f}",
+            comparison_operator_label="=",
+        )
+
 
 class SubForm8Dot15EtaP1(Formula):
     """Class representing sub-formula 8.15 for the calculation of the coefficient that takes into account the type of tendon and the bond situation
@@ -107,6 +118,16 @@ class SubForm8Dot15EtaP1(Formula):
                 return 3.2
             case _:
                 raise ValueError(f"Invalid type of wire: {type_of_wire}. Options: 'indented' or '3_7_wire_strands'")
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for the first subformula of formula 8.15."""
+        return LatexFormula(
+            return_symbol=r"\eta_{p1}",
+            result=f"{self:.2f}",
+            equation=r"type\;of\;wire",
+            numeric_equation=f"{self.type_of_wire}".replace(" ", r"\;"),
+            comparison_operator_label=r"\rightarrow",
+        )
 
 
 class SubForm8Dot15TensileStrengthAtRelease(Formula):
@@ -156,3 +177,13 @@ class SubForm8Dot15TensileStrengthAtRelease(Formula):
         raise_if_negative(alpha_ct=alpha_ct, f_ctm_t=f_ctm_t)
         raise_if_less_or_equal_to_zero(gamma_c=gamma_c)
         return alpha_ct * 0.7 * f_ctm_t / gamma_c
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for the second subformula of formula 8.15."""
+        return LatexFormula(
+            return_symbol=r"f_{ctd}(t)",
+            result=f"{self:.2f}",
+            equation=r"\frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c}",
+            numeric_equation=rf"\frac{{{self.alpha_ct:.2f} \cdot 0.7 \cdot {self.f_ctm_t:.2f}}}{{{self.gamma_c:.2f}}}",
+            comparison_operator_label="=",
+        )

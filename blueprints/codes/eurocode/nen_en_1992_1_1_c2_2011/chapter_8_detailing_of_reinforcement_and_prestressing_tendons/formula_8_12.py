@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MM2
 from blueprints.validations import raise_if_negative
 
@@ -43,3 +44,13 @@ class Form8Dot12AdditionalShearReinforcement(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a_s=a_s, n_1=n_1)
         return 0.25 * a_s * n_1
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.12."""
+        return LatexFormula(
+            return_symbol=r"A_{sh}",
+            result=f"{self:.2f}",
+            equation=r"0.25 \cdot A_s \cdot n_1",
+            numeric_equation=rf"0.25 \cdot {self.a_s:.2f} \cdot {self.n_1:.2f}",
+            comparison_operator_label="=",
+        )
