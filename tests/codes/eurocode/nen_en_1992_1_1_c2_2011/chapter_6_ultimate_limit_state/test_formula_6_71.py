@@ -152,7 +152,7 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
         # Expected result, manually calculated
         expected = result_manual
 
-        assert form == expected
+        assert bool(form) == expected
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -162,10 +162,10 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
                 (
                     r"CHECK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
                     r"\leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} \rightarrow "
-                    r"1.500 \cdot 10.000 \leq \frac{10.000}{2.000} \rightarrow NOT\;OK"
+                    r"1.500 \cdot 10.000 \leq \frac{10.000}{2.000} \rightarrow \text{Not OK}"
                 ),
             ),
-            ("short", r"CHECK \rightarrow NOT\;OK"),
+            ("short", r"CHECK \rightarrow \text{Not OK}"),
         ],
     )
     def test_latex_not_ok(self, representation: str, expected: str) -> None:
