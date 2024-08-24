@@ -70,6 +70,8 @@ class Stirrup:
         self._mandrel_diameter_factor = mandrel_diameter_factor
         self.based_on_cover = based_on_cover
         self._id = Stirrup.counter
+        self._validation_relative_position(relative_position=relative_start_position)
+        self._validation_relative_position(relative_position=relative_end_position)
         self._relative_start_position = relative_start_position
         self._relative_end_position = relative_end_position
         self.n_vertices_used = n_vertices_used
@@ -130,13 +132,11 @@ class Stirrup:
     @property
     def relative_start_position(self) -> RATIO:
         """Relative position of the start of the stirrup configuration inside the cross-section. Value between 0 and 1."""
-        self._validation_relative_position(relative_position=self._relative_start_position)
         return self._relative_start_position
 
     @property
     def relative_end_position(self) -> RATIO:
         """Relative position of the end of the stirrup configuration inside the cross-section. Value between 0 and 1."""
-        self._validation_relative_position(relative_position=self._relative_end_position)
         return self._relative_end_position
 
     @staticmethod
