@@ -290,3 +290,21 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
         expected = 0.75
 
         assert form == expected
+
+    def test__str__(self) -> None:
+        """Test the string representation of the formula."""
+        # Example values
+        gamma_f_fat = 1.5
+        delta_sigma_s_equ_n_star = 10.0
+        gamma_s_fat = 2.0
+        delta_sigma_rsk_n_star = 40.0
+
+        # Object to test
+        form = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        )
+
+        assert isinstance(str(form), str)
