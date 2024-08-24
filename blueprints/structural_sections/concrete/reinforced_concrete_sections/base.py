@@ -139,7 +139,8 @@ class ReinforcedCrossSection(ABC):
             If the stirrup is not fully inside the cross-section.
         """
         # check if the stirrup is inside the cross-section
-        if not self.cross_section.geometry.contains(stirrup.geometry):
+        stirrup_outside_edge = stirrup.geometry.buffer(distance=stirrup.diameter / 2)
+        if not self.cross_section.geometry.contains(stirrup_outside_edge):
             msg = "Stirrup is not (fully) inside the cross-section."
             raise ValueError(msg)
 
