@@ -9,7 +9,7 @@ from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import (
     ReinforcementConfiguration,
 )
-from blueprints.structural_sections.concrete.stirrups import Stirrup
+from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
 from blueprints.structural_sections.cross_section_shapes import CrossSection
 from blueprints.type_alias import KG_M, KG_M3, M3_M, MM2_M
 from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
@@ -36,7 +36,7 @@ class ReinforcedCrossSection(ABC):
         self.concrete_material = concrete_material
         self._reinforcement_configurations: list[tuple[LineString, ReinforcementConfiguration]] = []
         self._single_longitudinal_rebars: list[Rebar] = []
-        self._stirrups: list[Stirrup] = []
+        self._stirrups: list[StirrupConfiguration] = []
 
     @property
     def longitudinal_rebars(self) -> list[Rebar]:
@@ -120,17 +120,17 @@ class ReinforcedCrossSection(ABC):
 
         return rebar
 
-    def add_stirrup(self, stirrup: Stirrup) -> Stirrup:
+    def add_stirrup(self, stirrup: StirrupConfiguration) -> StirrupConfiguration:
         """Add a stirrup to the cross-section.
 
         Parameters
         ----------
-        stirrup : Stirrup
+        stirrup : StirrupConfiguration
             Configuration of stirrup reinforcement in the cross-section.
 
         Returns
         -------
-        Stirrup
+        StirrupConfiguration
             Newly created Stirrup
 
         Raises

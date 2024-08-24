@@ -10,7 +10,7 @@ from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
 STIRRUP_COLOR = (0.412, 0.412, 0.412)
 
 
-class Stirrup:
+class StirrupConfiguration:
     """Representation of a stirrup configuration.
 
     Parameters
@@ -69,7 +69,7 @@ class Stirrup:
         self.anchorage_length = anchorage_length
         self._mandrel_diameter_factor = mandrel_diameter_factor
         self.based_on_cover = based_on_cover
-        self._id = Stirrup.counter
+        self._id = StirrupConfiguration.counter
         self._validation_relative_position(relative_position=relative_start_position)
         self._validation_relative_position(relative_position=relative_end_position)
         self._relative_start_position = relative_start_position
@@ -77,7 +77,7 @@ class Stirrup:
         self.n_vertices_used = n_vertices_used
         self._cover_used = cover_used
         self._amount_of_legs = 2
-        Stirrup.counter += 1
+        StirrupConfiguration.counter += 1
 
     @property
     def mandrel_diameter_factor(self) -> DIMENSIONLESS:
