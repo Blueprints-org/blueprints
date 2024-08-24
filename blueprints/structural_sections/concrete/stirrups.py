@@ -36,9 +36,11 @@ class StirrupConfiguration:
     based_on_cover: bool
         Default is False. This helps to categorise stirrups that a created based on the covers present in the cross-section.
     relative_start_position: RATIO
-        Relative position of the start of the stirrup configuration inside the cross-section. Value between 0 and 1. Default is 0 (start).
+        Relative position of the start of the stirrup configuration inside the cross-section (longitudinal direction). Value between 0 and 1.
+        Default is 0 (start).
     relative_end_position: RATIO
-        Relative position of the end of the stirrup configuration inside the cross-section. Value between 0 and 1. Default is 1 (end).
+        Relative position of the end of the stirrup configuration inside the cross-section (longitudinal direction). Value between 0 and 1. Default
+        is 1 (end).
     """
 
     counter = 1
