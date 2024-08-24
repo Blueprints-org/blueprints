@@ -2,6 +2,7 @@
 
 import numpy as np
 from shapely import Point, Polygon
+from shapely.geometry.polygon import orient
 
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.type_alias import DIMENSIONLESS, KG_M3, MM, MM2, MM2_M, RATIO
@@ -60,7 +61,7 @@ class StirrupConfiguration:
         cover_used: MM | None = None,
     ) -> None:
         """Initialisation of the stirrup."""
-        self.geometry = geometry
+        self.geometry = orient(polygon=geometry)
         self.diameter = diameter
         self.distance = distance
         self.material = material
