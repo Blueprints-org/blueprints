@@ -120,7 +120,7 @@ class ReinforcedCrossSection(ABC):
 
         return rebar
 
-    def add_stirrup(self, stirrup: StirrupConfiguration) -> StirrupConfiguration:
+    def add_stirrup_configuration(self, stirrup: StirrupConfiguration) -> StirrupConfiguration:
         """Add a stirrup configuration to the cross-section.
 
         Parameters
