@@ -152,7 +152,7 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
         # Expected result, manually calculated
         expected = result_manual
 
-        assert form == expected
+        assert bool(form) == expected
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -162,10 +162,10 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
                 (
                     r"CHECK \rightarrow \gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) "
                     r"\leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}} \rightarrow "
-                    r"1.500 \cdot 10.000 \leq \frac{10.000}{2.000} \rightarrow NOT\;OK"
+                    r"1.500 \cdot 10.000 \leq \frac{10.000}{2.000} \rightarrow \text{Not OK}"
                 ),
             ),
-            ("short", r"CHECK \rightarrow NOT\;OK"),
+            ("short", r"CHECK \rightarrow \text{Not OK}"),
         ],
     )
     def test_latex_not_ok(self, representation: str, expected: str) -> None:
@@ -290,3 +290,21 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
         expected = 0.75
 
         assert form == expected
+
+    def test__str__(self) -> None:
+        """Test the string representation of the formula."""
+        # Example values
+        gamma_f_fat = 1.5
+        delta_sigma_s_equ_n_star = 10.0
+        gamma_s_fat = 2.0
+        delta_sigma_rsk_n_star = 40.0
+
+        # Object to test
+        form = Form6Dot71CriteriaBasedOnStressRange(
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
+        )
+
+        assert isinstance(str(form), str)

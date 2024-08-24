@@ -29,3 +29,26 @@ class TestForm2Dot1bRepresentativeValue:
 
         with pytest.raises(NegativeValueError):
             Form2Dot1bRepresentativeValue(psi=psi, f_k=f_k)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"F_{rep} = \psi \cdot F_k = 1.20 \cdot 100.00 = 120.00",
+            ),
+            ("short", r"F_{rep} = 120.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        psi = 1.2  # [-]
+        f_k = 100  # kN
+
+        # Object to test
+        form_2_1_b_latex = Form2Dot1bRepresentativeValue(psi=psi, f_k=f_k).latex()
+
+        actual = {"complete": form_2_1_b_latex.complete, "short": form_2_1_b_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -26,3 +26,25 @@ class TestForm9Dot10MaximumSpacingBentUpBars:
 
         with pytest.raises(NegativeValueError):
             Form9Dot10MaximumSpacingBentUpBars(d=d)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"s_{max} = d = 100.00 = 100.00",
+            ),
+            ("short", r"s_{max} = 100.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        d = 100  # mm
+
+        # Object to test
+        form_9_10_latex = Form9Dot10MaximumSpacingBentUpBars(d=d).latex()
+
+        actual = {"complete": form_9_10_latex.complete, "short": form_9_10_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
