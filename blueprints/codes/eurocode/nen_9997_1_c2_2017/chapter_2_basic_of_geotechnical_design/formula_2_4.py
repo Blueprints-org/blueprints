@@ -8,13 +8,18 @@ from blueprints.validations import raise_if_negative
 
 
 class Form2Dot4DesignValueGeotechnicalParameter(Formula):
-    """Class representing formula 2.4 for the check of the destabilizing load effect against the stabilizing load effect and friction resistance :math:`E_dst;d leq E_stb;d + T_d`."""
+    """Class representing formula 2.4 for the check of 
+    the destabilizing load effect 
+    against the stabilizing load effect and friction resistance 
+    :math:`E_dst;d leq E_stb;d + T_d`."""
 
     label = "2.4"
     source_document = NEN_9997_1_C2_2017
 
     def __init__(self, e_dst_d: N, e_stb_d: N, t_d: N) -> None:
-        """Check of the destabilizing load effect against the stabilizing load effect and friction resistance [:math:`E_dst;d leq E_stb;d + T_d`].
+        """Check of the destabilizing load effect 
+        against the stabilizing load effect and friction resistance 
+        [:math:`E_dst;d leq E_stb;d + T_d`].
 
         NEN 9997-1+C2:2017 art.2.4.7.2(1) - Formula (2.4)
 
@@ -47,7 +52,7 @@ class Form2Dot4DesignValueGeotechnicalParameter(Formula):
         return LatexFormula(
             return_symbol="",
             equation="E_{dst;d} \\leq E_{stb;d} + T_d",
-            result='OK' if self.__bool__() else '\\text{Not OK}',
+            result="OK" if self.__bool__() else "\\text{Not OK}",
             numeric_equation=f"{self.e_dst_d:.2f} \\leq {self.e_stb_d:.2f} + {self.t_d:.2f} \\to {self.e_dst_d:.2f} \\leq "
                              f"{self.e_stb_d + self.t_d:.2f}",
             comparison_operator_label="\\to",
