@@ -30,6 +30,21 @@ class TestForm4Dot1NominalConcreteCover:
 
         assert form_4_2 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation_default_values(self) -> None:
+        """Test the evaluation of the result using the default values for delta parameters."""
+        # Example values
+        c_min_b = 15  # mm
+        c_min_dur = 20  # mm
+        form_4_2 = Form4Dot2MinimumConcreteCover(
+            c_min_b=c_min_b,
+            c_min_dur=c_min_dur,
+        )
+
+        # Expected result, manually calculated
+        manually_calculated_result = 20
+
+        assert form_4_2 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     def test_raise_error_when_negative_c_min_b_is_given(self) -> None:
         """Test the evaluation of the result."""
         # Example values

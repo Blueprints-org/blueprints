@@ -152,3 +152,45 @@ class TestSubForm8Dot8nDesignLengthOfTransverseBar:
         manually_calculated_result = 69.950631942
 
         assert form_8_8n == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"l_{td} = \min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right) = "
+                    r"\min\left(100.00, 1.16 \cdot 16.00 \cdot ({\frac{500.00}{35.20}})^{0.5} \right) = 69.95"
+                ),
+            ),
+            ("short", r"l_{td} = 69.95"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        diameter_t = 16  # mm
+        f_yd = 500  # MPa
+        l_t = 100  # mm
+        f_ctd = 2.6  # MPa
+        sigma_cm = 15  # MPa
+        y_function = 0.5  # -
+        f_cd = 25  # MPa
+        sigma_td = SubForm8Dot8nConcreteStress(
+            f_ctd=f_ctd,
+            sigma_cm=sigma_cm,
+            y_function=y_function,
+            f_cd=f_cd,
+        )
+
+        # Object to test
+        sub_form_8_8n_1_latex = SubForm8Dot8nDesignLengthOfTransverseBar(
+            diameter_t=diameter_t,
+            f_yd=f_yd,
+            sigma_td=sigma_td,
+            l_t=l_t,
+        ).latex()
+
+        actual = {"complete": sub_form_8_8n_1_latex.complete, "short": sub_form_8_8n_1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, MM, MPA
 from blueprints.unit_conversion import KN_TO_N
 from blueprints.validations import raise_if_negative
@@ -61,3 +62,16 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
             f_cd=f_cd,
         )
         return f_bt * KN_TO_N * ((1 / a_b) + 1 / (2 * diameter)) / f_cd
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.1."""
+        return LatexFormula(
+            return_symbol=r"Ø_{m,min}",
+            result=f"{self:.2f}",
+            equation=r"\frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}}",
+            numeric_equation=(
+                rf"\frac{{{self.f_bt:.2f} \cdot 1000 \cdot \left( \frac{{1}}{{{self.a_b:.2f}}}"
+                rf" + \frac{{1}}{{2 \cdot {self.diameter:.2f}}} \right)}}{{{self.f_cd:.2f}}}"
+            ),
+            comparison_operator_label="=",
+        )

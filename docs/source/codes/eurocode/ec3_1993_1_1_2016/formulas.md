@@ -10,7 +10,7 @@ Total of 108 formulas present.
 | Formula number | Done | Remarks | Object name |
 |:---------------|:----:|:--------|:------------|
 | 2.1            | :x:  |         |             |
-| 2.2            | :x:  |         |             |
+| 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance |
 | 5.1            | :x:  |         |             |
 | 5.2            | :x:  |         |             |
 | 5.3            | :x:  |         |             |
@@ -26,7 +26,7 @@ Total of 108 formulas present.
 | 5.13           | :x:  |         |             |
 | 5.14           | :x:  |         |             |
 | 6.1            | :x:  |         |             |
-| 6.2            | :x:  |         |             |
+| 6.2            | :heavy_check_mark:  |         | Form6Dot2UtilizationRatio            |
 | 6.3            | :x:  |         |             |
 | 6.4            | :x:  |         |             |
 | 6.5            | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength |
@@ -95,7 +95,7 @@ Total of 108 formulas present.
 | 6.68           | :x:  |         |             |
 | 6.69           | :x:  |         |             |
 | 6.70           | :x:  |         |             |
-| 6.71           | :x:  |         |             |
+| 6.71           | :heavy_check_mark:  |         | FormADot2CriteriaBasedOnStressRangeLHS and FormADot2CriteriaBasedOnStressRangeRHS            |
 | 6.72           | :x:  |         |             |
 | 6.73           | :x:  |         |             |
 | 6.74           | :x:  |         |             |

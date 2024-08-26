@@ -34,9 +34,9 @@ class TestFormADot2CriteriaBasedOnDamageAccumulation:
         [
             (
                 "complete",
-                r"OK / NOT OK \rightarrow D_d \leq 1.0 \rightarrow 0.800 \leq 1.0 \rightarrow OK",
+                r"CHECK \rightarrow D_d \leq 1.0 \rightarrow 0.800 \leq 1.0 \rightarrow OK",
             ),
-            ("short", r"OK / NOT OK \rightarrow OK"),
+            ("short", r"CHECK \rightarrow OK"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

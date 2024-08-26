@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN
 
 
@@ -49,3 +50,13 @@ class Form6Dot1DesignShearStrength(Formula):
         if v_td < 0:
             raise ValueError(f"Negative v_td: {v_td}. v_td cannot be negative")
         return v_rd_s + v_ccd + v_td
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 6.1."""
+        return LatexFormula(
+            return_symbol=r"V_{Rd}",
+            result=f"{self:.3f}",
+            equation=r"V_{Rd,s} + V_{ccd} + V_{td}",
+            numeric_equation=rf"{self.v_rd_s:.3f} + {self.v_ccd:.3f} + {self.v_td:.3f}",
+            comparison_operator_label="=",
+        )

@@ -63,3 +63,30 @@ class TestForm9Dot12nMinimumLongitudinalReinforcementColumns:
 
         with pytest.raises(NegativeValueError):
             Form9Dot12nMinimumLongitudinalReinforcementColumns(n_ed=n_ed, f_yd=f_yd, a_c=a_c)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    r"A_{s,min} = \max( \frac{0.10 \cdot N_{Ed}}{f_{yd}}, 0.002 \cdot A_c ) = "
+                    r"\max( \frac{0.10 \cdot 200.00}{500.00}, 0.002 \cdot 25000.00 ) = 50.00"
+                ),
+            ),
+            ("short", r"A_{s,min} = 50.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        n_ed = 200  # kN
+        f_yd = 500  # MPa
+        a_c = 25000  # mm²
+
+        # Object to test
+        form_9_12n_latex = Form9Dot12nMinimumLongitudinalReinforcementColumns(n_ed=n_ed, f_yd=f_yd, a_c=a_c).latex()
+
+        actual = {"complete": form_9_12n_latex.complete, "short": form_9_12n_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

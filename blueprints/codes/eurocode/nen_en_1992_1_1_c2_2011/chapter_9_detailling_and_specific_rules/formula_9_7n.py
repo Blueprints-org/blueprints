@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DEG, MM
 from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
@@ -47,3 +48,13 @@ class Form9Dot7nMaximumDistanceBentUpBars(Formula):
         cot_alpha = 1 / np.tan(alpha_radians)
 
         return 0.6 * d * (1 + cot_alpha)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.7N."""
+        return LatexFormula(
+            return_symbol=r"s_{b,max}",
+            result=f"{self:.2f}",
+            equation=r"0.6 \cdot d \cdot \left( 1 + cot(\alpha) \right)",
+            numeric_equation=rf"0.6 \cdot {self.d:.2f} \cdot \left( 1 + cot({self.alpha:.2f}) \right)",
+            comparison_operator_label="=",
+        )
