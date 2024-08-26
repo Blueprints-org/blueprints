@@ -11,7 +11,7 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
 
     def test_evaluation_lower_than(self) -> None:
         """Test the evaluation of the result."""
-        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.2, e_stb_d=0.3, t_d=-0.1) == pytest.approx(1.0)
+        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.2, e_stb_d=0.31, t_d=-0.1) == pytest.approx(1.0)
 
     def test_evaluation_equals(self) -> None:
         """Test the evaluation of the result."""
@@ -31,22 +31,19 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
         with pytest.raises(NegativeValueError):
             Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=1, e_stb_d=-1, t_d=1)
 
-# TODO: latex gedeelte, wanneer latex zelf ook gefixt is
-    # @pytest.mark.parametrize(
-    #     ("representation", "expected_result"),
-    #     [
-    #         ("complete", r"X_d = \frac{X_{k}}{\gamma_M} = \frac{25.000}{1.450} = 17.241"),
-    #         ("short", r"X_d = 17.241"),
-    #     ],
-    # )
-    # def test_latex(self, representation: str, expected_result: str) -> None:
-    #     """Test the latex representation of the formula."""
-    #     # Object to test
-    #     latex = Form2Dot2DesignValueGeotechnicalParameter(x_k=25.0, gamma_m=1.45).latex()
+    @pytest.mark.parametrize(
+        ("representation", "expected_result"),
+        [
+            ("complete", r"E_{dst;d} \leq E_{stb;d} + T_d \to 2.01 \leq 1.00 + 1.00 \to 2.01 \leq 2.00 \to \text{Not OK}"),
+        ],
+    )
+    def test_latex(self, representation: str, expected_result: str) -> None:
+        """Test the latex representation of the formula."""
+        # Object to test
+        latex = Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=2.01, e_stb_d=1, t_d=1).latex()
 
-    #     actual = {
-    #         "complete": latex.complete,
-    #         "short": latex.short,
-    #     }
+        actual = {
+            "complete": latex.complete
+        }
 
-    #     assert actual[representation] == expected_result, f"{representation} representation failed."
+        assert actual[representation] == expected_result, f"{representation} representation failed."
