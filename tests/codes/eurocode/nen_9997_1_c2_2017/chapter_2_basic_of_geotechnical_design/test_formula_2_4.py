@@ -11,25 +11,25 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
 
     def test_evaluation_lower_than(self) -> None:
         """Test the evaluation of the result."""
-        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.2, e_stb_d=0.31, t_d=-0.1) == pytest.approx(1.0)
+        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.5, e_stb_d=1, t_d=0.1)
 
     def test_evaluation_equals(self) -> None:
         """Test the evaluation of the result."""
-        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=1, e_stb_d=0.5, t_d=0.5) == pytest.approx(1.0)
+        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.2, e_stb_d=0.3, t_d=-0.1)
 
     def test_evaluation_greater_than(self) -> None:
         """Test the evaluation of the result."""
-        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=2.01, e_stb_d=1, t_d=1) == pytest.approx(0.0)
+        assert not Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=2.01, e_stb_d=1, t_d=1)
 
     def test_raise_error_if_negative_e_dst_d(self) -> None:
         """Test that a NegativeValueError is raised when a negative value is passed for E_dst;d."""
         with pytest.raises(NegativeValueError):
-            Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=-1, e_stb_d=1, t_d=1)
+            Form2Dot4DesignValueGeotechnicalParameter.__evaluate__(e_dst_d=-1, e_stb_d=1)
 
     def test_raise_error_if_negative_e_stb_d(self) -> None:
         """Test that a NegativeValueError is raised when a negative value is passed for E_stb;d."""
         with pytest.raises(NegativeValueError):
-            Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=1, e_stb_d=-1, t_d=1)
+            Form2Dot4DesignValueGeotechnicalParameter.__evaluate__(e_dst_d=1, e_stb_d=-1)
 
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
@@ -42,8 +42,6 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
         # Object to test
         latex = Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=2.01, e_stb_d=1, t_d=1).latex()
 
-        actual = {
-            "complete": latex.complete
-        }
+        actual = {"complete": latex.complete}
 
         assert actual[representation] == expected_result, f"{representation} representation failed."

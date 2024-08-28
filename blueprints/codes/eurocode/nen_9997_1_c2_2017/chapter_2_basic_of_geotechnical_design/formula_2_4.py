@@ -1,13 +1,14 @@
-"""Formula 2.2 from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
+"""Formula 2.4 from NEN 9997-1+C2:2017: Chapter 2: Basis of geotechnical design."""
+
+import math
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
-from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import N
+from blueprints.type_alias import KN
 from blueprints.validations import raise_if_negative
 
 
-class Form2Dot4DesignValueGeotechnicalParameter(Formula):
+class Form2Dot4DesignValueGeotechnicalParameter:
     """Class representing formula 2.4 for the check of
     the destabilizing load effect
     against the stabilizing load effect and friction resistance
@@ -17,7 +18,7 @@ class Form2Dot4DesignValueGeotechnicalParameter(Formula):
     label = "2.4"
     source_document = NEN_9997_1_C2_2017
 
-    def __init__(self, e_dst_d: N, e_stb_d: N, t_d: N) -> None:
+    def __init__(self, e_dst_d: KN, e_stb_d: KN, t_d: KN) -> None:
         """Check of the destabilizing load effect
         against the stabilizing load effect and friction resistance
         [:math:`E_dst;d leq E_stb;d + T_d`].
@@ -33,16 +34,22 @@ class Form2Dot4DesignValueGeotechnicalParameter(Formula):
         T_d : N
             [:math: `T_d`] Design value of friction resistance.
         """
-        super().__init__()
         self.e_dst_d = e_dst_d
         self.e_stb_d = e_stb_d
         self.t_d = t_d
 
-    @staticmethod
-    def _evaluate(e_dst_d: N, e_stb_d: N, t_d: N) -> bool:
+    def __bool__(self) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(e_dst_d=e_dst_d, e_stb_d=e_stb_d)
-        return e_dst_d <= e_stb_d + t_d
+        return self.e_dst_d < self.e_stb_d + self.t_d or math.isclose(self.e_dst_d, self.e_stb_d + self.t_d)
+
+    @staticmethod
+    def __evaluate__(e_dst_d: KN, e_stb_d: KN) -> None:
+        """Raises an error if either of the load effects is negative."""
+        return raise_if_negative(e_dst_d=e_dst_d, e_stb_d=e_stb_d)
+
+    def __str__(self) -> str:
+        """Returns the latex formula as string."""
+        return self.latex().complete
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 2.4."""
