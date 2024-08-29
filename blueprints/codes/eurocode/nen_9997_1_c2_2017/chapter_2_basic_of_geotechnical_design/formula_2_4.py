@@ -12,7 +12,7 @@ class Form2Dot4DesignValueGeotechnicalParameter:
     """Class representing formula 2.4 for the check of
     the destabilizing load effect
     against the stabilizing load effect and friction resistance
-    :math:`E_dst;d leq E_stb;d + T_d`.
+    :math:`E_{dst;d} ≤ E_{stb;d} + T_d`.
     """
 
     label = "2.4"
@@ -21,7 +21,7 @@ class Form2Dot4DesignValueGeotechnicalParameter:
     def __init__(self, e_dst_d: KN, e_stb_d: KN, t_d: KN) -> None:
         """Check of the destabilizing load effect
         against the stabilizing load effect and friction resistance
-        [:math:`E_dst;d leq E_stb;d + T_d`].
+        [:math:`E_{dst;d} ≤ E_{stb;d} + T_d`].
 
         NEN 9997-1+C2:2017 art.2.4.7.2(1) - Formula (2.4)
 
@@ -44,7 +44,7 @@ class Form2Dot4DesignValueGeotechnicalParameter:
         return self.e_dst_d < self.e_stb_d + self.t_d or math.isclose(self.e_dst_d, self.e_stb_d + self.t_d)
 
     def __str__(self) -> str:
-        """Returns the latex formula as string."""
+        """Returns a string representation of the formula."""
         return self.latex().complete
 
     def latex(self) -> LatexFormula:
