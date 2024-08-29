@@ -40,12 +40,8 @@ class Form2Dot4DesignValueGeotechnicalParameter:
 
     def __bool__(self) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(e_dst_d=self.e_dst_d, e_stb_d=self.e_stb_d)
         return self.e_dst_d < self.e_stb_d + self.t_d or math.isclose(self.e_dst_d, self.e_stb_d + self.t_d)
-
-    @staticmethod
-    def __evaluate__(e_dst_d: KN, e_stb_d: KN) -> None:
-        """Raises an error if either of the load effects is negative."""
-        return raise_if_negative(e_dst_d=e_dst_d, e_stb_d=e_stb_d)
 
     def __str__(self) -> str:
         """Returns the latex formula as string."""

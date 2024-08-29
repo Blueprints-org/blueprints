@@ -24,12 +24,12 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
     def test_raise_error_if_negative_e_dst_d(self) -> None:
         """Test that a NegativeValueError is raised when a negative value is passed for E_dst;d."""
         with pytest.raises(NegativeValueError):
-            Form2Dot4DesignValueGeotechnicalParameter.__evaluate__(e_dst_d=-1, e_stb_d=1)
+            Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=-1, e_stb_d=1, t_d=1)
 
     def test_raise_error_if_negative_e_stb_d(self) -> None:
         """Test that a NegativeValueError is raised when a negative value is passed for E_stb;d."""
         with pytest.raises(NegativeValueError):
-            Form2Dot4DesignValueGeotechnicalParameter.__evaluate__(e_dst_d=1, e_stb_d=-1)
+            Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=1, e_stb_d=-1, t_d=1)
 
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
