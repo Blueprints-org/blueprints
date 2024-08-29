@@ -11,11 +11,11 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
 
     def test_evaluation_lower_than(self) -> None:
         """Test the evaluation of the result."""
-        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.2, e_stb_d=0.3, t_d=-0.1)
+        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.2, e_stb_d=0.31, t_d=-0.1)
 
     def test_evaluation_equals(self) -> None:
         """Test the evaluation of the result."""
-        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=1, e_stb_d=0.5, t_d=0.5)
+        assert Form2Dot4DesignValueGeotechnicalParameter(e_dst_d=0.2, e_stb_d=0.3, t_d=-0.1)
 
     def test_evaluation_greater_than(self) -> None:
         """Test the evaluation of the result."""
@@ -38,7 +38,7 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
-            ("complete", r"E_{dst;d} \leq E_{stb;d} + T_d \to 2.01 \leq 1.00 + 1.00  \to 2.01 \leq 2.00 \to \text{Not OK}"),
+            ("complete", r"E_{dst;d} \leq E_{stb;d} + T_d \to 2.01 \leq 1.00 + 1.00 \to 2.01 \leq 2.00 \to \text{Not OK}"),
             ("short", r" \to \text{Not OK}"),
         ],
     )
