@@ -65,7 +65,7 @@ class MockConcreteStructuralClass(ConcreteStructuralClassBase):
         return super().__new__(cls, MockConcreteStructuralClassCalculator, *args, **kwargs)
 
 
-@pytest.fixture()
+@pytest.fixture
 def structural_class() -> MockConcreteStructuralClass:
     """Fixture that returns an instance of the structural class for testing."""
     exposure_classes = ExposureClasses(
@@ -88,7 +88,7 @@ def structural_class() -> MockConcreteStructuralClass:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def calculator() -> MockConcreteStructuralClassCalculator:
     """Fixture that returns an instance of the calculator for testing."""
     exposure_classes = ExposureClasses(

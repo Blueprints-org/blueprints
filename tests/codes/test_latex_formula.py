@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets
 
 
-@pytest.fixture()
+@pytest.fixture
 def fixture_latex_formula() -> LatexFormula:
     """Fixture for testing."""
     return LatexFormula(
