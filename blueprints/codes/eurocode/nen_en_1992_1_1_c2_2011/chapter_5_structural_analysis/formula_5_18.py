@@ -22,7 +22,7 @@ class Form5Dot18ComparisonGeneralSecondOrderEffects:
         f_ved : KN
             [:math: F_{v,ed}`] ... [:math:`kN`].
         k_1 : DIMENSIONLESS
-            [:math: K_1`] ... [:math:`-`].
+            [:math: k_1`] ... [:math:`-`].
         n_s : DIMENSIONLESS
             [:math: `n_s`] is the total build-layers [:math:`-`].
         length : M
