@@ -1,4 +1,4 @@
-"""Soil material module."""
+"""Module containing definitions of soil types and soil materials."""
 
 from enum import Enum
 

@@ -9,6 +9,7 @@ Welcome to the ``Blueprints`` API Reference.
     :template: custom-module-template.rst
     :recursive:
 
+    blueprints.materials
     blueprints.codes
     blueprints.type_alias
     blueprints.unit_conversion
