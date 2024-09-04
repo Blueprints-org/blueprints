@@ -28,3 +28,8 @@ MRAD_TO_RAD = 1e-3
 RAD_TO_DEG = 180 / math.pi
 DEG_TO_RAD = math.pi / 180
 # </editor-fold>
+
+
+# <editor-fold desc="Length conversion">
+M_TO_MM = 1e3
+MM_TO_M = 1e-3
