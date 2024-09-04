@@ -206,7 +206,7 @@ Total of 304 formulas present.
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
 | 8.4            | :heavy_check_mark: |         | Form8Dot4DesignAnchorageLength                            |
-| 8.5            |        :x:         |         |                                                           |
+| 8.5            | :heavy_check_mark: |         | Form8Dot5ProductAlphas235                                 |
 | 8.6            | :heavy_check_mark: |         | Form8Dot6MinimumTensionAnchorage                          |
 | 8.7            | :heavy_check_mark: |         | Form8Dot7MinimumCompressionAnchorage                      |
 | 8.8N           | :heavy_check_mark: |         | Form8Dot8nAnchorageCapacityWeldedTransverseBar            |

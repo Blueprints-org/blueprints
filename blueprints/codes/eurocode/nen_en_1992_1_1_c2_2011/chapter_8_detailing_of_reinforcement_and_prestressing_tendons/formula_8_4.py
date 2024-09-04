@@ -1,6 +1,9 @@
 """Formula 8.4 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_5 import (
+    Form8Dot5ProductAlphas235,
+)
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
 from blueprints.type_alias import DIMENSIONLESS, MM
@@ -22,6 +25,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
         alpha_5: DIMENSIONLESS,
         l_b_rqd: MM,
         l_b_min: MM,
+        min_product_alpha_2_3_5: DIMENSIONLESS | None = None,
     ) -> None:
         """[:math:`l_{bd}`] Design anchorage length [:math:`mm`].
 
@@ -91,6 +95,10 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
             Use your own implementation of this formula or use the :class:`Form8Dot6MinimumTensionAnchorage` class for tension or
             :class:`Form8Dot7MinimumCompressionAnchorage` for compression.
+        min_product_alpha_2_3_5
+            Minimum value of the product of factors alpha 2, alpha 3 and alpha 5.
+            When this argument is None, :class: `Form8Dot5ProductAlphas235` is used for this condition.
+            When this argument is given, the condition :math: max((`α_{2}``α_{3}``α_{5}`) >= min_product_alpha_2_3_5 is used.
 
         Notes
         -----
@@ -104,6 +112,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
         self.alpha_5 = alpha_5
         self.l_b_rqd = l_b_rqd
         self.l_b_min = l_b_min
+        self.min_product_alpha_2_3_5 = min_product_alpha_2_3_5
 
     @staticmethod
     def _evaluate(
@@ -114,6 +123,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
         alpha_5: DIMENSIONLESS,
         l_b_rqd: MM,
         l_b_min: MM,
+        min_product_alpha_2_3_5: DIMENSIONLESS | None = None,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
@@ -125,7 +135,13 @@ class Form8Dot4DesignAnchorageLength(Formula):
             l_b_rqd=l_b_rqd,
             l_b_min=l_b_min,
         )
-        return max(alpha_1 * alpha_2 * alpha_3 * alpha_4 * alpha_5 * l_b_rqd, l_b_min)
+
+        if min_product_alpha_2_3_5 is None:
+            product_alphas_2_3_5: float = Form8Dot5ProductAlphas235(alpha_2, alpha_3, alpha_5)
+        else:
+            product_alphas_2_3_5 = max(alpha_2 * alpha_3 * alpha_5, min_product_alpha_2_3_5)
+
+        return max(alpha_1 * alpha_4 * product_alphas_2_3_5 * l_b_rqd, l_b_min)
 
     def latex(self) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
