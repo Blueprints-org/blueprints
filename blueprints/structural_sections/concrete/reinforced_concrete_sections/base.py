@@ -5,6 +5,7 @@ from abc import ABC
 from shapely import LineString
 
 from blueprints.materials.concrete import ConcreteMaterial
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import (
     ReinforcementConfiguration,
@@ -59,6 +60,11 @@ class ReinforcedCrossSection(ABC):
         return rebars
 
     @property
+    def stirrups(self) -> list[StirrupConfiguration]:
+        """Return a list of all stirrups."""
+        return self._stirrups
+
+    @property
     def reinforcement_weight_longitudinal_bars(self) -> KG_M:
         """Total mass of the longitudinal reinforcement in the cross-section per meter length [kg/m]."""
         return sum(rebar.weight_per_meter for rebar in self.longitudinal_rebars)
@@ -88,6 +94,12 @@ class ReinforcedCrossSection(ABC):
     def weight_per_volume(self) -> KG_M3:
         """Total mass of the cross-section per meter length (concrete_checks+reinforcement) [kg/m³]."""
         return self.reinforcement_weight / self.concrete_volume
+
+    def get_present_steel_materials(self) -> list[ReinforcementSteelMaterial]:
+        """Return a list of all present steel materials in the cross-section."""
+        materials = [rebar.material for rebar in self.longitudinal_rebars]
+        materials.extend(stirrup.material for stirrup in self._stirrups)
+        return list(set(materials))
 
     def add_longitudinal_rebar(
         self,
