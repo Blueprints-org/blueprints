@@ -20,6 +20,8 @@ class Form4Dot1NominalConcreteCover(Formula):
     ) -> None:
         """[:math:`c_{nom}`] Calculates the nominal concrete cover [:math:`mm`].
 
+        Please be advised that this formula does not take various considerations in art.4.4.1.2 and 4.4.1.3 into account.
+
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.1 (2) - Formula (4.1)
 
         Parameters
