@@ -9,9 +9,9 @@ COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = 5
 # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1+C2:2011
 COVER_INCREATSE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = {
     AbrasionClass.NA: 0,
-    AbrasionClass.XM1: 0,
-    AbrasionClass.XM2: 0,
-    AbrasionClass.XM3: 0,
+    AbrasionClass.XM1: 5,  # k1 according to art. 4.4.1.2 (13)
+    AbrasionClass.XM2: 10,  # k2 according to art. 4.4.1.2 (13)
+    AbrasionClass.XM3: 15,  # k3 according to art. 4.4.1.2 (13)
 }
 
 # According to art. 4.4.1.3 (1) from NEN-EN 1992-1-1+C2:2011
