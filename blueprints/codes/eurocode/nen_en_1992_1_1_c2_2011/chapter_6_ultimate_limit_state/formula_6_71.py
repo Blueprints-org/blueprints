@@ -105,7 +105,7 @@ class Form6Dot71CriteriaBasedOnStressRangeRHS(Formula):
         )
 
 
-class Form6Dot71CriteriaBasedOnStressRange(Formula):
+class Form6Dot71CriteriaBasedOnStressRange:
     """Class representing formula 6.71 for the calculation of the fatigue criteria based on stress range."""
 
     label = "6.71"
@@ -137,7 +137,6 @@ class Form6Dot71CriteriaBasedOnStressRange(Formula):
         -------
         None
         """
-        super().__init__()
         self.gamma_f_fat = gamma_f_fat
         self.delta_sigma_s_equ_n_star = delta_sigma_s_equ_n_star
         self.delta_sigma_rsk_n_star = delta_sigma_rsk_n_star
@@ -146,13 +145,6 @@ class Form6Dot71CriteriaBasedOnStressRange(Formula):
     @property
     def left_hand_side(self) -> MPA:
         """Calculate the left hand side of the equation.
-
-        Parameters
-        ----------
-        gamma_f_fat : DIMENSIONLESS
-            [:math:`γ_{F,fat}`] Partial factor for fatigue actions [:math:`-`].
-        delta_sigma_s_equ_n_star : MPA
-            [:math:`Δσ_{s,equ}(N*)`] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [:math:`MPa`].
 
         Returns
         -------
@@ -166,13 +158,6 @@ class Form6Dot71CriteriaBasedOnStressRange(Formula):
     @property
     def right_hand_side(self) -> MPA:
         """Calculate the left hand side of the equation.
-
-        Parameters
-        ----------
-        delta_sigma_rsk_n_star : MPA
-            [:math:`Δσ_{Rsk}(N*)`] Stress range at N* cycles from the S-N curve in Figure 6.30 [:math:`MPa`].
-        gamma_s_fat : DIMENSIONLESS
-            [:math:`γ_{S,fat}`] Partial factor for reinforcing or prestressing steel under fatigue loading [:math:`-`].
 
         Returns
         -------
@@ -188,23 +173,21 @@ class Form6Dot71CriteriaBasedOnStressRange(Formula):
         """Ratio between left hand side and right hand side of the formula, commonly referred to as unity check."""
         return self.left_hand_side / self.right_hand_side
 
-    @staticmethod
-    def _evaluate(
-        gamma_f_fat: DIMENSIONLESS,
-        delta_sigma_s_equ_n_star: MPA,
-        gamma_s_fat: DIMENSIONLESS,
-        delta_sigma_rsk_n_star: MPA,
-    ) -> MPA:
+    def __bool__(self) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
-        lhs = Form6Dot71CriteriaBasedOnStressRangeLHS(gamma_f_fat=gamma_f_fat, delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star)
-        rhs = Form6Dot71CriteriaBasedOnStressRangeRHS(gamma_s_fat=gamma_s_fat, delta_sigma_rsk_n_star=delta_sigma_rsk_n_star)
+        lhs = Form6Dot71CriteriaBasedOnStressRangeLHS(gamma_f_fat=self.gamma_f_fat, delta_sigma_s_equ_n_star=self.delta_sigma_s_equ_n_star)
+        rhs = Form6Dot71CriteriaBasedOnStressRangeRHS(gamma_s_fat=self.gamma_s_fat, delta_sigma_rsk_n_star=self.delta_sigma_rsk_n_star)
         return lhs <= rhs
+
+    def __str__(self) -> str:
+        """Return the result of the formula."""
+        return self.latex().complete
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.71."""
         return LatexFormula(
             return_symbol=r"CHECK",
-            result="OK" if self else r"NOT\;OK",
+            result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) \leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
             numeric_equation=(
                 rf"{self.gamma_f_fat:.3f} \cdot {self.delta_sigma_s_equ_n_star:.3f} "
