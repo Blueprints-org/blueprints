@@ -24,9 +24,9 @@ class Form5Dot17EffectiveLengthBucklingLoad(Formula):
 
         Parameters
         ----------
-        ei : DIMENSIONLESS
+        ei : kNm2
             [:math:`EI`] is a representative bending stiffness [:math:`-`].
-        n_b : DIMENSIONLESS
+        n_b : KN
             [:math:`N_{b}`] is the buckling load expressed in terms of EI (in equation (5.14) i should correspond
             to this EI). [:math:`-`].
         """
