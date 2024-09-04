@@ -27,3 +27,25 @@ class TestForm3Dot17CompressiveStressConcrete:
 
         with pytest.raises(ValueError):
             Form3Dot18CompressiveStressConcrete(f_cd=f_cd)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"sigma_c = f_{cd} = 18.500 = 18.500",
+            ),
+            ("short", r"sigma_c = 18.500"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_cd = 18.50  # MPa
+
+        # Object to test
+        form_3_18_latex = Form3Dot18CompressiveStressConcrete(f_cd=f_cd).latex()
+
+        actual = {"complete": form_3_18_latex.complete, "short": form_3_18_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

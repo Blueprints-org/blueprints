@@ -26,3 +26,25 @@ class TestForm3Dot11AutogeneShrinkage:
 
         with pytest.raises(ValueError):
             Form3Dot12AutogeneShrinkageInfinity(f_ck=f_ck)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\epsilon_{ca}(\infty) = 2.5 \cdot (f_{ck} - 10) \cdot 10^{-6} = 2.5 \cdot (15.800 - 10) \cdot 10^{-6} = 0.000015",
+            ),
+            ("short", r"\epsilon_{ca}(\infty) = 0.000015"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_ck = 15.8  # MPa
+
+        # Object to test
+        form_3_12_latex = Form3Dot12AutogeneShrinkageInfinity(f_ck=f_ck).latex()
+
+        actual = {"complete": form_3_12_latex.complete, "short": form_3_12_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

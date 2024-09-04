@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DAYS
 
 
@@ -41,3 +42,13 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
         if t < 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative")
         return 1 - np.exp(-0.2 * t**0.5)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.13."""
+        return LatexFormula(
+            return_symbol=r"\beta_{as}(t)",
+            result=f"{self:.3f}",
+            equation=r"1 - \exp(-0.2 \cdot t^{0.5})",
+            numeric_equation=rf"1 - \exp(-0.2 \cdot {self.t:.3f}^{{0.5}})",
+            comparison_operator_label="=",
+        )

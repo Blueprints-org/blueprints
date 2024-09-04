@@ -37,3 +37,26 @@ class TestSubForm3Dot10FictionalCrossSection:
 
         with pytest.raises(ValueError):
             SubForm3Dot10FictionalCrossSection(a_c=a_c, u=u)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"h_0 = 2 \cdot A_c / u = 2 \cdot 42.500 / 20.300 = 4.187",
+            ),
+            ("short", r"h_0 = 4.187"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        a_c = 42.5  # mm²
+        u = 20.3  # mm
+
+        # Object to test
+        form_3_10_sub_latex = SubForm3Dot10FictionalCrossSection(a_c=a_c, u=u).latex()
+
+        actual = {"complete": form_3_10_sub_latex.complete, "short": form_3_10_sub_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -58,3 +59,16 @@ class Form3Dot17CompressiveStressConcrete(Formula):
         if epsilon_c > epsilon_c2:
             raise ValueError(f"epsilon_c: {epsilon_c} > epsilon_c2: {epsilon_c2}. Try using Form3Dot18CompressiveStressConcrete class.")
         return f_cd * (1 - (1 - (epsilon_c / epsilon_c2)) ** n)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.17."""
+        return LatexFormula(
+            return_symbol=r"\sigma_c",
+            result=f"{self:.3f}",
+            equation=r"f_{cd} \cdot \left[ 1 - \left( 1 - \frac{\epsilon_c}{\epsilon_{c2}} \right)^n \right]",
+            numeric_equation=(
+                rf"{self.f_cd:.3f} \cdot \left[ 1 - \left( 1 - \frac{{{self.epsilon_c:.3f}}}"
+                rf"{{{self.epsilon_c2:.3f}}} \right)^{self.n:.3f} \right]"
+            ),
+            comparison_operator_label="=",
+        )

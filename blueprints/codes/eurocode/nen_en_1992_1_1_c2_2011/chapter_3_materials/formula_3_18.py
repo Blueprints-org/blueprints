@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -39,3 +40,13 @@ class Form3Dot18CompressiveStressConcrete(Formula):
         if f_cd < 0:
             raise ValueError(f"Invalid f_cd: {f_cd}. f_cd cannot be negative")
         return f_cd
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.18."""
+        return LatexFormula(
+            return_symbol=r"sigma_c",
+            result=f"{self:.3f}",
+            equation=r"f_{cd}",
+            numeric_equation=rf"{self.f_cd:.3f}",
+            comparison_operator_label="=",
+        )

@@ -28,3 +28,26 @@ class TestForm3Dot11AutogeneShrinkage:
 
         with pytest.raises(ValueError):
             Form3Dot11AutogeneShrinkage(beta_as_t=beta_as_t, epsilon_ca_inf=epsilon_ca_inf)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\epsilon_{ca}(t) = \beta_{as}(t) \cdot \epsilon_{ca}(\infty) = 0.250 \cdot 0.056 = 0.014",
+            ),
+            ("short", r"\epsilon_{ca}(t) = 0.014"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        beta_as_t = 0.25  # -
+        epsilon_ca_inf = 0.056  # -
+
+        # Object to test
+        form_3_11_latex = Form3Dot11AutogeneShrinkage(beta_as_t=beta_as_t, epsilon_ca_inf=epsilon_ca_inf).latex()
+
+        actual = {"complete": form_3_11_latex.complete, "short": form_3_11_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -4,6 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import HOURS, PERCENTAGE
 
 
@@ -55,3 +56,16 @@ class Form3Dot28RatioLossOfPreStressClass1(Formula):
         if t < 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative")
         return 5.39 * rho_1000 * np.exp(6.7 * mu) * (t / 1000) ** (0.75 * (1 - mu)) * 10**-5
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.28."""
+        return LatexFormula(
+            return_symbol=r"\frac{\Delta \sigma_{pr}}{\sigma_{pl}}",
+            result=f"{self:.6f}",
+            equation=r"5.39 \cdot \rho_{1000} \cdot e^{6.7 \cdot \mu} \left( \frac{t}{1000} \right)^{0.75 \cdot (1 - \mu)} \cdot 10^{-5}",
+            numeric_equation=(
+                rf"5.39 \cdot {self.rho_1000:.3f} \cdot e^{{6.7 \cdot {self.mu:.3f}}} \left( \frac{{{self.t:.3f}}}{{1000}} \right)"
+                rf"^{{0.75 \cdot (1 - {self.mu:.3f})}} \cdot 10^{{-5}}"
+            ),
+            comparison_operator_label="=",
+        )
