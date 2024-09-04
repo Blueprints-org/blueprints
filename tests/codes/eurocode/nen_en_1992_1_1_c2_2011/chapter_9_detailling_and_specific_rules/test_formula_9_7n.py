@@ -44,3 +44,26 @@ class TestForm9Dot7nMaximumDistanceBentUpBars:
 
         with pytest.raises(GreaterThan90Error):
             Form9Dot7nMaximumDistanceBentUpBars(d=d, alpha=alpha)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"s_{b,max} = 0.6 \cdot d \cdot \left( 1 + cot(\alpha) \right) = 0.6 \cdot 100.00 \cdot \left( 1 + cot(85.00) \right) = 65.25",
+            ),
+            ("short", r"s_{b,max} = 65.25"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        d = 100  # mm
+        alpha = 85  # deg
+
+        # Object to test
+        form_9_7n_latex = Form9Dot7nMaximumDistanceBentUpBars(d=d, alpha=alpha).latex()
+
+        actual = {"complete": form_9_7n_latex.complete, "short": form_9_7n_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
