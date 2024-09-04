@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KN, MM4, MPA, M
-from blueprints.unit_conversion import M_TO_MM
+from blueprints.unit_conversion import M_TO_MM, N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
@@ -65,7 +65,7 @@ class Form5Dot18ComparisonGeneralSecondOrderEffects:
             KN: Right hand side
         """
         raise_if_less_or_equal_to_zero(n=(self.n_s + 1.6))
-        return self.k_1 * (self.n_s / (self.n_s + 1.6)) * ((self.e_cd * self.i_c) / (self.length * M_TO_MM) ** 2)
+        return (self.k_1 * (self.n_s / (self.n_s + 1.6)) * ((self.e_cd * self.i_c) / (self.length * M_TO_MM) ** 2)) * N_TO_KN
 
     @property
     def ratio(self) -> DIMENSIONLESS:

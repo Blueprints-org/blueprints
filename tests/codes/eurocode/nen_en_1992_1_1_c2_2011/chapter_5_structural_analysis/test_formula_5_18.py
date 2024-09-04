@@ -12,8 +12,8 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
     @pytest.mark.parametrize(
         ("f_ved", "k_1", "n_s", "length", "e_cd", "i_c", "result_manual"),
         [
-            (53333.33333, 0.8, 2, 5, 30_000, 100_000_000, True),
-            (666666.66667, 1.2, 4, 3, 35_000, 200_000_000, False),
+            (53.3333, 0.8, 2, 5, 30_000, 100_000_000, True),
+            (666.6667, 1.2, 4, 3, 35_000, 200_000_000, False),
         ],
     )
     def test_comparison(self, f_ved: float, k_1: float, n_s: float, length: float, e_cd: float, i_c: float, result_manual: bool) -> None:
@@ -24,8 +24,8 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
     @pytest.mark.parametrize(
         ("f_ved", "k_1", "n_s", "length", "e_cd", "i_c"),
         [
-            (53333.33333, 0.8, 2, 5, 30_000, 100_000_000),
-            (666666.66667, 1.2, 4, 3, 35_000, 200_000_000),
+            (53.3333, 0.8, 2, 5, 30_000, 100_000_000),
+            (666.6667, 1.2, 4, 3, 35_000, 200_000_000),
         ],
     )
     def test_evaluation(self, f_ved: float, k_1: float, n_s: float, length: float, e_cd: float, i_c: float) -> None:
@@ -43,8 +43,8 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
     @pytest.mark.parametrize(
         ("f_ved", "k_1", "n_s", "length", "e_cd", "i_c", "expected_lhs_rhs"),
         [
-            (53333.33333, 0.8, 2, 5, 30_000, 100_000_000, 53333.33333),
-            (666666.666667, 1.2, 4, 3, 35_000, 200_000_000, 666666.666667),
+            (53.3333, 0.8, 2, 5, 30_000, 100_000_000, 53.3333),
+            (666.6667, 1.2, 4, 3, 35_000, 200_000_000, 666.6667),
         ],
     )
     def test_properties(self, f_ved: float, k_1: float, n_s: float, length: float, e_cd: float, i_c: float, expected_lhs_rhs: float) -> None:
@@ -56,10 +56,10 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
 
     def test_str_representation(self) -> None:
         """Test the string representation of the comparison."""
-        form_5_18 = Form5Dot18ComparisonGeneralSecondOrderEffects(f_ved=53333.33333, k_1=0.8, n_s=2, length=5, e_cd=30_000, i_c=100_000_000)
+        form_5_18 = Form5Dot18ComparisonGeneralSecondOrderEffects(f_ved=53.3333, k_1=0.8, n_s=2, length=5, e_cd=30_000, i_c=100_000_000)
         expected_str = (
             r"CHECK \rightarrow \F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
-            r"\rightarrow 53333.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK"
+            r"\rightarrow 53.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK"
         )
         assert str(form_5_18) == expected_str
 
@@ -69,7 +69,7 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
             (
                 "complete",
                 r"CHECK \rightarrow \F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
-                r"\rightarrow 53333.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK",
+                r"\rightarrow 53.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK",
             ),
             ("short", r"CHECK \rightarrow OK"),
         ],
@@ -77,7 +77,7 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the comparison."""
         # Example values
-        f_ved = 53333.33333
+        f_ved = 53.3333
         k_1 = 0.8
         n_s = 2
         length = 5
