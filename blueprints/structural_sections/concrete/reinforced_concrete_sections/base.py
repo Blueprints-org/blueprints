@@ -1,6 +1,8 @@
 """Base class of all reinforced cross-sections."""
 
 from abc import ABC
+from functools import partial
+from typing import Callable
 
 from shapely import LineString
 
@@ -35,7 +37,7 @@ class ReinforcedCrossSection(ABC):
         """
         self.cross_section = cross_section
         self.concrete_material = concrete_material
-        self._reinforcement_configurations: list[tuple[LineString, ReinforcementConfiguration]] = []
+        self._reinforcement_configurations: list[tuple[LineString | Callable[..., LineString], ReinforcementConfiguration]] = []
         self._single_longitudinal_rebars: list[Rebar] = []
         self._stirrups: list[StirrupConfiguration] = []
 
@@ -49,7 +51,10 @@ class ReinforcedCrossSection(ABC):
 
         # add the rebars from the reinforcement configurations
         for line, configuration in self._reinforcement_configurations:
-            rebars.extend(configuration.to_rebars(line=line))
+            if callable(line):
+                rebars.extend(configuration.to_rebars(line=line()))
+            else:
+                rebars.extend(configuration.to_rebars(line=line))
 
         # check if all rebars are inside the cross-section
         for rebar in rebars:
@@ -163,30 +168,31 @@ class ReinforcedCrossSection(ABC):
 
     def add_reinforcement_configuration(
         self,
-        line: LineString,
+        line: LineString | Callable[..., LineString],
         configuration: ReinforcementConfiguration,
-    ) -> list[Rebar]:
+        *args,
+        **kwargs,
+    ) -> None:
         """Add a reinforcement configuration to the cross-section.
 
         Parameters
         ----------
-        line : LineString
+        line : LineString | Callable[..., LineString]
             Representing the path of the reinforcement in the cross-section.
             Start of the line defines the first rebar of the configuration, end of the line defines the last rebar.
+            If a callable is given, it should return a LineString. The callable can take additional arguments.
+            Arguments can be passed to the callable using the *args and **kwargs.
         configuration : ReinforcementConfiguration
             Configuration of the reinforcement.
+        args : Any
+            Additional arguments for the callable line. If line is not a callable, these arguments are ignored.
+        kwargs : Any
+            Additional keyword arguments for the callable line. If line is not a callable, these arguments are ignored.
 
-        Returns
-        -------
-        List[Rebar]
-            List of Rebar objects.
         """
-        # check if the line is inside the cross-section
-        if not self.cross_section.geometry.contains(line):
-            msg = "The given reinforcement configuration is not (fully) inside the cross-section."
-            raise ValueError(msg)
+        # check if the line is a callable and wrap it with the given arguments
+        if callable(line):
+            line = partial(line, *args, **kwargs)
 
         # add the reinforcement configuration to the list
         self._reinforcement_configurations.append((line, configuration))
-
-        return configuration.to_rebars(line=line)
