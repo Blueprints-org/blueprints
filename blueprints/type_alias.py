@@ -58,6 +58,11 @@ CM4 = float
 M4 = float
 # </editor-fold>
 
+# <editor-fold desc="COMPOUNDS">
+N_M2 = float
+KN_M2 = float
+# </editor-fold>
+
 # <editor-fold desc="TIME">
 HOURS = float
 MINUTES = float
