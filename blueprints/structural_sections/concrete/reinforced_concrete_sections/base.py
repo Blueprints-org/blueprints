@@ -111,7 +111,7 @@ class ReinforcedCrossSection(ABC):
             Newly created Rebar
         """
         # check if given diameter/coordinates are fully inside the cross-section
-        if not self.cross_section.geometry.within(rebar.geometry):
+        if not rebar.geometry.within(self.cross_section.geometry):
             msg = f"Rebar (diameter={rebar.diameter}, x={rebar.x}, y={rebar.y}) is not (fully) inside the cross-section."
             raise ValueError(msg)
 
