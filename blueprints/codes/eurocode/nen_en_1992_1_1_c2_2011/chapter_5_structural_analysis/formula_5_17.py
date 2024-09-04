@@ -25,10 +25,10 @@ class Form5Dot17EffectiveLengthBucklingLoad(Formula):
         Parameters
         ----------
         ei : KN_M2
-            [:math:`EI`] is a representative bending stiffness [:math:`-`].
+            [:math:`EI`] is a representative bending stiffness [:math:`kN/m^2`].
         n_b : KN
             [:math:`N_{b}`] is the buckling load expressed in terms of EI (in equation (5.14) i should correspond
-            to this EI). [:math:`-`].
+            to this EI). [:math:`kN`].
         """
         super().__init__()
         self.ei = ei
