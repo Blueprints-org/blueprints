@@ -67,7 +67,7 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
             return_symbol=r"\beta_{ds}(t,t_s)",
             result=f"{self:.3f}",
             equation=r"\frac{(t - t_s)}{(t - t_s) + 0.04 \sqrt{h_0^3}}",
-            numeric_equation=rf"\frac{{({self.t:.3f} - {self.t_s:.3f})}}{{({self.t:.3f} - {self.t_s:.3f}) + 0.04 \sqrt{{{self.h_0:.3f}^3}}}}",
+            numeric_equation=rf"\frac{{({self.t:.2f} - {self.t_s:.2f})}}{{({self.t:.2f} - {self.t_s:.2f}) + 0.04 \sqrt{{{self.h_0:.2f}^3}}}}",
             comparison_operator_label="=",
         )
 
@@ -114,8 +114,8 @@ class SubForm3Dot10FictionalCrossSection(Formula):
         """Returns LatexFormula object for formula 3.10 subformula."""
         return LatexFormula(
             return_symbol=r"h_0",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"2 \cdot A_c / u",
-            numeric_equation=rf"2 \cdot {self.a_c:.3f} / {self.u:.3f}",
+            numeric_equation=rf"2 \cdot {self.a_c:.2f} / {self.u:.2f}",
             comparison_operator_label="=",
         )
