@@ -192,7 +192,7 @@ class ReinforcedCrossSection(ABC):
         """
         # check if the line is a callable and wrap it with the given arguments
         if callable(line):
-            line = partial(line, *args, **kwargs)
+            line = partial(line, *args, **kwargs)  # type: ignore[misc]
 
         # add the reinforcement configuration to the list
         self._reinforcement_configurations.append((line, configuration))
