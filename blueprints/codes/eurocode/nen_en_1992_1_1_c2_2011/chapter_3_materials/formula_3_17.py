@@ -68,7 +68,7 @@ class Form3Dot17CompressiveStressConcrete(Formula):
             equation=r"f_{cd} \cdot \left[ 1 - \left( 1 - \frac{\epsilon_c}{\epsilon_{c2}} \right)^n \right]",
             numeric_equation=(
                 rf"{self.f_cd:.3f} \cdot \left[ 1 - \left( 1 - \frac{{{self.epsilon_c:.3f}}}"
-                rf"{{{self.epsilon_c2:.3f}}} \right)^{self.n:.3f} \right]"
+                rf"{{{self.epsilon_c2:.3f}}} \right)^{{{self.n:.2f}}} \right]"
             ),
             comparison_operator_label="=",
         )
