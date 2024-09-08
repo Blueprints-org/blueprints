@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -39,3 +40,13 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
         if f_ck < 0:
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         return 2.5 * (f_ck - 10) * 10**-6
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.12."""
+        return LatexFormula(
+            return_symbol=r"\epsilon_{ca}(\infty)",
+            result=f"{self:.6f}",
+            equation=r"2.5 \cdot (f_{ck} - 10) \cdot 10^{-6}",
+            numeric_equation=rf"2.5 \cdot ({self.f_ck:.3f} - 10) \cdot 10^{{-6}}",
+            comparison_operator_label="=",
+        )

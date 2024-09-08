@@ -40,3 +40,27 @@ class TestForm3Dot9DryingShrinkage:
 
         with pytest.raises(ValueError):
             Form3Dot9DryingShrinkage(beta_ds_tt_s=beta_ds_tt_s, k_h=k_h, epsilon_cd_0=epsilon_cd_0)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\epsilon_{cd}(t) = \beta_{ds}(t,t_s) \cdot k_h \cdot \epsilon_{cd,0} = 0.250 \cdot 0.750 \cdot 0.440 = 0.083",
+            ),
+            ("short", r"\epsilon_{cd}(t) = 0.083"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        beta_ds_tt_s = 0.25  # -
+        k_h = 0.75  # -
+        epsilon_cd_0 = 0.44  # -
+
+        # Object to test
+        form_3_9_latex = Form3Dot9DryingShrinkage(beta_ds_tt_s=beta_ds_tt_s, k_h=k_h, epsilon_cd_0=epsilon_cd_0).latex()
+
+        actual = {"complete": form_3_9_latex.complete, "short": form_3_9_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

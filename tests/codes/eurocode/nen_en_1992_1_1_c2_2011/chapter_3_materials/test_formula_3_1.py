@@ -38,3 +38,26 @@ class TestForm3Dot1EstimationConcreteCompressiveStrength:
 
         with pytest.raises(NegativeValueError):
             Form3Dot1EstimationConcreteCompressiveStrength(beta_cc_t=beta_cc_t, f_cm=f_cm)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"f_{cm}(t) = \beta_{cc}(t) \cdot f_{cm} = 1.000 \cdot 10.000 = 10.000",
+            ),
+            ("short", r"f_{cm}(t) = 10.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        beta_cc_t = 1  # -
+        f_cm = 10  # MPa
+
+        # Object to test
+        form_3_1_latex = Form3Dot1EstimationConcreteCompressiveStrength(beta_cc_t=beta_cc_t, f_cm=f_cm).latex()
+
+        actual = {"complete": form_3_1_latex.complete, "short": form_3_1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

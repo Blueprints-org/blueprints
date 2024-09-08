@@ -31,3 +31,26 @@ class TestForm3Dot8TotalShrinkage:
         manually_calculated_result = 0.08
 
         assert form_3_8 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\epsilon_{cs} = \epsilon_{cd} + \epsilon_{ca} = 0.250 + 0.330 = 0.580",
+            ),
+            ("short", r"\epsilon_{cs} = 0.580"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        epsilon_cd = 0.25  # -
+        epsilon_ca = 0.33  # -
+
+        # Object to test
+        form_3_8_latex = Form3Dot8TotalShrinkage(epsilon_cd=epsilon_cd, epsilon_ca=epsilon_ca).latex()
+
+        actual = {"complete": form_3_8_latex.complete, "short": form_3_8_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

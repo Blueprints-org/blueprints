@@ -60,3 +60,28 @@ class TestForm3Dot10CoefficientAgeConcreteDryingShrinkage:
 
         with pytest.raises(ValueError):
             Form3Dot10CoefficientAgeConcreteDryingShrinkage(t=t, t_s=t_s, h_0=h_0)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\beta_{ds}(t,t_s) = \frac{(t - t_s)}{(t - t_s) + 0.04 \sqrt{h_0^3}} = "
+                r"\frac{(10.00 - 2.00)}{(10.00 - 2.00) + 0.04 \sqrt{200.00^3}} = 0.066",
+            ),
+            ("short", r"\beta_{ds}(t,t_s) = 0.066"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        t = 10  # -
+        t_s = 2  # -
+        h_0 = 200  # -
+
+        # Object to test
+        form_3_10_latex = Form3Dot10CoefficientAgeConcreteDryingShrinkage(t=t, t_s=t_s, h_0=h_0).latex()
+
+        actual = {"complete": form_3_10_latex.complete, "short": form_3_10_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
