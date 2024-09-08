@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_7 import Form3Dot7NonLinearCreepCoefficient
+from blueprints.validations import NegativeValueError
 
 
 class TestForm3Dot7NonLinearCreepCoefficient:
@@ -26,7 +27,7 @@ class TestForm3Dot7NonLinearCreepCoefficient:
         phi_inf_t0 = -0.25  # -
         k_sigma = 2.47  # days
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form3Dot7NonLinearCreepCoefficient(phi_inf_t0=phi_inf_t0, k_sigma=k_sigma)
 
     def test_raise_error_when_negative_k_sigma_is_given(self) -> None:
@@ -35,7 +36,7 @@ class TestForm3Dot7NonLinearCreepCoefficient:
         phi_inf_t0 = 0.25  # -
         k_sigma = -2.47  # days
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form3Dot7NonLinearCreepCoefficient(phi_inf_t0=phi_inf_t0, k_sigma=k_sigma)
 
     @pytest.mark.parametrize(
