@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_re
 )
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
-from blueprints.type_alias import DIMENSIONLESS, MM
+from blueprints.type_alias import MM, RATIO
 from blueprints.validations import raise_if_negative
 
 
@@ -18,14 +18,14 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
     def __init__(
         self,
-        alpha_1: DIMENSIONLESS,
-        alpha_2: DIMENSIONLESS,
-        alpha_3: DIMENSIONLESS,
-        alpha_4: DIMENSIONLESS,
-        alpha_5: DIMENSIONLESS,
+        alpha_1: RATIO,
+        alpha_2: RATIO,
+        alpha_3: RATIO,
+        alpha_4: RATIO,
+        alpha_5: RATIO,
         l_b_rqd: MM,
         l_b_min: MM,
-        min_product_alpha_2_3_5: DIMENSIONLESS | None = None,
+        min_product_alpha_2_3_5: RATIO | None = None,
     ) -> None:
         """[:math:`l_{bd}`] Design anchorage length [:math:`mm`].
 
@@ -33,7 +33,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
         Parameters
         ----------
-        alpha_1 : DIMENSIONLESS
+        alpha_1 : RATIO
             [:math:`α_{1}`] Coefficient for the effect of the form of the bars assuming adequate cover (see figure 8.1) [-].
 
             :math:`= 1.0` for bars in compression.
@@ -45,7 +45,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
             :math:`= 0.7 if c_{d} > 3 ⋅ Ø` for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
 
             Note: see figure 8.3 for values of :math:`c_{d}`.
-        alpha_2 : DIMENSIONLESS
+        alpha_2 : RATIO
             [:math:`α_{2}`] Coefficient for the effect of minimum concrete cover (see figure 8.3) [-].
 
             :math:`= 1.0` for bars in compression.
@@ -56,7 +56,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
             straight in tension (see figure 8.1 (b), (c) and (d)).
 
             Note: see figure 8.3 for values of :math:`c_{d}`.
-        alpha_3 : DIMENSIONLESS
+        alpha_3 : RATIO
             [:math:`α_{3}`] Coefficient for the effect of confinement by transverse reinforcement [-].
 
             :math:`= 1.0` for bars in compression.
@@ -69,13 +69,13 @@ class Form8Dot4DesignAnchorageLength(Formula):
             reinforcement :math:`= 0,25 ⋅ A_{s}` for beams and 0 for slabs.
 
             Note: see figure 8.4 for values of :math:`K, A_{s} and A_{st}`.
-        alpha_4 : DIMENSIONLESS
+        alpha_4 : RATIO
             [:math:`α_{4}`] Coefficient for the influence of one or more welded transverse bars :math:`(Ø_{t} > 0,6 Ø)` along the design anchorage
             length :math:`l_{bd}` (see 8.6) [-].
 
             :math:`= 0.7` for all types, position and size as specified in figure 8.6 (e) in both tension and compression.
 
-        alpha_5 : DIMENSIONLESS
+        alpha_5 : RATIO
             [:math:`α_{5}`] Coefficient for the effect of the pressure transverse to the plane of splitting
             along the design anchorage length :math:`l_{bd}` (see 8.6) [-].
 
@@ -95,7 +95,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
             Use your own implementation of this formula or use the :class:`Form8Dot6MinimumTensionAnchorage` class for tension or
             :class:`Form8Dot7MinimumCompressionAnchorage` for compression.
-        min_product_alpha_2_3_5
+        min_product_alpha_2_3_5: RATIO | None
             Minimum value of the product of factors alpha 2, alpha 3 and alpha 5.
             When this argument is None, :class: `Form8Dot5ProductAlphas235` is used for this condition.
             When this argument is given, the condition :math: max((`α_{2}``α_{3}``α_{5}`) >= min_product_alpha_2_3_5 is used.
@@ -116,14 +116,14 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
     @staticmethod
     def _evaluate(
-        alpha_1: DIMENSIONLESS,
-        alpha_2: DIMENSIONLESS,
-        alpha_3: DIMENSIONLESS,
-        alpha_4: DIMENSIONLESS,
-        alpha_5: DIMENSIONLESS,
+        alpha_1: RATIO,
+        alpha_2: RATIO,
+        alpha_3: RATIO,
+        alpha_4: RATIO,
+        alpha_5: RATIO,
         l_b_rqd: MM,
         l_b_min: MM,
-        min_product_alpha_2_3_5: DIMENSIONLESS | None = None,
+        min_product_alpha_2_3_5: RATIO | None = None,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
@@ -137,7 +137,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
         )
 
         if min_product_alpha_2_3_5 is None:
-            product_alphas_2_3_5: float = Form8Dot5ProductAlphas235(alpha_2, alpha_3, alpha_5)
+            product_alphas_2_3_5: float = Form8Dot5ProductAlphas235(alpha_2=alpha_2, alpha_3=alpha_3, alpha_5=alpha_5)
         else:
             product_alphas_2_3_5 = max(alpha_2 * alpha_3 * alpha_5, min_product_alpha_2_3_5)
 
