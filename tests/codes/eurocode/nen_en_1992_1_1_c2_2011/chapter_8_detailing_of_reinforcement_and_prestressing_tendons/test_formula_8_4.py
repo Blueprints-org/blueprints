@@ -70,6 +70,58 @@ class TestForm8Dot4DesignAnchorageLength:
 
         assert form_8_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation_alpha_product_to_small(self) -> None:
+        """Test the evaluation of the result if the product of alpha 2,3,5 is to small."""
+        # example values
+        alpha_1 = 1  # [-]
+        alpha_2 = 0.6  # [-]
+        alpha_3 = 1  # [-]
+        alpha_4 = 1  # [-]
+        alpha_5 = 1  # [-]
+        l_b_rqd = 450  # mm
+        l_b_min = 200  # mm
+        form_8_4 = Form8Dot4DesignAnchorageLength(
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            alpha_3=alpha_3,
+            alpha_4=alpha_4,
+            alpha_5=alpha_5,
+            l_b_rqd=l_b_rqd,
+            l_b_min=l_b_min,
+        )
+
+        # manually calculated result
+        manually_calculated_result = 315  # mm
+
+        assert form_8_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_evaluation_alpha_product_to_small_with_overwrite(self) -> None:
+        """Test the evaluation of the result."""
+        # example values
+        alpha_1 = 1  # [-]
+        alpha_2 = 0.6  # [-]
+        alpha_3 = 1  # [-]
+        alpha_4 = 1  # [-]
+        alpha_5 = 1  # [-]
+        l_b_rqd = 450  # mm
+        l_b_min = 200  # mm
+        min_product_alpha_2_3_5 = 0.85  # [-]
+        form_8_4 = Form8Dot4DesignAnchorageLength(
+            alpha_1=alpha_1,
+            alpha_2=alpha_2,
+            alpha_3=alpha_3,
+            alpha_4=alpha_4,
+            alpha_5=alpha_5,
+            l_b_rqd=l_b_rqd,
+            l_b_min=l_b_min,
+            min_product_alpha_2_3_5=min_product_alpha_2_3_5,
+        )
+
+        # manually calculated result
+        manually_calculated_result = 382.5  # mm
+
+        assert form_8_4 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("alpha_1", "alpha_2", "alpha_3", "alpha_4", "alpha_5"),
         [
