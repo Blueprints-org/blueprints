@@ -1,6 +1,9 @@
 """Tests for CoversRectangular class."""
 
+import pytest
+
 from blueprints.structural_sections.concrete.covers import CoversRectangular
+from blueprints.validations import NegativeValueError
 
 
 class TestCoversRectangular:
@@ -34,3 +37,17 @@ class TestCoversRectangular:
         covers = CoversRectangular(upper=50.0, right=50.0, lower=50.0, left=60.0)
         expected_output = "Cover:\n  upper|lower|right: 50 mm\n  left: 60 mm"
         assert covers.get_covers_info() == expected_output
+
+    @pytest.mark.parametrize(
+        "covers",
+        [
+            (50.0, 50.0, 50.0, -60.0),
+            (50.0, 50.0, -50.0, 60.0),
+            (50.0, -50.0, 50.0, 60.0),
+            (-50.0, 50.0, 50.0, 60.0),
+        ],
+    )
+    def test_covers_negative_value(self, covers: tuple[float, float, float, float]) -> None:
+        """Test if the method `validate` raises an error when a cover is negative."""
+        with pytest.raises(NegativeValueError):
+            CoversRectangular(upper=covers[0], right=covers[1], lower=covers[2], left=covers[3])

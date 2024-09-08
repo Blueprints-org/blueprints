@@ -3,16 +3,23 @@
 from dataclasses import dataclass
 
 from blueprints.type_alias import MM
+from blueprints.validations import raise_if_negative
+
+DEFAULT_COVER = 50  # mm
 
 
 @dataclass
 class CoversRectangular:
     """Representation of the covers of a rectangular cross-section."""
 
-    upper: MM = 50.0
-    right: MM = 50.0
-    lower: MM = 50.0
-    left: MM = 50.0
+    upper: MM = DEFAULT_COVER
+    right: MM = DEFAULT_COVER
+    lower: MM = DEFAULT_COVER
+    left: MM = DEFAULT_COVER
+
+    def __post_init__(self) -> None:
+        """Post initialization of the covers."""
+        self.validate()
 
     def get_covers_info(self) -> str:
         """Return a string with the covers of the cross-section."""
@@ -44,3 +51,7 @@ class CoversRectangular:
             text += f"\n  {names}: {cover:.0f} mm"
 
         return text
+
+    def validate(self) -> None:
+        """Validate the covers."""
+        raise_if_negative(upper=self.upper, right=self.right, lower=self.lower, left=self.left)
