@@ -22,7 +22,7 @@ NMM_TO_KNM = 1e-6
 MM2_TO_M2 = 1e-6
 # </editor-fold>
 
-# <editor-fold desc="ROTATIONAL CONVERSION">
+# <editor-fold desc="Rotation conversion">
 RAD_TO_MRAD = 1e3
 MRAD_TO_RAD = 1e-3
 RAD_TO_DEG = 180 / math.pi

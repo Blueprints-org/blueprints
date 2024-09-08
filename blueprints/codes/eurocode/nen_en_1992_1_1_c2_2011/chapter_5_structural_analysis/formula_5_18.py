@@ -82,9 +82,9 @@ class Form5Dot18ComparisonGeneralSecondOrderEffects:
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
-            equation=r"\F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2}",
+            equation=r"F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2}",
             numeric_equation=(
-                rf"{self.f_ved:.3f}"
+                rf"{self.left_hand_side:.3f}"
                 rf"\leq \frac{{{self.n_s}}}{{{self.n_s + 1.6}}} \cdot \frac{{\sum {self.e_cd} \cdot {self.i_c}}}{{{self.length ** 2}}}"
             ),
             comparison_operator_label=r"\rightarrow",

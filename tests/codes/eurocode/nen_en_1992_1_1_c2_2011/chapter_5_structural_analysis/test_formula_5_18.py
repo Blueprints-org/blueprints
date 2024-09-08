@@ -58,8 +58,8 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
         """Test the string representation of the comparison."""
         form_5_18 = Form5Dot18ComparisonGeneralSecondOrderEffects(f_ved=53.3333, k_1=0.8, n_s=2, length=5, e_cd=30_000, i_c=100_000_000)
         expected_str = (
-            r"CHECK \rightarrow \F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
-            r"\rightarrow 53.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK"
+            r"CHECK \rightarrow F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} \rightarrow 53.333\leq \frac{2}{3.6} "
+            r"\cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK"
         )
         assert str(form_5_18) == expected_str
 
@@ -68,16 +68,47 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
         [
             (
                 "complete",
-                r"CHECK \rightarrow \F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
+                r"CHECK \rightarrow F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
                 r"\rightarrow 53.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK",
             ),
             ("short", r"CHECK \rightarrow OK"),
         ],
     )
-    def test_latex(self, representation: str, expected: str) -> None:
+    def test_latex_ok(self, representation: str, expected: str) -> None:
         """Test the latex representation of the comparison."""
         # Example values
         f_ved = 53.3333
+        k_1 = 0.8
+        n_s = 2
+        length = 5
+        e_cd = 30_000
+        i_c = 100_000_000
+
+        # Object to test
+        form_5_18_latex = Form5Dot18ComparisonGeneralSecondOrderEffects(f_ved=f_ved, k_1=k_1, n_s=n_s, length=length, e_cd=e_cd, i_c=i_c).latex()
+
+        actual = {
+            "complete": form_5_18_latex.complete,
+            "short": form_5_18_latex.short,
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \rightarrow F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} \rightarrow 2000.000\leq \frac{2}{"
+                r"3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow \text{Not OK}",
+            ),
+            ("short", r"CHECK \rightarrow \text{Not OK}"),
+        ],
+    )
+    def test_latex_not_ok(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the comparison."""
+        # Example values
+        f_ved = 2000
         k_1 = 0.8
         n_s = 2
         length = 5
