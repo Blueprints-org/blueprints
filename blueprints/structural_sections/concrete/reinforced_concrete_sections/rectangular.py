@@ -271,7 +271,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
                 start, end = lower_left, lower_right
             case "left":
                 start, end = upper_left, lower_left
-            case _:
+            case _:  # pragma: no cover
                 msg = f"Edge '{edge}' is not supported. Supported edges are 'upper', 'right', 'lower', and 'left'."
                 raise ValueError(msg)
 
@@ -306,6 +306,13 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             The offset of the first and last rebars from the corners of the cross-section towards the center of the cross-section [mm]. If not
             provided, the rebars are to be placed at the corners taking into account the present covers and stirrups inside the cross-section.
         """
+        line = self._get_reference_line(
+            edge=edge,
+            diameter=diameter,
+            cover=cover,
+            corner_offset=corner_offset,
+        )
+        assert line
         return self.add_reinforcement_configuration(
             line=self._get_reference_line,
             configuration=ReinforcementByQuantity(

@@ -116,7 +116,7 @@ class RectangularCrossSectionPlotter:
                 custom_legend_text=custom_text_legend,
             )
         if show:
-            plt.show()
+            plt.show()  # pragma: no cover
         assert self.fig is not None
         return self.fig
 
