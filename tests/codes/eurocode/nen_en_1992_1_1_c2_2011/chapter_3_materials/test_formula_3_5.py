@@ -56,7 +56,7 @@ class TestForm3Dot5ApproximationVarianceElasticModulusOverTime:
         [
             (
                 "complete",
-                r"E_{cm}(t) = ( f_{cm}(t) / f{cm} )^{0.3} \cdot E_{cm} = ( 2.340 / 3.400 )^{0.3} \cdot 2.900 = 2.593",
+                r"E_{cm}(t) = ( f_{cm}(t) / f_{cm} )^{0.3} \cdot E_{cm} = ( 2.340 / 3.400 )^{0.3} \cdot 2.900 = 2.593",
             ),
             ("short", r"E_{cm}(t) = 2.593"),
         ],

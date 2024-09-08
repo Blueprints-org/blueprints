@@ -60,7 +60,7 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
         return LatexFormula(
             return_symbol=r"E_{cm}(t)",
             result=f"{self:.3f}",
-            equation=r"( f_{cm}(t) / f{cm} )^{0.3} \cdot E_{cm}",
+            equation=r"( f_{cm}(t) / f_{cm} )^{0.3} \cdot E_{cm}",
             numeric_equation=rf"( {self.f_cm_t:.3f} / {self.f_cm:.3f} )^{{0.3}} \cdot {self.e_cm:.3f}",
             comparison_operator_label="=",
         )
