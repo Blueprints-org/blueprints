@@ -9,7 +9,6 @@ Welcome to the ``Blueprints`` API Reference.
     :template: custom-module-template.rst
     :recursive:
 
-    blueprints.materials
     blueprints.codes
     blueprints.materials
     blueprints.type_alias
