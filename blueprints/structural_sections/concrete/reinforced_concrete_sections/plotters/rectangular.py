@@ -12,9 +12,9 @@ from blueprints.structural_sections.concrete.rebar import Rebar
 
 T = TypeVar("T", bound="RectangularReinforcedCrossSection")  # type: ignore[name-defined]
 
-RCS_CROSS_SECTION_COLOR = (0.98, 0.98, 0.824)
+RCS_CROSS_SECTION_COLOR = (0.827, 0.827, 0.827)
 STIRRUP_COLOR = (0.412, 0.412, 0.412)
-REBAR_COLOR = (0.50, 0, 0)
+REBAR_COLOR = (0.717, 0.255, 0.055)
 
 
 class RectangularCrossSectionPlotter:
@@ -327,6 +327,7 @@ class RectangularCrossSectionPlotter:
 
         legend_text += self._add_stirrups_to_legend()
         legend_text += self._add_longitudinal_rebars_to_legend()
+        legend_text += self._add_rebar_configurations_to_legend()
         legend_text += self._add_single_longitudinal_rebars_to_legend()
         legend_text += self._add_covers_info_to_legend()
 
@@ -336,7 +337,7 @@ class RectangularCrossSectionPlotter:
         """Adds stirrups to the legend text."""
         stirrups_text = ""
         if self.cross_section.stirrups:
-            stirrups_text += f"\nStirrups ({sum(stirrup.as_w for stirrup in self.cross_section.stirrups):.0f}mm²/m):"
+            stirrups_text += f"\nStirrups ({sum(stirrup.as_w for stirrup in self.cross_section.stirrups):.0f} mm²/m):"
             for stirrup in self.cross_section.stirrups:
                 stirrups_text += (
                     f"\n  ⌀{stirrup.diameter}-{stirrup.distance} mm (b:{stirrup.ctc_distance_legs:.0f} mm) ({stirrup.as_w:.0f} " f"mm²/m)"
@@ -347,26 +348,26 @@ class RectangularCrossSectionPlotter:
         """Add longitudinal rebars to the legend text."""
         longitudinal_rebars = ""
         if self.cross_section.longitudinal_rebars:
-            longitudinal_rebars += f"\nReinforcement ({sum(rebar.area for rebar in self.cross_section.longitudinal_rebars):.0f}mm²/m): "
+            longitudinal_rebars += f"\nReinforcement ({sum(rebar.area for rebar in self.cross_section.longitudinal_rebars):.0f} mm²/m): "
         return longitudinal_rebars
 
     def _add_single_longitudinal_rebars_to_legend(self) -> str:
         """Add single longitudinal rebars to legend text."""
         single_longitudinal_text = ""
-        if self.cross_section.longitudinal_rebars:
+        if self.cross_section._single_longitudinal_rebars:  # noqa: SLF001
             rebar_diameters: dict[float, list[Rebar]] = {}
-            for rebar in self.cross_section.longitudinal_rebars:
+            for rebar in self.cross_section._single_longitudinal_rebars:  # noqa: SLF001
                 rebar_diameters.setdefault(rebar.diameter, []).append(rebar)
             for diameter, rebars in rebar_diameters.items():
                 single_longitudinal_text += f"\n  {len(rebars)}⌀{round(diameter, 2)} ({int(sum(rebar.area for rebar in rebars))} mm²/m)"
         return single_longitudinal_text
 
-    def _add_rebar_configurations_to_legend_quantity_in_line(self) -> str:
+    def _add_rebar_configurations_to_legend(self) -> str:
         """Add rebar configurations to legend text (quantity in line)."""
         rebar_configurations_text = ""
-        if self.cross_section.reinforcement_layer_in_line:
-            for line_configuration in self.cross_section.reinforcement_layer_in_line:
-                rebar_configurations_text += f"\n  {line_configuration.n}⌀{line_configuration.diameter} ({line_configuration.area:.0f} mm²/m)"
+        if self.cross_section._reinforcement_configurations:  # noqa: SLF001
+            for _, configuration in self.cross_section._reinforcement_configurations:  # noqa: SLF001
+                rebar_configurations_text += f"\n  {configuration!s} ({int(configuration.area)} mm²/m)"
         return rebar_configurations_text
 
     def _add_covers_info_to_legend(self) -> str:
