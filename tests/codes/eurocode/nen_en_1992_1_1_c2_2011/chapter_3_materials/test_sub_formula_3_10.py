@@ -43,9 +43,9 @@ class TestSubForm3Dot10FictionalCrossSection:
         [
             (
                 "complete",
-                r"h_0 = 2 \cdot A_c / u = 2 \cdot 42.500 / 20.300 = 4.187",
+                r"h_0 = 2 \cdot A_c / u = 2 \cdot 42.50 / 20.30 = 4.19",
             ),
-            ("short", r"h_0 = 4.187"),
+            ("short", r"h_0 = 4.19"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
