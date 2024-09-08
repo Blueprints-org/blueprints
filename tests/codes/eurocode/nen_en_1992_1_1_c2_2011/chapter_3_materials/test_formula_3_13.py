@@ -32,7 +32,7 @@ class TestForm3Dot13CoefficientTimeAutogeneShrinkage:
         [
             (
                 "complete",
-                r"\beta_{as}(t) = 1 - \exp(-0.2 \cdot t^{0.5}) = 1 - \exp(-0.2 \cdot 5.000^{0.5}) = 0.361",
+                r"\beta_{as}(t) = 1 - \exp(-0.2 \cdot t^{0.5}) = 1 - \exp(-0.2 \cdot 5.00^{0.5}) = 0.361",
             ),
             ("short", r"\beta_{as}(t) = 0.361"),
         ],

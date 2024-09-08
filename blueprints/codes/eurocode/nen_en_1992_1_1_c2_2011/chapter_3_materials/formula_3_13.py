@@ -49,6 +49,6 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
             return_symbol=r"\beta_{as}(t)",
             result=f"{self:.3f}",
             equation=r"1 - \exp(-0.2 \cdot t^{0.5})",
-            numeric_equation=rf"1 - \exp(-0.2 \cdot {self.t:.3f}^{{0.5}})",
+            numeric_equation=rf"1 - \exp(-0.2 \cdot {self.t:.2f}^{{0.5}})",
             comparison_operator_label="=",
         )
