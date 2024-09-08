@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 
 
 class Form3Dot11AutogeneShrinkage(Formula):
@@ -47,3 +48,13 @@ class Form3Dot11AutogeneShrinkage(Formula):
         if beta_as_t < 0:
             raise ValueError(f"Invalid beta_as_t: {beta_as_t}. beta_as_t cannot be negative")
         return beta_as_t * epsilon_ca_inf
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.11."""
+        return LatexFormula(
+            return_symbol=r"\epsilon_{ca}(t)",
+            result=f"{self:.3f}",
+            equation=r"\beta_{as}(t) \cdot \epsilon_{ca}(\infty)",
+            numeric_equation=rf"{self.beta_as_t:.3f} \cdot {self.epsilon_ca_inf:.3f}",
+            comparison_operator_label="=",
+        )

@@ -55,3 +55,29 @@ class TestForm3Dot17CompressiveStressConcrete:
 
         with pytest.raises(ValueError):
             Form3Dot17CompressiveStressConcrete(f_cd=f_cd, epsilon_c=epsilon_c, epsilon_c2=epsilon_c2, n=n)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\sigma_c = f_{cd} \cdot \left[ 1 - \left( 1 - \frac{\epsilon_c}{\epsilon_{c2}} \right)^n \right] = "
+                r"18.500 \cdot \left[ 1 - \left( 1 - \frac{0.640}{0.810} \right)^{2.00} \right] = 17.685",
+            ),
+            ("short", r"\sigma_c = 17.685"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_cd = 18.50  # MPa
+        epsilon_c = 0.64  # -
+        epsilon_c2 = 0.81  # -
+        n = 2.0  # -
+
+        # Object to test
+        form_3_17_latex = Form3Dot17CompressiveStressConcrete(f_cd=f_cd, epsilon_c=epsilon_c, epsilon_c2=epsilon_c2, n=n).latex()
+
+        actual = {"complete": form_3_17_latex.complete, "short": form_3_17_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

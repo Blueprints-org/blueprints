@@ -28,3 +28,25 @@ class TestForm3Dot3AxialTensileStrengthFromTensileSplittingStrength:
 
         with pytest.raises(ValueError):
             Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(f_ct_sp=f_ct_sp)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"f_{ct} = 0.9 \cdot f_{ct,sp} = 0.9 \cdot 3.400 = 3.060",
+            ),
+            ("short", r"f_{ct} = 3.060"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_ct_sp = 3.4  # MPa
+
+        # Object to test
+        form_3_3_latex = Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(f_ct_sp=f_ct_sp).latex()
+
+        actual = {"complete": form_3_3_latex.complete, "short": form_3_3_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

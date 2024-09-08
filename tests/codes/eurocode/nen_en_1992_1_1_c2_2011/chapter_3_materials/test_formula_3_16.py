@@ -51,3 +51,27 @@ class TestForm3Dot16DesignValueTensileStrength:
 
         with pytest.raises(ValueError):
             Form3Dot16DesignValueTensileStrength(alpha_ct=alpha_ct, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"f_{ctd} = \alpha_{ct} \cdot f_{ctk,0.05} / \gamma_C = 1.000 \cdot 10.500 / 0.800 = 13.125",
+            ),
+            ("short", r"f_{ctd} = 13.125"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        alpha_ct = 1.0  # -
+        f_ctk_0_05 = 10.5  # MPa
+        gamma_c = 0.8
+
+        # Object to test
+        form_3_16_latex = Form3Dot16DesignValueTensileStrength(alpha_ct=alpha_ct, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c).latex()
+
+        actual = {"complete": form_3_16_latex.complete, "short": form_3_16_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

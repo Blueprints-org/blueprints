@@ -64,7 +64,7 @@ Total of 304 formulas present.
 | 5.15           | :heavy_check_mark: |         | Form5Dot15EffectiveLengthBraced                           |
 | 5.16           | :heavy_check_mark: |         | Form5Dot16EffectiveLengthUnbraced                         |
 | 5.17           | :heavy_check_mark: |         | Form5Dot17EffectiveLengthBucklingLoad                     |
-| 5.18           |        :x:         |         |                                                           |
+| 5.18           | :heavy_check_mark: |         | Form5Dot18ComparisonGeneralSecondOrderEffects             |
 | 5.19           |        :x:         |         |                                                           |
 | 5.20           |        :x:         |         |                                                           |
 | 5.21           |        :x:         |         |                                                           |
@@ -171,7 +171,7 @@ Total of 304 formulas present.
 | 6.68           |        :x:         |         |                                                           |
 | 6.69           |        :x:         |         |                                                           |
 | 6.70           |        :x:         |         |                                                           |
-| 6.71           |        :x:         |         |                                                           |
+| 6.71           | :heavy_check_mark: |         | Form6Dot71CriteriaBasedOnStressRange                      |
 | 6.72           |        :x:         |         |                                                           |
 | 6.73           |        :x:         |         |                                                           |
 | 6.74           |        :x:         |         |                                                           |
@@ -206,7 +206,7 @@ Total of 304 formulas present.
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
 | 8.4            | :heavy_check_mark: |         | Form8Dot4DesignAnchorageLength                            |
-| 8.5            |        :x:         |         |                                                           |
+| 8.5            | :heavy_check_mark: |         | Form8Dot5ProductAlphas235                                 |
 | 8.6            | :heavy_check_mark: |         | Form8Dot6MinimumTensionAnchorage                          |
 | 8.7            | :heavy_check_mark: |         | Form8Dot7MinimumCompressionAnchorage                      |
 | 8.8N           | :heavy_check_mark: |         | Form8Dot8nAnchorageCapacityWeldedTransverseBar            |
@@ -218,8 +218,8 @@ Total of 304 formulas present.
 | 8.14           | :heavy_check_mark: |         | Form8Dot14EquivalentDiameterBundledBars                   |
 | 8.15           | :heavy_check_mark: |         | Form8Dot15PrestressTransferStress                         |
 | 8.16           | :heavy_check_mark: |         | Form8Dot16BasicTransmissionLength                         |
-| 8.17           |        :x:         |         |                                                           |
-| 8.18           |        :x:         |         |                                                           |
+| 8.17           | :heavy_check_mark: |         | Form8Dot17DesignValueTransmissionLength1                  |
+| 8.18           | :heavy_check_mark: |         | Form8Dot18DesignValueTransmissionLength2                  |
 | 8.19           |        :x:         |         |                                                           |
 | 8.20           |        :x:         |         |                                                           |
 | 8.21           |        :x:         |         |                                                           |

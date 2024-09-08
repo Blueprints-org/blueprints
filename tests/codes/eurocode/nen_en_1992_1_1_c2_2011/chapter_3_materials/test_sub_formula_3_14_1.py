@@ -33,3 +33,26 @@ class TestSub1Form3Dot14Eta:
         manually_calculated_result = 1.5
 
         assert sub_1_form_3_14 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\eta = \epsilon_c / \epsilon_{c1} = 0.160 / 0.430 = 0.372",
+            ),
+            ("short", r"\eta = 0.372"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        epsilon_c = 0.16  # -
+        epsilon_c1 = 0.43  # -
+
+        # Object to test
+        form_3_14sub1_latex = SubForm3Dot14Eta(epsilon_c=epsilon_c, epsilon_c1=epsilon_c1).latex()
+
+        actual = {"complete": form_3_14sub1_latex.complete, "short": form_3_14sub1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
