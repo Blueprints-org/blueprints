@@ -44,7 +44,7 @@ class Form3Dot18CompressiveStressConcrete(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 3.18."""
         return LatexFormula(
-            return_symbol=r"sigma_c",
+            return_symbol=r"\sigma_c",
             result=f"{self:.3f}",
             equation=r"f_{cd}",
             numeric_equation=rf"{self.f_cd:.3f}",

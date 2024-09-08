@@ -33,9 +33,9 @@ class TestForm3Dot18CompressiveStressConcrete:
         [
             (
                 "complete",
-                r"sigma_c = f_{cd} = 18.500 = 18.500",
+                r"\sigma_c = f_{cd} = 18.500 = 18.500",
             ),
-            ("short", r"sigma_c = 18.500"),
+            ("short", r"\sigma_c = 18.500"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
