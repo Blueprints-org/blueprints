@@ -19,7 +19,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         s: float,
         t: DAYS,
     ) -> None:
-        """Calculates beta_cc(t) coefficient which is dependent of the age of concrete in days [-].
+        """[:math:`β_{cc}(t)`] Coefficient which is dependent of the age of concrete in days [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - Formula (3.2)
 
@@ -57,10 +57,10 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 3.2."""
         return LatexFormula(
-            return_symbol=r"\beta_{ss}(t)",
+            return_symbol=r"\beta_{cc}(t)",
             result=f"{self:.3f}",
             equation=r"\exp \left( s \cdot \left( 1 - \left( \frac{28}{t} \right) ^{1/2} \right) \right)",
-            numeric_equation=rf"\exp \left( {self.s:.3f} \cdot \left( 1 - \left( \frac{{28}}{{{self.t:.3f}}} \right) ^{{1/2}} \right) \right)",
+            numeric_equation=rf"\exp \left( {self.s:.3f} \cdot \left( 1 - \left( \frac{{28}}{{{self.t:.2f}}} \right) ^{{1/2}} \right) \right)",
             comparison_operator_label="=",
         )
 
