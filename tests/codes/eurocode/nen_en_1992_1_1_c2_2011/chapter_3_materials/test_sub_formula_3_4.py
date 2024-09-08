@@ -39,3 +39,25 @@ class TestSubForm3Dot4CoefficientAgeConcreteAlpha:
         manually_result = 2 / 3
 
         assert sub_form_3_4 == pytest.approx(expected=manually_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\alpha \rightarrow t \rightarrow 10.000 \rightarrow 1.000",
+            ),
+            ("short", r"\alpha \rightarrow 1.000"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        t = 10  # days
+
+        # Object to test
+        form_3_4_latex = SubForm3Dot4CoefficientAgeConcreteAlpha(t=t).latex()
+
+        actual = {"complete": form_3_4_latex.complete, "short": form_3_4_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

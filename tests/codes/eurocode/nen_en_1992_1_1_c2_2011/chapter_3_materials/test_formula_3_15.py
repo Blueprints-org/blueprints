@@ -51,3 +51,27 @@ class TestForm3Dot15DesignValueCompressiveStrength:
 
         with pytest.raises(ValueError):
             Form3Dot15DesignValueCompressiveStrength(alpha_cc=alpha_cc, f_ck=f_ck, gamma_c=gamma_c)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"f_{cd} = \alpha_{cc} \cdot f_{ck} / \gamma_C = 1.000 \cdot 10.500 / 0.800 = 13.125",
+            ),
+            ("short", r"f_{cd} = 13.125"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        alpha_cc = 1.0  # -
+        f_ck = 10.5  # MPa
+        gamma_c = 0.8
+
+        # Object to test
+        form_3_15_latex = Form3Dot15DesignValueCompressiveStrength(alpha_cc=alpha_cc, f_ck=f_ck, gamma_c=gamma_c).latex()
+
+        actual = {"complete": form_3_15_latex.complete, "short": form_3_15_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

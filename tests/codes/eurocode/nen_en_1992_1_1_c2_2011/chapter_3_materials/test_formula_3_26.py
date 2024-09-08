@@ -41,3 +41,27 @@ class TestForm3Dot26IncreasedStrainAtMaxStrength:
 
         with pytest.raises(ValueError):
             Form3Dot26IncreasedStrainAtMaxStrength(f_ck=f_ck, f_ck_c=f_ck_c, epsilon_c2=epsilon_c2)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\epsilon_{c2,c} = \epsilon_{c2} \cdot ( f_{ck,c} / f_{ck} )^2 = 0.330 \cdot ( 14.080 / 12.200 )^2 = 0.440",
+            ),
+            ("short", r"\epsilon_{c2,c} = 0.440"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_ck = 12.2  # MPa
+        f_ck_c = 14.08  # MPa
+        epsilon_c2 = 0.33  # -
+
+        # Object to test
+        form_3_26_latex = Form3Dot26IncreasedStrainAtMaxStrength(f_ck=f_ck, f_ck_c=f_ck_c, epsilon_c2=epsilon_c2).latex()
+
+        actual = {"complete": form_3_26_latex.complete, "short": form_3_26_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

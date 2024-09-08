@@ -2,11 +2,12 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
 class Form3Dot21And22EffectiveStrength(Formula):
-    """Class representing formula 3.21 and 3.22 for the calculation of the η factor for the effective strength."""
+    """[:math:`η`] Class representing formula 3.21 and 3.22 for the calculation of the factor for the effective strength [:math:`-`]."""
 
     label = "3.21 - 3.22"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -15,15 +16,15 @@ class Form3Dot21And22EffectiveStrength(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        """[η] Factor effective strength [-].
+        r"""[:math:`η`] Factor effective strength [:math:`-`].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.7(3) - Formula (3.21) and (3.22)
 
         Parameters
         ----------
         f_ck : MPA
-            [fck] Characteristic compressive strength concrete [MPa].
-            Valid range: f_ck <= 90.
+            [:math:`f_{ck}`] Characteristic compressive strength concrete [:math:`MPa`].
+            Valid range: :math:`f_{ck} \leq 90 MPa`.
 
         Returns
         -------
@@ -42,3 +43,13 @@ class Form3Dot21And22EffectiveStrength(Formula):
         if f_ck <= 90:
             return 1.0 - (f_ck - 50) / 200
         raise ValueError(f"Invalid f_ck: {f_ck}. Maximum of f_ck is 90 MPa")
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.21 and 3.22."""
+        return LatexFormula(
+            return_symbol=r"\eta",
+            result=f"{self:.3f}",
+            equation=r"1.0" if self.f_ck <= 50 else r"1.0 - (f_{ck} - 50) / 200",
+            numeric_equation=r"1.0" if self.f_ck <= 50 else rf"1.0 - ({self.f_ck:.3f} - 50) / 200",
+            comparison_operator_label="=",
+        )

@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -51,6 +52,16 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
             raise ValueError(f"Invalid eta: {eta}. eta cannot be negative")
         return (k * eta - eta**2) / (1 + (k - 2) * eta)
 
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.14."""
+        return LatexFormula(
+            return_symbol=r"\frac{\sigma_c}{f_{cm}}",
+            result=f"{self:.3f}",
+            equation=r"\frac{k \cdot \eta - \eta^2}{1 + (k-2) \cdot \eta}",
+            numeric_equation=rf"\frac{{{self.k:.3f} \cdot {self.eta:.3f} - {self.eta:.3f}^2}}{{1 + ({self.k:.3f}-2) \cdot {self.eta:.3f}}}",
+            comparison_operator_label="=",
+        )
+
 
 class SubForm3Dot14Eta(Formula):
     """Class representing sub-formula 1 for formula 3.14, which calculates eta."""
@@ -85,6 +96,16 @@ class SubForm3Dot14Eta(Formula):
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         return epsilon_c / epsilon_c1
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.14 sub 1."""
+        return LatexFormula(
+            return_symbol=r"\eta",
+            result=f"{self:.3f}",
+            equation=r"\epsilon_c / \epsilon_{c1}",
+            numeric_equation=rf"{self.epsilon_c:.3f} / {self.epsilon_c1:.3f}",
+            comparison_operator_label="=",
+        )
 
 
 class SubForm3Dot14K(Formula):
@@ -124,3 +145,13 @@ class SubForm3Dot14K(Formula):
         if f_cm <= 0:
             raise ValueError(f"Invalid f_cm: {f_cm}. f_cm cannot be negative or zero")
         return 1.05 * e_cm * abs(epsilon_c1) / f_cm
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.14 sub 2."""
+        return LatexFormula(
+            return_symbol=r"k",
+            result=f"{self:.3f}",
+            equation=r"1.05 \cdot E_{cm} \cdot |\epsilon_{c1}| / f_{cm}",
+            numeric_equation=rf"1.05 \cdot {self.e_cm:.3f} \cdot |{self.epsilon_c1:.3f}| / {self.f_cm:.3f}",
+            comparison_operator_label="=",
+        )

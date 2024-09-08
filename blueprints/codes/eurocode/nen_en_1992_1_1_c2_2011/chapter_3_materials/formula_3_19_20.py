@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -42,3 +43,13 @@ class Form3Dot19And20EffectivePressureZoneHeight(Formula):
         if f_ck <= 90:
             return 0.8 - (f_ck - 50) / 400
         raise ValueError(f"Invalid f_ck: {f_ck}. Maximum of f_ck is 90 MPa")
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.19 and 3.20."""
+        return LatexFormula(
+            return_symbol=r"\lambda",
+            result=f"{self:.3f}",
+            equation=r"0.8" if self.f_ck <= 50 else r"0.8 - (f_{ck} - 50) / 400",
+            numeric_equation=r"0.8" if self.f_ck <= 50 else rf"0.8 - ({self.f_ck:.3f} - 50) / 400",
+            comparison_operator_label="=",
+        )
