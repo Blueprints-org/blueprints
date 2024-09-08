@@ -10,7 +10,7 @@ from blueprints.structural_sections.concrete.stirrups import StirrupConfiguratio
 class TestStirrup:
     """Tests for the stirrups configuration."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def stirrup(self) -> StirrupConfiguration:
         """Creates a stirrup configuration."""
         return StirrupConfiguration(

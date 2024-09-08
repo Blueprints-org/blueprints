@@ -15,7 +15,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinfo
 class TestReinforcementByDistance:
     """Tests for the reinforcement by distance configuration."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def reinforcement_by_distance(self) -> ReinforcementByDistance:
         """Creates a reinforcement by distance configuration."""
         return ReinforcementByDistance(
@@ -60,7 +60,7 @@ class TestReinforcementByDistance:
 class TestReinforcementByQuantity:
     """Tests for the reinforcement by quantity configuration."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def reinforcement_by_quantity(self) -> ReinforcementByQuantity:
         """Creates a reinforcement by quantity configuration."""
         return ReinforcementByQuantity(
