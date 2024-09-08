@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -53,3 +54,13 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         if e_c < 0:
             raise ValueError(f"Negative e_c: {e_c}. e_c cannot be negative")
         return phi_inf_t0 * sigma_c / e_c
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.6."""
+        return LatexFormula(
+            return_symbol=r"\epsilon_{cc}(\infty, t_0)",
+            result=f"{self:.3f}",
+            equation=r"\varphi(\infty, t_0) \cdot ( \sigma_c / E_c )",
+            numeric_equation=rf"{self.phi_inf_t0:.3f} \cdot ( {self.sigma_c:.3f} / {self.e_c:.3f} )",
+            comparison_operator_label="=",
+        )

@@ -26,3 +26,25 @@ class TestForm3Dot13CoefficientTimeAutogeneShrinkage:
 
         with pytest.raises(ValueError):
             Form3Dot13CoefficientTimeAutogeneShrinkage(t=t)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\beta_{as}(t) = 1 - \exp(-0.2 \cdot t^{0.5}) = 1 - \exp(-0.2 \cdot 5.00^{0.5}) = 0.361",
+            ),
+            ("short", r"\beta_{as}(t) = 0.361"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        t = 5  # days
+
+        # Object to test
+        form_3_13_latex = Form3Dot13CoefficientTimeAutogeneShrinkage(t=t).latex()
+
+        actual = {"complete": form_3_13_latex.complete, "short": form_3_13_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

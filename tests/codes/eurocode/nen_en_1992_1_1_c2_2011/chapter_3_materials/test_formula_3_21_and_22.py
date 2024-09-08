@@ -39,3 +39,47 @@ class TestForm3Dot19And20EffectivePressureZoneHeight:
 
         with pytest.raises(ValueError):
             Form3Dot21And22EffectiveStrength(f_ck=f_ck)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\eta = 1.0 = 1.0 = 1.000",
+            ),
+            ("short", r"\eta = 1.000"),
+        ],
+    )
+    def test_latex_below_50(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_ck = 18.50  # -
+
+        # Object to test
+        form_3_21_22_latex = Form3Dot21And22EffectiveStrength(f_ck=f_ck).latex()
+
+        actual = {"complete": form_3_21_22_latex.complete, "short": form_3_21_22_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\eta = 1.0 - (f_{ck} - 50) / 200 = 1.0 - (83.500 - 50) / 200 = 0.833",
+            ),
+            ("short", r"\eta = 0.833"),
+        ],
+    )
+    def test_latex_above_50(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        f_ck = 83.5  # -
+
+        # Object to test
+        form_3_21_22_latex = Form3Dot21And22EffectiveStrength(f_ck=f_ck).latex()
+
+        actual = {"complete": form_3_21_22_latex.complete, "short": form_3_21_22_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
