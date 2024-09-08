@@ -4,6 +4,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
+from blueprints.validations import raise_if_negative
 
 
 class Form3Dot24And25IncreasedCharacteristicCompressiveStrength(Formula):
@@ -17,16 +18,17 @@ class Form3Dot24And25IncreasedCharacteristicCompressiveStrength(Formula):
         f_ck: MPA,
         sigma_2: MPA,
     ) -> None:
-        """[fck,c] Increased characteristic compressive strength due to enclosed concrete [MPa].
+        """[:math:`f_{ck,c}`] Increased characteristic compressive strength due to enclosed concrete [:math:`MPa`].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.9(2) - Formula (3.24 and 3.25)
 
         Parameters
         ----------
         f_ck : MPA
-            [fck] Characteristic compressive strength [MPa]
+            [:math:`f_{ck}`] Characteristic compressive strength concrete [:math:`MPa`].
+            Valid range: :math:`f_{ck} ≤ 90 MPa`.
         sigma_2 : MPA
-            [σ2] Effective compressive stress in transverse direction [MPa]
+            [:math:`σ_2`] Effective compressive stress in transverse direction [:math:`MPa`].
 
         Returns
         -------
@@ -40,10 +42,9 @@ class Form3Dot24And25IncreasedCharacteristicCompressiveStrength(Formula):
     def _evaluate(
         f_ck: MPA,
         sigma_2: MPA,
-    ) -> float:
+    ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        if f_ck < 0:
-            raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
+        raise_if_negative(f_ck=f_ck, sigma_2=sigma_2)
         if sigma_2 <= 0.05 * f_ck:
             return f_ck * (1.000 + 5.0 * sigma_2 / f_ck)
         return f_ck * (1.125 + 2.5 * sigma_2 / f_ck)
@@ -53,15 +54,15 @@ class Form3Dot24And25IncreasedCharacteristicCompressiveStrength(Formula):
         if self.sigma_2 <= 0.05 * self.f_ck:
             return LatexFormula(
                 return_symbol=r"f_{ck,c}",
-                result=f"{self:.3f}",
+                result=f"{self:.2f}",
                 equation=r"f_{ck} \cdot (1.000 + 5.0 \cdot \sigma_2 / f_{ck})",
-                numeric_equation=rf"{self.f_ck:.3f} \cdot (1.000 + 5.0 \cdot {self.sigma_2:.3f} / {self.f_ck:.3f})",
+                numeric_equation=rf"{self.f_ck:.2f} \cdot (1.000 + 5.0 \cdot {self.sigma_2:.2f} / {self.f_ck:.2f})",
                 comparison_operator_label="=",
             )
         return LatexFormula(
             return_symbol=r"f_{ck,c}",
-            result=f"{self:.3f}",
+            result=f"{self:.2f}",
             equation=r"f_{ck} \cdot (1.125 + 2.5 \cdot \sigma_2 / f_{ck})",
-            numeric_equation=rf"{self.f_ck:.3f} \cdot (1.125 + 2.5 \cdot {self.sigma_2:.3f} / {self.f_ck:.3f})",
+            numeric_equation=rf"{self.f_ck:.2f} \cdot (1.125 + 2.5 \cdot {self.sigma_2:.2f} / {self.f_ck:.2f})",
             comparison_operator_label="=",
         )

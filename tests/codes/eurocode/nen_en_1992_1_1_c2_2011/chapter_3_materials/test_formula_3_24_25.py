@@ -5,6 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_24_25 import (
     Form3Dot24And25IncreasedCharacteristicCompressiveStrength,
 )
+from blueprints.validations import NegativeValueError
 
 
 class TestForm3Dot24And25IncreasedCharacteristicCompressiveStrength:
@@ -29,7 +30,7 @@ class TestForm3Dot24And25IncreasedCharacteristicCompressiveStrength:
         f_ck = -12.2  # MPa
         sigma_2 = 0.03 * f_ck  # MPa
 
-        with pytest.raises(ValueError):
+        with pytest.raises(NegativeValueError):
             Form3Dot24And25IncreasedCharacteristicCompressiveStrength(f_ck=f_ck, sigma_2=sigma_2)
 
     def test_evaluation_large_sigma_2(self) -> None:
@@ -50,9 +51,9 @@ class TestForm3Dot24And25IncreasedCharacteristicCompressiveStrength:
         [
             (
                 "complete",
-                r"f_{ck,c} = f_{ck} \cdot (1.000 + 5.0 \cdot \sigma_2 / f_{ck}) = 12.200 \cdot (1.000 + 5.0 \cdot 0.500 / 12.200) = 14.700",
+                r"f_{ck,c} = f_{ck} \cdot (1.000 + 5.0 \cdot \sigma_2 / f_{ck}) = 12.20 \cdot (1.000 + 5.0 \cdot 0.50 / 12.20) = 14.70",
             ),
-            ("short", r"f_{ck,c} = 14.700"),
+            ("short", r"f_{ck,c} = 14.70"),
         ],
     )
     def test_latex_below_0dot05fck(self, representation: str, expected: str) -> None:
@@ -73,9 +74,9 @@ class TestForm3Dot24And25IncreasedCharacteristicCompressiveStrength:
         [
             (
                 "complete",
-                r"f_{ck,c} = f_{ck} \cdot (1.125 + 2.5 \cdot \sigma_2 / f_{ck}) = 12.200 \cdot (1.125 + 2.5 \cdot 1.000 / 12.200) = 16.225",
+                r"f_{ck,c} = f_{ck} \cdot (1.125 + 2.5 \cdot \sigma_2 / f_{ck}) = 12.20 \cdot (1.125 + 2.5 \cdot 1.00 / 12.20) = 16.23",
             ),
-            ("short", r"f_{ck,c} = 16.225"),
+            ("short", r"f_{ck,c} = 16.23"),
         ],
     )
     def test_latex_above_0dot05fck(self, representation: str, expected: str) -> None:
