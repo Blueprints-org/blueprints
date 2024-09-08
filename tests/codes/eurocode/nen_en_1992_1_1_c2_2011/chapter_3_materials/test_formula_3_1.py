@@ -44,7 +44,7 @@ class TestForm3Dot1EstimationConcreteCompressiveStrength:
         [
             (
                 "complete",
-                r"f_{cm}(t) = /beta_{cc}(t) \cdot f_{cm} = 1.000 \cdot 10.000 = 10.000",
+                r"f_{cm}(t) = \beta_{cc}(t) \cdot f_{cm} = 1.000 \cdot 10.000 = 10.000",
             ),
             ("short", r"f_{cm}(t) = 10.000"),
         ],

@@ -53,7 +53,7 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         return LatexFormula(
             return_symbol=r"f_{cm}(t)",
             result=f"{self:.3f}",
-            equation=r"/beta_{cc}(t) \cdot f_{cm}",
+            equation=r"\beta_{cc}(t) \cdot f_{cm}",
             numeric_equation=rf"{self.beta_cc_t:.3f} \cdot {self.f_cm:.3f}",
             comparison_operator_label="=",
         )
