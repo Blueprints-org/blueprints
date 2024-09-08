@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 class Form3Dot24And25IncreasedCharacteristicCompressiveStrength(Formula):
     """Class representing formula 3.24 and 3.25 for the calculation of the increased characteristic compressive strength due to enclosed concrete."""
 
-    label = "3.24"
+    label = "3.24 - 3.25"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
