@@ -43,9 +43,10 @@ class TestForm3Dot7NonLinearCreepCoefficient:
         [
             (
                 "complete",
-                r"\phi_k(\infty, t_0) = \phi(\infty, t_0) \cdot \exp( 1.5 ( k_{\sigma} - 0.45)) = 0.250 \cdot \exp( 1.5 ( 2.470 - 0.45)) = 5.174",
+                r"\varphi_{nl}(\infty, t_0) = \varphi(\infty, t_0) \cdot \exp( 1.5 ( k_{\sigma} - 0.45)) = 0.250 \cdot \exp( 1.5 ( 2.470 - 0.45)) = "
+                r"5.174",
             ),
-            ("short", r"\phi_k(\infty, t_0) = 5.174"),
+            ("short", r"\varphi_{nl}(\infty, t_0) = 5.174"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
