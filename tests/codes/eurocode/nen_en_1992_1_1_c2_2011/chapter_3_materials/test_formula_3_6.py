@@ -56,7 +56,7 @@ class TestForm3Dot6CreepDeformationOfConcrete:
         [
             (
                 "complete",
-                r"\epsilon_{cc}(\infty, t_0) = \phi(\infty, t_0) \cdot ( \sigma_c / E_c ) = 0.340 \cdot ( 0.750 / 2.450 ) = 0.104",
+                r"\epsilon_{cc}(\infty, t_0) = \varphi(\infty, t_0) \cdot ( \sigma_c / E_c ) = 0.340 \cdot ( 0.750 / 2.450 ) = 0.104",
             ),
             ("short", r"\epsilon_{cc}(\infty, t_0) = 0.104"),
         ],
