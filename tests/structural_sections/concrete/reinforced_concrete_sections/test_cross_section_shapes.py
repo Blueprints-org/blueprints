@@ -8,7 +8,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.cross_
 class TestCircularCrossSection:
     """Tests for the CircularCrossSection class."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def circular_cross_section(self) -> CircularCrossSection:
         """Return a CircularCrossSection instance."""
         return CircularCrossSection(diameter=200.0, x=0.0, y=0.0)
@@ -39,7 +39,7 @@ class TestCircularCrossSection:
 class TestRectangularCrossSection:
     """Tests for the RectangularCrossSection class."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def rectangular_cross_section(self) -> RectangularCrossSection:
         """Return a RectangularCrossSection instance."""
         return RectangularCrossSection(width=100.0, height=200.0)

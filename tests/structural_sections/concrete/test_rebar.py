@@ -9,7 +9,7 @@ from blueprints.structural_sections.concrete.rebar import Rebar
 class TestRebar:
     """Tests for the Rebar class."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def rebar(self) -> Rebar:
         """Return a Rebar instance."""
         return Rebar(
