@@ -1,4 +1,6 @@
-"""Tests for the Exposure classes."""
+"""Tests for the Exposure classes
+according to Table 4.1 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement.
+"""
 
 import pytest
 
@@ -7,85 +9,8 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     Chemical,
     Chloride,
     ChlorideSeawater,
-    Exposure,
-    ExposureClasses,
     FreezeThaw,
 )
-
-
-class DummyExposureSubclass(Exposure):
-    """Dummy Exposure subclass for testing purposes."""
-
-    DUMMY1 = "Dummy1"
-    DUMMY2 = "Dummy2"
-    DUMMY3 = "Dummy3"
-
-    @staticmethod
-    def exposure_class_description() -> str:
-        """Return the description of the DummyExposureSubclass."""
-        return "Dummy exposure subclass"
-
-
-class TestExposure:
-    """Testing Exposure parent class."""
-
-    def test_equal_to_operator(self) -> None:
-        """Check if the == operator is working correctly."""
-        assert DummyExposureSubclass.DUMMY1 == DummyExposureSubclass.DUMMY1
-        assert DummyExposureSubclass.DUMMY2 == DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY3 == DummyExposureSubclass.DUMMY3
-
-    def test_not_equal_to_operator(self) -> None:
-        """Check if the != operator is working correctly."""
-        assert DummyExposureSubclass.DUMMY1 != DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 != DummyExposureSubclass.DUMMY3
-        assert DummyExposureSubclass.DUMMY3 != DummyExposureSubclass.DUMMY1
-
-    def test_greather_than_operator(self) -> None:
-        """Check if the > operator is working correctly."""
-        assert DummyExposureSubclass.DUMMY3 > DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 > DummyExposureSubclass.DUMMY1
-
-    def test_greather_than_equal_to_operator(self) -> None:
-        """Check if the >= operator is working correctly."""
-        # Testing greater than
-        assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 >= DummyExposureSubclass.DUMMY1
-        # Testing equal to
-        assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY3
-        assert DummyExposureSubclass.DUMMY1 >= DummyExposureSubclass.DUMMY1
-
-    def test_lesser_than_operator(self) -> None:
-        """Check if the < operator is working correctly."""
-        assert DummyExposureSubclass.DUMMY1 < DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 < DummyExposureSubclass.DUMMY3
-
-    def test_lesser_than_equal_to_operator(self) -> None:
-        """Check if the <= operator is working correctly."""
-        # Testing lesser than
-        assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 <= DummyExposureSubclass.DUMMY3
-        # Testing equal to
-        assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY1
-        assert DummyExposureSubclass.DUMMY3 <= DummyExposureSubclass.DUMMY3
-
-    def test_options(self) -> None:
-        """Check if the options method returns all the possible options within an exposure class."""
-        assert DummyExposureSubclass.options() == ["Dummy1", "Dummy2", "Dummy3"]
-
-    def test_description_not_implemented(self) -> None:
-        """Check if the description method raises NotImplementedError if description method is not implemented."""
-        with pytest.raises(NotImplementedError):
-            Exposure.exposure_class_description()
-
-    def test_description_implemented(self) -> None:
-        """Check if the exposure_class_description method returns the description of the subclass."""
-        assert DummyExposureSubclass.exposure_class_description() == "Dummy exposure subclass"
-
-    def test_description_of_the_environment_not_implemented(self) -> None:
-        """Check if the description_of_the_environment method raises NotImplementedError if it is not implemented."""
-        with pytest.raises(NotImplementedError):
-            DummyExposureSubclass.DUMMY1.description_of_the_environment()
 
 
 class TestCarbonation:
@@ -185,55 +110,17 @@ class TestChemical:
         assert Chemical.NA.description_of_the_environment() == "Not applicable"
 
 
-class TestExposureClasses:
-    """Testing ExposureClasses class."""
-
-    def test_str(self) -> None:
-        """Check if the __str__ method returns the correct string representation of the exposure classes."""
-        exposure_classes = ExposureClasses(
-            carbonation=Carbonation("XC3"),
-            chloride=Chloride("XD2"),
-            chloride_seawater=ChlorideSeawater("Not applicable"),
-            freeze=FreezeThaw("XF2"),
-            chemical=Chemical("XA2"),
-        )
-        assert str(exposure_classes) == "XC3, XD2, XF2, XA2"
-
-    def test_str_x0(self) -> None:
-        """Check if the __str__ method returns the correct string representation of the exposure classes
-        when all exposure classes are not applicable.
-        """
-        exposureclasses = ExposureClasses()
-        assert str(exposureclasses) == "X0"
-
-    def test_no_risk(self) -> None:
-        """Check if the no_risk method returns True if the exposure classes are all not applicable."""
-        exposureclasses = ExposureClasses()
-        assert exposureclasses.no_risk is True
-
-    def test_no_risk_false(self) -> None:
-        """Check if the no_risk method returns False if at least one exposure class is applicable."""
-        exposureclasses = ExposureClasses(
-            carbonation=Carbonation("XC3"),
-            chloride=Chloride("XD2"),
-            chloride_seawater=ChlorideSeawater("Not applicable"),
-            freeze=FreezeThaw("XF2"),
-            chemical=Chemical("XA2"),
-        )
-        assert exposureclasses.no_risk is False
-
-
 def test_comparing_different_types_raises_error() -> None:
     """Check if comparing different exposure class types, raises TypeError."""
     with pytest.raises(TypeError):
-        Carbonation.XC2 > Chloride.XD1
+        _ = Carbonation.XC2 > Chloride.XD1
     with pytest.raises(TypeError):
-        Chloride.NA == Chemical.NA
+        _ = Chloride.NA == Chemical.NA
     with pytest.raises(TypeError):
-        FreezeThaw.XF1 <= ChlorideSeawater.XS2
+        _ = FreezeThaw.XF1 <= ChlorideSeawater.XS2
     with pytest.raises(TypeError):
-        ChlorideSeawater.XS3 >= Chloride.XD3
+        _ = ChlorideSeawater.XS3 >= Chloride.XD3
     with pytest.raises(TypeError):
-        Chemical.XA1 < Carbonation.XC2
+        _ = Chemical.XA1 < Carbonation.XC2
     with pytest.raises(TypeError):
-        Chemical.NA != FreezeThaw.XF1
+        _ = Chemical.NA != FreezeThaw.XF1

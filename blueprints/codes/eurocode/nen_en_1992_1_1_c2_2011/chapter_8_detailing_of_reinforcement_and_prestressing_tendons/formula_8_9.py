@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, MM, MM2, MPA
 from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
@@ -69,3 +70,16 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
         )
         raise_if_less_or_equal_to_zero(diameter_l=diameter_l)
         return min(f_wd, N_TO_KN * 16 * a_s * f_cd * (diameter_t / diameter_l))
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.9."""
+        return LatexFormula(
+            return_symbol=r"F_{btd}",
+            result=f"{self:.2f}",
+            equation=r"\min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right)",
+            numeric_equation=(
+                rf"\min \left( {self.f_wd:.2f}, 1000 \cdot 16 \cdot {self.a_s:.2f} \cdot {self.f_cd:.2f} \cdot "
+                rf"\frac{{{self.diameter_t:.2f}}}{{{self.diameter_l:.2f}}} \right)"
+            ),
+            comparison_operator_label="=",
+        )

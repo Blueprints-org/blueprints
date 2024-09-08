@@ -16,6 +16,7 @@ RAD = float
 KG = float
 G = float
 KG_M3 = float
+KG_M = float
 # </editor-fold>
 
 # <editor-fold desc="FORCES">
@@ -53,6 +54,11 @@ M3 = float
 MM4 = float
 CM4 = float
 M4 = float
+# </editor-fold>
+
+# <editor-fold desc="COMPOUNDS">
+N_M2 = float
+KN_M2 = float
 # </editor-fold>
 
 # <editor-fold desc="TIME">

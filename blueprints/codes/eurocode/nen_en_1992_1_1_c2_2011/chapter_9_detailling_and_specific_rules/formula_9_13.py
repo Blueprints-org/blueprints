@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, MM
 from blueprints.validations import raise_if_negative
 
@@ -45,3 +46,13 @@ class Form9Dot13TensileForceToBeAnchored(Formula):
         """For more detailed documentation see the class docstring."""
         raise_if_negative(r=r, z_e=z_e, z_i=z_i)
         return r * z_e / z_i
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 9.13."""
+        return LatexFormula(
+            return_symbol=r"F_s",
+            result=f"{self:.2f}",
+            equation=r"R \cdot z_e / z_i",
+            numeric_equation=rf"{self.r:.2f} \cdot {self.z_e:.2f} / {self.z_i:.2f}",
+            comparison_operator_label="=",
+        )

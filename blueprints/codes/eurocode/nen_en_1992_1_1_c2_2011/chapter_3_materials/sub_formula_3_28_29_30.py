@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -44,3 +45,13 @@ class SubForm3Dot282930Mu(Formula):
         if f_pk < 0:
             raise ValueError(f"Invalid f_pk: {f_pk}. f_pk cannot be negative")
         return sigma_pi / f_pk
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for μ in formula 3.28 and 3.29 and 3.30."""
+        return LatexFormula(
+            return_symbol=r"\mu",
+            result=f"{self:.3f}",
+            equation=r"\sigma_{pi} / f_{pk}",
+            numeric_equation=rf"{self.sigma_pi:.3f} / {self.f_pk:.3f}",
+            comparison_operator_label="=",
+        )

@@ -29,3 +29,26 @@ class TestSubForm3Dot282930Mu:
 
         with pytest.raises(ValueError):
             SubForm3Dot282930Mu(sigma_pi=sigma_pi, f_pk=f_pk)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\mu = \sigma_{pi} / f_{pk} = 2.400 / 8.500 = 0.282",
+            ),
+            ("short", r"\mu = 0.282"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        sigma_pi = 2.4  # MPa
+        f_pk = 8.5  # MPa
+
+        # Object to test
+        sub_form_3_28_29_30_latex = SubForm3Dot282930Mu(sigma_pi=sigma_pi, f_pk=f_pk).latex()
+
+        actual = {"complete": sub_form_3_28_29_30_latex.complete, "short": sub_form_3_28_29_30_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

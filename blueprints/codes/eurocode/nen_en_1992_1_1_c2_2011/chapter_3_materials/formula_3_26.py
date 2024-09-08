@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 
 
@@ -52,3 +53,13 @@ class Form3Dot26IncreasedStrainAtMaxStrength(Formula):
         if f_ck_c < 0:
             raise ValueError(f"Invalid f_ck_c: {f_ck_c}. f_ck_c cannot be negative")
         return epsilon_c2 * (f_ck_c / f_ck) ** 2
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.26."""
+        return LatexFormula(
+            return_symbol=r"\epsilon_{c2,c}",
+            result=f"{self:.3f}",
+            equation=r"\epsilon_{c2} \cdot ( f_{ck,c} / f_{ck} )^2",
+            numeric_equation=rf"{self.epsilon_c2:.3f} \cdot ( {self.f_ck_c:.3f} / {self.f_ck:.3f} )^2",
+            comparison_operator_label="=",
+        )

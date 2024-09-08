@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM, MPA
 
 
@@ -46,3 +47,13 @@ class Form3Dot23FlexuralTensileStrength(Formula):
         if f_ctm < 0:
             raise ValueError(f"Invalid f_ctm: {f_ctm}. f_ctm cannot be negative")
         return max((1.6 - h / 1000) * f_ctm, f_ctm)
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.23."""
+        return LatexFormula(
+            return_symbol=r"f_{ctm,fl}",
+            result=f"{self:.3f}",
+            equation=r"\max \left[ (1.6 - h/1000) \cdot f_{ctm} ; f_{ctm} \right]",
+            numeric_equation=rf"\max \left[ (1.6 - {self.h:.3f}/1000) \cdot {self.f_ctm:.3f} ; {self.f_ctm:.3f} \right]",
+            comparison_operator_label="=",
+        )

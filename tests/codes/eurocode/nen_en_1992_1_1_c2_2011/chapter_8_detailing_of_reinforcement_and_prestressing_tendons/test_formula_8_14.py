@@ -52,3 +52,25 @@ class TestForm8Dot14EquivalentDiameterBundledBars:
 
         with pytest.raises(NegativeValueError):
             Form8Dot14EquivalentDiameterBundledBars(diameter=diameter, n_b=n_b)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (r"Ø_n = \min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right) = \min \left(55 \ \text{mm}, 16.00 \cdot \sqrt{4.00} \right) = 32.00"),
+            ),
+            ("short", r"Ø_n = 32.00"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        diameter = 16  # mm
+        n_b = 4  # [-]
+
+        # Object to test
+        form_8_14_latex = Form8Dot14EquivalentDiameterBundledBars(diameter=diameter, n_b=n_b).latex()
+
+        actual = {"complete": form_8_14_latex.complete, "short": form_8_14_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -50,3 +50,23 @@ class TestSubForm8Dot8nFunctionX:
 
         with pytest.raises(LessOrEqualToZeroError):
             SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            ("complete", r"x = 2 \cdot \frac{c}{Ø_t} = 2 \cdot \frac{60.00}{16.00} = 8.50"),
+            ("short", r"x = 8.50"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        cover = 60  # mm
+        diameter_t = 16  # mm
+
+        # Object to test
+        sub_form_8_8n_4_latex = SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t).latex()
+
+        actual = {"complete": sub_form_8_8n_4_latex.complete, "short": sub_form_8_8n_4_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DAYS, MPA
 
 
@@ -57,6 +58,16 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
             raise ValueError(f"Negative alpha: {alpha}. alpha cannot be negative")
         return beta_cc_t**alpha * f_ctm
 
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.4."""
+        return LatexFormula(
+            return_symbol=r"f_{ctm}(t)",
+            result=f"{self:.3f}",
+            equation=r"(\beta_{cc}(t))^{\alpha} \cdot f_{ctm}",
+            numeric_equation=rf"({self.beta_cc_t:.3f})^{{{self.alpha:.3f}}} \cdot {self.f_ctm:.3f}",
+            comparison_operator_label=r"=",
+        )
+
 
 class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
     """Class representing sub-formula for formula 3.4 for the coefficient 'α' which is dependent of the age of concrete."""
@@ -90,3 +101,13 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
         if t < 28:
             return 1.0
         return 2 / 3
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.4sub."""
+        return LatexFormula(
+            return_symbol=r"\alpha",
+            result=f"{self:.3f}",
+            equation=r"t",
+            numeric_equation=rf"{self.t:.3f}",
+            comparison_operator_label=r"\rightarrow",
+        )
