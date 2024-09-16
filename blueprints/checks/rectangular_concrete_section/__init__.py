@@ -1,1 +1,0 @@
-"""Rectangular concrete section package."""
