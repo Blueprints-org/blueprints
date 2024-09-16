@@ -61,6 +61,27 @@ class TestSubForm5Dot1ReductionFactorLengthOrHeight:
 
         assert sub_form_5_1 == pytest.approx(expected=1, rel=1e-4)
 
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\alpha_h = \max( \min( 2 / \sqrt{l} ; 1) ; 2/3) = \max( \min( 2 / \sqrt{8.000} ; 1) ; 2/3) = 0.707",
+            ),
+            ("short", r"\alpha_h = 0.707"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex implementation."""
+        # Example values
+        length = 8  # m
+        form_5_1sub1_latex = SubForm5Dot1ReductionFactorLengthOrHeight(length=length).latex()
+
+        # Object to test
+        actual = {"complete": form_5_1sub1_latex.complete, "short": form_5_1sub1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
 
 class TestSubForm5Dot1ReductionFactorNumberOfMembers:
     """Validation for sub-formula (αm) for 5.1 from NEN-EN 1992-1-1+C2:2011."""
@@ -93,3 +114,24 @@ class TestSubForm5Dot1ReductionFactorNumberOfMembers:
 
         with pytest.raises(LessOrEqualToZeroError):
             SubForm5Dot1ReductionFactorNumberOfMembers(members=members)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\alpha_m = \sqrt{0.5 ( 1 + 1 / m)} = \sqrt{0.5 ( 1 + 1 / 5.0)} = 0.775",
+            ),
+            ("short", r"\alpha_m = 0.775"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex implementation."""
+        # Example values
+        members = 5
+        form_5_1sub2_latex = SubForm5Dot1ReductionFactorNumberOfMembers(members=members).latex()
+
+        # Object to test
+        actual = {"complete": form_5_1sub2_latex.complete, "short": form_5_1sub2_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

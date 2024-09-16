@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, M
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -42,3 +43,13 @@ class Form5Dot2Eccentricity(Formula):
         raise_if_negative(theta_i=theta_i)
         raise_if_less_or_equal_to_zero(l_0=l_0)
         return theta_i * l_0 / 2
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for the formula 5.2."""
+        return LatexFormula(
+            return_symbol=r"e_i",
+            result=f"{self:.4f}",
+            equation=r"\theta_i \cdot l_0 / 2",
+            numeric_equation=rf"{self.theta_i:.3f} \cdot {self.l_0:.3f} / 2",
+            comparison_operator_label="=",
+        )

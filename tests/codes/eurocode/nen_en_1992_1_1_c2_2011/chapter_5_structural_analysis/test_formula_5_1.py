@@ -87,3 +87,26 @@ class TestForm5Dot1Imperfections:
         manually_calculated_result = 0.00326598
 
         assert form_5_1 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\theta_i = \theta_0 \cdot \alpha_h \cdot \alpha_m = 0.005 \cdot 0.800 \cdot 0.900 = 0.0036",
+            ),
+            ("short", r"\theta_i = 0.0036"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex implementation."""
+        # Example values
+        theta_0 = 0.005
+        alpha_h = 0.8
+        alpha_m = 0.9
+        form_5_1_latex = Form5Dot1Imperfections(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m).latex()
+
+        # Object to test
+        actual = {"complete": form_5_1_latex.complete, "short": form_5_1_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
