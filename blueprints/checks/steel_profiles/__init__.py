@@ -1,1 +1,0 @@
-"""Steel profiles package."""
