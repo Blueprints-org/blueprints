@@ -1,13 +1,9 @@
-"""Calculation of nominal concrete cover from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement."""
+"""Calculation of nominal concrete cover from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement."""
 
-from blueprints.checks.nominal_concrete_cover.constants_nen_en_1992_1_1_c2_2011 import (
-    COVER_INCREASE_FOR_UNEVEN_SURFACE,
-    COVER_INCREATSE_FOR_ABRASION_CLASS,
-    DEFAULT_DELTA_C_DEV,
-    minimum_cover_with_regard_to_casting_surface,
+from blueprints.checks.nominal_concrete_cover.constants.base import (
+    NominalConcreteCoverConstantsBase as ConstantsBase,
 )
 from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
@@ -22,12 +18,13 @@ class NominalConcreteCover(Formula):
     """Class responsible for the calculation of the nominal concrete cover :math:`c_{nom}` [:math:`mm`]."""
 
     label = "Nominal concrete cover"
-    source_document = NEN_EN_1992_1_1_C2_2011
+    source_document = "NEN-EN 1992-1-1"
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         c_min_b: Table4Dot2MinimumCoverWithRegardToBond,
         c_min_dur: Table4Dot4nMinimumCoverDurabilityReinforcementSteel,
+        constants: ConstantsBase,
         delta_c_dur_gamma: MM = 0,
         delta_c_dur_st: MM = 0,
         delta_c_dur_add: MM = 0,
@@ -43,6 +40,8 @@ class NominalConcreteCover(Formula):
             [:math:`c_{min,b}`] The minimum concrete cover based on the adhesion requirements based on art. 4.4.1.2 (3) [:math:`mm`].
         c_min_dur: Table4Dot4nMinimumCoverDurabilityReinforcementSteel
             [:math:`c_{min,dur}`] The minimum concrete cover based on environmental conditions based on art. 4.4.1.2 (5) [:math:`mm`].
+        constants: ConstantsBase
+            The constants for the calculation of the nominal concrete cover.
         delta_c_dur_gamma: MM
             [:math:`Δc_{dur,γ}`] An additional safety requirement based on art. 4.4.1.2 (6) [:math:`mm`].
             The value of [:math:`Δc_{dur,γ}`] for use in a Country may be found in its National Annex.
@@ -68,6 +67,7 @@ class NominalConcreteCover(Formula):
         super().__init__()
         self.c_min_b = c_min_b
         self.c_min_dur = c_min_dur
+        self.constants = constants
         self.delta_c_dur_gamma = delta_c_dur_gamma
         self.delta_c_dur_st = delta_c_dur_st
         self.delta_c_dur_add = delta_c_dur_add
@@ -79,6 +79,7 @@ class NominalConcreteCover(Formula):
     def _evaluate(
         c_min_b: MM,
         c_min_dur: MM,
+        constants: ConstantsBase,
         delta_c_dur_gamma: MM = 0,
         delta_c_dur_st: MM = 0,
         delta_c_dur_add: MM = 0,
@@ -95,12 +96,12 @@ class NominalConcreteCover(Formula):
             delta_c_dur_add=delta_c_dur_add,
         )
 
-        # According to art. 4.4.1.2 (11) from NEN-EN 1992-1-1+C2:2011
-        c_min += COVER_INCREASE_FOR_UNEVEN_SURFACE * uneven_surface  # type: ignore[assignment]
-        # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1+C2:2011
-        c_min += COVER_INCREATSE_FOR_ABRASION_CLASS[abrasion_class]  # type: ignore[assignment]
+        # According to art. 4.4.1.2 (11) from NEN-EN 1992-1-1
+        c_min += constants.COVER_INCREASE_FOR_UNEVEN_SURFACE * uneven_surface  # type: ignore[assignment]
+        # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1
+        c_min += constants.COVER_INCREATSE_FOR_ABRASION_CLASS[abrasion_class]  # type: ignore[assignment]
 
         return max(
-            Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=DEFAULT_DELTA_C_DEV),
-            minimum_cover_with_regard_to_casting_surface(c_min_dur, casting_surface),
+            Form4Dot1NominalConcreteCover(c_min=c_min, delta_c_dev=constants.DEFAULT_DELTA_C_DEV),
+            constants.minimum_cover_with_regard_to_casting_surface(c_min_dur, casting_surface),
         )
