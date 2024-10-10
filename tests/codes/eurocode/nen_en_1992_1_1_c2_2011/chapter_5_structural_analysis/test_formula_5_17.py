@@ -9,7 +9,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 class TestForm5Dot17EffectiveLengthBucklingLoad:
     """Validation for formula 5.17 from NEN-EN 1992-1-1+C2:2011."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def form_5_17(self) -> Form5Dot17EffectiveLengthBucklingLoad:
         """Setup and teardown for test."""
         return Form5Dot17EffectiveLengthBucklingLoad(ei=1_000_000, n_b=5)

@@ -41,3 +41,27 @@ class TestSub2Form3Dot14K:
 
         with pytest.raises(ValueError):
             SubForm3Dot14K(e_cm=e_cm, epsilon_c1=epsilon_c1, f_cm=f_cm)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"k = 1.05 \cdot E_{cm} \cdot |\epsilon_{c1}| / f_{cm} = 1.05 \cdot 3.300 \cdot |0.430| / 6.700 = 0.222",
+            ),
+            ("short", r"k = 0.222"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        e_cm = 3.3  # MPa
+        epsilon_c1 = 0.43  # -
+        f_cm = 6.7  # MPa
+
+        # Object to test
+        form_3_14sub2_latex = SubForm3Dot14K(e_cm=e_cm, epsilon_c1=epsilon_c1, f_cm=f_cm).latex()
+
+        actual = {"complete": form_3_14sub2_latex.complete, "short": form_3_14sub2_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."

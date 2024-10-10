@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
 
 
 class Form3Dot9DryingShrinkage(Formula):
@@ -54,3 +55,13 @@ class Form3Dot9DryingShrinkage(Formula):
         if k_h < 0:
             raise ValueError(f"Negative k_h: {k_h}. k_h cannot be negative")
         return beta_ds_tt_s * k_h * epsilon_cd_0
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 3.9."""
+        return LatexFormula(
+            return_symbol=r"\epsilon_{cd}(t)",
+            result=f"{self:.3f}",
+            equation=r"\beta_{ds}(t,t_s) \cdot k_h \cdot \epsilon_{cd,0}",
+            numeric_equation=rf"{self.beta_ds_tt_s:.3f} \cdot {self.k_h:.3f} \cdot {self.epsilon_cd_0:.3f}",
+            comparison_operator_label="=",
+        )

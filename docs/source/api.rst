@@ -10,6 +10,7 @@ Welcome to the ``Blueprints`` API Reference.
     :recursive:
 
     blueprints.codes
+    blueprints.materials
     blueprints.type_alias
     blueprints.unit_conversion
     blueprints.validations

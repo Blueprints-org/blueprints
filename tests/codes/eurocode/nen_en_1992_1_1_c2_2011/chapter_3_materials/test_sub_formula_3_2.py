@@ -38,3 +38,25 @@ class TestSubForm3Dot2CoefficientTypeOfCementS:
 
         with pytest.raises(ValueError):
             SubForm3Dot2CoefficientTypeOfCementS(cement_class=cement_class)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"s \rightarrow \text{cement class} \rightarrow R \rightarrow 0.200",
+            ),
+            ("short", r"s \rightarrow 0.200"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        cement_class = "R"
+
+        # Object to test
+        form_7_3_latex = SubForm3Dot2CoefficientTypeOfCementS(cement_class=cement_class).latex()
+
+        actual = {"complete": form_7_3_latex.complete, "short": form_7_3_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
