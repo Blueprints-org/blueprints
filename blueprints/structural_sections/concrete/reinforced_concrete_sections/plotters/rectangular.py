@@ -169,13 +169,15 @@ class RectangularCrossSectionPlotter:
         style: dict[str, float]
             Style of the center lines. Check matplotlib documentation for more information (Annotation-arrowprops).
         """
-        center_line_style = style or {"arrowstyle": "-", "linewidth": 0.8, "color": "gray", "linestyle": "dashdot"}
+        default_style = {"arrowstyle": "-", "linewidth": 0.8, "color": "gray", "linestyle": "dashdot"}
+        if style:
+            default_style.update(style)
         offset_center_line = 1.05
         self.axes[axes_i].annotate(
             text="z",
             xy=(0, (-self.cross_section.height / 2) * offset_center_line),
             xytext=(0, (self.cross_section.height / 2) * offset_center_line),
-            arrowprops=center_line_style,
+            arrowprops=default_style,
             verticalalignment="bottom",
             horizontalalignment="center",
         )
@@ -183,7 +185,7 @@ class RectangularCrossSectionPlotter:
             text="y",
             xy=((self.cross_section.width / 2) * offset_center_line, 0),
             xytext=(-(self.cross_section.width / 2) * offset_center_line, 0),
-            arrowprops=center_line_style,
+            arrowprops=default_style,
             verticalalignment="center",
             horizontalalignment="right",
         )
