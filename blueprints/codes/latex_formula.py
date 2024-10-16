@@ -41,8 +41,9 @@ class LatexFormula:
             Return symbol = equation = numeric_equation = result
 
         """
-        all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, f"{self.result} {self.unit}"]
-        return f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
+        all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, f"{self.result}"]
+        long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
+        return long_formula + f" {self.unit}" if self.unit else long_formula
 
     @property
     def short(self) -> str:
@@ -54,7 +55,8 @@ class LatexFormula:
             Return symbol = result
 
         """
-        return f"{self.return_symbol} {self.comparison_operator_label} {self.result} {self.unit}"
+        short_formula = f"{self.return_symbol} {self.comparison_operator_label} {self.result}"
+        return short_formula + f" {self.unit}" if self.unit else short_formula
 
     def __str__(self) -> str:
         """String representation of the formula."""
