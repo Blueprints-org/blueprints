@@ -37,7 +37,7 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
 
     @staticmethod
     def _evaluate(r: M, e_p: KPA, alpha: float) -> KN_M3:
-        """Return the Menard stiffness k_h when r >= 0.3 m [kN/m3]."""
+        """Return the Menard stiffness k_h when r < 0.3 m [kN/m3]."""
         if r < 0.3:
             return e_p / 2 / r / ((4 * 2.65**alpha + 3 * alpha) / 18)
         msg = "Radius is equal to- or larger than 0.3m, use: Eq2Dot21ModulusHorizontalSubgrade"
