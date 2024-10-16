@@ -1,10 +1,13 @@
 """Reinforced concrete cross-section example."""
 
+from shapely import LineString
+
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
 from blueprints.structural_sections.concrete.covers import CoversRectangular
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 
 # Define a concrete material
 concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C35_45)
@@ -41,6 +44,12 @@ cs.add_longitudinal_reinforcement_by_quantity(
     edge="upper",
     material=steel,
     cover=100,
+)
+
+# add a free reinforcement configuration to the cross-section
+cs.add_reinforcement_configuration(
+    line=LineString([(50, -50), (200, 200)]),
+    configuration=ReinforcementByQuantity(diameter=20, n=4, material=steel),
 )
 
 # Add stirrups to the cross-section
