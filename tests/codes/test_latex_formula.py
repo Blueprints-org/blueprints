@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets, latex_replace_symbols
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets
 
 
 @pytest.fixture
