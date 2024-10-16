@@ -34,6 +34,15 @@ cs.add_longitudinal_reinforcement_by_quantity(
     material=steel,
 )
 
+# add a second layer of reinforcement to the cross-section
+cs.add_longitudinal_reinforcement_by_quantity(
+    n=3,
+    diameter=16,
+    edge="upper",
+    material=steel,
+    cover=100,
+)
+
 # Add stirrups to the cross-section
 cs.add_stirrup_along_edges(
     diameter=8,
