@@ -130,7 +130,7 @@ class RectangularCrossSectionPlotter:
         """
         plt.close("all")
         self.fig = plt.figure(figsize=figsize)
-        self.axes = [self.fig.add_subplot(111)]
+        self.axes = [self.fig.add_subplot()]
         return self.fig.get_figwidth(), self.fig.get_figheight()
 
     def _add_rectangle(
