@@ -1,0 +1,1 @@
+"""Test latex formula codes."""
