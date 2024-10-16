@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 DEFAULT_COVER = 50  # mm
 
 
-@dataclass
+@dataclass(frozen=True)
 class CoversRectangular:
     """Representation of the covers of a rectangular cross-section."""
 
