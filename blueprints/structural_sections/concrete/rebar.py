@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.cross_section_shapes import CircularCrossSection
+from blueprints.structural_sections.cross_section_shapes import CircularCrossSection
 from blueprints.type_alias import KG_M, RATIO
 from blueprints.unit_conversion import MM2_TO_M2
 
@@ -17,6 +17,10 @@ class Rebar(CircularCrossSection):
     ----------
     diameter : MM
         Diameter of the bar (for example: ⌀12, ⌀16, ⌀20, etc.) [mm]
+    x : MM
+        x-coordinate in the cross-section [mm]
+    y : MM
+        y-coordinate in the cross-section [mm]
     material : ReinforcementSteelMaterial
         Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
     relative_start_position: RATIO

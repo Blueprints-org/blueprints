@@ -1,6 +1,5 @@
 """Line module."""
 
-from enum import Enum
 from typing import Literal
 
 import numpy as np
@@ -10,13 +9,6 @@ from typing_extensions import Self
 from blueprints.geometry.operations import CoordinateSystemOptions, calculate_rotation_angle
 from blueprints.type_alias import DEG
 from blueprints.unit_conversion import RAD_TO_DEG
-
-
-class Reference(Enum):
-    """Enum of the reference options start/end."""
-
-    START = 0
-    END = 1
 
 
 class Line:

@@ -2,6 +2,7 @@
     :hidden:
     :maxdepth: 2
 
+    examples
     api
 
 .. image:: _static/blueprints_banner.png

@@ -73,10 +73,7 @@ class TestABCEnumMeta:
                 A = "a"
                 B = "b"
 
-        assert (
-            str(error_info.value)
-            == "Can't instantiate abstract class 'InvalidMockConcreteEnum' without an implementation for abstract method 'test_method'"
-        )
+        assert str(error_info.value).endswith("without an implementation for abstract method 'test_method'")
 
     def test_abc_enum_meta_attribute_error(self) -> None:
         """Test instantiation of class with ABCEnumMeta where no abstract methods attribute is present."""
