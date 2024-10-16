@@ -14,7 +14,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotte
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
 from blueprints.structural_sections.cross_section_shapes import RectangularCrossSection
-from blueprints.type_alias import MM, RATIO
+from blueprints.type_alias import DIMENSIONLESS, MM, RATIO
 
 
 class RectangularReinforcedCrossSection(ReinforcedCrossSection):
@@ -28,9 +28,8 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         The height of the rectangular cross-section [mm].
     concrete_material : ConcreteMaterial
         Material properties of the concrete.
-    covers : tuple[MM, MM, MM, MM], optional
-        The reinforcement covers for the cross-section [mm]. The covers are in the order of
-        (upper, right, lower, left) sides of the cross-section. The default is (25, 25, 25, 25).
+    covers : CoversRectangular, optional
+        The reinforcement covers for the cross-section [mm]. The default on all sides is 50 mm.
     """
 
     def __init__(
@@ -38,7 +37,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         width: MM,
         height: MM,
         concrete_material: ConcreteMaterial,
-        covers: tuple[MM, MM, MM, MM] = (25, 25, 25, 25),
+        covers: CoversRectangular = CoversRectangular(),
     ) -> None:
         """Initialize the rectangular reinforced concrete section."""
         super().__init__(
@@ -50,12 +49,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         )
         self.width = width
         self.height = height
-        self.covers = CoversRectangular(
-            upper=covers[0],
-            right=covers[1],
-            lower=covers[2],
-            left=covers[3],
-        )
+        self.covers = covers
         self.plotter = RectangularCrossSectionPlotter(cross_section=self)
 
     def add_stirrup_along_edges(
