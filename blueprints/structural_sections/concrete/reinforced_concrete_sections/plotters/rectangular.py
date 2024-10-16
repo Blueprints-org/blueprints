@@ -317,7 +317,7 @@ class RectangularCrossSectionPlotter:
                 )
             )
 
-    def _legend_text(self) -> str:
+    def legend_text(self) -> str:
         """Creates the legend text.
 
         Returns
@@ -401,7 +401,7 @@ class RectangularCrossSectionPlotter:
         offset_center_line: float
             Offset of the center line.
         """
-        legend_text = custom_legend_text or self._legend_text()
+        legend_text = custom_legend_text or self.legend_text()
         self.axes[axes_i].annotate(
             text=legend_text,
             xy=((self.cross_section.width / 2) * offset_center_line, -self.cross_section.height / 2),
