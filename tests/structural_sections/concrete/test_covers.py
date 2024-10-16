@@ -35,7 +35,7 @@ class TestCoversRectangular:
     def test_get_covers_info_with_three_equal_covers(self) -> None:
         """Test if the method `get_covers_info` returns the correct string when three covers are equal."""
         covers = CoversRectangular(upper=50.0, right=50.0, lower=50.0, left=60.0)
-        expected_output = "Cover:\n  upper|lower|right: 50 mm\n  left: 60 mm"
+        expected_output = "Cover:\n  upper|right|lower: 50 mm\n  left: 60 mm"
         assert covers.get_covers_info() == expected_output
 
     @pytest.mark.parametrize(

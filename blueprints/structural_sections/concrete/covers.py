@@ -1,6 +1,7 @@
 """Module with the representation of the covers for cross-sections."""
 
-from dataclasses import dataclass
+from collections import defaultdict
+from dataclasses import asdict, dataclass
 
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
@@ -23,34 +24,22 @@ class CoversRectangular:
 
     def get_covers_info(self) -> str:
         """Return a string with the covers of the cross-section."""
-        text = "Cover:"
+        caption_text = "Cover:"
 
-        all_equal = bool(len({self.upper, self.lower, self.right, self.left}) == 1)
-        if all_equal:
-            return f"Cover: {self.upper:.0f} mm"
+        covers = defaultdict(list)
 
-        covers = {cover: "" for cover in list({self.upper, self.lower, self.right, self.left})}
-        covers[self.upper] = "upper"
+        for key, value in asdict(self).items():
+            covers[value].append(key)
 
-        if covers[self.lower]:
-            covers[self.lower] += "|lower"
-        else:
-            covers[self.lower] = "lower"
+        if len(covers) == 1:
+            return f"{caption_text} {self.upper:.0f} mm"
 
-        if covers[self.left]:
-            covers[self.left] += "|left"
-        else:
-            covers[self.left] = "left"
-
-        if covers[self.right]:
-            covers[self.right] += "|right"
-        else:
-            covers[self.right] = "right"
+        cover_texts = [caption_text]
 
         for cover, names in covers.items():
-            text += f"\n  {names}: {cover:.0f} mm"
+            cover_texts.append(f"{'|'.join(names)}: {cover:.0f} mm")
 
-        return text
+        return "\n  ".join(cover_texts)
 
     def validate(self) -> None:
         """Validate the covers."""
