@@ -145,9 +145,9 @@ def latex_replace_symbols(
     r"""
     Replace symbols in a LaTeX template string based on the provided dictionary.
 
-    This function searches the template for symbols specified in the 
-    replacements and replaces them with their corresponding 
-    values. It also checks for the occurrence of symbols based on the 
+    This function searches the template for symbols specified in the
+    replacements and replaces them with their corresponding
+    values. It also checks for the occurrence of symbols based on the
     unique_symbol_check parameter, raising an error if necessary.
 
     Examples
@@ -163,12 +163,12 @@ def latex_replace_symbols(
         The original LaTeX string containing symbols to replace.
 
     replacements: dict[str, str]
-        A dictionary where keys are symbols to be replaced and values 
+        A dictionary where keys are symbols to be replaced and values
         are their replacements.
 
     unique_symbol_check: bool, optional
-        If True (default), raises an error if a symbol appears more 
-        than once in the template. If False, multiple occurrences 
+        If True (default), raises an error if a symbol appears more
+        than once in the template. If False, multiple occurrences
         will be replaced without error.
 
     Returns

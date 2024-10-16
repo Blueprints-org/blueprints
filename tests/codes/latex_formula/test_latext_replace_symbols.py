@@ -1,3 +1,4 @@
+"""Tests for the latex_replace_symbols function."""
 import pytest
 
 from blueprints.codes.latex_formula import latex_replace_symbols
@@ -10,10 +11,10 @@ from blueprints.codes.latex_formula import latex_replace_symbols
     (r"\frac{A}{B}", {'A': 'x', 'B': 'y'}, False, r"\frac{x}{y}"),
     (r"\frac{A}{B}", {'A': 'x', 'B': 'y'}, False, r"\frac{x}{y}"),
     (
-        r"\frac{k_{mod}}{\gamma_{R}}", 
+        r"\frac{k_{mod}}{\gamma_{R}}",
         {'k_{mod}': '0.9', r'\gamma_{R}': '1.2'},
         False,
-        r"\frac{0.9}{1.2}", 
+        r"\frac{0.9}{1.2}",
     ),
 ])
 def test_latex_replace_symbols_success(latex_template, replacements, unique_check, expected):
