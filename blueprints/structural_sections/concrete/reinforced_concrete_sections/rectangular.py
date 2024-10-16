@@ -65,7 +65,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         material: ReinforcementSteelMaterial,
         shear_check: bool = True,
         torsion_check: bool = True,
-        mandrel_diameter_factor: float | None = None,
+        mandrel_diameter_factor: DIMENSIONLESS | None = None,
         anchorage_length: MM = 0.0,
         relative_start_position: RATIO = 0.0,
         relative_end_position: RATIO = 1.0,
