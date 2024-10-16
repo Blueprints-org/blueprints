@@ -2,6 +2,7 @@
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
+from blueprints.structural_sections.concrete.covers import CoversRectangular
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
 
@@ -15,7 +16,7 @@ steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B
 cs = RectangularReinforcedCrossSection(
     width=1000,
     height=800,
-    covers=(45, 30, 35, 50),  # upper, right, lower, left
+    covers=CoversRectangular(upper=45, right=30, lower=35, left=50),
     concrete_material=concrete,
 )
 
