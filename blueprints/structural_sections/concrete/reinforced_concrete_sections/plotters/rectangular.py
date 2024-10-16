@@ -142,6 +142,8 @@ class RectangularCrossSectionPlotter:
 
         Parameters
         ----------
+        edge_color: str
+            Color of the edge of the rectangle. Use any matplotlib color.
         axes_i: int
             Index of the axes to plot on. Default is 0.
         """
