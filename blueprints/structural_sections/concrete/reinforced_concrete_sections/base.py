@@ -52,6 +52,10 @@ class ReinforcedCrossSection(ABC):
         # add the rebars from the reinforcement configurations
         for line, configuration in self._reinforcement_configurations:
             if callable(line):
+                # partial function with additional arguments where the line should be called to get the LineString
+                # the implementation will be made at that level and inserted here to produce the rebars needed.
+                # this keeps this ABC class clean and allows for a lot of flexibility in the implementation of the line.
+                # this has been done to be able to add any shape of line to the cross-section (e.g. a circle or any other in the future).
                 rebars.extend(configuration.to_rebars(line=line()))
             else:
                 rebars.extend(configuration.to_rebars(line=line))
