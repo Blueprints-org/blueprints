@@ -52,7 +52,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
     - [x] Soil (NEN-EN 1997) ✔️
 
 * Reinforced Concrete Section
-    - [x] Rectangular section ![](https://img.shields.io/badge/100%25-olivedrab?style=plastic)
+    - [x] Rectangular section ✔️
     - [ ] Circular section
 
 * Strain-stress analysis for reinforced concrete sections:
@@ -93,8 +93,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 | ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange) | Just started |
 | ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow) | Making progress |
 | ![](https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen) | In Review |
-| ![](https://img.shields.io/badge/100%25-olivedrab?style=plastic) | Done |
-| ✔️  | Released |
+| ✔️  | Done |
 
 </details>
 
