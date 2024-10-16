@@ -60,7 +60,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Common calculations:
   * L-walls :x:
   * Spring constants calculations for piles :x:
-  * Sheet-pile checks (strength, stability, deflection, local buckling, etc) :x:
+  * Sheet-pile checks (strength, stability, deflection, local buckling, etc.) :x:
 
 ## Installation
 
