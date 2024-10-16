@@ -95,6 +95,14 @@ class TestTable4Dot4nMinimumCoverDurabilityReinforcementSteel:
         with pytest.raises(TypeError):
             Table4Dot4nMinimumCoverDurabilityReinforcementSteel(exposure_classes, structural_class)  # type: ignore[arg-type]
 
+    def test_evaluation_invalid_structural_class_value(self) -> None:
+        """Test if the evaluation raises ValueError when the structural class is not between 1 and 6."""
+        exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC2, Chloride.XD1, ChlorideSeawater.XS3, FreezeThaw.XF4, Chemical.XA1)
+        structural_class = 7
+
+        with pytest.raises(ValueError):
+            Table4Dot4nMinimumCoverDurabilityReinforcementSteel(exposure_classes, structural_class)  # type: ignore[arg-type]
+
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [

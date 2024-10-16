@@ -5,7 +5,8 @@ from dataclasses import dataclass, field
 import pytest
 
 from blueprints.checks.nominal_concrete_cover.constants.base import NominalConcreteCoverConstantsBase
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass
+from blueprints.checks.nominal_concrete_cover.constants.constants_nen_en_1992_1_1_c2_2011 import NominalConcreteCoverConstants2011C2
+from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
 from blueprints.type_alias import MM
 
 
@@ -13,25 +14,30 @@ from blueprints.type_alias import MM
 class DummyConstants(NominalConcreteCoverConstantsBase):
     """Dummy constants for testing purposes."""
 
-    COVER_INCREATSE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = field(default_factory=dict)
+    COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = field(default_factory=dict)
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = 5
     DEFAULT_DELTA_C_DEV: MM = 5
 
     def __post_init__(self) -> None:
         """Post-initialization method to set default values."""
-        if not self.COVER_INCREATSE_FOR_ABRASION_CLASS:
+        if not self.COVER_INCREASE_FOR_ABRASION_CLASS:
             abrasion_class_cover_increase = {
                 "NA": 0,
                 "XM1": 5,
                 "XM2": 10,
                 "XM3": 15,
             }
-            object.__setattr__(self, "COVER_INCREATSE_FOR_ABRASION_CLASS", abrasion_class_cover_increase)
+            object.__setattr__(self, "COVER_INCREASE_FOR_ABRASION_CLASS", abrasion_class_cover_increase)
 
     @staticmethod
     def minimum_cover_with_regard_to_casting_surface(c_min_dur, casting_surface) -> MM:  # noqa: ANN001, ARG004
         """Dummy method for testing purposes."""
         return 0
+
+    @staticmethod
+    def minimum_cover_with_regard_to_casting_surface_latex(casting_surface) -> str:  # noqa: ANN001, ARG004
+        """Dummy method for testing purposes."""
+        return ""
 
 
 class TestNominalConcreteCoverConstantsBase:
@@ -51,5 +57,50 @@ class TestNominalConcreteCoverConstantsBase:
             "XM1": 5,
             "XM2": 10,
             "XM3": 15,
-        } == constants.COVER_INCREATSE_FOR_ABRASION_CLASS
+        } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
         assert constants.DEFAULT_DELTA_C_DEV == 5
+
+
+class TestNominalConcreteCoverConstants2011C2:
+    """Tests for the constants class for the calculation of nominal concrete cover according to NEN-EN 1992-1-1+C2:2011."""
+
+    def test_instantiation(self) -> None:
+        """Test that the class can be instantiated."""
+        constants = NominalConcreteCoverConstants2011C2()
+        assert constants.COVER_INCREASE_FOR_UNEVEN_SURFACE == 5
+        assert {
+            AbrasionClass.NA: 0,
+            AbrasionClass.XM1: 5,
+            AbrasionClass.XM2: 10,
+            AbrasionClass.XM3: 15,
+        } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
+        assert constants.DEFAULT_DELTA_C_DEV == 10
+
+    def test_instantiation_with_custom_values(self) -> None:
+        """Test that the class can be instantiated with custom values."""
+        with pytest.raises(TypeError, match=".* got an unexpected keyword argument .*"):
+            _ = NominalConcreteCoverConstants2011C2(  # type: ignore[call-arg]
+                COVER_INCREASE_FOR_UNEVEN_SURFACE=10,
+                DEFAULT_DELTA_C_DEV=10,
+                COVER_INCREASE_FOR_ABRASION_CLASS={
+                    AbrasionClass.NA: 0,
+                },
+            )
+
+    def test_post_init(self) -> None:
+        """Test that the post-init method sets default values."""
+        constants = NominalConcreteCoverConstants2011C2()
+        assert {
+            AbrasionClass.NA: 0,
+            AbrasionClass.XM1: 5,
+            AbrasionClass.XM2: 10,
+            AbrasionClass.XM3: 15,
+        } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
+
+    def test_minimum_cover_with_regard_to_casting_surface(self) -> None:
+        """Test the method for the calculation of the minimum cover with regard to casting surface."""
+        constants = NominalConcreteCoverConstants2011C2()
+        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.PERMANENTLY_EXPOSED) == 0
+        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.FORMWORK) == 0
+        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.PREPARED_GROUND) == 20
+        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.DIRECTLY_AGAINST_SOIL) == 60
