@@ -7,7 +7,7 @@ from blueprints.type_alias import KN_M3, KPA, M
 from blueprints.validations import raise_if_negative
 
 
-class Form2Dot21MenardStiffness(Formula):
+class Form2Dot21ModulusHorizontalSubgrade(Formula):
     """Representation of equation 2.21 CUR 228."""
 
     source_document = CUR_228
@@ -15,7 +15,7 @@ class Form2Dot21MenardStiffness(Formula):
     r_0: M = 0.3
 
     def __init__(self, r: M, e_p: KPA, alpha: float) -> None:
-        """Calculates the Menard stiffness (k_h) for r >= 0.3 m.
+        """Calculates the modulus of horizontal subgrade reaction (k_h) using Menard stiffness for r >= 0.3 m.
 
         Parameters
         ----------
@@ -40,26 +40,12 @@ class Form2Dot21MenardStiffness(Formula):
     @staticmethod
     def _evaluate(r: M, e_p: KPA, alpha: float) -> KN_M3:
         """Evaluates the formula, for more information see the __init__ method."""
-        r_0 = Form2Dot21MenardStiffness.r_0
+        r_0 = Form2Dot21ModulusHorizontalSubgrade.r_0
         raise_if_negative(r=r, e_p=e_p, alpha=alpha)
 
         if r >= r_0:
             return 3 * e_p / (1.3 * r_0 * (2.65 * r / r_0) ** alpha + alpha * r)
-        msg = "Radius is smaller than 0.3m, use: Eq2Dot21MenardStiffness"
-        raise ValueError(msg)
-
-    @property
-    def result(self) -> KN_M3:
-        """Return the Menard stiffness k_h when r >= 0.3 m [kN/m3].
-
-        Returns
-        -------
-        KN_M3
-            The Menard stiffness k_h [kN/m3]
-        """
-        if self.r >= self.r_0:
-            return 3 * self.e_p / (1.3 * self.r_0 * (2.65 * self.r / self.r_0) ** self.alpha + self.alpha * self.r)
-        msg = "Radius is smaller than 0.3m, use: Eq2Dot21MenardStiffness"
+        msg = "Radius is smaller than 0.3m, use: Eq2Dot21ModulusHorizontalSubgrade"
         raise ValueError(msg)
 
     def latex(self, n_decimals: int = 2) -> LatexFormula:
@@ -88,6 +74,6 @@ class Form2Dot21MenardStiffness(Formula):
             rf"\left[1.3 \cdot {self.r_0 :.{n}} "
             rf"\left( 2.65 \cdot \frac{{{self.r :.{n}}}}{{{self.r_0 :.{n}}}}\right)^{{{self.alpha :.{n}f}}}"
             rf"+ {self.alpha :.{n}} \cdot {self.r :.{n}}\right]",
-            result=f"{self.result :.{n_decimals}f}",
+            result=f"{self :.{n_decimals}f}",
             unit="kN/m^3",
         )
