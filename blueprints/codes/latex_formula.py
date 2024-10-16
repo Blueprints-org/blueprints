@@ -6,6 +6,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class LatexFormula:
     """Latex formula representation.
+
     Depending on the context this could include the unit, the formula, the result, etc.
 
     Attributes
@@ -28,6 +29,7 @@ class LatexFormula:
     equation: str = ""
     numeric_equation: str = ""
     comparison_operator_label: str = "="
+    unit: str = ""
 
     @property
     def complete(self) -> str:
@@ -39,13 +41,9 @@ class LatexFormula:
             Return symbol = equation = numeric_equation = result
 
         """
-        all_sub_equations = [
-            self.return_symbol,
-            self.equation,
-            self.numeric_equation,
-            self.result,
-        ]
-        return f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
+        all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, f"{self.result}"]
+        long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
+        return long_formula + f" {self.unit}" if self.unit else long_formula
 
     @property
     def short(self) -> str:
@@ -57,7 +55,8 @@ class LatexFormula:
             Return symbol = result
 
         """
-        return f"{self.return_symbol} {self.comparison_operator_label} {self.result}"
+        short_formula = f"{self.return_symbol} {self.comparison_operator_label} {self.result}"
+        return short_formula + f" {self.unit}" if self.unit else short_formula
 
     def __str__(self) -> str:
         """String representation of the formula."""
@@ -88,7 +87,9 @@ def latex_fraction(numerator: str | float, denominator: str | float) -> str:
     return f"\\frac{{{numerator}}}{{{denominator}}}"
 
 def latex_min_curly_brackets(*args: str | float) -> str:
-    r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex.
+
+    It will also automatically ensure floats are converted to latex
     text.
 
     Examples
@@ -111,7 +112,9 @@ def latex_min_curly_brackets(*args: str | float) -> str:
 
 
 def latex_max_curly_brackets(*args: str | float) -> str:
-    r"""Return a string which will output: max{arg_1; arg_2; ...; arg_N} in latex and it will also automatically ensure floats are converted to latex
+    r"""Return a string which will output: max{arg_1; arg_2; ...; arg_N} in latex.
+
+    It will also automatically ensure floats are converted to latex
     text.
 
     Examples
