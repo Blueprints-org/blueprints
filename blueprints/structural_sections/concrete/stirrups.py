@@ -127,9 +127,7 @@ class StirrupConfiguration:
     @property
     def cover_used(self) -> float:
         """Can be used to store the value of the cover used when adding the stirrup to the cross-section [mm]."""
-        if self._cover_used:
-            return self._cover_used
-        return 0.0
+        return self._cover_used or 0.0
 
     @property
     def relative_start_position(self) -> RATIO:
