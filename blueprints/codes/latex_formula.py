@@ -54,7 +54,7 @@ class LatexFormula:
             Return symbol = result
 
         """
-        return f"{self.return_symbol} {self.comparison_operator_label} {self.result}"
+        return f"{self.return_symbol} {self.comparison_operator_label} {self.result}{self.unit}"
 
     def __str__(self) -> str:
         """String representation of the formula."""
