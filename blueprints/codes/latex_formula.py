@@ -137,11 +137,7 @@ def latex_max_curly_brackets(*args: str | float) -> str:
     return f"\\max \\left\\{{{'; '.join(arguments)}\\right\\}}"
 
 
-def latex_replace_symbols(
-    template: str,
-    replacements: dict[str, str],
-    unique_symbol_check: bool = True
-) -> str:
+def latex_replace_symbols(template: str, replacements: dict[str, str], unique_symbol_check: bool = True) -> str:
     r"""
     Replace symbols in a LaTeX template string based on the provided dictionary.
 
@@ -153,7 +149,7 @@ def latex_replace_symbols(
     Examples
     --------
     >>> latex_template = r"\frac{K_{MOD}}{B}"
-    >>> replacements = {'K_{MOD}': '1.0', 'B': 'y'}
+    >>> replacements = {"K_{MOD}": "1.0", "B": "y"}
     >>> latex_replace_symbols(latex_template, replacements)
     '\frac{1.0}{y}
 
