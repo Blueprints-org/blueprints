@@ -86,6 +86,7 @@ def latex_fraction(numerator: str | float, denominator: str | float) -> str:
     """
     return f"\\frac{{{numerator}}}{{{denominator}}}"
 
+
 def latex_min_curly_brackets(*args: str | float) -> str:
     r"""Return a string which will output: min{arg_1; arg_2; ...; arg_N} in latex.
 
