@@ -51,8 +51,8 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
         suffix = " + 5" if self.nominal_max_aggregate_size_greater_than_32_mm else ""
         return LatexFormula(
             return_symbol=r"c_{min,b}",
-            result=f"{self:.1f}",
-            equation=r"(equivalent) diameter" + suffix,
+            result=f"{self:.0f}",
+            equation=r"(equivalent) rebar diameter" + suffix,
             numeric_equation=f"{self.diameter}" + suffix,
             comparison_operator_label="=",
         )

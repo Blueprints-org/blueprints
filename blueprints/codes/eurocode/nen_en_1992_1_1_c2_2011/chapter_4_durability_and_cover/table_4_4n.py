@@ -46,6 +46,9 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
         if not isinstance(structural_class, int):
             raise TypeError(f"Structural class must be (a subclass of) an integer, not {type(structural_class)}.")
 
+        if structural_class < 1 or structural_class > 6:
+            raise ValueError("Structural class must be between 1 and 6.")
+
         if exposure_classes.chloride.value in [
             "XD3",
             "XD2",
@@ -69,6 +72,6 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
         return LatexFormula(
             return_symbol=r"c_{min,dur}",
             result=f"{self:.0f}",
-            equation=rf"structural class {self.structural_class} & exposure classes ({self.exposure_classes})",
+            equation=rf"structural class {self.structural_class} \& exposure classes ({self.exposure_classes})",
             comparison_operator_label="=",
         )
