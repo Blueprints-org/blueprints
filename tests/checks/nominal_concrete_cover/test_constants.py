@@ -60,6 +60,9 @@ class TestNominalConcreteCoverConstantsBase:
             "XM3": 15,
         } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
         assert constants.DEFAULT_DELTA_C_DEV == 5
+        assert constants.CODE_SUFFIX == "DUMMY"
+        assert constants.minimum_cover_with_regard_to_casting_surface(0, CastingSurface.PERMANENTLY_EXPOSED) == 0
+        assert constants.minimum_cover_with_regard_to_casting_surface_latex(CastingSurface.PERMANENTLY_EXPOSED) == ""
 
 
 class TestNominalConcreteCoverConstants2011C2:
@@ -103,8 +106,8 @@ class TestNominalConcreteCoverConstants2011C2:
         [
             (10, CastingSurface.PERMANENTLY_EXPOSED, 0),
             (10, CastingSurface.FORMWORK, 0),
-            (10, CastingSurface.PREPARED_GROUND, 20),
-            (10, CastingSurface.DIRECTLY_AGAINST_SOIL, 60),
+            (10, CastingSurface.PREPARED_GROUND, 50),
+            (10, CastingSurface.DIRECTLY_AGAINST_SOIL, 85),
         ],
     )
     def test_minimum_cover_with_regard_to_casting_surface(self, c_min_dur: MM, casting_surface: CastingSurface, expected_result: MM) -> None:
@@ -117,8 +120,8 @@ class TestNominalConcreteCoverConstants2011C2:
         [
             (CastingSurface.PERMANENTLY_EXPOSED, "0 (No additional requirements for Permanently exposed)"),
             (CastingSurface.FORMWORK, "0 (No additional requirements for Formwork)"),
-            (CastingSurface.PREPARED_GROUND, "k1 ≥ c_{min,dur} + 10 mm for Prepared ground (including blinding)"),
-            (CastingSurface.DIRECTLY_AGAINST_SOIL, "k2 ≥ c_{min,dur} + 50 mm for Directly against soil"),
+            (CastingSurface.PREPARED_GROUND, "k1 ≥ c_{min,dur} + 40 mm for Prepared ground (including blinding)"),
+            (CastingSurface.DIRECTLY_AGAINST_SOIL, "k2 ≥ c_{min,dur} + 75 mm for Directly against soil"),
         ],
     )
     def test_minimum_cover_with_regard_to_casting_surface_latex(self, casting_surface: CastingSurface, expected_result: str) -> None:

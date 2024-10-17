@@ -74,7 +74,7 @@ class TestNominalConcreteCover:
                 CastingSurface.PREPARED_GROUND,
                 False,
                 AbrasionClass.XM2,
-                70,
+                90,
             ),
             (
                 20,
@@ -90,7 +90,7 @@ class TestNominalConcreteCover:
                 CastingSurface.DIRECTLY_AGAINST_SOIL,
                 False,
                 AbrasionClass.XM2,
-                80,
+                105,
             ),
         ],
     )
@@ -229,7 +229,7 @@ class TestNominalConcreteCover:
         assert (
             nominal_concrete_cover.latex() == r"Nominal~concrete~cover~according~to~art.~4.4.1~from~NEN-EN~1992-1-1+C2:2011:\newline"
             r"~\max~\left\{Nominal~concrete~cover~according~to~art.~4.4.1~(c_{nom});~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)\right\}\newline"
-            r"~=~\max~\left\{55.0;~85.0\right\}~=~85.0~mm\newline"
+            r"~=~\max~\left\{55.0;~110.0\right\}~=~110.0~mm\newline"
             r"~\newline"
             r"~Where:\newline"
             r"~c_{nom}~=~c_{min,total}+\Delta~c_{dev}~=~45.0+10~=~55.0~mm\newline"
@@ -240,5 +240,5 @@ class TestNominalConcreteCover:
             r"~\Delta~c_{dur,\gamma}~,~\Delta~c_{dur,st}~and~\Delta~c_{dur,add}~are~determined~according~to~art.~4.4.1.2~(6),~(7)~and~(8)\newline"
             r"~c_{min,b}~is~determined~according~to~table~4.2~based~on~(equivalent)~rebar~diameter~+~5~=~25~+~5~=~30~mm\newline"
             r"~c_{min,dur}~is~determined~according~to~table~4.3~based~on~structural~class~S4~\&~exposure~classes~(XC1,~XD1,~XS1)~=~35~mm\newline"
-            r"~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)~=~k2~≥~c_{min,dur}~+~50~mm~for~Directly~against~soil"
+            r"~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)~=~k2~≥~c_{min,dur}~+~75~mm~for~Directly~against~soil"
         )

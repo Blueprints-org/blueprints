@@ -40,9 +40,9 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
                 return 0  # No additional requirements
             case CastingSurface.PREPARED_GROUND:
-                return c_min_dur + 10  # k1 ≥ c_min,dur + 10
+                return c_min_dur + 40  # k1 ≥ c_min,dur + 40
             case CastingSurface.DIRECTLY_AGAINST_SOIL:
-                return c_min_dur + 50  # k2 ≥ c_min,dur + 50
+                return c_min_dur + 75  # k2 ≥ c_min,dur + 75
 
     @staticmethod
     def minimum_cover_with_regard_to_casting_surface_latex(casting_surface: CastingSurface) -> str:
@@ -51,6 +51,6 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
                 return f"0 (No additional requirements for {casting_surface.value})"
             case CastingSurface.PREPARED_GROUND:
-                return f"k1 ≥ c_{{min,dur}} + 10 mm for {casting_surface.value}"
+                return f"k1 ≥ c_{{min,dur}} + 40 mm for {casting_surface.value}"
             case CastingSurface.DIRECTLY_AGAINST_SOIL:
-                return f"k2 ≥ c_{{min,dur}} + 50 mm for {casting_surface.value}"
+                return f"k2 ≥ c_{{min,dur}} + 75 mm for {casting_surface.value}"
