@@ -212,7 +212,7 @@ class TestNominalConcreteCover:
         """Test the latex representation of the formula."""
         nominal_concrete_cover = NominalConcreteCover(
             reinforcement_diameter=25,
-            nominal_max_aggregate_size=32,
+            nominal_max_aggregate_size=40,
             constants=NominalConcreteCoverConstants2011C2(),
             structural_class=structural_class,
             carbonation=Carbonation.XC1,
@@ -221,9 +221,24 @@ class TestNominalConcreteCover:
             delta_c_dur_gamma=0,
             delta_c_dur_st=0,
             delta_c_dur_add=0,
-            casting_surface=CastingSurface.PERMANENTLY_EXPOSED,
-            uneven_surface=False,
+            casting_surface=CastingSurface.DIRECTLY_AGAINST_SOIL,
+            uneven_surface=True,
             abrasion_class=AbrasionClass.XM1,
         )
 
-        assert nominal_concrete_cover.latex() == r"\(45\, \text{mm}\)"
+        assert (
+            nominal_concrete_cover.latex() == r"Nominal~concrete~cover~according~to~art.~4.4.1~from~NEN-EN~1992-1-1+C2:2011:\newline"
+            r"~\max~\left\{Nominal~concrete~cover~according~to~art.~4.4.1~(c_{nom});~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)\right\}\newline"
+            r"~=~\max~\left\{55.0;~85.0\right\}~=~85.0~mm\newline"
+            r"~\newline"
+            r"~Where:\newline"
+            r"~c_{nom}~=~c_{min,total}+\Delta~c_{dev}~=~45.0+10~=~55.0~mm\newline"
+            r"~\Delta~c_{dev}~is~determined~according~to~art.~4.4.1.3~(1)\newline"
+            r"~c_{min,total}~=~c_{min}~+~\Delta~c_{uneven~surface}~~+~\Delta~c_{abrasion~class}~=~35.0~+~5~+~5~=~45.0~mm\newline"
+            r"~\Delta~c_{uneven~surface}~and~\Delta~c_{abrasion~class}~are~determined~according~to~art.~4.4.1.2~(11)~and~(13)\newline"
+            r"~c_{min}~=~\max~\left\{c_{min,b};~c_{min,dur}+\Delta~c_{dur,\gamma}-\Delta~c_{dur,st}-\Delta~c_{dur,add};~10~\text{mm}\right\}~=~\max~\left\{30.0;~35.0+0-0-0;~10\right\}~=~35.0~mm\newline"
+            r"~\Delta~c_{dur,\gamma}~,~\Delta~c_{dur,st}~and~\Delta~c_{dur,add}~are~determined~according~to~art.~4.4.1.2~(6),~(7)~and~(8)\newline"
+            r"~c_{min,b}~is~determined~according~to~table~4.2~based~on~(equivalent)~rebar~diameter~+~5~=~25~+~5~=~30~mm\newline"
+            r"~c_{min,dur}~is~determined~according~to~table~4.3~based~on~structural~class~S4~\&~exposure~classes~(XC1,~XD1,~XS1)~=~35~mm\newline"
+            r"~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)~=~k2~≥~c_{min,dur}~+~50~mm~for~Directly~against~soil"
+        )

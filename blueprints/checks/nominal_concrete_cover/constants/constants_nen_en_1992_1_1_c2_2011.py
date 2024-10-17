@@ -11,6 +11,8 @@ from blueprints.type_alias import MM
 class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
     """Constants for the calculation of nominal concrete cover according to NEN-EN 1992-1-1+C2:2011."""
 
+    CODE_SUFFIX: str = field(default="+C2:2011", init=False)
+
     # According to art. 4.4.1.2 (11) from NEN-EN 1992-1-1+C2:2011
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = field(default=5, init=False)
 
@@ -49,6 +51,6 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
                 return f"0 (No additional requirements for {casting_surface.value})"
             case CastingSurface.PREPARED_GROUND:
-                return f"for {casting_surface.value}: k1 ≥ c_min,dur + 10"
+                return f"k1 ≥ c_{{min,dur}} + 10 mm for {casting_surface.value}"
             case CastingSurface.DIRECTLY_AGAINST_SOIL:
-                return f"for {casting_surface.value}: k2 ≥ c_min,dur + 50"
+                return f"k2 ≥ c_{{min,dur}} + 50 mm for {casting_surface.value}"

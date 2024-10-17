@@ -14,6 +14,7 @@ from blueprints.type_alias import MM
 class DummyConstants(NominalConcreteCoverConstantsBase):
     """Dummy constants for testing purposes."""
 
+    CODE_SUFFIX: str = "DUMMY"
     COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = field(default_factory=dict)
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = 5
     DEFAULT_DELTA_C_DEV: MM = 5
@@ -46,7 +47,7 @@ class TestNominalConcreteCoverConstantsBase:
     def test_abstract_method(self) -> None:
         """Test that the abstract method raises a TypeError."""
         with pytest.raises(TypeError):
-            _ = NominalConcreteCoverConstantsBase(0, {}, 0)  # type: ignore[abstract]
+            _ = NominalConcreteCoverConstantsBase("_", 0, {}, 0)  # type: ignore[abstract]
 
     def test_instantiation(self) -> None:
         """Test that the class can be instantiated."""
@@ -97,10 +98,30 @@ class TestNominalConcreteCoverConstants2011C2:
             AbrasionClass.XM3: 15,
         } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
 
-    def test_minimum_cover_with_regard_to_casting_surface(self) -> None:
+    @pytest.mark.parametrize(
+        ("c_min_dur", "casting_surface", "expected_result"),
+        [
+            (10, CastingSurface.PERMANENTLY_EXPOSED, 0),
+            (10, CastingSurface.FORMWORK, 0),
+            (10, CastingSurface.PREPARED_GROUND, 20),
+            (10, CastingSurface.DIRECTLY_AGAINST_SOIL, 60),
+        ],
+    )
+    def test_minimum_cover_with_regard_to_casting_surface(self, c_min_dur: MM, casting_surface: CastingSurface, expected_result: MM) -> None:
         """Test the method for the calculation of the minimum cover with regard to casting surface."""
         constants = NominalConcreteCoverConstants2011C2()
-        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.PERMANENTLY_EXPOSED) == 0
-        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.FORMWORK) == 0
-        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.PREPARED_GROUND) == 20
-        assert constants.minimum_cover_with_regard_to_casting_surface(10, CastingSurface.DIRECTLY_AGAINST_SOIL) == 60
+        assert constants.minimum_cover_with_regard_to_casting_surface(c_min_dur, casting_surface) == expected_result
+
+    @pytest.mark.parametrize(
+        ("casting_surface", "expected_result"),
+        [
+            (CastingSurface.PERMANENTLY_EXPOSED, "0 (No additional requirements for Permanently exposed)"),
+            (CastingSurface.FORMWORK, "0 (No additional requirements for Formwork)"),
+            (CastingSurface.PREPARED_GROUND, "k1 ≥ c_{min,dur} + 10 mm for Prepared ground (including blinding)"),
+            (CastingSurface.DIRECTLY_AGAINST_SOIL, "k2 ≥ c_{min,dur} + 50 mm for Directly against soil"),
+        ],
+    )
+    def test_minimum_cover_with_regard_to_casting_surface_latex(self, casting_surface: CastingSurface, expected_result: str) -> None:
+        """Test the method for the calculation of the minimum cover with regard to casting surface in LaTeX."""
+        constants = NominalConcreteCoverConstants2011C2()
+        assert constants.minimum_cover_with_regard_to_casting_surface_latex(casting_surface) == expected_result

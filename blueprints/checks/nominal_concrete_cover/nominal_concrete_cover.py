@@ -120,13 +120,21 @@ class NominalConcreteCover:
             delta_c_dur_add=self.delta_c_dur_add,
         )
 
+    def cover_increase_for_uneven_surface(self) -> MM:
+        """Calculate the increase of the concrete cover for uneven surface according to art. 4.4.1.2 (11)."""
+        return self.constants.COVER_INCREASE_FOR_UNEVEN_SURFACE * self.uneven_surface
+
+    def cover_increase_for_abrasion_class(self) -> MM:
+        """Calculate the increase of the concrete cover for abrasion class according to art. 4.4.1.2 (13)."""
+        return self.constants.COVER_INCREASE_FOR_ABRASION_CLASS[self.abrasion_class]
+
     def c_min_total(self) -> MM:
         """Total minimum concrete cover according to art. 4.4.1.2 (11) and (13) from NEN-EN 1992-1-1."""
         c_min = self.c_min()
         # According to art. 4.4.1.2 (11) from NEN-EN 1992-1-1
-        c_min += self.constants.COVER_INCREASE_FOR_UNEVEN_SURFACE * self.uneven_surface  # type: ignore[assignment]
+        c_min += self.cover_increase_for_uneven_surface()  # type: ignore[assignment]
         # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1
-        c_min += self.constants.COVER_INCREASE_FOR_ABRASION_CLASS[self.abrasion_class]  # type: ignore[assignment]
+        c_min += self.cover_increase_for_abrasion_class()  # type: ignore[assignment]
         return c_min
 
     def c_nom(self) -> Form4Dot1NominalConcreteCover:
@@ -146,21 +154,31 @@ class NominalConcreteCover:
 
     def latex(self) -> str:
         """Returns the lateX string representation for Nominal concrete cover check."""
-        return "\n".join(
+        return r"\newline ".join(
             [
-                "Nominal concrete cover according to art. 4.4.1 from NEN-EN 1992-1-1:",
+                f"Nominal concrete cover according to art. 4.4.1 from NEN-EN 1992-1-1{self.constants.CODE_SUFFIX}:",
                 latex_max_curly_brackets(
-                    r"Nominal concrete cover according to art. 4.4.1 (c_{nom}).",
+                    r"Nominal concrete cover according to art. 4.4.1 (c_{nom})",
                     "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4)",
                 ),
+                f"= {latex_max_curly_brackets(self.c_nom().latex().result,self.minimum_cover_with_regard_to_casting_surface(),)} = {self.value()} mm",
                 "",
                 "Where:",
-                r"c_{nom} = " + self.c_nom().latex().equation.replace("min", "min, total"),
-                r"c_{min,total} = c_{min} + \Delta c_{uneven surface}  + \Delta c_{abrasion class}",
-                r"c_{min} = " + self.c_min().latex().equation,
-                r"c_{min,b} = " + self.c_min_b().latex().equation,
-                r"c_{min,dur} = " + self.c_min_dur().latex().equation,
+                f"{self.c_nom().latex().return_symbol} = {self.c_nom().latex().equation.replace('min', 'min,total')}"
+                f" = {self.c_nom().latex().numeric_equation} = {self.c_nom().latex().result} mm",
+                r"\Delta c_{dev} is determined according to art. 4.4.1.3 (1)",
+                r"c_{min,total} = c_{min} + \Delta c_{uneven surface}  + \Delta c_{abrasion class}"
+                f" = {self.c_min().latex().result} + {self.cover_increase_for_uneven_surface()} + {self.cover_increase_for_abrasion_class()}"
+                f" = {self.c_min_total()} mm",
+                r"\Delta c_{uneven surface} and \Delta c_{abrasion class} are determined according to art. 4.4.1.2 (11) and (13)",
+                f"{self.c_min().latex().return_symbol} = {self.c_min().latex().equation}"
+                f" = {self.c_min().latex().numeric_equation} = {self.c_min().latex().result} mm",
+                r"\Delta c_{dur,\gamma} , \Delta c_{dur,st} and \Delta c_{dur,add} are determined according to art. 4.4.1.2 (6), (7) and (8)",
+                f"{self.c_min_b().latex().return_symbol} is determined according to table 4.2 based on {self.c_min_b().latex().equation}"
+                f" = {self.c_min_b().latex().numeric_equation} = {self.c_min_b().latex().result} mm",
+                f"{self.c_min_dur().latex().return_symbol} is determined according to table 4.3 based on {self.c_min_dur().latex().equation}"
+                f" = {self.c_min_dur().latex().result} mm",
                 "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) = "
                 + self.constants.minimum_cover_with_regard_to_casting_surface_latex(self.casting_surface),
             ]
-        )
+        ).replace(" ", "~")

@@ -11,6 +11,7 @@ from blueprints.type_alias import MM
 class NominalConcreteCoverConstantsBase(ABC):
     """Base class for constants for the calculation of nominal concrete cover."""
 
+    CODE_SUFFIX: str  # Suffix for the code, e.g. "+C2:2011"
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM
     COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM]
     DEFAULT_DELTA_C_DEV: MM

@@ -72,6 +72,6 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
         return LatexFormula(
             return_symbol=r"c_{min,dur}",
             result=f"{self:.0f}",
-            equation=rf"structural class {self.structural_class} & exposure classes ({self.exposure_classes})",
+            equation=rf"structural class {self.structural_class} \& exposure classes ({self.exposure_classes})",
             comparison_operator_label="=",
         )
