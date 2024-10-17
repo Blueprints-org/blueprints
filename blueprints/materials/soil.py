@@ -26,6 +26,9 @@ class SoilMinorCompositions(Enum):
     SLIGHTLY_CLAYEY = "Slightly clayey"
     VERY_CLAYEY = "Very clayey"
 
+    SLIGHTLY_SILTY_CLAYEY = "Slightly silty, clayey"
+    VERY_SILTY_CLAYEY = "Very silty, clayey"
+
     SLIGHTLY_SANDY = "Slightly sandy"
     VERY_SANDY = "Very sandy"
 
