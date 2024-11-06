@@ -32,6 +32,18 @@ cs.add_longitudinal_reinforcement_by_quantity(
     edge="lower",
     material=steel,
 )
+cs.add_longitudinal_reinforcement_by_quantity(
+    n=5,
+    diameter=14,
+    edge="right",
+    material=steel,
+)
+cs.add_longitudinal_reinforcement_by_quantity(
+    n=5,
+    diameter=14,
+    edge="left",
+    material=steel,
+)
 
 # Add stirrups to the cross-section
 cs.add_stirrup_along_edges(
