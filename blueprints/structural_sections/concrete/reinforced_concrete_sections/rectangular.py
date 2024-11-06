@@ -229,9 +229,8 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         min_x, min_y, max_x, max_y = self.cross_section.geometry.bounds
 
         # check if a custom cover is provided
-        cover_on_configuration = getattr(self.covers, edge.lower())
-        if cover is not None:
-            cover_on_configuration = cover
+        upper_cover = cover if cover is not None else self.covers.upper
+        lower_cover = cover if cover is not None else self.covers.lower
 
         # check if there is a stirrup configuration present and adjust the cover
         max_stirrups_diameter = 0.0
@@ -241,19 +240,19 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         # define corner positions of a bar inside the cross-section
         upper_left = (
             min_x + self.covers.left + max_stirrups_diameter + corner_offset + diameter / 2,
-            max_y - cover_on_configuration - max_stirrups_diameter - diameter / 2,
+            max_y - upper_cover - max_stirrups_diameter - diameter / 2,
         )
         upper_right = (
             max_x - self.covers.right - max_stirrups_diameter - corner_offset - diameter / 2,
-            max_y - cover_on_configuration - max_stirrups_diameter - diameter / 2,
+            max_y - upper_cover - max_stirrups_diameter - diameter / 2,
         )
         lower_left = (
             min_x + self.covers.left + max_stirrups_diameter + corner_offset + diameter / 2,
-            min_y + cover_on_configuration + max_stirrups_diameter + diameter / 2,
+            min_y + lower_cover + max_stirrups_diameter + diameter / 2,
         )
         lower_right = (
             max_x - self.covers.right - max_stirrups_diameter - corner_offset - diameter / 2,
-            min_y + cover_on_configuration + max_stirrups_diameter + diameter / 2,
+            min_y + lower_cover + max_stirrups_diameter + diameter / 2,
         )
 
         match edge.lower():
