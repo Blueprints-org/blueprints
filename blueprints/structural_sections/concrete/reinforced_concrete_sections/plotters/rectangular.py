@@ -48,6 +48,7 @@ class RectangularCrossSectionPlotter:
         custom_text_height: str | None = None,
         offset_line_width: float = 1.25,
         offset_line_height: float = 1.2,
+        center_line_style: dict[str, float | str] | None = None,
         show: bool = False,
         axes_i: int = 0,
     ) -> plt.Figure:
@@ -77,6 +78,8 @@ class RectangularCrossSectionPlotter:
             Offset of the width line.
         offset_line_height: float
             Offset of the height line.
+        center_line_style: dict[str, float | str] | None
+            Style of the center lines. Check matplotlib documentation for more information (Annotation-arrowprops).
         show: bool
             Show the plot.
         axes_i: int
@@ -89,7 +92,7 @@ class RectangularCrossSectionPlotter:
         """
         self._start_plot(figsize=figsize)
         self._add_rectangle(axes_i=axes_i)
-        self._add_center_lines(axes_i=axes_i)
+        self._add_center_lines(axes_i=axes_i, style=center_line_style)
         self._add_dimension_lines(
             axes_i=axes_i,
             font_size_dimension=font_size_dimension,

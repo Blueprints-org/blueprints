@@ -132,7 +132,7 @@ class TestRectangularReinforcedCrossSection:
 
     def test_plot(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the plot method."""
-        plot = rectangular_reinforced_cross_section.plot(show=False)
+        plot = rectangular_reinforced_cross_section.plot(show=False, center_line_style={"linewidth": 0.85})
         assert isinstance(plot, plt.Figure)
 
     def test_reinforcement_weight_longitudinal_bars(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
