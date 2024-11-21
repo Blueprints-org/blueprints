@@ -40,7 +40,7 @@ class TestForm5Dot3aTransverseForceUnbracedMembers:
         [
             (
                 "complete",
-                r"\H_i = \theta_i \cdot N = 0.003 \cdot 5 = 0.015",
+                r"H_i = \theta_i \cdot N = 0.003 \cdot 5.000 = 0.015",
             ),
             ("short", r"H_i = 0.015"),
         ],
