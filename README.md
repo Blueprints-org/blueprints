@@ -13,22 +13,54 @@
   <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
 </picture>
 
-Can someone explain to me why Eurocode is not publicly available in code and that all of us are coding Eurocode with massive maintenance costs 
-and shortages in technical personnel? Well, no longer!
+Welcome to `Blueprints`, the go-to repository for civil engineering professionals and enthusiasts!
 
-Welcome to Blueprints, the cornerstone repository for civil engineering professionals and enthusiasts alike!
+It includes programmable engineering standards, formulas, tables, and checks across a variety of structural and geotechnical disciplines. We offer 
+tools for materials, geometry, and section checks, as well as a foundation of essential use cases designed to meet all key engineering needs.
 
-Blueprints is a collaboration of several engineering companies which contains programmable Eurocode information such as tables, figures and 
-formulas. It also provides materials, geometry and even section checks. The basis as well as the implemented use cases provide all key 
-necessities for the civil engineer.
+Blueprints is a collaborative effort between several engineering companies to streamline code, documentation, and knowledge sharing—helping you focus on the work that matters most.
+
+Blueprints is more than just a tool, it's a growing community of engineers working together to solve real-world challenges. We believe that by 
+sharing knowledge and collaborating, we can eliminate inefficiencies like re-inventing the wheel or relying on cumbersome tools like Excel for complex calculations.
+
+Join us in this effort to build a future where engineering standards are programmable, accessible, and shared. Whether you're an industry expert or a curious enthusiast, your contributions can help drive innovation and reduce the technical overhead we all face.
+
+Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
 ## Mission
 
-Our mission is to:
+Our mission is to reduce the cost and time associated with civil engineering calculations by:
 
-- Offer a robust suite of tools and libraries that encapsulate common and advanced engineering tasks.
-- Foster a community where sharing knowledge and best practices is the norm, not the exception.
-- Provide a solid foundation of code and documentation that adheres to the highest quality standards (100% code coverage).
+- Offering a robust suite of tools that encapsulate both basic and advanced engineering tasks.
+- Providing an open-source alternative to expensive proprietary tools, with a high level of accuracy and full transparency.
+- Standardizing programmable civil engineering implementations, minimizing redundancy and eliminating knowledge silos.
+- Fostering a community where sharing knowledge and best practices is the norm, not the exception.
+- Ensuring 100% code coverage and high-quality documentation for a seamless user experience.
+
+## (Upcoming) Features
+
+* Eurocode formulas:
+  * NEN-EN 1992-1-1+C2:2011 :construction:
+  * NEN-EN 1993-1-1+C2+A1:2016 :construction:
+  * NEN-EN 1993-1-9+C2:2012 :construction:
+  * NEN-EN 1993-5:2008 :construction:        
+  * NEN 9997-1+C2:2017 :construction:
+
+* Reinforced Concrete Section :construction:
+    * Rectangular section :heavy_check_mark:
+    * Circular section :x:
+
+* Strain-stress analysis for reinforced concrete sections:
+  * Rectangular section :construction:
+  * Circular section :x:
+
+* Concrete checks:
+  * Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) :construction:
+
+* Common calculations:
+  * L-walls :x:
+  * Spring constants calculations for piles :x:
+  * Sheet-pile checks (strength, stability, deflection, local buckling, etc.) :x:
 
 ## Installation
 
@@ -62,7 +94,15 @@ figures for streamlined access and reference.
 
 ## Contributing
 
-Contributions are very welcome. To learn more, see the [Contributor Guide](CONTRIBUTING.md).
+We welcome contributions from developers and engineers of all skill levels! Here’s how you can contribute:
+
+- Fork the Repository: Create your own fork of the project.
+- Create a Branch: Make a feature branch (git checkout -b feature/new-feature).
+- Make Your Changes: Write clear, concise code and ensure it’s fully covered with tests.
+- Run Tests: Use pytest to ensure all tests pass.
+- Submit a Pull Request: Push your branch and open a pull request against main.
+
+To learn more, see the [Contributor Guide](CONTRIBUTING.md).
 
 ## License
 
@@ -86,10 +126,11 @@ By using the Blueprints package, you are agreeing to the following:
 
 2. **Adherence to Laws and Regulations**: At all times, the user is fully responsible for the adherence to (local) laws and regulations. It is the user's responsibility to ensure that their use of Blueprints complies with all relevant legal and regulatory requirements.
 
-3. **Outdated Results**: Results may be outdated due to circumstances, changes in rules and regulations, and/or changes in the Eurocodes and/or national annexes. Users should always verify the results and not solely rely on the output from the Blueprints package.
+3. **Outdated Results**: Results may be outdated due to circumstances, changes in rules and regulations, and/or changes in the codes and/or national 
+   annexes. Users should always verify the results and not solely rely on the output from Blueprints.
 
-4. **Agreement to Terms**: When using Blueprints, you agree to the terms and conditions of the [license](LICENSE) and this disclaimer. If you do not agree with these terms, please do not use the Blueprints package.
+4. **Agreement to Terms**: When using Blueprints, you agree to the terms and conditions of the [license](LICENSE) and this disclaimer.
 
-5. **Warrenties**: The Blueprins package is provided as is without any warrenties of any kind, either expressed or implied.
+5. **Warranties**: Blueprints is provided as is without any warranties of any kind, either expressed or implied.
 
 Please note that this disclaimer is intended to be as broad and inclusive as permitted by the law of the jurisdiction in which you reside. If any portion of this disclaimer is held invalid, the remainder shall continue in full legal force and effect.

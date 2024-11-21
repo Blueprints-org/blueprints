@@ -70,10 +70,12 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/source/gen/*
 
 # PyBuilder
 .pybuilder/
 target/
+
 
 # Jupyter Notebook
 .ipynb_checkpoints

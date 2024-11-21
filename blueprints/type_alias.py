@@ -38,6 +38,7 @@ GPA = float
 
 # <editor-fold desc="AREAS">
 MM2 = float
+MM2_M = float
 CM2 = float
 DM2 = float
 M2 = float
@@ -48,6 +49,7 @@ KM2 = float
 MM3 = float
 CM3 = float
 M3 = float
+M3_M = float
 # </editor-fold>
 
 # <editor-fold desc="BI-QUADRATIC">
