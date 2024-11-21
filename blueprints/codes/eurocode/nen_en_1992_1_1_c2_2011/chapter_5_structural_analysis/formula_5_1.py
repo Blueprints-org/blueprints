@@ -54,7 +54,7 @@ class Form5Dot1Imperfections(Formula):
         return theta_0 * alpha_h * alpha_m
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for the formula 5.1."""
+        """Returns LatexFormula object for formula 5.1."""
         return LatexFormula(
             return_symbol=r"\theta_i",
             result=f"{self:.4f}",
@@ -103,12 +103,12 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
         return alpha_h
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for the alpha_h subformula 5.1."""
+        """Returns LatexFormula object for formula 5.1 subformula 1."""
         return LatexFormula(
             return_symbol=r"\alpha_h",
             result=f"{self:.3f}",
-            equation=r"\max( \min( 2 / \sqrt{l} ; 1) ; 2/3)",
-            numeric_equation=rf"\max( \min( 2 / \sqrt{{{self.length:.3f}}} ; 1) ; 2/3)",
+            equation=r"\min( \max(2 / \sqrt{l}; 2/3); 1)",
+            numeric_equation=rf"\min( \max(2 / \sqrt{{{self.length:.3f}}}; 2/3); 1)",
             comparison_operator_label="=",
         )
 
@@ -145,11 +145,11 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
         return np.sqrt(0.5 * (1 + 1 / members))
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for the alpha_m subformula 5.1."""
+        """Returns LatexFormula object for formula 5.1 subformula 2."""
         return LatexFormula(
             return_symbol=r"\alpha_m",
             result=f"{self:.3f}",
-            equation=r"\sqrt{0.5 ( 1 + 1 / m)}",
-            numeric_equation=rf"\sqrt{{0.5 ( 1 + 1 / {self.members:.1f})}}",
+            equation=r"\sqrt{0.5 \cdot ( 1 + 1 / m)}",
+            numeric_equation=rf"\sqrt{{0.5 \cdot ( 1 + 1 / {self.members:.3f})}}",
             comparison_operator_label="=",
         )

@@ -93,20 +93,74 @@ class TestForm5Dot1Imperfections:
         [
             (
                 "complete",
+                r"\alpha_m = \sqrt{0.5 \cdot ( 1 + 1 / m)} = \sqrt{0.5 \cdot ( 1 + 1 / 3.000)} = 0.816",
+            ),
+            ("short", r"\alpha_m = 0.816"),
+        ],
+    )
+    def test_latex_sub2(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        members = 3
+
+        # Object to test
+        form_5_1_sub2_latex = SubForm5Dot1ReductionFactorNumberOfMembers(members).latex()
+
+        actual = {
+            "complete": form_5_1_sub2_latex.complete,
+            "short": form_5_1_sub2_latex.short,
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\alpha_h = \min( \max(2 / \sqrt{l}; 2/3); 1) = \min( \max(2 / \sqrt{5.300}; 2/3); 1) = 0.869",
+            ),
+            ("short", r"\alpha_h = 0.869"),
+        ],
+    )
+    def test_latex_sub1(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        length = 5.3
+
+        # Object to test
+        form_5_1_sub1_latex = SubForm5Dot1ReductionFactorLengthOrHeight(length).latex()
+
+        actual = {
+            "complete": form_5_1_sub1_latex.complete,
+            "short": form_5_1_sub1_latex.short,
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
                 r"\theta_i = \theta_0 \cdot \alpha_h \cdot \alpha_m = 0.005 \cdot 0.800 \cdot 0.900 = 0.0036",
             ),
             ("short", r"\theta_i = 0.0036"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
-        """Test the latex implementation."""
+        """Test the latex representation of the formula."""
         # Example values
         theta_0 = 0.005
         alpha_h = 0.8
         alpha_m = 0.9
-        form_5_1_latex = Form5Dot1Imperfections(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m).latex()
 
         # Object to test
-        actual = {"complete": form_5_1_latex.complete, "short": form_5_1_latex.short}
+        form_5_1_latex = Form5Dot1Imperfections(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m).latex()
+
+        actual = {
+            "complete": form_5_1_latex.complete,
+            "short": form_5_1_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

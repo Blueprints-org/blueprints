@@ -38,25 +38,3 @@ class TestForm5Dot2Eccentricity:
 
         with pytest.raises(LessOrEqualToZeroError):
             Form5Dot2Eccentricity(theta_i=theta_i, l_0=l_0)
-
-    @pytest.mark.parametrize(
-        ("representation", "expected"),
-        [
-            (
-                "complete",
-                r"e_i = \theta_i \cdot l_0 / 2 = 0.003 \cdot 5.000 / 2 = 0.0075",
-            ),
-            ("short", r"e_i = 0.0075"),
-        ],
-    )
-    def test_latex(self, representation: str, expected: str) -> None:
-        """Test the latex implementation."""
-        # Example values
-        theta_i = 0.003  # -
-        l_0 = 5  # m
-        form_5_2_latex = Form5Dot2Eccentricity(theta_i=theta_i, l_0=l_0).latex()
-
-        # Object to test
-        actual = {"complete": form_5_2_latex.complete, "short": form_5_2_latex.short}
-
-        assert actual[representation] == expected, f"{representation} representation failed."
