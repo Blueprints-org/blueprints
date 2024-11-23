@@ -3,8 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_7 import Form5Dot7EffectiveFlangeWidth
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_7a import Form5Dot7aFlangeEffectiveFlangeWidth
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_7b import Form5Dot7bFlangeEffectiveFlangeWidth
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_7ab import Form5Dot7abFlangeEffectiveFlangeWidth
 from blueprints.validations import NegativeValueError
 
 
@@ -57,8 +56,8 @@ class TestForm5Dot7EffectiveFlangeWidth:
         b_w = 0.15  # M
 
         b_eff_i = (
-            Form5Dot7aFlangeEffectiveFlangeWidth(b_1, l_0),
-            Form5Dot7bFlangeEffectiveFlangeWidth(b_2, l_0),
+            Form5Dot7abFlangeEffectiveFlangeWidth(b_1, l_0),
+            Form5Dot7abFlangeEffectiveFlangeWidth(b_2, l_0),
         )
         # Object to test
         form_5_7 = Form5Dot7EffectiveFlangeWidth(*b_eff_i, b_w=b_w, b=b)
