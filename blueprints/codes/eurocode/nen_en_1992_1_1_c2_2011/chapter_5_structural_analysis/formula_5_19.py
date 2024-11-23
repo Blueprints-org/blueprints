@@ -21,11 +21,11 @@ class Form5Dot19EffectiveCreepCoefficient(Formula):
         Parameters
         ----------
         phi_inf_t0 : DIMENSIONLESS
-            [:math:`ϕ (∞,t0)`] is the final value of the creep coefficient.
+            [:math:`ϕ (∞,t0)`] is the final value of the creep coefficient according to art. 3.1.4.
         m0_eqp : KN_M
-            [:math:`M_{0,Eqp}`] is the first-order bending moment in the quasi-permanent load combination.
+            [:math:`M_{0,Eqp}`] is the first-order bending moment in the quasi-permanent load combination (SLS).
         m0_ed : KN_M
-            [:math:`M_{0,Ed}`] is the first-order bending moment in the ultimate limit state.
+            [:math:`M_{0,Ed}`] is the first-order bending moment in the ultimate limit state (ULS).
         """
         super().__init__()
         self.phi_inf_t0 = phi_inf_t0
