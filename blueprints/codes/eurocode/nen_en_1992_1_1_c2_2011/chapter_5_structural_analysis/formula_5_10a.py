@@ -6,14 +6,14 @@ from blueprints.type_alias import DIMENSIONLESS, M
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form5Dot10aRedistributionOfMoments:
-    """Class representing formula 5.10a for the redistribution of moments in continuous beams or slabs."""
+class Form5Dot10aRedistributionOfMomentsLowerFck:
+    r"""Class representing formula 5.10a for the redistribution of moments in continuous beams or slabs when :math:`f_{ck} \leq 50 MPa`."""
 
     label = "5.10a"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, delta: DIMENSIONLESS, k1: DIMENSIONLESS, k2: DIMENSIONLESS, xu: M, d: M) -> None:
-        """[:math:`δ`] Redistribution of moments.
+        r"""[:math:`δ`] Redistribution of moments in continuous beams or slabs when :math:`f_{ck} \leq 50 MPa`.
 
         NEN-EN 1992-1-1+C2:2011 art.5.5(4) - Formula (5.10a)
 
@@ -81,6 +81,6 @@ class Form5Dot10aRedistributionOfMoments:
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\delta \geq k_1 + k_2 \frac{x_u}{d}",
-            numeric_equation=(rf"{self.left_hand_side:.3f} \geq {self.k1} + {self.k2} \frac{{{self.xu}}}{{{self.d}}}"),
+            numeric_equation=rf"{self.left_hand_side:.3f} \geq {self.k1} + {self.k2} \frac{{{self.xu}}}{{{self.d}}}",
             comparison_operator_label=r"\rightarrow",
         )
