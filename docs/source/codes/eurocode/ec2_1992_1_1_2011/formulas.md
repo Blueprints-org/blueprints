@@ -66,7 +66,7 @@ Total of 304 formulas present.
 | 5.17           | :heavy_check_mark: |         | Form5Dot17EffectiveLengthBucklingLoad                     |
 | 5.18           | :heavy_check_mark: |         | Form5Dot18ComparisonGeneralSecondOrderEffects             |
 | 5.19           | :heavy_check_mark: |         | Form5Dot19EffectiveCreepCoefficient                       |
-| 5.20           |        :x:         |         |                                                           |
+| 5.20           | :heavy_check_mark: |         | Form5Dot20DesignModulusElasticity                         |
 | 5.21           |        :x:         |         |                                                           |
 | 5.22           |        :x:         |         |                                                           |
 | 5.23           |        :x:         |         |                                                           |
