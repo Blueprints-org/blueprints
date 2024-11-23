@@ -39,28 +39,63 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 ## (Upcoming) Features
 
-* Eurocode formulas:
-  * NEN-EN 1992-1-1+C2:2011 :construction:
-  * NEN-EN 1993-1-1+C2+A1:2016 :construction:
-  * NEN-EN 1993-1-9+C2:2012 :construction:
-  * NEN-EN 1993-5:2008 :construction:        
-  * NEN 9997-1+C2:2017 :construction:
+* Eurocode formulas
+    - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow)
+    - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
+    - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
+    - [ ] NEN-EN 1993-5:2008 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
+    - [ ] NEN 9997-1+C2:2017 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
+ 
+* Material definitions
+    - [x] Concrete (NEN-EN 1992) ✔️
+    - [x] Rebar Steel (NEN-EN 1992) ✔️
+    - [x] Soil (NEN-EN 1997) ✔️
 
-* Reinforced Concrete Section :construction:
-    * Rectangular section :heavy_check_mark:
-    * Circular section :x:
+* Reinforced Concrete Section
+    - [x] Rectangular section ✔️
+    - [ ] Circular section
 
 * Strain-stress analysis for reinforced concrete sections:
-  * Rectangular section :construction:
-  * Circular section :x:
+  - [ ] Rectangular section ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
+  - [ ] Circular section
 
-* Concrete checks:
-  * Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) :construction:
+* Concrete checks
+  - [ ] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow)
+  - [ ] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8)
+  - [ ] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2)
+  - [ ] Shear Resistance circular shapes;
+  - [ ] Torsion (NEN-EN 1992-1-1: Chapter 6.3)
+  - [ ] Punching Shear (NEN-EN 1992-1-1: Chapter 6.4)
+  - [ ] Fatigue (NEN-EN 1992-1-1: Chapter 6.8)
+  - [ ] Crack Control (NEN-EN 1992-1-1: Chapter 7.3)
+  - [ ] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4)
 
-* Common calculations:
-  * L-walls :x:
-  * Spring constants calculations for piles :x:
-  * Sheet-pile checks (strength, stability, deflection, local buckling, etc.) :x:
+* Timber checks (NEN-EN 1995)
+   - *To Be Determined*
+
+* Steel checks (NEN-EN 1993)
+  - *To Be Determined*
+
+* Geotechnical checks (NEN-EN 9997-1
+  - *To Be Determined*
+
+* Common calculations
+  - [ ] L-walls
+  - [ ] Spring constants calculations for piles
+  - [ ] Sheet-pile checks (strength, stability, deflection, local buckling, etc.)
+ 
+<details>
+
+<summary> Progress definitions </summary>
+
+| Icon | Definition  |
+| ---  | ---------   |
+| ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange) | Just started |
+| ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow) | Making progress |
+| ![](https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen) | In Review |
+| ✔️  | Done |
+
+</details>
 
 ## Installation
 
