@@ -46,7 +46,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
   * NEN-EN 1993-5:2008 :heavy_check_mark:        
   * NEN 9997-1+C2:2017 :heavy_check_mark:
 
-* Reinforced Concrete Section :construction:
+* Reinforced Concrete Section
     * Rectangular section :heavy_check_mark:
     * Circular section :construction:
 
