@@ -49,7 +49,7 @@ class Form5Dot2Eccentricity(Formula):
         return LatexFormula(
             return_symbol=r"e_i",
             result=f"{self:.4f}",
-            equation=r"\theta_i \cdot l_0 \cdot / 2",
-            numeric_equation=rf"{self.theta_i:.3f} \cdot {self.l_0:.3f} \cdot / 2",
+            equation=r"\theta_i \cdot l_0 / 2",
+            numeric_equation=rf"{self.theta_i:.3f} \cdot {self.l_0:.3f} / 2",
             comparison_operator_label="=",
         )

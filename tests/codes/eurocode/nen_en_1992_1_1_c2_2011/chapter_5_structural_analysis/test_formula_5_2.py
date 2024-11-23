@@ -44,7 +44,7 @@ class TestForm5Dot2Eccentricity:
         [
             (
                 "complete",
-                r"e_i = \theta_i \cdot l_0 \cdot / 2 = 0.003 \cdot 5.000 \cdot / 2 = 0.0075",
+                r"e_i = \theta_i \cdot l_0 / 2 = 0.003 \cdot 5.000 / 2 = 0.0075",
             ),
             ("short", r"e_i = 0.0075"),
         ],
