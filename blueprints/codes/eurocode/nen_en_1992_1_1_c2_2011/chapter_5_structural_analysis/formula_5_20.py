@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot20DesignModulusElasticity(Formula):
-    """Class representing formula 5.20 for the calculation of the design modulus of elasticity, Ecd."""
+    """Class representing formula 5.20 for the calculation of the design modulus of elasticity, :math:`E_{cd}`."""
 
     label = "5.20"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,12 +23,11 @@ class Form5Dot20DesignModulusElasticity(Formula):
         e_cm : MPA
             [:math:`E_{cm}`] is the characteristic modulus of elasticity of concrete.
         gamma_ce : DIMENSIONLESS, optional
-            [:math:`\gamma_{CE}`] is the factor for the design value of the modulus of elasticity. Default is 1.2.
+            [:math:`\gamma_{cE}`] is the factor for the design value of the modulus of elasticity. Default is 1.2 which is the recommended value.
         """
         super().__init__()
         self.e_cm = e_cm
         self.gamma_ce = gamma_ce
-        raise_if_less_or_equal_to_zero(e_cm=e_cm, gamma_ce=gamma_ce)
 
     @staticmethod
     def _evaluate(e_cm: MPA, gamma_ce: DIMENSIONLESS) -> MPA:
