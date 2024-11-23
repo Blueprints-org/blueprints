@@ -1,8 +1,9 @@
-"""Tests for cross section shapes."""
+"""Tests for cross-section shapes."""
 
 import pytest
+from shapely import Polygon
 
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.cross_section_shapes import CircularCrossSection, RectangularCrossSection
+from blueprints.structural_sections.cross_section_shapes import CircularCrossSection, RectangularCrossSection
 
 
 class TestCircularCrossSection:
@@ -12,6 +13,10 @@ class TestCircularCrossSection:
     def circular_cross_section(self) -> CircularCrossSection:
         """Return a CircularCrossSection instance."""
         return CircularCrossSection(diameter=200.0, x=0.0, y=0.0)
+
+    def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the geometry property of the CircularCrossSection class."""
+        assert isinstance(circular_cross_section.geometry, Polygon)
 
     def test_area(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the area property of the CircularCrossSection class."""
@@ -34,6 +39,11 @@ class TestCircularCrossSection:
         assert len(vertices) == 65
         assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(100.0, 0.0), rel=1e-6)
         assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(100.0, 0.0), rel=1e-6)
+
+    def test_wrong_input(self) -> None:
+        """Test the wrong input for the CircularCrossSection class."""
+        with pytest.raises(ValueError):
+            CircularCrossSection(diameter=-200.0, x=0.0, y=0.0)
 
 
 class TestRectangularCrossSection:
