@@ -40,27 +40,27 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 ## (Upcoming) Features
 
 * Eurocode formulas:
-  * NEN-EN 1992-1-1+C2:2011 :construction:
-  * NEN-EN 1993-1-1+C2+A1:2016 :construction:
-  * NEN-EN 1993-1-9+C2:2012 :construction:
-  * NEN-EN 1993-5:2008 :construction:        
-  * NEN 9997-1+C2:2017 :construction:
+  * NEN-EN 1992-1-1+C2:2011 :heavy_check_mark:
+  * NEN-EN 1993-1-1+C2+A1:2016 :heavy_check_mark:
+  * NEN-EN 1993-1-9+C2:2012 :heavy_check_mark:
+  * NEN-EN 1993-5:2008 :heavy_check_mark:        
+  * NEN 9997-1+C2:2017 :heavy_check_mark:
 
-* Reinforced Concrete Section :construction:
+* Reinforced Concrete Section
     * Rectangular section :heavy_check_mark:
-    * Circular section :x:
+    * Circular section :construction:
 
 * Strain-stress analysis for reinforced concrete sections:
   * Rectangular section :construction:
-  * Circular section :x:
+  * Circular section :construction:
 
 * Concrete checks:
   * Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) :construction:
 
 * Common calculations:
-  * L-walls :x:
-  * Spring constants calculations for piles :x:
-  * Sheet-pile checks (strength, stability, deflection, local buckling, etc.) :x:
+  * L-walls :construction:
+  * Spring constants calculations for piles :construction:
+  * Sheet-pile checks (strength, stability, deflection, local buckling, etc.) :construction:
 
 ## Installation
 
