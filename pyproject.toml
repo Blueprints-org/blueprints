@@ -10,7 +10,7 @@ maintainers = [
     { name = "Blueprints Maintainers" },
 ]
 description = "Blueprints: Python AEC library."
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 keywords = [
     "Civil engineering",
     "Material properties",

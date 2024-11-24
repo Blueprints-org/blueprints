@@ -12,7 +12,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
 
@@ -27,8 +27,6 @@ jobs:
           pip install .
           pip install .[minimal_requirements]
           pip install .[dev]
-          pip install pandas-stubs
-          pip install types-shapely
 
       - name: Run checks with ruff
         run: |
