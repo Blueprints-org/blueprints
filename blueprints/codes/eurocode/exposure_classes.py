@@ -3,9 +3,11 @@ according to Table 4.1 from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to
 """
 
 from abc import abstractmethod
+from collections.abc import Iterator
+from dataclasses import dataclass
 from enum import Enum
 from functools import total_ordering
-from typing import NamedTuple, Type, TypeVar
+from typing import Self, TypeVar
 
 from blueprints.utils.abc_enum_meta import ABCEnumMeta
 
@@ -20,7 +22,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
     On top of that, it handles a couple of methods which will be used by its subclasses.
     """
 
-    def __eq__(self, other: object) -> bool:
+    def __eq__(self, other: Self) -> bool:
         """Definition of '==' operator for the comparison of the severity of the exposure classifications.
 
         Parameters
@@ -46,7 +48,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
             return _self_severity == _other_severity
         raise TypeError("Only the same exposure class types can be compared with each other!")
 
-    def __gt__(self, other: object) -> bool:
+    def __gt__(self, other: Self) -> bool:
         """Definition of '>' operator for the comparison of the severity of the exposure classifications.
 
         Parameters
@@ -73,7 +75,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         raise TypeError("Only the same exposure class types can be compared with each other!")
 
     @classmethod
-    def options(cls: Type[T]) -> list[str]:
+    def options(cls: type[T]) -> list[str]:
         """Return all the possible options within a subclass.
 
         Returns
@@ -130,7 +132,8 @@ class ChemicalBase(Exposure):
     """Enum Class which indicates the classification of chemical attack."""
 
 
-class ExposureClassesBase(NamedTuple):
+@dataclass(frozen=True)
+class ExposureClassesBase:
     """Parent class which serves as a container for the Exposure classes.
 
     Exposure classes related to environmental conditions in accordance with EN 206-1
@@ -153,7 +156,7 @@ class ExposureClassesBase(NamedTuple):
         bool
             True if all exposure classes are 'Not applicable'
         """
-        return all(exposure_class.value == "Not applicable" for exposure_class in self)
+        return all(exposure_class.value == "Not applicable" for exposure_class in self.__dict__.values())
 
     def __str__(self) -> str:
         """String representation of the ExposureClasses object.
@@ -163,4 +166,14 @@ class ExposureClassesBase(NamedTuple):
         str
             String representation of the ExposureClasses object
         """
-        return "X0" if self.no_risk else ", ".join(enum.value for enum in self if enum.value != "Not applicable")
+        return "X0" if self.no_risk else ", ".join(enum.value for enum in self.__dict__.values() if enum.value != "Not applicable")
+
+    def __iter__(self) -> Iterator[Exposure]:
+        """Iterator for the ExposureClasses object.
+
+        Returns
+        -------
+        Iterable[Exposure]
+            Iterator for the ExposureClasses object
+        """
+        return iter(self.__dict__.values())

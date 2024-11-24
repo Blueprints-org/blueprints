@@ -242,3 +242,5 @@ class TestNominalConcreteCover:
             r"~c_{min,dur}~is~determined~according~to~table~4.3~based~on~structural~class~S4~\&~exposure~classes~(XC1,~XD1,~XS1)~=~35~mm\newline"
             r"~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)~=~k2~≥~c_{min,dur}~+~75~mm~for~Directly~against~soil"
         )
+
+        assert str(nominal_concrete_cover) == "Nominal concrete cover according to art. 4.4.1 = 110.0 mm"

@@ -182,3 +182,7 @@ class NominalConcreteCover:
                 + self.constants.minimum_cover_with_regard_to_casting_surface_latex(self.casting_surface),
             ]
         ).replace(" ", "~")
+
+    def __str__(self) -> str:
+        """Return the string representation of the nominal concrete cover."""
+        return f"{self.label} = {self.value()} mm"

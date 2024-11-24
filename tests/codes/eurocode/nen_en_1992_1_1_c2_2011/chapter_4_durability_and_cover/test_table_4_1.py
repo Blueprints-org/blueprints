@@ -10,6 +10,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     Chloride,
     ChlorideSeawater,
     FreezeThaw,
+    Table4Dot1ExposureClasses,
 )
 
 
@@ -124,3 +125,17 @@ def test_comparing_different_types_raises_error() -> None:
         _ = Chemical.XA1 < Carbonation.XC2
     with pytest.raises(TypeError):
         _ = Chemical.NA != FreezeThaw.XF1
+
+
+def test_table_4_1_exposure_classes_from_exposure_list() -> None:
+    """Test the from_exposure_list method of Table4Dot1ExposureClasses."""
+    exposure_classes = Table4Dot1ExposureClasses.from_exposure_list(["XC1", "XD1", "XS1", "XF1", "XA1"])
+    assert exposure_classes.carbonation == Carbonation.XC1
+    assert exposure_classes.chloride == Chloride.XD1
+    assert exposure_classes.chloride_seawater == ChlorideSeawater.XS1
+    assert exposure_classes.freeze == FreezeThaw.XF1
+    assert exposure_classes.chemical == Chemical.XA1
+
+    # test with wrong exposure class
+    with pytest.raises(ValueError):
+        _ = Table4Dot1ExposureClasses.from_exposure_list(["XC1", "wrong", "XS1", "XF1", "XA1"])

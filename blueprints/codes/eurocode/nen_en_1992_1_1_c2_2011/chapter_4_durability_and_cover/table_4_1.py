@@ -3,6 +3,7 @@ according to Table 4.1 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and 
 """
 
 from functools import total_ordering
+from typing import Self, TypeVar
 
 from blueprints.codes.eurocode.exposure_classes import (
     CarbonationBase,
@@ -215,6 +216,10 @@ class Chemical(ChemicalBase):
                 return "Not applicable"
 
 
+# Define a generic type for the class
+T = TypeVar("T", bound="Table4Dot1ExposureClasses")
+
+
 class Table4Dot1ExposureClasses(ExposureClassesBase):
     """Implementation of table 4.1 from NEN-EN 1992-1-1+C2:2011.
 
@@ -226,3 +231,56 @@ class Table4Dot1ExposureClasses(ExposureClassesBase):
     chloride_seawater: ChlorideSeawater
     freeze: FreezeThaw
     chemical: Chemical
+
+    @classmethod
+    def from_exposure_list(cls, exposure_classes: list[str]) -> Self:
+        """Create an instance from a list of exposure classes.
+
+        Examples
+        --------
+        >>> exposure_classes = ["XC1", "XD1", "XS1"]
+        >>> Table4Dot1ExposureClasses().from_exposure_list(exposure_classes)
+        Table4Dot1ExposureClasses(
+            carbonation=<Carbonation.XC1: 'XC1'>,
+            chloride=<Chloride.XD1: 'XD1'>,
+            chloride_seawater=<ChlorideSeawater.XS1: 'XS1'>,
+            freeze=<FreezeThaw.NA: 'Not applicable'>,
+            chemical=<Chemical.NA: 'Not applicable'>
+        )
+
+        Parameters
+        ----------
+        exposure_classes : list[str]
+            list of exposure classes, order is not important. If an exposure class is not provided, it is set to "Not applicable"
+            You can use capital letters or lowercase letters, the method is case-insensitive.
+            For example, "XC1" and "xc1" are both valid.
+
+        Returns
+        -------
+        Self
+            instance created from the list
+        """
+        # Initialize the dictionary with "Not applicable" for all exposure classes
+        exposures = {
+            "carbonation": Carbonation.NA,
+            "chloride": Chloride.NA,
+            "chloride_seawater": ChlorideSeawater.NA,
+            "freeze": FreezeThaw.NA,
+            "chemical": Chemical.NA,
+        }
+
+        for exposure_class in exposure_classes:
+            if exposure_class.upper() in Carbonation.__members__:
+                exposures["carbonation"] = Carbonation[exposure_class.upper()]
+            elif exposure_class.upper() in Chloride.__members__:
+                exposures["chloride"] = Chloride[exposure_class.upper()]
+            elif exposure_class.upper() in ChlorideSeawater.__members__:
+                exposures["chloride_seawater"] = ChlorideSeawater[exposure_class.upper()]
+            elif exposure_class.upper() in FreezeThaw.__members__:
+                exposures["freeze"] = FreezeThaw[exposure_class.upper()]
+            elif exposure_class.upper() in Chemical.__members__:
+                exposures["chemical"] = Chemical[exposure_class.upper()]
+            else:
+                raise ValueError(f"Unknown exposure class: '{exposure_class}'")
+
+        return cls(**exposures)  # type: ignore[arg-type]

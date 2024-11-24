@@ -1,7 +1,5 @@
 """Tests reinforcement configurations."""
 
-from typing import Type
-
 import pytest
 from shapely import LineString
 
@@ -85,7 +83,7 @@ class TestReinforcementByQuantity:
             )
 
     @pytest.mark.parametrize(("wrong_n", "expected_error"), [(0, ValueError), (-1, ValueError), (1.5, TypeError)])
-    def test_wrong_n_float(self, wrong_n: int, expected_error: Type[BaseException]) -> None:
+    def test_wrong_n_float(self, wrong_n: int, expected_error: type[BaseException]) -> None:
         """Test the wrong number of rebars."""
         with pytest.raises(expected_error):
             ReinforcementByQuantity(
