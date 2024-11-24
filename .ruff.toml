@@ -55,7 +55,6 @@ ignore = [
     # flake8-annotations
     "ANN002", # missing-type-args
     "ANN003", # missing-type-kwargs
-    "ANN101", # missing-type-self
 
     # flake8-pytest-style
     "PT011", # pytest-raises-too-broad
