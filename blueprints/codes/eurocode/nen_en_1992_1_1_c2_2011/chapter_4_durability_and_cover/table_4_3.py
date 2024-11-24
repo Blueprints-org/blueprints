@@ -2,7 +2,7 @@
 according to Table 4.3 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement.
 """
 
-from typing_extensions import Self
+from typing import Self
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (

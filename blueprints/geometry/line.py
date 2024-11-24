@@ -1,10 +1,9 @@
 """Line module."""
 
-from typing import Literal
+from typing import Literal, Self
 
 import numpy as np
 from shapely import Point
-from typing_extensions import Self
 
 from blueprints.geometry.operations import CoordinateSystemOptions, calculate_rotation_angle
 from blueprints.type_alias import DEG

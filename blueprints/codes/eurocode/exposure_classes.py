@@ -22,7 +22,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
     On top of that, it handles a couple of methods which will be used by its subclasses.
     """
 
-    def __eq__(self, other: Self) -> bool:
+    def __eq__(self, other: object) -> bool:
         """Definition of '==' operator for the comparison of the severity of the exposure classifications.
 
         Parameters
@@ -42,11 +42,11 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         Boolean
             True if both arguments are of the same severity (In this case they will both be literally the same).
         """
-        if isinstance(other, self.__class__):
-            _self_severity = int(self.value[-1]) if self.value != "Not applicable" else 0
-            _other_severity = int(other.value[-1]) if other.value != "Not applicable" else 0
-            return _self_severity == _other_severity
-        raise TypeError("Only the same exposure class types can be compared with each other!")
+        if not isinstance(other, Exposure):
+            raise TypeError("Only the same exposure class types can be compared with each other!")
+        _self_severity = int(self.value[-1]) if self.value != "Not applicable" else 0
+        _other_severity = int(other.value[-1]) if other.value != "Not applicable" else 0
+        return _self_severity == _other_severity
 
     def __gt__(self, other: Self) -> bool:
         """Definition of '>' operator for the comparison of the severity of the exposure classifications.

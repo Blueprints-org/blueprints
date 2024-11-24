@@ -41,7 +41,7 @@ We use Git flow for our branching strategy. Only create branches from issues/fea
 
 ## Checklist for Code Submission
 
-- Python >= 3.10
+- Python >= 3.12
 - All code must be in English
 - Max ~400 lines per PR
 - Use Typehints and Docstrings (numpy style)
