@@ -49,7 +49,7 @@ include = ["blueprints*"]
 
 [tool.mypy]
 packages = "blueprints"
-python_version = "3.10"
+python_version = "3.12"
 
 [[tool.mypy.overrides]]
 module = ["matplotlib.*"]
