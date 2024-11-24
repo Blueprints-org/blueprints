@@ -42,7 +42,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         Boolean
             True if both arguments are of the same severity (In this case they will both be literally the same).
         """
-        if not isinstance(other, Exposure):
+        if not isinstance(other, self.__class__):
             raise TypeError("Only the same exposure class types can be compared with each other!")
         _self_severity = int(self.value[-1]) if self.value != "Not applicable" else 0
         _other_severity = int(other.value[-1]) if other.value != "Not applicable" else 0
