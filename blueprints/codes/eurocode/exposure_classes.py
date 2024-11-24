@@ -5,7 +5,7 @@ according to Table 4.1 from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to
 from abc import abstractmethod
 from enum import Enum
 from functools import total_ordering
-from typing import NamedTuple, Type, TypeVar
+from typing import NamedTuple, TypeVar
 
 from blueprints.utils.abc_enum_meta import ABCEnumMeta
 
@@ -73,7 +73,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         raise TypeError("Only the same exposure class types can be compared with each other!")
 
     @classmethod
-    def options(cls: Type[T]) -> list[str]:
+    def options(cls: type[T]) -> list[str]:
         """Return all the possible options within a subclass.
 
         Returns

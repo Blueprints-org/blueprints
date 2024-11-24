@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
-
-from typing import Self
+from typing import Any, Self
 
 from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase as ExposureClasses
 from blueprints.materials.concrete import ConcreteMaterial
