@@ -4,7 +4,7 @@ from typing import Literal
 
 import numpy as np
 from shapely import Point
-from typing_extensions import Self
+from typing import Self
 
 from blueprints.geometry.operations import CoordinateSystemOptions, calculate_rotation_angle
 from blueprints.type_alias import DEG
