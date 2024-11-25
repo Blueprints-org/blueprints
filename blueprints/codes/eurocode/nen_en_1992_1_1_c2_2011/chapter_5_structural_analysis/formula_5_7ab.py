@@ -52,7 +52,7 @@ class Form5Dot7abFlangeEffectiveFlangeWidth(Formula):
         return min(0.2 * b_i + 0.1 * l_0, 0.2 * l_0, b_i)
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 5.7."""
+        """Returns LatexFormula object for formula 5.7ab."""
         return LatexFormula(
             return_symbol=r"b_{eff,i}",
             result=f"{self:.3f}",

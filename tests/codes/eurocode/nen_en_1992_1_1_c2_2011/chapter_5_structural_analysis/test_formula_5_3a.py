@@ -34,3 +34,29 @@ class TestForm5Dot3aTransverseForceUnbracedMembers:
         """Test negative values."""
         with pytest.raises(NegativeValueError):
             Form5Dot3aTransverseForceUnbracedMembers(theta_i=theta_i, n_axial_force=n_axial_force)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"H_i = \theta_i \cdot N = 0.003 \cdot 5.000 = 0.015",
+            ),
+            ("short", r"H_i = 0.015"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        theta_i = 0.003  # -
+        n_axial_force = 5  # kN
+
+        # Object to test
+        form_5_3a_latex = Form5Dot3aTransverseForceUnbracedMembers(theta_i=theta_i, n_axial_force=n_axial_force).latex()
+
+        actual = {
+            "complete": form_5_3a_latex.complete,
+            "short": form_5_3a_latex.short,
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
