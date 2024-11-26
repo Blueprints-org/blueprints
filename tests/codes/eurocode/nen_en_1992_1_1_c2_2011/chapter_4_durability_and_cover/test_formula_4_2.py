@@ -140,13 +140,13 @@ class TestForm4Dot1NominalConcreteCover:
         [
             (
                 "complete",
-                r"c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 \ "
+                r"c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 "
                 r"\text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0",
             ),
             ("short", "c_{min} = 15.0"),
             (
                 "string",
-                r"c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 \ "
+                r"c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 "
                 r"\text{mm}\right\} = \max \left\{15; 10+5-5-0; 10\right\} = 15.0",
             ),
         ],
