@@ -80,9 +80,9 @@ Our mission is to reduce the cost and time associated with civil engineering cal
   - *To Be Determined*
 
 * Common calculations
+  - [ ] Sheet-pile checks (strength and local buckling) ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
   - [ ] L-walls
   - [ ] Spring constants calculations for piles
-  - [ ] Sheet-pile checks (strength, stability, deflection, local buckling, etc.)
  
 <details>
 
