@@ -43,7 +43,7 @@ class TestConcreteStructuralClassCalculator:
 
     @pytest.mark.parametrize(
         ("design_working_life", "expected_structural_class", "expected_explanation"),
-        [(50, 4, " + 0 class (50 years)"), (75, 5, " + 1 class (75 years)"), (100, 6, " + 2 classes (100 years)")],
+        [(50, 4, " + 0 class (50 years)"), (90, 4, " + 0 class (50 years)"), (100, 6, " + 2 classes (100 years)")],
     )
     def test_structural_class_delta_design_working_life(
         self, design_working_life: YEARS, expected_structural_class: int, expected_explanation: str
@@ -164,6 +164,20 @@ class TestTable4Dot3ConcreteStructuralClass:
         """Test if a new instance can be instantiated."""
         new_instance = Table4Dot3ConcreteStructuralClass(
             exposure_classes=DUMMY_EXPOSURE_CLASSES,
+            design_working_life=50,
+            concrete_material=ConcreteMaterial(ConcreteStrengthClass("C20/25")),
+            plate_geometry=False,
+            quality_control=False,
+        )
+
+        assert isinstance(new_instance, Table4Dot3ConcreteStructuralClass)
+        assert isinstance(new_instance, ConcreteStructuralClassBase)
+        assert isinstance(new_instance, int)
+
+    def test_new_instance_list_of_exposure_classes(self) -> None:
+        """Test if a new instance can be instantiated with a list of exposure classes."""
+        new_instance = Table4Dot3ConcreteStructuralClass(
+            exposure_classes=["XC2", "XD1", "XS1", "XA2"],
             design_working_life=50,
             concrete_material=ConcreteMaterial(ConcreteStrengthClass("C20/25")),
             plate_geometry=False,
