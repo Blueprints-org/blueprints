@@ -2,6 +2,7 @@
 according to Table 4.3 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement.
 """
 
+from collections.abc import Sequence
 from typing import Self
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
@@ -34,7 +35,7 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
 
     def __init__(
         self,
-        exposure_classes: Table4Dot1ExposureClasses,
+        exposure_classes: Table4Dot1ExposureClasses | Sequence[str],
         design_working_life: YEARS,
         concrete_material: ConcreteMaterial,
         plate_geometry: bool,
@@ -44,8 +45,8 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
 
         Parameters
         ----------
-        exposure_classes : ExposureClasses
-            The exposure classes of the concrete element
+        exposure_classes : ExposureClasses | Sequence[str]
+            The exposure classes of the concrete element. This can be a sequence of strings or an instance of the ExposureClasses class.
         design_working_life : YEARS, optional
             The design working life of the concrete element
         concrete_material : ConcreteMaterial, optional
@@ -55,6 +56,8 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
         quality_control : bool, optional
             True if the quality control of the concrete element is ensured, False otherwise
         """
+        if not isinstance(exposure_classes, Table4Dot1ExposureClasses):
+            exposure_classes = Table4Dot1ExposureClasses.from_exposure_list(exposure_classes)
         super().__init__(exposure_classes, design_working_life, concrete_material, plate_geometry, quality_control)
 
     def _structural_class_delta_design_working_life(self) -> None:
@@ -145,7 +148,7 @@ class Table4Dot3ConcreteStructuralClass(ConcreteStructuralClassBase):
 
     def __init__(
         self,
-        exposure_classes: Table4Dot1ExposureClasses,
+        exposure_classes: Table4Dot1ExposureClasses | Sequence[str],
         design_working_life: YEARS,
         concrete_material: ConcreteMaterial,
         plate_geometry: bool,
@@ -155,8 +158,8 @@ class Table4Dot3ConcreteStructuralClass(ConcreteStructuralClassBase):
 
         Parameters
         ----------
-        exposure_classes : ExposureClasses
-            The exposure classes of the concrete element
+        exposure_classes : Table4Dot1ExposureClasses | Sequence[str]
+            The exposure classes of the concrete element. This can be a sequence of strings or an instance of the ExposureClasses class.
         design_working_life : YEARS
             The design working life of the concrete element
         concrete_material : ConcreteMaterial

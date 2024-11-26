@@ -329,5 +329,11 @@ class Table4Dot1ExposureClasses(ExposureClassesBase):
             if classification_name in exposures:
                 raise ValueError(f"Duplication Error: There are multiple instances of '{classification.__name__}' class.")
             exposures[classification_name] = classification[exposure_str.upper()]
+            del classifications[classification.notation()]
+
+        for classification in classifications.values():
+            classification_name = classification.snake_case().removesuffix("_thaw")
+            if classification_name not in exposures:
+                exposures.setdefault(classification_name, classification.NA)
 
         return cls(**exposures)  # type: ignore[arg-type]
