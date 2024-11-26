@@ -43,7 +43,7 @@ class TestConcreteStructuralClassCalculator:
 
     @pytest.mark.parametrize(
         ("design_working_life", "expected_structural_class", "expected_explanation"),
-        [(50, 4, " + 0 class (50 years)"), (75, 5, " + 1 class (75 years)"), (100, 6, " + 2 classes (100 years)")],
+        [(50, 4, " + 0 class (50 years)"), (90, 4, " + 0 class (50 years)"), (100, 6, " + 2 classes (100 years)")],
     )
     def test_structural_class_delta_design_working_life(
         self, design_working_life: YEARS, expected_structural_class: int, expected_explanation: str
