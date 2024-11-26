@@ -60,7 +60,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
   - [ ] Circular section
 
 * Concrete checks
-  - [ ] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow)
+  - [x] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ✔️
   - [ ] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8)
   - [ ] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2)
   - [ ] Shear Resistance circular shapes;
