@@ -8,4 +8,3 @@ Total of 0 tables present.
 
 | Table number | Done | Remarks | Object name |
 |:-------------|:----:|:--------|:------------|
-| 11.1            | :heavy_check_mark: |         | Form11Dot1AxialTensileResistance |
