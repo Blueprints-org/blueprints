@@ -18,7 +18,6 @@ from blueprints.type_alias import YEARS
 
 """Design working life in years as defined in table 4.3 of NEN-EN 1992-1-1+C2:2011."""
 DESIGN_WORKING_LIFE_DEFAULT = 50
-DESIGN_WORKING_LIFE_75 = 75
 DESIGN_WORKING_LIFE_100 = 100
 
 
@@ -66,9 +65,7 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
         In accordance with:
         NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
-        if DESIGN_WORKING_LIFE_75 <= self.design_working_life < DESIGN_WORKING_LIFE_100:
-            self.update_structural_class(1, f"{DESIGN_WORKING_LIFE_75} years")
-        elif self.design_working_life >= DESIGN_WORKING_LIFE_100:
+        if self.design_working_life >= DESIGN_WORKING_LIFE_100:
             self.update_structural_class(2, f"{DESIGN_WORKING_LIFE_100} years")
         else:
             self.update_structural_class(0, f"{DESIGN_WORKING_LIFE_DEFAULT} years")
