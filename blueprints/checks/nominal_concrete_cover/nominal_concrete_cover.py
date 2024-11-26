@@ -1,6 +1,7 @@
 """Calculation of nominal concrete cover from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement."""
 
 from dataclasses import dataclass, field
+from typing import Literal
 
 from blueprints.checks.nominal_concrete_cover.constants.base import (
     NominalConcreteCoverConstantsBase as ConstantsBase,
@@ -41,11 +42,11 @@ class NominalConcreteCover:
     structural_class: ConcreteStructuralClassBase | int
         The structural class of the concrete. Either an instance of the ConcreteStructuralClassBase class or an integer.
         Tip: Use the :class:`Table4Dot3ConcreteStructuralClass` class to calculate the structural class.
-    carbonation: Carbonation
+    carbonation: Carbonation | Literal["XC1", "XC2", "XC3", "XC4", "NA"]
         The classification of corrosion induced by carbonation. Default is "Not applicable".
-    chloride: Chloride
+    chloride: Chloride | Literal["XD1", "XD2", "XD3", "NA"]
         The classification of corrosion induced by chlorides other than by sea water. Default is "Not applicable".
-    chloride_seawater: ChlorideSeawater
+    chloride_seawater: ChlorideSeawater | Literal["XS1", "XS2", "XS3", "NA"]
         The classification of corrosion induced by chlorides from sea water. Default is "Not applicable".
     delta_c_dur_gamma: MM
         [:math:`Δc_{dur,γ}`] An additional safety requirement based on art. 4.4.1.2 (6) [:math:`mm`].
@@ -77,9 +78,9 @@ class NominalConcreteCover:
     nominal_max_aggregate_size: MM
     constants: ConstantsBase
     structural_class: ConcreteStructuralClassBase | int
-    carbonation: Carbonation = field(default_factory=lambda: Carbonation.NA)
-    chloride: Chloride = field(default_factory=lambda: Chloride.NA)
-    chloride_seawater: ChlorideSeawater = field(default_factory=lambda: ChlorideSeawater.NA)
+    carbonation: Carbonation | Literal["XC1", "XC2", "XC3", "XC4", "NA"] = field(default_factory=lambda: Carbonation.NA)
+    chloride: Chloride | Literal["XD1", "XD2", "XD3", "NA"] = field(default_factory=lambda: Chloride.NA)
+    chloride_seawater: ChlorideSeawater | Literal["XS1", "XS2", "XS3", "NA"] = field(default_factory=lambda: ChlorideSeawater.NA)
     delta_c_dur_gamma: MM = field(default=0)
     delta_c_dur_st: MM = field(default=0)
     delta_c_dur_add: MM = field(default=0)
@@ -98,9 +99,16 @@ class NominalConcreteCover:
         if not isinstance(self.casting_surface, CastingSurface):
             raise TypeError(f"Invalid type for casting_surface: {type(self.casting_surface)}. Expected type is CastingSurface.")
 
+        if isinstance(self.carbonation, str):
+            object.__setattr__(self, "carbonation", Carbonation[self.carbonation])
+        if isinstance(self.chloride, str):
+            object.__setattr__(self, "chloride", Chloride[self.chloride])
+        if isinstance(self.chloride_seawater, str):
+            object.__setattr__(self, "chloride_seawater", ChlorideSeawater[self.chloride_seawater])
+
     def exposure_classes(self) -> Table4Dot1ExposureClasses:
         """Exposure classes according to table 4.1 from NEN-EN 1992-1-1."""
-        return Table4Dot1ExposureClasses(self.carbonation, self.chloride, self.chloride_seawater, FreezeThaw.NA, Chemical.NA)
+        return Table4Dot1ExposureClasses(self.carbonation, self.chloride, self.chloride_seawater, FreezeThaw.NA, Chemical.NA)  # type: ignore[arg-type]
 
     def c_min_b(self) -> Table4Dot2MinimumCoverWithRegardToBond:
         """Minimum concrete cover with regard to bond according to table 4.2 from NEN-EN 1992-1-1."""
