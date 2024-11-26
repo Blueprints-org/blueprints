@@ -2,6 +2,7 @@
 according to Table 4.1 from NEN-EN 1992-1-1+C2:2011: Chapter 4 - Durability and cover to reinforcement.
 """
 
+from collections.abc import Sequence
 from functools import total_ordering
 from typing import Self, TypeVar
 
@@ -56,6 +57,17 @@ class Carbonation(CarbonationBase):
             case Carbonation.NA:
                 return "Not applicable"
 
+    @staticmethod
+    def notation() -> str:
+        """Static method which returns the notation of this exposure class.
+
+        Returns
+        -------
+        str
+            notation of this exposure class
+        """
+        return "XC"
+
 
 @total_ordering
 class Chloride(ChlorideBase):
@@ -95,6 +107,17 @@ class Chloride(ChlorideBase):
             case Chloride.NA:
                 return "Not applicable"
 
+    @staticmethod
+    def notation() -> str:
+        """Static method which returns the notation of this exposure class.
+
+        Returns
+        -------
+        str
+            notation of this exposure class
+        """
+        return "XD"
+
 
 @total_ordering
 class ChlorideSeawater(ChlorideSeawaterBase):
@@ -133,6 +156,17 @@ class ChlorideSeawater(ChlorideSeawaterBase):
                 return "Tidal, splash and spray zones"
             case ChlorideSeawater.NA:
                 return "Not applicable"
+
+    @staticmethod
+    def notation() -> str:
+        """Static method which returns the notation of this exposure class.
+
+        Returns
+        -------
+        str
+            notation of this exposure class
+        """
+        return "XS"
 
 
 @total_ordering
@@ -176,6 +210,17 @@ class FreezeThaw(FreezeThawBase):
             case FreezeThaw.NA:
                 return "Not applicable"
 
+    @staticmethod
+    def notation() -> str:
+        """Static method which returns the notation of this exposure class.
+
+        Returns
+        -------
+        str
+            notation of this exposure class
+        """
+        return "XF"
+
 
 @total_ordering
 class Chemical(ChemicalBase):
@@ -215,6 +260,17 @@ class Chemical(ChemicalBase):
             case Chemical.NA:
                 return "Not applicable"
 
+    @staticmethod
+    def notation() -> str:
+        """Static method which returns the notation of this exposure class.
+
+        Returns
+        -------
+        str
+            notation of this exposure class
+        """
+        return "XA"
+
 
 # Define a generic type for the class
 T = TypeVar("T", bound="Table4Dot1ExposureClasses")
@@ -233,8 +289,8 @@ class Table4Dot1ExposureClasses(ExposureClassesBase):
     chemical: Chemical
 
     @classmethod
-    def from_exposure_list(cls, exposure_classes: list[str]) -> Self:
-        """Create an instance from a list of exposure classes.
+    def from_exposure_list(cls, exposure_classes: Sequence[str]) -> Self:
+        """Create an instance from a sequence of exposure classes.
 
         Examples
         --------
@@ -250,7 +306,7 @@ class Table4Dot1ExposureClasses(ExposureClassesBase):
 
         Parameters
         ----------
-        exposure_classes : list[str]
+        exposure_classes : Sequence[str]
             list of exposure classes, order is not important. If an exposure class is not provided, it is set to "Not applicable"
             You can use capital letters or lowercase letters, the method is case-insensitive.
             For example, "XC1" and "xc1" are both valid.
@@ -260,27 +316,18 @@ class Table4Dot1ExposureClasses(ExposureClassesBase):
         Self
             instance created from the list
         """
-        # Initialize the dictionary with "Not applicable" for all exposure classes
-        exposures = {
-            "carbonation": Carbonation.NA,
-            "chloride": Chloride.NA,
-            "chloride_seawater": ChlorideSeawater.NA,
-            "freeze": FreezeThaw.NA,
-            "chemical": Chemical.NA,
+        exposures: dict[str, Carbonation | Chloride | ChlorideSeawater | Chemical | FreezeThaw] = {}
+        classifications = {
+            classification.notation(): classification for classification in (Carbonation, Chloride, ChlorideSeawater, FreezeThaw, Chemical)
         }
 
-        for exposure_class in exposure_classes:
-            if exposure_class.upper() in Carbonation.__members__:
-                exposures["carbonation"] = Carbonation[exposure_class.upper()]
-            elif exposure_class.upper() in Chloride.__members__:
-                exposures["chloride"] = Chloride[exposure_class.upper()]
-            elif exposure_class.upper() in ChlorideSeawater.__members__:
-                exposures["chloride_seawater"] = ChlorideSeawater[exposure_class.upper()]
-            elif exposure_class.upper() in FreezeThaw.__members__:
-                exposures["freeze"] = FreezeThaw[exposure_class.upper()]
-            elif exposure_class.upper() in Chemical.__members__:
-                exposures["chemical"] = Chemical[exposure_class.upper()]
-            else:
-                raise ValueError(f"Unknown exposure class: '{exposure_class}'")
+        for exposure_str in exposure_classes:
+            classification = classifications.get(exposure_str[:2].upper())
+            if classification is None:
+                raise ValueError(f"Unknown exposure class: '{exposure_str}'")
+            classification_name = classification.snake_case().removesuffix("_thaw")
+            if classification_name in exposures:
+                raise ValueError(f"Duplication Error: There are multiple instances of '{classification.__name__}' class.")
+            exposures[classification_name] = classification[exposure_str.upper()]
 
         return cls(**exposures)  # type: ignore[arg-type]

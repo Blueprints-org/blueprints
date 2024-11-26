@@ -2,6 +2,7 @@
 according to Table 4.1 from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement.
 """
 
+import re
 from abc import abstractmethod
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -105,6 +106,17 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         str
             description of the environment based on the instance
         """
+
+    @classmethod
+    def snake_case(cls) -> str:
+        """Converts the name of a subclass to snake_case which can be used in a parametrization class.
+
+        Returns
+        -------
+        str
+            the name of a subclass in snake_case
+        """
+        return re.sub(r"(?<!^)(?=[A-Z])", "_", cls.__name__).lower()
 
 
 @total_ordering
