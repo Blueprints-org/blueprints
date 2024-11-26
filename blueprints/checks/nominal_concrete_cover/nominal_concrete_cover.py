@@ -100,11 +100,11 @@ class NominalConcreteCover:
             raise TypeError(f"Invalid type for casting_surface: {type(self.casting_surface)}. Expected type is CastingSurface.")
 
         if isinstance(self.carbonation, str):
-            object.__setattr__(self, "carbonation", Carbonation[self.carbonation])
+            object.__setattr__(self, "carbonation", Carbonation[self.carbonation.upper()])
         if isinstance(self.chloride, str):
-            object.__setattr__(self, "chloride", Chloride[self.chloride])
+            object.__setattr__(self, "chloride", Chloride[self.chloride.upper()])
         if isinstance(self.chloride_seawater, str):
-            object.__setattr__(self, "chloride_seawater", ChlorideSeawater[self.chloride_seawater])
+            object.__setattr__(self, "chloride_seawater", ChlorideSeawater[self.chloride_seawater.upper()])
 
     def exposure_classes(self) -> Table4Dot1ExposureClasses:
         """Exposure classes according to table 4.1 from NEN-EN 1992-1-1."""
