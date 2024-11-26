@@ -4,7 +4,6 @@
 from blueprints.checks.nominal_concrete_cover.constants.constants_nen_en_1992_1_1_c2_2011 import NominalConcreteCoverConstants2011C2
 from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
 from blueprints.checks.nominal_concrete_cover.nominal_concrete_cover import NominalConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import Table4Dot1ExposureClasses
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 
@@ -16,12 +15,9 @@ concrete_material = ConcreteMaterial(
 # Define the constants for the calculation of nominal concrete cover according to NEN-EN 1992-1-1+C2:2011
 constants = NominalConcreteCoverConstants2011C2()
 
-# Exposure classes of the concrete element
-exposure_classes = Table4Dot1ExposureClasses.from_exposure_list(["XC1"])
-
 # Or calculate the structural class by its exposure classes, design working life and other parameters
 structural_class = Table4Dot3ConcreteStructuralClass(
-    exposure_classes=exposure_classes,
+    exposure_classes=["XC1"],
     design_working_life=100,
     concrete_material=concrete_material,
     plate_geometry=False,
@@ -34,9 +30,7 @@ calculation = NominalConcreteCover(
     nominal_max_aggregate_size=32,
     constants=constants,
     structural_class=structural_class,  # or by its number, for example 4 in the case of S4
-    carbonation=exposure_classes.carbonation,
-    chloride=exposure_classes.chloride,
-    chloride_seawater=exposure_classes.chloride_seawater,
+    carbonation="XC1",
     delta_c_dur_gamma=10,
     delta_c_dur_add=0,
     casting_surface=CastingSurface.PREPARED_GROUND,
