@@ -145,5 +145,7 @@ class TestTable4Dot1ExposureClasses:
 
     def test_dubble_exposure_class(self) -> None:
         """Test the from_exposure_list method of Table4Dot1ExposureClasses with a double exposure class."""
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             _ = Table4Dot1ExposureClasses.from_exposure_list(["XC1", "XD1", "XD2", "XF1", "XA1"])
+
+        assert str(excinfo.value) == "Duplication Error: There are multiple instances of 'Chloride' class."
