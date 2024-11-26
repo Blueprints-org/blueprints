@@ -24,8 +24,8 @@ class Form11Dot1AxialTensileResistance(Formula):
 
         Parameters
         ----------
-        k_mod : DIMENSIONLESS
-            [:math:`k_{mod}`] Modification factor for duration of load and moisture.
+        k_mod : DIMENSIONLESS.
+            [:math:`k_{mod}`]  Modification factor accounting for the effect of the duration of load and moisture
         gamma_r : DIMENSIONLESS
             [:math:`\\gamma_R`] Partial factor for resistance.
         f_pull_k : KN
@@ -62,7 +62,7 @@ class Form11Dot1AxialTensileResistance(Formula):
             _equation,
             {
                 r"k_{mod}": f"{self.k_mod:.2f}",
-                r"gamma_R": f"{self.gamma_r:.2f}",
+                r"\gamma_R": f"{self.gamma_r:.2f}",
                 r"F_{pull,k}": f"{self.f_pull_k:.2f}",
                 r"F_{w,k}": f"{self.f_w_k:.2f}",
             },
@@ -75,4 +75,5 @@ class Form11Dot1AxialTensileResistance(Formula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
+            unit="kN"
         )
