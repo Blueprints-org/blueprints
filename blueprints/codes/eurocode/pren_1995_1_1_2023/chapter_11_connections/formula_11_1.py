@@ -47,12 +47,7 @@ class Form11Dot1AxialTensileResistance(Formula):
         f_w_k: KN,
     ) -> KN:
         """Evaluates the formula for the design axial tensile resistance."""
-        raise_if_less_or_equal_to_zero(
-            k_mod=k_mod,
-            gamma_r=gamma_r,
-            f_pull_k=f_pull_k,
-            f_w_k=f_w_k
-        )
+        raise_if_less_or_equal_to_zero(k_mod=k_mod, gamma_r=gamma_r, f_pull_k=f_pull_k, f_w_k=f_w_k)
         return k_mod / gamma_r * max(f_pull_k, f_w_k)
 
     def latex(self) -> LatexFormula:
@@ -66,7 +61,7 @@ class Form11Dot1AxialTensileResistance(Formula):
                 r"F_{pull,k}": f"{self.f_pull_k:.2f}",
                 r"F_{w,k}": f"{self.f_w_k:.2f}",
             },
-            True
+            True,
         )
 
         return LatexFormula(
@@ -75,5 +70,5 @@ class Form11Dot1AxialTensileResistance(Formula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
-            unit="kN"
+            unit="kN",
         )
