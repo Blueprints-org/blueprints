@@ -1,0 +1,37 @@
+/* settings for logo in dark and light mode */
+#logo_light_mode {
+    display: var(--md-footer-logo-light-mode);
+}
+
+#logo_dark_mode {
+    display: var(--md-footer-logo-dark-mode);
+}
+
+[data-md-color-scheme="default"] {
+    --md-footer-logo-dark-mode:         none;
+    --md-footer-logo-light-mode:         block;
+}
+
+[data-md-color-scheme="slate"] {
+    --md-footer-logo-dark-mode:         block;
+    --md-footer-logo-light-mode:         none;
+}
+
+/* hide site_name in header */
+.md-header__topic {
+    display: none;
+}
+
+/* make logo slightly bigger */
+.md-header__button.md-logo {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 5;
+    padding-bottom: 0;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+    height: 50%;
+    width: 60%;
+}
