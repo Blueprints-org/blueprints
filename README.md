@@ -88,12 +88,32 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 <summary> Progress definitions </summary>
 
-| Icon | Definition  |
-| ---  | ---------   |
-| ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange) | Just started |
-| ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow) | Making progress |
-| ![](https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen) | In Review |
-| ✔️  | Done |
+<table border="1">
+  <thead>
+    <tr>
+      <th>Icon</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange" alt="20% Icon"></td>
+      <td>Just started</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow" alt="50% Icon"></td>
+      <td>Making progress</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen" alt="80% Icon"></td>
+      <td>In Review</td>
+    </tr>
+    <tr>
+      <td>✔️</td>
+      <td>Done</td>
+    </tr>
+  </tbody>
+</table>
 
 </details>
 
