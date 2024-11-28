@@ -3,7 +3,14 @@ repo_url: https://github.com/Blueprints-org/blueprints
 
 extra_css:
   - assets/stylesheets/extra.css
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
+extra_javascript:
+  - assets/javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
   
+
 theme:
   favicon: assets/images/favicon.ico
   name: material
@@ -34,9 +41,12 @@ theme:
   features:
     - toc.follow
     - navigation.indexes
+    - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
     - content.code.copy
+    - navigation.path
+    - navigation.top
 
   language: en
 
@@ -64,13 +74,14 @@ plugins:
             separate_signature: true
             show_bases: true
             show_root_heading: true
+            show_member_full_path: true
             show_root_full_path: true
             show_symbol_type_heading: true
             signature_crossrefs: true
             summary:
+              classes: true
               modules: true
             unwrap_annotated: true
-            show_category_heading: true
             docstring_section_style: list
             show_if_no_docstring: true
 
