@@ -22,23 +22,23 @@ class Form5Dot7ShearBucklingResistance(Formula):
         f_bv: MPA,
         gamma_m_0: DIMENSIONLESS,
     ) -> None:
-        """[:math:`V_{b,Rd}`] Calculate the shear buckling resistance [:math:`kN`].
+        """[$V_{b,Rd}$] Calculate the shear buckling resistance [$kN$].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(7) - Formula (5.7)
 
         Parameters
         ----------
         h : MM
-            [:math:`h`] Height of the web in [:math:`mm`].
+            [$h$] Height of the web in [$mm$].
         t_f : MM
-            [:math:`t_{f}`] Thickness of the flange in [:math:`mm`].
+            [$t_{f}$] Thickness of the flange in [$mm$].
         t_w : MM
-            [:math:`t_{w}`] Thickness of the web in [:math:`mm`].
+            [$t_{w}$] Thickness of the web in [$mm$].
         f_bv : MPA
-            [:math:`f_{bv}`] Shear buckling strength according to Table 6-1 of EN 1993-1-3 for a web without stiffening
-            at the support and for a relative web slenderness [:math:`MPa`]
+            [$f_{bv}$] Shear buckling strength according to Table 6-1 of EN 1993-1-3 for a web without stiffening
+            at the support and for a relative web slenderness [$MPa$]
         gamma_m_0 : float
-            [:math:`γ_{M0}`] Partial factor for material properties [-].
+            [$γ_{M0}$] Partial factor for material properties [-].
         """
         super().__init__()
         self.h: float = h

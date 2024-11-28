@@ -21,14 +21,14 @@ class Form8Dot15PrestressTransferStress(Formula):
         eta_1: DIMENSIONLESS,
         f_ctd_t: MPA,
     ) -> None:
-        """[:math:`f_{bpt}`] Constant bond stress at which prestress is assumed to be transferred to the concrete [:math:`MPa`].
+        """[$f_{bpt}$] Constant bond stress at which prestress is assumed to be transferred to the concrete [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.10.2.2(1) - Formula (8.15)
 
         Parameters
         ----------
         eta_p1 : DIMENSIONLESS
-            [:math:`η_{p1}`] Coefficient that takes into account the type of tendon and the bond situation at release [-].
+            [$η_{p1}$] Coefficient that takes into account the type of tendon and the bond situation at release [-].
 
             = 2.7 for indented wires.
 
@@ -36,7 +36,7 @@ class Form8Dot15PrestressTransferStress(Formula):
 
             Use your own implementation for this value or use :class:`SubForm8Dot15EtaP1` class.
         eta_1 : DIMENSIONLESS
-            [:math:`η_1`] Coefficient related to the quality of the bond condition and the position of the bar during concreting (see Figure 8.2) [-].
+            [$η_1$] Coefficient related to the quality of the bond condition and the position of the bar during concreting (see Figure 8.2) [-].
 
             = 1 when ‘good’ conditions are obtained;
 
@@ -44,9 +44,9 @@ class Form8Dot15PrestressTransferStress(Formula):
 
             Use your own implementation of this formula or use the :class:`SubForm8Dot2CoefficientQualityOfBond` class.
         f_ctd_t : MPA
-            [:math:`f_{ctd}(t)`] Design tensile value of strength at time of release [:math:`mm`].
+            [$f_{ctd}(t)$] Design tensile value of strength at time of release [$mm$].
 
-            = :math:`α_{ct} ⋅ 0.7 ⋅ f_{ctm}(t) / γ_{c}` (see 3.1.2(9) and 3.1.6(2)P)
+            =$α_{ct} ⋅ 0.7 ⋅ f_{ctm}(t) / γ_{c}$(see 3.1.2(9) and 3.1.6(2)P)
 
             Use your own implementation for this value or use :class:`SubForm8Dot15TensileStrengthAtRelease` class.
         """
@@ -92,7 +92,7 @@ class SubForm8Dot15EtaP1(Formula):
         self,
         type_of_wire: str,
     ) -> None:
-        """[:math:`η_{p1}`] Coefficient that takes into account the type of tendon and the bond situation at release [-].
+        """[$η_{p1}$] Coefficient that takes into account the type of tendon and the bond situation at release [-].
 
         NEN-EN 1992-1-1+C2:2011 art.8.10.2.2(1) - Formula (8.15)
 
@@ -144,23 +144,23 @@ class SubForm8Dot15TensileStrengthAtRelease(Formula):
         f_ctm_t: MPA,
         gamma_c: DIMENSIONLESS,
     ) -> None:
-        """[:math:`f_{ctd}(t)`] Design tensile value of strength at time of release [:math:`MPa`].
+        """[$f_{ctd}(t)$] Design tensile value of strength at time of release [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.10.2.2(1) - Formula (8.15)
 
         Parameters
         ----------
         alpha_ct : DIMENSIONLESS
-            [:math:`α_{ct}`] coefficient taking account of long term effects on the tensile strength and of unfavourable effects, resulting from the
+            [$α_{ct}$] coefficient taking account of long term effects on the tensile strength and of unfavourable effects, resulting from the
             way the load is applied. [-].
 
             Value may be found in national annex. Recommended value: 1.0
         f_ctm_t : MPA
-            [:math:`f_{ctm}(t)`] Mean value of tensile strength at time of release (see formula 3.4) [:math:`MPa`].
+            [$f_{ctm}(t)$] Mean value of tensile strength at time of release (see formula 3.4) [$MPa$].
 
             Use your own implementation for this value or use :class:`Form3Dot4DevelopmentTensileStrength` class.
         gamma_c : DIMENSIONLESS
-            [:math:`γ_{c}`] Partial safety factor for concrete [-].
+            [$γ_{c}$] Partial safety factor for concrete [-].
         """
         super().__init__()
         self.alpha_ct = alpha_ct

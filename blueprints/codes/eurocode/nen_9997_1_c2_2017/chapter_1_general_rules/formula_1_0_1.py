@@ -10,22 +10,22 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form1Dot0Dot1EquivalentPilePointCenterline(Formula):
-    """Class representing formula 1.0.1 for the calculation of the equivalent pile point centerline :math:`D_{eq}` in [m]."""
+    """Class representing formula 1.0.1 for the calculation of the equivalent pile point centerline $D_{eq}$ in [m]."""
 
     label = "1.0.1"
     source_document = NEN_9997_1_C2_2017
 
     def __init__(self, a: M, b: M) -> None:
-        """[:math:`D_{eq}`] Equivalent pile point centerline.
+        """[$D_{eq}$] Equivalent pile point centerline.
 
         NEN 9997-1+C2:2017 art.1.5.2.106a - Formula (1.0.1)
 
         Parameters
         ----------
         a : M
-            [:math:`a`] minor dimension of the largest cross-section at the pile tip [:math:`m`].
+            [$a$] minor dimension of the largest cross-section at the pile tip [$m$].
         b : M
-            [:math:`b`] major dimension of the largest cross-section at the pile tip [:math:`m`].
+            [$b$] major dimension of the largest cross-section at the pile tip [$m$].
 
             Where: b ≤ 1.5 * a
         """

@@ -10,7 +10,7 @@ from blueprints.type_alias import MM
 
 class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
     """Class representing the table 4.4N
-    for the calculation of the minimum cover :math:`c_{min,dur}` [:math:`mm`] requirements with regard to durability
+    for the calculation of the minimum cover $c_{min,dur}$ [$mm$] requirements with regard to durability
     for reinforcement steel.
     """
 
@@ -22,7 +22,7 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
         exposure_classes: ExposureClassesBase,
         structural_class: ConcreteStructuralClassBase,
     ) -> None:
-        """[:math:`c_{min,dur}`] Calculates the minimum concrete cover with regard to durability [:math:`mm`] for reinforcement steel.
+        """[$c_{min,dur}$] Calculates the minimum concrete cover with regard to durability [$mm$] for reinforcement steel.
 
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.2 (5) - Table (4.4N)
 

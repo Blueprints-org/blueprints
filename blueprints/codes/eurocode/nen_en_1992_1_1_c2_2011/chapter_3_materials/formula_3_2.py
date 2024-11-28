@@ -19,7 +19,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         s: float,
         t: DAYS,
     ) -> None:
-        """[:math:`β_{cc}(t)`] Coefficient which is dependent of the age of concrete in days [-].
+        """[$β_{cc}(t)$] Coefficient which is dependent of the age of concrete in days [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - Formula (3.2)
 

@@ -10,9 +10,9 @@ from blueprints.validations import raise_if_negative
 
 class Form2Dot4DesignValueGeotechnicalParameter:
     """Class representing formula 2.4 for the check of
-    the destabilizing load effect
-    against the stabilizing load effect and friction resistance
-    :math:`E_{dst;d} ≤ E_{stb;d} + T_d`.
+     the destabilizing load effect
+     against the stabilizing load effect and friction resistance
+    $E_{dst;d} ≤ E_{stb;d} + T_d$.
     """
 
     label = "2.4"
@@ -21,16 +21,16 @@ class Form2Dot4DesignValueGeotechnicalParameter:
     def __init__(self, e_dst_d: KN, e_stb_d: KN, t_d: KN) -> None:
         """Check of the destabilizing load effect
         against the stabilizing load effect and friction resistance
-        [:math:`E_{dst;d} ≤ E_{stb;d} + T_d`].
+        [$E_{dst;d} ≤ E_{stb;d} + T_d$].
 
         NEN 9997-1+C2:2017 art.2.4.7.2(1) - Formula (2.4)
 
         Parameters
         ----------
         E_dst_d : N
-            [:math:`E_dst;d`] Design value of destabilizing load effect.
+            [$E_dst;d$] Design value of destabilizing load effect.
         E_stb_d : N
-            [:math:`E_stb;d`] Design value of stabilizing load effect.
+            [$E_stb;d$] Design value of stabilizing load effect.
         T_d : N
             [:math: `T_d`] Design value of friction resistance.
         """

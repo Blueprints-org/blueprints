@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot5TransverseForceEffectFloorDiaphragm(Formula):
-    """Class representing formula 5.5 for the calculation of the effect of the inclination on floor diaphragm, :math:`H_{i}`.
+    """Class representing formula 5.5 for the calculation of the effect of the inclination on floor diaphragm, $H_{i}$.
 
     See Figure 5.1 c1.
     """
@@ -22,22 +22,22 @@ class Form5Dot5TransverseForceEffectFloorDiaphragm(Formula):
         n_a: KN,
         n_b: KN,
     ) -> None:
-        """[:math:`H_{i}`] Effect of the inclination on floor diaphragm [:math:`kN`].
+        """[$H_{i}$] Effect of the inclination on floor diaphragm [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(8) - Formula (5.5)
 
         Parameters
         ----------
         theta_i : DIMENSIONLESS
-            [:math:`Θ_{i}`] Eccentricity, initial inclination imperfections [-].
+            [$Θ_{i}$] Eccentricity, initial inclination imperfections [-].
         n_a : KN
-            [:math:`N_{a}`] Axial force in the member [:math:`kN`].
+            [$N_{a}$] Axial force in the member [$kN$].
         n_b : KN
-            [:math:`N_{b}`] Axial force in the member [:math:`kN`].
+            [$N_{b}$] Axial force in the member [$kN$].
 
         Notes
         -----
-        where :math:`N_{a} and :math:`N_{b}` are longitudinal forces contributing to :math:`H_{i}`.
+        where$_{a} and :math:$N_{b}` are longitudinal forces contributing to${i}$.
         Positive values for compression, tension is not allowed.
         """
         super().__init__()

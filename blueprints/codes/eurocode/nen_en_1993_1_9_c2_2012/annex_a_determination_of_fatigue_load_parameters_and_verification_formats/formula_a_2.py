@@ -17,14 +17,14 @@ class FormADot2CriteriaBasedOnDamageAccumulation(Formula):
         self,
         d_d: DIMENSIONLESS,
     ) -> None:
-        """[:math:`CHECK`] Criteria met, based on damage accumulation.
+        """[$CHECK$] Criteria met, based on damage accumulation.
 
         NEN-EN 1993-1-9+C2:2012 art.A.5 - Formula (A.1)
 
         Parameters
         ----------
         d_d : DIMENSIONLESS
-            [:math:`D_d`] The damage during the design life [:math:`-`].
+            [$D_d$] The damage during the design life [$-$].
 
         Returns
         -------

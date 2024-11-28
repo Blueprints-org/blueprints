@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form8Dot14EquivalentDiameterBundledBars(Formula):
-    """Class representing formula 8.14 for the calculation of the equivalent diameter of bundled bars, :math:`Ø_{n}`."""
+    """Class representing formula 8.14 for the calculation of the equivalent diameter of bundled bars, $Ø_{n}$."""
 
     label = "8.14"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,16 +20,16 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
         diameter: MM,
         n_b: DIMENSIONLESS,
     ) -> None:
-        """[:math:`Ø_{n}`] Equivalent diameter of bundled bars [:math:`mm`].
+        """[$Ø_{n}$] Equivalent diameter of bundled bars [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.9.1(2) - Formula (8.14)
 
         Parameters
         ----------
         diameter : MM
-            [:math:`Ø`] Diameter of the bars [:math:`mm`]
+            [$Ø$] Diameter of the bars [$mm$]
         n_b : DIMENSIONLESS
-            [:math:`n_{b}`] Number of bars in the bundle [-].
+            [$n_{b}$] Number of bars in the bundle [-].
 
             ≤ 4 for vertical bars in compression and for bars in a lapped joint.
 

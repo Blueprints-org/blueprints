@@ -18,16 +18,16 @@ class Form5Dot10ReductionFactorShearArea(Formula):
         v_ed: KN,
         v_pl_rd: KN,
     ) -> None:
-        """[:math:`ρ`] Calculate the reduction factor for shear area of the cross-section [-].
+        """[$ρ$] Calculate the reduction factor for shear area of the cross-section [-].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(9) - Formula (5.10)
 
         Parameters
         ----------
         v_ed : KN
-            [:math:`V_{Ed}`] Design shear force in [:math:`kN`].
+            [$V_{Ed}$] Design shear force in [$kN$].
         v_pl_rd : KN
-            [:math:`V_{pl,rd}`] Plastic shear resistance in [:math:`kN`].
+            [$V_{pl,rd}$] Plastic shear resistance in [$kN$].
         """
         super().__init__()
         self.v_ed: float = v_ed

@@ -97,7 +97,7 @@ class ConcreteMaterial:
         Use a custom name for the concrete material (default= concrete class name)
     custom_e_c: MPA
         Use a custom modulus of elasticity of concrete [MPa]
-        If no custom value is given, the value :math:`E_cm` from table 3.1 of NEN-EN 1992-1-1 is used.
+        If no custom value is given, the value $E_cm$ from table 3.1 of NEN-EN 1992-1-1 is used.
 
     """
 
@@ -129,9 +129,9 @@ class ConcreteMaterial:
 
     @property
     def e_c(self) -> MPA:
-        """[:math:`E_c`] Modulus of elasticity of concrete [MPa].
+        """[$E_c$] Modulus of elasticity of concrete [MPa].
 
-        If no custom value is given, the value :math:`E_cm` from table 3.1 of NEN-EN 1992-1-1 is used.
+        If no custom value is given, the value $E_cm$ from table 3.1 of NEN-EN 1992-1-1 is used.
 
         Returns
         -------
@@ -144,7 +144,7 @@ class ConcreteMaterial:
 
     @property
     def f_ck(self) -> MPA:
-        """[:math:`f_ck`] Characteristic compressive cylinder strength of concrete at 28 days [MPa].
+        """[$f_ck$] Characteristic compressive cylinder strength of concrete at 28 days [MPa].
 
         Returns
         -------
@@ -158,7 +158,7 @@ class ConcreteMaterial:
 
     @property
     def f_ck_cube(self) -> MPA:
-        """[:math:`f_{ck,cube}`] Characteristic compressive cubic strength of concrete at 28 days [MPa].
+        """[$f_{ck,cube}$] Characteristic compressive cubic strength of concrete at 28 days [MPa].
 
         Returns
         -------
@@ -172,7 +172,7 @@ class ConcreteMaterial:
 
     @property
     def f_cd(self) -> MPA:
-        """[:math:`f_cd`] Design value of concrete compressive strength (NEN-EN 1992-1-1 art.3.1.6 (1)) [MPa].
+        """[$f_cd$] Design value of concrete compressive strength (NEN-EN 1992-1-1 art.3.1.6 (1)) [MPa].
 
         Returns
         -------
@@ -183,7 +183,7 @@ class ConcreteMaterial:
 
     @property
     def f_cm(self) -> MPA:
-        """[:math:`f_cm`] Mean value of concrete cylinder compressive strength [MPa].
+        """[$f_cm$] Mean value of concrete cylinder compressive strength [MPa].
 
         Returns
         -------
@@ -194,7 +194,7 @@ class ConcreteMaterial:
 
     @property
     def f_cm_cube(self) -> MPA:
-        """[:math:`f_{cm,cube}`] Mean value of concrete cubic compressive strength [MPa].
+        """[$f_{cm,cube}$] Mean value of concrete cubic compressive strength [MPa].
 
         Returns
         -------
@@ -205,7 +205,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctm(self) -> MPA:
-        """[:math:`f_ctm`] Mean value of axial tensile strength of concrete [MPa].
+        """[$f_ctm$] Mean value of axial tensile strength of concrete [MPa].
 
         Returns
         -------
@@ -218,7 +218,7 @@ class ConcreteMaterial:
 
     @property
     def sigma_cr(self) -> MPA:
-        r"""[:math:`σ_{cr}`] Crack tensile stress (long term) equal to :math:`0.6 \cdot f_{ctm}` [MPa].
+        r"""[$σ_{cr}$] Crack tensile stress (long term) equal to $0.6 \cdot f_{ctm}$ [MPa].
 
         Returns
         -------
@@ -229,7 +229,7 @@ class ConcreteMaterial:
 
     @property
     def strain_cr(self) -> MPA:
-        """[:math:`ε_{cr}`] Strain at crack tensile stress (long term) equal to :math:`σ_{cr} / E_{cm}` [MPa].
+        """[$ε_{cr}$] Strain at crack tensile stress (long term) equal to $σ_{cr} / E_{cm}$ [MPa].
 
         Returns
         -------
@@ -240,7 +240,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctk_0_05(self) -> MPA:
-        """[:math:`f_{ctk,0.05}`] Mean value of axial tensile strength of concrete, 5% fractile [MPa].
+        """[$f_{ctk,0.05}$] Mean value of axial tensile strength of concrete, 5% fractile [MPa].
 
         Returns
         -------
@@ -251,7 +251,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctd(self) -> MPA:
-        """[:math:`f_ctd`] Design value of tensile strength of concrete [MPa].
+        """[$f_ctd$] Design value of tensile strength of concrete [MPa].
 
         Returns
         -------
@@ -262,7 +262,7 @@ class ConcreteMaterial:
 
     @property
     def f_ctk_0_95(self) -> MPA:
-        """[:math:`f_{ctk,0.95}`] Mean value of axial tensile strength of concrete, 95% fractile [MPa].
+        """[$f_{ctk,0.95}$] Mean value of axial tensile strength of concrete, 95% fractile [MPa].
 
         Returns
         -------
@@ -273,7 +273,7 @@ class ConcreteMaterial:
 
     @property
     def e_cm(self) -> MPA:
-        """[:math:`E_cm`] Secant modulus of elasticity of concrete [MPa].
+        """[$E_cm$] Secant modulus of elasticity of concrete [MPa].
 
         Returns
         -------
@@ -284,7 +284,7 @@ class ConcreteMaterial:
 
     @property
     def custom_e_c_present(self) -> bool:
-        """Checks if the value of :math:`E_c` equal is to the value of :math:`E_cm` from table 3.1 of NEN-EN 1992-1-1.
+        """Checks if the value of $E_c$ equal is to the value of $E_cm$ from table 3.1 of NEN-EN 1992-1-1.
 
         Returns
         -------
@@ -295,7 +295,7 @@ class ConcreteMaterial:
 
     @property
     def eps_c1(self) -> PER_MILLE:
-        """[:math:`ε_{c1}`] Compressive strain in the concrete at the peak stress :math:`f_c` [‰ (per mille)]. Value with a maximum of 2.8 ‰.
+        """[$ε_{c1}$] Compressive strain in the concrete at the peak stress $f_c$ [‰ (per mille)]. Value with a maximum of 2.8 ‰.
         Check Figure 3.2 of NEN-EN 1992-1-1.
 
         Returns
@@ -307,7 +307,7 @@ class ConcreteMaterial:
 
     @property
     def eps_cu1(self) -> PER_MILLE:
-        """[:math:`ε_{cu1}`] Nominal ultimate compressive strain in the concrete [‰ (per mille)]. Check Figure 3.2 of NEN-EN 1992-1-1.
+        """[$ε_{cu1}$] Nominal ultimate compressive strain in the concrete [‰ (per mille)]. Check Figure 3.2 of NEN-EN 1992-1-1.
 
         Returns
         -------
@@ -320,7 +320,7 @@ class ConcreteMaterial:
 
     @property
     def eps_c2(self) -> PER_MILLE:
-        """[:math:`ε_{c2}`] Compressive strain at reaching the maximum strength according to Table 3.1 [‰ (per mille)].
+        """[$ε_{c2}$] Compressive strain at reaching the maximum strength according to Table 3.1 [‰ (per mille)].
         Check Figure 3.3 of NEN-EN 1992-1-1.
 
         Returns
@@ -334,7 +334,7 @@ class ConcreteMaterial:
 
     @property
     def eps_cu2(self) -> PER_MILLE:
-        """[:math:`ε_{cu2}`]Nominal ultimate compressive strain in the concrete according to Table 3.1 [‰ (per mille)].
+        """[$ε_{cu2}$] Nominal ultimate compressive strain in the concrete according to Table 3.1 [‰ (per mille)].
         Check Figure 3.3 of NEN-EN 1992-1-1.
 
         Returns
@@ -348,7 +348,7 @@ class ConcreteMaterial:
 
     @property
     def n_factor(self) -> DIMENSIONLESS:
-        """[:math:`n`] factor from table 3.1 of NEN-EN 1992-1-1 [-].
+        """[$n$] factor from table 3.1 of NEN-EN 1992-1-1 [-].
 
         Returns
         -------
@@ -361,7 +361,7 @@ class ConcreteMaterial:
 
     @property
     def eps_c3(self) -> PER_MILLE:
-        """[:math:`ε_{c3}`]Compressive strain at reaching the maximum strength according to a Bi-linear stress-strain relation [‰ (per mille)].
+        """[$ε_{c3}$]Compressive strain at reaching the maximum strength according to a Bi-linear stress-strain relation [‰ (per mille)].
 
         Check Figure 3.4 of NEN-EN 1992-1-1.
 
@@ -376,7 +376,7 @@ class ConcreteMaterial:
 
     @property
     def eps_cu3(self) -> PER_MILLE:
-        """[:math:`ε_{cu3}`]Nominal ultimate compressive strain in the concrete according to a Bi-linear stress-strain relation [‰ (per mille)].
+        """[$ε_{cu3}$]Nominal ultimate compressive strain in the concrete according to a Bi-linear stress-strain relation [‰ (per mille)].
 
         Check Figure 3.4 of NEN-EN 1992-1-1.
 
@@ -390,7 +390,7 @@ class ConcreteMaterial:
         return 3.5
 
     def rho_min(self, f_yd: MPA) -> PERCENTAGE:
-        """[:math:`ρ_{min}`] Minimum reinforcement ratio (CB2, 7de druk 2011, pag.55) [%].
+        """[$ρ_{min}$] Minimum reinforcement ratio (CB2, 7de druk 2011, pag.55) [%].
 
         Parameters
         ----------
