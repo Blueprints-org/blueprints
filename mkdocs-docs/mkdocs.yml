@@ -1,0 +1,95 @@
+site_name: "Blueprints"
+repo_url: https://github.com/Blueprints-org/blueprints
+
+extra_css:
+  - assets/stylesheets/extra.css
+  
+theme:
+  favicon: assets/images/favicon.ico
+  name: material
+  logo_dark_mode: assets/images/logo-dark-mode.png
+  logo_light_mode: assets/images/logo-light-mode.png
+  custom_dir: docs/overrides
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: indigo
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/brightness-4 
+        name: Switch to system preference
+  font: 
+    text: Gentium Plus
+  features:
+    - toc.follow
+    - navigation.indexes
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - content.code.copy
+
+  language: en
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: date
+  - gen-files:
+      scripts:
+        - docs/scripts/generate_reference_pages.py
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [../blueprints]
+          options:
+            show_source: true
+            merge_init_into_class: true
+            show_signature_annotations: true
+            filters:
+              - "!^_"
+            line_length: 60
+            docstring_style: numpy
+            heading_level: 2
+            separate_signature: true
+            show_bases: true
+            show_root_heading: true
+            show_root_full_path: true
+            show_symbol_type_heading: true
+            signature_crossrefs: true
+            summary:
+              modules: true
+            unwrap_annotated: true
+            show_category_heading: true
+            docstring_section_style: list
+            show_if_no_docstring: true
+
+markdown_extensions: 
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.gemoji
+      alt: short
+  - pymdownx.tasklist:
+      custom_checkbox: false
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - abbr
+  - attr_list
+  - pymdownx.snippets:
+      check_paths: true
+      base_path: 
+        - ../README.md
+  - pymdownx.arithmatex:
+      generic: true
