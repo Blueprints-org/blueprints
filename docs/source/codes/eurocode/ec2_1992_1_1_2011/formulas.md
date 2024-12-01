@@ -221,7 +221,7 @@ Total of 304 formulas present.
 | 8.17           | :heavy_check_mark: |         | Form8Dot17DesignValueTransmissionLength1                  |
 | 8.18           | :heavy_check_mark: |         | Form8Dot18DesignValueTransmissionLength2                  |
 | 8.19           |        :x:         |         |                                                           |
-| 8.20           |        :x:         |         |                                                           |
+| 8.20           | :heavy_check_mark: |         | Form8Dot20BondStrengthAnchorageULS                        |
 | 8.21           |        :x:         |         |                                                           |
 | 9.1N           | :heavy_check_mark: |         | Form9Dot1nMinimumTensileReinforcementBeam                 |
 | 9.2            | :heavy_check_mark: |         | Form9Dot2ShiftInMomentDiagram                             |
