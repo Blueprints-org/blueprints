@@ -39,8 +39,7 @@ class Form8Dot19DispersionLength(Formula):
         d: M,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(l_pt=l_pt)
-        raise_if_negative(d=d)
+        raise_if_negative(l_pt=l_pt, d=d)
         return (l_pt**2 + d**2) ** 0.5
 
     def latex(self) -> LatexFormula:
