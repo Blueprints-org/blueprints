@@ -3,6 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
+from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 
 
@@ -13,25 +14,27 @@ class Form8Dot20BondStrengthAnchorageULS(Formula):
 
     Parameters
     ----------
-    eta_p2 : float
-        Coefficient that takes into account the type of tendon and the bond situation at anchorage. 1.4 for indented wires or 1,2 for 7-wire strands.
-    eta_1 : float
-        Coefficient for concrete, defined in 8.10.2.2 (1).
-    f_ctd : float
+    eta_p2 : DIMENSIONLESS
+        [:math:`η_{p2}`] Coefficient that takes into account the type of tendon and the bond situation at anchorage [:math:`-`].
+
+        1.4 for indented wires or 1,2 for 7-wire strands.
+    eta_1 : DIMENSIONLESS
+        [:math:`η_{1}`] Coefficient for concrete, defined in 8.10.2.2 (1) [:math:`-`].
+    f_ctd : MPA
         Design tensile strength of concrete [:math:`MPa`].
     """
 
     label = "8.20"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, eta_p2: float, eta_1: float, f_ctd: float) -> None:
+    def __init__(self, eta_p2: DIMENSIONLESS, eta_1: DIMENSIONLESS, f_ctd: MPA) -> None:
         super().__init__()
         self.eta_p2 = eta_p2
         self.eta_1 = eta_1
         self.f_ctd = f_ctd
 
     @staticmethod
-    def _evaluate(eta_p2: float, eta_1: float, f_ctd: float) -> float:
+    def _evaluate(eta_p2: DIMENSIONLESS, eta_1: DIMENSIONLESS, f_ctd: MPA) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(eta_p2=eta_p2, eta_1=eta_1, f_ctd=f_ctd)
         return eta_p2 * eta_1 * f_ctd
