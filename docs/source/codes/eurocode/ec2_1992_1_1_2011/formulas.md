@@ -56,7 +56,7 @@ Total of 304 formulas present.
 | 5.8            | :heavy_check_mark: |         | Form5Dot8EffectiveSpan                                    |
 | 5.9            | :heavy_check_mark: |         | Form5Dot9DesignSupportMomentReduction                     |
 | 5.10a          | :heavy_check_mark: |         | Form5Dot10aRedistributionOfMomentsLowerFck                |
-| 5.10b          |        :x:         |         |                                                           |
+| 5.10b          | :heavy_check_mark: |         | Form5Dot10bRedistributionOfMomentsUpperFck                |
 | 5.11N          | :heavy_check_mark: |         | Form5Dot11nShearSlendernessCorrectionFactor               |
 | 5.12N          | :heavy_check_mark: |         | Form5Dot12nRatioDistancePointZeroAndMaxMoment             |
 | 5.13N          | :heavy_check_mark: |         | Form5Dot13NSlendernessCriterion                           |
@@ -220,8 +220,8 @@ Total of 304 formulas present.
 | 8.16           | :heavy_check_mark: |         | Form8Dot16BasicTransmissionLength                         |
 | 8.17           | :heavy_check_mark: |         | Form8Dot17DesignValueTransmissionLength1                  |
 | 8.18           | :heavy_check_mark: |         | Form8Dot18DesignValueTransmissionLength2                  |
-| 8.19           |        :x:         |         |                                                           |
-| 8.20           |        :x:         |         |                                                           |
+| 8.19           | :heavy_check_mark: |         | Form8Dot19DispersionLength                                |
+| 8.20           | :heavy_check_mark: |         | Form8Dot20BondStrengthAnchorageULS                        |
 | 8.21           |        :x:         |         |                                                           |
 | 9.1N           | :heavy_check_mark: |         | Form9Dot1nMinimumTensileReinforcementBeam                 |
 | 9.2            | :heavy_check_mark: |         | Form9Dot2ShiftInMomentDiagram                             |

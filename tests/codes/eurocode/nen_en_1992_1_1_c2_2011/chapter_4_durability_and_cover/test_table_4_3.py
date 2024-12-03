@@ -174,6 +174,20 @@ class TestTable4Dot3ConcreteStructuralClass:
         assert isinstance(new_instance, ConcreteStructuralClassBase)
         assert isinstance(new_instance, int)
 
+    def test_new_instance_list_of_exposure_classes(self) -> None:
+        """Test if a new instance can be instantiated with a list of exposure classes."""
+        new_instance = Table4Dot3ConcreteStructuralClass(
+            exposure_classes=["XC2", "XD1", "XS1", "XA2"],
+            design_working_life=50,
+            concrete_material=ConcreteMaterial(ConcreteStrengthClass("C20/25")),
+            plate_geometry=False,
+            quality_control=False,
+        )
+
+        assert isinstance(new_instance, Table4Dot3ConcreteStructuralClass)
+        assert isinstance(new_instance, ConcreteStructuralClassBase)
+        assert isinstance(new_instance, int)
+
     def test_new_instance_attributes(self) -> None:
         """Test if the new instance has the 'explanation' attribute."""
         new_instance = Table4Dot3ConcreteStructuralClass(

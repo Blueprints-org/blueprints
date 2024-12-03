@@ -69,10 +69,10 @@ class TestTable4Dot2MinimumCoverWithRegardToBond:
     @pytest.mark.parametrize(
         ("nominal_max_aggregate_size_greater_than_32_mm", "representation", "expected_result"),
         [
-            (True, "complete", r"c_{min,b} = (equivalent) diameter + 5 = 20 + 5 = 25.0"),
-            (True, "short", "c_{min,b} = 25.0"),
-            (False, "complete", r"c_{min,b} = (equivalent) diameter = 20 = 20.0"),
-            (False, "short", "c_{min,b} = 20.0"),
+            (True, "complete", r"c_{min,b} = (equivalent) rebar diameter + 5 = 20 + 5 = 25"),
+            (True, "short", "c_{min,b} = 25"),
+            (False, "complete", r"c_{min,b} = (equivalent) rebar diameter = 20 = 20"),
+            (False, "short", "c_{min,b} = 20"),
         ],
     )
     def test_latex(self, nominal_max_aggregate_size_greater_than_32_mm: bool, representation: str, expected_result: str) -> None:
