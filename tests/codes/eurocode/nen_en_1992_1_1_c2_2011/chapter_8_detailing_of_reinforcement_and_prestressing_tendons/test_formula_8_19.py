@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_19 import (
     Form8Dot19DispersionLength,
 )
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot19DispersionLength:
@@ -29,7 +29,7 @@ class TestForm8Dot19DispersionLength:
         l_pt = -10  # m
         d = 2  # m
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot19DispersionLength(l_pt=l_pt, d=d)
 
     def test_raise_error_when_negative_d_is_given(self) -> None:
@@ -38,7 +38,7 @@ class TestForm8Dot19DispersionLength:
         l_pt = 10  # m
         d = -2  # m
 
-        with pytest.raises(NegativeValueError):
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot19DispersionLength(l_pt=l_pt, d=d)
 
     @pytest.mark.parametrize(
