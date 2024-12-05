@@ -8,14 +8,9 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 
 # Define the concrete material to be used in the calculation
-concrete_material = ConcreteMaterial(
-    concrete_class=ConcreteStrengthClass.C30_37,
-)
+concrete_material = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C30_37)
 
-# Define the constants for the calculation of nominal concrete cover according to NEN-EN 1992-1-1+C2:2011
-constants = NominalConcreteCoverConstants2011C2()
-
-# Or calculate the structural class by its exposure classes, design working life and other parameters
+# Calculate the structural class by its exposure classes, design working life and other parameters
 structural_class = Table4Dot3ConcreteStructuralClass(
     exposure_classes=["XC1"],
     design_working_life=100,
@@ -28,7 +23,7 @@ structural_class = Table4Dot3ConcreteStructuralClass(
 calculation = NominalConcreteCover(
     reinforcement_diameter=32,
     nominal_max_aggregate_size=32,
-    constants=constants,
+    constants=NominalConcreteCoverConstants2011C2(),
     structural_class=structural_class,  # or by its number, for example 4 in the case of S4
     carbonation="XC1",
     delta_c_dur_gamma=10,
