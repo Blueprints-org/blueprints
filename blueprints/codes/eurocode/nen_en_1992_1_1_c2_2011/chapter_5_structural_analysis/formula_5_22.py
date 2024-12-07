@@ -66,8 +66,6 @@ class Form5Dot22FactorKc(Formula):
         rho : float
             [:math:`\rho`] Geometric reinforcement ratio, As/Ac. Must be >= 0.002.
         """
-        if rho < 0.002:
-            raise ValueError(f"Invalid rho: {rho}. rho cannot be less than 0.002")
         super().__init__()
         self.k1 = k1
         self.k2 = k2
