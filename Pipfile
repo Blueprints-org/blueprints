@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+matplotlib = ">=3.7.2"
+plotly = ">=5.15.0"
+pandas = ">=2.1.0"
+shapely = ">=2.0.1"
+numpy = ">=1.25.2"
+mypy = "==1.13.0"
+ruff = "==0.8.0"
+pre-commit = "==4.0.1"
+pytest = "==8.3.3"
+pytest-cov = "==6.0.0"
+pytest-describe = "==2.2.0"
+pytest-pspec = "==0.0.4"
+pytest-raises = "==0.11"
+types-shapely = "==2.0.0.20241112"
+pandas-stubs = "==2.2.3.241009"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

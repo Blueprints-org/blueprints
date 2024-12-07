@@ -46,6 +46,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
     * NEN-EN 1993-1-1+C2+A1:2016 🚧
     * NEN-EN 1993-1-9+C2:2012 🚧
     * NEN-EN 1993-5:2008 🚧
+    * prEN-EN 1995-1-1:2023 🚧
     * NEN 9997-1+C2:2017 🚧
 
 * Reinforced Concrete Section 🚧
