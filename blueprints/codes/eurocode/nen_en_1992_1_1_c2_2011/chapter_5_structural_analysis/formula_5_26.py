@@ -21,10 +21,8 @@ class Form5Dot26FactorKs(Formula):
         Parameters
         ----------
         rho : float
-            [:math:`\rho`] Geometric reinforcement ratio, As/Ac. Must be > 0.01.
+            [:math:`\rho`] Geometric reinforcement ratio, As/Ac. Must be >= 0.01.
         """
-        if rho <= 0.01:
-            raise ValueError(f"Invalid rho: {rho}. rho must be greater than 0.01")
         super().__init__()
         self.rho = rho
 
@@ -32,7 +30,7 @@ class Form5Dot26FactorKs(Formula):
     def _evaluate(rho: float) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if rho <= 0.01:
-            raise ValueError(f"Invalid rho: {rho}. rho must be greater than 0.01")
+            raise ValueError(f"Invalid rho: {rho}. rho cannot be less than 0.01")
         return 0.0
 
     def latex(self) -> LatexFormula:

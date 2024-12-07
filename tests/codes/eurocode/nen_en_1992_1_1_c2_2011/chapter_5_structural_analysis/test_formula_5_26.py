@@ -22,10 +22,10 @@ class TestForm5Dot26FactorKs:
 
         assert form_5_26_ks == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_when_rho_is_less_or_equal_to_0_01(self) -> None:
-        """Test a value for rho less than or equal to 0.01."""
+    def test_raise_error_when_rho_is_less_than_0_01(self) -> None:
+        """Test a value for rho less than 0.01."""
         # Example values
-        rho = 0.01
+        rho = 0.009
 
         with pytest.raises(ValueError):
             Form5Dot26FactorKs(rho=rho)
