@@ -74,7 +74,7 @@ Total of 304 formulas present.
 | 5.25           | :heavy_check_mark: |         | Form5Dot25AxialForceCorrectionFactor                      |
 | 5.26a          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
 | 5.26b          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
-| 5.27           |        :x:         |         | Form5Dot27EffectiveDesignModulusElasticity                |
+| 5.27           | :heavy_check_mark: |         | Form5Dot27EffectiveDesignModulusElasticity                |
 | 5.28           |        :x:         |         |                                                           |
 | 5.29           |        :x:         |         |                                                           |
 | 5.30           |        :x:         |         |                                                           |
