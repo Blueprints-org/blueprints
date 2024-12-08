@@ -77,7 +77,7 @@ Total of 304 formulas present.
 | 5.28           |        :x:         |         |                                                           |
 | 5.29           |        :x:         |         |                                                           |
 | 5.30           |        :x:         |         |                                                           |
-| 5.31           |        :x:         |         |                                                           |
+| 5.31           | :heavy_check_mark: |         | Form5Dot31DesignMoment                                    |
 | 5.32           |        :x:         |         |                                                           |
 | 5.33           |        :x:         |         |                                                           |
 | 5.34           |        :x:         |         |                                                           |
