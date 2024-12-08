@@ -39,9 +39,9 @@ class TestForm5Dot29BetaFactor:
         [
             (
                 "complete",
-                r"β = \frac{\pi^2}{c_0} = \frac{\pi^2}{8.000} = 1.234 -",
+                r"\beta = \frac{\pi^2}{c_0} = \frac{\pi^2}{8.000} = 1.234 -",
             ),
-            ("short", r"β = 1.234 -"),
+            ("short", r"\beta = 1.234 -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
