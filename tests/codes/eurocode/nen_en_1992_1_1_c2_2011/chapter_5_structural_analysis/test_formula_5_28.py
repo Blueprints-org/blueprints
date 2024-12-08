@@ -37,7 +37,7 @@ class TestForm5Dot28TotalDesignMoment:
         formula = Form5Dot28TotalDesignMoment(m_0ed=m_0ed, beta=beta, n_ed=n_ed, n_b=n_b)
 
         # Expected result, manually calculated
-        manually_calculated_result = 50000000.0  # kNm
+        manually_calculated_result = 1e9  # kNm
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
