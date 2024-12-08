@@ -43,7 +43,7 @@ class Form5Dot29BetaFactor(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.29."""
         return LatexFormula(
-            return_symbol=r"β",
+            return_symbol=r"\beta",
             result=f"{self:.3f}",
             equation=r"\frac{\pi^2}{c_0}",
             numeric_equation=rf"\frac{{\pi^2}}{{{self.c_0:.3f}}}",
