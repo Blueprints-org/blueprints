@@ -49,7 +49,7 @@ class TestForm5Dot33NominalSecondOrderMoment:
             (
                 "complete",
                 r"M_{2} = N_{Ed} \cdot \left(\frac{1}{r}\right) \cdot \frac{l_{o}^2}{c} "
-                r"= 100.000 \cdot \left(\frac{1}{0.010}\right) \cdot \frac{5.000^2}{10.000} = 2.500 kNm",
+                r"= 100.000 \cdot \left(0.010\right) \cdot \frac{5.000^2}{10.000} = 2.500 kNm",
             ),
             ("short", r"M_{2} = 2.500 kNm"),
         ],
