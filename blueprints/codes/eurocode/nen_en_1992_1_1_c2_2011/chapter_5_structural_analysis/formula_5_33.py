@@ -29,7 +29,7 @@ class Form5Dot33NominalSecondOrderMoment(Formula):
         n_ed : KN
             [:math:`N_{Ed}`] Design value of axial force [:math:`kN`].
         curvature : DIMENSIONLESS
-            [:math:`\frac{1}{r}`] Curvature (1/r), see 5.8.8.3 [-].
+            [:math:`\frac{1}{r}`] Curvature (1/r), see 5.8.8.3 [:math:`1/m`].
         l_o : M
             [:math:`l_{o}`] Effective length, see 5.8.3.2 [:math:`m`].
         c : DIMENSIONLESS
