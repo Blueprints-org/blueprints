@@ -80,7 +80,7 @@ Total of 304 formulas present.
 | 5.31           |        :x:         |         |                                                           |
 | 5.32           |        :x:         |         |                                                           |
 | 5.33           |        :x:         |         |                                                           |
-| 5.34           |        :x:         |         |                                                           |
+| 5.34           | :heavy_check_mark: |         | Form5Dot34Curvature                                       |
 | 5.35           |        :x:         |         |                                                           |
 | 5.36           |        :x:         |         |                                                           |
 | 5.37           |        :x:         |         |                                                           |
