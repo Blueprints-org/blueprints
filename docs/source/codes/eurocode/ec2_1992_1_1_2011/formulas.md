@@ -83,7 +83,7 @@ Total of 304 formulas present.
 | 5.34           | :heavy_check_mark: |         | Form5Dot34Curvature                                       |
 | 5.35           | :heavy_check_mark: |         | Form5Dot35EffectiveDepth                                  |
 | 5.36           | :heavy_check_mark: |         | Form5Dot36RelativeAxialForce                              |
-| 5.37           |        :x:         |         |                                                           |
+| 5.37           | :heavy_check_mark: |         | Form5Dot37CreepFactor                                     |
 | 5.38a          |        :x:         |         |                                                           |
 | 5.38b          |        :x:         |         |                                                           |
 | 5.39           |        :x:         |         |                                                           |
