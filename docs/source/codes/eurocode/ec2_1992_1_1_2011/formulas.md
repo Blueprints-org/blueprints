@@ -86,7 +86,7 @@ Total of 304 formulas present.
 | 5.37           |        :x:         |         |                                                           |
 | 5.38a          | :heavy_check_mark: |         | Form5Dot38aCheckRelativeSlendernessRatio                  |
 | 5.38b          | :heavy_check_mark: |         | Form5Dot38bCheckRelativeEccentricityRatio                 |
-| 5.39           |        :x:         |         |                                                           |
+| 5.39           | :heavy_check_mark: |         | Form5Dot39SimplifiedCriterionBiaxialBending               |
 | 5.40a          |        :x:         |         |                                                           |
 | 5.40b          |        :x:         |         |                                                           |
 | 5.41           |        :x:         |         |                                                           |
