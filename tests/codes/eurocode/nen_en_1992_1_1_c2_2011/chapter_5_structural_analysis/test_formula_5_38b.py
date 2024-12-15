@@ -25,6 +25,22 @@ class TestForm5Dot38bCheckRelativeEccentricityRatio:
 
         assert formula == expected_result
 
+    def test_evaluation_excentricity_zero(self) -> None:
+        """Tests the evaluation of the result with e=0."""
+        # Example values
+        e_y = 30.0
+        e_z = 0.0
+        b_eq = 100.0
+        h_eq = 101.0
+
+        # Object to test
+        formula = Form5Dot38bCheckRelativeEccentricityRatio(e_y=e_y, e_z=e_z, b_eq=b_eq, h_eq=h_eq)
+
+        # Expected result, manually calculated
+        expected_result = True
+
+        assert formula == expected_result
+
     @pytest.mark.parametrize(
         ("e_y", "e_z", "b_eq", "h_eq"),
         [
