@@ -84,7 +84,7 @@ Total of 304 formulas present.
 | 5.35           |        :x:         |         |                                                           |
 | 5.36           |        :x:         |         |                                                           |
 | 5.37           |        :x:         |         |                                                           |
-| 5.38a          |        :x:         |         |                                                           |
+| 5.38a          | :heavy_check_mark: |         | Form5Dot38aCheckRelativeSlendernessRatio                  |
 | 5.38b          |        :x:         |         |                                                           |
 | 5.39           |        :x:         |         |                                                           |
 | 5.40a          |        :x:         |         |                                                           |
