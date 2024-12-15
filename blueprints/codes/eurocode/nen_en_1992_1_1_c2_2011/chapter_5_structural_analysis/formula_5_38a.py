@@ -18,8 +18,7 @@ class Form5Dot38aCheckRelativeSlendernessRatio(Formula):
         lambda_y: DIMENSIONLESS,
         lambda_z: DIMENSIONLESS,
     ) -> None:
-        r"""[:math:`\lambda_{y}`] Slenderness ratio in y-direction [-].
-            [:math:`\lambda_{z}`] Slenderness ratio in z-direction [-].
+        r"""Check the ratio of the slenderness in y-direction and z-direction.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.38a)
 
