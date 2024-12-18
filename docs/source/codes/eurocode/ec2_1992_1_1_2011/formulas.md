@@ -87,8 +87,8 @@ Total of 304 formulas present.
 | 5.38a          |        :x:         |         |                                                           |
 | 5.38b          |        :x:         |         |                                                           |
 | 5.39           |        :x:         |         |                                                           |
-| 5.40a          |        :x:         |         |                                                           |
-| 5.40b          |        :x:         |         |                                                           |
+| 5.40a          |        :x:         |         | Form5Dot40aCheckLateralInstability                        |
+| 5.40b          |        :x:         |         | Form5Dot40bCheckLateralInstability                        |
 | 5.41           |        :x:         |         |                                                           |
 | 5.42           |        :x:         |         |                                                           |
 | 5.43           |        :x:         |         |                                                           |
