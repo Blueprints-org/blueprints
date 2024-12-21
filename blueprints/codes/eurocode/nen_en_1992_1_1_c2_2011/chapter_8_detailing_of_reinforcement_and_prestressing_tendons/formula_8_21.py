@@ -32,13 +32,13 @@ class Form8Dot21AnchorageLength(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
-            self,
-            l_pt2: MM,
-            alpha_2: DIMENSIONLESS,
-            diameter: MM,
-            sigma_pd: MPA,
-            sigma_pminf: MPA,
-            f_bpd: MPA,
+        self,
+        l_pt2: MM,
+        alpha_2: DIMENSIONLESS,
+        diameter: MM,
+        sigma_pd: MPA,
+        sigma_pminf: MPA,
+        f_bpd: MPA,
     ) -> None:
         super().__init__()
         self.l_pt2 = l_pt2
