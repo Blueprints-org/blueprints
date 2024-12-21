@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 class Form8Dot21AnchorageLength(Formula):
     """Class representing formula 8.21 for the calculation of anchorage length :math:`l_{bpd}` [:math:`mm`].
 
-    NEN-EN 1992-1-1+C2:2011 art.8.10.2.2(4) - Formula (8.21)
+    NEN-EN 1992-1-1+C2:2011 art.8.10.2.3(4) - Formula (8.21)
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ class Form8Dot21AnchorageLength(Formula):
     diameter : MM
         [:math:`Ø`] Diameter of the tendon [:math:`mm`].
     sigma_pd : MPA
-        [:math:`σ_{pd}`] Is the tendon stress corresponding to the force described in (1) [:math:`MPa`].
+        [:math:`σ_{pd}`] Is the tendon stress corresponding to the force described in art.8.10.2.3(1) [:math:`MPa`].
     sigma_pminf : MPA
         [:math:`σ_{pm∞}`] is the prestress after all losses [:math:`MPa`].
     f_bpd : MPA
@@ -31,7 +31,15 @@ class Form8Dot21AnchorageLength(Formula):
     label = "8.21"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, l_pt2: MM, alpha_2: DIMENSIONLESS, diameter: MM, sigma_pd: MPA, sigma_pminf: MPA, f_bpd: MPA) -> None:
+    def __init__(
+            self,
+            l_pt2: MM,
+            alpha_2: DIMENSIONLESS,
+            diameter: MM,
+            sigma_pd: MPA,
+            sigma_pminf: MPA,
+            f_bpd: MPA,
+    ) -> None:
         super().__init__()
         self.l_pt2 = l_pt2
         self.alpha_2 = alpha_2
@@ -41,7 +49,7 @@ class Form8Dot21AnchorageLength(Formula):
         self.f_bpd = f_bpd
 
     @staticmethod
-    def _evaluate(l_pt2: MM, alpha_2: DIMENSIONLESS, diameter: MM, sigma_pd: MPA, sigma_pminf: MPA, f_bpd: MPA) -> float:
+    def _evaluate(l_pt2: MM, alpha_2: DIMENSIONLESS, diameter: MM, sigma_pd: MPA, sigma_pminf: MPA, f_bpd: MPA) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(l_pt2=l_pt2, alpha_2=alpha_2, diameter=diameter, sigma_pd=sigma_pd, sigma_pminf=sigma_pminf)
         raise_if_less_or_equal_to_zero(f_bpd=f_bpd)
