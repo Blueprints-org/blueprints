@@ -89,7 +89,7 @@ Total of 304 formulas present.
 | 5.39           |        :x:         |         |                                                           |
 | 5.40a          |        :x:         |         |                                                           |
 | 5.40b          |        :x:         |         |                                                           |
-| 5.41           |        :x:         |         |                                                           |
+| 5.41           | :heavy_check_mark: |         | Form5Dot41MaxForceTendon                                  |
 | 5.42           |        :x:         |         |                                                           |
 | 5.43           |        :x:         |         |                                                           |
 | 5.44           |        :x:         |         |                                                           |
