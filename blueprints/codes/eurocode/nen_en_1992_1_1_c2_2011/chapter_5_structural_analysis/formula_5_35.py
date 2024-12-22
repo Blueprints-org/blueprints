@@ -32,7 +32,6 @@ class Form5Dot35EffectiveDepth(Formula):
         super().__init__()
         self.h = h
         self.i_s = i_s
-        self.d = h / 2 + i_s
 
     @staticmethod
     def _evaluate(
