@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot37CreepFactor(Formula):
-    r"""Class representing formula 5.37 for the calculation of the creep factor, :math:`k_{\phi}`."""
+    r"""Class representing formula 5.37 for the calculation of the creep factor, :math:`K_{\phi}`."""
 
     label = "5.37"
     source_document = NEN_EN_1992_1_1_C2_2011
