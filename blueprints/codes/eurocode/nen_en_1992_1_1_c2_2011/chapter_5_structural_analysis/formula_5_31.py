@@ -4,7 +4,6 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KNM
-from blueprints.validations import raise_if_negative
 
 
 class Form5Dot31DesignMoment(Formula):
