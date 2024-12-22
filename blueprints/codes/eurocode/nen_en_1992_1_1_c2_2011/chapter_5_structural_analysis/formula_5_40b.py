@@ -21,7 +21,7 @@ class Form5Dot40bCheckLateralInstability(Formula):
     ) -> None:
         r"""Check the conditions to ignore second order effects in connection with lateral instability.
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.8.3(2) - Formula (5.40b)
+        NEN-EN 1992-1-1+C2:2011 art.5.9(3) - Formula (5.40b)
 
         Parameters
         ----------
