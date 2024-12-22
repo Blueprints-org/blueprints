@@ -22,7 +22,7 @@ class Form5Dot33NominalSecondOrderMoment(Formula):
     ) -> None:
         r"""[:math:`M_{2}`] Nominal 2nd order moment [:math:`kNm`].
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.8.3 - Formula (5.33)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.8.2 - Formula (5.33)
 
         Parameters
         ----------
