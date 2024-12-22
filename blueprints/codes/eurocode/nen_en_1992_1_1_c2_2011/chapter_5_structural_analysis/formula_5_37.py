@@ -21,7 +21,7 @@ class Form5Dot37CreepFactor(Formula):
     ) -> None:
         r"""[:math:`k_{\phi}`] Creep factor [:math:`-`].
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.4 - Formula (5.37)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.8.3(4) - Formula (5.37)
 
         Parameters
         ----------
