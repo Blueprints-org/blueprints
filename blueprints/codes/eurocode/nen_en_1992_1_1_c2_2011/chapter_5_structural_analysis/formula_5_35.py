@@ -32,7 +32,6 @@ class Form5Dot35EffectiveDepth(Formula):
         super().__init__()
         self.h = h
         self.i_s = i_s
-        self.d = h / 2 + i_s
 
     @staticmethod
     def _evaluate(
@@ -48,7 +47,7 @@ class Form5Dot35EffectiveDepth(Formula):
         """Returns LatexFormula object for formula 5.35."""
         return LatexFormula(
             return_symbol=r"d",
-            result=f"{self.d:.3f}",
+            result=f"{self:.3f}",
             equation=r"\frac{h}{2} + i_s",
             numeric_equation=rf"\frac{{{self.h:.3f}}}{{2}} + {self.i_s:.3f}",
             comparison_operator_label="=",

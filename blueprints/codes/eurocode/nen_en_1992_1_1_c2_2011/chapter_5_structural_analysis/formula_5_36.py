@@ -24,7 +24,7 @@ class Form5Dot36RelativeAxialForce(Formula):
     ) -> None:
         r"""[:math:`K_{r}`] Relative axial force [:math:`DIMENSIONLESS`].
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.36)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.8.3(3) - Formula (5.36)
 
         Parameters
         ----------
