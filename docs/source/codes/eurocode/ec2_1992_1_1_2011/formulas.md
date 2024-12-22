@@ -67,28 +67,30 @@ Total of 304 formulas present.
 | 5.18           | :heavy_check_mark: |         | Form5Dot18ComparisonGeneralSecondOrderEffects             |
 | 5.19           | :heavy_check_mark: |         | Form5Dot19EffectiveCreepCoefficient                       |
 | 5.20           | :heavy_check_mark: |         | Form5Dot20DesignModulusElasticity                         |
-| 5.21           |        :x:         |         |                                                           |
-| 5.22           |        :x:         |         |                                                           |
-| 5.23           |        :x:         |         |                                                           |
-| 5.24           |        :x:         |         |                                                           |
-| 5.25           |        :x:         |         |                                                           |
-| 5.26           |        :x:         |         |                                                           |
-| 5.27           |        :x:         |         |                                                           |
-| 5.28           |        :x:         |         |                                                           |
-| 5.29           |        :x:         |         |                                                           |
-| 5.30           |        :x:         |         |                                                           |
-| 5.31           |        :x:         |         |                                                           |
-| 5.32           |        :x:         |         |                                                           |
-| 5.33           |        :x:         |         |                                                           |
-| 5.34           |        :x:         |         |                                                           |
-| 5.35           |        :x:         |         |                                                           |
-| 5.36           |        :x:         |         |                                                           |
-| 5.37           |        :x:         |         |                                                           |
-| 5.38a          |        :x:         |         |                                                           |
-| 5.38b          |        :x:         |         |                                                           |
-| 5.39           |        :x:         |         |                                                           |
-| 5.40a          |        :x:         |         |                                                           |
-| 5.40b          |        :x:         |         |                                                           |
+| 5.21           | :heavy_check_mark: |         | Form5Dot21NominalStiffness                                |
+| 5.22a          | :heavy_check_mark: |         | Form5Dot22FactorKs                                        |
+| 5.22b          | :heavy_check_mark: |         | Form5Dot22FactorKc                                        |
+| 5.23           | :heavy_check_mark: |         | Form5Dot23FactorConcreteStrengthClass                     |
+| 5.24           | :heavy_check_mark: |         | Form5Dot24AxialForceCorrectionFactor                      |
+| 5.25           | :heavy_check_mark: |         | Form5Dot25AxialForceCorrectionFactor                      |
+| 5.26a          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
+| 5.26b          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
+| 5.27           | :heavy_check_mark: |         | Form5Dot27EffectiveDesignModulusElasticity                |
+| 5.28           | :heavy_check_mark: |         | Form5Dot28TotalDesignMoment                               |
+| 5.29           | :heavy_check_mark: |         | Form5Dot29BetaFactor                                      |
+| 5.30           | :heavy_check_mark: |         | Form5Dot30TotalDesignMoment                               |
+| 5.31           | :heavy_check_mark: |         | Form5Dot31DesignMoment                                    |
+| 5.32           | :heavy_check_mark: |         | Form5Dot32EquivalentFirstOrderEndMoment                   |
+| 5.33           | :heavy_check_mark: |         | Form5Dot33NominalSecondOrderMoment                        |
+| 5.34           | :heavy_check_mark: |         | Form5Dot34Curvature                                       |
+| 5.35           | :heavy_check_mark: |         | Form5Dot35EffectiveDepth                                  |
+| 5.36           | :heavy_check_mark: |         | Form5Dot36RelativeAxialForce                              |
+| 5.37           | :heavy_check_mark: |         | Form5Dot37CreepFactor                                     |
+| 5.38a          | :heavy_check_mark: |         | Form5Dot38aCheckRelativeSlendernessRatio                  |
+| 5.38b          | :heavy_check_mark: |         | Form5Dot38bCheckRelativeEccentricityRatio                 |
+| 5.39           | :heavy_check_mark: |         | Form5Dot39SimplifiedCriterionBiaxialBending               |
+| 5.40a          | :heavy_check_mark: |         | Form5Dot40aCheckLateralInstability                        |
+| 5.40b          | :heavy_check_mark: |         | Form5Dot40bCheckLateralInstability                        |
 | 5.41           | :heavy_check_mark: |         | Form5Dot41MaxForceTendon                                  |
 | 5.42           | :heavy_check_mark: |         | Form5Dot42ConcreteCompressiveStress                       |
 | 5.43           | :heavy_check_mark: |         | Form5Dot43InitialPrestressForce                           |
