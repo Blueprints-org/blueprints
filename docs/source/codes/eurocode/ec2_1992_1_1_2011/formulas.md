@@ -64,6 +64,7 @@ Total of 304 formulas present.
 | 5.15           | :heavy_check_mark: |         | Form5Dot15EffectiveLengthBraced                           |
 | 5.16           | :heavy_check_mark: |         | Form5Dot16EffectiveLengthUnbraced                         |
 | 5.17           | :heavy_check_mark: |         | Form5Dot17EffectiveLengthBucklingLoad                     |
+| 5.18           | :heavy_check_mark: |         | Form5Dot18ComparisonGeneralSecondOrderEffects             |
 | 5.19           | :heavy_check_mark: |         | Form5Dot19EffectiveCreepCoefficient                       |
 | 5.20           | :heavy_check_mark: |         | Form5Dot20DesignModulusElasticity                         |
 | 5.21           | :heavy_check_mark: |         | Form5Dot21NominalStiffness                                |
@@ -75,9 +76,9 @@ Total of 304 formulas present.
 | 5.26a          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
 | 5.26b          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
 | 5.27           | :heavy_check_mark: |         | Form5Dot27EffectiveDesignModulusElasticity                |
-| 5.28           |        :x:         |         |                                                           |
-| 5.29           |        :x:         |         |                                                           |
-| 5.30           |        :x:         |         |                                                           |
+| 5.28           | :heavy_check_mark: |         | Form5Dot28TotalDesignMoment                               |
+| 5.29           | :heavy_check_mark: |         | Form5Dot29BetaFactor                                      |
+| 5.30           | :heavy_check_mark: |         | Form5Dot30TotalDesignMoment                               |
 | 5.31           |        :x:         |         |                                                           |
 | 5.32           |        :x:         |         |                                                           |
 | 5.33           |        :x:         |         |                                                           |
