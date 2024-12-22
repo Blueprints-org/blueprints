@@ -53,7 +53,7 @@ class Form5Dot30TotalDesignMoment(Formula):
         # When n_ed / n_b is equal to 1, the formula will divide by zero.
         # The spirit of the equation is to raise the second order moment to infinity when n_ed / n_b is equal to 1.
         # This is not possible in numeric calculations, so we will use a large number instead.
-        return 1e9 if n_ed / n_b == 1 else m_0ed / (1 - (n_ed / n_b))
+        return 1e9 if n_ed == n_b else m_0ed / (1 - (n_ed / n_b))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.30."""
