@@ -67,16 +67,18 @@ Total of 304 formulas present.
 | 5.18           | :heavy_check_mark: |         | Form5Dot18ComparisonGeneralSecondOrderEffects             |
 | 5.19           | :heavy_check_mark: |         | Form5Dot19EffectiveCreepCoefficient                       |
 | 5.20           | :heavy_check_mark: |         | Form5Dot20DesignModulusElasticity                         |
-| 5.21           |        :x:         |         |                                                           |
-| 5.22           |        :x:         |         |                                                           |
-| 5.23           |        :x:         |         |                                                           |
-| 5.24           |        :x:         |         |                                                           |
-| 5.25           |        :x:         |         |                                                           |
-| 5.26           |        :x:         |         |                                                           |
-| 5.27           |        :x:         |         |                                                           |
-| 5.28           |        :x:         |         |                                                           |
-| 5.29           |        :x:         |         |                                                           |
-| 5.30           |        :x:         |         |                                                           |
+| 5.21           | :heavy_check_mark: |         | Form5Dot21NominalStiffness                                |
+| 5.22a          | :heavy_check_mark: |         | Form5Dot22FactorKs                                        |
+| 5.22b          | :heavy_check_mark: |         | Form5Dot22FactorKc                                        |
+| 5.23           | :heavy_check_mark: |         | Form5Dot23FactorConcreteStrengthClass                     |
+| 5.24           | :heavy_check_mark: |         | Form5Dot24AxialForceCorrectionFactor                      |
+| 5.25           | :heavy_check_mark: |         | Form5Dot25AxialForceCorrectionFactor                      |
+| 5.26a          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
+| 5.26b          | :heavy_check_mark: |         | Form5Dot26FactorKs                                        |
+| 5.27           | :heavy_check_mark: |         | Form5Dot27EffectiveDesignModulusElasticity                |
+| 5.28           | :heavy_check_mark: |         | Form5Dot28TotalDesignMoment                               |
+| 5.29           | :heavy_check_mark: |         | Form5Dot29BetaFactor                                      |
+| 5.30           | :heavy_check_mark: |         | Form5Dot30TotalDesignMoment                               |
 | 5.31           | :heavy_check_mark: |         | Form5Dot31DesignMoment                                    |
 | 5.32           | :heavy_check_mark: |         | Form5Dot32EquivalentFirstOrderEndMoment                   |
 | 5.33           | :heavy_check_mark: |         | Form5Dot33NominalSecondOrderMoment                        |
@@ -222,7 +224,7 @@ Total of 304 formulas present.
 | 8.18           | :heavy_check_mark: |         | Form8Dot18DesignValueTransmissionLength2                  |
 | 8.19           | :heavy_check_mark: |         | Form8Dot19DispersionLength                                |
 | 8.20           | :heavy_check_mark: |         | Form8Dot20BondStrengthAnchorageULS                        |
-| 8.21           |        :x:         |         |                                                           |
+| 8.21           | :heavy_check_mark: |         | Form8Dot21AnchorageLength                                 |
 | 9.1N           | :heavy_check_mark: |         | Form9Dot1nMinimumTensileReinforcementBeam                 |
 | 9.2            | :heavy_check_mark: |         | Form9Dot2ShiftInMomentDiagram                             |
 | 9.3            | :heavy_check_mark: |         | Form9Dot3ShiftInMomentDiagram                             |
