@@ -21,7 +21,7 @@ class TestForm5Dot35EffectiveDepth:
         # Expected result, manually calculated
         manually_calculated_result = 200.0  # mm
 
-        assert formula.d == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
         ("h", "i_s"),
