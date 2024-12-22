@@ -39,10 +39,6 @@ class Form5Dot31DesignMoment(Formula):
         m_2: KNM,
     ) -> KNM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(
-            m_0ed=m_0ed,
-            m_2=m_2,
-        )
         return m_0ed + m_2
 
     def latex(self) -> LatexFormula:
