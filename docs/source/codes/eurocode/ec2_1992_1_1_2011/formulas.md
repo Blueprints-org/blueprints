@@ -79,9 +79,9 @@ Total of 304 formulas present.
 | 5.28           | :heavy_check_mark: |         | Form5Dot28TotalDesignMoment                               |
 | 5.29           | :heavy_check_mark: |         | Form5Dot29BetaFactor                                      |
 | 5.30           | :heavy_check_mark: |         | Form5Dot30TotalDesignMoment                               |
-| 5.31           |        :x:         |         |                                                           |
-| 5.32           |        :x:         |         |                                                           |
-| 5.33           |        :x:         |         |                                                           |
+| 5.31           | :heavy_check_mark: |         | Form5Dot31DesignMoment                                    |
+| 5.32           | :heavy_check_mark: |         | Form5Dot32EquivalentFirstOrderEndMoment                   |
+| 5.33           | :heavy_check_mark: |         | Form5Dot33NominalSecondOrderMoment                        |
 | 5.34           |        :x:         |         |                                                           |
 | 5.35           |        :x:         |         |                                                           |
 | 5.36           |        :x:         |         |                                                           |
