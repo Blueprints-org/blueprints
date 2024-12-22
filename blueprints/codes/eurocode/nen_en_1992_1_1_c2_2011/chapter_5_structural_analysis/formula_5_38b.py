@@ -22,7 +22,7 @@ class Form5Dot38bCheckRelativeEccentricityRatio(Formula):
     ) -> None:
         r"""Check the excentricity of the loads in x and y direction.
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.38b)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.9(3) - Formula (5.38b)
 
         Parameters
         ----------
