@@ -23,7 +23,7 @@ class Form5Dot39SimplifiedCriterionBiaxialBending(Formula):
     ) -> None:
         r"""Simplified criterion for biaxial bending.
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.39)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.9(4) - Formula (5.39)
 
         Parameters
         ----------
