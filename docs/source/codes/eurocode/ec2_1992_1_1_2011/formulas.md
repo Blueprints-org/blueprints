@@ -91,8 +91,8 @@ Total of 304 formulas present.
 | 5.40b          |        :x:         |         |                                                           |
 | 5.41           | :heavy_check_mark: |         | Form5Dot41MaxForceTendon                                  |
 | 5.42           | :heavy_check_mark: |         | Form5Dot42ConcreteCompressiveStress                       |
-| 5.43           | :heavy_check_mark: |         | TestForm5Dot43InitialPrestressForce                       |
-| 5.44           |        :x:         |         |                                                           |
+| 5.43           | :heavy_check_mark: |         | Form5Dot43InitialPrestressForce                           |
+| 5.44           | :heavy_check_mark: |         | Form5Dot44PrestressLoss                                   |
 | 5.45           |        :x:         |         |                                                           |
 | 5.46           |        :x:         |         |                                                           |
 | 5.47           |        :x:         |         |                                                           |
