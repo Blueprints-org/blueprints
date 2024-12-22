@@ -20,7 +20,7 @@ class Form5Dot38aCheckRelativeSlendernessRatio(Formula):
     ) -> None:
         r"""Check the ratio of the slenderness in y-direction and z-direction.
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.38a)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.9(3) - Formula (5.38a)
 
         Parameters
         ----------
