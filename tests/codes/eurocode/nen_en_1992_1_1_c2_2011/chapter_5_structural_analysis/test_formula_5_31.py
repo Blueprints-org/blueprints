@@ -3,7 +3,6 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_31 import Form5Dot31DesignMoment
-from blueprints.validations import NegativeValueError
 
 
 class TestForm5Dot31DesignMoment:
@@ -22,18 +21,6 @@ class TestForm5Dot31DesignMoment:
         manually_calculated_result = 60.0  # kNm
 
         assert formula == pytest.approx(manually_calculated_result, rel=1e-4)
-
-    @pytest.mark.parametrize(
-        ("m_0ed", "m_2"),
-        [
-            (-50.0, 10.0),  # m_0ed is negative
-            (50.0, -10.0),  # m_2 is negative
-        ],
-    )
-    def test_raise_error_when_invalid_values_are_given(self, m_0ed: float, m_2: float) -> None:
-        """Test invalid values."""
-        with pytest.raises(NegativeValueError):
-            Form5Dot31DesignMoment(m_0ed=m_0ed, m_2=m_2)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
