@@ -23,7 +23,7 @@ class Form5Dot41MaxForceTendon(Formula):
     ) -> None:
         r"""[:math:`P_{max}`] Maximum force applied to a tendon [:math:`N`].
 
-        NEN-EN 1992-1-1+C2:2011 art.5.10.9.2(1) - Formula (5.41)
+        NEN-EN 1992-1-1+C2:2011 art.5.10.2.1(1) - Formula (5.41)
 
         Parameters
         ----------

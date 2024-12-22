@@ -20,7 +20,7 @@ class Form5Dot42ConcreteCompressiveStress(Formula):
     ) -> None:
         r"""Calculate the concrete compressive stress resulting from the prestressing force.
 
-        NEN-EN 1992-1-1+C2:2011 art.5.10.9 - Formula (5.42)
+        NEN-EN 1992-1-1+C2:2011 art.5.10.2.2(5) - Formula (5.42)
 
         Parameters
         ----------

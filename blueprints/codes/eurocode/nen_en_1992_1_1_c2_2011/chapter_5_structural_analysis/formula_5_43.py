@@ -23,7 +23,7 @@ class Form5Dot43InitialPrestressForce(Formula):
     ) -> None:
         r"""[:math:`P_{m0}(x)`] Initial prestress force [:math:`N`].
 
-        NEN-EN 1992-1-1+C2:2011 art.5.10.9.2(1) - Formula (5.43)
+        NEN-EN 1992-1-1+C2:2011 art.5.10.3(2) - Formula (5.43)
 
         Parameters
         ----------
