@@ -96,7 +96,7 @@ Total of 304 formulas present.
 | 5.43           |        :x:         |         |                                                           |
 | 5.44           |        :x:         |         |                                                           |
 | 5.45           | :heavy_check_mark: |         | Form5Dot45LossesDueToFriction                             |
-| 5.46           |        :x:         |         |                                                           |
+| 5.46           | :heavy_check_mark: |         | Form5Dot46TimeDependentLosses                             |
 | 5.47           |        :x:         |         |                                                           |
 | 5.48           |        :x:         |         |                                                           |
 | 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
