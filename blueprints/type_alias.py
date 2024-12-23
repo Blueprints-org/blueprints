@@ -73,10 +73,34 @@ MONTHS = float
 YEARS = float
 # </editor-fold>
 
-# <editor-fold desc="Ratio's">
+# <editor-fold desc="RATIOS">
 RATIO = float
 PERCENTAGE = float
 DIMENSIONLESS = float
 PER_MILLE = float
 PER_DEGREE = float
+# </editor-fold>
+
+# <editor-fold desc="FREQUENCY">
+HZ = float
+# </editor-fold>
+
+# <editor-fold desc="TEMPERATURE">
+DEG_C = float
+DEG_K = float
+# </editor-fold>
+
+# <editor-fold desc="RECIPROCAL">
+ONE_OVER_MM = float
+ONE_OVER_M = float
+# </editor-fold>
+
+# <editor-fold desc="VELOCITIES">
+M_PER_S = float
+KM_PER_H = float
+# </editor-fold>
+
+# <editor-fold desc="ACCELERATIONS">
+M_PER_S2 = float
+MM_PER_S2 = float
 # </editor-fold>
