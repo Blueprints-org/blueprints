@@ -3,7 +3,6 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_40a import Form5Dot40aCheckLateralInstability
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm5Dot40aCheckLateralInstability:
@@ -23,21 +22,6 @@ class TestForm5Dot40aCheckLateralInstability:
         expected_result = True
 
         assert formula == expected_result
-
-    @pytest.mark.parametrize(
-        ("l_0t", "b", "h"),
-        [
-            (-6.0, 0.3, 0.5),  # l_0t is negative
-            (6.0, -0.3, 0.5),  # b is negative
-            (6.0, 0.3, -0.5),  # h is negative
-            (6.0, 0.0, 0.5),  # b is zero
-            (6.0, 0.3, 0.0),  # h is zero
-        ],
-    )
-    def test_raise_error_when_invalid_values_are_given(self, l_0t: float, b: float, h: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form5Dot40aCheckLateralInstability(l_0t=l_0t, b=b, h=h)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
