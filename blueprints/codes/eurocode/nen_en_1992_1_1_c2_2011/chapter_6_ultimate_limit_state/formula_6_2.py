@@ -48,7 +48,7 @@ class Form6Dot2ShearResistance(Formula):
         d : MM
             [:math:`d`] Effective depth [:math:`mm`].
         v_min : N
-            [:math:`v_{min}`] shear capacity without shear resitance [:math:`N`].
+            [:math:`v_{min}`] shear capacity without rebar [:math:`N`].
         """
         super().__init__()
         self.c_rd_c = c_rd_c
