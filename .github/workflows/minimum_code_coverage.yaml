@@ -31,4 +31,4 @@ jobs:
 
     - name: Check code coverage is 100%
       run: |
-        pytest --cov=./blueprints --cov-fail-under=100
+        pytest --cov=./blueprints --cov-report term-missing --cov-fail-under=100
