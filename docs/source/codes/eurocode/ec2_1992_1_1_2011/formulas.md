@@ -100,8 +100,7 @@ Total of 304 formulas present.
 | 5.47           |        :x:         |         |                                                           |
 | 5.48           |        :x:         |         |                                                           |
 | 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
-| 6.2.a          |        :x:         |         |                                                           |
-| 6.2.b          |        :x:         |         |                                                           |
+| 6.2            | :heavy_check_mark: |         | Form6Dot2ShearResistance                                  |
 | 6.3N           |        :x:         |         |                                                           |
 | 6.4            |        :x:         |         |                                                           |
 | 6.5            |        :x:         |         |                                                           |
