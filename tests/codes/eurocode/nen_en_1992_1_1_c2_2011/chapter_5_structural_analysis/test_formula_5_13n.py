@@ -209,12 +209,25 @@ class TestForm5Dot13NSub3FactorForMomentRatio:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation_with_zeros(self) -> None:
+        """Tests the evaluation of the result."""
+        # Example values
+        m_01 = 0.0
+        m_02 = 0.0
+
+        # Object to test
+        formula = Form5Dot13NSub3FactorForMomentRatio(m_01=m_01, m_02=m_02)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 1.7
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("m_01", "m_02"),
         [
             (-10.0, 20.0),  # m_01 is negative
             (10.0, -20.0),  # m_02 is negative
-            (10.0, 0.0),  # m_02 is zero
             (30.0, 20.0),  # m_01 is greater than m_02
         ],
     )
