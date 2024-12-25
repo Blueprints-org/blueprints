@@ -101,8 +101,8 @@ Total of 304 formulas present.
 | 5.48           |        :x:         |         |                                                           |
 | 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
 | 6.2            | :heavy_check_mark: |         | Form6Dot2ShearResistance                                  |
-| 6.3N           | :heavy_check_mark: |         | TestForm6Dot3NShearCapacityWithoutRebar                   |
-| 6.4            |        :x:         |         |                                                           |
+| 6.3N           | :heavy_check_mark: |         | Form6Dot3NShearCapacityWithoutRebar                       |
+| 6.4            | :heavy_check_mark: |         | Form6Dot4ShearResistance                                  |
 | 6.5            |        :x:         |         |                                                           |
 | 6.6N           |        :x:         |         |                                                           |
 | 6.7N           |        :x:         |         |                                                           |
