@@ -100,13 +100,12 @@ Total of 304 formulas present.
 | 5.47           |        :x:         |         |                                                           |
 | 5.48           |        :x:         |         |                                                           |
 | 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
-| 6.2.a          |        :x:         |         |                                                           |
-| 6.2.b          |        :x:         |         |                                                           |
-| 6.3N           |        :x:         |         |                                                           |
-| 6.4            |        :x:         |         |                                                           |
-| 6.5            |        :x:         |         |                                                           |
-| 6.6N           |        :x:         |         |                                                           |
-| 6.7N           |        :x:         |         |                                                           |
+| 6.2            | :heavy_check_mark: |         | Form6Dot2ShearResistance                                  |
+| 6.3N           | :heavy_check_mark: |         | Form6Dot3NShearCapacityWithoutRebar                       |
+| 6.4            | :heavy_check_mark: |         | Form6Dot4ShearResistance                                  |
+| 6.5            | :heavy_check_mark: |         | Form6Dot5ShearForceCheck                                  |
+| 6.6N           | :heavy_check_mark: |         | Form6Dot6nStrengthReductionFactor                         |
+| 6.7N           | :heavy_check_mark: |         | Form6Dot7nCheckCotTheta                                   |
 | 6.8            |        :x:         |         |                                                           |
 | 6.9            |        :x:         |         |                                                           |
 | 6.10.aN        |        :x:         |         |                                                           |
