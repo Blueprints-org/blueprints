@@ -105,7 +105,7 @@ Total of 304 formulas present.
 | 6.4            | :heavy_check_mark: |         | Form6Dot4ShearResistance                                  |
 | 6.5            | :heavy_check_mark: |         | Form6Dot5ShearForceCheck                                  |
 | 6.6N           | :heavy_check_mark: |         | Form6Dot6nStrengthReductionFactor                         |
-| 6.7N           |        :x:         |         |                                                           |
+| 6.7N           | :heavy_check_mark: |         | Form6Dot7nCheckCotTheta                                   |
 | 6.8            |        :x:         |         |                                                           |
 | 6.9            |        :x:         |         |                                                           |
 | 6.10.aN        |        :x:         |         |                                                           |
