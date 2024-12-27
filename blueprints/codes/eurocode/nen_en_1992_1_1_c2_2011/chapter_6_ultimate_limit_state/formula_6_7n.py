@@ -21,7 +21,7 @@ class Form6Dot7nCheckCotTheta(Formula):
     ) -> None:
         r"""Check if cotangent of theta is between 1 and 2.5.
 
-        NEN-EN 1992-1-1+C2:2011 art.6.2.3(1) - Formula (6.7n)
+        NEN-EN 1992-1-1+C2:2011 art.6.2.3(2) - Formula (6.7n)
 
         Parameters
         ----------
