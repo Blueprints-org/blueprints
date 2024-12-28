@@ -5,7 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DEG, MM, MPA, N
+from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -20,8 +20,8 @@ class Form6Dot9MaximumShearResistance(Formula):
         b_w: MM,
         z: MM,
         f_cd: MPA,
-        nu_1: float,
-        alpha_cw: float,
+        nu_1: DIMENSIONLESS,
+        alpha_cw: DIMENSIONLESS,
         theta: DEG,
     ) -> None:
         r"""[:math:`V_{Rd,max}`] Maximum shear resistance [:math:`N`].
@@ -36,11 +36,11 @@ class Form6Dot9MaximumShearResistance(Formula):
             [:math:`z`] Lever arm [:math:`mm`].
         f_cd : MPA
             [:math:`f_{cd}`] Design value of concrete compressive strength [:math:`MPa`].
-        nu_1 : float
+        nu_1 : DIMENSIONLESS
             [:math:`\nu_{1}`] Strength reduction factor for concrete cracked in shear [-].
-        alpha_cw : float
+        alpha_cw : DIMENSIONLESS
             [:math:`\alpha_{cw}`] Coefficient taking account of the state of the stress in the compression chord [-].
-        theta : float
+        theta : DEG
             [:math:`\theta`] Angle between the concrete compression strut and the beam axis perpendicular to the shear force [:math:`degrees`].
         """
         super().__init__()
@@ -56,8 +56,8 @@ class Form6Dot9MaximumShearResistance(Formula):
         b_w: MM,
         z: MM,
         f_cd: MPA,
-        nu_1: float,
-        alpha_cw: float,
+        nu_1: DIMENSIONLESS,
+        alpha_cw: DIMENSIONLESS,
         theta: DEG,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
