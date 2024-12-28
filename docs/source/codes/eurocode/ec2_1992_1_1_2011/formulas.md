@@ -109,8 +109,7 @@ Total of 304 formulas present.
 | 6.7N           |        :x:         |         |                                                           |
 | 6.8            | :heavy_check_mark: |         | Form6Dot8ShearResistance                                  |
 | 6.9            | :heavy_check_mark: |         | Form6Dot9MaximumShearResistance                           |
-| 6.10.aN        |        :x:         |         |                                                           |
-| 6.10.bN        |        :x:         |         |                                                           |
+| 6.10.abN       | :heavy_check_mark: |         | Form6Dot10abNStrengthReductionFactor                      |
 | 6.11.aN        |        :x:         |         |                                                           |
 | 6.11.bN        |        :x:         |         |                                                           |
 | 6.11.cN        |        :x:         |         |                                                           |
