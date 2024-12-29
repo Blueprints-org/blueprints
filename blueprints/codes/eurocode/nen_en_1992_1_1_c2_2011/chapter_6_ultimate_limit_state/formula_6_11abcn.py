@@ -22,7 +22,7 @@ class Form6Dot11abcNCompressionChordCoefficient(Formula):
     ) -> None:
         r"""[:math:`\alpha_{cw}`] Coefficient taking account of the state of the stress in the compression chord [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.2.2(1) - Formula (6.11.aN, 6.11.bN, and 6.11.cN)
+        NEN-EN 1992-1-1+C2:2011 art.6.2.3(3) - Formula (6.11.aN, 6.11.bN, and 6.11.cN)
 
         Parameters
         ----------

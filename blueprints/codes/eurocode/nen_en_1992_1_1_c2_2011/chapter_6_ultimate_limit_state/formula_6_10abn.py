@@ -19,7 +19,7 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
     ) -> None:
         r"""[:math:`\nu_{1}`] Strength reduction factor for concrete cracked in shear [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.2.2(1) - Formula (6.10.aN and 6.10.bN)
+        NEN-EN 1992-1-1+C2:2011 art.6.2.3(3) - Formula (6.10.aN and 6.10.bN)
 
         Parameters
         ----------
