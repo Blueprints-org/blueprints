@@ -107,16 +107,13 @@ Total of 304 formulas present.
 | 6.5            |        :x:         |         |                                                           |
 | 6.6N           |        :x:         |         |                                                           |
 | 6.7N           |        :x:         |         |                                                           |
-| 6.8            |        :x:         |         |                                                           |
-| 6.9            |        :x:         |         |                                                           |
-| 6.10.aN        |        :x:         |         |                                                           |
-| 6.10.bN        |        :x:         |         |                                                           |
-| 6.11.aN        |        :x:         |         |                                                           |
-| 6.11.bN        |        :x:         |         |                                                           |
-| 6.11.cN        |        :x:         |         |                                                           |
-| 6.12           |        :x:         |         |                                                           |
-| 6.13           |        :x:         |         |                                                           |
-| 6.14           |        :x:         |         |                                                           |
+| 6.8            | :heavy_check_mark: |         | Form6Dot8ShearResistance                                  |
+| 6.9            | :heavy_check_mark: |         | Form6Dot9MaximumShearResistance                           |
+| 6.10.abN       | :heavy_check_mark: |         | Form6Dot10abNStrengthReductionFactor                      |
+| 6.11.abcN      | :heavy_check_mark: |         | Form6Dot11abcNCompressionChordCoefficient                 |
+| 6.12           | :heavy_check_mark: |         | Form6Dot12CheckMaxEffectiveCrossSectionalAreaShearReinf   |
+| 6.13           | :heavy_check_mark: |         | Form6Dot13ShearResistanceInclinedReinforcement            |
+| 6.14           | :heavy_check_mark: |         | Form6Dot14MaxShearResistanceInclinedReinforcement         |
 | 6.15           |        :x:         |         |                                                           |
 | 6.16           |        :x:         |         |                                                           |
 | 6.17           |        :x:         |         |                                                           |
