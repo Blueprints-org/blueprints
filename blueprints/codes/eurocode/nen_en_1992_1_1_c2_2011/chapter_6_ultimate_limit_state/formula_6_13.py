@@ -26,7 +26,7 @@ class Form6Dot13ShearResistanceInclinedReinforcement(Formula):
         theta: DEG,
         alpha: DEG,
     ) -> None:
-        r"""[:math:`V_{Rd,s}`] Shear resistance for members with inclined shear reinforcement [:math:`kN`].
+        r"""[:math:`V_{Rd,s}`] Shear resistance for members with inclined shear reinforcement [:math:`N`].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(4) - Formula (6.13)
 
