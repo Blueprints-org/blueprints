@@ -114,7 +114,7 @@ Total of 304 formulas present.
 | 6.12           | :heavy_check_mark: |         | Form6Dot12CheckMaxEffectiveCrossSectionalAreaShearReinf   |
 | 6.13           | :heavy_check_mark: |         | Form6Dot13ShearResistanceInclinedReinforcement            |
 | 6.14           | :heavy_check_mark: |         | Form6Dot14MaxShearResistanceInclinedReinforcement         |
-| 6.15           |        :x:         |         |                                                           |
+| 6.15           | :heavy_check_mark: |         | Form6Dot15ShearReinforcementResistance                    |
 | 6.16           |        :x:         |         |                                                           |
 | 6.17           |        :x:         |         |                                                           |
 | 6.18           |        :x:         |         |                                                           |
