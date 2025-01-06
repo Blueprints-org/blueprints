@@ -115,7 +115,7 @@ Total of 304 formulas present.
 | 6.13           | :heavy_check_mark: |         | Form6Dot13ShearResistanceInclinedReinforcement            |
 | 6.14           | :heavy_check_mark: |         | Form6Dot14MaxShearResistanceInclinedReinforcement         |
 | 6.15           | :heavy_check_mark: |         | Form6Dot15ShearReinforcementResistance                    |
-| 6.16           |        :x:         |         |                                                           |
+| 6.16           | :heavy_check_mark: |         | Form6Dot16NominalWebWidth                                 |
 | 6.17           |        :x:         |         |                                                           |
 | 6.18           |        :x:         |         |                                                           |
 | 6.19           |        :x:         |         |                                                           |
