@@ -118,7 +118,7 @@ Total of 304 formulas present.
 | 6.16           | :heavy_check_mark: |         | Form6Dot16NominalWebWidth                                 |
 | 6.17           | :heavy_check_mark: |         | Form6Dot17NominalWebWidth                                 |
 | 6.18           | :heavy_check_mark: |         | Form6Dot18AdditionalTensileForce                          |
-| 6.19           |        :x:         |         |                                                           |
+| 6.19           | :heavy_check_mark: |         | Form6Dot19CheckShearForce                                 |
 | 6.20           |        :x:         |         |                                                           |
 | 6.21           |        :x:         |         |                                                           |
 | 6.22           |        :x:         |         |                                                           |
