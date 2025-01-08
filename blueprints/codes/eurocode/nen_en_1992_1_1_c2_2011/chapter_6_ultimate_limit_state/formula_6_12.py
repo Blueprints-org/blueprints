@@ -30,7 +30,7 @@ class Form6Dot12CheckMaxEffectiveCrossSectionalAreaShearReinf(Formula):
         Parameters
         ----------
         a_sw_max : MM2
-            [:math:`A_{sw,max}`] Maximum effective cross-sectional area of the shear reinforcement [:math:`mm²`].
+            [:math:`A_{sw,max}`] Maximum effective cross-sectional area of the shear reinforcement [:math:`mm^2`].
         f_ywd : MPA
             [:math:`f_{ywd}`] Design yield strength of the shear reinforcement [:math:`MPa`].
         b_w : MM

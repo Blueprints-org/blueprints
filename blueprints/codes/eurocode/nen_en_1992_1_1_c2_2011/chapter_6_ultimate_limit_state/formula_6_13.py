@@ -33,7 +33,7 @@ class Form6Dot13ShearResistanceInclinedReinforcement(Formula):
         Parameters
         ----------
         a_sw : MM2
-            [:math:`A_{sw}`] Area of shear reinforcement [:math:`mm²`].
+            [:math:`A_{sw}`] Area of shear reinforcement [:math:`mm^2`].
         s : MM
             [:math:`s`] Spacing of the shear reinforcement [:math:`mm`].
         z : MM
