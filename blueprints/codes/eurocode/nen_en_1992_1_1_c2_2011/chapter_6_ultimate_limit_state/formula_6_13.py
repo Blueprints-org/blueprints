@@ -39,7 +39,7 @@ class Form6Dot13ShearResistanceInclinedReinforcement(Formula):
         z : MM
             [:math:`z`] Lever arm [:math:`mm`].
         f_ywd : KN
-            [:math:`f_{ywd}`] Design yield strength of the shear reinforcement [:math:`kN`].
+            [:math:`f_{ywd}`] Design yield strength of the shear reinforcement [:math:`MPa`].
         theta : DEG
             [:math:`\theta`] angle between the concrete compression strut and the beam axis perpendicular to the
             shear force [:math:`degrees`].
