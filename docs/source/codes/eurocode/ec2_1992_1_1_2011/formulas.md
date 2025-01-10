@@ -124,7 +124,7 @@ Total of 304 formulas present.
 | 6.19           |        :x:         |         |                                                           |
 | 6.20           | :heavy_check_mark: |         | Form6Dot20LongitudinalShearStress                         |
 | 6.21           | :heavy_check_mark: |         | Form6Dot21CheckTransverseReinforcement                    |
-| 6.22           |        :x:         |         |                                                           |
+| 6.22           | :heavy_check_mark: |         | Form6Dot22CheckCrushingCompressionStruts                  |
 | 6.23           |        :x:         |         |                                                           |
 | 6.24           |        :x:         |         |                                                           |
 | 6.25           |        :x:         |         |                                                           |
