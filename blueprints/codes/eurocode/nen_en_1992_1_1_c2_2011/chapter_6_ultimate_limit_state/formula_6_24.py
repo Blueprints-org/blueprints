@@ -22,7 +22,7 @@ class Form6Dot24DesignShearStress(Formula):
     ) -> None:
         r"""[:math:`v_{Edi}`] Design shear stress in the interface [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.2.5 - Formula (6.24)
+        NEN-EN 1992-1-1+C2:2011 art.6.2.5(1) - Formula (6.24)
 
         Parameters
         ----------
