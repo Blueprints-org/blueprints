@@ -126,7 +126,7 @@ Total of 304 formulas present.
 | 6.21           |        :x:         |         |                                                           |
 | 6.22           |        :x:         |         |                                                           |
 | 6.23           | :heavy_check_mark: |         | Form6Dot23CheckShearStressInterface                       |
-| 6.24           |        :x:         |         |                                                           |
+| 6.24           | :heavy_check_mark: |         | Form6Dot24DesignShearStress                               |
 | 6.25           |        :x:         |         |                                                           |
 | 6.26           |        :x:         |         |                                                           |
 | 6.27           |        :x:         |         |                                                           |
