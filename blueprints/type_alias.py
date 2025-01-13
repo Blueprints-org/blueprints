@@ -22,6 +22,7 @@ KG_M = float
 # <editor-fold desc="FORCES">
 N = float
 KN = float
+N_M = float
 KN_M = float
 # </editor-fold>
 

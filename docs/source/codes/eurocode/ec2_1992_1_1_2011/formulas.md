@@ -129,7 +129,7 @@ Total of 304 formulas present.
 | 6.24           |        :x:         |         |                                                           |
 | 6.25           |        :x:         |         |                                                           |
 | 6.26           | :heavy_check_mark: |         | Form6Dot26ShearStressInWall                               |
-| 6.27           |        :x:         |         |                                                           |
+| 6.27           | :heavy_check_mark: |         | Form6Dot27ShearForceInWall                                |
 | 6.28           |        :x:         |         |                                                           |
 | 6.29           |        :x:         |         |                                                           |
 | 6.30           |        :x:         |         |                                                           |

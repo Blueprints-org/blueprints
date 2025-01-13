@@ -41,9 +41,9 @@ class TestForm6Dot26ShearStressInWall:
         [
             (
                 "complete",
-                r"\tau_{t,i}t_{ef,i} = \frac{T_{Ed}}{2 \cdot A_{k}} = \frac{100.000}{2 \cdot 200.000} = 0.250 MPa",
+                r"\tau_{t,i}t_{ef,i} = \frac{T_{Ed}}{2 \cdot A_{k}} = \frac{100.000}{2 \cdot 200.000} = 0.250 N/m",
             ),
-            ("short", r"\tau_{t,i}t_{ef,i} = 0.250 MPa"),
+            ("short", r"\tau_{t,i}t_{ef,i} = 0.250 N/m"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
