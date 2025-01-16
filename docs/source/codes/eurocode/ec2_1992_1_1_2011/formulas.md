@@ -133,7 +133,7 @@ Total of 304 formulas present.
 | 6.28           | :heavy_check_mark: |         | Form6Dot28RequiredCrossSectionalArea                      |
 | 6.29           | :heavy_check_mark: |         | Form6Dot29CheckTorsionShearResistance                     |
 | 6.30           |        :x:         |         |                                                           |
-| 6.31           |        :x:         |         |                                                           |
+| 6.31           | :heavy_check_mark: |         | Form6Dot31CheckTorsionShearResistanceRectangular          |
 | 6.32           |        :x:         |         |                                                           |
 | 6.33           |        :x:         |         |                                                           |
 | 6.34           |        :x:         |         |                                                           |
