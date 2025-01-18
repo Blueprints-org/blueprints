@@ -136,8 +136,8 @@ Total of 304 formulas present.
 | 6.31           |        :x:         |         |                                                           |
 | 6.32           | :heavy_check_mark: |         | Form6Dot32EffectiveDepthSlab                              |
 | 6.33           | :heavy_check_mark: |         | Form6Dot32ContourRadiusCircularColumnHeads                |
-| 6.34           |        :x:         |         |                                                           |
-| 6.35           |        :x:         |         |                                                           |
+| 6.34           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
+| 6.35           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
 | 6.36           |        :x:         |         |                                                           |
 | 6.37           |        :x:         |         |                                                           |
 | 6.38           |        :x:         |         |                                                           |
