@@ -140,7 +140,7 @@ Total of 304 formulas present.
 | 6.35           |        :x:         |         |                                                           |
 | 6.36           |        :x:         |         |                                                           |
 | 6.37           |        :x:         |         |                                                           |
-| 6.38           |        :x:         |         |                                                           |
+| 6.38           | :heavy_check_mark: |         | Form6Dot38MaxShearStress                                  |
 | 6.39           |        :x:         |         |                                                           |
 | 6.40           |        :x:         |         |                                                           |
 | 6.41           |        :x:         |         |                                                           |
