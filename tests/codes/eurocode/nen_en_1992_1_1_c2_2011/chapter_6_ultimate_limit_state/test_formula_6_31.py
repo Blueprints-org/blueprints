@@ -14,9 +14,9 @@ class TestForm6Dot31CheckTorsionShearResistanceRectangular:
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         # Example values
-        t_ed = 100.0  # Nm
+        t_ed = 100.0  # Nmm
         v_ed = 200.0  # N
-        t_rd_c = 150.0  # Nm
+        t_rd_c = 150.0  # Nmm
         v_rd_c = 250.0  # N
 
         # Object to test
@@ -57,9 +57,9 @@ class TestForm6Dot31CheckTorsionShearResistanceRectangular:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        t_ed = 100.0  # Nm
+        t_ed = 100.0  # Nmm
         v_ed = 200.0  # N
-        t_rd_c = 150.0  # Nm
+        t_rd_c = 150.0  # Nmm
         v_rd_c = 250.0  # N
 
         # Object to test

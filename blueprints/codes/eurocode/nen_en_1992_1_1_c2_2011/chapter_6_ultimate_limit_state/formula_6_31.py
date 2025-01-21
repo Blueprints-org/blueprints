@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import NM, N
+from blueprints.type_alias import NMM, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -15,9 +15,9 @@ class Form6Dot31CheckTorsionShearResistanceRectangular(Formula):
 
     def __init__(
         self,
-        t_ed: NM,
+        t_ed: NMM,
         v_ed: N,
-        t_rd_c: NM,
+        t_rd_c: NMM,
         v_rd_c: N,
     ) -> None:
         r"""Check the maximum resistance of a member subjected to torsion and shear.
@@ -26,12 +26,12 @@ class Form6Dot31CheckTorsionShearResistanceRectangular(Formula):
 
         Parameters
         ----------
-        t_ed : NM
-            [:math:`T_{Ed}`] Design torsional moment [Nm].
+        t_ed : NMM
+            [:math:`T_{Ed}`] Design torsional moment [Nmm].
         v_ed : N
             [:math:`V_{Ed}`] Design transverse force [N].
-        t_rd_c : NM
-            [:math:`T_{Rd,c}`] the torsional cracking moment, which may be determined by setting tau_t,i = fctd [Nm].
+        t_rd_c : NMM
+            [:math:`T_{Rd,c}`] the torsional cracking moment, which may be determined by setting tau_t,i = fctd [Nmm].
         v_rd_c : N
             [:math:`V_{Rd,c}`] follows from Expression (6.2) [N].
         """
@@ -43,9 +43,9 @@ class Form6Dot31CheckTorsionShearResistanceRectangular(Formula):
 
     @staticmethod
     def _evaluate(
-        t_ed: NM,
+        t_ed: NMM,
         v_ed: N,
-        t_rd_c: NM,
+        t_rd_c: NMM,
         v_rd_c: N,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""

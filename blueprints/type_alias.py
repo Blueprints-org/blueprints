@@ -25,11 +25,13 @@ KN = float
 # </editor-fold>
 
 # <editor-fold desc="FORCE PER UNIT LENGTH">
+N_MM = float
 N_M = float
 KN_M = float
 # </editor-fold>
 
 # <editor-fold desc="MOMENTS">
+NMM = float
 NM = float
 KNM = float
 # </editor-fold>

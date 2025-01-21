@@ -5,7 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DEG, MM, MM2, MPA, NM
+from blueprints.type_alias import DEG, MM, MM2, MPA, NMM
 from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -22,7 +22,7 @@ class Form6Dot28RequiredCrossSectionalArea(Formula):
         self,
         u_k: MM,
         f_yd: MPA,
-        t_ed: NM,
+        t_ed: NMM,
         a_k: MM2,
         theta: DEG,
     ) -> None:
@@ -36,8 +36,8 @@ class Form6Dot28RequiredCrossSectionalArea(Formula):
             [:math:`u_k`] Perimeter of the area A_k [:math:`mm`].
         f_yd : MPA
             [:math:`f_{yd}`] Design yield stress of the longitudinal reinforcement [:math:`MPa`].
-        t_ed : NM
-            [:math:`T_{Ed}`] Design value of the torsional moment [:math:`NM`].
+        t_ed : NMM
+            [:math:`T_{Ed}`] Design value of the torsional moment [:math:`Nmm`].
         a_k : MM2
             [:math:`A_k`] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [:math:`mm^2`].
         theta : DEG
@@ -54,7 +54,7 @@ class Form6Dot28RequiredCrossSectionalArea(Formula):
     def _evaluate(
         u_k: MM2,
         f_yd: MPA,
-        t_ed: NM,
+        t_ed: NMM,
         a_k: MM2,
         theta: DEG,
     ) -> MM2:

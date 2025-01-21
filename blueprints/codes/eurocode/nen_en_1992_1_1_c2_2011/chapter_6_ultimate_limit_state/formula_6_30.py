@@ -5,7 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MM2, MPA, NM
+from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MM2, MPA, NMM
 from blueprints.validations import raise_if_negative
 
 
@@ -24,7 +24,7 @@ class Form6Dot30DesignTorsionalResistanceMoment(Formula):
         t_ef_i: MM,
         theta: DEG,
     ) -> None:
-        r"""[:math:`T_{Rd,max}`] Design torsional resistance moment [:math:`Nm`].
+        r"""[:math:`T_{Rd,max}`] Design torsional resistance moment [:math:`Nmm`].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(4) - Formula (6.30)
 
@@ -59,7 +59,7 @@ class Form6Dot30DesignTorsionalResistanceMoment(Formula):
         a_k: MM2,
         t_ef_i: MM,
         theta: DEG,
-    ) -> NM:
+    ) -> NMM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             nu=nu,
@@ -81,5 +81,5 @@ class Form6Dot30DesignTorsionalResistanceMoment(Formula):
             numeric_equation=rf"2 \cdot {self.nu:.3f} \cdot {self.alpha_cw:.3f} \cdot {self.f_cd:.3f} \cdot {self.a_k:.3f} "
             rf"\cdot {self.t_ef_i:.3f} \cdot \sin({self.theta:.3f}) \cdot \cos({self.theta:.3f})",
             comparison_operator_label="=",
-            unit="Nm",
+            unit="Nmm",
         )

@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import M2, N_M, NM
+from blueprints.type_alias import MM2, N_MM, NMM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -15,8 +15,8 @@ class Form6Dot26ShearStressInWall(Formula):
 
     def __init__(
         self,
-        t_ed: NM,
-        a_k: M2,
+        t_ed: NMM,
+        a_k: MM2,
     ) -> None:
         r"""[:math:`\tau_{t,i}t_{ef,i}`] Shear stress in a wall of a section subject to a pure torsional moment [N/m].
 
@@ -24,10 +24,10 @@ class Form6Dot26ShearStressInWall(Formula):
 
         Parameters
         ----------
-        t_ed : NM
-            [T_Ed] Applied design torsion [Nm].
-        a_k : M2
-            [A_k] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [:math:`m^2`].
+        t_ed : NMM
+            [T_Ed] Applied design torsion [Nmm].
+        a_k : MM2
+            [A_k] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [:math:`mm^2`].
         """
         super().__init__()
         self.t_ed = t_ed
@@ -35,9 +35,9 @@ class Form6Dot26ShearStressInWall(Formula):
 
     @staticmethod
     def _evaluate(
-        t_ed: NM,
-        a_k: M2,
-    ) -> N_M:
+        t_ed: NMM,
+        a_k: MM2,
+    ) -> N_MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(a_k=a_k)
         raise_if_negative(t_ed=t_ed)
@@ -52,5 +52,5 @@ class Form6Dot26ShearStressInWall(Formula):
             equation=r"\frac{T_{Ed}}{2 \cdot A_{k}}",
             numeric_equation=rf"\frac{{{self.t_ed:.3f}}}{{2 \cdot {self.a_k:.3f}}}",
             comparison_operator_label="=",
-            unit="N/m",
+            unit="N/mm",
         )
