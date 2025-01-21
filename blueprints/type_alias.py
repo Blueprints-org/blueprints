@@ -26,6 +26,7 @@ KN_M = float
 # </editor-fold>
 
 # <editor-fold desc="MOMENTS">
+NMM = float
 NM = float
 KNM = float
 # </editor-fold>
