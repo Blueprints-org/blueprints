@@ -1,6 +1,7 @@
 """Formula 5.13N from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
 
 import math
+from typing import Optional
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -38,27 +39,24 @@ class Form5Dot13NSlendernessCriterion(Formula):
         self.n = n
 
     @staticmethod
-    def calculate_a(phi_eff: DIMENSIONLESS) -> DIMENSIONLESS:
+    def calculate_a(phi_eff: Optional[float]) -> float:
         """Calculate A based on phi_eff."""
         if phi_eff is None:
             return 0.7
-
         return 1 / (1 + 0.2 * phi_eff)
 
     @staticmethod
-    def calculate_b(omega: DIMENSIONLESS) -> DIMENSIONLESS:
+    def calculate_b(omega: Optional[float]) -> float:
         """Calculate B based on omega."""
         if omega is None:
             return 1.1
-
         return omega
 
     @staticmethod
-    def calculate_c(rm: DIMENSIONLESS) -> DIMENSIONLESS:
+    def calculate_c(rm: Optional[float]) -> float:
         """Calculate C based on rm."""
         if rm is None:
             return 0.7
-
         return 1.7 - rm
 
     @staticmethod

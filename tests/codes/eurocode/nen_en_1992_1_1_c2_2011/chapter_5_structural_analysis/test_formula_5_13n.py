@@ -99,3 +99,22 @@ class TestSubForm5Dot13NRmMomentRatio(unittest.TestCase):
         assert latex.equation == r"\frac{M_{01}}{M_{02}}"
         assert latex.numeric_equation == r"\frac{10}{20}"
         assert latex.comparison_operator_label == "="
+
+
+class TestForm5Dot13NSlendernessCriterionStaticMethods(unittest.TestCase):
+    """Tests for the static methods of Form5Dot13NSlendernessCriterion."""
+
+    def test_calculate_a(self) -> None:
+        """Test the calculate_a method."""
+        assert Form5Dot13NSlendernessCriterion.calculate_a(0.5) == 1 / (1 + 0.2 * 0.5)
+        assert Form5Dot13NSlendernessCriterion.calculate_a(None) == 0.7
+
+    def test_calculate_b(self) -> None:
+        """Test the calculate_b method."""
+        assert Form5Dot13NSlendernessCriterion.calculate_b(0.3) == 0.3
+        assert Form5Dot13NSlendernessCriterion.calculate_b(None) == 1.1
+
+    def test_calculate_c(self) -> None:
+        """Test the calculate_c method."""
+        assert Form5Dot13NSlendernessCriterion.calculate_c(0.2) == 1.7 - 0.2
+        assert Form5Dot13NSlendernessCriterion.calculate_c(None) == 0.7
