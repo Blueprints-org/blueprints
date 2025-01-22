@@ -4,6 +4,7 @@ import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_4 import (
     Form12Dot4PlainConcreteShearStress,
+    Form12Dot4PlainConcreteShearStressComparison,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
@@ -89,3 +90,70 @@ class TestForm12Dot4PlainConcreteShearStress:
         }
 
         assert actual[representation] == expected, f"{representation} representation failed."
+
+
+class TestForm12Dot4PlainConcreteShearStressComparison:
+    """Validation for Form12Dot4PlainConcreteShearStressComparison."""
+
+    def test_comparison_true(self) -> None:
+        """Test the comparison when sigma_cp is less than or equal to sigma_c_lim."""
+        comparison = Form12Dot4PlainConcreteShearStressComparison(sigma_cp=1.0, sigma_c_lim=1.5)
+        assert comparison.comparison is True
+
+    def test_comparison_false(self) -> None:
+        """Test the comparison when sigma_cp is greater than sigma_c_lim."""
+        comparison = Form12Dot4PlainConcreteShearStressComparison(sigma_cp=2.0, sigma_c_lim=1.5)
+        assert comparison.comparison is False
+
+    @pytest.mark.parametrize(
+        ("sigma_cp", "sigma_c_lim"),
+        [
+            (-1.0, 1.5),
+            (1.0, -1.5),
+        ],
+    )
+    def test_raise_error_when_negative_values_are_given(
+        self,
+        sigma_cp: float,
+        sigma_c_lim: float,
+    ) -> None:
+        """Test negative values for sigma_cp and sigma_c_lim."""
+        with pytest.raises(NegativeValueError):
+            Form12Dot4PlainConcreteShearStressComparison(sigma_cp=sigma_cp, sigma_c_lim=sigma_c_lim)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \rightarrow \sigma_{cp} ≤ \sigma_{c,lim} \rightarrow 1.000 ≤ 1.500 \rightarrow OK",
+            ),
+            (
+                "complete_not_ok",
+                r"CHECK \rightarrow \sigma_{cp} ≤ \sigma_{c,lim} \rightarrow 2.000 ≤ 1.500 \rightarrow \text{Not OK}",
+            ),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the comparison."""
+        if representation == "complete":
+            comparison = Form12Dot4PlainConcreteShearStressComparison(sigma_cp=1.0, sigma_c_lim=1.5)
+        else:
+            comparison = Form12Dot4PlainConcreteShearStressComparison(sigma_cp=2.0, sigma_c_lim=1.5)
+
+        actual = {
+            "complete": comparison.latex().complete,
+            "complete_not_ok": comparison.latex().complete,
+        }
+
+        assert actual[representation] == expected, f"{representation} representation failed."
+
+    def test_str(self) -> None:
+        """Test the string representation of the comparison."""
+        comparison = Form12Dot4PlainConcreteShearStressComparison(sigma_cp=1.0, sigma_c_lim=1.5)
+        expected_str = r"CHECK \rightarrow \sigma_{cp} ≤ \sigma_{c,lim} \rightarrow 1.000 ≤ 1.500 \rightarrow OK"
+        assert str(comparison) == expected_str
+
+        comparison_not_ok = Form12Dot4PlainConcreteShearStressComparison(sigma_cp=2.0, sigma_c_lim=1.5)
+        expected_str_not_ok = r"CHECK \rightarrow \sigma_{cp} ≤ \sigma_{c,lim} \rightarrow 2.000 ≤ 1.500 \rightarrow " r"\text{Not OK}"
+        assert str(comparison_not_ok) == expected_str_not_ok

@@ -8,7 +8,8 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form12Dot3PlainConcreteShearStress(Formula):
-    r"""Class representing formula 12.3 for the calculation of the design shear stress of plain concrete, :math:`\sigma_{cp}`.
+    r"""Class representing formula 12.3 for the calculation of the design shear stress of plain concrete,
+    :math:`\sigma_{cp}`.
 
     NEN-EN 1992-1-1+C2:2011 art.12.6.3 - Formula (12.3)
     """

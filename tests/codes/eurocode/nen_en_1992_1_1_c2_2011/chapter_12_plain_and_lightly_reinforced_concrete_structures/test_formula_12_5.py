@@ -1,95 +1,145 @@
-"""Testing formula 12.1 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 12.5 and 12.6 of NEN-EN 1992-1-1+C2:2011."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_1 import (
-    Form12Dot1PlainConcreteTensileStrength,
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_3 import (
+    Form12Dot3PlainConcreteShearStress,
 )
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_5 import (
+    Form12Dot5PlainConcreteBendingResistance,
+)
+from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestForm12Dot1PlainConcreteTensileStrength:
-    """Validation for formula 12.1 from NEN-EN 1992-1-1+C2:2011."""
+class TestForm12Dot5PlainConcreteBendingResistance:
+    """Validation for formula 12.5 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
         # Example values
-        alpha_ct_pl = 0.8  # -
-        f_ctk_0_05 = 2.5  # MPa
-        gamma_c = 1.5  # -
+        f_ctd_pl = 2.5  # MPa
+        sigma_cp = 1.0  # MPa
+        sigma_c_lim = 1.5  # MPa
 
         # Object to test
-        form_12_1 = Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=alpha_ct_pl, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
+        form_12_5 = Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=sigma_c_lim)
 
         # Expected result, manually calculated
-        manually_calculated_result = 1.333  # MPa
+        manually_calculated_result = 2.958
 
-        assert round(form_12_1, 3) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+        assert round(form_12_5, 3) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_evaluation_comparison_not_satisfied(self) -> None:
+        """Test the evaluation of the result when the comparison is not satisfied."""
+        # Example values
+        f_ctd_pl = 2.5  # MPa
+        sigma_cp = 2.0  # MPa
+        sigma_c_lim = 1.5  # MPa
+
+        # Object to test
+        form_12_5 = Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=sigma_c_lim)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 3.112
+
+        assert round(form_12_5, 3) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("alpha_ct_pl", "f_ctk_0_05", "gamma_c"),
+        ("f_ctd_pl", "sigma_cp"),
         [
-            (-0.8, 2.5, 1.5),
-            (0.8, -2.5, 1.5),
+            (-2.5, 1.0),
+            (2.5, -1.0),
         ],
     )
     def test_raise_error_when_negative_values_are_given(
         self,
-        alpha_ct_pl: float,
-        f_ctk_0_05: float,
-        gamma_c: float,
+        f_ctd_pl: float,
+        sigma_cp: float,
     ) -> None:
-        """Test negative values for alpha_ct_pl and f_ctk_0_05."""
-        with pytest.raises(NegativeValueError):
-            Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=alpha_ct_pl, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
+        """Test negative values for f_ctd_pl and sigma_cp."""
+        with pytest.raises(LessOrEqualToZeroError):
+            Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=1.5)
 
     @pytest.mark.parametrize(
-        "gamma_c",
+        ("f_ctd_pl", "sigma_cp"),
         [
-            0,
-            -1.5,
+            (0.0, 1.0),
+            (2.5, 0.0),
         ],
     )
-    def test_raise_error_when_gamma_c_is_less_or_equal_to_zero(
+    def test_raise_error_when_values_are_less_or_equal_to_zero(
         self,
-        gamma_c: float,
+        f_ctd_pl: float,
+        sigma_cp: float,
     ) -> None:
-        """Test gamma_c less or equal to zero."""
+        """Test values less or equal to zero for f_ctd_pl and sigma_cp."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=0.8, f_ctk_0_05=2.5, gamma_c=gamma_c)
+            Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=1.5)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333",
+                r"f_{cvd} = \sqrt{f_{ctd, pl} ^ 2 + \sigma_{cp} \cdot f_{ctd, pl}} = " r"\sqrt{2.500 ^ 2 + 1.000 \cdot 2.500} = 2.958",
             ),
-            ("short", r"f_{ctd,pl} = 1.333"),
-            (
-                "string",
-                r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333",
-            ),
+            ("short", r"f_{cvd} = 2.958"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        alpha_ct_pl = 0.8  # -
-        f_ctk_0_05 = 2.5  # MPa
-        gamma_c = 1.5  # -
+        f_ctd_pl = 2.5  # MPa
+        sigma_cp = 1.0  # MPa
+        sigma_c_lim = 1.5  # MPa
 
         # Object to test
-        form_12_1_latex = Form12Dot1PlainConcreteTensileStrength(
-            alpha_ct_pl=alpha_ct_pl,
-            f_ctk_0_05=f_ctk_0_05,
-            gamma_c=gamma_c,
+        form_12_5_latex = Form12Dot5PlainConcreteBendingResistance(
+            f_ctd_pl=f_ctd_pl,
+            sigma_cp=sigma_cp,
+            sigma_c_lim=sigma_c_lim,
         ).latex()
 
         actual = {
-            "complete": form_12_1_latex.complete,
-            "short": form_12_1_latex.short,
-            "string": str(form_12_1_latex),
+            "complete": form_12_5_latex.complete,
+            "short": form_12_5_latex.short,
+            "string": str(form_12_5_latex),
         }
 
         assert actual[representation] == expected, f"{representation} representation failed."
+
+    def test_latex_comparison_not_satisfied(self) -> None:
+        """Test the latex representation of the formula when the comparison is not satisfied."""
+        # Example values
+        f_ctd_pl = 2.5  # MPa
+        sigma_cp = 2.0  # MPa
+        sigma_c_lim = 1.5  # MPa
+
+        # Object to test
+        form_12_5_latex = Form12Dot5PlainConcreteBendingResistance(
+            f_ctd_pl=f_ctd_pl,
+            sigma_cp=sigma_cp,
+            sigma_c_lim=sigma_c_lim,
+        ).latex()
+
+        expected = (
+            r"f_{cvd} = \sqrt{f_{ctd, pl} ^ 2 + \sigma_{cp} \cdot f_{ctd, pl} - "
+            r"\left(\frac{\sigma_{cp} - \sigma_{c, lim}}{2}\right) ^ 2} = "
+            r"\sqrt{2.500 ^ 2 + 2.000 \cdot 2.500 - \left(\frac{2.000 - "
+            r"1.500}2\right) ^ 2} = 3.112"
+        )
+
+        assert form_12_5_latex.complete == expected, "Latex representation failed when comparison is not satisfied."
+
+    def test_evaluation_with_sigma_cp_object(self) -> None:
+        """Test the evaluation of the result with sigma_cp as an object."""
+        # Example values
+        f_ctd_pl = 2.5  # MPa
+        sigma_cp_object = Form12Dot3PlainConcreteShearStress(n_ed=100000.0, a_cc=50000.0)  # MPa
+        sigma_c_lim = 1.5  # MPa
+
+        # Object to test
+        form_12_5 = Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp_object, sigma_c_lim=sigma_c_lim)
+
+        manually_calculated_result = 3.112
+        assert round(form_12_5, 3) == pytest.approx(expected=round(manually_calculated_result, 3), rel=1e-4)

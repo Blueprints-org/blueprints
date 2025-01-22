@@ -8,7 +8,8 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form12Dot1PlainConcreteTensileStrength(Formula):
-    """Class representing formula 12.1 for the calculation of the design tensile strength of plain concrete, :math:`f_{ctd,pl}`.
+    r"""Class representing formula 12.1 for the calculation of the design tensile strength of plain concrete,
+    :math:`f_{ctd,pl}`.
 
     NEN-EN 1992-1-1+C2:2011 art.12.3.1 - Formula (12.1)
     """
