@@ -70,7 +70,7 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
         gamma_m1: DIMENSIONLESS,
         chi: DIMENSIONLESS,
         m_c_rd: KNM,
-    ) -> DIMENSIONLESS:
+    ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             n_ed=n_ed,
@@ -98,13 +98,13 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
             {
                 "N_{Ed}": f"{self.n_ed:.3f}",
                 "M_{Ed}": f"{self.m_ed:.3f}",
-                "N_{pl,Rd}": f"{self.a * self.f_y / self.gamma_m0:.3f}",
+                "N_{pl,Rd}": f"{self.a * self.f_y / self.gamma_m0 * N_TO_KN:.3f}",
                 "M_{c,Rd}": f"{self.m_c_rd:.3f}",
-                "gamma_{M0}": f"{self.gamma_m0:.3f}",
-                "gamma_{M1}": f"{self.gamma_m1:.3f}",
-                "chi": f"{self.chi:.3f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.1f}",
+                r"\gamma_{M1}": f"{self.gamma_m1:.1f}",
+                r"\chi": f"{self.chi:.3f}",
             },
-            True,  # set to False when a single variable appears more than once in equation
+            False,
         )
         return LatexFormula(
             return_symbol=r"CHECK",

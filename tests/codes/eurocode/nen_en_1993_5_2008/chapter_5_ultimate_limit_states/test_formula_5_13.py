@@ -1,22 +1,28 @@
-"""Testing formula 5.38a of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 5.13 of NEN-EN 1993-5:2008."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_38a import Form5Dot38aCheckRelativeSlendernessRatio
+from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states.formula_5_13 import Form5Dot13SimplifiedBucklingCheck
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm5Dot38aCheckRelativeSlendernessRatio:
-    """Validation for formula 5.38a from NEN-EN 1992-1-1+C2:2011."""
+class TestForm5Dot13SimplifiedBucklingCheck:
+    """Validation for formula 5.13 from NEN-EN 1993-5:2008."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         # Example values
-        lambda_y = 1.0
-        lambda_z = 1.5
+        n_ed = 100.0  # kN
+        m_ed = 50.0  # kNm
+        a = 2000.0  # mm^2
+        f_y = 355.0  # MPa
+        gamma_m0 = 1.0  # dimensionless
+        gamma_m1 = 1.0  # dimensionless
+        chi = 0.9  # dimensionless
+        m_c_rd = 110.0  # kNm
 
         # Object to test
-        formula = Form5Dot38aCheckRelativeSlendernessRatio(lambda_y=lambda_y, lambda_z=lambda_z)
+        formula = Form5Dot13SimplifiedBucklingCheck(n_ed=n_ed, m_ed=m_ed, a=a, f_y=f_y, gamma_m0=gamma_m0, gamma_m1=gamma_m1, chi=chi, m_c_rd=m_c_rd)
 
         # Expected result, manually calculated
         expected_result = True
@@ -24,26 +30,34 @@ class TestForm5Dot38aCheckRelativeSlendernessRatio:
         assert formula == expected_result
 
     @pytest.mark.parametrize(
-        ("lambda_y", "lambda_z"),
+        ("n_ed", "m_ed", "a", "f_y", "gamma_m0", "gamma_m1", "chi", "m_c_rd"),
         [
-            (-1.0, 1.5),  # lambda_y is negative
-            (1.0, -1.5),  # lambda_z is negative
-            (0.0, 1.5),  # lambda_y is zero
-            (1.0, 0.0),  # lambda_z is zero
+            (-100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, 0.9, 100.0),  # n_ed is negative
+            (100.0, -50.0, 2000.0, 355.0, 1.0, 1.0, 0.9, 100.0),  # m_ed is negative
+            (100.0, 50.0, -2000.0, 355.0, 1.0, 1.0, 0.9, 100.0),  # a is negative
+            (100.0, 50.0, 2000.0, -355.0, 1.0, 1.0, 0.9, 100.0),  # f_y is negative
+            (100.0, 50.0, 2000.0, 355.0, 0.0, 1.0, 0.9, 100.0),  # gamma_m0 is zero
+            (100.0, 50.0, 2000.0, 355.0, 1.0, 0.0, 0.9, 100.0),  # gamma_m1 is zero
+            (100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, -0.9, 100.0),  # chi is negative
+            (100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, 0.9, -100.0),  # m_c_rd is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, lambda_y: float, lambda_z: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, n_ed: float, m_ed: float, a: float, f_y: float, gamma_m0: float, gamma_m1: float, chi: float, m_c_rd: float
+    ) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form5Dot38aCheckRelativeSlendernessRatio(lambda_y=lambda_y, lambda_z=lambda_z)
+            Form5Dot13SimplifiedBucklingCheck(n_ed=n_ed, m_ed=m_ed, a=a, f_y=f_y, gamma_m0=gamma_m0, gamma_m1=gamma_m1, chi=chi, m_c_rd=m_c_rd)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{\lambda_{y}}{\lambda_{z}} \leq 2 \text{ and } \frac{\lambda_{z}}{\lambda_{y}} \leq 2 \right) \to "
-                r"\left( \frac{1.000}{1.500} \leq 2 \text{ and } \frac{1.500}{1.000} \leq 2 \right) \to OK",
+                r"CHECK \to \frac{N_{Ed}}{\chi \cdot N_{pl,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
+                r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
+                r" \to \frac{100.000}{0.900 \cdot 710.000 \cdot \left( \frac{1.0}{1.0} \right)} + "
+                r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to OK",
             ),
             ("short", r"CHECK \to OK"),
         ],
@@ -51,11 +65,56 @@ class TestForm5Dot38aCheckRelativeSlendernessRatio:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        lambda_y = 1.0
-        lambda_z = 1.5
+        n_ed = 100.0  # kN
+        m_ed = 50.0  # kNm
+        a = 2000.0  # mm^2
+        f_y = 355.0  # MPa
+        gamma_m0 = 1.0  # dimensionless
+        gamma_m1 = 1.0  # dimensionless
+        chi = 0.9  # dimensionless
+        m_c_rd = 100.0  # kNm
 
         # Object to test
-        latex = Form5Dot38aCheckRelativeSlendernessRatio(lambda_y=lambda_y, lambda_z=lambda_z).latex()
+        latex = Form5Dot13SimplifiedBucklingCheck(
+            n_ed=n_ed, m_ed=m_ed, a=a, f_y=f_y, gamma_m0=gamma_m0, gamma_m1=gamma_m1, chi=chi, m_c_rd=m_c_rd
+        ).latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to \frac{N_{Ed}}{\chi \cdot N_{pl,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
+                r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
+                r" \to \frac{10000.000}{0.900 \cdot 710.000 \cdot \left( \frac{1.0}{1.0} \right)} + "
+                r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to \text{Not OK}",
+            ),
+            ("short", r"CHECK \to \text{Not OK}"),
+        ],
+    )
+    def test_latex_not_ok(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula "Not OK" case."""
+        # Example values
+        n_ed = 10000.0  # kN
+        m_ed = 50.0  # kNm
+        a = 2000.0  # mm^2
+        f_y = 355.0  # MPa
+        gamma_m0 = 1.0  # dimensionless
+        gamma_m1 = 1.0  # dimensionless
+        chi = 0.9  # dimensionless
+        m_c_rd = 100.0  # kNm
+
+        # Object to test
+        latex = Form5Dot13SimplifiedBucklingCheck(
+            n_ed=n_ed, m_ed=m_ed, a=a, f_y=f_y, gamma_m0=gamma_m0, gamma_m1=gamma_m1, chi=chi, m_c_rd=m_c_rd
+        ).latex()
 
         actual = {
             "complete": latex.complete,
