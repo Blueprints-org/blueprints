@@ -48,7 +48,7 @@ class Form5Dot12ElasticCriticalLoad(Formula):
     def _evaluate(
         e: MPA,
         i: MM4,
-        beta_d: float,
+        beta_d: DIMENSIONLESS,
         l: MM,  # noqa: E741
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
