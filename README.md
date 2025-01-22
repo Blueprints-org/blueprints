@@ -76,7 +76,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Steel checks (NEN-EN 1993)
   - *To Be Determined*
 
-* Geotechnical checks (NEN-EN 9997-1
+* Geotechnical checks (NEN-EN 9997-1)
   - *To Be Determined*
 
 * Common calculations
