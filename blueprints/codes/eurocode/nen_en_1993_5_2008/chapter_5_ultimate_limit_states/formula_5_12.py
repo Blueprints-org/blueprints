@@ -33,10 +33,10 @@ class Form5Dot12ElasticCriticalLoad(Formula):
         i : MM4
             [$I$] Moment of inertia [$mm^4$].
         beta_d : DIMENSIONLESS
-            [$\beta_D$] Reduction factor [-].
+            [$\beta_D$] Reduction factor, see 6.4 [-].
         l : MM
             [$l$] the buckling length, determined according to Figure 5-2 for a free or partially fixed earth
-            support or according to Figure 5-3 for a fixed earth support and Po is a reduction factor, see 6.4. [$mm$].
+            support or according to Figure 5-3 for a fixed earth support. [$mm$].
         """
         super().__init__()
         self.e = e
@@ -56,7 +56,6 @@ class Form5Dot12ElasticCriticalLoad(Formula):
             e=e,
             i=i,
             beta_d=beta_d,
-            l=l,
         )
         raise_if_less_or_equal_to_zero(l=l)
 
@@ -68,7 +67,7 @@ class Form5Dot12ElasticCriticalLoad(Formula):
             return_symbol=r"N_{cr}",
             result=f"{self:.3f}",
             equation=r"\frac{E \cdot I \cdot \beta_D \cdot \pi^2}{l^2}",
-            numeric_equation=rf"\frac{{{{self.e:.3f}} \cdot {self.i:.3f} \cdot {self.beta_d:.3f} \cdot \pi^2}}{{{self.l:.3f}^2}}",
+            numeric_equation=rf"\frac{{{self.e:.3f} \cdot {self.i:.3f} \cdot {self.beta_d:.3f} \cdot \pi^2}}{{{self.l:.3f}^2}}",
             comparison_operator_label="=",
             unit="N",
         )
