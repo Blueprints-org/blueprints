@@ -15,14 +15,14 @@ from blueprints.type_alias import MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form12Dot5PlainConcreteBendingResistance(Formula):
-    r"""Class representing formula 12.5 for the calculation of the design bending resistance of plain concrete,
+class Form12Dot5And6PlainConcreteBendingResistance(Formula):
+    r"""Class representing formula 12.5 and 12.6 for the calculation of the design bending resistance of plain concrete,
     :math:`f_{cvd}`.
 
     NEN-EN 1992-1-1+C2:2011 art.12.6.1 - Formula (12.5)
     """
 
-    label = "12.5"
+    label = "12.5/12.6"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(

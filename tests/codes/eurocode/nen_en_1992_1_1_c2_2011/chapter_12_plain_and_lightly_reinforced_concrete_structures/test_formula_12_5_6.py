@@ -5,8 +5,8 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_3 import (
     Form12Dot3PlainConcreteShearStress,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_5 import (
-    Form12Dot5PlainConcreteBendingResistance,
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_5_6 import (
+    Form12Dot5And6PlainConcreteBendingResistance,
 )
 from blueprints.validations import LessOrEqualToZeroError
 
@@ -22,7 +22,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
         sigma_c_lim = 1.5  # MPa
 
         # Object to test
-        form_12_5 = Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=sigma_c_lim)
+        form_12_5 = Form12Dot5And6PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=sigma_c_lim)
 
         # Expected result, manually calculated
         manually_calculated_result = 2.958
@@ -37,7 +37,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
         sigma_c_lim = 1.5  # MPa
 
         # Object to test
-        form_12_5 = Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=sigma_c_lim)
+        form_12_5 = Form12Dot5And6PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=sigma_c_lim)
 
         # Expected result, manually calculated
         manually_calculated_result = 3.112
@@ -58,7 +58,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
     ) -> None:
         """Test negative values for f_ctd_pl and sigma_cp."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=1.5)
+            Form12Dot5And6PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=1.5)
 
     @pytest.mark.parametrize(
         ("f_ctd_pl", "sigma_cp"),
@@ -74,7 +74,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
     ) -> None:
         """Test values less or equal to zero for f_ctd_pl and sigma_cp."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=1.5)
+            Form12Dot5And6PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp, sigma_c_lim=1.5)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -94,7 +94,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
         sigma_c_lim = 1.5  # MPa
 
         # Object to test
-        form_12_5_latex = Form12Dot5PlainConcreteBendingResistance(
+        form_12_5_latex = Form12Dot5And6PlainConcreteBendingResistance(
             f_ctd_pl=f_ctd_pl,
             sigma_cp=sigma_cp,
             sigma_c_lim=sigma_c_lim,
@@ -116,7 +116,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
         sigma_c_lim = 1.5  # MPa
 
         # Object to test
-        form_12_5_latex = Form12Dot5PlainConcreteBendingResistance(
+        form_12_5_latex = Form12Dot5And6PlainConcreteBendingResistance(
             f_ctd_pl=f_ctd_pl,
             sigma_cp=sigma_cp,
             sigma_c_lim=sigma_c_lim,
@@ -139,7 +139,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
         sigma_c_lim = 1.5  # MPa
 
         # Object to test
-        form_12_5 = Form12Dot5PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp_object, sigma_c_lim=sigma_c_lim)
+        form_12_5 = Form12Dot5And6PlainConcreteBendingResistance(f_ctd_pl=f_ctd_pl, sigma_cp=sigma_cp_object, sigma_c_lim=sigma_c_lim)
 
         manually_calculated_result = 3.112
         assert round(form_12_5, 3) == pytest.approx(expected=round(manually_calculated_result, 3), rel=1e-4)
