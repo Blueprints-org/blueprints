@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import MM
+from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
 
@@ -37,7 +37,7 @@ class Form6Dot46BetaCorner(Formula):
     def _evaluate(
         u1: MM,
         u1_star: MM,
-    ) -> float:
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(u1=u1, u1_star=u1_star)
 
