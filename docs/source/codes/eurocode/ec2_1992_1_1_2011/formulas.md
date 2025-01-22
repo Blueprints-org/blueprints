@@ -146,7 +146,7 @@ Total of 304 formulas present.
 | 6.41           | :heavy_check_mark: |         | Form6Dot41W1Rectangular                                   |
 | 6.42           | :heavy_check_mark: |         | Form6Dot42BetaCircular                                    |
 | 6.43           | :heavy_check_mark: |         | Form6Dot43BetaRectangular                                 |
-| 6.44           |        :x:         |         |                                                           |
+| 6.44           | :heavy_check_mark: |         | TestForm6Dot44BetaRectangular                             |
 | 6.45           |        :x:         |         |                                                           |
 | 6.46           |        :x:         |         |                                                           |
 | 6.47           |        :x:         |         |                                                           |
