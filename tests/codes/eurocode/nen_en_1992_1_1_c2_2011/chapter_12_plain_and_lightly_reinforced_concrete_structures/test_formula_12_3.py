@@ -1,95 +1,72 @@
-"""Testing formula 12.1 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 12.3 of NEN-EN 1992-1-1+C2:2011."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_1 import (
-    Form12Dot1PlainConcreteTensileStrength,
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_3 import (
+    Form12Dot3PlainConcreteShearStress,
 )
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestForm12Dot1PlainConcreteTensileStrength:
-    """Validation for formula 12.1 from NEN-EN 1992-1-1+C2:2011."""
+class TestForm12Dot3PlainConcreteShearStress:
+    """Validation for formula 12.3 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
         # Example values
-        alpha_ct_pl = 0.8  # -
-        f_ctk_0_05 = 2.5  # MPa
-        gamma_c = 1.5  # -
+        n_ed = 100000.0  # N
+        a_cc = 50000.0  # mm^2
 
         # Object to test
-        form_12_1 = Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=alpha_ct_pl, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
+        form_12_3 = Form12Dot3PlainConcreteShearStress(n_ed=n_ed, a_cc=a_cc)
 
         # Expected result, manually calculated
-        manually_calculated_result = 1.333  # MPa
+        manually_calculated_result = 2.0  # MPa
 
-        assert round(form_12_1, 3) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
-
-    @pytest.mark.parametrize(
-        ("alpha_ct_pl", "f_ctk_0_05", "gamma_c"),
-        [
-            (-0.8, 2.5, 1.5),
-            (0.8, -2.5, 1.5),
-        ],
-    )
-    def test_raise_error_when_negative_values_are_given(
-        self,
-        alpha_ct_pl: float,
-        f_ctk_0_05: float,
-        gamma_c: float,
-    ) -> None:
-        """Test negative values for alpha_ct_pl and f_ctk_0_05."""
-        with pytest.raises(NegativeValueError):
-            Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=alpha_ct_pl, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
+        assert round(form_12_3, 3) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        "gamma_c",
+        ("n_ed", "a_cc"),
         [
-            0,
-            -1.5,
+            (0.0, 50000.0),
+            (100000.0, 0.0),
         ],
     )
-    def test_raise_error_when_gamma_c_is_less_or_equal_to_zero(
+    def test_raise_error_when_values_are_less_or_equal_to_zero(
         self,
-        gamma_c: float,
+        n_ed: float,
+        a_cc: float,
     ) -> None:
-        """Test gamma_c less or equal to zero."""
+        """Test values less or equal to zero for n_ed and a_cc."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=0.8, f_ctk_0_05=2.5, gamma_c=gamma_c)
+            Form12Dot3PlainConcreteShearStress(n_ed=n_ed, a_cc=a_cc)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333",
+                r"\sigma_{cp} = \frac{N_{Ed}}{A_{cc}} = \frac{100000.000}{50000.000} = 2.000",
             ),
-            ("short", r"f_{ctd,pl} = 1.333"),
-            (
-                "string",
-                r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333",
-            ),
+            ("short", r"\sigma_{cp} = 2.000"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        alpha_ct_pl = 0.8  # -
-        f_ctk_0_05 = 2.5  # MPa
-        gamma_c = 1.5  # -
+        n_ed = 100000.0  # N
+        a_cc = 50000.0  # mm^2
 
         # Object to test
-        form_12_1_latex = Form12Dot1PlainConcreteTensileStrength(
-            alpha_ct_pl=alpha_ct_pl,
-            f_ctk_0_05=f_ctk_0_05,
-            gamma_c=gamma_c,
+        form_12_3_latex = Form12Dot3PlainConcreteShearStress(
+            n_ed=n_ed,
+            a_cc=a_cc,
         ).latex()
 
         actual = {
-            "complete": form_12_1_latex.complete,
-            "short": form_12_1_latex.short,
-            "string": str(form_12_1_latex),
+            "complete": form_12_3_latex.complete,
+            "short": form_12_3_latex.short,
+            "string": str(form_12_3_latex),
         }
 
         assert actual[representation] == expected, f"{representation} representation failed."
