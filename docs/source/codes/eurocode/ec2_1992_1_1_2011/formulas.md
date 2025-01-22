@@ -143,7 +143,7 @@ Total of 304 formulas present.
 | 6.38           | :heavy_check_mark: |         | Form6Dot38MaxShearStress                                  |
 | 6.39           | :heavy_check_mark: |         | Form6Dot39BetaCoefficient                                 |
 | 6.40           |        :x:         |         |                                                           |
-| 6.41           |        :x:         |         |                                                           |
+| 6.41           | :heavy_check_mark: |         | Form6Dot41W1Rectangular                                   |
 | 6.42           |        :x:         |         |                                                           |
 | 6.43           |        :x:         |         |                                                           |
 | 6.44           |        :x:         |         |                                                           |
