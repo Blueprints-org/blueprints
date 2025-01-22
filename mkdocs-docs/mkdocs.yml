@@ -10,6 +10,7 @@ extra_javascript:
   - https://unpkg.com/katex@0/dist/katex.min.js
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
   
+copyright: "2025 &copy; Blueprints"
 
 theme:
   favicon: assets/images/favicon.ico
@@ -47,6 +48,7 @@ theme:
     - content.code.copy
     - navigation.path
     - navigation.top
+    - navigation.footer
 
   language: en
 
