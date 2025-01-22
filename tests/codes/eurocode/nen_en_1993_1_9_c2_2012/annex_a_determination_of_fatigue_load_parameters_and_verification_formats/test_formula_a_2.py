@@ -20,8 +20,7 @@ class TestFormADot2CriteriaBasedOnDamageAccumulation:
     )
     def test_evaluation(self, d_d: float, result_manual: bool) -> None:
         """Test the evaluation of the result."""
-        form_a_1 = FormADot2CriteriaBasedOnDamageAccumulation(d_d=d_d)
-        assert form_a_1 == pytest.approx(expected=result_manual, rel=1e-9)
+        assert FormADot2CriteriaBasedOnDamageAccumulation(d_d=d_d) == result_manual
 
     def test_raise_error_if_negative_n_e(self) -> None:
         """Test that a NegativeValueError is raised when a negative value is passed for n_E."""
