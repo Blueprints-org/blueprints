@@ -45,12 +45,12 @@ class Form6Dot48NetAppliedPunchingLoad(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.48."""
-        _equation: str = r"V_{Ed,red} = V_{Ed} - \Delta V_{Ed}"
+        _equation: str = r"V_{Ed} - \Delta V_{Ed}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed}": f"{self.v_ed:.3f}",
                 r"\Delta V_{Ed}": f"{self.delta_v_ed:.3f}",
+                r"V_{Ed}": f"{self.v_ed:.3f}",
             },
             False,
         )

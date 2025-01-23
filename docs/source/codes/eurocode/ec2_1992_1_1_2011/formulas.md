@@ -156,7 +156,7 @@ Total of 304 formulas present.
 | 6.47_sub4      | :heavy_check_mark: |         | Form6Dot47Sub4FactorSigmaCy                               |
 | 6.47_sub5      | :heavy_check_mark: |         | Form6Dot47Sub5FactorSigmaCz                               |
 | 6.48           | :heavy_check_mark: |         | Form6Dot48NetAppliedPunchingLoad                          |
-| 6.49           |        :x:         |         |                                                           |
+| 6.49           | :heavy_check_mark: |         | Form6Dot49AppliedPunchingShearStress                      |
 | 6.50           |        :x:         |         |                                                           |
 | 6.51           |        :x:         |         |                                                           |
 | 6.52           |        :x:         |         |                                                           |
