@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MM2, MPA, N
+from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
 
 
@@ -17,7 +17,7 @@ class Form5Dot44PrestressLoss(Formula):
         self,
         a_p: MM2,
         e_p: MPA,
-        j: list[int],
+        j: list[DIMENSIONLESS],
         delta_sigma_c_t: list[MPA],
         e_cm_t: list[MPA],
     ) -> None:
@@ -31,12 +31,12 @@ class Form5Dot44PrestressLoss(Formula):
             [:math:`A_{p}`] Cross-sectional area of the tendon [:math:`mm^2`].
         e_p : MPA
             [:math:`E_{p}`] Modulus of elasticity of the tendon [:math:`MPa`].
-        j : [DIMENSIONLESS]
-            [:math:`j`] (n-1)/2n, with n the number of identical tendons successively presetressed [:math:`[-]`].
-        delta_sigma_c_t : [MPA]
-            [:math:`\Delta \sigma_{c}(t)`] variation of stress at the centre of gravity of the tendons applied at time t [:math:`[MPa]`].
-        e_cm_t: [MPA]
-            [:math:`E_{cm}(t)`] 0.1% proof stress of prestressing steel [:math:`[MPa]`].
+        j : list[DIMENSIONLESS]
+            [:math:`j`] (n-1)/2n, with n the number of identical tendons successively prestressed [:math:`list[-]`].
+        delta_sigma_c_t : list[MPA]
+            [:math:`\Delta \sigma_{c}(t)`] variation of stress at the centre of gravity of the tendons applied at time t [:math:`list[MPa]`].
+        e_cm_t: list[MPA]
+            [:math:`E_{cm}(t)`] 0.1% proof stress of prestressing steel [:math:`list[MPa]`].
         """
         super().__init__()
         self.a_p = a_p
@@ -49,7 +49,7 @@ class Form5Dot44PrestressLoss(Formula):
     def _evaluate(
         a_p: MPA,
         e_p: MPA,
-        j: list[int],
+        j: list[DIMENSIONLESS],
         delta_sigma_c_t: list[MPA],
         e_cm_t: list[MPA],
     ) -> N:
@@ -62,7 +62,7 @@ class Form5Dot44PrestressLoss(Formula):
             raise_if_negative(x=x, y=y)
             raise_if_less_or_equal_to_zero(z=z)
 
-        return a_p * e_p * sum(j[i] * (delta_sigma_c_t[i] / e_cm_t[i]) for i in range(len(j)))
+        return a_p * e_p * sum(x * (y / z) for x, y, z in zip(j, delta_sigma_c_t, e_cm_t))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.43."""

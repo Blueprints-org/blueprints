@@ -30,11 +30,11 @@ class Form5Dot43InitialPrestressForce(Formula):
         a_p : MM2
             [:math:`A_{p}`] Area of prestressing steel [:math:`mm^2`].
         k_7 : DIMENSIONLESS
-            [:math:`k_{7}`] Coefficient for characteristic tensile strength [-].
+            [:math:`k_{7}`] Coefficient for characteristic tensile strength, recommended value is 0.75 [-].
         f_pk : MPA
             [:math:`f_{pk}`] Characteristic tensile strength of prestressing steel [:math:`MPa`].
         k_8 : DIMENSIONLESS
-            [:math:`k_{8}`] Coefficient for 0.1% proof stress [-].
+            [:math:`k_{8}`] Coefficient for 0.1% proof stress, recommended value is 0.85 [-].
         f_p0_1k : MPA
             [:math:`f_{p0,1k}`] 0.1% proof stress of prestressing steel [:math:`MPa`].
         """
@@ -48,9 +48,9 @@ class Form5Dot43InitialPrestressForce(Formula):
     @staticmethod
     def _evaluate(
         a_p: MM2,
-        k_7: float,
+        k_7: DIMENSIONLESS,
         f_pk: MPA,
-        k_8: float,
+        k_8: DIMENSIONLESS,
         f_p0_1k: MPA,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""

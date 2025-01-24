@@ -21,7 +21,7 @@ class Form5Dot41MaxForceTendon(Formula):
         k_2: DIMENSIONLESS,
         f_p0_1k: MPA,
     ) -> None:
-        r"""[:math:`P_{max}`] Maximum force applied to a tendon [:math:`N`].
+        r"""[:math:`P_{max}`] Maximum force applied to a tendon at active end [:math:`N`].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.2.1(1) - Formula (5.41)
 
@@ -30,11 +30,11 @@ class Form5Dot41MaxForceTendon(Formula):
         a_p : MM2
             [:math:`A_{p}`] Cross-sectional area of the tendon [:math:`mm^2`].
         k_1 : DIMENSIONLESS
-            [:math:`k_{1}`] Coefficient for characteristic tensile strength [-].
+            [:math:`k_{1}`] Coefficient for characteristic tensile strength, recommended value is 0.8 [-].
         f_pk : KN
             [:math:`f_{pk}`] Characteristic tensile strength of the tendon [:math:`MPa`].
         k_2 : DIMENSIONLESS
-            [:math:`k_{2}`] Coefficient for 0.1% proof stress [-].
+            [:math:`k_{2}`] Coefficient for 0.1% proof stress, recommended value is 0.9[-].
         f_p0_1k : KN
             [:math:`f_{p0.1k}`] 0.1% proof stress of the tendon [:math:`MPa`].
         """
@@ -48,9 +48,9 @@ class Form5Dot41MaxForceTendon(Formula):
     @staticmethod
     def _evaluate(
         a_p: MM2,
-        k_1: float,
+        k_1: DIMENSIONLESS,
         f_pk: MPA,
-        k_2: float,
+        k_2: DIMENSIONLESS,
         f_p0_1k: MPA,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
