@@ -35,11 +35,17 @@ class TestForm5Dot13SimplifiedBucklingCheck:
             (-100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, 0.9, 100.0),  # n_ed is negative
             (100.0, -50.0, 2000.0, 355.0, 1.0, 1.0, 0.9, 100.0),  # m_ed is negative
             (100.0, 50.0, -2000.0, 355.0, 1.0, 1.0, 0.9, 100.0),  # a is negative
+            (100.0, 50.0, 0, 355.0, 1.0, 1.0, 0.9, 100.0),  # a is zero
             (100.0, 50.0, 2000.0, -355.0, 1.0, 1.0, 0.9, 100.0),  # f_y is negative
+            (100.0, 50.0, 2000.0, 0, 1.0, 1.0, 0.9, 100.0),  # f_y is zero
+            (100.0, 50.0, 2000.0, 355.0, -1.0, 1.0, 0.9, 100.0),  # gamma_m0 is negative
             (100.0, 50.0, 2000.0, 355.0, 0.0, 1.0, 0.9, 100.0),  # gamma_m0 is zero
+            (100.0, 50.0, 2000.0, 355.0, 1.0, -1.0, 0.9, 100.0),  # gamma_m1 is negative
             (100.0, 50.0, 2000.0, 355.0, 1.0, 0.0, 0.9, 100.0),  # gamma_m1 is zero
             (100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, -0.9, 100.0),  # chi is negative
+            (100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, 0, 100.0),  # chi is zero
             (100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, 0.9, -100.0),  # m_c_rd is negative
+            (100.0, 50.0, 2000.0, 355.0, 1.0, 1.0, 0.9, 0),  # m_c_rd is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(
@@ -54,9 +60,9 @@ class TestForm5Dot13SimplifiedBucklingCheck:
         [
             (
                 "complete",
-                r"CHECK \to \frac{N_{Ed}}{\chi \cdot N_{pl,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
+                r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
                 r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
-                r" \to \frac{100.000}{0.900 \cdot 710.000 \cdot \left( \frac{1.0}{1.0} \right)} + "
+                r" \to \frac{100.000}{0.900 \cdot (2000.00 \cdot 355.0 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
                 r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to OK",
             ),
             ("short", r"CHECK \to OK"),
@@ -91,9 +97,9 @@ class TestForm5Dot13SimplifiedBucklingCheck:
         [
             (
                 "complete",
-                r"CHECK \to \frac{N_{Ed}}{\chi \cdot N_{pl,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
+                r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
                 r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
-                r" \to \frac{10000.000}{0.900 \cdot 710.000 \cdot \left( \frac{1.0}{1.0} \right)} + "
+                r" \to \frac{10000.000}{0.900 \cdot (2000.00 \cdot 355.0 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
                 r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to \text{Not OK}",
             ),
             ("short", r"CHECK \to \text{Not OK}"),

@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot13SimplifiedBucklingCheck(Formula):
-    """Class representing formula 5.13 for combined axial force and bending moment check."""
+    """Class representing formula 5.13 for combined axial force and bending moment check. Only valid for class 1, 2 and 3."""
 
     label = "5.13"
     source_document = NEN_EN_1993_5_2008
@@ -26,7 +26,7 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
         m_c_rd: KNM,
     ) -> None:
         r"""
-        Simplified buckling check.
+        Simplified buckling check for class 1, 2 and 3.
 
         Provided that the boundary conditions are supplied by elements (anchor, earth support, capping beam, etc.)
         that give positional restraint corresponding to the non-sway buckling mode, this check may be used:
@@ -48,7 +48,8 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
         chi : DIMENSIONLESS
             [$\chi$] Buckling coefficient from 6.3.1.2 of EN 1993-1-1 [-].
         m_c_rd : KNM
-            [$kNm$] Design moment resistance of the cross-section [$kNm$].
+            [$kNm$] Design moment resistance of the cross-section [$kNm$]. See 5.2.2 (2).
+            This can also be calculated using Form5Dot2DesignMomentResistanceClass1Or2 or Form5Dot3DesignMomentResistanceClass3.
         """
         super().__init__()
         self.n_ed = n_ed
@@ -90,7 +91,7 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13."""
         _equation: str = (
-            r"\frac{N_{Ed}}{\chi \cdot N_{pl,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
+            r"\frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
             r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
         )
         _numeric_equation: str = latex_replace_symbols(
@@ -98,7 +99,8 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
             {
                 "N_{Ed}": f"{self.n_ed:.3f}",
                 "M_{Ed}": f"{self.m_ed:.3f}",
-                "N_{pl,Rd}": f"{self.a * self.f_y / self.gamma_m0 * N_TO_KN:.3f}",
+                "A": f"{self.a:.2f}",
+                "f_{y}": f"{self.f_y:.1f}",
                 "M_{c,Rd}": f"{self.m_c_rd:.3f}",
                 r"\gamma_{M0}": f"{self.gamma_m0:.1f}",
                 r"\gamma_{M1}": f"{self.gamma_m1:.1f}",
