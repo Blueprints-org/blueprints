@@ -158,7 +158,7 @@ Total of 304 formulas present.
 | 6.48           | :heavy_check_mark: |         | Form6Dot48NetAppliedPunchingLoad                          |
 | 6.49           | :heavy_check_mark: |         | Form6Dot49AppliedPunchingShearStress                      |
 | 6.50           | :heavy_check_mark: |         | Form6Dot50ShearStressResistance                           |
-| 6.51           |        :x:         |         |                                                           |
+| 6.51           | :heavy_check_mark: |         | Form6Dot51ShearStressLoadingEccentric                     |
 | 6.52           |        :x:         |         |                                                           |
 | 6.53           |        :x:         |         |                                                           |
 | 6.54           |        :x:         |         |                                                           |
