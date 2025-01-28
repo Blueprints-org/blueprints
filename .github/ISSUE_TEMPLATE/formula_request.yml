@@ -1,6 +1,6 @@
 name: '🔧 Formula Request'
 description: Suggest a new formula to be implemented for Blueprints
-title: "[🔧 Formula Request]: Add a short title to your request here."
+title: "[🔧 Formula Request]: Add formulas from chapter XXX from Eurocode YYY."
 labels: [ enhancement ]
 
 body:
