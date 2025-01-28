@@ -1,0 +1,64 @@
+"""Testing formula 6.56 of NEN-EN 1992-1-1+C2:2011."""
+
+import pytest
+
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_56 import (
+    Form6Dot56DesignStrengthConcreteStrussTransverseTension,
+)
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+
+
+class TestForm6Dot56DesignStrengthConcreteStrussTransverseTension:
+    """Validation for formula 6.56 from NEN-EN 1992-1-1+C2:2011."""
+
+    def test_evaluation(self) -> None:
+        """Tests the evaluation of the result."""
+        # Example values
+        eta_prime = 0.85
+        f_cd = 25.0
+
+        # Object to test
+        formula = Form6Dot56DesignStrengthConcreteStrussTransverseTension(eta_prime=eta_prime, f_cd=f_cd)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 12.75  # MPa
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("eta_prime", "f_cd"),
+        [
+            (-0.85, 25.0),  # eta_prime is negative
+            (0.85, -25.0),  # f_cd is negative
+        ],
+    )
+    def test_raise_error_when_invalid_values_are_given(self, eta_prime: float, f_cd: float) -> None:
+        """Test invalid values."""
+        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+            Form6Dot56DesignStrengthConcreteStrussTransverseTension(eta_prime=eta_prime, f_cd=f_cd)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"\sigma_{Rd,max} = 0.6 \cdot \eta' \cdot f_{cd} = 0.6 \cdot 0.850 \cdot 25.000 = 12.750 MPa",
+            ),
+            ("short", r"\sigma_{Rd,max} = 12.750 MPa"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
+        eta_prime = 0.85
+        f_cd = 25.0
+
+        # Object to test
+        latex = Form6Dot56DesignStrengthConcreteStrussTransverseTension(eta_prime=eta_prime, f_cd=f_cd).latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
