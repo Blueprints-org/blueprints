@@ -159,7 +159,7 @@ Total of 304 formulas present.
 | 6.54           |        :x:         |         |                                                           |
 | 6.55           | :heavy_check_mark: |         | Form6Dot55DesignStrengthConcreteStruts                    |
 | 6.56           | :heavy_check_mark: |         | Form6Dot56DesignStrengthConcreteStrussTransverseTension   |
-| 6.57N          |        :x:         |         |                                                           |
+| 6.57N          | :heavy_check_mark: |         | Form6Dot57NuPrime                                         |
 | 6.58           |        :x:         |         |                                                           |
 | 6.59           |        :x:         |         |                                                           |
 | 6.60           |        :x:         |         |                                                           |

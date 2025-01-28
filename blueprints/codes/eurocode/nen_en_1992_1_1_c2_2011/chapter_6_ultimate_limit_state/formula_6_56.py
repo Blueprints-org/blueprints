@@ -15,7 +15,7 @@ class Form6Dot56DesignStrengthConcreteStrussTransverseTension(Formula):
 
     def __init__(
         self,
-        eta_prime: DIMENSIONLESS,
+        nu_prime: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
         r"""[$$\sigma_{Rd,max}$$] Calculation of [$$\sigma_{Rd,max}$$].
@@ -24,33 +24,33 @@ class Form6Dot56DesignStrengthConcreteStrussTransverseTension(Formula):
 
         Parameters
         ----------
-        eta_prime : float
-            [$$\eta'$$] Factor for transverse tension [-]. The value of $$\eta'$$ for use in a Country may be found in its National Annex.
+        nu_prime : float
+            [$$\nu'$$] Factor for transverse tension [-]. The value of $$\nu'$$ for use in a Country may be found in its National Annex.
             The recommended value is given by equation (6.57N).
         f_cd : float
             [$$f_{cd}$$] Design compressive strength of concrete [$$MPa$$].
         """
         super().__init__()
-        self.eta_prime = eta_prime
+        self.nu_prime = nu_prime
         self.f_cd = f_cd
 
     @staticmethod
     def _evaluate(
-        eta_prime: DIMENSIONLESS,
+        nu_prime: DIMENSIONLESS,
         f_cd: MPA,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(eta_prime=eta_prime, f_cd=f_cd)
+        raise_if_negative(nu_prime=nu_prime, f_cd=f_cd)
 
-        return 0.6 * eta_prime * f_cd
+        return 0.6 * nu_prime * f_cd
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.56."""
-        _equation: str = r"0.6 \cdot \eta' \cdot f_{cd}"
+        _equation: str = r"0.6 \cdot \nu' \cdot f_{cd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\eta'": f"{self.eta_prime:.3f}",
+                r"\nu'": f"{self.nu_prime:.3f}",
                 r"f_{cd}": f"{self.f_cd:.3f}",
             },
             False,
