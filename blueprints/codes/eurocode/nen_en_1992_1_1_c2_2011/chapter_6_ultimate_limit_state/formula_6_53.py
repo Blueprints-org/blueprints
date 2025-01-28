@@ -15,7 +15,7 @@ class Form6Dot53CheckPunchingShear(Formula):
     Parameters
     ----------
     beta : DIMENSIONLESS
-        [$$\beta$$] Factor accounting for the effect of load eccentricity [-].
+        [$$\beta$$] See 6.4.3 (3), (4) and (5) [-].
     v_ed : N
         [$$V_{Ed}$$] Design shear force [$$N$$].
     u_0 : MM
