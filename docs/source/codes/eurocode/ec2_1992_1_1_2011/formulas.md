@@ -155,7 +155,7 @@ Total of 304 formulas present.
 | 6.50           |        :x:         |         |                                                           |
 | 6.51           |        :x:         |         |                                                           |
 | 6.52           | :heavy_check_mark: |         | Form6Dot52PunchingShearResistance                         |
-| 6.53           |        :x:         |         |                                                           |
+| 6.53           | :heavy_check_mark: |         | Form6Dot53CheckPunchingShear                              |
 | 6.54           |        :x:         |         |                                                           |
 | 6.55           |        :x:         |         |                                                           |
 | 6.56           |        :x:         |         |                                                           |
