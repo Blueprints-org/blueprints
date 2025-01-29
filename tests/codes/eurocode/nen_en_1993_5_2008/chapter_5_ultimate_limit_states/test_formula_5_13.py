@@ -5,6 +5,20 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states.formula_5_13 import Form5Dot13SimplifiedBucklingCheck
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
+COMPLETE_LATEX_REPRESENTATION_OK = (
+    r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
+    r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
+    r" \to \frac{100.000}{0.900 \cdot (2000.00 / 10^6 \cdot 355.0 \cdot 10^3 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
+    r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to OK"
+)
+
+COMPLETE_LATEX_REPRESENTATION_NOT_OK = (
+    r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
+    r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
+    r" \to \frac{10000.000}{0.900 \cdot (2000.00 / 10^6 \cdot 355.0 \cdot 10^3 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
+    r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to \text{Not OK}"
+)
+
 
 class TestForm5Dot13SimplifiedBucklingCheck:
     """Validation for formula 5.13 from NEN-EN 1993-5:2008."""
@@ -60,10 +74,7 @@ class TestForm5Dot13SimplifiedBucklingCheck:
         [
             (
                 "complete",
-                r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
-                r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
-                r" \to \frac{100.000}{0.900 \cdot (2000.00 \cdot 355.0 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
-                r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to OK",
+                COMPLETE_LATEX_REPRESENTATION_OK,
             ),
             ("short", r"CHECK \to OK"),
         ],
@@ -97,10 +108,7 @@ class TestForm5Dot13SimplifiedBucklingCheck:
         [
             (
                 "complete",
-                r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
-                r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
-                r" \to \frac{10000.000}{0.900 \cdot (2000.00 \cdot 355.0 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
-                r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to \text{Not OK}",
+                COMPLETE_LATEX_REPRESENTATION_NOT_OK,
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],
