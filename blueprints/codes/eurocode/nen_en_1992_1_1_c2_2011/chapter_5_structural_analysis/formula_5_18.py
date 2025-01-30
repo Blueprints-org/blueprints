@@ -14,25 +14,25 @@ class Form5Dot18ComparisonGeneralSecondOrderEffects:
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, f_ved: KN, k_1: DIMENSIONLESS, n_s: DIMENSIONLESS, length: M, e_cd: MPA, i_c: MM4) -> None:
-        """[:math:`CHECK`] Criteria met, based on damage accumulation.
+        r"""[$$CHECK$$] Criteria met, based on damage accumulation.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.3.3(1) - Formula (5.18)
 
         Parameters
         ----------
         f_ved : KN
-            [:math: F_{v,ed}`] Total vertical load (on braced and bracing members) [:math:`kN`].
+            [$$F_{v,ed}$$] Total vertical load (on braced and bracing members) [$$kN$$].
         k_1 : DIMENSIONLESS
-            [:math: k_1`] The value of k1 for use in a Country may be found in its National Annex. Recommend value is
-            0.31 [:math:`-`].
+            [$$k_1$$] The value of k1 for use in a Country may be found in its National Annex. Recommend value is
+            0.31 [$$-$$].
         n_s : DIMENSIONLESS
-            [:math: `n_s`] is the total number of storeys [:math:`-`].
+            [$$n_s$$] is the total number of storeys [$$-$$].
         length : M
-            [:math: `L`] is the total height of the building above level of moment restraint. [:math:`m`].
+            [$$L$$] is the total height of the building above level of moment restraint. [$$m$$].
         e_cd : MPa
-            [:math: `E_{cd}`] is the design value of the modulus of elasticity of concrete. [:math:`MPa`].
+            [$$E_{cd}$$] is the design value of the modulus of elasticity of concrete. [$$MPa$$].
         i_c : MM4
-            [:math: `l_c`] is the second moment of area (uncracked concrete section) of bracing member(s). [:math:`mm^4`].
+            [$$I_c$$] is the second moment of area (uncracked concrete section) of bracing member(s). [$$mm^4$$].
         """
         self.f_ved = f_ved
         self.k_1 = k_1
@@ -54,7 +54,7 @@ class Form5Dot18ComparisonGeneralSecondOrderEffects:
 
     @property
     def right_hand_side(self) -> KN:
-        """Calculate the left hand side of the comparison.
+        """Calculate the right hand side of the comparison.
 
         Returns
         -------

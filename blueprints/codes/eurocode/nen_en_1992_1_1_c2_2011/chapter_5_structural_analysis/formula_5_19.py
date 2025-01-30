@@ -14,18 +14,18 @@ class Form5Dot19EffectiveCreepCoefficient(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, phi_inf_t0: DIMENSIONLESS, m0_eqp: KN_M, m0_ed: KN_M) -> None:
-        """[:math:`ϕ_{ef}`] Effective creep coefficient.
+        r"""[$$\phi_{ef}$$] Effective creep coefficient.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.4(2) - Formula (5.19)
 
         Parameters
         ----------
         phi_inf_t0 : DIMENSIONLESS
-            [:math:`ϕ (∞,t0)`] is the final value of the creep coefficient according to art. 3.1.4.
+            [$$\phi (\infty,t_0)$$] is the final value of the creep coefficient according to art. 3.1.4.
         m0_eqp : KN_M
-            [:math:`M_{0,Eqp}`] is the first-order bending moment in the quasi-permanent load combination (SLS).
+            [$$M_{0,Eqp}$$] is the first-order bending moment in the quasi-permanent load combination (SLS).
         m0_ed : KN_M
-            [:math:`M_{0,Ed}`] is the first-order bending moment in the ultimate limit state (ULS).
+            [$$M_{0,Ed}$$] is the first-order bending moment in the ultimate limit state (ULS).
         """
         super().__init__()
         self.phi_inf_t0 = phi_inf_t0
