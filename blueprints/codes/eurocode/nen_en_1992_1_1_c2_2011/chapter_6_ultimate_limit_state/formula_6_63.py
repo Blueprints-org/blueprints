@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot63ConcentratedResistanceForce(Formula):
-    r"""Class representing formula 6.63 for the calculation of [:math:`F_{Rdu}`]."""
+    r"""Class representing formula 6.63 for the calculation of [$$F_{Rdu}$$]."""
 
     label = "6.63"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,18 +21,18 @@ class Form6Dot63ConcentratedResistanceForce(Formula):
         a_c1: MM2,
         f_cd: MPA,
     ) -> None:
-        r"""[:math:`F_{Rdu}`] Calculation of [:math:`F_{Rdu}`].
+        r"""[$$F_{Rdu}$$] Calculation of [$$F_{Rdu}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.7(2) - Formula (6.63)
 
         Parameters
         ----------
         a_c0 : MM2
-            [:math:`A_{c0}`] Loaded area [:math:`mm^2`].
+            [$$A_{c0}$$] Loaded area [$$mm^2$$].
         a_c1 : MM2
-            [:math:`A_{c1}`] Maximum design distribution area with a similar shape to [:math:`A_{c0}`] [:math:`mm^2`].
+            [$$A_{c1}$$] Maximum design distribution area with a similar shape to [$$A_{c0}$$] [$$mm^2$$].
         f_cd : MPA
-            [:math:`f_{cd}`] Design compressive strength of concrete [:math:`MPa`].
+            [$$f_{cd}$$] Design compressive strength of concrete [$$MPa$$].
         """
         super().__init__()
         self.a_c0 = a_c0
