@@ -163,7 +163,7 @@ Total of 304 formulas present.
 | 6.58           |        :x:         |         |                                                           |
 | 6.59           |        :x:         |         |                                                           |
 | 6.60           | :heavy_check_mark: |         | Form6Dot60DesignValueCompressiveStressResistance          |
-| 6.61           |        :x:         |         |                                                           |
+| 6.61           | :heavy_check_mark: |         | Form6Dot61DesignValueCompressiveStressResistance          |
 | 6.62           |        :x:         |         |                                                           |
 | 6.63           |        :x:         |         |                                                           |
 | 6.64           |        :x:         |         |                                                           |
