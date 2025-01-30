@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot61DesignValueCompressiveStressResistance(Formula):
-    r"""Class representing formula 6.61 for the calculation of :math:`\sigma_{Rd,max}`."""
+    r"""Class representing formula 6.61 for the calculation of [$$\sigma_{Rd,max}$$]."""
 
     label = "6.61"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,20 +19,20 @@ class Form6Dot61DesignValueCompressiveStressResistance(Formula):
         nu_prime: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
-        r""":math:`\sigma_{Rd,max}` Calculation of :math:`\sigma_{Rd,max}`.
+        r"""[$$\sigma_{Rd,max}$$] Calculation of [$$\sigma_{Rd,max}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.5.4(4) - Formula (6.61)
 
         Parameters
         ----------
         k_2 : DIMENSIONLESS
-            :math:`k_2` Coefficient for the design value of compressive stress resistance [-].
-            Note: The value of :math:`k_2` for use in a Country may be found in its National Annex.
+            [$$k_2$$] Coefficient for the design value of compressive stress resistance [-].
+            Note: The value of [$$k_2$$] for use in a Country may be found in its National Annex.
             The recommended value is 0.85.
         nu_prime : DIMENSIONLESS
-            :math:`\nu'` Reduction factor for the design value of compressive stress resistance [-].
+            [$$\nu'$$] Reduction factor for the design value of compressive stress resistance [-].
         f_cd : MPA
-            :math:`f_{cd}` Design value of compressive strength [MPa].
+            [$$f_{cd}$$] Design value of compressive strength [MPa].
         """
         super().__init__()
         self.k_2 = k_2
