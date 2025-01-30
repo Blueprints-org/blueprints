@@ -25,13 +25,13 @@ class Form6Dot62DesignValueCompressiveStressResistance(Formula):
 
         Parameters
         ----------
-        k_3 : float
+        k_3 : DIMENSIONLESS
             :math:`k_3` Coefficient for the design value of compressive stress resistance [-].
             Note: The value of :math:`k_3` for use in a Country may be found in its National Annex.
             The recommended value is 0.75.
-        nu_prime : float
+        nu_prime : DIMENSIONLESS
             :math:`\nu'` Reduction factor for the design value of compressive stress resistance [-].
-        f_cd : float
+        f_cd : MPA
             :math:`f_{cd}` Design value of compressive strength [MPa].
         """
         super().__init__()
