@@ -128,12 +128,12 @@ Total of 304 formulas present.
 | 6.23           |        :x:         |         |                                                           |
 | 6.24           |        :x:         |         |                                                           |
 | 6.25           |        :x:         |         |                                                           |
-| 6.26           |        :x:         |         |                                                           |
-| 6.27           |        :x:         |         |                                                           |
-| 6.28           |        :x:         |         |                                                           |
-| 6.29           |        :x:         |         |                                                           |
-| 6.30           |        :x:         |         |                                                           |
-| 6.31           |        :x:         |         |                                                           |
+| 6.26           | :heavy_check_mark: |         | Form6Dot26ShearStressInWall                               |
+| 6.27           | :heavy_check_mark: |         | Form6Dot27ShearForceInWall                                |
+| 6.28           | :heavy_check_mark: |         | Form6Dot28RequiredCrossSectionalArea                      |
+| 6.29           | :heavy_check_mark: |         | Form6Dot29CheckTorsionShearResistance                     |
+| 6.30           | :heavy_check_mark: |         | Form6Dot30DesignTorsionalResistanceMoment                 |
+| 6.31           | :heavy_check_mark: |         | Form6Dot31CheckTorsionShearResistanceRectangular          |
 | 6.32           |        :x:         |         |                                                           |
 | 6.33           |        :x:         |         |                                                           |
 | 6.34           |        :x:         |         |                                                           |
