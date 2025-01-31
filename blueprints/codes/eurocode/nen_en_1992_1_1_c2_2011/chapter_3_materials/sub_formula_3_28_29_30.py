@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class SubForm3Dot282930Mu(Formula):
@@ -17,16 +17,16 @@ class SubForm3Dot282930Mu(Formula):
         sigma_pi: MPA,
         f_pk: MPA,
     ) -> None:
-        """[μ] Ratio between initial pre-stress and characteristic tensile strength  (σpi / fpk) [-].
+        r"""[$$\mu$$] Ratio between initial pre-stress and characteristic tensile strength  [$$\sigma_{pi} / f_{pk}$$] [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.3.2(7) - μ
+        NEN-EN 1992-1-1+C2:2011 art.3.3.2(7) - [$$\mu$$]
 
         Parameters
         ----------
         sigma_pi : MPA
-            [σpi] Initial pre-stress [MPa]
+            [$$\sigma_{pi}$$] Initial pre-stress [MPa]
         f_pk : MPA
-            [fpk] Characteristic tensile strength of pre-stress steel [MPa]
+            [$$f_{pk}$$] Characteristic tensile strength of pre-stress steel [MPa]
 
         Returns
         -------
@@ -40,14 +40,14 @@ class SubForm3Dot282930Mu(Formula):
     def _evaluate(
         sigma_pi: MPA,
         f_pk: MPA,
-    ) -> float:
-        """Evaluates the formula, for more information see the __init__ method."""
+    ) -> DIMENSIONLESS:
+        r"""Evaluates the formula, for more information see the __init__ method."""
         if f_pk < 0:
             raise ValueError(f"Invalid f_pk: {f_pk}. f_pk cannot be negative")
         return sigma_pi / f_pk
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for μ in formula 3.28 and 3.29 and 3.30."""
+        r"""Returns LatexFormula object for [$$\mu$$] in formula 3.28 and 3.29 and 3.30."""
         return LatexFormula(
             return_symbol=r"\mu",
             result=f"{self:.3f}",

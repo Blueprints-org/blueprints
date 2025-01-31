@@ -3,6 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
+from blueprints.type_alias import DIMENSIONLESS
 
 
 class Form3Dot11AutogeneShrinkage(Formula):
@@ -13,21 +14,21 @@ class Form3Dot11AutogeneShrinkage(Formula):
 
     def __init__(
         self,
-        beta_as_t: float,
-        epsilon_ca_inf: float,
+        beta_as_t: DIMENSIONLESS,
+        epsilon_ca_inf: DIMENSIONLESS,
     ) -> None:
-        """[εca(t)] Autogene shrinkage [-].
+        r"""[$$\epsilon_{ca}(t)$$] Autogene shrinkage [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.11)
 
         Parameters
         ----------
-        beta_as_t : float
-            [βas(t)] Coefficient dependent on time in days for autogene shrinkage [-].
+        beta_as_t : DIMENSIONLESS
+            [$$\beta_{as}(t)$$] Coefficient dependent on time in days for autogene shrinkage [-].
             = 1 - exp(-0.2 * t^0.5)
             Use your own implementation of this formula or use the Form3Dot13CoefficientTimeAutogeneShrinkage class
-        epsilon_ca_inf : float
-            [εca(∞)] Autogene shrinkage at infinity [-].
+        epsilon_ca_inf : DIMENSIONLESS
+            [$$\epsilon_{ca}(\infty)$$] Autogene shrinkage at infinity [-].
             = 2.5 * (fck - 10) E-6
             Use your own implementation of this formula or use the Form3Dot12AutogeneShrinkageInfinity class.
 
@@ -41,8 +42,8 @@ class Form3Dot11AutogeneShrinkage(Formula):
 
     @staticmethod
     def _evaluate(
-        beta_as_t: float,
-        epsilon_ca_inf: float,
+        beta_as_t: DIMENSIONLESS,
+        epsilon_ca_inf: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if beta_as_t < 0:

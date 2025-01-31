@@ -3,6 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
+from blueprints.type_alias import DIMENSIONLESS
 
 
 class Form3Dot8TotalShrinkage(Formula):
@@ -13,19 +14,19 @@ class Form3Dot8TotalShrinkage(Formula):
 
     def __init__(
         self,
-        epsilon_cd: float,
-        epsilon_ca: float,
+        epsilon_cd: DIMENSIONLESS,
+        epsilon_ca: DIMENSIONLESS,
     ) -> None:
-        """[εcs] The total shrinkage [-].
+        r"""[$$\epsilon_{cs}$$] The total shrinkage [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.8)
 
         Parameters
         ----------
-        epsilon_cd : float
-            [εcd] Drying shrinkage [-].
-        epsilon_ca : float
-            [εca] Autogene shrinkage [-].
+        epsilon_cd : DIMENSIONLESS
+            [$$\epsilon_{cd}$$] Drying shrinkage [-].
+        epsilon_ca : DIMENSIONLESS
+            [$$\epsilon_{ca}$$] Autogene shrinkage [-].
 
         Returns
         -------
@@ -37,9 +38,9 @@ class Form3Dot8TotalShrinkage(Formula):
 
     @staticmethod
     def _evaluate(
-        epsilon_cd: float,
-        epsilon_ca: float,
-    ) -> float:
+        epsilon_cd: DIMENSIONLESS,
+        epsilon_ca: DIMENSIONLESS,
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         return epsilon_cd + epsilon_ca
 

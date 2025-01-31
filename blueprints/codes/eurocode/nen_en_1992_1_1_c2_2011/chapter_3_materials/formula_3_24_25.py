@@ -18,17 +18,17 @@ class Form3Dot24And25IncreasedCharacteristicCompressiveStrength(Formula):
         f_ck: MPA,
         sigma_2: MPA,
     ) -> None:
-        """[:math:`f_{ck,c}`] Increased characteristic compressive strength due to enclosed concrete [:math:`MPa`].
+        r"""[$$f_{ck,c}$$] Increased characteristic compressive strength due to enclosed concrete [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.9(2) - Formula (3.24 and 3.25)
 
         Parameters
         ----------
         f_ck : MPA
-            [:math:`f_{ck}`] Characteristic compressive strength concrete [:math:`MPa`].
-            Valid range: :math:`f_{ck} ≤ 90 MPa`.
+            [$$f_{ck}$$] Characteristic compressive strength concrete [$$MPa$$].
+            Valid range: [$$f_{ck} \leq 90 \, MPa$$].
         sigma_2 : MPA
-            [:math:`σ_2`] Effective compressive stress in transverse direction [:math:`MPa`].
+            [$$\sigma_2$$] Effective compressive stress in transverse direction [$$MPa$$].
 
         Returns
         -------

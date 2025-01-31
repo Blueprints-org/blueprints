@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot16DesignValueTensileStrength(Formula):
@@ -14,23 +14,24 @@ class Form3Dot16DesignValueTensileStrength(Formula):
 
     def __init__(
         self,
-        alpha_ct: float,
+        alpha_ct: DIMENSIONLESS,
         f_ctk_0_05: MPA,
-        gamma_c: float,
+        gamma_c: DIMENSIONLESS,
     ) -> None:
-        """[fcd] Design value concrete tensile strength [MPa].
+        r"""[$$f_{cd}$$] Design value concrete tensile strength [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.6(2) - Formula (3.16)
 
         Parameters
         ----------
-        alpha_ct : float
-            [αct] Coefficient taking long term effects on tensile strength into account and unfavorable effect due to positioning loading [-]
+        alpha_ct : DIMENSIONLESS
+            [$$\alpha_{ct}$$] Coefficient taking long term effects on tensile strength into
+            account and unfavorable effect due to positioning loading [-]
             See national appendix. Recommended value: 1.0
         f_ctk_0_05 : MPA
-            [fctk,0,05] Characteristic tensile strength 5% [MPa].
-        gamma_c : float
-            [γc] Partial safety factor concrete, see 2.4.2.4 [-].
+            [$$f_{ctk,0.05}$$] Characteristic tensile strength 5% [$$MPa$$].
+        gamma_c : DIMENSIONLESS
+            [$$\gamma_{c}$$] Partial safety factor concrete, see 2.4.2.4 [-].
 
         Returns
         -------
@@ -43,9 +44,9 @@ class Form3Dot16DesignValueTensileStrength(Formula):
 
     @staticmethod
     def _evaluate(
-        alpha_ct: float,
+        alpha_ct: DIMENSIONLESS,
         f_ctk_0_05: MPA,
-        gamma_c: float,
+        gamma_c: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if alpha_ct < 0:

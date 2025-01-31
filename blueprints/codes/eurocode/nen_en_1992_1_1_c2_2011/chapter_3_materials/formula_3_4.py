@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DAYS, MPA
+from blueprints.type_alias import DAYS, DIMENSIONLESS, MPA
 
 
 class Form3Dot4DevelopmentTensileStrength(Formula):
@@ -14,25 +14,25 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
 
     def __init__(
         self,
-        beta_cc_t: float,
-        alpha: float,
+        beta_cc_t: DIMENSIONLESS,
+        alpha: DIMENSIONLESS,
         f_ctm: MPA,
     ) -> None:
-        """[fctm(t)] The initial estimation of the tensile strength after t days [MPa].
+        r"""[$$f_{ctm}(t)$$] The initial estimation of the tensile strength after t days [MPa].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - Formula (3.4)
 
         Parameters
         ----------
-        beta_cc_t : float
-            [βcc(t)] Coefficient dependent of the age of concrete [-].
-        alpha : float
-            [α] Factor dependent of the age of concrete [-]
+        beta_cc_t : DIMENSIONLESS
+            [$$\beta_{cc}(t)$$] Coefficient dependent of the age of concrete [-].
+        alpha : DIMENSIONLESS
+            [$$\alpha$$] Factor dependent of the age of concrete [-]
             alpha = 1 for t < 28 days
             alpha = 2/3 for t >= 28 days
             Use your own implementation of this value or use the SubForm3Dot4CoefficientAgeConcreteAlpha class.
         f_ctm : MPA
-            [fctm] Tensile strength from table 3.1 [MPa].
+            [$$f_{ctm}$$] Tensile strength from table 3.1 [MPa].
 
         Returns
         -------
@@ -45,8 +45,8 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
 
     @staticmethod
     def _evaluate(
-        beta_cc_t: float,
-        alpha: float,
+        beta_cc_t: DIMENSIONLESS,
+        alpha: DIMENSIONLESS,
         f_ctm: MPA,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
@@ -79,14 +79,14 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
         self,
         t: DAYS,
     ) -> None:
-        """[α] Factor dependent of the age of concrete [-].
+        r"""[$$\alpha$$] Factor dependent of the age of concrete [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - α
 
         Parameters
         ----------
         t : DAYS
-            [t] Age of concrete in days [days].
+            [$$t$$] Age of concrete in days [days].
         """
         super().__init__()
         self.t = t
@@ -94,7 +94,7 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
     @staticmethod
     def _evaluate(
         t: DAYS,
-    ) -> float:
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         if t <= 0:
             raise ValueError(f"Invalid t: {t}. t cannot be negative or zero")

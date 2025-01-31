@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot14StressStrainForShortTermLoading(Formula):
@@ -14,22 +14,22 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
 
     def __init__(
         self,
-        k: float,
-        eta: float,
+        k: DIMENSIONLESS,
+        eta: DIMENSIONLESS,
     ) -> None:
-        """[σc / fcm] Compressive stress-strength ratio [-].
+        r"""[$$\sigma_c / f_{cm}$$] Compressive stress-strength ratio [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.5(1) - Formula (3.14)
 
         Parameters
         ----------
-        k : float
-            [k] [-].
-            = 1.05 * Ecm * |εc1| / fcm
+        k : DIMENSIONLESS
+            [$$k$$] [-].
+            = 1.05 * Ecm * |$$\epsilon_{c1}$$| / fcm
             Use your own implementation of this formula or use the SubForm3Dot14K class.
-        eta : float
-            [η] Strain - peak-strain ratio [-].
-            = εc / εc1
+        eta : DIMENSIONLESS
+            [$$\eta$$] Strain - peak-strain ratio [-].
+            = $$\epsilon_c / \epsilon_{c1}$$
             Use your own implementation of this formula or use the SubForm3Dot14Eta class.
 
         Returns
@@ -42,8 +42,8 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
 
     @staticmethod
     def _evaluate(
-        k: float,
-        eta: float,
+        k: DIMENSIONLESS,
+        eta: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if k < 0:
@@ -71,19 +71,19 @@ class SubForm3Dot14Eta(Formula):
 
     def __init__(
         self,
-        epsilon_c: float,
-        epsilon_c1: float,
+        epsilon_c: DIMENSIONLESS,
+        epsilon_c1: DIMENSIONLESS,
     ) -> None:
-        """[η] Strain - peak-strain ratio [-].
+        r"""[$$\eta$$] Strain - peak-strain ratio [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.5(1) - η
 
         Parameters
         ----------
-        epsilon_c : float
-            [εc] Strain concrete [-].
-        epsilon_c1 : float
-            [εc1] Strain concrete at peak-stress following table 3.1 [-].
+        epsilon_c : DIMENSIONLESS
+            [$$\epsilon_c$$] Strain concrete [-].
+        epsilon_c1 : DIMENSIONLESS
+            [$$\epsilon_{c1}$$] Strain concrete at peak-stress following table 3.1 [-].
         """
         super().__init__()
         self.epsilon_c = epsilon_c
@@ -91,8 +91,8 @@ class SubForm3Dot14Eta(Formula):
 
     @staticmethod
     def _evaluate(
-        epsilon_c: float,
-        epsilon_c1: float,
+        epsilon_c: DIMENSIONLESS,
+        epsilon_c1: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         return epsilon_c / epsilon_c1
@@ -114,19 +114,19 @@ class SubForm3Dot14K(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.14"
 
-    def __init__(self, e_cm: MPA, epsilon_c1: float, f_cm: MPA) -> None:
-        """[k] [-].
+    def __init__(self, e_cm: MPA, epsilon_c1: DIMENSIONLESS, f_cm: MPA) -> None:
+        r"""[$$k$$] [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.5(1) - k
 
         Parameters
         ----------
         e_cm : MPA
-            [Ecm] Elastic modulus concrete [MPa].
-        epsilon_c1 : float
-            [εc1] Strain concrete at peak-stress following table 3.1 [-].
+            [$$E_{cm}$$] Elastic modulus concrete [MPa].
+        epsilon_c1 : DIMENSIONLESS
+            [$$\epsilon_{c1}$$] Strain concrete at peak-stress following table 3.1 [-].
         f_cm : MPA
-            [fcm] Compressive strength concrete [MPa].
+            [$$f_{cm}$$] Compressive strength concrete [MPa].
         """
         super().__init__()
         self.e_cm = e_cm
@@ -136,7 +136,7 @@ class SubForm3Dot14K(Formula):
     @staticmethod
     def _evaluate(
         e_cm: MPA,
-        epsilon_c1: float,
+        epsilon_c1: DIMENSIONLESS,
         f_cm: MPA,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""

@@ -3,12 +3,12 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
-    """Class representing formula 3.1 for the estimation of the concrete compressive strength, fcm(t),  after t days
+    r"""Class representing formula 3.1 for the estimation of the concrete compressive strength, [$$f_{cm}(t)$$], after t days
     with an average temperature of 20 degrees Celsius.
     """
 
@@ -17,19 +17,19 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
 
     def __init__(
         self,
-        beta_cc_t: float,
+        beta_cc_t: DIMENSIONLESS,
         f_cm: MPA,
     ) -> None:
-        """[fcm(t)] The estimated concrete compressive strength [MPa].
+        r"""[$$f_{cm}(t)$$] The estimated concrete compressive strength [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - Formula (3.1)
 
         Parameters
         ----------
-        beta_cc_t : float
-            [βcc(t)] Coefficient dependent of the age of concrete [-].
+        beta_cc_t : DIMENSIONLESS
+            [$$\beta_{cc}(t)$$] Coefficient dependent of the age of concrete [-].
         f_cm : MPA
-            [fcm] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
+            [$$f_{cm}$$] Average concrete compressive strength on day 28 based on table 3.1 [$$MPa$$].
 
         Returns
         -------
@@ -41,7 +41,7 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
 
     @staticmethod
     def _evaluate(
-        beta_cc_t: float,
+        beta_cc_t: DIMENSIONLESS,
         f_cm: MPA,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
