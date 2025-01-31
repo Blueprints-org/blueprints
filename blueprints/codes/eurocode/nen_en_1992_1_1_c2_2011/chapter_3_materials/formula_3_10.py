@@ -83,16 +83,16 @@ class SubForm3Dot10FictionalCrossSection(Formula):
         a_c: MM2,
         u: MM,
     ) -> None:
-        r"""[$$h_0$$] Fictional thickness of the cross-section [mm].
+        r"""[$$h_0$$] Fictional thickness of the cross-section [$$mm$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - h0
 
         Parameters
         ----------
         a_c : MM2
-            [$$A_c$$] Area of the cross-section of the concrete [mm²].
+            [$$A_c$$] Area of the cross-section of the concrete [$$mm^2$$].
         u : MM
-            [$$u$$] Circumference of part that is subjected to drying [mm].
+            [$$u$$] Circumference of part that is subjected to drying [$$mm$$].
         """
         super().__init__()
         self.a_c = a_c
