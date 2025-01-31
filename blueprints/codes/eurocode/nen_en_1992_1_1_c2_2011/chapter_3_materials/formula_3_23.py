@@ -17,7 +17,7 @@ class Form3Dot23FlexuralTensileStrength(Formula):
         h: MM,
         f_ctm: MPA,
     ) -> None:
-        r"""[$$f_{ctm,fl}$$] Mean flexural tensile strength of reinforced concrete members  [MPa].
+        r"""[$$f_{ctm,fl}$$] Mean flexural tensile strength of reinforced concrete members  [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.8(1) - Formula (3.23)
 
@@ -26,7 +26,7 @@ class Form3Dot23FlexuralTensileStrength(Formula):
         h : MM
             [$${h}$$] Total member depth [mm].
         f_ctm : MPA
-            [$${f_{ctm}}$$] Mean axial tensile strength following from table 3.1 [MPa].
+            [$${f_{ctm}}$$] Mean axial tensile strength following from table 3.1 [$$MPa$$].
 
         Returns
         -------

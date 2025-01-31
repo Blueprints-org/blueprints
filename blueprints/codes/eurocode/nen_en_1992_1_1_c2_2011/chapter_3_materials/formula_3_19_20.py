@@ -23,7 +23,7 @@ class Form3Dot19And20EffectivePressureZoneHeight(Formula):
         Parameters
         ----------
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength concrete [MPa].
+            [$$f_{ck}$$] Characteristic compressive strength concrete [$$MPa$$].
             Valid range: [$$f_{ck} \leq 90$$].
 
         Returns

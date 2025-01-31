@@ -25,9 +25,9 @@ class Form3Dot26IncreasedStrainAtMaxStrength(Formula):
         Parameters
         ----------
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength [MPa]
+            [$$f_{ck}$$] Characteristic compressive strength [$$MPa$$]
         f_ck_c : MPA
-            [$$f_{ck,c}$$] Increased characteristic compressive strength due to enclosed concrete [MPa].
+            [$$f_{ck,c}$$] Increased characteristic compressive strength due to enclosed concrete [$$MPa$$].
             See classes Form3Dot24IncreasedCharacteristicCompressiveStrength and/or Form3Dot25IncreasedCharacteristicCompressiveStrength
         epsilon_c2 : DIMENSIONLESS
             [$$\epsilon_{c2}$$] Strain at maximum strength [$$-$$]
