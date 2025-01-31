@@ -28,9 +28,9 @@ class Form3Dot17CompressiveStressConcrete(Formula):
         f_cd : MPA
             [$$f_{cd}$$] Design value compressive strength concrete [MPa].
         epsilon_c : DIMENSIONLESS
-            [$$\epsilon_c$$] Strain in concrete [-].
+            [$$\epsilon_c$$] Strain in concrete [$$-$$].
         epsilon_c2 : DIMENSIONLESS
-            [$$\epsilon_{c2}$$] Strain in concrete when reaching maximum strength following table 3.1 [-].
+            [$$\epsilon_{c2}$$] Strain in concrete when reaching maximum strength following table 3.1 [$$-$$].
         n : DIMENSIONLESS
             Exponent following table 3.1.
 

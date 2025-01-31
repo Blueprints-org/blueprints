@@ -18,18 +18,18 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
         f_cm: MPA,
         e_cm: MPA,
     ) -> None:
-        r"""[$$E_{cm}(t)$$] The approximated elastic modulus at day t [MPa].
+        r"""[$$E_{cm}(t)$$] The approximated elastic modulus at day t [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.3(3) - Formula (3.5)
 
         Parameters
         ----------
         f_cm_t : MPA
-            [$$f_{cm}(t)$$] Compressive strength concrete at t days [MPa].
+            [$$f_{cm}(t)$$] Compressive strength concrete at t days [$$MPa$$].
         f_cm : MPA
-            [$$f_{cm}$$] Average concrete compressive strength on day 28 based on table 3.1 [MPa].
+            [$$f_{cm}$$] Average concrete compressive strength on day 28 based on table 3.1 [$$MPa$$].
         e_cm : MPA
-            [$$E_{cm}$$] Average elastic modulus on day 28 [MPa].
+            [$$E_{cm}$$] Average elastic modulus on day 28 [$$MPa$$].
 
         Returns
         -------

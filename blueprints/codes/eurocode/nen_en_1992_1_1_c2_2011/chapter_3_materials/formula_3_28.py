@@ -20,20 +20,20 @@ class Form3Dot28RatioLossOfPreStressClass1(Formula):
         mu: DIMENSIONLESS,
         t: HOURS,
     ) -> None:
-        r"""[$$\frac{\Delta \sigma_{pr}}{\sigma_{pi}}$$] Ratio between loss of pre-stress and initial pre-stress for class 2 [-].
+        r"""[$$\frac{\Delta \sigma_{pr}}{\sigma_{pi}}$$] Ratio between loss of pre-stress and initial pre-stress for class 2 [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.3.2(7) - Formula (3.28)
 
         Parameters
         ----------
         rho_1000 : PERCENTAGE
-            [$$\rho_{1000}$$] Value of relaxation loss at 1000h after prestressing at an average temperature of 20 degrees Celsius [-]
+            [$$\rho_{1000}$$] Value of relaxation loss at 1000h after prestressing at an average temperature of 20 degrees Celsius [$$-$$]
         mu : DIMENSIONLESS
-            [$$\mu$$] Ratio between initial pre-stress and characteristic tensile strength [-]
+            [$$\mu$$] Ratio between initial pre-stress and characteristic tensile strength [$$-$$]
             = [$$\frac{\sigma_{pi}}{f_{pk}}$$]
             Use your own implementation of this formula or use sub_formula_3_28_39_30 class SubForm3Dot282930Mu.
         t : HOURS
-            [$$t$$] Time after prestressing [hours]
+            [$$t$$] Time after prestressing [$$hours$$]
 
         Returns
         -------

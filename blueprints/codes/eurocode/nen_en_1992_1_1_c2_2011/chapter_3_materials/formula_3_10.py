@@ -20,18 +20,18 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
         t_s: DAYS,
         h_0: MM,
     ) -> None:
-        r"""[$$\beta_{ds}(t, t_s)$$] Coefficient for drying shrinkage due to age of concrete [-].
+        r"""[$$\beta_{ds}(t, t_s)$$] Coefficient for drying shrinkage due to age of concrete [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.10)
 
         Parameters
         ----------
         t : DAYS
-            [$$t$$] Age in days of the concrete at the considered moment [days].
+            [$$t$$] Age in days of the concrete at the considered moment [$$days$$].
         t_s : DAYS
-            [$$t_s$$] Age in days of the concrete at the start of the drying shrinkage [days].
+            [$$t_s$$] Age in days of the concrete at the start of the drying shrinkage [$$days$$].
         h_0 : MM
-            [$$h_0$$] fictional thickness of cross-section [mm].
+            [$$h_0$$] fictional thickness of cross-section [$$mm$$].
             = 2 * Ac / u
             Use your own implementation of this formula or use the SubForm3Dot10FictionalCrossSection class.
 

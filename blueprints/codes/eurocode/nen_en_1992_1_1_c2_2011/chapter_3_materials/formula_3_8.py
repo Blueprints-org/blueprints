@@ -24,9 +24,9 @@ class Form3Dot8TotalShrinkage(Formula):
         Parameters
         ----------
         epsilon_cd : DIMENSIONLESS
-            [$$\epsilon_{cd}$$] Drying shrinkage [-].
+            [$$\epsilon_{cd}$$] Drying shrinkage [$$-$$].
         epsilon_ca : DIMENSIONLESS
-            [$$\epsilon_{ca}$$] Autogene shrinkage [-].
+            [$$\epsilon_{ca}$$] Autogene shrinkage [$$-$$].
 
         Returns
         -------

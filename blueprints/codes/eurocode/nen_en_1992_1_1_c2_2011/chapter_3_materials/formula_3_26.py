@@ -18,7 +18,7 @@ class Form3Dot26IncreasedStrainAtMaxStrength(Formula):
         f_ck_c: MPA,
         epsilon_c2: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\epsilon_{c2,c}$$] Increased strain at the maximum strength due to enclosed concrete. [-].
+        r"""[$$\epsilon_{c2,c}$$] Increased strain at the maximum strength due to enclosed concrete. [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.9(2) - Formula (3.26)
 
@@ -30,7 +30,7 @@ class Form3Dot26IncreasedStrainAtMaxStrength(Formula):
             [$$f_{ck,c}$$] Increased characteristic compressive strength due to enclosed concrete [MPa].
             See classes Form3Dot24IncreasedCharacteristicCompressiveStrength and/or Form3Dot25IncreasedCharacteristicCompressiveStrength
         epsilon_c2 : DIMENSIONLESS
-            [$$\epsilon_{c2}$$] Strain at maximum strength [-]
+            [$$\epsilon_{c2}$$] Strain at maximum strength [$$-$$]
 
         Returns
         -------

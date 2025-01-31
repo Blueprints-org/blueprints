@@ -25,11 +25,11 @@ class Form6Dot1DesignShearStrength(Formula):
         Parameters
         ----------
         v_rd_s : KN
-            [$$V_{Rd,s}$$] Design shear resistance of an element with shear reinforcement [kN].
+            [$$V_{Rd,s}$$] Design shear resistance of an element with shear reinforcement [$$kN$$].
         v_ccd : KN
-            [$$V_{ccd}$$] Design value of the shear force component in the compression area in case of a change in height [kN].
+            [$$V_{ccd}$$] Design value of the shear force component in the compression area in case of a change in height [$$kN$$].
         v_td : KN
-            [$$V_{td}$$] Design value of the shear force component of the tensile force in the reinforcement in case of a change in height [kN].
+            [$$V_{td}$$] Design value of the shear force component of the tensile force in the reinforcement in case of a change in height [$$kN$$].
         """
         super().__init__()
         self.v_rd_s = v_rd_s

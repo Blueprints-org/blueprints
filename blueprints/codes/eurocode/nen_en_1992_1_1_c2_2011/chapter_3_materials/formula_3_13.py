@@ -18,14 +18,14 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
         self,
         t: DAYS,
     ) -> None:
-        r"""[$$\beta_{as}(t)$$] Coefficient dependent on time in days for autogene shrinkage [-].
+        r"""[$$\beta_{as}(t)$$] Coefficient dependent on time in days for autogene shrinkage [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.13)
 
         Parameters
         ----------
         t : DAYS
-            [$$t$$] Time in days [days].
+            [$$t$$] Time in days [$$days$$].
 
         Returns
         -------

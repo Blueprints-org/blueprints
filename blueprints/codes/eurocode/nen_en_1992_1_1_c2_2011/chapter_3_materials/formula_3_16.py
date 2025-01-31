@@ -26,12 +26,12 @@ class Form3Dot16DesignValueTensileStrength(Formula):
         ----------
         alpha_ct : DIMENSIONLESS
             [$$\alpha_{ct}$$] Coefficient taking long term effects on tensile strength into
-            account and unfavorable effect due to positioning loading [-]
+            account and unfavorable effect due to positioning loading [$$-$$]
             See national appendix. Recommended value: 1.0
         f_ctk_0_05 : MPA
             [$$f_{ctk,0.05}$$] Characteristic tensile strength 5% [$$MPa$$].
         gamma_c : DIMENSIONLESS
-            [$$\gamma_{c}$$] Partial safety factor concrete, see 2.4.2.4 [-].
+            [$$\gamma_{c}$$] Partial safety factor concrete, see 2.4.2.4 [$$-$$].
 
         Returns
         -------

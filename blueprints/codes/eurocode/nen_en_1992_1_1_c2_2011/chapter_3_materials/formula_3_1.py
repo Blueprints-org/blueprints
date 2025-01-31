@@ -27,7 +27,7 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         Parameters
         ----------
         beta_cc_t : DIMENSIONLESS
-            [$$\beta_{cc}(t)$$] Coefficient dependent of the age of concrete [-].
+            [$$\beta_{cc}(t)$$] Coefficient dependent of the age of concrete [$$-$$].
         f_cm : MPA
             [$$f_{cm}$$] Average concrete compressive strength on day 28 based on table 3.1 [$$MPa$$].
 

@@ -18,18 +18,18 @@ class Form3Dot27IncreasedStrainLimitValue(Formula):
         sigma_2: MPA,
         epsilon_cu2: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\epsilon_{cu2,c}$$] Increased strain limit value due to enclosed concrete. [-].
+        r"""[$$\epsilon_{cu2,c}$$] Increased strain limit value due to enclosed concrete. [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.9(2) - Formula (3.27)
 
         Parameters
         ----------
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength [MPa]
+            [$$f_{ck}$$] Characteristic compressive strength [$$MPa$$]
         sigma_2 : MPA
-            [$$\sigma_{2}$$] Effective compressive stress in transverse direction [MPa]
+            [$$\sigma_{2}$$] Effective compressive stress in transverse direction [$$MPa$$]
         epsilon_cu2 : DIMENSIONLESS
-            [$$\epsilon_{cu2}$$] Strain limit value [-]
+            [$$\epsilon_{cu2}$$] Strain limit value [$$-$$]
 
         Returns
         -------

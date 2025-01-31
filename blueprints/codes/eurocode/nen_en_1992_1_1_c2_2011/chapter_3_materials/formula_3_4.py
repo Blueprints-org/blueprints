@@ -79,14 +79,14 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
         self,
         t: DAYS,
     ) -> None:
-        r"""[$$\alpha$$] Factor dependent of the age of concrete [-].
+        r"""[$$\alpha$$] Factor dependent of the age of concrete [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - α
 
         Parameters
         ----------
         t : DAYS
-            [$$t$$] Age of concrete in days [days].
+            [$$t$$] Age of concrete in days [$$days$$].
         """
         super().__init__()
         self.t = t

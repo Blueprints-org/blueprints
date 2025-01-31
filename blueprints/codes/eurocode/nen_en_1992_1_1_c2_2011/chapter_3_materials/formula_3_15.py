@@ -26,12 +26,12 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
         ----------
         alpha_cc : DIMENSIONLESS
             [$$\alpha_{cc}$$] Coefficient taking long term effects on compressive strength into
-            account and unfavorable effect due to positioning loading [-]
+            account and unfavorable effect due to positioning loading [$$-$$]
             Normally between 0.8 and 1, see national appendix. Recommended value: 1.0
         f_ck : MPA
             [$$f_{ck}$$] Characteristic compressive strength [$$MPa$$].
         gamma_c : DIMENSIONLESS
-            [$$\gamma_{c}$$] Partial safety factor concrete, see 2.4.2.4 [-].
+            [$$\gamma_{c}$$] Partial safety factor concrete, see 2.4.2.4 [$$-$$].
 
         Returns
         -------
