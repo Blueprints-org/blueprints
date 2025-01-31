@@ -21,7 +21,7 @@ Total of 63 formulas present.
 | 5.10           | :heavy_check_mark: |         | Form5Dot10ReductionFactorShearArea       |
 | 5.11           |        :x:         |         |                                          |
 | 5.12           | :heavy_check_mark: |         | Form5Dot12ElasticCriticalLoad            |
-| 5.13           |        :x:         |         |                                          |
+| 5.13           | :heavy_check_mark: |         | Form5Dot13SimplifiedBucklingCheck        |
 | 5.14           |        :x:         |         |                                          |
 | 5.15           |        :x:         |         |                                          |
 | 5.16           |        :x:         |         |                                          |
