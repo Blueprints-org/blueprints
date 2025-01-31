@@ -30,7 +30,7 @@ class Form5Dot40aCheckLateralInstability(Formula):
         b : M
             [$$b$$] is the width of compression flange [$$m$$].
         h : M
-            [$$h$$] is the total depth of beam in central part of [$$l_{0t}$$] [$$m$$].
+            [$$h$$] is the total depth of beam in central part of $$l_{0t}$$ [$$m$$].
         """
         super().__init__()
         self.l_0t = l_0t

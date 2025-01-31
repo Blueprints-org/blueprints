@@ -83,7 +83,7 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
         Parameters
         ----------
         length : M
-            [$$\text{length}$$] Length or height, see art.5.2(6) [m].
+            [$$\text{length}$$] Length or height, see art.5.2(6) [$$m$$].
         """
         super().__init__()
         self.length = length

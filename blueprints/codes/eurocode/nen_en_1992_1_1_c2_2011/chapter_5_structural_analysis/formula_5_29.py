@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot29BetaFactor(Formula):
-    """Class representing formula 5.29 for the calculation of the beta factor, [$$β$$]."""
+    r"""Class representing formula 5.29 for the calculation of the beta factor, [$$\beta$$]."""
 
     label = "5.29"
     source_document = NEN_EN_1992_1_1_C2_2011
