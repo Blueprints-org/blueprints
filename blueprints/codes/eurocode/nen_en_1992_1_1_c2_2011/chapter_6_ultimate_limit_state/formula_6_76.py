@@ -27,14 +27,14 @@ class Form6Dot76DesignFatigueStrengthConcrete(Formula):
         Parameters
         ----------
         k_1 : DIMENSIONLESS
-            [$$k_{1}$$] k1 factor ([$$-$$])
+            [$$k_{1}$$] k1 factor [$$-$$]
         beta_cc_t0 : DIMENSIONLESS
-            [$$β_{cc}(t_0)$$] Coefficient for concrete strength at first load application see (3.1.2 (6)) ([$$-$$]).
+            [$$β_{cc}(t_0)$$] Coefficient for concrete strength at first load application see (3.1.2 (6)) [$$-$$].
             [$$t_0$$] The time of the start of the cyclic loading in concrete in days.
         f_cd : MPA
-            [$$f_{cd}$$] Design strength of concrete ([$$MPa$$])
+            [$$f_{cd}$$] Design strength of concrete [$$MPa$$]
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic strength of concrete ([$$MPa$$])
+            [$$f_{ck}$$] Characteristic strength of concrete [$$MPa$$]
 
         """
         super().__init__()
