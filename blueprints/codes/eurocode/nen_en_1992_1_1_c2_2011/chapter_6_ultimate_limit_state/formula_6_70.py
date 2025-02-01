@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS
+from blueprints.type_alias import MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
 
 
@@ -13,16 +13,16 @@ class Form6Dot70FatigueDamageFactor(Formula):
     label = "6.70"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, n_delta_sigma_i: list[DIMENSIONLESS], capital_n_delta_sigma_i: list[DIMENSIONLESS]) -> None:
+    def __init__(self, n_delta_sigma_i: list[MPA], capital_n_delta_sigma_i: list[MPA]) -> None:
         r"""[D_{Ed}] The calculation of the fatigue damage factor [-].
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.4(2) - Formula (6.70)
 
         Parameters
         ----------
-        n_delta_sigma_i : list[DIMENSIONLESS]
+        n_delta_sigma_i : list[MPA]
             [$$n_{E}$$] The applied number of cycles for a stress range [MPa].
-        capital_n_delta_sigma_i : list[DIMENSIONLESS]
+        capital_n_delta_sigma_i : list[MPA]
             [$$N_{R}$$] The resisting number of cycles for a stress range [MPa]
 
         Returns
@@ -35,9 +35,9 @@ class Form6Dot70FatigueDamageFactor(Formula):
 
     @staticmethod
     def _evaluate(
-        n_delta_sigma_i: list[DIMENSIONLESS],
-        capital_n_delta_sigma_i: list[DIMENSIONLESS],
-    ) -> DIMENSIONLESS:
+        n_delta_sigma_i: list[MPA],
+        capital_n_delta_sigma_i: list[MPA],
+    ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_lists_differ_in_length(n_delta_sigma_i=n_delta_sigma_i, capital_n_delta_sigma_i=capital_n_delta_sigma_i)
         raise_if_negative(min_n_delta_sigma_i=min(n_delta_sigma_i))
