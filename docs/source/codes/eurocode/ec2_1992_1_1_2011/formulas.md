@@ -172,7 +172,7 @@ Total of 304 formulas present.
 | 6.67           |        :x:         |         |                                                           |
 | 6.68           |        :x:         |         |                                                           |
 | 6.69           |        :x:         |         |                                                           |
-| 6.70           |        :x:         |         |                                                           |
+| 6.70           | :heavy_check_mark: |         | Form6Dot70FatigueDamageFactor                             |
 | 6.71           | :heavy_check_mark: |         | Form6Dot71CriteriaBasedOnStressRange                      |
 | 6.72           |        :x:         |         |                                                           |
 | 6.73           |        :x:         |         |                                                           |
