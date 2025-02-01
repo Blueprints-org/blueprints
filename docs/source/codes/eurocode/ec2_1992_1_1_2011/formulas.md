@@ -175,7 +175,7 @@ Total of 304 formulas present.
 | 6.70           | :heavy_check_mark: |         | Form6Dot70FatigueDamageFactor                             |
 | 6.71           | :heavy_check_mark: |         | Form6Dot71CriteriaBasedOnStressRange                      |
 | 6.72           | :heavy_check_mark: |         | Form6Dot72FatigueResistanceConcreteCompression            |
-| 6.73           |        :x:         |         |                                                           |
+| 6.73           | :heavy_check_mark: |         | Form6Dot73StressRatio                                     |
 | 6.74           |        :x:         |         |                                                           |
 | 6.75           |        :x:         |         |                                                           |
 | 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
