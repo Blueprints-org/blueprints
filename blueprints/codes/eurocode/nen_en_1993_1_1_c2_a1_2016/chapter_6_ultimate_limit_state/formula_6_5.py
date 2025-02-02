@@ -4,7 +4,7 @@
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import KN, RATIO
+from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -19,16 +19,16 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         n_ed: KN,
         n_t_rd: KN,
     ) -> None:
-        """[N_ed/N_t_rd] Unity check for tensile strength of an element in tension.
+        r"""[$$N_{Ed}/N_{t,Rd}$$] Unity check for tensile strength of an element in tension.
 
         NEN-EN 1993-1-1+C2+A1:2016 art.6.2.3(1) - Formula (6.5)
 
         Parameters
         ----------
         n_ed : KN
-            [NEd] Design value of the normal tensile force [kN].
+            [$$N_{Ed}$$] Design value of the normal tensile force [kN].
         n_t_rd : KN
-            [Nt,Rd] Design value of the resistance against tenslie force [kN].
+            [$$N_{t,Rd}$$] Design value of the resistance against tensile force [kN].
         """
         super().__init__()
         self.n_ed = n_ed
@@ -38,7 +38,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
     def _evaluate(
         n_ed: KN,
         n_t_rd: KN,
-    ) -> RATIO:
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(n_t_rd=n_t_rd)
         raise_if_negative(n_ed=n_ed)

@@ -20,18 +20,18 @@ class Form9Dot12nMinimumLongitudinalReinforcementColumns(Formula):
         f_yd: MPA,
         a_c: MM2,
     ) -> None:
-        """[As,min] Minimum longitudinal reinforcement for columns [mm²].
+        r"""[$$A_{s,min}$$] Minimum longitudinal reinforcement for columns [$$\text{mm}^2$$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.5.2(2) - Formula (9.12N)
 
         Parameters
         ----------
         n_ed: KN
-            [Ned] Design value of axial force [kN].
+            [$$N_{Ed}$$] Design value of axial force [$$\text{kN}$$].
         f_yd: MPA
-            [fyd] Design yield strength reinforcement steel [MPa].
+            [$$f_{yd}$$] Design yield strength reinforcement steel [$$\text{MPa}$$].
         a_c: MM2
-            [Ac] Concrete cross-sectional area [mm²].
+            [$$A_c$$] Concrete cross-sectional area [$$\text{mm}^2$$].
         """
         super().__init__()
         self.n_ed = n_ed
