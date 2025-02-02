@@ -9,7 +9,7 @@ from blueprints.validations import NegativeValueError
 class TestForm6Dot78And79FatigueResistance:
     """Validation for formula 6.78/6.79 from NEN-EN 1992-1-1+C2:2011."""
 
-    def test_evaluation(self) -> None:
+    def test_evaluation_78(self) -> None:
         """Tests the evaluation of the result."""
         # Example values
         v_ed_max = 100.0
@@ -22,6 +22,22 @@ class TestForm6Dot78And79FatigueResistance:
 
         # Expected result, manually calculated
         expected_result = True
+
+        assert formula == expected_result
+
+    def test_evaluation_79(self) -> None:
+        """Tests the evaluation of the result."""
+        # Example values
+        v_ed_max = 100.0
+        v_ed_min = -50.0
+        v_rd_c = 200.0
+        f_ck = 30.0
+
+        # Object to test
+        formula = Form6Dot78And79FatigueResistance(v_ed_max=v_ed_max, v_ed_min=v_ed_min, v_rd_c=v_rd_c, f_ck=f_ck)
+
+        # Expected result, manually calculated
+        expected_result = False
 
         assert formula == expected_result
 
