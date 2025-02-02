@@ -41,6 +41,6 @@ class Form2Dot2CharacteristicValueResistance(Formula):
             return_symbol=r"R_{k}",
             result=f"{self:.2f}",
             equation=r"R_d \cdot \gamma_{Mi}",
-            numeric_equation=rf"{self.r_d :.2f} \cdot {self.gamma_mi :.2f}",
+            numeric_equation=rf"{self.r_d:.2f} \cdot {self.gamma_mi:.2f}",
             comparison_operator_label="=",
         )
