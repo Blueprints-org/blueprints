@@ -21,7 +21,7 @@ class Form8Dot12AdditionalShearReinforcement(Formula):
         n_1: DIMENSIONLESS,
     ) -> None:
         r"""[$$A_{sh}$$] Minimum additional shear reinforcement in the anchorage zones where transverse compression is not present for straight
-        anchorage lengths, in the direction parallel to the tension face [$$mm²$$].
+        anchorage lengths, in the direction parallel to the tension face [$$mm^2$$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.8(6) - Formula (8.12)
 
