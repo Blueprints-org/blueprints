@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS, RATIO
+from blueprints.type_alias import RATIO
 from blueprints.validations import raise_if_negative
 
 
@@ -69,7 +69,7 @@ class Form8Dot5ProductAlphas235(Formula):
         alpha_2: RATIO,
         alpha_3: RATIO,
         alpha_5: RATIO,
-    ) -> DIMENSIONLESS:
+    ) -> RATIO:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             alpha_2=alpha_2,
