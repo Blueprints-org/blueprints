@@ -20,17 +20,17 @@ class Form8Dot12AdditionalShearReinforcement(Formula):
         a_s: MM2,
         n_1: DIMENSIONLESS,
     ) -> None:
-        """[:math:`A_{sh}`] Minimum additional shear reinforcement in the anchorage zones where transverse compression is not present for straight
-        anchorage lengths, in the direction parallel to the tension face [:math:`mm²`].
+        r"""[$$A_{sh}$$] Minimum additional shear reinforcement in the anchorage zones where transverse compression is not present for straight
+        anchorage lengths, in the direction parallel to the tension face [$$mm²$$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.8(6) - Formula (8.12)
 
         Parameters
         ----------
         a_s: MM2
-            [:math:`A_{s}`] Cross sectional area of reinforcement [:math:`mm²`].
+            [$$A_{s}$$] Cross sectional area of reinforcement [$$mm²$$].
         n_1: DIMENSIONLESS
-            [:math:`n_{1}`] Number of layers with bars anchored at the same point in the member [-].
+            [$$n_{1}$$] Number of layers with bars anchored at the same point in the member [$$-$$].
         """
         super().__init__()
         self.a_s = a_s
