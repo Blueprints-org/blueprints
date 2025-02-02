@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS, KN, MM, MM2, MPA
+from blueprints.type_alias import KN, MM, MM2, MPA
 from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -60,7 +60,7 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
         diameter_l: MM,
         a_s: MM2,
         f_cd: MPA,
-    ) -> DIMENSIONLESS:
+    ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             f_wd=f_wd,

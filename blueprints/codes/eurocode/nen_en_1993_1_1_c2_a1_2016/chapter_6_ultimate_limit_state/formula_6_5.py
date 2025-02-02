@@ -4,7 +4,7 @@
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS, KN
+from blueprints.type_alias import KN, RATIO
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -38,7 +38,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
     def _evaluate(
         n_ed: KN,
         n_t_rd: KN,
-    ) -> DIMENSIONLESS:
+    ) -> RATIO:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(n_t_rd=n_t_rd)
         raise_if_negative(n_ed=n_ed)

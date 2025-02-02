@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS, MM, MM2
+from blueprints.type_alias import MM, MM2
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
@@ -33,9 +33,9 @@ class Form5Dot6ProjectedShearArea(Formula):
             [$$t_{w}$$] Web thickness in [$$mm$$].
         """
         super().__init__()
-        self.h: DIMENSIONLESS = h
-        self.t_f: DIMENSIONLESS = t_f
-        self.t_w: DIMENSIONLESS = t_w
+        self.h: MM = h
+        self.t_f: MM = t_f
+        self.t_w: MM = t_w
 
     @staticmethod
     def _evaluate(
