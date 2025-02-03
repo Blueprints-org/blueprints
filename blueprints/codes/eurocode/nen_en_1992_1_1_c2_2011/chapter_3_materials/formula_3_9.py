@@ -3,6 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
+from blueprints.type_alias import DIMENSIONLESS
 
 
 class Form3Dot9DryingShrinkage(Formula):
@@ -13,26 +14,26 @@ class Form3Dot9DryingShrinkage(Formula):
 
     def __init__(
         self,
-        beta_ds_tt_s: float,
-        k_h: float,
-        epsilon_cd_0: float,
+        beta_ds_tt_s: DIMENSIONLESS,
+        k_h: DIMENSIONLESS,
+        epsilon_cd_0: DIMENSIONLESS,
     ) -> None:
-        """[εcd(t)] Development of the drying shrinkage [-].
+        r"""[$$\epsilon_{cd}(t)$$] Development of the drying shrinkage [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.9)
 
         Parameters
         ----------
-        beta_ds_tt_s : float
-            [βds(t, ts)] Coefficient that depends on the age t (in days) of the concrete for the drying shrinkage [-].
-        k_h : float
-            [kh] Coefficient depending on the fictional thickness h0 following table 3.3 [-].
-            h0 = 100 -> kh = 1.0
-            h0 = 200 -> kh = 0.85
-            h0 = 300 -> kh = 0.75
-            h0 >= 500 -> kh = 0.70
-        epsilon_cd_0 : float
-            [εcd,0] Nominal unobstructed drying shrinkage, formula in appendix B or use table 3.2 [-].
+        beta_ds_tt_s : DIMENSIONLESS
+            [$$\beta_{ds}(t, t_s)$$] Coefficient that depends on the age t (in days) of the concrete for the drying shrinkage [$$-$$].
+        k_h : DIMENSIONLESS
+            [$$k_h$$] Coefficient depending on the fictional thickness $$h_0$$ following table 3.3 [$$-$$].
+            $$h_0 = 100 \rightarrow k_h = 1.0$$
+            $$h_0 = 200 \rightarrow k_h = 0.85$$
+            $$h_0 = 300 \rightarrow k_h = 0.75$$
+            $$h_0 \geq 500 \rightarrow k_h = 0.70$$
+        epsilon_cd_0 : DIMENSIONLESS
+            [$$\epsilon_{cd,0}$$] Nominal unobstructed drying shrinkage, formula in appendix B or use table 3.2 [$$-$$].
 
         Returns
         -------
@@ -45,9 +46,9 @@ class Form3Dot9DryingShrinkage(Formula):
 
     @staticmethod
     def _evaluate(
-        beta_ds_tt_s: float,
-        k_h: float,
-        epsilon_cd_0: float,
+        beta_ds_tt_s: DIMENSIONLESS,
+        k_h: DIMENSIONLESS,
+        epsilon_cd_0: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if beta_ds_tt_s < 0:
