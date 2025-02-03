@@ -97,12 +97,12 @@ KN_M2 = float
 # </editor-fold>
 
 # <editor-fold desc="TIME">
-HOURS = float
-"""Hours (h), represented as a float."""
-MINUTES = float
-"""Minutes (min), represented as a float."""
 SECONDS = float
 """Seconds (sec), represented as a float."""
+MINUTES = float
+"""Minutes (min), represented as a float."""
+HOURS = float
+"""Hours (h), represented as a float."""
 DAYS = float
 """Days (days), represented as a float."""
 WEEKS = float
@@ -113,15 +113,18 @@ YEARS = float
 """Years (years), represented as a float."""
 # </editor-fold>
 
+# <editor-fold desc="Percentages">
+PERCENTAGE = float
+"""Percentage (%), represented as a float."""
+PER_MILLE = float
+"""Per mille (‰), represented as a float."""
+# </editor-fold>
+
 # <editor-fold desc="Ratio's">
 RATIO = float
 """Ratio, represented as a float."""
-PERCENTAGE = float
-"""Percentage (%), represented as a float."""
-DIMENSIONLESS = float
-"""Dimensionless, represented as a float."""
-PER_MILLE = float
-"""Per mille (‰), represented as a float."""
 PER_DEGREE = float
 """Per degree (1/°), represented as a float."""
+DIMENSIONLESS = float
+"""Dimensionless, represented as a float."""
 # </editor-fold>
