@@ -153,5 +153,7 @@ KM_PER_H = float
 
 # <editor-fold desc="ACCELERATIONS">
 M_PER_S2 = float
+"""Acceleration (m/s²), represented as a float."""
 MM_PER_S2 = float
+"""Acceleration (mm/s²), represented as a float."""
 # </editor-fold>
