@@ -136,7 +136,9 @@ HZ = float
 
 # <editor-fold desc="TEMPERATURE">
 DEG_C = float
+"""Degrees (celsius), represented as a float."""
 DEG_K = float
+"""Degrees (kelvin), represented as a float."""
 # </editor-fold>
 
 # <editor-fold desc="RECIPROCAL">
