@@ -166,8 +166,8 @@ Total of 304 formulas present.
 | 6.61           |        :x:         |         |                                                           |
 | 6.62           |        :x:         |         |                                                           |
 | 6.63           |        :x:         |         |                                                           |
-| 6.64           |        :x:         |         |                                                           |
-| 6.65           |        :x:         |         |                                                           |
+| 6.64           | :heavy_check_mark: |         | Form6Dot64BondFactor                                      |
+| 6.65           | :heavy_check_mark: |         | Form6Dot65ConcreteCompressionStrut                        |
 | 6.66           |        :x:         |         |                                                           |
 | 6.67           |        :x:         |         |                                                           |
 | 6.68           |        :x:         |         |                                                           |
