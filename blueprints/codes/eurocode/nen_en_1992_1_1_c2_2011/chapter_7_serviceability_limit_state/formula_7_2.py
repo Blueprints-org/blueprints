@@ -98,7 +98,9 @@ class Form7Dot2Sub1AxialForceCoefficient(Formula):
         Parameters
         ----------
         n_ed : MPA
-            [$$N_{Ed}$$] Axial force in the concrete [$$MPa$$].
+            [$$N_{Ed}$$] Axial force at the serviceability limit state acting on the part of the cross-section
+            under consideration (compressive force positive). [$$N_{Ed}$$] should be determined considering the characteristic
+            values of prestress and axial forces under the relevant combination of actions.
         h : MM
             [$$h$$] Overall depth of the section [$$mm$$].
         """
@@ -115,11 +117,11 @@ class Form7Dot2Sub1AxialForceCoefficient(Formula):
         raise_if_negative(h=h)
 
         h_star = h if h < 1000 else 1000
-        return 1.5 if n_ed < 0 else 2 * h_star / (3 * h)
+        return 1.5 if n_ed > 0 else 2 * h_star / (3 * h)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 7.2sub1."""
-        _equation: str = r"\begin{cases} 1.5 & \text{if } N_{Ed} < 0 \\ \frac{2 \cdot min(h, 1000)}{3 \cdot h} & \text{if } N_{Ed} \ge 0 \end{cases}"
+        _equation: str = r"\begin{cases} 1.5 & \text{if } N_{Ed} > 0 \\ \frac{2 \cdot min(h, 1000)}{3 \cdot h} & \text{if } N_{Ed} \le 0 \end{cases}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {

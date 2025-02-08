@@ -80,7 +80,7 @@ class TestForm7Dot2Sub1AxialForceCoefficient:
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         # Example values
-        n_ed = -5.0
+        n_ed = 5.0
         h = 500.0
 
         # Object to test
@@ -94,7 +94,7 @@ class TestForm7Dot2Sub1AxialForceCoefficient:
     @pytest.mark.parametrize(
         ("n_ed", "h"),
         [
-            (-5.0, -500.0),  # h is negative
+            (5.0, -500.0),  # h is negative
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, n_ed: float, h: float) -> None:
@@ -107,9 +107,9 @@ class TestForm7Dot2Sub1AxialForceCoefficient:
         [
             (
                 "complete",
-                r"k_1 = \begin{cases} 1.5 & \text{if } N_{Ed} < 0 \\ \frac{2 \cdot min(h, 1000)}{3 \cdot h} & \text{if } N_{Ed} \ge 0 \end{cases} = "
-                r"\begin{cases} 1.5 & \text{if } -5.000 < 0 \\ \frac{2 \cdot min(500.000, 1000)}{3 \cdot 500.000} & \text{if } -5.000 "
-                r"\ge 0 \end{cases} = 1.500 -",
+                r"k_1 = \begin{cases} 1.5 & \text{if } N_{Ed} > 0 \\ \frac{2 \cdot min(h, 1000)}{3 \cdot h} & \text{if } N_{Ed} \le 0 \end{cases} = "
+                r"\begin{cases} 1.5 & \text{if } 5.000 > 0 \\ \frac{2 \cdot min(500.000, 1000)}{3 \cdot 500.000} & \text{if } 5.000 "
+                r"\le 0 \end{cases} = 1.500 -",
             ),
             ("short", r"k_1 = 1.500 -"),
         ],
@@ -117,7 +117,7 @@ class TestForm7Dot2Sub1AxialForceCoefficient:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        n_ed = -5.0
+        n_ed = 5.0
         h = 500.0
 
         # Object to test
