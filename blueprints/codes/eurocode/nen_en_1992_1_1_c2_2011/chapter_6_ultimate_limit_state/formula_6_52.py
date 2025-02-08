@@ -101,7 +101,7 @@ class Form6Dot52PunchingShearResistance(Formula):
 
 
 class Form6Dot52Sub1EffectiveYieldStrength(Formula):
-    r"""Class representing formula 6.52sub1 for the calculation of :math:`f_{ywd,ef}`."""
+    r"""Class representing formula 6.52sub1 for the calculation of [$$f_{ywd,ef}$$]."""
 
     label = "6.52sub1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -111,16 +111,16 @@ class Form6Dot52Sub1EffectiveYieldStrength(Formula):
         d: MM,
         f_ywd: MPA,
     ) -> None:
-        r""":math:`f_{ywd,ef}` Calculation of :math:`f_{ywd,ef}`.
+        r"""[f_{ywd,ef}] Calculation of [$$f_{ywd,ef}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.5(1) - Formula (6.52sub1)
 
         Parameters
         ----------
         d : MM
-            :math:`d` Mean effective depth of the slab [mm].
+            [$$d$$] Mean effective depth of the slab [$$mm$$].
         f_ywd : MPA
-            :math:`f_{ywd}` Design yield strength of the reinforcement [MPa].
+            [$$f_{ywd}$$] Design yield strength of the reinforcement [$$MPa$$].
         """
         super().__init__()
         self.d = d

@@ -27,7 +27,7 @@ class Form6Dot54ControlPerimeter(Formula):
         Parameters
         ----------
         beta : DIMENSIONLESS
-            [$$\beta$$] Factor as per 6.4.3 (3), (4) and (5) [-].
+            [$$\beta$$] Factor as per 6.4.3 (3), (4) and (5) [$$-$$].
         v_ed : N
             [$$V_{Ed}$$] Design shear force [$$N$$].
         v_rd_c : MPA
