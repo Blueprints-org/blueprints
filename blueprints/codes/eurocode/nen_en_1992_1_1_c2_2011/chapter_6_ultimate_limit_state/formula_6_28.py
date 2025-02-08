@@ -12,7 +12,7 @@ from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_eq
 class Form6Dot28RequiredCrossSectionalArea(Formula):
     r"""Class representing formula 6.28 for the calculation of the required cross-sectional area of the longitudinal reinforcement.
     The description of the equation states that it is used to calculate the total reinforcement area. Therefore the
-    calculation has been rewritten to find the solution to that question, :math:`\Sigma A_{sl}`.
+    calculation has been rewritten to find the solution to that question, [$$\Sigma A_{sl}$$].
     """
 
     label = "6.28"
@@ -26,22 +26,22 @@ class Form6Dot28RequiredCrossSectionalArea(Formula):
         a_k: MM2,
         theta: DEG,
     ) -> None:
-        r"""[:math:`\Sigma A_{sl}`] Required cross-sectional area of the longitudinal reinforcement [:math:`mm^2`].
+        r"""[$$\Sigma A_{sl}$$] Required cross-sectional area of the longitudinal reinforcement [$$mm^2$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.3.2(3) - Formula (6.28)
 
         Parameters
         ----------
         u_k : MM
-            [:math:`u_k`] Perimeter of the area A_k [:math:`mm`].
+            [$$u_k$$] Perimeter of the area A_k [$$mm$$].
         f_yd : MPA
-            [:math:`f_{yd}`] Design yield stress of the longitudinal reinforcement [:math:`MPa`].
+            [$$f_{yd}$$] Design yield stress of the longitudinal reinforcement [$$MPa$$].
         t_ed : NMM
-            [:math:`T_{Ed}`] Design value of the torsional moment [:math:`Nmm`].
+            [$$T_{Ed}$$] Design value of the torsional moment [$$Nmm$$].
         a_k : MM2
-            [:math:`A_k`] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [:math:`mm^2`].
+            [$$A_k$$] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [$$mm^2$$].
         theta : DEG
-            [:math:`\theta`] Angle of compression struts (see Figure 6.5) [:math:`degrees`].
+            [$$\theta$$] Angle of compression struts (see Figure 6.5) [$$degrees$$].
         """
         super().__init__()
         self.u_k = u_k
