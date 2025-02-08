@@ -169,7 +169,7 @@ class NominalConcreteCover:
                     r"Nominal concrete cover according to art. 4.4.1 (c_{nom})",
                     "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4)",
                 ),
-                f"= {latex_max_curly_brackets(self.c_nom().latex().result,self.minimum_cover_with_regard_to_casting_surface(),)} = {self.value()} mm",
+                f"= {latex_max_curly_brackets(self.c_nom().latex().result, self.minimum_cover_with_regard_to_casting_surface())} = {self.value()} mm",
                 "",
                 "Where:",
                 f"{self.c_nom().latex().return_symbol} = {self.c_nom().latex().equation.replace('min', 'min,total')}"

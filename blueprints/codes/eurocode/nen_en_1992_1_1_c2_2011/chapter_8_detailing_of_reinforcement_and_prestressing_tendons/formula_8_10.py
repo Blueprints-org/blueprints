@@ -174,7 +174,7 @@ class SubForm8Dot10Alpha6(Formula):
         return LatexFormula(
             return_symbol=r"\alpha_6",
             result=f"{self:.2f}",
-            equation=f'{latex_max_curly_brackets(latex_min_curly_brackets(argument_1_formula, "1.5"), "1")}',
-            numeric_equation=f'{latex_max_curly_brackets(latex_min_curly_brackets(numerical_argument_1, "1.5"), "1")}',
+            equation=f"{latex_max_curly_brackets(latex_min_curly_brackets(argument_1_formula, '1.5'), '1')}",
+            numeric_equation=f"{latex_max_curly_brackets(latex_min_curly_brackets(numerical_argument_1, '1.5'), '1')}",
             comparison_operator_label="=",
         )
