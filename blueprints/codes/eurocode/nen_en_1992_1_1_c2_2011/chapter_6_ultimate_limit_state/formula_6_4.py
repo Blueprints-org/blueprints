@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot4ShearResistance(Formula):
-    r"""Class representing formula 6.4 for the calculation of the shear resistance in regions uncracked in bending, :math:`V_{Rd,c}`."""
+    r"""Class representing formula 6.4 for the calculation of the shear resistance in regions uncracked in bending, [$$V_{Rd,c}$$]."""
 
     label = "6.4"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -22,24 +22,24 @@ class Form6Dot4ShearResistance(Formula):
         alpha_l: DIMENSIONLESS,
         sigma_cp: MPA,
     ) -> None:
-        r"""[:math:`V_{Rd,c}`] Shear resistance in regions uncracked in bending [:math:`kN`].
+        r"""[$$V_{Rd,c}$$] Shear resistance in regions uncracked in bending [$$kN$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.2(2) - Formula (6.4)
 
         Parameters
         ----------
         i : MM4
-            [:math:`I`] Second moment of area [:math:`mm^4`].
+            [$$I$$] Second moment of area [$$mm^4$$].
         b_w : MM
-            [:math:`b_w`] Width of the cross-section at the centroidal axis, see equation 6.16 and 6.17 [:math:`mm`].
+            [$$b_w$$] Width of the cross-section at the centroidal axis, see equation 6.16 and 6.17 [$$mm$$].
         s : MM3
-            [:math:`S`] First moment of area above and about the centroidal axis [:math:`mm^3`].
+            [$$S$$] First moment of area above and about the centroidal axis [$$mm^3$$].
         f_ctd : MPA
-            [:math:`f_{ctd}`] Design tensile strength of concrete [:math:`MPa`].
+            [$$f_{ctd}$$] Design tensile strength of concrete [$$MPa$$].
         alpha_l : DIMENSIONLESS
-            [:math:`\alpha_l`] l_x / l_pt2 <= 1.0 for pretensioned tendons, 1.0 for other types of prestressing [-].
+            [$$\alpha_l$$] [$$l_x / l_{pt2} \leq 1.0$$] for pretensioned tendons, [$$1.0$$] for other types of prestressing [$$-$$].
         sigma_cp : MPA
-            [:math:`\sigma_{cp}`] Concrete compressive stress at the centroidal axis due to axial loading and/or prestressing [:math:`MPa`].
+            [$$\sigma_{cp}$$] Concrete compressive stress at the centroidal axis due to axial loading and/or prestressing [$$MPa$$].
         """
         super().__init__()
         self.i = i

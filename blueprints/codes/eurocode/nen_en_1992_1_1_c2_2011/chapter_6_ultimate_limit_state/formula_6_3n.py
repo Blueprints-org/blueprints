@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot3NShearCapacityWithoutRebar(Formula):
-    r"""Class representing formula 6.3N for the calculation of the shear capacity without rebar, :math:`v_{min}`."""
+    r"""Class representing formula 6.3N for the calculation of the shear capacity without rebar, [$$v_{min}$$]."""
 
     label = "6.3N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form6Dot3NShearCapacityWithoutRebar(Formula):
         k: DIMENSIONLESS,
         f_ck: MPA,
     ) -> None:
-        r"""[:math:`v_{min}`] Shear capacity without rebar [:math=`MPa`].
+        r"""[$$v_{min}$$] Shear capacity without rebar [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.2(1) - Formula (6.3N)
 
         Parameters
         ----------
-        k : float
-            [:math:`k`] Factor which depends on the thickness concrete, see formula 6.2 [-].
-        f_ck : float
-            [:math:`f_{ck}`] Characteristic compressive strength of concrete [:math=`MPa`].
+        k : DIMENSIONLESS
+            [$$k$$] Factor which depends on the thickness concrete, see formula 6.2 [$$-$$].
+        f_ck : MPA
+            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
         """
         super().__init__()
         self.k = k

@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot2ShearResistance(Formula):
-    r"""Class representing formula 6.2a for the calculation of the design value for the shear resistance, :math:`V_{Rd,c}`."""
+    r"""Class representing formula 6.2a for the calculation of the design value for the shear resistance, [$$V_{Rd,c}$$]."""
 
     label = "6.2ab"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -25,30 +25,30 @@ class Form6Dot2ShearResistance(Formula):
         d: MM,
         v_min: N,
     ) -> None:
-        r"""[:math:`V_{Rd,c}`] Design value for the shear resistance [:math:`kN`].
+        r"""[$$V_{Rd,c}$$] Design value for the shear resistance [$$kN$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.2(1) - Formula (6.2a)
 
         Parameters
         ----------
         c_rd_c : DIMENSIONLESS
-            [:math:`C_{Rd,c}`] Coefficient for shear strength [-].
+            [$$C_{Rd,c}$$] Coefficient for shear strength [$$-$$].
         k : DIMENSIONLESS
-            [:math:`k`] Size effect factor [-].
+            [$$k$$] Size effect factor [$$-$$].
         rho_l : DIMENSIONLESS
-            [:math:`\rho_l`] Longitudinal reinforcement ratio [-].
-        f_ck : MPa
-            [:math:`f_{ck}`] Characteristic compressive strength of concrete [:math:`MPa`].
+            [$$\rho_l$$] Longitudinal reinforcement ratio [$$-$$].
+        f_ck : MPA
+            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
         k_1 : DIMENSIONLESS
-            [:math:`k_1`] Coefficient for concrete [-].
-        sigma_cp : MPa
-            [:math:`\sigma_{cp}`] Compressive stress in the concrete [:math:`MPa`].
+            [$$k_1$$] Coefficient for concrete [$$-$$].
+        sigma_cp : MPA
+            [$$\sigma_{cp}$$] Compressive stress in the concrete [$$MPa$$].
         b_w : MM
-            [:math:`b_w`] Width of the web [:math:`mm`].
+            [$$b_w$$] Width of the web [$$mm$$].
         d : MM
-            [:math:`d`] Effective depth [:math:`mm`].
+            [$$d$$] Effective depth [$$mm$$].
         v_min : N
-            [:math:`v_{min}`] shear capacity without rebar [:math:`N`].
+            [$$v_{min}$$] shear capacity without rebar [$$N$$].
         """
         super().__init__()
         self.c_rd_c = c_rd_c
@@ -106,7 +106,7 @@ class Form6Dot2ShearResistance(Formula):
 
 
 class Form6Dot2aSub1ThicknessFactor(Formula):
-    r"""Class representing formula 6.2a for k, the thickness factor, :math:`k`."""
+    r"""Class representing formula 6.2a for k, the thickness factor, [$$k$$]."""
 
     label = "6.2aSub1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -115,14 +115,14 @@ class Form6Dot2aSub1ThicknessFactor(Formula):
         self,
         d: MM,
     ) -> None:
-        r"""[:math:`k`] factor to take thickness into account [:math:`kN`].
+        r"""[$$k$$] factor to take thickness into account [$$kN$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.2(1) - Formula (6.2a)
 
         Parameters
         ----------
         d : MM
-            [:math:`d`] Effective depth [:math=`mm`].
+            [$$d$$] Effective depth [$$mm$$].
         """
         super().__init__()
         self.d = d
@@ -150,7 +150,7 @@ class Form6Dot2aSub1ThicknessFactor(Formula):
 
 
 class Form6Dot2aSub2RebarRatio(Formula):
-    r"""Class representing formula 6.2a for the tensile rebar ratio, :math:`\rho_l`."""
+    r"""Class representing formula 6.2a for the tensile rebar ratio, [$$\rho_l$$]."""
 
     label = "6.2aSub2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -161,18 +161,18 @@ class Form6Dot2aSub2RebarRatio(Formula):
         b_w: MM,
         d: MM,
     ) -> None:
-        r"""[:math:`\rho_l`] Tensile rebar ratio [:math:`-`].
+        r"""[$$\rho_l$$] Tensile rebar ratio [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.2(1) - Formula (6.2a)
 
         Parameters
         ----------
         a_sl : MM2
-            [:math:`A_{sl}`] Area of tensile reinforcement [:math=`mm^2`].
+            [$$A_{sl}$$] Area of tensile reinforcement [$$mm^2$$].
         b_w : MM
-            [:math=`b_w`] Width of the web [:math=`mm`].
+            [$$b_w$$] Width of the web [$$mm$$].
         d : MM
-            [:math=`d`] Effective depth [:math=`mm`].
+            [$$d$$] Effective depth [$$mm$$].
         """
         super().__init__()
         self.A_sl = a_sl
