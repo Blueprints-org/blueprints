@@ -234,15 +234,15 @@ class TestForm5Dot46Part2TimeDependentStressLosses:
         [
             (
                 "complete",
-                r"\Delta P_{c+s+r} = A_p \cdot \frac{\epsilon_{cs} \cdot E_p + 0.8 \cdot \Delta \sigma_{pr} + "
+                r"\Delta \sigma_{p,c+s+r} = \frac{\epsilon_{cs} \cdot E_p + 0.8 \cdot \Delta \sigma_{pr} + "
                 r"\frac{E_p}{E_{cm}} \cdot \phi(t, t_0) \cdot \sigma_{c,QP}}{1 + \frac{E_p}{E_{cm}} \cdot \frac{A_p}{A_c} "
                 r"\cdot \left(1 + \frac{A_c}{I_c} \cdot z_{cp}^2\right) \cdot \left(1 + 0.8 \cdot \phi(t, t_0)\right)}"
-                r" = 1000.000 \cdot \frac{0.000200 \cdot 200000.000 + 0.800 \cdot 100.000 + \frac{200000.000}{30000.000} "
+                r" = \frac{0.000200 \cdot 200000.000 + 0.800 \cdot 100.000 + \frac{200000.000}{30000.000} "
                 r"\cdot 2.000 \cdot 10.000}{1 + \frac{200000.000}{30000.000} \cdot \frac{1000.000}{5000.000} "
                 r"\cdot \left(1 + \frac{5000.000}{1000000.000} \cdot 200.000^2\right) "
                 r"\cdot \left(1 + 0.800 \cdot 2.000\right)} = 0.363 MPa",
             ),
-            ("short", r"\Delta P_{c+s+r} = 0.363 MPa"),
+            ("short", r"\Delta \sigma_{p,c+s+r} = 0.363 MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

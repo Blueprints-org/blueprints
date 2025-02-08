@@ -202,7 +202,7 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
 
         numerator = epsilon_cs * e_p + 0.8 * delta_sigma_pr + (e_p / e_cm) * phi_t_t0 * sigma_c_qp
         denominator = 1 + (e_p / e_cm) * (a_p / a_c) * (1 + (a_c / i_c) * z_cp**2) * (1 + 0.8 * phi_t_t0)
-        return a_p * numerator / denominator
+        return numerator / denominator
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.46 for stress losses."""
