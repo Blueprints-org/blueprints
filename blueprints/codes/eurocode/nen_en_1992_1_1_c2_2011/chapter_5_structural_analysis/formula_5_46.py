@@ -44,7 +44,9 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
             [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
         delta_sigma_pr : MPA
             [$$\Delta \sigma_{pr}$$] is the absolute value of the variation of stress in the tendons at location x, at
-            time t, due to the relaxation of the prestressing steel [$$MPa$$].
+            time t, due to the relaxation of the prestressing steel. It is determined for a stress of
+            [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$]where [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$] is the initial
+            stress in the tendons due to initial prestress and quasi-permanent actions. [$$MPa$$].
         phi_t_t0 : DIMENSIONLESS
             [$$\phi(t, t_0)$$] Creep coefficient at a time t and load application at time t0 [$$-$$].
         sigma_c_qp : MPA
@@ -135,7 +137,7 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
         i_c: MM4,
         z_cp: MM,
     ) -> None:
-        r"""[$$\Delta \sigma_{p,c+s+r}$$] Time dependent pre- and post-tensioning stresslosses at
+        r"""[$$\Delta \sigma_{p,c+s+r}$$] Time dependent pre- and post-tensioning stress losses at
         location x under the permanent loads [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.6(2) - Formula (5.46)
@@ -152,7 +154,9 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
             [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
         delta_sigma_pr : MPA
             [$$\Delta \sigma_{pr}$$] is the absolute value of the variation of stress in the tendons at location x, at
-            time t, due to the relaxation of the prestressing steel [$$MPa$$].
+            time t, due to the relaxation of the prestressing steel. It is determined for a stress of
+            [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$]where [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$] is the initial
+            stress in the tendons due to initial prestress and quasi-permanent actions. [$$MPa$$].
         phi_t_t0 : DIMENSIONLESS
             [$$\phi(t, t_0)$$] Creep coefficient at a time t and load application at time t0 [$$-$$].
         sigma_c_qp : MPA
