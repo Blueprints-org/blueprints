@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot45LossesDueToFriction(Formula):
-    r"""Class representing formula 5.45 for the calculation of losses due to friction in post-tensioned tendons, :math:`\Delta P_{\mu}(x)`."""
+    r"""Class representing formula 5.45 for the calculation of losses due to friction in post-tensioned tendons, [$$\Delta P_{\mu}(x)$$]."""
 
     label = "5.45"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,22 +23,22 @@ class Form5Dot45LossesDueToFriction(Formula):
         k: ONE_OVER_M,
         x: M,
     ) -> None:
-        r"""[:math:`\Delta P_{\mu}(x)`] Losses due to friction [:math:`kN`].
+        r"""[$$\Delta P_{\mu}(x)$$] Losses due to friction [$$kN$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.5.2(1) - Formula (5.45)
 
         Parameters
         ----------
         p_max : KN
-            [:math:`P_{max}`] Force at the active end during tensioning [:math:`kN`].
+            [$$P_{max}$$] Force at the active end during tensioning [$$kN$$].
         mu : DIMENSIONLESS
-            [:math:`\mu`] Coefficient of friction between the tendon and its duct [-].
+            [$$\mu$$] Coefficient of friction between the tendon and its duct [$$-$$].
         theta : DIMENSIONLESS
-            [:math:`\theta`] Sum of the angular displacements over a distance x (irrespective of direction or sign) [-].
+            [$$\theta$$] Sum of the angular displacements over a distance x (irrespective of direction or sign) [$$-$$].
         k : ONE_OVER_M
-            [:math:`k`] Unintentional angular displacement for internal tendons (per unit length) [:math:`1/m`].
+            [$$k$$] Unintentional angular displacement for internal tendons (per unit length) [$$1/m$$].
         x : M
-            [:math:`x`] Distance along tendon from point where the prestressing force equals Pmax (force at active end during tensioning) [:math:`m`].
+            [$$x$$] Distance along tendon from point where the prestressing force equals Pmax (force at active end during tensioning) [$$m$$].
         """
         super().__init__()
         self.p_max = p_max

@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 class Form5Dot46TimeDependentLosses(Formula):
     r"""Class representing formula 5.46 for the calculation of the time dependent pre- and post-tensioning losses at location
-    x under the permanent loads, :math:`\Delta P_{c+s+r}`.
+    x under the permanent loads, [$$\Delta P_{c+s+r}$$].
     """
 
     label = "5.46"
@@ -28,34 +28,34 @@ class Form5Dot46TimeDependentLosses(Formula):
         i_c: MM4,
         z_cp: MM,
     ) -> None:
-        r"""[:math:`\Delta P_{c+s+r}`] Time dependent pre- and post-tensioning losses at location x under the permanent loads [:math:`N`].
+        r"""[$$\Delta P_{c+s+r}$$] Time dependent pre- and post-tensioning losses at location x under the permanent loads [$$N$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.6(2) - Formula (5.46)
 
         Parameters
         ----------
         a_p : MM2
-            [:math:`A_p`] Area of all the prestressing tendons at the location x [:math:`mm^2`].
+            [$$A_p$$] Area of all the prestressing tendons at the location x [$$mm^2$$].
         epsilon_cs : DIMENSIONLESS
-            [:math:`\epsilon_{cs}`] The estimated shrinkage strain according to 3.1.4(6) in absolute value [-].
+            [$$\epsilon_{cs}$$] The estimated shrinkage strain according to 3.1.4(6) in absolute value [$$-$$].
         e_p : MPA
-            [:math:`E_p`] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [:math:`MPa`].
+            [$$E_p$$] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [$$MPa$$].
         delta_sigma_pr : MPA
-            [:math:`\Delta \sigma_{pr}`] is the absolute value of the variation of stress in the tendons at location x, at
-            time t, due to the relaxation of the prestressing steel [:math:`MPa`].
+            [$$\Delta \sigma_{pr}$$] is the absolute value of the variation of stress in the tendons at location x, at
+            time t, due to the relaxation of the prestressing steel [$$MPa$$].
         e_cm : MPA
-            [:math:`E_{cm}`] Modulus of elasticity for the concrete (Table 3.1) [:math:`MPa`].
+            [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
         phi_t_t0 : DIMENSIONLESS
-            [:math:`\phi(t, t_0)`] Creep coefficient at a time t and load application at time t0 [-].
+            [$$\phi(t, t_0)$$] Creep coefficient at a time t and load application at time t0 [$$-$$].
         sigma_c_qp : MPA
-            [:math:`\sigma_{c,QP}`] stress in the concrete adjacent to the tendons, due to self-weight and
-            initial prestress and other quasi-permanent actions where relevant. [:math:`MPa`].
+            [$$\sigma_{c,QP}$$] stress in the concrete adjacent to the tendons, due to self-weight and
+            initial prestress and other quasi-permanent actions where relevant. [$$MPa$$].
         a_c : MM2
-            [:math:`A_c`] Area of concrete section [:math:`mm^2`].
+            [$$A_c$$] Area of concrete section [$$mm^2$$].
         i_c : MM4
-            [:math:`I_c`] Second moment of area of concrete section [:math:`mm^4`].
+            [$$I_c$$] Second moment of area of concrete section [$$mm^4$$].
         z_cp : MM
-            [:math:`z_{cp}`] Distance between the centre of gravity of the concrete section and the tendons [:math:`mm`].
+            [$$z_{cp}$$] Distance between the centre of gravity of the concrete section and the tendons [$$mm$$].
         """
         super().__init__()
         self.a_p = a_p
