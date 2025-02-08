@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot51ShearStressLoadingEccentric(Formula):
-    r"""Class representing formula 6.51 for the calculation of shear stress loading for eccentric loading :math:`v_{Ed}`."""
+    r"""Class representing formula 6.51 for the calculation of shear stress loading for eccentric loading [$$v_{Ed}$$]."""
 
     label = "6.51"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -22,24 +22,24 @@ class Form6Dot51ShearStressLoadingEccentric(Formula):
         m_ed: NMM,
         w: MM2,
     ) -> None:
-        r""":math:`v_{Ed}` Calculation of shear stress loading.
+        r"""[$$v_{Ed}$$] Calculation of shear stress loading.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.51)
 
         Parameters
         ----------
         v_ed_red : N
-            :math:`V_{Ed,red}` Reduced design shear force [N].
+            [$$V_{Ed,red}$$] Reduced design shear force [$$N$$].
         u : MM
-            :math:`u` Perimeter of the critical section [mm].
+            [$$u$$] Perimeter of the critical section [$$mm$$].
         d : MM
-            :math:`d` Mean effective depth of the slab [mm].
+            [$$d$$] Mean effective depth of the slab [$$mm$$].
         k : DIMENSIONLESS
-            :math:`k` Factor defined in 6.4.3(3) or 6.4.3(4) [-].
+            [$$k$$] Factor defined in 6.4.3(3) or 6.4.3(4) [$$-$$].
         m_ed : NMM
-            :math:`M_{Ed}` Design bending moment [Nmm].
+            [$$M_{Ed}$$] Design bending moment [$$Nmm$$].
         w : MM2
-            :math:`W` Similar to :math:`W_1` but for perimeter :math:`u` [mm^2].
+            [$$W$$] Similar to [$$W_1$$] but for perimeter [$$u$$] [$$mm^2$$].
         """
         super().__init__()
         self.v_ed_red = v_ed_red

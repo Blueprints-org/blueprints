@@ -10,20 +10,20 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot47Sub1FactorK(Formula):
-    r"""Class representing sub-formula 1 for formula 6.47, which calculates the factor $$k$$."""
+    r"""Class representing sub-formula 1 for formula 6.47, which calculates the factor [$$k$$]."""
 
     label = "6.47sub1"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, d: MM) -> None:
-        r"""$$k$$ Calculation of factor k.
+        r"""[$$k$$] Calculation of factor k.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub1)
 
         Parameters
         ----------
         d : MM
-            $$d$$ Effective depth [$$mm$$].
+            [$$d$$] Effective depth [$$mm$$].
         """
         super().__init__()
         self.d = d
@@ -55,22 +55,22 @@ class Form6Dot47Sub1FactorK(Formula):
 
 
 class Form6Dot47Sub2FactorRhoL(Formula):
-    r"""Class representing sub-formula 2 for formula 6.47, which calculates the factor $$\rho_l$$."""
+    r"""Class representing sub-formula 2 for formula 6.47, which calculates the factor [$$\rho_l$$]."""
 
     label = "6.47sub2"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, rho_ly: DIMENSIONLESS, rho_lz: DIMENSIONLESS) -> None:
-        r"""$$\rho_l$$ Calculation of factor $$\rho_l$$.
+        r"""[$$\rho_l$$] Calculation of factor [$$\rho_l$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub2)
 
         Parameters
         ----------
         rho_ly : DIMENSIONLESS
-            $$\rho_{ly}$$ Longitudinal reinforcement ratio in y-direction [-].
+            [$$\rho_{ly}$$] Longitudinal reinforcement ratio in y-direction [$$-$$].
         rho_lz : DIMENSIONLESS
-            $$\rho_{lz}$$ Longitudinal reinforcement ratio in z-direction [-].
+            [$$\rho_{lz}$$] Longitudinal reinforcement ratio in z-direction [$$-$$].
         """
         super().__init__()
         self.rho_ly = rho_ly
@@ -104,22 +104,22 @@ class Form6Dot47Sub2FactorRhoL(Formula):
 
 
 class Form6Dot47Sub3FactorSigmaCp(Formula):
-    r"""Class representing sub-formula 3 for formula 6.47, which calculates the factor $$\sigma_{cp}$$."""
+    r"""Class representing sub-formula 3 for formula 6.47, which calculates the factor [$$\sigma_{cp}$$]."""
 
     label = "6.47sub3"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, sigma_cy: MPA, sigma_cz: MPA) -> None:
-        r"""$$\sigma_{cp}$$ Calculation of factor $$\sigma_{cp}$$.
+        r"""[$$\sigma_{cp}$$] Calculation of factor [$$\sigma_{cp}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub3)
 
         Parameters
         ----------
         sigma_cy : MPA
-            $$\sigma_{cy}$$ Stress in the y-direction [$$MPa$$].
+            [$$\sigma_{cy}$$] Stress in the y-direction [$$MPa$$].
         sigma_cz : MPA
-            $$\sigma_{cz}$$ Stress in the z-direction [$$MPa$$].
+            [$$\sigma_{cz}$$] Stress in the z-direction [$$MPa$$].
         """
         super().__init__()
         self.sigma_cy = sigma_cy
@@ -153,22 +153,22 @@ class Form6Dot47Sub3FactorSigmaCp(Formula):
 
 
 class Form6Dot47Sub4FactorSigmaCy(Formula):
-    r"""Class representing sub-formula 4 for formula 6.47, which calculates the factor $$\sigma_{cy}$$."""
+    r"""Class representing sub-formula 4 for formula 6.47, which calculates the factor [$$\sigma_{cy}$$]."""
 
     label = "6.47sub4"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, n_ed_y: N, a_cy: MM2) -> None:
-        r"""$$\sigma_{cy}$$ Calculation of factor $$\sigma_{cy}$$.
+        r"""[$$\sigma_{cy}$$] Calculation of factor [$$\sigma_{cy}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub4)
 
         Parameters
         ----------
         n_ed_y : N
-            $$N_{Ed,y}$$ Design axial force in y-direction [$$N$$].
+            [$$N_{Ed,y}$$] Design axial force in y-direction [$$N$$].
         a_cy : MM2
-            $$A_{cy}$$ Cross-sectional area in y-direction [$$mm^2$$].
+            [$$A_{cy}$$] Cross-sectional area in y-direction [$$mm^2$$].
         """
         super().__init__()
         self.n_ed_y = n_ed_y
@@ -203,22 +203,22 @@ class Form6Dot47Sub4FactorSigmaCy(Formula):
 
 
 class Form6Dot47Sub5FactorSigmaCz(Formula):
-    r"""Class representing sub-formula 5 for formula 6.47, which calculates the factor $$\sigma_{cz}$$."""
+    r"""Class representing sub-formula 5 for formula 6.47, which calculates the factor [$$\sigma_{cz}$$]."""
 
     label = "6.47sub5"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, n_ed_z: N, a_cz: MM2) -> None:
-        r"""$$\sigma_{cz}$$ Calculation of factor $$\sigma_{cz}$$.
+        r"""[$$\sigma_{cz}$$] Calculation of factor [$$\sigma_{cz}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub5)
 
         Parameters
         ----------
         n_ed_z : N
-            $$N_{Ed,z}$$ Design axial force in z-direction [$$N$$].
+            [$$N_{Ed,z}$$] Design axial force in z-direction [$$N$$].
         a_cz : MM2
-            $$A_{cz}$$ Cross-sectional area in z-direction [$$mm^2$$].
+            [$$A_{cz}$$] Cross-sectional area in z-direction [$$mm^2$$].
         """
         super().__init__()
         self.n_ed_z = n_ed_z
