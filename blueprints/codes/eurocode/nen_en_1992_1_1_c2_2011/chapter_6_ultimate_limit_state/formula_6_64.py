@@ -34,7 +34,7 @@ class Form6Dot64BondFactor(Formula):
         a_p : MM2
             [$$A_P$$] Area of prestressing tendon or tendons [$$mm^2$$].
         xi : DIMENSIONLESS
-            [$$\xi$$] Ratio of bond strength between bonded tendons and ribbed steel in concrete.
+            [$$\xi$$] Ratio of bond strength between bonded tendons and ribbed steel in concrete [-].
         d_s : MM
             [$$\⌀_s$$] Largest diameter of reinforcement [$$mm$$].
         d_p : MM
