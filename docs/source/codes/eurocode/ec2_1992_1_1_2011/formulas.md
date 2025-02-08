@@ -161,8 +161,8 @@ Total of 304 formulas present.
 | 6.56           |        :x:         |         |                                                           |
 | 6.57N          |        :x:         |         |                                                           |
 | 6.58           |        :x:         |         |                                                           |
-| 6.59           |        :x:         |         |                                                           |
-| 6.60           |        :x:         |         |                                                           |
+| 6.59           | :heavy_check_mark: |         | TestForm6Dot58And59TensileForce                           |
+| 6.60           | :heavy_check_mark: |         | TestForm6Dot58And59TensileForce                           |
 | 6.61           |        :x:         |         |                                                           |
 | 6.62           |        :x:         |         |                                                           |
 | 6.63           |        :x:         |         |                                                           |
