@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot37InternalContourRadiusCircularColumnHeads(Formula):
-    r"""Class representing formula 6.37 for the calculation of the contour radius for circular column heads, :math:`r_{cont,int}`."""
+    r"""Class representing formula 6.37 for the calculation of the contour radius for circular column heads, [$$r_{cont,int}$$]."""
 
     label = "6.37"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,18 +19,18 @@ class Form6Dot37InternalContourRadiusCircularColumnHeads(Formula):
         h_h: MM,
         c: MM,
     ) -> None:
-        r"""[:math:`r_{cont,int}`] Contour radius for circular column heads [:math:`mm`].
+        r"""[$$r_{cont,int}$$] Contour radius for circular column heads [$$mm$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.2(11) - Formula (6.37)
 
         Parameters
         ----------
         d : MM
-            [:math:`d`] Effective depth [:math:`mm`].
+            [$$d$$] Effective depth [$$mm$$].
         h_h : MM
-            [:math:`h_{H}`] height of the column head [:math:`mm`].
+            [$$h_{H}$$] height of the column head [$$mm$$].
         c : MM
-            [:math:`c`] Diameter of a circular column [:math:`mm`].
+            [$$c$$] Diameter of a circular column [$$mm$$].
         """
         super().__init__()
         self.d = d

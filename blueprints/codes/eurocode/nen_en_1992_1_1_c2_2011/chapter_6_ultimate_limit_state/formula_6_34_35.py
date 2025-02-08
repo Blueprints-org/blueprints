@@ -23,22 +23,22 @@ class Form6Dot34And35ContourRadiusRectangular(Formula):
         l_h1: MM,
         l_h2: MM,
     ) -> None:
-        r"""[:math:`r_{cont}`] Contour radius [:math:`mm`].
+        r"""[$$r_{cont}$$] Contour radius [$$mm$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(8) - Formula (6.34 and 6.35)
 
         Parameters
         ----------
         d : MM
-            [:math:`d`] Effective depth [:math:`mm`].
+            [$$d$$] Effective depth [$$mm$$].
         c_1 : MM
-            [:math:`c_{1}`] Column size in one direction [:math:`mm`].
+            [$$c_{1}$$] Column size in one direction [$$mm$$].
         c_2 : MM
-            [:math:`c_{2}`] Column size in the perpendicular direction [:math:`mm`].
+            [$$c_{2}$$] Column size in the perpendicular direction [$$mm$$].
         l_h1 : MM
-            [:math:`l_{H1}`] Head size in one direction [:math:`mm`].
+            [$$l_{H1}$$] Head size in one direction [$$mm$$].
         l_h2 : MM
-            [:math:`l_{H2}`] Head size in the perpendicular direction [:math:`mm`].
+            [$$l_{H2}$$] Head size in the perpendicular direction [$$mm$$].
         """
         super().__init__()
         self.d = d
