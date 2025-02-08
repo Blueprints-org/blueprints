@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot43InitialPrestressForce(Formula):
-    r"""Class representing formula 5.43 for the calculation of the initial prestress force, :math:`P_{m0}(x)`."""
+    r"""Class representing formula 5.43 for the calculation of the initial prestress force, [$$P_{m0}(x)$$]."""
 
     label = "5.43"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,22 +21,22 @@ class Form5Dot43InitialPrestressForce(Formula):
         k_8: DIMENSIONLESS,
         f_p0_1k: MPA,
     ) -> None:
-        r"""[:math:`P_{m0}(x)`] Initial prestress force [:math:`N`].
+        r"""[$$P_{m0}(x)$$] Initial prestress force [$$N$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.3(2) - Formula (5.43)
 
         Parameters
         ----------
         a_p : MM2
-            [:math:`A_{p}`] Area of prestressing steel [:math:`mm^2`].
+            [$$A_{p}$$] Area of prestressing steel [$$mm^2$$].
         k_7 : DIMENSIONLESS
-            [:math:`k_{7}`] Coefficient for characteristic tensile strength, recommended value is 0.75 [-].
+            [$$k_{7}$$] Coefficient for characteristic tensile strength, recommended value is 0.75 [$$-$$].
         f_pk : MPA
-            [:math:`f_{pk}`] Characteristic tensile strength of prestressing steel [:math:`MPa`].
+            [$$f_{pk}$$] Characteristic tensile strength of prestressing steel [$$MPa$$].
         k_8 : DIMENSIONLESS
-            [:math:`k_{8}`] Coefficient for 0.1% proof stress, recommended value is 0.85 [-].
+            [$$k_{8}$$] Coefficient for 0.1% proof stress, recommended value is 0.85 [$$-$$].
         f_p0_1k : MPA
-            [:math:`f_{p0,1k}`] 0.1% proof stress of prestressing steel [:math:`MPa`].
+            [$$f_{p0,1k}$$] 0.1% proof stress of prestressing steel [$$MPa$$].
         """
         super().__init__()
         self.a_p = a_p

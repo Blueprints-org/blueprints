@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_list
 
 
 class Form5Dot44PrestressLoss(Formula):
-    r"""Class representing formula 5.44 for the calculation of the prestress losses, :math:`ΔP_{el}`."""
+    r"""Class representing formula 5.44 for the calculation of the prestress losses, [$$\Delta P_{el}$$]."""
 
     label = "5.44"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,22 +21,22 @@ class Form5Dot44PrestressLoss(Formula):
         delta_sigma_c_t: list[MPA],
         e_cm_t: list[MPA],
     ) -> None:
-        r"""[:math:`ΔP_{el}`] Prestress loss [:math:`N`].
+        r"""[$$\Delta P_{el}$$] Prestress loss [$$N$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.5.1(2) - Formula (5.44)
 
         Parameters
         ----------
         a_p : MM2
-            [:math:`A_{p}`] Cross-sectional area of the tendon [:math:`mm^2`].
+            [$$A_{p}$$] Cross-sectional area of the tendon [$$mm^2$$].
         e_p : MPA
-            [:math:`E_{p}`] Modulus of elasticity of the tendon [:math:`MPa`].
+            [$$E_{p}$$] Modulus of elasticity of the tendon [$$MPa$$].
         j : list[DIMENSIONLESS]
-            [:math:`j`] (n-1)/2n, with n the number of identical tendons successively prestressed [:math:`list[-]`].
+            [$$j$$] (n-1)/2n, with n the number of identical tendons successively prestressed [$$list[-]$$].
         delta_sigma_c_t : list[MPA]
-            [:math:`\Delta \sigma_{c}(t)`] variation of stress at the centre of gravity of the tendons applied at time t [:math:`list[MPa]`].
+            [$$\Delta \sigma_{c}(t)$$] variation of stress at the centre of gravity of the tendons applied at time t [$$list[MPa]$$].
         e_cm_t: list[MPA]
-            [:math:`E_{cm}(t)`] 0.1% proof stress of prestressing steel [:math:`list[MPa]`].
+            [$$E_{cm}(t)$$] 0.1% proof stress of prestressing steel [$$list[MPa]$$].
         """
         super().__init__()
         self.a_p = a_p
