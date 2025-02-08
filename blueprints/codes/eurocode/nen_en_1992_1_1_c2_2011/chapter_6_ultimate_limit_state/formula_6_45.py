@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot45W1Rectangular(Formula):
-    r"""Class representing formula 6.45 for the calculation of $$W_1$$."""
+    r"""Class representing formula 6.45 for the calculation of [$$W_1$$]."""
 
     label = "6.45"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,18 +21,18 @@ class Form6Dot45W1Rectangular(Formula):
         c_2: MM,
         d: MM,
     ) -> None:
-        r"""$$W_1$$ Calculation of $$W_1$$.
+        r"""[$$W_1$$] Calculation of [$$W_1$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(4) - Formula (6.45)
 
         Parameters
         ----------
         c_1 : MM
-            $$c_1$$ Column dimension parallel to the eccentricity of the load [$$mm$$].
+            [$$c_1$$] Column dimension parallel to the eccentricity of the load [$$mm$$].
         c_2 : MM
-            $$c_2$$ Column dimension perpendicular to the eccentricity of the load [$$mm$$].
+            [$$c_2$$] Column dimension perpendicular to the eccentricity of the load [$$mm$$].
         d : MM
-            $$d$$ Mean effective depth of the slab [$$mm$$].
+            [$$d$$] Mean effective depth of the slab [$$mm$$].
         """
         super().__init__()
         self.c_1 = c_1

@@ -32,7 +32,7 @@ class Form6Dot44BetaRectangular(Formula):
         u1_star : MM
             [$$u_{1^*}$$] Reduced basic control perimeter [$$mm$$].
         k : DIMENSIONLESS
-            [$$k$$] Factor determined from Table 6.1 with the ratio c1/2c2 [-].
+            [$$k$$] Factor determined from Table 6.1 with the ratio c1/2c2 [$$-$$].
         w_1 : NMM
             [$$W_1$$] Calculated for the basic control perimeter [$$Nmm$$].
         e_par : MM

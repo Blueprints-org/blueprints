@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot38MaxShearStress(Formula):
-    r"""Class representing formula 6.38 for the calculation of the maximum shear stress, :math:`v_{Ed}`."""
+    r"""Class representing formula 6.38 for the calculation of the maximum shear stress, [$$v_{Ed}$$]."""
 
     label = "6.38"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,20 +20,20 @@ class Form6Dot38MaxShearStress(Formula):
         u_i: MM,
         d: MM,
     ) -> None:
-        r"""[:math:`v_{Ed}`] Maximum shear stress [:math:`MPa`].
+        r"""[$$v_{Ed}$$] Maximum shear stress [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(3) - Formula (6.38)
 
         Parameters
         ----------
         beta : DIMENSIONLESS
-            [:math:`β`] Factor which depends on the distribution of the support reaction, see equation 6.39.
+            [$$\beta$$] Factor which depends on the distribution of the support reaction, see equation 6.39.
         v_ed : N
-            [:math:`V_{Ed}`] Design value of the shear force [:math:`N`].
+            [$$V_{Ed}$$] Design value of the shear force [$$N$$].
         u_i : MM
-            [:math:`u_{i}`] Length of the control perimeter being considered [:math:`mm`].
+            [$$u_{i}$$] Length of the control perimeter being considered [$$mm$$].
         d : MM
-            [:math:`d`] Mean effective depth of the slab, which may be taken as (dy + dz)/2 [:math:`mm`].
+            [$$d$$] Mean effective depth of the slab, which may be taken as (dy + dz)/2 [$$mm$$].
         """
         super().__init__()
         self.beta = beta
