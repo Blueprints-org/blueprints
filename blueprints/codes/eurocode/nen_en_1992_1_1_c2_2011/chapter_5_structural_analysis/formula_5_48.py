@@ -27,7 +27,8 @@ class Form5Dot48LowerCharacteristicPrestressingValue(Formula):
         Parameters
         ----------
         r_inf : DIMENSIONLESS
-            [$$r_{inf}$$] Factor for the lower characteristic value [$$-$$].
+            [$$r_{inf}$$] Factor for the lower characteristic value, recommended value is 0.95 for pre-tensioning or unbounded tendons,
+             0.90 for post-tensioning with bonded tendons. When appropriate measures are taken: 1.0 [$$-$$].
         p_m_t : KN
             [$$P_{m,t}(x)$$] Mean value of the prestressing force at location x [$$kN$$].
         """
