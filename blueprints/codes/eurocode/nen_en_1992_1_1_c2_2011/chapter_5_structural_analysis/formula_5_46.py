@@ -20,8 +20,8 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
         a_p: MM2,
         epsilon_cs: DIMENSIONLESS,
         e_p: MPA,
-        delta_sigma_pr: MPA,
         e_cm: MPA,
+        delta_sigma_pr: MPA,
         phi_t_t0: DIMENSIONLESS,
         sigma_c_qp: MPA,
         a_c: MM2,
@@ -40,11 +40,11 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
             [$$\epsilon_{cs}$$] The estimated shrinkage strain according to 3.1.4(6) in absolute value [$$-$$].
         e_p : MPA
             [$$E_p$$] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [$$MPa$$].
+        e_cm : MPA
+            [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
         delta_sigma_pr : MPA
             [$$\Delta \sigma_{pr}$$] is the absolute value of the variation of stress in the tendons at location x, at
             time t, due to the relaxation of the prestressing steel [$$MPa$$].
-        e_cm : MPA
-            [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
         phi_t_t0 : DIMENSIONLESS
             [$$\phi(t, t_0)$$] Creep coefficient at a time t and load application at time t0 [$$-$$].
         sigma_c_qp : MPA
@@ -61,8 +61,8 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
         self.a_p = a_p
         self.epsilon_cs = epsilon_cs
         self.e_p = e_p
-        self.delta_sigma_pr = delta_sigma_pr
         self.e_cm = e_cm
+        self.delta_sigma_pr = delta_sigma_pr
         self.phi_t_t0 = phi_t_t0
         self.sigma_c_qp = sigma_c_qp
         self.a_c = a_c
@@ -74,8 +74,8 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
         a_p: MM2,
         epsilon_cs: DIMENSIONLESS,
         e_p: MPA,
-        delta_sigma_pr: MPA,
         e_cm: MPA,
+        delta_sigma_pr: MPA,
         phi_t_t0: DIMENSIONLESS,
         sigma_c_qp: MPA,
         a_c: MM2,
@@ -127,8 +127,8 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
         a_p: MM2,
         epsilon_cs: DIMENSIONLESS,
         e_p: MPA,
-        delta_sigma_pr: MPA,
         e_cm: MPA,
+        delta_sigma_pr: MPA,
         phi_t_t0: DIMENSIONLESS,
         sigma_c_qp: MPA,
         a_c: MM2,
@@ -148,11 +148,11 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
             [$$\epsilon_{cs}$$] The estimated shrinkage strain according to 3.1.4(6) in absolute value [$$-$$].
         e_p : MPA
             [$$E_p$$] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [$$MPa$$].
+        e_cm : MPA
+            [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
         delta_sigma_pr : MPA
             [$$\Delta \sigma_{pr}$$] is the absolute value of the variation of stress in the tendons at location x, at
             time t, due to the relaxation of the prestressing steel [$$MPa$$].
-        e_cm : MPA
-            [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
         phi_t_t0 : DIMENSIONLESS
             [$$\phi(t, t_0)$$] Creep coefficient at a time t and load application at time t0 [$$-$$].
         sigma_c_qp : MPA
@@ -169,8 +169,8 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
         self.a_p = a_p
         self.epsilon_cs = epsilon_cs
         self.e_p = e_p
-        self.delta_sigma_pr = delta_sigma_pr
         self.e_cm = e_cm
+        self.delta_sigma_pr = delta_sigma_pr
         self.phi_t_t0 = phi_t_t0
         self.sigma_c_qp = sigma_c_qp
         self.a_c = a_c
@@ -182,8 +182,8 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
         a_p: MM2,
         epsilon_cs: DIMENSIONLESS,
         e_p: MPA,
-        delta_sigma_pr: MPA,
         e_cm: MPA,
+        delta_sigma_pr: MPA,
         phi_t_t0: DIMENSIONLESS,
         sigma_c_qp: MPA,
         a_c: MM2,
