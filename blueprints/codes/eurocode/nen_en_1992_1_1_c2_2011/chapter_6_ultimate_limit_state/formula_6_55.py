@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot55DesignStrengthConcreteStruts(Formula):
-    r"""Class representing formula 6.55 for the calculation of :math:`\sigma_{Rd,max}`."""
+    r"""Class representing formula 6.55 for the calculation of [$$\sigma_{Rd,max}$$]."""
 
     label = "6.55"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -17,14 +17,14 @@ class Form6Dot55DesignStrengthConcreteStruts(Formula):
         self,
         f_cd: MPA,
     ) -> None:
-        r""":math:`\sigma_{Rd,max}` Calculation of the design strength of concrete struts.
+        r"""[$$\sigma_{Rd,max}$$] Calculation of the design strength of concrete struts.
 
         NEN-EN 1992-1-1+C2:2011 art.6.5.2(1) - Formula (6.55)
 
         Parameters
         ----------
         f_cd : MPA
-            :math:`f_{cd}` Design compressive strength of concrete [MPa].
+            [$$f_{cd}$$] Design compressive strength of concrete [$$MPa$$].
         """
         super().__init__()
         self.f_cd = f_cd
