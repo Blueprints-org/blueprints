@@ -131,6 +131,7 @@ DIMENSIONLESS = float
 
 # <editor-fold desc="FREQUENCY">
 HZ = float
+"""Frequency (hertz), represented as a float."""
 # </editor-fold>
 
 # <editor-fold desc="TEMPERATURE">
