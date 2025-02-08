@@ -182,8 +182,9 @@ Total of 304 formulas present.
 | 6.77           |        :x:         |         |                                                           |
 | 6.78           |        :x:         |         |                                                           |
 | 6.79           |        :x:         |         |                                                           |
-| 7.1            |        :x:         |         |                                                           |
-| 7.2            |        :x:         |         |                                                           |
+| 7.1            | :heavy_check_mark: |         | Form7Dot1MinReinforcingSteel                              |
+| 7.2            | :heavy_check_mark: |         | Form7Dot2StressDistributionCoefficient                    |
+| 7.2sub1        | :heavy_check_mark: |         | Form7Dot2Sub1AxialForceCoefficient                        |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
 | 7.4            |        :x:         |         |                                                           |
 | 7.5            |        :x:         |         |                                                           |
