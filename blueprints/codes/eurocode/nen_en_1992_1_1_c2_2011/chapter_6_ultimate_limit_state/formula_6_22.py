@@ -29,13 +29,13 @@ class Form6Dot22CheckCrushingCompressionStruts(Formula):
         Parameters
         ----------
         v_ed : MPA
-            [:math:`v_{Ed}`] Design shear force [:math:`MPa`].
+            [$$v_{Ed}$$] Design shear force [$$MPa$$].
         nu : DIMENSIONLESS
-            [:math:`\nu`] Strength reduction factor [-].
+            [$$\nu$$] Strength reduction factor [$$-$$].
         f_cd : MPA
-            [:math:`f_{cd}`] Design value of concrete compressive strength [:math:`MPa`].
+            [$$f_{cd}$$] Design value of concrete compressive strength [$$MPa$$].
         theta_f : DEG
-            [:math:`\theta_{f}`] Angle of the compression struts [-].
+            [$$\theta_{f}$$] Angle of the compression struts [$$-$$].
         """
         super().__init__()
         self.v_ed = v_ed

@@ -31,17 +31,17 @@ class Form6Dot21CheckTransverseReinforcement(Formula):
         Parameters
         ----------
         a_sf : MM2
-            [:math:`A_{sf}`] Area of transverse reinforcement per unit length [mm^2].
+            [$$A_{sf}$$] Area of transverse reinforcement per unit length [$$mm^2$$].
         f_yd : MPA
-            [:math:`f_{yd}`] Design yield strength of reinforcement [MPa].
+            [$$f_{yd}$$] Design yield strength of reinforcement [$$MPa$$].
         s_f : MM
-            [:math:`s_{f}`] Spacing of transverse reinforcement [mm].
+            [$$s_{f}$$] Spacing of transverse reinforcement [$$mm$$].
         v_ed : MPA
-            [:math:`v_{Ed}`] Design shear stress [MPa].
+            [$$v_{Ed}$$] Design shear stress [$$MPa$$].
         h_f : MM
-            [:math:`h_{f}`] Thickness of flange at the junctions [mm].
+            [$$h_{f}$$] Thickness of flange at the junctions [$$mm$$].
         theta_f : DEG
-            [:math:`\theta_{f}`] Angle of the compression strut [degrees].
+            [$$\theta_{f}$$] Angle of the compression strut [$$degrees$$].
         """
         super().__init__()
         self.a_sf = a_sf
