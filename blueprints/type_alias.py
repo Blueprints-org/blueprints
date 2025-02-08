@@ -141,7 +141,9 @@ DEG_K = float
 
 # <editor-fold desc="RECIPROCAL">
 ONE_OVER_MM = float
+"""Reciprocal (1/mm), represented as a float."""
 ONE_OVER_M = float
+"""Reciprocal (1/m), represented as a float."""
 # </editor-fold>
 
 # <editor-fold desc="VELOCITIES">
