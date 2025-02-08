@@ -51,7 +51,7 @@ class Form6Dot74MinimumCompressiveStressLevel(Formula):
             _equation,
             {
                 r"\sigma_{cd,min,equ}": f"{self.sigma_cd_min_equ:.3f}",
-                r"f_{cd_fat}": f"{self.f_cd_fat:.3f}",
+                r"f_{cd,fat}": f"{self.f_cd_fat:.3f}",
             },
             False,
         )
