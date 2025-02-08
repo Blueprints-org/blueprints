@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_eq
 
 
 class Form6Dot25DesignShearResistance(Formula):
-    r"""Class representing formula 6.25 for the calculation of the design shear resistance at the interface, :math:`v_{Rdi}`."""
+    r"""Class representing formula 6.25 for the calculation of the design shear resistance at the interface, [$$v_{Rdi}$$]."""
 
     label = "6.25"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -28,32 +28,32 @@ class Form6Dot25DesignShearResistance(Formula):
         nu: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
-        r"""[:math:`v_{Rdi}`] Design shear resistance at the interface [:math:`MPa`].
+        r"""[$$v_{Rdi}$$] Design shear resistance at the interface [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.5(1) - Formula (6.25)
 
         Parameters
         ----------
         c : DIMENSIONLESS
-            [:math:`c`] Factor which depends on the roughness of the interface, see (2) [-].
+            [$$c$$] Factor which depends on the roughness of the interface, see (2) [$$-$$].
         mu : DIMENSIONLESS
-            [:math:`\mu`] Factor which depends on the roughness of the interface, see (2) [-].
+            [$$\mu$$] Factor which depends on the roughness of the interface, see (2) [$$-$$].
         f_ctd : MPA
-            [:math:`f_{ctd}`] Design tensile strength of concrete [:math:`MPa`].
+            [$$f_{ctd}$$] Design tensile strength of concrete [$$MPa$$].
         sigma_n : MPA
-            [:math:`\sigma_{n}`] Stress per unit area caused by the minimum external normal force across the interface [:math:`MPa`].
+            [$$\sigma_{n}$$] Stress per unit area caused by the minimum external normal force across the interface [$$MPa$$].
         a_s : MM2
-            [:math:`A_{s}`] Area of reinforcement crossing the interface [:math:`mm^2`].
+            [$$A_{s}$$] Area of reinforcement crossing the interface [$$mm^2$$].
         a_i : MM2
-            [:math:`A_{i}`] Area of the joint [:math:`mm^2`].
+            [$$A_{i}$$] Area of the joint [$$mm^2$$].
         f_yd : MPA
-            [:math:`f_{yd}`] Design yield strength of reinforcement [:math:`MPa`].
+            [$$f_{yd}$$] Design yield strength of reinforcement [$$MPa$$].
         alpha : DEG
-            [:math:`\alpha`] Angle of the interface, limited by 45° ≤ α ≤ 90° [degrees].
+            [$$\alpha$$] Angle of the interface, limited by 45° ≤ α ≤ 90° [$$degrees$$].
         nu : DIMENSIONLESS
-            [:math:`\nu`] Strength reduction factor [-].
+            [$$\nu$$] Strength reduction factor [$$-$$].
         f_cd : MPA
-            [:math:`f_{cd}`] Design compressive strength of concrete [:math:`MPa`].
+            [$$f_{cd}$$] Design compressive strength of concrete [$$MPa$$].
         """
         super().__init__()
         self.c = c
