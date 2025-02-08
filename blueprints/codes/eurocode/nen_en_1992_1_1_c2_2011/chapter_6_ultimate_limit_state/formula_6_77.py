@@ -20,7 +20,7 @@ class Form6Dot77FatigueVerification(Formula):
         f_cd_fat: MPA,
         f_ck: MPA,
     ) -> None:
-        r"""[$$\sigma_{Rd,max}$$] Fatigue verification for concrete [-].
+        r"""[$$\sigma_{Rd,max}$$] Fatigue verification for concrete [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.7(2) - Formula (6.77)
 

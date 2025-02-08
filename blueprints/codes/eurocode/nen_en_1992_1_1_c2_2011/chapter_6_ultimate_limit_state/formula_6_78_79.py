@@ -20,7 +20,7 @@ class Form6Dot78And79FatigueResistance(Formula):
         v_rd_c: N,
         f_ck: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\sigma_{Rd,max}$$] Fatigue resistance check [-].
+        r"""[$$\sigma_{Rd,max}$$] Fatigue resistance check [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.7(4) - Formula (6.78 and 6.79)
 
