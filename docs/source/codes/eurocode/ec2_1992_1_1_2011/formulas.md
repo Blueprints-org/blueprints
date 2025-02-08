@@ -140,15 +140,15 @@ Total of 304 formulas present.
 | 6.35           |        :x:         |         |                                                           |
 | 6.36           |        :x:         |         |                                                           |
 | 6.37           |        :x:         |         |                                                           |
-| 6.38           |        :x:         |         |                                                           |
-| 6.39           |        :x:         |         |                                                           |
+| 6.38           | :heavy_check_mark: |         | Form6Dot38MaxShearStress                                  |
+| 6.39           | :heavy_check_mark: |         | Form6Dot39BetaCoefficient                                 |
 | 6.40           |        :x:         |         |                                                           |
-| 6.41           |        :x:         |         |                                                           |
-| 6.42           |        :x:         |         |                                                           |
-| 6.43           |        :x:         |         |                                                           |
-| 6.44           |        :x:         |         |                                                           |
-| 6.45           |        :x:         |         |                                                           |
-| 6.46           |        :x:         |         |                                                           |
+| 6.41           | :heavy_check_mark: |         | Form6Dot41W1Rectangular                                   |
+| 6.42           | :heavy_check_mark: |         | Form6Dot42BetaCircular                                    |
+| 6.43           | :heavy_check_mark: |         | Form6Dot43BetaRectangular                                 |
+| 6.44           | :heavy_check_mark: |         | Form6Dot44BetaRectangular                                 |
+| 6.45           | :heavy_check_mark: |         | Form6Dot45W1Rectangular                                   |
+| 6.46           | :heavy_check_mark: |         | Form6Dot46BetaCorner                                      |
 | 6.47           |        :x:         |         |                                                           |
 | 6.48           |        :x:         |         |                                                           |
 | 6.49           |        :x:         |         |                                                           |
