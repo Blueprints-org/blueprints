@@ -145,7 +145,9 @@ ONE_OVER_M = float
 
 # <editor-fold desc="VELOCITIES">
 M_PER_S = float
+"""Velocity (m/s), represented as a float."""
 KM_PER_H = float
+"""Velocity (km/h), represented as a float."""
 # </editor-fold>
 
 # <editor-fold desc="ACCELERATIONS">
