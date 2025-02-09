@@ -186,7 +186,7 @@ Total of 304 formulas present.
 | 7.2            | :heavy_check_mark: |         | Form7Dot2StressDistributionCoefficient                    |
 | 7.2sub1        | :heavy_check_mark: |         | Form7Dot2Sub1AxialForceCoefficient                        |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
-| 7.4            |        :x:         |         |                                                           |
+| 7.4            | :heavy_check_mark: |         | Form7Dot4MeanStressConcrete                               |
 | 7.5            |        :x:         |         |                                                           |
 | 7.6N           |        :x:         |         |                                                           |
 | 7.7N           |        :x:         |         |                                                           |
