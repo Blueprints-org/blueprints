@@ -189,7 +189,7 @@ Total of 304 formulas present.
 | 7.4            | :heavy_check_mark: |         | Form7Dot4MeanStressConcrete                               |
 | 7.5            | :heavy_check_mark: |         | Form7Dot5AdjustedBondStrengthRatio                        |
 | 7.6N           | :heavy_check_mark: |         | Form7Dot6nMaxBarDiameterBending                           |
-| 7.7N           |        :x:         |         |                                                           |
+| 7.7N           | :heavy_check_mark: |         | Form7Dot7nMaxBarDiameterTension                           |
 | 7.8            |        :x:         |         |                                                           |
 | 7.9            |        :x:         |         |                                                           |
 | 7.10           |        :x:         |         |                                                           |
