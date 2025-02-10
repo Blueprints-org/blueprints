@@ -97,8 +97,8 @@ Total of 304 formulas present.
 | 5.44           | :heavy_check_mark: |         | Form5Dot44PrestressLoss                                   |
 | 5.45           | :heavy_check_mark: |         | Form5Dot45LossesDueToFriction                             |
 | 5.46           | :heavy_check_mark: |         | Form5Dot46TimeDependentLosses                             |
-| 5.47           | :heavy_check_mark: |         | TestForm5Dot47UpperCharacteristicPrestressingValue        |
-| 5.48           | :heavy_check_mark: |         | TestForm5Dot48LowerCharacteristicPrestressingValue        |
+| 5.47           | :heavy_check_mark: |         | Form5Dot47UpperCharacteristicPrestressingValue            |
+| 5.48           | :heavy_check_mark: |         | Form5Dot48LowerCharacteristicPrestressingValue            |
 | 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
 | 6.2            | :heavy_check_mark: |         | Form6Dot2ShearResistance                                  |
 | 6.3N           | :heavy_check_mark: |         | Form6Dot3NShearCapacityWithoutRebar                       |
