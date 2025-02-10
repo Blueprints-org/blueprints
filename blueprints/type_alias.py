@@ -120,11 +120,44 @@ PER_MILLE = float
 """Per mille (‰), represented as a float."""
 # </editor-fold>
 
-# <editor-fold desc="Ratio's">
+# <editor-fold desc="RATIOS">
 RATIO = float
 """Ratio, represented as a float."""
 PER_DEGREE = float
 """Per degree (1/°), represented as a float."""
 DIMENSIONLESS = float
 """Dimensionless, represented as a float."""
+# </editor-fold>
+
+# <editor-fold desc="FREQUENCY">
+HZ = float
+"""Frequency (hertz), represented as a float."""
+# </editor-fold>
+
+# <editor-fold desc="TEMPERATURE">
+DEG_C = float
+"""Degrees (Celsius), represented as a float."""
+DEG_K = float
+"""Degrees (Kelvin), represented as a float."""
+# </editor-fold>
+
+# <editor-fold desc="RECIPROCAL">
+ONE_OVER_MM = float
+"""Reciprocal (1/mm), represented as a float."""
+ONE_OVER_M = float
+"""Reciprocal (1/m), represented as a float."""
+# </editor-fold>
+
+# <editor-fold desc="VELOCITIES">
+M_PER_S = float
+"""Velocity (m/s), represented as a float."""
+KM_PER_H = float
+"""Velocity (km/h), represented as a float."""
+# </editor-fold>
+
+# <editor-fold desc="ACCELERATIONS">
+M_PER_S2 = float
+"""Acceleration (m/s²), represented as a float."""
+MM_PER_S2 = float
+"""Acceleration (mm/s²), represented as a float."""
 # </editor-fold>
