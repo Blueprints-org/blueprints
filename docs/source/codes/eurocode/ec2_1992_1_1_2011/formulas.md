@@ -89,16 +89,16 @@ Total of 304 formulas present.
 | 5.38a          | :heavy_check_mark: |         | Form5Dot38aCheckRelativeSlendernessRatio                  |
 | 5.38b          | :heavy_check_mark: |         | Form5Dot38bCheckRelativeEccentricityRatio                 |
 | 5.39           | :heavy_check_mark: |         | Form5Dot39SimplifiedCriterionBiaxialBending               |
-| 5.40a          |        :x:         |         | Form5Dot40aCheckLateralInstability                        |
-| 5.40b          |        :x:         |         | Form5Dot40bCheckLateralInstability                        |
-| 5.41           |        :x:         |         |                                                           |
-| 5.42           |        :x:         |         |                                                           |
-| 5.43           |        :x:         |         |                                                           |
-| 5.44           |        :x:         |         |                                                           |
-| 5.45           |        :x:         |         |                                                           |
-| 5.46           |        :x:         |         |                                                           |
-| 5.47           |        :x:         |         |                                                           |
-| 5.48           |        :x:         |         |                                                           |
+| 5.40a          | :heavy_check_mark: |         | Form5Dot40aCheckLateralInstability                        |
+| 5.40b          | :heavy_check_mark: |         | Form5Dot40bCheckLateralInstability                        |
+| 5.41           | :heavy_check_mark: |         | Form5Dot41MaxForceTendon                                  |
+| 5.42           | :heavy_check_mark: |         | Form5Dot42ConcreteCompressiveStress                       |
+| 5.43           | :heavy_check_mark: |         | Form5Dot43InitialPrestressForce                           |
+| 5.44           | :heavy_check_mark: |         | Form5Dot44PrestressLoss                                   |
+| 5.45           | :heavy_check_mark: |         | Form5Dot45LossesDueToFriction                             |
+| 5.46           | :heavy_check_mark: |         | Form5Dot46TimeDependentLosses                             |
+| 5.47           | :heavy_check_mark: |         | TestForm5Dot47UpperCharacteristicPrestressingValue        |
+| 5.48           | :heavy_check_mark: |         | TestForm5Dot48LowerCharacteristicPrestressingValue        |
 | 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
 | 6.2            | :heavy_check_mark: |         | Form6Dot2ShearResistance                                  |
 | 6.3N           | :heavy_check_mark: |         | Form6Dot3NShearCapacityWithoutRebar                       |

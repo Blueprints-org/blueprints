@@ -25,6 +25,6 @@ class ABCEnumMeta(ABCMeta, EnumMeta):
             missing = ", ".join(f"{method!r}" for method in abstract_methods)
             plural = "s" if len(abstract_methods) > 1 else ""
             raise TypeError(
-                f"Can't instantiate abstract class {abstract_enum_cls.__name__!r}" f" without an implementation for abstract method{plural} {missing}"
+                f"Can't instantiate abstract class {abstract_enum_cls.__name__!r} without an implementation for abstract method{plural} {missing}"
             )
         return abstract_enum_cls

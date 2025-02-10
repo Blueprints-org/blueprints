@@ -5,7 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import HOURS, PERCENTAGE
+from blueprints.type_alias import DIMENSIONLESS, HOURS, PERCENTAGE
 
 
 class Form3Dot30RatioLossOfPreStressClass3(Formula):
@@ -17,23 +17,23 @@ class Form3Dot30RatioLossOfPreStressClass3(Formula):
     def __init__(
         self,
         rho_1000: PERCENTAGE,
-        mu: float,
+        mu: DIMENSIONLESS,
         t: HOURS,
     ) -> None:
-        """[Δσpr / σpi] Ratio between loss of pre-stress and initial pre-stress for class 3. [-].
+        r"""[$$\frac{\Delta \sigma_{pr}}{\sigma_{pi}}$$] Ratio between loss of pre-stress and initial pre-stress for class 3. [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.3.2(7) - Formula (3.30)
 
         Parameters
         ----------
         rho_1000 : PERCENTAGE
-            [ρ1000] Value of relaxation loss at 1000h after prestressing at an average temperature of 20 degrees Celsius [%]
-        mu : float
-            [μ] Ratio between initial pre-stress and characteristic tensile strength [-]
-            = σpi / fpk
+            [$$\rho_{1000}$$] Value of relaxation loss at 1000h after prestressing at an average temperature of 20 degrees Celsius [$$%$$]
+        mu : DIMENSIONLESS
+            [$$\mu$$] Ratio between initial pre-stress and characteristic tensile strength [$$-$$]
+            = [$$\frac{\sigma_{pi}}{f_{pk}}$$]
             Use your own implementation of this formula or use sub_formula_3_28_39_30 class SubForm3Dot282930Mu.
         t : HOURS
-            [t] Time after prestressing [hours]
+            [$$t$$] Time after prestressing [$$hours$$]
 
         Returns
         -------
@@ -47,7 +47,7 @@ class Form3Dot30RatioLossOfPreStressClass3(Formula):
     @staticmethod
     def _evaluate(
         rho_1000: PERCENTAGE,
-        mu: float,
+        mu: DIMENSIONLESS,
         t: HOURS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""

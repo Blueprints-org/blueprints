@@ -8,20 +8,20 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot25AxialForceCorrectionFactor(Formula):
-    """Class representing formula 5.25 for the calculation of the axial force correction factor [:math:`k_{2}`]."""
+    """Class representing formula 5.25 for the calculation of the axial force correction factor [$$k_{2}$$]."""
 
     label = "5.25"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, n: DIMENSIONLESS) -> None:
-        r"""[:math:`k_{2}`] Axial force correction factor.
+        r"""[$$k_{2}$$] Axial force correction factor.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.6(3) - Formula (5.25)
 
         Parameters
         ----------
         n : DIMENSIONLESS
-            [:math:`n`] Relative axial force, :math:`N_{ed} / (A_{c} * f_{cd})` [-].
+            [$$n$$] Relative axial force, [$$N_{ed} / (A_{c} * f_{cd})$$] [-].
         """
         super().__init__()
         self.n = n
