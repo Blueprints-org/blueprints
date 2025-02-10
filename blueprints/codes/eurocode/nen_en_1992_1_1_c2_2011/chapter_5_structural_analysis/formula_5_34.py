@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot34Curvature(Formula):
-    r"""Class representing formula 5.34 for the calculation of the curvature, :math:`\frac{1}{r}`."""
+    r"""Class representing formula 5.34 for the calculation of the curvature, [$$\frac{1}{r}$$]."""
 
     label = "5.34"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,22 +21,22 @@ class Form5Dot34Curvature(Formula):
         e_s: MPA,
         d: MM,
     ) -> None:
-        r"""[:math:`\frac{1}{r}`] Curvature [:math:`1/mm`].
+        r"""[$$\frac{1}{r}$$] Curvature [$$1/mm$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.3 - Formula (5.34)
 
         Parameters
         ----------
         k_r : DIMENSIONLESS
-            [:math:`K_r`] Correction factor depending on axial load, see 5.8.8.3 (3) [-].
+            [$$K_r$$] Correction factor depending on axial load, see 5.8.8.3 (3) [-].
         k_phi : DIMENSIONLESS
-            [:math:`K_\\phi`] Factor for taking account of creep, see 5.8.8.3 (4) [-].
+            [$$K_\phi$$] Factor for taking account of creep, see 5.8.8.3 (4) [-].
         f_yd : MPA
-            [:math:`f_{yd}`] Design yield strength of reinforcement [:math:`MPa`].
+            [$$f_{yd}$$] Design yield strength of reinforcement [$$MPa$$].
         e_s : MPA
-            [:math:`E_s`] Modulus of elasticity of reinforcement [:math:`MPa`].
+            [$$E_s$$] Modulus of elasticity of reinforcement [$$MPa$$].
         d : MM
-            [:math:`d`] Effective depth; see also 5.8.8.3 (2) [:math:`mm`].
+            [$$d$$] Effective depth; see also 5.8.8.3 (2) [$$mm$$].
         """
         super().__init__()
         self.k_r = k_r

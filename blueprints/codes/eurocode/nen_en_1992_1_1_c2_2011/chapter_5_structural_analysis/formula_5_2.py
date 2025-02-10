@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot2Eccentricity(Formula):
-    """Class representing formula 5.2 for the calculation of eccentricity, ei."""
+    """Class representing formula 5.2 for the calculation of eccentricity, [$$e_i$$]."""
 
     label = "5.2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,17 +18,17 @@ class Form5Dot2Eccentricity(Formula):
         theta_i: DIMENSIONLESS,
         l_0: M,
     ) -> None:
-        """[ei] Eccentricity, ei, for isolated members [m].
+        r"""[$$e_i$$] Eccentricity, [$$e_i$$], for isolated members [$$m$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(7) - Formula (5.2)
 
         Parameters
         ----------
         theta_i : DIMENSIONLESS
-            [Θi] Eccentricity, initial inclination imperfections [-].
+            [$$\Theta_i$$] Eccentricity, initial inclination imperfections [-].
             Use your own implementation of this value or use the Form5Dot2Imperfections class.
         l_0 : M
-            [l0] Effective length of the member, see 5.8.3.2 [m].
+            [$$l_0$$] Effective length of the member, see 5.8.3.2 [$$m$$].
         """
         super().__init__()
         self.theta_i = theta_i

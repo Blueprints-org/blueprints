@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot14SlendernessRatio(Formula):
-    """Class representing formula 5.14 for the calculation of the slenderness ratio, :math:`λ`."""
+    r"""Class representing formula 5.14 for the calculation of the slenderness ratio, [$$\lambda$$]."""
 
     label = "5.14"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,18 +18,18 @@ class Form5Dot14SlendernessRatio(Formula):
         l_0: M,
         i: M,
     ) -> None:
-        """[:math:`λ`] Slenderness ratio [:math:`-`].
+        r"""[$$\lambda$$] Slenderness ratio [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.3.2(1) - Formula (5.14)
 
         Parameters
         ----------
         l_0 : M
-            [:math:`l_{0}`] Effective length [:math:`m`].
+            [$$l_{0}$$] Effective length [$$m$$].
             Use your own implementation of this value or use :class: `Form5Dot15EffectiveLengthBraced`
             or :class: `Form5Dot15EffectiveLengthUnbraced`.
         i : M
-            [:math:`i`] Radius of gyration of the uncracked concrete section [:math:`m`].
+            [$$i$$] Radius of gyration of the uncracked concrete section [$$m$$].
         """
         super().__init__()
         self.l_0 = l_0

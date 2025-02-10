@@ -19,18 +19,18 @@ class Form9Dot14SplittingForceColumnOnRock(Formula):
         h: MM,
         n_ed: KN,
     ) -> None:
-        """[Fs] Splitting force on a column footing on rock [kN].
+        r"""[$$F_s$$] Splitting force on a column footing on rock [$$kN$$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.8.4(2) - Formula (9.14)
 
         Parameters
         ----------
         c: MM
-            [c] Width over which NEd is applied [mm].
+            [$$c$$] Width over which [$$N_{Ed}$$] is applied [$$mm$$].
         h: MM
-            [h] Lesser of b and H from figure 9.14 [mm].
+            [$$h$$] Lesser of [$$b$$] and [$$H$$] from figure 9.14 [$$mm$$].
         n_ed: KN
-            [NEd] Design value of the applied axial force [kN].
+            [$$N_{Ed}$$] Design value of the applied axial force [$$kN$$].
         """
         super().__init__()
         self.c = c

@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot7EffectiveFlangeWidth(Formula):
-    """Class representing formula 5.7 for the calculation of effective flange width [:math:`b_{eff}`] for a T beam or L beam.
+    """Class representing formula 5.7 for the calculation of effective flange width [$$b_{eff}$$] for a T beam or L beam.
     See Figure 5.3.
     """
 
@@ -21,22 +21,22 @@ class Form5Dot7EffectiveFlangeWidth(Formula):
         b_w: M,
         b: M,
     ) -> None:
-        """[:math:`b_{eff}`] Effective flange width for a T beam or L beam [:math:`m`].
+        r"""[$$b_{eff}$$] Effective flange width for a T beam or L beam [$$m$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.3.2.1(3) - Formula (5.7)
 
         Parameters
         ----------
         b_eff_i : M
-            [:math:`b_{eff,i}`] Effective flange width of the i-th flange [:math:`m`].
+            [$$b_{eff,i}$$] Effective flange width of the i-th flange [$$m$$].
         b_w : M
-            [:math:`b_{w}`] Width of the web [:math:`m`].
+            [$$b_{w}$$] Width of the web [$$m$$].
         b : M
-            [:math:`b`] Total width of the flange [:math:`m`].
+            [$$b$$] Total width of the flange [$$m$$].
 
         Notes
         -----
-        where [:math:`b_{eff,i}`] is the effective flange width of the i-th flange
+        where [$$b_{eff,i}$$] is the effective flange width of the i-th flange
         """
         super().__init__()
         self.b_eff_i = b_eff_i
