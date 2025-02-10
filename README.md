@@ -162,6 +162,16 @@ figures for streamlined access and reference.
       <td><a href="docs/source/codes/eurocode/nen_en_1993_5_2008/figures.md">0</a></td>
     </tr>
     <tr>
+      <td>prEN 1995-1-1:2023</td>
+      <td>
+        Eurocode 5: Design of timber structures – Part 1-1: General rules and rules for buildings
+        (<a href="blueprints/codes/eurocode/pren_1995_1_1_2023">code</a>)
+      </td>
+      <td><a href="docs/source/codes/eurocode/pren_1995_1_1_2023/formulas.md">1</a></td>
+      <td><a href="docs/source/codes/eurocode/pren_1995_1_1_2023/tables.md">0</a></td>
+      <td><a href="docs/source/codes/eurocode/pren_1995_1_1_2023/figures.md">0</a></td>
+    </tr>
+    <tr>
       <td>NEN 9997-1+C2:2017</td>
       <td>
         Eurocode 7: Geotechnical design of structures - Part 1: General rules
