@@ -8,24 +8,24 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form8Dot21AnchorageLength(Formula):
-    """Class representing formula 8.21 for the calculation of anchorage length :math:`l_{bpd}` [:math:`mm`].
+    r"""Class representing formula 8.21 for the calculation of anchorage length [$$l_{bpd}$$] [$$mm$$].
 
     NEN-EN 1992-1-1+C2:2011 art.8.10.2.3(4) - Formula (8.21)
 
     Parameters
     ----------
     l_pt2 : MM
-        [:math:`l_{pt2}`] is the upper design value of transmission length, see 8.10.2.2 (3) [:math:`mm`].
+        [$$l_{pt2}$$] is the upper design value of transmission length, see 8.10.2.2 (3) [$$mm$$].
     alpha_2 : DIMENSIONLESS
-        [:math:`α_{2}`] as defined in 8.10.2.2 (2) [-].
+        [$$\alpha_{2}$$] as defined in 8.10.2.2 (2) [$$-$$].
     diameter : MM
-        [:math:`Ø`] Diameter of the tendon [:math:`mm`].
+        [$$Ø$$] Diameter of the tendon [$$mm$$].
     sigma_pd : MPA
-        [:math:`σ_{pd}`] Is the tendon stress corresponding to the force described in art.8.10.2.3(1) [:math:`MPa`].
+        [$$\sigma_{pd}$$] Is the tendon stress corresponding to the force described in art.8.10.2.3(1) [$$MPa$$].
     sigma_pminf : MPA
-        [:math:`σ_{pm∞}`] is the prestress after all losses [:math:`MPa`].
+        [$$\sigma_{pm\infty}$$] is the prestress after all losses [$$MPa$$].
     f_bpd : MPA
-       [:math:`f_{bpd}`] Bond strength for anchorage in the ultimate limit state [:math:`MPa`].
+        [$$f_{bpd}$$] Bond strength for anchorage in the ultimate limit state [$$MPa$$].
     """
 
     label = "8.21"
