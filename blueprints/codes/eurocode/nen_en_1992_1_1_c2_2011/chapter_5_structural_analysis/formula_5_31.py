@@ -7,7 +7,7 @@ from blueprints.type_alias import KNM
 
 
 class Form5Dot31DesignMoment(Formula):
-    """Class representing formula 5.31 for the calculation of the design moment, :math:`M_{Ed}`."""
+    """Class representing formula 5.31 for the calculation of the design moment, [$$M_{Ed}$$]."""
 
     label = "5.31"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -17,16 +17,16 @@ class Form5Dot31DesignMoment(Formula):
         m_0ed: KNM,
         m_2: KNM,
     ) -> None:
-        """[:math:`M_{Ed}`] Design moment [:math:`kNm`].
+        r"""[$$M_{Ed}$$] Design moment [$$kNm$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.31)
 
         Parameters
         ----------
         m_0ed : KNM
-            [:math:`M_{0Ed}`] First order moment, including the effect of imperfections; see also 5.8.8.2 (2) [:math:`kNm`].
+            [$$M_{0Ed}$$] First order moment, including the effect of imperfections; see also 5.8.8.2 (2) [$$kNm$$].
         m_2 : KNM
-            [:math:`M_{2}`] Nominal 2nd order moment; see 5.8.8.2 (3) [:math:`kNm`].
+            [$$M_{2}$$] Nominal 2nd order moment; see 5.8.8.2 (3) [$$kNm$$].
         """
         super().__init__()
         self.m_0ed = m_0ed

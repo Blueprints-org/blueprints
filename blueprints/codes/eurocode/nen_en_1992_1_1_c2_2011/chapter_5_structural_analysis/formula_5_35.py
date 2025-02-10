@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot35EffectiveDepth(Formula):
-    r"""Class representing formula 5.35 for the calculation of the effective depth, :math:`d`."""
+    r"""Class representing formula 5.35 for the calculation of the effective depth, [$$d$$]."""
 
     label = "5.35"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form5Dot35EffectiveDepth(Formula):
         h: MM,
         i_s: MM,
     ) -> None:
-        r"""[:math:`d`] Effective depth [:math:`mm`].
+        r"""[$$d$$] Effective depth [$$mm$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.3 - Formula (5.35)
 
         Parameters
         ----------
         h : MM
-            [:math:`h`] Total height of the section [:math:`mm`].
+            [$$h$$] Total height of the section [$$mm$$].
         i_s : MM
-            [:math:`i_s`] Radius of gyration of the total reinforcement area [:math:`mm`].
+            [$$i_s$$] Radius of gyration of the total reinforcement area [$$mm$$].
         """
         super().__init__()
         self.h = h

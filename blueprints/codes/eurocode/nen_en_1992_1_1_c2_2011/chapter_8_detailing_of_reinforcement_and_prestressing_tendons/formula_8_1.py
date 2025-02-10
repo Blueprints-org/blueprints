@@ -23,23 +23,23 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         diameter: MM,
         f_cd: MPA,
     ) -> None:
-        """[Øm,min] minimum mandrel diameter if it needs to be checked to avoid concrete failure [MM].
+        r"""[$$\Ø_{m,min}$$] minimum mandrel diameter if it needs to be checked to avoid concrete failure [$$MM$$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.3(3) - Formula (8.1)
 
         Parameters
         ----------
         f_bt: KN
-            [Fbt] Tensile force from ultimate loads in a bar or group of bars in contact at the start of a bend  [kN].
+            [$$F_{bt}$$] Tensile force from ultimate loads in a bar or group of bars in contact at the start of a bend  [$$kN$$].
         a_b: MM
-            [ab] Half of the centre-to-centre distance between bars (or groups of bars) perpendicular
+            [$$a_b$$] Half of the centre-to-centre distance between bars (or groups of bars) perpendicular
             to the plane of the bend for a given bar (or group of bars in contact).
-            For a bar or group of bars adjacent to the face of the member, 'ab' should be taken as the cover plus Ø/2 [mm].
+            For a bar or group of bars adjacent to the face of the member, [$$a_b$$] should be taken as the cover plus [$$\Ø/2$$] [$$mm$$].
         diameter: MM
-            [Ø] Diameter of reinforcing bar [mm].
+            [$$\Ø$$] Diameter of reinforcing bar [$$mm$$].
         f_cd: MPA
-            [fcd] Design value of concrete compressive stress [MPa].
-            Note: The value of fcd should not be taken greater than that for concrete class C55/67.
+            [$$f_{cd}$$] Design value of concrete compressive stress [$$MPa$$].
+            Note: The value of [$$f_{cd}$$] should not be taken greater than that for concrete class C55/67.
         """
         super().__init__()
         self.f_bt = f_bt
