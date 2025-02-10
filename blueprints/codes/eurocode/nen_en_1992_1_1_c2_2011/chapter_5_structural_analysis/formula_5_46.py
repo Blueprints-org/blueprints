@@ -85,18 +85,9 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
         z_cp: MM,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(
-            epsilon_cs=epsilon_cs,
-            delta_sigma_pr=delta_sigma_pr,
-            phi_t_t0=phi_t_t0,
-            sigma_c_qp=sigma_c_qp,
-            z_cp=z_cp,
-        )
-        raise_if_less_or_equal_to_zero(a_p=a_p, e_p=e_p, e_cm=e_cm, a_c=a_c, i_c=i_c)
+        raise_if_negative(a_p=a_p)
 
-        numerator = epsilon_cs * e_p + 0.8 * delta_sigma_pr + (e_p / e_cm) * phi_t_t0 * sigma_c_qp
-        denominator = 1 + (e_p / e_cm) * (a_p / a_c) * (1 + (a_c / i_c) * z_cp**2) * (1 + 0.8 * phi_t_t0)
-        return a_p * numerator / denominator
+        return a_p * Form5Dot46Part2TimeDependentStressLosses(a_p, epsilon_cs, e_p, e_cm, delta_sigma_pr, phi_t_t0, sigma_c_qp, a_c, i_c, z_cp)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.46."""
