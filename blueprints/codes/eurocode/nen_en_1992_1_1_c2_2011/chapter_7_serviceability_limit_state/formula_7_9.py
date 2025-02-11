@@ -31,11 +31,11 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
         sigma_s : MPA
             [$$\sigma_s$$] Stress in the reinforcement [$$MPa$$].
         k_t : DIMENSIONLESS
-            [$$k_t$$] Coefficient.
+            [$$k_t$$] Factor dependent on the duration of the load, 0.6 for short term loading, 0.4 for long term loading [$$-$$].
         f_ct_eff : MPA
             [$$f_{ct,eff}$$] Effective tensile strength of concrete [$$MPa$$].
         rho_p_eff : DIMENSIONLESS
-            [$$\rho_{p,eff}$$] Effective reinforcement ratio.
+            [$$\rho_{p,eff}$$] Effective reinforcement ratio, see equation 7.10 [$$-$$].
         e_s : MPA
             [$$e_s$$] Modulus of elasticity of reinforcement [$$MPa$$].
         e_c : MPA
