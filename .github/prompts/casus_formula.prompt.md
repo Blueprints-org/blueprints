@@ -1,6 +1,7 @@
 ## Code notes
 
-- Rewrite the example script, make sure the if statements are presented in the LaTeX fully. 
+- Write an equation such as presented in the template. 
+- Make sure the if statements are presented in the LaTeX fully. 
 - Keep all formatting and naming conventions such as they are presented in the template. 
 - If variable descriptions are given or found, copy precisely and fully from input or Eurocode. 
 - Variablenames are always lowercase.
