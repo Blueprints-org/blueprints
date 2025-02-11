@@ -7,7 +7,6 @@
 - Write one test with succesful input, that retuns the answer of the equation. 
 - For all variables found in the raise_if_negative of the linked formula, write a test where its input is given as a negative value.
 - For all variables found in the raise_if_less_or_equal_to_zero of the linked formula, write a test where its input is given as zero and a test where its given as a negative value.
-- For the LaTeX complete and short presentation, make sure you add a unit at the end.
 
 ## Template for service
 
