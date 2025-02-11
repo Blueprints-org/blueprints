@@ -21,8 +21,8 @@ class Form7Dot5AdjustedBondStrengthRatio(Formula):
         diam_s: MM,
         diam_p: MM,
     ) -> None:
-        r"""[$$\Xi_1$$] Calculation of the ratio of bond strength of presetressing and reinforcing steel [$$-$$].
-        Note: if only prestressing steel is used to control cracking: [$$\Xi_1 = \sqrt{\Xi}$$].
+        r"""[$$\xi_1$$] Calculation of the ratio of bond strength of presetressing and reinforcing steel [$$-$$].
+        Note: if only prestressing steel is used to control cracking: [$$\xi_1 = \sqrt{\xi}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.2(3) - Formula (7.5)
 
@@ -54,18 +54,18 @@ class Form7Dot5AdjustedBondStrengthRatio(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 7.5."""
-        _equation: str = r"\sqrt{\Xi \cdot \left( \frac{⌀_s}{⌀_p} \right)}"
+        _equation: str = r"\sqrt{\xi \cdot \left( \frac{⌀_s}{⌀_p} \right)}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\Xi": f"{self.xi:.3f}",
+                r"\xi": f"{self.xi:.3f}",
                 r"⌀_s": f"{self.diam_s:.3f}",
                 r"⌀_p": f"{self.diam_p:.3f}",
             },
             False,
         )
         return LatexFormula(
-            return_symbol=r"\Xi_1",
+            return_symbol=r"\xi_1",
             result=f"{self:.3f}",
             equation=_equation,
             numeric_equation=_numeric_equation,

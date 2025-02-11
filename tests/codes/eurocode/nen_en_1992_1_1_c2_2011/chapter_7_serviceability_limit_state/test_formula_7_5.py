@@ -43,9 +43,9 @@ class TestForm7Dot5AdjustedBondStrengthRatio:
         [
             (
                 "complete",
-                r"\Xi_1 = \sqrt{\Xi \cdot \left( \frac{⌀_s}{⌀_p} \right)} = \sqrt{1.200 \cdot \left( \frac{20.000}{15.000} \right)} = 1.265 -",
+                r"\xi_1 = \sqrt{\xi \cdot \left( \frac{⌀_s}{⌀_p} \right)} = \sqrt{1.200 \cdot \left( \frac{20.000}{15.000} \right)} = 1.265 -",
             ),
-            ("short", r"\Xi_1 = 1.265 -"),
+            ("short", r"\xi_1 = 1.265 -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
