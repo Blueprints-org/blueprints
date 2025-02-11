@@ -50,7 +50,7 @@ class Form7Dot8CrackWidth(Formula):
             _equation,
             {
                 r"s_{r,max}": f"{self.s_r_max:.3f}",
-                r"\epsilon_{sm} - \epsilon_{cm}": f"{self.epsilon_sm_minus_epsilon_cm:.3f}",
+                r"\epsilon_{sm} - \epsilon_{cm}": f"{self.epsilon_sm_minus_epsilon_cm:.6f}",
             },
             False,
         )
