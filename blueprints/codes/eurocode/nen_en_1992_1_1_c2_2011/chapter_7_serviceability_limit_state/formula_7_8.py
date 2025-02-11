@@ -27,7 +27,7 @@ class Form7Dot8CrackWidth(Formula):
         s_r_max : MM
             [$$s_{r,max}$$] Maximum crack spacing [$$mm$$].
         epsilon_sm_minus_epsilon_cm : DIMENSIONLESS
-            [$$\epsilon_{sm} - \epsilon_{cm}$$] Difference between mean strain in reinforcement and mean strain in concrete [-].
+            [$$\epsilon_{sm} - \epsilon_{cm}$$] Difference between mean strain in reinforcement and mean strain in concrete [$$-$$].
         """
         super().__init__()
         self.s_r_max = s_r_max
