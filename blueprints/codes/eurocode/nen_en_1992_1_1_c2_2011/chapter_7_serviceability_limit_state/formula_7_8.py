@@ -1,63 +1,64 @@
-"""Formula 7.3 from NEN-EN 1992-1-1+C2:2011: Chapter 7 - Serviceability limit state (SLS)."""
+"""Formula 7.8 from NEN-EN 1992-1-1+C2:2011: Chapter 7 - Serviceability Limit State."""
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import KN, MM2, MPA
-from blueprints.unit_conversion import KN_TO_N
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
+from blueprints.type_alias import DIMENSIONLESS, MM
+from blueprints.validations import raise_if_negative
 
 
-class Form7Dot3CoefficientKc(Formula):
-    """Class representing the formula 7.3 for the coefficient kc for flanges of tubular cross-sections and T-sections."""
+class Form7Dot8CrackWidth(Formula):
+    r"""Class representing formula 7.8 for the calculation of the crack width [$$w_k$$]."""
 
-    label = "7.3"
+    label = "7.8"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
         self,
-        f_cr: KN,
-        a_ct: MM2,
-        f_ct_eff: MPA,
+        s_r_max: MM,
+        epsilon_sm_minus_epsilon_cm: DIMENSIONLESS,
     ) -> None:
-        """[kc] Calculates kc for flanges of tubular cross-sections and T-sections [-].
+        r"""[$$w_k$$] Calculation of the crack width [$$mm$$].
 
-        NEN-EN 1992-1-1:2011 art.7.3.2(2) - Formula (7.3)
+        NEN-EN 1992-1-1+C2:2011 art.7.3.4(1) - Formula (7.8)
 
         Parameters
         ----------
-        f_cr : KN
-            [Fcr] Absolute value of the tensile force within the flange immediately before cracking due to the cracking moment calculated with
-            fct,eff [kN].
-        a_ct : MM2
-            [Act] Area of the concrete within the tension zone. The tension zone is that part of the cross-section that, according to the calculation,
-            is under tension just before the first crack occurs [mm²].
-        f_ct_eff : MPA
-            [fc,eff] Average value of the tensile strength of the concrete at the time when the first cracks can be expected [MPa].
+        s_r_max : MM
+            [$$s_{r,max}$$] Maximum crack spacing [$$mm$$].
+        epsilon_sm_minus_epsilon_cm : DIMENSIONLESS
+            [$$\epsilon_{sm} - \epsilon_{cm}$$] Difference between mean strain in reinforcement and mean strain in concrete [-].
         """
         super().__init__()
-        self.f_cr = f_cr
-        self.a_ct = a_ct
-        self.f_ct_eff = f_ct_eff
+        self.s_r_max = s_r_max
+        self.epsilon_sm_minus_epsilon_cm = epsilon_sm_minus_epsilon_cm
 
     @staticmethod
     def _evaluate(
-        f_cr: KN,
-        a_ct: MM2,
-        f_ct_eff: MPA,
-    ) -> float:
+        s_r_max: MM,
+        epsilon_sm_minus_epsilon_cm: DIMENSIONLESS,
+    ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
-        if a_ct <= 0:
-            raise ValueError("The value of a_ct must be greater than zero.")
-        if f_ct_eff <= 0:
-            raise ValueError("The value of f_ct_eff must be greater than zero.")
-        return max(0.9 * (abs(f_cr) * KN_TO_N / (a_ct * f_ct_eff)), 0.5)
+        raise_if_negative(s_r_max=s_r_max, epsilon_sm_minus_epsilon_cm=epsilon_sm_minus_epsilon_cm)
+
+        return s_r_max * epsilon_sm_minus_epsilon_cm
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 7.3."""
+        """Returns LatexFormula object for formula 7.8."""
+        _equation: str = r"s_{r,max} \cdot (\epsilon_{sm} - \epsilon_{cm})"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"s_{r,max}": f"{self.s_r_max:.3f}",
+                r"\epsilon_{sm} - \epsilon_{cm}": f"{self.epsilon_sm_minus_epsilon_cm:.3f}",
+            },
+            False,
+        )
         return LatexFormula(
-            return_symbol=r"k_c",
+            return_symbol=r"w_k",
             result=f"{self:.3f}",
-            equation=r"\max\left(0.9 \cdot \frac{F_{cr}}{A_{ct} \cdot f_{ct,eff}}, 0.5\right)",
-            numeric_equation=rf"\max\left(0.9 \cdot \frac{{{self.f_cr:.3f}}}{{{self.a_ct:.3f} \cdot {self.f_ct_eff:.3f}}}, 0.5\right)",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
             comparison_operator_label="=",
+            unit="mm",
         )
