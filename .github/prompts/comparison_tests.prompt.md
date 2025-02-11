@@ -1,7 +1,7 @@
 ## Code notes
 
 - Write tests for all classes found in the linked file. All should be in the format as is presented in the current template. 
-- The manually calculated results should just be presented as floats. 
+- The manually calculated results should just be presented as a bool. 
 - Keep all formatting and naming conventions such as they currently are. 
 - The latex formula always has 3 decimals. 
 - Write one test with succesful input, that retuns the answer of the equation. 
