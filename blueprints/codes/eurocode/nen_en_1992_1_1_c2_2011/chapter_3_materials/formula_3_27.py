@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot27IncreasedStrainLimitValue(Formula):
@@ -16,20 +16,20 @@ class Form3Dot27IncreasedStrainLimitValue(Formula):
         self,
         f_ck: MPA,
         sigma_2: MPA,
-        epsilon_cu2: float,
+        epsilon_cu2: DIMENSIONLESS,
     ) -> None:
-        """[εcu2,c] Increased strain limit value due to enclosed concrete. [-].
+        r"""[$$\epsilon_{cu2,c}$$] Increased strain limit value due to enclosed concrete. [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.9(2) - Formula (3.27)
 
         Parameters
         ----------
         f_ck : MPA
-            [fck] Characteristic compressive strength [MPa]
+            [$$f_{ck}$$] Characteristic compressive strength [$$MPa$$]
         sigma_2 : MPA
-            [σ2] Effective compressive stress in transverse direction [MPa]
-        epsilon_cu2 : float
-            [εcu2] Strain limit value [-]
+            [$$\sigma_{2}$$] Effective compressive stress in transverse direction [$$MPa$$]
+        epsilon_cu2 : DIMENSIONLESS
+            [$$\epsilon_{cu2}$$] Strain limit value [$$-$$]
 
         Returns
         -------
@@ -44,7 +44,7 @@ class Form3Dot27IncreasedStrainLimitValue(Formula):
     def _evaluate(
         f_ck: MPA,
         sigma_2: MPA,
-        epsilon_cu2: float,
+        epsilon_cu2: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if f_ck < 0:

@@ -7,7 +7,7 @@ from blueprints.type_alias import MPA
 
 
 class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
-    """Class representing formula 3.3 for the approximated axial tensile strength, fct, determined by tensile splitting strength."""
+    """Class representing formula 3.3 for the approximated axial tensile strength, [$$f_{ct}$$], determined by tensile splitting strength."""
 
     label = "3.3"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -16,15 +16,15 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
         self,
         f_ct_sp: MPA,
     ) -> None:
-        """[fct] The approximated axial tensile strength when tensile strength is determined as coefficient
-        which is dependent of the age of concrete [MPa].
+        r"""[$$f_{ct}$$] The approximated axial tensile strength when tensile strength is determined as coefficient
+        which is dependent of the age of concrete [$$MPa$$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(8) - Formula (3.3)
 
         Parameters
         ----------
-        f_ct_sp : float
-            [fct,sp] Tensile strength determined by tensile splitting strength [MPa].
+        f_ct_sp : MPA
+            [$$f_{ct,sp}$$] Tensile strength determined by tensile splitting strength [$$MPa$$].
 
         Returns
         -------

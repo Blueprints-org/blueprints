@@ -9,8 +9,8 @@ from blueprints.type_alias import MM
 
 
 class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
-    """Class representing the table 4.5N
-    for the calculation of the minimum cover :math:`c_{min,dur}` [:math:`mm`] requirements with regard to durability
+    r"""Class representing the table 4.5N
+    for the calculation of the minimum cover [$$c_{min,dur}$$] [$$mm$$] requirements with regard to durability
     for prestressing steel.
     """
 
@@ -22,16 +22,16 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
         exposure_classes: ExposureClassesBase,
         structural_class: ConcreteStructuralClassBase,
     ) -> None:
-        """[:math:`c_{min,dur}`] Calculates the minimum concrete cover with regard to durability [:math:`mm`] for prestressing steel.
+        r"""[$$c_{min,dur}$$] Calculates the minimum concrete cover with regard to durability [$$mm$$] for prestressing steel.
 
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.2 (5) - Table (4.5N)
 
         Parameters
         ----------
         exposure_classes: ExposureClassesBase
-            The exposure classes of the concrete. Use the :class:`Table4Dot1ExposureClasses` class.
+            The exposure classes of the concrete. Use the [$$Table4Dot1ExposureClasses$$] class. [$$-$$]
         structural_class: ConcreteStructuralClassBase
-            The structural class of the concrete. Use the :class:`Table4Dot3ConcreteStructuralClass` class.
+            The structural class of the concrete. Use the [$$Table4Dot3ConcreteStructuralClass$$] class. [$$-$$]
         """
         super().__init__()
         self.exposure_classes = exposure_classes
