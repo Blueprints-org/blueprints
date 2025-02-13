@@ -7,8 +7,8 @@ from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot50ShearStressResistance(Formula):
-    r"""Class representing formula 6.50 for the calculation of shear stress resistance [$$v_{Rd}$$]."""
+class Form6Dot50PunchingStressResistance(Formula):
+    r"""Class representing formula 6.50 for the calculation of punching stress resistance [$$v_{Rd}$$] of slabs and column bases without shear reinforcement."""
 
     label = "6.50"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,7 +23,7 @@ class Form6Dot50ShearStressResistance(Formula):
         a: MM,
         v_min: MPA,
     ) -> None:
-        r"""[$$v_{Rd}$$] Calculation of shear stress resistance.
+        r"""[$$v_{Rd}$$] Calculation of punching stress resistance of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.50)
 

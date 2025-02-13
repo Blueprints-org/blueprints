@@ -26,7 +26,7 @@ class Form6Dot49AppliedPunchingShearStress(Formula):
         Parameters
         ----------
         v_ed_red : N
-            [$$V_{Ed,red}$$] Net applied punching load [$$N$$].
+            [$$V_{Ed,red}$$] Net applied punching force [$$N$$].
         u : MM
             [$$u$$] Punching perimeter [$$mm$$].
         d : MM

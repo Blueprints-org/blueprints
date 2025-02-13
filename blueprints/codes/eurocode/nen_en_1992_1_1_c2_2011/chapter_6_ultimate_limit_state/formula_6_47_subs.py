@@ -9,16 +9,16 @@ from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot47Sub1FactorK(Formula):
-    r"""Class representing sub-formula 1 for formula 6.47, which calculates the factor [$$k$$]."""
+class SubForm6Dot47FactorK(Formula):
+    r"""Class representing the sub-formula which calculates the factor [$$k$$] for formula 6.47 ."""
 
-    label = "6.47sub1"
+    label = "6.47 (factor k)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, d: MM) -> None:
         r"""[$$k$$] Calculation of factor k.
 
-        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub1)
+        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor k for Formula (6.47)
 
         Parameters
         ----------
@@ -35,7 +35,7 @@ class Form6Dot47Sub1FactorK(Formula):
         return min(1 + np.sqrt(200 / d), 2.0)
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.47sub1."""
+        """Returns LatexFormula object for sub-formula 6.47 (factor k)."""
         _equation: str = r"\min \left( 1 + \sqrt{\frac{200}{d}}, 2.0 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -54,16 +54,16 @@ class Form6Dot47Sub1FactorK(Formula):
         )
 
 
-class Form6Dot47Sub2FactorRhoL(Formula):
-    r"""Class representing sub-formula 2 for formula 6.47, which calculates the factor [$$\rho_l$$]."""
+class SubForm6Dot47FactorRhoL(Formula):
+    r"""Class representing the sub-formula which calculates the factor [$$\rho_l$$] for formula 6.47 ."""
 
-    label = "6.47sub2"
+    label = "6.47 (factor rho_l)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, rho_ly: DIMENSIONLESS, rho_lz: DIMENSIONLESS) -> None:
         r"""[$$\rho_l$$] Calculation of factor [$$\rho_l$$].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub2)
+        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor rho_l for Formula (6.47)
 
         Parameters
         ----------
@@ -83,7 +83,7 @@ class Form6Dot47Sub2FactorRhoL(Formula):
         return min(np.sqrt(rho_ly * rho_lz), 0.02)
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.47sub2."""
+        """Returns LatexFormula object for sub-formula 6.47 (factor rho_l)"""
         _equation: str = r"\min \left( \sqrt{\rho_{ly} \cdot \rho_{lz}}, 0.02 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -103,23 +103,23 @@ class Form6Dot47Sub2FactorRhoL(Formula):
         )
 
 
-class Form6Dot47Sub3FactorSigmaCp(Formula):
-    r"""Class representing sub-formula 3 for formula 6.47, which calculates the factor [$$\sigma_{cp}$$]."""
+class SubForm6Dot47FactorSigmaCp(Formula):
+    r"""Class representing the sub-formula which calculates the factor [$$\sigma_{cp}$$] for formula 6.47,."""
 
-    label = "6.47sub3"
+    label = "6.47 (factor sigma_cp)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, sigma_cy: MPA, sigma_cz: MPA) -> None:
         r"""[$$\sigma_{cp}$$] Calculation of factor [$$\sigma_{cp}$$].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub3)
+        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor sigma_cp for Formula (6.47)
 
         Parameters
         ----------
         sigma_cy : MPA
-            [$$\sigma_{cy}$$] Stress in the y-direction [$$MPa$$].
+            [$$\sigma_{cy}$$] Normal concrete stress in the critical section in the y-direction [$$MPa$$], Positive if compression.
         sigma_cz : MPA
-            [$$\sigma_{cz}$$] Stress in the z-direction [$$MPa$$].
+            [$$\sigma_{cz}$$] Normal concrete stress inm the critical section in the z-direction [$$MPa$$], Positive if compression.
         """
         super().__init__()
         self.sigma_cy = sigma_cy
@@ -132,7 +132,7 @@ class Form6Dot47Sub3FactorSigmaCp(Formula):
         return (sigma_cy + sigma_cz) / 2
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.47sub3."""
+        """Returns LatexFormula object for sub-formula 6.47 (sigma_cp)."""
         _equation: str = r"\frac{\sigma_{cy} + \sigma_{cz}}{2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -152,16 +152,16 @@ class Form6Dot47Sub3FactorSigmaCp(Formula):
         )
 
 
-class Form6Dot47Sub4FactorSigmaCy(Formula):
-    r"""Class representing sub-formula 4 for formula 6.47, which calculates the factor [$$\sigma_{cy}$$]."""
+class SubForm6Dot47FactorSigmaCy(Formula):
+    r"""Class representing the sub-formula which calculates the factor [$$\sigma_{cy}$$] for formula 6.47."""
 
-    label = "6.47sub4"
+    label = "6.47 (factor sigma_cy)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, n_ed_y: N, a_cy: MM2) -> None:
         r"""[$$\sigma_{cy}$$] Calculation of factor [$$\sigma_{cy}$$].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub4)
+        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor sigma_cy for Formula (6.47)
 
         Parameters
         ----------
@@ -182,7 +182,7 @@ class Form6Dot47Sub4FactorSigmaCy(Formula):
         return n_ed_y / a_cy
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.47sub4."""
+        """Returns LatexFormula object for sub-formula 6.47 (sigma_cy)."""
         _equation: str = r"\frac{N_{Ed,y}}{A_{cy}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -202,16 +202,16 @@ class Form6Dot47Sub4FactorSigmaCy(Formula):
         )
 
 
-class Form6Dot47Sub5FactorSigmaCz(Formula):
-    r"""Class representing sub-formula 5 for formula 6.47, which calculates the factor [$$\sigma_{cz}$$]."""
+class SubForm6Dot47FactorSigmaCz(Formula):
+    r"""Class representing the sub-formula which calculates the factor [$$\sigma_{cz}$$] for formula 6.47."""
 
-    label = "6.47sub5"
+    label = "6.47 (factor sigma_cz)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, n_ed_z: N, a_cz: MM2) -> None:
         r"""[$$\sigma_{cz}$$] Calculation of factor [$$\sigma_{cz}$$].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47sub5)
+        NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor sigma_cz for Formula (6.47)
 
         Parameters
         ----------
@@ -232,7 +232,7 @@ class Form6Dot47Sub5FactorSigmaCz(Formula):
         return n_ed_z / a_cz
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.47sub5."""
+        """Returns LatexFormula object for sub-formula 6.47 sigma_cz."""
         _equation: str = r"\frac{N_{Ed,z}}{A_{cz}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,

@@ -7,8 +7,8 @@ from blueprints.type_alias import N
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot48NetAppliedPunchingLoad(Formula):
-    r"""Class representing formula 6.48 for the calculation of net applied punching load [$$V_{Ed,red}$$]."""
+class Form6Dot48NetAppliedPunchingForce(Formula):
+    r"""Class representing formula 6.48 for the calculation of net applied punching force [$$V_{Ed,red}$$] of slabs and column bases without shear reinforcement."""
 
     label = "6.48"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,7 +20,7 @@ class Form6Dot48NetAppliedPunchingLoad(Formula):
     ) -> None:
         r"""[$$V_{Ed,red}$$] Calculation of net applied punching force of slabs and column bases without shear reinforcement.
 
-        NEN-EN 1992-1-1+C2:2011 art.6.4.4(3) - Formula (6.48)
+        NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.48)
 
         Parameters
         ----------

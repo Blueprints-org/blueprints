@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot47PunchingShearResistance(Formula):
-    r"""Class representing formula 6.47 for the calculation of punching shear resistance, $$v_{Rd,c}$$."""
+    r"""Class representing formula 6.47 for the calculation of punching shear resistance, $$v_{Rd,c}$$ of slabs and column bases without shear reinforcement."""
 
     label = "6.47"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,7 +23,7 @@ class Form6Dot47PunchingShearResistance(Formula):
         sigma_cp: MPA,
         v_min: MPA,
     ) -> None:
-        r"""$$v_{Rd,c}$$ Calculation of punching shear resistance.
+        r"""$$v_{Rd,c}$$ Calculation of punching shear resistance  of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47)
 

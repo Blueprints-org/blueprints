@@ -7,8 +7,8 @@ from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MPA, NMM, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot51ShearStressLoadingEccentric(Formula):
-    r"""Class representing formula 6.51 for the calculation of shear stress loading for eccentric loading [$$v_{Ed}$$]."""
+class Form6Dot51AppliedPunchingShearStressEccentricLoading(Formula):
+    r"""Class representing formula 6.51 for the calculation of punching shear stress for eccentric loading [$$v_{Ed}$$] of slabs and column bases without shear reinforcement."""
 
     label = "6.51"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -22,14 +22,14 @@ class Form6Dot51ShearStressLoadingEccentric(Formula):
         m_ed: NMM,
         w: MM2,
     ) -> None:
-        r"""[$$v_{Ed}$$] Calculation of shear stress loading.
+        r"""[$$v_{Ed}$$] Calculation of punching shear stress for eccentric loading of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.51)
 
         Parameters
         ----------
         v_ed_red : N
-            [$$V_{Ed,red}$$] Reduced design shear force [$$N$$].
+            [$$V_{Ed,red}$$] Net applied punching force [$$N$$].
         u : MM
             [$$u$$] Perimeter of the critical section [$$mm$$].
         d : MM
