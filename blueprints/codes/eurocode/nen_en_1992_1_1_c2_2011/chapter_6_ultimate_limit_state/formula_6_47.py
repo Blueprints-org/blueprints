@@ -25,7 +25,7 @@ class Form6Dot47PunchingShearResistance(Formula):
         sigma_cp: MPA,
         v_min: MPA,
     ) -> None:
-        r"""$$v_{Rd,c}$$ Calculation of punching shear resistance  of slabs and column bases without shear reinforcement.
+        r"""$$v_{Rd,c}$$ Calculation of punching shear resistance of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Formula (6.47).
 
