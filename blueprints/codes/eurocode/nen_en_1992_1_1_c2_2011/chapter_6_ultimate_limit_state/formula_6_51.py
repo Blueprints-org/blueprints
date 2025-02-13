@@ -39,7 +39,7 @@ class Form6Dot51ShearStressLoadingEccentric(Formula):
         m_ed : NMM
             [$$M_{Ed}$$] Design bending moment [$$Nmm$$].
         w : MM2
-            [$$W$$] Similar to [$$W_1$$] but for perimeter [$$u$$] [$$mm^2$$].
+            [$$W$$] Similar to [$$W_1$$] as defined in 6.4.3(3) and 6.4.3.(4) but for perimeter [$$u$$] [$$mm^2$$].
         """
         super().__init__()
         self.v_ed_red = v_ed_red
