@@ -19,7 +19,7 @@ class Form6Dot49AppliedPunchingShearStress(Formula):
         u: MM,
         d: MM,
     ) -> None:
-        r"""[$$v_{Ed}$$] Calculation of applied punching shear stress [$$v_{Ed}$$].
+        r"""[$$v_{Ed}$$] Calculation of applied punching shear stress [$$v_{Ed}$$] of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.49)
 
