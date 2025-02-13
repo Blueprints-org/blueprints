@@ -35,7 +35,7 @@ class Form6Dot51ShearStressLoadingEccentric(Formula):
         d : MM
             [$$d$$] Mean effective depth of the slab [$$mm$$].
         k : DIMENSIONLESS
-            [$$k$$] Factor defined in 6.4.3(3) or 6.4.3(4) [$$-$$].
+            [$$k$$] Coefficient dependent on the ratio between the column dimensions as defined in 6.4.3(3) or 6.4.3(4) [$$-$$].
         m_ed : NMM
             [$$M_{Ed}$$] Design bending moment [$$Nmm$$].
         w : MM2
