@@ -18,7 +18,7 @@ class Form6Dot48NetAppliedPunchingLoad(Formula):
         v_ed: N,
         delta_v_ed: N,
     ) -> None:
-        r"""[$$V_{Ed,red}$$] Calculation of net applied punching load.
+        r"""[$$V_{Ed,red}$$] Calculation of net applied punching force of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(3) - Formula (6.48)
 
