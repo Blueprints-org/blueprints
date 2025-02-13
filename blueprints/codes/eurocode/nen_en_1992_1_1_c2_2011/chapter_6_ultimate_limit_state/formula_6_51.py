@@ -8,7 +8,9 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot51AppliedPunchingShearStressEccentricLoading(Formula):
-    r"""Class representing formula 6.51 for the calculation of punching shear stress for eccentric loading [$$v_{Ed}$$] of slabs and column bases without shear reinforcement."""
+    r"""Class representing formula 6.51 for the calculation of punching shear stress for eccentric loading [$$v_{Ed}$$]
+    of slabs and column bases without shear reinforcement.
+    """
 
     label = "6.51"
     source_document = NEN_EN_1992_1_1_C2_2011
