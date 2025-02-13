@@ -65,8 +65,13 @@ class ConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculato
         In accordance with:
         NNEN-EN 1992-1-1+C2:2011 Concrete - General
         """
-        if self.design_working_life >= DESIGN_WORKING_LIFE_100:
-            self.update_structural_class(2, f"{DESIGN_WORKING_LIFE_100} years")
+        if self.design_working_life > DESIGN_WORKING_LIFE_DEFAULT:
+            explanation = (
+                f"{DESIGN_WORKING_LIFE_100} years"
+                if self.design_working_life == DESIGN_WORKING_LIFE_100
+                else f"{self.design_working_life} > {DESIGN_WORKING_LIFE_DEFAULT} => {DESIGN_WORKING_LIFE_100} years"
+            )
+            self.update_structural_class(2, explanation)
         else:
             self.update_structural_class(0, f"{DESIGN_WORKING_LIFE_DEFAULT} years")
 
