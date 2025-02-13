@@ -26,11 +26,11 @@ class Form5Dot40bCheckLateralInstability(Formula):
         Parameters
         ----------
         l_0t : M
-            [:math:`l_{0t}`] is the distance between torsional restraints [m].
+            [$$l_{0t}$$] is the distance between torsional restraints [$$m$$].
         b : M
-            [:math:`b`] is the width of compression flange [m].
+            [$$b$$] is the width of compression flange [$$m$$].
         h : M
-            [:math:`h`] is the total depth of beam in central part of l_0t [m].
+            [$$h$$] is the total depth of beam in central part of [$$l_{0t}$$] [$$m$$].
         """
         super().__init__()
         self.l_0t = l_0t
@@ -39,9 +39,9 @@ class Form5Dot40bCheckLateralInstability(Formula):
 
     @staticmethod
     def _evaluate(
-        l_0t: float,
-        b: float,
-        h: float,
+        l_0t: M,
+        b: M,
+        h: M,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(b=b, h=h)

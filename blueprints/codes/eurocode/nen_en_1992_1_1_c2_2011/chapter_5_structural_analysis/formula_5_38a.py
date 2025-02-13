@@ -25,9 +25,9 @@ class Form5Dot38aCheckRelativeSlendernessRatio(Formula):
         Parameters
         ----------
         lambda_y : DIMENSIONLESS
-            [:math:`\lambda_{y}`] Slenderness ratio in y-direction [-].
+            [$$\lambda_{y}$$] Slenderness ratio in y-direction [-].
         lambda_z : DIMENSIONLESS
-            [:math:`\lambda_{z}`] Slenderness ratio in z-direction [-].
+            [$$\lambda_{z}$$] Slenderness ratio in z-direction [-].
         """
         super().__init__()
         self.lambda_y = lambda_y
