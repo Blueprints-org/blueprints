@@ -150,11 +150,11 @@ Total of 304 formulas present.
 | 6.45           |        :x:         |         |                                                           |
 | 6.46           |        :x:         |         |                                                           |
 | 6.47           | :heavy_check_mark: |         | Form6Dot47PunchingShearResistance                         |
-| 6.47_sub1      | :heavy_check_mark: |         | Form6Dot47Sub1FactorK                                     |
-| 6.47_sub2      | :heavy_check_mark: |         | Form6Dot47Sub2FactorRhoL                                  |
-| 6.47_sub3      | :heavy_check_mark: |         | Form6Dot47Sub3FactorSigmaCp                               |
-| 6.47_sub4      | :heavy_check_mark: |         | Form6Dot47Sub4FactorSigmaCy                               |
-| 6.47_sub5      | :heavy_check_mark: |         | Form6Dot47Sub5FactorSigmaCz                               |
+| 6.47 k         | :heavy_check_mark: |         | Form6Dot47Sub1FactorK                                     |
+| 6.47 rho_l     | :heavy_check_mark: |         | Form6Dot47Sub2FactorRhoL                                  |
+| 6.47 sigma_cp  | :heavy_check_mark: |         | Form6Dot47Sub3FactorSigmaCp                               |
+| 6.47 sigma_cy  | :heavy_check_mark: |         | Form6Dot47Sub4FactorSigmaCy                               |
+| 6.47 sigma_cz  | :heavy_check_mark: |         | Form6Dot47Sub5FactorSigmaCz                               |
 | 6.48           | :heavy_check_mark: |         | Form6Dot48NetAppliedPunchingLoad                          |
 | 6.49           | :heavy_check_mark: |         | Form6Dot49AppliedPunchingShearStress                      |
 | 6.50           | :heavy_check_mark: |         | Form6Dot50ShearStressResistance                           |

@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_48 import Form6Dot48NetAppliedPunchingLoad
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_48 import Form6Dot48NetAppliedPunchingForce
 from blueprints.validations import NegativeValueError
 
 
-class TestForm6Dot48NetAppliedPunchingLoad:
+class TestForm6Dot48NetAppliedPunchingForce:
     """Validation for formula 6.48 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -16,7 +16,7 @@ class TestForm6Dot48NetAppliedPunchingLoad:
         delta_v_ed = 200.0
 
         # Object to test
-        formula = Form6Dot48NetAppliedPunchingLoad(v_ed=v_ed, delta_v_ed=delta_v_ed)
+        formula = Form6Dot48NetAppliedPunchingForce(v_ed=v_ed, delta_v_ed=delta_v_ed)
 
         # Expected result, manually calculated
         manually_calculated_result = 800.0  # N
@@ -33,7 +33,7 @@ class TestForm6Dot48NetAppliedPunchingLoad:
     def test_raise_error_when_invalid_values_are_given(self, v_ed: float, delta_v_ed: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot48NetAppliedPunchingLoad(v_ed=v_ed, delta_v_ed=delta_v_ed)
+            Form6Dot48NetAppliedPunchingForce(v_ed=v_ed, delta_v_ed=delta_v_ed)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -52,7 +52,7 @@ class TestForm6Dot48NetAppliedPunchingLoad:
         delta_v_ed = 200.0
 
         # Object to test
-        latex = Form6Dot48NetAppliedPunchingLoad(v_ed=v_ed, delta_v_ed=delta_v_ed).latex()
+        latex = Form6Dot48NetAppliedPunchingForce(v_ed=v_ed, delta_v_ed=delta_v_ed).latex()
 
         actual = {
             "complete": latex.complete,

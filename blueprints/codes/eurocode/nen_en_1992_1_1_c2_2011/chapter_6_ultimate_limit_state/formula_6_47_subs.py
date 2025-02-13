@@ -68,9 +68,11 @@ class SubForm6Dot47FactorRhoL(Formula):
         Parameters
         ----------
         rho_ly : DIMENSIONLESS
-            [$$\rho_{ly}$$] Longitudinal reinforcement ratio in y-direction [$$-$$].
+            [$$\rho_{ly}$$] Related to the bonded tension steel in y- drection. The value $$\rho_ly$$ should be calculated as mean values taking
+            into account a slab width equal to the column width plus 3d each side [$$-$$].
         rho_lz : DIMENSIONLESS
-            [$$\rho_{lz}$$] Longitudinal reinforcement ratio in z-direction [$$-$$].
+            [$$\rho_{lz}$$] Related to the bonded tension steel in z- drection. The value $$\rho_lz$$ should be calculated as mean values taking
+            into account a slab width equal to the column width plus 3d each side [$$-$$].
         """
         super().__init__()
         self.rho_ly = rho_ly
@@ -83,7 +85,7 @@ class SubForm6Dot47FactorRhoL(Formula):
         return min(np.sqrt(rho_ly * rho_lz), 0.02)
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for sub-formula 6.47 (factor rho_l)"""
+        """Returns LatexFormula object for sub-formula 6.47 (factor rho_l)."""
         _equation: str = r"\min \left( \sqrt{\rho_{ly} \cdot \rho_{lz}}, 0.02 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -118,8 +120,10 @@ class SubForm6Dot47FactorSigmaCp(Formula):
         ----------
         sigma_cy : MPA
             [$$\sigma_{cy}$$] Normal concrete stress in the critical section in the y-direction [$$MPa$$], Positive if compression.
+            See equation SubForm6Dot47FactorSigmaCy.
         sigma_cz : MPA
             [$$\sigma_{cz}$$] Normal concrete stress inm the critical section in the z-direction [$$MPa$$], Positive if compression.
+            See equation SubForm6Dot47FactorSigmaCz.
         """
         super().__init__()
         self.sigma_cy = sigma_cy
@@ -166,7 +170,8 @@ class SubForm6Dot47FactorSigmaCy(Formula):
         Parameters
         ----------
         n_ed_y : N
-            [$$N_{Ed,y}$$] Design axial force in y-direction [$$N$$].
+            [$$N_{Ed,y}$$] Longitudinal forces across the full bay for internal columns and the logintudinal force across
+            the control section for edge columns. The force may be from a load or prestressing action [$$N$$].
         a_cy : MM2
             [$$A_{cy}$$] Cross-sectional area in y-direction [$$mm^2$$].
         """
@@ -216,7 +221,8 @@ class SubForm6Dot47FactorSigmaCz(Formula):
         Parameters
         ----------
         n_ed_z : N
-            [$$N_{Ed,z}$$] Design axial force in z-direction [$$N$$].
+            [$$N_{Ed,z}$$] Longitudinal forces across the full bay for internal columns and the logintudinal force across
+            the control section for edge columns. The force may be from a load or prestressing action [$$N$$].
         a_cz : MM2
             [$$A_{cz}$$] Cross-sectional area in z-direction [$$mm^2$$].
         """

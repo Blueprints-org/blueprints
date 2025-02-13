@@ -2,11 +2,13 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_51 import Form6Dot51ShearStressLoadingEccentric
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_51 import (
+    Form6Dot51AppliedPunchingShearStressEccentricLoading,
+)
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot51ShearStressLoadingEccentric:
+class TestForm6Dot51AppliedPunchingShearStressEccentricLoading:
     """Validation for formula 6.51 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -20,7 +22,7 @@ class TestForm6Dot51ShearStressLoadingEccentric:
         w = 500.0
 
         # Object to test
-        formula = Form6Dot51ShearStressLoadingEccentric(v_ed_red=v_ed_red, u=u, d=d, k=k, m_ed=m_ed, w=w)
+        formula = Form6Dot51AppliedPunchingShearStressEccentricLoading(v_ed_red=v_ed_red, u=u, d=d, k=k, m_ed=m_ed, w=w)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.17066666666  # MPa
@@ -45,7 +47,7 @@ class TestForm6Dot51ShearStressLoadingEccentric:
     def test_raise_error_when_invalid_values_are_given(self, v_ed_red: float, u: float, d: float, k: float, m_ed: float, w: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot51ShearStressLoadingEccentric(v_ed_red=v_ed_red, u=u, d=d, k=k, m_ed=m_ed, w=w)
+            Form6Dot51AppliedPunchingShearStressEccentricLoading(v_ed_red=v_ed_red, u=u, d=d, k=k, m_ed=m_ed, w=w)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -70,7 +72,7 @@ class TestForm6Dot51ShearStressLoadingEccentric:
         w = 500.0
 
         # Object to test
-        latex = Form6Dot51ShearStressLoadingEccentric(v_ed_red=v_ed_red, u=u, d=d, k=k, m_ed=m_ed, w=w).latex()
+        latex = Form6Dot51AppliedPunchingShearStressEccentricLoading(v_ed_red=v_ed_red, u=u, d=d, k=k, m_ed=m_ed, w=w).latex()
 
         actual = {
             "complete": latex.complete,

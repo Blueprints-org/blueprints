@@ -3,16 +3,16 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_47_subs import (
-    Form6Dot47Sub1FactorK,
-    Form6Dot47Sub2FactorRhoL,
-    Form6Dot47Sub3FactorSigmaCp,
-    Form6Dot47Sub4FactorSigmaCy,
-    Form6Dot47Sub5FactorSigmaCz,
+    SubForm6Dot47FactorK,
+    SubForm6Dot47FactorRhoL,
+    SubForm6Dot47FactorSigmaCp,
+    SubForm6Dot47FactorSigmaCy,
+    SubForm6Dot47FactorSigmaCz,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot47Sub1FactorK:
+class TestSubForm6Dot47FactorK:
     """Validation for sub-formula 1 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -21,7 +21,7 @@ class TestForm6Dot47Sub1FactorK:
         d = 500.0
 
         # Object to test
-        formula = Form6Dot47Sub1FactorK(d=d)
+        formula = SubForm6Dot47FactorK(d=d)
 
         # Expected result, manually calculated
         manually_calculated_result = 1.632455532033676  # dimensionless
@@ -38,7 +38,7 @@ class TestForm6Dot47Sub1FactorK:
     def test_raise_error_when_invalid_values_are_given(self, d: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form6Dot47Sub1FactorK(d=d)
+            SubForm6Dot47FactorK(d=d)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -56,7 +56,7 @@ class TestForm6Dot47Sub1FactorK:
         d = 500.0
 
         # Object to test
-        latex = Form6Dot47Sub1FactorK(d=d).latex()
+        latex = SubForm6Dot47FactorK(d=d).latex()
 
         actual = {
             "complete": latex.complete,
@@ -66,7 +66,7 @@ class TestForm6Dot47Sub1FactorK:
         assert expected == actual[representation], f"{representation} representation failed."
 
 
-class TestForm6Dot47Sub2FactorRhoL:
+class TestSubForm6Dot47FactorRhoL:
     """Validation for sub-formula 2 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -76,7 +76,7 @@ class TestForm6Dot47Sub2FactorRhoL:
         rho_lz = 0.03
 
         # Object to test
-        formula = Form6Dot47Sub2FactorRhoL(rho_ly=rho_ly, rho_lz=rho_lz)
+        formula = SubForm6Dot47FactorRhoL(rho_ly=rho_ly, rho_lz=rho_lz)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.02  # dimensionless
@@ -93,7 +93,7 @@ class TestForm6Dot47Sub2FactorRhoL:
     def test_raise_error_when_invalid_values_are_given(self, rho_ly: float, rho_lz: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot47Sub2FactorRhoL(rho_ly=rho_ly, rho_lz=rho_lz)
+            SubForm6Dot47FactorRhoL(rho_ly=rho_ly, rho_lz=rho_lz)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -113,7 +113,7 @@ class TestForm6Dot47Sub2FactorRhoL:
         rho_lz = 0.03
 
         # Object to test
-        latex = Form6Dot47Sub2FactorRhoL(rho_ly=rho_ly, rho_lz=rho_lz).latex()
+        latex = SubForm6Dot47FactorRhoL(rho_ly=rho_ly, rho_lz=rho_lz).latex()
 
         actual = {
             "complete": latex.complete,
@@ -123,7 +123,7 @@ class TestForm6Dot47Sub2FactorRhoL:
         assert expected == actual[representation], f"{representation} representation failed."
 
 
-class TestForm6Dot47Sub3FactorSigmaCp:
+class TestSubForm6Dot47FactorSigmaCp:
     """Validation for sub-formula 3 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -133,7 +133,7 @@ class TestForm6Dot47Sub3FactorSigmaCp:
         sigma_cz = 2.0
 
         # Object to test
-        formula = Form6Dot47Sub3FactorSigmaCp(sigma_cy=sigma_cy, sigma_cz=sigma_cz)
+        formula = SubForm6Dot47FactorSigmaCp(sigma_cy=sigma_cy, sigma_cz=sigma_cz)
 
         # Expected result, manually calculated
         manually_calculated_result = 1.5  # MPa
@@ -150,7 +150,7 @@ class TestForm6Dot47Sub3FactorSigmaCp:
     def test_raise_error_when_invalid_values_are_given(self, sigma_cy: float, sigma_cz: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot47Sub3FactorSigmaCp(sigma_cy=sigma_cy, sigma_cz=sigma_cz)
+            SubForm6Dot47FactorSigmaCp(sigma_cy=sigma_cy, sigma_cz=sigma_cz)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -169,7 +169,7 @@ class TestForm6Dot47Sub3FactorSigmaCp:
         sigma_cz = 2.0
 
         # Object to test
-        latex = Form6Dot47Sub3FactorSigmaCp(sigma_cy=sigma_cy, sigma_cz=sigma_cz).latex()
+        latex = SubForm6Dot47FactorSigmaCp(sigma_cy=sigma_cy, sigma_cz=sigma_cz).latex()
 
         actual = {
             "complete": latex.complete,
@@ -179,7 +179,7 @@ class TestForm6Dot47Sub3FactorSigmaCp:
         assert expected == actual[representation], f"{representation} representation failed."
 
 
-class TestForm6Dot47Sub4FactorSigmaCy:
+class TestSubForm6Dot47FactorSigmaCy:
     """Validation for sub-formula 4 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -189,7 +189,7 @@ class TestForm6Dot47Sub4FactorSigmaCy:
         a_cy = 500.0
 
         # Object to test
-        formula = Form6Dot47Sub4FactorSigmaCy(n_ed_y=n_ed_y, a_cy=a_cy)
+        formula = SubForm6Dot47FactorSigmaCy(n_ed_y=n_ed_y, a_cy=a_cy)
 
         # Expected result, manually calculated
         manually_calculated_result = 2.0  # MPa
@@ -207,7 +207,7 @@ class TestForm6Dot47Sub4FactorSigmaCy:
     def test_raise_error_when_invalid_values_are_given(self, n_ed_y: float, a_cy: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot47Sub4FactorSigmaCy(n_ed_y=n_ed_y, a_cy=a_cy)
+            SubForm6Dot47FactorSigmaCy(n_ed_y=n_ed_y, a_cy=a_cy)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -226,7 +226,7 @@ class TestForm6Dot47Sub4FactorSigmaCy:
         a_cy = 500.0
 
         # Object to test
-        latex = Form6Dot47Sub4FactorSigmaCy(n_ed_y=n_ed_y, a_cy=a_cy).latex()
+        latex = SubForm6Dot47FactorSigmaCy(n_ed_y=n_ed_y, a_cy=a_cy).latex()
 
         actual = {
             "complete": latex.complete,
@@ -236,7 +236,7 @@ class TestForm6Dot47Sub4FactorSigmaCy:
         assert expected == actual[representation], f"{representation} representation failed."
 
 
-class TestForm6Dot47Sub5FactorSigmaCz:
+class TestSubForm6Dot47FactorSigmaCz:
     """Validation for sub-formula 5 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -246,7 +246,7 @@ class TestForm6Dot47Sub5FactorSigmaCz:
         a_cz = 1000.0
 
         # Object to test
-        formula = Form6Dot47Sub5FactorSigmaCz(n_ed_z=n_ed_z, a_cz=a_cz)
+        formula = SubForm6Dot47FactorSigmaCz(n_ed_z=n_ed_z, a_cz=a_cz)
 
         # Expected result, manually calculated
         manually_calculated_result = 2.0  # MPa
@@ -264,7 +264,7 @@ class TestForm6Dot47Sub5FactorSigmaCz:
     def test_raise_error_when_invalid_values_are_given(self, n_ed_z: float, a_cz: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot47Sub5FactorSigmaCz(n_ed_z=n_ed_z, a_cz=a_cz)
+            SubForm6Dot47FactorSigmaCz(n_ed_z=n_ed_z, a_cz=a_cz)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -283,7 +283,7 @@ class TestForm6Dot47Sub5FactorSigmaCz:
         a_cz = 1000.0
 
         # Object to test
-        latex = Form6Dot47Sub5FactorSigmaCz(n_ed_z=n_ed_z, a_cz=a_cz).latex()
+        latex = SubForm6Dot47FactorSigmaCz(n_ed_z=n_ed_z, a_cz=a_cz).latex()
 
         actual = {
             "complete": latex.complete,
