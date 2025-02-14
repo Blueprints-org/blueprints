@@ -7,7 +7,7 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 
-class Form7Dot14CrackSpacing(Formula):
+class Form7Dot14MaximumCrackSpacing(Formula):
     r"""Class representing formula 7.14 for the calculation of crack spacing [$$s_{r,max}$$]."""
 
     label = "7.14"

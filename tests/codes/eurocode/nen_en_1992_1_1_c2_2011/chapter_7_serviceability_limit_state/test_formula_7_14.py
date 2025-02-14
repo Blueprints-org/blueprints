@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_14 import Form7Dot14CrackSpacing
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_14 import Form7Dot14MaximumCrackSpacing
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm7Dot14CrackSpacing:
+class TestForm7Dot14MaximumCrackSpacing:
     """Validation for formula 7.14 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -16,7 +16,7 @@ class TestForm7Dot14CrackSpacing:
         x = 200.0
 
         # Object to test
-        formula = Form7Dot14CrackSpacing(h=h, x=x)
+        formula = Form7Dot14MaximumCrackSpacing(h=h, x=x)
 
         # Expected result, manually calculated
         manually_calculated_result = 390.0  # mm
@@ -33,7 +33,7 @@ class TestForm7Dot14CrackSpacing:
     def test_raise_error_when_invalid_values_are_given(self, h: float, x: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form7Dot14CrackSpacing(h=h, x=x)
+            Form7Dot14MaximumCrackSpacing(h=h, x=x)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -52,7 +52,7 @@ class TestForm7Dot14CrackSpacing:
         x = 200.0
 
         # Object to test
-        latex = Form7Dot14CrackSpacing(h=h, x=x).latex()
+        latex = Form7Dot14MaximumCrackSpacing(h=h, x=x).latex()
 
         actual = {
             "complete": latex.complete,
