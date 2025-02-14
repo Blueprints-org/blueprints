@@ -195,7 +195,7 @@ Total of 304 formulas present.
 | 7.11           | :heavy_check_mark: |         | Form7Dot11MaximumCrackSpacing                             |
 | 7.12           | :heavy_check_mark: |         | Form7Dot12EquivalentDiameter                              |
 | 7.13           | :heavy_check_mark: |         | Form7Dot13CoefficientK2                                   |
-| 7.14           |        :x:         |         |                                                           |
+| 7.14           | :heavy_check_mark: |         | Form7Dot14CrackSpacing                                    |
 | 7.15           |        :x:         |         |                                                           |
 | 7.16.a         |        :x:         |         |                                                           |
 | 7.16.b         |        :x:         |         |                                                           |
