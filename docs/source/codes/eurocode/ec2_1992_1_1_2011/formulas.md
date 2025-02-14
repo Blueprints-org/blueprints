@@ -189,11 +189,11 @@ Total of 304 formulas present.
 | 7.5            |        :x:         |         |                                                           |
 | 7.6N           |        :x:         |         |                                                           |
 | 7.7N           |        :x:         |         |                                                           |
-| 7.8            |        :x:         |         |                                                           |
-| 7.9            |        :x:         |         |                                                           |
-| 7.10           |        :x:         |         |                                                           |
-| 7.11           |        :x:         |         |                                                           |
-| 7.12           |        :x:         |         |                                                           |
+| 7.8            | :heavy_check_mark: |         | Form7Dot8CrackWidth                                       |
+| 7.9            | :heavy_check_mark: |         | Form7Dot9EpsilonSmMinusEpsilonCm                          |
+| 7.10           | :heavy_check_mark: |         | Form7Dot10RhoPEff                                         |
+| 7.11           | :heavy_check_mark: |         | Form7Dot11MaximumCrackSpacing                             |
+| 7.12           | :heavy_check_mark: |         | Form7Dot12EquivalentDiameter                              |
 | 7.13           |        :x:         |         |                                                           |
 | 7.14           |        :x:         |         |                                                           |
 | 7.15           |        :x:         |         |                                                           |
