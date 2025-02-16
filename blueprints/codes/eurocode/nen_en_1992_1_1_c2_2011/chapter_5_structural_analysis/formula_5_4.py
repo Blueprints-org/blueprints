@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot4TransverseForceEffectBracingSystem(Formula):
-    """Class representing formula 5.4 for the calculation of the effect of the inclination on bracing systems, :math:`H_{i}`.
+    """Class representing formula 5.4 for the calculation of the effect of the inclination on bracing systems, [$$H_{i}$$].
 
     See Figure 5.1 b.
     """
@@ -22,22 +22,22 @@ class Form5Dot4TransverseForceEffectBracingSystem(Formula):
         n_a: KN,
         n_b: KN,
     ) -> None:
-        """[:math:`H_{i}`] Effect of the inclination on bracing systems [:math:`kN`].
+        r"""[$$H_{i}$$] Effect of the inclination on bracing systems [$$kN$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(8) - Formula (5.4)
 
         Parameters
         ----------
         theta_i : DIMENSIONLESS
-            [:math:`Θ_{i}`] Eccentricity, initial inclination imperfections [-].
+            [$$Θ_{i}$$] Eccentricity, initial inclination imperfections [-].
         n_a : KN
-            [:math:`N_{a}`] Axial force in the member [:math:`kN`].
+            [$$N_{a}$$] Axial force in the member [$$kN$$].
         n_b : KN
-            [:math:`N_{b}`] Axial force in the member [:math:`kN`].
+            [$$N_{b}$$] Axial force in the member [$$kN$$].
 
         Notes
         -----
-        where :math:`N_{a} and :math:`N_{b}` are longitudinal forces contributing to :math:`H_{i}`.
+        where [$$N_{a}$$] and [$$N_{b}$$] are longitudinal forces contributing to [$$H_{i}$$].
         Positive values for compression, tension is not allowed.
         """
         super().__init__()

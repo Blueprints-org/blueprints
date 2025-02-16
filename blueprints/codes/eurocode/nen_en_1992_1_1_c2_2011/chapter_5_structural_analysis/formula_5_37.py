@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot37CreepFactor(Formula):
-    r"""Class representing formula 5.37 for the calculation of the creep factor, :math:`K_{\phi}`."""
+    r"""Class representing formula 5.37 for the calculation of the creep factor, [$$K_{\phi}$$]."""
 
     label = "5.37"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,18 +19,18 @@ class Form5Dot37CreepFactor(Formula):
         lambda_: DIMENSIONLESS,
         phi_ef: DIMENSIONLESS,
     ) -> None:
-        r"""[:math:`K_{\phi}`] Creep factor [:math:`-`].
+        r"""[$$K_{\phi}$$] Creep factor [$$-$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.3(4) - Formula (5.37)
 
         Parameters
         ----------
         f_ck : MPA
-            [:math:`f_{ck}`] Characteristic compressive strength of concrete [:math:`MPa`].
+            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
         lambda_ : DIMENSIONLESS
-            [:math:`\lambda`] Slenderness ratio, see 5.8.3.1 [-].
+            [$$\lambda$$] Slenderness ratio, see 5.8.3.1 [-].
         phi_ef : DIMENSIONLESS
-            [:math:`\phi_{ef}`] Effective creep ratio, see 5.8.4 [-].
+            [$$\phi_{ef}$$] Effective creep ratio, see 5.8.4 [-].
         """
         super().__init__()
         self.f_ck = f_ck
@@ -55,7 +55,7 @@ class Form5Dot37CreepFactor(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.37."""
         return LatexFormula(
-            return_symbol=r"k_{\phi}",
+            return_symbol=r"K_{\phi}",
             result=f"{self:.3f}",
             equation=r"\max\left(1 + \left(0.35 + \frac{f_{ck}}{200} - \frac{\lambda}{150}\right) \cdot \phi_{ef}; 1\right)",
             numeric_equation=rf"\max\left(1 + \left(0.35 + \frac{{{self.f_ck:.3f}}}{{200}} - \frac{{{self.lambda_:.3f}}}{{150}}\right) "

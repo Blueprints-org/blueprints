@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot9DesignSupportMomentReduction(Formula):
-    """Class representing formula 5.9 for the calculation of the design support moment reduction, :math:`ΔM_{Ed}`.
+    """Class representing formula 5.9 for the calculation of the design support moment reduction, [$$ΔM_{Ed}$$].
     See Figure 5.4 b.
     """
 
@@ -20,23 +20,23 @@ class Form5Dot9DesignSupportMomentReduction(Formula):
         f_ed_sup: KN,
         t: M,
     ) -> None:
-        """[:math:`ΔM_{Ed}`] Design support moment reduction [:math:`kN`].
+        r"""[$$ΔM_{Ed}$$] Design support moment reduction [$$kN$$].
 
         Note: Regardless of the method of analysis used, where a beam or slab is continuous over a
         support which may be considered to provide no restraint to rotation (e.g. over walls), the design
         support moment, calculated on the basis of a span equal to the centre-to-centre distance
-        between supports, may be reduced by an amount :math:`ΔM_{Ed}`.
+        between supports, may be reduced by an amount [$$ΔM_{Ed}$$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.3.2.2(4) - Formula (5.9)
 
         Parameters
         ----------
         f_ed_sup : KN
-            [:math:`F_{Ed,sup}`] Design support reaction [:math:`kN`].
+            [$$F_{Ed,sup}$$] Design support reaction [$$kN$$].
         t : M
-            [:math:`t`] breadth of the support (see Figure 5.4 b) [:math:`m`].
+            [$$t$$] breadth of the support (see Figure 5.4 b) [$$m$$].
 
-            Note:  Where support bearings are used [:math:`t`] should be taken as the bearing width.
+            Note:  Where support bearings are used [$$t$$] should be taken as the bearing width.
         """
         super().__init__()
         self.f_ed_sup = f_ed_sup

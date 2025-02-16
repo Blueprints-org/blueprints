@@ -8,20 +8,20 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot23FactorConcreteStrengthClass(Formula):
-    """Class representing formula 5.23 for the calculation of the factor for concrete strength class, :math:`k_{1}`."""
+    """Class representing formula 5.23 for the calculation of the factor for concrete strength class, [$$k_{1}$$]."""
 
     label = "5.23"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, f_ck: MPA) -> None:
-        r"""[:math:`k_{1}`] Factor for concrete strength class.
+        r"""[$$k_{1}$$] Factor for concrete strength class.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.6(3) - Formula (5.23)
 
         Parameters
         ----------
         f_ck : MPA
-            [:math:`f_{ck}`] is the characteristic compressive strength of concrete.
+            [$$f_{ck}$$] is the characteristic compressive strength of concrete.
         """
         super().__init__()
         self.f_ck = f_ck

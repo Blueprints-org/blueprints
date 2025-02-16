@@ -13,21 +13,21 @@ class Form5Dot22FactorKs(Formula):
     label = "5.22"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(self, rho: float) -> None:
-        r"""[:math:`K_s`] Factor K_s = 1.
+    def __init__(self, rho: DIMENSIONLESS) -> None:
+        r"""[$$K_s$$] Factor K_s = 1.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.7.2(2) - Formula (5.22)
 
         Parameters
         ----------
-        rho : float
-            [:math:`\rho`] Geometric reinforcement ratio, As/Ac. Must be >= 0.002.
+        rho : DIMENSIONLESS
+            [$$\rho$$] Geometric reinforcement ratio, As/Ac. Must be >= 0.002.
         """
         super().__init__()
         self.rho = rho
 
     @staticmethod
-    def _evaluate(rho: float) -> float:
+    def _evaluate(rho: DIMENSIONLESS) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if rho < 0.002:
             raise ValueError(f"Invalid rho: {rho}. rho cannot be less than 0.002")
@@ -51,20 +51,20 @@ class Form5Dot22FactorKc(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, k1: DIMENSIONLESS, k2: DIMENSIONLESS, phi_ef: DIMENSIONLESS, rho: float) -> None:
-        r"""[:math:`K_c`] Factor K_c = k_1 * k_2 / (1 + \phi_{ef}).
+        r"""[$$K_c$$] Factor K_c = k_1 * k_2 / (1 + \phi_{ef}).
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.7.2(2) - Formula (5.22)
 
         Parameters
         ----------
         k1 : DIMENSIONLESS
-            [:math:`k_1`] Factor which depends on concrete strength class, Expression (5.23).
+            [$$k_1$$] Factor which depends on concrete strength class, Expression (5.23).
         k2 : DIMENSIONLESS
-            [:math:`k_2`] Factor which depends on axial force and slenderness, Expression (5.24).
+            [$$k_2$$] Factor which depends on axial force and slenderness, Expression (5.24).
         phi_ef : DIMENSIONLESS
-            [:math:`\phi_{ef}`] Effective creep ratio, see 5.8.4.
-        rho : float
-            [:math:`\rho`] Geometric reinforcement ratio, As/Ac. Must be >= 0.002.
+            [$$\phi_{ef}$$] Effective creep ratio, see 5.8.4.
+        rho : DIMENSIONLESS
+            [$$\rho$$] Geometric reinforcement ratio, As/Ac. Must be >= 0.002.
         """
         super().__init__()
         self.k1 = k1
