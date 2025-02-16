@@ -72,8 +72,10 @@ class Form9Dot11MinimumShearReinforcement(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 9.11."""
-        _equation: str = r"\frac{0.08 \cdot \sqrt{f_{ck}}}{f_{yk}} \cdot \frac{s_r \cdot s_t}{1.5 \cdot "
-        r"\sin(\alpha) + \cos(\alpha)}"
+        _equation: str = (
+            r"\frac{0.08 \cdot \sqrt{f_{ck}}}{f_{yk}} \cdot \frac{s_r \cdot s_t}{1.5 \cdot "
+            r"\sin(\alpha) + \cos(\alpha)}"
+        )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
