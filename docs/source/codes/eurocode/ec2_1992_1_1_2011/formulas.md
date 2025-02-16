@@ -202,7 +202,7 @@ Total of 304 formulas present.
 | 7.17           | :heavy_check_mark: |         | Form7Dot17MultiplicationFactor                            |
 | 7.18           | :heavy_check_mark: |         | Form7Dot18DeformationParameter                            |
 | 7.19           | :heavy_check_mark: |         | Form7Dot19DistributionCoefficient                         |
-| 7.20           |        :x:         |         |                                                           |
+| 7.20           | :heavy_check_mark: |         | Form7Dot20EffectiveModulus                                |
 | 7.21           |        :x:         |         |                                                           |
 | 8.1            | :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                   |
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
