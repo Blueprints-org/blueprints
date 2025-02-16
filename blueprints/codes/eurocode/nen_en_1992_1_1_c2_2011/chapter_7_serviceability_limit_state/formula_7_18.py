@@ -26,7 +26,7 @@ class Form7Dot18DeformationParameter(Formula):
         Parameters
         ----------
         zeta : DIMENSIONLESS
-            [$$\zeta$$] Distribution coefficient allowing for tension stiffening at a section.
+            [$$\zeta$$] Distribution coefficient allowing for tension stiffening at a section, calculated with Expression (7.19).
         alpha_l : DIMENSIONLESS
             [$$\alpha_{I}$$] Value of the parameter calculated for the uncracked condition
         alpha_ll : DIMENSIONLESS
