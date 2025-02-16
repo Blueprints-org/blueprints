@@ -197,8 +197,8 @@ Total of 304 formulas present.
 | 7.13           |        :x:         |         |                                                           |
 | 7.14           |        :x:         |         |                                                           |
 | 7.15           |        :x:         |         |                                                           |
-| 7.16.a         |        :x:         |         |                                                           |
-| 7.16.b         |        :x:         |         |                                                           |
+| 7.16.a         | :heavy_check_mark: |         | Form7Dot16abSpanDepthRatio                                |
+| 7.16.b         | :heavy_check_mark: |         | Form7Dot16abSpanDepthRatio                                |
 | 7.17           |        :x:         |         |                                                           |
 | 7.18           |        :x:         |         |                                                           |
 | 7.19           |        :x:         |         |                                                           |
