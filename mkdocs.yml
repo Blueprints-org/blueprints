@@ -1,14 +1,17 @@
 site_name: "Blueprints"
+site_url: !ENV READTHEDOCS_CANONICAL_URL
 repo_url: https://github.com/Blueprints-org/blueprints
 
 extra_css:
   - assets/stylesheets/extra.css
+  - assets/stylesheets/readthedocs.css
   - https://unpkg.com/katex@0/dist/katex.min.css
 
 extra_javascript:
   - assets/javascripts/katex.js
   - https://unpkg.com/katex@0/dist/katex.min.js
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+  - assets/javascripts/readthedocs.js
   
 copyright: "2025 &copy; Blueprints"
 
