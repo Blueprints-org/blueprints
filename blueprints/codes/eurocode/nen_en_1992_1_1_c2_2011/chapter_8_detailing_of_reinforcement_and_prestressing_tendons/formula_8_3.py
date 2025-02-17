@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form8Dot3RequiredAnchorageLength(Formula):
-    """Class representing formula 8.3 for the calculation of the basic required anchorage length, assuming constant bond stress :math:`f_{bd}`."""
+    r"""Class representing formula 8.3 for the calculation of the basic required anchorage length, assuming constant bond stress [$$f_{bd}$$]."""
 
     label = "8.3"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,19 +19,19 @@ class Form8Dot3RequiredAnchorageLength(Formula):
         sigma_sd: MPA,
         f_bd: MPA,
     ) -> None:
-        r"""[:math:`l_{b,rqd}`] Basic required anchorage length, for anchoring the force :math:`A_{s} \\cdot σ_{sd}` in a straight bar assuming
-        constant bond stress :math:`f_{bd}`. [mm].
+        r"""[$$l_{b,rqd}$$] Basic required anchorage length, for anchoring the force [$$A_{s} \cdot \sigma_{sd}$$] in a straight bar assuming
+        constant bond stress [$$f_{bd}$$]. [mm].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.3(2) - Formula (8.3)
 
         Parameters
         ----------
         diameter: MM
-            [:math:`Ø`] Diameter of the bar [mm].
+            [$$Ø$$] Diameter of the bar [mm].
         sigma_sd: MPA
-            [:math:`σ_{sd}`] design stress of the bar at the position from where the anchorage is measured from [MPa].
+            [$$\sigma_{sd}$$] design stress of the bar at the position from where the anchorage is measured from [MPa].
         f_bd: MPA
-            [:math:`f_{bd}`] Design value ultimate bond stress [MPa].
+            [$$f_{bd}$$] Design value ultimate bond stress [MPa].
             Use your own implementation for this value or use the Form8Dot2UltimateBondStress class.
         """
         super().__init__()

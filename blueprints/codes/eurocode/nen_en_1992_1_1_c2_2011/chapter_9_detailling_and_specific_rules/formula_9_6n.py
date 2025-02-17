@@ -20,16 +20,16 @@ class Form9Dot6nMaximumDistanceShearReinforcement(Formula):
         d: MM,
         alpha: DEG,
     ) -> None:
-        """[sl,max] Maximum distance between shear reinforcement in longitudinal direction [mm].
+        r"""[$$s_{l,max}$$] Maximum distance between shear reinforcement in longitudinal direction [$$mm$$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.2(6) - Formula (9.6N)
 
         Parameters
         ----------
         d: MM
-            [d] Effective height of the cross-section [mm].
+            [$$d$$] Effective height of the cross-section [$$mm$$].
         alpha: DEG
-            [α] The angle between the shear reinforcement and the longitudinal axis of the beam (see 9.2.2(1)) [deg].
+            [$$\alpha$$] The angle between the shear reinforcement and the longitudinal axis of the beam (see 9.2.2(1)) [$$deg$$].
         """
         super().__init__()
         self.d = d
