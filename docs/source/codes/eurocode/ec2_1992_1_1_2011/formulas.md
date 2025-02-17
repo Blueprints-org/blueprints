@@ -59,7 +59,7 @@ Total of 304 formulas present.
 | 5.10b          | :heavy_check_mark: |         | Form5Dot10bRedistributionOfMomentsUpperFck                |
 | 5.11N          | :heavy_check_mark: |         | Form5Dot11nShearSlendernessCorrectionFactor               |
 | 5.12N          | :heavy_check_mark: |         | Form5Dot12nRatioDistancePointZeroAndMaxMoment             |
-| 5.13N          |        :x:         |         |                                                           |
+| 5.13N          | :heavy_check_mark: |         | Form5Dot13NSlendernessCriterion                           |
 | 5.14           | :heavy_check_mark: |         | Form5Dot14SlendernessRatio                                |
 | 5.15           | :heavy_check_mark: |         | Form5Dot15EffectiveLengthBraced                           |
 | 5.16           | :heavy_check_mark: |         | Form5Dot16EffectiveLengthUnbraced                         |
