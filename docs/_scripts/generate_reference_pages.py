@@ -7,7 +7,7 @@ import mkdocs_gen_files
 nav = mkdocs_gen_files.Nav()
 mod_symbol = '<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code>'
 
-root = Path(__file__).parents[3]
+root = Path(__file__).parents[2]
 src = root / "blueprints"
 
 for path in sorted(src.rglob("*.py")):
