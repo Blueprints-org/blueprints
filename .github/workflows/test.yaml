@@ -41,8 +41,8 @@ jobs:
 
       - name: Run type checks with mypy
         run: |
-          mypy -p blueprints
+          uv run mypy -p blueprints
 
       - name: Run tests with pytest
         run: |
-          uv run pytest --pspec tests/ --verbose
+          pytest --pspec tests/ --verbose
