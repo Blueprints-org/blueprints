@@ -25,7 +25,7 @@ class Form8Dot8nAnchorageCapacityWeldedTransverseBar(Formula):
         sigma_td: MPA,
         f_wd: KN,
     ) -> None:
-        """[$F_{btd}$] Anchorage capacity of welded transverse bar, welded on the inside of the main bar [$kN$].
+        """[:math:`F_{btd}`] Anchorage capacity of welded transverse bar, welded on the inside of the main bar [:math:`kN`].
 
             Note: Value may be found in National Annex.
 
@@ -34,22 +34,22 @@ class Form8Dot8nAnchorageCapacityWeldedTransverseBar(Formula):
         Parameters
         ----------
         l_td: MM
-            [$l_{td}$] Design length of transverse bar [$mm$].
+            [:math:`l_{td}`] Design length of transverse bar [:math:`mm`].
 
-           $= 1.16 ⋅ ø_{t} ⋅ (f_{yd}/σ_{td})^{0.5} ≤ l_{t}$
+            :math:`= 1.16 ⋅ ø_{t} ⋅ (f_{yd}/σ_{td})^{0.5} ≤ l_{t}`
 
             Use your own implementation of this formula or use the SubForm8Dot8nDesignLengthOfTransverseBar class.
         diameter_t: MM
-            [$ø_{t}$] Diameter of transverse bar [$mm$].
+            [:math:`ø_{t}`] Diameter of transverse bar [:math:`mm`].
         sigma_td: MPA
-            [$σ_{td}$] Concrete stress [$MPa$].
+            [:math:`σ_{td}`] Concrete stress [:math:`MPa`].
 
-          $(f_{ctd}+σ_{cm})/y ≤ 3⋅f_{cd}$
+            :math:`=(f_{ctd}+σ_{cm})/y ≤ 3⋅f_{cd}`
 
             Use your own implementation of this formula or use the SubForm8Dot8nConcreteStress class.
         f_wd: KN
-            [$F_{wd}$] Design shear strength of weld (specified as a factor times${s}⋅f_{yd}$; say$$⋅A_{s}⋅f_{yd}$w$e
-            $A_{s}$ is the cross-section of the anchored bar and fyd is its design yield strength)  [kN].
+            [:math:`F_{wd}`] Design shear strength of weld (specified as a factor times :math:`A_{s}⋅f_{yd}`; say :math:`0.5⋅A_{s}⋅f_{yd}` where
+            :math:`A_{s}` is the cross-section of the anchored bar and fyd is its design yield strength)  [kN].
         """
         super().__init__()
         self.l_td = l_td
@@ -97,24 +97,24 @@ class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
         sigma_td: MPA,
         l_t: MM,
     ) -> None:
-        """[$l_{td}$] Design length of transverse bar [$mm$].
+        """[:math:`l_{td}`] Design length of transverse bar [:math:`mm`].
 
-        NEN-EN 1992-1-1+C2:2011 art.8.6(2) -$_{td}$
+        NEN-EN 1992-1-1+C2:2011 art.8.6(2) - :math:`l_{td}`
 
         Parameters
         ----------
         diameter_t: MM
-            [$ø_{t}$] Diameter of transverse bar [$mm$].
+            [:math:`ø_{t}`] Diameter of transverse bar [:math:`mm`].
         f_yd: MPA
-            [$f_{yd}$] Design yield strength of bar [$MPa$].
+            [:math:`f_{yd}`] Design yield strength of bar [:math:`MPa`].
         sigma_td: MPA
-            [$σ_{td}$] Concrete stress [$MPa$].
+            [:math:`σ_{td}`] Concrete stress [:math:`MPa`].
 
-          $(f_{ctd}+σ_{cm})/y ≤ 3⋅f_{cd}$
+            :math:`=(f_{ctd}+σ_{cm})/y ≤ 3⋅f_{cd}`
 
             Use your own implementation of this formula or use the SubForm8Dot8nConcreteStress class.
         l_t: MM
-            [$l_{t}$] Length of transverse bar, but not more than the spacing of bars to be anchored [$mm$].
+            [:math:`l_{t}`] Length of transverse bar, but not more than the spacing of bars to be anchored [:math:`mm`].
         """
         super().__init__()
         self.diameter_t = diameter_t
@@ -165,24 +165,24 @@ class SubForm8Dot8nConcreteStress(Formula):
         y_function: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
-        """[$σ_{td}$] Concrete stress [$MPa$].
+        """[:math:`σ_{td}`] Concrete stress [:math:`MPa`].
 
         NEN-EN 1992-1-1+C2:2011 art.8.6(2) - σtd
 
         Parameters
         ----------
         f_ctd: MPA
-            [$f_{ctd}$] Design tensile strength of concrete [$MPa$].
+            [:math:`f_{ctd}`] Design tensile strength of concrete [:math:`MPa`].
         sigma_cm: MPA
-            [$σ_{cm}$] Compression in the concrete perpendicular to both bars (mean value) [$MPa$].
+            [:math:`σ_{cm}`] Compression in the concrete perpendicular to both bars (mean value) [:math:`MPa`].
         y_function: DIMENSIONLESS
             [y] A function [-]
 
-          $ 0.015 + 0.14 ⋅ exp(-0.18⋅x)$
+            :math:`= 0.015 + 0.14 ⋅ exp(-0.18⋅x)`
 
             Use your own implementation of this formula or use the SubForm8Dot8nFunctionY class.
         f_cd: MPA
-            [$f_{cd}$] Design value compressive strength of concrete [$MPa$].
+            [:math:`f_{cd}`] Design value compressive strength of concrete [:math:`MPa`].
         """
         super().__init__()
         self.f_ctd = f_ctd
@@ -238,7 +238,7 @@ class SubForm8Dot8nFunctionY(Formula):
         x_function: DIMENSIONLESS
             [x] A function accounting for the geometry [-]
 
-        $ 2⋅(c/ø_{t}) + 1$
+            :math:`= 2⋅(c/ø_{t}) + 1`
 
             Use your own implementation of this formula or use the SubForm8Dot8nFunctionX class.
         """
@@ -282,9 +282,9 @@ class SubForm8Dot8nFunctionX(Formula):
         Parameters
         ----------
         cover: MM
-            [c] Concrete cover perpendicular to both bars [$mm$].
+            [c] Concrete cover perpendicular to both bars [:math:`mm`].
         diameter_t: MM
-            [$ø_{t}$] Diameter of transverse bar [$mm$].
+            [:math:`ø_{t}`] Diameter of transverse bar [:math:`mm`].
         """
         super().__init__()
         self.cover = cover

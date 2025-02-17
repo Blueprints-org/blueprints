@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot7abFlangeEffectiveFlangeWidth(Formula):
-    """Class representing formula 5.7a and formula 5.7b for the calculation of effective flange width of the i-th flange [$b_{eff,i}$].
+    """Class representing formula 5.7a and formula 5.7b for the calculation of effective flange width of the i-th flange [:math:`b_{eff,i}`].
     See Figure 5.3.
     """
 
@@ -20,16 +20,16 @@ class Form5Dot7abFlangeEffectiveFlangeWidth(Formula):
         b_i: M,
         l_0: M,
     ) -> None:
-        """[$b_{eff,i}$] Effective flange width of the i-th flange of a beam [$m$].
+        """[:math:`b_{eff,i}`] Effective flange width of the i-th flange of a beam [:math:`m`].
 
         NEN-EN 1992-1-1+C2:2011 art.5.3.2.1(3) - Formula (5.7a) and (5.7b)
 
         Parameters
         ----------
         b_i : M
-            [$b_{i}$] Effective flange width of the i-th flange [$m$].
+            [:math:`b_{i}`] Effective flange width of the i-th flange [:math:`m`].
         l_0 : M
-            [$l_{0}$] distance between points of zero moment, which may be obtained from Figure 5.2 [$m$].
+            [:math:`l_{0}`] distance between points of zero moment, which may be obtained from Figure 5.2 [:math:`m`].
 
         Notes
         -----

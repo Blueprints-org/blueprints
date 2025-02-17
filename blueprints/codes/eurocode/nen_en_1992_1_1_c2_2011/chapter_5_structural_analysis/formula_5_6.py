@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot6TransverseForceEffectRoofDiaphragm(Formula):
-    """Class representing formula 5.6 for the calculation of the effect of the inclination on roof diaphragm, $H_{i}$.
+    """Class representing formula 5.6 for the calculation of the effect of the inclination on roof diaphragm, :math:`H_{i}`.
     See Figure 5.1 c2.
     """
 
@@ -20,20 +20,20 @@ class Form5Dot6TransverseForceEffectRoofDiaphragm(Formula):
         theta_i: DIMENSIONLESS,
         n_a: KN,
     ) -> None:
-        """[$H_{i}$] Effect of the inclination on roof diaphragm [$kN$].
+        """[:math:`H_{i}`] Effect of the inclination on roof diaphragm [:math:`kN`].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(8) - Formula (5.6)
 
         Parameters
         ----------
         theta_i : DIMENSIONLESS
-            [$Θ_{i}$] Eccentricity, initial inclination imperfections [-].
+            [:math:`Θ_{i}`] Eccentricity, initial inclination imperfections [-].
         n_a : KN
-            [$N_{a}$] Axial force in the member [$kN$].
+            [:math:`N_{a}`] Axial force in the member [:math:`kN`].
 
         Notes
         -----
-        where$_{a} is a longitudinal force contributing to :math:$H_{i}`.
+        where :math:`N_{a} is a longitudinal force contributing to :math:`H_{i}`.
         Positive values for compression, tension is not allowed.
         """
         super().__init__()

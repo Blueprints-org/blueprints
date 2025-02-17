@@ -19,26 +19,26 @@ class Form8Dot2UltimateBondStress(Formula):
         eta_2: DIMENSIONLESS,
         f_ctd: MPA,
     ) -> None:
-        r"""[$f_{bd}$] The design value of the ultimate bond stress for ribbed bars [-].
+        r"""[:math:`f_{bd}`] The design value of the ultimate bond stress for ribbed bars [-].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) - Formula (8.2)
 
         Parameters
         ----------
         eta_1 : DIMENSIONLESS
-            [$η_1$] coefficient related to the quality of the bond condition and the position of the bar during concreting (see Figure 8.2) [-].
-            =$1$ when ‘good’ conditions are obtained;
-            =$1$ other cases and for bars in structural elements built with slip-forms, unless it can be shown that ‘good’ bond conditions
+            [:math:`η_1`] coefficient related to the quality of the bond condition and the position of the bar during concreting (see Figure 8.2) [-].
+            = :math:`1` when ‘good’ conditions are obtained;
+            = :math:`1` other cases and for bars in structural elements built with slip-forms, unless it can be shown that ‘good’ bond conditions
             exist;
             Use your own implementation of this formula or use the SubForm8Dot2CoefficientQualityOfBond class.
         eta_2 : DIMENSIONLESS
-            [$η_2$] A factor related to the bar diameter [-].
-            =$2$ for bars with a diameter ≤$$\text{mm}$;
-            =$(132 - Ø) / 100$ for bars with a diameter >$32\text{mm}$.
+            [:math:`η_2`] A factor related to the bar diameter [-].
+            = :math:`1` for bars with a diameter ≤ :math:`32 \text{mm}`;
+            = :math:`(132 - Ø) / 100` for bars with a diameter > :math:`32 \text{mm}`.
             Use your own implementation of this value or use the SubForm8Dot2CoefficientBarDiameter class.
         f_ctd : MPA
-            [$f_{ctd}$] Design tensile strength of concrete according to art.3.1.6(2) [MPa].
-            Due to the increasing brittleness of higher strength concrete,$_{ctk,0,05}$ should be limited here to the value for C60/75, unless
+            [:math:`f_{ctd}`] Design tensile strength of concrete according to art.3.1.6(2) [MPa].
+            Due to the increasing brittleness of higher strength concrete, :math:`f_{ctk,0,05}` should be limited here to the value for C60/75, unless
             it can be verified that the average bond strength increases above this limit.
         """
         super().__init__()
@@ -108,14 +108,14 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
     label = "8.2"
 
     def __init__(self, diameter: MM) -> None:
-        """[$η_2$] Coefficient that depends on the bar diameter [-].
+        """[:math:`η_2`] Coefficient that depends on the bar diameter [-].
 
-        NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) -$_2$
+        NEN-EN 1992-1-1+C2:2011 art.8.4.2(2) - :math:`η_2`
 
         Parameters
         ----------
         diameter : MM
-            [$Ø$] Diameter of the bar [mm].
+            [:math:`Ø`] Diameter of the bar [mm].
         """
         super().__init__()
         self.diameter = diameter

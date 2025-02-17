@@ -12,7 +12,7 @@ class Form5Dot12nRatioDistancePointZeroAndMaxMoment(Formula):
 
     Note:
     Ratio of the distance between point of zero and maximum moment after redistribution and
-    effective depth, d. [$λ$]
+    effective depth, d. [:math:`λ`]
     """
 
     label = "5.12N"
@@ -24,19 +24,19 @@ class Form5Dot12nRatioDistancePointZeroAndMaxMoment(Formula):
         v_sd: KN,
         d: M,
     ) -> None:
-        """[$λ$] ratio of the distance between point of zero and maximum moment after redistribution and
-        effective depth, d [$-$].
+        """[:math:`λ`] ratio of the distance between point of zero and maximum moment after redistribution and
+        effective depth, d [:math:`-`].
 
         NEN-EN 1992-1-1+C2:2011 art.5.6.3(4) - Formula (5.12N)
 
         Parameters
         ----------
         m_sd : KNM
-            [$M_{sd}$] Design moment at the section [$kNm$].
+            [:math:`M_{sd}`] Design moment at the section [:math:`kNm`].
         v_sd : KN
-            [$V_{sd}$] Design shear force at the section [$kN$].
+            [:math:`V_{sd}`] Design shear force at the section [:math:`kN`].
         d : M
-            [$d$] Effective depth [$m$].
+            [:math:`d`] Effective depth [:math:`m`].
         """
         super().__init__()
         self.m_sd = m_sd

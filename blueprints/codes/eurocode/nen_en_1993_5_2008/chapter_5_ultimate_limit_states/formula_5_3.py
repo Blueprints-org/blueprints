@@ -21,20 +21,20 @@ class Form5Dot3DesignMomentResistanceClass3(Formula):
         f_y: MPA,
         gamma_m_0: DIMENSIONLESS,
     ) -> None:
-        """[$M_{c,Rd}$] Calculate design moment resistance of the cross-section (class 3) in [$kNm/m$].
+        """(:math:`M_{c,Rd}`) Calculate design moment resistance of the cross-section (class 3) in [:math:`kNm/m`].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(2) - Formula (5.3)
 
         Parameters
         ----------
         beta_b : DIMENSIONLESS
-            p$β_{b}$] Reduction factor for the bending resistance of the cross-section in [-].
+            (:math:`β_{b}`) Reduction factor for the bending resistance of the cross-section in [-].
         w_el : MM3
-            [$W_{el}$] Elastic section modulus in [$mm³/m$].
+            (:math:`W_{el}`) Elastic section modulus in [:math:`mm³/m`].
         f_y : MPA
-            [$f_{y}$] Yield strength in [$MPa$].
+            (:math:`f_{y}`) Yield strength in [:math:`MPa`].
         gamma_m_0 : DIMENSIONLESS
-            [$γ_{M0}$] Partial factor for material properties in [-].
+            (:math:`γ_{M0}`) Partial factor for material properties in [-].
         """
         super().__init__()
         self.beta_b = beta_b

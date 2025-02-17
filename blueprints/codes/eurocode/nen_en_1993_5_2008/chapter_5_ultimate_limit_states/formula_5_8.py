@@ -22,20 +22,20 @@ class Form5Dot8RelativeWebSlenderness(Formula):
         f_y: MPA,  # Yield strength
         e: MPA,  # Young's modulus
     ) -> None:
-        r"""[$\overline{\lambda}$] Calculate the relative slenderness of the web [-].
+        r"""[:math:`\overline{\lambda}`] Calculate the relative slenderness of the web [-].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(7) - Formula (5.8)
 
         Parameters
         ----------
         c : MM
-            [$c$] Length of the web in [$mm$].
+            [:math:`c`] Length of the web in [:math:`mm`].
         t_w : MM
-            [$t_{w}$] Thickness of the web in [$mm$].
+            [:math:`t_{w}`] Thickness of the web in [:math:`mm`].
         f_y : MPA
-            [$f_{y}$] Yield strength in [$MPa$].
+            [:math:`f_{y}`] Yield strength in [:math:`MPa`].
         e : MPA
-            [$E$] Young's modulus in [$MPa$].
+            [:math:`E`] Young's modulus in [:math:`MPa`].
         """
         super().__init__()
         self.c: float = c

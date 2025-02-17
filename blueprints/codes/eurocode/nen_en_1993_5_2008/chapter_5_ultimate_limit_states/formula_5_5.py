@@ -22,18 +22,18 @@ class Form5Dot5PlasticShearResistance(Formula):
         f_y: MPA,
         gamma_m_0: DIMENSIONLESS,
     ) -> None:
-        """[$V_{pl,Rd}$] Calculate design plastic shear resistance for each web in [$kN$].
+        """(:math:`V_{pl,Rd}`) Calculate design plastic shear resistance for each web in [:math:`kN`].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(4) - Formula (5.5)
 
         Parameters
         ----------
         a_v : MM2
-            [$A_{v}$] Projected shear area for each web, acting in the same direction as VEd in [$mm²$].
+            (:math:`A_{v}`) Projected shear area for each web, acting in the same direction as VEd in [:math:`mm²`].
         f_y : MPA
-            [$f_{y}$] Yield strength in [$MPa$].
+            (:math:`f_{y}`) Yield strength in [:math:`MPa`].
         gamma_m_0 : DIMENSIONLESS
-            [$γ_{M0}$] Partial factor for material properties in [-].
+            (:math:`γ_{M0}`) Partial factor for material properties in [-].
         """
         super().__init__()
         self.a_v: float = a_v

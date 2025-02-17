@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot8EffectiveSpan(Formula):
-    """Class representing formula 5.8 for calculating the effective span of beams and slabs, $l_{eff}$.
+    """Class representing formula 5.8 for calculating the effective span of beams and slabs, :math:`l_{eff}`.
 
     See Figure 5.4
     """
@@ -22,20 +22,20 @@ class Form5Dot8EffectiveSpan(Formula):
         a_1: M,
         a_2: M,
     ) -> None:
-        """[$l_{eff}$] the effective span of a member [$m$].
+        """[:math:`l_{eff}`] the effective span of a member [:math:`m`].
 
         NEN-EN 1992-1-1+C2:2011 art.5.3.2.2(1) - Formula (5.8)
 
         Parameters
         ----------
         l_n : M
-            [$l_{n}$] clear distance between the faces of the supports [$m$].
+            [:math:`l_{n}`] clear distance between the faces of the supports [:math:`m`].
         a_1 : M
-            [$a_{1}$] values for${1}$$$a$}$at$ch end of the span, may be determined from the appropriate$a_{$$
-                            values in Figure 5.4 where t is the width of the supporting element as shown. [$m$].
+            [:math:`a_{1}`] values for :math:`a_{1}` and :math:`a_{2}` at each end of the span, may be determined from the appropriate :math:`a_{i}`
+                            values in Figure 5.4 where t is the width of the supporting element as shown. [:math:`m`].
         a_2 : M
-            [$a_{2}$] values for${1}$$$a$}$at$ch end of the span, may be determined from the appropriate$a_{$$
-                            values in Figure 5.4 where t is the width of the supporting element as shown. [$m$].
+            [:math:`a_{2}`] values for :math:`a_{1}` and :math:`a_{2}` at each end of the span, may be determined from the appropriate :math:`a_{i}`
+                            values in Figure 5.4 where t is the width of the supporting element as shown. [:math:`m`].
         """
         super().__init__()
         self.l_n = l_n

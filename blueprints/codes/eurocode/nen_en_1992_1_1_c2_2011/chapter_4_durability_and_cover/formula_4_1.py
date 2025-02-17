@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form4Dot1NominalConcreteCover(Formula):
-    """Class representing the formula 4.1 for the calculation of the nominal concrete cover $c_{nom}$ [$mm$]."""
+    """Class representing the formula 4.1 for the calculation of the nominal concrete cover :math:`c_{nom}` [:math:`mm`]."""
 
     label = "4.1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form4Dot1NominalConcreteCover(Formula):
         c_min: MM,
         delta_c_dev: MM,
     ) -> None:
-        """[$c_{nom}$] Calculates the nominal concrete cover [$mm$].
+        """[:math:`c_{nom}`] Calculates the nominal concrete cover [:math:`mm`].
 
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.1 (2) - Formula (4.1)
 
         Parameters
         ----------
         c_min: MM
-            [$c_{min}$] Minimum concrete cover based on art. 4.4.1.2 [$mm$].
+            [:math:`c_{min}`] Minimum concrete cover based on art. 4.4.1.2 [:math:`mm`].
         delta_c_dev: MM
-            [$Δc_{dev}$] Construction tolerance based on art. 4.4.1.3 [$mm$].
+            [:math:`Δc_{dev}`] Construction tolerance based on art. 4.4.1.3 [:math:`mm`].
         """
         super().__init__()
         self.c_min = c_min

@@ -126,7 +126,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def f_yk(self) -> MPA:
-        """[$f_yk$] Characteristic yield strength of reinforcement [MPa].
+        """[:math:`f_yk`] Characteristic yield strength of reinforcement [MPa].
 
         Returns
         -------
@@ -148,7 +148,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def f_tk(self) -> MPA:
-        """[$f_tk$] Characteristic tensile strength of reinforcement [MPa].
+        """[:math:`f_tk`] Characteristic tensile strength of reinforcement [MPa].
 
         Returns
         -------
@@ -159,7 +159,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def ductility_factor_k(self) -> DIMENSIONLESS:
-        """Ductility factor k [-] -> ($f_tk$/$f_yk$) tabel C.1 Annex C from NEN-EN 1992-1-1.
+        """Ductility factor k [-] -> (:math:`f_tk` / :math:`f_yk`) tabel C.1 Annex C from NEN-EN 1992-1-1.
 
         * 1.05 for steel class A
         * 1.08 for steel class B
@@ -182,7 +182,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def eps_uk(self) -> PER_MILLE:
-        """[$ε_uk$] Characteristic strain of reinforcement at maximum load [‰ (per mille)] (tabel C.1 Annex C from NEN-EN 1992-1-1).
+        """[:math:`ε_uk`] Characteristic strain of reinforcement at maximum load [‰ (per mille)] (tabel C.1 Annex C from NEN-EN 1992-1-1).
 
         * 250 ‰ for steel class A
         * 500 ‰ for steel class B

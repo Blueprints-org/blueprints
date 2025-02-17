@@ -8,22 +8,22 @@ from blueprints.validations import raise_if_negative
 
 
 class Form2Dot2CharacteristicValueResistance(Formula):
-    """Class representing formula 2.2 for the calculation of the characteristic value of the resistance $R_k$."""
+    """Class representing formula 2.2 for the calculation of the characteristic value of the resistance :math:`R_k`."""
 
     label = "2.2"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
 
     def __init__(self, r_d: float, gamma_mi: DIMENSIONLESS) -> None:
-        """[$R_k$] Characteristic value of the resistance [$kN$].
+        """[:math:`R_k`] Characteristic value of the resistance [:math:`kN`].
 
         NEN-EN 1993-1-1+C2+A1:2016 art.2.5(2) - Formula (2.2)
 
         Parameters
         ----------
         r_d : float
-            [$R_d$] Design value of the resistance according to Annex D of EN 1990.
+            [:math:`R_d`] Design value of the resistance according to Annex D of EN 1990.
         gamma_mi : DIMENSIONLESS
-            [$γ_{Mi}$] Recommended partial factors for the resistance.
+            [:math:`γ_{Mi}`] Recommended partial factors for the resistance.
         """
         super().__init__()
         self.r_d = r_d

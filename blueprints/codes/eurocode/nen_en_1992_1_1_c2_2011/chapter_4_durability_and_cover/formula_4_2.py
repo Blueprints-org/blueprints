@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form4Dot2MinimumConcreteCover(Formula):
-    """Class representing the formula 4.2 for the calculation of the minimum concrete cover $c_{min}$ [$mm$]."""
+    """Class representing the formula 4.2 for the calculation of the minimum concrete cover :math:`c_{min}` [:math:`mm`]."""
 
     label = "4.2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,7 +21,7 @@ class Form4Dot2MinimumConcreteCover(Formula):
         delta_c_dur_st: MM = 0,
         delta_c_dur_add: MM = 0,
     ) -> None:
-        """[$c_{min}$] Calculates the minimum concrete cover [$mm$].
+        """[:math:`c_{min}`] Calculates the minimum concrete cover [:math:`mm`].
 
         A minimum concrete cover of 10 mm is required, even if the calculated value is lower.
 
@@ -30,20 +30,20 @@ class Form4Dot2MinimumConcreteCover(Formula):
         Parameters
         ----------
         c_min_b: MM
-            [$c_{min,b}$] The minimum concrete cover based on the adhesion requirements based on art. 4.4.1.2 (3) [$mm$].
+            [:math:`c_{min,b}`] The minimum concrete cover based on the adhesion requirements based on art. 4.4.1.2 (3) [:math:`mm`].
         c_min_dur: MM
-            [$c_{min,dur}$] The minimum concrete cover based on environmental conditions based on art. 4.4.1.2 (5) [$mm$].
+            [:math:`c_{min,dur}`] The minimum concrete cover based on environmental conditions based on art. 4.4.1.2 (5) [:math:`mm`].
         delta_c_dur_gamma: MM
-            [$Δc_{dur,γ}$] An additional safety requirement based on art. 4.4.1.2 (6) [$mm$].
-            The value of [$Δc_{dur,γ}$] for use in a Country may be found in its National Annex.
+            [:math:`Δc_{dur,γ}`] An additional safety requirement based on art. 4.4.1.2 (6) [:math:`mm`].
+            The value of [:math:`Δc_{dur,γ}`] for use in a Country may be found in its National Annex.
             The recommended value is O mm. 0 mm is the default value in the formula if not specified otherwise.
         delta_c_dur_st: MM
-            [$Δc_{dur,st}$] A reduction of minimum concrete cover when using stainless steel based on art. 4.4.1.2 (7) [$mm$].
-            The value of [$Δc_{dur,st}$] for use in a Country may be found in its National Annex.
+            [:math:`Δc_{dur,st}`] A reduction of minimum concrete cover when using stainless steel based on art. 4.4.1.2 (7) [:math:`mm`].
+            The value of [:math:`Δc_{dur,st}`] for use in a Country may be found in its National Annex.
             The recommended value, without further specification, is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
         delta_c_dur_add: MM
-            [$Δc_{dur,add}$] A reduction of minimum concrete cover when using additional protection based on art. 4.4.1.2 (8) [$mm$].
-            The value of [$Δc_{dur,add}$] for use in a Country may be found in its National Annex.
+            [:math:`Δc_{dur,add}`] A reduction of minimum concrete cover when using additional protection based on art. 4.4.1.2 (8) [:math:`mm`].
+            The value of [:math:`Δc_{dur,add}`] for use in a Country may be found in its National Annex.
             The recommended value, without further specification, is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
         """
         super().__init__()

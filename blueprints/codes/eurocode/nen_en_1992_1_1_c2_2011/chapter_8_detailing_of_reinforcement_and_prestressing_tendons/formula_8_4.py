@@ -11,7 +11,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form8Dot4DesignAnchorageLength(Formula):
-    """Class representing formula 8.4 for the calculation of the design anchorage length $l_{bd}$ [mm]."""
+    """Class representing formula 8.4 for the calculation of the design anchorage length :math:`l_{bd}` [mm]."""
 
     label = "8.4"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -27,71 +27,71 @@ class Form8Dot4DesignAnchorageLength(Formula):
         l_b_min: MM,
         min_product_alpha_2_3_5: RATIO | None = None,
     ) -> None:
-        """[$l_{bd}$] Design anchorage length [$mm$].
+        """[:math:`l_{bd}`] Design anchorage length [:math:`mm`].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.4)
 
         Parameters
         ----------
         alpha_1 : RATIO
-            [$α_{1}$] Coefficient for the effect of the form of the bars assuming adequate cover (see figure 8.1) [-].
+            [:math:`α_{1}`] Coefficient for the effect of the form of the bars assuming adequate cover (see figure 8.1) [-].
 
-          $1.0$ for bars in compression.
+            :math:`= 1.0` for bars in compression.
 
-          $1.0$ for straight bars in tension.
+            :math:`= 1.0` for straight bars in tension.
 
-          $1.0 if c_{d} <= 3 ⋅ Ø$ for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            :math:`= 1.0 if c_{d} <= 3 ⋅ Ø` for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
 
-          $0.7 if c_{d} > 3 ⋅ Ø$ for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            :math:`= 0.7 if c_{d} > 3 ⋅ Ø` for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
 
-            Note: see figure 8.3 for values of $_{d}$.
+            Note: see figure 8.3 for values of :math:`c_{d}`.
         alpha_2 : RATIO
-            [$α_{2}$] Coefficient for the effect of minimum concrete cover (see figure 8.3) [-].
+            [:math:`α_{2}`] Coefficient for the effect of minimum concrete cover (see figure 8.3) [-].
 
-          $1.0$ for bars in compression.
+            :math:`= 1.0` for bars in compression.
 
-          $1 - 0.15 ⋅ (c_{d} - Ø) / Ø <= 1$ with a minimum of 0.7 for straight bars in tension.
+            :math:`= 1 - 0.15 ⋅ (c_{d} - Ø) / Ø <= 1` with a minimum of 0.7 for straight bars in tension.
 
-          $1 - 0.15 ⋅ (c_{d} - 3 ⋅ Ø) / Ø <= 1$ with a minimum of 0.7 for bars other than
+            :math:`= 1 - 0.15 ⋅ (c_{d} - 3 ⋅ Ø) / Ø <= 1` with a minimum of 0.7 for bars other than
             straight in tension (see figure 8.1 (b), (c) and (d)).
 
-            Note: see figure 8.3 for values of$_{d}$.
+            Note: see figure 8.3 for values of :math:`c_{d}`.
         alpha_3 : RATIO
-            [$α_{3}$] Coefficient for the effect of confinement by transverse reinforcement [-].
+            [:math:`α_{3}`] Coefficient for the effect of confinement by transverse reinforcement [-].
 
-          $1.0$ for bars in compression.
+            :math:`= 1.0` for bars in compression.
 
-          $1 - K ⋅ λ <= 1$ with a minimum of 0.7 for bars in tension.
+            :math:`= 1 - K ⋅ λ <= 1` with a minimum of 0.7 for bars in tension.
 
-            Where:$= (ΣA_{st} - ΣA_{st,min}) / A_{s}$.
+            Where: :math:`λ = (ΣA_{st} - ΣA_{st,min}) / A_{s}`.
 
-            Where: $A_{st,min}$ cross-sectional area of the minimum transverse
-            reinforcement$ 0,25 ⋅ A_{s}$ for beams and 0 for slabs.
+            Where: :math:`ΣA_{st,min}` = cross-sectional area of the minimum transverse
+            reinforcement :math:`= 0,25 ⋅ A_{s}` for beams and 0 for slabs.
 
-            Note: see figure 8.4 for values of $, A_{s} and A_{st}$.
+            Note: see figure 8.4 for values of :math:`K, A_{s} and A_{st}`.
         alpha_4 : RATIO
-            [$α_{4}$] Coefficient for the influence of one or more welded transverse bars $Ø_{t} > 0,6 Ø)$ along the design anchorage
-            length $_{bd}$ (see 8.6) [-].
+            [:math:`α_{4}`] Coefficient for the influence of one or more welded transverse bars :math:`(Ø_{t} > 0,6 Ø)` along the design anchorage
+            length :math:`l_{bd}` (see 8.6) [-].
 
-          $0.7$ for all types, position and size as specified in figure 8.6 (e) in both tension and compression.
+            :math:`= 0.7` for all types, position and size as specified in figure 8.6 (e) in both tension and compression.
 
         alpha_5 : RATIO
-            [$α_{5}$] Coefficient for the effect of the pressure transverse to the plane of splitting
-            along the design anchorage length$_{bd}$ee 8.6) [-].
+            [:math:`α_{5}`] Coefficient for the effect of the pressure transverse to the plane of splitting
+            along the design anchorage length :math:`l_{bd}` (see 8.6) [-].
 
-          $1 - 0.04 ⋅ p <= 1$ with a minimum of 0.7 for all types of anchorage in compression.
+            :math:`= 1 - 0.04 ⋅ p <= 1` with a minimum of 0.7 for all types of anchorage in compression.
 
-            Where: p = transverse pressure at ultimate limit state along $_{bd}$ [MPa].
+            Where: p = transverse pressure at ultimate limit state along :math:`l_{bd}` [MPa].
         l_b_rqd: MM
-            [$l_{b,rqd}$] Basic required anchorage length, for anchoring the force As⋅σsd in a straight bar assuming constant
-            bond stress (formula 8.3) [$mm$].
+            [:math:`l_{b,rqd}`] Basic required anchorage length, for anchoring the force As⋅σsd in a straight bar assuming constant
+            bond stress (formula 8.3) [:math:`mm`].
 
             Use your own implementation for this value or use the :class:`Form8Dot3RequiredAnchorageLength` class.
         l_b_min : MM
-            [$l_{b,min}$] Minimum anchorage length if no other limitation is applied [$mm$].
+            [:math:`l_{b,min}`] Minimum anchorage length if no other limitation is applied [:math:`mm`].
 
-          $= max(0.3 ⋅ l_{b,rqd}, 10 ⋅ Ø, 100)$ for tension anchorage (formula 8.6).
-          $= max(0.6 ⋅ l_{b,rqd}, 10 ⋅ Ø, 100)$ for compression anchorage (formula 8.7).
+            :math:`= max(0.3 ⋅ l_{b,rqd}, 10 ⋅ Ø, 100)` for tension anchorage (formula 8.6).
+            :math:`= max(0.6 ⋅ l_{b,rqd}, 10 ⋅ Ø, 100)` for compression anchorage (formula 8.7).
 
             Use your own implementation of this formula or use the :class:`Form8Dot6MinimumTensionAnchorage` class for tension or
             :class:`Form8Dot7MinimumCompressionAnchorage` for compression.
@@ -102,7 +102,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
         Notes
         -----
-        NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.5) prescribes that $(α_{2} ⋅ α_{3} ⋅ α_{5}) >= 0.7$.
+        NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.5) prescribes that :math:`(α_{2} ⋅ α_{3} ⋅ α_{5}) >= 0.7`.
         """
         super().__init__()
         self.alpha_1 = alpha_1

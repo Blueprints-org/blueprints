@@ -21,20 +21,20 @@ class Form5Dot2DesignMomentResistanceClass1Or2(Formula):
         f_y: MPA,
         gamma_m_0: DIMENSIONLESS,
     ) -> None:
-        """[$M_{c,Rd}$] Calculate design moment resistance of the cross-section (class 1 or 2) in [$kNm/m$].
+        """(:math:`M_{c,Rd}`) Calculate design moment resistance of the cross-section (class 1 or 2) in [:math:`kNm/m`].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(2) - Formula (5.2)
 
         Parameters
         ----------
         beta_b : DIMENSIONLESS
-            [$β_{b}$] Reduction factor for the bending resistance of the cross-section in [-].
+            (:math:`β_{b}`) Reduction factor for the bending resistance of the cross-section in [-].
         w_pl : MM3
-            [$W_{pl}$] Plastic section modulus in [$mm³/m$].
+            (:math:`W_{pl}`) Plastic section modulus in [:math:`mm³/m`].
         f_y : MPA
-            [$f_{y}$] Yield strength in [$MPa$].
+            (:math:`f_{y}`) Yield strength in [:math:`MPa`].
         gamma_m_0 : DIMENSIONLESS
-            [$γ_{M0}$] Partial factor for material properties in [-].
+            (:math:`γ_{M0}`) Partial factor for material properties in [-].
         """
         super().__init__()
         self.beta_b = beta_b
