@@ -45,4 +45,4 @@ jobs:
 
       - name: Run tests with pytest
         run: |
-          python -m pytest --pspec tests/ --verbose
+          uv run pytest --pspec tests/ --verbose
