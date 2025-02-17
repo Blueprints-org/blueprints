@@ -39,6 +39,7 @@ KN_M = float
 # </editor-fold>
 
 # <editor-fold desc="MOMENTS">
+NMM = float
 NM = float
 """Newton-meters (Nm), represented as a float."""
 KNM = float
