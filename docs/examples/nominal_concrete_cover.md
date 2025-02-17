@@ -63,7 +63,7 @@ The output will be:
 Nominal~concrete~cover~according~to~art.~4.4.1~from~NEN-EN~1992-1-1+C2:2011:\newline~\max~\left\{Nominal~concrete~cover~according~to~art.~4.4.1~(c_{nom});~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)\right\}\newline~=~\max~\left\{42.0;~60.0\right\}~=~60.0~mm\newline~\newline~Where:\newline~c_{nom}~=~c_{min,total}+\Delta~c_{dev}~=~32.0+10~=~42.0~mm\newline~\Delta~c_{dev}~is~determined~according~to~art.~4.4.1.3~(1)\newline~c_{min,total}~=~c_{min}~+~\Delta~c_{uneven~surface}~~+~\Delta~c_{abrasion~class}~=~32.0~+~0~+~0~=~32.0~mm\newline~\Delta~c_{uneven~surface}~and~\Delta~c_{abrasion~class}~are~determined~according~to~art.~4.4.1.2~(11)~and~(13)\newline~c_{min}~=~\max~\left\{c_{min,b};~c_{min,dur}+\Delta~c_{dur,\gamma}-\Delta~c_{dur,st}-\Delta~c_{dur,add};~10~\text{mm}\right\}~=~\max~\left\{32.0;~20.0+10-0-0;~10\right\}~=~32.0~mm\newline~\Delta~c_{dur,\gamma}~,~\Delta~c_{dur,st}~and~\Delta~c_{dur,add}~are~determined~according~to~art.~4.4.1.2~(6),~(7)~and~(8)\newline~c_{min,b}~is~determined~according~to~table~4.2~based~on~(equivalent)~rebar~diameter~=~32~=~32~mm\newline~c_{min,dur}~is~determined~according~to~table~4.3~based~on~structural~class~S5~\&~exposure~classes~(XC1)~=~20~mm
 ```
 
-You could use an external service like `lagrida <https://latexeditor.lagrida.com/>`_ to render the latex code or use this output inside a latex or word document of your choice.
+You could use an external service like [lagrida](https://latexeditor.lagrida.com/) to render the latex code or use this output inside a latex or word document of your choice.
 
 <a name="full-code-example">
 The full code example:
