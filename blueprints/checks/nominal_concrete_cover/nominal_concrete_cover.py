@@ -184,7 +184,7 @@ class NominalConcreteCover:
                 r"\Delta c_{dur,\gamma} , \Delta c_{dur,st} and \Delta c_{dur,add} are determined according to art. 4.4.1.2 (6), (7) and (8)",
                 f"{self.c_min_b().latex().return_symbol} is determined according to table 4.2 based on {self.c_min_b().latex().equation}"
                 f" = {self.c_min_b().latex().numeric_equation} = {self.c_min_b().latex().result} mm",
-                f"{self.c_min_dur().latex().return_symbol} is determined according to table 4.3 based on {self.c_min_dur().latex().equation}"
+                f"{self.c_min_dur().latex().return_symbol} is determined according to table 4.4 based on {self.c_min_dur().latex().equation}"
                 f" = {self.c_min_dur().latex().result} mm",
                 "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) = "
                 + self.constants.minimum_cover_with_regard_to_casting_surface_latex(self.casting_surface),
