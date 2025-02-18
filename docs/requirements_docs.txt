@@ -6,3 +6,5 @@ mkdocs-nav-weight ~= 0.2.0
 mkdocs-git-revision-date-localized-plugin ~= 1.2.6
 mkdocstrings[python] ~= 0.27.0
 mkdocs-gen-files ~= 0.5.0
+mkdocs-awesome-nav ~= v3.0.0
+natsorted ~= 8.4.0
