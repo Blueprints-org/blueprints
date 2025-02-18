@@ -1,3 +1,7 @@
+---
+hide:
+  - toc
+---
 # Nominal Concrete Cover
 
 Calculating the nominal concrete cover is an important step in the design of reinforced concrete structures.
@@ -37,7 +41,7 @@ Then just print the results:
 
 The output will be:
 
-```python
+```text
 Structural class: S5
 
 C,min,dur: 20.0 mm

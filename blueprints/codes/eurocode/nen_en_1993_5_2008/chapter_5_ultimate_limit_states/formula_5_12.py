@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot12ElasticCriticalLoad(Formula):
-    r"""Class representing formula 5.12 for the calculation of the elastic critical load, [$$N_{cr}$$]."""
+    r"""Class representing formula 5.12 for the calculation of the elastic critical load, [$N_{cr}$]."""
 
     label = "5.12"
     source_document = NEN_EN_1993_5_2008
@@ -22,21 +22,21 @@ class Form5Dot12ElasticCriticalLoad(Formula):
         beta_d: DIMENSIONLESS,
         l: MM,  # noqa: E741
     ) -> None:
-        r"""[$$N_{cr}$$] Elastic critical load [$$N$$].
+        r"""[$N_{cr}$] Elastic critical load [$N$].
 
         NEN-EN 1993-5:2008 art.5.2.3 - Formula (5.12)
 
         Parameters
         ----------
         e : MPA
-            [$$E$$] Modulus of elasticity [$$MPa$$].
+            [$E$] Modulus of elasticity [$MPa$].
         i : MM4
-            [$$I$$] Moment of inertia [$$mm^4$$].
+            [$I$] Moment of inertia [$mm^4$].
         beta_d : DIMENSIONLESS
-            [$$\beta_D$$] Reduction factor, see 6.4 [$$-$$].
+            [$\beta_D$] Reduction factor, see 6.4 [$-$].
         l : MM
-            [$$l$$] the buckling length, determined according to Figure 5-2 for a free or partially fixed earth
-            support or according to Figure 5-3 for a fixed earth support. [$$mm$$].
+            [$l$] the buckling length, determined according to Figure 5-2 for a free or partially fixed earth
+            support or according to Figure 5-3 for a fixed earth support. [$mm$].
         """
         super().__init__()
         self.e = e

@@ -22,20 +22,20 @@ class Form9Dot4ShearReinforcementRatio(Formula):
         b_w: MM,
         alpha: DEG,
     ) -> None:
-        r"""[$$\rho_w$$] Shear reinforcement ratio [$$-$$].
+        r"""[$\rho_w$] Shear reinforcement ratio [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.2(5) - Formula (9.4)
 
         Parameters
         ----------
         a_sw: MM2
-            [$$A_{sw}$$] Area of shear reinforcement within length s [$$mm^2$$].
+            [$A_{sw}$] Area of shear reinforcement within length s [$mm^2$].
         s: MM
-            [$$s$$] The spacing between shear reinforcement along the longitudinal axis of the element [$$mm$$].
+            [$s$] The spacing between shear reinforcement along the longitudinal axis of the element [$mm$].
         b_w: MM
-            [$$b_w$$] The width of the web of the element [$$mm$$].
+            [$b_w$] The width of the web of the element [$mm$].
         alpha: DEG
-            [$$\alpha$$] The angle between the shear reinforcement and the longitudinal axis of the beam (see 9.2.2(1)) [$$deg$$].
+            [$\alpha$] The angle between the shear reinforcement and the longitudinal axis of the beam (see 9.2.2(1)) [$deg$].
         """
         super().__init__()
         self.a_sw = a_sw

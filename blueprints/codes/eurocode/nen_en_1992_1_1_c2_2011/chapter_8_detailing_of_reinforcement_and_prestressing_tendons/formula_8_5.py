@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form8Dot5ProductAlphas235(Formula):
-    r"""Class representing formula 8.5 for the calculating the product of [$$\alpha_{2}$$], [$$\alpha_{3}$$] [$$\alpha_{5}$$] [$$-$$]."""
+    r"""Class representing formula 8.5 for the calculating the product of [$\alpha_{2}$], [$\alpha_{3}$] [$\alpha_{5}$] [$-$]."""
 
     label = "8.5"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,45 +19,45 @@ class Form8Dot5ProductAlphas235(Formula):
         alpha_3: RATIO,
         alpha_5: RATIO,
     ) -> None:
-        r"""Calculate the product of [$$\alpha_{2}$$], [$$\alpha_{3}$$] and [$$\alpha_{5}$$] [$$-$$].
+        r"""Calculate the product of [$\alpha_{2}$], [$\alpha_{3}$] and [$\alpha_{5}$] [$-$].
 
-        NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.5) prescribes that [$$(\alpha_{2} \cdot \alpha_{3} \cdot \alpha_{5}) \ge 0.7$$].
+        NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.5) prescribes that [$(\alpha_{2} \cdot \alpha_{3} \cdot \alpha_{5}) \ge 0.7$].
         Used by NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.4)
 
         Parameters
         ----------
         alpha_2 : RATIO
-            [$$\alpha_{2}$$] Coefficient for the effect of minimum concrete cover (see figure 8.3) [$$-$$].
+            [$\alpha_{2}$] Coefficient for the effect of minimum concrete cover (see figure 8.3) [$-$].
 
-            [$$= 1.0$$] for bars in compression.
+            [$= 1.0$] for bars in compression.
 
-            [$$= 1 - 0.15 \cdot (c_{d} - \varnothing) / \varnothing \le 1$$] with a minimum of [$$0.7$$] for straight bars in tension.
+            [$= 1 - 0.15 \cdot (c_{d} - \varnothing) / \varnothing \le 1$] with a minimum of [$0.7$] for straight bars in tension.
 
-            [$$= 1 - 0.15 \cdot (c_{d} - 3 \cdot \varnothing) / \varnothing \le 1$$] with a minimum of [$$0.7$$] for bars other than
+            [$= 1 - 0.15 \cdot (c_{d} - 3 \cdot \varnothing) / \varnothing \le 1$] with a minimum of [$0.7$] for bars other than
             straight in tension (see figure 8.1 (b), (c) and (d)).
 
-            Note: see figure 8.3 for values of [$$c_{d}$$].
+            Note: see figure 8.3 for values of [$c_{d}$].
         alpha_3 : RATIO
-            [$$\alpha_{3}$$] Coefficient for the effect of confinement by transverse reinforcement [$$-$$].
+            [$\alpha_{3}$] Coefficient for the effect of confinement by transverse reinforcement [$-$].
 
-            [$$= 1.0$$] for bars in compression.
+            [$= 1.0$] for bars in compression.
 
-            [$$= 1 - K \cdot \lambda \le 1$$] with a minimum of [$$0.7$$] for bars in tension.
+            [$= 1 - K \cdot \lambda \le 1$] with a minimum of [$0.7$] for bars in tension.
 
-            Where: [$$\lambda = (\Sigma A_{st} - \Sigma A_{st,min}) / A_{s}$$].
+            Where: [$\lambda = (\Sigma A_{st} - \Sigma A_{st,min}) / A_{s}$].
 
-            Where: [$$\Sigma A_{st,min}$$] = cross-sectional area of the minimum transverse
-            reinforcement [$$= 0.25 \cdot A_{s}$$] for beams and [$$0$$] for slabs.
+            Where: [$\Sigma A_{st,min}$] = cross-sectional area of the minimum transverse
+            reinforcement [$= 0.25 \cdot A_{s}$] for beams and [$0$] for slabs.
 
-            Note: see figure 8.4 for values of [$$K, A_{s}$$] and [$$A_{st}$$].
+            Note: see figure 8.4 for values of [$K, A_{s}$] and [$A_{st}$].
 
         alpha_5 : RATIO
-            [$$\alpha_{5}$$] Coefficient for the effect of the pressure transverse to the plane of splitting
-            along the design anchorage length [$$l_{bd}$$] (see 8.6) [$$-$$].
+            [$\alpha_{5}$] Coefficient for the effect of the pressure transverse to the plane of splitting
+            along the design anchorage length [$l_{bd}$] (see 8.6) [$-$].
 
-            [$$= 1 - 0.04 \cdot p \le 1$$] with a minimum of [$$0.7$$] for all types of anchorage in compression.
+            [$= 1 - 0.04 \cdot p \le 1$] with a minimum of [$0.7$] for all types of anchorage in compression.
 
-            Where: [$$p$$] = transverse pressure at ultimate limit state along [$$l_{bd}$$] [$$MPa$$].
+            Where: [$p$] = transverse pressure at ultimate limit state along [$l_{bd}$] [$MPa$].
         """
         super().__init__()
         self.alpha_2 = alpha_2

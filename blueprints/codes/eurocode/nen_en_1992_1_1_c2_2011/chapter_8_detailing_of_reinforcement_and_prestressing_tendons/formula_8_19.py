@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot19DispersionLength(Formula):
-    """Class representing formula 8.19 for the calculation of dispersion length [$$l_{disp}$$]."""
+    """Class representing formula 8.19 for the calculation of dispersion length [$l_{disp}$]."""
 
     label = "8.19"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form8Dot19DispersionLength(Formula):
         l_pt: M,
         d: M,
     ) -> None:
-        r"""[$$l_{disp}$$] Dispersion length for prestressing tendons [$$m$$].
+        r"""[$l_{disp}$] Dispersion length for prestressing tendons [$m$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.10.2.2(4) - Formula (8.19)
 
         Parameters
         ----------
         l_pt : M
-            [$$l_{disp}$$] Length of prestressing tendon [$$m$$].
+            [$l_{disp}$] Length of prestressing tendon [$m$].
         d : M
-            [$$d$$] Diameter of the tendon [$$m$$].
+            [$d$] Diameter of the tendon [$m$].
         """
         super().__init__()
         self.l_pt = l_pt

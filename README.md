@@ -8,9 +8,9 @@
 
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/source/_static/blueprints_banner.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/source/_static/blueprints_banner.png">
-  <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <img alt="blueprints banner" src="docs/_overrides/assets/images/blueprints_banner.png">
 </picture>
 
 Welcome to `Blueprints`, the go-to repository for civil engineering professionals and enthusiasts!

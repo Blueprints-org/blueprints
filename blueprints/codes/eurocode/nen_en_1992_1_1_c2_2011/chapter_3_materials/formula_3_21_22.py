@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot21And22EffectiveStrength(Formula):
-    r"""[$$\eta$$] Class representing formula 3.21 and 3.22 for the calculation of the factor for the effective strength [$$-$$]."""
+    r"""[$\eta$] Class representing formula 3.21 and 3.22 for the calculation of the factor for the effective strength [$-$]."""
 
     label = "3.21 - 3.22"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -16,15 +16,15 @@ class Form3Dot21And22EffectiveStrength(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[$$\eta$$] Factor effective strength [$$-$$].
+        r"""[$\eta$] Factor effective strength [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.7(3) - Formula (3.21) and (3.22)
 
         Parameters
         ----------
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength concrete [$$MPa$$].
-            Valid range: [$$f_{ck} \leq 90 MPa$$].
+            [$f_{ck}$] Characteristic compressive strength concrete [$MPa$].
+            Valid range: [$f_{ck} \leq 90 MPa$].
 
         Returns
         -------

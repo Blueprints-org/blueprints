@@ -17,16 +17,16 @@ class SubForm3Dot282930Mu(Formula):
         sigma_pi: MPA,
         f_pk: MPA,
     ) -> None:
-        r"""[$$\mu$$] Ratio between initial pre-stress and characteristic tensile strength  [$$\sigma_{pi} / f_{pk}$$] [$$-$$].
+        r"""[$\mu$] Ratio between initial pre-stress and characteristic tensile strength  [$\sigma_{pi} / f_{pk}$] [$-$].
 
-        NEN-EN 1992-1-1+C2:2011 art.3.3.2(7) - [$$\mu$$]
+        NEN-EN 1992-1-1+C2:2011 art.3.3.2(7) - [$\mu$]
 
         Parameters
         ----------
         sigma_pi : MPA
-            [$$\sigma_{pi}$$] Initial pre-stress [$$MPa$$]
+            [$\sigma_{pi}$] Initial pre-stress [$MPa$]
         f_pk : MPA
-            [$$f_{pk}$$] Characteristic tensile strength of pre-stress steel [$$MPa$$]
+            [$f_{pk}$] Characteristic tensile strength of pre-stress steel [$MPa$]
 
         Returns
         -------
@@ -47,7 +47,7 @@ class SubForm3Dot282930Mu(Formula):
         return sigma_pi / f_pk
 
     def latex(self) -> LatexFormula:
-        r"""Returns LatexFormula object for [$$\mu$$] in formula 3.28 and 3.29 and 3.30."""
+        r"""Returns LatexFormula object for [$\mu$] in formula 3.28 and 3.29 and 3.30."""
         return LatexFormula(
             return_symbol=r"\mu",
             result=f"{self:.3f}",

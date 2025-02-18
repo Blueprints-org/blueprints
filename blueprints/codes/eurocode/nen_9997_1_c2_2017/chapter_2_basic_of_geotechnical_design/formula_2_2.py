@@ -8,22 +8,22 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form2Dot2DesignValueGeotechnicalParameter(Formula):
-    """Class representing formula 2.2 for the calculation of the design value [$$X_d$$] of geotechnical parameter [$$X$$]."""
+    """Class representing formula 2.2 for the calculation of the design value [$X_d$] of geotechnical parameter [$X$]."""
 
     label = "2.2"
     source_document = NEN_9997_1_C2_2017
 
     def __init__(self, x_k: DIMENSIONLESS, gamma_m: DIMENSIONLESS) -> None:
-        r"""[$$X_d$$] Design value of geotechnical parameter [$$X$$].
+        r"""[$X_d$] Design value of geotechnical parameter [$X$].
 
         NEN 9997-1+C2:2017 art.2.4.6.2(1) - Formula (2.2)
 
         Parameters
         ----------
         x_k : DIMENSIONLESS
-            [$$X_{k}$$] Characteristic value of geotechnical parameter [$$X$$].
+            [$X_{k}$] Characteristic value of geotechnical parameter [$X$].
         gamma_m : DIMENSIONLESS
-            [$$\gamma_M$$] material partial factor [$$-$$].
+            [$\gamma_M$] material partial factor [$-$].
         """
         super().__init__()
         self.x_k = x_k

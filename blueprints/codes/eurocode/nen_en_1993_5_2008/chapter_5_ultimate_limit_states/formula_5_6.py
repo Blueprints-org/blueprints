@@ -19,18 +19,18 @@ class Form5Dot6ProjectedShearArea(Formula):
         t_f: MM,
         t_w: MM,
     ) -> None:
-        r"""[$$A_{v}$$] Calculate the projected shear area for each web of a U-profile or Z-profile in [$$mm^2$$].
+        r"""[$A_{v}$] Calculate the projected shear area for each web of a U-profile or Z-profile in [$mm^2$].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(5) - Formula (5.6)
 
         Parameters
         ----------
         h : MM
-            [$$h$$] Overall height in [$$mm$$].
+            [$h$] Overall height in [$mm$].
         t_f : MM
-            [$$t_{f}$$] Flange thickness in [$$mm$$].
+            [$t_{f}$] Flange thickness in [$mm$].
         t_w : MM
-            [$$t_{w}$$] Web thickness in [$$mm$$].
+            [$t_{w}$] Web thickness in [$mm$].
         """
         super().__init__()
         self.h: MM = h

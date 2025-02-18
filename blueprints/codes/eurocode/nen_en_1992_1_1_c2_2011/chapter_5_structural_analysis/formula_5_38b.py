@@ -27,13 +27,13 @@ class Form5Dot38bCheckRelativeEccentricityRatio(Formula):
         Parameters
         ----------
         e_y : MM
-            [$$e_{y}$$] Eccentricity along y-axis [$$mm$$].
+            [$e_{y}$] Eccentricity along y-axis [$mm$].
         e_z : MM
-            [$$e_{z}$$] Eccentricity along z-axis [$$mm$$].
+            [$e_{z}$] Eccentricity along z-axis [$mm$].
         b_eq : MM
-            [$$b_{eq}$$] Equivalent width [$$mm$$].
+            [$b_{eq}$] Equivalent width [$mm$].
         h_eq : MM
-            [$$h_{eq}$$] Equivalent depth [$$mm$$].
+            [$h_{eq}$] Equivalent depth [$mm$].
         """
         super().__init__()
         self.e_y = e_y

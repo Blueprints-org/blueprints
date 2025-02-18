@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
-    r"""Class representing formula 3.1 for the estimation of the concrete compressive strength, [$$f_{cm}(t)$$], after t days
+    r"""Class representing formula 3.1 for the estimation of the concrete compressive strength, [$f_{cm}(t)$], after t days
     with an average temperature of 20 degrees Celsius.
     """
 
@@ -20,16 +20,16 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         beta_cc_t: DIMENSIONLESS,
         f_cm: MPA,
     ) -> None:
-        r"""[$$f_{cm}(t)$$] The estimated concrete compressive strength [$$MPa$$].
+        r"""[$f_{cm}(t)$] The estimated concrete compressive strength [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - Formula (3.1)
 
         Parameters
         ----------
         beta_cc_t : DIMENSIONLESS
-            [$$\beta_{cc}(t)$$] Coefficient dependent of the age of concrete [$$-$$].
+            [$\beta_{cc}(t)$] Coefficient dependent of the age of concrete [$-$].
         f_cm : MPA
-            [$$f_{cm}$$] Average concrete compressive strength on day 28 based on table 3.1 [$$MPa$$].
+            [$f_{cm}$] Average concrete compressive strength on day 28 based on table 3.1 [$MPa$].
 
         Returns
         -------

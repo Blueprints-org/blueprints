@@ -9,31 +9,31 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot2UtilizationRatio(Formula):
-    """Class representing form 6.2 for the calculation of the utilization ratio [$$UC$$]."""
+    """Class representing form 6.2 for the calculation of the utilization ratio [$UC$]."""
 
     label = "6.2"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
 
     def __init__(self, n_ed: KN, n_rd: KN, m_y_ed: KNM, m_y_rd: KNM, m_z_ed: KNM, m_z_rd: KNM) -> None:
         r"""
-        [$$UC$$] The calculation of the utilization ratio [$$-$$].
+        [$UC$] The calculation of the utilization ratio [$-$].
 
         NEN-EN 1993-1-1+C2+A1:2016 art.6.2.1(7) - Formula (6.2)
 
         Parameters
         ----------
         n_ed : kN
-            [$$N_{Ed}$$] Contains the design axial force [$$kN$$].
+            [$N_{Ed}$] Contains the design axial force [$kN$].
         n_rd : kN
-            [$$N_{Rd}$$] Contains the design axial resistance [$$kN$$].
+            [$N_{Rd}$] Contains the design axial resistance [$kN$].
         m_y_ed : kNm
-            [$$M_{y,Ed}$$] Contains the design moment about the y-axis [$$kNm$$].
+            [$M_{y,Ed}$] Contains the design moment about the y-axis [$kNm$].
         m_y_rd : kNm
-            [$$M_{y,Rd}$$] Contains the design moment resistance about the y-axis [$$kNm$$].
+            [$M_{y,Rd}$] Contains the design moment resistance about the y-axis [$kNm$].
         m_z_ed : kNm
-            [$$M_{z,Ed}$$] Contains the design moment about the z-axis [$$kNm$$].
+            [$M_{z,Ed}$] Contains the design moment about the z-axis [$kNm$].
         m_z_rd : kNm
-            [$$M_{z,Rd}$$] Contains the design moment resistance about the z-axis [$$kNm$$].
+            [$M_{z,Rd}$] Contains the design moment resistance about the z-axis [$kNm$].
 
         Returns
         -------

@@ -19,18 +19,18 @@ class Form3Dot17CompressiveStressConcrete(Formula):
         epsilon_c2: DIMENSIONLESS,
         n: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\sigma_c$$] Compressive stress in concrete using stress-strain diagram of figure 3.3 [$$MPa$$].
+        r"""[$\sigma_c$] Compressive stress in concrete using stress-strain diagram of figure 3.3 [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.7(1) - Formula (3.17)
 
         Parameters
         ----------
         f_cd : MPA
-            [$$f_{cd}$$] Design value compressive strength concrete [$$MPa$$].
+            [$f_{cd}$] Design value compressive strength concrete [$MPa$].
         epsilon_c : DIMENSIONLESS
-            [$$\epsilon_c$$] Strain in concrete [$$-$$].
+            [$\epsilon_c$] Strain in concrete [$-$].
         epsilon_c2 : DIMENSIONLESS
-            [$$\epsilon_{c2}$$] Strain in concrete when reaching maximum strength following table 3.1 [$$-$$].
+            [$\epsilon_{c2}$] Strain in concrete when reaching maximum strength following table 3.1 [$-$].
         n : DIMENSIONLESS
             Exponent following table 3.1.
 

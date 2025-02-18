@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot41MaxForceTendon(Formula):
-    r"""Class representing formula 5.41 for the calculation of the maximum force applied to a tendon, [$$P_{max}$$]."""
+    r"""Class representing formula 5.41 for the calculation of the maximum force applied to a tendon, [$P_{max}$]."""
 
     label = "5.41"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,22 +21,22 @@ class Form5Dot41MaxForceTendon(Formula):
         k_2: DIMENSIONLESS,
         f_p0_1k: MPA,
     ) -> None:
-        r"""[$$P_{max}$$] Maximum force applied to a tendon at active end [$$N$$].
+        r"""[$P_{max}$] Maximum force applied to a tendon at active end [$N$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.2.1(1) - Formula (5.41)
 
         Parameters
         ----------
         a_p : MM2
-            [$$A_{p}$$] Cross-sectional area of the tendon [$$mm^2$$].
+            [$A_{p}$] Cross-sectional area of the tendon [$mm^2$].
         k_1 : DIMENSIONLESS
-            [$$k_{1}$$] Coefficient for characteristic tensile strength, recommended value is 0.8 [$$-$$].
+            [$k_{1}$] Coefficient for characteristic tensile strength, recommended value is 0.8 [$-$].
         f_pk : MPA
-            [$$f_{pk}$$] Characteristic tensile strength of the tendon [$$MPa$$].
+            [$f_{pk}$] Characteristic tensile strength of the tendon [$MPa$].
         k_2 : DIMENSIONLESS
-            [$$k_{2}$$] Coefficient for 0.1% proof stress, recommended value is 0.9 [$$-$$].
+            [$k_{2}$] Coefficient for 0.1% proof stress, recommended value is 0.9 [$-$].
         f_p0_1k : MPA
-            [$$f_{p0.1k}$$] 0.1% proof stress of the tendon [$$MPa$$].
+            [$f_{p0.1k}$] 0.1% proof stress of the tendon [$MPa$].
         """
         super().__init__()
         self.a_p = a_p

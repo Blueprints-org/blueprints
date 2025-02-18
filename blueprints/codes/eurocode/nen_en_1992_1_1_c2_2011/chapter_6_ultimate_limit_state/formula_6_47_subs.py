@@ -10,20 +10,20 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class SubForm6Dot47FactorK(Formula):
-    r"""Class representing the sub-formula which calculates the factor [$$k$$] for formula 6.47 ."""
+    r"""Class representing the sub-formula which calculates the factor [$k$] for formula 6.47 ."""
 
     label = "6.47 (factor k)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, d: MM) -> None:
-        r"""[$$k$$] Calculation of factor k.
+        r"""[$k$] Calculation of factor k.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor k for Formula (6.47)
 
         Parameters
         ----------
         d : MM
-            [$$d$$] Effective depth [$$mm$$].
+            [$d$] Effective depth [$mm$].
         """
         super().__init__()
         self.d = d
@@ -55,24 +55,24 @@ class SubForm6Dot47FactorK(Formula):
 
 
 class SubForm6Dot47FactorRhoL(Formula):
-    r"""Class representing the sub-formula which calculates the factor [$$\rho_l$$] for formula 6.47 ."""
+    r"""Class representing the sub-formula which calculates the factor [$\rho_l$] for formula 6.47 ."""
 
     label = "6.47 (factor rho_l)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, rho_ly: DIMENSIONLESS, rho_lz: DIMENSIONLESS) -> None:
-        r"""[$$\rho_l$$] Calculation of factor [$$\rho_l$$].
+        r"""[$\rho_l$] Calculation of factor [$\rho_l$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor rho_l for Formula (6.47)
 
         Parameters
         ----------
         rho_ly : DIMENSIONLESS
-            [$$\rho_{ly}$$] Related to the bonded tension steel in y- drection. The value $$\rho_ly$$ should be calculated as mean values taking
-            into account a slab width equal to the column width plus 3d each side [$$-$$].
+            [$\rho_{ly}$] Related to the bonded tension steel in y- drection. The value $\rho_ly$ should be calculated as mean values taking
+            into account a slab width equal to the column width plus 3d each side [$-$].
         rho_lz : DIMENSIONLESS
-            [$$\rho_{lz}$$] Related to the bonded tension steel in z- drection. The value $$\rho_lz$$ should be calculated as mean values taking
-            into account a slab width equal to the column width plus 3d each side [$$-$$].
+            [$\rho_{lz}$] Related to the bonded tension steel in z- drection. The value $\rho_lz$ should be calculated as mean values taking
+            into account a slab width equal to the column width plus 3d each side [$-$].
         """
         super().__init__()
         self.rho_ly = rho_ly
@@ -106,23 +106,23 @@ class SubForm6Dot47FactorRhoL(Formula):
 
 
 class SubForm6Dot47FactorSigmaCp(Formula):
-    r"""Class representing the sub-formula which calculates the factor [$$\sigma_{cp}$$] for formula 6.47,."""
+    r"""Class representing the sub-formula which calculates the factor [$\sigma_{cp}$] for formula 6.47,."""
 
     label = "6.47 (factor sigma_cp)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, sigma_cy: MPA, sigma_cz: MPA) -> None:
-        r"""[$$\sigma_{cp}$$] Calculation of factor [$$\sigma_{cp}$$].
+        r"""[$\sigma_{cp}$] Calculation of factor [$\sigma_{cp}$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor sigma_cp for Formula (6.47)
 
         Parameters
         ----------
         sigma_cy : MPA
-            [$$\sigma_{cy}$$] Normal concrete stress in the critical section in the y-direction [$$MPa$$], Positive if compression.
+            [$\sigma_{cy}$] Normal concrete stress in the critical section in the y-direction [$MPa$], Positive if compression.
             See equation SubForm6Dot47FactorSigmaCy.
         sigma_cz : MPA
-            [$$\sigma_{cz}$$] Normal concrete stress inm the critical section in the z-direction [$$MPa$$], Positive if compression.
+            [$\sigma_{cz}$] Normal concrete stress inm the critical section in the z-direction [$MPa$], Positive if compression.
             See equation SubForm6Dot47FactorSigmaCz.
         """
         super().__init__()
@@ -157,23 +157,23 @@ class SubForm6Dot47FactorSigmaCp(Formula):
 
 
 class SubForm6Dot47FactorSigmaCy(Formula):
-    r"""Class representing the sub-formula which calculates the factor [$$\sigma_{cy}$$] for formula 6.47."""
+    r"""Class representing the sub-formula which calculates the factor [$\sigma_{cy}$] for formula 6.47."""
 
     label = "6.47 (factor sigma_cy)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, n_ed_y: N, a_cy: MM2) -> None:
-        r"""[$$\sigma_{cy}$$] Calculation of factor [$$\sigma_{cy}$$].
+        r"""[$\sigma_{cy}$] Calculation of factor [$\sigma_{cy}$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor sigma_cy for Formula (6.47)
 
         Parameters
         ----------
         n_ed_y : N
-            [$$N_{Ed,y}$$] Longitudinal forces across the full bay for internal columns and the logintudinal force across
-            the control section for edge columns. The force may be from a load or prestressing action [$$N$$].
+            [$N_{Ed,y}$] Longitudinal forces across the full bay for internal columns and the logintudinal force across
+            the control section for edge columns. The force may be from a load or prestressing action [$N$].
         a_cy : MM2
-            [$$A_{cy}$$] Cross-sectional area in y-direction [$$mm^2$$].
+            [$A_{cy}$] Cross-sectional area in y-direction [$mm^2$].
         """
         super().__init__()
         self.n_ed_y = n_ed_y
@@ -208,23 +208,23 @@ class SubForm6Dot47FactorSigmaCy(Formula):
 
 
 class SubForm6Dot47FactorSigmaCz(Formula):
-    r"""Class representing the sub-formula which calculates the factor [$$\sigma_{cz}$$] for formula 6.47."""
+    r"""Class representing the sub-formula which calculates the factor [$\sigma_{cz}$] for formula 6.47."""
 
     label = "6.47 (factor sigma_cz)"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, n_ed_z: N, a_cz: MM2) -> None:
-        r"""[$$\sigma_{cz}$$] Calculation of factor [$$\sigma_{cz}$$].
+        r"""[$\sigma_{cz}$] Calculation of factor [$\sigma_{cz}$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(1) - Factor sigma_cz for Formula (6.47)
 
         Parameters
         ----------
         n_ed_z : N
-            [$$N_{Ed,z}$$] Longitudinal forces across the full bay for internal columns and the logintudinal force across
-            the control section for edge columns. The force may be from a load or prestressing action [$$N$$].
+            [$N_{Ed,z}$] Longitudinal forces across the full bay for internal columns and the logintudinal force across
+            the control section for edge columns. The force may be from a load or prestressing action [$N$].
         a_cz : MM2
-            [$$A_{cz}$$] Cross-sectional area in z-direction [$$mm^2$$].
+            [$A_{cz}$] Cross-sectional area in z-direction [$mm^2$].
         """
         super().__init__()
         self.n_ed_z = n_ed_z

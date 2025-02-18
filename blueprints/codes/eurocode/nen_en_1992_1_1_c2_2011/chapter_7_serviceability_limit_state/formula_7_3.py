@@ -19,20 +19,20 @@ class Form7Dot3CoefficientKc(Formula):
         a_ct: MM2,
         f_ct_eff: MPA,
     ) -> None:
-        r"""[$$kc$$] Calculates kc for flanges of tubular cross-sections and T-sections [$$-$$].
+        r"""[$kc$] Calculates kc for flanges of tubular cross-sections and T-sections [$-$].
 
         NEN-EN 1992-1-1:2011 art.7.3.2(2) - Formula (7.3)
 
         Parameters
         ----------
         f_cr : KN
-            [$$F_{cr}$$] Absolute value of the tensile force within the flange immediately before cracking due to the cracking moment calculated with
-            [$$f_{ct,eff}$$] [$$kN$$].
+            [$F_{cr}$] Absolute value of the tensile force within the flange immediately before cracking due to the cracking moment calculated with
+            [$f_{ct,eff}$] [$kN$].
         a_ct : MM2
-            [$$A_{ct}$$] Area of the concrete within the tension zone. The tension zone is that part of the cross-section that,
-            according to the calculation, is under tension just before the first crack occurs [$$mm^2$$].
+            [$A_{ct}$] Area of the concrete within the tension zone. The tension zone is that part of the cross-section that,
+            according to the calculation, is under tension just before the first crack occurs [$mm^2$].
         f_ct_eff : MPA
-            [$$f_{ct,eff}$$] Average value of the tensile strength of the concrete at the time when the first cracks can be expected [$$MPa$$].
+            [$f_{ct,eff}$] Average value of the tensile strength of the concrete at the time when the first cracks can be expected [$MPa$].
         """
         super().__init__()
         self.f_cr = f_cr

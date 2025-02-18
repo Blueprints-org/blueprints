@@ -20,26 +20,26 @@ class Form9Dot1nMinimumTensileReinforcementBeam(Formula):
         b_t: MM,
         d: MM,
     ) -> None:
-        r"""[$$A_{s,min}$$] Calculates minimum required tensile reinforcement area in longitudinal direction for beams [$$\text{mm}^2$$].
+        r"""[$A_{s,min}$] Calculates minimum required tensile reinforcement area in longitudinal direction for beams [$\text{mm}^2$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.1.1(1) - Formula (9.1N)
 
         Notes
         -----
-        [$${A_{s,min}}$$] is no less than [$${0.0013 \cdot b_t \cdot d}$$]
+        [${A_{s,min}}$] is no less than [${0.0013 \cdot b_t \cdot d}$]
 
         Parameters
         ----------
         f_ctm: MPA
-            [$${f_{ctm}}$$] Mean axial tensile stress concrete [$$\text{MPa}$$].
+            [${f_{ctm}}$] Mean axial tensile stress concrete [$\text{MPa}$].
             Should be determined with respect to the relevant strength class according to Table 3.1
         f_yk: MPA
-            [$${f_{yk}}$$] Characteristic yield strength reinforcement steel [$$\text{MPa}$$].
+            [${f_{yk}}$] Characteristic yield strength reinforcement steel [$\text{MPa}$].
         b_t: MM
-            [$${b_t}$$] Mean width of the concrete tension zone, for T-beams with a flange under compression only the width of the web is
-            considered for calculating [$${b_t}$$] [$$\text{mm}$$].
+            [${b_t}$] Mean width of the concrete tension zone, for T-beams with a flange under compression only the width of the web is
+            considered for calculating [${b_t}$] [$\text{mm}$].
         d: MM
-            [$${d}$$] Effective height of the cross-section [$$\text{mm}$$].
+            [${d}$] Effective height of the cross-section [$\text{mm}$].
         """
         super().__init__()
         self.f_ctm = f_ctm

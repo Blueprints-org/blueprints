@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot48NetAppliedPunchingForce(Formula):
-    r"""Class representing formula 6.48 for the calculation of net applied punching force [$$V_{Ed,red}$$] of slabs and column
+    r"""Class representing formula 6.48 for the calculation of net applied punching force [$V_{Ed,red}$] of slabs and column
     bases without shear reinforcement.
     """
 
@@ -20,16 +20,16 @@ class Form6Dot48NetAppliedPunchingForce(Formula):
         v_ed: N,
         delta_v_ed: N,
     ) -> None:
-        r"""[$$V_{Ed,red}$$] Calculation of net applied punching force of slabs and column bases without shear reinforcement.
+        r"""[$V_{Ed,red}$] Calculation of net applied punching force of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.48)
 
         Parameters
         ----------
         v_ed : N
-            [$$V_{Ed}$$] Applied shear force [$$N$$].
+            [$V_{Ed}$] Applied shear force [$N$].
         delta_v_ed : N
-            [$$\Delta V_{Ed}$$] Net upward force within the control perimeter considered [$$N$$].
+            [$\Delta V_{Ed}$] Net upward force within the control perimeter considered [$N$].
         """
         super().__init__()
         self.v_ed = v_ed

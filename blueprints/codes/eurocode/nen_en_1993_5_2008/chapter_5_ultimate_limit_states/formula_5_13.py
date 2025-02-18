@@ -34,21 +34,21 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
         Parameters
         ----------
         n_ed : KN
-            [$$kN$$] Design axial force [$$kN$$].
+            [$kN$] Design axial force [$kN$].
         m_ed : KNM
-            [$$kNm$$] Design bending moment [$$kNm$$].
+            [$kNm$] Design bending moment [$kNm$].
         a : MM2
-            [$$mm^2$$] Cross-sectional area [$$mm^2$$].
+            [$mm^2$] Cross-sectional area [$mm^2$].
         f_y : MPA
-            [$$MPa$$] Yield strength of the material [$$MPa$$].
+            [$MPa$] Yield strength of the material [$MPa$].
         gamma_m0 : DIMENSIONLESS
-            [$$\gamma_{M0}$$] Partial factor according to 5.1.1 (4) [$$-$$].
+            [$\gamma_{M0}$] Partial factor according to 5.1.1 (4) [$-$].
         gamma_m1 : DIMENSIONLESS
-            [$$\gamma_{M1}$$] Partial factor according to 5.1.1 (4) [$$-$$].
+            [$\gamma_{M1}$] Partial factor according to 5.1.1 (4) [$-$].
         chi : DIMENSIONLESS
-            [$$\chi$$] Buckling coefficient from 6.3.1.2 of EN 1993-1-1 [$$-$$].
+            [$\chi$] Buckling coefficient from 6.3.1.2 of EN 1993-1-1 [$-$].
         m_c_rd : KNM
-            [$$kNm$$] Design moment resistance of the cross-section [$$kNm$$]. See 5.2.2 (2).
+            [$kNm$] Design moment resistance of the cross-section [$kNm$]. See 5.2.2 (2).
             This can also be calculated using Form5Dot2DesignMomentResistanceClass1Or2 or Form5Dot3DesignMomentResistanceClass3.
         """
         super().__init__()

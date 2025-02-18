@@ -18,16 +18,16 @@ class Form6Dot71CriteriaBasedOnStressRangeLHS(Formula):
         gamma_f_fat: DIMENSIONLESS,
         delta_sigma_s_equ_n_star: MPA,
     ) -> None:
-        r"""[$$\Delta\sigma_{Ed}$$] Loading side of equation [$$MPa$$].
+        r"""[$\Delta\sigma_{Ed}$] Loading side of equation [$MPa$].
 
         NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
 
         Parameters
         ----------
         gamma_f_fat : DIMENSIONLESS
-            [$$\gamma_{F,fat}$$] Partial factor for fatigue actions [$$-$$].
+            [$\gamma_{F,fat}$] Partial factor for fatigue actions [$-$].
         delta_sigma_s_equ_n_star : MPA
-            [$$\Delta\sigma_{s,equ}(N*)$$] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [$$MPa$$].
+            [$\Delta\sigma_{s,equ}(N*)$] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [$MPa$].
 
         Returns
         -------
@@ -68,16 +68,16 @@ class Form6Dot71CriteriaBasedOnStressRangeRHS(Formula):
         delta_sigma_rsk_n_star: MPA,
         gamma_s_fat: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\Delta\sigma_{Rd}$$] Resistance side of equation [$$MPa$$].
+        r"""[$\Delta\sigma_{Rd}$] Resistance side of equation [$MPa$].
 
         NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
 
         Parameters
         ----------
         delta_sigma_rsk_n_star : MPA
-            [$$\Delta\sigma_{Rsk}(N*)$$] Stress range at N* cycles from the S-N curve in Figure 6.30 [$$MPa$$].
+            [$\Delta\sigma_{Rsk}(N*)$] Stress range at N* cycles from the S-N curve in Figure 6.30 [$MPa$].
         gamma_s_fat : DIMENSIONLESS
-            [$$\gamma_{S,fat}$$] Partial factor for reinforcing or prestressing steel under fatigue loading [$$-$$].
+            [$\gamma_{S,fat}$] Partial factor for reinforcing or prestressing steel under fatigue loading [$-$].
 
         Returns
         -------
@@ -118,20 +118,20 @@ class Form6Dot71CriteriaBasedOnStressRange:
         delta_sigma_rsk_n_star: MPA,
         gamma_s_fat: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\text{CHECK}$$] Criteria met, based on damage accumulation.
+        r"""[$\text{CHECK}$] Criteria met, based on damage accumulation.
 
         NEN-EN 1993-1-1+C2:2011 art.6.8.5 - Formula (6.71)
 
         Parameters
         ----------
         gamma_f_fat : DIMENSIONLESS
-            [$$\gamma_{F,fat}$$] Partial factor for fatigue actions [$$-$$].
+            [$\gamma_{F,fat}$] Partial factor for fatigue actions [$-$].
         delta_sigma_s_equ_n_star : MPA
-            [$$\Delta\sigma_{s,equ}(N*)$$] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [$$MPa$$].
+            [$\Delta\sigma_{s,equ}(N*)$] Damage equivalent stress range for types of reinforcement and considering number of cycles N* [$MPa$].
         delta_sigma_rsk_n_star : MPA
-            [$$\Delta\sigma_{Rsk}(N*)$$] Stress range at N* cycles from the S-N curve in Figure 6.30 [$$MPa$$].
+            [$\Delta\sigma_{Rsk}(N*)$] Stress range at N* cycles from the S-N curve in Figure 6.30 [$MPa$].
         gamma_s_fat : DIMENSIONLESS
-            [$$\gamma_{S,fat}$$] Partial factor for reinforcing or prestressing steel under fatigue loading [$$-$$].
+            [$\gamma_{S,fat}$] Partial factor for reinforcing or prestressing steel under fatigue loading [$-$].
 
         Returns
         -------

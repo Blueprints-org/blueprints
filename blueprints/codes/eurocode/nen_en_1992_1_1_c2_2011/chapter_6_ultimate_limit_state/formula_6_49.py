@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot49AppliedPunchingShearStress(Formula):
-    r"""Class representing formula 6.49 for the calculation of applied punching shear stress [$$v_{Ed}$$] of slabs and column bases
+    r"""Class representing formula 6.49 for the calculation of applied punching shear stress [$v_{Ed}$] of slabs and column bases
     without shear reinforcement.
     """
 
@@ -21,18 +21,18 @@ class Form6Dot49AppliedPunchingShearStress(Formula):
         u: MM,
         d: MM,
     ) -> None:
-        r"""[$$v_{Ed}$$] Calculation of applied punching shear stress [$$v_{Ed}$$] of slabs and column bases without shear reinforcement.
+        r"""[$v_{Ed}$] Calculation of applied punching shear stress [$v_{Ed}$] of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.49)
 
         Parameters
         ----------
         v_ed_red : N
-            [$$V_{Ed,red}$$] Net applied punching force [$$N$$].
+            [$V_{Ed,red}$] Net applied punching force [$N$].
         u : MM
-            [$$u$$] Punching perimeter [$$mm$$].
+            [$u$] Punching perimeter [$mm$].
         d : MM
-            [$$d$$] Effective depth [$$mm$$].
+            [$d$] Effective depth [$mm$].
         """
         super().__init__()
         self.v_ed_red = v_ed_red

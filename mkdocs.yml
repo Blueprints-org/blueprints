@@ -64,6 +64,7 @@ plugins:
   - gen-files:
       scripts:
         - docs/_scripts/generate_reference_pages.py
+        - docs/_scripts/generate_index.py
   - mkdocstrings:
       handlers:
         python:
@@ -90,6 +91,7 @@ plugins:
             unwrap_annotated: true
             docstring_section_style: list
             show_if_no_docstring: false
+  - awesome-nav
 
 markdown_extensions: 
   - pymdownx.highlight:
