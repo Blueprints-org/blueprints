@@ -64,6 +64,7 @@ plugins:
   - gen-files:
       scripts:
         - docs/_scripts/generate_reference_pages.py
+        - docs/_scripts/generate_index.py
   - mkdocstrings:
       handlers:
         python:
