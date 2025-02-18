@@ -1,3 +1,7 @@
+---
+hide:
+  - toc
+---
 # Nominal Concrete Cover
 
 Calculating the nominal concrete cover is an important step in the design of reinforced concrete structures.
