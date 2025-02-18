@@ -61,3 +61,13 @@
     --md-code-hl-bg-color: #1e1e1e;
     --md-code-hl-string-color: #ce9178;
 }
+
+/* specific style for sd (docstring) class to match string color */
+.highlight .sd {
+    color: var(--md-code-hl-string-color);
+}
+/* specific style for kc (boolean) class to match string color */
+.highlight .kc {
+    color: var(--md-code-hl-special-color);
+}
+
