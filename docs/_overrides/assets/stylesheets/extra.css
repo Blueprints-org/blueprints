@@ -52,3 +52,12 @@
     max-width: fit-content;       /* Expand to content width */
     word-break: break-word;       /* Enable word breaks */
 }
+
+/* alternative code highlighting equal to vscode default */
+
+:root > * {
+    --md-code-hl-comment-color: #6a9955;
+    --md-code-hl-name-color: #4ec9b0;
+    --md-code-hl-bg-color: #1e1e1e;
+    --md-code-hl-string-color: #ce9178;
+}
