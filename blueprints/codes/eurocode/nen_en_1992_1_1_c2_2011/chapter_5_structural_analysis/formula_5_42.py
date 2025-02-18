@@ -25,9 +25,9 @@ class Form5Dot42ConcreteCompressiveStress(Formula):
         Parameters
         ----------
         sigma_c : MPA
-            [$$\sigma_{c}$$] Concrete compressive stress [MPa].
+            [$\sigma_{c}$] Concrete compressive stress [MPa].
         f_ck_t : MPA
-            [$$f_{ck}(t)$$] Characteristic compressive strength of concrete at time t [MPa].
+            [$f_{ck}(t)$] Characteristic compressive strength of concrete at time t [MPa].
         """
         super().__init__()
         self.sigma_c = sigma_c

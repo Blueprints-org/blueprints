@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot50PunchingStressResistance(Formula):
-    r"""Class representing formula 6.50 for the calculation of punching stress resistance [$$v_{Rd}$$] of slabs and
+    r"""Class representing formula 6.50 for the calculation of punching stress resistance [$v_{Rd}$] of slabs and
     column bases without shear reinforcement.
     """
 
@@ -25,30 +25,30 @@ class Form6Dot50PunchingStressResistance(Formula):
         a: MM,
         v_min: MPA,
     ) -> None:
-        r"""[$$v_{Rd}$$] Calculation of punching stress resistance of slabs and column bases without shear reinforcement.
+        r"""[$v_{Rd}$] Calculation of punching stress resistance of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.50)
 
-        The values of $$C_{Rd,c}$$, $$v_{min}$$, and $$k$$ for use in a country may be found in its national annex.
-        The recommended value for $$C_{Rd,c}$$ is $$0.18 / \gamma_c$$, for $$v_{min}$$ is given by Expression (6.3N),
-        and that for $$k$$ is $$1.0$$.
+        The values of $C_{Rd,c}$, $v_{min}$, and $k$ for use in a country may be found in its national annex.
+        The recommended value for $C_{Rd,c}$ is $0.18 / \gamma_c$, for $v_{min}$ is given by Expression (6.3N),
+        and that for $k$ is $1.0$.
 
         Parameters
         ----------
         c_rd_c : DIMENSIONLESS
-            $$C_{Rd,c}$$ Coefficient for punching shear resistance, recommended value $$0.18 / \gamma_c$$ [-].
+            $C_{Rd,c}$ Coefficient for punching shear resistance, recommended value $0.18 / \gamma_c$ [-].
         k : DIMENSIONLESS
-            $$k$$ Size effect factor, see equation SubForm6Dot47FactorK [-].
+            $k$ Size effect factor, see equation SubForm6Dot47FactorK [-].
         rho_l : DIMENSIONLESS
-            $$\rho_l$$ Longitudinal reinforcement ratio, see equation SubForm6Dot47FactorRhoL [-].
+            $\rho_l$ Longitudinal reinforcement ratio, see equation SubForm6Dot47FactorRhoL [-].
         f_ck : MPA
-            $$f_{ck}$$ Characteristic compressive strength of concrete [$$MPa$$].
+            $f_{ck}$ Characteristic compressive strength of concrete [$MPa$].
         d : MM
-            $$d$$ Effective depth [$$mm$$].
+            $d$ Effective depth [$mm$].
         a : MM
-            $$a$$ Distance from the periphery of the column to the control perimeter considered [$$mm$$].
+            $a$ Distance from the periphery of the column to the control perimeter considered [$mm$].
         v_min : MPA
-            $$v_{min}$$ Minimum shear stress capacity concrete, recommended value with Expression (6.3N) [$$MPa$$].
+            $v_{min}$ Minimum shear stress capacity concrete, recommended value with Expression (6.3N) [$MPa$].
         """
         super().__init__()
         self.c_rd_c = c_rd_c
