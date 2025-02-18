@@ -41,7 +41,7 @@ Then just print the results:
 
 The output will be:
 
-```python
+```text
 Structural class: S5
 
 C,min,dur: 20.0 mm
