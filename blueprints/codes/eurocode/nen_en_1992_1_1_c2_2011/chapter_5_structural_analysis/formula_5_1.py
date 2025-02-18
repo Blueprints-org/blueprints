@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot1Imperfections(Formula):
-    r"""Class representing formula 5.1 for the calculation of initial inclination imperfections, [$$\Theta_i$$]."""
+    r"""Class representing formula 5.1 for the calculation of initial inclination imperfections, [$\Theta_i$]."""
 
     label = "5.1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,21 +21,21 @@ class Form5Dot1Imperfections(Formula):
         alpha_h: DIMENSIONLESS,
         alpha_m: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\\Theta_i$$] Initial inclination imperfections, [$$\\Theta_i$$], is a ratio between height and inclination of the member [-].
+        r"""[$\\Theta_i$] Initial inclination imperfections, [$\\Theta_i$], is a ratio between height and inclination of the member [-].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(5) - Formula (5.1)
 
         Parameters
         ----------
         theta_0 : float
-            [$$\\Theta_0$$] Basic value [-].
-            Note: The value of [$$\\Theta_0$$] for use in a Country may be found in its National Annex.
+            [$\\Theta_0$] Basic value [-].
+            Note: The value of [$\\Theta_0$] for use in a Country may be found in its National Annex.
             The recommended value is 1/200
         alpha_h : float
-            [$$\alpha_h$$] Reduction factor for length or height [-].
+            [$\alpha_h$] Reduction factor for length or height [-].
             Use your own implementation of this value or use the SubForm5Dot1ReductionFactorLengthOrHeight class.
         alpha_m : float
-            [$$\alpha_m$$] Reduction factor for number of members [-].
+            [$\alpha_m$] Reduction factor for number of members [-].
             Use your own implementation of this value or use the SubForm5Dot1ReductionFactorNumberOfMembers class.
         """
         super().__init__()
@@ -65,7 +65,7 @@ class Form5Dot1Imperfections(Formula):
 
 
 class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
-    r"""Class representing sub-formula 5.1 for the calculation of the reduction factor for length or height, [$$\alpha_h$$]."""
+    r"""Class representing sub-formula 5.1 for the calculation of the reduction factor for length or height, [$\alpha_h$]."""
 
     label = "5.1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -74,16 +74,16 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
         self,
         length: M,
     ) -> None:
-        r"""[$$\alpha_h$$] Reduction factor for length or height [-].
+        r"""[$\alpha_h$] Reduction factor for length or height [-].
 
-        The calculated value of [$$\alpha_h$$] is between 2/3 and 1.0.
+        The calculated value of [$\alpha_h$] is between 2/3 and 1.0.
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(5) - Formula (5.1)
 
         Parameters
         ----------
         length : M
-            [$$\text{length}$$] Length or height, see art.5.2(6) [$$m$$].
+            [$\text{length}$] Length or height, see art.5.2(6) [$m$].
         """
         super().__init__()
         self.length = length
@@ -114,7 +114,7 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
 
 
 class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
-    r"""Class representing sub-formula 5.1 for the calculation of the reduction factor for number of members, [$$\alpha_m$$]."""
+    r"""Class representing sub-formula 5.1 for the calculation of the reduction factor for number of members, [$\alpha_m$]."""
 
     label = "5.1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -123,14 +123,14 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
         self,
         members: int,
     ) -> None:
-        r"""[$$\alpha_m$$] Reduction factor for number of members [-].
+        r"""[$\alpha_m$] Reduction factor for number of members [-].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(5) - Formula (5.1)
 
         Parameters
         ----------
         members : int
-            [$$m$$] Number of vertical members contributing to the total effect [-].
+            [$m$] Number of vertical members contributing to the total effect [-].
         """
         super().__init__()
         self.members = members

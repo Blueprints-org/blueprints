@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Table4Dot2MinimumCoverWithRegardToBond(Formula):
-    """Class representing the table 4.2 for the calculation of the minimum cover [$$c_{min,b}$$] [$$mm$$] requirements with regard to bond."""
+    """Class representing the table 4.2 for the calculation of the minimum cover [$c_{min,b}$] [$mm$] requirements with regard to bond."""
 
     label = "4.2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,18 +18,18 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
         diameter: MM,
         nominal_max_aggregate_size_greater_than_32_mm: bool,
     ) -> None:
-        r"""[$$c_{min,b}$$] Calculates the minimum concrete cover with regard to bond [$$mm$$].
+        r"""[$c_{min,b}$] Calculates the minimum concrete cover with regard to bond [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.4.4.1.2 (3) - Table (4.2)
 
         Parameters
         ----------
         diameter: MM
-            Diameter of the reinforcement [$$mm$$].
-            In case of bundled bars, the equivalent diameter [$$Ø_{n}$$] as defined in par. 8.9.1 should be used.
+            Diameter of the reinforcement [$mm$].
+            In case of bundled bars, the equivalent diameter [$Ø_{n}$] as defined in par. 8.9.1 should be used.
             Use your own implementation of this value or use the :class:`Form8Dot14EquivalentDiameterBundledBars` class.
         nominal_max_aggregate_size_greater_than_32_mm: bool
-            Is the nominal maximum aggregate size greater than 32 [$$mm$$]?
+            Is the nominal maximum aggregate size greater than 32 [$mm$]?
         """
         super().__init__()
         self.diameter = diameter

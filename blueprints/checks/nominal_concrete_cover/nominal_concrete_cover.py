@@ -28,15 +28,15 @@ from blueprints.type_alias import MM
 
 @dataclass(frozen=True)
 class NominalConcreteCover:
-    r"""Class responsible for the calculation of the nominal concrete cover [$$c_{nom}$$] [$$mm$$].
+    r"""Class responsible for the calculation of the nominal concrete cover [$c_{nom}$] [$mm$].
     It takes considerations of art.4.4.1.2 and 4.4.1.3 into account.
 
     Parameters
     ----------
     reinforcement_diameter: MM
-        The diameter of the reinforcement [$$mm$$].
+        The diameter of the reinforcement [$mm$].
     nominal_max_aggregate_size: MM
-        The nominal maximum aggregate size [$$mm$$].
+        The nominal maximum aggregate size [$mm$].
     constants: ConstantsBase
         The constants for the calculation of the nominal concrete cover.
     structural_class: ConcreteStructuralClassBase | int
@@ -49,16 +49,16 @@ class NominalConcreteCover:
     chloride_seawater: ChlorideSeawater | Literal["XS1", "XS2", "XS3", "NA"]
         The classification of corrosion induced by chlorides from sea water. Default is "Not applicable".
     delta_c_dur_gamma: MM
-        [$$\Delta c_{dur,\gamma}$$] An additional safety requirement based on art. 4.4.1.2 (6) [$$mm$$].
-        The value of [$$\Delta c_{dur,\gamma}$$] for use in a Country may be found in its National Annex.
+        [$\Delta c_{dur,\gamma}$] An additional safety requirement based on art. 4.4.1.2 (6) [$mm$].
+        The value of [$\Delta c_{dur,\gamma}$] for use in a Country may be found in its National Annex.
         The recommended value is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
     delta_c_dur_st: MM
-        [$$\Delta c_{dur,st}$$] A reduction of minimum concrete cover when using stainless steel based on art. 4.4.1.2 (7) [$$mm$$].
-        The value of [$$\Delta c_{dur,st}$$] for use in a Country may be found in its National Annex.
+        [$\Delta c_{dur,st}$] A reduction of minimum concrete cover when using stainless steel based on art. 4.4.1.2 (7) [$mm$].
+        The value of [$\Delta c_{dur,st}$] for use in a Country may be found in its National Annex.
         The recommended value, without further specification, is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
     delta_c_dur_add: MM
-        [$$\Delta c_{dur,add}$$] A reduction of minimum concrete cover when using additional protection based on art. 4.4.1.2 (8) [$$mm$$].
-        The value of [$$\Delta c_{dur,add}$$] for use in a Country may be found in its National Annex.
+        [$\Delta c_{dur,add}$] A reduction of minimum concrete cover when using additional protection based on art. 4.4.1.2 (8) [$mm$].
+        The value of [$\Delta c_{dur,add}$] for use in a Country may be found in its National Annex.
         The recommended value, without further specification, is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
     casting_surface: CastingSurface
         The casting surface of the concrete according to art. 4.4.1.3 (4).

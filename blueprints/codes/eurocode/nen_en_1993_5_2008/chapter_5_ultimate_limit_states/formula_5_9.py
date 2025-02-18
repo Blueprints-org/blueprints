@@ -28,7 +28,7 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         gamma_m_0: DIMENSIONLESS,
         mc_rd: KNM,
     ) -> None:
-        r"""[$$M_{V,Rd}$$] Calculate reduced design bending moment resistance of the cross-section allowing for the shear force in [$$kNm$$].
+        r"""[$M_{V,Rd}$] Calculate reduced design bending moment resistance of the cross-section allowing for the shear force in [$kNm$].
 
         This calculation is specifically for sheet pile cross-sections, particularly U-profiles and Z-profiles.
 
@@ -37,32 +37,32 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         Parameters
         ----------
         beta_b : DIMENSIONLESS
-            [$$β_{b}$$] Reduction factor for the bending resistance of the cross-section, which takes account of
-            possible lack of shear force transmission in the interlocks [$$-$$].
+            [$β_{b}$] Reduction factor for the bending resistance of the cross-section, which takes account of
+            possible lack of shear force transmission in the interlocks [$-$].
             Defined in NEN-EN 1993-5:2008(E) art. 5.2.2(2) or CUR166, part 2, par. 3.3.2.
         w_pl : MM3
-            [$$W_{pl}$$] Plastic section modulus in [$$mm^3$$].
+            [$W_{pl}$] Plastic section modulus in [$mm^3$].
         rho : DIMENSIONLESS
-            [$$ρ$$] Reduction factor for shear resistance of the cross-section, according NEN-EN 1993-5:2008(E) art. 5.2.2(9) formula 5.10 [$$-$$].
+            [$ρ$] Reduction factor for shear resistance of the cross-section, according NEN-EN 1993-5:2008(E) art. 5.2.2(9) formula 5.10 [$-$].
         a_v : MM2
-            [$$A_{V}$$] Projected shear area for each web, acting in the same direction as VEd in [$$mm^2$$].
+            [$A_{V}$] Projected shear area for each web, acting in the same direction as VEd in [$mm^2$].
         t_w : MM
-            [$$t_{w}$$] Thickness of the web in [$$mm$$].
+            [$t_{w}$] Thickness of the web in [$mm$].
         alpha : DEG
-            [$$α$$] the inclination of the web according to NEN-EN 1993-5:2008(E) Figure 5-1 in [$$degrees$$].
+            [$α$] the inclination of the web according to NEN-EN 1993-5:2008(E) Figure 5-1 in [$degrees$].
         f_y : MPA
-            [$$f_{y}$$] Yield strength in [$$MPa$$].
+            [$f_{y}$] Yield strength in [$MPa$].
         gamma_m_0 : DIMENSIONLESS
-            [$$γ_{M0}$$] Partial factor for material properties in [$$-$$].
+            [$γ_{M0}$] Partial factor for material properties in [$-$].
         mc_rd : KNM
-            [$$M_{c,Rd}$$] Design moment resistance of the cross-section in [$$kNm$$].
+            [$M_{c,Rd}$] Design moment resistance of the cross-section in [$kNm$].
 
             The `mc_rd` parameter represents the design moment resistance of the cross-section.
             In the context of the formula for reduced bending moment resistance, it serves as an upper bound.
             The formula calculates the reduced design bending moment resistance (`m_v_rd`) and then returns the minimum of `m_v_rd` and `mc_rd`.
             This means that the result of the formula will never exceed `mc_rd`, making `mc_rd` an upper bound for this formula.
 
-            [$$M_{v,Rd} \leq M_{c,Rd}$$]
+            [$M_{v,Rd} \leq M_{c,Rd}$]
         """
         super().__init__()
         self.beta_b: DIMENSIONLESS = beta_b
