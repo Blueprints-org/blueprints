@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot20LongitudinalShearStress(Formula):
-    r"""Class representing formula 6.20 for the calculation of the longitudinal shear stress, [$$v_{Ed}$$]."""
+    r"""Class representing formula 6.20 for the calculation of the longitudinal shear stress, [$v_{Ed}$]."""
 
     label = "6.20"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,18 +19,18 @@ class Form6Dot20LongitudinalShearStress(Formula):
         h_f: MM,
         delta_x: MM,
     ) -> None:
-        r"""[$$v_{Ed}$$] Longitudinal shear stress [$$MPa$$].
+        r"""[$v_{Ed}$] Longitudinal shear stress [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.4(3) - Formula (6.20)
 
         Parameters
         ----------
         delta_f_d : N
-            [$$\Delta F_{d}$$] Change of the normal force in the flange over the length [$$\Delta x$$] [$$N$$].
+            [$\Delta F_{d}$] Change of the normal force in the flange over the length [$\Delta x$] [$N$].
         h_f : MM
-            [$$h_{f}$$] Thickness of flange at the junctions [$$mm$$].
+            [$h_{f}$] Thickness of flange at the junctions [$mm$].
         delta_x : MM
-            [$$\Delta x$$] Length under consideration, see Figure 6.7 [$$mm$$].
+            [$\Delta x$] Length under consideration, see Figure 6.7 [$mm$].
         """
         super().__init__()
         self.delta_f_d = delta_f_d
