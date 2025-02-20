@@ -10,24 +10,24 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot16EffectiveLengthUnbraced(Formula):
-    """Class representing formula 5.16 for the calculation of effective length of unbraced members, :math:`l_0`."""
+    """Class representing formula 5.16 for the calculation of effective length of unbraced members, [$l_0$]."""
 
     label = "5.16"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, k_1: DIMENSIONLESS, k_2: DIMENSIONLESS, height: M) -> None:
-        """[:math:`l_{0}`] Effective length for unbraced members [:math:`m`].
+        r"""[$l_{0}$] Effective length for unbraced members [$m$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.3.2(3) - Formula (5.16)
 
         Parameters
         ----------
         k_1 : DIMENSIONLESS
-            [:math:`k_{1}`] Relative flexibility of rotational constraint at end 1 [:math:`-`].
+            [$k_{1}$] Relative flexibility of rotational constraint at end 1 [$-$].
         k_2 : DIMENSIONLESS
-            [:math:`k_{2}`] Relative flexibility of rotational constraint at end 2 [:math:`-`].
+            [$k_{2}$] Relative flexibility of rotational constraint at end 2 [$-$].
         height : M
-            [:math:`l`] Clear height of compression member between end restraints [:math:`M`].
+            [$l$] Clear height of compression member between end constraint [$m$].
         """
         super().__init__()
         self.k_1 = k_1

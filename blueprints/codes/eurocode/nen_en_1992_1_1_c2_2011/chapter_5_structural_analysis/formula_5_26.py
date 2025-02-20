@@ -14,14 +14,14 @@ class Form5Dot26FactorKs(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, rho: float) -> None:
-        r"""[:math:`K_s`] Factor K_s = 0.
+        r"""[$K_s$] Factor $K_s = 0$.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.7.2(2) - Formula (5.26)
 
         Parameters
         ----------
         rho : float
-            [:math:`\rho`] Geometric reinforcement ratio, As/Ac. Must be >= 0.01.
+            [$\rho$] Geometric reinforcement ratio, As/Ac. Must be >= 0.01.
         """
         super().__init__()
         self.rho = rho
@@ -51,16 +51,16 @@ class Form5Dot26FactorKc(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, phi_ef: DIMENSIONLESS, rho: float) -> None:
-        r"""[:math:`K_c`] Factor K_c = 0.3 / (1 + 0.5 * \phi_{ef}).
+        r"""[$K_c$] Factor $K_c = \frac{0.3}{1 + 0.5 \cdot \phi_{ef}}$.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.7.2(2) - Formula (5.26)
 
         Parameters
         ----------
         phi_ef : DIMENSIONLESS
-            [:math:`\phi_{ef}`] Effective creep ratio, see 5.8.4.
+            [$\phi_{ef}$] Effective creep ratio, see 5.8.4.
         rho : float
-            [:math:`\rho`] Geometric reinforcement ratio, As/Ac. Must be > 0.01.
+            [$\rho$] Geometric reinforcement ratio, As/Ac. Must be > 0.01.
         """
         super().__init__()
         self.phi_ef = phi_ef

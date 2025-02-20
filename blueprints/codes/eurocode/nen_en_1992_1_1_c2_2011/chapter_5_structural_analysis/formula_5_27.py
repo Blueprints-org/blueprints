@@ -8,22 +8,22 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot27EffectiveDesignModulusElasticity(Formula):
-    """Class representing formula 5.27 for the calculation of the effective design modulus of elasticity, :math:`E_{cd,eff}`."""
+    """Class representing formula 5.27 for the calculation of the effective design modulus of elasticity, [$E_{cd,eff}$]."""
 
     label = "5.27"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, e_cd: MPA, phi_ef: DIMENSIONLESS) -> None:
-        r"""[:math:`E_{cd,eff}`] Effective design modulus of elasticity.
+        r"""[$E_{cd,eff}$] Effective design modulus of elasticity.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.6(3) - Formula (5.27)
 
         Parameters
         ----------
         e_cd : MPA
-            [:math:`E_{cd}`] is the design modulus of elasticity of concrete according to 5.8.6 (3).
+            [$E_{cd}$] is the design modulus of elasticity of concrete according to 5.8.6 (3).
         phi_ef : DIMENSIONLESS
-            [:math:`\phi_{ef}`] is the effective creep coefficient; same value as for columns may be used.
+            [$\phi_{ef}$] is the effective creep coefficient; same value as for columns may be used.
         """
         super().__init__()
         self.e_cd = e_cd
