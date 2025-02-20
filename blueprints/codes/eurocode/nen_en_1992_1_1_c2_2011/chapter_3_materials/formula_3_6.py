@@ -19,18 +19,18 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
         e_c: MPA,
     ) -> None:
         r"""εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete
-        compressive stress [$$\sigma_c$$] applied at time [$$t_0$$] [$$-$$].
+        compressive stress [$\sigma_c$] applied at time [$t_0$] [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(3) - Formula (3.6)
 
         Parameters
         ----------
         phi_inf_t0 : DIMENSIONLESS
-            [$$\varphi(\infty, t_0)$$] Creep coefficient if high accuracy is not required use figure 3.1 else use appendix B [$$-$$].
+            [$\varphi(\infty, t_0)$] Creep coefficient if high accuracy is not required use figure 3.1 else use appendix B [$-$].
         sigma_c : MPA
-            [$$\sigma_c$$] Concrete compressive stress [$$MPa$$].
+            [$\sigma_c$] Concrete compressive stress [$MPa$].
         e_c : MPA
-            [$$E_c$$] tangent modulus = 1.05 * [$$E_{cm}$$]. According to art.3.1.4(2) [$$MPa$$].
+            [$E_c$] tangent modulus = 1.05 * [$E_{cm}$]. According to art.3.1.4(2) [$MPa$].
 
         Returns
         -------

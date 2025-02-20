@@ -18,20 +18,20 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
         f_ck: MPA,
         gamma_c: DIMENSIONLESS,
     ) -> None:
-        r"""[$$f_{cd}$$] Design value concrete compressive strength [$$MPa$$].
+        r"""[$f_{cd}$] Design value concrete compressive strength [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.6(1) - Formula (3.15)
 
         Parameters
         ----------
         alpha_cc : DIMENSIONLESS
-            [$$\alpha_{cc}$$] Coefficient taking long term effects on compressive strength into
-            account and unfavorable effect due to positioning loading [$$-$$]
+            [$\alpha_{cc}$] Coefficient taking long term effects on compressive strength into
+            account and unfavorable effect due to positioning loading [$-$]
             Normally between 0.8 and 1, see national appendix. Recommended value: 1.0
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength [$$MPa$$].
+            [$f_{ck}$] Characteristic compressive strength [$MPa$].
         gamma_c : DIMENSIONLESS
-            [$$\gamma_{c}$$] Partial safety factor concrete, see 2.4.2.4 [$$-$$].
+            [$\gamma_{c}$] Partial safety factor concrete, see 2.4.2.4 [$-$].
 
         Returns
         -------

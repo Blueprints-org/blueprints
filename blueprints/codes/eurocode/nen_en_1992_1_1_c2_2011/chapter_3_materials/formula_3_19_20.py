@@ -16,15 +16,15 @@ class Form3Dot19And20EffectivePressureZoneHeight(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[$$\lambda$$] Factor effective pressure zone height [$$-$$].
+        r"""[$\lambda$] Factor effective pressure zone height [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.7(3) - Formula (3.19) and (3.20)
 
         Parameters
         ----------
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength concrete [$$MPa$$].
-            Valid range: [$$f_{ck} \leq 90$$].
+            [$f_{ck}$] Characteristic compressive strength concrete [$MPa$].
+            Valid range: [$f_{ck} \leq 90$].
 
         Returns
         -------

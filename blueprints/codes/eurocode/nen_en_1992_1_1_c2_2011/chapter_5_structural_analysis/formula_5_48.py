@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_negative
 
 class Form5Dot48LowerCharacteristicPrestressingValue(Formula):
     r"""Class representing formula 5.48 for the calculation of the lower characteristic value for the prestressing
-    value at SLS and Fatigue, [$$P_{k,inf}$$].
+    value at SLS and Fatigue, [$P_{k,inf}$].
     """
 
     label = "5.48"
@@ -20,17 +20,17 @@ class Form5Dot48LowerCharacteristicPrestressingValue(Formula):
         r_inf: DIMENSIONLESS,
         p_m_t: KN,
     ) -> None:
-        r"""[$$P_{k,inf}$$] Lower characteristic value for the prestressing value at SLS and Fatigue [$$kN$$].
+        r"""[$P_{k,inf}$] Lower characteristic value for the prestressing value at SLS and Fatigue [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.9(1) - Formula (5.48)
 
         Parameters
         ----------
         r_inf : DIMENSIONLESS
-            [$$r_{inf}$$] Factor for the lower characteristic value, recommended value is 0.95 for pre-tensioning or unbounded tendons,
-             0.90 for post-tensioning with bonded tendons. When appropriate measures are taken: 1.0 [$$-$$].
+            [$r_{inf}$] Factor for the lower characteristic value, recommended value is 0.95 for pre-tensioning or unbounded tendons,
+             0.90 for post-tensioning with bonded tendons. When appropriate measures are taken: 1.0 [$-$].
         p_m_t : KN
-            [$$P_{m,t}(x)$$] Mean value of the prestressing force at location x [$$kN$$].
+            [$P_{m,t}(x)$] Mean value of the prestressing force at location x [$kN$].
         """
         super().__init__()
         self.r_inf = r_inf
