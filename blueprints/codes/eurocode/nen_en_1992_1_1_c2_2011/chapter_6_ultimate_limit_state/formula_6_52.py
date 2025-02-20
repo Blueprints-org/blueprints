@@ -17,19 +17,19 @@ class Form6Dot52PunchingShearResistance(Formula):
     Parameters
     ----------
     v_rd_c : MPA
-        [$$v_{Rd,c}$$] Design shear strength of concrete without shear reinforcement [$$MPa$$].
+        [$v_{Rd,c}$] Design shear strength of concrete without shear reinforcement [$MPa$].
     d : MM
-        [$$d$$] Mean effective depth of the slab [$$mm$$].
+        [$d$] Mean effective depth of the slab [$mm$].
     s_r : MM
-        [$$s_r$$] Radial spacing of perimeters of shear reinforcement [$$mm$$].
+        [$s_r$] Radial spacing of perimeters of shear reinforcement [$mm$].
     a_sw : MM2
-        [$$A_{sw}$$] Area of one perimeter of shear reinforcement around the column [$$mm^2$$].
+        [$A_{sw}$] Area of one perimeter of shear reinforcement around the column [$mm^2$].
     f_ywd_ef : MPA
-        [$$f_{ywd,ef}$$] Effective design strength of the punching shear reinforcement [$$MPa$$].
+        [$f_{ywd,ef}$] Effective design strength of the punching shear reinforcement [$MPa$].
     u_1 : MM
-        [$$u_{y1}$$] Perimeter of the critical section [$$mm$$].
+        [$u_{y1}$] Perimeter of the critical section [$mm$].
     alpha : DEG
-        [$$\alpha$$] Angle between the shear reinforcement and the plane of the slab [$$deg$$].
+        [$\alpha$] Angle between the shear reinforcement and the plane of the slab [$deg$].
     """
 
     label = "6.52"
@@ -101,7 +101,7 @@ class Form6Dot52PunchingShearResistance(Formula):
 
 
 class Form6Dot52Sub1EffectiveYieldStrength(Formula):
-    r"""Class representing formula 6.52sub1 for the calculation of [$$f_{ywd,ef}$$]."""
+    r"""Class representing formula 6.52sub1 for the calculation of [$f_{ywd,ef}$]."""
 
     label = "6.52sub1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -111,16 +111,16 @@ class Form6Dot52Sub1EffectiveYieldStrength(Formula):
         d: MM,
         f_ywd: MPA,
     ) -> None:
-        r"""[f_{ywd,ef}] Calculation of [$$f_{ywd,ef}$$].
+        r"""[f_{ywd,ef}] Calculation of [$f_{ywd,ef}$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.5(1) - Formula (6.52sub1)
 
         Parameters
         ----------
         d : MM
-            [$$d$$] Mean effective depth of the slab [$$mm$$].
+            [$d$] Mean effective depth of the slab [$mm$].
         f_ywd : MPA
-            [$$f_{ywd}$$] Design yield strength of the reinforcement [$$MPa$$].
+            [$f_{ywd}$] Design yield strength of the reinforcement [$MPa$].
         """
         super().__init__()
         self.d = d

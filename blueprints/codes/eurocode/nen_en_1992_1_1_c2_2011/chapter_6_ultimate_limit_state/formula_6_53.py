@@ -15,15 +15,15 @@ class Form6Dot53CheckPunchingShear(Formula):
     Parameters
     ----------
     beta : DIMENSIONLESS
-        [$$\beta$$] See 6.4.3 (3), (4) and (5) [$$-$$].
+        [$\beta$] See 6.4.3 (3), (4) and (5) [$-$].
     v_ed : N
-        [$$V_{Ed}$$] Design shear force [$$N$$].
+        [$V_{Ed}$] Design shear force [$N$].
     u_0 : MM
-        [$$u_{0}$$] Perimeter of the critical section, differs for interior vs edge vs corner column [$$mm$$].
+        [$u_{0}$] Perimeter of the critical section, differs for interior vs edge vs corner column [$mm$].
     d : MM
-        [$$d$$] Mean effective depth of the slab [$$mm$$].
+        [$d$] Mean effective depth of the slab [$mm$].
     v_rd_max : MPA
-        [$$v_{Rd,max}$$] Maximum design shear stress [$$MPa$$].
+        [$v_{Rd,max}$] Maximum design shear stress [$MPa$].
     """
 
     label = "6.53"
