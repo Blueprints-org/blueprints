@@ -51,6 +51,6 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
                 return f"0 (No additional requirements for {casting_surface.value})"
             case CastingSurface.PREPARED_GROUND:
-                return f"k1 ≥ c_{{min,dur}} + 40 mm for {casting_surface.value}"
+                return f"k1 \\ge c_{{min,dur}} + 40 mm for {casting_surface.value}"
             case CastingSurface.DIRECTLY_AGAINST_SOIL:
-                return f"k2 ≥ c_{{min,dur}} + 75 mm for {casting_surface.value}"
+                return f"k2 \\ge c_{{min,dur}} + 75 mm for {casting_surface.value}"

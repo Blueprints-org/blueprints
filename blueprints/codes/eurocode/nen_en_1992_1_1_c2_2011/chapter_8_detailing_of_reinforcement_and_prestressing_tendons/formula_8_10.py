@@ -1,4 +1,4 @@
-"""Formula 8.10 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
+r"""Formula 8.10 from NEN-EN 1992-1-1+C2:2011: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form8Dot10DesignLapLength(Formula):
-    """Class representing formula 8.10 for the calculation of the design lap length :math:`l_{0}` [:math:`mm`]."""
+    r"""Class representing formula 8.10 for the calculation of the design lap length [$l_{0}$] [$mm$]."""
 
     label = "8.10"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,74 +23,74 @@ class Form8Dot10DesignLapLength(Formula):
         l_b_rqd: MM,
         l_0_min: MM,
     ) -> None:
-        """[:math:`l_{0}`] Design lap length [:math:`mm`].
+        r"""[$l_{0}$] Design lap length [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.7.3(1) - Formula (8.10)
 
         Parameters
         ----------
         alpha_1 : DIMENSIONLESS
-            [:math:`α_{1}`] Coefficient for the effect of the form of the bars assuming adequate cover (see figure 8.1) [-].
+            [$α_{1}$] Coefficient for the effect of the form of the bars assuming adequate cover (see figure 8.1) [$-$].
 
-            :math:`= 1.0` for bars in compression.
+            [$= 1.0$] for bars in compression.
 
-            :math:`= 1.0` for straight bars in tension.
+            [$= 1.0$] for straight bars in tension.
 
-            :math:`= 1.0` if :math:`c_{d} <= 3 ⋅ Ø` for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            [$= 1.0$] if [$c_{d} <= 3 ⋅ Ø$] for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
 
-            :math:`= 0.7` if :math:`c_{d} > 3 ⋅ Ø` for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
+            [$= 0.7$] if [$c_{d} > 3 ⋅ Ø$] for bars other than straight in tension (see figure 8.1 (b), (c) and (d)).
 
-            Note: see figure 8.3 for values of cd.
+            Note: see figure 8.3 for values of [$c_{d}$].
         alpha_2 : DIMENSIONLESS
-            [:math:`α_{2}`] Coefficient for the effect of minimum concrete cover (see figure 8.3) [-].
+            [$α_{2}$] Coefficient for the effect of minimum concrete cover (see figure 8.3) [$-$].
 
-            :math:`= 1.0` for bars in compression.
+            [$= 1.0$] for bars in compression.
 
-            :math:`= 1 - 0.15 ⋅ (c_{d} - Ø) / Ø <= 1` with a minimum of 0.7 for straight bars in tension.
+            [$= 1 - 0.15 ⋅ (c_{d} - Ø) / Ø <= 1$] with a minimum of 0.7 for straight bars in tension.
 
-            :math:`= 1 - 0.15 ⋅ (c_{d} - 3 ⋅ Ø) / Ø <= 1` with a minimum of 0.7 for bars other than straight in tension
+            [$= 1 - 0.15 ⋅ (c_{d} - 3 ⋅ Ø) / Ø <= 1$] with a minimum of 0.7 for bars other than straight in tension
             (see figure 8.1 (b), (c) and (d)).
 
-            Note: see figure 8.3 for values of :math:`c_{d}`.
+            Note: see figure 8.3 for values of [$c_{d}$].
         alpha_3 : DIMENSIONLESS
-            [:math:`α_{3}`] Coefficient for the effect of confinement by transverse reinforcement [-].
+            [$α_{3}$] Coefficient for the effect of confinement by transverse reinforcement [$-$].
 
-            :math:`= 1.0` for bars in compression.
+            [$= 1.0$] for bars in compression.
 
-            :math:`= 1 - K ⋅ λ <= 1` with a minimum of 0.7 for bars in tension.
+            [$= 1 - K ⋅ λ <= 1$] with a minimum of 0.7 for bars in tension.
 
-            Where: :math:`λ = (ΣA_{st} - ΣA_{st,min}) / A_{s}`.
+            Where: [$λ = (ΣA_{st} - ΣA_{st,min}) / A_{s}$].
 
-            Where: :math:`ΣA_{st,min} = A_{s} ⋅ (σ_{sd}/f_{yd})`
+            Where: [$ΣA_{st,min} = A_{s} ⋅ (σ_{sd}/f_{yd})$]
 
-            With :math:`A_{s}` = area of one lapped bar [mm²].
+            With [$A_{s}$] = area of one lapped bar [$mm²$].
 
-            Note: see figure 8.4 for values of :math:`K, A_{s}` and :math:`A_{st}`.
+            Note: see figure 8.4 for values of [$K, A_{s}$] and [$A_{st}$].
         alpha_5 : DIMENSIONLESS
-            [:math:`α_{5}`] Coefficient for the effect of the pressure transverse to the plane of splitting along the design
-            anchorage length :math:`l_{bd}` (see 8.6) [-].
+            [$α_{5}$] Coefficient for the effect of the pressure transverse to the plane of splitting along the design
+            anchorage length [$l_{bd}$] (see 8.6) [$-$].
 
-            :math:`= 1 - 0.04 ⋅ p <= 1` with a minimum of 0.7 for all types of anchorage in compression.
+            [$= 1 - 0.04 ⋅ p <= 1$] with a minimum of 0.7 for all types of anchorage in compression.
 
-            Where: p = transverse pressure at ultimate limit state along :math:`l_{bd}` [:math:`MPa`].
+            Where: p = transverse pressure at ultimate limit state along [$l_{bd}$] [$MPa$].
         alpha_6 : DIMENSIONLESS
-            [:math:`α_{6}`] Coefficient for the effect of reinforcement ratio [-].
+            [$α_{6}$] Coefficient for the effect of reinforcement ratio [$-$].
 
-            :math:`= (ρ_{1}/25)^{0.5} <= 1.5` with a minimum of 1.0.
+            [$= (ρ_{1}/25)^{0.5} <= 1.5$] with a minimum of 1.0.
 
-            Where: :math:`ρ_{1}` = reinforcement percentage lapped within :math:`0,65 ⋅ l_{0}` from the centre of the lap length
-            considered (see figure 8.8) [-].
+            Where: [$ρ_{1}$] = reinforcement percentage lapped within [$0,65 ⋅ l_{0}$] from the centre of the lap length
+            considered (see figure 8.8) [$-$].
 
             Use your own implementation of this formula or use the :class:`SubForm8Dot10Alpha6` class.
         l_b_rqd : MM
-            [:math:`l_{b,rqd}`] Basic required anchorage length, for anchoring the force :math:`A_{s} ⋅ σ_{sd}` in a straight bar assuming constant
-            bond stress (formula 8.3) [:math:`mm`].
+            [$l_{b,rqd}$] Basic required anchorage length, for anchoring the force [$A_{s} ⋅ σ_{sd}$] in a straight bar assuming constant
+            bond stress (formula 8.3) [$mm$].
 
             Use your own implementation for this value or use the :class:`Form8Dot3RequiredAnchorageLength` class.
         l_0_min : MM
-            [:math:`l_{0,min}`] Minimum design lap length [:math:`mm`].
+            [$l_{0,min}$] Minimum design lap length [$mm$].
 
-            :math:`= max(0.3 ⋅ α_{6} ⋅ l_{b,rqd}, 15 ⋅ Ø, 200)` (formula 8.11).
+            [$= max(0.3 ⋅ α_{6} ⋅ l_{b,rqd}, 15 ⋅ Ø, 200)$] (formula 8.11).
 
             Use your own implementation of this formula or use :class:`Form8Dot11MinimumDesignLapLength` class.
         """
@@ -141,21 +141,21 @@ class Form8Dot10DesignLapLength(Formula):
 
 
 class SubForm8Dot10Alpha6(Formula):
-    """Class representing the formula for the calculation of the coefficient :math:`α_{6}`."""
+    r"""Class representing the formula for the calculation of the coefficient [$α_{6}$]."""
 
     label = "8.8"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, rho_1: DIMENSIONLESS) -> None:
-        """[:math:`α_{6}`] Coefficient for the effect of reinforcement ratio [-].
+        r"""[$α_{6}$] Coefficient for the effect of reinforcement ratio [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.7.3(1) - Formula (8.8)
 
         Parameters
         ----------
         rho_1 : DIMENSIONLESS
-            [:math:`ρ_{1}`] Reinforcement percentage lapped within :math:`0,65 ⋅ l_{0}` from the centre of the lap length
-            considered (see figure 8.8) [-].
+            [$ρ_{1}$] Reinforcement percentage lapped within [$0,65 ⋅ l_{0}$] from the centre of the lap length
+            considered (see figure 8.8) [$-$].
         """
         super().__init__()
         self.rho_1 = rho_1
@@ -174,7 +174,7 @@ class SubForm8Dot10Alpha6(Formula):
         return LatexFormula(
             return_symbol=r"\alpha_6",
             result=f"{self:.2f}",
-            equation=f'{latex_max_curly_brackets(latex_min_curly_brackets(argument_1_formula, "1.5"), "1")}',
-            numeric_equation=f'{latex_max_curly_brackets(latex_min_curly_brackets(numerical_argument_1, "1.5"), "1")}',
+            equation=f"{latex_max_curly_brackets(latex_min_curly_brackets(argument_1_formula, '1.5'), '1')}",
+            numeric_equation=f"{latex_max_curly_brackets(latex_min_curly_brackets(numerical_argument_1, '1.5'), '1')}",
             comparison_operator_label="=",
         )

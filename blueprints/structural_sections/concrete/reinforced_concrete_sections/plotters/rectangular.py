@@ -346,9 +346,7 @@ class RectangularCrossSectionPlotter:
         if self.cross_section.stirrups:
             stirrups_text += f"\nStirrups ({sum(stirrup.as_w for stirrup in self.cross_section.stirrups):.0f} mm²/m):"
             for stirrup in self.cross_section.stirrups:
-                stirrups_text += (
-                    f"\n  ⌀{stirrup.diameter}-{stirrup.distance} mm (b:{stirrup.ctc_distance_legs:.0f} mm) ({stirrup.as_w:.0f} " f"mm²/m)"
-                )
+                stirrups_text += f"\n  ⌀{stirrup.diameter}-{stirrup.distance} mm (b:{stirrup.ctc_distance_legs:.0f} mm) ({stirrup.as_w:.0f} mm²/m)"
         return stirrups_text
 
     def _add_longitudinal_rebars_to_legend(self) -> str:
