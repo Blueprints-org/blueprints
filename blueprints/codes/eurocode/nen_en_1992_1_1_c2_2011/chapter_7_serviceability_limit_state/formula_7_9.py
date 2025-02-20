@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
-    r"""Class representing formula 7.9 for the calculation of [$$\epsilon_{sm} - \epsilon_{cm}$$]."""
+    r"""Class representing formula 7.9 for the calculation of [$\epsilon_{sm} - \epsilon_{cm}$]."""
 
     label = "7.9"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -22,24 +22,24 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
         e_s: MPA,
         e_c: MPA,
     ) -> None:
-        r"""[$$\epsilon_{sm} - \epsilon_{cm}$$] Calculation of the strain difference [$$\epsilon$$].
+        r"""[$\epsilon_{sm} - \epsilon_{cm}$] Calculation of the strain difference [$\epsilon$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.4(2) - Formula (7.9)
 
         Parameters
         ----------
         sigma_s : MPA
-            [$$\sigma_s$$] Stress in the reinforcement [$$MPa$$].
+            [$\sigma_s$] Stress in the reinforcement [$MPa$].
         k_t : DIMENSIONLESS
-            [$$k_t$$] Factor dependent on the duration of the load, 0.6 for short term loading, 0.4 for long term loading [$$-$$].
+            [$k_t$] Factor dependent on the duration of the load, 0.6 for short term loading, 0.4 for long term loading [$-$].
         f_ct_eff : MPA
-            [$$f_{ct,eff}$$] Effective tensile strength of concrete [$$MPa$$].
+            [$f_{ct,eff}$] Effective tensile strength of concrete [$MPa$].
         rho_p_eff : DIMENSIONLESS
-            [$$\rho_{p,eff}$$] Effective reinforcement ratio, see equation 7.10 [$$-$$].
+            [$\rho_{p,eff}$] Effective reinforcement ratio, see equation 7.10 [$-$].
         e_s : MPA
-            [$$e_s$$] Modulus of elasticity of reinforcement [$$MPa$$].
+            [$e_s$] Modulus of elasticity of reinforcement [$MPa$].
         e_c : MPA
-            [$$e_c$$] Modulus of elasticity of concrete [$$MPa$$].
+            [$e_c$] Modulus of elasticity of concrete [$MPa$].
         """
         super().__init__()
         self.sigma_s = sigma_s

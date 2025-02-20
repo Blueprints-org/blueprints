@@ -8,22 +8,22 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form7Dot13CoefficientK2(Formula):
-    r"""Class representing formula 7.13 for the calculation of [$$k_2$$]."""
+    r"""Class representing formula 7.13 for the calculation of [$k_2$]."""
 
     label = "7.13"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, epsilon_1: DIMENSIONLESS, epsilon_2: DIMENSIONLESS) -> None:
-        r"""[$$k_2$$] Calculation of the coefficient for distribution of strain [$$-$$].
+        r"""[$k_2$] Calculation of the coefficient for distribution of strain [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.4(3) - Formula (7.13)
 
         Parameters
         ----------
         epsilon_1 : DIMENSIONLESS
-            [$$\epsilon_1$$] Greater tensile strain at the boundaries of the section considered [$$-$$].
+            [$\epsilon_1$] Greater tensile strain at the boundaries of the section considered [$-$].
         epsilon_2 : DIMENSIONLESS
-            [$$\epsilon_2$$] Lesser tensile strain at the boundaries of the section considered [$$-$$].
+            [$\epsilon_2$] Lesser tensile strain at the boundaries of the section considered [$-$].
         """
         super().__init__()
         self.epsilon_1 = epsilon_1

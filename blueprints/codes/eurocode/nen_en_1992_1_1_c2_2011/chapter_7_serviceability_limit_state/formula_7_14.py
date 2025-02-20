@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot14MaximumCrackSpacing(Formula):
-    r"""Class representing formula 7.14 for the calculation of crack spacing [$$s_{r,max}$$]."""
+    r"""Class representing formula 7.14 for the calculation of crack spacing [$s_{r,max}$]."""
 
     label = "7.14"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,18 +18,18 @@ class Form7Dot14MaximumCrackSpacing(Formula):
         h: MM,
         x: MM,
     ) -> None:
-        r"""[$$s_{r,max}$$] Where the spacing of the bonded reinforcement exceeds 5(c+⌀/2) (see Figure 7.2) or where
+        r"""[$s_{r,max}$] Where the spacing of the bonded reinforcement exceeds 5(c+⌀/2) (see Figure 7.2) or where
         there is no bonded reinforcement within the tension zone, an upper bound to the crack width
-        may be found by assuming a maximum crack spacing with this formula [$$mm$$].
+        may be found by assuming a maximum crack spacing with this formula [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.4(3) - Formula (7.14)
 
         Parameters
         ----------
         h : MM
-            [$$h$$] Depth of the neutral axis [$$mm$$].
+            [$h$] Depth of the neutral axis [$mm$].
         x : MM
-            [$$x$$] Depth of the concrete tension surface [$$mm$$].
+            [$x$] Depth of the concrete tension surface [$mm$].
         """
         super().__init__()
         self.h = h

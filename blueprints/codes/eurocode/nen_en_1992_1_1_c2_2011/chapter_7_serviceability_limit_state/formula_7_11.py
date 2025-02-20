@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form7Dot11MaximumCrackSpacing(Formula):
-    r"""Class representing formula 7.11 for the calculation of [$$s_{r,max}$$]."""
+    r"""Class representing formula 7.11 for the calculation of [$s_{r,max}$]."""
 
     label = "7.11"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,32 +23,32 @@ class Form7Dot11MaximumCrackSpacing(Formula):
         diam: MM,
         rho_p_eff: DIMENSIONLESS,
     ) -> None:
-        r"""[$$s_{r,max}$$] Calculation of the maximum crack spacing [$$mm$$].
+        r"""[$s_{r,max}$] Calculation of the maximum crack spacing [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.4(3) - Formula (7.11)
 
         Parameters
         ----------
         k_3 : DIMENSIONLESS
-            [$$k_3$$] Coefficient, the recommended value is 3.4 [$$-$$].
+            [$k_3$] Coefficient, the recommended value is 3.4 [$-$].
         c : MM
-            [$$c$$] Cover to the longitudinal reinforcement [$$mm$$].
+            [$c$] Cover to the longitudinal reinforcement [$mm$].
         k_1 : DIMENSIONLESS
-            [$$k_1$$] Coefficient which takes account of the bond properties of the bonded reinforcement.
+            [$k_1$] Coefficient which takes account of the bond properties of the bonded reinforcement.
             Use 0.8 for high bond bars and 1.6 for bars with an efffectively plain surface
-            (e.g. prestressing tendons) [$$-$$].
+            (e.g. prestressing tendons) [$-$].
         k_2 : DIMENSIONLESS
-            [$$k_2$$] Coefficient which takes account of the distribution of strain.
+            [$k_2$] Coefficient which takes account of the distribution of strain.
             Use 0.5 for bending, 1.0 for pure tension. For cases of eccentric tension or for local areas,
-            intermediate values of k2 should be used which may be calculated with equation (7.13) [$$-$$] .
+            intermediate values of k2 should be used which may be calculated with equation (7.13) [$-$] .
         k_4 : DIMENSIONLESS
-            [$$k_4$$] Coefficient, the recommended value is 0.425 [$$-$$].
+            [$k_4$] Coefficient, the recommended value is 0.425 [$-$].
         diam : MM
-            [$$diam$$] Bar diameter [$$mm$$]. Where a mixture of bar diameters is used in a section, an
-            equivalent diameter, $$⌀_{eq}$$, should be used. For a section with $$n_1$$ bars of diameter $$⌀_1$$
-            and $$n_2$$ bars of diameter $$⌀_2$$, expression (7.12) should be used to calculate $$⌀_{eq}$$.
+            [$diam$] Bar diameter [$mm$]. Where a mixture of bar diameters is used in a section, an
+            equivalent diameter, $⌀_{eq}$, should be used. For a section with $n_1$ bars of diameter $⌀_1$
+            and $n_2$ bars of diameter $⌀_2$, expression (7.12) should be used to calculate $⌀_{eq}$.
         rho_p_eff : DIMENSIONLESS
-            [$$\rho_{p,eff}$$] Effective reinforcement ratio [$$-$$].
+            [$\rho_{p,eff}$] Effective reinforcement ratio [$-$].
         """
         super().__init__()
         self.k_3 = k_3

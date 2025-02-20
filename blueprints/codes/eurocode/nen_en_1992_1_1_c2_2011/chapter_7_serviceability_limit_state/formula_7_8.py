@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot8CrackWidth(Formula):
-    r"""Class representing formula 7.8 for the calculation of the crack width [$$w_k$$]."""
+    r"""Class representing formula 7.8 for the calculation of the crack width [$w_k$]."""
 
     label = "7.8"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form7Dot8CrackWidth(Formula):
         s_r_max: MM,
         epsilon_sm_minus_epsilon_cm: DIMENSIONLESS,
     ) -> None:
-        r"""[$$w_k$$] Calculation of the crack width [$$mm$$].
+        r"""[$w_k$] Calculation of the crack width [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.4(1) - Formula (7.8)
 
         Parameters
         ----------
         s_r_max : MM
-            [$$s_{r,max}$$] Maximum crack spacing [$$mm$$].
+            [$s_{r,max}$] Maximum crack spacing [$mm$].
         epsilon_sm_minus_epsilon_cm : DIMENSIONLESS
-            [$$\epsilon_{sm} - \epsilon_{cm}$$] Difference between mean strain in reinforcement and mean strain in concrete [$$-$$].
+            [$\epsilon_{sm} - \epsilon_{cm}$] Difference between mean strain in reinforcement and mean strain in concrete [$-$].
         """
         super().__init__()
         self.s_r_max = s_r_max

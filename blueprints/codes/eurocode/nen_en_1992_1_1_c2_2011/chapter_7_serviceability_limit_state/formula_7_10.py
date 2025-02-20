@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot10RhoPEff(Formula):
-    r"""Class representing formula 7.10 for the calculation of [$$\rho_{p,eff}$$]."""
+    r"""Class representing formula 7.10 for the calculation of [$\rho_{p,eff}$]."""
 
     label = "7.10"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,20 +20,20 @@ class Form7Dot10RhoPEff(Formula):
         a_p_prime: MM2,
         a_c_eff: MM2,
     ) -> None:
-        r"""[$$\rho_{p,eff}$$] Calculation of the effective reinforcement ratio [$$mm^2$$].
+        r"""[$\rho_{p,eff}$] Calculation of the effective reinforcement ratio [$mm^2$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.2(3) - Formula (7.10)
 
         Parameters
         ----------
         a_s : MM2
-            [$$A_s$$] Area of tensile reinforcement [$$mm^2$$].
+            [$A_s$] Area of tensile reinforcement [$mm^2$].
         xi_1 : DIMENSIONLESS
-            [$$\xi_1$$] Coefficient related to the reinforcement.
+            [$\xi_1$] Coefficient related to the reinforcement.
         a_p_prime : MM2
-            [$$A'_p$$] Area of pre- or post-tensioned steel [$$mm^2$$].
+            [$A'_p$] Area of pre- or post-tensioned steel [$mm^2$].
         a_c_eff : MM2
-            [$$A_{c,eff}$$] Effective area of concrete [$$mm^2$$].
+            [$A_{c,eff}$] Effective area of concrete [$mm^2$].
         """
         super().__init__()
         self.a_s = a_s

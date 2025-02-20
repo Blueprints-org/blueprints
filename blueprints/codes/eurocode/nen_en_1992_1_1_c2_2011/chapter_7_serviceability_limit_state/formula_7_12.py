@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot12EquivalentDiameter(Formula):
-    r"""Class representing formula 7.12 for the calculation of [$$⌀_{eq}$$]."""
+    r"""Class representing formula 7.12 for the calculation of [$⌀_{eq}$]."""
 
     label = "7.12"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,20 +20,20 @@ class Form7Dot12EquivalentDiameter(Formula):
         n_2: DIMENSIONLESS,
         diam_2: MM,
     ) -> None:
-        r"""[$$⌀_{eq}$$] Calculation of the equivalent diameter [$$mm$$].
+        r"""[$⌀_{eq}$] Calculation of the equivalent diameter [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.4(3) - Formula (7.12)
 
         Parameters
         ----------
         n_1 : DIMENSIONLESS
-            [$$n_1$$] Number of bars with diameter $$⌀_1$$.
+            [$n_1$] Number of bars with diameter $⌀_1$.
         diam_1 : MM
-            [$$⌀_1$$] Diameter of the first set of bars [$$mm$$].
+            [$⌀_1$] Diameter of the first set of bars [$mm$].
         n_2 : DIMENSIONLESS
-            [$$n_2$$] Number of bars with diameter $$⌀_2$$.
+            [$n_2$] Number of bars with diameter $⌀_2$.
         diam_2 : MM
-            [$$⌀_2$$] Diameter of the second set of bars [$$mm$$].
+            [$⌀_2$] Diameter of the second set of bars [$mm$].
         """
         super().__init__()
         self.n_1 = n_1
