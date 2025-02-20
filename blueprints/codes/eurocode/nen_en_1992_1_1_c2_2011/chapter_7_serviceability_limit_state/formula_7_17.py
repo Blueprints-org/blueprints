@@ -19,18 +19,18 @@ class Form7Dot17MultiplicationFactor(Formula):
         a_s_req: MM2,
         a_s_prov: MM2,
     ) -> None:
-        r"""[$$\frac{310}{\sigma_s}$$] Calculation of the multiplication factor [$$-$$].
+        r"""[$\frac{310}{\sigma_s}$] Calculation of the multiplication factor [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.4.2(2) - Formula (7.17)
 
         Parameters
         ----------
         f_yk : MPa
-            [$$f_{yk}$$] Characteristic yield strength of the steel [$$MPa$$].
+            [$f_{yk}$] Characteristic yield strength of the steel [$MPa$].
         a_s_req : MM2
-            [$$A_{s,req}$$] Area of steel required at this section for ultimate limit state [$$mm^2$$].
+            [$A_{s,req}$] Area of steel required at this section for ultimate limit state [$mm^2$].
         a_s_prov : MM2
-            [$$A_{s,prov}$$] Area of steel provided at this section [$$mm^2$$].
+            [$A_{s,prov}$] Area of steel provided at this section [$mm^2$].
         """
         super().__init__()
         self.f_yk = f_yk

@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form7Dot19DistributionCoefficient(Formula):
-    r"""Class representing formula 7.19 for the calculation of [$$\zeta$$]."""
+    r"""Class representing formula 7.19 for the calculation of [$\zeta$]."""
 
     label = "7.19"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,24 +19,24 @@ class Form7Dot19DistributionCoefficient(Formula):
         sigma_sr: MPA,
         sigma_s: MPA,
     ) -> None:
-        r"""[$$\zeta$$] Calculation of the distribution coefficient, 0 for uncracked sections [$$\zeta$$].
+        r"""[$\zeta$] Calculation of the distribution coefficient, 0 for uncracked sections [$\zeta$].
 
-        Note: $$\sigma_{sr} / \sigma_{s}$$ may be replaced by $$M_{cr} / M$$ for flexure or $$N_{cr} / N$$ for pure tension,
-        where $$M_{cr}$$ is the cracking moment and $$N_{cr}$$ is the cracking force.
+        Note: $\sigma_{sr} / \sigma_{s}$ may be replaced by $M_{cr} / M$ for flexure or $N_{cr} / N$ for pure tension,
+        where $M_{cr}$ is the cracking moment and $N_{cr}$ is the cracking force.
 
         NEN-EN 1992-1-1+C2:2011 art.7.4.3(3) - Formula (7.19)
 
         Parameters
         ----------
         beta : DIMENSIONLESS
-            [$$\beta$$] Coefficient taking account of the influence of the duration of the loading or of
-            repeated loading on the average strain. For short-term loading, [$$\beta$$] = 1.0. For sustained loads or
-            many cycles of repeated loading [$$\beta$$] = 0.5 [$$-$$].
+            [$\beta$] Coefficient taking account of the influence of the duration of the loading or of
+            repeated loading on the average strain. For short-term loading, [$\beta$] = 1.0. For sustained loads or
+            many cycles of repeated loading [$\beta$] = 0.5 [$-$].
         sigma_sr : MPA
-            [$$\sigma_{sr}$$] Stress in the tension reinforcement calculated on the basis of a
-            cracked section under the loading conditions causing first cracking [$$MPa$$].
+            [$\sigma_{sr}$] Stress in the tension reinforcement calculated on the basis of a
+            cracked section under the loading conditions causing first cracking [$MPa$].
         sigma_s : MPA
-            [$$\sigma_{s}$$] Stress in the tension reinforcement calculated on the basis of a cracked section [$$MPa$$].
+            [$\sigma_{s}$] Stress in the tension reinforcement calculated on the basis of a cracked section [$MPa$].
         """
         super().__init__()
         self.beta = beta

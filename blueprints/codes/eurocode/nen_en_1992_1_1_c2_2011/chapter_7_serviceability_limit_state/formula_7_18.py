@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot18DeformationParameter(Formula):
-    r"""Class representing formula 7.18 for the calculation of [$$\alpha$$]."""
+    r"""Class representing formula 7.18 for the calculation of [$\alpha$]."""
 
     label = "7.18"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,18 +19,18 @@ class Form7Dot18DeformationParameter(Formula):
         alpha_l: DIMENSIONLESS,
         alpha_ll: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\alpha$$] Calculation of the deformation parameter [$$\alpha$$].
+        r"""[$\alpha$] Calculation of the deformation parameter [$\alpha$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.4.3(3) - Formula (7.18)
 
         Parameters
         ----------
         zeta : DIMENSIONLESS
-            [$$\zeta$$] Distribution coefficient allowing for tension stiffening at a section, calculated with Expression (7.19).
+            [$\zeta$] Distribution coefficient allowing for tension stiffening at a section, calculated with Expression (7.19).
         alpha_l : DIMENSIONLESS
-            [$$\alpha_{I}$$] Value of the parameter calculated for the uncracked condition
+            [$\alpha_{I}$] Value of the parameter calculated for the uncracked condition
         alpha_ll : DIMENSIONLESS
-            [$$\alpha_{II}$$] Value of the parameter calculated for the fully cracked condition.
+            [$\alpha_{II}$] Value of the parameter calculated for the fully cracked condition.
         .
         """
         super().__init__()

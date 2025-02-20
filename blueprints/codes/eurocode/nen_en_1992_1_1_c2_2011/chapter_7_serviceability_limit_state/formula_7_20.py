@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot20EffectiveModulus(Formula):
-    r"""Class representing formula 7.20 for the calculation of [$$E_{c,eff}$$]."""
+    r"""Class representing formula 7.20 for the calculation of [$E_{c,eff}$]."""
 
     label = "7.20"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form7Dot20EffectiveModulus(Formula):
         e_cm: MPA,
         phi_inf_t0: DIMENSIONLESS,
     ) -> None:
-        r"""[$$E_{c,eff}$$] Calculation of the effective modulus of elasticity for concrete including creep.
+        r"""[$E_{c,eff}$] Calculation of the effective modulus of elasticity for concrete including creep.
 
         NEN-EN 1992-1-1+C2:2011 art.7.4.3(5) - Formula (7.20)
 
         Parameters
         ----------
         e_cm : MPA
-            [$$E_{cm}$$] Modulus of elasticity of concrete [$$MPa$$].
+            [$E_{cm}$] Modulus of elasticity of concrete [$MPa$].
         phi_inf_t0 : DIMENSIONLESS
-            [$$\phi(\infty, t_0)$$] Creep coefficient relevant for the load and time interval (see 3.1.3) [$$-$$].
+            [$\phi(\infty, t_0)$] Creep coefficient relevant for the load and time interval (see 3.1.3) [$-$].
         """
         super().__init__()
         self.e_cm = e_cm

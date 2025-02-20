@@ -23,23 +23,23 @@ class Form7Dot16abSpanDepthRatio(Formula):
         rho_0: DIMENSIONLESS,
         rho_prime: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\frac{l}{d}$$] Limit span/depth ratio [-].
+        r"""[$\frac{l}{d}$] Limit span/depth ratio [-].
 
         NEN-EN 1992-1-1+C2:2011 art.7.4.2(2) - Formula (7.16a and 7.16b)
 
         Parameters
         ----------
         capital_k : DIMENSIONLESS
-            [$$K$$] Factor to take into account the different structural systems [-].
+            [$K$] Factor to take into account the different structural systems [-].
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
+            [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         rho : DIMENSIONLESS
-            [$$\rho$$] Required tension reinforcement ratio at mid-span to resist the moment
+            [$\rho$] Required tension reinforcement ratio at mid-span to resist the moment
             due to the design loads (at support for cantilevers) [-].
         rho_0 : DIMENSIONLESS
-            [$$\rho_0$$] Reference reinforcement ratio [$$\sqrt{f_{ck}} \cdot 10^{-3}$$] [-].
+            [$\rho_0$] Reference reinforcement ratio [$\sqrt{f_{ck}} \cdot 10^{-3}$] [-].
         rho_prime : DIMENSIONLESS
-            [$$\rho'$$] Required compression reinforcement ratio at mid-span to resist the moment
+            [$\rho'$] Required compression reinforcement ratio at mid-span to resist the moment
             due to design loads (at support for cantilevers) [-].
         """
         super().__init__()
