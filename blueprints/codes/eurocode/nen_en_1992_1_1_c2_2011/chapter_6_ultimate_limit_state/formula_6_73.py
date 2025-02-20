@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot73StressRatio(Formula):
-    r"""Class representing formula 6.73 for the calculation of [$$R_{equ}$$]."""
+    r"""Class representing formula 6.73 for the calculation of [$R_{equ}$]."""
 
     label = "6.73"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form6Dot73StressRatio(Formula):
         e_cd_min_equ: MPA,
         e_cd_max_equ: MPA,
     ) -> None:
-        r"""[$$R_{equ}$$] Calculation of stress ratio.
+        r"""[$R_{equ}$] Calculation of stress ratio.
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.7(1) - Formula (6.73)
 
         Parameters
         ----------
         e_cd_min_equ : MPA
-            [$$E_{cd,min,equ}$$] Minimum compressive stress level [$$MPa$$].
+            [$E_{cd,min,equ}$] Minimum compressive stress level [$MPa$].
         e_cd_max_equ : MPA
-            [$$E_{cd,max,equ}$$] Maximum compressive stress level [$$MPa$$].
+            [$E_{cd,max,equ}$] Maximum compressive stress level [$MPa$].
         """
         super().__init__()
         self.e_cd_min_equ = e_cd_min_equ

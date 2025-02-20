@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_list
 
 
 class Form6Dot70FatigueDamageFactor(Formula):
-    """Class representing formula 6.70 for the calculation of the fatigue damage factor [$$D_{Ed}$$]."""
+    """Class representing formula 6.70 for the calculation of the fatigue damage factor [$D_{Ed}$]."""
 
     label = "6.70"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,9 +21,9 @@ class Form6Dot70FatigueDamageFactor(Formula):
         Parameters
         ----------
         n_delta_sigma_i : list[MPA]
-            [$$n_{E}$$] The applied number of cycles for a stress range [MPa].
+            [$n_{E}$] The applied number of cycles for a stress range [MPa].
         capital_n_delta_sigma_i : list[MPA]
-            [$$N_{R}$$] The resisting number of cycles for a stress range [MPa]
+            [$N_{R}$] The resisting number of cycles for a stress range [MPa]
 
         Returns
         -------

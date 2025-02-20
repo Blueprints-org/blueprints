@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot74MinimumCompressiveStressLevel(Formula):
-    r"""Class representing formula 6.74 for the calculation of the minimum compressive stress level [$$E_{cd,min,equ}$$]."""
+    r"""Class representing formula 6.74 for the calculation of the minimum compressive stress level [$E_{cd,min,equ}$]."""
 
     label = "6.74"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form6Dot74MinimumCompressiveStressLevel(Formula):
         sigma_cd_min_equ: MPA,
         f_cd_fat: MPA,
     ) -> None:
-        r"""[$$E_{cd,min,equ}$$] Calculation of the minimum compressive stress level.
+        r"""[$E_{cd,min,equ}$] Calculation of the minimum compressive stress level.
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.7(1) - Formula (6.74)
 
         Parameters
         ----------
         sigma_cd_min_equ : MPA
-            [$$\sigma_{cd,min,equ}$$] Lower stress of the ultimate amplitude for N cycles [$$MPa$$].
+            [$\sigma_{cd,min,equ}$] Lower stress of the ultimate amplitude for N cycles [$MPa$].
         f_cd_fat : MPA
-            [$$f_{cd,fat}$$] Design fatigue strength of concrete according to (6.76) [$$MPa$$].
+            [$f_{cd,fat}$] Design fatigue strength of concrete according to (6.76) [$MPa$].
         """
         super().__init__()
         self.sigma_cd_min_equ = sigma_cd_min_equ

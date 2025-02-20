@@ -27,9 +27,9 @@ class Form6Dot72FatigueResistanceConcreteCompression(Formula):
         Parameters
         ----------
         e_cd_max_equ : MPA
-            [$$E_{cd,max,equ}$$] Maximum compressive stress level [$$MPa$$].
+            [$E_{cd,max,equ}$] Maximum compressive stress level [$MPa$].
         r_equ : DIMENSIONLESS
-            [$$R_{equ}$$] Stress ratio [$$-$$].
+            [$R_{equ}$] Stress ratio [$-$].
         """
         super().__init__()
         self.e_cd_max_equ = e_cd_max_equ

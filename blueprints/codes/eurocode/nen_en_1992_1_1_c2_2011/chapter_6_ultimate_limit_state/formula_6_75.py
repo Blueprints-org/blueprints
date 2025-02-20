@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot75MaximumCompressiveStressLevel(Formula):
-    r"""Class representing formula 6.75 for the calculation of the maximum compressive stress level [$$E_{cd,max,equ}$$]."""
+    r"""Class representing formula 6.75 for the calculation of the maximum compressive stress level [$E_{cd,max,equ}$]."""
 
     label = "6.75"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form6Dot75MaximumCompressiveStressLevel(Formula):
         sigma_cd_max_equ: MPA,
         f_cd_fat: MPA,
     ) -> None:
-        r"""[$$E_{cd,max,equ}$$] Calculation of the maximum compressive stress level.
+        r"""[$E_{cd,max,equ}$] Calculation of the maximum compressive stress level.
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.7(1) - Formula (6.75)
 
         Parameters
         ----------
         sigma_cd_max_equ : MPA
-            [$$\sigma_{cd,max,equ}$$] Upper stress of the ultimate amplitude for N cycles [$$MPa$$].
+            [$\sigma_{cd,max,equ}$] Upper stress of the ultimate amplitude for N cycles [$MPa$].
         f_cd_fat : MPA
-            [$$f_{cd,fat}$$] Design fatigue strength of concrete according to (6.76) [$$MPa$$].
+            [$f_{cd,fat}$] Design fatigue strength of concrete according to (6.76) [$MPa$].
         """
         super().__init__()
         self.sigma_cd_max_equ = sigma_cd_max_equ
