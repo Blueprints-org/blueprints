@@ -27,13 +27,13 @@ class Form6Dot31CheckTorsionShearResistanceRectangular(Formula):
         Parameters
         ----------
         t_ed : NMM
-            [$$T_{Ed}$$] Design torsional moment [$$Nmm$$].
+            [$T_{Ed}$] Design torsional moment [$Nmm$].
         v_ed : N
-            [$$V_{Ed}$$] Design transverse force [$$N$$].
+            [$V_{Ed}$] Design transverse force [$N$].
         t_rd_c : NMM
-            [$$T_{Rd,c}$$] the torsional cracking moment, which may be determined by setting tau_t,i = fctd [$$Nmm$$].
+            [$T_{Rd,c}$] the torsional cracking moment, which may be determined by setting tau_t,i = fctd [$Nmm$].
         v_rd_c : N
-            [$$V_{Rd,c}$$] follows from Expression (6.2) [$$N$$].
+            [$V_{Rd,c}$] follows from Expression (6.2) [$N$].
         """
         super().__init__()
         self.t_ed = t_ed

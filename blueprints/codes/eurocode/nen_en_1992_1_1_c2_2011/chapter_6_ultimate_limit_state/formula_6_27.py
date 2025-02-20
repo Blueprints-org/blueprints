@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot27ShearForceInWall(Formula):
-    r"""Class representing formula 6.27 for the calculation of the shear force in a wall, [$$V_{Ed,i}$$]."""
+    r"""Class representing formula 6.27 for the calculation of the shear force in a wall, [$V_{Ed,i}$]."""
 
     label = "6.27"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form6Dot27ShearForceInWall(Formula):
         tau_t_i_t_ef_i: N_M,
         z_i: M,
     ) -> None:
-        r"""[$$V_{Ed,i}$$] Shear force in a wall [$$kN$$].
+        r"""[$V_{Ed,i}$] Shear force in a wall [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.3.2(1) - Formula (6.27)
 
         Parameters
         ----------
         tau_t_i_t_ef_i : N_M
-            [$$\tau_{t,i} t_{ef,i}$$] Shear stress times effective thickness [$$N/m$$].
+            [$\tau_{t,i} t_{ef,i}$] Shear stress times effective thickness [$N/m$].
         z_i : M
-            [$$z_{i}$$] is the side length of wall i defined by the distance between the intersection points with the adjacent walls [$$m$$].
+            [$z_{i}$] is the side length of wall i defined by the distance between the intersection points with the adjacent walls [$m$].
         """
         super().__init__()
         self.tau_t_i_t_ef_i = tau_t_i_t_ef_i

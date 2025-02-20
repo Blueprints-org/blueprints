@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot30DesignTorsionalResistanceMoment(Formula):
-    r"""Class representing formula 6.30 for the calculation of the design torsional resistance moment, [$$T_{Rd,max}$$]."""
+    r"""Class representing formula 6.30 for the calculation of the design torsional resistance moment, [$T_{Rd,max}$]."""
 
     label = "6.30"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -24,24 +24,24 @@ class Form6Dot30DesignTorsionalResistanceMoment(Formula):
         t_ef_i: MM,
         theta: DEG,
     ) -> None:
-        r"""[$$T_{Rd,max}$$] Design torsional resistance moment [$$Nmm$$].
+        r"""[$T_{Rd,max}$] Design torsional resistance moment [$Nmm$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(4) - Formula (6.30)
 
         Parameters
         ----------
         nu : DIMENSIONLESS
-            [$$\nu$$] Strength reduction factor for concrete cracked in shear, see 6.2.2 (6) [$$-$$].
+            [$\nu$] Strength reduction factor for concrete cracked in shear, see 6.2.2 (6) [$-$].
         alpha_cw : DIMENSIONLESS
-            [$$\alpha_{cw}$$] Coefficient taking account of the state of the stress in the compression chord, see Expression (6.9) [$$-$$].
+            [$\alpha_{cw}$] Coefficient taking account of the state of the stress in the compression chord, see Expression (6.9) [$-$].
         f_cd : MPA
-            [$$f_{cd}$$] Design value of concrete compressive strength [$$MPa$$].
+            [$f_{cd}$] Design value of concrete compressive strength [$MPa$].
         a_k : MM2
-            [$$A_{k}$$] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [$$mm^2$$].
+            [$A_{k}$] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [$mm^2$].
         t_ef_i : MM
-            [$$t_{ef,i}$$] Effective wall thickness [$$mm$$].
+            [$t_{ef,i}$] Effective wall thickness [$mm$].
         theta : DEG
-            [$$\theta$$] Angle of compression struts (see Figure 6.5) [$$degrees$$].
+            [$\theta$] Angle of compression struts (see Figure 6.5) [$degrees$].
         """
         super().__init__()
         self.nu = nu

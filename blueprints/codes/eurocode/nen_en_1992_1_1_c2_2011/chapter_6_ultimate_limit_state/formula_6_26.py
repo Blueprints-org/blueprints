@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 class Form6Dot26ShearStressInWall(Formula):
     r"""Class representing formula 6.26 for the calculation of the shear stress in a wall of a section
-    subject to a pure torsional moment, [$$\tau_{t,i}$$].
+    subject to a pure torsional moment, [$\tau_{t,i}$].
     """
 
     label = "6.26"
@@ -20,16 +20,16 @@ class Form6Dot26ShearStressInWall(Formula):
         t_ed: NMM,
         a_k: MM2,
     ) -> None:
-        r"""[$$\tau_{t,i}t_{ef,i}$$] Shear stress in a wall of a section subject to a pure torsional moment [$$N/m$$].
+        r"""[$\tau_{t,i}t_{ef,i}$] Shear stress in a wall of a section subject to a pure torsional moment [$N/m$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.3.2(1) - Formula (6.26)
 
         Parameters
         ----------
         t_ed : NMM
-            [$$T_{Ed}$$] Applied design torsion [$$Nmm$$].
+            [$T_{Ed}$] Applied design torsion [$Nmm$].
         a_k : MM2
-            [$$A_k$$] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [$$mm^2$$].
+            [$A_k$] Area enclosed by the centre-lines of the connecting walls, including inner hollow areas [$mm^2$].
         """
         super().__init__()
         self.t_ed = t_ed

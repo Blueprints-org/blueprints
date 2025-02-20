@@ -27,13 +27,13 @@ class Form6Dot29CheckTorsionShearResistance(Formula):
         Parameters
         ----------
         t_ed : NM
-            [$$T_{Ed}$$] Design torsional moment [$$Nm$$].
+            [$T_{Ed}$] Design torsional moment [$Nm$].
         v_ed : N
-            [$$V_{Ed}$$] Design transverse force [$$N$$].
+            [$V_{Ed}$] Design transverse force [$N$].
         t_rd_max : NM
-            [$$T_{Rd,max}$$] Design torsional resistance moment according to equation 6.30 [$$Nm$$].
+            [$T_{Rd,max}$] Design torsional resistance moment according to equation 6.30 [$Nm$].
         v_rd_max : N
-            [$$V_{Rd,max}$$] Maximum design shear resistance according to Expressions (6.9) or (6.14) [$$N$$].
+            [$V_{Rd,max}$] Maximum design shear resistance according to Expressions (6.9) or (6.14) [$N$].
         """
         super().__init__()
         self.t_ed = t_ed
