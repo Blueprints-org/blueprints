@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot65ConcreteCompressionStrut(Formula):
-    r"""Class representing formula 6.65 for the calculation of [$$\theta_{fat}$$]."""
+    r"""Class representing formula 6.65 for the calculation of [$\theta_{fat}$]."""
 
     label = "6.65"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,14 +19,14 @@ class Form6Dot65ConcreteCompressionStrut(Formula):
         self,
         theta: DEG,
     ) -> None:
-        r"""[$$\theta_{fat}$$] Calculation of concrete compression struts angle for fatigue.
+        r"""[$\theta_{fat}$] Calculation of concrete compression struts angle for fatigue.
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.2(2) - Formula (6.65)
 
         Parameters
         ----------
         theta : DEG
-            [$$\theta$$] Angle of concrete compression struts to the beam axis assumed in ULS design [$$degrees$$].
+            [$\theta$] Angle of concrete compression struts to the beam axis assumed in ULS design [$degrees$].
         """
         super().__init__()
         self.theta = theta

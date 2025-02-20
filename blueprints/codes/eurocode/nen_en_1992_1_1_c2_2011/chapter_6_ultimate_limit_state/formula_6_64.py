@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot64BondFactor(Formula):
-    r"""Class representing formula 6.64 for the calculation of [$$\eta$$]."""
+    r"""Class representing formula 6.64 for the calculation of [$\eta$]."""
 
     label = "6.64"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -23,22 +23,22 @@ class Form6Dot64BondFactor(Formula):
         d_s: MM,
         d_p: MM,
     ) -> None:
-        r"""[$$\eta$$] Calculation of [$$\eta$$].
+        r"""[$\eta$] Calculation of [$\eta$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.2(2) - Formula (6.64)
 
         Parameters
         ----------
         a_s : MM2
-            [$$A_s$$] Area of reinforcing steel [$$mm^2$$].
+            [$A_s$] Area of reinforcing steel [$mm^2$].
         a_p : MM2
-            [$$A_P$$] Area of prestressing tendon or tendons [$$mm^2$$].
+            [$A_P$] Area of prestressing tendon or tendons [$mm^2$].
         xi : DIMENSIONLESS
-            [$$\xi$$] Ratio of bond strength between bonded tendons and ribbed steel in concrete [-].
+            [$\xi$] Ratio of bond strength between bonded tendons and ribbed steel in concrete [-].
         d_s : MM
-            [$$\⌀_s$$] Largest diameter of reinforcement [$$mm$$].
+            [$\⌀_s$] Largest diameter of reinforcement [$mm$].
         d_p : MM
-            [$$\⌀_P$$] Diameter or equivalent diameter of prestressing steel [$$mm$$].
+            [$\⌀_P$] Diameter or equivalent diameter of prestressing steel [$mm$].
         """
         super().__init__()
         self.a_s = a_s
