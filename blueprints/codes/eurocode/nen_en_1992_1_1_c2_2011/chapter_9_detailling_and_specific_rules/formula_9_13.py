@@ -19,18 +19,18 @@ class Form9Dot13TensileForceToBeAnchored(Formula):
         z_e: MM,
         z_i: MM,
     ) -> None:
-        """[Fs] Tensile force to be anchored [kN].
+        r"""[$F_s$] Tensile force to be anchored [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.8.2.2(2) - Formula (9.13)
 
         Parameters
         ----------
         r: MM
-            [R] The resultant of ground pressure within x from figure 9.13 [mm].
+            [$R$] The resultant of ground pressure within x from figure 9.13 [$mm$].
         z_e: MM
-            [ze] The external lever arm, see figure 9.13, i.e. distance between the reinforcement and the horizontal force Fc [mm].
+            [$z_e$] The external lever arm, see figure 9.13, i.e. distance between the reinforcement and the horizontal force $F_c$ [$mm$].
         z_i: MM
-            [zi] Internal lever arm, see figure 9.13, i.e. distance between R and the vertical force NEd [mm].
+            [$z_i$] Internal lever arm, see figure 9.13, i.e. distance between $R$ and the vertical force $N_{Ed}$ [$mm$].
         """
         super().__init__()
         self.r = r

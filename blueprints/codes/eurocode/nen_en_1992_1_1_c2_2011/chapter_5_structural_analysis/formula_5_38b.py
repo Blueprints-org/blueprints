@@ -1,4 +1,4 @@
-"""Formula 5.38b from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
+r"""Formula 5.38b from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -26,14 +26,14 @@ class Form5Dot38bCheckRelativeEccentricityRatio(Formula):
 
         Parameters
         ----------
-        e_y : DIMENSIONLESS
-            [:math:`e_{y}`] Eccentricity along y-axis [mm].
-        e_z : DIMENSIONLESS
-            [:math:`e_{z}`] Eccentricity along z-axis [mm].
-        b_eq : DIMENSIONLESS
-            [:math:`b_{eq}`] Equivalent width [mm].
-        h_eq : DIMENSIONLESS
-            [:math:`h_{eq}`] Equivalent depth [mm].
+        e_y : MM
+            [$e_{y}$] Eccentricity along y-axis [$mm$].
+        e_z : MM
+            [$e_{z}$] Eccentricity along z-axis [$mm$].
+        b_eq : MM
+            [$b_{eq}$] Equivalent width [$mm$].
+        h_eq : MM
+            [$h_{eq}$] Equivalent depth [$mm$].
         """
         super().__init__()
         self.e_y = e_y
@@ -43,10 +43,10 @@ class Form5Dot38bCheckRelativeEccentricityRatio(Formula):
 
     @staticmethod
     def _evaluate(
-        e_y: float,
-        e_z: float,
-        b_eq: float,
-        h_eq: float,
+        e_y: MM,
+        e_z: MM,
+        b_eq: MM,
+        h_eq: MM,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(e_y=e_y, e_z=e_z)

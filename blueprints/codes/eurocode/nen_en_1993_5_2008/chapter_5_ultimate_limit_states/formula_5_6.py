@@ -19,23 +19,23 @@ class Form5Dot6ProjectedShearArea(Formula):
         t_f: MM,
         t_w: MM,
     ) -> None:
-        """[:math:`A_{v}`] Calculate the projected shear area for each web of a U-profile or Z-profile in [:math:`mm²`].
+        r"""[$A_{v}$] Calculate the projected shear area for each web of a U-profile or Z-profile in [$mm^2$].
 
         NEN-EN 1993-5:2008(E) art.5.2.2(5) - Formula (5.6)
 
         Parameters
         ----------
         h : MM
-            [:math:`h`] Overall height in [:math:`mm`].
+            [$h$] Overall height in [$mm$].
         t_f : MM
-            [:math:`t_{f}`] Flange thickness in [:math:`mm`].
+            [$t_{f}$] Flange thickness in [$mm$].
         t_w : MM
-            [:math:`t_{w}`] Web thickness in [:math:`mm`].
+            [$t_{w}$] Web thickness in [$mm$].
         """
         super().__init__()
-        self.h: float = h
-        self.t_f: float = t_f
-        self.t_w: float = t_w
+        self.h: MM = h
+        self.t_f: MM = t_f
+        self.t_w: MM = t_w
 
     @staticmethod
     def _evaluate(

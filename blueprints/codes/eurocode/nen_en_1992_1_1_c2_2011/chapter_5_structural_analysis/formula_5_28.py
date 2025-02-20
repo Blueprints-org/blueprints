@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot28TotalDesignMoment(Formula):
-    """Class representing formula 5.28 for the calculation of the total design moment, :math:`M_{Ed}`."""
+    """Class representing formula 5.28 for the calculation of the total design moment, [$M_{Ed}$]."""
 
     label = "5.28"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,20 +20,20 @@ class Form5Dot28TotalDesignMoment(Formula):
         n_ed: KN,
         n_b: KN,
     ) -> None:
-        """[:math:`M_{Ed}`] Total design moment [:math:`kNm`].
+        r"""[$M_{Ed}$] Total design moment [$kNm$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.28)
 
         Parameters
         ----------
         m_0ed : KNM
-            [:math:`M_{0Ed}`] First order moment; see also 5.8.8.2 (2) [:math:`kNm`].
+            [$M_{0Ed}$] First order moment; see also 5.8.8.2 (2) [$kNm$].
         beta : float
-            [:math:`β`] Factor which depends on distribution of 1st and 2nd order moments, see 5.8.7.3 (2)-(3) [-].
+            [$\beta$] Factor which depends on distribution of 1st and 2nd order moments, see 5.8.7.3 (2)-(3) [-].
         n_ed : KN
-            [:math:`N_{Ed}`] Design value of axial load [:math:`kN`].
+            [$N_{Ed}$] Design value of axial load [$kN$].
         n_b : KN
-            [:math:`N_{B}`] Buckling load based on nominal stiffness [:math:`kN`].
+            [$N_{B}$] Buckling load based on nominal stiffness [$kN$].
         """
         super().__init__()
         self.m_0ed = m_0ed
