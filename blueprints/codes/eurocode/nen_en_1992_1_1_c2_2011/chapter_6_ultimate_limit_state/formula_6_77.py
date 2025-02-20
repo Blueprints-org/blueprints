@@ -20,20 +20,20 @@ class Form6Dot77FatigueVerification(Formula):
         f_cd_fat: MPA,
         f_ck: MPA,
     ) -> None:
-        r"""[$$\sigma_{Rd,max}$$] Fatigue verification for concrete [$$-$$].
+        r"""[$\sigma_{Rd,max}$] Fatigue verification for concrete [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.7(2) - Formula (6.77)
 
         Parameters
         ----------
         sigma_c_max : MPA
-            [$$\sigma_{c,max}$$] Maximum compressive stress at a fibre under the frequent load combination [$$MPa$$].
+            [$\sigma_{c,max}$] Maximum compressive stress at a fibre under the frequent load combination [$MPa$].
         sigma_c_min : MPA
-            [$$\sigma_{c,min}$$] Minimum compressive stress at the same fibre where the maximum occurs [$$MPa$$].
+            [$\sigma_{c,min}$] Minimum compressive stress at the same fibre where the maximum occurs [$MPa$].
         f_cd_fat : MPA
-            [$$f_{cd,fat}$$] Design compressive strength of concrete under fatigue [$$MPa$$].
+            [$f_{cd,fat}$] Design compressive strength of concrete under fatigue [$MPa$].
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
+            [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         """
         super().__init__()
         self.sigma_c_max = sigma_c_max

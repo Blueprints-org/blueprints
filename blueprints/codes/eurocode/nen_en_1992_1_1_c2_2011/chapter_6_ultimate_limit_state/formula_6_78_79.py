@@ -20,21 +20,21 @@ class Form6Dot78And79FatigueResistance(Formula):
         v_rd_c: N,
         f_ck: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\sigma_{Rd,max}$$] Fatigue resistance check [$$-$$].
+        r"""[$\sigma_{Rd,max}$] Fatigue resistance check [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.8.7(4) - Formula (6.78 and 6.79)
 
         Parameters
         ----------
         v_ed_max : N
-            [$$V_{Ed,max}$$] Design value of the maximum applied shear force under frequent load combination [$$N$$].
+            [$V_{Ed,max}$] Design value of the maximum applied shear force under frequent load combination [$N$].
         v_ed_min : N
-            [$$V_{Ed,min}$$] Design value of the minimum applied shear force under frequent load combination
-            in the cross-section where [$$V_{Ed,max}$$] occurs [$$N$$].
+            [$V_{Ed,min}$] Design value of the minimum applied shear force under frequent load combination
+            in the cross-section where [$V_{Ed,max}$] occurs [$N$].
         v_rd_c : N
-            [$$V_{Rd,c}$$] Design value for shear-resistance according to Expression (6.2.a) [$$N$$].
+            [$V_{Rd,c}$] Design value for shear-resistance according to Expression (6.2.a) [$N$].
         f_ck : DIMENSIONLESS
-            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
+            [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         """
         super().__init__()
         self.v_ed_max = v_ed_max
