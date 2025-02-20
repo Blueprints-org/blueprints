@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot44BetaRectangular(Formula):
-    r"""Class representing formula 6.44 for the calculation of [$$\beta$$] for rectangular columns."""
+    r"""Class representing formula 6.44 for the calculation of [$\beta$] for rectangular columns."""
 
     label = "6.44"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,22 +21,22 @@ class Form6Dot44BetaRectangular(Formula):
         w_1: NMM,
         e_par: MM,
     ) -> None:
-        r"""[$$\beta$$] Calculation of [$$\beta$$].
+        r"""[$\beta$] Calculation of [$\beta$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(3) - Formula (6.44)
 
         Parameters
         ----------
         u1 : MM
-            [$$u_1$$] Basic control perimeter [$$mm$$].
+            [$u_1$] Basic control perimeter [$mm$].
         u1_star : MM
-            [$$u_{1^*}$$] Reduced basic control perimeter [$$mm$$].
+            [$u_{1^*}$] Reduced basic control perimeter [$mm$].
         k : DIMENSIONLESS
-            [$$k$$] Factor determined from Table 6.1 with the ratio c1/2c2 [$$-$$].
+            [$k$] Factor determined from Table 6.1 with the ratio c1/2c2 [$-$].
         w_1 : NMM
-            [$$W_1$$] Calculated for the basic control perimeter [$$Nmm$$].
+            [$W_1$] Calculated for the basic control perimeter [$Nmm$].
         e_par : MM
-            [$$e_{par}$$] Eccentricity parallel to the slab edge [$$mm$$].
+            [$e_{par}$] Eccentricity parallel to the slab edge [$mm$].
         """
         super().__init__()
         self.u1 = u1

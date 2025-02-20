@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot43BetaRectangular(Formula):
-    r"""Class representing formula 6.43 for the calculation of [$$\beta$$] for rectangular columns."""
+    r"""Class representing formula 6.43 for the calculation of [$\beta$] for rectangular columns."""
 
     label = "6.43"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -22,20 +22,20 @@ class Form6Dot43BetaRectangular(Formula):
         by: MM,
         bz: MM,
     ) -> None:
-        r"""[$$\beta$$] Calculation of [$$\beta$$].
+        r"""[$\beta$] Calculation of [$\beta$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(3) - Formula (6.43)
 
         Parameters
         ----------
         ey : MM
-            [$$e_y$$] Eccentricity along y-axis [$$mm$$].
+            [$e_y$] Eccentricity along y-axis [$mm$].
         ez : MM
-            [$$e_z$$] Eccentricity along z-axis [$$mm$$].
+            [$e_z$] Eccentricity along z-axis [$mm$].
         by : MM
-            [$$b_y$$] Dimension of the control perimeter along y-axis [$$mm$$].
+            [$b_y$] Dimension of the control perimeter along y-axis [$mm$].
         bz : MM
-            [$$b_z$$] Dimension of the control perimeter along z-axis [$$mm$$].
+            [$b_z$] Dimension of the control perimeter along z-axis [$mm$].
         """
         super().__init__()
         self.ey = ey

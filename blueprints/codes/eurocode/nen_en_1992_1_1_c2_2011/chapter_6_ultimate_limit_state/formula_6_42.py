@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot42BetaCircular(Formula):
-    r"""Class representing formula 6.42 for the calculation of [$$\beta$$]."""
+    r"""Class representing formula 6.42 for the calculation of [$\beta$]."""
 
     label = "6.42"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,18 +21,18 @@ class Form6Dot42BetaCircular(Formula):
         diameter: MM,
         e: MM,
     ) -> None:
-        r"""[$$\beta$$] Calculation of [$$\beta$$].
+        r"""[$\beta$] Calculation of [$\beta$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(3) - Formula (6.42)
 
         Parameters
         ----------
         d : MM
-            [$$d$$] Effective depth of the slab [$$mm$$].
+            [$d$] Effective depth of the slab [$mm$].
         diameter : MM
-            [$$D$$] Diameter of the circular column [$$mm$$].
+            [$D$] Diameter of the circular column [$mm$].
         e : MM
-            [$$e$$] Distance from the axis about which the moment [$$M_{Ed}$$] acts [$$mm$$].
+            [$e$] Distance from the axis about which the moment [$M_{Ed}$] acts [$mm$].
         """
         super().__init__()
         self.d = d

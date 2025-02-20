@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot46BetaCorner(Formula):
-    r"""Class representing formula 6.46 for the calculation of [$$\beta$$] for corner column connections."""
+    r"""Class representing formula 6.46 for the calculation of [$\beta$] for corner column connections."""
 
     label = "6.46"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form6Dot46BetaCorner(Formula):
         u1: MM,
         u1_star: MM,
     ) -> None:
-        r"""[$$\beta$$] Calculation of [$$\beta$$].
+        r"""[$\beta$] Calculation of [$\beta$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(3) - Formula (6.46)
 
         Parameters
         ----------
         u1 : MM
-            [$$u_1$$] Basic control perimeter [$$mm$$].
+            [$u_1$] Basic control perimeter [$mm$].
         u1_star : MM
-            [$$u_{1^*}$$] Reduced basic control perimeter [$$mm$$].
+            [$u_{1^*}$] Reduced basic control perimeter [$mm$].
         """
         super().__init__()
         self.u1 = u1
