@@ -8,23 +8,24 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_list
 
 
 class FormADot1DamageDuringDesignLife(Formula):
-    """Class representing formula A.1 for the calculation of the damage during the design life :math:`D_d`."""
+    """Class representing formula A.1 for the calculation of the damage during the design life [$D_d$]."""
 
     label = "A.1"
     source_document = NEN_EN_1993_1_9_C2_2012
 
     def __init__(self, n_e: list[DIMENSIONLESS], n_r: list[DIMENSIONLESS]) -> None:
-        """[:math:`D_d`] The calculation of the damage during the design life [:math:`-`].
+        r"""[$D_d$] The calculation of the damage during the design life [$-$].
 
         NEN-EN 1993-1-9+C2:2012 art.A.5 - Formula (A.1)
 
         Parameters
         ----------
         n_e : list[DIMENSIONLESS]
-            [:math:`n_E`] Contains number of cycles associated with the stress range γ_Ff·Δσ_i for each band i in the factored spectrum [:math:`-`].
+            [$n_E$] Contains number of cycles associated with the stress range [$\gamma_{Ff} \cdot \Delta\sigma_i$]
+            for each band i in the factored spectrum [$-$].
         n_r : list[DIMENSIONLESS]
-            [:math:`N_R`] Contains the endurance (in cycles) obtained from the factored Δσ_C/γ_Mf-n_r curve for each stress range of
-            γ_Ff·Δ_i [:math:`-`]
+            [$N_R$] Contains the endurance (in cycles) obtained from the factored [$\Delta\sigma_C / \gamma_{Mf} - n_r$] curve for
+            each stress range of [$\gamma_{Ff} \cdot \Delta_i$] [$-$].
 
         Returns
         -------

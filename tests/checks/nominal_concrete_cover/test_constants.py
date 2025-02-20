@@ -53,12 +53,12 @@ class TestNominalConcreteCoverConstantsBase:
         """Test that the class can be instantiated."""
         constants = DummyConstants()
         assert constants.COVER_INCREASE_FOR_UNEVEN_SURFACE == 5
-        assert {
+        assert constants.COVER_INCREASE_FOR_ABRASION_CLASS == {
             "NA": 0,
             "XM1": 5,
             "XM2": 10,
             "XM3": 15,
-        } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
+        }
         assert constants.DEFAULT_DELTA_C_DEV == 5
         assert constants.CODE_SUFFIX == "DUMMY"
         assert constants.minimum_cover_with_regard_to_casting_surface(0, CastingSurface.PERMANENTLY_EXPOSED) == 0
@@ -72,12 +72,12 @@ class TestNominalConcreteCoverConstants2011C2:
         """Test that the class can be instantiated."""
         constants = NominalConcreteCoverConstants2011C2()
         assert constants.COVER_INCREASE_FOR_UNEVEN_SURFACE == 5
-        assert {
+        assert constants.COVER_INCREASE_FOR_ABRASION_CLASS == {
             AbrasionClass.NA: 0,
             AbrasionClass.XM1: 5,
             AbrasionClass.XM2: 10,
             AbrasionClass.XM3: 15,
-        } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
+        }
         assert constants.DEFAULT_DELTA_C_DEV == 10
 
     def test_instantiation_with_custom_values(self) -> None:
@@ -94,12 +94,12 @@ class TestNominalConcreteCoverConstants2011C2:
     def test_post_init(self) -> None:
         """Test that the post-init method sets default values."""
         constants = NominalConcreteCoverConstants2011C2()
-        assert {
+        assert constants.COVER_INCREASE_FOR_ABRASION_CLASS == {
             AbrasionClass.NA: 0,
             AbrasionClass.XM1: 5,
             AbrasionClass.XM2: 10,
             AbrasionClass.XM3: 15,
-        } == constants.COVER_INCREASE_FOR_ABRASION_CLASS
+        }
 
     @pytest.mark.parametrize(
         ("c_min_dur", "casting_surface", "expected_result"),
@@ -120,8 +120,8 @@ class TestNominalConcreteCoverConstants2011C2:
         [
             (CastingSurface.PERMANENTLY_EXPOSED, "0 (No additional requirements for Permanently exposed)"),
             (CastingSurface.FORMWORK, "0 (No additional requirements for Formwork)"),
-            (CastingSurface.PREPARED_GROUND, "k1 ≥ c_{min,dur} + 40 mm for Prepared ground (including blinding)"),
-            (CastingSurface.DIRECTLY_AGAINST_SOIL, "k2 ≥ c_{min,dur} + 75 mm for Directly against soil"),
+            (CastingSurface.PREPARED_GROUND, "k1 \\ge c_{min,dur} + 40 mm for Prepared ground (including blinding)"),
+            (CastingSurface.DIRECTLY_AGAINST_SOIL, "k2 \\ge c_{min,dur} + 75 mm for Directly against soil"),
         ],
     )
     def test_minimum_cover_with_regard_to_casting_surface_latex(self, casting_surface: CastingSurface, expected_result: str) -> None:
