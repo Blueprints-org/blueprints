@@ -14,14 +14,14 @@ class Form9Dot10MaximumSpacingBentUpBars(Formula):
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, d: MM) -> None:
-        """[smax] Maximum longitudinal spacing of bent up bars for slabs [mm].
+        r"""[$s_{max}$] Maximum longitudinal spacing of bent up bars for slabs [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.3.2(4) - Formula (9.10)
 
         Parameters
         ----------
         d: MM
-            [d] Effective height of the cross-section [mm].
+            [$d$] Effective height of the cross-section [$mm$].
         """
         super().__init__()
         self.d = d
