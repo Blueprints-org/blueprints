@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot11nShearSlendernessCorrectionFactor(Formula):
-    """Class representing formula 5.11N for the calculation of the shear slenderness correction factor [:math:`k_{λ}`]."""
+    """Class representing formula 5.11N for the calculation of the shear slenderness correction factor [$k_{λ}$]."""
 
     label = "5.11N"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -17,15 +17,15 @@ class Form5Dot11nShearSlendernessCorrectionFactor(Formula):
         self,
         lambda_factor: DIMENSIONLESS,
     ) -> None:
-        """[:math:`k_{λ}`] Shear slenderness correction factor.
+        r"""[$k_{λ}$] Shear slenderness correction factor.
 
         NEN-EN 1992-1-1+C2:2011 art.5.6.3(4) - Formula (5.11N)
 
         Parameters
         ----------
         lambda_factor : DIMENSIONLESS
-            [:math:`λ`] ratio of the distance between point of zero and maximum moment after redistribution and
-        effective depth, d [:math:`-`]
+            [$λ$] ratio of the distance between point of zero and maximum moment after redistribution and
+        effective depth, d [$-$]
 
         Use your own implementation for this value or use :class:`Form5Dot12nRatioDistancePointZeroAndMaxMoment`.
         """

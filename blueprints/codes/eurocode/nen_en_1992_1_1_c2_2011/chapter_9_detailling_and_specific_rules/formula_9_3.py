@@ -20,22 +20,22 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
         z: MM,
         n_ed: KN,
     ) -> None:
-        """[FEd] Force to be anchored according to the shift rule [kN].
+        r"""[$F_{Ed}$] Force to be anchored according to the shift rule [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.1.4(2) - Formula (9.3)
 
         Parameters
         ----------
         v_ed: KN
-            [VEd] Design value shear force [kN].
+            [$V_{Ed}$] Design value shear force [$kN$].
         a_l: MM
-            [al] Shift in the moment diagram of an element with shear reinforcement based on art. 9.2.1.3 (2) [mm].
+            [$a_l$] Shift in the moment diagram of an element with shear reinforcement based on art. 9.2.1.3 (2) [$mm$].
             Use your own implementation of this value or use the Form9Dot2ShiftInMomentDiagram class.
         z: MM
-            [z] The internal lever arm for an element with constant height, corresponding to the bending moment in the considered element. In the
-            shear force calculation of reinforced concrete without axial force, the approximate value z = 0.9d may generally be used [mm].
+            [$z$] The internal lever arm for an element with constant height, corresponding to the bending moment in the considered element. In the
+            shear force calculation of reinforced concrete without axial force, the approximate value [$z = 0.9d$] may generally be used [$mm$].
         n_ed: KN
-            [NEd] Design value of axial force [kN].
+            [$N_{Ed}$] Design value of axial force [$kN$].
         """
         super().__init__()
         self.v_ed = v_ed

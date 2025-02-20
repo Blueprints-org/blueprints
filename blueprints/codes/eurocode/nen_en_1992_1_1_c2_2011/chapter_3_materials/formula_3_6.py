@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot6CreepDeformationOfConcrete(Formula):
@@ -14,22 +14,23 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
 
     def __init__(
         self,
-        phi_inf_t0: float,
+        phi_inf_t0: DIMENSIONLESS,
         sigma_c: MPA,
         e_c: MPA,
     ) -> None:
-        """εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete compressive stress σc applied at time t0 [-].
+        r"""εcc(∞,t0) Creep deformation of concrete at the time t = ∞ for a constant concrete
+        compressive stress [$\sigma_c$] applied at time [$t_0$] [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(3) - Formula (3.6)
 
         Parameters
         ----------
-        phi_inf_t0 : float
-            [φ(∞, t0)] Creep coefficient if high accuracy is not required use figure 3.1 else use appendix B [-].
+        phi_inf_t0 : DIMENSIONLESS
+            [$\varphi(\infty, t_0)$] Creep coefficient if high accuracy is not required use figure 3.1 else use appendix B [$-$].
         sigma_c : MPA
-            [σc] Concrete compressive stress [MPa].
+            [$\sigma_c$] Concrete compressive stress [$MPa$].
         e_c : MPA
-            [Ec] tangent modulus = 1.05 * Ecm. According to art.3.1.4(2) [MPa].
+            [$E_c$] tangent modulus = 1.05 * [$E_{cm}$]. According to art.3.1.4(2) [$MPa$].
 
         Returns
         -------
@@ -42,10 +43,10 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
 
     @staticmethod
     def _evaluate(
-        phi_inf_t0: float,
+        phi_inf_t0: DIMENSIONLESS,
         sigma_c: MPA,
         e_c: MPA,
-    ) -> float:
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         if phi_inf_t0 < 0:
             raise ValueError(f"Negative phi_inf_t0: {phi_inf_t0}. phi_inf_t0 cannot be negative")
