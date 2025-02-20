@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot56DesignStrengthConcreteStrussTransverseTension(Formula):
-    r"""Class representing formula 6.56 for the calculation of [$$\sigma_{Rd,max}$$]."""
+    r"""Class representing formula 6.56 for the calculation of [$\sigma_{Rd,max}$]."""
 
     label = "6.56"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,17 +18,17 @@ class Form6Dot56DesignStrengthConcreteStrussTransverseTension(Formula):
         nu_prime: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
-        r"""[$$\sigma_{Rd,max}$$] Calculation of [$$\sigma_{Rd,max}$$].
+        r"""[$\sigma_{Rd,max}$] Calculation of [$\sigma_{Rd,max}$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.5.2(2) - Formula (6.56)
 
         Parameters
         ----------
         nu_prime : float
-            [$$\nu'$$] Factor for transverse tension [-]. The value of $$\nu'$$ for use in a Country may be found in its National Annex.
+            [$\nu'$] Factor for transverse tension [-]. The value of $\nu'$ for use in a Country may be found in its National Annex.
             The recommended value is given by equation (6.57N).
         f_cd : float
-            [$$f_{cd}$$] Design compressive strength of concrete [$$MPa$$].
+            [$f_{cd}$] Design compressive strength of concrete [$MPa$].
         """
         super().__init__()
         self.nu_prime = nu_prime

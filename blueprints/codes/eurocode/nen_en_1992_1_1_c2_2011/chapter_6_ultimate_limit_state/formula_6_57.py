@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot57NuPrime(Formula):
-    r"""Class representing formula 6.57 for the calculation of [$$\nu'$$]."""
+    r"""Class representing formula 6.57 for the calculation of [$\nu'$]."""
 
     label = "6.57"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -17,14 +17,14 @@ class Form6Dot57NuPrime(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[$$\nu'$$] Calculation of [$$\nu'$$].
+        r"""[$\nu'$] Calculation of [$\nu'$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.5.2(2) - Formula (6.57)
 
         Parameters
         ----------
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
+            [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         """
         super().__init__()
         self.f_ck = f_ck
