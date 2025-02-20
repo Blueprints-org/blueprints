@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot51AppliedPunchingShearStressEccentricLoading(Formula):
-    r"""Class representing formula 6.51 for the calculation of punching shear stress for eccentric loading [$$v_{Ed}$$]
+    r"""Class representing formula 6.51 for the calculation of punching shear stress for eccentric loading [$v_{Ed}$]
     of slabs and column bases without shear reinforcement.
     """
 
@@ -24,24 +24,24 @@ class Form6Dot51AppliedPunchingShearStressEccentricLoading(Formula):
         m_ed: NMM,
         w: MM2,
     ) -> None:
-        r"""[$$v_{Ed}$$] Calculation of punching shear stress for eccentric loading of slabs and column bases without shear reinforcement.
+        r"""[$v_{Ed}$] Calculation of punching shear stress for eccentric loading of slabs and column bases without shear reinforcement.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.4(2) - Formula (6.51)
 
         Parameters
         ----------
         v_ed_red : N
-            [$$V_{Ed,red}$$] Net applied punching force [$$N$$].
+            [$V_{Ed,red}$] Net applied punching force [$N$].
         u : MM
-            [$$u$$] Perimeter of the critical section [$$mm$$].
+            [$u$] Perimeter of the critical section [$mm$].
         d : MM
-            [$$d$$] Mean effective depth of the slab [$$mm$$].
+            [$d$] Mean effective depth of the slab [$mm$].
         k : DIMENSIONLESS
-            [$$k$$] Coefficient dependent on the ratio between the column dimensions as defined in 6.4.3(3) or 6.4.3(4) [$$-$$].
+            [$k$] Coefficient dependent on the ratio between the column dimensions as defined in 6.4.3(3) or 6.4.3(4) [$-$].
         m_ed : NMM
-            [$$M_{Ed}$$] Design bending moment [$$Nmm$$].
+            [$M_{Ed}$] Design bending moment [$Nmm$].
         w : MM2
-            [$$W$$] Similar to [$$W_1$$] as defined in 6.4.3(3) and 6.4.3.(4) but for perimeter [$$u$$] [$$mm^2$$].
+            [$W$] Similar to [$W_1$] as defined in 6.4.3(3) and 6.4.3.(4) but for perimeter [$u$] [$mm^2$].
         """
         super().__init__()
         self.v_ed_red = v_ed_red

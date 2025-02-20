@@ -18,20 +18,20 @@ class Form3Dot16DesignValueTensileStrength(Formula):
         f_ctk_0_05: MPA,
         gamma_c: DIMENSIONLESS,
     ) -> None:
-        r"""[$$f_{cd}$$] Design value concrete tensile strength [$$MPa$$].
+        r"""[$f_{cd}$] Design value concrete tensile strength [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.6(2) - Formula (3.16)
 
         Parameters
         ----------
         alpha_ct : DIMENSIONLESS
-            [$$\alpha_{ct}$$] Coefficient taking long term effects on tensile strength into
-            account and unfavorable effect due to positioning loading [$$-$$]
+            [$\alpha_{ct}$] Coefficient taking long term effects on tensile strength into
+            account and unfavorable effect due to positioning loading [$-$]
             See national appendix. Recommended value: 1.0
         f_ctk_0_05 : MPA
-            [$$f_{ctk,0.05}$$] Characteristic tensile strength 5% [$$MPa$$].
+            [$f_{ctk,0.05}$] Characteristic tensile strength 5% [$MPa$].
         gamma_c : DIMENSIONLESS
-            [$$\gamma_{c}$$] Partial safety factor concrete, see 2.4.2.4 [$$-$$].
+            [$\gamma_{c}$] Partial safety factor concrete, see 2.4.2.4 [$-$].
 
         Returns
         -------

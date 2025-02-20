@@ -9,31 +9,31 @@ from blueprints.validations import raise_if_negative
 
 class Form5Dot21NominalStiffness(Formula):
     r"""Class representing formula 5.21 for the calculation of the nominal stiffness of slender compression members
-    with arbitrary cross-section, [$$EI$$] [$$Nmm^2$$].
+    with arbitrary cross-section, [$EI$] [$Nmm^2$].
     """
 
     label = "5.21"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, k_c: DIMENSIONLESS, e_cd: MPA, i_c: MM4, k_s: DIMENSIONLESS, e_s: MPA, i_s: MM4) -> None:
-        r"""[$$EI$$] Nominal stiffness of slender compression members with arbitrary cross-section.
+        r"""[$EI$] Nominal stiffness of slender compression members with arbitrary cross-section.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.7.2(2) or (3) - Formula (5.21)
 
         Parameters
         ----------
         k_c : DIMENSIONLESS
-            [$$K_{c}$$] is a factor for effects of cracking, creep etc. see 5.8.7.2 (2) or (3).
+            [$K_{c}$] is a factor for effects of cracking, creep etc. see 5.8.7.2 (2) or (3).
         e_cd : MPA
-            [$$E_{cd}$$] is the design value of the modulus of elasticity of concrete, see 5.8.6 (3)
+            [$E_{cd}$] is the design value of the modulus of elasticity of concrete, see 5.8.6 (3)
         i_c : MPA
-            [$$I_{c}$$] is the moment of inertia of concrete cross section.
+            [$I_{c}$] is the moment of inertia of concrete cross section.
         k_s : DIMENSIONLESS
-            [$$K_{s}$$] is a factor for contribution of reinforcement, see 5.8.7.2 (2) or (3).
+            [$K_{s}$] is a factor for contribution of reinforcement, see 5.8.7.2 (2) or (3).
         e_s : MPA
-            [$$E_{s}$$] is the design value of the modulus of elasticity of reinforcement, 5.8.6 (3).
+            [$E_{s}$] is the design value of the modulus of elasticity of reinforcement, 5.8.6 (3).
         i_s : MPA
-            [$$I_{s}$$] is the second moment of area of reinforcement, about the centre of area of the concrete.
+            [$I_{s}$] is the second moment of area of reinforcement, about the centre of area of the concrete.
         """
         super().__init__()
         self.k_c = k_c

@@ -14,25 +14,25 @@ class Form5Dot18ComparisonGeneralSecondOrderEffects:
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, f_ved: KN, k_1: DIMENSIONLESS, n_s: DIMENSIONLESS, length: M, e_cd: MPA, i_c: MM4) -> None:
-        r"""[$$CHECK$$] Criteria met, based on damage accumulation.
+        r"""[$CHECK$] Criteria met, based on damage accumulation.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.3.3(1) - Formula (5.18)
 
         Parameters
         ----------
         f_ved : KN
-            [$$F_{v,ed}$$] Total vertical load (on braced and bracing members) [$$kN$$].
+            [$F_{v,ed}$] Total vertical load (on braced and bracing members) [$kN$].
         k_1 : DIMENSIONLESS
-            [$$k_1$$] The value of k1 for use in a Country may be found in its National Annex. Recommend value is
-            0.31 [$$-$$].
+            [$k_1$] The value of k1 for use in a Country may be found in its National Annex. Recommend value is
+            0.31 [$-$].
         n_s : DIMENSIONLESS
-            [$$n_s$$] is the total number of storeys [$$-$$].
+            [$n_s$] is the total number of storeys [$-$].
         length : M
-            [$$L$$] is the total height of the building above level of moment restraint. [$$m$$].
+            [$L$] is the total height of the building above level of moment restraint. [$m$].
         e_cd : MPa
-            [$$E_{cd}$$] is the design value of the modulus of elasticity of concrete. [$$MPa$$].
+            [$E_{cd}$] is the design value of the modulus of elasticity of concrete. [$MPa$].
         i_c : MM4
-            [$$I_c$$] is the second moment of area (uncracked concrete section) of bracing member(s). [$$mm^4$$].
+            [$I_c$] is the second moment of area (uncracked concrete section) of bracing member(s). [$mm^4$].
         """
         self.f_ved = f_ved
         self.k_1 = k_1
