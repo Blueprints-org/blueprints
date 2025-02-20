@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot16NominalWebWidth(Formula):
-    r"""Class representing formula 6.16 for the calculation of the nominal web width, :math:`b_{w,nom}`."""
+    r"""Class representing formula 6.16 for the calculation of the nominal web width, [$b_{w,nom}$]."""
 
     label = "6.16"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form6Dot16NominalWebWidth(Formula):
         b_w: MM,
         diameters: list[MM],
     ) -> None:
-        r"""[:math:`b_{w,nom}`] Nominal web width [:math:`mm`].
+        r"""[$b_{w,nom}$] Nominal web width [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(6) - Formula (6.16)
 
         Parameters
         ----------
         b_w : MM
-            [:math:`b_{w}`] Web width [:math:`mm`].
+            [$b_{w}$] Web width [$mm$].
         diameters : list[MM]
-            [:math:`⌀`] Diameters of the reinforcement bars for the most unfavourable level [:math:`mm`].
+            [$⌀$] Diameters of the reinforcement bars for the most unfavourable level [$mm$].
         """
         super().__init__()
         self.b_w = b_w

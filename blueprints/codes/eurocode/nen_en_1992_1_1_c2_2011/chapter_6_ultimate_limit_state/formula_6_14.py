@@ -11,7 +11,7 @@ from blueprints.validations import raise_if_negative
 
 class Form6Dot14MaxShearResistanceInclinedReinforcement(Formula):
     r"""Class representing formula 6.14 for the calculation of the maximum shear resistance for members with inclined
-    shear reinforcement, :math:`V_{Rd,max}`.
+    shear reinforcement, [$V_{Rd,max}$].
     """
 
     label = "6.14"
@@ -27,27 +27,27 @@ class Form6Dot14MaxShearResistanceInclinedReinforcement(Formula):
         theta: DEG,
         alpha: DEG,
     ) -> None:
-        r"""[:math:`V_{Rd,max}`] Maximum shear resistance for members with inclined shear reinforcement [:math:`N`].
+        r"""[$V_{Rd,max}$] Maximum shear resistance for members with inclined shear reinforcement [$N$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(4) - Formula (6.14)
 
         Parameters
         ----------
         alpha_cw : DIMENSIONLESS
-            [:math:`\alpha_{cw}`] Coefficient taking account of the state of the stress in the compression chord [-].
+            [$\alpha_{cw}$] Coefficient taking account of the state of the stress in the compression chord [$-$].
         b_w : MM
-            [:math:`b_{w}`] Width of the web [:math:`mm`].
+            [$b_{w}$] Width of the web [$mm$].
         z : MM
-            [:math:`z`] Lever arm [:math:`mm`].
+            [$z$] Lever arm [$mm$].
         nu_1 : DIMENSIONLESS
-            [:math:`\nu_{1}`] Strength reduction factor for concrete [-].
+            [$\nu_{1}$] Strength reduction factor for concrete [$-$].
         f_cd : MPA
-            [:math:`f_{cd}`] Design value of concrete compressive strength [:math:`MPa`].
+            [$f_{cd}$] Design value of concrete compressive strength [$MPa$].
         theta : DEG
-            [:math:`\theta`] Angle between the concrete compression strut and the beam axis perpendicular to the
-            shear force [:math:`degrees`].
+            [$\theta$] Angle between the concrete compression strut and the beam axis perpendicular to the
+            shear force [$degrees$].
         alpha : DEG
-            [:math:`\alpha`] Angle between shear reinforcement and the beam axis perpendicular to the shear force [:math:`degrees`].
+            [$\alpha$] Angle between shear reinforcement and the beam axis perpendicular to the shear force [$degrees$].
         """
         super().__init__()
         self.alpha_cw = alpha_cw
@@ -79,7 +79,7 @@ class Form6Dot14MaxShearResistanceInclinedReinforcement(Formula):
             alpha=alpha,
         )
 
-        def cot(angle: DEG) -> float:
+        def cot(angle: DEG) -> DIMENSIONLESS:
             """Returns the cotangent of the given angle."""
             return 1 / np.tan(np.radians(angle))
 

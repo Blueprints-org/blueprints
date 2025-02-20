@@ -17,14 +17,14 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[:math:`\nu_{1}`] Strength reduction factor for concrete cracked in shear [-].
+        r"""[$\nu_{1}$] Strength reduction factor for concrete cracked in shear [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(3) - Formula (6.10.aN and 6.10.bN)
 
         Parameters
         ----------
         f_ck : MPA
-            [:math:`f_{ck}`] Characteristic compressive strength of concrete [:math:`MPa`].
+            [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         """
         super().__init__()
         self.f_ck = f_ck

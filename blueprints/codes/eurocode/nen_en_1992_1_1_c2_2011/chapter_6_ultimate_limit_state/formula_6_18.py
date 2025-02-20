@@ -5,12 +5,12 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DEG, KN
+from blueprints.type_alias import DEG, DIMENSIONLESS, KN
 from blueprints.validations import raise_if_negative
 
 
 class Form6Dot18AdditionalTensileForce(Formula):
-    r"""Class representing formula 6.18 for the calculation of the additional tensile force, :math:`\Delta F_{td}`."""
+    r"""Class representing formula 6.18 for the calculation of the additional tensile force, [$\Delta F_{td}$]."""
 
     label = "6.18"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,18 +21,18 @@ class Form6Dot18AdditionalTensileForce(Formula):
         theta: DEG,
         alpha: DEG,
     ) -> None:
-        r"""[:math:`\Delta F_{td}`] Additional tensile force [:math:`kN`].
+        r"""[$\Delta F_{td}$] Additional tensile force [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(7) - Formula (6.18)
 
         Parameters
         ----------
         v_ed : KN
-            [:math:`V_{Ed}`] Design value of the shear force [:math:`kN`].
+            [$V_{Ed}$] Design value of the shear force [$kN$].
         theta : DEG
-            [:math:`\theta`] Angle between the concrete compression strut and the beam axis perpendicular to the shear force [:math:`degrees`].
+            [$\theta$] Angle between the concrete compression strut and the beam axis perpendicular to the shear force [$degrees$].
         alpha : DEG
-            [:math:`\alpha`] Angle between shear reinforcement and the beam axis perpendicular to the shear force [:math:`degrees`].
+            [$\alpha$] Angle between shear reinforcement and the beam axis perpendicular to the shear force [$degrees$].
         """
         super().__init__()
         self.v_ed = v_ed
@@ -52,7 +52,7 @@ class Form6Dot18AdditionalTensileForce(Formula):
             alpha=alpha,
         )
 
-        def cot(angle: DEG) -> float:
+        def cot(angle: DEG) -> DIMENSIONLESS:
             """Returns the cotangent of the given angle."""
             return 1 / np.tan(np.radians(angle))
 

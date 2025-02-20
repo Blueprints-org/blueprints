@@ -20,16 +20,16 @@ class Form6Dot11abcNCompressionChordCoefficient(Formula):
         sigma_cp: MPA,
         f_cd: MPA,
     ) -> None:
-        r"""[:math:`\alpha_{cw}`] Coefficient taking account of the state of the stress in the compression chord [-].
+        r"""[$\alpha_{cw}$] Coefficient taking account of the state of the stress in the compression chord [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(3) - Formula (6.11.aN, 6.11.bN, and 6.11.cN)
 
         Parameters
         ----------
         sigma_cp : MPA
-            [:math:`\sigma_{cp}`] Mean compressive stress, measured positive, due to the design axial force [:math:`MPa`].
+            [$\sigma_{cp}$] Mean compressive stress, measured positive, due to the design axial force [$MPa$].
         f_cd : MPA
-            [:math:`f_{cd}`] Design value of concrete compressive strength [:math:`MPa`].
+            [$f_{cd}$] Design value of concrete compressive strength [$MPa$].
         """
         super().__init__()
         self.sigma_cp = sigma_cp

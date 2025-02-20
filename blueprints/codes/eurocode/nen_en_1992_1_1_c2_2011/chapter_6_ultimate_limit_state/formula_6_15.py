@@ -33,21 +33,21 @@ class Form6Dot15ShearReinforcementResistance(Formula):
         Parameters
         ----------
         a_sw_max : MM2
-            [:math:`A_{sw,max}`] The cross-sectional area of the shear reinforcement [:math:`mm^2`].
+            [$A_{sw,max}$] The cross-sectional area of the shear reinforcement [$mm^2$].
         f_ywd : MPA
-            [:math:`f_{ywd}`] Design yield strength of the shear reinforcement [:math:`MPa`].
+            [$f_{ywd}$] Design yield strength of the shear reinforcement [$MPa$].
         b_w : MM
-            [:math:`b_{w}`] Width of the web [:math:`mm`].
+            [$b_{w}$] Width of the web [$mm$].
         s : MM
-            [:math:`s`] Spacing of the stirrups [:math:`mm`].
+            [$s$] Spacing of the stirrups [$mm$].
         alpha_cw : DIMENSIONLESS
-            [:math:`\alpha_{cw}`] Coefficient taking account of the state of stress in the compression chord [-].
+            [$\alpha_{cw}$] Coefficient taking account of the state of stress in the compression chord [$-$].
         nu_1 : DIMENSIONLESS
-            [:math:`\nu_{1}`] Strength reduction factor for concrete cracked in shear [-].
+            [$\nu_{1}$] Strength reduction factor for concrete cracked in shear [$-$].
         f_cd : MPA
-            [:math:`f_{cd}`] Design value of concrete compressive strength [:math:`MPa`].
+            [$f_{cd}$] Design value of concrete compressive strength [$MPa$].
         alpha : DEG
-            [:math:`\alpha`] Angle between shear reinforcement and the beam axis perpendicular to the shear force [:math:`degrees`].
+            [$\alpha$] Angle between shear reinforcement and the beam axis perpendicular to the shear force [$degrees$].
         """
         super().__init__()
         self.a_sw_max = a_sw_max
