@@ -3,12 +3,12 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import M
+from blueprints.type_alias import DIMENSIONLESS, M
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot19DispersionLength(Formula):
-    """Class representing formula 8.19 for the calculation of dispersion length :math:`l_{disp}`."""
+    """Class representing formula 8.19 for the calculation of dispersion length [$l_{disp}$]."""
 
     label = "8.19"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,16 +18,16 @@ class Form8Dot19DispersionLength(Formula):
         l_pt: M,
         d: M,
     ) -> None:
-        """[:math:`l_{disp}`] Dispersion length for prestressing tendons [:math:`m`].
+        r"""[$l_{disp}$] Dispersion length for prestressing tendons [$m$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.10.2.2(4) - Formula (8.19)
 
         Parameters
         ----------
         l_pt : M
-            [:math:`l_{disp}`] Length of prestressing tendon [:math:`m`].
+            [$l_{disp}$] Length of prestressing tendon [$m$].
         d : M
-            [:math:`d`] Diameter of the tendon [:math:`m`].
+            [$d$] Diameter of the tendon [$m$].
         """
         super().__init__()
         self.l_pt = l_pt
@@ -35,9 +35,9 @@ class Form8Dot19DispersionLength(Formula):
 
     @staticmethod
     def _evaluate(
-        l_pt: float,
+        l_pt: DIMENSIONLESS,
         d: M,
-    ) -> float:
+    ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(l_pt=l_pt, d=d)
         return (l_pt**2 + d**2) ** 0.5

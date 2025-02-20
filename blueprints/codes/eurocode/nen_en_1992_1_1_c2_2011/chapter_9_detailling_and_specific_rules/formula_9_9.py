@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form9Dot9MaximumSpacingSeriesOfLinks(Formula):
-    """Class representing the formula 9.9 for the calculation of the maximum distance between successive series of links in longitudinal direction
+    r"""Class representing the formula 9.9 for the calculation of the maximum distance between successive series of links in longitudinal direction
     for slabs.
     """
 
@@ -22,16 +22,16 @@ class Form9Dot9MaximumSpacingSeriesOfLinks(Formula):
         d: MM,
         alpha: DEG,
     ) -> None:
-        """[smax] Maximum distance between successive series of links in longitudinal direction for slabs [mm].
+        r"""[$s_{max}$] Maximum distance between successive series of links in longitudinal direction for slabs [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.3.2(4) - Formula (9.9)
 
         Parameters
         ----------
         d: MM
-            [d] Effective height of the cross-section [mm].
+            [$d$] Effective height of the cross-section [$mm$].
         alpha: DEG
-            [α] The angle between the shear reinforcement and the longitudinal axis of the slab (see 9.2.2(1)) [deg].
+            [$\alpha$] The angle between the shear reinforcement and the longitudinal axis of the slab (see 9.2.2(1)) [$deg$].
         """
         super().__init__()
         self.d = d
