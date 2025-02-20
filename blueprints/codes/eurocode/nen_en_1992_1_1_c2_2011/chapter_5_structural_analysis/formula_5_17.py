@@ -10,25 +10,25 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot17EffectiveLengthBucklingLoad(Formula):
-    """Class representing formula 5.17 for the calculation of effective length of unbraced members, in the
-    case where criteria (2) and (3) do not apply such as by variable loading, :math:`l_0`.
+    r"""Class representing formula 5.17 for the calculation of effective length of unbraced members, in the
+    case where criteria (2) and (3) do not apply such as by variable loading, [$l_0$].
     """
 
     label = "5.17"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, ei: KN_M2, n_b: KN) -> None:
-        """[:math:`l_{0}`] Effective length for unbraced members [:math:`m`].
+        r"""[$l_{0}$] Effective length for unbraced members [$m$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.3.2(6) - Formula (5.17)
 
         Parameters
         ----------
         ei : KN_M2
-            [:math:`EI`] is a representative bending stiffness [:math:`kN/m^2`].
+            [$EI$] is a representative bending stiffness [$kN/m^2$].
         n_b : KN
-            [:math:`N_{b}`] is the buckling load expressed in terms of EI (in equation (5.14) i should correspond
-            to this EI). [:math:`kN`].
+            [$N_{b}$] is the buckling load expressed in terms of EI (in equation (5.14) i should correspond
+            to this EI). [$kN$].
         """
         super().__init__()
         self.ei = ei
