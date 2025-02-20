@@ -64,7 +64,7 @@ class ReinforcementDiagramType(Enum):
 
 @dataclass(frozen=True)
 class ReinforcementSteelMaterial:
-    """Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
+    r"""Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
 
     Based on the analytical relations shown on table C.1 Annex C.
 
@@ -73,7 +73,7 @@ class ReinforcementSteelMaterial:
     steel_quality: ReinforcementSteelQuality,
         Steel quality of the ReinforcementSteelMaterial object (default: B500B).
     density: KG_M3
-        Unit weight of steel [kg/m³] (default= 7850.0)
+        Unit weight of steel [kg/m³] (default= 7850.0) [$kg/m^3$]
     reinforcement_type: ReinforcementType
         Product form / Reinforcement type (default=ReinforcementType.BARS)
     bar_surface: ReinforcementBarSurface
@@ -85,7 +85,7 @@ class ReinforcementSteelMaterial:
     custom_name: str
         User-defined name of the material (default= name of steel quality; example: 'B500B')
     custom_e_s: MPA
-        User-defined Young's modulus of the material, if not provided the default value is used (default=200000)
+        User-defined Young's modulus of the material, if not provided the default value is used (default=200000) [$MPa$]
 
     """
 
@@ -100,7 +100,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def name(self) -> str:
-        """Name of the reinforcement steel material.
+        r"""Name of the reinforcement steel material.
 
         Returns
         -------
@@ -113,7 +113,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def e_s(self) -> MPA:
-        """Reinforcement steel Young's modulus [MPa].
+        r"""Reinforcement steel Young's modulus [$MPa$].
 
         Returns
         -------
@@ -126,7 +126,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def f_yk(self) -> MPA:
-        """[:math:`f_yk`] Characteristic yield strength of reinforcement [MPa].
+        r"""[$f_{yk}$] Characteristic yield strength of reinforcement [$MPa$].
 
         Returns
         -------
@@ -137,7 +137,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def steel_class(self) -> str:
-        """Reinforcement class.
+        r"""Reinforcement class.
 
         Returns
         -------
@@ -148,7 +148,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def f_tk(self) -> MPA:
-        """[:math:`f_tk`] Characteristic tensile strength of reinforcement [MPa].
+        r"""[$f_{tk}$] Characteristic tensile strength of reinforcement [$MPa$].
 
         Returns
         -------
@@ -159,7 +159,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def ductility_factor_k(self) -> DIMENSIONLESS:
-        """Ductility factor k [-] -> (:math:`f_tk` / :math:`f_yk`) tabel C.1 Annex C from NEN-EN 1992-1-1.
+        r"""Ductility factor k [$-$] -> ([$f_{tk}$] / [$f_{yk}$]) tabel C.1 Annex C from NEN-EN 1992-1-1.
 
         * 1.05 for steel class A
         * 1.08 for steel class B
@@ -182,7 +182,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def eps_uk(self) -> PER_MILLE:
-        """[:math:`ε_uk`] Characteristic strain of reinforcement at maximum load [‰ (per mille)] (tabel C.1 Annex C from NEN-EN 1992-1-1).
+        r"""[$\varepsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (tabel C.1 Annex C from NEN-EN 1992-1-1).
 
         * 250 ‰ for steel class A
         * 500 ‰ for steel class B
