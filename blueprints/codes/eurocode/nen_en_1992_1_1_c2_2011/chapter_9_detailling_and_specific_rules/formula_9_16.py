@@ -20,20 +20,20 @@ class Form9Dot16MinimumForceOnInternalBeamLine(Formula):
         l_2: M,
         q_4: KN,
     ) -> None:
-        """[Ftie] Minimum force on an internal beam line [kN].
+        r"""[$F_{tie}$] Minimum force on an internal beam line [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.10.2.3(4) - Formula (9.16)
 
         Parameters
         ----------
         q_3: KN_M
-            [q3] May be found in national annex, recommended value is 20 [kN/m].
+            [$q_3$] May be found in national annex, recommended value is 20 [$kN/m$].
         l_1: M
-            [l1] span length of floor slabs on either side of the beam, see figure 9.15 [m].
+            [$l_1$] span length of floor slabs on either side of the beam, see figure 9.15 [$m$].
         l_2: M
-            [l2] span length of floor slabs on either side of the beam, see figure 9.15 [m].
+            [$l_2$] span length of floor slabs on either side of the beam, see figure 9.15 [$m$].
         q_4: KN
-            [Q4] May be found in national annex, recommended value is 70 [kN].
+            [$Q_4$] May be found in national annex, recommended value is 70 [$kN$].
         """
         super().__init__()
         self.q_3 = q_3

@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot17CompressiveStressConcrete(Formula):
@@ -15,23 +15,23 @@ class Form3Dot17CompressiveStressConcrete(Formula):
     def __init__(
         self,
         f_cd: MPA,
-        epsilon_c: float,
-        epsilon_c2: float,
-        n: float,
+        epsilon_c: DIMENSIONLESS,
+        epsilon_c2: DIMENSIONLESS,
+        n: DIMENSIONLESS,
     ) -> None:
-        """[σc] Compressive stress in concrete using stress-strain diagram of figure 3.3 [MPa].
+        r"""[$\sigma_c$] Compressive stress in concrete using stress-strain diagram of figure 3.3 [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.7(1) - Formula (3.17)
 
         Parameters
         ----------
         f_cd : MPA
-            [fcd] Design value compressive strength concrete [MPa].
-        epsilon_c : float
-            [εc] Strain in concrete [-].
-        epsilon_c2 : float
-            [εc2] Strain in concrete when reaching maximum strength following table 3.1 [-].
-        n : float
+            [$f_{cd}$] Design value compressive strength concrete [$MPa$].
+        epsilon_c : DIMENSIONLESS
+            [$\epsilon_c$] Strain in concrete [$-$].
+        epsilon_c2 : DIMENSIONLESS
+            [$\epsilon_{c2}$] Strain in concrete when reaching maximum strength following table 3.1 [$-$].
+        n : DIMENSIONLESS
             Exponent following table 3.1.
 
         Returns
@@ -47,9 +47,9 @@ class Form3Dot17CompressiveStressConcrete(Formula):
     @staticmethod
     def _evaluate(
         f_cd: MPA,
-        epsilon_c: float,
-        epsilon_c2: float,
-        n: float,
+        epsilon_c: DIMENSIONLESS,
+        epsilon_c2: DIMENSIONLESS,
+        n: DIMENSIONLESS,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         if f_cd < 0:

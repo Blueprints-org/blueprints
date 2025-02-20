@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form5Dot36RelativeAxialForce(Formula):
-    r"""Class representing formula 5.36 for the calculation of the relative axial force, :math:`K_{r}`."""
+    r"""Class representing formula 5.36 for the calculation of the relative axial force, [$K_{r}$]."""
 
     label = "5.36"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -22,24 +22,24 @@ class Form5Dot36RelativeAxialForce(Formula):
         fyd: MPA,
         n_bal: DIMENSIONLESS,
     ) -> None:
-        r"""[:math:`K_{r}`] Relative axial force [:math:`DIMENSIONLESS`].
+        r"""[$K_{r}$] Relative axial force [-].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.3(3) - Formula (5.36)
 
         Parameters
         ----------
         n_ed : KN
-            [:math:`N_{Ed}`] Design value of axial load [:math:`kN`].
-        ac : float
-            [:math:`A_{c}`] Area of concrete cross section [:math:`mm^2`].
-        fcd : float
-            [:math:`f_{cd}`] Design value of concrete compressive strength [:math:`MPa`].
-        as_ : float
-            [:math:`A_{s}`] Total area of reinforcement [:math:`mm^2`].
-        fyd : float
-            [:math:`f_{yd}`] Design yield strength of reinforcement [:math:`MPa`].
+            [$N_{Ed}$] Design value of axial load [$kN$].
+        ac : MM2
+            [$A_{c}$] Area of concrete cross section [$mm^2$].
+        fcd : MPA
+            [$f_{cd}$] Design value of concrete compressive strength [$MPa$].
+        as_ : MM2
+            [$A_{s}$] Total area of reinforcement [$mm^2$].
+        fyd : MPA
+            [$f_{yd}$] Design yield strength of reinforcement [$MPa$].
         n_bal : DIMENSIONLESS
-            [:math:`n_{bal}`] Value of n at maximum moment resistance, 0.4 may be used [-].
+            [$n_{bal}$] Value of n at maximum moment resistance, 0.4 may be used [-].
         """
         super().__init__()
         self.n_ed = n_ed

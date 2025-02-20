@@ -42,10 +42,10 @@ class TestForm5Dot37CreepFactor:
         [
             (
                 "complete",
-                r"k_{\phi} = \max\left(1 + \left(0.35 + \frac{f_{ck}}{200} - \frac{\lambda}{150}\right) \cdot \phi_{ef}; 1\right) "
+                r"K_{\phi} = \max\left(1 + \left(0.35 + \frac{f_{ck}}{200} - \frac{\lambda}{150}\right) \cdot \phi_{ef}; 1\right) "
                 r"= \max\left(1 + \left(0.35 + \frac{30.000}{200} - \frac{2.000}{150}\right) \cdot 1.500; 1\right) = 1.730 -",
             ),
-            ("short", r"k_{\phi} = 1.730 -"),
+            ("short", r"K_{\phi} = 1.730 -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

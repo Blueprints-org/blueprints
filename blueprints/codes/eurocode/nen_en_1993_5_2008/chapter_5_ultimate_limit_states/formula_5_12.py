@@ -33,7 +33,7 @@ class Form5Dot12ElasticCriticalLoad(Formula):
         i : MM4
             [$I$] Moment of inertia [$mm^4$].
         beta_d : DIMENSIONLESS
-            [$\beta_D$] Reduction factor, see 6.4 [-].
+            [$\beta_D$] Reduction factor, see 6.4 [$-$].
         l : MM
             [$l$] the buckling length, determined according to Figure 5-2 for a free or partially fixed earth
             support or according to Figure 5-3 for a fixed earth support. [$mm$].
