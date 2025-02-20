@@ -25,9 +25,9 @@ class Form6Dot23CheckShearStressInterface(Formula):
         Parameters
         ----------
         v_edi : MPA
-            [$$v_{Edi}$$] Design value of the shear stress at the interface [$$MPa$$].
+            [$v_{Edi}$] Design value of the shear stress at the interface [$MPa$].
         v_rdi : MPA
-            [$$v_{Rdi}$$] Design shear strength of the interface [$$MPa$$].
+            [$v_{Rdi}$] Design shear strength of the interface [$MPa$].
         """
         super().__init__()
         self.v_edi = v_edi

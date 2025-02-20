@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot24DesignShearStress(Formula):
-    r"""Class representing formula 6.24 for the calculation of the design shear stress in the interface, [$$v_{Edi}$$]."""
+    r"""Class representing formula 6.24 for the calculation of the design shear stress in the interface, [$v_{Edi}$]."""
 
     label = "6.24"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,21 +20,21 @@ class Form6Dot24DesignShearStress(Formula):
         z: MM,
         b_i: MM,
     ) -> None:
-        r"""[$$v_{Edi}$$] Design shear stress in the interface [$$MPa$$].
+        r"""[$v_{Edi}$] Design shear stress in the interface [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.5(1) - Formula (6.24)
 
         Parameters
         ----------
         beta : DIMENSIONLESS
-            [$$\beta$$] Ratio of the longitudinal force in the new concrete area and the total longitudinal force either in
-            the compression or tension zone, both calculated for the section considered [$$-$$].
+            [$\beta$] Ratio of the longitudinal force in the new concrete area and the total longitudinal force either in
+            the compression or tension zone, both calculated for the section considered [$-$].
         v_ed : N
-            [$$V_{Ed}$$] Transverse shear force [$$N$$].
+            [$V_{Ed}$] Transverse shear force [$N$].
         z : MM
-            [$$z$$] Lever arm of composite section [$$mm$$].
+            [$z$] Lever arm of composite section [$mm$].
         b_i : MM
-            [$$b_{i}$$] Width of the interface (see Figure 6.8) [$$mm$$].
+            [$b_{i}$] Width of the interface (see Figure 6.8) [$mm$].
         """
         super().__init__()
         self.beta = beta
