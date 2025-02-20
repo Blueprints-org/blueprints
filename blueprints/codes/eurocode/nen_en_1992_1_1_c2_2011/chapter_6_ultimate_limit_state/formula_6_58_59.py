@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot58And59TensileForce(Formula):
-    r"""Class representing formula 6.58 and 6.59 for the calculation of the tensile force [$$T$$]."""
+    r"""Class representing formula 6.58 and 6.59 for the calculation of the tensile force [$T$]."""
 
     label = "6.58/6.59"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -20,20 +20,20 @@ class Form6Dot58And59TensileForce(Formula):
         b: MM,
         capital_h: MM,
     ) -> None:
-        r"""[$$T$$] Tensile force [$$N$$].
+        r"""[$T$] Tensile force [$N$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.5.3(3) - Formula (6.58 and 6.59)
 
         Parameters
         ----------
         f : N
-            [$$F$$] Applied force [$$N$$].
+            [$F$] Applied force [$N$].
         a : MM
-            [$$a$$] Width of the concentrated force [$$mm$$].
+            [$a$] Width of the concentrated force [$mm$].
         b : MM
-            [$$b$$] Width of the locally widened section [$$mm$$].
+            [$b$] Width of the locally widened section [$mm$].
         capital_h : MM
-            [$$H$$] Height of the widened section [$$mm$$].
+            [$H$] Height of the widened section [$mm$].
         """
         super().__init__()
         self.f = f
