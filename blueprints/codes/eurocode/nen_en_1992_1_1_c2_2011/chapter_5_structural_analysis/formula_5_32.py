@@ -7,7 +7,7 @@ from blueprints.type_alias import KNM
 
 
 class Form5Dot32EquivalentFirstOrderEndMoment(Formula):
-    """Class representing formula 5.32 for the calculation of the equivalent first order end moment, :math:`M_{0e}`."""
+    """Class representing formula 5.32 for the calculation of the equivalent first order end moment, [$M_{0e}$]."""
 
     label = "5.32"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -17,16 +17,16 @@ class Form5Dot32EquivalentFirstOrderEndMoment(Formula):
         m_01: KNM,
         m_02: KNM,
     ) -> None:
-        """[:math:`M_{0e}`] Equivalent first order end moment [:math:`kNm`].
+        r"""[$M_{0e}$] Equivalent first order end moment [$kNm$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(2) - Formula (5.32)
 
         Parameters
         ----------
         m_01 : KNM
-            [:math:`M_{01}`] The smaller first order end moment [:math:`kNm`].
+            [$M_{01}$] The smaller first order end moment [$kNm$].
         m_02 : KNM
-            [:math:`M_{02}`] The larger first order end moment [:math:`kNm`].
+            [$M_{02}$] The larger first order end moment [$kNm$].
         """
         super().__init__()
         self.m_01 = m_01

@@ -1,4 +1,4 @@
-"""Calculation of nominal concrete cover from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement."""
+r"""Calculation of nominal concrete cover from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement."""
 
 from dataclasses import dataclass, field
 from typing import Literal
@@ -28,15 +28,15 @@ from blueprints.type_alias import MM
 
 @dataclass(frozen=True)
 class NominalConcreteCover:
-    """Class responsible for the calculation of the nominal concrete cover :math:`c_{nom}` [:math:`mm`].
+    r"""Class responsible for the calculation of the nominal concrete cover [$c_{nom}$] [$mm$].
     It takes considerations of art.4.4.1.2 and 4.4.1.3 into account.
 
     Parameters
     ----------
     reinforcement_diameter: MM
-        The diameter of the reinforcement [:math:`mm`].
+        The diameter of the reinforcement [$mm$].
     nominal_max_aggregate_size: MM
-        The nominal maximum aggregate size [:math:`mm`].
+        The nominal maximum aggregate size [$mm$].
     constants: ConstantsBase
         The constants for the calculation of the nominal concrete cover.
     structural_class: ConcreteStructuralClassBase | int
@@ -49,16 +49,16 @@ class NominalConcreteCover:
     chloride_seawater: ChlorideSeawater | Literal["XS1", "XS2", "XS3", "NA"]
         The classification of corrosion induced by chlorides from sea water. Default is "Not applicable".
     delta_c_dur_gamma: MM
-        [:math:`Δc_{dur,γ}`] An additional safety requirement based on art. 4.4.1.2 (6) [:math:`mm`].
-        The value of [:math:`Δc_{dur,γ}`] for use in a Country may be found in its National Annex.
-        The recommended value is O mm. 0 mm is the default value in the formula if not specified otherwise.
+        [$\Delta c_{dur,\gamma}$] An additional safety requirement based on art. 4.4.1.2 (6) [$mm$].
+        The value of [$\Delta c_{dur,\gamma}$] for use in a Country may be found in its National Annex.
+        The recommended value is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
     delta_c_dur_st: MM
-        [:math:`Δc_{dur,st}`] A reduction of minimum concrete cover when using stainless steel based on art. 4.4.1.2 (7) [:math:`mm`].
-        The value of [:math:`Δc_{dur,st}`] for use in a Country may be found in its National Annex.
+        [$\Delta c_{dur,st}$] A reduction of minimum concrete cover when using stainless steel based on art. 4.4.1.2 (7) [$mm$].
+        The value of [$\Delta c_{dur,st}$] for use in a Country may be found in its National Annex.
         The recommended value, without further specification, is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
     delta_c_dur_add: MM
-        [:math:`Δc_{dur,add}`] A reduction of minimum concrete cover when using additional protection based on art. 4.4.1.2 (8) [:math:`mm`].
-        The value of [:math:`Δc_{dur,add}`] for use in a Country may be found in its National Annex.
+        [$\Delta c_{dur,add}$] A reduction of minimum concrete cover when using additional protection based on art. 4.4.1.2 (8) [$mm$].
+        The value of [$\Delta c_{dur,add}$] for use in a Country may be found in its National Annex.
         The recommended value, without further specification, is 0 mm. 0 mm is the default value in the formula if not specified otherwise.
     casting_surface: CastingSurface
         The casting surface of the concrete according to art. 4.4.1.3 (4).
@@ -162,31 +162,34 @@ class NominalConcreteCover:
 
     def latex(self) -> str:
         """Returns the lateX string representation for Nominal concrete cover check."""
-        return r"\newline ".join(
+        return r"\newline~".join(
             [
                 f"Nominal concrete cover according to art. 4.4.1 from NEN-EN 1992-1-1{self.constants.CODE_SUFFIX}:",
                 latex_max_curly_brackets(
                     r"Nominal concrete cover according to art. 4.4.1 (c_{nom})",
                     "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4)",
                 ),
-                f"= {latex_max_curly_brackets(self.c_nom().latex().result,self.minimum_cover_with_regard_to_casting_surface(),)} = {self.value()} mm",
+                f"= {latex_max_curly_brackets(self.c_nom().latex().result, self.minimum_cover_with_regard_to_casting_surface())} = {self.value()} mm",
                 "",
                 "Where:",
-                f"{self.c_nom().latex().return_symbol} = {self.c_nom().latex().equation.replace('min', 'min,total')}"
+                f"\\hspace{{4ex}}{self.c_nom().latex().return_symbol} = {self.c_nom().latex().equation.replace('min', 'min,total')}"
                 f" = {self.c_nom().latex().numeric_equation} = {self.c_nom().latex().result} mm",
-                r"\Delta c_{dev} is determined according to art. 4.4.1.3 (1)",
-                r"c_{min,total} = c_{min} + \Delta c_{uneven surface}  + \Delta c_{abrasion class}"
+                r"\hspace{4ex}\Delta c_{dev} is determined according to art. 4.4.1.3 (1)",
+                r"\hspace{4ex}c_{min,total} = c_{min} + \Delta c_{uneven surface}  + \Delta c_{abrasion class}"
                 f" = {self.c_min().latex().result} + {self.cover_increase_for_uneven_surface()} + {self.cover_increase_for_abrasion_class()}"
                 f" = {self.c_min_total()} mm",
-                r"\Delta c_{uneven surface} and \Delta c_{abrasion class} are determined according to art. 4.4.1.2 (11) and (13)",
-                f"{self.c_min().latex().return_symbol} = {self.c_min().latex().equation}"
+                r"\hspace{4ex}\Delta c_{uneven surface} and \Delta c_{abrasion class} are determined according to art. 4.4.1.2 (11) and (13)",
+                f"\\hspace{{4ex}}{self.c_min().latex().return_symbol} = {self.c_min().latex().equation}"
                 f" = {self.c_min().latex().numeric_equation} = {self.c_min().latex().result} mm",
-                r"\Delta c_{dur,\gamma} , \Delta c_{dur,st} and \Delta c_{dur,add} are determined according to art. 4.4.1.2 (6), (7) and (8)",
-                f"{self.c_min_b().latex().return_symbol} is determined according to table 4.2 based on {self.c_min_b().latex().equation}"
+                r"\hspace{4ex}\Delta c_{dur,\gamma} , \Delta c_{dur,st} and \Delta c_{dur,add} "
+                r"are determined according to art. 4.4.1.2 (6), (7) and (8)",
+                f"\\hspace{{4ex}}{self.c_min_b().latex().return_symbol} is determined according to "
+                f"table 4.2 based on {self.c_min_b().latex().equation}"
                 f" = {self.c_min_b().latex().numeric_equation} = {self.c_min_b().latex().result} mm",
-                f"{self.c_min_dur().latex().return_symbol} is determined according to table 4.3 based on {self.c_min_dur().latex().equation}"
+                f"\\hspace{{4ex}}{self.c_min_dur().latex().return_symbol} is determined according to "
+                f"table 4.4 based on {self.c_min_dur().latex().equation}"
                 f" = {self.c_min_dur().latex().result} mm",
-                "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) = "
+                r"\hspace{4ex}Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) = "
                 + self.constants.minimum_cover_with_regard_to_casting_surface_latex(self.casting_surface),
             ]
         ).replace(" ", "~")
