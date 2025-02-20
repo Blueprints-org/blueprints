@@ -15,7 +15,7 @@ class Form5Dot28TotalDesignMoment(Formula):
 
     def __init__(
         self,
-        m_0ed: KN,
+        m_0ed: KNM,
         beta: DIMENSIONLESS,
         n_ed: KN,
         n_b: KN,
