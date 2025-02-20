@@ -82,7 +82,7 @@ indent-style = "space"
 docstring-code-format = true
 
 [lint.pylint]
-max-args = 9
+max-args = 10
 
 [lint.pydocstyle]
 convention = "numpy"
