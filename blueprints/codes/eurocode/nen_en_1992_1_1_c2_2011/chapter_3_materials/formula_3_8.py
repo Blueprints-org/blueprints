@@ -17,16 +17,16 @@ class Form3Dot8TotalShrinkage(Formula):
         epsilon_cd: DIMENSIONLESS,
         epsilon_ca: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\epsilon_{cs}$$] The total shrinkage [-].
+        r"""[$\epsilon_{cs}$] The total shrinkage [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.8)
 
         Parameters
         ----------
         epsilon_cd : DIMENSIONLESS
-            [$$\epsilon_{cd}$$] Drying shrinkage [$$-$$].
+            [$\epsilon_{cd}$] Drying shrinkage [$-$].
         epsilon_ca : DIMENSIONLESS
-            [$$\epsilon_{ca}$$] Autogene shrinkage [$$-$$].
+            [$\epsilon_{ca}$] Autogene shrinkage [$-$].
 
         Returns
         -------

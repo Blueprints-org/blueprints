@@ -17,18 +17,18 @@ class Form3Dot11AutogeneShrinkage(Formula):
         beta_as_t: DIMENSIONLESS,
         epsilon_ca_inf: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\epsilon_{ca}(t)$$] Autogene shrinkage [$$-$$].
+        r"""[$\epsilon_{ca}(t)$] Autogene shrinkage [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.11)
 
         Parameters
         ----------
         beta_as_t : DIMENSIONLESS
-            [$$\beta_{as}(t)$$] Coefficient dependent on time in days for autogene shrinkage [$$-$$].
+            [$\beta_{as}(t)$] Coefficient dependent on time in days for autogene shrinkage [$-$].
             = 1 - exp(-0.2 * t^0.5)
             Use your own implementation of this formula or use the Form3Dot13CoefficientTimeAutogeneShrinkage class
         epsilon_ca_inf : DIMENSIONLESS
-            [$$\epsilon_{ca}(\infty)$$] Autogene shrinkage at infinity [$$-$$].
+            [$\epsilon_{ca}(\infty)$] Autogene shrinkage at infinity [$-$].
             = 2.5 * (fck - 10) E-6
             Use your own implementation of this formula or use the Form3Dot12AutogeneShrinkageInfinity class.
 

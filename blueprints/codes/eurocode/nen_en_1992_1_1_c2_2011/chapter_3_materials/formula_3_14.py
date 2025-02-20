@@ -17,19 +17,19 @@ class Form3Dot14StressStrainForShortTermLoading(Formula):
         k: DIMENSIONLESS,
         eta: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\sigma_c / f_{cm}$$] Compressive stress-strength ratio [$$-$$].
+        r"""[$\sigma_c / f_{cm}$] Compressive stress-strength ratio [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.5(1) - Formula (3.14)
 
         Parameters
         ----------
         k : DIMENSIONLESS
-            [$$k$$] [$$-$$].
-            = 1.05 * Ecm * |$$\epsilon_{c1}$$| / fcm
+            [$k$] [$-$].
+            = 1.05 * Ecm * |$\epsilon_{c1}$| / fcm
             Use your own implementation of this formula or use the SubForm3Dot14K class.
         eta : DIMENSIONLESS
-            [$$\eta$$] Strain - peak-strain ratio [$$-$$].
-            = $$\epsilon_c / \epsilon_{c1}$$
+            [$\eta$] Strain - peak-strain ratio [$-$].
+            = $\epsilon_c / \epsilon_{c1}$
             Use your own implementation of this formula or use the SubForm3Dot14Eta class.
 
         Returns
@@ -74,16 +74,16 @@ class SubForm3Dot14Eta(Formula):
         epsilon_c: DIMENSIONLESS,
         epsilon_c1: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\eta$$] Strain - peak-strain ratio [$$-$$].
+        r"""[$\eta$] Strain - peak-strain ratio [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.5(1) - η
 
         Parameters
         ----------
         epsilon_c : DIMENSIONLESS
-            [$$\epsilon_c$$] Strain concrete [$$-$$].
+            [$\epsilon_c$] Strain concrete [$-$].
         epsilon_c1 : DIMENSIONLESS
-            [$$\epsilon_{c1}$$] Strain concrete at peak-stress following table 3.1 [$$-$$].
+            [$\epsilon_{c1}$] Strain concrete at peak-stress following table 3.1 [$-$].
         """
         super().__init__()
         self.epsilon_c = epsilon_c
@@ -115,18 +115,18 @@ class SubForm3Dot14K(Formula):
     label = "3.14"
 
     def __init__(self, e_cm: MPA, epsilon_c1: DIMENSIONLESS, f_cm: MPA) -> None:
-        r"""[$$k$$] [-].
+        r"""[$k$] [-].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.5(1) - k
 
         Parameters
         ----------
         e_cm : MPA
-            [$$E_{cm}$$] Elastic modulus concrete [$$MPa$$].
+            [$E_{cm}$] Elastic modulus concrete [$MPa$].
         epsilon_c1 : DIMENSIONLESS
-            [$$\epsilon_{c1}$$] Strain concrete at peak-stress following table 3.1 [$$-$$].
+            [$\epsilon_{c1}$] Strain concrete at peak-stress following table 3.1 [$-$].
         f_cm : MPA
-            [$$f_{cm}$$] Compressive strength concrete [$$MPa$$].
+            [$f_{cm}$] Compressive strength concrete [$MPa$].
         """
         super().__init__()
         self.e_cm = e_cm
