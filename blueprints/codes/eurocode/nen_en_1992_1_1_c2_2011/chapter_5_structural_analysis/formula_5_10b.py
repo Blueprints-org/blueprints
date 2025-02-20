@@ -7,28 +7,28 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot10bRedistributionOfMomentsUpperFck:
-    r"""Class representing formula 5.10b for the redistribution of moments in continuous beams or slabs when [$$f_{ck} > 50 MPa$$]."""
+    r"""Class representing formula 5.10b for the redistribution of moments in continuous beams or slabs when [$f_{ck} > 50 MPa$]."""
 
     label = "5.10b"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(self, delta: DIMENSIONLESS, k3: DIMENSIONLESS, k4: DIMENSIONLESS, xu: M, d: M) -> None:
-        r"""[$$\delta$$] Redistribution of moments in continuous beams or slabs when [$$f_{ck} > 50 MPa$$].
+        r"""[$\delta$] Redistribution of moments in continuous beams or slabs when [$f_{ck} > 50 MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.5(4) - Formula (5.10b)
 
         Parameters
         ----------
         delta : DIMENSIONLESS
-            [$$\delta$$] is the ratio of the redistributed moment to the elastic moment.
+            [$\delta$] is the ratio of the redistributed moment to the elastic moment.
         k3 : DIMENSIONLESS
-            [$$k_3$$] is a coefficient for redistribution.
+            [$k_3$] is a coefficient for redistribution.
         k4 : DIMENSIONLESS
-            [$$k_4$$] is a coefficient for redistribution.
+            [$k_4$] is a coefficient for redistribution.
         xu : M
-            [$$x_u$$] is the depth of the compression zone in the ultimate limit state after redistribution.
+            [$x_u$] is the depth of the compression zone in the ultimate limit state after redistribution.
         d : M
-            [$$d$$] is the effective depth of the section.
+            [$d$] is the effective depth of the section.
         """
         super().__init__()
         self.delta = delta

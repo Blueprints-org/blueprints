@@ -9,7 +9,7 @@ from blueprints.type_alias import DAYS, DIMENSIONLESS
 
 
 class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
-    r"""Class representing formula 3.2 for the coefficient [$$\beta_{cc}(t)$$] which is dependent of the age of concrete."""
+    r"""Class representing formula 3.2 for the coefficient [$\beta_{cc}(t)$] which is dependent of the age of concrete."""
 
     label = "3.2"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,20 +19,20 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
         s: DIMENSIONLESS,
         t: DAYS,
     ) -> None:
-        r"""[$$\beta_{cc}(t)$$] Coefficient which is dependent of the age of concrete in days [$$-$$].
+        r"""[$\beta_{cc}(t)$] Coefficient which is dependent of the age of concrete in days [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - Formula (3.2)
 
         Parameters
         ----------
         s : DIMENSIONLESS
-            [$$s$$] Coefficient dependent on the kind of cement [$$-$$].
+            [$s$] Coefficient dependent on the kind of cement [$-$].
             = 0.20 for cement of strength classes CEM 42.5 R, CEM 52.5 N, and CEM 52.5 R (class R);
             = 0.25 for cement of strength classes CEM 32.5 R, CEM 42.5 N (class N);
             = 0.38 for cement of strength class CEM 32.5 N (class S).
             Use your own implementation of this formula or use the SubForm3Dot2CoefficientTypeOfCementS class.
         t : DAYS
-            [$$t$$] Age of concrete in days [$$\text{days}$$].
+            [$t$] Age of concrete in days [$\text{days}$].
 
         Returns
         -------
@@ -66,7 +66,7 @@ class Form3Dot2CoefficientDependentOfConcreteAge(Formula):
 
 
 class SubForm3Dot2CoefficientTypeOfCementS(Formula):
-    r"""Class representing sub-formula for formula 3.2, which calculates the coefficient [$$s$$] which is dependent on the cement class."""
+    r"""Class representing sub-formula for formula 3.2, which calculates the coefficient [$s$] which is dependent on the cement class."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.2"
@@ -75,14 +75,14 @@ class SubForm3Dot2CoefficientTypeOfCementS(Formula):
         self,
         cement_class: str,
     ) -> None:
-        r"""[$$s$$] Coefficient that depends on the type of cement [$$-$$].
+        r"""[$s$] Coefficient that depends on the type of cement [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(6) - s
 
         Parameters
         ----------
         cement_class : str
-            [$$cement\_class$$] Class of the cement.
+            [$cement\_class$] Class of the cement.
                 = 'R' for cement of strength classes CEM 42.5 R, CEM 52.5 N, and CEM 52.5 R (class R);
                 = 'N' for cement of strength classes CEM 32.5 R, CEM 42.5 N (class N);
                 = 'S' for cement of strength class CEM 32.5 N (class S).

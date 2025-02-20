@@ -20,16 +20,16 @@ class Form9Dot5nMinimumShearReinforcementRatio(Formula):
         f_ck: MPA,
         f_yk: MPA,
     ) -> None:
-        r"""[$$\rho_{w,min}$$] Minimum shear reinforcement ratio for beams [$$-$$].
+        r"""[$\rho_{w,min}$] Minimum shear reinforcement ratio for beams [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.9.2.2(5) - Formula (9.5N)
 
         Parameters
         ----------
         f_ck: MPA
-            [$$f_{ck}$$] Characteristic concrete compressive cylinder strength at 28 days [$$MPa$$].
+            [$f_{ck}$] Characteristic concrete compressive cylinder strength at 28 days [$MPa$].
         f_yk: MPA
-            [$$f_{yk}$$] Characteristic yield strength reinforcement steel [$$MPa$$].
+            [$f_{yk}$] Characteristic yield strength reinforcement steel [$MPa$].
         """
         super().__init__()
         self.f_ck = f_ck

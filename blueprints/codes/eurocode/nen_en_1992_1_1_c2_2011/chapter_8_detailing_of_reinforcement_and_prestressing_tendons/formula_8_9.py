@@ -24,27 +24,27 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
         a_s: MM2,
         f_cd: MPA,
     ) -> None:
-        r"""[$$F_{btd}$$] Anchorage capacity of a welded cross bar for nominal bar diameters smaller than 12 mm [$$kN$$].
+        r"""[$F_{btd}$] Anchorage capacity of a welded cross bar for nominal bar diameters smaller than 12 mm [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.6(5) - formula 8.9
 
         Parameters
         ----------
         f_wd : KN
-            [$$F_{wd}$$] Design shear strength of weld (specified as a factor times [$$A_{s} \cdot f_{yd}$$]; say [$$0.5 \cdot A_{s} \cdot f_{yd}$$]
-            where [$$A_{s}$$] is the cross-section of the anchored bar and [$$f_{yd}$$] is its design yield strength)  [$$kN$$].
+            [$F_{wd}$] Design shear strength of weld (specified as a factor times [$A_{s} \cdot f_{yd}$]; say [$0.5 \cdot A_{s} \cdot f_{yd}$]
+            where [$A_{s}$] is the cross-section of the anchored bar and [$f_{yd}$] is its design yield strength)  [$kN$].
         diameter_t : MM
-            [$$ø_{t}$$] Diameter of the transverse bar [$$mm$$].
+            [$ø_{t}$] Diameter of the transverse bar [$mm$].
 
-            Note: [$$ø_{t} \leq 12$$] [$$mm$$].
+            Note: [$ø_{t} \leq 12$] [$mm$].
         diameter_l : MM
-            [$$ø_{l}$$] Diameter of the bar to be anchored [$$mm$$].
+            [$ø_{l}$] Diameter of the bar to be anchored [$mm$].
 
-            Note: [$$ø_{l} \leq 12$$] [$$mm$$].
+            Note: [$ø_{l} \leq 12$] [$mm$].
         a_s : MM2
-            [$$A_{s}$$] Cross-section of the anchored bar [$$mm^{2}$$].
+            [$A_{s}$] Cross-section of the anchored bar [$mm^{2}$].
         f_cd : MPA
-            [$$f_{cd}$$] Design compressive strength of concrete [$$MPa$$].
+            [$f_{cd}$] Design compressive strength of concrete [$MPa$].
         """
         super().__init__()
         self.f_wd = f_wd
