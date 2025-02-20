@@ -26,7 +26,7 @@ class Form6Dot7nCheckCotTheta(Formula):
         Parameters
         ----------
         theta : DEG
-            [$$\theta$$] angle between the concrete compression strut and the beam axis perpendicular to the shear force [$$-$$].
+            [$\theta$] angle between the concrete compression strut and the beam axis perpendicular to the shear force [$-$].
         """
         super().__init__()
         self.theta = theta

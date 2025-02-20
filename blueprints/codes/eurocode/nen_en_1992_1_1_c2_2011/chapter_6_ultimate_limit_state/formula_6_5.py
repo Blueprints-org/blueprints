@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot5ShearForceCheck(Formula):
-    r"""Class representing formula 6.5 for the shear force check, [$$V_{Ed}$$]."""
+    r"""Class representing formula 6.5 for the shear force check, [$V_{Ed}$]."""
 
     label = "6.5"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,22 +21,22 @@ class Form6Dot5ShearForceCheck(Formula):
         nu: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
-        r"""[$$V_{Ed}$$] Shear force check [$$N$$].
+        r"""[$V_{Ed}$] Shear force check [$N$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.2(6) - Formula (6.5)
 
         Parameters
         ----------
         v_ed : N
-            [$$V_{Ed}$$] Design value of shear force [$$N$$].
+            [$V_{Ed}$] Design value of shear force [$N$].
         b_w : MM
-            [$$b_w$$] Width of the web [$$mm$$].
+            [$b_w$] Width of the web [$mm$].
         d : MM
-            [$$d$$] Effective depth [$$mm$$].
+            [$d$] Effective depth [$mm$].
         nu : DIMENSIONLESS
-            [$$\nu$$] Strength reduction factor for concrete cracked in shear [$$-$$].
+            [$\nu$] Strength reduction factor for concrete cracked in shear [$-$].
         f_cd : MPA
-            [$$f_{cd}$$] Design value of concrete compressive strength [$$MPa$$].
+            [$f_{cd}$] Design value of concrete compressive strength [$MPa$].
         """
         super().__init__()
         self.v_ed = v_ed

@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot6nStrengthReductionFactor(Formula):
-    r"""Class representing formula 6.6n for the calculation of the strength reduction factor, [$$\nu$$]."""
+    r"""Class representing formula 6.6n for the calculation of the strength reduction factor, [$\nu$]."""
 
     label = "6.6n"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -17,14 +17,14 @@ class Form6Dot6nStrengthReductionFactor(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[$$\nu$$] Strength reduction factor for concrete cracked in shear [$$-$$].
+        r"""[$\nu$] Strength reduction factor for concrete cracked in shear [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.2 (6) - Formula (6.6n)
 
         Parameters
         ----------
         f_ck : MPA
-            [$$f_{ck}$$] Characteristic compressive strength of concrete [$$MPa$$].
+            [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         """
         super().__init__()
         self.f_ck = f_ck
