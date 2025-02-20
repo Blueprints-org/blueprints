@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MPA
+from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot15DesignValueCompressiveStrength(Formula):
@@ -14,23 +14,24 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
 
     def __init__(
         self,
-        alpha_cc: float,
+        alpha_cc: DIMENSIONLESS,
         f_ck: MPA,
-        gamma_c: float,
+        gamma_c: DIMENSIONLESS,
     ) -> None:
-        """[fcd] Design value concrete compressive strength [MPa].
+        r"""[$f_{cd}$] Design value concrete compressive strength [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.6(1) - Formula (3.15)
 
         Parameters
         ----------
-        alpha_cc : float
-            [αcc] Coefficient taking long term effects on compressive strength into account and unfavorable effect due to positioning loading [-]
+        alpha_cc : DIMENSIONLESS
+            [$\alpha_{cc}$] Coefficient taking long term effects on compressive strength into
+            account and unfavorable effect due to positioning loading [$-$]
             Normally between 0.8 and 1, see national appendix. Recommended value: 1.0
         f_ck : MPA
-            [fck] Characteristic compressive strength [MPa].
-        gamma_c : float
-            [γc] Partial safety factor concrete, see 2.4.2.4 [-].
+            [$f_{ck}$] Characteristic compressive strength [$MPa$].
+        gamma_c : DIMENSIONLESS
+            [$\gamma_{c}$] Partial safety factor concrete, see 2.4.2.4 [$-$].
 
         Returns
         -------
@@ -43,9 +44,9 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
 
     @staticmethod
     def _evaluate(
-        alpha_cc: float,
+        alpha_cc: DIMENSIONLESS,
         f_ck: MPA,
-        gamma_c: float,
+        gamma_c: DIMENSIONLESS,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
         if alpha_cc < 0:

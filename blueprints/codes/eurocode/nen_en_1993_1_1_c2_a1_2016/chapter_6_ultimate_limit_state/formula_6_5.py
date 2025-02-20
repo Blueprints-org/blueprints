@@ -19,16 +19,16 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         n_ed: KN,
         n_t_rd: KN,
     ) -> None:
-        """[N_ed/N_t_rd] Unity check for tensile strength of an element in tension.
+        r"""[$N_{Ed}/N_{t,Rd}$] Unity check for tensile strength of an element in tension.
 
         NEN-EN 1993-1-1+C2+A1:2016 art.6.2.3(1) - Formula (6.5)
 
         Parameters
         ----------
         n_ed : KN
-            [NEd] Design value of the normal tensile force [kN].
+            [$N_{Ed}$] Design value of the normal tensile force [kN].
         n_t_rd : KN
-            [Nt,Rd] Design value of the resistance against tenslie force [kN].
+            [$N_{t,Rd}$] Design value of the resistance against tensile force [kN].
         """
         super().__init__()
         self.n_ed = n_ed
