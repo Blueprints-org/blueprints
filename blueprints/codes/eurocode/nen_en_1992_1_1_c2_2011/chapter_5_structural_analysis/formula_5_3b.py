@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot3bTransverseForceBracedMembers(Formula):
-    """Class representing formula 5.3b for the calculation of the transverse force for braced members, :math:`H_{i}`.
+    """Class representing formula 5.3b for the calculation of the transverse force for braced members, [$H_{i}$].
 
     See Figure 5.1 a2.
     """
@@ -21,25 +21,25 @@ class Form5Dot3bTransverseForceBracedMembers(Formula):
         theta_i: DIMENSIONLESS,
         n_axial_force: KN,
     ) -> None:
-        """[:math:`H_{i}`] Transverse force for braced members [:math:`kN`].
+        r"""[$H_{i}$] Transverse force for braced members [$kN$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.2(7) - Formula (5.3b)
 
         Parameters
         ----------
         theta_i : DIMENSIONLESS
-            [:math:`Θ_{i}`] Eccentricity, initial inclination imperfections [-].
+            [$Θ_{i}$] Eccentricity, initial inclination imperfections [-].
 
             Use your own implementation of this value or use the :class:`Form5Dot1Imperfections` class.
         n_axial_force : KN
-            [:math:`N`] Axial force [:math:`kN`].
+            [$N$] Axial force [$kN$].
 
             Positive values for compression, tension is not allowed.
 
         Notes
         -----
         Eccentricity is suitable for statically determinate members, whereas transverse load can be used for
-        both determinate and indeterminate members. The force :math:`H_{i}` may be substituted by some other equivalent
+        both determinate and indeterminate members. The force [$H_{i}$] may be substituted by some other equivalent
         transverse action.
         """
         super().__init__()
