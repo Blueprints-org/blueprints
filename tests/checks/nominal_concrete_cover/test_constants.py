@@ -120,8 +120,8 @@ class TestNominalConcreteCoverConstants2011C2:
         [
             (CastingSurface.PERMANENTLY_EXPOSED, "0 (No additional requirements for Permanently exposed)"),
             (CastingSurface.FORMWORK, "0 (No additional requirements for Formwork)"),
-            (CastingSurface.PREPARED_GROUND, "k1 ≥ c_{min,dur} + 40 mm for Prepared ground (including blinding)"),
-            (CastingSurface.DIRECTLY_AGAINST_SOIL, "k2 ≥ c_{min,dur} + 75 mm for Directly against soil"),
+            (CastingSurface.PREPARED_GROUND, "k1 \\ge c_{min,dur} + 40 mm for Prepared ground (including blinding)"),
+            (CastingSurface.DIRECTLY_AGAINST_SOIL, "k2 \\ge c_{min,dur} + 75 mm for Directly against soil"),
         ],
     )
     def test_minimum_cover_with_regard_to_casting_surface_latex(self, casting_surface: CastingSurface, expected_result: str) -> None:

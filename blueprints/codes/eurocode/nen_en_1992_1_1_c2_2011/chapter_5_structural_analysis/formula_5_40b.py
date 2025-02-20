@@ -26,11 +26,11 @@ class Form5Dot40bCheckLateralInstability(Formula):
         Parameters
         ----------
         l_0t : M
-            [$$l_{0t}$$] is the distance between torsional restraints [$$m$$].
+            [$l_{0t}$] is the distance between torsional restraints [$m$].
         b : M
-            [$$b$$] is the width of compression flange [$$m$$].
+            [$b$] is the width of compression flange [$m$].
         h : M
-            [$$h$$] is the total depth of beam in central part of [$$l_{0t}$$] [$$m$$].
+            [$h$] is the total depth of beam in central part of [$l_{0t}$] [$m$].
         """
         super().__init__()
         self.l_0t = l_0t

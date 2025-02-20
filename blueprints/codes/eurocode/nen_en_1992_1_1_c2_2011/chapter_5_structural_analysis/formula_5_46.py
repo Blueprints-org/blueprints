@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 class Form5Dot46Part1TimeDependentForceLosses(Formula):
     r"""Class representing formula 5.46 for the calculation of the time dependent pre- and post-tensioning losses at location
-    x under the permanent loads, [$$\Delta P_{c+s+r}$$].
+    x under the permanent loads, [$\Delta P_{c+s+r}$].
     """
 
     label = "5.46"
@@ -28,36 +28,36 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
         i_c: MM4,
         z_cp: MM,
     ) -> None:
-        r"""[$$\Delta P_{c+s+r}$$] Time dependent pre- and post-tensioning losses at location x under the permanent loads [$$N$$].
+        r"""[$\Delta P_{c+s+r}$] Time dependent pre- and post-tensioning losses at location x under the permanent loads [$N$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.6(2) - Formula (5.46)
 
         Parameters
         ----------
         a_p : MM2
-            [$$A_p$$] Area of all the prestressing tendons at the location x [$$mm^2$$].
+            [$A_p$] Area of all the prestressing tendons at the location x [$mm^2$].
         epsilon_cs : DIMENSIONLESS
-            [$$\epsilon_{cs}$$] The estimated shrinkage strain according to 3.1.4(6) in absolute value [$$-$$].
+            [$\epsilon_{cs}$] The estimated shrinkage strain according to 3.1.4(6) in absolute value [$-$].
         e_p : MPA
-            [$$E_p$$] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [$$MPa$$].
+            [$E_p$] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [$MPa$].
         e_cm : MPA
-            [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
+            [$E_{cm}$] Modulus of elasticity for the concrete (Table 3.1) [$MPa$].
         delta_sigma_pr : MPA
-            [$$\Delta \sigma_{pr}$$] is the absolute value of the variation of stress in the tendons at location x, at
+            [$\Delta \sigma_{pr}$] is the absolute value of the variation of stress in the tendons at location x, at
             time t, due to the relaxation of the prestressing steel. It is determined for a stress of
-            [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$]where [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$] is the initial
-            stress in the tendons due to initial prestress and quasi-permanent actions. [$$MPa$$].
+            [$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$]where [$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$] is the initial
+            stress in the tendons due to initial prestress and quasi-permanent actions. [$MPa$].
         phi_t_t0 : DIMENSIONLESS
-            [$$\phi(t, t_0)$$] Creep coefficient at a time t and load application at time t0 [$$-$$].
+            [$\phi(t, t_0)$] Creep coefficient at a time t and load application at time t0 [$-$].
         sigma_c_qp : MPA
-            [$$\sigma_{c,QP}$$] stress in the concrete adjacent to the tendons, due to self-weight and
-            initial prestress and other quasi-permanent actions where relevant. [$$MPa$$].
+            [$\sigma_{c,QP}$] stress in the concrete adjacent to the tendons, due to self-weight and
+            initial prestress and other quasi-permanent actions where relevant. [$MPa$].
         a_c : MM2
-            [$$A_c$$] Area of concrete section [$$mm^2$$].
+            [$A_c$] Area of concrete section [$mm^2$].
         i_c : MM4
-            [$$I_c$$] Second moment of area of concrete section [$$mm^4$$].
+            [$I_c$] Second moment of area of concrete section [$mm^4$].
         z_cp : MM
-            [$$z_{cp}$$] Distance between the centre of gravity of the concrete section and the tendons [$$mm$$].
+            [$z_{cp}$] Distance between the centre of gravity of the concrete section and the tendons [$mm$].
         """
         super().__init__()
         self.a_p = a_p
@@ -109,7 +109,7 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
 
 class Form5Dot46Part2TimeDependentStressLosses(Formula):
     r"""Class representing formula 5.46 for the calculation of the time dependent pre- and post-tensioning losses at location
-    x under the permanent loads, [$$\Delta \sigma_{p,c+s+r}$$].
+    x under the permanent loads, [$\Delta \sigma_{p,c+s+r}$].
     """
 
     label = "5.46"
@@ -128,37 +128,37 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
         i_c: MM4,
         z_cp: MM,
     ) -> None:
-        r"""[$$\Delta \sigma_{p,c+s+r}$$] Time dependent pre- and post-tensioning stress losses at
-        location x under the permanent loads [$$MPa$$].
+        r"""[$\Delta \sigma_{p,c+s+r}$] Time dependent pre- and post-tensioning stress losses at
+        location x under the permanent loads [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.5.10.6(2) - Formula (5.46)
 
         Parameters
         ----------
         a_p : MM2
-            [$$A_p$$] Area of all the prestressing tendons at the location x [$$mm^2$$].
+            [$A_p$] Area of all the prestressing tendons at the location x [$mm^2$].
         epsilon_cs : DIMENSIONLESS
-            [$$\epsilon_{cs}$$] The estimated shrinkage strain according to 3.1.4(6) in absolute value [$$-$$].
+            [$\epsilon_{cs}$] The estimated shrinkage strain according to 3.1.4(6) in absolute value [$-$].
         e_p : MPA
-            [$$E_p$$] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [$$MPa$$].
+            [$E_p$] Modulus of elasticity for the prestressing steel, see 3.3.3 (9) [$MPa$].
         e_cm : MPA
-            [$$E_{cm}$$] Modulus of elasticity for the concrete (Table 3.1) [$$MPa$$].
+            [$E_{cm}$] Modulus of elasticity for the concrete (Table 3.1) [$MPa$].
         delta_sigma_pr : MPA
-            [$$\Delta \sigma_{pr}$$] is the absolute value of the variation of stress in the tendons at location x, at
+            [$\Delta \sigma_{pr}$] is the absolute value of the variation of stress in the tendons at location x, at
             time t, due to the relaxation of the prestressing steel. It is determined for a stress of
-            [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$]where [$$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$$] is the initial
-            stress in the tendons due to initial prestress and quasi-permanent actions. [$$MPa$$].
+            [$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$]where [$\sigma_p = \sigma_p(G+P_{m0}+\Psi_2 Q)$] is the initial
+            stress in the tendons due to initial prestress and quasi-permanent actions. [$MPa$].
         phi_t_t0 : DIMENSIONLESS
-            [$$\phi(t, t_0)$$] Creep coefficient at a time t and load application at time t0 [$$-$$].
+            [$\phi(t, t_0)$] Creep coefficient at a time t and load application at time t0 [$-$].
         sigma_c_qp : MPA
-            [$$\sigma_{c,QP}$$] stress in the concrete adjacent to the tendons, due to self-weight and
-            initial prestress and other quasi-permanent actions where relevant. [$$MPa$$].
+            [$\sigma_{c,QP}$] stress in the concrete adjacent to the tendons, due to self-weight and
+            initial prestress and other quasi-permanent actions where relevant. [$MPa$].
         a_c : MM2
-            [$$A_c$$] Area of concrete section [$$mm^2$$].
+            [$A_c$] Area of concrete section [$mm^2$].
         i_c : MM4
-            [$$I_c$$] Second moment of area of concrete section [$$mm^4$$].
+            [$I_c$] Second moment of area of concrete section [$mm^4$].
         z_cp : MM
-            [$$z_{cp}$$] Distance between the centre of gravity of the concrete section and the tendons [$$mm$$].
+            [$z_{cp}$] Distance between the centre of gravity of the concrete section and the tendons [$mm$].
         """
         super().__init__()
         self.a_p = a_p

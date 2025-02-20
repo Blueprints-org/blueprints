@@ -12,7 +12,7 @@ class Form2Dot4DesignValueGeotechnicalParameter:
     r"""Class representing formula 2.4 for the check of
     the destabilizing load effect
     against the stabilizing load effect and friction resistance
-    [$$E_{dst;d} \leq E_{stb;d} + T_d$$].
+    [$E_{dst;d} \leq E_{stb;d} + T_d$].
     """
 
     label = "2.4"
@@ -21,18 +21,18 @@ class Form2Dot4DesignValueGeotechnicalParameter:
     def __init__(self, e_dst_d: KN, e_stb_d: KN, t_d: KN) -> None:
         r"""Check of the destabilizing load effect
         against the stabilizing load effect and friction resistance
-        [$$E_{dst;d} \leq E_{stb;d} + T_d$$].
+        [$E_{dst;d} \leq E_{stb;d} + T_d$].
 
         NEN 9997-1+C2:2017 art.2.4.7.2(1) - Formula (2.4)
 
         Parameters
         ----------
         E_dst_d : KN
-            [$$E_{dst;d}$$] Design value of destabilizing load effect [$$kN$$].
+            [$E_{dst;d}$] Design value of destabilizing load effect [$kN$].
         E_stb_d : KN
-            [$$E_{stb;d}$$] Design value of stabilizing load effect [$$kN$$].
+            [$E_{stb;d}$] Design value of stabilizing load effect [$kN$].
         T_d : KN
-            [$$T_d$$] Design value of friction resistance [$$kN$$].
+            [$T_d$] Design value of friction resistance [$kN$].
         """
         self.e_dst_d = e_dst_d
         self.e_stb_d = e_stb_d
