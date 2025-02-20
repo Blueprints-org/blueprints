@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form7Dot1MinReinforcingSteel(Formula):
-    r"""Class representing formula 7.1 for the calculation of [$$A_{s,min}$$]."""
+    r"""Class representing formula 7.1 for the calculation of [$A_{s,min}$]."""
 
     label = "7.1"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,26 +21,26 @@ class Form7Dot1MinReinforcingSteel(Formula):
         a_ct: MM2,
         sigma_s: MPA,
     ) -> None:
-        r"""[$$A_{s,min}$$] Calculation of minimum area of reinforcing steel within the tensile zone.
+        r"""[$A_{s,min}$] Calculation of minimum area of reinforcing steel within the tensile zone.
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.2(2) - Formula (7.1)
 
         Parameters
         ----------
         k_c : DIMENSIONLESS
-            [$$k_c$$] Coefficient which takes account of the stress distribution within the section immediately
-            prior to cracking and of the change of the lever arm. For pure tension use 1.0, else use equation 7.2 or 7.3 [$$-$$].
+            [$k_c$] Coefficient which takes account of the stress distribution within the section immediately
+            prior to cracking and of the change of the lever arm. For pure tension use 1.0, else use equation 7.2 or 7.3 [$-$].
         k : DIMENSIONLESS
-            [$$k$$] Coefficient which allows for the effect of non-uniform self-equilibrating stresses, which lead to a
-            reduction of restraint forces [$$-$$].
+            [$k$] Coefficient which allows for the effect of non-uniform self-equilibrating stresses, which lead to a
+            reduction of restraint forces [$-$].
         f_ct_eff : MPA
-            [$$f_{ct,eff}$$] Mean value of the tensile strength of the concrete effective at the time when the cracks may
-            first be expected to occur [$$MPa$$].
+            [$f_{ct,eff}$] Mean value of the tensile strength of the concrete effective at the time when the cracks may
+            first be expected to occur [$MPa$].
         a_ct : MM2
-            [$$A_{ct}$$] Area of concrete within the tensile zone [$$mm^2$$].
+            [$A_{ct}$] Area of concrete within the tensile zone [$mm^2$].
         sigma_s : MPA
-            [$$\sigma_s$$] Absolute value of the maximum stress permitted in the reinforcement immediately after formation
-            of the crack [$$MPa$$].
+            [$\sigma_s$] Absolute value of the maximum stress permitted in the reinforcement immediately after formation
+            of the crack [$MPa$].
         """
         super().__init__()
         self.k_c = k_c

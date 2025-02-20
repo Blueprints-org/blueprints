@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form7Dot5AdjustedBondStrengthRatio(Formula):
-    r"""Class representing formula 7.5 for the calculation of [$$\Xi_1$$]."""
+    r"""Class representing formula 7.5 for the calculation of [$\Xi_1$]."""
 
     label = "7.5"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,19 +21,19 @@ class Form7Dot5AdjustedBondStrengthRatio(Formula):
         diam_s: MM,
         diam_p: MM,
     ) -> None:
-        r"""[$$\xi_1$$] Calculation of the ratio of bond strength of presetressing and reinforcing steel [$$-$$].
-        Note: if only prestressing steel is used to control cracking: [$$\xi_1 = \sqrt{\xi}$$].
+        r"""[$\xi_1$] Calculation of the ratio of bond strength of presetressing and reinforcing steel [$-$].
+        Note: if only prestressing steel is used to control cracking: [$\xi_1 = \sqrt{\xi}$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.2(3) - Formula (7.5)
 
         Parameters
         ----------
         xi : DIMENSIONLESS
-            [$$\Xi$$] Ratio of bond strength of prestressing and reinforcing steel.
+            [$\Xi$] Ratio of bond strength of prestressing and reinforcing steel.
         diam_s : MM
-            [$$\diam_s$$] Largest bar diameter of reinforcing steel [$$mm$$].
+            [$\diam_s$] Largest bar diameter of reinforcing steel [$mm$].
         diam_p : MM
-            [$$\diam_p$$] Equivalent diameter of tendon [$$mm$$].
+            [$\diam_p$] Equivalent diameter of tendon [$mm$].
         """
         super().__init__()
         self.xi = xi

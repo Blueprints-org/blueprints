@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form7Dot7nMaxBarDiameterTension(Formula):
-    r"""Class representing formula 7.7n for the calculation of [$$\diam_s$$]."""
+    r"""Class representing formula 7.7n for the calculation of [$\diam_s$]."""
 
     label = "7.7n"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,24 +21,24 @@ class Form7Dot7nMaxBarDiameterTension(Formula):
         h: MM,
         d: MM,
     ) -> None:
-        r"""[$$\diam_s$$] Calculation of the maximum bar diameter for tension [$$mm$$].
+        r"""[$\diam_s$] Calculation of the maximum bar diameter for tension [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.3(2) - Formula (7.7n)
 
         Parameters
         ----------
         diam_s_star : MM
-            [$$\diam^*_s$$] Maximum bar size given in the Table 7.2N [$$mm$$].
+            [$\diam^*_s$] Maximum bar size given in the Table 7.2N [$mm$].
         f_ct_eff : MPA
-            [$$f_{ct,eff}$$] Mean value of the tensile strength of the concrete effective at the time
-            when the cracks may first be expected to occur [$$MPa$$].
+            [$f_{ct,eff}$] Mean value of the tensile strength of the concrete effective at the time
+            when the cracks may first be expected to occur [$MPa$].
         h_cr : MM
-            [$$h_{cr}$$] Depth of the tensile zone immediately prior to cracking, considering the characteristic values
-            of prestress and axial forces under the quasi-permanent combination of actions [$$mm$$].
+            [$h_{cr}$] Depth of the tensile zone immediately prior to cracking, considering the characteristic values
+            of prestress and axial forces under the quasi-permanent combination of actions [$mm$].
         h : MM
-            [$$h$$] Overall depth of the section [$$mm$$].
+            [$h$] Overall depth of the section [$mm$].
         d : MM
-            [$$d$$] Effective depth to the centroid of the outer layer of reinforcement [$$mm$$].
+            [$d$] Effective depth to the centroid of the outer layer of reinforcement [$mm$].
         """
         super().__init__()
         self.diam_s_star = diam_s_star

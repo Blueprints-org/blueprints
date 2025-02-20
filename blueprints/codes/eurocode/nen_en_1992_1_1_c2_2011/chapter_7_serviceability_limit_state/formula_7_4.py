@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form7Dot4MeanStressConcrete(Formula):
-    r"""Class representing formula 7.4 for the calculation of [$$\sigma_c$$]."""
+    r"""Class representing formula 7.4 for the calculation of [$\sigma_c$]."""
 
     label = "7.4"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,19 +19,19 @@ class Form7Dot4MeanStressConcrete(Formula):
         b: MM,
         h: MM,
     ) -> None:
-        r"""[$$\sigma_c$$] Calculation of mean stress of the concrete in the cross-section under consideration [$$MPa$$].
+        r"""[$\sigma_c$] Calculation of mean stress of the concrete in the cross-section under consideration [$MPa$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.2(2) - Formula (7.4)
 
         Parameters
         ----------
         n_ed : N
-            [$$N_{Ed}$$] Axial force at the serviceability limit state acting on the part of the
-            cross-section under consideration (compressive force positive) [$$N$$].
+            [$N_{Ed}$] Axial force at the serviceability limit state acting on the part of the
+            cross-section under consideration (compressive force positive) [$N$].
         b : MM
-            [$$b$$] Width of the cross-section [$$mm$$].
+            [$b$] Width of the cross-section [$mm$].
         h : MM
-            [$$h$$] Height of the cross-section [$$mm$$].
+            [$h$] Height of the cross-section [$mm$].
         """
         super().__init__()
         self.n_ed = n_ed
