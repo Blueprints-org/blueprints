@@ -70,7 +70,7 @@ class Form6Dot3ADeductionAreaStaggeredFastenerHoles(Formula):
         _equation: str = r"t \left( n \cdot d_0 - \sum \frac{s^2}{4 \cdot p} \right)"
         _numeric_equation: str = (
             rf"{self.t:.3f} \left( {self.n:.3f} \cdot {self.d_0:.3f} - \left( \frac{{{self.s[0]:.3f}^2}}"
-            r"{{4 \cdot {self.p[0]:.3f}}}"
+            rf"{{4 \cdot {self.p[0]:.3f}}}"
         )
         for s_i, p_i in zip(self.s[1:], self.p[1:]):
             _numeric_equation += rf" + \frac{{{s_i:.3f}^2}}{{4 \cdot {p_i:.3f}}}"
