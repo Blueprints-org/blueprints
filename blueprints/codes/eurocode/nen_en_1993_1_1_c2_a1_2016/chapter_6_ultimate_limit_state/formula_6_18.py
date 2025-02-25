@@ -28,7 +28,7 @@ class Form6Dot18DesignPlasticShearResistance(Formula):
         Parameters
         ----------
         a_v : MM2
-            [$A_v$] Shear area [$mm^2$].
+            [$A_v$] Shear area, to be taken from a subformula from 6.18 [$mm^2$].
         f_y : MPA
             [$f_y$] Yield strength of the material [$MPa$].
         gamma_m0 : DIMENSIONLESS
