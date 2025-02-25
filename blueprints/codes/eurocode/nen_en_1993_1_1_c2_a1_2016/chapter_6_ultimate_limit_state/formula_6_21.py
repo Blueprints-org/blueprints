@@ -1,4 +1,4 @@
-"""Formula 6.20 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.21 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
@@ -7,10 +7,10 @@ from blueprints.type_alias import MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot20TauEd(Formula):
-    r"""Class representing formula 6.20 for the calculation of [$\tau_{Ed}$]."""
+class Form6Dot21ShearStressIOrHSection(Formula):
+    r"""Class representing formula 6.21 for the calculation of [$\tau_{Ed}$]."""
 
-    label = "6.20"
+    label = "6.21"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
 
     def __init__(
@@ -22,7 +22,7 @@ class Form6Dot20TauEd(Formula):
         r"""[$\tau_{Ed}$] Calculation of the design elastic shear stress [$MPa$].
         For I- or H-sections the shear stress in the web may be taken with this equation.
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(5) - Formula (6.20)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(5) - Formula (6.21)
 
         Parameters
         ----------
@@ -53,7 +53,7 @@ class Form6Dot20TauEd(Formula):
         return v_ed / a_w
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.20."""
+        """Returns LatexFormula object for formula 6.21."""
         _equation: str = r"\frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6"
         _numeric_equation: str = latex_replace_symbols(
             _equation,

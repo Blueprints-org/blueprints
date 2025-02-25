@@ -9,7 +9,7 @@ from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot18VplRd(Formula):
+class Form6Dot18DesignPlasticShearResistance(Formula):
     r"""Class representing formula 6.18 for the calculation of [$V_{pl,Rd}$]."""
 
     label = "6.18"

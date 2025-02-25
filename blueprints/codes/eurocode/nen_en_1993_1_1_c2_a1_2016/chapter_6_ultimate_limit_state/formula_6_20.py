@@ -7,7 +7,7 @@ from blueprints.type_alias import MM, MM3, MM4, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot20TauEd(Formula):
+class Form6Dot20ShearStress(Formula):
     r"""Class representing formula 6.20 for the calculation of [$\tau_{Ed}$]."""
 
     label = "6.20"

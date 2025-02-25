@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_18 import Form6Dot18VplRd
+from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_18 import Form6Dot18DesignPlasticShearResistance
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot18VplRd:
+class TestForm6Dot18DesignPlasticShearResistance:
     """Validation for formula 6.18 from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
@@ -17,7 +17,7 @@ class TestForm6Dot18VplRd:
         gamma_m0 = 1.0
 
         # Object to test
-        formula = Form6Dot18VplRd(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0)
+        formula = Form6Dot18DesignPlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0)
 
         # Expected result, manually calculated
         manually_calculated_result = 409918.6911246343  # N
@@ -35,7 +35,7 @@ class TestForm6Dot18VplRd:
     def test_raise_error_when_invalid_values_are_given(self, a_v: float, f_y: float, gamma_m0: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot18VplRd(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0)
+            Form6Dot18DesignPlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0)
 
     @pytest.mark.parametrize(
         ("a_v", "f_y", "gamma_m0"),
@@ -47,7 +47,7 @@ class TestForm6Dot18VplRd:
     def test_raise_error_when_gamma_m0_is_invalid(self, a_v: float, f_y: float, gamma_m0: float) -> None:
         """Test invalid gamma_m0 values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form6Dot18VplRd(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0)
+            Form6Dot18DesignPlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -68,7 +68,7 @@ class TestForm6Dot18VplRd:
         gamma_m0 = 1.0
 
         # Object to test
-        latex = Form6Dot18VplRd(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0).latex()
+        latex = Form6Dot18DesignPlasticShearResistance(a_v=a_v, f_y=f_y, gamma_m0=gamma_m0).latex()
 
         actual = {
             "complete": latex.complete,

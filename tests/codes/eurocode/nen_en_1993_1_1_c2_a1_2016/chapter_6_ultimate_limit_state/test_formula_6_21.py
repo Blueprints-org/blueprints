@@ -1,13 +1,13 @@
-"""Testing formula 6.20 of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.21 of NEN-EN 1993-1-1+C2+A1:2016."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_21 import Form6Dot20TauEd
+from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_21 import Form6Dot21ShearStressIOrHSection
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot20TauEd:
-    """Validation for formula 6.20 from NEN-EN 1993-1-1+C2+A1:2016."""
+class TestForm6Dot21ShearStressIOrHSection:
+    """Validation for formula 6.21 from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -17,7 +17,7 @@ class TestForm6Dot20TauEd:
         a_f = 150.0
 
         # Object to test
-        formula = Form6Dot20TauEd(v_ed=v_ed, a_w=a_w, a_f=a_f)
+        formula = Form6Dot21ShearStressIOrHSection(v_ed=v_ed, a_w=a_w, a_f=a_f)
 
         # Expected result, manually calculated
         manually_calculated_result = 5.0  # MPa
@@ -34,7 +34,7 @@ class TestForm6Dot20TauEd:
     def test_raise_error_when_invalid_values_are_given(self, v_ed: float, a_w: float, a_f: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot20TauEd(v_ed=v_ed, a_w=a_w, a_f=a_f)
+            Form6Dot21ShearStressIOrHSection(v_ed=v_ed, a_w=a_w, a_f=a_f)
 
     @pytest.mark.parametrize(
         ("v_ed", "a_w", "a_f"),
@@ -46,7 +46,7 @@ class TestForm6Dot20TauEd:
     def test_raise_error_when_a_w_is_invalid(self, v_ed: float, a_w: float, a_f: float) -> None:
         """Test invalid values for a_w."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form6Dot20TauEd(v_ed=v_ed, a_w=a_w, a_f=a_f)
+            Form6Dot21ShearStressIOrHSection(v_ed=v_ed, a_w=a_w, a_f=a_f)
 
     @pytest.mark.parametrize(
         ("v_ed", "a_w", "a_f"),
@@ -57,7 +57,7 @@ class TestForm6Dot20TauEd:
     def test_raise_error_when_a_f_divided_by_a_w_is_invalid(self, v_ed: float, a_w: float, a_f: float) -> None:
         """Test invalid values for a_f / a_w."""
         with pytest.raises(ValueError):
-            Form6Dot20TauEd(v_ed=v_ed, a_w=a_w, a_f=a_f)
+            Form6Dot21ShearStressIOrHSection(v_ed=v_ed, a_w=a_w, a_f=a_f)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -78,7 +78,7 @@ class TestForm6Dot20TauEd:
         a_f = 150.0
 
         # Object to test
-        latex = Form6Dot20TauEd(v_ed=v_ed, a_w=a_w, a_f=a_f).latex()
+        latex = Form6Dot21ShearStressIOrHSection(v_ed=v_ed, a_w=a_w, a_f=a_f).latex()
 
         actual = {
             "complete": latex.complete,
