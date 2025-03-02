@@ -7,7 +7,7 @@ from blueprints.type_alias import NMM
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot24TEd(Formula):
+class Form6Dot24TotalTorsionalMoment(Formula):
     r"""Class representing formula 6.24 for the calculation of [$T_{Ed}$]."""
 
     label = "6.24"

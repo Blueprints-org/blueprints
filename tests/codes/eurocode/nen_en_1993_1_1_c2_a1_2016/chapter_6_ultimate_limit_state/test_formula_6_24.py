@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_24 import Form6Dot24TEd
+from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_24 import Form6Dot24TotalTorsionalMoment
 from blueprints.validations import NegativeValueError
 
 
-class TestForm6Dot24TEd:
+class TestForm6Dot24TotalTorsionalMoment:
     """Validation for formula 6.24 from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
@@ -16,7 +16,7 @@ class TestForm6Dot24TEd:
         t_w_ed = 300.0
 
         # Object to test
-        formula = Form6Dot24TEd(t_t_ed=t_t_ed, t_w_ed=t_w_ed)
+        formula = Form6Dot24TotalTorsionalMoment(t_t_ed=t_t_ed, t_w_ed=t_w_ed)
 
         # Expected result, manually calculated
         manually_calculated_result = 800.0  # Nmm
@@ -33,7 +33,7 @@ class TestForm6Dot24TEd:
     def test_raise_error_when_invalid_values_are_given(self, t_t_ed: float, t_w_ed: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot24TEd(t_t_ed=t_t_ed, t_w_ed=t_w_ed)
+            Form6Dot24TotalTorsionalMoment(t_t_ed=t_t_ed, t_w_ed=t_w_ed)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -52,7 +52,7 @@ class TestForm6Dot24TEd:
         t_w_ed = 300.0
 
         # Object to test
-        latex = Form6Dot24TEd(t_t_ed=t_t_ed, t_w_ed=t_w_ed).latex()
+        latex = Form6Dot24TotalTorsionalMoment(t_t_ed=t_t_ed, t_w_ed=t_w_ed).latex()
 
         actual = {
             "complete": latex.complete,
