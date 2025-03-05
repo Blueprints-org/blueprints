@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.cur.cur_228.formula_2_22 import Form2Dot22ModulusHorizontalSubgrade
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm2Dot22ModulusHorizontalSubgrade:
@@ -29,6 +30,18 @@ class TestForm2Dot22ModulusHorizontalSubgrade:
         alpha = 1 / 3  # -
 
         with pytest.raises(ValueError):
+            Form2Dot22ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
+
+    @pytest.mark.parametrize(
+        ("e_p", "r", "alpha"),
+        [
+            (-500.0, -0.2, -0.33),
+            (0.0, 0.0, 0.0),
+        ],
+    )
+    def test_raise_error_when_invalid_values_are_given(self, e_p: float, r: float, alpha: float) -> None:
+        """Test invalid values."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form2Dot22ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
 
     def test_latex_method(self) -> None:

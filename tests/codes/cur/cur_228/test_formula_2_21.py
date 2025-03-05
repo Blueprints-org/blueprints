@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.codes.cur.cur_228.formula_2_21 import Form2Dot21ModulusHorizontalSubgrade
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm2Dot21ModulusHorizontalSubgrade:
@@ -21,14 +22,16 @@ class TestForm2Dot21ModulusHorizontalSubgrade:
 
         assert form_2_21 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_when_r_is_lower_then_0_3(self) -> None:
-        """Tests if an ValueError is raised when r < 0.3."""
-        # Example values
-        r = 0.2  # m
-        e_p = 2.47  # kN/m²
-        alpha = 1 / 3  # -
-
-        with pytest.raises(ValueError):
+    @pytest.mark.parametrize(
+        ("e_p", "r", "alpha"),
+        [
+            (-500.0, -0.6, -0.33),
+            (0.0, 0.0, 0.0),
+        ],
+    )
+    def test_raise_error_when_invalid_values_are_given(self, e_p: float, r: float, alpha: float) -> None:
+        """Test invalid values."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form2Dot21ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
 
     def test_latex_method(self) -> None:

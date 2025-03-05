@@ -54,3 +54,5 @@ python_version = "3.12"
 [[tool.mypy.overrides]]
 module = ["matplotlib.*"]
 ignore_missing_imports = true
+
+
