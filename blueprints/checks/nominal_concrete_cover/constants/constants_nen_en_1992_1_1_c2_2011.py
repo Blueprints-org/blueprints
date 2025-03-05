@@ -17,7 +17,7 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = field(default=5, init=False)
 
     # According to art. 4.4.1.3 (1) from NEN-EN 1992-1-1+C2:2011
-    DEFAULT_DELTA_C_DEV: MM = field(default=10)
+    DEFAULT_DELTA_C_DEV: MM = field(default_factory=int)
 
     # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1+C2:2011
     COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = field(default_factory=dict)

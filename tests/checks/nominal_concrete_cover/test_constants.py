@@ -105,6 +105,11 @@ class TestNominalConcreteCoverConstants2011C2:
         )
         assert custom_constants.DEFAULT_DELTA_C_DEV == 13
 
+    def test_instantiation_with_default_delta_c_dev(self) -> None:
+        """Test that the class can be instantiated with default value for the default delta c_dev."""
+        custom_constants = NominalConcreteCoverConstants2011C2()
+        assert custom_constants.DEFAULT_DELTA_C_DEV == 10  # Default value
+
     def test_post_init(self) -> None:
         """Test that the post-init method sets default values."""
         constants = NominalConcreteCoverConstants2011C2()
