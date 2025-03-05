@@ -20,18 +20,18 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
         l_b_rqd: MM,
         diameter: MM,
     ) -> None:
-        """[lb,min] Minimum anchorage length if no other limitation is applied for anchorage in compression. [mm].
+        r"""[$l_{b,min}$] Minimum anchorage length if no other limitation is applied for anchorage in compression. [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.8.4.4(1) - Formula (8.7)
 
         Parameters
         ----------
         l_b_rqd: MM
-            [lb,rqd] Basic required anchorage length, for anchoring the force As*σsd in a straight bar assuming constant
-            bond stress (formula 8.3) [mm].
+            [$l_{b,rqd}$] Basic required anchorage length, for anchoring the force [$A_s \cdot \sigma_{sd}$] in a straight bar assuming constant
+            bond stress (formula 8.3) [$mm$].
             Use your own implementation for this value or use the Form8Dot3RequiredAnchorageLength class.
         diameter: MM
-            [Ø] Diameter of the bar [mm].
+            [$Ø$] Diameter of the bar [$mm$].
         """
         super().__init__()
         self.l_b_rqd = l_b_rqd

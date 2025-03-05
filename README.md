@@ -8,9 +8,9 @@
 
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/source/_static/blueprints_banner.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/source/_static/blueprints_banner.png">
-  <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <img alt="blueprints banner" src="docs/_overrides/assets/images/blueprints_banner.png">
 </picture>
 
 Welcome to `Blueprints`, the go-to repository for civil engineering professionals and enthusiasts!
@@ -60,7 +60,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
   - [ ] Circular section
 
 * Concrete checks
-  - [ ] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow)
+  - [x] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ✔️
   - [ ] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8)
   - [ ] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2)
   - [ ] Shear Resistance circular shapes;
@@ -76,24 +76,44 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Steel checks (NEN-EN 1993)
   - *To Be Determined*
 
-* Geotechnical checks (NEN-EN 9997-1
+* Geotechnical checks (NEN-EN 9997-1)
   - *To Be Determined*
 
 * Common calculations
+  - [ ] Sheet-pile checks (strength and local buckling) ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
   - [ ] L-walls
   - [ ] Spring constants calculations for piles
-  - [ ] Sheet-pile checks (strength, stability, deflection, local buckling, etc.)
  
 <details>
 
 <summary> Progress definitions </summary>
 
-| Icon | Definition  |
-| ---  | ---------   |
-| ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange) | Just started |
-| ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow) | Making progress |
-| ![](https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen) | In Review |
-| ✔️  | Done |
+<table border="1">
+  <thead>
+    <tr>
+      <th>Icon</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange" alt="20% Icon"></td>
+      <td>Just started</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow" alt="50% Icon"></td>
+      <td>Making progress</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen" alt="80% Icon"></td>
+      <td>In Review</td>
+    </tr>
+    <tr>
+      <td>✔️</td>
+      <td>Done</td>
+    </tr>
+  </tbody>
+</table>
 
 </details>
 
@@ -120,12 +140,59 @@ Documentation is available at [blueprints.readthedocs.io](https://blueprints.rea
 This table serves as a quick navigator to the key elements of the code within Blueprints, offering immediate links to its formulas, tables, and
 figures for streamlined access and reference.
 
-| Document                   | Description                                                                                 |                            Formulas                             |                            Tables                             |                            Figures                             |
-|:---------------------------|:--------------------------------------------------------------------------------------------|:---------------------------------------------------------------:|:-------------------------------------------------------------:|:--------------------------------------------------------------:|
-| NEN-EN 1992-1-1+C2:2011    | Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings ([code](blueprints/codes/eurocode/nen_en_1992_1_1_c2_2011)) | [304](docs/source/codes/eurocode/ec2_1992_1_1_2011/formulas.md) | [38](docs/source/codes/eurocode/ec2_1992_1_1_2011/tables.md)  | [104](docs/source/codes/eurocode/ec2_1992_1_1_2011/figures.md) |
-| NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings ([code](blueprints/codes/eurocode/nen_en_1993_1_1_c2_a1_2016))    | [108](docs/source/codes/eurocode/ec3_1993_1_1_2016/formulas.md) | [20](docs/source/codes/eurocode/ec3_1993_1_1_2016/tables.md)  | [28](docs/source/codes/eurocode/ec3_1993_1_1_2016/figures.md)  |
-| NEN 9997-1+C2:2017         | Eurocode 7: Geotechnical design of structures - Part 1: General rules ([code](blueprints/codes/eurocode/nen_9997_1_c2_2017))                      | [88](docs/source/codes/eurocode/nen_9997_1_c2_2017/formulas.md) | [11](docs/source/codes/eurocode/nen_9997_1_c2_2017/tables.md) | [25](docs/source/codes/eurocode/nen_9997_1_c2_2017/figures.md) |
-| NEN-EN 1993-5:2008         | Eurocode 3: Design of steel structures – Part 5: Piling ([code](blueprints/codes/eurocode/nen_en_1993_5_2008))                                    | [63](docs/source/codes/eurocode/nen_en_1993_5_2008/formulas.md) | [0](docs/source/codes/eurocode/nen_en_1993_5_2008/tables.md)  | [0](docs/source/codes/eurocode/nen_en_1993_5_2008/figures.md)  |
+<table>
+  <thead>
+    <tr>
+      <th>Document</th>
+      <th>Description</th>
+      <th>Formulas</th>
+      <th>Tables</th>
+      <th>Figures</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NEN-EN 1992-1-1+C2:2011</td>
+      <td>
+        Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings
+        (<a href="blueprints/codes/eurocode/nen_en_1992_1_1_c2_2011">code</a>)
+      </td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/formulas.md">304</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/figures.md">104</a></td>
+    </tr>
+    <tr>
+      <td>NEN-EN 1993-1-1+C2+A1:2016</td>
+      <td>
+        NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings
+        (<a href="blueprints/codes/eurocode/nen_en_1993_1_1_c2_a1_2016">code</a>)
+      </td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/figures.md">28</a></td>
+    </tr>
+    <tr>
+      <td>NEN-EN 1993-5:2008</td>
+      <td>
+        Eurocode 3: Design of steel structures – Part 5: Piling
+        (<a href="blueprints/codes/eurocode/nen_en_1993_5_2008">code</a>)
+      </td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/figures.md">0</a></td>
+    </tr>
+    <tr>
+      <td>NEN 9997-1+C2:2017</td>
+      <td>
+        Eurocode 7: Geotechnical design of structures - Part 1: General rules
+        (<a href="blueprints/codes/eurocode/nen_9997_1_c2_2017">code</a>)
+      </td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/formulas.md">88</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/tables.md">11</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/figures.md">25</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Contributing
 

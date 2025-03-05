@@ -18,17 +18,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: install uv
+      uses: astral-sh/setup-uv@v5
+
     - name: Setup python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Update pip
-      run: pip install --upgrade pip
-
     - name: Install package
-      run: python -m pip install -e .[dev]
+      run: uv pip install -e .[dev] --system
 
     - name: Check code coverage is 100%
       run: |
-        pytest --cov=./blueprints --cov-fail-under=100
+        pytest --cov=./blueprints --cov-report term-missing:skip-covered --cov-fail-under=100
