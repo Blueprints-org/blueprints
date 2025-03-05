@@ -41,7 +41,7 @@ class TestForm2Dot21ModulusHorizontalSubgrade:
             (0.29),
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, r: float) -> None:
+    def test_raise_error_when_invalid_diameter_values_are_given(self, r: float) -> None:
         """Test invalid values."""
         with pytest.raises(ValueError):
             Form2Dot21ModulusHorizontalSubgrade(r=r, e_p=500, alpha=0.33)
