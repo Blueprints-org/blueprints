@@ -1,4 +1,4 @@
-**NEN-EN 1992-1-1+C2 - November 2011
+**NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020 - February 2020
 Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings**
 

@@ -2,8 +2,8 @@
 Eurocode 7: Geotechnical design
 Part 1: General rules**
 
-The table presents a list of tables from the Eurocode 7 standards for geotechnical design, tracking their implementation status (:x: or :
-heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+The table presents a list of tables from the Eurocode 7 standards for geotechnical design, tracking their implementation status (:x: or :heavy_check_mark:)
+and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 11 tables present.
 
