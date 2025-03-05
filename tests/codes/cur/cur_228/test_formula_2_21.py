@@ -42,4 +42,4 @@ class TestForm2Dot21ModulusHorizontalSubgrade:
         form_2_21 = Form2Dot21ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
 
         # Test the full LaTeX representation
-        assert isinstance(form_2_21.latex(2).complete, str)
+        assert isinstance(form_2_21.latex().complete, str)

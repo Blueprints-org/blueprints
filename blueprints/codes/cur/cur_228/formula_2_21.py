@@ -12,6 +12,7 @@ class Form2Dot21ModulusHorizontalSubgrade(Formula):
 
     source_document = CUR_228
     label = "2.21"
+    n_decimals: int = 2
 
     def __init__(self, r: M, e_p: KPA, alpha: DIMENSIONLESS) -> None:
         """Calculates the modulus of horizontal subgrade reaction (k_h) using Menard stiffness for r >= 0.3 m.
@@ -47,7 +48,7 @@ class Form2Dot21ModulusHorizontalSubgrade(Formula):
         msg = "Radius is smaller than 0.3m, use: Eq2Dot21ModulusHorizontalSubgrade"
         raise ValueError(msg)
 
-    def latex(self, n_decimals: int = 2) -> LatexFormula:
+    def latex(self) -> LatexFormula:
         """Latex representation of the full equation including result.
 
         Parameters
@@ -61,7 +62,7 @@ class Form2Dot21ModulusHorizontalSubgrade(Formula):
             Latex representation of the equation
 
         """
-        n = n_decimals
+        n = self.n_decimals
 
         return LatexFormula(
             return_symbol="k_{h}",
@@ -73,6 +74,6 @@ class Form2Dot21ModulusHorizontalSubgrade(Formula):
             rf"\left[1.3 \cdot {R_0:.{n}} "
             rf"\left( 2.65 \cdot \frac{{{self.r:.{n}}}}{{{R_0:.{n}}}}\right)^{{{self.alpha:.{n}f}}}"
             rf"+ {self.alpha:.{n}} \cdot {self.r:.{n}}\right]",
-            result=f"{self:.{n_decimals}f}",
+            result=f"{self:.{n}f}",
             unit="kN/m^3",
         )

@@ -12,6 +12,7 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
 
     source_document = CUR_228
     label = "2.22"
+    n_decimals: int = 2
 
     def __init__(self, r: M, e_p: KPA, alpha: DIMENSIONLESS) -> None:
         """Calculates the modulus of horizontal subgrade reaction (k_h) using Menard stiffness for r < 0.3 m.
@@ -45,13 +46,8 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
         msg = "Radius is equal to- or larger than 0.3m, use: Eq2Dot21ModulusHorizontalSubgrade"
         raise ValueError(msg)
 
-    def latex(self, n_decimals: int = 2) -> LatexFormula:
+    def latex(self) -> LatexFormula:
         """Latex representation of the full equation including result.
-
-        Parameters
-        ----------
-        n_decimals: int
-            Number of decimals to round the result to
 
         Returns
         -------
@@ -59,7 +55,7 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
             Latex representation of the equation
 
         """
-        n = n_decimals
+        n = self.n_decimals
         return LatexFormula(
             return_symbol=r"k_{h}",
             result=f"{self:.{n}f}",
