@@ -23,7 +23,7 @@ class TestForm5Dot8CheckSlenderness:
         # Expected result, manually calculated
         expected_result = True
 
-        assert formula(lambda_bar, a, f_y, n_ed) == expected_result
+        assert formula == expected_result
 
     @pytest.mark.parametrize(
         ("lambda_bar", "a", "f_y", "n_ed"),
