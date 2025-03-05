@@ -92,21 +92,22 @@ class Form5Dot9ReducedBendingMomentResistance(Formula):
         m_v_rd = ((beta_b * w_pl) - ((rho * a_v**2) / (4.0 * t_w * np.sin(np.deg2rad(alpha))))) * (f_y / gamma_m_0) * NMM_TO_KNM
         return min(m_v_rd, mc_rd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.9."""
         latex_equation = latex_min_curly_brackets(
             r"\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot \frac{f_y}{\gamma_{M0}}, M_{c,Rd}"
         )
-        fraction = latex_fraction(numerator=f"{self.f_y:.2f}", denominator=f"{self.gamma_m_0:.2f}")
+        fraction = latex_fraction(numerator=f"{self.f_y:.{n}f}", denominator=f"{self.gamma_m_0:.{n}f}")
         return LatexFormula(
             return_symbol=r"M_{V,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=latex_equation,
             numeric_equation=(
                 latex_min_curly_brackets(
-                    rf"\left({self.beta_b:.2f} \cdot {self.w_pl:.2f} - \frac{{{self.rho:.2f} \cdot {self.a_v:.2f}^2}}{{4 \cdot {self.t_w:.2f} \cdot "
-                    rf"\sin({self.alpha:.2f})}}\right) \cdot "
-                    rf"{fraction} \cdot 10^{{-6}}, {self.mc_rd:.2f}"
+                    rf"\left({self.beta_b:.{n}f} \cdot {self.w_pl:.{n}f} - \frac{{{self.rho:.{n}f} "
+                    rf"\cdot {self.a_v:.{n}f}^2}}{{4 \cdot {self.t_w:.{n}f} \cdot "
+                    rf"\sin({self.alpha:.{n}f})}}\right) \cdot "
+                    rf"{fraction} \cdot 10^{{-6}}, {self.mc_rd:.{n}f}"
                 )
             ),
             comparison_operator_label="=",

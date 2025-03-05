@@ -58,13 +58,13 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
             raise ValueError(f"Negative alpha: {alpha}. alpha cannot be negative")
         return beta_cc_t**alpha * f_ctm
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.4."""
         return LatexFormula(
             return_symbol=r"f_{ctm}(t)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"(\beta_{cc}(t))^{\alpha} \cdot f_{ctm}",
-            numeric_equation=rf"({self.beta_cc_t:.3f})^{{{self.alpha:.3f}}} \cdot {self.f_ctm:.3f}",
+            numeric_equation=rf"({self.beta_cc_t:.{n}f})^{{{self.alpha:.{n}f}}} \cdot {self.f_ctm:.{n}f}",
             comparison_operator_label=r"=",
         )
 
@@ -102,12 +102,12 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
             return 1.0
         return 2 / 3
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.4sub."""
         return LatexFormula(
             return_symbol=r"\alpha",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"t",
-            numeric_equation=rf"{self.t:.3f}",
+            numeric_equation=rf"{self.t:.{n}f}",
             comparison_operator_label=r"\rightarrow",
         )

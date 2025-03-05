@@ -53,13 +53,13 @@ class Form5Dot1Imperfections(Formula):
         raise_if_negative(theta_0=theta_0, alpha_h=alpha_h, alpha_m=alpha_m)
         return theta_0 * alpha_h * alpha_m
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.1."""
         return LatexFormula(
             return_symbol=r"\theta_i",
             result=f"{self:.4f}",
             equation=r"\theta_0 \cdot \alpha_h \cdot \alpha_m",
-            numeric_equation=rf"{self.theta_0:.3f} \cdot {self.alpha_h:.3f} \cdot {self.alpha_m:.3f}",
+            numeric_equation=rf"{self.theta_0:.{n}f} \cdot {self.alpha_h:.{n}f} \cdot {self.alpha_m:.{n}f}",
             comparison_operator_label="=",
         )
 
@@ -102,13 +102,13 @@ class SubForm5Dot1ReductionFactorLengthOrHeight(Formula):
             return 1
         return alpha_h
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.1 subformula 1."""
         return LatexFormula(
             return_symbol=r"\alpha_h",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min( \max(2 / \sqrt{l}; 2/3); 1)",
-            numeric_equation=rf"\min( \max(2 / \sqrt{{{self.length:.3f}}}; 2/3); 1)",
+            numeric_equation=rf"\min( \max(2 / \sqrt{{{self.length:.{n}f}}}; 2/3); 1)",
             comparison_operator_label="=",
         )
 
@@ -144,12 +144,12 @@ class SubForm5Dot1ReductionFactorNumberOfMembers(Formula):
         # the value of alpha_m is between 1.0 and 1.5
         return np.sqrt(0.5 * (1 + 1 / members))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.1 subformula 2."""
         return LatexFormula(
             return_symbol=r"\alpha_m",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\sqrt{0.5 \cdot ( 1 + 1 / m)}",
-            numeric_equation=rf"\sqrt{{0.5 \cdot ( 1 + 1 / {self.members:.3f})}}",
+            numeric_equation=rf"\sqrt{{0.5 \cdot ( 1 + 1 / {self.members:.{n}f})}}",
             comparison_operator_label="=",
         )

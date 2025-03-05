@@ -72,11 +72,11 @@ class Form4Dot2MinimumConcreteCover(Formula):
         minimum_cover = 10  # mm
         return max(c_min_b, c_min_dur + delta_c_dur_gamma - delta_c_dur_st - delta_c_dur_add, minimum_cover)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 1) -> LatexFormula:
         """Returns LatexFormula object for formula 4.2."""
         return LatexFormula(
             return_symbol=r"c_{min}",
-            result=str(self),
+            result=f"{self:.{n}f}",
             equation=latex_max_curly_brackets(
                 r"c_{min,b}",
                 r"c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}",

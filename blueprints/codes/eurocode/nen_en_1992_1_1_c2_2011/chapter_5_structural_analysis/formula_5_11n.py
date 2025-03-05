@@ -40,11 +40,11 @@ class Form5Dot11nShearSlendernessCorrectionFactor(Formula):
         raise_if_less_or_equal_to_zero(lambda_factor=lambda_factor)
         return (lambda_factor / 3) ** 0.5
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.11N."""
         return LatexFormula(
             return_symbol=r"k_{λ}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\sqrt{\frac{λ}{3}}",
             numeric_equation=rf"\sqrt{latex_fraction(numerator=self.lambda_factor, denominator=3)}",
             comparison_operator_label="=",

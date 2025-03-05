@@ -56,12 +56,12 @@ class Form5Dot8EffectiveSpan(Formula):
         )
         return l_n + a_1 + a_2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.8."""
         return LatexFormula(
             return_symbol=r"l_{eff}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"l_{n} + a_{1} + a_{2}",
-            numeric_equation=f"{self.l_n:.3f} + {self.a_1:.3f} + {self.a_2:.3f}",
+            numeric_equation=f"{self.l_n:.{n}f} + {self.a_1:.{n}f} + {self.a_2:.{n}f}",
             comparison_operator_label="=",
         )

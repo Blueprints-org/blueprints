@@ -64,21 +64,21 @@ class Form6Dot41W1Rectangular(Formula):
 
         return (c_1**2) / 2 + c_1 * c_2 + 4 * c_2 * d + 16 * d**2 + 2 * np.pi * d * c_1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.41."""
         _equation: str = r"\frac{c_1^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot d^2 + 2 \cdot \pi \cdot d \cdot c_1"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"c_1": f"{self.c_1:.3f}",
-                r"c_2": f"{self.c_2:.3f}",
-                r"d": f"{self.d:.3f}",
+                r"c_1": f"{self.c_1:.{n}f}",
+                r"c_2": f"{self.c_2:.{n}f}",
+                r"d": f"{self.d:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"W_1",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

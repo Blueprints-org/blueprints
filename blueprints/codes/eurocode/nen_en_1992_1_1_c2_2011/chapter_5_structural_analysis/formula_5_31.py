@@ -40,13 +40,13 @@ class Form5Dot31DesignMoment(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         return m_0ed + m_2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.31."""
         return LatexFormula(
             return_symbol=r"M_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"M_{0Ed} + M_{2}",
-            numeric_equation=rf"{self.m_0ed:.3f} + {self.m_2:.3f}",
+            numeric_equation=rf"{self.m_0ed:.{n}f} + {self.m_2:.{n}f}",
             comparison_operator_label="=",
             unit="kNm",
         )

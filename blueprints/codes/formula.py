@@ -89,8 +89,13 @@ class Formula(float, ABC):
         """
 
     @abstractmethod
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Abstract method for the latex representation of the formula.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of decimal places to round the result to.
 
         Returns
         -------

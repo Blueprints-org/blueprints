@@ -46,7 +46,7 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
         msg = "Radius is equal to- or larger than 0.3m, use: Eq2Dot21ModulusHorizontalSubgrade"
         raise ValueError(msg)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Latex representation of the full equation including result.
 
         Returns

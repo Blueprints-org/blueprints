@@ -51,12 +51,12 @@ class Form6Dot1DesignShearStrength(Formula):
             raise ValueError(f"Negative v_td: {v_td}. v_td cannot be negative")
         return v_rd_s + v_ccd + v_td
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.1."""
         return LatexFormula(
             return_symbol=r"V_{Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"V_{Rd,s} + V_{ccd} + V_{td}",
-            numeric_equation=rf"{self.v_rd_s:.3f} + {self.v_ccd:.3f} + {self.v_td:.3f}",
+            numeric_equation=rf"{self.v_rd_s:.{n}f} + {self.v_ccd:.{n}f} + {self.v_td:.{n}f}",
             comparison_operator_label="=",
         )

@@ -45,20 +45,20 @@ class Form6Dot48NetAppliedPunchingForce(Formula):
 
         return v_ed - delta_v_ed
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.48."""
         _equation: str = r"V_{Ed} - \Delta V_{Ed}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\Delta V_{Ed}": f"{self.delta_v_ed:.3f}",
-                r"V_{Ed}": f"{self.v_ed:.3f}",
+                r"\Delta V_{Ed}": f"{self.delta_v_ed:.{n}f}",
+                r"V_{Ed}": f"{self.v_ed:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"V_{Ed,red}",
-            result=f"{self._evaluate(self.v_ed, self.delta_v_ed):.3f}",
+            result=f"{self._evaluate(self.v_ed, self.delta_v_ed):.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

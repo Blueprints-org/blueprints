@@ -64,13 +64,13 @@ class Form5Dot41MaxForceTendon(Formula):
 
         return a_p * min(k_1 * f_pk, k_2 * f_p0_1k)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.41."""
         return LatexFormula(
             return_symbol=r"P_{max}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"A_{p} \cdot \min(k_1 \cdot f_{pk}, k_2 \cdot f_{p0.1k})",
-            numeric_equation=rf"{self.a_p:.3f} \cdot \min({self.k_1:.3f} \cdot {self.f_pk:.3f}, {self.k_2:.3f} \cdot {self.f_p0_1k:.3f})",
+            numeric_equation=rf"{self.a_p:.{n}f} \cdot \min({self.k_1:.{n}f} \cdot {self.f_pk:.{n}f}, {self.k_2:.{n}f} \cdot {self.f_p0_1k:.{n}f})",
             comparison_operator_label="=",
             unit="N",
         )

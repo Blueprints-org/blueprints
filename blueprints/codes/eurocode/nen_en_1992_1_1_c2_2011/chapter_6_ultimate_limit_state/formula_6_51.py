@@ -66,24 +66,24 @@ class Form6Dot51AppliedPunchingShearStressEccentricLoading(Formula):
 
         return (v_ed_red / (u * d)) * (1 + k * (m_ed * u) / (v_ed_red * w))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.51."""
         _equation: str = r"\frac{V_{Ed,red}}{u \cdot d} \cdot \left(1 + k \cdot \frac{M_{Ed} \cdot u}{V_{Ed,red} \cdot W}\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed,red}": f"{self.v_ed_red:.3f}",
-                r"u": f"{self.u:.3f}",
-                r" d": f" {self.d:.3f}",
-                r"k": f"{self.k:.3f}",
-                r"M_{Ed}": f"{self.m_ed:.3f}",
-                r"W": f"{self.w:.3f}",
+                r"V_{Ed,red}": f"{self.v_ed_red:.{n}f}",
+                r"u": f"{self.u:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
+                r"k": f"{self.k:.{n}f}",
+                r"M_{Ed}": f"{self.m_ed:.{n}f}",
+                r"W": f"{self.w:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"v_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

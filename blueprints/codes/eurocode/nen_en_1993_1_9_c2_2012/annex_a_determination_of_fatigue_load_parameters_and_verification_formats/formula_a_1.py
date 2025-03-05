@@ -46,12 +46,12 @@ class FormADot1DamageDuringDesignLife(Formula):
         raise_if_less_or_equal_to_zero(n_r_min=min(n_r))
         return sum([n_e[i] / n_r[i] for i in range(len(n_e))])
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula A.1."""
         return LatexFormula(
             return_symbol=r"D_d",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\sum_{i}^{n} \frac{n_{Ei}}{N_Ri}",
-            numeric_equation="".join(rf"\frac{{{self.n_e[i]:.3f}}}{{{self.n_r[i]:.3f}}} + " for i in range(len(self.n_r)))[:-3],
+            numeric_equation="".join(rf"\frac{{{self.n_e[i]:.{n}f}}}{{{self.n_r[i]:.{n}f}}} + " for i in range(len(self.n_r)))[:-3],
             comparison_operator_label="=",
         )

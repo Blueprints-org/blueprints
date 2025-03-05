@@ -77,7 +77,7 @@ class Form6Dot47PunchingShearResistance(Formula):
         term2 = v_min + k_1 * sigma_cp
         return max(term1, term2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.47."""
         _equation: str = (
             r"\max \left( C_{Rd,c} \cdot k \cdot (100 \cdot \rho_l \cdot f_{ck})^{1/3} "
@@ -86,19 +86,19 @@ class Form6Dot47PunchingShearResistance(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"C_{Rd,c}": f"{self.c_rd_c:.3f}",
-                r"\rho_l": f"{self.rho_l:.3f}",
-                r"f_{ck}": f"{self.f_ck:.3f}",
-                r"k_1": f"{self.k_1:.3f}",
-                r"\sigma_{cp}": f"{self.sigma_cp:.3f}",
-                r"v_{min}": f"{self.v_min:.3f}",
-                r"k": f"{self.k:.3f}",
+                r"C_{Rd,c}": f"{self.c_rd_c:.{n}f}",
+                r"\rho_l": f"{self.rho_l:.{n}f}",
+                r"f_{ck}": f"{self.f_ck:.{n}f}",
+                r"k_1": f"{self.k_1:.{n}f}",
+                r"\sigma_{cp}": f"{self.sigma_cp:.{n}f}",
+                r"v_{min}": f"{self.v_min:.{n}f}",
+                r"k": f"{self.k:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"v_{Rd,c}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

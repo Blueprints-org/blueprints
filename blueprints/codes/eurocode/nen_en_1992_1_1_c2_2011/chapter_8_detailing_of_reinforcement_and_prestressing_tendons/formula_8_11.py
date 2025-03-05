@@ -61,19 +61,19 @@ class Form8Dot11MinimumDesignLapLength(Formula):
         )
         return max(0.3 * alpha_6 * l_b_rqd, 15 * diameter, 200)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns a representation of the formula in LaTeX format."""
         arg_1_equation = r"0.3 \cdot \alpha_6 \cdot l_{b,rqd}"
         arg_2_equation = r"15 \cdot Ø"
         arg_3_equation = r"200 \ \text{mm}"
 
-        arg_1_numerical_equation = rf"0.3 \cdot {self.alpha_6:.2f} \cdot {self.l_b_rqd:.2f}"
+        arg_1_numerical_equation = rf"0.3 \cdot {self.alpha_6:.{n}f} \cdot {self.l_b_rqd:.{n}f}"
         arg_2_numerical_equation = rf"15 \cdot {self.diameter}"
         arg_3_numerical_equation = r"200"
 
         return LatexFormula(
             return_symbol=r"l_{Ø,min}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=f"{latex_max_curly_brackets(arg_1_equation, arg_2_equation, arg_3_equation)}",
             numeric_equation=f"{latex_max_curly_brackets(arg_1_numerical_equation, arg_2_numerical_equation, arg_3_numerical_equation)}",
             comparison_operator_label="=",

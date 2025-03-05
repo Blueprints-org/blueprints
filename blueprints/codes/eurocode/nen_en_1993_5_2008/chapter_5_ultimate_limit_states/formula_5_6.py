@@ -47,11 +47,11 @@ class Form5Dot6ProjectedShearArea(Formula):
         raise_if_less_or_equal_to_zero(h=h, t_f=t_f, t_w=t_w)
         return t_w * (h - t_f)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.6."""
         return LatexFormula(
             return_symbol=r"A_v",
-            result=str(self),
+            result=f"{self:.{n}f}",
             equation=r"t_w \left(h - t_f \right)",
             numeric_equation=rf"{self.t_w} \cdot \left({self.h} - {self.t_f} \right)",
             comparison_operator_label="=",

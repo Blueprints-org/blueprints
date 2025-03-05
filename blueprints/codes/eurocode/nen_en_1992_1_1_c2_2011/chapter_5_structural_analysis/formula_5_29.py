@@ -40,13 +40,13 @@ class Form5Dot29BetaFactor(Formula):
         raise_if_less_or_equal_to_zero(c_0=c_0)
         return (np.pi**2) / c_0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.29."""
         return LatexFormula(
             return_symbol=r"\beta",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{\pi^2}{c_0}",
-            numeric_equation=rf"\frac{{\pi^2}}{{{self.c_0:.3f}}}",
+            numeric_equation=rf"\frac{{\pi^2}}{{{self.c_0:.{n}f}}}",
             comparison_operator_label="=",
             unit="-",
         )

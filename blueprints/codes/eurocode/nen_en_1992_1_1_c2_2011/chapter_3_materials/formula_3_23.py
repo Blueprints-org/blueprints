@@ -48,12 +48,12 @@ class Form3Dot23FlexuralTensileStrength(Formula):
             raise ValueError(f"Invalid f_ctm: {f_ctm}. f_ctm cannot be negative")
         return max((1.6 - h / 1000) * f_ctm, f_ctm)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.23."""
         return LatexFormula(
             return_symbol=r"f_{ctm,fl}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\max \left[ (1.6 - h/1000) \cdot f_{ctm} ; f_{ctm} \right]",
-            numeric_equation=rf"\max \left[ (1.6 - {self.h:.3f}/1000) \cdot {self.f_ctm:.3f} ; {self.f_ctm:.3f} \right]",
+            numeric_equation=rf"\max \left[ (1.6 - {self.h:.{n}f}/1000) \cdot {self.f_ctm:.{n}f} ; {self.f_ctm:.{n}f} \right]",
             comparison_operator_label="=",
         )

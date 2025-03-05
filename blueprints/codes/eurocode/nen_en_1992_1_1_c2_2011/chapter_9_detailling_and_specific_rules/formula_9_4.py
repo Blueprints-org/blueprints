@@ -59,12 +59,12 @@ class Form9Dot4ShearReinforcementRatio(Formula):
 
         return a_sw / (s * b_w * np.sin(alpha_radians))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.4."""
         return LatexFormula(
             return_symbol=r"\rho_w",
             result=f"{self:.6f}",
             equation=r"\frac{A_{sw}}{s \cdot b_w \cdot sin(\alpha)}",
-            numeric_equation=rf"\frac{{{self.a_sw:.2f}}}{{{self.s:.2f} \cdot {self.b_w:.2f} \cdot sin({self.alpha:.2f})}}",
+            numeric_equation=rf"\frac{{{self.a_sw:.{n}f}}}{{{self.s:.{n}f} \cdot {self.b_w:.{n}f} \cdot sin({self.alpha:.{n}f})}}",
             comparison_operator_label="=",
         )

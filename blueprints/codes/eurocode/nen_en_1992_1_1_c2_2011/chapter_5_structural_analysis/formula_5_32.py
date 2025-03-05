@@ -43,13 +43,13 @@ class Form5Dot32EquivalentFirstOrderEndMoment(Formula):
 
         return max(0.6 * m_02 + 0.4 * m_01, 0.4 * m_02)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.32."""
         return LatexFormula(
             return_symbol=r"M_{0e}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\max\left(0.6 \cdot M_{02} + 0.4 \cdot M_{01}; 0.4 \cdot M_{02}\right)",
-            numeric_equation=rf"\max\left(0.6 \cdot {self.m_02:.3f} + 0.4 \cdot {self.m_01:.3f}; 0.4 \cdot {self.m_02:.3f}\right)",
+            numeric_equation=rf"\max\left(0.6 \cdot {self.m_02:.{n}f} + 0.4 \cdot {self.m_01:.{n}f}; 0.4 \cdot {self.m_02:.{n}f}\right)",
             comparison_operator_label="=",
             unit="kNm",
         )

@@ -160,7 +160,7 @@ class NominalConcreteCover:
             self.minimum_cover_with_regard_to_casting_surface(),
         )
 
-    def latex(self) -> str:
+    def latex(self, n: int = 3) -> str:
         """Returns the lateX string representation for Nominal concrete cover check."""
         return r"\newline~".join(
             [
@@ -169,7 +169,9 @@ class NominalConcreteCover:
                     r"Nominal concrete cover according to art. 4.4.1 (c_{nom})",
                     "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4)",
                 ),
-                f"= {latex_max_curly_brackets(self.c_nom().latex().result, self.minimum_cover_with_regard_to_casting_surface())} = {self.value()} mm",
+                rf"= {latex_max_curly_brackets(self.c_nom().latex().result, self.minimum_cover_with_regard_to_casting_surface())} = {{self.value() .{
+                    n
+                }f}} mm",
                 "",
                 "Where:",
                 f"\\hspace{{4ex}}{self.c_nom().latex().return_symbol} = {self.c_nom().latex().equation.replace('min', 'min,total')}"

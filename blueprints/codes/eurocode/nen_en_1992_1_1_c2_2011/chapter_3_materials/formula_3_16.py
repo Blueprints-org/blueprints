@@ -57,12 +57,12 @@ class Form3Dot16DesignValueTensileStrength(Formula):
             raise ValueError(f"Invalid gamma_c: {gamma_c}. gamma_c cannot be negative or zero")
         return alpha_ct * f_ctk_0_05 / gamma_c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.16."""
         return LatexFormula(
             return_symbol=r"f_{ctd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\alpha_{ct} \cdot f_{ctk,0.05} / \gamma_C",
-            numeric_equation=rf"{self.alpha_ct:.3f} \cdot {self.f_ctk_0_05:.3f} / {self.gamma_c:.3f}",
+            numeric_equation=rf"{self.alpha_ct:.{n}f} \cdot {self.f_ctk_0_05:.{n}f} / {self.gamma_c:.{n}f}",
             comparison_operator_label="=",
         )

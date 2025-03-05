@@ -39,12 +39,12 @@ class Form8Dot20BondStrengthAnchorageULS(Formula):
         raise_if_negative(eta_p2=eta_p2, eta_1=eta_1, f_ctd=f_ctd)
         return eta_p2 * eta_1 * f_ctd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.20."""
         return LatexFormula(
             return_symbol=r"f_{bpd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\eta_{p2} \cdot \eta_{1} \cdot f_{ctd}",
-            numeric_equation=rf"{self.eta_p2:.3f} \cdot {self.eta_1:.3f} \cdot {self.f_ctd:.3f}",
+            numeric_equation=rf"{self.eta_p2:.{n}f} \cdot {self.eta_1:.{n}f} \cdot {self.f_ctd:.{n}f}",
             comparison_operator_label="=",
         )

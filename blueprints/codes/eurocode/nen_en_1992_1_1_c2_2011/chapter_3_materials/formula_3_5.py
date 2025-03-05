@@ -55,12 +55,12 @@ class Form3Dot5ApproximationVarianceElasticModulusOverTime(Formula):
             raise ValueError(f"Negative e_cm: {e_cm}. e_cm cannot be negative")
         return (f_cm_t / f_cm) ** 0.3 * e_cm
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.5."""
         return LatexFormula(
             return_symbol=r"E_{cm}(t)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"( f_{cm}(t) / f_{cm} )^{0.3} \cdot E_{cm}",
-            numeric_equation=rf"( {self.f_cm_t:.3f} / {self.f_cm:.3f} )^{{0.3}} \cdot {self.e_cm:.3f}",
+            numeric_equation=rf"( {self.f_cm_t:.{n}f} / {self.f_cm:.{n}f} )^{{0.3}} \cdot {self.e_cm:.{n}f}",
             comparison_operator_label="=",
         )

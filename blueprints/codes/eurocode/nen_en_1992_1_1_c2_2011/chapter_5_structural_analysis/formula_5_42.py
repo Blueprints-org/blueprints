@@ -43,13 +43,13 @@ class Form5Dot42ConcreteCompressiveStress(Formula):
 
         return sigma_c <= 0.6 * f_ck_t
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.42."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\sigma_{c} \leq 0.6 \cdot f_{ck}(t)",
-            numeric_equation=rf"{self.sigma_c:.3f} \leq 0.6 \cdot {self.f_ck_t:.3f}",
+            numeric_equation=rf"{self.sigma_c:.{n}f} \leq 0.6 \cdot {self.f_ck_t:.{n}f}",
             comparison_operator_label="\\to",
             unit="",
         )

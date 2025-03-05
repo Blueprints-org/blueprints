@@ -77,14 +77,15 @@ class Form8Dot16BasicTransmissionLength(Formula):
         raise_if_less_or_equal_to_zero(f_bpt=f_bpt)
         return alpha_1 * alpha_2 * diameter * sigma_pm0 / f_bpt
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.16."""
         return LatexFormula(
             return_symbol=r"l_{pt}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\alpha_1 \cdot \alpha_2 \cdot Ø \cdot \frac{\sigma_{pm0}}{f_{bpt}}",
             numeric_equation=(
-                rf"{self.alpha_1:.2f} \cdot {self.alpha_2:.2f} \cdot {self.diameter:.2f} \cdot \frac{{{self.sigma_pm0:.2f}}}{{{self.f_bpt:.2f}}}"
+                rf"{self.alpha_1:.{n}f} \cdot {self.alpha_2:.{n}f} "
+                rf"\cdot {self.diameter:.{n}f} \cdot \frac{{{self.sigma_pm0:.{n}f}}}{{{self.f_bpt:.{n}f}}}"
             ),
             comparison_operator_label="=",
         )
@@ -120,11 +121,11 @@ class SubForm8Dot16Alpha1(Formula):
             case _:
                 raise ValueError(f"Invalid release type: {release_type}. Valid values are 'gradual' or 'sudden'.")
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the first subformula of formula 8.16."""
         return LatexFormula(
             return_symbol=r"\alpha_1",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"release\;type",
             numeric_equation=f"{self.release_type}",
             comparison_operator_label=r"\rightarrow",
@@ -168,11 +169,11 @@ class SubForm8Dot16Alpha2(Formula):
             case _:
                 raise ValueError(f"Invalid type of wire: {type_of_wire}. Valid values are 'circular' or '3_7_wire_strands'.")
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the second subformula of formula 8.16."""
         return LatexFormula(
             return_symbol=r"\alpha_2",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"type\;of\;wire",
             numeric_equation=f"{self.type_of_wire}".replace(" ", r"\;"),
             comparison_operator_label=r"\rightarrow",

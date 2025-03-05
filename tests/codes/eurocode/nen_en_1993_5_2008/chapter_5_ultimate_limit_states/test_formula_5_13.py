@@ -8,15 +8,15 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 COMPLETE_LATEX_REPRESENTATION_OK = (
     r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
     r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
-    r" \to \frac{100.000}{0.900 \cdot (2000.00 / 10^6 \cdot 355.0 \cdot 10^3 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
-    r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to OK"
+    r" \to \frac{100.00}{0.90 \cdot (2000.00 / 10^6 \cdot 355.0 \cdot 10^3 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
+    r"1.15 \cdot \frac{50.00}{100.00 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to OK"
 )
 
 COMPLETE_LATEX_REPRESENTATION_NOT_OK = (
     r"CHECK \to \frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
     r"1.15 \cdot \frac{M_{Ed}}{M_{c,Rd} \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} \leq 1.0"
-    r" \to \frac{10000.000}{0.900 \cdot (2000.00 / 10^6 \cdot 355.0 \cdot 10^3 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
-    r"1.15 \cdot \frac{50.000}{100.000 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to \text{Not OK}"
+    r" \to \frac{10000.00}{0.90 \cdot (2000.00 / 10^6 \cdot 355.0 \cdot 10^3 / 1.0) \cdot \left( \frac{1.0}{1.0} \right)} + "
+    r"1.15 \cdot \frac{50.00}{100.00 \cdot \left( \frac{1.0}{1.0} \right)} \leq 1.0 \to \text{Not OK}"
 )
 
 

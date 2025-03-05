@@ -44,7 +44,7 @@ class TestForm3Dot2CoefficientDependentOfConcreteAge:
             (
                 "complete",
                 r"\beta_{cc}(t) = \exp \left( s \cdot \left( 1 - \left( \frac{28}{t} \right) ^{1/2} \right) \right) = "
-                r"\exp \left( 0.250 \cdot \left( 1 - \left( \frac{28}{10.00} \right) ^{1/2} \right) \right) = 0.845",
+                r"\exp \left( 0.250 \cdot \left( 1 - \left( \frac{28}{10.000} \right) ^{1/2} \right) \right) = 0.845",
             ),
             ("short", r"\beta_{cc}(t) = 0.845"),
         ],

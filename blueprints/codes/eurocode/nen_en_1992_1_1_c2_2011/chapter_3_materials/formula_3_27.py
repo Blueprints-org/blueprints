@@ -51,12 +51,12 @@ class Form3Dot27IncreasedStrainLimitValue(Formula):
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         return epsilon_cu2 + 0.2 * sigma_2 / f_ck
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.27."""
         return LatexFormula(
             return_symbol=r"\epsilon_{cu2,c}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\epsilon_{cu2} + 0.2 \cdot \sigma_2 / f_{ck}",
-            numeric_equation=rf"{self.epsilon_cu2:.3f} + 0.2 \cdot {self.sigma_2:.3f} / {self.f_ck:.3f}",
+            numeric_equation=rf"{self.epsilon_cu2:.{n}f} + 0.2 \cdot {self.sigma_2:.{n}f} / {self.f_ck:.{n}f}",
             comparison_operator_label="=",
         )

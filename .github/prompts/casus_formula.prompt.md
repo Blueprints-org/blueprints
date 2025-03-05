@@ -61,19 +61,19 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
 
         return output
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.10a/bN."""
         _equation: str = r"\begin{cases} 0.600 & \text{if } f_{ck} \leq 60 MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) & \text{if } f_{ck} > 60 MPa \end{cases}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "f_{ck}": f"{self.f_ck:.3f}",
+                "f_{ck}": f"{self.f_ck:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\nu_{1}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

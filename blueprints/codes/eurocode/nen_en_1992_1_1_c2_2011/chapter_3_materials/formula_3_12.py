@@ -41,12 +41,12 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
             raise ValueError(f"Invalid f_ck: {f_ck}. f_ck cannot be negative")
         return 2.5 * (f_ck - 10) * 10**-6
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.12."""
         return LatexFormula(
             return_symbol=r"\epsilon_{ca}(\infty)",
             result=f"{self:.6f}",
             equation=r"2.5 \cdot (f_{ck} - 10) \cdot 10^{-6}",
-            numeric_equation=rf"2.5 \cdot ({self.f_ck:.3f} - 10) \cdot 10^{{-6}}",
+            numeric_equation=rf"2.5 \cdot ({self.f_ck:.{n}f} - 10) \cdot 10^{{-6}}",
             comparison_operator_label="=",
         )

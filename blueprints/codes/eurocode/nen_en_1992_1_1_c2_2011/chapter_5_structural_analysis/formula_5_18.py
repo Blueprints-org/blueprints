@@ -77,14 +77,14 @@ class Form5Dot18ComparisonGeneralSecondOrderEffects:
         """Return the result of the comparison."""
         return self.latex().complete
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.18."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2}",
             numeric_equation=(
-                rf"{self.left_hand_side:.3f}"
+                rf"{self.left_hand_side:.{n}f}"
                 rf"\leq \frac{{{self.n_s}}}{{{self.n_s + 1.6}}} \cdot \frac{{\sum {self.e_cd} \cdot {self.i_c}}}{{{self.length**2}}}"
             ),
             comparison_operator_label=r"\rightarrow",
