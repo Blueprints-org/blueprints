@@ -4,10 +4,10 @@
 - Make sure the script returns a bool. 
 - Keep all formatting and naming conventions such as they are presented in the template. 
 - If variable descriptions are given or found, copy precisely and fully from input or Eurocode. 
-- Variablenames are always lowercase.
+- Variable names are always lowercase in line with PEP8.
 - In the LaTeX formula, edit the return symbol such that it is the left hand side of the equation
 - Edit the _equation variable such that it represents the right hand side of the equation
-- LaTeX variables should be rounded to 3 decimals.  
+- LaTeX variables should be rounded to 3 decimals as default, but could be overwritten at usage level.  
 - Import the necessary typehinting with type alias units found in type_alias.py and remove the unused imported type aliases. Forces in N, (Bending) moments in Nmm, distances in mm, areas in mm^2, Stress in MPa, angles in DEG, no unit is DIMENSIONLESS. When dealing with angles, use np.deg2rad.
 
 ## Template for service
@@ -58,14 +58,14 @@ class Form5Dot38aCheckRelativeSlendernessRatio(Formula):
 
         return (lambda_y / lambda_z <= 2) and (lambda_z / lambda_y <= 2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.38a."""
         _equation: str = r"\left( \frac{\lambda_{y}}{\lambda_{z}} \leq 2 \text{ and } \frac{\lambda_{z}}{\lambda_{y}} \leq 2 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "lambda_y": f"{self.lambda_y:.3f}",
-                "lambda_z": f"{self.lambda_z:.3f}",
+                "lambda_y": f"{self.lambda_y:.{n}f}",
+                "lambda_z": f"{self.lambda_z:.{n}f}",
             },
             False,
         )
