@@ -34,6 +34,18 @@ class TestForm2Dot21ModulusHorizontalSubgrade:
         with pytest.raises(LessOrEqualToZeroError):
             Form2Dot21ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
 
+    @pytest.mark.parametrize(
+        ("r"),
+        [
+            (0.2),
+            (0.29),
+        ],
+    )
+    def test_raise_error_when_invalid_values_are_given(self, r: float) -> None:
+        """Test invalid values."""
+        with pytest.raises(ValueError):
+            Form2Dot21ModulusHorizontalSubgrade(r=r, e_p=500, alpha=0.33)
+
     def test_latex_method(self) -> None:
         """Test the latex method."""
         r = 0.5  # m
