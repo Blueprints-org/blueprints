@@ -224,7 +224,7 @@ class TestNominalConcreteCover:
                 abrasion_class=AbrasionClass.XM1,
             )
 
-    def text_latex(self) -> None:
+    def test_latex_representation(self) -> None:
         """Test the latex representation of the formula."""
         nominal_concrete_cover = NominalConcreteCover(
             reinforcement_diameter=25,
