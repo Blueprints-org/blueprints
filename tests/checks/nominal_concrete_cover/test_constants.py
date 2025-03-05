@@ -80,16 +80,30 @@ class TestNominalConcreteCoverConstants2011C2:
         }
         assert constants.DEFAULT_DELTA_C_DEV == 10
 
-    def test_instantiation_with_custom_values(self) -> None:
-        """Test that the class can be instantiated with custom values."""
+    def test_instantiation_with_custom_cover_increase_uneven_surfaces(self) -> None:
+        """Test that the class cannot be instantiated with custom value for the cover increase for uneven surfaces."""
         with pytest.raises(TypeError, match=".* got an unexpected keyword argument .*"):
             _ = NominalConcreteCoverConstants2011C2(  # type: ignore[call-arg]
                 COVER_INCREASE_FOR_UNEVEN_SURFACE=10,
-                DEFAULT_DELTA_C_DEV=10,
-                COVER_INCREASE_FOR_ABRASION_CLASS={
-                    AbrasionClass.NA: 0,
-                },
             )
+
+    def test_instantiation_with_custom_cover_increase_abraison_class(self) -> None:
+        """Test that the class can be instantiated with custom value for the cover increase for abrasion class."""
+        custom_constants = NominalConcreteCoverConstants2011C2(  # type: ignore[call-arg]
+            COVER_INCREASE_FOR_ABRASION_CLASS={
+                AbrasionClass.NA: 0,
+            },
+        )
+        assert custom_constants.COVER_INCREASE_FOR_ABRASION_CLASS == {
+            AbrasionClass.NA: 0,
+        }
+
+    def test_instantiation_with_custom_delta_c_dev(self) -> None:
+        """Test that the class can be instantiated with custom value for the default delta c_dev."""
+        custom_constants = NominalConcreteCoverConstants2011C2(  # type: ignore[call-arg]
+            DEFAULT_DELTA_C_DEV=13,
+        )
+        assert custom_constants.DEFAULT_DELTA_C_DEV == 13
 
     def test_post_init(self) -> None:
         """Test that the post-init method sets default values."""
