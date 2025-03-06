@@ -1,1 +1,1 @@
-"""Cur guidelines."""
+"""CUR guidelines."""

@@ -96,7 +96,7 @@ N_M2 = float
 KN_M2 = float
 """Kilonewton per square meter (kN/m²), represented as a float."""
 KN_M3 = float
-"""Kilonewton per cubic meter (kN/m²), represented as a float."""
+"""Kilonewton per cubic meter (kN/m3), represented as a float."""
 # </editor-fold>
 
 # <editor-fold desc="TIME">

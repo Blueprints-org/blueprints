@@ -4,7 +4,7 @@ from blueprints.codes.cur.cur_228 import CUR_228, R_0
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KN_M3, KPA, M
-from blueprints.validations import raise_if_less_or_equal_to_zero
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form2Dot22ModulusHorizontalSubgrade(Formula):
@@ -21,16 +21,16 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
         ----------
         r: M
             The radius of a foundation pile [m]:
-            r >= 0.3 m
+            r < 0.3 m
         e_p: KPA
             Elastic modulus of Ménard [kPa]:
             e_p ≈ beta * q_c
                 beta: DIMENSIONLESS
-                    Dependent on soil type [-]:
+                    Dependent on soil type [-]: (table 2.1)
                 q_c: KPA
                     Cone resistance [kPa]
         alpha: DIMENSIONLESS
-            Factor dependent on soil type [-]:
+            Factor dependent on soil type [-]: (table 2.1)
         """
         super().__init__()
         self.r = r
@@ -40,7 +40,8 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
     @staticmethod
     def _evaluate(r: M, e_p: KPA, alpha: DIMENSIONLESS) -> KN_M3:
         """Return the Menard stiffness k_h when r < 0.3 m [kN/m3]."""
-        raise_if_less_or_equal_to_zero(e_p=e_p, r=r, alpha=alpha)
+        raise_if_negative(e_p=e_p)
+        raise_if_less_or_equal_to_zero(r=r, alpha=alpha)
         if r < R_0:
             return e_p / 2 / r / ((4 * 2.65**alpha + 3 * alpha) / 18)
         msg = "Radius is equal to- or larger than 0.3m, use: Eq2Dot21ModulusHorizontalSubgrade"

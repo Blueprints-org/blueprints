@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.cur.cur_228.formula_2_22 import Form2Dot22ModulusHorizontalSubgrade
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm2Dot22ModulusHorizontalSubgrade:
@@ -33,23 +33,54 @@ class TestForm2Dot22ModulusHorizontalSubgrade:
             Form2Dot22ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
 
     @pytest.mark.parametrize(
-        ("e_p", "r", "alpha"),
+        ("r", "alpha"),
         [
-            (-500.0, -0.2, -0.33),
-            (0.0, 0.0, 0.0),
+            (-0.6, -0.33),
+            (0.2, -0.33),
+            (0.2, 0.0),
+            (0.0, 0.0),
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, e_p: float, r: float, alpha: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, r: float, alpha: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form2Dot22ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
+            Form2Dot22ModulusHorizontalSubgrade(r=r, e_p=500, alpha=alpha)
 
-    def test_latex_method(self) -> None:
-        """Test the latex method."""
+    @pytest.mark.parametrize(
+        ("e_p"),
+        [
+            (-500.0),
+        ],
+    )
+    def test_raise_error_when_negative_values_are_given(self, e_p: float) -> None:
+        """Test invalid values."""
+        with pytest.raises(NegativeValueError):
+            Form2Dot22ModulusHorizontalSubgrade(r=0.2, e_p=e_p, alpha=0.33)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                (
+                    "k_{h} = \\frac{2 \\cdot R}{E_{p}} \\cdot \\frac{4 \\cdot 2.65^{\\alpha} + 3 "
+                    "\\alpha}{18} = \\frac{2 \\cdot 0.20}{2.47} \\cdot \\frac{4 \\cdot "
+                    "2.65^{0.33} + 3 \\cdot 0.33}{18} = 17.01 kN/m^3"
+                ),
+            ),
+            ("short", "k_{h} = 17.01 kN/m^3"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula."""
+        # Example values
         r = 0.2  # m
         e_p = 2.47  # kN/m²
         alpha = 1 / 3  # -
-        form_2_22 = Form2Dot22ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha)
 
-        # Test the full LaTeX representation
-        assert isinstance(form_2_22.latex().complete, str)
+        # Object to test
+        form_2_1_a_latex = Form2Dot22ModulusHorizontalSubgrade(r=r, e_p=e_p, alpha=alpha).latex()
+
+        actual = {"complete": form_2_1_a_latex.complete, "short": form_2_1_a_latex.short}
+
+        assert actual[representation] == expected, f"{representation} representation failed."
