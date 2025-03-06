@@ -5,7 +5,7 @@ Part 2: Concrete bridges - Design and detailing rules**
 The table presents a list of formulas from the Eurocode 2 standards for concrete structures, tracking their implementation status 
 ( :x: or :heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
-Total of 43 formulas present.
+Total of 161 formulas present.
 
 | Formula number |        Done        | Remarks | Object name                                               |
 |:---------------|:------------------:|:--------|:----------------------------------------------------------|
