@@ -97,11 +97,25 @@ class Form6Dot50PunchingStressResistance(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"C_{Rd,c}": rf"{self.c_rd_c:.3f}",
+                r"\rho_l": rf"{self.rho_l:.3f}",
+                r"f_{ck}": rf"{self.f_ck:.3f} \text{{ MPa}}",
+                r" d": rf" {self.d:.3f} \text{{ mm}}",
+                r"{a": "{" + rf"{self.a:.3f} \text{{ mm}}",
+                r"v_{min}": rf"{self.v_min:.3f} \text{{ MPa}}",
+                r"k": rf"{self.k:.3f}",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"v_{Rd}",
             result=f"{self:.3f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="MPa",
         )
