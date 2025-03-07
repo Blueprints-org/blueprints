@@ -107,47 +107,45 @@ Total of 304 formulas present.
 | 6.5            |        :x:         |         |                                                           |
 | 6.6N           |        :x:         |         |                                                           |
 | 6.7N           |        :x:         |         |                                                           |
-| 6.8            |        :x:         |         |                                                           |
-| 6.9            |        :x:         |         |                                                           |
-| 6.10.aN        |        :x:         |         |                                                           |
-| 6.10.bN        |        :x:         |         |                                                           |
-| 6.11.aN        |        :x:         |         |                                                           |
-| 6.11.bN        |        :x:         |         |                                                           |
-| 6.11.cN        |        :x:         |         |                                                           |
-| 6.12           |        :x:         |         |                                                           |
-| 6.13           |        :x:         |         |                                                           |
-| 6.14           |        :x:         |         |                                                           |
-| 6.15           |        :x:         |         |                                                           |
-| 6.16           |        :x:         |         |                                                           |
-| 6.17           |        :x:         |         |                                                           |
-| 6.18           |        :x:         |         |                                                           |
-| 6.19           |        :x:         |         |                                                           |
+| 6.8            | :heavy_check_mark: |         | Form6Dot8ShearResistance                                  |
+| 6.9            | :heavy_check_mark: |         | Form6Dot9MaximumShearResistance                           |
+| 6.10.abN       | :heavy_check_mark: |         | Form6Dot10abNStrengthReductionFactor                      |
+| 6.11.abcN      | :heavy_check_mark: |         | Form6Dot11abcNCompressionChordCoefficient                 |
+| 6.12           | :heavy_check_mark: |         | Form6Dot12CheckMaxEffectiveCrossSectionalAreaShearReinf   |
+| 6.13           | :heavy_check_mark: |         | Form6Dot13ShearResistanceInclinedReinforcement            |
+| 6.14           | :heavy_check_mark: |         | Form6Dot14MaxShearResistanceInclinedReinforcement         |
+| 6.15           | :heavy_check_mark: |         | Form6Dot15ShearReinforcementResistance                    |
+| 6.16           | :heavy_check_mark: |         | Form6Dot16NominalWebWidth                                 |
+| 6.17           | :heavy_check_mark: |         | Form6Dot17NominalWebWidth                                 |
+| 6.18           | :heavy_check_mark: |         | Form6Dot18AdditionalTensileForce                          |
+| 6.19           | :heavy_check_mark: |         | Form6Dot19CheckShearForce                                 |
 | 6.20           |        :x:         |         |                                                           |
 | 6.21           |        :x:         |         |                                                           |
 | 6.22           |        :x:         |         |                                                           |
 | 6.23           |        :x:         |         |                                                           |
 | 6.24           |        :x:         |         |                                                           |
 | 6.25           |        :x:         |         |                                                           |
-| 6.26           |        :x:         |         |                                                           |
-| 6.27           |        :x:         |         |                                                           |
-| 6.28           |        :x:         |         |                                                           |
-| 6.29           |        :x:         |         |                                                           |
-| 6.30           |        :x:         |         |                                                           |
-| 6.31           |        :x:         |         |                                                           |
+| 6.26           | :heavy_check_mark: |         | Form6Dot26ShearStressInWall                               |
+| 6.27           | :heavy_check_mark: |         | Form6Dot27ShearForceInWall                                |
+| 6.28           | :heavy_check_mark: |         | Form6Dot28RequiredCrossSectionalArea                      |
+| 6.29           | :heavy_check_mark: |         | Form6Dot29CheckTorsionShearResistance                     |
+| 6.30           | :heavy_check_mark: |         | Form6Dot30DesignTorsionalResistanceMoment                 |
+| 6.31           | :heavy_check_mark: |         | Form6Dot31CheckTorsionShearResistanceRectangular          |
 | 6.32           | :heavy_check_mark: |         | Form6Dot32EffectiveDepthSlab                              |
 | 6.33           | :heavy_check_mark: |         | Form6Dot32ContourRadiusCircularColumnHeads                |
 | 6.34           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
 | 6.35           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
 | 6.36           | :heavy_check_mark: |         | Form6Dot36ExternalContourRadiusCircularColumnHeads        |
 | 6.37           | :heavy_check_mark: |         | Form6Dot37InternalContourRadiusCircularColumnHeads        |
-| 6.38           |        :x:         |         |                                                           |
-| 6.39           |        :x:         |         |                                                           |
+| 6.38           | :heavy_check_mark: |         | Form6Dot38MaxShearStress                                  |
+| 6.39           | :heavy_check_mark: |         | Form6Dot39BetaCoefficient                                 |
 | 6.40           |        :x:         |         |                                                           |
-| 6.41           |        :x:         |         |                                                           |
-| 6.42           |        :x:         |         |                                                           |
-| 6.43           |        :x:         |         |                                                           |
-| 6.44           |        :x:         |         |                                                           |
-| 6.45           |        :x:         |         |                                                           |
+| 6.41           | :heavy_check_mark: |         | Form6Dot41W1Rectangular                                   |
+| 6.42           | :heavy_check_mark: |         | Form6Dot42BetaCircular                                    |
+| 6.43           | :heavy_check_mark: |         | Form6Dot43BetaRectangular                                 |
+| 6.44           | :heavy_check_mark: |         | Form6Dot44BetaRectangular                                 |
+| 6.45           | :heavy_check_mark: |         | Form6Dot45W1Rectangular                                   |
+| 6.46           | :heavy_check_mark: |         | Form6Dot46BetaCorner                                      |
 | 6.47           | :heavy_check_mark: |         | Form6Dot47PunchingShearResistance                         |
 | 6.47 k         | :heavy_check_mark: |         | SubForm6Dot47FactorK                                      |
 | 6.47 rho_l     | :heavy_check_mark: |         | SubForm6Dot47FactorRhoL                                   |
