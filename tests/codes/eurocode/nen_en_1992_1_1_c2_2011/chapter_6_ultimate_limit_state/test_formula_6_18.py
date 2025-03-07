@@ -43,9 +43,9 @@ class TestForm6Dot18AdditionalTensileForce:
             (
                 "complete",
                 r"\Delta F_{td} = 0.5 \cdot V_{Ed} \cdot \left(\cot(\theta) - \cot(\alpha)\right) "
-                r"= 0.5 \cdot 100.000 \cdot \left(\cot(30.000) - \cot(45.000)\right) = 36.603 kN",
+                r"= 0.5 \cdot 100.000 \cdot \left(\cot(30.000) - \cot(45.000)\right) = 36.603 \text{ kN}",
             ),
-            ("short", r"\Delta F_{td} = 36.603 kN"),
+            ("short", r"\Delta F_{td} = 36.603 \text{ kN}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

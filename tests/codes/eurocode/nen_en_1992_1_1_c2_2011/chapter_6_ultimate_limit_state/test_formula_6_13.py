@@ -53,9 +53,9 @@ class TestForm6Dot13ShearResistanceInclinedReinforcement:
                 "complete",
                 r"V_{Rd,s} = \frac{A_{sw}}{s} \cdot z \cdot f_{ywd} \cdot \left(\cot(\theta) + \cot(\alpha)\right) \cdot \sin(\alpha) = "
                 r"\frac{100.000}{200.000} \cdot 300.000 \cdot 400.000 \cdot \left(\cot(30.000) + \cot(45.000)\right) \cdot \sin(45.000) = "
-                r"115911.099 N",
+                r"115911.099 \text{ N}",
             ),
-            ("short", r"V_{Rd,s} = 115911.099 N"),
+            ("short", r"V_{Rd,s} = 115911.099 \text{ N}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

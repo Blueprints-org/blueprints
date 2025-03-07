@@ -56,9 +56,9 @@ class TestForm6Dot14MaxShearResistanceInclinedReinforcement:
                 "complete",
                 r"V_{Rd,max} = \alpha_{cw} \cdot b_{w} \cdot z \cdot \nu_{1} \cdot f_{cd} \cdot \frac{\cot(\theta) + "
                 r"\cot(\alpha)}{1 + \cot^2(\theta)} = 1.000 \cdot 300.000 \cdot 400.000 \cdot 0.600 \cdot 30.000 \cdot "
-                r"\frac{\cot(30.000) + \cot(45.000)}{1 + \cot^2(30.000)} = 1475307.436 N",
+                r"\frac{\cot(30.000) + \cot(45.000)}{1 + \cot^2(30.000)} = 1475307.436 \text{ N}",
             ),
-            ("short", r"V_{Rd,max} = 1475307.436 N"),
+            ("short", r"V_{Rd,max} = 1475307.436 \text{ N}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

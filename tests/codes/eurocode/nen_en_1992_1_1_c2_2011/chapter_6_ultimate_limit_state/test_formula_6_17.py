@@ -40,9 +40,9 @@ class TestForm6Dot16NominalWebWidth:
         [
             (
                 "complete",
-                r"b_{w,nom} = b_{w} - 1.2 \cdot \sum(⌀) = 300.000 - 1.2 \cdot \left(16.000 + 20.000 + 25.000 \right) = 226.800 mm",
+                r"b_{w,nom} = b_{w} - 1.2 \cdot \sum(⌀) = 300.000 - 1.2 \cdot \left(16.000 + 20.000 + 25.000 \right) = 226.800 \text{ mm}",
             ),
-            ("short", r"b_{w,nom} = 226.800 mm"),
+            ("short", r"b_{w,nom} = 226.800 \text{ mm}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
