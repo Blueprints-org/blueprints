@@ -61,8 +61,8 @@ class Form6Dot21CheckTransverseReinforcement(Formula):
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a_sf=a_sf, f_yd=f_yd, v_ed=v_ed, h_f=h_f, theta_f=theta_f)
-        denominator = cot(theta_f)
-        raise_if_less_or_equal_to_zero(s_f=s_f, denominator=denominator)
+        denominator_rhs = cot(theta_f)
+        raise_if_less_or_equal_to_zero(s_f=s_f, denominator_rhs=denominator_rhs)
 
         return (a_sf * f_yd / s_f) >= (v_ed * h_f / cot(theta_f))
 
