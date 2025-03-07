@@ -16,8 +16,8 @@ class Form6Dot31CheckTorsionShearResistanceRectangular(Formula):
     def __init__(
         self,
         t_ed: NMM,
-        v_ed: N,
         t_rd_c: NMM,
+        v_ed: N,
         v_rd_c: N,
     ) -> None:
         r"""Check the maximum resistance of a member subjected to torsion and shear.
@@ -28,24 +28,24 @@ class Form6Dot31CheckTorsionShearResistanceRectangular(Formula):
         ----------
         t_ed : NMM
             [$T_{Ed}$] Design torsional moment [$Nmm$].
-        v_ed : N
-            [$V_{Ed}$] Design transverse force [$N$].
         t_rd_c : NMM
             [$T_{Rd,c}$] the torsional cracking moment, which may be determined by setting tau_t,i = fctd [$Nmm$].
+        v_ed : N
+            [$V_{Ed}$] Design transverse force [$N$].
         v_rd_c : N
             [$V_{Rd,c}$] follows from Expression (6.2) [$N$].
         """
         super().__init__()
         self.t_ed = t_ed
-        self.v_ed = v_ed
         self.t_rd_c = t_rd_c
+        self.v_ed = v_ed
         self.v_rd_c = v_rd_c
 
     @staticmethod
     def _evaluate(
         t_ed: NMM,
-        v_ed: N,
         t_rd_c: NMM,
+        v_ed: N,
         v_rd_c: N,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
