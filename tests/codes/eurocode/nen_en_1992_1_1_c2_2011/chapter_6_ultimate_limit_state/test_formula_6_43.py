@@ -47,9 +47,9 @@ class TestForm6Dot43BetaRectangular:
             (
                 "complete",
                 r"\beta = 1 + 1.8 \cdot \sqrt{\left(\frac{e_y}{b_z}\right)^2 + \left(\frac{e_z}{b_y}\right)^2} "
-                r"= 1 + 1.8 \cdot \sqrt{\left(\frac{300.000}{500.000}\right)^2 + \left(\frac{200.000}{400.000}\right)^2} = 2.406",
+                r"= 1 + 1.8 \cdot \sqrt{\left(\frac{300.000}{500.000}\right)^2 + \left(\frac{200.000}{400.000}\right)^2} = 2.406 \text{ -}",
             ),
-            ("short", r"\beta = 2.406"),
+            ("short", r"\beta = 2.406 \text{ -}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
