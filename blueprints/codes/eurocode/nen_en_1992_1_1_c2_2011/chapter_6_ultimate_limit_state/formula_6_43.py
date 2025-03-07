@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form6Dot43BetaRectangular(Formula):
@@ -51,7 +51,8 @@ class Form6Dot43BetaRectangular(Formula):
         bz: MM,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(ey=ey, ez=ez, by=by, bz=bz)
+        raise_if_negative(ey=ey, ez=ez)
+        raise_if_less_or_equal_to_zero(by=by, bz=bz)
 
         return 1 + 1.8 * np.sqrt((ey / bz) ** 2 + (ez / by) ** 2)
 

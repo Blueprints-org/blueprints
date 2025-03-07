@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form6Dot42BetaCircular(Formula):
@@ -47,6 +47,8 @@ class Form6Dot42BetaCircular(Formula):
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(d=d, diameter=diameter, e=e)
+        denominator = diameter + 4 * d
+        raise_if_less_or_equal_to_zero(denominator=denominator)
 
         return 1 + 0.6 * np.pi * e / (diameter + 4 * d)
 

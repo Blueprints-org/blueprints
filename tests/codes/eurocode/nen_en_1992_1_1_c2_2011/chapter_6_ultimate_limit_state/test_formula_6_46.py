@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_46 import Form6Dot46BetaCorner
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot46BetaCorner:
@@ -28,11 +28,12 @@ class TestForm6Dot46BetaCorner:
         [
             (-500.0, 400.0),  # u1 is negative
             (500.0, -400.0),  # u1_star is negative
+            (500.0, 0.0),  # u1_star is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, u1: float, u1_star: float) -> None:
         """Test invalid values."""
-        with pytest.raises(NegativeValueError):
+        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form6Dot46BetaCorner(u1=u1, u1_star=u1_star)
 
     @pytest.mark.parametrize(

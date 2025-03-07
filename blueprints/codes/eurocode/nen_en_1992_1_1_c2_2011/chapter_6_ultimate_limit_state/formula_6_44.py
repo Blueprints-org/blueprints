@@ -4,11 +4,13 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, NMM
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form6Dot44BetaRectangular(Formula):
-    r"""Class representing formula 6.44 for the calculation of [$\beta$] for rectangular columns."""
+    r"""Class representing formula 6.44 for the calculation of [$\beta$] for rectangular columns where there are
+    eccentricities in both orthogonal directions.
+    """
 
     label = "6.44"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,7 +23,7 @@ class Form6Dot44BetaRectangular(Formula):
         w_1: NMM,
         e_par: MM,
     ) -> None:
-        r"""[$\beta$] Calculation of [$\beta$].
+        r"""[$\beta$] Calculation of [$\beta$] where there are eccentricities in both orthogonal directions.
 
         NEN-EN 1992-1-1+C2:2011 art.6.4.3(3) - Formula (6.44)
 
@@ -54,7 +56,8 @@ class Form6Dot44BetaRectangular(Formula):
         e_par: MM,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(u1=u1, u1_star=u1_star, k=k, w_1=w_1, e_par=e_par)
+        raise_if_negative(u1=u1, k=k, e_par=e_par)
+        raise_if_less_or_equal_to_zero(u1_star=u1_star, w_1=w_1)
 
         return (u1 / u1_star) + k * (u1 / w_1) * e_par
 

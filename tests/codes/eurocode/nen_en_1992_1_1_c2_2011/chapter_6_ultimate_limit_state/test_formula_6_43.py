@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_43 import Form6Dot43BetaRectangular
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot43BetaRectangular:
@@ -32,11 +32,13 @@ class TestForm6Dot43BetaRectangular:
             (300.0, -200.0, 400.0, 500.0),  # ez is negative
             (300.0, 200.0, -400.0, 500.0),  # by is negative
             (300.0, 200.0, 400.0, -500.0),  # bz is negative
+            (300.0, 200.0, 0.0, 500.0),  # by is zero
+            (300.0, 200.0, 400.0, 0.0),  # bz is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, ey: float, ez: float, by: float, bz: float) -> None:
         """Test invalid values."""
-        with pytest.raises(NegativeValueError):
+        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form6Dot43BetaRectangular(ey=ey, ez=ez, by=by, bz=bz)
 
     @pytest.mark.parametrize(

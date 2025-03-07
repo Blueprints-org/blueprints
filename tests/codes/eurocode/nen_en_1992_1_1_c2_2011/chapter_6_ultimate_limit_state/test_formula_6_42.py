@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_42 import Form6Dot42BetaCircular
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot42BetaCircular:
@@ -30,11 +30,12 @@ class TestForm6Dot42BetaCircular:
             (-500.0, 400.0, 300.0),  # d is negative
             (500.0, -400.0, 300.0),  # D is negative
             (500.0, 400.0, -300.0),  # e is negative
+            (0.0, 0.0, 300.0),  # denominator is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, d: float, diameter: float, e: float) -> None:
         """Test invalid values."""
-        with pytest.raises(NegativeValueError):
+        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form6Dot42BetaCircular(d=d, diameter=diameter, e=e)
 
     @pytest.mark.parametrize(
