@@ -34,12 +34,20 @@ N = float
 """Newtons (N), represented as a float."""
 KN = float
 """Kilonewtons (kN), value represented as a float."""
+# </editor-fold>
+
+# <editor-fold desc="FORCE PER UNIT LENGTH">
+N_MM = float
+"""Newtons per millimeter (N/mm), represented as a float."""
+N_M = float
+"""Newtons per meter (N/m), represented as a float."""
 KN_M = float
 """Kilonewtons per meter (kN/m), represented as a float."""
 # </editor-fold>
 
 # <editor-fold desc="MOMENTS">
 NMM = float
+"""Newton-millimeters (Nmm), represented as a float."""
 NM = float
 """Newton-meters (Nm), represented as a float."""
 KNM = float
