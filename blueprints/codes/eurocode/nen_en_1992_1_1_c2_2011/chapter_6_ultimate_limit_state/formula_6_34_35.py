@@ -10,7 +10,9 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot34And35ContourRadiusRectangular(Formula):
-    r"""Class representing formulas 6.34 and 6.35 for the calculation of the contour radius for rectangular columns with a rectangular head."""
+    r"""Class representing formulas 6.34 and 6.35 for the calculation of the contour radius for rectangular columns with a rectangular head
+    where $l_H < 2.0 h_H$.
+    """
 
     label = "6.34 and 6.35"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -42,10 +44,12 @@ class Form6Dot34And35ContourRadiusRectangular(Formula):
         """
         super().__init__()
         self.d = d
-        self.c_1 = c_1
-        self.c_2 = c_2
-        self.l_h1 = l_h1
-        self.l_h2 = l_h2
+
+        self.l_1 = c_1 + 2 * l_h1
+        self.l_2 = c_2 + 2 * l_h2
+
+        self.c_1, self.c_2 = (c_2, c_1) if self.l_1 > self.l_2 else (c_1, c_2)
+        self.l_h1, self.l_h2 = (l_h2, l_h1) if self.l_1 > self.l_2 else (l_h1, l_h2)
 
     @staticmethod
     def _evaluate(
@@ -68,19 +72,13 @@ class Form6Dot34And35ContourRadiusRectangular(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formulas 6.34 and 6.35."""
-        l_1 = self.c_1 + 2 * self.l_h1
-        l_2 = self.c_2 + 2 * self.l_h2
-
-        c_1, c_2 = (self.c_2, self.c_1) if l_1 > l_2 else (self.c_1, self.c_2)
-        l_h1, l_h2 = (self.l_h2, self.l_h1) if l_1 > l_2 else (self.l_h1, self.l_h2)
-
         return LatexFormula(
             return_symbol=r"r_{cont}",
             result=f"{self:.3f}",
             equation=r"min\left(2 \cdot d + 0.56 \cdot \sqrt{(c_1 + 2 \cdot l_{H1}) \cdot (c_2 + 2 \cdot l_{H2})}, "
             r"2 \cdot d + 0.69 \cdot (c_1 + 2 \cdot l_{H1})\right)",
-            numeric_equation=rf"min\left(2 \cdot {self.d:.3f} + 0.56 \cdot \sqrt{{({c_1:.3f} + 2 \cdot {l_h1:.3f}) \cdot "
-            rf"({c_2:.3f} + 2 \cdot {l_h2:.3f})}}, 2 \cdot {self.d:.3f} + 0.69 \cdot ({c_1:.3f} + 2 \cdot {l_h1:.3f})\right)",
+            numeric_equation=rf"min\left(2 \cdot {self.d:.3f} + 0.56 \cdot \sqrt{{({self.c_1:.3f} + 2 \cdot {self.l_h1:.3f}) \cdot "
+            rf"({self.c_2:.3f} + 2 \cdot {self.l_h2:.3f})}}, 2 \cdot {self.d:.3f} + 0.69 \cdot ({self.c_1:.3f} + 2 \cdot {self.l_h1:.3f})\right)",
             comparison_operator_label="=",
             unit="mm",
         )
