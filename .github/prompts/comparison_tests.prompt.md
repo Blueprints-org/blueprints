@@ -62,7 +62,7 @@ class TestForm5Dot38aCheckRelativeSlendernessRatio:
             (
                 "complete_with_units",
                 r"CHECK \to \left( \frac{L_{y}}{L_{z}} \leq 2 \text{ and } \frac{L_{z}}{L_{y}} \leq 2 \right) \to "
-                r"\left( \frac{1.000 \text{ mm}}{1.500 \text{ mm}} \leq 2 \text{ and } \frac{1.500 \text{ mm}}{1.000 \text{ mm}} "
+                r"\left( \frac{1.000 \ mm}{1.500 \ mm} \leq 2 \text{ and } \frac{1.500 \ mm}{1.000 \ mm} "
                 r"\leq 2 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),

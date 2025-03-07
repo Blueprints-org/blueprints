@@ -73,8 +73,8 @@ class Form5Dot38aCheckRelativeLengthRatio(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                "length_y": rf"{self.length_y:.3f} \text{{ mm}}",
-                "length_z": rf"{self.length_z:.3f} \text{{ mm}}",
+                "length_y": rf"{self.length_y:.3f} \ mm",
+                "length_z": rf"{self.length_z:.3f} \ mm",
             },
             False,
         )
