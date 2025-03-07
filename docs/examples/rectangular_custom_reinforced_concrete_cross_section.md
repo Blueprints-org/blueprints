@@ -2,7 +2,7 @@
 hide:
   - toc
 ---
-# Custom Reinforced Cross-section
+# Create a Custom Reinforced Cross-section
 
 And just to show that you can create any RCS you like, here is a custom one:
 
