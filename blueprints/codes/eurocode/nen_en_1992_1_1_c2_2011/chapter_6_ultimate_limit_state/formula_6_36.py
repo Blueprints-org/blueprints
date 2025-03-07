@@ -15,8 +15,8 @@ class Form6Dot36ExternalContourRadiusCircularColumnHeads(Formula):
 
     def __init__(
         self,
-        d: MM,
         l_h: MM,
+        d: MM,
         c: MM,
     ) -> None:
         r"""[$r_{cont,ext}$] Contour radius for circular column heads [$mm$].
@@ -25,26 +25,26 @@ class Form6Dot36ExternalContourRadiusCircularColumnHeads(Formula):
 
         Parameters
         ----------
-        d : MM
-            [$d$] Effective depth [$mm$].
         l_h : MM
             [$l_{H}$] Distance from the column face to the edge of the column head [$mm$].
+        d : MM
+            [$d$] Effective depth [$mm$].
         c : MM
             [$c$] Diameter of a circular column [$mm$].
         """
         super().__init__()
-        self.d = d
         self.l_h = l_h
+        self.d = d
         self.c = c
 
     @staticmethod
     def _evaluate(
-        d: MM,
         l_h: MM,
+        d: MM,
         c: MM,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(d=d, l_h=l_h, c=c)
+        raise_if_negative(l_h=l_h, d=d, c=c)
         return l_h + 2 * d + 0.5 * c
 
     def latex(self) -> LatexFormula:
