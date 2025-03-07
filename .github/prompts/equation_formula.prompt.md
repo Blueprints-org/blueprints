@@ -80,9 +80,9 @@ class Form6Dot41W1Rectangular(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"c_1": f"{self.c_1:.3f}",
-                r"c_2": f"{self.c_2:.3f}",
-                r"d": f"{self.d:.3f} \text{{mm}}",
+                r"c_1": rf"{self.c_1:.3f} \text{{ mm}}",
+                r"c_2": rf"{self.c_2:.3f} \text{{ mm}}",
+                r"d": rf"{self.d:.3f} \text{{ mm}}",
             },
             True,
         )

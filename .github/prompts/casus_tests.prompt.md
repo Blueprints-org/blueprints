@@ -67,10 +67,17 @@ class TestForm6Dot10abNStrengthReductionFactor:
         [
             (
                 "complete",
-                r"\nu_{1} = \begin{cases} 0.600 & \text{if } f_{ck} \leq 60 MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) "
-                r"& \text{if } f_{ck} > 60 MPa \end{cases} = "
-                r"\begin{cases} 0.600 & \text{if } 30.0 \leq 60 MPa \\ \max\left(0.9 - \frac{30.0}{200}, 0.5\right) "
-                r"& \text{if } 30.0 > 60 MPa \end{cases} = 0.600 \text{ -}",
+                r"\nu_{1} = \begin{cases} 0.600 & \text{if } f_{ck} \leq 60 \text{ MPa} \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) "
+                r"& \text{if } f_{ck} > 60 \text{ MPa} \end{cases} = "
+                r"\begin{cases} 0.600 & \text{if } 30.0 \leq 60 \text{ MPa} \\ \max\left(0.9 - \frac{30.0}{200}, 0.5\right) "
+                r"& \text{if } 30.0 > 60 \text{ MPa} \end{cases} = 0.600 \text{ -}",
+            ),
+            (
+                "complete_with_units",
+                r"\nu_{1} = \begin{cases} 0.600 & \text{if } f_{ck} \leq 60 \text{ MPa} \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) "
+                r"& \text{if } f_{ck} > 60 \text{ MPa} \end{cases} = "
+                r"\begin{cases} 0.600 & \text{if } 30.0 \text{ MPa} \leq 60 \text{ MPa} \\ \max\left(0.9 - \frac{30.0 \text{ MPa}}{200}, 0.5\right) "
+                r"& \text{if } 30.0 > 60 \text{ MPa} \end{cases} = 0.600 \text{ -}",
             ),
             ("short", r"\nu_{1} = 0.600 \text{ -}"),
         ],
