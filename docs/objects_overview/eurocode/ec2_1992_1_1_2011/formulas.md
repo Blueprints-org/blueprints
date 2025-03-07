@@ -122,9 +122,9 @@ Total of 304 formulas present.
 | 6.20           |        :x:         |         |                                                           |
 | 6.21           |        :x:         |         |                                                           |
 | 6.22           |        :x:         |         |                                                           |
-| 6.23           |        :x:         |         |                                                           |
-| 6.24           |        :x:         |         |                                                           |
-| 6.25           |        :x:         |         |                                                           |
+| 6.23           | :heavy_check_mark: |         | Form6Dot23CheckShearStressInterface                       |
+| 6.24           | :heavy_check_mark: |         | Form6Dot24DesignShearStress                               |
+| 6.25           | :heavy_check_mark: |         | Form6Dot25DesignShearResistance                           |
 | 6.26           | :heavy_check_mark: |         | Form6Dot26ShearStressInWall                               |
 | 6.27           | :heavy_check_mark: |         | Form6Dot27ShearForceInWall                                |
 | 6.28           | :heavy_check_mark: |         | Form6Dot28RequiredCrossSectionalArea                      |

@@ -53,7 +53,7 @@ class Form6Dot19CheckShearForce(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(alpha=alpha, f_ywd=f_ywd, a_sw=a_sw, v_ed=v_ed)
 
-        return v_ed <= a_sw * f_ywd * np.sin(np.radians(alpha))
+        return v_ed <= a_sw * f_ywd * np.sin(np.deg2rad(alpha))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.19."""

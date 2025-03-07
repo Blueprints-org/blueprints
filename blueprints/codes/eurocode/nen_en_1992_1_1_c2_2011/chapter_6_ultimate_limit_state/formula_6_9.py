@@ -71,7 +71,7 @@ class Form6Dot9MaximumShearResistance(Formula):
         )
         raise_if_less_or_equal_to_zero(theta=theta)
 
-        return alpha_cw * b_w * z * nu_1 * f_cd / (cot(theta) + np.tan(np.radians(theta)))
+        return alpha_cw * b_w * z * nu_1 * f_cd / (cot(theta) + np.tan(np.deg2rad(theta)))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.9."""
