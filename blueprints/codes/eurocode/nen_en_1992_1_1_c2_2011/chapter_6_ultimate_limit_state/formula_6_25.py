@@ -39,7 +39,7 @@ class Form6Dot25DesignShearResistance(Formula):
         mu : DIMENSIONLESS
             [$\mu$] Factor which depends on the roughness of the interface, see (2) [$-$].
         f_ctd : MPA
-            [$f_{ctd}$] Design tensile strength of concrete [$MPa$].
+            [$f_{ctd}$] Design tensile strength of concrete, as defined in 3.1.6 (2)P [$MPa$].
         sigma_n : MPA
             [$\sigma_{n}$] Stress per unit area caused by the minimum external normal force across the interface [$MPa$].
         a_s : MM2
