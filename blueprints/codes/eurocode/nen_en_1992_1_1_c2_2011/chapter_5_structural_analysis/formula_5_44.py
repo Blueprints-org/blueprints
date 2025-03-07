@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
+from blueprints.type_alias import AMOUNT, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
 
 
@@ -17,7 +17,7 @@ class Form5Dot44PrestressLoss(Formula):
         self,
         a_p: MM2,
         e_p: MPA,
-        j: list[DIMENSIONLESS],
+        j: list[AMOUNT],
         delta_sigma_c_t: list[MPA],
         e_cm_t: list[MPA],
     ) -> None:
@@ -31,7 +31,7 @@ class Form5Dot44PrestressLoss(Formula):
             [$A_{p}$] Cross-sectional area of the tendon [$mm^2$].
         e_p : MPA
             [$E_{p}$] Modulus of elasticity of the tendon [$MPa$].
-        j : list[DIMENSIONLESS]
+        j : list[AMOUNT]
             [$j$] (n-1)/2n, with n the number of identical tendons successively prestressed [$list[-]$].
         delta_sigma_c_t : list[MPA]
             [$\Delta \sigma_{c}(t)$] variation of stress at the centre of gravity of the tendons applied at time t [$list[MPa]$].
@@ -49,7 +49,7 @@ class Form5Dot44PrestressLoss(Formula):
     def _evaluate(
         a_p: MPA,
         e_p: MPA,
-        j: list[DIMENSIONLESS],
+        j: list[AMOUNT],
         delta_sigma_c_t: list[MPA],
         e_cm_t: list[MPA],
     ) -> N:

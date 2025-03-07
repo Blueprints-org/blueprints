@@ -47,9 +47,9 @@ class TestForm5Dot45LossesDueToFriction:
             (
                 "complete",
                 r"\Delta P_{\mu}(x) = P_{max} \cdot \left( 1 - e^{-\mu \cdot (\theta + k \cdot x)} \right) = "
-                r"1000.000 \cdot \left( 1 - e^{-0.200 \cdot (0.100 + 0.010 \cdot 50.000)} \right) = 113.080 kN",
+                r"1000.000 \cdot \left( 1 - e^{-0.200 \cdot (0.100 + 0.010 \cdot 50.000)} \right) = 113.080 \ kN",
             ),
-            ("short", r"\Delta P_{\mu}(x) = 113.080 kN"),
+            ("short", r"\Delta P_{\mu}(x) = 113.080 \ kN"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

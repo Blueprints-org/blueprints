@@ -45,9 +45,10 @@ class TestSubForm6Dot47FactorK:
         [
             (
                 "complete",
-                r"k = \min \left( 1 + \sqrt{\frac{200}{d}}, 2.0 \right) = " r"\min \left( 1 + \sqrt{\frac{200}{500.000}}, 2.0 \right) = 1.632 -",
+                r"k = \min \left( 1 + \sqrt{\frac{200}{d}}, 2.0 \right) = "
+                r"\min \left( 1 + \sqrt{\frac{200}{500.000}}, 2.0 \right) = 1.632 \ -",
             ),
-            ("short", r"k = 1.632 -"),
+            ("short", r"k = 1.632 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -101,9 +102,9 @@ class TestSubForm6Dot47FactorRhoL:
             (
                 "complete",
                 r"\rho_l = \min \left( \sqrt{\rho_{ly} \cdot \rho_{lz}}, 0.02 \right) = "
-                r"\min \left( \sqrt{0.020 \cdot 0.030}, 0.02 \right) = 0.020 -",
+                r"\min \left( \sqrt{0.020 \cdot 0.030}, 0.02 \right) = 0.020 \ -",
             ),
-            ("short", r"\rho_l = 0.020 -"),
+            ("short", r"\rho_l = 0.020 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -157,9 +158,9 @@ class TestSubForm6Dot47FactorSigmaCp:
         [
             (
                 "complete",
-                r"\sigma_{cp} = \frac{\sigma_{cy} + \sigma_{cz}}{2} = " r"\frac{1.000 + 2.000}{2} = 1.500 MPa",
+                r"\sigma_{cp} = \frac{\sigma_{cy} + \sigma_{cz}}{2} = " r"\frac{1.000 + 2.000}{2} = 1.500 \ MPa",
             ),
-            ("short", r"\sigma_{cp} = 1.500 MPa"),
+            ("short", r"\sigma_{cp} = 1.500 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -214,9 +215,9 @@ class TestSubForm6Dot47FactorSigmaCy:
         [
             (
                 "complete",
-                r"\sigma_{cy} = \frac{N_{Ed,y}}{A_{cy}} = " r"\frac{1000.000}{500.000} = 2.000 MPa",
+                r"\sigma_{cy} = \frac{N_{Ed,y}}{A_{cy}} = " r"\frac{1000.000}{500.000} = 2.000 \ MPa",
             ),
-            ("short", r"\sigma_{cy} = 2.000 MPa"),
+            ("short", r"\sigma_{cy} = 2.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -271,9 +272,9 @@ class TestSubForm6Dot47FactorSigmaCz:
         [
             (
                 "complete",
-                r"\sigma_{cz} = \frac{N_{Ed,z}}{A_{cz}} = " r"\frac{2000.000}{1000.000} = 2.000 MPa",
+                r"\sigma_{cz} = \frac{N_{Ed,z}}{A_{cz}} = " r"\frac{2000.000}{1000.000} = 2.000 \ MPa",
             ),
-            ("short", r"\sigma_{cz} = 2.000 MPa"),
+            ("short", r"\sigma_{cz} = 2.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

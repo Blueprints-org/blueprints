@@ -57,9 +57,9 @@ class TestForm6Dot47PunchingShearResistance:
                 r"v_{Rd,c} = \max \left( C_{Rd,c} \cdot k \cdot (100 \cdot \rho_l \cdot f_{ck})^{1/3} + "
                 r"k_1 \cdot \sigma_{cp}, v_{min} + k_1 \cdot \sigma_{cp} \right) = "
                 r"\max \left( 0.180 \cdot 1.500 \cdot (100 \cdot 0.020 \cdot 30.000)^{1/3} + "
-                r"0.100 \cdot 1.000, 0.035 + 0.100 \cdot 1.000 \right) = 1.157 MPa",
+                r"0.100 \cdot 1.000, 0.035 + 0.100 \cdot 1.000 \right) = 1.157 \ MPa",
             ),
-            ("short", r"v_{Rd,c} = 1.157 MPa"),
+            ("short", r"v_{Rd,c} = 1.157 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

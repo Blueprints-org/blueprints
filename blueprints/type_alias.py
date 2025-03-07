@@ -1,5 +1,10 @@
 """Module to keep track of type aliases used in Blueprints."""
 
+# <editor-fold desc="COUNTERS">
+AMOUNT = int
+"""Amount, represented as a int."""
+# </editor-fold>
+
 # <editor-fold desc="DISTANCES">
 MM = float
 """Millimeters (mm), represented as a float."""

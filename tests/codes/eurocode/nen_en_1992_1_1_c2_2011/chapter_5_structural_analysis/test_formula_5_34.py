@@ -50,9 +50,9 @@ class TestForm5Dot34Curvature:
             (
                 "complete",
                 r"\frac{1}{r} = K_r \cdot K_\phi \cdot \frac{f_{yd}}{E_s \cdot 0.45 \cdot d} "
-                r"= 0.800 \cdot 1.200 \cdot \frac{500.000}{200000.000 \cdot 0.45 \cdot 300.000} = 0.000018 1/mm",
+                r"= 0.800 \cdot 1.200 \cdot \frac{500.000}{200000.000 \cdot 0.45 \cdot 300.000} = 0.000018 \ 1/mm",
             ),
-            ("short", r"\frac{1}{r} = 0.000018 1/mm"),
+            ("short", r"\frac{1}{r} = 0.000018 \ 1/mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
