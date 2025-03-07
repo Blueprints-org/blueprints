@@ -18,8 +18,7 @@ copyright: "2025 &copy; Blueprints"
 theme:
   favicon: assets/images/favicon.ico
   name: material
-  logo_dark_mode: assets/images/logo-dark-mode.png
-  logo_light_mode: assets/images/logo-light-mode.png
+  logo: assets/images/logo-dark-mode.png
   custom_dir: docs/_overrides
   palette:
     - media: "(prefers-color-scheme)"
@@ -28,20 +27,16 @@ theme:
         name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: white
-      accent: indigo
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: black
-      accent: indigo
       toggle:
         icon: material/brightness-4 
         name: Switch to system preference
   font: 
-    text: Gentium Plus
+    text: "DM Sans"
   features:
     - toc.follow
     - navigation.indexes
@@ -65,6 +60,7 @@ plugins:
       scripts:
         - docs/_scripts/generate_reference_pages.py
         - docs/_scripts/generate_index.py
+        - docs/_scripts/generate_quick_reference.py
   - mkdocstrings:
       handlers:
         python:
