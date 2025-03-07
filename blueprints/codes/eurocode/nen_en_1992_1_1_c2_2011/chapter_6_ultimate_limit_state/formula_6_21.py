@@ -1,10 +1,9 @@
 """Formula 6.21 from NEN-EN 1992-1-1+C2:2011: Chapter 6 - Ultimate Limit State."""
 
-import numpy as np
-
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
+from blueprints.math_helpers import cot
 from blueprints.type_alias import DEG, MM, MM2, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -61,11 +60,9 @@ class Form6Dot21CheckTransverseReinforcement(Formula):
         theta_f: DEG,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(s_f=s_f)
         raise_if_negative(a_sf=a_sf, f_yd=f_yd, v_ed=v_ed, h_f=h_f, theta_f=theta_f)
-
-        def cot(x: DEG) -> float:
-            return 1 / np.tan(np.radians(x))
+        denominator = cot(theta_f)
+        raise_if_less_or_equal_to_zero(s_f=s_f, denominator=denominator)
 
         return (a_sf * f_yd / s_f) >= (v_ed * h_f / cot(theta_f))
 
