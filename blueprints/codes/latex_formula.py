@@ -191,8 +191,8 @@ def latex_replace_symbols(template: str, replacements: dict[str, str], unique_sy
 
     Returns
     -------
-    tuple[str, str]
-        The modified LaTeX string with symbols replaced, and the modified LaTeX string with units.
+    str
+        The modified LaTeX string with symbols replaced by values (and units).
 
     Raises
     ------
