@@ -33,11 +33,11 @@ class Form5Dot22FactorKs(Formula):
             raise ValueError(f"Invalid rho: {rho}. rho cannot be less than 0.002")
         return 1.0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.22 K_s."""
         return LatexFormula(
             return_symbol=r"K_s",
-            result=f"{self._evaluate(self.rho):.3f}",
+            result=f"{self._evaluate(self.rho):.{n}f}",
             equation=r"1",
             numeric_equation="1",
             comparison_operator_label="=",
@@ -81,12 +81,12 @@ class Form5Dot22FactorKc(Formula):
         raise_if_negative(k1=k1, k2=k2)
         return k1 * k2 / (1 + phi_ef)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.22 K_c."""
         return LatexFormula(
             return_symbol=r"K_c",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{k_1 \cdot k_2}{1 + \phi_{ef}}",
-            numeric_equation=rf"\frac{{{self.k1:.3f} \cdot {self.k2:.3f}}}{{1 + {self.phi_ef:.3f}}}",
+            numeric_equation=rf"\frac{{{self.k1:.{n}f} \cdot {self.k2:.{n}f}}}{{1 + {self.phi_ef:.{n}f}}}",
             comparison_operator_label="=",
         )

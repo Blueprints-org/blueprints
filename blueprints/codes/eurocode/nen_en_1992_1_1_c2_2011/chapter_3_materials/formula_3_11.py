@@ -50,12 +50,12 @@ class Form3Dot11AutogeneShrinkage(Formula):
             raise ValueError(f"Invalid beta_as_t: {beta_as_t}. beta_as_t cannot be negative")
         return beta_as_t * epsilon_ca_inf
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.11."""
         return LatexFormula(
             return_symbol=r"\epsilon_{ca}(t)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\beta_{as}(t) \cdot \epsilon_{ca}(\infty)",
-            numeric_equation=rf"{self.beta_as_t:.3f} \cdot {self.epsilon_ca_inf:.3f}",
+            numeric_equation=rf"{self.beta_as_t:.{n}f} \cdot {self.epsilon_ca_inf:.{n}f}",
             comparison_operator_label="=",
         )

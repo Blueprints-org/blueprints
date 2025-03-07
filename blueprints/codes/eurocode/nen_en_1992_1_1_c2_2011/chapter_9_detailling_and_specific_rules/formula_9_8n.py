@@ -34,12 +34,12 @@ class Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks(Formula):
         raise_if_negative(d=d)
         return min(0.75 * d, 600)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.8N."""
         return LatexFormula(
             return_symbol=r"s_{t,max}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"min(0.75 \cdot d, 600 \text{mm})",
-            numeric_equation=rf"min(0.75 \cdot {self.d:.2f}, 600 \text{{mm}})",
+            numeric_equation=rf"min(0.75 \cdot {self.d:.{n}f}, 600 \text{{mm}})",
             comparison_operator_label="=",
         )

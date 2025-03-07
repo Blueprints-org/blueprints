@@ -55,13 +55,13 @@ class Form5Dot30TotalDesignMoment(Formula):
         # This is not possible in numeric calculations, so we will use a large number instead.
         return 1e9 if n_ed == n_b else m_0ed / (1 - (n_ed / n_b))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.30."""
         return LatexFormula(
             return_symbol=r"M_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{M_{0Ed}}{1 - \left(\frac{N_{Ed}}{N_{B}}\right)}",
-            numeric_equation=rf"\frac{{{self.m_0ed:.3f}}}{{1 - \left(\frac{{{self.n_ed:.3f}}}{{{self.n_b:.3f}}}\right)}}",
+            numeric_equation=rf"\frac{{{self.m_0ed:.{n}f}}}{{1 - \left(\frac{{{self.n_ed:.{n}f}}}{{{self.n_b:.{n}f}}}\right)}}",
             comparison_operator_label="=",
             unit="kNm",
         )

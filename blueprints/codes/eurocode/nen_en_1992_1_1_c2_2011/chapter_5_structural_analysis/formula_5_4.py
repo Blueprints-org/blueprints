@@ -59,12 +59,12 @@ class Form5Dot4TransverseForceEffectBracingSystem(Formula):
         )
         return theta_i * (n_b - n_a)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.4."""
         return LatexFormula(
             return_symbol=r"H_{i}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"Θ_{i} \cdot (N_{b} - N_{a})",
-            numeric_equation=rf"{self.theta_i:.3f} \cdot ({self.n_b:.3f} - {self.n_a:.3f})",
+            numeric_equation=rf"{self.theta_i:.{n}f} \cdot ({self.n_b:.{n}f} - {self.n_a:.{n}f})",
             comparison_operator_label="=",
         )

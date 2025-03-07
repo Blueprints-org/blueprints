@@ -44,12 +44,12 @@ class Form3Dot8TotalShrinkage(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         return epsilon_cd + epsilon_ca
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.8."""
         return LatexFormula(
             return_symbol=r"\epsilon_{cs}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\epsilon_{cd} + \epsilon_{ca}",
-            numeric_equation=rf"{self.epsilon_cd:.3f} + {self.epsilon_ca:.3f}",
+            numeric_equation=rf"{self.epsilon_cd:.{n}f} + {self.epsilon_ca:.{n}f}",
             comparison_operator_label="=",
         )

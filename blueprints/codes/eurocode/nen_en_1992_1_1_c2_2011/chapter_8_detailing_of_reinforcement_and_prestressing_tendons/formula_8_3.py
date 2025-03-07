@@ -50,14 +50,14 @@ class Form8Dot3RequiredAnchorageLength(Formula):
         raise_if_less_or_equal_to_zero(f_bd=f_bd)
         return (diameter / 4) * (sigma_sd / f_bd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
         latex_diameter = r"Ø"
         latex_sigma_sd = r"\sigma_{sd}"
         latex_f_bd = r"f_{bd}"
         return LatexFormula(
             return_symbol=r"l_{b,rqd}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=rf"{latex_fraction(latex_diameter, 4)} \cdot {latex_fraction(latex_sigma_sd, latex_f_bd)}",
             numeric_equation=rf"{latex_fraction(self.diameter, 4)} \cdot {latex_fraction(self.sigma_sd, self.f_bd)}",
             comparison_operator_label="=",

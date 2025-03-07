@@ -62,13 +62,14 @@ class Form5Dot34Curvature(Formula):
 
         return k_r * k_phi * (f_yd / e_s) / (0.45 * d)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.34."""
         return LatexFormula(
             return_symbol=r"\frac{1}{r}",
             result=f"{self:.6f}",
             equation=r"K_r \cdot K_\phi \cdot \frac{f_{yd}}{E_s \cdot 0.45 \cdot d}",
-            numeric_equation=rf"{self.k_r:.3f} \cdot {self.k_phi:.3f} \cdot \frac{{{self.f_yd:.3f}}}{{{self.e_s:.3f} \cdot 0.45 \cdot {self.d:.3f}}}",
+            numeric_equation=rf"{self.k_r:.{n}f} \cdot {self.k_phi:.{n}f} "
+            rf"\cdot \frac{{{self.f_yd:.{n}f}}}{{{self.e_s:.{n}f} \cdot 0.45 \cdot {self.d:.{n}f}}}",
             comparison_operator_label="=",
             unit="1/mm",
         )

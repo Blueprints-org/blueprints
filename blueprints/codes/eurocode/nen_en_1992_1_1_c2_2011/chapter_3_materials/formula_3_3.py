@@ -42,12 +42,12 @@ class Form3Dot3AxialTensileStrengthFromTensileSplittingStrength(Formula):
             raise ValueError(f"Negative f_ct_sp: {f_ct_sp}. f_ct_sp cannot be negative")
         return 0.9 * f_ct_sp
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.3."""
         return LatexFormula(
             return_symbol=r"f_{ct}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"0.9 \cdot f_{ct,sp}",
-            numeric_equation=rf"0.9 \cdot {self.f_ct_sp:.3f}",
+            numeric_equation=rf"0.9 \cdot {self.f_ct_sp:.{n}f}",
             comparison_operator_label="=",
         )

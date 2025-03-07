@@ -48,12 +48,12 @@ class Form3Dot1EstimationConcreteCompressiveStrength(Formula):
         raise_if_negative(beta_cc_t=beta_cc_t, f_cm=f_cm)
         return beta_cc_t * f_cm
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.1."""
         return LatexFormula(
             return_symbol=r"f_{cm}(t)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\beta_{cc}(t) \cdot f_{cm}",
-            numeric_equation=rf"{self.beta_cc_t:.3f} \cdot {self.f_cm:.3f}",
+            numeric_equation=rf"{self.beta_cc_t:.{n}f} \cdot {self.f_cm:.{n}f}",
             comparison_operator_label="=",
         )

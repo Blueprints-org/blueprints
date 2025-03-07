@@ -37,12 +37,12 @@ class Form8Dot18DesignValueTransmissionLength2(Formula):
         raise_if_negative(l_pt=l_pt)
         return 1.2 * l_pt
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.18."""
         return LatexFormula(
             return_symbol=r"l_{pt2}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"1.2 \cdot l_{pt}",
-            numeric_equation=rf"1.2 \cdot {self.l_pt:.2f}",
+            numeric_equation=rf"1.2 \cdot {self.l_pt:.{n}f}",
             comparison_operator_label="=",
         )

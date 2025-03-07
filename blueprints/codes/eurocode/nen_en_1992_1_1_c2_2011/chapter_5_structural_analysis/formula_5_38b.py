@@ -58,14 +58,14 @@ class Form5Dot38bCheckRelativeEccentricityRatio(Formula):
 
         return (e_y / h_eq) / (e_z / b_eq) <= 0.2 or (e_z / b_eq) / (e_y / h_eq) <= 0.2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.38b."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\left(\frac{e_{y}/h_{eq}}{e_{z}/b_{eq}} \leq 0.2 \text{ or } \frac{e_{z}/b_{eq}}{e_{y}/h_{eq}} \leq 0.2 \right)",
-            numeric_equation=rf"\left(\frac{{{self.e_y:.3f}/{self.h_eq:.3f}}}{{{self.e_z:.3f}/{self.b_eq:.3f}}} "
-            rf"\leq 0.2 \text{{ or }} \frac{{{self.e_z:.3f}/{self.b_eq:.3f}}}{{{self.e_y:.3f}/{self.h_eq:.3f}}} \leq 0.2 \right)",
+            numeric_equation=rf"\left(\frac{{{self.e_y:.{n}f}/{self.h_eq:.{n}f}}}{{{self.e_z:.{n}f}/{self.b_eq:.{n}f}}} "
+            rf"\leq 0.2 \text{{ or }} \frac{{{self.e_z:.{n}f}/{self.b_eq:.{n}f}}}{{{self.e_y:.{n}f}/{self.h_eq:.{n}f}}} \leq 0.2 \right)",
             comparison_operator_label="\\to",
             unit="",
         )

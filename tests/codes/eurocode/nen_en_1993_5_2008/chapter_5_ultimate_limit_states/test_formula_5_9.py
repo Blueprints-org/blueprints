@@ -65,15 +65,15 @@ class TestForm5Dot9ReducedBendingMomentResistance:
                 r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
                 r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} "
                 r"= \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
-                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.266",
+                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.27",
             ),
-            ("short", r"M_{V,Rd} = 1204.266"),
+            ("short", r"M_{V,Rd} = 1204.27"),
             (
                 "string",
                 r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
                 r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} "
                 r"= \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
-                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.266",
+                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.27",
             ),
         ],
     )

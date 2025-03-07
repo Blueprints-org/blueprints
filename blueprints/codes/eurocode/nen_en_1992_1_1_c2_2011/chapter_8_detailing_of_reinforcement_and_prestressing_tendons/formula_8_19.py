@@ -42,12 +42,12 @@ class Form8Dot19DispersionLength(Formula):
         raise_if_less_or_equal_to_zero(l_pt=l_pt, d=d)
         return (l_pt**2 + d**2) ** 0.5
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.19."""
         return LatexFormula(
             return_symbol=r"l_{disp}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\sqrt{l_{pt}^2 + d^2}",
-            numeric_equation=rf"\sqrt{{{self.l_pt:.3f}^2 + {self.d:.3f}^2}}",
+            numeric_equation=rf"\sqrt{{{self.l_pt:.{n}f}^2 + {self.d:.{n}f}^2}}",
             comparison_operator_label="=",
         )

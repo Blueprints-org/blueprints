@@ -46,12 +46,12 @@ class SubForm3Dot282930Mu(Formula):
             raise ValueError(f"Invalid f_pk: {f_pk}. f_pk cannot be negative")
         return sigma_pi / f_pk
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         r"""Returns LatexFormula object for [$\mu$] in formula 3.28 and 3.29 and 3.30."""
         return LatexFormula(
             return_symbol=r"\mu",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\sigma_{pi} / f_{pk}",
-            numeric_equation=rf"{self.sigma_pi:.3f} / {self.f_pk:.3f}",
+            numeric_equation=rf"{self.sigma_pi:.{n}f} / {self.f_pk:.{n}f}",
             comparison_operator_label="=",
         )

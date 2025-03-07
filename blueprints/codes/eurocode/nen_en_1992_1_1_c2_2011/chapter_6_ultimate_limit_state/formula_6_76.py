@@ -55,13 +55,13 @@ class Form6Dot76DesignFatigueStrengthConcrete(Formula):
 
         return k_1 * beta_cc_t0 * f_cd * (1 - f_ck / 250)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.76."""
         return LatexFormula(
             return_symbol=r"f_{cd,fat}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"k_{1} \cdot β_{cc}(t_0) \cdot f_{cd} \cdot \left(1-\frac{f_{ck}}{250}\right)",
-            numeric_equation=rf"{self.k_1:.3f} \cdot {self.beta_cc_t0:.3f} \cdot {self.f_cd:.3f} \cdot "
-            rf"\left(1-\frac{{{self.f_ck:.3f}}}{{250}}\right)",
+            numeric_equation=rf"{self.k_1:.{n}f} \cdot {self.beta_cc_t0:.{n}f} \cdot {self.f_cd:.{n}f} \cdot "
+            rf"\left(1-\frac{{{self.f_ck:.{n}f}}}{{250}}\right)",
             comparison_operator_label="=",
         )

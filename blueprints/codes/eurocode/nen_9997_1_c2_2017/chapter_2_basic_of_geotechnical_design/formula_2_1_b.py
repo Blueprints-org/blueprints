@@ -38,12 +38,12 @@ class Form2Dot1bRepresentativeValue(Formula):
         raise_if_negative(psi=psi)
         return psi * f_k
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 2.1b."""
         return LatexFormula(
             return_symbol=r"F_{rep}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\psi \cdot F_k",
-            numeric_equation=rf"{self.psi:.2f} \cdot {self.f_k:.2f}",
+            numeric_equation=rf"{self.psi:.{n}f} \cdot {self.f_k:.{n}f}",
             comparison_operator_label="=",
         )

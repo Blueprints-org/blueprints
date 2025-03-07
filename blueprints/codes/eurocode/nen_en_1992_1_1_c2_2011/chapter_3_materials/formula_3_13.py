@@ -43,12 +43,12 @@ class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):
             raise ValueError(f"Invalid t: {t}. t cannot be negative")
         return 1 - np.exp(-0.2 * t**0.5)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         r"""Returns LatexFormula object for formula 3.13."""
         return LatexFormula(
             return_symbol=r"\beta_{as}(t)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"1 - \exp(-0.2 \cdot t^{0.5})",
-            numeric_equation=rf"1 - \exp(-0.2 \cdot {self.t:.2f}^{{0.5}})",
+            numeric_equation=rf"1 - \exp(-0.2 \cdot {self.t:.{n}f}^{{0.5}})",
             comparison_operator_label="=",
         )

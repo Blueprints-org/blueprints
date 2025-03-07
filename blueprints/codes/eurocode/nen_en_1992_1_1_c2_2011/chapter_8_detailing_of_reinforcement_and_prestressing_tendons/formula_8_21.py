@@ -55,13 +55,13 @@ class Form8Dot21AnchorageLength(Formula):
         raise_if_less_or_equal_to_zero(f_bpd=f_bpd)
         return l_pt2 + alpha_2 * diameter * (sigma_pd - sigma_pminf) / f_bpd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.21."""
         return LatexFormula(
             return_symbol=r"l_{bpd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"l_{pt2} + \alpha_{2} \cdot Ø \cdot \frac{\sigma_{pd} - \sigma_{pm\infty}}{f_{bpd}}",
-            numeric_equation=rf"{self.l_pt2:.3f} + {self.alpha_2:.3f} \cdot {self.diameter:.3f} \cdot \frac{{{self.sigma_pd:.3f} - "
-            rf"{self.sigma_pminf:.3f}}}{{{self.f_bpd:.3f}}}",
+            numeric_equation=rf"{self.l_pt2:.{n}f} + {self.alpha_2:.{n}f} \cdot {self.diameter:.{n}f} \cdot \frac{{{self.sigma_pd:.{n}f} - "
+            rf"{self.sigma_pminf:.{n}f}}}{{{self.f_bpd:.{n}f}}}",
             comparison_operator_label="=",
         )

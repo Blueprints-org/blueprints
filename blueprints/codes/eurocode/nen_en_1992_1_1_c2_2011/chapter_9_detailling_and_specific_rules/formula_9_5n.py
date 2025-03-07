@@ -41,12 +41,12 @@ class Form9Dot5nMinimumShearReinforcementRatio(Formula):
         raise_if_negative(f_ck=f_ck, f_yk=f_yk)
         return (0.08 * np.sqrt(f_ck)) / f_yk
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.5N."""
         return LatexFormula(
             return_symbol=r"\rho_{w,min}",
             result=f"{self:.6f}",
             equation=r"\left( 0.08 \cdot \sqrt{f_{ck}} \right) / f_{yk}",
-            numeric_equation=rf"\left( 0.08 \cdot \sqrt{{{self.f_ck:.2f}}} \right) / {self.f_yk:.2f}",
+            numeric_equation=rf"\left( 0.08 \cdot \sqrt{{{self.f_ck:.{n}f}}} \right) / {self.f_yk:.{n}f}",
             comparison_operator_label="=",
         )

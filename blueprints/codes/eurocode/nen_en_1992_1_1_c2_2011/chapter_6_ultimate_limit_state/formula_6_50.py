@@ -78,7 +78,7 @@ class Form6Dot50PunchingStressResistance(Formula):
 
         return max(term1, term2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.50."""
         _equation: str = (
             r"\max \left( C_{Rd,c} \cdot k \cdot \left( 100 \cdot \rho_l \cdot f_{ck} \right)^{\frac{1}{3}} "
@@ -87,19 +87,19 @@ class Form6Dot50PunchingStressResistance(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"C_{Rd,c}": f"{self.c_rd_c:.3f}",
-                r"\rho_l": f"{self.rho_l:.3f}",
-                r"f_{ck}": f"{self.f_ck:.3f}",
-                r" d": f" {self.d:.3f}",
-                r"{a": "{" + f"{self.a:.3f}",
-                r"v_{min}": f"{self.v_min:.3f}",
-                r"k": f"{self.k:.3f}",
+                r"C_{Rd,c}": f"{self.c_rd_c:.{n}f}",
+                r"\rho_l": f"{self.rho_l:.{n}f}",
+                r"f_{ck}": f"{self.f_ck:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
+                r"{a": "{" + f"{self.a:.{n}f}",
+                r"v_{min}": f"{self.v_min:.{n}f}",
+                r"k": f"{self.k:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"v_{Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

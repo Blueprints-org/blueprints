@@ -47,12 +47,12 @@ class Form5Dot14SlendernessRatio(Formula):
         )
         return l_0 / i
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.14."""
         return LatexFormula(
             return_symbol=r"λ",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{l_0}{i}",
-            numeric_equation=rf"\frac{{{self.l_0:.3f}}}{{{self.i:.3f}}}",
+            numeric_equation=rf"\frac{{{self.l_0:.{n}f}}}{{{self.i:.{n}f}}}",
             comparison_operator_label="=",
         )

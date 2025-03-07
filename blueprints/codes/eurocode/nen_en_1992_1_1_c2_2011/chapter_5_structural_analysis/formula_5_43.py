@@ -64,14 +64,14 @@ class Form5Dot43InitialPrestressForce(Formula):
 
         return a_p * min(k_7 * f_pk, k_8 * f_p0_1k)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.43."""
         return LatexFormula(
             return_symbol=r"P_{m0}(x)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"A_{p} \cdot \min \left(k_7 \cdot f_{pk} ; k_8 \cdot f_{p0.1k} \right)",
-            numeric_equation=rf"{self.a_p:.3f} \cdot \min \left({self.k_7:.3f} \cdot {self.f_pk:.3f} ;"
-            rf" {self.k_8:.3f} \cdot {self.f_p0_1k:.3f} \right)",
+            numeric_equation=rf"{self.a_p:.{n}f} \cdot \min \left({self.k_7:.{n}f} \cdot {self.f_pk:.{n}f} ;"
+            rf" {self.k_8:.{n}f} \cdot {self.f_p0_1k:.{n}f} \right)",
             comparison_operator_label="=",
             unit="N",
         )
