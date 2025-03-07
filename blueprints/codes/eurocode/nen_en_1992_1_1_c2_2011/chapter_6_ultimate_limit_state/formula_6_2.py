@@ -190,7 +190,7 @@ class Form6Dot2aSub2RebarRatio(Formula):
         raise_if_negative(a_sl=a_sl)
         raise_if_less_or_equal_to_zero(b_w=b_w, d=d)
 
-        return a_sl / (b_w * d)
+        return min(a_sl / (b_w * d), 0.02)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.2a Sub 2."""
