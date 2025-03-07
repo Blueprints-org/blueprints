@@ -49,9 +49,9 @@ class TestForm6Dot39BetaCoefficient:
             (
                 "complete",
                 r"\beta = 1 + k \cdot \frac{M_{Ed}}{V_{Ed}} \cdot \frac{u_1}{W_1} = "
-                r"1 + 1.000 \cdot \frac{100.000}{200.000} \cdot \frac{300.000}{400.000} = 1.375 \text{ -}",
+                r"1 + 1.000 \cdot \frac{100.000}{200.000} \cdot \frac{300.000}{400.000} = 1.375 \ -",
             ),
-            ("short", r"\beta = 1.375 \text{ -}"),
+            ("short", r"\beta = 1.375 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

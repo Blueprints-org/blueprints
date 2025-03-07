@@ -42,9 +42,9 @@ class TestForm5Dot48LowerCharacteristicPrestressingValue:
         [
             (
                 "complete",
-                r"P_{k,inf} = r_{inf} \cdot P_{m,t}(x) = 0.950 \cdot 100.000 = 95.000 \text{ kN}",
+                r"P_{k,inf} = r_{inf} \cdot P_{m,t}(x) = 0.950 \cdot 100.000 = 95.000 \ kN",
             ),
-            ("short", r"P_{k,inf} = 95.000 \text{ kN}"),
+            ("short", r"P_{k,inf} = 95.000 \ kN"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

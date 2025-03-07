@@ -56,17 +56,17 @@ class TestForm6Dot50PunchingStressResistance:
                 r"v_{Rd} = \max \left( C_{Rd,c} \cdot k \cdot \left( 100 \cdot \rho_l \cdot f_{ck} \right)^{\frac{1}{3}} "
                 r"\cdot \frac{2 \cdot d}{a}, v_{min} \cdot \frac{2 \cdot d}{a} \right)"
                 r" = \max \left( 0.180 \cdot 1.500 \cdot \left( 100 \cdot 0.020 \cdot 30.000 \right)^{\frac{1}{3}} \cdot "
-                r"\frac{2 \cdot 500.000}{300.000}, 0.035 \cdot \frac{2 \cdot 500.000}{300.000} \right) = 3.523 \text{ MPa}",
+                r"\frac{2 \cdot 500.000}{300.000}, 0.035 \cdot \frac{2 \cdot 500.000}{300.000} \right) = 3.523 \ MPa",
             ),
             (
                 "complete_with_units",
                 r"v_{Rd} = \max \left( C_{Rd,c} \cdot k \cdot \left( 100 \cdot \rho_l \cdot f_{ck} \right)^{\frac{1}{3}} "
                 r"\cdot \frac{2 \cdot d}{a}, v_{min} \cdot \frac{2 \cdot d}{a} \right)"
-                r" = \max \left( 0.180 \cdot 1.500 \cdot \left( 100 \cdot 0.020 \cdot 30.000 \text{ MPa} \right)^{\frac{1}{3}} "
-                r"\cdot \frac{2 \cdot 500.000 \text{ mm}}{300.000 \text{ mm}}, 0.035 \text{ MPa} \cdot \frac{2 \cdot 500.000 "
-                r"\text{ mm}}{300.000 \text{ mm}} \right) = 3.523 \text{ MPa}",
+                r" = \max \left( 0.180 \cdot 1.500 \cdot \left( 100 \cdot 0.020 \cdot 30.000 \ MPa \right)^{\frac{1}{3}} "
+                r"\cdot \frac{2 \cdot 500.000 \ mm}{300.000 \ mm}, 0.035 \ MPa \cdot \frac{2 \cdot 500.000 "
+                r"\ mm}{300.000 \ mm} \right) = 3.523 \ MPa",
             ),
-            ("short", r"v_{Rd} = 3.523 \text{ MPa}"),
+            ("short", r"v_{Rd} = 3.523 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -51,9 +51,9 @@ class TestForm6Dot28RequiredCrossSectionalArea:
             (
                 "complete",
                 r"\Sigma A_{sl} = \frac{u_k}{f_{yd}} \cdot \frac{T_{Ed}}{2 \cdot A_k} \cdot \cot(\theta) = "
-                r"\frac{500.000}{435.000} \cdot \frac{20.000}{2 \cdot 1000.000} \cdot \cot(30.000) = 0.020 \text{ mm^2}",
+                r"\frac{500.000}{435.000} \cdot \frac{20.000}{2 \cdot 1000.000} \cdot \cot(30.000) = 0.020 \ mm^2",
             ),
-            ("short", r"\Sigma A_{sl} = 0.020 \text{ mm^2}"),
+            ("short", r"\Sigma A_{sl} = 0.020 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

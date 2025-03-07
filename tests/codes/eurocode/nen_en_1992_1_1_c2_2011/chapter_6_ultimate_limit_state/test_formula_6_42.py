@@ -44,9 +44,9 @@ class TestForm6Dot42BetaCircular:
             (
                 "complete",
                 r"\beta = 1 + 0.6 \cdot \pi \cdot \frac{e}{D + 4 \cdot d} "
-                r"= 1 + 0.6 \cdot \pi \cdot \frac{300.000}{400.000 + 4 \cdot 500.000} = 1.236 \text{ -}",
+                r"= 1 + 0.6 \cdot \pi \cdot \frac{300.000}{400.000 + 4 \cdot 500.000} = 1.236 \ -",
             ),
-            ("short", r"\beta = 1.236 \text{ -}"),
+            ("short", r"\beta = 1.236 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

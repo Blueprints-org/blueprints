@@ -42,9 +42,9 @@ class TestForm5Dot47UpperCharacteristicPrestressingValue:
         [
             (
                 "complete",
-                r"P_{k,sup} = r_{sup} \cdot P_{m,t}(x) = 1.050 \cdot 100.000 = 105.000 \text{ kN}",
+                r"P_{k,sup} = r_{sup} \cdot P_{m,t}(x) = 1.050 \cdot 100.000 = 105.000 \ kN",
             ),
-            ("short", r"P_{k,sup} = 105.000 \text{ kN}"),
+            ("short", r"P_{k,sup} = 105.000 \ kN"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

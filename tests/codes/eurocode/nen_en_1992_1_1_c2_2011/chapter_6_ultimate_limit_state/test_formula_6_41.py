@@ -44,9 +44,9 @@ class TestForm6Dot41W1Rectangular:
                 "complete",
                 r"W_1 = \frac{c_1^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot d^2 + 2 \cdot \pi \cdot d \cdot c_1 = "
                 r"\frac{300.000^2}{2} + 300.000 \cdot 400.000 + 4 \cdot 400.000 \cdot 500.000 + "
-                r"16 \cdot 500.000^2 + 2 \cdot \pi \cdot 500.000 \cdot 300.000 = 5907477.796 \text{ mm}^2",
+                r"16 \cdot 500.000^2 + 2 \cdot \pi \cdot 500.000 \cdot 300.000 = 5907477.796 \ mm^2",
             ),
-            ("short", r"W_1 = 5907477.796 \text{ mm}^2"),
+            ("short", r"W_1 = 5907477.796 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

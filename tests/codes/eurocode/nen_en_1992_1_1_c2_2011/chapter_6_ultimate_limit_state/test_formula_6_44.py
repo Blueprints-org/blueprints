@@ -49,9 +49,9 @@ class TestForm6Dot44BetaRectangular:
             (
                 "complete",
                 r"\beta = \frac{u_1}{u_{1^*}} + k \cdot \frac{u_1}{W_1} \cdot e_{par} = "
-                r"\frac{500.000}{400.000} + 1.200 \cdot \frac{500.000}{300.000} \cdot 200.000 = 401.250 \text{ -}",
+                r"\frac{500.000}{400.000} + 1.200 \cdot \frac{500.000}{300.000} \cdot 200.000 = 401.250 \ -",
             ),
-            ("short", r"\beta = 401.250 \text{ -}"),
+            ("short", r"\beta = 401.250 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

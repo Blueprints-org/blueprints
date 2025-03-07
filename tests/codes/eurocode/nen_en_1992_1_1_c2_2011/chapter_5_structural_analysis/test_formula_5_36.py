@@ -53,9 +53,9 @@ class TestForm5Dot36RelativeAxialForce:
                 r"K_{r} = \min\left(\frac{\left(1 + \frac{A_{s} \cdot f_{yd}}{A_{c} \cdot f_{cd}}\right) - "
                 r"\frac{N_{Ed}}{A_{c} \cdot f_{cd}}}{\left(1 + \frac{A_{s} \cdot f_{yd}}{A_{c} \cdot f_{cd}}\right) - n_{bal}}, 1\right) "
                 r"= \min\left(\frac{\left(1 + \frac{100.000 \cdot 500.000}{2000.000 \cdot 30.000}\right) - \frac{100000.000}"
-                r"{2000.000 \cdot 30.000}}{\left(1 + \frac{100.000 \cdot 500.000}{2000.000 \cdot 30.000}\right) - 0.400}, 1\right) = 0.116 \text{ -}",
+                r"{2000.000 \cdot 30.000}}{\left(1 + \frac{100.000 \cdot 500.000}{2000.000 \cdot 30.000}\right) - 0.400}, 1\right) = 0.116 \ -",
             ),
-            ("short", r"K_{r} = 0.116 \text{ -}"),
+            ("short", r"K_{r} = 0.116 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

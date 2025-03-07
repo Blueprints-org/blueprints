@@ -42,9 +42,9 @@ class TestForm6Dot49AppliedPunchingShearStress:
         [
             (
                 "complete",
-                r"v_{Ed} = \frac{V_{Ed,red}}{u \cdot d} = \frac{1000000.000}{200.000 \cdot 300.000} = 16.667 \text{ MPa}",
+                r"v_{Ed} = \frac{V_{Ed,red}}{u \cdot d} = \frac{1000000.000}{200.000 \cdot 300.000} = 16.667 \ MPa",
             ),
-            ("short", r"v_{Ed} = 16.667 \text{ MPa}"),
+            ("short", r"v_{Ed} = 16.667 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

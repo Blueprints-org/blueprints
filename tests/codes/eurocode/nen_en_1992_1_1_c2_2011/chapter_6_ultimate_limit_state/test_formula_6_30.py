@@ -52,9 +52,9 @@ class TestForm6Dot30DesignTorsionalResistanceMoment:
                 "complete",
                 r"T_{Rd,max} = 2 \cdot \nu \cdot \alpha_{cw} \cdot f_{cd} \cdot A_{k} \cdot t_{ef,i} \cdot \sin(\theta) \cdot \cos(\theta) = "
                 r"2 \cdot 0.600 \cdot 1.000 \cdot 30.000 \cdot 1000.000 \cdot 200.000 \cdot \sin(45.000) \cdot \cos(45.000) = 3600000.000 "
-                r"\text{ Nmm}",
+                r"\ Nmm",
             ),
-            ("short", r"T_{Rd,max} = 3600000.000 \text{ Nmm}"),
+            ("short", r"T_{Rd,max} = 3600000.000 \ Nmm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

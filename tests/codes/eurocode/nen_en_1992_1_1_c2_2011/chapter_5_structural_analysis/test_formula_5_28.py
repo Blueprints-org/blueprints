@@ -62,9 +62,9 @@ class TestForm5Dot28TotalDesignMoment:
             (
                 "complete",
                 r"M_{Ed} = M_{0Ed} \cdot \left(1 + \frac{\beta}{\frac{N_{B}}{N_{Ed}} - 1}\right) "
-                r"= 50.000 \cdot \left(1 + \frac{0.200}{\frac{200.000}{100.000} - 1}\right) = 60.000 \text{ kNm}",
+                r"= 50.000 \cdot \left(1 + \frac{0.200}{\frac{200.000}{100.000} - 1}\right) = 60.000 \ kNm",
             ),
-            ("short", r"M_{Ed} = 60.000 \text{ kNm}"),
+            ("short", r"M_{Ed} = 60.000 \ kNm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

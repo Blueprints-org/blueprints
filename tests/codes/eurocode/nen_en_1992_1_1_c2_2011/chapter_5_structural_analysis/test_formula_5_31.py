@@ -27,9 +27,9 @@ class TestForm5Dot31DesignMoment:
         [
             (
                 "complete",
-                r"M_{Ed} = M_{0Ed} + M_{2} = 50.000 + 10.000 = 60.000 \text{ kNm}",
+                r"M_{Ed} = M_{0Ed} + M_{2} = 50.000 + 10.000 = 60.000 \ kNm",
             ),
-            ("short", r"M_{Ed} = 60.000 \text{ kNm}"),
+            ("short", r"M_{Ed} = 60.000 \ kNm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
