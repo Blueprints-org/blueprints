@@ -1,13 +1,13 @@
-"""Testing formula 6.32 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.33 of NEN-EN 1992-1-1+C2:2011."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_33 import Form6Dot32ContourRadiusCircularColumnHeads
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_33 import Form6Dot33ContourRadiusCircularColumnHeads
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot32ContourRadiusCircularColumnHeads:
-    """Validation for formula 6.32 from NEN-EN 1992-1-1+C2:2011."""
+class TestForm6Dot33ContourRadiusCircularColumnHeads:
+    """Validation for formula 6.33 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -17,7 +17,7 @@ class TestForm6Dot32ContourRadiusCircularColumnHeads:
         c = 300.0
 
         # Object to test
-        formula = Form6Dot32ContourRadiusCircularColumnHeads(d=d, l_h=l_h, c=c)
+        formula = Form6Dot33ContourRadiusCircularColumnHeads(d=d, l_h=l_h, c=c)
 
         # Expected result, manually calculated
         manually_calculated_result = 2150.0  # mm
@@ -35,7 +35,7 @@ class TestForm6Dot32ContourRadiusCircularColumnHeads:
     def test_raise_error_when_invalid_values_are_given(self, d: float, l_h: float, c: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot32ContourRadiusCircularColumnHeads(d=d, l_h=l_h, c=c)
+            Form6Dot33ContourRadiusCircularColumnHeads(d=d, l_h=l_h, c=c)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -55,7 +55,7 @@ class TestForm6Dot32ContourRadiusCircularColumnHeads:
         c = 300.0
 
         # Object to test
-        latex = Form6Dot32ContourRadiusCircularColumnHeads(d=d, l_h=l_h, c=c).latex()
+        latex = Form6Dot33ContourRadiusCircularColumnHeads(d=d, l_h=l_h, c=c).latex()
 
         actual = {
             "complete": latex.complete,

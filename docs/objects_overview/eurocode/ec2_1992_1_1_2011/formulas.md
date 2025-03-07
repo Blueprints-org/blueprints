@@ -132,7 +132,7 @@ Total of 304 formulas present.
 | 6.30           | :heavy_check_mark: |         | Form6Dot30DesignTorsionalResistanceMoment                 |
 | 6.31           | :heavy_check_mark: |         | Form6Dot31CheckTorsionShearResistanceRectangular          |
 | 6.32           | :heavy_check_mark: |         | Form6Dot32EffectiveDepthSlab                              |
-| 6.33           | :heavy_check_mark: |         | Form6Dot32ContourRadiusCircularColumnHeads                |
+| 6.33           | :heavy_check_mark: |         | Form6Dot33ContourRadiusCircularColumnHeads                |
 | 6.34           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
 | 6.35           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
 | 6.36           | :heavy_check_mark: |         | Form6Dot36ExternalContourRadiusCircularColumnHeads        |

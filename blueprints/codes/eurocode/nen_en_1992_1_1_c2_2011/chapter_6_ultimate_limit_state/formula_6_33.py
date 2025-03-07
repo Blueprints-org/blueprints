@@ -1,4 +1,4 @@
-"""Formula 6.32 from NEN-EN 1992-1-1+C2:2011: Chapter 6 - Ultimate limit state."""
+"""Formula 6.33 from NEN-EN 1992-1-1+C2:2011: Chapter 6 - Ultimate limit state."""
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -7,10 +7,10 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot32ContourRadiusCircularColumnHeads(Formula):
-    r"""Class representing formula 6.32 for the calculation of the contour radius for circular column heads, [$r_{cont}$]."""
+class Form6Dot33ContourRadiusCircularColumnHeads(Formula):
+    r"""Class representing formula 6.33 for the calculation of the contour radius for circular column heads, [$r_{cont}$]."""
 
-    label = "6.32"
+    label = "6.33"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
@@ -21,7 +21,7 @@ class Form6Dot32ContourRadiusCircularColumnHeads(Formula):
     ) -> None:
         r"""[$r_{cont}$] Contour radius for circular column heads [$mm$].
 
-        NEN-EN 1992-1-1+C2:2011 art.6.4.2(8) - Formula (6.32)
+        NEN-EN 1992-1-1+C2:2011 art.6.4.2(8) - Formula (6.33)
 
         Parameters
         ----------
@@ -53,7 +53,7 @@ class Form6Dot32ContourRadiusCircularColumnHeads(Formula):
         return 2 * d + l_h + 0.5 * c
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.32."""
+        """Returns LatexFormula object for formula 6.33."""
         return LatexFormula(
             return_symbol=r"r_{cont}",
             result=f"{self:.3f}",
