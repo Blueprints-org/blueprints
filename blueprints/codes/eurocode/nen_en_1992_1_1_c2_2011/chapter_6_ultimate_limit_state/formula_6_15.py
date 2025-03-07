@@ -84,9 +84,10 @@ class Form6Dot15ShearReinforcementResistance(Formula):
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
-            equation=r"\frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{1/2 \cdot \alpha_{cw} " r"\cdot \nu_{1} \cdot f_{cd}}{\sin(\alpha)}",
+            equation=r"\frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{\frac{1}{2} \cdot \alpha_{cw} "
+            r"\cdot \nu_{1} \cdot f_{cd}}{\sin(\alpha)}",
             numeric_equation=rf"\frac{{{self.a_sw_max:.3f} \cdot {self.f_ywd:.3f}}}{{{self.b_w:.3f} \cdot "
-            rf"{self.s:.3f}}} \leq \frac{{1/2 \cdot {self.alpha_cw:.3f} \cdot {self.nu_1:.3f} "
+            rf"{self.s:.3f}}} \leq \frac{{\frac{{1}}{{2}} \cdot {self.alpha_cw:.3f} \cdot {self.nu_1:.3f} "
             rf"\cdot {self.f_cd:.3f}}}{{\sin({self.alpha:.3f})}}",
             comparison_operator_label="\\to",
             unit="",

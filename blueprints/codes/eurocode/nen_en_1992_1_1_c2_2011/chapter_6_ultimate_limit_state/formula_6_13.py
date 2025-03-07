@@ -5,7 +5,8 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MM2, MPA, N
+from blueprints.math_helpers import cot
+from blueprints.type_alias import DEG, MM, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -74,10 +75,6 @@ class Form6Dot13ShearResistanceInclinedReinforcement(Formula):
         raise_if_less_or_equal_to_zero(
             s=s,
         )
-
-        def cot(theta: DEG) -> DIMENSIONLESS:
-            """Returns the cotangent of the given angle."""
-            return 1 / np.tan(np.radians(theta))
 
         return (a_sw / s) * z * f_ywd * (cot(theta) + cot(alpha)) * np.sin(np.radians(alpha))
 

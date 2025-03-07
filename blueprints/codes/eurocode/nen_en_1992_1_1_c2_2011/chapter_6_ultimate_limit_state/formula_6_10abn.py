@@ -46,9 +46,9 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
             return_symbol=r"\nu_{1}",
             result=f"{self:.3f}",
             equation=r"\begin{cases} 0.600 & \text{if } f_{ck} \leq 60 MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) "
-            r"& \text{if } f_{ck} > 60 MPa \end{cases}",
+            r"& \text{if } f_{ck} /ge 60 MPa \end{cases}",
             numeric_equation=rf"\begin{{cases}} 0.600 & \text{{if }} {self.f_ck} \leq 60 MPa \\ "
-            rf"\max\left(0.9 - \frac{{{self.f_ck}}}{{200}}, 0.5\right) & \text{{if }} {self.f_ck} > 60 MPa \end{{cases}}",
+            rf"\max\left(0.9 - \frac{{{self.f_ck}}}{{200}}, 0.5\right) & \text{{if }} {self.f_ck} /ge 60 MPa \end{{cases}}",
             comparison_operator_label="=",
             unit="-",
         )

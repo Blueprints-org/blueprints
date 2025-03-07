@@ -1,11 +1,10 @@
 """Formula 6.18 from NEN-EN 1992-1-1+C2:2011: Chapter 6 - Ultimate limit state."""
 
-import numpy as np
-
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import DEG, DIMENSIONLESS, KN
+from blueprints.math_helpers import cot
+from blueprints.type_alias import DEG, KN
 from blueprints.validations import raise_if_negative
 
 
@@ -51,10 +50,6 @@ class Form6Dot18AdditionalTensileForce(Formula):
             theta=theta,
             alpha=alpha,
         )
-
-        def cot(angle: DEG) -> DIMENSIONLESS:
-            """Returns the cotangent of the given angle."""
-            return 1 / np.tan(np.radians(angle))
 
         return 0.5 * v_ed * (cot(theta) - cot(alpha))
 

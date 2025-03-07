@@ -75,9 +75,9 @@ class TestForm6Dot15ShearReinforcementResistance:
         [
             (
                 "complete",
-                r"CHECK \to \frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{1/2 \cdot \alpha_{cw} "
+                r"CHECK \to \frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{\frac{1}{2} \cdot \alpha_{cw} "
                 r"\cdot \nu_{1} \cdot f_{cd}}{\sin(\alpha)} \to "
-                r"\frac{1000.000 \cdot 500.000}{300.000 \cdot 200.000} \leq \frac{1/2 \cdot 1.000 "
+                r"\frac{1000.000 \cdot 500.000}{300.000 \cdot 200.000} \leq \frac{\frac{1}{2} \cdot 1.000 "
                 r"\cdot 0.600 \cdot 30.000}{\sin(45.000)} \to OK",
             ),
             ("short", r"CHECK \to OK"),

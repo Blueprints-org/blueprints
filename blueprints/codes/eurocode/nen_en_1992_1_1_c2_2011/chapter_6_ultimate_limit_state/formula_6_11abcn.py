@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form6Dot11abcNCompressionChordCoefficient(Formula):
@@ -41,10 +41,9 @@ class Form6Dot11abcNCompressionChordCoefficient(Formula):
         f_cd: MPA,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(sigma_cp=sigma_cp)
-        raise_if_less_or_equal_to_zero(f_cd=f_cd)
+        raise_if_less_or_equal_to_zero(f_cd=f_cd, sigma_cp=sigma_cp)
 
-        if 0 <= sigma_cp <= 0.25 * f_cd:
+        if 0 < sigma_cp <= 0.25 * f_cd:
             return 1 + sigma_cp / f_cd
         if 0.25 * f_cd < sigma_cp <= 0.5 * f_cd:
             return 1.25
@@ -55,13 +54,13 @@ class Form6Dot11abcNCompressionChordCoefficient(Formula):
         return LatexFormula(
             return_symbol=r"\alpha_{cw}",
             result=f"{self:.3f}",
-            equation=r"\begin{cases} 1 + \frac{\sigma_{cp}}{f_{cd}} & \text{if } 0 \leq \sigma_{cp} \leq 0.25 f_{cd} \\ "
-            r"1.25 & \text{if } 0.25 f_{cd} < \sigma_{cp} \leq 0.5 f_{cd} \\ "
-            r"2.5 \left(1 - \frac{\sigma_{cp}}{f_{cd}}\right) & \text{if } \sigma_{cp} > 0.5 f_{cd} \end{cases}",
-            numeric_equation=rf"\begin{{cases}} 1 + \frac{{{self.sigma_cp:.3f}}}{{{self.f_cd:.3f}}} & \text{{if }} 0 \leq {self.sigma_cp:.3f} "
-            rf"\leq 0.25 \cdot {self.f_cd:.3f} \\ 1.250 & \text{{if }} 0.25 \cdot {self.f_cd:.3f} < {self.sigma_cp:.3f} \leq "
+            equation=r"\begin{cases} 1 + \frac{\sigma_{cp}}{f_{cd}} & \text{if } 0 \lt \sigma_{cp} \leq 0.25 f_{cd} \\ "
+            r"1.25 & \text{if } 0.25 f_{cd} \lt \sigma_{cp} \leq 0.5 f_{cd} \\ "
+            r"2.5 \left(1 - \frac{\sigma_{cp}}{f_{cd}}\right) & \text{if } \sigma_{cp} \gt 0.5 f_{cd} \end{cases}",
+            numeric_equation=rf"\begin{{cases}} 1 + \frac{{{self.sigma_cp:.3f}}}{{{self.f_cd:.3f}}} & \text{{if }} 0 \lt {self.sigma_cp:.3f} "
+            rf"\leq 0.25 \cdot {self.f_cd:.3f} \\ 1.250 & \text{{if }} 0.25 \cdot {self.f_cd:.3f} \lt {self.sigma_cp:.3f} \leq "
             rf"0.5 \cdot {self.f_cd:.3f} \\ 2.5 \left(1 - \frac{{{self.sigma_cp:.3f}}}{{{self.f_cd:.3f}}}\right) & "
-            rf"\text{{if }} {self.sigma_cp:.3f} > 0.5 \cdot {self.f_cd:.3f} \end{{cases}}",
+            rf"\text{{if }} {self.sigma_cp:.3f} \gt 0.5 \cdot {self.f_cd:.3f} \end{{cases}}",
             comparison_operator_label="=",
             unit="-",
         )

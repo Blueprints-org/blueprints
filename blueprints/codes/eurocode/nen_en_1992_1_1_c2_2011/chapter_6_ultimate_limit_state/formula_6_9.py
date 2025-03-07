@@ -5,12 +5,13 @@ import numpy as np
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
+from blueprints.math_helpers import cot
 from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form6Dot9MaximumShearResistance(Formula):
-    r"""Class representing formula 6.9 for the calculation of the maximum shear resistance, :math:`V_{Rd,max}`."""
+    r"""Class representing formula 6.9 for the calculation of the maximum shear resistance, $V_{Rd,max}$."""
 
     label = "6.9"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -24,24 +25,24 @@ class Form6Dot9MaximumShearResistance(Formula):
         alpha_cw: DIMENSIONLESS,
         theta: DEG,
     ) -> None:
-        r"""[:math:`V_{Rd,max}`] Maximum shear resistance [:math:`N`].
+        r"""[$V_{Rd,max}$] Maximum shear resistance [$N$].
 
         NEN-EN 1992-1-1+C2:2011 art.6.2.3(3) - Formula (6.9)
 
         Parameters
         ----------
         b_w : MM
-            [:math:`b_{w}`] Width of the web of the beam [:math:`mm`].
+            [$b_{w}$] Width of the web of the beam [$mm$].
         z : MM
-            [:math:`z`] Lever arm [:math:`mm`].
+            [$z$] Lever arm [$mm$].
         f_cd : MPA
-            [:math:`f_{cd}`] Design value of concrete compressive strength [:math:`MPa`].
+            [$f_{cd}$] Design value of concrete compressive strength [$MPa$].
         nu_1 : DIMENSIONLESS
-            [:math:`\nu_{1}`] Strength reduction factor for concrete cracked in shear [-].
+            [$\nu_{1}$] Strength reduction factor for concrete cracked in shear [-].
         alpha_cw : DIMENSIONLESS
-            [:math:`\alpha_{cw}`] Coefficient taking account of the state of the stress in the compression chord [-].
+            [$\alpha_{cw}$] Coefficient taking account of the state of the stress in the compression chord [-].
         theta : DEG
-            [:math:`\theta`] Angle between the concrete compression strut and the beam axis perpendicular to the shear force [:math:`degrees`].
+            [$\theta$] Angle between the concrete compression strut and the beam axis perpendicular to the shear force [$degrees$].
         """
         super().__init__()
         self.b_w = b_w
@@ -70,10 +71,7 @@ class Form6Dot9MaximumShearResistance(Formula):
         )
         raise_if_less_or_equal_to_zero(theta=theta)
 
-        cot_theta = 1 / np.tan(np.radians(theta))
-        tan_theta = np.tan(np.radians(theta))
-
-        return alpha_cw * b_w * z * nu_1 * f_cd / (cot_theta + tan_theta)
+        return alpha_cw * b_w * z * nu_1 * f_cd / (cot(theta) + np.tan(np.radians(theta)))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.9."""

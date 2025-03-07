@@ -8,7 +8,9 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot17NominalWebWidth(Formula):
-    r"""Class representing formula 6.17 for the calculation of the nominal web width, [$b_{w,nom}$]."""
+    r"""Class representing formula 6.17 for the calculation of the nominal web width (for non-grouted ducts, grouted plastic ducts
+    and unbonded tendons), [$b_{w,nom}$].
+    """
 
     label = "6.17"
     source_document = NEN_EN_1992_1_1_C2_2011
