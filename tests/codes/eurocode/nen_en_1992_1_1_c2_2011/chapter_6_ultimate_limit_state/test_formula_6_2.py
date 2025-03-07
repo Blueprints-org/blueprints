@@ -125,7 +125,7 @@ class TestForm6Dot2aSub1ThicknessFactor:
         [
             (
                 "complete",
-                r"k = \min(\sqrt{\frac{200}{d}}, 2.0) = \min(\sqrt{\frac{200}{500.000}}, 2.0) = 1.632 -",
+                r"k = \min(1 + \sqrt{\frac{200}{d}}, 2.0) = \min(1 + \sqrt{\frac{200}{500.000}}, 2.0) = 1.632 -",
             ),
             ("short", r"k = 1.632 -"),
         ],
@@ -184,7 +184,7 @@ class TestForm6Dot2aSub2RebarRatio:
         [
             (
                 "complete",
-                r"\rho_l = \frac{A_{sl}}{b_w \cdot d} = \frac{1500.000}{300.000 \cdot 500.000} = 0.010 -",
+                r"\rho_l = \min( \frac{A_{sl}}{b_w \cdot d}, 0.02) = \min( \frac{1500.000}{300.000 \cdot 500.000}, 0.02) = 0.010 -",
             ),
             ("short", r"\rho_l = 0.010 -"),
         ],

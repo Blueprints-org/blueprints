@@ -126,7 +126,6 @@ class Form6Dot2aSub1ThicknessFactor(Formula):
         """
         super().__init__()
         self.d = d
-        self.k = min(1 + (200 / d) ** 0.5, 2.0)
 
     @staticmethod
     def _evaluate(
@@ -142,8 +141,8 @@ class Form6Dot2aSub1ThicknessFactor(Formula):
         return LatexFormula(
             return_symbol=r"k",
             result=f"{self:.3f}",
-            equation=r"\min(\sqrt{\frac{200}{d}}, 2.0)",
-            numeric_equation=rf"\min(\sqrt{{\frac{{200}}{{{self.d:.3f}}}}}, 2.0)",
+            equation=r"\min(1 + \sqrt{\frac{200}{d}}, 2.0)",
+            numeric_equation=rf"\min(1 + \sqrt{{\frac{{200}}{{{self.d:.3f}}}}}, 2.0)",
             comparison_operator_label="=",
             unit="-",
         )
@@ -178,7 +177,6 @@ class Form6Dot2aSub2RebarRatio(Formula):
         self.A_sl = a_sl
         self.b_w = b_w
         self.d = d
-        self.rho_l = a_sl / (b_w * d)
 
     @staticmethod
     def _evaluate(
@@ -197,8 +195,8 @@ class Form6Dot2aSub2RebarRatio(Formula):
         return LatexFormula(
             return_symbol=r"\rho_l",
             result=f"{self:.3f}",
-            equation=r"\frac{A_{sl}}{b_w \cdot d}",
-            numeric_equation=rf"\frac{{{self.A_sl:.3f}}}{{{self.b_w:.3f} \cdot {self.d:.3f}}}",
+            equation=r"\min( \frac{A_{sl}}{b_w \cdot d}, 0.02)",
+            numeric_equation=rf"\min( \frac{{{self.A_sl:.3f}}}{{{self.b_w:.3f} \cdot {self.d:.3f}}}, 0.02)",
             comparison_operator_label="=",
             unit="-",
         )
