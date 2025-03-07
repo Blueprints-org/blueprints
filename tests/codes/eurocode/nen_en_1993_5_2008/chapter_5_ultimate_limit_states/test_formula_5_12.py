@@ -46,9 +46,9 @@ class TestForm5Dot12ElasticCriticalLoad:
             (
                 "complete",
                 r"N_{cr} = \frac{E \cdot I \cdot \beta_D \cdot \pi^2}{l^2} = "
-                r"\frac{210000.000 \cdot 5000.000 \cdot 1.000 \cdot \pi^2}{1000.000^2} = 10363.085 N",
+                r"\frac{210000.000 \cdot 5000.000 \cdot 1.000 \cdot \pi^2}{1000.000^2} = 10363.085 \text{ N}",
             ),
-            ("short", r"N_{cr} = 10363.085 N"),
+            ("short", r"N_{cr} = 10363.085 \text{ N}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

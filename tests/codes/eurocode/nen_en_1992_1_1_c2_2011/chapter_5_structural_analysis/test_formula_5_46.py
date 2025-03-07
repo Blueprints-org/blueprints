@@ -104,9 +104,9 @@ class TestForm5Dot46Part1TimeDependentForceLosses:
                 r" = 1000.000 \cdot \frac{0.000200 \cdot 200000.000 + 0.800 \cdot 100.000 + \frac{200000.000}{30000.000} "
                 r"\cdot 2.000 \cdot 10.000}{1 + \frac{200000.000}{30000.000} \cdot \frac{1000.000}{5000.000} "
                 r"\cdot \left(1 + \frac{5000.000}{1000000.000} \cdot 200.000^2\right) "
-                r"\cdot \left(1 + 0.800 \cdot 2.000\right)} = 363.046 N",
+                r"\cdot \left(1 + 0.800 \cdot 2.000\right)} = 363.046 \text{ N}",
             ),
-            ("short", r"\Delta P_{c+s+r} = 363.046 N"),
+            ("short", r"\Delta P_{c+s+r} = 363.046 \text{ N}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -240,9 +240,9 @@ class TestForm5Dot46Part2TimeDependentStressLosses:
                 r" = \frac{0.000200 \cdot 200000.000 + 0.800 \cdot 100.000 + \frac{200000.000}{30000.000} "
                 r"\cdot 2.000 \cdot 10.000}{1 + \frac{200000.000}{30000.000} \cdot \frac{1000.000}{5000.000} "
                 r"\cdot \left(1 + \frac{5000.000}{1000000.000} \cdot 200.000^2\right) "
-                r"\cdot \left(1 + 0.800 \cdot 2.000\right)} = 0.363 MPa",
+                r"\cdot \left(1 + 0.800 \cdot 2.000\right)} = 0.363 \text{ MPa}",
             ),
-            ("short", r"\Delta \sigma_{p,c+s+r} = 0.363 MPa"),
+            ("short", r"\Delta \sigma_{p,c+s+r} = 0.363 \text{ MPa}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -47,9 +47,9 @@ class TestForm5Dot43InitialPrestressForce:
             (
                 "complete",
                 r"P_{m0}(x) = A_{p} \cdot \min \left(k_7 \cdot f_{pk} ; k_8 \cdot f_{p0.1k} \right) = "
-                r"1000.000 \cdot \min \left(0.750 \cdot 1860.000 ; 0.850 \cdot 1674.000 \right) = 1395000.000 N",
+                r"1000.000 \cdot \min \left(0.750 \cdot 1860.000 ; 0.850 \cdot 1674.000 \right) = 1395000.000 \text{ N}",
             ),
-            ("short", r"P_{m0}(x) = 1395000.000 N"),
+            ("short", r"P_{m0}(x) = 1395000.000 \text{ N}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

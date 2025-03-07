@@ -40,9 +40,9 @@ class TestForm6Dot48NetAppliedPunchingForce:
         [
             (
                 "complete",
-                r"V_{Ed,red} = V_{Ed} - \Delta V_{Ed} = 1000.000 - 200.000 = 800.000 N",
+                r"V_{Ed,red} = V_{Ed} - \Delta V_{Ed} = 1000.000 - 200.000 = 800.000 \text{ N}",
             ),
-            ("short", r"V_{Ed,red} = 800.000 N"),
+            ("short", r"V_{Ed,red} = 800.000 \text{ N}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
