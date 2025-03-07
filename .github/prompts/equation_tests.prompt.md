@@ -7,7 +7,7 @@
 - Write one test with succesful input, that retuns the answer of the equation. 
 - For all variables found in the raise_if_negative of the linked formula, write a test where its input is given as a negative value.
 - For all variables found in the raise_if_less_or_equal_to_zero of the linked formula, write a test where its input is given as zero and a test where its given as a negative value.
-- For the LaTeX complete and short presentation, make sure you add a unit at the end.
+- For the LaTeX complete and short presentation, make sure you add a unit at the end. For the complete_with_units, add units to all variables except for those that are dimensionless
 
 ## Template for service
 
@@ -58,9 +58,9 @@ class TestForm6Dot41W1Rectangular:
                 "complete",
                 r"W_1 = \frac{c_1^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot d^2 + 2 \cdot \pi \cdot d \cdot c_1 = "
                 r"\frac{300.000^2}{2} + 300.000 \cdot 400.000 + 4 \cdot 400.000 \cdot 500.000 + "
-                r"16 \cdot 500.000^2 + 2 \cdot \pi \cdot 500.000 \cdot 300.000 = 5907477.796 mm^2",
+                r"16 \cdot 500.000^2 + 2 \cdot \pi \cdot 500.000 \cdot 300.000 = 5907477.796 \text{ mm^2}",
             ),
-            ("short", r"W_1 = 5907477.796 mm^2"),
+            ("short", r"W_1 = 5907477.796 \text{ mm^2}"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

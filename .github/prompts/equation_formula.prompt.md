@@ -7,6 +7,7 @@
 - In the LaTeX formula, edit the return symbol such that it is the left hand side of the equation
 - Edit the _equation variable such that it represents the right hand side of the equation
 - LaTeX variables should be rounded to 3 decimals.  
+- The LaTex _numeric_equation_with_units should include units, except when its dimensionless
 - Import the necessary typehinting with type alias units found in type_alias.py and remove the unused imported type aliases. Forces in N, (Bending) moments in Nmm, distances in mm, areas in mm^2, Stress in MPa, angles in DEG, no unit is DIMENSIONLESS. When dealing with angles, use np.deg2rad.
 
 ## Template for service
@@ -76,11 +77,21 @@ class Form6Dot41W1Rectangular(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"c_1": f"{self.c_1:.3f}",
+                r"c_2": f"{self.c_2:.3f}",
+                r"d": f"{self.d:.3f} \text{{mm}}",
+            },
+            True,
+        )
         return LatexFormula(
             return_symbol=r"W_1",
             result=f"{self:.3f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units
             comparison_operator_label="=",
             unit="mm^2",
         )
