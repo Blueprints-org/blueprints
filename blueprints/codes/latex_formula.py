@@ -48,7 +48,7 @@ class LatexFormula:
         """
         all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, f"{self.result}"]
         long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
-        return long_formula + f" \\text{{ }} {self.unit}" if self.unit else long_formula
+        return long_formula + rf" \ {self.unit}" if self.unit else long_formula
 
     @property
     def complete_with_units(self) -> str:
@@ -65,7 +65,7 @@ class LatexFormula:
 
         all_sub_equations = [self.return_symbol, self.equation, numeric_equation_with_units, f"{self.result}"]
         long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
-        return long_formula + f" \\text{{ }} {self.unit}" if self.unit else long_formula
+        return long_formula + rf" \ {self.unit}" if self.unit else long_formula
 
     @property
     def short(self) -> str:
@@ -78,7 +78,7 @@ class LatexFormula:
 
         """
         short_formula = f"{self.return_symbol} {self.comparison_operator_label} {self.result}"
-        return short_formula + f" \\text{{ }} {self.unit}" if self.unit else short_formula
+        return short_formula + rf" \ {self.unit}" if self.unit else short_formula
 
     def __str__(self) -> str:
         """String representation of the formula."""
