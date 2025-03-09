@@ -76,12 +76,12 @@ class Formula(float, ABC):
 
     @staticmethod
     @abstractmethod
-    def _evaluate(*args, **kwargs) -> float:
+    def _evaluate(*args, **kwargs) -> float | bool:
         """Abstract method for the logic of the formula.
 
         Returns
         -------
-        float
+        float | bool
             The result of the formula.
             This is an abstract method and must be implemented in all subclasses.
         """
