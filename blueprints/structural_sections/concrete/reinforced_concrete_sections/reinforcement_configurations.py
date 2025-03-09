@@ -166,7 +166,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
             msg = f"Number of rebars must be an integer, got {self.n}"
             raise TypeError(msg)
 
-        # check that n is at least 2
+        # check that n is at least 1
         minimum_number_of_rebars = 1
         if self.n < minimum_number_of_rebars:
             msg = f"Number of rebars must be at least {minimum_number_of_rebars}, got {self.n}"
@@ -193,7 +193,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
         """
         rebars = []
         for index in range(self.n):
-            distance = index * line.length / (self.n - 1)
+            distance = index * line.length / (self.n)
             point = line.interpolate(distance)
             rebars.append(
                 Rebar(
