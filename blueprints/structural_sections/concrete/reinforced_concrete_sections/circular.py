@@ -137,11 +137,17 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         """
         # calculate the radius for the placement of the rebars
         cover = cover if cover is not None else self.covers.cover
-        radius = self.diameter / 2 - cover - (diameter / 2)
+        # check if there is a stirrup configuration present and adjust the cover
+        max_stirrups_diameter = 0.0
+        if self._stirrups:
+            max_stirrups_diameter = max([stirrup.diameter for stirrup in self._stirrups])
+
+        # calculate the effective radius for the rebars based on the stirrups, the cover, and the diameter of the stirrups
+        radius = self.diameter / 2 - cover - (diameter / 2) - max_stirrups_diameter
 
         # calculate the positions of the rebars
         angles = [2 * pi * i / n for i in range(n)]
-        rebar_positions = [(radius * cos(angle - pi / 2), radius * sin(angle - pi / 2)) for angle in angles]
+        rebar_positions = [(radius * cos(pi / 2 - angle), radius * sin(pi / 2 - angle)) for angle in angles]
 
         return self.add_reinforcement_configuration(
             line=Polygon(rebar_positions).exterior, configuration=ReinforcementByQuantity(diameter=diameter, material=material, n=n)
@@ -160,50 +166,3 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Additional keyword arguments passed to the plotter.
         """
         return self.plotter.plot(*args, **kwargs)
-
-
-if __name__ == "__main__":
-    from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
-    from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
-    from blueprints.structural_sections.concrete.covers import CoversCircular
-
-    def circular_reinforced_cross_section() -> CircularReinforcedCrossSection:
-        """Return a circular reinforced cross-section."""
-        # Define a concrete material
-        concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C35_45)
-
-        # Define a reinforcement steel material
-        steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B)
-
-        # Define a circular reinforced cross-section
-        cs = CircularReinforcedCrossSection(
-            diameter=1000,
-            covers=CoversCircular(cover=50),
-            concrete_material=concrete,
-        )
-
-        # Add reinforcement to the cross-section
-        cs.add_longitudinal_reinforcement_by_quantity(
-            n=14,
-            diameter=20,
-            material=steel,
-        )
-
-        # Add stirrups to the cross-section
-        cs.add_stirrup_along_perimeter(
-            diameter=10,
-            distance=200,
-            material=steel,
-        )
-
-        return cs
-
-    cs = circular_reinforced_cross_section()
-    stirrup = cs.add_stirrup_along_perimeter(
-        diameter=10,
-        distance=200,
-        material=cs.get_present_steel_materials()[0],
-    )
-
-    fig = cs.plot()
-    plt.show()
