@@ -241,14 +241,22 @@ class CircularCrossSectionPlotter:
             Index of the axes to plot on. Default is 0.
         """
         for stirrup in self.cross_section.stirrups:
+            # add stirrup to the plot by adding two circles (one for "the stirrup plus inner circle" and one minus inner circle)
+            # coded this way as the circle patch does not have a "donut" option and linewidth is in pixels and not in mm
             self.axes[axes_i].add_patch(
                 mplpatches.Circle(
                     xy=(0, 0),
-                    radius=stirrup.geometry.exterior.coords[0][0],
+                    radius=self.cross_section.diameter / 2 - self.cross_section.covers.cover,
                     edgecolor=STIRRUP_COLOR,
                     facecolor=STIRRUP_COLOR,
-                    fill=True,
-                    lw=1,
+                )
+            )
+            self.axes[axes_i].add_patch(
+                mplpatches.Circle(
+                    xy=(0, 0),
+                    radius=self.cross_section.diameter / 2 - self.cross_section.covers.cover - stirrup.diameter,
+                    edgecolor=RCS_CROSS_SECTION_COLOR,
+                    facecolor=RCS_CROSS_SECTION_COLOR,
                 )
             )
 
