@@ -40,7 +40,7 @@ class ReinforcementConfiguration(ABC):
         """Each reinforcement configuration must have a resulting area."""
 
     @abstractmethod
-    def to_rebars(self, line: LineString) -> list[Rebar]:
+    def to_rebars(self, line: LineString, end_at_start: bool = False) -> list[Rebar]:
         """Convert the reinforcement configuration to a list of rebars.
 
         Parameters
@@ -48,6 +48,10 @@ class ReinforcementConfiguration(ABC):
         line : LineString
             Representing the path of the reinforcement in the section.
             Start of the line defines the first rebar of the configuration, end of the line defines the last rebar.
+        end_at_start : bool, optional
+            If True, the reinforcement configuration ends at the start of the line.
+            If False, the reinforcement configuration ends at another point.
+            Default is False.
 
         Returns
         -------
@@ -91,7 +95,7 @@ class ReinforcementByDistance(ReinforcementConfiguration):
         """Number of rebars per meter [1/m]."""
         return 1.0 * M_TO_MM / self.center_to_center
 
-    def to_rebars(self, line: LineString) -> list[Rebar]:
+    def to_rebars(self, line: LineString, end_at_start: bool = False) -> list[Rebar]:
         """Convert the reinforcement configuration to a list of rebars.
 
         Parameters
@@ -99,6 +103,10 @@ class ReinforcementByDistance(ReinforcementConfiguration):
         line : LineString
             Representing the path of the reinforcement in the section.
             Start of the line defines the first rebar of the configuration, end of the line defines the last rebar.
+        end_at_start : bool, optional
+            If True, the reinforcement configuration ends at the start of the line.
+            If False, the reinforcement configuration ends at another point.
+            default is False.
 
         Returns
         -------
@@ -109,7 +117,7 @@ class ReinforcementByDistance(ReinforcementConfiguration):
         rebars = []
 
         # define the number of rebars based on the length of the line, minimum 1
-        n_rebars = line.length / self.center_to_center
+        n_rebars = line.length / self.center_to_center - 1 if end_at_start else line.length / self.center_to_center
         n_rebars_applied = max(int(n_rebars), 1)
 
         # calculate the space between the rebars
@@ -150,9 +158,14 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
     ----------
     n : int
         Amount of longitudinal bars.
+    end_at_start : bool, optional
+        If True, the reinforcement configuration ends at the start of the line.
+        If False, the reinforcement configuration ends at another point.
+        Default is False.
     """
 
     n: int
+    end_at_start: bool = False
 
     def __post_init__(self) -> None:
         """Post initialization of the reinforcement configuration."""
@@ -177,7 +190,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
         """Area of the reinforcement configuration [mm²]."""
         return 0.25 * np.pi * self.diameter**2 * self.n
 
-    def to_rebars(self, line: LineString) -> list[Rebar]:
+    def to_rebars(self, line: LineString, end_at_start: bool = False) -> list[Rebar]:
         """Convert the reinforcement configuration to a list of rebars.
 
         Parameters
@@ -185,15 +198,20 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
         line : LineString
             Representing the path of the reinforcement in the section.
             Start of the line defines the first rebar of the configuration, end of the line defines the last rebar.
+        end_at_start : bool, optional
+            If True, the reinforcement configuration ends at the start of the line.
+            If False, the reinforcement configuration ends at another point.
+            default is False.
 
         Returns
         -------
         List[Rebar]
             List of Rebar objects.
+
         """
         rebars = []
         for index in range(self.n):
-            distance = index * line.length / (self.n)
+            distance = index * line.length / (self.n if end_at_start else self.n - 1)
             point = line.interpolate(distance)
             rebars.append(
                 Rebar(

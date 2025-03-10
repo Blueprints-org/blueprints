@@ -150,7 +150,8 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         rebar_positions = [(radius * cos(pi / 2 - angle), radius * sin(pi / 2 - angle)) for angle in angles]
 
         return self.add_reinforcement_configuration(
-            line=Polygon(rebar_positions).exterior, configuration=ReinforcementByQuantity(diameter=diameter, material=material, n=n)
+            line=Polygon(rebar_positions).exterior,
+            configuration=ReinforcementByQuantity(diameter=diameter, material=material, n=n, end_at_start=True),
         )
 
     def plot(self, *args, **kwargs) -> plt.Figure:
@@ -166,3 +167,30 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Additional keyword arguments passed to the plotter.
         """
         return self.plotter.plot(*args, **kwargs)
+
+
+if __name__ == "__main__":
+    # Example of the usage of the CircularReinforcedCrossSection
+    from blueprints.materials.concrete import ConcreteMaterial
+    from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+    from blueprints.structural_sections.concrete.covers import CoversCircular
+    from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
+
+    # Define the concrete material
+    concrete = ConcreteMaterial()
+
+    # Define the reinforcement steel material
+    reinforcement_steel = ReinforcementSteelMaterial()
+
+    # Define the cross-section
+    cross_section = CircularReinforcedCrossSection(diameter=300, concrete_material=concrete)
+
+    # Add stirrups
+    cross_section.add_stirrup_along_perimeter(diameter=16, distance=100, material=reinforcement_steel)
+
+    # Add longitudinal reinforcement
+    cross_section.add_longitudinal_reinforcement_by_quantity(n=8, diameter=16, material=reinforcement_steel)
+
+    # Plot the cross-section
+    cross_section.plot()
+    plt.show()
