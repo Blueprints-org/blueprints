@@ -347,10 +347,10 @@ if __name__ == "__main__":
     reinforcement_steel = ReinforcementSteelMaterial()
 
     # Define the cross-section
-    cross_section = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=concrete)
+    cross_section = RectangularReinforcedCrossSection(width=500, height=500, concrete_material=concrete)
 
     # Add stirrups along edges
-    cross_section.add_stirrup_along_edges(diameter=16, distance=100, material=reinforcement_steel)
+    cross_section.add_stirrup_along_edges(diameter=32, distance=100, material=reinforcement_steel)
 
     # Add longitudinal reinforcement
     cross_section.add_longitudinal_reinforcement_by_quantity(n=8, diameter=16, material=reinforcement_steel, edge="upper")

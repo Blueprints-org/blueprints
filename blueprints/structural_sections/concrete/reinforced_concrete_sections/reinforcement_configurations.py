@@ -26,11 +26,16 @@ class ReinforcementConfiguration(ABC):
         If True, the reinforcement configuration ends at the start of the line.
         If False, the reinforcement configuration ends at another point.
         Default is False.
+    start_on_half_increment: bool, optional
+        If True, the circle is rotated by half the increment.
+        If False, the rebar is placed at the top of the cross-section.
+        Default is False.
     """
 
     diameter: MM
     material: ReinforcementSteelMaterial
     end_at_start: bool = False
+    start_on_half_increment: bool = False
 
     def __post_init__(self) -> None:
         """Post initialization of the reinforcement configuration."""
@@ -155,6 +160,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
     ----------
     n : int
         Amount of longitudinal bars.
+
     """
 
     n: int
@@ -198,8 +204,10 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
 
         """
         rebars = []
+        start = line.length / self.n / 2 if self.start_on_half_increment else 0
+
         for index in range(self.n):
-            distance = index * line.length / (self.n if self.end_at_start else self.n - 1)
+            distance = start + index * line.length / (self.n if self.end_at_start else self.n - 1)
             point = line.interpolate(distance)
             rebars.append(
                 Rebar(
