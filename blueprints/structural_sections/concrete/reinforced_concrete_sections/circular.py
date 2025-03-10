@@ -4,7 +4,7 @@
 
 from matplotlib import pyplot as plt
 from numpy import cos, pi, sin
-from shapely import Polygon
+from shapely import LinearRing, Polygon
 
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
@@ -115,6 +115,38 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             )
         )
 
+    def _get_reference_circle(
+        self,
+        diameter: MM,
+        cover: MM | None = None,
+    ) -> LinearRing:
+        """Get the reference circle for the cross-section.
+
+        Parameters
+        ----------
+        diameter: MM
+            Diameter of the rebars [mm].
+        cover: MM, optional
+            Cover of the rebars [mm]. If not provided, the default cover is used.
+
+        Returns
+        -------
+        LinearRing
+            Reference circle for the cross-section.
+        """
+        # calculate the effective radius for the rebars
+        cover = cover if cover is not None else self.covers.cover
+
+        # check if there is a stirrup configuration present to adjust the radius
+        max_stirrups_diameter = 0.0
+        if self._stirrups:
+            max_stirrups_diameter = max([stirrup.diameter for stirrup in self._stirrups])
+
+        radius = self.diameter / 2 - cover - max_stirrups_diameter - (diameter / 2)
+
+        # create the circle using shapely's LinearRing
+        return LinearRing([(radius * cos(angle), radius * sin(angle)) for angle in [2 * pi * i / 100 for i in range(100)]])
+
     def add_longitudinal_reinforcement_by_quantity(
         self,
         n: int,
@@ -135,22 +167,11 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         cover: MM, optional
             Cover of the rebars [mm]. If not provided, the default cover is used.
         """
-        # calculate the radius for the placement of the rebars
-        cover = cover if cover is not None else self.covers.cover
-        # check if there is a stirrup configuration present and adjust the cover
-        max_stirrups_diameter = 0.0
-        if self._stirrups:
-            max_stirrups_diameter = max([stirrup.diameter for stirrup in self._stirrups])
-
-        # calculate the effective radius for the rebars based on the stirrups, the cover, and the diameter of the stirrups
-        radius = self.diameter / 2 - cover - (diameter / 2) - max_stirrups_diameter
-
-        # calculate the positions of the rebars
-        angles = [2 * pi * i / n for i in range(n)]
-        rebar_positions = [(radius * cos(pi / 2 - angle), radius * sin(pi / 2 - angle)) for angle in angles]
+        circle = self._get_reference_circle(diameter=diameter, cover=cover)
+        assert circle
 
         return self.add_reinforcement_configuration(
-            line=Polygon(rebar_positions).exterior,
+            line=self._get_reference_circle(diameter=diameter, cover=cover),
             configuration=ReinforcementByQuantity(diameter=diameter, material=material, n=n, end_at_start=True),
         )
 
@@ -182,14 +203,16 @@ if __name__ == "__main__":
     # Define the reinforcement steel material
     reinforcement_steel = ReinforcementSteelMaterial()
 
+    covers = CoversCircular(25)
+
     # Define the cross-section
-    cross_section = CircularReinforcedCrossSection(diameter=300, concrete_material=concrete)
+    cross_section = CircularReinforcedCrossSection(diameter=400, concrete_material=concrete, covers=covers)
 
     # Add stirrups
-    cross_section.add_stirrup_along_perimeter(diameter=16, distance=100, material=reinforcement_steel)
+    cross_section.add_stirrup_along_perimeter(diameter=25, distance=100, material=reinforcement_steel)
 
     # Add longitudinal reinforcement
-    cross_section.add_longitudinal_reinforcement_by_quantity(n=8, diameter=16, material=reinforcement_steel)
+    cross_section.add_longitudinal_reinforcement_by_quantity(n=8, diameter=25, material=reinforcement_steel)
 
     # Plot the cross-section
     cross_section.plot()
