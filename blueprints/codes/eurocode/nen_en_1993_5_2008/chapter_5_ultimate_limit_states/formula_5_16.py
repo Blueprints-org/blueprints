@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
-from blueprints.validations import raise_if_less_or_equal_to_zero
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form5Dot16PlasticDesignResistance(Formula):
@@ -44,7 +44,8 @@ class Form5Dot16PlasticDesignResistance(Formula):
         gamma_m0: DIMENSIONLESS,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(a=a, f_y=f_y, gamma_m0=gamma_m0)
+        raise_if_less_or_equal_to_zero(gamma_m0=gamma_m0)
+        raise_if_negative(f_y=f_y, a=a)
 
         return (a * f_y) / gamma_m0
 

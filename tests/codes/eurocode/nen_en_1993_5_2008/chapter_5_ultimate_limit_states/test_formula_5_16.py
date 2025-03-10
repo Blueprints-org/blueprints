@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_5_2008.chapter_5_ultimate_limit_states.formula_5_16 import Form5Dot16PlasticDesignResistance
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm5Dot16PlasticDesignResistance:
@@ -35,7 +35,7 @@ class TestForm5Dot16PlasticDesignResistance:
     )
     def test_raise_error_when_invalid_values_are_given(self, a: float, f_y: float, gamma_m0: float) -> None:
         """Test invalid values."""
-        with pytest.raises(LessOrEqualToZeroError):
+        with pytest.raises((LessOrEqualToZeroError, NegativeValueError)):
             Form5Dot16PlasticDesignResistance(a=a, f_y=f_y, gamma_m0=gamma_m0)
 
     @pytest.mark.parametrize(
