@@ -332,29 +332,3 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             Additional keyword arguments passed to the plotter.
         """
         return self.plotter.plot(*args, **kwargs)
-
-
-if __name__ == "__main__":
-    # Example of the usage of the RectangularReinforcedCrossSection
-    from blueprints.materials.concrete import ConcreteMaterial
-    from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-    from blueprints.structural_sections.concrete.covers import CoversRectangular
-
-    # Define the concrete material
-    concrete = ConcreteMaterial()
-
-    # Define the reinforcement steel material
-    reinforcement_steel = ReinforcementSteelMaterial()
-
-    # Define the cross-section
-    cross_section = RectangularReinforcedCrossSection(width=500, height=500, concrete_material=concrete)
-
-    # Add stirrups along edges
-    cross_section.add_stirrup_along_edges(diameter=32, distance=100, material=reinforcement_steel)
-
-    # Add longitudinal reinforcement
-    cross_section.add_longitudinal_reinforcement_by_quantity(n=8, diameter=16, material=reinforcement_steel, edge="upper")
-
-    # Plot the cross-section
-    cross_section.plot()
-    plt.show()
