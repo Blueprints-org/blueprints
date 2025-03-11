@@ -10,10 +10,6 @@ STEEL_YOUNG_MODULUS = 210_000.0  # [MPa]
 STEEL_POISSON_RATIO = 0.3  # [-]
 STEEL_THERMAL_COEFFICIENT = 1.2e-5  # [1/°C]
 
-# define error messages for yield strength and ultimate strength
-ERROR40 = ValueError("Yield strength not defined for thickness > 40 mm")
-ERROR80 = ValueError("Yield strength not defined for thickness > 80 mm")
-
 
 class SteelStrengthClass(Enum):
     """Enumeration of steel strength classes based on standard tables, based on Table 3.1 from NEN-EN 1993-1-1."""
@@ -180,7 +176,7 @@ class SteelMaterial:
         """
         return self.e_modulus / (2 * (1 + self.poisson_ratio))
 
-    def yield_strength(self) -> MPA:  # noqa: C901, PLR0911, PLR0912, PLR0915
+    def yield_strength(self) -> MPA:
         """Yield strength of the steel material for steel.
 
         Returns
@@ -191,139 +187,9 @@ class SteelMaterial:
         if self.custom_yield_strength:
             return float(self.custom_yield_strength)
 
-        match self.steel_class:
-            case SteelStrengthClass.EN_10025_2_S235:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 235.0 if self.thickness <= 40 else 215.0
-            case SteelStrengthClass.EN_10025_2_S275:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 275.0 if self.thickness <= 40 else 255.0
-            case SteelStrengthClass.EN_10025_2_S355:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 355.0 if self.thickness <= 40 else 335.0
-            case SteelStrengthClass.EN_10025_2_S450:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 440.0 if self.thickness <= 40 else 410.0
-            case SteelStrengthClass.EN_10025_3_S275_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 275.0 if self.thickness <= 40 else 255.0
-            case SteelStrengthClass.EN_10025_3_S355_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 355.0 if self.thickness <= 40 else 335.0
-            case SteelStrengthClass.EN_10025_3_S420_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 420.0 if self.thickness <= 40 else 390.0
-            case SteelStrengthClass.EN_10025_3_S460_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 460.0 if self.thickness <= 40 else 430.0
-            case SteelStrengthClass.EN_10025_4_S275_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 275.0 if self.thickness <= 40 else 255.0
-            case SteelStrengthClass.EN_10025_4_S355_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 355.0 if self.thickness <= 40 else 335.0
-            case SteelStrengthClass.EN_10025_4_S420_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 420.0 if self.thickness <= 40 else 390.0
-            case SteelStrengthClass.EN_10025_4_S460_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 460.0 if self.thickness <= 40 else 430.0
-            case SteelStrengthClass.EN_10025_5_S235_W:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 235.0 if self.thickness <= 40 else 215.0
-            case SteelStrengthClass.EN_10025_5_S355_W:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 355.0 if self.thickness <= 40 else 335.0
-            case SteelStrengthClass.EN_10025_6_S460_Q_QL_QL1:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 460.0 if self.thickness <= 40 else 440.0
-            case SteelStrengthClass.EN_10210_1_S235_H:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 235.0 if self.thickness <= 40 else 215.0
-            case SteelStrengthClass.EN_10210_1_S275_H:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 275.0 if self.thickness <= 40 else 255.0
-            case SteelStrengthClass.EN_10210_1_S355_H:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 355.0 if self.thickness <= 40 else 335.0
-            case SteelStrengthClass.EN_10210_1_S275_NH_NLH:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 275.0 if self.thickness <= 40 else 255.0
-            case SteelStrengthClass.EN_10210_1_S355_NH_NLH:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 355.0 if self.thickness <= 40 else 335.0
-            case SteelStrengthClass.EN_10210_1_S420_NH_NHL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 420.0 if self.thickness <= 40 else 390.0
-            case SteelStrengthClass.EN_10210_1_S460_NH_NLH:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 460.0 if self.thickness <= 40 else 430.0
-            case SteelStrengthClass.EN_10219_1_S235_H:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 235.0
-            case SteelStrengthClass.EN_10219_1_S275_H:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 275.0
-            case SteelStrengthClass.EN_10219_1_S355_H:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 355.0
-            case SteelStrengthClass.EN_10219_1_S275_NH_NLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 275.0
-            case SteelStrengthClass.EN_10219_1_S355_NH_NLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 355.0
-            case SteelStrengthClass.EN_10219_1_S460_NH_NLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 460.0
-            case SteelStrengthClass.EN_10219_1_S275_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 275.0
-            case SteelStrengthClass.EN_10219_1_S355_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 355.0
-            case SteelStrengthClass.EN_10219_1_S420_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 420.0
-            case SteelStrengthClass.EN_10219_1_S460_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 460.0
-            case _:
-                raise ValueError("Unknown steel strength class")
+        return self._get_strength(self.steel_class, self.thickness, "yield")
 
-    def ultimate_strength(self) -> MPA:  # noqa: C901, PLR0911, PLR0912, PLR0915
+    def ultimate_strength(self) -> MPA:
         """Ultimate strength of the steel material for steel.
 
         Returns
@@ -334,134 +200,81 @@ class SteelMaterial:
         if self.custom_ultimate_strength:
             return float(self.custom_ultimate_strength)
 
-        match self.steel_class:
-            case SteelStrengthClass.EN_10025_2_S235:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 360.0 if self.thickness <= 40 else 360.0  # noqa: RUF034
-            case SteelStrengthClass.EN_10025_2_S275:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 430.0 if self.thickness <= 40 else 410.0
-            case SteelStrengthClass.EN_10025_2_S355:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 510.0 if self.thickness <= 40 else 470.0
-            case SteelStrengthClass.EN_10025_2_S450:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 550.0 if self.thickness <= 40 else 550.0  # noqa: RUF034
-            case SteelStrengthClass.EN_10025_3_S275_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 390.0 if self.thickness <= 40 else 370.0
-            case SteelStrengthClass.EN_10025_3_S355_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 490.0 if self.thickness <= 40 else 470.0
-            case SteelStrengthClass.EN_10025_3_S420_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 520.0 if self.thickness <= 40 else 520.0  # noqa: RUF034
-            case SteelStrengthClass.EN_10025_3_S460_N_NL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 540.0 if self.thickness <= 40 else 540.0  # noqa: RUF034
-            case SteelStrengthClass.EN_10025_4_S275_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 370.0 if self.thickness <= 40 else 360.0
-            case SteelStrengthClass.EN_10025_4_S355_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 470.0 if self.thickness <= 40 else 450.0
-            case SteelStrengthClass.EN_10025_4_S420_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 520.0 if self.thickness <= 40 else 500.0
-            case SteelStrengthClass.EN_10025_4_S460_M_ML:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 540.0 if self.thickness <= 40 else 530.0
-            case SteelStrengthClass.EN_10025_5_S235_W:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 360.0 if self.thickness <= 40 else 340.0
-            case SteelStrengthClass.EN_10025_5_S355_W:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 510.0 if self.thickness <= 40 else 490.0
-            case SteelStrengthClass.EN_10025_6_S460_Q_QL_QL1:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 570.0 if self.thickness <= 40 else 550.0
-            case SteelStrengthClass.EN_10210_1_S235_H:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 360.0 if self.thickness <= 40 else 340.0
-            case SteelStrengthClass.EN_10210_1_S275_H:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 430.0 if self.thickness <= 40 else 410.0
-            case SteelStrengthClass.EN_10210_1_S355_H:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 510.0 if self.thickness <= 40 else 490.0
-            case SteelStrengthClass.EN_10210_1_S275_NH_NLH:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 390.0 if self.thickness <= 40 else 370.0
-            case SteelStrengthClass.EN_10210_1_S355_NH_NLH:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 490.0 if self.thickness <= 40 else 470.0
-            case SteelStrengthClass.EN_10210_1_S420_NH_NHL:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 540.0 if self.thickness <= 40 else 520.0
-            case SteelStrengthClass.EN_10210_1_S460_NH_NLH:
-                if self.thickness > 80:
-                    raise ERROR80
-                return 560.0 if self.thickness <= 40 else 550.0
-            case SteelStrengthClass.EN_10219_1_S235_H:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 360.0
-            case SteelStrengthClass.EN_10219_1_S275_H:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 430.0
-            case SteelStrengthClass.EN_10219_1_S355_H:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 510.0
-            case SteelStrengthClass.EN_10219_1_S275_NH_NLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 370.0
-            case SteelStrengthClass.EN_10219_1_S355_NH_NLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 470.0
-            case SteelStrengthClass.EN_10219_1_S460_NH_NLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 550.0
-            case SteelStrengthClass.EN_10219_1_S275_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 360.0
-            case SteelStrengthClass.EN_10219_1_S355_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 470.0
-            case SteelStrengthClass.EN_10219_1_S420_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 500.0
-            case SteelStrengthClass.EN_10219_1_S460_MH_MLH:
-                if self.thickness > 40:
-                    raise ERROR40
-                return 530.0
-            case _:
-                raise ValueError("Unknown steel strength class")
+        return self._get_strength(self.steel_class, self.thickness, "ultimate")
+
+    def _get_strength(self, steel_class: SteelStrengthClass, thickness: MM, strength_type: str) -> MPA:
+        """Helper method to get the strength of the steel material.
+
+        Parameters
+        ----------
+        steel_class: SteelStrengthClass
+            The steel strength class
+        thickness: MM
+            The thickness of the steel material
+        strength_type: str
+            The type of strength to retrieve ("yield" or "ultimate")
+
+        Returns
+        -------
+        MPA
+            The strength of the material
+        """
+        strength_data = {
+            SteelStrengthClass.EN_10025_2_S235: (235.0, 360.0, 215.0, 360.0),
+            SteelStrengthClass.EN_10025_2_S275: (275.0, 430.0, 255.0, 410.0),
+            SteelStrengthClass.EN_10025_2_S355: (355.0, 510.0, 335.0, 470.0),
+            SteelStrengthClass.EN_10025_2_S450: (440.0, 550.0, 410.0, 550.0),
+            SteelStrengthClass.EN_10025_3_S275_N_NL: (275.0, 390.0, 255.0, 370.0),
+            SteelStrengthClass.EN_10025_3_S355_N_NL: (355.0, 490.0, 335.0, 470.0),
+            SteelStrengthClass.EN_10025_3_S420_N_NL: (420.0, 520.0, 390.0, 520.0),
+            SteelStrengthClass.EN_10025_3_S460_N_NL: (460.0, 540.0, 430.0, 540.0),
+            SteelStrengthClass.EN_10025_4_S275_M_ML: (275.0, 370.0, 255.0, 360.0),
+            SteelStrengthClass.EN_10025_4_S355_M_ML: (355.0, 470.0, 335.0, 450.0),
+            SteelStrengthClass.EN_10025_4_S420_M_ML: (420.0, 520.0, 390.0, 500.0),
+            SteelStrengthClass.EN_10025_4_S460_M_ML: (460.0, 540.0, 430.0, 530.0),
+            SteelStrengthClass.EN_10025_5_S235_W: (235.0, 360.0, 215.0, 340.0),
+            SteelStrengthClass.EN_10025_5_S355_W: (355.0, 510.0, 335.0, 490.0),
+            SteelStrengthClass.EN_10025_6_S460_Q_QL_QL1: (460.0, 570.0, 440.0, 550.0),
+            SteelStrengthClass.EN_10210_1_S235_H: (235.0, 360.0, 215.0, 340.0),
+            SteelStrengthClass.EN_10210_1_S275_H: (275.0, 430.0, 255.0, 410.0),
+            SteelStrengthClass.EN_10210_1_S355_H: (355.0, 510.0, 335.0, 490.0),
+            SteelStrengthClass.EN_10210_1_S275_NH_NLH: (275.0, 390.0, 255.0, 370.0),
+            SteelStrengthClass.EN_10210_1_S355_NH_NLH: (355.0, 490.0, 335.0, 470.0),
+            SteelStrengthClass.EN_10210_1_S420_NH_NHL: (420.0, 540.0, 390.0, 520.0),
+            SteelStrengthClass.EN_10210_1_S460_NH_NLH: (460.0, 560.0, 430.0, 550.0),
+            SteelStrengthClass.EN_10219_1_S235_H: (235.0, 360.0, None, None),
+            SteelStrengthClass.EN_10219_1_S275_H: (275.0, 430.0, None, None),
+            SteelStrengthClass.EN_10219_1_S355_H: (355.0, 510.0, None, None),
+            SteelStrengthClass.EN_10219_1_S275_NH_NLH: (275.0, 370.0, None, None),
+            SteelStrengthClass.EN_10219_1_S355_NH_NLH: (355.0, 470.0, None, None),
+            SteelStrengthClass.EN_10219_1_S460_NH_NLH: (460.0, 550.0, None, None),
+            SteelStrengthClass.EN_10219_1_S275_MH_MLH: (275.0, 360.0, None, None),
+            SteelStrengthClass.EN_10219_1_S355_MH_MLH: (355.0, 470.0, None, None),
+            SteelStrengthClass.EN_10219_1_S420_MH_MLH: (420.0, 500.0, None, None),
+            SteelStrengthClass.EN_10219_1_S460_MH_MLH: (460.0, 530.0, None, None),
+        }
+
+        if steel_class not in strength_data:
+            raise ValueError("Unknown steel strength class")
+
+        yield_strength, ultimate_strength, yield_strength_above_40, ultimate_strength_above_40 = strength_data[steel_class]
+
+        if strength_type == "yield":
+            if thickness > 80:
+                raise ValueError("Yield strength not defined for thickness > 80 mm")
+            if thickness > 40 and yield_strength_above_40 is None:
+                raise ValueError("Yield strength not defined for thickness > 40 mm")
+            if thickness > 40 and yield_strength_above_40 is not None:
+                return yield_strength_above_40
+            return yield_strength
+
+        if strength_type == "ultimate":
+            if thickness > 80:
+                raise ValueError("Yield strength not defined for thickness > 80 mm")
+            if thickness > 40 and ultimate_strength_above_40 is None:
+                raise ValueError("Yield strength not defined for thickness > 40 mm")
+            if thickness > 40 and ultimate_strength_above_40 is not None:
+                return ultimate_strength_above_40
+            return ultimate_strength
+
+        raise ValueError("Unknown strength type")
