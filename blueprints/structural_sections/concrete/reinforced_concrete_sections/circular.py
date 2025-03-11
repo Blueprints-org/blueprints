@@ -120,6 +120,8 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         self,
         diameter: MM,
         cover: MM | None = None,
+        end_at_start: bool = False,  # ruff: noqa: PLR0913
+        start_on_half_increment: bool = False,  # ruff: noqa: PLR0913
     ) -> LineString:
         """Get the reference circle for the cross-section.
 
@@ -129,6 +131,14 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Diameter of the rebars [mm].
         cover: MM, optional
             Cover of the rebars [mm]. If not provided, the default cover is used.
+        end_at_start: bool, optional
+            If True, the circle is rotated by half the increment.
+            If False, the rebar is placed at the top of the cross-section.
+            Default is False.
+        start_on_half_increment: bool, optional
+            If True, the circle is rotated by half the increment.
+            If False, the rebar is placed at the top of the cross-section.
+            Default is False.
 
         Returns
         -------
@@ -137,6 +147,8 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         """
         # calculate the effective radius for the rebars
         cover = cover if cover is not None else self.covers.cover
+
+        end_at_start, start_on_half_increment
 
         # check if there is a stirrup configuration present to adjust the radius
         max_stirrups_diameter = 0.0
@@ -178,13 +190,14 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         assert line
 
         return self.add_reinforcement_configuration(
-            line=self._get_reference_line(diameter=diameter, cover=cover),
+            line=self._get_reference_line,
             configuration=ReinforcementByQuantity(
                 diameter=diameter, material=material, n=n, end_at_start=True, start_on_half_increment=start_on_half_increment
             ),
             cover=cover,
             start_on_half_increment=start_on_half_increment,
             diameter=diameter,
+            end_at_start=True,
         )
 
     def plot(self, *args, **kwargs) -> plt.Figure:
@@ -200,38 +213,3 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Additional keyword arguments passed to the plotter.
         """
         return self.plotter.plot(*args, **kwargs)
-
-
-if __name__ == "__main__":
-    # Example of the usage of the CircularReinforcedCrossSection
-    from blueprints.materials.concrete import ConcreteMaterial
-    from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-    from blueprints.structural_sections.concrete.covers import CoversCircular
-    from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
-
-    # Define the concrete material
-    concrete = ConcreteMaterial()
-
-    # Define the reinforcement steel material
-    reinforcement_steel = ReinforcementSteelMaterial()
-
-    covers = CoversCircular(25)
-
-    # Define the cross-section
-    cross_section = CircularReinforcedCrossSection(diameter=400, concrete_material=concrete, covers=covers)
-
-    # Add longitudinal reinforcement
-    cross_section.add_longitudinal_reinforcement_by_quantity(n=3, diameter=25, material=reinforcement_steel, start_on_half_increment=True)
-
-    # Add longitudinal reinforcement
-    cross_section.add_longitudinal_reinforcement_by_quantity(n=3, diameter=10, material=reinforcement_steel, start_on_half_increment=False)
-
-    # Add stirrups
-    cross_section.add_stirrup_along_perimeter(diameter=25, distance=200, material=reinforcement_steel)
-
-    # Add stirrups
-    cross_section.add_stirrup_along_perimeter(diameter=10, distance=200, material=reinforcement_steel)
-
-    # Plot the cross-section
-    cross_section.plot()
-    plt.show()
