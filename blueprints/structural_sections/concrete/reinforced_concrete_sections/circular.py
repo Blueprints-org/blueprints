@@ -146,9 +146,8 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Reference circle for the cross-section.
         """
         # calculate the effective radius for the rebars
-        cover = cover if cover is not None else self.covers.cover
-
         end_at_start, start_on_half_increment
+        cover = cover if cover is not None else self.covers.cover
 
         # check if there is a stirrup configuration present to adjust the radius
         max_stirrups_diameter = 0.0
