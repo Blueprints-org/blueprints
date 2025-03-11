@@ -46,12 +46,12 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
             raise TypeError("The parameter 'nominal_max_aggregate_size_greater_than_32_mm' must be a boolean.")
         return diameter + 5 * nominal_max_aggregate_size_greater_than_32_mm
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 0) -> LatexFormula:
         """Returns LatexFormula object for table 4.2."""
         suffix = " + 5" if self.nominal_max_aggregate_size_greater_than_32_mm else ""
         return LatexFormula(
             return_symbol=r"c_{min,b}",
-            result=f"{self:.0f}",
+            result=f"{self:.{n}f}",
             equation=r"(equivalent) rebar diameter" + suffix,
             numeric_equation=f"{self.diameter}" + suffix,
             comparison_operator_label="=",

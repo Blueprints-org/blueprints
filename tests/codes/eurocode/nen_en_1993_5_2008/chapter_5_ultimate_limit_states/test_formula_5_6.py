@@ -44,12 +44,12 @@ class TestForm5Dot6ProjectedShearArea:
         [
             (
                 "complete",
-                r"A_v = t_w \left(h - t_f \right) = 10 \cdot \left(500 - 20 \right) = 4800.0",
+                r"A_v = t_w \left(h - t_f \right) = 10 \cdot \left(500 - 20 \right) = 4800.00",
             ),
-            ("short", r"A_v = 4800.0"),
+            ("short", r"A_v = 4800.00"),
             (
                 "string",
-                r"A_v = t_w \left(h - t_f \right) = 10 \cdot \left(500 - 20 \right) = 4800.0",
+                r"A_v = t_w \left(h - t_f \right) = 10 \cdot \left(500 - 20 \right) = 4800.00",
             ),
         ],
     )

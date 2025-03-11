@@ -59,9 +59,9 @@ class TestForm5Dot3bTransverseForceBracedMembers:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"H_{i} = 2\theta_{i}N = 2\cdot0.003\cdot5.00 = 0.030"),
+            ("complete", r"H_{i} = 2\theta_{i}N = 2\cdot0.003\cdot5.000 = 0.030"),
             ("short", r"H_{i} = 0.030"),
-            ("string", r"H_{i} = 2\theta_{i}N = 2\cdot0.003\cdot5.00 = 0.030"),
+            ("string", r"H_{i} = 2\theta_{i}N = 2\cdot0.003\cdot5.000 = 0.030"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

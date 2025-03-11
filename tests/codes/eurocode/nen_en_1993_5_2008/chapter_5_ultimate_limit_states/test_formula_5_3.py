@@ -51,12 +51,12 @@ class TestForm5Dot3DesignMomentResistanceClass3:
         [
             (
                 "complete",
-                r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000000 = 0.0025",
+                r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000000 = 0.00",
             ),
-            ("short", r"M_{c,Rd} = 0.0025"),
+            ("short", r"M_{c,Rd} = 0.00"),
             (
                 "string",
-                r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000000 = 0.0025",
+                r"M_{c,Rd} = \beta_B W_{el} f_y / \gamma_{M0} = 0.5 \cdot 20 \cdot 200 / 0.8 / 1000000 = 0.00",
             ),
         ],
     )

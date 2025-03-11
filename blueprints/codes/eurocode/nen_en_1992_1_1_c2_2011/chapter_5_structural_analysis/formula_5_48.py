@@ -49,13 +49,13 @@ class Form5Dot48LowerCharacteristicPrestressingValue(Formula):
 
         return r_inf * p_m_t
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.48."""
         return LatexFormula(
             return_symbol=r"P_{k,inf}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"r_{inf} \cdot P_{m,t}(x)",
-            numeric_equation=rf"{self.r_inf:.3f} \cdot {self.p_m_t:.3f}",
+            numeric_equation=rf"{self.r_inf:.{n}f} \cdot {self.p_m_t:.{n}f}",
             comparison_operator_label="=",
             unit="kN",
         )

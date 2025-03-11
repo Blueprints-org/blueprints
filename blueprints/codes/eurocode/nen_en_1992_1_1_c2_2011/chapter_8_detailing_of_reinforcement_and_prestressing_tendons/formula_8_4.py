@@ -122,14 +122,14 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
         return max(alpha_1 * alpha_4 * product_alphas_2_3_5 * l_b_rqd, l_b_min)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
         return LatexFormula(
             return_symbol=r"l_{bd}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=latex_max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}", r"l_{b,min}"),
             numeric_equation=latex_max_curly_brackets(
-                rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_4} \cdot {self.alpha_5} \cdot {self.l_b_rqd:.2f}",
+                rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_4} \cdot {self.alpha_5} \cdot {self.l_b_rqd:.{n}f}",
                 self.l_b_min,
             ),
             comparison_operator_label="=",

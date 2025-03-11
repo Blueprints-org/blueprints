@@ -48,8 +48,8 @@ class TestSubForm8Dot8nFunctionY:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"y = 0.015 + 0.14 \cdot e^{-0.18 \cdot x} = 0.015 + 0.14 \cdot e^{-0.18 \cdot 8.50} = 0.045"),
-            ("short", r"y = 0.045"),
+            ("complete", r"y = 0.015 + 0.14 \cdot e^{-0.18 \cdot x} = 0.015 + 0.14 \cdot e^{-0.18 \cdot 8.50} = 0.05"),
+            ("short", r"y = 0.05"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

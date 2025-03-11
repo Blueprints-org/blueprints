@@ -35,11 +35,11 @@ class Form5Dot20DesignModulusElasticity(Formula):
         raise_if_less_or_equal_to_zero(gamma_ce=gamma_ce)
         return e_cm / gamma_ce
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.20."""
         return LatexFormula(
             return_symbol=r"E_{cd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{E_{cm}}{\gamma_{CE}}",
             numeric_equation=rf"\frac{{{self.e_cm}}}{{{self.gamma_ce}}}",
             comparison_operator_label="=",

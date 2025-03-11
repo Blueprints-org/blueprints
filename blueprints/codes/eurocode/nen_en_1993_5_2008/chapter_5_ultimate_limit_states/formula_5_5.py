@@ -50,11 +50,11 @@ class Form5Dot5PlasticShearResistance(Formula):
         raise_if_less_or_equal_to_zero(a_v=a_v, f_y=f_y, gamma_m_0=gamma_m_0)
         return (a_v * f_y / (np.sqrt(3) * gamma_m_0)) * N_TO_KN
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.5."""
         return LatexFormula(
             return_symbol=r"V_{pl,Rd}",
-            result=str(self),
+            result=f"{self:.{n}f}",
             equation=latex_fraction(
                 numerator="A_v f_y",
                 denominator=r"\sqrt{3} \gamma_{M0}",

@@ -56,12 +56,12 @@ class Form3Dot6CreepDeformationOfConcrete(Formula):
             raise ValueError(f"Negative e_c: {e_c}. e_c cannot be negative")
         return phi_inf_t0 * sigma_c / e_c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.6."""
         return LatexFormula(
             return_symbol=r"\epsilon_{cc}(\infty, t_0)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\varphi(\infty, t_0) \cdot ( \sigma_c / E_c )",
-            numeric_equation=rf"{self.phi_inf_t0:.3f} \cdot ( {self.sigma_c:.3f} / {self.e_c:.3f} )",
+            numeric_equation=rf"{self.phi_inf_t0:.{n}f} \cdot ( {self.sigma_c:.{n}f} / {self.e_c:.{n}f} )",
             comparison_operator_label="=",
         )
