@@ -60,6 +60,14 @@ class SteelStrengthClass(Enum):
     EN_10219_1_S420_MH_MLH = "EN 10219-1 S 420 MH/MLH"
     EN_10219_1_S460_MH_MLH = "EN 10219-1 S 460 MH/MLH"
 
+    # data from NEN-EN 10248/1
+    EN_10248_1_S240_GP = "NEN-EN 10248/1 S 240 GP"
+    EN_10248_1_S270_GP = "NEN-EN 10248/1 S 270 GP"
+    EN_10248_1_S320_GP = "NEN-EN 10248/1 S 320 GP"
+    EN_10248_1_S355_GP = "NEN-EN 10248/1 S 355 GP"
+    EN_10248_1_S390_GP = "NEN-EN 10248/1 S 390 GP"
+    EN_10248_1_S430_GP = "NEN-EN 10248/1 S 430 GP"
+
 
 class DiagramType(Enum):
     """Enumeration of diagram types of stress-strain relations."""
@@ -252,6 +260,12 @@ class SteelMaterial:
             SteelStrengthClass.EN_10219_1_S355_MH_MLH: (355.0, 470.0, None, None),
             SteelStrengthClass.EN_10219_1_S420_MH_MLH: (420.0, 500.0, None, None),
             SteelStrengthClass.EN_10219_1_S460_MH_MLH: (460.0, 530.0, None, None),
+            SteelStrengthClass.EN_10248_1_S240_GP: (240.0, 340.0, 240.0, 340.0),
+            SteelStrengthClass.EN_10248_1_S270_GP: (270.0, 410.0, 270.0, 410.0),
+            SteelStrengthClass.EN_10248_1_S320_GP: (320.0, 440.0, 320.0, 440.0),
+            SteelStrengthClass.EN_10248_1_S355_GP: (355.0, 480.0, 355.0, 80.0),
+            SteelStrengthClass.EN_10248_1_S390_GP: (390.0, 490.0, 390.0, 490.0),
+            SteelStrengthClass.EN_10248_1_S430_GP: (430.0, 510.0, 430.0, 510.0),
         }
 
         if steel_class not in strength_data:
