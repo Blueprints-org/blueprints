@@ -13,9 +13,9 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinfo
     ReinforcementConfiguration,
 )
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.cross_section_shapes import CrossSection
+from blueprints.structural_sections.general_cross_section import CrossSection
 from blueprints.type_alias import KG_M, KG_M3, M3_M, MM2_M
-from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
+from blueprints.unit_conversion import MM3_TO_M3
 
 
 class ReinforcedCrossSection(ABC):
@@ -97,12 +97,12 @@ class ReinforcedCrossSection(ABC):
     @property
     def concrete_volume(self) -> M3_M:
         """Total volume of the reinforced cross-section per meter length [m³/m]."""
-        length = M_TO_MM
+        length = 1000  # mm
         return self.cross_section.area * length * MM3_TO_M3
 
     @property
     def weight_per_volume(self) -> KG_M3:
-        """Total mass of the cross-section per meter length (concrete_checks+reinforcement) [kg/m³]."""
+        """Total mass of the cross-section per meter length (concrete+reinforcement) [kg/m³]."""
         return self.reinforcement_weight / self.concrete_volume
 
     def get_present_steel_materials(self) -> list[ReinforcementSteelMaterial]:

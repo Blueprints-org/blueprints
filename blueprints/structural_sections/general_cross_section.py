@@ -63,5 +63,5 @@ class CrossSection(Protocol):
         """Plastic section modulus about the z-axis [mm³]."""
 
     @property
-    def elastic_vertices(self) -> list[Point]:
+    def vertices(self) -> list[Point]:
         """Vertices of the cross-section."""
