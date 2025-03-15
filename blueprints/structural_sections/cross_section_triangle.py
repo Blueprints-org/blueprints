@@ -20,9 +20,9 @@ class RightAngledTriangularCrossSection:
     height : MM
         The height of the triangular cross-section.
     x : MM
-        The x-coordinate of the centroid of the triangle. Default is 0.
+        The x-coordinate of the 90-degree angle. Default is 0.
     y : MM
-        The y-coordinate of the centroid of the triangle. Default is 0.
+        The y-coordinate of the 90-degree angle. Default is 0.
     flipped_horizontally : bool
         Whether the triangle is flipped horizontally. Default is False.
     flipped_vertically : bool
@@ -46,9 +46,9 @@ class RightAngledTriangularCrossSection:
         Polygon
             The shapely Polygon representing the triangle.
         """
-        left_lower = (self.x - self.base / 2, self.y - self.height / 2)
-        right_lower = (self.x + self.base / 2, self.y - self.height / 2)
-        top = (self.x - self.base / 2, self.y + self.height / 2)
+        left_lower = (self.x, self.y)
+        right_lower = (self.x + self.base, self.y)
+        top = (self.x, self.y + self.height)
 
         if self.flipped_horizontally:
             left_lower, right_lower = right_lower, left_lower
@@ -91,7 +91,7 @@ class RightAngledTriangularCrossSection:
         Point
             The centroid of the triangle.
         """
-        return Point(self.x - self.base / 6, self.y - self.height / 6)
+        return Point(self.x + self.base / 3, self.y + self.height / 3)
 
     @property
     def moment_of_inertia_about_y(self) -> MM4:
