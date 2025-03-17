@@ -155,9 +155,9 @@ Total of 304 formulas present.
 | 6.49           | :heavy_check_mark: |         | Form6Dot49AppliedPunchingShearStress                      |
 | 6.50           | :heavy_check_mark: |         | Form6Dot50PunchingStressResistance                        |
 | 6.51           | :heavy_check_mark: |         | Form6Dot51AppliedPunchingShearStressEccentricLoading      |
-| 6.52           |        :x:         |         |                                                           |
-| 6.53           |        :x:         |         |                                                           |
-| 6.54           |        :x:         |         |                                                           |
+| 6.52           | :heavy_check_mark: |         | Form6Dot52PunchingShearResistance                         |
+| 6.53           | :heavy_check_mark: |         | Form6Dot53CheckPunchingShear                              |
+| 6.54           | :heavy_check_mark: |         | Form6Dot54ControlPerimeter                                |
 | 6.55           |        :x:         |         |                                                           |
 | 6.56           |        :x:         |         |                                                           |
 | 6.57N          |        :x:         |         |                                                           |
