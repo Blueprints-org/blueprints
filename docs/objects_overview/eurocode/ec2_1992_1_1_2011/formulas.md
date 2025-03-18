@@ -180,9 +180,9 @@ Total of 304 formulas present.
 | 6.74           |        :x:         |         |                                                           |
 | 6.75           |        :x:         |         |                                                           |
 | 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
-| 6.77           |        :x:         |         |                                                           |
-| 6.78           |        :x:         |         |                                                           |
-| 6.79           |        :x:         |         |                                                           |
+| 6.77           | :heavy_check_mark: |         | Form6Dot77FatigueVerification                             |
+| 6.78           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
+| 6.79           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
 | 7.1            |        :x:         |         |                                                           |
 | 7.2            |        :x:         |         |                                                           |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
