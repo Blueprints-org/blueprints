@@ -2,7 +2,7 @@
 hide:
   - toc
 ---
-# Make a Rectangular Reinforced Cross-section
+# Create a Rectangular Reinforced Cross-section
 
 Simply create a rectangular cross-section and add some reinforcement:
 
