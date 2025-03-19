@@ -2,9 +2,11 @@
 
 from dataclasses import dataclass
 
+from shapely import Point
+
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.general_cross_section import CrossSection
-from blueprints.type_alias import KG_M, MPA
+from blueprints.type_alias import KG_M, MM, MM2, MM3, MM4, MPA
 from blueprints.unit_conversion import MM2_TO_M2
 
 
@@ -31,6 +33,76 @@ class SteelElement:
         """Post-initialization to validate the material."""
         if self.material is None:
             raise ValueError("Material of the steel element cannot be None.")
+
+    @property
+    def area(self) -> MM2:
+        """Area of the cross-section [mm²]."""
+        return self.cross_section.area
+
+    @property
+    def plate_thickness(self) -> MM:
+        """Plate thickness of the cross-section [mm]."""
+        return self.cross_section.plate_thickness
+
+    @property
+    def perimeter(self) -> MM:
+        """Perimeter of the cross-section [mm]."""
+        return self.cross_section.perimeter
+
+    @property
+    def centroid(self) -> Point:
+        """Centroid of the cross-section [mm]."""
+        return self.cross_section.centroid
+
+    @property
+    def moment_of_inertia_about_y(self) -> MM4:
+        """Moments of inertia of the cross-section [mm⁴]."""
+        return self.cross_section.moment_of_inertia_about_y
+
+    @property
+    def moment_of_inertia_about_z(self) -> MM4:
+        """Moments of inertia of the cross-section [mm⁴]."""
+        return self.cross_section.moment_of_inertia_about_z
+
+    @property
+    def polar_moment_of_inertia(self) -> MM4:
+        """Polar moments of inertia of the cross-section [mm⁴]."""
+        return self.cross_section.polar_moment_of_inertia
+
+    @property
+    def elastic_section_modulus_about_y_positive(self) -> MM3:
+        """Elastic section modulus about the y-axis on the positive z side [mm³]."""
+        return self.cross_section.elastic_section_modulus_about_y_positive
+
+    @property
+    def elastic_section_modulus_about_y_negative(self) -> MM3:
+        """Elastic section modulus about the y-axis on the negative z side [mm³]."""
+        return self.cross_section.elastic_section_modulus_about_y_negative
+
+    @property
+    def elastic_section_modulus_about_z_positive(self) -> MM3:
+        """Elastic section modulus about the z-axis on the positive y side [mm³]."""
+        return self.cross_section.elastic_section_modulus_about_z_positive
+
+    @property
+    def elastic_section_modulus_about_z_negative(self) -> MM3:
+        """Elastic section modulus about the z-axis on the negative y side [mm³]."""
+        return self.cross_section.elastic_section_modulus_about_z_negative
+
+    @property
+    def plastic_section_modulus_about_y(self) -> MM3:
+        """Plastic section modulus about the y-axis [mm³]."""
+        return self.cross_section.plastic_section_modulus_about_y
+
+    @property
+    def plastic_section_modulus_about_z(self) -> MM3:
+        """Plastic section modulus about the z-axis [mm³]."""
+        return self.cross_section.plastic_section_modulus_about_z
+
+    @property
+    def geometry(self) -> dict:
+        """Return the geometry of the steel element."""
+        return self.cross_section.geometry
 
     @property
     def weight_per_meter(self) -> KG_M:
