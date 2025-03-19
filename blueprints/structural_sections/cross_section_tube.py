@@ -93,6 +93,18 @@ class TubeCrossSection:
         return math.pi * (self.outer_radius**2.0 - self.inner_radius**2.0)
 
     @property
+    def plate_thickness(self) -> MM:
+        """
+        Calculate the thickness of the tube wall [mm].
+
+        Returns
+        -------
+        MM
+            The thickness of the tube wall.
+        """
+        return (self.outer_diameter - self.inner_diameter) / 2.0
+
+    @property
     def perimeter(self) -> MM:
         """
         Calculate the perimeter (circumference) of the circular tube cross-section [mm].
