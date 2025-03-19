@@ -184,31 +184,47 @@ class SteelMaterial:
         """
         return self.e_modulus / (2 * (1 + self.poisson_ratio))
 
-    def yield_strength(self) -> MPA:
+    def yield_strength(self, thickness: MM | None = None) -> MPA:
         """Yield strength of the steel material for steel.
+
+        Parameters
+        ----------
+        thickness: MM, optional
+            Nominal thickness of the steel element [$mm$] (default: None)
 
         Returns
         -------
         MPA
             Yield strength of the material at the given temperature
         """
+        if thickness is None:
+            thickness = self.thickness
+
         if self.custom_yield_strength:
             return float(self.custom_yield_strength)
 
-        return self._get_strength(self.steel_class, self.thickness, "yield")
+        return self._get_strength(self.steel_class, thickness, "yield")
 
-    def ultimate_strength(self) -> MPA:
+    def ultimate_strength(self, thickness: MM | None = None) -> MPA:
         """Ultimate strength of the steel material for steel.
+
+        Parameters
+        ----------
+        thickness: MM, optional
+            Nominal thickness of the steel element [$mm$] (default: None)
 
         Returns
         -------
         MPA
             Ultimate strength of the material at the given temperature
         """
+        if thickness is None:
+            thickness = self.thickness
+
         if self.custom_ultimate_strength:
             return float(self.custom_ultimate_strength)
 
-        return self._get_strength(self.steel_class, self.thickness, "ultimate")
+        return self._get_strength(self.steel_class, thickness, "ultimate")
 
     def _get_strength(self, steel_class: SteelStrengthClass, thickness: MM, strength_type: str) -> MPA:
         """Helper method to get the strength of the steel material.
