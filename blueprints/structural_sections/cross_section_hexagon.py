@@ -72,6 +72,18 @@ class HexagonalCrossSection:
         return (3 * math.sqrt(3) / 2) * self.side_length**2
 
     @property
+    def plate_thickness(self) -> MM:
+        """
+        Calculate the plate thickness of the hexagonal cross-section [mm].
+
+        Returns
+        -------
+        MM
+            The plate thickness of the hexagon.
+        """
+        return self.side_length * math.sqrt(3)
+
+    @property
     def perimeter(self) -> MM:
         """
         Calculate the perimeter of the hexagonal cross-section [mm].

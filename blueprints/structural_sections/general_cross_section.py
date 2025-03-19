@@ -19,6 +19,10 @@ class CrossSection(Protocol):
         """Area of the cross-section [mm²]."""
 
     @property
+    def plate_thickness(self) -> MM:
+        """Plate thickness of the cross-section [mm]."""
+
+    @property
     def perimeter(self) -> MM:
         """Perimeter of the cross-section [mm]."""
 

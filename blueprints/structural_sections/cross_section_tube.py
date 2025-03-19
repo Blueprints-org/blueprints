@@ -9,7 +9,7 @@ from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
 @dataclass(frozen=True)
-class CircularTubeCrossSection:
+class TubeCrossSection:
     """
     Class to represent a circular tube cross-section using shapely for geometric calculations.
 

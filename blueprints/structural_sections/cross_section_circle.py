@@ -70,6 +70,18 @@ class CircularCrossSection:
         return math.pi * self.radius**2.0
 
     @property
+    def plate_thickness(self) -> MM:
+        """
+        Get the plate thickness of the circular cross-section.
+
+        Returns
+        -------
+        MM
+            The plate thickness of the circle.
+        """
+        return self.diameter
+
+    @property
     def perimeter(self) -> MM:
         """
         Calculate the perimeter (circumference) of the circular cross-section [mm].

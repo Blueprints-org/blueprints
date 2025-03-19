@@ -92,6 +92,18 @@ class SquareWithQuarterCircleCutoutCrossSection:
         return square_area - quarter_circle_area
 
     @property
+    def plate_thickness(self) -> MM:
+        """
+        Get the thickness of the square cross-section with a quarter circle cutout.
+
+        Returns
+        -------
+        MM
+            The thickness of the shape.
+        """
+        return self.a
+
+    @property
     def perimeter(self) -> MM:
         """
         Calculate the perimeter of the square cross-section with a quarter circle cutout.

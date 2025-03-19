@@ -122,6 +122,18 @@ class PartialRingCrossSection:
         return 0.5 * angle_radians * (self.outer_radius**2 - self.inner_radius**2)
 
     @property
+    def plate_thickness(self) -> MM:
+        """
+        Get the plate thickness of the partial ring cross-section.
+
+        Returns
+        -------
+        MM
+            The plate thickness of the partial ring.
+        """
+        return self.thickness
+
+    @property
     def perimeter(self) -> MM:
         """
         Calculate the perimeter of the partial ring cross-section [mm].

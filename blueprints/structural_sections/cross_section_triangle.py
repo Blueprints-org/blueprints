@@ -70,6 +70,18 @@ class RightAngledTriangularCrossSection:
         return self.base * self.height / 2
 
     @property
+    def plate_thickness(self) -> MM:
+        """
+        Calculate the plate thickness of the triangular cross-section.
+
+        Returns
+        -------
+        MM
+            The plate thickness of the triangle.
+        """
+        return min(self.base, self.height)
+
+    @property
     def perimeter(self) -> MM:
         """
         Calculate the perimeter of the triangular cross-section.
