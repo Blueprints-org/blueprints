@@ -15,14 +15,17 @@ class SteelElement:
 
     Parameters
     ----------
-    material : SteelMaterial
-        The material properties of the steel element.
     cross_section : CrossSection
         The cross-section of the steel element.
+    material : SteelMaterial
+        The material properties of the steel element.
+    name : str
+        The name of the steel element.
     """
 
-    material: SteelMaterial
     cross_section: CrossSection
+    material: SteelMaterial
+    name: str
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the material."""
@@ -51,7 +54,7 @@ class SteelElement:
         MPa
             The yield strength of the steel element.
         """
-        return self.material.yield_strength()
+        return self.material.yield_strength(thickness=self.cross_section.plate_thickness)
 
     @property
     def ultimate_strength(self) -> MPA:
