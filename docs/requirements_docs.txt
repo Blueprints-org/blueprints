@@ -1,7 +1,7 @@
-mkdocs ~= 1.6.0
-mkdocs-material ~= 9.5.29
-pygments ~= 2.18.0
-mkdocs-open-in-new-tab ~= 1.0.3
+mkdocs ~= 1.6.1
+mkdocs-material ~= 9.6.6
+pygments ~= 2.19.1
+mkdocs-open-in-new-tab ~= 1.0.8
 mkdocs-nav-weight ~= 0.2.0
 mkdocs-git-revision-date-localized-plugin ~= 1.2.6
 mkdocstrings[python] ~= 0.27.0
