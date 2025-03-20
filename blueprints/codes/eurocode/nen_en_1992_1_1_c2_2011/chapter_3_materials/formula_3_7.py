@@ -23,16 +23,16 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
         phi_inf_t0: DIMENSIONLESS,
         k_sigma: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\varphi_{nl}(\infty,t_0)$$] The non-linear creep coefficient [$$-$$].
+        r"""[$\varphi_{nl}(\infty,t_0)$] The non-linear creep coefficient [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(4) - Formula (3.7)
 
         Parameters
         ----------
         phi_inf_t0 : DIMENSIONLESS
-            [$$\varphi(\infty, t_0)$$] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [$$-$$].
+            [$\varphi(\infty, t_0)$] Creep coefficient if high accuracy is not required use figure 3.1 and/or use appendix B [$-$].
         k_sigma : DIMENSIONLESS
-            [$$k_{\sigma}$$] Stress-strength ratio [$$\sigma_c / f_{ck}(t_0)$$] [$$-$$].
+            [$k_{\sigma}$] Stress-strength ratio [$\sigma_c / f_{ck}(t_0)$] [$-$].
 
         Returns
         -------

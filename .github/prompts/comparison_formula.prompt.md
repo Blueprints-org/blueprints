@@ -1,6 +1,6 @@
 ## Code notes
 
-- Write an equation such as presented in the template. 
+- Write an equation such as presented in the template. Public docstring on top. Then numpy import. Then project imports. Then classes.
 - Make sure the script returns a bool. 
 - Keep all formatting and naming conventions such as they are presented in the template. 
 - If variable descriptions are given or found, copy precisely and fully from input or Eurocode. 
@@ -40,9 +40,9 @@ class Form5Dot38aCheckRelativeSlendernessRatio(Formula):
         Parameters
         ----------
         lambda_y : DIMENSIONLESS
-            [$$\lambda_{y}$$] Slenderness ratio in y-direction [-].
+            [$\lambda_{y}$] Slenderness ratio in y-direction [-].
         lambda_z : DIMENSIONLESS
-            [$$\lambda_{z}$$] Slenderness ratio in z-direction [$$N$$].
+            [$\lambda_{z}$] Slenderness ratio in z-direction [$N$].
         """
         super().__init__()
         self.lambda_y = lambda_y

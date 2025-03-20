@@ -8,9 +8,9 @@
 
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/source/_static/blueprints_banner.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/source/_static/blueprints_banner.png">
-  <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <img alt="blueprints banner" src="docs/_overrides/assets/images/blueprints_banner.png">
 </picture>
 
 Welcome to `Blueprints`, the go-to repository for civil engineering professionals and enthusiasts!
@@ -39,7 +39,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 ## (Upcoming) Features
 
-* Eurocode formulas
+* Eurocode formulas [templates for making formula](https://github.com/orgs/Blueprints-org/discussions/432)
     - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow)
     - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
     - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
@@ -76,7 +76,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Steel checks (NEN-EN 1993)
   - *To Be Determined*
 
-* Geotechnical checks (NEN-EN 9997-1
+* Geotechnical checks (NEN-EN 9997-1)
   - *To Be Determined*
 
 * Common calculations
@@ -88,12 +88,32 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 <summary> Progress definitions </summary>
 
-| Icon | Definition  |
-| ---  | ---------   |
-| ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange) | Just started |
-| ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow) | Making progress |
-| ![](https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen) | In Review |
-| ✔️  | Done |
+<table border="1">
+  <thead>
+    <tr>
+      <th>Icon</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange" alt="20% Icon"></td>
+      <td>Just started</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow" alt="50% Icon"></td>
+      <td>Making progress</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen" alt="80% Icon"></td>
+      <td>In Review</td>
+    </tr>
+    <tr>
+      <td>✔️</td>
+      <td>Done</td>
+    </tr>
+  </tbody>
+</table>
 
 </details>
 
@@ -137,9 +157,9 @@ figures for streamlined access and reference.
         Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/nen_en_1992_1_1_c2_2011">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/ec2_1992_1_1_2011/formulas.md">304</a></td>
-      <td><a href="docs/source/codes/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
-      <td><a href="docs/source/codes/eurocode/ec2_1992_1_1_2011/figures.md">104</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/formulas.md">304</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/figures.md">104</a></td>
     </tr>
     <tr>
       <td>NEN-EN 1993-1-1+C2+A1:2016</td>
@@ -147,9 +167,9 @@ figures for streamlined access and reference.
         NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/nen_en_1993_1_1_c2_a1_2016">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
-      <td><a href="docs/source/codes/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
-      <td><a href="docs/source/codes/eurocode/ec3_1993_1_1_2016/figures.md">28</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/figures.md">28</a></td>
     </tr>
     <tr>
       <td>NEN-EN 1993-5:2008</td>
@@ -157,9 +177,9 @@ figures for streamlined access and reference.
         Eurocode 3: Design of steel structures – Part 5: Piling
         (<a href="blueprints/codes/eurocode/nen_en_1993_5_2008">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_en_1993_5_2008/figures.md">0</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/figures.md">0</a></td>
     </tr>
     <tr>
       <td>NEN 9997-1+C2:2017</td>
@@ -167,9 +187,9 @@ figures for streamlined access and reference.
         Eurocode 7: Geotechnical design of structures - Part 1: General rules
         (<a href="blueprints/codes/eurocode/nen_9997_1_c2_2017">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/nen_9997_1_c2_2017/formulas.md">88</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_9997_1_c2_2017/tables.md">11</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_9997_1_c2_2017/figures.md">25</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/formulas.md">88</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/tables.md">11</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/figures.md">25</a></td>
     </tr>
   </tbody>
 </table>

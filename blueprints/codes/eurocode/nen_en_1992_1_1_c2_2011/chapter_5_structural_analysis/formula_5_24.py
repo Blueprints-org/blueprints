@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_negative
 
 
 class Form5Dot24AxialForceCorrectionFactor(Formula):
-    """Class representing formula 5.24 for the calculation of the axial force correction factor [$$k_{2}$$]."""
+    """Class representing formula 5.24 for the calculation of the axial force correction factor [$k_{2}$]."""
 
     label = "5.24"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -18,20 +18,20 @@ class Form5Dot24AxialForceCorrectionFactor(Formula):
         n: DIMENSIONLESS,
         lambda_factor: DIMENSIONLESS,
     ) -> None:
-        r"""[$$k_{2}$$] Axial force correction factor.
+        r"""[$k_{2}$] Axial force correction factor.
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.3 - Formula (5.24)
 
         Parameters
         ----------
         n : DIMENSIONLESS
-            [$$n$$] Relative axial force, [$$N_{ed} / (A_{c} * f_{cd})$$] [-].
+            [$n$] Relative axial force, [$N_{ed} / (A_{c} * f_{cd})$] [-].
         lambda_factor : DIMENSIONLESS
-            [$$λ$$] Slenderness ratio, see 5.8.3 [-].
+            [$λ$] Slenderness ratio, see 5.8.3 [-].
 
         Notes
         -----
-        The value of [$$k_{2}$$] cannot be larger than 0.20.
+        The value of [$k_{2}$] cannot be larger than 0.20.
         """
         super().__init__()
         self.n = n

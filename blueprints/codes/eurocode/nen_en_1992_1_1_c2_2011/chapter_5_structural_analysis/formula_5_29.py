@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form5Dot29BetaFactor(Formula):
-    r"""Class representing formula 5.29 for the calculation of the beta factor, [$$\beta$$]."""
+    r"""Class representing formula 5.29 for the calculation of the beta factor, [$\beta$]."""
 
     label = "5.29"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -19,7 +19,7 @@ class Form5Dot29BetaFactor(Formula):
         self,
         c_0: DIMENSIONLESS,
     ) -> None:
-        r"""[$$\beta$$] Factor which depends on the distribution of first order moment [-].
+        r"""[$\beta$] Factor which depends on the distribution of first order moment [-].
 
         NEN-EN 1992-1-1+C2:2011 art.5.8.8.2(3) - Formula (5.29)
 

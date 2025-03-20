@@ -18,21 +18,21 @@ class Form3Dot4DevelopmentTensileStrength(Formula):
         alpha: DIMENSIONLESS,
         f_ctm: MPA,
     ) -> None:
-        r"""[$$f_{ctm}(t)$$] The initial estimation of the tensile strength after t days [MPa].
+        r"""[$f_{ctm}(t)$] The initial estimation of the tensile strength after t days [MPa].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - Formula (3.4)
 
         Parameters
         ----------
         beta_cc_t : DIMENSIONLESS
-            [$$\beta_{cc}(t)$$] Coefficient dependent of the age of concrete [-].
+            [$\beta_{cc}(t)$] Coefficient dependent of the age of concrete [-].
         alpha : DIMENSIONLESS
-            [$$\alpha$$] Factor dependent of the age of concrete [-]
+            [$\alpha$] Factor dependent of the age of concrete [-]
             alpha = 1 for t < 28 days
             alpha = 2/3 for t >= 28 days
             Use your own implementation of this value or use the SubForm3Dot4CoefficientAgeConcreteAlpha class.
         f_ctm : MPA
-            [$$f_{ctm}$$] Tensile strength from table 3.1 [MPa].
+            [$f_{ctm}$] Tensile strength from table 3.1 [MPa].
 
         Returns
         -------
@@ -79,14 +79,14 @@ class SubForm3Dot4CoefficientAgeConcreteAlpha(Formula):
         self,
         t: DAYS,
     ) -> None:
-        r"""[$$\alpha$$] Factor dependent of the age of concrete [$$-$$].
+        r"""[$\alpha$] Factor dependent of the age of concrete [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.2(9) - α
 
         Parameters
         ----------
         t : DAYS
-            [$$t$$] Age of concrete in days [$$days$$].
+            [$t$] Age of concrete in days [$days$].
         """
         super().__init__()
         self.t = t
