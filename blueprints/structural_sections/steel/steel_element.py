@@ -105,6 +105,11 @@ class SteelElement:
         return self.cross_section.geometry
 
     @property
+    def vertices(self) -> list[Point]:
+        """Return the vertices of the steel element."""
+        return self.cross_section.vertices
+
+    @property
     def weight_per_meter(self) -> KG_M:
         """
         Calculate the weight per meter of the steel element.
