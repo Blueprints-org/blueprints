@@ -51,9 +51,9 @@ class RightAngledTriangularCrossSection:
         top = (self.x, self.y + self.height)
 
         if self.flipped_horizontally:
-            left_lower, right_lower = right_lower, left_lower
+            right_lower = (2 * left_lower[0] - right_lower[0], right_lower[1])
         if self.flipped_vertically:
-            left_lower, top = top, left_lower
+            top = (top[0], 2 * left_lower[1] - top[1])
 
         return Polygon([left_lower, right_lower, top])
 
