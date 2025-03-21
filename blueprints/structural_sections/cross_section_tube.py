@@ -76,8 +76,9 @@ class TubeCrossSection:
         Polygon
             The shapely Polygon representing the tube.
         """
-        outer_circle = self.centroid.buffer(self.outer_radius)
-        inner_circle = self.centroid.buffer(self.inner_radius)
+        resolution = 100
+        outer_circle = self.centroid.buffer(self.outer_radius, resolution=resolution)
+        inner_circle = self.centroid.buffer(self.inner_radius, resolution=resolution)
         return outer_circle.difference(inner_circle)
 
     @property
