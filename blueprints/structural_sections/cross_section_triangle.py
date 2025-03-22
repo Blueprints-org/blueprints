@@ -3,6 +3,7 @@
 import math
 from dataclasses import dataclass
 
+import numpy as np
 from shapely import Point, Polygon
 
 from blueprints.type_alias import MM, MM2, MM3, MM4
@@ -228,3 +229,53 @@ class RightAngledTriangularCrossSection:
             The vertices of the triangle.
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
+
+    def dotted_mesh(self, mesh_size: MM = 0) -> list[tuple[Point, MM2]]:
+        """
+        Mesh the right-angled triangular cross-section with a given mesh size and return the inner nodes
+        of each rectangle along with the area they represent.
+
+        Parameters
+        ----------
+        mesh_size : MM
+            The mesh size to use for the meshing. Default is a tenth of the smallest dimension.
+
+        Returns
+        -------
+        list[tuple[Point, MM2]]
+            The inner nodes of the meshed rectangles along with the area they represent.
+        """
+        if mesh_size == 0:
+            mesh_size = min(self.base, self.height) / 10
+
+        x_min, y_min, x_max, y_max = self.geometry.bounds
+        x_range = np.arange(x_min, x_max, mesh_size)
+        y_range = np.arange(y_min, y_max, mesh_size)
+        return [
+            (Point(x + mesh_size / 2, y + mesh_size / 2), mesh_size**2)
+            for x in x_range
+            for y in y_range
+            if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
+        ]
+
+
+if __name__ == "__main__":
+    # Example usage of RightAngledTriangularCrossSection to get the mesh
+    triangle_section = RightAngledTriangularCrossSection(base=100, height=50)
+    mesh = triangle_section.dotted_mesh()
+
+    import matplotlib.pyplot as plt
+
+    # Extract x and y coordinates from the mesh nodes
+    x_coords = [node.x for node, _ in mesh]
+    y_coords = [node.y for node, _ in mesh]
+
+    # Create the plot
+    plt.figure(figsize=(8, 8))
+    plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
+    plt.title("Mesh Points of Right-Angled Triangular Cross-Section")
+    plt.xlabel("X Coordinate (mm)")
+    plt.ylabel("Y Coordinate (mm)")
+    plt.grid(True)
+    plt.gca().set_aspect("equal", adjustable="box")
+    plt.show()
