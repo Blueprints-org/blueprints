@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.cross_section_shapes import CircularCrossSection
+from blueprints.structural_sections.cross_section_circle import CircularCrossSection
 from blueprints.type_alias import KG_M, RATIO
 from blueprints.unit_conversion import MM2_TO_M2
 
