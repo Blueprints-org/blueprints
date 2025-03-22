@@ -229,10 +229,10 @@ class RectangularCrossSection:
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
-    def dotted_mesh(self, mesh_size: MM = 0) -> list[tuple[Point, MM2]]:
+    def dotted_mesh(self, mesh_size: MM = 0) -> list[Point]:
         """
         Mesh the rectangular cross-section with a given mesh size and return the inner nodes of
-        each rectangle along with the area they represent.
+        each rectangle they represent.
 
         Parameters
         ----------
@@ -241,8 +241,8 @@ class RectangularCrossSection:
 
         Returns
         -------
-        list[tuple[Point, MM2]]
-            The inner nodes of the meshed rectangles along with the area they represent.
+        list[Point]
+            The inner nodes of the meshed rectangles they represent.
         """
         if mesh_size == 0:
             mesh_size = min(self.width, self.height) / 4
@@ -250,12 +250,12 @@ class RectangularCrossSection:
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size)
         y_range = np.arange(y_min, y_max, mesh_size)
-        return [(Point(x + mesh_size / 2, y + mesh_size / 2), mesh_size**2) for x in x_range for y in y_range]
+        return [Point(x + mesh_size / 2, y + mesh_size / 2) for x in x_range for y in y_range]
 
 
 if __name__ == "__main__":
     # Example usage of RectangularCrossSection to get the mesh
-    width = 10  # mm
+    width = 100  # mm
     height = 10  # mm
     mesh_size = 1  # mm
 
@@ -265,8 +265,8 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
     # Extract x and y coordinates from the mesh nodes
-    x_coords = [node.x for node, _ in mesh]
-    y_coords = [node.y for node, _ in mesh]
+    x_coords = [node.x for node in mesh]
+    y_coords = [node.y for node in mesh]
 
     # Create the plot
     plt.figure(figsize=(8, 8))

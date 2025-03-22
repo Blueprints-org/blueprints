@@ -70,5 +70,5 @@ class CrossSection(Protocol):
     def vertices(self) -> list[Point]:
         """Vertices of the cross-section."""
 
-    def dotted_mesh(self, mesh_size: MM) -> list[tuple[Point, MM2]]:
+    def dotted_mesh(self, mesh_size: MM) -> list[Point]:
         """Dotted mesh of the cross-section."""
