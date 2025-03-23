@@ -3,7 +3,7 @@
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon as MplPolygon
-from shapely.geometry import Polygon
+from shapely.geometry import Point, Polygon
 
 from blueprints.materials.steel import SteelStrengthClass
 from blueprints.structural_sections.general_cross_section import CrossSection
@@ -14,6 +14,7 @@ STEEL_COLOR = (0.683, 0.0, 0.0)
 
 def plot_shapes(
     *elements: CrossSection,
+    centroid: Point,
     figsize: tuple[float, float] = (15.0, 8.0),
     title: str = "Cross Section",
     font_size_title: float = 18.0,
@@ -26,6 +27,8 @@ def plot_shapes(
     ----------
     elements : CrossSection
         The cross-sections to plot.
+    centroid : Point
+        The centroid of the cross-section.
     figsize : tuple[float, float], optional
         The size of the figure in inches. Default is (15.0, 8.0).
     title : str, optional
@@ -51,6 +54,10 @@ def plot_shapes(
             x, y = interior.xy
             patch = MplPolygon(xy=list(zip(x, y)), lw=0, fill=True, facecolor="white")
             ax.add_patch(patch)
+
+    # Plot the centroid
+    if centroid:
+        ax.plot(centroid.x, centroid.y, "o", color="black")
 
     ax.set_xlabel("X")
     ax.set_ylabel("Y")

@@ -58,7 +58,7 @@ class CHSSteelProfile(SteelCrossSection):
         **kwargs
             Additional keyword arguments passed to the plotter.
         """
-        return plot_shapes(self.cross_section, *args, **kwargs)
+        return plot_shapes(self.cross_section, centroid=self.centroid, *args, **kwargs)
 
 
 class CHSStandardProfileClass(Enum):
@@ -363,10 +363,3 @@ class CHSProfiles:
     def get_profile_name(self) -> str:
         """Return the name of the CHS profile."""
         return self.profile.value
-
-
-if __name__ == "__main__":
-    # Example usage
-    profile = CHSStandardProfileClass.CHS_508x40
-    chs_profile = CHSProfiles(profile=profile).get_profile()
-    chs_profile.plot(show=True)
