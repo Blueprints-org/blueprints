@@ -46,9 +46,9 @@ class TestForm6Dot54ControlPerimeter:
         [
             (
                 "complete",
-                r"u_{out,ef} = \frac{\beta \cdot V_{Ed}}{v_{Rd,c} \cdot d} = \frac{1.100 \cdot 200.000}{1.500 \cdot 500.000} = 0.293 mm",
+                r"u_{out,ef} = \frac{\beta \cdot V_{Ed}}{v_{Rd,c} \cdot d} = \frac{1.100 \cdot 200.000}{1.500 \cdot 500.000} = 0.293 \ mm",
             ),
-            ("short", r"u_{out,ef} = 0.293 mm"),
+            ("short", r"u_{out,ef} = 0.293 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

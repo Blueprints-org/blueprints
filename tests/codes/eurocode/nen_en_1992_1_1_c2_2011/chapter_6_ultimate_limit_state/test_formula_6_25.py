@@ -65,9 +65,9 @@ class TestForm6Dot25DesignShearResistance:
                 r"v_{Rdi} = \min \left( c \cdot f_{ctd} + \mu \cdot \sigma_{n} + \frac{A_{s}}{A_{i}} \cdot "
                 r"f_{yd} \cdot (\mu \cdot \sin(\alpha) + \cos(\alpha)); 0.5 \cdot \nu \cdot f_{cd} \right) = "
                 r"\min \left( 0.500 \cdot 2.000 + 0.600 \cdot 1.000 + \frac{1000.000}{200000.000} \cdot 500.000 \cdot "
-                r"(0.600 \cdot \sin(30.000) + \cos(30.000)); 0.5 \cdot 0.900 \cdot 30.000 \right) = 4.515 MPa",
+                r"(0.600 \cdot \sin(30.000) + \cos(30.000)); 0.5 \cdot 0.900 \cdot 30.000 \right) = 4.515 \ MPa",
             ),
-            ("short", r"v_{Rdi} = 4.515 MPa"),
+            ("short", r"v_{Rdi} = 4.515 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
