@@ -98,14 +98,22 @@ class RightAngleCurvedCrossSection:
     @property
     def centroid(self) -> Point:
         """
-        Get the centroid of the cross-section.
+        Get the centroid of the cross-section, taking into account the flipped status.
 
         Returns
         -------
         Point
             The centroid of the shape.
         """
-        return Point(self.x + self.radius / 2, self.y + self.radius / 2)
+        centroid_x = self.x + self.radius / 3
+        centroid_y = self.y + self.radius / 3
+
+        if self.flipped_horizontally:
+            centroid_x = self.x - self.radius / 3
+        if self.flipped_vertically:
+            centroid_y = self.y - self.radius / 3
+
+        return Point(centroid_x, centroid_y)
 
     @property
     def moment_of_inertia_about_y(self) -> MM4:
@@ -117,7 +125,19 @@ class RightAngleCurvedCrossSection:
         MM4
             The moment of inertia about the y-axis.
         """
-        return (self.radius**4 / 36) + (math.pi * self.radius**4 / 64)
+        inertia_square = self.radius**4 / 12
+        area_square = self.radius**2
+        cog_square_to_reference_point = self.radius / 2
+
+        inertia_quarter_circle = math.pi * self.radius**4 / 64
+        area_quarter_circle = math.pi * self.radius**2 / 4
+        cog_quarter_circle_to_reference_point = self.radius - 4 * self.radius / 3 / np.pi
+
+        inertia_reference_point_square = inertia_square + area_square * cog_square_to_reference_point**2
+        inertia_about_reference_point_quarter_circle = inertia_quarter_circle + area_quarter_circle * cog_quarter_circle_to_reference_point**2
+        inertia_reference_point = inertia_reference_point_square - inertia_about_reference_point_quarter_circle
+
+        return inertia_reference_point - (area_square - area_quarter_circle) * (self.centroid.y - self.y) ** 2
 
     @property
     def moment_of_inertia_about_z(self) -> MM4:
@@ -129,7 +149,7 @@ class RightAngleCurvedCrossSection:
         MM4
             The moment of inertia about the z-axis.
         """
-        return (self.radius**4 / 36) + (math.pi * self.radius**4 / 64)
+        return self.moment_of_inertia_about_y
 
     @property
     def polar_moment_of_inertia(self) -> MM4:
@@ -153,7 +173,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = self.radius / 3 * 2
+        distance_to_end = self.radius / 3
         return self.moment_of_inertia_about_y / distance_to_end
 
     @property
@@ -166,7 +186,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = self.radius / 3
+        distance_to_end = self.radius / 3 * 2
         return self.moment_of_inertia_about_y / distance_to_end
 
     @property
@@ -205,7 +225,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The plastic section modulus about the y-axis.
         """
-        return (self.radius**3) / 4
+        return 0
 
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
@@ -217,7 +237,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The plastic section modulus about the z-axis.
         """
-        return (self.radius**3) / 4
+        return 0
 
     @property
     def vertices(self) -> list[Point]:
@@ -258,25 +278,3 @@ class RightAngleCurvedCrossSection:
             if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
             if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
         ]
-
-
-if __name__ == "__main__":
-    # Example usage of RectangularCrossSection to get the mesh
-    curve_section = RightAngleCurvedCrossSection(radius=100)
-    mesh = curve_section.dotted_mesh()
-
-    import matplotlib.pyplot as plt
-
-    # Extract x and y coordinates from the mesh nodes
-    x_coords = [node.x for node in mesh]
-    y_coords = [node.y for node in mesh]
-
-    # Create the plot
-    plt.figure(figsize=(8, 8))
-    plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Right-Angle Curved Cross-Section" + f", amount of nodes: {len(mesh)}")
-    plt.xlabel("X Coordinate (mm)")
-    plt.ylabel("Y Coordinate (mm)")
-    plt.grid(True)
-    plt.gca().set_aspect("equal", adjustable="box")
-    plt.show()
