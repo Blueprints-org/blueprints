@@ -31,7 +31,7 @@ body:
     attributes:
       label: "Dependencies"
       description: "List any dependencies, like third-party libraries or specific hardware, needed for this formula."
-      placeholder: ""
+      placeholder: "List any dependencies here."
     validations:
       required: false
 
