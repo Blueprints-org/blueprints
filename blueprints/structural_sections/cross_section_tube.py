@@ -250,23 +250,26 @@ class TubeCrossSection:
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
-    def dotted_mesh(self, mesh_size: MM = 0) -> list[Point]:
+    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
         """
         Mesh the circular tube cross-section with a given mesh size and return the inner nodes of each
         rectangle they represent.
 
         Parameters
         ----------
-        mesh_size : MM
-            The mesh size to use for the meshing. Default is a third of the thickness.
+        max_mesh_size : MM
+            The maximum mesh size to use for the meshing. Default is a third of the thickness and 20th of diameter,
+            whichever is less.
 
         Returns
         -------
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if mesh_size == 0:
-            mesh_size = self.plate_thickness / 3
+        if max_mesh_size == 0:
+            mesh_size = min(self.plate_thickness / 3, self.outer_diameter / 20)
+        else:
+            mesh_size = self.plate_thickness / np.ceil(self.plate_thickness / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size)
@@ -282,7 +285,7 @@ class TubeCrossSection:
 if __name__ == "__main__":
     # Example usage of TubeCrossSection to get the mesh
     tube_section = TubeCrossSection(outer_diameter=100, inner_diameter=50, x=0, y=0)
-    mesh = tube_section.dotted_mesh(mesh_size=2)
+    mesh = tube_section.dotted_mesh()
 
     import matplotlib.pyplot as plt
 
@@ -293,7 +296,7 @@ if __name__ == "__main__":
     # Create the plot
     plt.figure(figsize=(8, 8))
     plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Circular Tube Cross-Section")
+    plt.title("Mesh Points of Circular Tube Cross-Section" + f", amount of nodes: {len(mesh)}")
     plt.xlabel("X Coordinate (mm)")
     plt.ylabel("Y Coordinate (mm)")
     plt.grid(True)

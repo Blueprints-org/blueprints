@@ -226,23 +226,22 @@ class CircularCrossSection:
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
-    def dotted_mesh(self, mesh_size: MM = 0) -> list[Point]:
+    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
         """
         Mesh the circular cross-section with a given mesh size and return the inner nodes of
         each rectangle they represent.
 
         Parameters
         ----------
-        mesh_size : MM
-            The mesh size to use for the meshing. Default is a tenth of the diameter.
+        max_mesh_size : MM
+            The maximum mesh size to use for the meshing. Default is a tenth of the diameter.
 
         Returns
         -------
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if mesh_size == 0:
-            mesh_size = self.diameter / 10
+        mesh_size = self.diameter / 10 if max_mesh_size == 0 else self.diameter / np.ceil(self.diameter / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size)
@@ -269,7 +268,7 @@ if __name__ == "__main__":
     # Create the plot
     plt.figure(figsize=(8, 8))
     plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Circular Cross-Section")
+    plt.title("Mesh Points of Circular Cross-Section" + f", amount of nodes: {len(mesh)}")
     plt.xlabel("X Coordinate (mm)")
     plt.ylabel("Y Coordinate (mm)")
     plt.grid(True)

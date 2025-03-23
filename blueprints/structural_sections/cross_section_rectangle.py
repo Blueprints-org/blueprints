@@ -229,38 +229,41 @@ class RectangularCrossSection:
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
-    def dotted_mesh(self, mesh_size: MM = 0) -> list[Point]:
+    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
         """
         Mesh the rectangular cross-section with a given mesh size and return the inner nodes of
         each rectangle they represent.
 
         Parameters
         ----------
-        mesh_size : MM
-            The mesh size to use for the meshing. Default is a fourth of the smallest dimension.
+        max_mesh_size : MM
+            The maximum mesh size to use for the meshing. Default is a fourth of the smallest dimension.
 
         Returns
         -------
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if mesh_size == 0:
-            mesh_size = min(self.width, self.height) / 4
+        if max_mesh_size == 0:
+            mesh_size_width = min(self.width, self.height) / 4
+            mesh_size_height = mesh_size_width
+        else:
+            mesh_size_width = self.height / np.ceil(self.height / max_mesh_size)
+            mesh_size_height = self.width / np.ceil(self.width / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size)
-        y_range = np.arange(y_min, y_max, mesh_size)
-        return [Point(x + mesh_size / 2, y + mesh_size / 2) for x in x_range for y in y_range]
+        x_range = np.arange(x_min, x_max, mesh_size_width)
+        y_range = np.arange(y_min, y_max, mesh_size_height)
+        return [Point(x + mesh_size_width / 2, y + mesh_size_height / 2) for x in x_range for y in y_range]
 
 
 if __name__ == "__main__":
     # Example usage of RectangularCrossSection to get the mesh
     width = 100  # mm
     height = 10  # mm
-    mesh_size = 1  # mm
 
     rect_section = RectangularCrossSection(width=width, height=height)
-    mesh = rect_section.dotted_mesh(mesh_size=mesh_size)
+    mesh = rect_section.dotted_mesh()
 
     import matplotlib.pyplot as plt
 
@@ -271,7 +274,7 @@ if __name__ == "__main__":
     # Create the plot
     plt.figure(figsize=(8, 8))
     plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Right-Angle Curved Cross-Section")
+    plt.title("Mesh Points of Right-Angle Curved Cross-Section" + f", amount of nodes: {len(mesh)}")
     plt.xlabel("X Coordinate (mm)")
     plt.ylabel("Y Coordinate (mm)")
     plt.grid(True)

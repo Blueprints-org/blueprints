@@ -106,8 +106,16 @@ class PartialRingCrossSection:
         inner_ring = rotate(inner_circle, self.start_angle, origin=center)
         outer_ring = rotate(outer_circle, self.start_angle, origin=center)
 
-        partial_ring = outer_ring.difference(inner_ring)
-        return rotate(partial_ring, self.end_angle - self.start_angle, origin=center)
+        # Create the partial ring by intersecting with a sector
+        sector_points = [center]
+        angle_step = (self.end_angle - self.start_angle) / 8
+        for i in range(9):
+            angle = math.radians(self.start_angle + i * angle_step)
+            sector_points.append(Point(center.x + 2 * self.outer_radius * math.cos(angle), center.y + 2 * self.outer_radius * math.sin(angle)))
+        sector_points.append(center)
+        sector = Polygon(sector_points).buffer(0)
+
+        return outer_ring.difference(inner_ring).intersection(sector)
 
     @property
     def area(self) -> MM2:
@@ -297,23 +305,26 @@ class PartialRingCrossSection:
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
-    def dotted_mesh(self, mesh_size: MM = 0) -> list[Point]:
+    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
         """
         Mesh the partial ring cross-section with a given mesh size and return the inner nodes of
         each rectangle  they represent.
 
         Parameters
         ----------
-        mesh_size : MM
-            The mesh size to use for the meshing. Default is a third of the thickness.
+        max_mesh_size : MM
+            The maximum mesh size to use for the meshing. Default is a third of the thickness and 10th of radius.,
+            whichever is the minimum of the two.
 
         Returns
         -------
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if mesh_size == 0:
-            mesh_size = self.thickness / 3
+        if max_mesh_size == 0:
+            mesh_size = min(self.plate_thickness / 3, self.inner_radius / 10)
+        else:
+            mesh_size = self.thickness / np.ceil(self.thickness / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size)
@@ -328,7 +339,7 @@ class PartialRingCrossSection:
 
 if __name__ == "__main__":
     # Example usage of PartialRingCrossSection to get the mesh
-    partial_ring = PartialRingCrossSection(radius_centerline=100, thickness=10, start_angle=0, end_angle=180, x=0, y=0)
+    partial_ring = PartialRingCrossSection(radius_centerline=100, thickness=10, start_angle=0, end_angle=137, x=0, y=0)
     mesh = partial_ring.dotted_mesh()
 
     import matplotlib.pyplot as plt
@@ -340,9 +351,15 @@ if __name__ == "__main__":
     # Create the plot
     plt.figure(figsize=(8, 8))
     plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Partial Ring Cross-Section")
+    plt.title("Mesh Points of Partial Ring Cross-Section" + f", amount of nodes: {len(mesh)}")
     plt.xlabel("X Coordinate (mm)")
     plt.ylabel("Y Coordinate (mm)")
     plt.grid(True)
     plt.gca().set_aspect("equal", adjustable="box")
+
+    # Plot the geometry lines
+    x_geom, y_geom = partial_ring.geometry.exterior.xy
+
+    plt.plot(x_geom, y_geom, color="red", linewidth=2, label="Geometry")
+    plt.legend()
     plt.show()

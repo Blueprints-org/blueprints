@@ -231,23 +231,22 @@ class RightAngleCurvedCrossSection:
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
-    def dotted_mesh(self, mesh_size: MM = 0) -> list[Point]:
+    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
         """
         Mesh the right-angled triangular cross-section with a quarter circle with a given mesh size and
         return the inner nodes of each rectangle they represent.
 
         Parameters
         ----------
-        mesh_size : MM
-            The mesh size to use for the meshing. Default is a tenth of the radius.
+        max_mesh_size : MM
+            The maximum mesh size to use for the meshing. Default is a twentieth of the radius.
 
         Returns
         -------
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if mesh_size == 0:
-            mesh_size = self.radius / 10
+        mesh_size = self.radius / 20 if max_mesh_size == 0 else self.radius / np.ceil(self.radius / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size)
@@ -275,7 +274,7 @@ if __name__ == "__main__":
     # Create the plot
     plt.figure(figsize=(8, 8))
     plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Right-Angle Curved Cross-Section")
+    plt.title("Mesh Points of Right-Angle Curved Cross-Section" + f", amount of nodes: {len(mesh)}")
     plt.xlabel("X Coordinate (mm)")
     plt.ylabel("Y Coordinate (mm)")
     plt.grid(True)

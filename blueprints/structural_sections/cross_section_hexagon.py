@@ -12,7 +12,7 @@ from blueprints.type_alias import MM, MM2, MM3, MM4
 @dataclass(frozen=True)
 class HexagonalCrossSection:
     """
-    Class to represent a hexagonal cross-section using shapely for geometric calculations.
+    Class to represent a hexagonal cross-section flat on ground, using shapely for geometric calculations.
 
     Parameters
     ----------
@@ -228,32 +228,36 @@ class HexagonalCrossSection:
         """
         return [Point(x, y) for x, y in self.geometry.exterior.coords]
 
-    def dotted_mesh(self, mesh_size: MM = 0) -> list[Point]:
+    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
         """
         Mesh the hexagonal cross-section with a given mesh size and return the inner nodes of
         each rectangle they represent.
 
         Parameters
         ----------
-        mesh_size : MM
-            The mesh size to use for the meshing. Default is a tenth of the side length.
+        max_mesh_size : MM
+            The maximum mesh size to use for the meshing. Default is a tenth of the side length.
 
         Returns
         -------
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if mesh_size == 0:
-            mesh_size = self.side_length / 10
+        if max_mesh_size == 0:
+            mesh_size_width = self.side_length / 10
+            mesh_size_height = mesh_size_width / np.sqrt(3)
+        else:
+            mesh_size_width = self.side_length / np.ceil(self.side_length / max_mesh_size)
+            mesh_size_height = mesh_size_width / np.sqrt(3)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size)
-        y_range = np.arange(y_min, y_max, mesh_size)
+        x_range = np.arange(x_min, x_max, mesh_size_width)
+        y_range = np.arange(y_min, y_max, mesh_size_height)
         return [
-            Point(x + mesh_size / 2, y + mesh_size / 2)
+            Point(x + mesh_size_width / 2, y + mesh_size_height / 2)
             for x in x_range
             for y in y_range
-            if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
+            if self.geometry.contains(Point(x + mesh_size_width / 2, y + mesh_size_height / 2))
         ]
 
 
@@ -271,9 +275,15 @@ if __name__ == "__main__":
     # Create the plot
     plt.figure(figsize=(8, 8))
     plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Hexagonal Cross-Section")
+    plt.title("Mesh Points of Hexagonal Cross-Section" + f", amount of nodes: {len(mesh)}")
     plt.xlabel("X Coordinate (mm)")
     plt.ylabel("Y Coordinate (mm)")
     plt.grid(True)
     plt.gca().set_aspect("equal", adjustable="box")
+
+    # Plot the geometry lines
+    x_geom, y_geom = hex_section.geometry.exterior.xy
+
+    plt.plot(x_geom, y_geom, color="red", linewidth=2, label="Geometry")
+    plt.legend()
     plt.show()
