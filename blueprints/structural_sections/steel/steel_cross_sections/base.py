@@ -51,21 +51,24 @@ class SteelCrossSection(ABC):
     @property
     def centroid(self) -> Point:
         """Centroid of the steel cross-section."""
-        area_weighted_centroids = sum(element.centroid * element.area for element in self.elements)
-        return area_weighted_centroids / self.steel_area
+        area_weighted_centroids_x = sum(element.centroid.x * element.area for element in self.elements)
+        area_weighted_centroids_y = sum(element.centroid.y * element.area for element in self.elements)
+        centroid_x = area_weighted_centroids_x / self.steel_area
+        centroid_y = area_weighted_centroids_y / self.steel_area
+        return Point(centroid_x, centroid_y)
 
     @property
     def moment_of_inertia_about_y(self) -> KG_M:
         """Moment of inertia about the y-axis per meter length [mm⁴/m]."""
         body_moments_of_inertia = sum(element.moment_of_inertia_about_y for element in self.elements)
-        parallel_axis_theorem = sum(element.area * (element.centroid.y - self.centroid) ** 2 for element in self.elements)
+        parallel_axis_theorem = sum(element.area * (element.centroid.y - self.centroid.y) ** 2 for element in self.elements)
         return body_moments_of_inertia + parallel_axis_theorem
 
     @property
     def moment_of_inertia_about_z(self) -> KG_M:
         """Moment of inertia about the z-axis per meter length [mm⁴/m]."""
         body_moments_of_inertia = sum(element.moment_of_inertia_about_z for element in self.elements)
-        parallel_axis_theorem = sum(element.area * (element.centroid.x - self.centroid) ** 2 for element in self.elements)
+        parallel_axis_theorem = sum(element.area * (element.centroid.x - self.centroid.x) ** 2 for element in self.elements)
         return body_moments_of_inertia + parallel_axis_theorem
 
     @property
@@ -76,25 +79,25 @@ class SteelCrossSection(ABC):
     @property
     def elastic_section_modulus_about_y_positive(self) -> KG_M:
         """Elastic section modulus about the y-axis on the positive z side [mm³/m]."""
-        distance_to_top = max(point.y for point in self.vertices)
+        distance_to_top = max(point.y for element in self.elements for point in element.cross_section.vertices) - self.centroid.y
         return self.moment_of_inertia_about_y / distance_to_top
 
     @property
     def elastic_section_modulus_about_y_negative(self) -> KG_M:
         """Elastic section modulus about the y-axis on the negative z side [mm³/m]."""
-        distance_to_bottom = min(point.y for point in self.vertices)
+        distance_to_bottom = self.centroid.y - min(point.y for element in self.elements for point in element.cross_section.vertices)
         return self.moment_of_inertia_about_y / distance_to_bottom
 
     @property
     def elastic_section_modulus_about_z_positive(self) -> KG_M:
         """Elastic section modulus about the z-axis on the positive y side [mm³/m]."""
-        distance_to_right = max(point.x for point in self.vertices)
+        distance_to_right = max(point.x for element in self.elements for point in element.cross_section.vertices) - self.centroid.x
         return self.moment_of_inertia_about_z / distance_to_right
 
     @property
     def elastic_section_modulus_about_z_negative(self) -> KG_M:
         """Elastic section modulus about the z-axis on the negative y side [mm³/m]."""
-        distance_to_left = min(point.x for point in self.vertices)
+        distance_to_left = self.centroid.x - min(point.x for element in self.elements for point in element.cross_section.vertices)
         return self.moment_of_inertia_about_z / distance_to_left
 
     @property
