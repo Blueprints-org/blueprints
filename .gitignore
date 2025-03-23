@@ -166,3 +166,4 @@ cython_debug/
 
 # ENV file
 .ENV
+/local/
