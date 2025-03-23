@@ -61,7 +61,7 @@ class LatexFormula:
 
         """
         # If numeric_equation_with_units is not provided, use numeric_equation
-        numeric_equation_with_units = self.numeric_equation_with_units if self.numeric_equation_with_units != "" else self.numeric_equation
+        numeric_equation_with_units = self.numeric_equation_with_units or self.numeric_equation
 
         all_sub_equations = [self.return_symbol, self.equation, numeric_equation_with_units, f"{self.result}"]
         long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
