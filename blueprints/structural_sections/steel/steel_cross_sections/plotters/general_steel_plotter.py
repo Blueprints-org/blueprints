@@ -6,14 +6,14 @@ from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Polygon
 
 from blueprints.materials.steel import SteelStrengthClass
-from blueprints.structural_sections.steel.steel_element import SteelElement
+from blueprints.structural_sections.general_cross_section import CrossSection
 
 # Define color
 STEEL_COLOR = (0.683, 0.0, 0.0)
 
 
 def plot_shapes(
-    *elements: SteelElement,
+    *elements: CrossSection,
     figsize: tuple[float, float] = (15.0, 8.0),
     title: str = "Cross Section",
     font_size_title: float = 18.0,
@@ -24,8 +24,8 @@ def plot_shapes(
 
     Parameters
     ----------
-    elements : SteelElement
-        The steel elements to plot.
+    elements : CrossSection
+        The cross-sections to plot.
     figsize : tuple[float, float], optional
         The size of the figure in inches. Default is (15.0, 8.0).
     title : str, optional

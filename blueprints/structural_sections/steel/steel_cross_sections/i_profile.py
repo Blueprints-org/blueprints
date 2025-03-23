@@ -25,8 +25,8 @@ class ISteelProfile(SteelCrossSection):
         The width of the bottom flange [mm].
     bottom_flange_thickness : MM
         The thickness of the bottom flange [mm].
-    web_height : MM
-        The height of the web [mm].
+    total_height : MM
+        The total height of the profile [mm].
     web_thickness : MM
         The thickness of the web [mm].
     steel_class : SteelStrengthClass
@@ -41,7 +41,7 @@ class ISteelProfile(SteelCrossSection):
         top_flange_thickness: MM,
         bottom_flange_width: MM,
         bottom_flange_thickness: MM,
-        web_height: MM,
+        total_height: MM,
         web_thickness: MM,
         steel_class: SteelStrengthClass,
         radius: MM | None = None,
@@ -51,26 +51,29 @@ class ISteelProfile(SteelCrossSection):
         self.top_flange_thickness = top_flange_thickness
         self.bottom_flange_width = bottom_flange_width
         self.bottom_flange_thickness = bottom_flange_thickness
-        self.web_height = web_height
+        self.total_height = total_height
         self.web_thickness = web_thickness
         self.radius = radius if radius is not None else web_thickness
+
+        # Calculate web height
+        self.web_height = total_height - top_flange_thickness - bottom_flange_thickness
 
         # Create the cross-sections for the flanges and web
         self.top_flange = RectangularCrossSection(
             width=top_flange_width,
             height=top_flange_thickness,
             x=0,
-            y=(web_height + top_flange_thickness) / 2,
+            y=(self.web_height + top_flange_thickness) / 2,
         )
         self.bottom_flange = RectangularCrossSection(
             width=bottom_flange_width,
             height=bottom_flange_thickness,
             x=0,
-            y=-(web_height + bottom_flange_thickness) / 2,
+            y=-(self.web_height + bottom_flange_thickness) / 2,
         )
         self.web = RectangularCrossSection(
             width=web_thickness,
-            height=web_height,
+            height=self.web_height,
             x=0,
             y=0,
         )
@@ -79,28 +82,28 @@ class ISteelProfile(SteelCrossSection):
         self.curve_1 = RightAngleCurvedCrossSection(
             radius=self.radius,
             x=web_thickness / 2,
-            y=web_height / 2,
+            y=self.web_height / 2,
             flipped_horizontally=False,
             flipped_vertically=True,
         )
         self.curve_2 = RightAngleCurvedCrossSection(
             radius=self.radius,
             x=-web_thickness / 2,
-            y=web_height / 2,
+            y=self.web_height / 2,
             flipped_horizontally=True,
             flipped_vertically=True,
         )
         self.curve_3 = RightAngleCurvedCrossSection(
             radius=self.radius,
             x=web_thickness / 2,
-            y=-web_height / 2,
+            y=-self.web_height / 2,
             flipped_horizontally=False,
             flipped_vertically=False,
         )
         self.curve_4 = RightAngleCurvedCrossSection(
             radius=self.radius,
             x=-web_thickness / 2,
-            y=-web_height / 2,
+            y=-self.web_height / 2,
             flipped_horizontally=True,
             flipped_vertically=False,
         )
@@ -157,8 +160,9 @@ if __name__ == "__main__":
         top_flange_thickness=36,
         bottom_flange_width=300,
         bottom_flange_thickness=36,
-        web_height=1000 - 36 * 2,
+        total_height=1000,
         web_thickness=19,
         radius=30,
         steel_class=steel_class,
     )
+    profile.plot(show=True)
