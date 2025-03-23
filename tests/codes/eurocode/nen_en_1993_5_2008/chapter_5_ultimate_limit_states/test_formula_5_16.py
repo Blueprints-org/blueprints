@@ -43,9 +43,9 @@ class TestForm5Dot16PlasticDesignResistance:
         [
             (
                 "complete",
-                r"N_{pl,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = \frac{5000.000 \cdot 355.000}{1.000} = 1775000.000 N",
+                r"N_{pl,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = \frac{5000.000 \cdot 355.000}{1.000} = 1775000.000 \ N",
             ),
-            ("short", r"N_{pl,Rd} = 1775000.000 N"),
+            ("short", r"N_{pl,Rd} = 1775000.000 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

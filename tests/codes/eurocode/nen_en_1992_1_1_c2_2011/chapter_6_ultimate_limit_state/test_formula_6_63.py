@@ -44,9 +44,9 @@ class TestForm6Dot63ConcentratedResistanceForce:
             (
                 "complete",
                 r"F_{Rdu} = \min \left( A_{c0} \cdot f_{cd} \cdot \sqrt{\frac{A_{c1}}{A_{c0}}}, 3 \cdot f_{cd} \cdot A_{c0} \right) = "
-                r"\min \left( 300.000 \cdot 30.000 \cdot \sqrt{\frac{400.000}{300.000}}, 3 \cdot 30.000 \cdot 300.000 \right) = 10392.305 N",
+                r"\min \left( 300.000 \cdot 30.000 \cdot \sqrt{\frac{400.000}{300.000}}, 3 \cdot 30.000 \cdot 300.000 \right) = 10392.305 \ N",
             ),
-            ("short", r"F_{Rdu} = 10392.305 N"),
+            ("short", r"F_{Rdu} = 10392.305 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
