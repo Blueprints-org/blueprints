@@ -22,8 +22,7 @@ body:
     attributes:
       label: "Acceptance Criteria"
       description: "List the conditions that the formula must fulfill to be considered complete."
-      placeholder: "- [ ] Add the formula to the code\n- [ ] Add latex expression to the formula\n- [ ] Add unittests\n- "
-      "[ ] Add docstrings\n- [ ] Update table in docs with classname(s)"
+      placeholder: "- [ ] Add the formula to the code\n- [ ] Add latex expression to the formula\n- [ ] Add unittests\n- [ ] Add docstrings\n- [ ] Update table in docs with classname(s)"
     validations:
       required: true
 
