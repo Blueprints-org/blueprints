@@ -69,7 +69,7 @@ class RightAngleCurvedCrossSection:
         MM2
             The area of the shape.
         """
-        return self.radius**2 / 2 + (math.pi * self.radius**2 / 4) / 2
+        return self.radius**2 - (math.pi * self.radius**2 / 4)
 
     @property
     def plate_thickness(self) -> MM:

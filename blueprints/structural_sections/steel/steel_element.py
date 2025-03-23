@@ -20,7 +20,7 @@ class SteelElement:
     cross_section : CrossSection
         The cross-section of the steel element.
     material : SteelMaterial
-        The material properties of the steel element.
+        The material of the steel element.
     name : str
         The name of the steel element.
     """
@@ -30,9 +30,9 @@ class SteelElement:
     name: str
 
     def __post_init__(self) -> None:
-        """Post-initialization to validate the material."""
-        if self.material is None:
-            raise ValueError("Material of the steel element cannot be None.")
+        """Check if the material is a SteelMaterial."""
+        if not isinstance(self.material, SteelMaterial):
+            raise TypeError(f"Expected a SteelMaterial, but got: {type(self.material)}")
 
     @property
     def area(self) -> MM2:
