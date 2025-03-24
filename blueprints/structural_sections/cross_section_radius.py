@@ -105,13 +105,28 @@ class RightAngleCurvedCrossSection:
         Point
             The centroid of the shape.
         """
-        centroid_x = self.x + self.radius / 3
-        centroid_y = self.y + self.radius / 3
+        if self.radius == 0:
+            return Point(self.x, self.y)
+
+        area_square = self.radius**2
+        cog_square_to_reference_point = self.radius / 2
+
+        area_quarter_circle = math.pi * self.radius**2 / 4
+        cog_quarter_circle_to_reference_point = self.radius - 4 * self.radius / 3 / np.pi
+
+        first_moment_square = area_square * cog_square_to_reference_point
+        first_moment_quarter_circle = area_quarter_circle * cog_quarter_circle_to_reference_point
+
+        total_first_moment = first_moment_square - first_moment_quarter_circle
+        total_area = area_square - area_quarter_circle
+
+        centroid_x = self.x + total_first_moment / total_area
+        centroid_y = self.y + total_first_moment / total_area
 
         if self.flipped_horizontally:
-            centroid_x = self.x - self.radius / 3
+            centroid_x = 2 * self.x - centroid_x
         if self.flipped_vertically:
-            centroid_y = self.y - self.radius / 3
+            centroid_y = 2 * self.y - centroid_y
 
         return Point(centroid_x, centroid_y)
 
@@ -173,7 +188,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = self.radius / 3
+        distance_to_end = max(point.y for point in self.vertices) - self.centroid.y
         return self.moment_of_inertia_about_y / distance_to_end
 
     @property
@@ -186,7 +201,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = self.radius / 3 * 2
+        distance_to_end = self.centroid.y - min(point.y for point in self.vertices)
         return self.moment_of_inertia_about_y / distance_to_end
 
     @property
@@ -199,7 +214,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_end = self.radius / 3 * 2
+        distance_to_end = max(point.x for point in self.vertices) - self.centroid.x
         return self.moment_of_inertia_about_z / distance_to_end
 
     @property
@@ -212,7 +227,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_end = self.radius / 3
+        distance_to_end = self.centroid.x - min(point.x for point in self.vertices)
         return self.moment_of_inertia_about_z / distance_to_end
 
     @property
