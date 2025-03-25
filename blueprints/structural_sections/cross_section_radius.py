@@ -234,25 +234,27 @@ class RightAngleCurvedCrossSection:
     def plastic_section_modulus_about_y(self) -> MM3:
         """
         Plastic section modulus about the y-axis [mm³].
+        Note: This is an approximation.
 
         Returns
         -------
         MM3
             The plastic section modulus about the y-axis.
         """
-        return 0
+        return self.radius**3 / 30.73
 
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
         """
         Plastic section modulus about the z-axis [mm³].
+        Note: This is an approximation.
 
         Returns
         -------
         MM3
             The plastic section modulus about the z-axis.
         """
-        return 0
+        return self.plastic_section_modulus_about_y
 
     @property
     def vertices(self) -> list[Point]:

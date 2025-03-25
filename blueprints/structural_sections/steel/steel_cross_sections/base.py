@@ -108,8 +108,8 @@ class SteelCrossSection(ABC):
         weighted_midpoint_y = sum(element.centroid.y * element.area * element.yield_strength for element in self.elements) / total_weighted_area
 
         # Create a dotted mesh for each element
-        mesh_size = 0  # zero lets the cross-section decide the mesh size
-        dotted_meshes = [element.cross_section.dotted_mesh(mesh_size) for element in self.elements]
+        max_mesh_size = 0  # zero lets the cross-section decide the mesh size
+        dotted_meshes = [element.cross_section.dotted_mesh(max_mesh_size) for element in self.elements]
 
         # Calculate the plastic section modulus by integrating the area over the distance to the weighted midpoint
         plastic_section_modulus = 0
@@ -128,8 +128,8 @@ class SteelCrossSection(ABC):
         weighted_midpoint_x = sum(element.centroid.x * element.area * element.yield_strength for element in self.elements) / total_weighted_area
 
         # Create a dotted mesh for each element
-        mesh_size = 0  # zero lets the cross-section decide the mesh size
-        dotted_meshes = [element.cross_section.dotted_mesh(mesh_size) for element in self.elements]
+        max_mesh_size = 0  # zero lets the cross-section decide the mesh size
+        dotted_meshes = [element.cross_section.dotted_mesh(max_mesh_size) for element in self.elements]
 
         # Calculate the plastic section modulus by integrating the area over the distance to the weighted midpoint
         plastic_section_modulus = 0
