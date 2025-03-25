@@ -103,12 +103,42 @@ class SteelCrossSection(ABC):
     @property
     def plastic_section_modulus_about_y(self) -> MM3:
         """Plastic section modulus about the y-axis [mm³]."""
-        return 0  # to be added later using mesh
+        # Calculate the area and yield strength weighted midpoint
+        total_weighted_area = sum(element.area * element.yield_strength for element in self.elements)
+        weighted_midpoint_y = sum(element.centroid.y * element.area * element.yield_strength for element in self.elements) / total_weighted_area
+
+        # Create a dotted mesh for each element
+        mesh_size = 0  # zero lets the cross-section decide the mesh size
+        dotted_meshes = [element.cross_section.dotted_mesh(mesh_size) for element in self.elements]
+
+        # Calculate the plastic section modulus by integrating the area over the distance to the weighted midpoint
+        plastic_section_modulus = 0
+        for element, dotted_mesh in zip(self.elements, dotted_meshes):
+            mesh_area = element.area / len(dotted_mesh)
+            for node in dotted_mesh:
+                plastic_section_modulus += abs(node.y - weighted_midpoint_y) * mesh_area
+
+        return plastic_section_modulus
 
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
         """Plastic section modulus about the z-axis [mm³]."""
-        return 0  # to be added later using mesh
+        # Calculate the area and yield strength weighted midpoint
+        total_weighted_area = sum(element.area * element.yield_strength for element in self.elements)
+        weighted_midpoint_x = sum(element.centroid.x * element.area * element.yield_strength for element in self.elements) / total_weighted_area
+
+        # Create a dotted mesh for each element
+        mesh_size = 0  # zero lets the cross-section decide the mesh size
+        dotted_meshes = [element.cross_section.dotted_mesh(mesh_size) for element in self.elements]
+
+        # Calculate the plastic section modulus by integrating the area over the distance to the weighted midpoint
+        plastic_section_modulus = 0
+        for element, dotted_mesh in zip(self.elements, dotted_meshes):
+            mesh_area = element.area / len(dotted_mesh)
+            for node in dotted_mesh:
+                plastic_section_modulus += abs(node.x - weighted_midpoint_x) * mesh_area
+
+        return plastic_section_modulus
 
     @property
     def vertices(self) -> list[Point]:

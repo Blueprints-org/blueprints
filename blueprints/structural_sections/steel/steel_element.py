@@ -110,6 +110,11 @@ class SteelElement:
         return self.cross_section.vertices
 
     @property
+    def dotted_mesh(self) -> list:
+        """Return the dotted mesh of the steel element."""
+        return self.cross_section.dotted_mesh(mesh_size=0)
+
+    @property
     def weight_per_meter(self) -> KG_M:
         """
         Calculate the weight per meter of the steel element.
