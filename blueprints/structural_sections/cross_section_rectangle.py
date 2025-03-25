@@ -250,8 +250,8 @@ class RectangularCrossSection:
             mesh_size_width = min(self.width, self.height) / 4
             mesh_size_height = mesh_size_width
         else:
-            mesh_size_width = self.height / np.ceil(self.height / max_mesh_size)
-            mesh_size_height = self.width / np.ceil(self.width / max_mesh_size)
+            mesh_size_width = self.width / np.ceil(self.width / max_mesh_size)
+            mesh_size_height = self.height / np.ceil(self.height / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size_width)
