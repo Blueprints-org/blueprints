@@ -281,15 +281,20 @@ class RightAngleCurvedCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
+        if self.area == 0:
+            return [Point(self.x, self.y)]
         mesh_size = self.radius / 20 if max_mesh_size == 0 else self.radius / np.ceil(self.radius / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size)
         y_range = np.arange(y_min, y_max, mesh_size)
+        center_radius = (
+            self.x - self.radius if self.flipped_horizontally else self.x + self.radius,
+            self.y - self.radius if self.flipped_vertically else self.y + self.radius,
+        )
         return [
             Point(x + mesh_size / 2, y + mesh_size / 2)
             for x in x_range
             for y in y_range
-            if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
-            if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
+            if (x + mesh_size / 2 - center_radius[0]) ** 2 + (y + mesh_size / 2 - center_radius[1]) ** 2 > self.radius**2
         ]

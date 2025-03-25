@@ -258,7 +258,7 @@ class TubeCrossSection:
         Parameters
         ----------
         max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a third of the thickness and 20th of diameter,
+            The maximum mesh size to use for the meshing. Default is a halve of the thickness and 20th of diameter,
             whichever is less.
 
         Returns
@@ -266,8 +266,10 @@ class TubeCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
+        if self.area == 0:
+            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
-            mesh_size = min(self.plate_thickness / 3, self.outer_diameter / 20)
+            mesh_size = min(self.plate_thickness / 2, self.outer_diameter / 20)
         else:
             mesh_size = self.plate_thickness / np.ceil(self.plate_thickness / max_mesh_size)
 
@@ -278,27 +280,5 @@ class TubeCrossSection:
             Point(x + mesh_size / 2, y + mesh_size / 2)
             for x in x_range
             for y in y_range
-            if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
+            if self.inner_radius < math.sqrt((x + mesh_size / 2 - self.x) ** 2 + (y + mesh_size / 2 - self.y) ** 2) < self.outer_radius
         ]
-
-
-if __name__ == "__main__":
-    # Example usage of TubeCrossSection to get the mesh
-    tube_section = TubeCrossSection(outer_diameter=100, inner_diameter=50, x=0, y=0)
-    mesh = tube_section.dotted_mesh()
-
-    import matplotlib.pyplot as plt
-
-    # Extract x and y coordinates from the mesh nodes
-    x_coords = [node.x for node in mesh]
-    y_coords = [node.y for node in mesh]
-
-    # Create the plot
-    plt.figure(figsize=(8, 8))
-    plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Circular Tube Cross-Section" + f", amount of nodes: {len(mesh)}")
-    plt.xlabel("X Coordinate (mm)")
-    plt.ylabel("Y Coordinate (mm)")
-    plt.grid(True)
-    plt.gca().set_aspect("equal", adjustable="box")
-    plt.show()

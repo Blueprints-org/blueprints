@@ -241,6 +241,9 @@ class CircularCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
+        if self.area == 0:
+            return [Point(self.x, self.y)]
+
         mesh_size = self.diameter / 10 if max_mesh_size == 0 else self.diameter / np.ceil(self.diameter / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
@@ -250,27 +253,5 @@ class CircularCrossSection:
             Point(x + mesh_size / 2, y + mesh_size / 2)
             for x in x_range
             for y in y_range
-            if self.geometry.contains(Point(x + mesh_size / 2, y + mesh_size / 2))
+            if (x + mesh_size / 2 - self.x) ** 2 + (y + mesh_size / 2 - self.y) ** 2 <= self.radius**2
         ]
-
-
-if __name__ == "__main__":
-    # Example usage of CircularCrossSection to get the mesh
-    circle_section = CircularCrossSection(diameter=100, x=0, y=0)
-    mesh = circle_section.dotted_mesh()
-
-    import matplotlib.pyplot as plt
-
-    # Extract x and y coordinates from the mesh nodes
-    x_coords = [node.x for node in mesh]
-    y_coords = [node.y for node in mesh]
-
-    # Create the plot
-    plt.figure(figsize=(8, 8))
-    plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Circular Cross-Section" + f", amount of nodes: {len(mesh)}")
-    plt.xlabel("X Coordinate (mm)")
-    plt.ylabel("Y Coordinate (mm)")
-    plt.grid(True)
-    plt.gca().set_aspect("equal", adjustable="box")
-    plt.show()

@@ -244,6 +244,8 @@ class RectangularCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
+        if self.area == 0:
+            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
             mesh_size_width = min(self.width, self.height) / 4
             mesh_size_height = mesh_size_width
@@ -255,28 +257,3 @@ class RectangularCrossSection:
         x_range = np.arange(x_min, x_max, mesh_size_width)
         y_range = np.arange(y_min, y_max, mesh_size_height)
         return [Point(x + mesh_size_width / 2, y + mesh_size_height / 2) for x in x_range for y in y_range]
-
-
-if __name__ == "__main__":
-    # Example usage of RectangularCrossSection to get the mesh
-    width = 100  # mm
-    height = 10  # mm
-
-    rect_section = RectangularCrossSection(width=width, height=height)
-    mesh = rect_section.dotted_mesh()
-
-    import matplotlib.pyplot as plt
-
-    # Extract x and y coordinates from the mesh nodes
-    x_coords = [node.x for node in mesh]
-    y_coords = [node.y for node in mesh]
-
-    # Create the plot
-    plt.figure(figsize=(8, 8))
-    plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Right-Angle Curved Cross-Section" + f", amount of nodes: {len(mesh)}")
-    plt.xlabel("X Coordinate (mm)")
-    plt.ylabel("Y Coordinate (mm)")
-    plt.grid(True)
-    plt.gca().set_aspect("equal", adjustable="box")
-    plt.show()

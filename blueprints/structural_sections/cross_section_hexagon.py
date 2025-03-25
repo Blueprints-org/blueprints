@@ -44,7 +44,7 @@ class HexagonalCrossSection:
         MM
             The radius of the circumscribed circle.
         """
-        return self.side_length * math.sqrt(3) / 2.0
+        return self.side_length
 
     @property
     def geometry(self) -> Polygon:
@@ -243,6 +243,8 @@ class HexagonalCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
+        if self.area == 0:
+            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
             mesh_size_width = self.side_length / 10
             mesh_size_height = mesh_size_width / np.sqrt(3)
@@ -253,37 +255,31 @@ class HexagonalCrossSection:
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size_width)
         y_range = np.arange(y_min, y_max, mesh_size_height)
+
+        def is_point_inside_hexagon(px: MM, py: MM) -> bool:
+            """Check if a point is inside the hexagon using geometric properties.
+
+            Parameters
+            ----------
+            px : MM
+                The x-coordinate of the point of interest.
+            py : MM
+                The y-coordinate of the point of interest.
+
+            Returns
+            -------
+            bool
+                True if the point is inside the hexagon, False otherwise.
+            """
+            dx = abs(px - self.x)
+            dy = abs(py - self.y)
+            if dx > self.side_length or dy > self.side_length * math.sqrt(3) / 2:
+                return False
+            return dy <= self.side_length * math.sqrt(3) / 2 and dx <= self.side_length - dy / math.sqrt(3)
+
         return [
             Point(x + mesh_size_width / 2, y + mesh_size_height / 2)
             for x in x_range
             for y in y_range
-            if self.geometry.contains(Point(x + mesh_size_width / 2, y + mesh_size_height / 2))
+            if is_point_inside_hexagon(x + mesh_size_width / 2, y + mesh_size_height / 2)
         ]
-
-
-if __name__ == "__main__":
-    # Example usage of HexagonalCrossSection to get the mesh
-    hex_section = HexagonalCrossSection(side_length=100, x=0, y=0)
-    mesh = hex_section.dotted_mesh()
-
-    import matplotlib.pyplot as plt
-
-    # Extract x and y coordinates from the mesh nodes
-    x_coords = [node.x for node in mesh]
-    y_coords = [node.y for node in mesh]
-
-    # Create the plot
-    plt.figure(figsize=(8, 8))
-    plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Hexagonal Cross-Section" + f", amount of nodes: {len(mesh)}")
-    plt.xlabel("X Coordinate (mm)")
-    plt.ylabel("Y Coordinate (mm)")
-    plt.grid(True)
-    plt.gca().set_aspect("equal", adjustable="box")
-
-    # Plot the geometry lines
-    x_geom, y_geom = hex_section.geometry.exterior.xy
-
-    plt.plot(x_geom, y_geom, color="red", linewidth=2, label="Geometry")
-    plt.legend()
-    plt.show()

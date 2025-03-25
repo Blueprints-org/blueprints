@@ -245,6 +245,8 @@ class RightAngledTriangularCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
+        if self.area == 0:
+            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
             mesh_size_width = self.base / 20
             mesh_size_height = self.height / 20
@@ -259,31 +261,13 @@ class RightAngledTriangularCrossSection:
         # Shift the x-range by 1/100th of the mesh size to avoid diagonal issues with the mesh
         x_range = np.array([x + ((i % 2) * 2 - 1) * mesh_size_width / 100 for i, x in enumerate(x_range)])
 
+        left_lower = Point(self.x, self.y)
+        right_lower = Point(self.x + self.base, self.y) if not self.flipped_horizontally else Point(self.x - self.base, self.y)
+        top = Point(self.x, self.y + self.height) if not self.flipped_vertically else Point(self.x, self.y - self.height)
+
         return [
             Point(x + mesh_size_width / 2, y + mesh_size_height / 2)
             for x in x_range
             for y in y_range
-            if self.geometry.contains(Point(x + mesh_size_width / 2, y + mesh_size_height / 2))
+            if Polygon([left_lower, right_lower, top]).contains(Point(x + mesh_size_width / 2, y + mesh_size_height / 2))
         ]
-
-
-if __name__ == "__main__":
-    # Example usage of RightAngledTriangularCrossSection to get the mesh
-    triangle_section = RightAngledTriangularCrossSection(base=10, height=20)
-    mesh = triangle_section.dotted_mesh()
-
-    import matplotlib.pyplot as plt
-
-    # Extract x and y coordinates from the mesh nodes
-    x_coords = [node.x for node in mesh]
-    y_coords = [node.y for node in mesh]
-
-    # Create the plot
-    plt.figure(figsize=(8, 8))
-    plt.scatter(x_coords, y_coords, s=10, c="blue", marker="o")
-    plt.title("Mesh Points of Right-Angled Triangular Cross-Section" + f", amount of nodes: {len(mesh)}")
-    plt.xlabel("X Coordinate (mm)")
-    plt.ylabel("Y Coordinate (mm)")
-    plt.grid(True)
-    plt.gca().set_aspect("equal", adjustable="box")
-    plt.show()
