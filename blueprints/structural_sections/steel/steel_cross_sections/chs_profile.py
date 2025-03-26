@@ -42,7 +42,7 @@ class CHSSteelProfile(SteelCrossSection):
             ),
             steel_material=SteelMaterial(steel_class=steel_class, thickness=wall_thickness),
         )
-        self.elements = [SteelElement(cross_section=self.cross_section, material=self.steel_material, name="CHS")]
+        self.elements = [SteelElement(cross_section=self.cross_section, material=self.steel_material)]
 
         self.diameter = outer_diameter
         self.thickness = wall_thickness
@@ -364,3 +364,9 @@ class CHSProfiles:
     def get_profile_name(self) -> str:
         """Return the name of the CHS profile."""
         return self.profile.value
+
+if __name__ == "__main__":
+    # Define a sample CHS profile
+    steel_class = SteelStrengthClass.EN_10025_2_S355
+    profile = CHSProfiles(steel_class=steel_class, profile=CHSStandardProfileClass.CHS_508x16)
+    profile.get_profile().plot(show=True)
