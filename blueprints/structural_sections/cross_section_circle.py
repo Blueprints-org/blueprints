@@ -16,6 +16,8 @@ class CircularCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the rectangular cross-section.
     diameter : MM
         The diameter of the circular cross-section [mm].
     x : MM
@@ -24,6 +26,7 @@ class CircularCrossSection:
         The y-coordinate of the circle's center.
     """
 
+    name: str
     diameter: MM
     x: MM
     y: MM

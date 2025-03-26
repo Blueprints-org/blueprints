@@ -15,6 +15,8 @@ class RectangularCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the rectangular cross-section.
     width : MM
         The width of the rectangular cross-section.
     height : MM
@@ -25,6 +27,7 @@ class RectangularCrossSection:
         The y-coordinate of the centroid of the rectangle. Default is 0.
     """
 
+    name: str
     width: MM
     height: MM
     x: MM = 0

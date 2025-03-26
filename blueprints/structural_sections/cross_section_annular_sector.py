@@ -19,6 +19,8 @@ class AnnularSectorCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the rectangular cross-section.
     radius_centerline : MM
         The radius of the centerline of the annular sector cross-section [mm].
     thickness : MM
@@ -33,6 +35,7 @@ class AnnularSectorCrossSection:
         The y-coordinate of the annular sector's center.
     """
 
+    name: str
     radius_centerline: MM
     thickness: MM
     start_angle: float

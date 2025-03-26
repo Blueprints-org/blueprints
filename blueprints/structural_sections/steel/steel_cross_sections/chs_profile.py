@@ -34,6 +34,7 @@ class CHSSteelProfile(SteelCrossSection):
         """Initialize the CHS steel profile."""
         super().__init__(
             cross_section=TubeCrossSection(
+                name="CHS",
                 outer_diameter=outer_diameter,
                 inner_diameter=outer_diameter - 2 * wall_thickness,
                 x=0,

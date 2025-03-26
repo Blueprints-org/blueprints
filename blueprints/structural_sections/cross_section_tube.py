@@ -16,6 +16,8 @@ class TubeCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the rectangular cross-section.
     outer_diameter : MM
         The outer diameter of the circular tube cross-section [mm].
     inner_diameter : MM
@@ -26,6 +28,7 @@ class TubeCrossSection:
         The y-coordinate of the tube's center.
     """
 
+    name: str
     outer_diameter: MM
     inner_diameter: MM
     x: MM

@@ -18,6 +18,7 @@ def plot_shapes(
     figsize: tuple[float, float] = (15.0, 8.0),
     title: str = "Cross Section",
     font_size_title: float = 18.0,
+    font_size_legend: float = 10.0,
     show: bool = False,
 ) -> plt.Figure:
     """
@@ -35,10 +36,14 @@ def plot_shapes(
         The title of the plot. Default is "Cross Section".
     font_size_title : float, optional
         The font size of the title. Default is 18.0.
+    font_size_legend : float, optional
+        The font size of the legend. Default is 10.0.
     show : bool, optional
         Whether to show the plot. Default is False.
     """
     fig, ax = plt.subplots(figsize=figsize)
+
+    legend_text = "Legend:\n"
 
     for element in elements:
         if not isinstance(element.geometry, Polygon):
@@ -55,9 +60,28 @@ def plot_shapes(
             patch = MplPolygon(xy=list(zip(x, y)), lw=0, fill=True, facecolor="white")
             ax.add_patch(patch)
 
+        # Add element details to the legend
+        if hasattr(element, "width") and hasattr(element, "height"):
+            legend_text += f"- {element.name}: Width={element.width} mm, Height={element.height} mm\n"
+        elif hasattr(element, "radius"):
+            legend_text += f"- {element.name}: Radius={element.radius} mm\n"
+        elif hasattr(element, "side_length"):
+            legend_text += f"- {element.name}: Side Length={element.side_length} mm\n"
+
     # Plot the centroid
     if centroid:
         ax.plot(centroid.x, centroid.y, "o", color="black")
+
+    # Add legend text
+    ax.annotate(
+        text=legend_text,
+        xy=(0.05, 0.05),  # Adjusted for left alignment
+        xycoords="axes fraction",
+        verticalalignment="bottom",
+        horizontalalignment="left",  # Align text to the left
+        fontsize=font_size_legend,
+        bbox=dict(boxstyle="round,pad=0.3", edgecolor="none", facecolor="white"),  # Removed black border
+    )
 
     ax.set_xlabel("X")
     ax.set_ylabel("Y")

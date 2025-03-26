@@ -16,6 +16,8 @@ class RightAngleCurvedCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the radius cross-section.
     radius : MM
         The length of the two sides of the triangular cross-section.
     x : MM
@@ -28,6 +30,7 @@ class RightAngleCurvedCrossSection:
         Whether the triangle is flipped vertically. Default is False.
     """
 
+    name: str
     radius: MM
     x: MM = 0
     y: MM = 0

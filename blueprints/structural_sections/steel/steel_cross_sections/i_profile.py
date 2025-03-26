@@ -64,18 +64,21 @@ class ISteelProfile(SteelCrossSection):
 
         # Create the cross-sections for the flanges and web
         self.top_flange = RectangularCrossSection(
+            name="Top Flange",
             width=top_flange_width,
             height=top_flange_thickness,
             x=0,
             y=(self.web_height + top_flange_thickness) / 2,
         )
         self.bottom_flange = RectangularCrossSection(
+            name="Bottom Flange",
             width=bottom_flange_width,
             height=bottom_flange_thickness,
             x=0,
             y=-(self.web_height + bottom_flange_thickness) / 2,
         )
         self.web = RectangularCrossSection(
+            name="Web",
             width=web_thickness,
             height=self.web_height,
             x=0,
@@ -83,28 +86,32 @@ class ISteelProfile(SteelCrossSection):
         )
 
         # Create curves for the corners of the flanges
-        self.curve_1 = RightAngleCurvedCrossSection(
+        self.curve_top_right = RightAngleCurvedCrossSection(
+            name="Curve top right",
             radius=self.radius_top,
             x=web_thickness / 2,
             y=self.web_height / 2,
             flipped_horizontally=False,
             flipped_vertically=True,
         )
-        self.curve_2 = RightAngleCurvedCrossSection(
+        self.curve_top_left = RightAngleCurvedCrossSection(
+            name="Curve top left",
             radius=self.radius_top,
             x=-web_thickness / 2,
             y=self.web_height / 2,
             flipped_horizontally=True,
             flipped_vertically=True,
         )
-        self.curve_3 = RightAngleCurvedCrossSection(
+        self.curve_bottom_right = RightAngleCurvedCrossSection(
+            name="Curve bottom right",
             radius=self.radius_bottom,
             x=web_thickness / 2,
             y=-self.web_height / 2,
             flipped_horizontally=False,
             flipped_vertically=False,
         )
-        self.curve_4 = RightAngleCurvedCrossSection(
+        self.curve_bottom_left = RightAngleCurvedCrossSection(
+            name="Curve bottom left",
             radius=self.radius_bottom,
             x=-web_thickness / 2,
             y=-self.web_height / 2,
@@ -117,10 +124,10 @@ class ISteelProfile(SteelCrossSection):
             self.top_flange.geometry.exterior.coords[:]
             + self.web.geometry.exterior.coords[:]
             + self.bottom_flange.geometry.exterior.coords[:]
-            + self.curve_1.geometry.exterior.coords[:]
-            + self.curve_2.geometry.exterior.coords[:]
-            + self.curve_3.geometry.exterior.coords[:]
-            + self.curve_4.geometry.exterior.coords[:]
+            + self.curve_top_right.geometry.exterior.coords[:]
+            + self.curve_top_left.geometry.exterior.coords[:]
+            + self.curve_bottom_right.geometry.exterior.coords[:]
+            + self.curve_bottom_left.geometry.exterior.coords[:]
         )
 
         # material properties
@@ -130,13 +137,13 @@ class ISteelProfile(SteelCrossSection):
 
         # Create the steel elements
         self.elements = [
-            SteelElement(cross_section=self.top_flange, material=material_top_flange, name="Top Flange"),
-            SteelElement(cross_section=self.bottom_flange, material=material_bottom_flange, name="Bottom Flange"),
-            SteelElement(cross_section=self.web, material=material_web, name="Web"),
-            SteelElement(cross_section=self.curve_1, material=material_web, name="Curve 1"),
-            SteelElement(cross_section=self.curve_2, material=material_web, name="Curve 2"),
-            SteelElement(cross_section=self.curve_3, material=material_web, name="Curve 3"),
-            SteelElement(cross_section=self.curve_4, material=material_web, name="Curve 4"),
+            SteelElement(cross_section=self.top_flange, material=material_top_flange),
+            SteelElement(cross_section=self.bottom_flange, material=material_bottom_flange),
+            SteelElement(cross_section=self.web, material=material_web),
+            SteelElement(cross_section=self.curve_top_right, material=material_web),
+            SteelElement(cross_section=self.curve_top_left, material=material_web),
+            SteelElement(cross_section=self.curve_bottom_right, material=material_web),
+            SteelElement(cross_section=self.curve_bottom_left, material=material_web),
         ]
 
         self.steel_material = SteelMaterial(steel_class=steel_class, thickness=max(top_flange_thickness, bottom_flange_thickness, web_thickness))
@@ -157,11 +164,26 @@ class ISteelProfile(SteelCrossSection):
             self.top_flange,
             self.bottom_flange,
             self.web,
-            self.curve_1,
-            self.curve_2,
-            self.curve_3,
-            self.curve_4,
+            self.curve_top_right,
+            self.curve_top_left,
+            self.curve_bottom_right,
+            self.curve_bottom_left,
             centroid=self.centroid,
             *args,
             **kwargs,
         )
+
+if __name__ == "__main__":
+    profile = ISteelProfile(
+        top_flange_width=300,
+        top_flange_thickness=36,
+        bottom_flange_width=300,
+        bottom_flange_thickness=36,
+        total_height=1000,
+        web_thickness=19,
+        radius_bottom=30,
+        radius_top=30,
+        steel_class=SteelStrengthClass.EN_10025_2_S355,
+    )
+    profile.plot()
+    plt.show()

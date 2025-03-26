@@ -16,6 +16,8 @@ class RightAngledTriangularCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the rectangular cross-section.
     base : MM
         The base length of the triangular cross-section.
     height : MM
@@ -30,6 +32,7 @@ class RightAngledTriangularCrossSection:
         Whether the triangle is flipped vertically. Default is False.
     """
 
+    name: str
     base: MM
     height: MM
     x: MM = 0
