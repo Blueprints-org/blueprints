@@ -3,6 +3,7 @@
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon as MplPolygon
+from matplotlib import patches as mplpatches
 from shapely.geometry import Point, Polygon
 
 from blueprints.materials.steel import SteelStrengthClass
@@ -75,7 +76,12 @@ def plot_shapes(
         for attr, label in attributes.items():
             if hasattr(element, attr):
                 legend_text += f"  {label}={getattr(element, attr):.1f} mm\n"
-        legend_text += f"  Area={element.area:.1f} mm²\n"
+        legend_text += f"  Area={element.area:.1f} mm²\n\n"
+    legend_text = legend_text[:-4]
+
+
+    # Add dimension lines
+    _add_dimension_lines(ax, elements, centroid)
 
     # Plot the centroid
     if centroid:
@@ -84,10 +90,10 @@ def plot_shapes(
     # Add legend text
     ax.annotate(
         text=legend_text,
-        xy=(0.05, 0.05),  # Adjusted for left alignment
+        xy=(0.05, 0.5), 
         xycoords="axes fraction",
-        verticalalignment="bottom",
-        horizontalalignment="left",  # Align text to the left
+        verticalalignment="center",
+        horizontalalignment="left", 
         fontsize=font_size_legend,
         bbox=dict(boxstyle="round,pad=0.3", edgecolor="none", facecolor="none"),
     )
@@ -106,11 +112,124 @@ def plot_shapes(
     return fig
 
 
+def _add_dimension_lines(ax, elements, centroid):
+    """Adds dimension lines to show the outer dimensions of the geometry.
+    
+    Parameters
+    ----------
+    elements : list[CrossSection]
+        The cross-sections to plot.
+    centroid : Point
+        The centroid of the cross-section.
+    """
+    # Calculate the bounds of all elements in the geometry
+    min_x, min_y, max_x, max_y = float("inf"), float("inf"), float("-inf"), float("-inf")
+    for element in elements:
+        bounds = element.geometry.bounds
+        min_x = min(min_x, bounds[0])
+        min_y = min(min_y, bounds[1])
+        max_x = max(max_x, bounds[2])
+        max_y = max(max_y, bounds[3])
+    
+    width = max_x - min_x
+    height = max_y - min_y
+    centroid_width = centroid.x - min_x
+    centroid_height = centroid.y - min_y
+
+
+    # Add the width dimension line (below the geometry)
+    diameter_line_style = {
+        "arrowstyle": mplpatches.ArrowStyle(stylename="<->", head_length=0.5, head_width=0.5),
+    }
+    offset_width = max(height, width) / 20
+    ax.annotate(
+        text="",
+        xy=(min_x, min_y - offset_width),
+        xytext=(max_x, min_y - offset_width),
+        verticalalignment="center",
+        horizontalalignment="center",
+        arrowprops=diameter_line_style,
+        annotation_clip=False,
+    )
+    ax.text(
+        s=f"{width:.0f} mm",
+        x=(min_x + max_x) / 2,
+        y=min_y - offset_width - 1,
+        verticalalignment="top",
+        horizontalalignment="center",
+        fontsize=10,
+    )
+
+    # Add the height dimension line (on the right side of the geometry)
+    offset_height = offset_width
+    ax.annotate(
+        text="",
+        xy=(max_x + offset_height, max_y),
+        xytext=(max_x + offset_height, min_y),
+        verticalalignment="center",
+        horizontalalignment="center",
+        arrowprops=diameter_line_style,
+        rotation=90,
+        annotation_clip=False,
+    )
+    ax.text(
+        s=f"{height:.0f} mm",
+        x=max_x + offset_height,
+        y=(min_y + max_y) / 2,
+        verticalalignment="center",
+        horizontalalignment="left",
+        fontsize=10,
+        rotation=90,
+    )
+
+    # Add the distance from the left to the centroid (below the geometry, double offset)
+    offset_centroid_left_bottom = 2 * offset_width
+    ax.annotate(
+        text="",
+        xy=(min_x, min_y - offset_centroid_left_bottom),
+        xytext=(centroid.x, min_y - offset_centroid_left_bottom),
+        verticalalignment="center",
+        horizontalalignment="center",
+        arrowprops=diameter_line_style,
+        annotation_clip=False,
+    )
+    ax.text(
+        s=f"{centroid_width:.0f} mm",
+        x=(min_x + centroid.x) / 2,
+        y=min_y - offset_centroid_left_bottom - 1,
+        verticalalignment="top",
+        horizontalalignment="center",
+        fontsize=10,
+    )
+
+    # Add the distance from the bottom to the centroid (on the right side, double offset)
+    offset_centroid_bottom_right = 2 * offset_height
+    ax.annotate(
+        text="",
+        xy=(max_x + offset_centroid_bottom_right, min_y),
+        xytext=(max_x + offset_centroid_bottom_right, centroid.y),
+        verticalalignment="center",
+        horizontalalignment="center",
+        arrowprops=diameter_line_style,
+        rotation=90,
+        annotation_clip=False,
+    )
+    ax.text(
+        s=f"{centroid_height:.0f} mm",
+        x=max_x + offset_centroid_bottom_right,
+        y=(min_y + centroid.y) / 2,
+        verticalalignment="center",
+        horizontalalignment="left",
+        fontsize=10,
+        rotation=90,
+    )
+
+
 # Example usage
 if __name__ == "__main__":
     from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile
 
     # Define a sample CHS profile
     steel_class = SteelStrengthClass.EN_10025_2_S355
-    profile = CHSSteelProfile(outer_diameter=100, wall_thickness=10, steel_class=steel_class)
+    profile = CHSSteelProfile(outer_diameter=1000, wall_thickness=10, steel_class=steel_class)
     profile.plot(show=True)
