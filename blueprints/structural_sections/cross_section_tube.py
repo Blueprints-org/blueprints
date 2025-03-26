@@ -69,6 +69,18 @@ class TubeCrossSection:
             The inner radius of the tube.
         """
         return self.inner_diameter / 2.0
+    
+    @property
+    def wall_thickness(self) -> MM:
+        """
+        Calculate the thickness of the tube wall [mm].
+
+        Returns
+        -------
+        MM
+            The thickness of the tube wall.
+        """
+        return self.outer_radius - self.inner_radius
 
     @property
     def geometry(self) -> Polygon:

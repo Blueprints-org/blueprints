@@ -43,7 +43,7 @@ def plot_shapes(
     """
     fig, ax = plt.subplots(figsize=figsize)
 
-    legend_text = "Legend:\n"
+    legend_text = ""
 
     for element in elements:
         if not isinstance(element.geometry, Polygon):
@@ -61,12 +61,21 @@ def plot_shapes(
             ax.add_patch(patch)
 
         # Add element details to the legend
-        if hasattr(element, "width") and hasattr(element, "height"):
-            legend_text += f"- {element.name}: Width={element.width} mm, Height={element.height} mm\n"
-        elif hasattr(element, "radius"):
-            legend_text += f"- {element.name}: Radius={element.radius} mm\n"
-        elif hasattr(element, "side_length"):
-            legend_text += f"- {element.name}: Side Length={element.side_length} mm\n"
+        legend_text += f"{element.name}:\n"
+        attributes = {
+            "width": "Width",
+            "base": "Base",
+            "height": "Height",
+            "radius": "Radius",
+            "side_length": "Side Length",
+            "outer_diameter": "Outer Diameter",
+            "wall_thickness": "Wall Thickness",
+        }
+
+        for attr, label in attributes.items():
+            if hasattr(element, attr):
+                legend_text += f"  {label}={getattr(element, attr):.1f} mm\n"
+        legend_text += f"  Area={element.area:.1f} mm²\n"
 
     # Plot the centroid
     if centroid:
@@ -80,7 +89,7 @@ def plot_shapes(
         verticalalignment="bottom",
         horizontalalignment="left",  # Align text to the left
         fontsize=font_size_legend,
-        bbox=dict(boxstyle="round,pad=0.3", edgecolor="none", facecolor="white"),  # Removed black border
+        bbox=dict(boxstyle="round,pad=0.3", edgecolor="none", facecolor="none"),
     )
 
     ax.set_xlabel("X")
