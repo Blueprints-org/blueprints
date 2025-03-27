@@ -60,3 +60,8 @@ class TestRectangularCrossSection:
         expected_z = 1 / 4 * 200 * 100**2
         assert rectangular_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=expected_y, rel=1e-6)
         assert rectangular_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=expected_z, rel=1e-6)
+
+    def test_dotted_mesh(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the dotted mesh property of the RectangularCrossSection class."""
+        dotted_mesh = rectangular_cross_section.dotted_mesh()
+        assert len(dotted_mesh) > 0

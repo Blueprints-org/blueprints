@@ -69,3 +69,8 @@ class TestCircularCrossSection:
         expected_plastic_modulus = (1 / 6) * 200**3
         assert circular_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=expected_plastic_modulus, rel=1e-6)
         assert circular_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=expected_plastic_modulus, rel=1e-6)
+
+    def test_dotted_mesh(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the dotted mesh property of the CircularCrossSection class."""
+        dotted_mesh = circular_cross_section.dotted_mesh()
+        assert len(dotted_mesh) > 0
