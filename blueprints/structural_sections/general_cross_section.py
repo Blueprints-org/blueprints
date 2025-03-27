@@ -11,6 +11,10 @@ class CrossSection(Protocol):
     """Protocol for a cross-section."""
 
     @property
+    def name(self) -> str:
+        """Name of the cross-section."""
+
+    @property
     def geometry(self) -> Polygon:
         """Shapely Polygon representing the cross-section."""
 
