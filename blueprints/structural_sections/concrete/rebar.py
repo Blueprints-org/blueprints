@@ -27,11 +27,14 @@ class Rebar(CircularCrossSection):
         Relative position of the start of the rebar in the longitudinal direction of the host element [-]
     relative_end_position: RATIO
         Relative position of the end of the rebar in the longitudinal direction of the host element [-]
+    name: str
+        Name of the rebar element, default is "Rebar"
     """
 
     material: ReinforcementSteelMaterial
     relative_start_position: RATIO = 0.0
     relative_end_position: RATIO = 1.0
+    name: str = "Rebar"
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the diameter."""

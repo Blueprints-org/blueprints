@@ -11,7 +11,7 @@ class TestRectangularCrossSection:
     @pytest.fixture
     def rectangular_cross_section(self) -> RectangularCrossSection:
         """Return a RectangularCrossSection instance."""
-        return RectangularCrossSection(width=100.0, height=200.0)
+        return RectangularCrossSection(name="Rectangle", width=100.0, height=200.0)
 
     def test_area(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the area property of the RectangularCrossSection class."""

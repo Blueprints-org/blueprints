@@ -14,7 +14,7 @@ class TestCircularCrossSection:
     @pytest.fixture
     def circular_cross_section(self) -> CircularCrossSection:
         """Return a CircularCrossSection instance."""
-        return CircularCrossSection(diameter=200.0, x=0.0, y=0.0)
+        return CircularCrossSection(name="Circle", diameter=200.0, x=0.0, y=0.0)
 
     def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the geometry property of the CircularCrossSection class."""
@@ -45,7 +45,7 @@ class TestCircularCrossSection:
     def test_wrong_input(self) -> None:
         """Test the wrong input for the CircularCrossSection class."""
         with pytest.raises(ValueError):
-            CircularCrossSection(diameter=-200.0, x=0.0, y=0.0)
+            CircularCrossSection(name="Circle", diameter=-200.0, x=0.0, y=0.0)
 
     def test_moments_of_inertia(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the moments of inertia properties of the CircularCrossSection class."""

@@ -22,6 +22,8 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
 
     Parameters
     ----------
+    name : str
+        The name of the cross-section.
     width : MM
         The width of the rectangular cross-section [mm].
     height : MM
@@ -34,6 +36,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
 
     def __init__(
         self,
+        name: str,
         width: MM,
         height: MM,
         concrete_material: ConcreteMaterial,
@@ -42,11 +45,13 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         """Initialize the rectangular reinforced concrete section."""
         super().__init__(
             cross_section=RectangularCrossSection(
+                name="Rectangular Reinforced Concrete Section",
                 width=width,
                 height=height,
             ),
             concrete_material=concrete_material,
         )
+        self.name = name
         self.width = width
         self.height = height
         self.covers = covers
