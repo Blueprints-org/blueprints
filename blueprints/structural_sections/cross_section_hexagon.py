@@ -16,6 +16,8 @@ class HexagonalCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the rectangular cross-section.
     side_length : MM
         The side length of the hexagonal cross-section [mm].
     x : MM
@@ -24,6 +26,7 @@ class HexagonalCrossSection:
         The y-coordinate of the hexagon's center.
     """
 
+    name: str
     side_length: MM
     x: MM
     y: MM

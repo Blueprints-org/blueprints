@@ -16,6 +16,8 @@ class TubeCrossSection:
 
     Parameters
     ----------
+    name : str
+        The name of the rectangular cross-section.
     outer_diameter : MM
         The outer diameter of the circular tube cross-section [mm].
     inner_diameter : MM
@@ -26,6 +28,7 @@ class TubeCrossSection:
         The y-coordinate of the tube's center.
     """
 
+    name: str
     outer_diameter: MM
     inner_diameter: MM
     x: MM
@@ -66,6 +69,18 @@ class TubeCrossSection:
             The inner radius of the tube.
         """
         return self.inner_diameter / 2.0
+    
+    @property
+    def wall_thickness(self) -> MM:
+        """
+        Calculate the thickness of the tube wall [mm].
+
+        Returns
+        -------
+        MM
+            The thickness of the tube wall.
+        """
+        return self.outer_radius - self.inner_radius
 
     @property
     def geometry(self) -> Polygon:
