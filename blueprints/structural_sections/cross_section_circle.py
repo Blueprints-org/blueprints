@@ -234,7 +234,7 @@ class CircularCrossSection:
         Parameters
         ----------
         max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a tenth of the diameter.
+            The maximum mesh size to use for the meshing. Default is a twentieth of the diameter.
 
         Returns
         -------
@@ -244,7 +244,7 @@ class CircularCrossSection:
         if self.area == 0:
             return [Point(self.x, self.y)]
 
-        mesh_size = self.diameter / 10 if max_mesh_size == 0 else self.diameter / np.ceil(self.diameter / max_mesh_size)
+        mesh_size = self.diameter / 20 if max_mesh_size == 0 else self.diameter / np.ceil(self.diameter / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size)
