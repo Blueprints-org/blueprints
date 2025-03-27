@@ -330,8 +330,6 @@ class AnnularSectorCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if self.area == 0:
-            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
             mesh_size = min(self.plate_thickness / 3, self.inner_radius / 10)
         else:
