@@ -16,20 +16,20 @@ class HexagonalCrossSection:
 
     Parameters
     ----------
-    name : str
-        The name of the rectangular cross-section.
     side_length : MM
         The side length of the hexagonal cross-section [mm].
     x : MM
         The x-coordinate of the hexagon's center.
     y : MM
         The y-coordinate of the hexagon's center.
+    name : str
+        The name of the rectangular cross-section, default is "Hexagon".
     """
 
-    name: str
     side_length: MM
     x: MM
     y: MM
+    name: str = "Hexagon"
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the side length."""

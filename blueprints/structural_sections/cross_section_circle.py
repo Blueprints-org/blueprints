@@ -16,20 +16,20 @@ class CircularCrossSection:
 
     Parameters
     ----------
-    name : str
-        The name of the rectangular cross-section.
     diameter : MM
         The diameter of the circular cross-section [mm].
     x : MM
         The x-coordinate of the circle's center.
     y : MM
         The y-coordinate of the circle's center.
+    name : str
+        The name of the rectangular cross-section, default is "Circle".
     """
 
-    name: str
     diameter: MM
     x: MM
     y: MM
+    name: str = "Circle"
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the diameter."""

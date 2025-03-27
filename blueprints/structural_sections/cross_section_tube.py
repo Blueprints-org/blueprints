@@ -16,8 +16,6 @@ class TubeCrossSection:
 
     Parameters
     ----------
-    name : str
-        The name of the rectangular cross-section.
     outer_diameter : MM
         The outer diameter of the circular tube cross-section [mm].
     inner_diameter : MM
@@ -26,13 +24,15 @@ class TubeCrossSection:
         The x-coordinate of the tube's center.
     y : MM
         The y-coordinate of the tube's center.
+    name : str
+        The name of the rectangular cross-section, default is "Tube".
     """
 
-    name: str
     outer_diameter: MM
     inner_diameter: MM
     x: MM
     y: MM
+    name: str = "Tube"
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the diameters."""

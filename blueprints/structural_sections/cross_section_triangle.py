@@ -16,8 +16,6 @@ class RightAngledTriangularCrossSection:
 
     Parameters
     ----------
-    name : str
-        The name of the rectangular cross-section.
     base : MM
         The base length of the triangular cross-section.
     height : MM
@@ -30,15 +28,17 @@ class RightAngledTriangularCrossSection:
         Whether the triangle is flipped horizontally. Default is False.
     flipped_vertically : bool
         Whether the triangle is flipped vertically. Default is False.
+    name : str
+        The name of the rectangular cross-section, default is "Triangle".
     """
 
-    name: str
     base: MM
     height: MM
     x: MM = 0
     y: MM = 0
     flipped_horizontally: bool = False
     flipped_vertically: bool = False
+    name: str = "Triangle"
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the width and height."""

@@ -19,8 +19,6 @@ class AnnularSectorCrossSection:
 
     Parameters
     ----------
-    name : str
-        The name of the rectangular cross-section.
     radius_centerline : MM
         The radius of the centerline of the annular sector cross-section [mm].
     thickness : MM
@@ -33,15 +31,17 @@ class AnnularSectorCrossSection:
         The x-coordinate of the annular sector's center.
     y : MM
         The y-coordinate of the annular sector's center.
+    name : str
+        The name of the rectangular cross-section, default is "Annular Sector".
     """
 
-    name: str
     radius_centerline: MM
     thickness: MM
     start_angle: float
     end_angle: float
     x: MM
     y: MM
+    name: str = "Annular Sector"
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the inputs."""

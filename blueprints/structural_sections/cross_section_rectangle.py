@@ -15,8 +15,6 @@ class RectangularCrossSection:
 
     Parameters
     ----------
-    name : str
-        The name of the rectangular cross-section.
     width : MM
         The width of the rectangular cross-section.
     height : MM
@@ -25,13 +23,15 @@ class RectangularCrossSection:
         The x-coordinate of the centroid of the rectangle. Default is 0.
     y : MM
         The y-coordinate of the centroid of the rectangle. Default is 0.
+    name : str
+        The name of the rectangular cross-section, default is "Rectangle".
     """
 
-    name: str
     width: MM
     height: MM
     x: MM = 0
     y: MM = 0
+    name: str = "Rectangle"
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the width and height."""
