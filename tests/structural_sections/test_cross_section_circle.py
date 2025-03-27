@@ -58,6 +58,8 @@ class TestCircularCrossSection:
         expected_section_modulus = (1 / 32) * math.pi * 200**3
         assert circular_cross_section.elastic_section_modulus_about_y_positive == pytest.approx(expected=expected_section_modulus, rel=1e-6)
         assert circular_cross_section.elastic_section_modulus_about_z_positive == pytest.approx(expected=expected_section_modulus, rel=1e-6)
+        assert circular_cross_section.elastic_section_modulus_about_y_negative == pytest.approx(expected=expected_section_modulus, rel=1e-6)
+        assert circular_cross_section.elastic_section_modulus_about_z_negative == pytest.approx(expected=expected_section_modulus, rel=1e-6)
 
     def test_polar_moment_of_inertia(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the polar moment of inertia property of the CircularCrossSection class."""
@@ -74,3 +76,21 @@ class TestCircularCrossSection:
         """Test the dotted mesh property of the CircularCrossSection class."""
         dotted_mesh = circular_cross_section.dotted_mesh()
         assert len(dotted_mesh) > 0
+
+    def test_radius(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the radius property of the CircularCrossSection class."""
+        assert circular_cross_section.radius == pytest.approx(expected=100.0, rel=1e-6)
+
+    def test_plate_thickness(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the plate_thickness property of the CircularCrossSection class."""
+        assert circular_cross_section.plate_thickness == pytest.approx(expected=200.0, rel=1e-6)
+
+    def test_dotted_mesh_with_custom_mesh_size(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the dotted mesh property with a custom mesh size."""
+        dotted_mesh = circular_cross_section.dotted_mesh(max_mesh_size=10.0)
+        assert len(dotted_mesh) > 0
+
+    def test_geometry_bounds(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the bounds of the geometry property."""
+        bounds = circular_cross_section.geometry.bounds
+        assert bounds == pytest.approx(expected=(-100.0, -100.0, 100.0, 100.0), rel=1e-6)
