@@ -40,6 +40,13 @@ class RightAngledTriangularCrossSection:
     flipped_horizontally: bool = False
     flipped_vertically: bool = False
 
+    def __post_init__(self) -> None:
+        """Post-initialization to validate the width and height."""
+        if self.base < 0:
+            raise ValueError(f"Base must be a positive value, but got {self.base}")
+        if self.height < 0:
+            raise ValueError(f"Height must be a positive value, but got {self.height}")
+
     @property
     def geometry(self) -> Polygon:
         """

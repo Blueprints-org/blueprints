@@ -247,8 +247,6 @@ class RectangularCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if self.area == 0:
-            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
             mesh_size_width = min(self.width, self.height) / 4
             mesh_size_height = mesh_size_width

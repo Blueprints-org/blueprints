@@ -246,8 +246,6 @@ class HexagonalCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if self.area == 0:
-            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
             mesh_size_width = self.side_length / 10
             mesh_size_height = mesh_size_width / np.sqrt(3)

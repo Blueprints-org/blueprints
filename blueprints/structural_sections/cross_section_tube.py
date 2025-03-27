@@ -69,7 +69,7 @@ class TubeCrossSection:
             The inner radius of the tube.
         """
         return self.inner_diameter / 2.0
-    
+
     @property
     def wall_thickness(self) -> MM:
         """
@@ -281,8 +281,6 @@ class TubeCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if self.area == 0:
-            return [Point(self.x, self.y)]
         if max_mesh_size == 0:
             mesh_size = min(self.plate_thickness / 2, self.outer_diameter / 20)
         else:

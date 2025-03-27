@@ -244,9 +244,6 @@ class CircularCrossSection:
         list[Point]
             The inner nodes of the meshed rectangles they represent.
         """
-        if self.area == 0:
-            return [Point(self.x, self.y)]
-
         mesh_size = self.diameter / 20 if max_mesh_size == 0 else self.diameter / np.ceil(self.diameter / max_mesh_size)
 
         x_min, y_min, x_max, y_max = self.geometry.bounds
