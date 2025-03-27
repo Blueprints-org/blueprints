@@ -1,33 +1,51 @@
 """HEA Steel Profiles."""
-# ruff: noqa: RUF012
 
 from enum import Enum
 
+from blueprints.type_alias import MM
+
 
 class HEAProfile(Enum):
-    """Enumeration of HEA steel profiles with dimensions and properties."""
+    """Enumeration of HEA steel profiles with dimensions."""
 
-    HEA_100 = {"name": "HEA100", "h": 96, "b": 100, "t_w": 5, "t_f": 8, "radius": 12}
-    HEA_120 = {"name": "HEA120", "h": 114, "b": 120, "t_w": 5, "t_f": 8, "radius": 12}
-    HEA_140 = {"name": "HEA140", "h": 133, "b": 140, "t_w": 5.5, "t_f": 8.5, "radius": 12}
-    HEA_160 = {"name": "HEA160", "h": 152, "b": 160, "t_w": 6, "t_f": 9, "radius": 15}
-    HEA_180 = {"name": "HEA180", "h": 171, "b": 180, "t_w": 6, "t_f": 9.5, "radius": 15}
-    HEA_200 = {"name": "HEA200", "h": 190, "b": 200, "t_w": 6.5, "t_f": 10, "radius": 18}
-    HEA_220 = {"name": "HEA220", "h": 210, "b": 220, "t_w": 7, "t_f": 11, "radius": 18}
-    HEA_240 = {"name": "HEA240", "h": 230, "b": 240, "t_w": 7.5, "t_f": 12, "radius": 21}
-    HEA_260 = {"name": "HEA260", "h": 250, "b": 260, "t_w": 7.5, "t_f": 12.5, "radius": 24}
-    HEA_280 = {"name": "HEA280", "h": 270, "b": 280, "t_w": 8, "t_f": 13, "radius": 24}
-    HEA_300 = {"name": "HEA300", "h": 290, "b": 300, "t_w": 8.5, "t_f": 14, "radius": 27}
-    HEA_320 = {"name": "HEA320", "h": 310, "b": 300, "t_w": 9, "t_f": 15.5, "radius": 27}
-    HEA_340 = {"name": "HEA340", "h": 330, "b": 300, "t_w": 9.5, "t_f": 16.5, "radius": 27}
-    HEA_360 = {"name": "HEA360", "h": 350, "b": 300, "t_w": 10, "t_f": 17.5, "radius": 27}
-    HEA_400 = {"name": "HEA400", "h": 390, "b": 300, "t_w": 11, "t_f": 19, "radius": 27}
-    HEA_450 = {"name": "HEA450", "h": 440, "b": 300, "t_w": 11.5, "t_f": 21, "radius": 27}
-    HEA_500 = {"name": "HEA500", "h": 490, "b": 300, "t_w": 12, "t_f": 23, "radius": 27}
-    HEA_550 = {"name": "HEA550", "h": 540, "b": 300, "t_w": 12.5, "t_f": 24, "radius": 27}
-    HEA_600 = {"name": "HEA600", "h": 590, "b": 300, "t_w": 13, "t_f": 25, "radius": 27}
-    HEA_650 = {"name": "HEA650", "h": 640, "b": 300, "t_w": 13.5, "t_f": 26, "radius": 27}
-    HEA_700 = {"name": "HEA700", "h": 690, "b": 300, "t_w": 14.5, "t_f": 27, "radius": 27}
-    HEA_800 = {"name": "HEA800", "h": 790, "b": 300, "t_w": 15, "t_f": 28, "radius": 30}
-    HEA_900 = {"name": "HEA900", "h": 890, "b": 300, "t_w": 16, "t_f": 30, "radius": 30}
-    HEA_1000 = {"name": "HEA1000", "h": 990, "b": 300, "t_w": 16.5, "t_f": 31, "radius": 30}
+    HEA_100 = ("HEA100", 96, 100, 5, 8, 12)
+    HEA_120 = ("HEA120", 114, 120, 5, 8, 12)
+    HEA_140 = ("HEA140", 133, 140, 5.5, 8.5, 12)
+    HEA_160 = ("HEA160", 152, 160, 6, 9, 15)
+    HEA_180 = ("HEA180", 171, 180, 6, 9.5, 15)
+    HEA_200 = ("HEA200", 190, 200, 6.5, 10, 18)
+    HEA_220 = ("HEA220", 210, 220, 7, 11, 18)
+    HEA_240 = ("HEA240", 230, 240, 7.5, 12, 21)
+    HEA_260 = ("HEA260", 250, 260, 7.5, 12.5, 24)
+    HEA_280 = ("HEA280", 270, 280, 8, 13, 24)
+    HEA_300 = ("HEA300", 290, 300, 8.5, 14, 27)
+    HEA_320 = ("HEA320", 310, 300, 9, 15.5, 27)
+    HEA_340 = ("HEA340", 330, 300, 9.5, 16.5, 27)
+    HEA_360 = ("HEA360", 350, 300, 10, 17.5, 27)
+    HEA_400 = ("HEA400", 390, 300, 11, 19, 27)
+    HEA_450 = ("HEA450", 440, 300, 11.5, 21, 27)
+    HEA_500 = ("HEA500", 490, 300, 12, 23, 27)
+    HEA_550 = ("HEA550", 540, 300, 12.5, 24, 27)
+    HEA_600 = ("HEA600", 590, 300, 13, 25, 27)
+    HEA_650 = ("HEA650", 640, 300, 13.5, 26, 27)
+    HEA_700 = ("HEA700", 690, 300, 14.5, 27, 27)
+    HEA_800 = ("HEA800", 790, 300, 15, 28, 30)
+    HEA_900 = ("HEA900", 890, 300, 16, 30, 30)
+    HEA_1000 = ("HEA1000", 990, 300, 16.5, 31, 30)
+
+    def __init__(self, code: str, h: MM, b: MM, t_w: MM, t_f: MM, radius: MM) -> None:
+        """Initialize HEA profile.
+        Args:
+            code (str): Profile code.
+            h (MM): Total height.
+            b (MM): Total width.
+            t_w (MM): Web thickness.
+            t_f (MM): Flange thickness.
+            radius (MM): Radius.
+        """
+        self.code = code
+        self.h = h
+        self.b = b
+        self.t_w = t_w
+        self.t_f = t_f
+        self.radius = radius

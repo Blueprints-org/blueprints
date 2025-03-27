@@ -1,33 +1,51 @@
 """HEM Steel Profiles."""
-# ruff: noqa: RUF012
 
 from enum import Enum
+
+from blueprints.type_alias import MM
 
 
 class HEMProfile(Enum):
     """Enumeration of HEM steel profiles with dimensions."""
 
-    HEM_100 = {"name": "HEM100", "h": 120, "b": 106, "t_w": 12, "t_f": 20, "radius": 12}
-    HEM_120 = {"name": "HEM120", "h": 140, "b": 126, "t_w": 12.5, "t_f": 21, "radius": 12}
-    HEM_140 = {"name": "HEM140", "h": 160, "b": 146, "t_w": 13, "t_f": 22, "radius": 12}
-    HEM_160 = {"name": "HEM160", "h": 180, "b": 166, "t_w": 14, "t_f": 23, "radius": 15}
-    HEM_180 = {"name": "HEM180", "h": 200, "b": 186, "t_w": 14.5, "t_f": 24, "radius": 15}
-    HEM_200 = {"name": "HEM200", "h": 220, "b": 206, "t_w": 15, "t_f": 25, "radius": 18}
-    HEM_220 = {"name": "HEM220", "h": 240, "b": 226, "t_w": 15.5, "t_f": 26, "radius": 18}
-    HEM_240 = {"name": "HEM240", "h": 270, "b": 248, "t_w": 18, "t_f": 32, "radius": 21}
-    HEM_260 = {"name": "HEM260", "h": 290, "b": 268, "t_w": 18, "t_f": 32.5, "radius": 24}
-    HEM_280 = {"name": "HEM280", "h": 310, "b": 288, "t_w": 18.5, "t_f": 33, "radius": 24}
-    HEM_300 = {"name": "HEM300", "h": 340, "b": 310, "t_w": 21, "t_f": 39, "radius": 27}
-    HEM_320 = {"name": "HEM320", "h": 359, "b": 309, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_340 = {"name": "HEM340", "h": 377, "b": 309, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_360 = {"name": "HEM360", "h": 395, "b": 308, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_400 = {"name": "HEM400", "h": 432, "b": 307, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_450 = {"name": "HEM450", "h": 478, "b": 307, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_500 = {"name": "HEM500", "h": 524, "b": 306, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_550 = {"name": "HEM550", "h": 572, "b": 306, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_600 = {"name": "HEM600", "h": 620, "b": 305, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_650 = {"name": "HEM650", "h": 668, "b": 305, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_700 = {"name": "HEM700", "h": 716, "b": 304, "t_w": 21, "t_f": 40, "radius": 27}
-    HEM_800 = {"name": "HEM800", "h": 814, "b": 303, "t_w": 21, "t_f": 40, "radius": 30}
-    HEM_900 = {"name": "HEM900", "h": 910, "b": 302, "t_w": 21, "t_f": 40, "radius": 30}
-    HEM_1000 = {"name": "HEM1000", "h": 1008, "b": 302, "t_w": 21, "t_f": 40, "radius": 30}
+    HEM_100 = ("HEM100", 120, 106, 12, 20, 12)
+    HEM_120 = ("HEM120", 140, 126, 12.5, 21, 12)
+    HEM_140 = ("HEM140", 160, 146, 13, 22, 12)
+    HEM_160 = ("HEM160", 180, 166, 14, 23, 15)
+    HEM_180 = ("HEM180", 200, 186, 14.5, 24, 15)
+    HEM_200 = ("HEM200", 220, 206, 15, 25, 18)
+    HEM_220 = ("HEM220", 240, 226, 15.5, 26, 18)
+    HEM_240 = ("HEM240", 270, 248, 18, 32, 21)
+    HEM_260 = ("HEM260", 290, 268, 18, 32.5, 24)
+    HEM_280 = ("HEM280", 310, 288, 18.5, 33, 24)
+    HEM_300 = ("HEM300", 340, 310, 21, 39, 27)
+    HEM_320 = ("HEM320", 359, 309, 21, 40, 27)
+    HEM_340 = ("HEM340", 377, 309, 21, 40, 27)
+    HEM_360 = ("HEM360", 395, 308, 21, 40, 27)
+    HEM_400 = ("HEM400", 432, 307, 21, 40, 27)
+    HEM_450 = ("HEM450", 478, 307, 21, 40, 27)
+    HEM_500 = ("HEM500", 524, 306, 21, 40, 27)
+    HEM_550 = ("HEM550", 572, 306, 21, 40, 27)
+    HEM_600 = ("HEM600", 620, 305, 21, 40, 27)
+    HEM_650 = ("HEM650", 668, 305, 21, 40, 27)
+    HEM_700 = ("HEM700", 716, 304, 21, 40, 27)
+    HEM_800 = ("HEM800", 814, 303, 21, 40, 30)
+    HEM_900 = ("HEM900", 910, 302, 21, 40, 30)
+    HEM_1000 = ("HEM1000", 1008, 302, 21, 40, 30)
+
+    def __init__(self, code: str, h: MM, b: MM, t_w: MM, t_f: MM, radius: MM) -> None:
+        """Initialize HEM profile.
+        Args:
+            code (str): Profile code.
+            h (MM): Total height.
+            b (MM): Total width.
+            t_w (MM): Web thickness.
+            t_f (MM): Flange thickness.
+            radius (MM): Radius.
+        """
+        self.code = code
+        self.h = h
+        self.b = b
+        self.t_w = t_w
+        self.t_f = t_f
+        self.radius = radius
