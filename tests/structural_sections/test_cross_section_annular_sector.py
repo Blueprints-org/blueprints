@@ -15,7 +15,7 @@ class TestAnnularSectorCrossSection:
         """Return an AnnularSectorCrossSection instance."""
         return AnnularSectorCrossSection(
             name="AnnularSector",
-            radius_centerline=100.0,
+            inner_radius=90.0,
             thickness=20.0,
             start_angle=0.0,
             end_angle=90.0,
@@ -89,10 +89,10 @@ class TestAnnularSectorCrossSection:
 
     def test_invalid_radius(self) -> None:
         """Test initialization with an invalid radius value."""
-        with pytest.raises(ValueError, match="Radius must be a positive value"):
+        with pytest.raises(ValueError, match="Radius must be zero or positive"):
             AnnularSectorCrossSection(
                 name="InvalidRadius",
-                radius_centerline=-10.0,
+                inner_radius=-10.0,
                 thickness=20.0,
                 start_angle=0.0,
                 end_angle=90.0,
@@ -105,7 +105,7 @@ class TestAnnularSectorCrossSection:
         with pytest.raises(ValueError, match="Thickness must be a positive value"):
             AnnularSectorCrossSection(
                 name="InvalidThickness",
-                radius_centerline=100.0,
+                inner_radius=100.0,
                 thickness=-20.0,
                 start_angle=0.0,
                 end_angle=90.0,
@@ -117,7 +117,7 @@ class TestAnnularSectorCrossSection:
     with pytest.raises(ValueError, match="Start angle must be between -360 and 360 degrees"):
         AnnularSectorCrossSection(
             name="InvalidStartAngle",
-            radius_centerline=100.0,
+            inner_radius=100.0,
             thickness=20.0,
             start_angle=400.0,
             end_angle=450.0,
@@ -130,7 +130,7 @@ class TestAnnularSectorCrossSection:
         with pytest.raises(ValueError, match="End angle must be larger than start angle and not more than 360 degrees more"):
             AnnularSectorCrossSection(
                 name="InvalidEndAngle",
-                radius_centerline=100.0,
+                inner_radius=100.0,
                 thickness=20.0,
                 start_angle=0.0,
                 end_angle=400.0,

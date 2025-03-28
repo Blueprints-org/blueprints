@@ -19,8 +19,8 @@ class AnnularSectorCrossSection:
 
     Parameters
     ----------
-    radius_centerline : MM
-        The radius of the centerline of the annular sector cross-section [mm].
+    inner_radius : MM
+        The radius of the inner circle of the annular sector [mm].
     thickness : MM
         The thickness of the annular sector cross-section [mm].
     start_angle : float
@@ -35,7 +35,7 @@ class AnnularSectorCrossSection:
         The name of the rectangular cross-section, default is "Annular Sector".
     """
 
-    radius_centerline: MM
+    inner_radius: MM
     thickness: MM
     start_angle: float
     end_angle: float
@@ -45,8 +45,8 @@ class AnnularSectorCrossSection:
 
     def __post_init__(self) -> None:
         """Post-initialization to validate the inputs."""
-        if self.radius_centerline <= 0:
-            raise ValueError(f"Radius must be a positive value, but got {self.radius_centerline}")
+        if self.inner_radius < 0:
+            raise ValueError(f"Radius must be zero or positive, but got {self.inner_radius}")
         if self.thickness <= 0:
             raise ValueError(f"Thickness must be a positive value, but got {self.thickness}")
         if not (-360 < self.start_angle < 360):
@@ -55,9 +55,9 @@ class AnnularSectorCrossSection:
             raise ValueError(f"End angle must be larger than start angle and not more than 360 degrees more, but got {self.end_angle}")
 
     @property
-    def inner_radius(self) -> MM:
+    def radius_centerline(self) -> MM:
         """Calculate the inner radius of the annular sector [mm]."""
-        return self.radius_centerline - self.thickness / 2.0
+        return self.inner_radius + self.thickness / 2.0
 
     @property
     def outer_radius(self) -> MM:
