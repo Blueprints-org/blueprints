@@ -183,13 +183,14 @@ Total of 304 formulas present.
 | 6.77           | :heavy_check_mark: |         | Form6Dot77FatigueVerification                             |
 | 6.78           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
 | 6.79           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
-| 7.1            |        :x:         |         |                                                           |
-| 7.2            |        :x:         |         |                                                           |
+| 7.1            | :heavy_check_mark: |         | Form7Dot1MinReinforcingSteel                              |
+| 7.2            | :heavy_check_mark: |         | Form7Dot2StressDistributionCoefficient                    |
+| 7.2sub1        | :heavy_check_mark: |         | Form7Dot2Sub1AxialForceCoefficient                        |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
-| 7.4            |        :x:         |         |                                                           |
-| 7.5            |        :x:         |         |                                                           |
-| 7.6N           |        :x:         |         |                                                           |
-| 7.7N           |        :x:         |         |                                                           |
+| 7.4            | :heavy_check_mark: |         | Form7Dot4MeanStressConcrete                               |
+| 7.5            | :heavy_check_mark: |         | Form7Dot5AdjustedBondStrengthRatio                        |
+| 7.6N           | :heavy_check_mark: |         | Form7Dot6nMaxBarDiameterBending                           |
+| 7.7N           | :heavy_check_mark: |         | Form7Dot7nMaxBarDiameterTension                           |
 | 7.8            |        :x:         |         |                                                           |
 | 7.9            |        :x:         |         |                                                           |
 | 7.10           |        :x:         |         |                                                           |
