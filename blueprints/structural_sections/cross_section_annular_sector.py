@@ -7,7 +7,6 @@ import numpy as np
 from shapely.affinity import rotate
 from shapely.geometry import Point, Polygon
 
-from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
@@ -183,35 +182,56 @@ class AnnularSectorCrossSection:
     def moment_of_inertia_about_y(self) -> MM4:
         """
         Moments of inertia of the cross-section about the y-axis [mm⁴].
-        Note: No closed form equation was found, therefore this approximation is used.
 
         Returns
         -------
         MM4
             The moment of inertia about the y-axis.
         """
-        representative_width = self.area / self.height
-        return RectangularCrossSection(width=representative_width, height=self.height, x=self.x, y=self.y).moment_of_inertia_about_y
+        # based on https://engineering.stackexchange.com/a/60564
+        # with y horizontal and z vertical
+        theta = math.radians(self.end_angle - self.start_angle)
+        term0 = self.outer_radius**4 - self.inner_radius**4
+        term1 = (theta + math.sin(theta)) / 8
+        term2 = (8 * math.sin(theta / 2) ** 2) / (9 * theta)
+        term3 = (8 * math.sin(theta / 2) ** 2) / (9 * theta * (self.outer_radius + self.inner_radius) ** 2)
+        term4 = self.inner_radius**4 * self.outer_radius**2 - self.outer_radius**4 * self.inner_radius**2
+
+        i_z_annulus = term0 * (term1 - term2) + term3 * term4
+        i_y_annulus = term0 * (theta - math.sin(theta)) / 8
+
+        beta = np.pi / 2 - math.radians(self.end_angle + self.start_angle) / 2
+        return (i_y_annulus + i_z_annulus) / 2 + (i_y_annulus - i_z_annulus) / 2 * math.cos(2 * beta)
 
     @property
     def moment_of_inertia_about_z(self) -> MM4:
         """
         Moments of inertia of the cross-section about the z-axis [mm⁴].
-        Note: No closed form equation was found, therefore this approximation is used.
 
         Returns
         -------
         MM4
             The moment of inertia about the z-axis.
         """
-        representative_height = self.area / self.width
-        return RectangularCrossSection(width=self.width, height=representative_height, x=self.x, y=self.y).moment_of_inertia_about_z
+        # based on https://engineering.stackexchange.com/a/60564
+        # with y horizontal and z vertical
+        theta = math.radians(self.end_angle - self.start_angle)
+        term0 = self.outer_radius**4 - self.inner_radius**4
+        term1 = (theta + math.sin(theta)) / 8
+        term2 = (8 * math.sin(theta / 2) ** 2) / (9 * theta)
+        term3 = (8 * math.sin(theta / 2) ** 2) / (9 * theta * (self.outer_radius + self.inner_radius) ** 2)
+        term4 = self.inner_radius**4 * self.outer_radius**2 - self.outer_radius**4 * self.inner_radius**2
+
+        i_z_annulus = term0 * (term1 - term2) + term3 * term4
+        i_y_annulus = term0 * (theta - math.sin(theta)) / 8
+
+        beta = np.pi / 2 - math.radians(self.end_angle + self.start_angle) / 2
+        return (i_y_annulus + i_z_annulus) / 2 - (i_y_annulus - i_z_annulus) / 2 * math.cos(2 * beta)
 
     @property
     def polar_moment_of_inertia(self) -> MM4:
         """
         Polar moment of inertia of the cross-section [mm⁴].
-        Note: No closed form equation was found, therefore this approximation is used.
 
         Returns
         -------
@@ -345,3 +365,15 @@ class AnnularSectorCrossSection:
             if self.inner_radius <= math.hypot(x + mesh_size / 2 - self.x, y + mesh_size / 2 - self.y) <= self.outer_radius
             and self.start_angle <= 90 - math.degrees(math.atan2(y + mesh_size / 2 - self.y, x + mesh_size / 2 - self.x)) <= self.end_angle
         ]
+
+
+if __name__ == "__main__":
+    # Example usage of AnnularSectorCrossSection
+    annular_sector = AnnularSectorCrossSection(
+        inner_radius=1000,  # mm
+        thickness=1,  # mm
+        start_angle=-5,  # degrees
+        end_angle=5,  # degrees
+        x=0,  # mm
+        y=0,  # mm
+    )
