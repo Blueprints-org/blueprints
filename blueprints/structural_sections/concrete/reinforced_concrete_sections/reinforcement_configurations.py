@@ -22,10 +22,20 @@ class ReinforcementConfiguration(ABC):
         Diameter of the rebar [mm].
     material : ReinforcementSteelMaterial
         Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
+    end_at_start : bool, optional
+        If True, the reinforcement configuration ends at the start of the line.
+        If False, the reinforcement configuration ends at another point.
+        Default is False.
+    start_on_half_increment: bool, optional
+        If True, the circle is rotated by half the increment.
+        If False, the rebar is placed at the top of the cross-section.
+        Default is False.
     """
 
     diameter: MM
     material: ReinforcementSteelMaterial
+    end_at_start: bool = False
+    start_on_half_increment: bool = False
 
     def __post_init__(self) -> None:
         """Post initialization of the reinforcement configuration."""
@@ -109,7 +119,7 @@ class ReinforcementByDistance(ReinforcementConfiguration):
         rebars = []
 
         # define the number of rebars based on the length of the line, minimum 1
-        n_rebars = line.length / self.center_to_center
+        n_rebars = line.length / self.center_to_center - 1 if self.end_at_start else line.length / self.center_to_center
         n_rebars_applied = max(int(n_rebars), 1)
 
         # calculate the space between the rebars
@@ -150,6 +160,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
     ----------
     n : int
         Amount of longitudinal bars.
+
     """
 
     n: int
@@ -166,7 +177,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
             msg = f"Number of rebars must be an integer, got {self.n}"
             raise TypeError(msg)
 
-        # check that n is at least 2
+        # check that n is at least 1
         minimum_number_of_rebars = 1
         if self.n < minimum_number_of_rebars:
             msg = f"Number of rebars must be at least {minimum_number_of_rebars}, got {self.n}"
@@ -190,10 +201,13 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
         -------
         List[Rebar]
             List of Rebar objects.
+
         """
         rebars = []
+        start = line.length / self.n / 2 if self.start_on_half_increment else 0
+
         for index in range(self.n):
-            distance = index * line.length / (self.n - 1)
+            distance = start + index * line.length / (self.n if self.end_at_start else self.n - 1)
             point = line.interpolate(distance)
             rebars.append(
                 Rebar(
