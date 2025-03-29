@@ -307,4 +307,4 @@ class SteelMaterial:
                 return ultimate_strength_above_40
             return ultimate_strength
 
-        raise ValueError("Unknown strength type")
+        raise ValueError("Unknown strength type")  # pragma: no cover
