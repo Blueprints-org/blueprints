@@ -1,8 +1,9 @@
 """Tests for cross-section shapes."""
 
+import math
+
 import numpy as np
 import pytest
-from shapely.geometry import Point
 
 from blueprints.structural_sections.cross_section_annular_sector import AnnularSectorCrossSection
 
@@ -28,6 +29,16 @@ class TestAnnularSectorCrossSection:
         expected_area = 0.5 * (90.0 * (np.pi / 180)) * ((110.0**2) - (90.0**2))
         assert annular_sector_cross_section.area == pytest.approx(expected=expected_area, rel=1e-6)
 
+    def test_width(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
+        """Test the width property of the AnnularSectorCrossSection class."""
+        expected_width = 110.0
+        assert annular_sector_cross_section.width == pytest.approx(expected=expected_width, rel=1e-6)
+
+    def test_height(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
+        """Test the height property of the AnnularSectorCrossSection class."""
+        expected_height = 110.0
+        assert annular_sector_cross_section.height == pytest.approx(expected=expected_height, rel=1e-6)
+
     def test_perimeter(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the perimeter property of the AnnularSectorCrossSection class."""
         angle_radians = 90.0 * (np.pi / 180)
@@ -37,28 +48,46 @@ class TestAnnularSectorCrossSection:
     def test_centroid(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the centroid property of the AnnularSectorCrossSection class."""
         centroid = annular_sector_cross_section.centroid
-        assert isinstance(centroid, Point)
+        angle_radians = np.radians(annular_sector_cross_section.end_angle - annular_sector_cross_section.start_angle)
+        centroid_radius = (2 * np.sin(angle_radians) / (3 * angle_radians)) * (
+            (annular_sector_cross_section.outer_radius**3 - annular_sector_cross_section.inner_radius**3)
+            / (annular_sector_cross_section.outer_radius**2 - annular_sector_cross_section.inner_radius**2)
+        )
+        centroid_angle = np.radians((annular_sector_cross_section.start_angle + annular_sector_cross_section.end_angle) / 2)
+        centroid_x = annular_sector_cross_section.x + centroid_radius * np.cos(np.radians(90) - centroid_angle)
+        centroid_y = annular_sector_cross_section.y + centroid_radius * np.sin(np.radians(90) - centroid_angle)
+        assert centroid.x == pytest.approx(expected=centroid_x, rel=1e-6)
+        assert centroid.y == pytest.approx(expected=centroid_y, rel=1e-6)
 
     def test_moments_of_inertia(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the moments of inertia properties of the AnnularSectorCrossSection class."""
-        assert annular_sector_cross_section.moment_of_inertia_about_y > 0
-        assert annular_sector_cross_section.moment_of_inertia_about_z > 0
+        assert annular_sector_cross_section.moment_of_inertia_about_y == annular_sector_cross_section.moment_of_inertia_about_z
 
     def test_section_moduli(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the section moduli properties of the AnnularSectorCrossSection class."""
-        assert annular_sector_cross_section.elastic_section_modulus_about_y_positive > 0
-        assert annular_sector_cross_section.elastic_section_modulus_about_z_positive > 0
-        assert annular_sector_cross_section.elastic_section_modulus_about_y_negative > 0
-        assert annular_sector_cross_section.elastic_section_modulus_about_z_negative > 0
+        assert annular_sector_cross_section.elastic_section_modulus_about_y_positive == pytest.approx(
+            expected=annular_sector_cross_section.elastic_section_modulus_about_z_positive, rel=1e-6
+        )
+        assert annular_sector_cross_section.elastic_section_modulus_about_y_negative == pytest.approx(
+            expected=annular_sector_cross_section.elastic_section_modulus_about_z_negative, rel=1e-6
+        )
 
     def test_polar_moment_of_inertia(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the polar moment of inertia property of the AnnularSectorCrossSection class."""
-        assert annular_sector_cross_section.polar_moment_of_inertia > 0
+        assert annular_sector_cross_section.polar_moment_of_inertia == 2 * annular_sector_cross_section.moment_of_inertia_about_y
 
     def test_plastic_section_moduli(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the plastic section moduli properties of the AnnularSectorCrossSection class."""
-        assert annular_sector_cross_section.plastic_section_modulus_about_y > 0
-        assert annular_sector_cross_section.plastic_section_modulus_about_z > 0
+        max_elastic_section_modulus_y = max(
+            annular_sector_cross_section.elastic_section_modulus_about_y_positive,
+            annular_sector_cross_section.elastic_section_modulus_about_y_negative,
+        )
+        max_elastic_section_modulus_z = max(
+            annular_sector_cross_section.elastic_section_modulus_about_z_positive,
+            annular_sector_cross_section.elastic_section_modulus_about_z_negative,
+        )
+        assert annular_sector_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=max_elastic_section_modulus_y, rel=1e-6)
+        assert annular_sector_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=max_elastic_section_modulus_z, rel=1e-6)
 
     def test_dotted_mesh(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the dotted mesh property of the AnnularSectorCrossSection class."""
@@ -137,3 +166,39 @@ class TestAnnularSectorCrossSection:
                 x=0.0,
                 y=0.0,
             )
+
+    def test_moments_of_inertia_approximation_with_rectangle(self) -> None:
+        """Test the moments of inertia by approximating the annular sector with a rectangle."""
+        annular_sector = AnnularSectorCrossSection(
+            inner_radius=1000,  # mm
+            thickness=0.1,  # mm
+            start_angle=-2,  # degrees
+            end_angle=2,  # degrees
+            x=0,  # mm
+            y=0,  # mm
+        )
+        # Approximate the moments of inertia using a rectangle
+        angle_radians = math.radians(annular_sector.end_angle - annular_sector.start_angle)
+        approximate_width = angle_radians * annular_sector.radius_centerline
+        approximate_height = annular_sector.thickness
+
+        # Moment of inertia about the z-axis
+        approximate_moi_z = (approximate_height * approximate_width**3) / 12
+        assert annular_sector.moment_of_inertia_about_z == pytest.approx(expected=approximate_moi_z, rel=1e-3)
+
+        annular_sector = AnnularSectorCrossSection(
+            inner_radius=1000,  # mm
+            thickness=0.1,  # mm
+            start_angle=88,  # degrees
+            end_angle=92,  # degrees
+            x=0,  # mm
+            y=0,  # mm
+        )
+        # Approximate the moments of inertia using a rectangle
+        angle_radians = math.radians(annular_sector.end_angle - annular_sector.start_angle)
+        approximate_width = annular_sector.thickness
+        approximate_height = angle_radians * annular_sector.radius_centerline
+
+        # Moment of inertia about the z-axis
+        approximate_moi_y = (approximate_height**3 * approximate_width) / 12
+        assert annular_sector.moment_of_inertia_about_y == pytest.approx(expected=approximate_moi_y, rel=1e-3)

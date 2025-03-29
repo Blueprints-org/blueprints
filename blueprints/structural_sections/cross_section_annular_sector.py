@@ -313,7 +313,7 @@ class AnnularSectorCrossSection:
     def plastic_section_modulus_about_z(self) -> MM3:
         """
         Plastic section modulus about the z-axis [mm³].
-        Note: No closed form equation was found, therefore this approximation is used.
+        Note: No closed form equation was found, therefore this conservative approximation is used.
 
         Returns
         -------
@@ -365,15 +365,3 @@ class AnnularSectorCrossSection:
             if self.inner_radius <= math.hypot(x + mesh_size / 2 - self.x, y + mesh_size / 2 - self.y) <= self.outer_radius
             and self.start_angle <= 90 - math.degrees(math.atan2(y + mesh_size / 2 - self.y, x + mesh_size / 2 - self.x)) <= self.end_angle
         ]
-
-
-if __name__ == "__main__":
-    # Example usage of AnnularSectorCrossSection
-    annular_sector = AnnularSectorCrossSection(
-        inner_radius=1000,  # mm
-        thickness=1,  # mm
-        start_angle=-5,  # degrees
-        end_angle=5,  # degrees
-        x=0,  # mm
-        y=0,  # mm
-    )
