@@ -49,12 +49,12 @@ class RightAngleCurvedCrossSection:
         """
         left_lower = (self.x, self.y)
 
-        # Approximate the quarter circle with 25 straight lines
+        # Approximate the quarter circle with 50 straight lines
         quarter_circle_points = [
-            (self.x + self.radius - self.radius * math.cos(math.pi / 2 * i / 25), self.y + self.radius - self.radius * math.sin(math.pi / 2 * i / 25))
-            for i in range(26)
+            (self.x + self.radius - self.radius * math.cos(math.pi / 2 * i / 50), self.y + self.radius - self.radius * math.sin(math.pi / 2 * i / 50))
+            for i in range(51)
         ]
-        for i in range(26):
+        for i in range(51):
             if self.flipped_horizontally:
                 quarter_circle_points[i] = (2 * left_lower[0] - quarter_circle_points[i][0], quarter_circle_points[i][1])
             if self.flipped_vertically:
@@ -192,7 +192,7 @@ class RightAngleCurvedCrossSection:
             The elastic section modulus about the y-axis.
         """
         distance_to_end = max(point.y for point in self.vertices) - self.centroid.y
-        return self.moment_of_inertia_about_y / distance_to_end
+        return self.moment_of_inertia_about_y / distance_to_end if self.area != 0 else 0
 
     @property
     def elastic_section_modulus_about_y_negative(self) -> MM3:
@@ -205,7 +205,7 @@ class RightAngleCurvedCrossSection:
             The elastic section modulus about the y-axis.
         """
         distance_to_end = self.centroid.y - min(point.y for point in self.vertices)
-        return self.moment_of_inertia_about_y / distance_to_end
+        return self.moment_of_inertia_about_y / distance_to_end if self.area != 0 else 0
 
     @property
     def elastic_section_modulus_about_z_positive(self) -> MM3:
@@ -218,7 +218,7 @@ class RightAngleCurvedCrossSection:
             The elastic section modulus about the z-axis.
         """
         distance_to_end = max(point.x for point in self.vertices) - self.centroid.x
-        return self.moment_of_inertia_about_z / distance_to_end
+        return self.moment_of_inertia_about_z / distance_to_end if self.area != 0 else 0
 
     @property
     def elastic_section_modulus_about_z_negative(self) -> MM3:
@@ -231,7 +231,7 @@ class RightAngleCurvedCrossSection:
             The elastic section modulus about the z-axis.
         """
         distance_to_end = self.centroid.x - min(point.x for point in self.vertices)
-        return self.moment_of_inertia_about_z / distance_to_end
+        return self.moment_of_inertia_about_z / distance_to_end if self.area != 0 else 0
 
     @property
     def plastic_section_modulus_about_y(self) -> MM3:
