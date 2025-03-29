@@ -5,7 +5,7 @@ from enum import Enum
 from blueprints.type_alias import MM
 
 
-class HEMProfile(Enum):
+class HEMStandardProfileClass(Enum):
     """Enumeration of HEM steel profiles with dimensions."""
 
     HEM_100 = ("HEM100", 120, 106, 12, 20, 12)
