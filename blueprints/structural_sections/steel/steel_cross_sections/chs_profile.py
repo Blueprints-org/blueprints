@@ -31,20 +31,19 @@ class CHSSteelProfile(SteelCrossSection):
         steel_class: SteelStrengthClass,
     ) -> None:
         """Initialize the CHS steel profile."""
-        super().__init__(
-            cross_section=TubeCrossSection(
-                name="Ring",
-                outer_diameter=outer_diameter,
-                inner_diameter=outer_diameter - 2 * wall_thickness,
-                x=0,
-                y=0,
-            ),
-            steel_material=SteelMaterial(steel_class=steel_class, thickness=wall_thickness),
-        )
-        self.elements = [SteelElement(cross_section=self.cross_section, material=self.steel_material)]
-
-        self.diameter = outer_diameter
         self.thickness = wall_thickness
+        self.outer_diameter = outer_diameter
+        self.inner_diameter = outer_diameter - 2 * wall_thickness
+
+        self.chs = TubeCrossSection(
+            name="Ring",
+            outer_diameter=self.outer_diameter,
+            inner_diameter=self.inner_diameter,
+            x=0,
+            y=0,
+        )
+        self.steel_material = SteelMaterial(steel_class=steel_class)
+        self.elements = [SteelElement(cross_section=self.chs, material=self.steel_material)]
 
     def plot(self, *args, **kwargs) -> plt.Figure:
         """Plot the cross-section. Making use of the standard plotter.
@@ -58,7 +57,7 @@ class CHSSteelProfile(SteelCrossSection):
         **kwargs
             Additional keyword arguments passed to the plotter.
         """
-        return plot_shapes(self.cross_section, centroid=self.centroid, *args, **kwargs)
+        return plot_shapes(self.chs, centroid=self.centroid, *args, **kwargs)
 
 
 class CHSProfiles:
@@ -84,6 +83,10 @@ class CHSProfiles:
         """Return the steel class and profile."""
         return f"Steel class: {self.steel_class}, Profile: {self.profile}"
 
+    def code(self) -> str:
+        """Return the code of the CHS profile."""
+        return self.profile.code
+
     def diameter(self) -> MM:
         """Return the outer diameter of the CHS profile."""
         return self.profile.diameter
@@ -95,14 +98,3 @@ class CHSProfiles:
     def get_profile(self) -> CHSSteelProfile:
         """Return the CHS profile."""
         return CHSSteelProfile(outer_diameter=self.diameter(), wall_thickness=self.thickness(), steel_class=self.steel_class)
-
-    def get_profile_name(self) -> str:
-        """Return the name of the CHS profile."""
-        return self.profile.value
-
-
-if __name__ == "__main__":
-    # Define a sample CHS profile
-    steel_class = SteelStrengthClass.EN_10025_2_S355
-    profile = CHSProfiles(steel_class=steel_class, profile=CHSStandardProfileClass.CHS_508x16)
-    profile.get_profile().plot(show=True)
