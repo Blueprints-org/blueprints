@@ -2,8 +2,8 @@
 # ruff: noqa: PLR0913, F821
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon as MplPolygon
 from matplotlib import patches as mplpatches
+from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Point, Polygon
 
 from blueprints.materials.steel import SteelStrengthClass
@@ -79,7 +79,6 @@ def plot_shapes(
         legend_text += f"  Area={element.area:.1f} mm²\n\n"
     legend_text = legend_text[:-4]
 
-
     # Add dimension lines
     _add_dimension_lines(ax, elements, centroid)
 
@@ -88,14 +87,14 @@ def plot_shapes(
         ax.plot(centroid.x, centroid.y, "o", color="black")
 
     # Add legend text
-    ax.annotate(
-        text=legend_text,
-        xy=(0.05, 0.5), 
-        xycoords="axes fraction",
+    ax.text(
+        x=0.05,
+        y=0.5,
+        s=legend_text,
+        transform=ax.transAxes,
         verticalalignment="center",
-        horizontalalignment="left", 
+        horizontalalignment="left",
         fontsize=font_size_legend,
-        bbox=dict(boxstyle="round,pad=0.3", edgecolor="none", facecolor="none"),
     )
 
     ax.set_xlabel("X")
@@ -112,12 +111,14 @@ def plot_shapes(
     return fig
 
 
-def _add_dimension_lines(ax, elements, centroid):
+def _add_dimension_lines(ax: plt.Axes, elements: tuple[CrossSection, ...], centroid: Point) -> None:
     """Adds dimension lines to show the outer dimensions of the geometry.
-    
+
     Parameters
     ----------
-    elements : list[CrossSection]
+    ax : plt.Axes
+        The matplotlib axes to draw on.
+    elements : tuple[CrossSection, ...]
         The cross-sections to plot.
     centroid : Point
         The centroid of the cross-section.
@@ -130,12 +131,11 @@ def _add_dimension_lines(ax, elements, centroid):
         min_y = min(min_y, bounds[1])
         max_x = max(max_x, bounds[2])
         max_y = max(max_y, bounds[3])
-    
+
     width = max_x - min_x
     height = max_y - min_y
     centroid_width = centroid.x - min_x
     centroid_height = centroid.y - min_y
-
 
     # Add the width dimension line (below the geometry)
     diameter_line_style = {
@@ -174,7 +174,7 @@ def _add_dimension_lines(ax, elements, centroid):
     )
     ax.text(
         s=f"{height:.0f} mm",
-        x=max_x + offset_height,
+        x=max_x + offset_height + 1 + height / 200,
         y=(min_y + max_y) / 2,
         verticalalignment="center",
         horizontalalignment="left",
@@ -216,7 +216,7 @@ def _add_dimension_lines(ax, elements, centroid):
     )
     ax.text(
         s=f"{centroid_height:.0f} mm",
-        x=max_x + offset_centroid_bottom_right,
+        x=max_x + offset_centroid_bottom_right + 1 + height / 200,
         y=(min_y + centroid.y) / 2,
         verticalalignment="center",
         horizontalalignment="left",
