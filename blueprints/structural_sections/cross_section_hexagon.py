@@ -181,7 +181,7 @@ class HexagonalCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        return self.moment_of_inertia_about_z / (self.side_length * math.sqrt(3) / 2)
+        return self.moment_of_inertia_about_z / (self.side_length)
 
     @property
     def elastic_section_modulus_about_z_negative(self) -> MM3:
@@ -193,7 +193,7 @@ class HexagonalCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        return self.moment_of_inertia_about_z / (self.side_length * math.sqrt(3) / 2)
+        return self.moment_of_inertia_about_z / (self.side_length)
 
     @property
     def plastic_section_modulus_about_y(self) -> MM3:
