@@ -90,6 +90,8 @@ CM3 = float
 """Cubic centimeters (cm³), represented as a float."""
 M3 = float
 """Cubic meters (m³), represented as a float."""
+MM3_M = float
+"""Cubic millimeters per meter (mm³/m), represented as a float."""
 M3_M = float
 """Cubic meters per meter (m³/m), represented as a float."""
 # </editor-fold>
