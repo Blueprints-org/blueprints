@@ -89,10 +89,10 @@ def plot_shapes(
     # Add legend text
     ax.text(
         x=0.05,
-        y=0.5,
+        y=0.95,
         s=legend_text,
         transform=ax.transAxes,
-        verticalalignment="center",
+        verticalalignment="top",
         horizontalalignment="left",
         fontsize=font_size_legend,
     )
@@ -152,7 +152,7 @@ def _add_dimension_lines(ax: plt.Axes, elements: tuple[CrossSection, ...], centr
         annotation_clip=False,
     )
     ax.text(
-        s=f"{width:.0f} mm",
+        s=f"{width:.1f} mm",
         x=(min_x + max_x) / 2,
         y=min_y - offset_width - 1,
         verticalalignment="top",
@@ -173,7 +173,7 @@ def _add_dimension_lines(ax: plt.Axes, elements: tuple[CrossSection, ...], centr
         annotation_clip=False,
     )
     ax.text(
-        s=f"{height:.0f} mm",
+        s=f"{height:.1f} mm",
         x=max_x + offset_height + 1 + height / 200,
         y=(min_y + max_y) / 2,
         verticalalignment="center",
@@ -194,7 +194,7 @@ def _add_dimension_lines(ax: plt.Axes, elements: tuple[CrossSection, ...], centr
         annotation_clip=False,
     )
     ax.text(
-        s=f"{centroid_width:.0f} mm",
+        s=f"{centroid_width:.1f} mm",
         x=(min_x + centroid.x) / 2,
         y=min_y - offset_centroid_left_bottom - 1,
         verticalalignment="top",
@@ -215,7 +215,7 @@ def _add_dimension_lines(ax: plt.Axes, elements: tuple[CrossSection, ...], centr
         annotation_clip=False,
     )
     ax.text(
-        s=f"{centroid_height:.0f} mm",
+        s=f"{centroid_height:.1f} mm",
         x=max_x + offset_centroid_bottom_right + 1 + height / 200,
         y=(min_y + centroid.y) / 2,
         verticalalignment="center",
