@@ -25,8 +25,11 @@ class TestIPEStandardProfileClass:
         """Test that enum attributes are correctly assigned."""
         profile = IPEStandardProfileClass.IPE_80
         assert profile.code == "IPE80"
-        assert profile.h == 80
-        assert profile.b == 46
-        assert profile.t_w == 3.8
-        assert profile.t_f == 5.2
-        assert profile.radius == 5
+        assert profile.total_height == 80
+        assert profile.top_flange_width == 46
+        assert profile.top_flange_thickness == 5.2
+        assert profile.bottom_flange_width == 46
+        assert profile.bottom_flange_thickness == 5.2
+        assert profile.web_thickness == 3.8
+        assert profile.top_radius == 5
+        assert profile.bottom_radius == 5

@@ -1,13 +1,16 @@
 """I-Profile steel section."""
 
 from matplotlib import pyplot as plt
-from shapely import Polygon
 
 from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
 from blueprints.structural_sections.cross_section_radius import RightAngleCurvedCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEAStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEBStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEMStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPEStandardProfileClass
 from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
@@ -31,9 +34,9 @@ class ISteelProfile(SteelCrossSection):
         The thickness of the web [mm].
     steel_class : SteelStrengthClass
         The steel strength class of the profile.
-    radius_top : MM | None
+    top_radius : MM | None
         The radius of the curved corners of the top flange. Default is None, the corner radius is then taken as the thickness.
-    radius_bottom : MM | None
+    bottom_radius : MM | None
         The radius of the curved corners of the bottom flange. Default is None, the corner radius is then taken as the thickness.
     """
 
@@ -46,8 +49,8 @@ class ISteelProfile(SteelCrossSection):
         total_height: MM,
         web_thickness: MM,
         steel_class: SteelStrengthClass,
-        radius_top: MM | None = None,
-        radius_bottom: MM | None = None,
+        top_radius: MM | None = None,
+        bottom_radius: MM | None = None,
     ) -> None:
         """Initialize the I-profile steel section."""
         self.top_flange_width = top_flange_width
@@ -56,8 +59,8 @@ class ISteelProfile(SteelCrossSection):
         self.bottom_flange_thickness = bottom_flange_thickness
         self.total_height = total_height
         self.web_thickness = web_thickness
-        self.radius_top = radius_top if radius_top is not None else top_flange_thickness
-        self.radius_bottom = radius_bottom if radius_bottom is not None else bottom_flange_thickness
+        self.top_radius = top_radius if top_radius is not None else top_flange_thickness
+        self.bottom_radius = bottom_radius if bottom_radius is not None else bottom_flange_thickness
 
         # Calculate web height
         self.web_height = total_height - top_flange_thickness - bottom_flange_thickness
@@ -88,7 +91,7 @@ class ISteelProfile(SteelCrossSection):
         # Create curves for the corners of the flanges
         self.curve_top_right = RightAngleCurvedCrossSection(
             name="Curve top right",
-            radius=self.radius_top,
+            radius=self.top_radius,
             x=web_thickness / 2,
             y=self.web_height / 2,
             flipped_horizontally=False,
@@ -96,7 +99,7 @@ class ISteelProfile(SteelCrossSection):
         )
         self.curve_top_left = RightAngleCurvedCrossSection(
             name="Curve top left",
-            radius=self.radius_top,
+            radius=self.top_radius,
             x=-web_thickness / 2,
             y=self.web_height / 2,
             flipped_horizontally=True,
@@ -104,7 +107,7 @@ class ISteelProfile(SteelCrossSection):
         )
         self.curve_bottom_right = RightAngleCurvedCrossSection(
             name="Curve bottom right",
-            radius=self.radius_bottom,
+            radius=self.bottom_radius,
             x=web_thickness / 2,
             y=-self.web_height / 2,
             flipped_horizontally=False,
@@ -112,22 +115,11 @@ class ISteelProfile(SteelCrossSection):
         )
         self.curve_bottom_left = RightAngleCurvedCrossSection(
             name="Curve bottom left",
-            radius=self.radius_bottom,
+            radius=self.bottom_radius,
             x=-web_thickness / 2,
             y=-self.web_height / 2,
             flipped_horizontally=True,
             flipped_vertically=False,
-        )
-
-        # Combine the cross-sections into a single geometry
-        self.cross_section = Polygon(
-            self.top_flange.geometry.exterior.coords[:]
-            + self.web.geometry.exterior.coords[:]
-            + self.bottom_flange.geometry.exterior.coords[:]
-            + self.curve_top_right.geometry.exterior.coords[:]
-            + self.curve_top_left.geometry.exterior.coords[:]
-            + self.curve_bottom_right.geometry.exterior.coords[:]
-            + self.curve_bottom_left.geometry.exterior.coords[:]
         )
 
         # material properties
@@ -173,17 +165,81 @@ class ISteelProfile(SteelCrossSection):
             **kwargs,
         )
 
+
+class IProfiles:
+    r"""Representation of the strength and deformation characteristics for steel material.
+
+    Parameters
+    ----------
+    steel_class: SteelStrengthClass
+        Enumeration of steel strength classes (default: S355)
+    profile: ISteelProfile
+        Representation of an I-Profile steel section (default: HEB_360)
+    """
+
+    def __init__(
+        self,
+        steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355,
+        profile: HEAStandardProfileClass
+        | HEBStandardProfileClass
+        | HEMStandardProfileClass
+        | IPEStandardProfileClass = HEBStandardProfileClass.HEB_360,
+    ) -> None:
+        self.steel_class = steel_class
+        self.profile = profile
+
+    def __str__(self) -> str:
+        """Return the steel class and profile."""
+        return f"Steel class: {self.steel_class}, Profile: {self.profile}"
+
+    def top_flange_width(self) -> MM:
+        """Return the top flange width of the I-profile."""
+        return self.profile.top_flange_width
+
+    def top_flange_thickness(self) -> MM:
+        """Return the top flange thickness of the I-profile."""
+        return self.profile.top_flange_thickness
+
+    def bottom_flange_width(self) -> MM:
+        """Return the bottom flange width of the I-profile."""
+        return self.profile.bottom_flange_width
+
+    def bottom_flange_thickness(self) -> MM:
+        """Return the bottom flange thickness of the I-profile."""
+        return self.profile.bottom_flange_thickness
+
+    def total_height(self) -> MM:
+        """Return the total height of the I-profile."""
+        return self.profile.total_height
+
+    def web_thickness(self) -> MM:
+        """Return the web thickness of the I-profile."""
+        return self.profile.web_thickness
+
+    def top_radius(self) -> MM:
+        """Return the top radius of the I-profile."""
+        return self.profile.top_radius
+
+    def bottom_radius(self) -> MM:
+        """Return the bottom radius of the I-profile."""
+        return self.profile.bottom_radius
+
+    def get_profile(self) -> ISteelProfile:
+        """Return the CHS profile."""
+        return ISteelProfile(
+            top_flange_width=self.top_flange_width(),
+            top_flange_thickness=self.top_flange_thickness(),
+            bottom_flange_width=self.bottom_flange_width(),
+            bottom_flange_thickness=self.bottom_flange_thickness(),
+            total_height=self.total_height(),
+            web_thickness=self.web_thickness(),
+            steel_class=self.steel_class,
+            top_radius=self.top_radius(),
+            bottom_radius=self.bottom_radius(),
+        )
+
+
 if __name__ == "__main__":
-    profile = ISteelProfile(
-        top_flange_width=300,
-        top_flange_thickness=36,
-        bottom_flange_width=300,
-        bottom_flange_thickness=36,
-        total_height=1000,
-        web_thickness=19,
-        radius_bottom=30,
-        radius_top=30,
-        steel_class=SteelStrengthClass.EN_10025_2_S355,
-    )
-    profile.plot()
-    plt.show()
+    steel_class = SteelStrengthClass.EN_10025_2_S355
+    profile = IProfiles(steel_class=steel_class, profile=HEMStandardProfileClass.HEM_200)
+    profile.get_profile().plot(show=True)

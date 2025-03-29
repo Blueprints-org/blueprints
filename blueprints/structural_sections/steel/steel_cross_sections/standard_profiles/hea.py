@@ -44,8 +44,11 @@ class HEAStandardProfileClass(Enum):
             radius (MM): Radius.
         """
         self.code = code
-        self.h = h
-        self.b = b
-        self.t_w = t_w
-        self.t_f = t_f
-        self.radius = radius
+        self.top_flange_width = b
+        self.top_flange_thickness = t_f
+        self.bottom_flange_width = b
+        self.bottom_flange_thickness = t_f
+        self.total_height = h
+        self.web_thickness = t_w
+        self.top_radius = radius
+        self.bottom_radius = radius

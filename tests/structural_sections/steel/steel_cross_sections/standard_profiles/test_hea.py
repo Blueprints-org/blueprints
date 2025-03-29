@@ -25,8 +25,11 @@ class TestHEAStandardProfileClass:
         """Test that enum attributes are correctly assigned."""
         profile = HEAStandardProfileClass.HEA_100
         assert profile.code == "HEA100"
-        assert profile.h == 96
-        assert profile.b == 100
-        assert profile.t_w == 5
-        assert profile.t_f == 8
-        assert profile.radius == 12
+        assert profile.top_flange_width == 100
+        assert profile.top_flange_thickness == 8
+        assert profile.bottom_flange_width == 100
+        assert profile.bottom_flange_thickness == 8
+        assert profile.total_height == 96
+        assert profile.web_thickness == 5
+        assert profile.top_radius == 12
+        assert profile.bottom_radius == 12

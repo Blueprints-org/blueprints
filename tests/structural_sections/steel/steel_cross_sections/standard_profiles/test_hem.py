@@ -25,8 +25,11 @@ class TestHEMStandardProfileClass:
         """Test that enum attributes are correctly assigned."""
         profile = HEMStandardProfileClass.HEM_100
         assert profile.code == "HEM100"
-        assert profile.h == 120
-        assert profile.b == 106
-        assert profile.t_w == 12
-        assert profile.t_f == 20
-        assert profile.radius == 12
+        assert profile.total_height == 120
+        assert profile.top_flange_width == 106
+        assert profile.top_flange_thickness == 20
+        assert profile.bottom_flange_width == 106
+        assert profile.bottom_flange_thickness == 20
+        assert profile.web_thickness == 12
+        assert profile.top_radius == 12
+        assert profile.bottom_radius == 12

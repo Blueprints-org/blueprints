@@ -25,8 +25,11 @@ class TestHEBStandardProfileClass:
         """Test that enum attributes are correctly assigned."""
         profile = HEBStandardProfileClass.HEB_100
         assert profile.code == "HEB100"
-        assert profile.h == 100
-        assert profile.b == 100
-        assert profile.t_w == 6
-        assert profile.t_f == 10
-        assert profile.radius == 12
+        assert profile.total_height == 100
+        assert profile.top_flange_width == 100
+        assert profile.top_flange_thickness == 10
+        assert profile.bottom_flange_width == 100
+        assert profile.bottom_flange_thickness == 10
+        assert profile.web_thickness == 6
+        assert profile.top_radius == 12
+        assert profile.bottom_radius == 12
