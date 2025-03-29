@@ -86,11 +86,11 @@ class CHSProfiles:
 
     def diameter(self) -> MM:
         """Return the outer diameter of the CHS profile."""
-        return float(self.profile.value.split(" ")[1].split("x")[0].replace("_", "."))
+        return self.profile.diameter
 
     def thickness(self) -> MM:
         """Return the wall thickness of the CHS profile."""
-        return float(self.profile.value.split(" ")[1].split("x")[1].replace("_", "."))
+        return self.profile.thickness
 
     def get_profile(self) -> CHSSteelProfile:
         """Return the CHS profile."""
