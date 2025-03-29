@@ -5,7 +5,6 @@ from abc import ABC
 from shapely.geometry import Point
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.general_cross_section import CrossSection
 from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import KG_M, M3_M, MM2, MM3
 from blueprints.unit_conversion import MM3_TO_M3
@@ -16,19 +15,15 @@ class SteelCrossSection(ABC):
 
     def __init__(
         self,
-        cross_section: CrossSection,
         steel_material: SteelMaterial,
     ) -> None:
         """Initialize the steel cross-section.
 
         Parameters
         ----------
-        cross_section : CrossSection
-            Cross-section of the steel element.
         steel_material : SteelMaterial
             Material properties of the steel.
         """
-        self.cross_section = cross_section
         self.steel_material = steel_material
         self.elements: list[SteelElement] = []
 
