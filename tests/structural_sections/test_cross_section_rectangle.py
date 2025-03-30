@@ -11,7 +11,7 @@ class TestRectangularCrossSection:
     @pytest.fixture
     def rectangular_cross_section(self) -> RectangularCrossSection:
         """Return a RectangularCrossSection instance."""
-        return RectangularCrossSection(name="Rectangle", width=100.0, height=200.0)
+        return RectangularCrossSection(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
 
     def test_area(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the area property of the RectangularCrossSection class."""
@@ -24,7 +24,7 @@ class TestRectangularCrossSection:
     def test_centroid(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the centroid property of the RectangularCrossSection class."""
         centroid = rectangular_cross_section.centroid
-        assert (centroid.x, centroid.y) == pytest.approx(expected=(0.0, 0.0), rel=1e-6)
+        assert (centroid.x, centroid.y) == pytest.approx(expected=(100.0, 250.0), rel=1e-6)
 
     def test_vertices(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the vertices property of the RectangularCrossSection class."""
@@ -32,8 +32,8 @@ class TestRectangularCrossSection:
         first_vertex = vertices[0]
         last_vertex = vertices[-1]
         assert len(vertices) == 5
-        assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(-50.0, -100.00), rel=1e-6)
-        assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(-50.0, -100.00), rel=1e-6)
+        assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(50.0, 150.00), rel=1e-6)
+        assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(50.0, 150.00), rel=1e-6)
 
     def test_moments_of_inertia(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the moments of inertia properties of the RectangularCrossSection class."""
@@ -83,13 +83,13 @@ class TestRectangularCrossSection:
     def test_geometry(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the geometry property of the RectangularCrossSection class."""
         geometry = rectangular_cross_section.geometry
-        assert geometry.bounds == pytest.approx(expected=(-50.0, -100.0, 50.0, 100.0), rel=1e-6)
+        assert geometry.bounds == pytest.approx(expected=(50.0, 150.0, 150.0, 350.0), rel=1e-6)
 
     def test_dotted_mesh_custom_size(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the dotted mesh method with a custom mesh size."""
         dotted_mesh = rectangular_cross_section.dotted_mesh(max_mesh_size=50.0)
         assert len(dotted_mesh) > 0
-        assert all(-50.0 <= point.x <= 50.0 and -100.0 <= point.y <= 100.0 for point in dotted_mesh)
+        assert all(50.0 <= point.x <= 150.0 and 150.0 <= point.y <= 350.0 for point in dotted_mesh)
 
     def test_plate_thickness(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the plate_thickness property of the RectangularCrossSection class."""

@@ -14,7 +14,7 @@ class TestCircularCrossSection:
     @pytest.fixture
     def circular_cross_section(self) -> CircularCrossSection:
         """Return a CircularCrossSection instance."""
-        return CircularCrossSection(name="Circle", diameter=200.0, x=0.0, y=0.0)
+        return CircularCrossSection(name="Circle", diameter=200.0, x=100.0, y=250.0)
 
     def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the geometry property of the CircularCrossSection class."""
@@ -31,7 +31,7 @@ class TestCircularCrossSection:
     def test_centroid(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the centroid property of the CircularCrossSection class."""
         centroid = circular_cross_section.centroid
-        assert (centroid.x, centroid.y) == pytest.approx(expected=(0.0, 0.0), rel=1e-6)
+        assert (centroid.x, centroid.y) == pytest.approx(expected=(100.0, 250.0), rel=1e-6)
 
     def test_vertices(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the vertices property of the CircularCrossSection class."""
@@ -39,8 +39,8 @@ class TestCircularCrossSection:
         first_vertex = vertices[0]
         last_vertex = vertices[-1]
         assert len(vertices) == 65
-        assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(100.0, 0.0), rel=1e-6)
-        assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(100.0, 0.0), rel=1e-6)
+        assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(200.0, 250.0), rel=1e-6)
+        assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(200.0, 250.0), rel=1e-6)
 
     def test_wrong_input(self) -> None:
         """Test the wrong input for the CircularCrossSection class."""
@@ -93,4 +93,4 @@ class TestCircularCrossSection:
     def test_geometry_bounds(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the bounds of the geometry property."""
         bounds = circular_cross_section.geometry.bounds
-        assert bounds == pytest.approx(expected=(-100.0, -100.0, 100.0, 100.0), rel=1e-6)
+        assert bounds == pytest.approx(expected=(0.0, 150.0, 200.0, 350.0), rel=1e-6)

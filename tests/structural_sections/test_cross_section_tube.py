@@ -13,7 +13,7 @@ class TestTubeCrossSection:
     @pytest.fixture
     def tube_cross_section(self) -> TubeCrossSection:
         """Return a TubeCrossSection instance."""
-        return TubeCrossSection(name="Tube", outer_diameter=100.0, inner_diameter=50.0, x=0.0, y=0.0)
+        return TubeCrossSection(name="Tube", outer_diameter=100.0, inner_diameter=50.0, x=100.0, y=250.0)
 
     def test_area(self, tube_cross_section: TubeCrossSection) -> None:
         """Test the area property of the TubeCrossSection class."""
@@ -33,7 +33,7 @@ class TestTubeCrossSection:
     def test_centroid(self, tube_cross_section: TubeCrossSection) -> None:
         """Test the centroid property of the TubeCrossSection class."""
         centroid = tube_cross_section.centroid
-        assert (centroid.x, centroid.y) == pytest.approx(expected=(0.0, 0.0), rel=1e-6)
+        assert (centroid.x, centroid.y) == pytest.approx(expected=(100.0, 250.0), rel=1e-6)
 
     def test_moments_of_inertia(self, tube_cross_section: TubeCrossSection) -> None:
         """Test the moments of inertia properties of the TubeCrossSection class."""

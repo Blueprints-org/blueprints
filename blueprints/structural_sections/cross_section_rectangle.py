@@ -74,7 +74,7 @@ class RectangularCrossSection:
         MM2
             The area of the rectangle.
         """
-        return self.geometry.area
+        return self.width * self.height
 
     @property
     def plate_thickness(self) -> MM:
@@ -98,7 +98,7 @@ class RectangularCrossSection:
         MM
             The perimeter of the rectangle.
         """
-        return self.geometry.length
+        return 2 * (self.width + self.height)
 
     @property
     def centroid(self) -> Point:
@@ -110,7 +110,7 @@ class RectangularCrossSection:
         Point
             The centroid of the rectangle.
         """
-        return self.geometry.centroid
+        return Point(self.x, self.y)
 
     @property
     def moment_of_inertia_about_y(self) -> MM4:

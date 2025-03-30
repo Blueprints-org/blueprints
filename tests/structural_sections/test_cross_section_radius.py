@@ -15,7 +15,7 @@ class TestRightAngleCurvedCrossSection:
     @pytest.fixture
     def cross_section(self) -> RightAngleCurvedCrossSection:
         """Return a RightAngleCurvedCrossSection instance."""
-        return RightAngleCurvedCrossSection(radius=50.0, x=0.0, y=0.0)
+        return RightAngleCurvedCrossSection(radius=50.0, x=100.0, y=250.0)
 
     def test_area(self, cross_section: RightAngleCurvedCrossSection) -> None:
         """Test the area property of the RightAngleCurvedCrossSection class."""
@@ -63,8 +63,8 @@ class TestRightAngleCurvedCrossSection:
 
     def test_section_moduli(self, cross_section: RightAngleCurvedCrossSection) -> None:
         """Test the section moduli properties of the RightAngleCurvedCrossSection class."""
-        expected_modulus_positive = cross_section.moment_of_inertia_about_y / (cross_section.radius - cross_section.centroid.y)
-        expected_modulus_negative = cross_section.moment_of_inertia_about_y / (cross_section.centroid.y)
+        expected_modulus_positive = cross_section.moment_of_inertia_about_y / (cross_section.radius - cross_section.centroid.y + cross_section.y)
+        expected_modulus_negative = cross_section.moment_of_inertia_about_y / (cross_section.centroid.y - cross_section.y)
         assert cross_section.elastic_section_modulus_about_y_positive == pytest.approx(expected=expected_modulus_positive, rel=1e-6)
         assert cross_section.elastic_section_modulus_about_y_negative == pytest.approx(expected=expected_modulus_negative, rel=1e-6)
         assert cross_section.elastic_section_modulus_about_z_positive == pytest.approx(expected=expected_modulus_positive, rel=1e-6)

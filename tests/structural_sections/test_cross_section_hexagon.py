@@ -13,7 +13,7 @@ class TestHexagonalCrossSection:
     @pytest.fixture
     def hexagonal_cross_section(self) -> HexagonalCrossSection:
         """Return a HexagonalCrossSection instance."""
-        return HexagonalCrossSection(name="Hexagon", side_length=50.0, x=0.0, y=0.0)
+        return HexagonalCrossSection(name="Hexagon", side_length=50.0, x=100.0, y=250.0)
 
     def test_area(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the area property of the HexagonalCrossSection class."""
@@ -33,7 +33,7 @@ class TestHexagonalCrossSection:
     def test_centroid(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the centroid property of the HexagonalCrossSection class."""
         centroid = hexagonal_cross_section.centroid
-        assert (centroid.x, centroid.y) == pytest.approx(expected=(0.0, 0.0), rel=1e-6)
+        assert (centroid.x, centroid.y) == pytest.approx(expected=(100.0, 250.0), rel=1e-6)
 
     def test_moments_of_inertia(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the moments of inertia properties of the HexagonalCrossSection class."""

@@ -20,8 +20,8 @@ class TestAnnularSectorCrossSection:
             thickness=20.0,
             start_angle=0.0,
             end_angle=90.0,
-            x=0.0,
-            y=0.0,
+            x=100.0,
+            y=250.0,
         )
 
     def test_area(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:

@@ -11,7 +11,7 @@ class TestRightAngledTriangularCrossSection:
     @pytest.fixture
     def triangular_cross_section(self) -> RightAngledTriangularCrossSection:
         """Return a RightAngledTriangularCrossSection instance."""
-        return RightAngledTriangularCrossSection(name="Triangle", base=100.0, height=200.0)
+        return RightAngledTriangularCrossSection(name="Triangle", base=100.0, height=200.0, x=100.0, y=250.0)
 
     def test_area(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the area property of the RightAngledTriangularCrossSection class."""
@@ -25,7 +25,7 @@ class TestRightAngledTriangularCrossSection:
     def test_centroid(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the centroid property of the RightAngledTriangularCrossSection class."""
         centroid = triangular_cross_section.centroid
-        assert (centroid.x, centroid.y) == pytest.approx(expected=(100.0 / 3, 200.0 / 3), rel=1e-6)
+        assert (centroid.x, centroid.y) == pytest.approx(expected=(100.0 / 3 + 100, 200.0 / 3 + 250), rel=1e-6)
 
     def test_moments_of_inertia(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the moments of inertia properties of the RightAngledTriangularCrossSection class."""
@@ -82,9 +82,9 @@ class TestRightAngledTriangularCrossSection:
         """Test the vertices property of the RightAngledTriangularCrossSection class."""
         vertices = triangular_cross_section.vertices
         assert len(vertices) == 4  # Triangle has 3 vertices + 1 repeated for closure
-        assert (vertices[0].x, vertices[0].y) == (0, 0)
-        assert (vertices[1].x, vertices[1].y) == (100.0, 0)
-        assert (vertices[2].x, vertices[2].y) == (0, 200.0)
+        assert (vertices[0].x, vertices[0].y) == (100.0, 250.0)
+        assert (vertices[1].x, vertices[1].y) == (200.0, 250.0)
+        assert (vertices[2].x, vertices[2].y) == (100.0, 450.0)
 
     def test_dotted_mesh_with_custom_mesh_size(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the dotted mesh property with a custom mesh size."""
