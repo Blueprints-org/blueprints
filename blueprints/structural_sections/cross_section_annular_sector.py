@@ -27,9 +27,9 @@ class AnnularSectorCrossSection:
     end_angle : float
         The end angle of the annular sector in degrees (must be larger than start angle but not more than 360 degrees more).
     x : MM
-        The x-coordinate of the annular sector's center.
+        The x-coordinate of the annular sector's radius center.
     y : MM
-        The y-coordinate of the annular sector's center.
+        The y-coordinate of the annular sector's radius center.
     name : str
         The name of the rectangular cross-section, default is "Annular Sector".
     """
@@ -167,9 +167,9 @@ class AnnularSectorCrossSection:
         Point
             The centroid of the annular sector.
         """
-        angle_radians = math.radians(self.end_angle - self.start_angle)
+        halve_angle_radians = math.radians(self.end_angle - self.start_angle) / 2
         centroid_radius = (
-            (2 * np.sin(angle_radians) / 3 / angle_radians)
+            (2 * np.sin(halve_angle_radians) / 3 / halve_angle_radians)
             * (self.outer_radius**3 - self.inner_radius**3)
             / (self.outer_radius**2 - self.inner_radius**2)
         )

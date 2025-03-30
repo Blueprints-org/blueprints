@@ -48,8 +48,8 @@ class TestAnnularSectorCrossSection:
     def test_centroid(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the centroid property of the AnnularSectorCrossSection class."""
         centroid = annular_sector_cross_section.centroid
-        angle_radians = np.radians(annular_sector_cross_section.end_angle - annular_sector_cross_section.start_angle)
-        centroid_radius = (2 * np.sin(angle_radians) / (3 * angle_radians)) * (
+        halve_angle_radians = np.radians(annular_sector_cross_section.end_angle - annular_sector_cross_section.start_angle) / 2
+        centroid_radius = (2 * np.sin(halve_angle_radians) / (3 * halve_angle_radians)) * (
             (annular_sector_cross_section.outer_radius**3 - annular_sector_cross_section.inner_radius**3)
             / (annular_sector_cross_section.outer_radius**2 - annular_sector_cross_section.inner_radius**2)
         )
