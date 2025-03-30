@@ -75,7 +75,7 @@ class Form6Dot15ShearReinforcementResistance(Formula):
         raise_if_negative(a_sw_max=a_sw_max, f_ywd=f_ywd, alpha_cw=alpha_cw, nu_1=nu_1, f_cd=f_cd)
 
         left_side = (a_sw_max * f_ywd) / (b_w * s)
-        right_side = (0.5 * alpha_cw * nu_1 * f_cd) / np.sin(np.radians(alpha))
+        right_side = (0.5 * alpha_cw * nu_1 * f_cd) / np.sin(np.deg2rad(alpha))
 
         return left_side <= right_side
 

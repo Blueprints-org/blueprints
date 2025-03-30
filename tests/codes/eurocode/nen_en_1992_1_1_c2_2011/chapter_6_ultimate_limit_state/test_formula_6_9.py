@@ -50,9 +50,9 @@ class TestForm6Dot9MaximumShearResistance:
             (
                 "complete",
                 r"V_{Rd,max} = \alpha_{cw} \cdot b_{w} \cdot z \cdot \nu_{1} \cdot \frac{f_{cd}}{\cot(\theta) + \tan(\theta)} = "
-                r"1.000 \cdot 300.000 \cdot 500.000 \cdot 0.600 \cdot \frac{25.000}{\cot(30.000) + \tan(30.000)} = 974278.579 N",
+                r"1.000 \cdot 300.000 \cdot 500.000 \cdot 0.600 \cdot \frac{25.000}{\cot(30.000) + \tan(30.000)} = 974278.579 \ N",
             ),
-            ("short", r"V_{Rd,max} = 974278.579 N"),
+            ("short", r"V_{Rd,max} = 974278.579 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
