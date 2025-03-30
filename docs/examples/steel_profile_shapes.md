@@ -1,4 +1,3 @@
-```markdown
 ---
 hide:
     - toc
@@ -14,7 +13,7 @@ Follow the steps below to explore the usage of different steel profile shapes (o
 Start by defining the steel class to be used for the profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:4:6"
+--8<-- "examples/_code/steel_profile_shapes.py:17:18"
 ```
 
 ## Circular Hollow Section (CHS) Profiles
@@ -24,7 +23,7 @@ Start by defining the steel class to be used for the profiles:
 Structual parameters are automatically calculated and can be obtained with:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:8:12"
+--8<-- "examples/_code/steel_profile_shapes.py:20:28"
 ```
 
 ### Custom CHS Profile
@@ -32,7 +31,7 @@ Structual parameters are automatically calculated and can be obtained with:
 Alternatively, define a custom CHS profile by specifying its dimensions:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:14:18"
+--8<-- "examples/_code/steel_profile_shapes.py:30:32"
 ```
 
 ## Rectangular Hollow Section (RHS) Profiles
@@ -42,7 +41,7 @@ Alternatively, define a custom CHS profile by specifying its dimensions:
 Predefined RHS profiles are available for use:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:20:24"
+--8<-- "examples/_code/steel_profile_shapes.py:34:36"
 ```
 
 ### Custom RHS Profile
@@ -50,7 +49,7 @@ Predefined RHS profiles are available for use:
 Define a custom RHS profile by specifying its height, width, and thickness:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:26:30"
+--8<-- "examples/_code/steel_profile_shapes.py:38:40"
 ```
 
 ## I-Section Profiles (HEB)
@@ -60,7 +59,7 @@ Define a custom RHS profile by specifying its height, width, and thickness:
 Use predefined I-profiles such as HEB profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:32:36"
+--8<-- "examples/_code/steel_profile_shapes.py:42:44"
 ```
 
 ### Custom I-Profile
@@ -68,7 +67,7 @@ Use predefined I-profiles such as HEB profiles:
 Define a custom I-profile by specifying its flange and web dimensions:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:38:46"
+--8<-- "examples/_code/steel_profile_shapes.py:46:58"
 ```
 
 ## Strip Profiles
@@ -78,7 +77,7 @@ Define a custom I-profile by specifying its flange and web dimensions:
 Predefined strip profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:48:52"
+--8<-- "examples/_code/steel_profile_shapes.py:60:62"
 ```
 
 ### Custom Strip Profile
@@ -86,7 +85,7 @@ Predefined strip profiles are also available:
 Define a custom strip profile by specifying its width and height:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:54:58"
+--8<-- "examples/_code/steel_profile_shapes.py:64:70"
 ```
 
 ## Visualizing Profiles
@@ -100,4 +99,3 @@ For each profile, the `plot` method is used to visualize the shape. The plots wi
 --8<-- "examples/_code/steel_profile_shapes.py"
 ```
 </a>
-```
