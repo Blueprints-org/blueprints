@@ -24,9 +24,10 @@ class TestUNPStandardProfileClass:
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
         profile = UNPStandardProfileClass.UNP_80
-        assert profile.code == "UNP80"
-        assert profile.h == 80
-        assert profile.b == 45
-        assert profile.t_w == 6
-        assert profile.t_f == 8
+        assert profile.top_flange_total_width == 45
+        assert profile.top_flange_thickness == 8
+        assert profile.bottom_flange_total_width == 45
+        assert profile.bottom_flange_thickness == 8
+        assert profile.total_height == 80
+        assert profile.web_thickness == 6
         assert profile.radius == 8

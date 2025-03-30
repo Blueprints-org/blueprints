@@ -36,8 +36,10 @@ class UNPStandardProfileClass(Enum):
             radius (MM): Radius (always 0 for UNP profiles).
         """
         self.code = code
-        self.h = h
-        self.b = b
-        self.t_w = t_w
-        self.t_f = t_f
+        self.top_flange_total_width = b
+        self.top_flange_thickness = t_f
+        self.bottom_flange_total_width = b
+        self.bottom_flange_thickness = t_f
+        self.total_height = h
+        self.web_thickness = t_w
         self.radius = radius
