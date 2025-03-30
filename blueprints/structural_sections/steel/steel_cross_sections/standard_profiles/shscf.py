@@ -172,4 +172,4 @@ class SHSCFStandardProfileClass(Enum):
         self.thickness = t
         self.inner_radius = ri
         self.outer_radius = r0
-        self.center_radius = ri + t / 2
+        self.center_radius = (r0 + ri) / 2
