@@ -170,5 +170,6 @@ class SHSCFStandardProfileClass(Enum):
         self.total_width = b
         self.total_height = b
         self.thickness = t
-        self.outer_radius = r0
         self.inner_radius = ri
+        self.outer_radius = r0
+        self.center_radius = ri + t / 2

@@ -6,7 +6,11 @@ from blueprints.type_alias import MM
 
 
 class SHSStandardProfileClass(Enum):
-    """Enumeration of SHS steel profiles with dimensions and properties."""
+    """Enumeration of SHS steel profiles with dimensions and properties.
+    Note: the corners of SHS profiles are not of constant thickness but are thicker,
+    this feature has not been implemented yet in Blueprints.
+    The corners are conservatively approximated by assuming a constant radius following the outside perimeter.
+    """
 
     SHS_40_2_6 = ("SHS40/2.6", 40, 2.6, 3.9, 2.6)
     SHS_40_3_2 = ("SHS40/3.2", 40, 3.2, 4.8, 3.2)
@@ -130,3 +134,4 @@ class SHSStandardProfileClass(Enum):
         self.thickness = t
         self.outer_radius = r0
         self.inner_radius = ri
+        self.center_radius = r0 - t / 2
