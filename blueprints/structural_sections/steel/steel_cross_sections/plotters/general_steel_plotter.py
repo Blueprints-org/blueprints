@@ -64,13 +64,11 @@ def plot_shapes(
         # Add element details to the legend
         legend_text += f"{element.name}:\n"
         attributes = {
-            "width": "Width",
-            "base": "Base",
-            "height": "Height",
+            "plate_thickness": "Thickness",
             "radius": "Radius",
+            "radius_centerline": "Center Radius",
             "side_length": "Side Length",
             "outer_diameter": "Outer Diameter",
-            "wall_thickness": "Wall Thickness",
         }
 
         for attr, label in attributes.items():
