@@ -273,7 +273,7 @@ class TubeCrossSection:
         Parameters
         ----------
         max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a halve of the thickness and 20th of diameter,
+            The maximum mesh size to use for the meshing. Default is a quarter of the thickness and 20th of diameter,
             whichever is less.
 
         Returns
@@ -282,7 +282,7 @@ class TubeCrossSection:
             The inner nodes of the meshed rectangles they represent.
         """
         if max_mesh_size == 0:
-            mesh_size = min(self.plate_thickness / 2, self.outer_diameter / 20)
+            mesh_size = min(self.plate_thickness / 4, self.outer_diameter / 20)
         else:
             mesh_size = self.plate_thickness / np.ceil(self.plate_thickness / max_mesh_size)
 
