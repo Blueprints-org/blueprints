@@ -75,7 +75,7 @@ def plot_shapes(
             if hasattr(element, attr):
                 legend_text += f"  {label}={getattr(element, attr):.1f} mm\n"
         legend_text += f"  Area={element.area:.1f} mm²\n\n"
-    legend_text = legend_text[:-4]
+    legend_text = legend_text[:-2]
 
     # Add dimension lines
     _add_dimension_lines(ax, elements, centroid)
