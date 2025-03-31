@@ -237,9 +237,3 @@ class IProfiles:
             top_radius=self.top_radius(),
             bottom_radius=self.bottom_radius(),
         )
-
-
-if __name__ == "__main__":
-    steel_class = SteelStrengthClass.EN_10025_2_S355
-    profile = IProfiles(steel_class=steel_class, profile=HEMStandardProfileClass.HEM_200)
-    profile.get_profile().plot(show=True)

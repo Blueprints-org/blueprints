@@ -228,7 +228,7 @@ class RectangularCrossSection:
         Parameters
         ----------
         max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a fourth of the smallest dimension.
+            The maximum mesh size to use for the meshing. Default is a eigth of the smallest dimension.
 
         Returns
         -------
@@ -236,8 +236,12 @@ class RectangularCrossSection:
             The inner nodes of the meshed rectangles they represent.
         """
         if max_mesh_size == 0:
-            mesh_size_width = min(self.width, self.height) / 4
-            mesh_size_height = mesh_size_width
+            if self.width < self.height:
+                mesh_size_width = self.width / 8
+                mesh_size_height = self.height / np.ceil(self.height / mesh_size_width)
+            else:
+                mesh_size_height = self.height / 8
+                mesh_size_width = self.width / np.ceil(self.width / mesh_size_height)
         else:
             mesh_size_width = self.width / np.ceil(self.width / max_mesh_size)
             mesh_size_height = self.height / np.ceil(self.height / max_mesh_size)
