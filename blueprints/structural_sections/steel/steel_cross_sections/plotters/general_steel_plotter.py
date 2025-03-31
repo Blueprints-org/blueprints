@@ -6,7 +6,6 @@ from matplotlib import patches as mplpatches
 from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Point, Polygon
 
-from blueprints.materials.steel import SteelStrengthClass
 from blueprints.structural_sections.general_cross_section import CrossSection
 
 # Define color
@@ -221,13 +220,3 @@ def _add_dimension_lines(ax: plt.Axes, elements: tuple[CrossSection, ...], centr
         fontsize=10,
         rotation=90,
     )
-
-
-# Example usage
-if __name__ == "__main__":
-    from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile
-
-    # Define a sample CHS profile
-    steel_class = SteelStrengthClass.EN_10025_2_S355
-    profile = CHSSteelProfile(outer_diameter=1000, wall_thickness=10, steel_class=steel_class)
-    profile.plot(show=True)
