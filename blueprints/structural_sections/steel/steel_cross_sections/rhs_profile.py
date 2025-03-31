@@ -224,9 +224,3 @@ class RHSProfiles:
             steel_class=self.steel_class,
             center_radius=self.profile.center_radius,
         )
-
-
-if __name__ == "__main__":
-    steel_class = SteelStrengthClass.EN_10025_2_S355
-    profile = RHSProfiles(steel_class=steel_class, profile=RHSCFStandardProfileClass.RHSCF120x80_5)
-    profile.get_profile().plot(show=True)
