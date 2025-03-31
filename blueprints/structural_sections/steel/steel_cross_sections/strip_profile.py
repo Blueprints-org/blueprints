@@ -98,9 +98,3 @@ class StripProfiles:
     def get_profile(self) -> StripSteelProfile:
         """Return the strip profile."""
         return StripSteelProfile(width=self.width(), height=self.height(), steel_class=self.steel_class)
-
-
-if __name__ == "__main__":
-    steel_class = SteelStrengthClass.EN_10025_2_S355
-    profile = StripProfiles(steel_class=steel_class, profile=StripStandardProfileClass.STRIP_160x5)
-    profile.get_profile().plot(show=True)
