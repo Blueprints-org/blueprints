@@ -129,8 +129,10 @@ class AnnularSectorCrossSection:
         MM2
             The area of the annular sector.
         """
-        angle_radians = math.radians(self.end_angle - self.start_angle)
-        return 0.5 * angle_radians * (self.outer_radius**2 - self.inner_radius**2)
+        area_outer_circle = math.pi * self.outer_radius**2
+        area_inner_circle = math.pi * self.inner_radius**2
+        area_ring = area_outer_circle - area_inner_circle
+        return area_ring / 360 * (self.end_angle - self.start_angle)
 
     @property
     def plate_thickness(self) -> MM:
