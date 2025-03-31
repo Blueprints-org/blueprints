@@ -26,7 +26,7 @@ class TestAnnularSectorCrossSection:
 
     def test_area(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the area property of the AnnularSectorCrossSection class."""
-        expected_area = 0.5 * (90.0 * (np.pi / 180)) * ((110.0**2) - (90.0**2))
+        expected_area = (annular_sector_cross_section.outer_radius**2 - annular_sector_cross_section.inner_radius**2) * np.pi / 4
         assert annular_sector_cross_section.area == pytest.approx(expected=expected_area, rel=1e-6)
 
     def test_width(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
