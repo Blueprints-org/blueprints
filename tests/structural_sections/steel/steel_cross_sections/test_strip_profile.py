@@ -65,11 +65,6 @@ class TestStripSteelProfile:
         expected_moi_z = 1 / 12 * 160**3 * 5  # mm⁴
         assert pytest.approx(strip_profile.moment_of_inertia_about_z, rel=1e-6) == expected_moi_z
 
-    def test_polar_moment_of_inertia(self, strip_profile: StripSteelProfile) -> None:
-        """Test the polar moment of inertia."""
-        expected_polar_moi = 1 / 12 * 160 * 5**3 + 1 / 12 * 160**3 * 5  # mm⁴
-        assert pytest.approx(strip_profile.polar_moment_of_inertia, rel=1e-6) == expected_polar_moi
-
     def test_elastic_section_modulus_about_y_positive(self, strip_profile: StripSteelProfile) -> None:
         """Test the elastic section modulus about the y-axis on the positive z side."""
         expected_modulus_y_positive = 1 / 6 * 160 * 5**2  # mm³

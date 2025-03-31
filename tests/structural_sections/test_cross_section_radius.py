@@ -56,11 +56,6 @@ class TestRightAngleCurvedCrossSection:
         assert cross_section.moment_of_inertia_about_y == pytest.approx(expected=expected_inertia, rel=1e-6)
         assert cross_section.moment_of_inertia_about_z == pytest.approx(expected=expected_inertia, rel=1e-6)
 
-    def test_polar_moment_of_inertia(self, cross_section: RightAngleCurvedCrossSection) -> None:
-        """Test the polar moment of inertia property of the RightAngleCurvedCrossSection class."""
-        expected_polar = cross_section.moment_of_inertia_about_y + cross_section.moment_of_inertia_about_z
-        assert cross_section.polar_moment_of_inertia == pytest.approx(expected=expected_polar, rel=1e-6)
-
     def test_section_moduli(self, cross_section: RightAngleCurvedCrossSection) -> None:
         """Test the section moduli properties of the RightAngleCurvedCrossSection class."""
         expected_modulus_positive = cross_section.moment_of_inertia_about_y / (cross_section.radius - cross_section.centroid.y + cross_section.y)
@@ -135,6 +130,5 @@ class TestRightAngleCurvedCrossSection:
         assert cross_section_zero_radius.perimeter == 0.0
         assert cross_section_zero_radius.moment_of_inertia_about_y == 0.0
         assert cross_section_zero_radius.moment_of_inertia_about_z == 0.0
-        assert cross_section_zero_radius.polar_moment_of_inertia == 0.0
         assert cross_section_zero_radius.elastic_section_modulus_about_y_positive == 0.0
         assert len(cross_section_zero_radius.dotted_mesh()) == 1

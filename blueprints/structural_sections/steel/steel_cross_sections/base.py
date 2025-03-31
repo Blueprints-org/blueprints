@@ -67,11 +67,6 @@ class SteelCrossSection(ABC):
         return body_moments_of_inertia + parallel_axis_theorem
 
     @property
-    def polar_moment_of_inertia(self) -> KG_M:
-        """Polar moment of inertia per meter length [mm⁴/m]."""
-        return self.moment_of_inertia_about_y + self.moment_of_inertia_about_z
-
-    @property
     def elastic_section_modulus_about_y_positive(self) -> KG_M:
         """Elastic section modulus about the y-axis on the positive z side [mm³/m]."""
         distance_to_top = max(point.y for element in self.elements for point in element.cross_section.vertices) - self.centroid.y

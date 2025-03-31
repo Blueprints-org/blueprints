@@ -72,10 +72,6 @@ class TestAnnularSectorCrossSection:
             expected=annular_sector_cross_section.elastic_section_modulus_about_z_negative, rel=1e-6
         )
 
-    def test_polar_moment_of_inertia(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
-        """Test the polar moment of inertia property of the AnnularSectorCrossSection class."""
-        assert annular_sector_cross_section.polar_moment_of_inertia == 2 * annular_sector_cross_section.moment_of_inertia_about_y
-
     def test_plastic_section_moduli(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the plastic section moduli properties of the AnnularSectorCrossSection class."""
         max_elastic_section_modulus_y = max(

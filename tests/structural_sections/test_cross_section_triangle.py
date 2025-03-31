@@ -45,11 +45,6 @@ class TestRightAngledTriangularCrossSection:
         assert triangular_cross_section.elastic_section_modulus_about_y_negative == pytest.approx(expected=expected_y_negative, rel=1e-6)
         assert triangular_cross_section.elastic_section_modulus_about_z_negative == pytest.approx(expected=expected_z_negative, rel=1e-6)
 
-    def test_polar_moment_of_inertia(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
-        """Test the polar moment of inertia property of the RightAngledTriangularCrossSection class."""
-        expected_polar = (100.0 * 200.0**3) / 36 + (200.0 * 100.0**3) / 36
-        assert triangular_cross_section.polar_moment_of_inertia == pytest.approx(expected=expected_polar, rel=1e-6)
-
     def test_plastic_section_moduli(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the plastic section moduli properties of the RightAngledTriangularCrossSection class."""
         expected_y = (100.0 * 200.0**2) / 4

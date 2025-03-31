@@ -21,7 +21,6 @@ def mock_cross_section(mocker: Mock) -> Mock:
     cross_section.centroid = Point(50, 50)
     cross_section.moment_of_inertia_about_y = 2000  # mm⁴
     cross_section.moment_of_inertia_about_z = 3000  # mm⁴
-    cross_section.polar_moment_of_inertia = 5000  # mm⁴
     cross_section.elastic_section_modulus_about_y_positive = 100  # mm³
     cross_section.elastic_section_modulus_about_y_negative = 90  # mm³
     cross_section.elastic_section_modulus_about_z_positive = 80  # mm³
@@ -83,11 +82,6 @@ def test_moment_of_inertia_about_y(steel_element: SteelElement, mock_cross_secti
 def test_moment_of_inertia_about_z(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement moment of inertia about Z matches the mock cross-section."""
     assert steel_element.moment_of_inertia_about_z == mock_cross_section.moment_of_inertia_about_z
-
-
-def test_polar_moment_of_inertia(steel_element: SteelElement, mock_cross_section: Mock) -> None:
-    """Test that the SteelElement polar moment of inertia matches the mock cross-section."""
-    assert steel_element.polar_moment_of_inertia == mock_cross_section.polar_moment_of_inertia
 
 
 def test_elastic_section_modulus_about_y_positive(steel_element: SteelElement, mock_cross_section: Mock) -> None:

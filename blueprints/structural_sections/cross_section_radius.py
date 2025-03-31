@@ -170,18 +170,6 @@ class RightAngleCurvedCrossSection:
         return self.moment_of_inertia_about_y
 
     @property
-    def polar_moment_of_inertia(self) -> MM4:
-        """
-        Polar moments of inertia of the cross-section [mm⁴].
-
-        Returns
-        -------
-        MM4
-            The polar moment of inertia.
-        """
-        return self.moment_of_inertia_about_y + self.moment_of_inertia_about_z
-
-    @property
     def elastic_section_modulus_about_y_positive(self) -> MM3:
         """
         Elastic section modulus about the y-axis on the positive z side [mm³].

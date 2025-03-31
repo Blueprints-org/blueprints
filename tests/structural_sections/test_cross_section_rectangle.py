@@ -53,11 +53,6 @@ class TestRectangularCrossSection:
         assert rectangular_cross_section.elastic_section_modulus_about_y_negative == pytest.approx(expected=expected_y_negative, rel=1e-6)
         assert rectangular_cross_section.elastic_section_modulus_about_z_negative == pytest.approx(expected=expected_z_negative, rel=1e-6)
 
-    def test_polar_moment_of_inertia(self, rectangular_cross_section: RectangularCrossSection) -> None:
-        """Test the polar moment of inertia property of the RectangularCrossSection class."""
-        expected_polar = 1 / 12 * 100 * 200**3 + 1 / 12 * 200 * 100**3
-        assert rectangular_cross_section.polar_moment_of_inertia == pytest.approx(expected=expected_polar, rel=1e-6)
-
     def test_plastic_section_moduli(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the plastic section moduli properties of the RectangularCrossSection class."""
         expected_y = 1 / 4 * 100 * 200**2

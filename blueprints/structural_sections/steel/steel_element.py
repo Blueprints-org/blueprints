@@ -35,7 +35,7 @@ class SteelElement:
     def name(self) -> str:
         """Name of the steel element."""
         return self.cross_section.name
-    
+
     @property
     def area(self) -> MM2:
         """Area of the cross-section [mm²]."""
@@ -65,11 +65,6 @@ class SteelElement:
     def moment_of_inertia_about_z(self) -> MM4:
         """Moments of inertia of the cross-section [mm⁴]."""
         return self.cross_section.moment_of_inertia_about_z
-
-    @property
-    def polar_moment_of_inertia(self) -> MM4:
-        """Polar moments of inertia of the cross-section [mm⁴]."""
-        return self.cross_section.polar_moment_of_inertia
 
     @property
     def elastic_section_modulus_about_y_positive(self) -> MM3:

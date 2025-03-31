@@ -43,10 +43,6 @@ class CrossSection(Protocol):
         """Moments of inertia of the cross-section [mm⁴]."""
 
     @property
-    def polar_moment_of_inertia(self) -> MM4:
-        """Polar moments of inertia of the cross-section [mm⁴]."""
-
-    @property
     def elastic_section_modulus_about_y_positive(self) -> MM3:
         """Elastic section modulus about the y-axis on the positive z side [mm³]."""
 

@@ -41,11 +41,6 @@ class TestHexagonalCrossSection:
         assert hexagonal_cross_section.moment_of_inertia_about_y == pytest.approx(expected=expected_inertia, rel=1e-6)
         assert hexagonal_cross_section.moment_of_inertia_about_z == pytest.approx(expected=expected_inertia, rel=1e-6)
 
-    def test_polar_moment_of_inertia(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
-        """Test the polar moment of inertia property of the HexagonalCrossSection class."""
-        expected_polar = (5 / 8) * np.sqrt(3) * 50.0**4
-        assert hexagonal_cross_section.polar_moment_of_inertia == pytest.approx(expected=expected_polar, rel=1e-6)
-
     def test_section_moduli(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the section moduli properties of the HexagonalCrossSection class."""
         expected_modulus_y = ((5 / 16) * np.sqrt(3) * 50.0**4) / (50.0 * np.sqrt(3) / 2)

@@ -65,11 +65,6 @@ class TestCHSSteelProfile:
         expected_moi_z: float = 7.4909e8  # mm⁴
         assert pytest.approx(chs_profile.moment_of_inertia_about_z, rel=1e-2) == expected_moi_z
 
-    def test_polar_moment_of_inertia(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the polar moment of inertia."""
-        expected_polar_moi: float = 2 * 7.4909e8  # mm⁴
-        assert pytest.approx(chs_profile.polar_moment_of_inertia, rel=1e-2) == expected_polar_moi
-
     def test_elastic_section_modulus_about_y_positive(self, chs_profile: CHSSteelProfile) -> None:
         """Test the elastic section modulus about the y-axis on the positive z side."""
         expected_modulus_y_positive: float = 2.9490e6  # mm³

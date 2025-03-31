@@ -41,11 +41,6 @@ class TestTubeCrossSection:
         assert tube_cross_section.moment_of_inertia_about_y == pytest.approx(expected=expected_inertia, rel=1e-6)
         assert tube_cross_section.moment_of_inertia_about_z == pytest.approx(expected=expected_inertia, rel=1e-6)
 
-    def test_polar_moment_of_inertia(self, tube_cross_section: TubeCrossSection) -> None:
-        """Test the polar moment of inertia property of the TubeCrossSection class."""
-        expected_polar = (np.pi / 32) * (100.0**4 - 50.0**4)
-        assert tube_cross_section.polar_moment_of_inertia == pytest.approx(expected=expected_polar, rel=1e-6)
-
     def test_section_moduli(self, tube_cross_section: TubeCrossSection) -> None:
         """Test the section moduli properties of the TubeCrossSection class."""
         expected_modulus = (np.pi / 64) * (100.0**4 - 50.0**4) / 50.0

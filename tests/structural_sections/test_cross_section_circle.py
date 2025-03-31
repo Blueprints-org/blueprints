@@ -61,11 +61,6 @@ class TestCircularCrossSection:
         assert circular_cross_section.elastic_section_modulus_about_y_negative == pytest.approx(expected=expected_section_modulus, rel=1e-6)
         assert circular_cross_section.elastic_section_modulus_about_z_negative == pytest.approx(expected=expected_section_modulus, rel=1e-6)
 
-    def test_polar_moment_of_inertia(self, circular_cross_section: CircularCrossSection) -> None:
-        """Test the polar moment of inertia property of the CircularCrossSection class."""
-        expected_polar_moi = (1 / 32) * math.pi * 200**4
-        assert circular_cross_section.polar_moment_of_inertia == pytest.approx(expected=expected_polar_moi, rel=1e-6)
-
     def test_plastic_section_moduli(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the plastic section moduli properties of the CircularCrossSection class."""
         expected_plastic_modulus = (1 / 6) * 200**3
