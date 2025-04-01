@@ -6,5 +6,5 @@ pytest-cov==6.0.0
 pytest-describe==2.2.0
 pytest-pspec==0.0.4
 pytest-raises==0.11
-types-shapely==2.0.0.20241221
+types-shapely==2.0.0.20250326
 pandas-stubs==2.2.3.241126
