@@ -22,8 +22,6 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
 
     Parameters
     ----------
-    name : str
-        The name of the cross-section.
     width : MM
         The width of the rectangular cross-section [mm].
     height : MM
@@ -32,15 +30,17 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         Material properties of the concrete.
     covers : CoversRectangular, optional
         The reinforcement covers for the cross-section [mm]. The default on all sides is 50 mm.
+    name : str
+        The name of the cross-section, default is "Rectangular Reinforced Concrete Section".
     """
 
     def __init__(
         self,
-        name: str,
         width: MM,
         height: MM,
         concrete_material: ConcreteMaterial,
         covers: CoversRectangular = CoversRectangular(),
+        name: str = "Rectangular Reinforced Concrete Section",
     ) -> None:
         """Initialize the rectangular reinforced concrete section."""
         super().__init__(
