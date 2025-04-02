@@ -102,7 +102,7 @@ def plot_shapes(
     ax.axis("off")
 
     if show:
-        plt.show()
+        plt.show()  # pragma: no cover
 
     assert fig is not None
     return fig

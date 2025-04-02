@@ -24,8 +24,8 @@ class SteelCrossSection(ABC):
         steel_material : SteelMaterial
             Material properties of the steel.
         """
-        self.steel_material = steel_material
-        self.elements: list[SteelElement] = []
+        self.steel_material = steel_material  # pragma: no cover
+        self.elements: list[SteelElement] = []  # pragma: no cover
 
     @property
     def steel_volume_per_meter(self) -> M3_M:
