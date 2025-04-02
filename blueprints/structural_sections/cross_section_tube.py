@@ -95,7 +95,8 @@ class TubeCrossSection:
         resolution = 100
         outer_circle = self.centroid.buffer(self.outer_radius, resolution=resolution)
         inner_circle = self.centroid.buffer(self.inner_radius, resolution=resolution)
-        return Polygon(outer_circle.difference(inner_circle))
+        difference = outer_circle.difference(inner_circle)
+        return Polygon(difference) if difference.geom_type == "Polygon" else None
 
     @property
     def area(self) -> MM2:

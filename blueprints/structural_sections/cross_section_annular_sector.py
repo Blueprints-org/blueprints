@@ -117,7 +117,8 @@ class AnnularSectorCrossSection:
         sector_points.append(center)
         sector = Polygon(sector_points).buffer(0)
 
-        return Polygon(outer_ring.difference(inner_ring).intersection(sector))
+        result = outer_ring.difference(inner_ring).intersection(sector)
+        return Polygon(result) if result.geom_type == "Polygon" else None
 
     @property
     def area(self) -> MM2:
