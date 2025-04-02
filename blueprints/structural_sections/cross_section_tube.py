@@ -96,7 +96,11 @@ class TubeCrossSection:
         outer_circle = self.centroid.buffer(self.outer_radius, resolution=resolution)
         inner_circle = self.centroid.buffer(self.inner_radius, resolution=resolution)
         difference = outer_circle.difference(inner_circle)
-        return Polygon(difference) if difference.geom_type == "Polygon" else None
+        if difference.geom_type == "Polygon":
+            return difference
+        if difference.geom_type == "MultiPolygon":
+            return max(difference.geoms, key=lambda p: p.area)  # Return the largest polygon
+        raise ValueError("Unexpected geometry type for tube cross-section.")
 
     @property
     def area(self) -> MM2:

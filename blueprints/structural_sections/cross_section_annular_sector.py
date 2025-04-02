@@ -118,7 +118,11 @@ class AnnularSectorCrossSection:
         sector = Polygon(sector_points).buffer(0)
 
         result = outer_ring.difference(inner_ring).intersection(sector)
-        return Polygon(result) if result.geom_type == "Polygon" else None
+        if result.geom_type == "Polygon":
+            return result
+        if result.geom_type == "MultiPolygon":
+            return max(result.geoms, key=lambda p: p.area)  # Return the largest polygon
+        raise ValueError("Unexpected geometry type for annular sector cross-section.")
 
     @property
     def area(self) -> MM2:
