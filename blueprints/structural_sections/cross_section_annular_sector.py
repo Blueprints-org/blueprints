@@ -117,7 +117,7 @@ class AnnularSectorCrossSection:
         sector_points.append(center)
         sector = Polygon(sector_points).buffer(0)
 
-        return outer_ring.difference(inner_ring).intersection(sector)
+        return Polygon(outer_ring.difference(inner_ring).intersection(sector))
 
     @property
     def area(self) -> MM2:
@@ -349,9 +349,11 @@ class AnnularSectorCrossSection:
         x_range = np.arange(x_min, x_max, mesh_size)
         y_range = np.arange(y_min, y_max, mesh_size)
         return [
-            Point(x + mesh_size / 2, y + mesh_size / 2)
+            Point(float(x + mesh_size / 2), float(y + mesh_size / 2))
             for x in x_range
             for y in y_range
-            if self.inner_radius <= math.hypot(x + mesh_size / 2 - self.x, y + mesh_size / 2 - self.y) <= self.outer_radius
-            and self.start_angle <= 90 - math.degrees(math.atan2(y + mesh_size / 2 - self.y, x + mesh_size / 2 - self.x)) <= self.end_angle
+            if self.inner_radius <= math.hypot(float(x + mesh_size / 2 - self.x), float(y + mesh_size / 2 - self.y)) <= self.outer_radius
+            and self.start_angle
+            <= 90 - math.degrees(math.atan2(float(y + mesh_size / 2 - self.y), float(x + mesh_size / 2 - self.x)))
+            <= self.end_angle
         ]

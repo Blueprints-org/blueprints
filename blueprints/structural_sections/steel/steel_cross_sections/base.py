@@ -102,7 +102,7 @@ class SteelCrossSection(ABC):
         dotted_meshes = [element.cross_section.dotted_mesh(max_mesh_size) for element in self.elements]
 
         # Calculate the plastic section modulus by integrating the area over the distance to the weighted midpoint
-        plastic_section_modulus = 0
+        plastic_section_modulus: float = 0.0
         for element, dotted_mesh in zip(self.elements, dotted_meshes):
             mesh_area = element.area / len(dotted_mesh)
             for node in dotted_mesh:
@@ -122,7 +122,7 @@ class SteelCrossSection(ABC):
         dotted_meshes = [element.cross_section.dotted_mesh(max_mesh_size) for element in self.elements]
 
         # Calculate the plastic section modulus by integrating the area over the distance to the weighted midpoint
-        plastic_section_modulus = 0
+        plastic_section_modulus: float = 0.0
         for element, dotted_mesh in zip(self.elements, dotted_meshes):
             mesh_area = element.area / len(dotted_mesh)
             for node in dotted_mesh:
@@ -133,4 +133,4 @@ class SteelCrossSection(ABC):
     @property
     def vertices(self) -> list[Point]:
         """Vertices of the cross-section."""
-        return [element.cross_section.vertices for element in self.elements]
+        return [point for element in self.elements for point in element.cross_section.vertices]

@@ -249,4 +249,4 @@ class RectangularCrossSection:
         x_min, y_min, x_max, y_max = self.geometry.bounds
         x_range = np.arange(x_min, x_max, mesh_size_width)
         y_range = np.arange(y_min, y_max, mesh_size_height)
-        return [Point(x + mesh_size_width / 2, y + mesh_size_height / 2) for x in x_range for y in y_range]
+        return [Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2)) for x in x_range for y in y_range]

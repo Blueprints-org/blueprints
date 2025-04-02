@@ -95,7 +95,7 @@ class TubeCrossSection:
         resolution = 100
         outer_circle = self.centroid.buffer(self.outer_radius, resolution=resolution)
         inner_circle = self.centroid.buffer(self.inner_radius, resolution=resolution)
-        return outer_circle.difference(inner_circle)
+        return Polygon(outer_circle.difference(inner_circle))
 
     @property
     def area(self) -> MM2:
@@ -278,8 +278,8 @@ class TubeCrossSection:
         x_range = np.arange(x_min, x_max, mesh_size)
         y_range = np.arange(y_min, y_max, mesh_size)
         return [
-            Point(x + mesh_size / 2, y + mesh_size / 2)
+            Point(float(x + mesh_size / 2), float(y + mesh_size / 2))
             for x in x_range
             for y in y_range
-            if self.inner_radius < math.sqrt((x + mesh_size / 2 - self.x) ** 2 + (y + mesh_size / 2 - self.y) ** 2) < self.outer_radius
+            if self.inner_radius < math.sqrt(float((x + mesh_size / 2 - self.x) ** 2 + (y + mesh_size / 2 - self.y) ** 2)) < self.outer_radius
         ]

@@ -264,8 +264,8 @@ class RightAngledTriangularCrossSection:
         top = Point(self.x, self.y + self.height) if not self.flipped_vertically else Point(self.x, self.y - self.height)
 
         return [
-            Point(x + mesh_size_width / 2, y + mesh_size_height / 2)
+            Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2))
             for x in x_range
             for y in y_range
-            if Polygon([left_lower, right_lower, top]).contains(Point(x + mesh_size_width / 2, y + mesh_size_height / 2))
+            if Polygon([left_lower, right_lower, top]).contains(Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2)))
         ]

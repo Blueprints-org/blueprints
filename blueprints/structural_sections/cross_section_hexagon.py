@@ -267,8 +267,8 @@ class HexagonalCrossSection:
             return dy <= self.side_length * math.sqrt(3) / 2 and dx <= self.side_length - dy / math.sqrt(3)
 
         return [
-            Point(x + mesh_size_width / 2, y + mesh_size_height / 2)
+            Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2))
             for x in x_range
             for y in y_range
-            if is_point_inside_hexagon(x + mesh_size_width / 2, y + mesh_size_height / 2)
+            if is_point_inside_hexagon(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2))
         ]
