@@ -4,7 +4,7 @@
 import matplotlib.pyplot as plt
 from matplotlib import patches as mplpatches
 from matplotlib.patches import Polygon as MplPolygon
-from shapely.geometry import Point, Polygon
+from shapely.geometry import Point
 
 from blueprints.structural_sections.general_cross_section import CrossSection
 
@@ -46,9 +46,6 @@ def plot_shapes(
     legend_text = ""
 
     for element in elements:
-        if not isinstance(element.geometry, Polygon):
-            raise TypeError(f"All shapes must be Shapely polygons, but got: {type(element.geometry)}")
-
         # Plot the exterior polygon
         x, y = element.geometry.exterior.xy
         patch = MplPolygon(xy=list(zip(x, y)), lw=1, fill=True, facecolor=STEEL_COLOR, edgecolor=STEEL_COLOR)
