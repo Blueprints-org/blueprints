@@ -7,7 +7,7 @@
 - Write one test with succesful input, that retuns the answer of the equation. 
 - For all variables found in the raise_if_negative of the linked formula, write a test where its input is given as a negative value.
 - For all variables found in the raise_if_less_or_equal_to_zero of the linked formula, write a test where its input is given as zero and a test where its given as a negative value.
-- For the LaTeX complete and short presentation, make sure you add a unit at the end.
+- For the LaTeX complete and short presentation, make sure you add a unit at the end. For the complete_with_units, add units to all variables except for those that are dimensionless
 
 ## Template for service
 
@@ -67,12 +67,19 @@ class TestForm6Dot10abNStrengthReductionFactor:
         [
             (
                 "complete",
-                r"\nu_{1} = \begin{cases} 0.600 & \text{if } f_{ck} \leq 60 MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) "
-                r"& \text{if } f_{ck} > 60 MPa \end{cases} = "
-                r"\begin{cases} 0.600 & \text{if } 30.0 \leq 60 MPa \\ \max\left(0.9 - \frac{30.0}{200}, 0.5\right) "
-                r"& \text{if } 30.0 > 60 MPa \end{cases} = 0.600 -",
+                r"\nu_{1} = \begin{cases} 0.600 & \text{if } f_{ck} \leq 60 \ MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) "
+                r"& \text{if } f_{ck} > 60 \ MPa \end{cases} = "
+                r"\begin{cases} 0.600 & \text{if } 30.0 \leq 60 \ MPa \\ \max\left(0.9 - \frac{30.0}{200}, 0.5\right) "
+                r"& \text{if } 30.0 > 60 \ MPa \end{cases} = 0.600 \ -",
             ),
-            ("short", r"\nu_{1} = 0.600 -"),
+            (
+                "complete_with_units",
+                r"\nu_{1} = \begin{cases} 0.600 & \text{if } f_{ck} \leq 60 \ MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) "
+                r"& \text{if } f_{ck} > 60 \ MPa \end{cases} = "
+                r"\begin{cases} 0.600 & \text{if } 30.0 \ MPa \leq 60 \ MPa \\ \max\left(0.9 - \frac{30.0 \ MPa}{200}, 0.5\right) "
+                r"& \text{if } 30.0 > 60 \ MPa \end{cases} = 0.600 \ -",
+            ),
+            ("short", r"\nu_{1} = 0.600 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
