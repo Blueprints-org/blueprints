@@ -1,5 +1,6 @@
 """Line module."""
 
+from itertools import pairwise
 from typing import Literal, Self
 
 import numpy as np
@@ -236,7 +237,7 @@ class Line:
             raise ValueError(msg)
 
         evenly_spaced_points = self.get_evenly_spaced_points(n + 1)
-        return [Line(start_point=point_1, end_point=point_2) for point_1, point_2 in zip(evenly_spaced_points[:-1], evenly_spaced_points[1:])]
+        return [Line(start_point=point_1, end_point=point_2) for point_1, point_2 in pairwise(evenly_spaced_points)]
 
     def __eq__(self, other: object) -> bool:
         """Return True if the lines are equal."""
