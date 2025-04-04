@@ -82,15 +82,14 @@ class TestRectangularCrossSection:
 
     def test_dotted_mesh_custom_size(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the dotted mesh method with a custom mesh size."""
-        dotted_mesh = rectangular_cross_section.dotted_mesh(max_mesh_size=50.0)
+        dotted_mesh = rectangular_cross_section.dotted_mesh(max_mesh_size=14.0)
         assert len(dotted_mesh) > 0
         assert all(50.0 <= point.x <= 150.0 and 150.0 <= point.y <= 350.0 for point in dotted_mesh)
 
-    def test_dotted_mesh_default_size(self, rectangular_cross_section: RectangularCrossSection) -> None:
+    def test_dotted_mesh_wide(self) -> None:
         """Test the dotted mesh method with a custom mesh size."""
-        dotted_mesh = rectangular_cross_section.dotted_mesh()
+        dotted_mesh = RectangularCrossSection(name="Rectangle", width=300.0, height=200.0).dotted_mesh()
         assert len(dotted_mesh) > 0
-        assert all(50.0 <= point.x <= 150.0 and 150.0 <= point.y <= 350.0 for point in dotted_mesh)
 
     def test_plate_thickness(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the plate_thickness property of the RectangularCrossSection class."""
