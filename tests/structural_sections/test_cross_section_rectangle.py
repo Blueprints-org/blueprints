@@ -86,6 +86,12 @@ class TestRectangularCrossSection:
         assert len(dotted_mesh) > 0
         assert all(50.0 <= point.x <= 150.0 and 150.0 <= point.y <= 350.0 for point in dotted_mesh)
 
+    def test_dotted_mesh_default_size(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the dotted mesh method with a custom mesh size."""
+        dotted_mesh = rectangular_cross_section.dotted_mesh()
+        assert len(dotted_mesh) > 0
+        assert all(50.0 <= point.x <= 150.0 and 150.0 <= point.y <= 350.0 for point in dotted_mesh)
+
     def test_plate_thickness(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the plate_thickness property of the RectangularCrossSection class."""
         assert rectangular_cross_section.plate_thickness == pytest.approx(expected=100.0, rel=1e-6)
