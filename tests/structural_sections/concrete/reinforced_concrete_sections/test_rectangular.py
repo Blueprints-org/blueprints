@@ -29,6 +29,7 @@ class TestRectangularReinforcedCrossSection:
 
         # Define a rectangular reinforced cross-section
         cs = RectangularReinforcedCrossSection(
+            name="Rectangular",
             width=1000,
             height=800,
             covers=CoversRectangular(upper=45, right=30, lower=35, left=50),
