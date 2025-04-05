@@ -1,13 +1,13 @@
-"""Testing formula 6.57 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.57N of NEN-EN 1992-1-1+C2:2011."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_57 import Form6Dot57NuPrime
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_57n import Form6Dot57NNuPrime
 from blueprints.validations import NegativeValueError
 
 
-class TestForm6Dot57NuPrime:
-    """Validation for formula 6.57 from NEN-EN 1992-1-1+C2:2011."""
+class TestForm6Dot57NNuPrime:
+    """Validation for formula 6.57N from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -15,7 +15,7 @@ class TestForm6Dot57NuPrime:
         f_ck = 30.0
 
         # Object to test
-        formula = Form6Dot57NuPrime(f_ck=f_ck)
+        formula = Form6Dot57NNuPrime(f_ck=f_ck)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.88  # dimensionless
@@ -31,7 +31,7 @@ class TestForm6Dot57NuPrime:
     def test_raise_error_when_invalid_values_are_given(self, f_ck: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot57NuPrime(f_ck=f_ck)
+            Form6Dot57NNuPrime(f_ck=f_ck)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -49,7 +49,7 @@ class TestForm6Dot57NuPrime:
         f_ck = 30.0
 
         # Object to test
-        latex = Form6Dot57NuPrime(f_ck=f_ck).latex()
+        latex = Form6Dot57NNuPrime(f_ck=f_ck).latex()
 
         actual = {
             "complete": latex.complete,
