@@ -16,7 +16,7 @@ STEEL_COLOR = (0.683, 0.0, 0.0)
 def plot_shapes(
     profile: SteelCrossSection,
     figsize: tuple[float, float] = (15.0, 8.0),
-    title: str = "Cross Section",
+    title: str = "",
     font_size_title: float = 18.0,
     font_size_legend: float = 10.0,
     show: bool = False,
@@ -31,7 +31,7 @@ def plot_shapes(
     figsize : tuple[float, float], optional
         The size of the figure in inches. Default is (15.0, 8.0).
     title : str, optional
-        The title of the plot. Default is "Cross Section".
+        The title of the plot. Default is "".
     font_size_title : float, optional
         The font size of the title. Default is 18.0.
     font_size_legend : float, optional
@@ -40,8 +40,6 @@ def plot_shapes(
         Whether to show the plot. Default is False.
     """
     fig, ax = plt.subplots(figsize=figsize)
-
-    legend_text = ""
 
     for element in profile.elements:
         # Plot the exterior polygon
@@ -55,27 +53,17 @@ def plot_shapes(
             patch = MplPolygon(xy=list(zip(x, y)), lw=0, fill=True, facecolor="white")
             ax.add_patch(patch)
 
-        # Add element details to the legend
-        legend_text += f"{element.name}:\n"
-        attributes = {
-            "plate_thickness": "Thickness",
-            "radius": "Radius",
-            "radius_centerline": "Center Radius",
-            "side_length": "Side Length",
-            "outer_diameter": "Outer Diameter",
-        }
-
-        for attr, label in attributes.items():
-            if hasattr(element, attr):
-                legend_text += f"  {label}={getattr(element, attr):.1f} mm\n"
-        legend_text += f"  Area={element.area:.1f} mm²\n\n"
-    legend_text = legend_text[:-2]
-
     # Add dimension lines and centroid
     _add_dimension_lines(ax, profile.elements, profile.centroid)
     ax.plot(profile.centroid.x, profile.centroid.y, "o", color="black")
 
     # Add legend text
+    legend_text = f"Total area: {profile.steel_area:.1f} mm²\n"
+    legend_text += f"Weight per meter: {profile.steel_weight_per_meter:.1f} kg/m\n"
+    legend_text += f"Moment of inertia about y: {profile.moment_of_inertia_about_y:.0f} mm⁴\n"
+    legend_text += f"Moment of inertia about z: {profile.moment_of_inertia_about_z:.0f} mm⁴\n"
+    legend_text += f"Steel quality: {profile.steel_material.name}\n"
+
     ax.text(
         x=0.05,
         y=0.95,
