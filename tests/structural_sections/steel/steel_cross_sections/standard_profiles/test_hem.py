@@ -1,0 +1,35 @@
+"""Unit tests for the HEMStandardProfileClass enum."""
+
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEMStandardProfileClass
+
+
+class TestHEMStandardProfileClass:
+    """Tests for the HEMStandardProfileClass enum."""
+
+    def test_enum_values(self) -> None:
+        """Test that enum values are correctly defined."""
+        assert HEMStandardProfileClass.HEM_100.value == ("HEM100", 120, 106, 12, 20, 12)
+        assert HEMStandardProfileClass.HEM_200.value == ("HEM200", 220, 206, 15, 25, 18)
+
+    def test_enum_membership(self) -> None:
+        """Test that specific values are members of the enum."""
+        assert "HEM100" in [e.value[0] for e in HEMStandardProfileClass]
+        assert "HEM200" in [e.value[0] for e in HEMStandardProfileClass]
+
+    def test_enum_uniqueness(self) -> None:
+        """Test that all enum values are unique."""
+        values = [e.value for e in HEMStandardProfileClass]
+        assert len(values) == len(set(values))
+
+    def test_enum_attributes(self) -> None:
+        """Test that enum attributes are correctly assigned."""
+        profile = HEMStandardProfileClass.HEM_100
+        assert profile.code == "HEM100"
+        assert profile.total_height == 120
+        assert profile.top_flange_width == 106
+        assert profile.top_flange_thickness == 20
+        assert profile.bottom_flange_width == 106
+        assert profile.bottom_flange_thickness == 20
+        assert profile.web_thickness == 12
+        assert profile.top_radius == 12
+        assert profile.bottom_radius == 12
