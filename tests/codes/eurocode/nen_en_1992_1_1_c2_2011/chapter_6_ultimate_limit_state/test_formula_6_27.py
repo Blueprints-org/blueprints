@@ -40,9 +40,9 @@ class TestForm6Dot27ShearForceInWall:
         [
             (
                 "complete",
-                r"V_{Ed,i} = \tau_{t,i} t_{ef,i} \cdot z_{i} = 100.000 \cdot 2.000 = 200.000 N",
+                r"V_{Ed,i} = \tau_{t,i} t_{ef,i} \cdot z_{i} = 100.000 \cdot 2.000 = 200.000 \ N",
             ),
-            ("short", r"V_{Ed,i} = 200.000 N"),
+            ("short", r"V_{Ed,i} = 200.000 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

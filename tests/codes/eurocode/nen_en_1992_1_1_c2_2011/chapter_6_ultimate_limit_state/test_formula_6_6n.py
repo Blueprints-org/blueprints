@@ -38,9 +38,9 @@ class TestForm6Dot6nStrengthReductionFactor:
         [
             (
                 "complete",
-                r"\nu = 0.6 \cdot \left(1 - \frac{f_{ck}}{250}\right) = 0.6 \cdot \left(1 - \frac{30.000}{250}\right) = 0.528 -",
+                r"\nu = 0.6 \cdot \left(1 - \frac{f_{ck}}{250}\right) = 0.6 \cdot \left(1 - \frac{30.000}{250}\right) = 0.528 \ -",
             ),
-            ("short", r"\nu = 0.528 -"),
+            ("short", r"\nu = 0.528 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

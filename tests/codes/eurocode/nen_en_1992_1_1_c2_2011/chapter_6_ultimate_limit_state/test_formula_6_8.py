@@ -48,9 +48,9 @@ class TestForm6Dot8ShearResistance:
             (
                 "complete",
                 r"V_{Rd,s} = \frac{A_{sw}}{s} \cdot z \cdot f_{ywd} \cdot \cot(\theta) = "
-                r"\frac{100.000}{200.000} \cdot 300.000 \cdot 400.000 \cdot \cot(45.000) = 60000.000 N",
+                r"\frac{100.000}{200.000} \cdot 300.000 \cdot 400.000 \cdot \cot(45.000) = 60000.000 \ N",
             ),
-            ("short", r"V_{Rd,s} = 60000.000 N"),
+            ("short", r"V_{Rd,s} = 60000.000 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
