@@ -38,9 +38,9 @@ class TestForm6Dot57NNuPrime:
         [
             (
                 "complete",
-                r"\nu' = 1 - \frac{f_{ck}}{250} = 1 - \frac{30.000}{250} = 0.880 -",
+                r"\nu' = 1 - \frac{f_{ck}}{250} = 1 - \frac{30.000}{250} = 0.880 \ -",
             ),
-            ("short", r"\nu' = 0.880 -"),
+            ("short", r"\nu' = 0.880 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -42,9 +42,9 @@ class TestForm6Dot56DesignStrengthConcreteStrussTransverseTension:
         [
             (
                 "complete",
-                r"\sigma_{Rd,max} = 0.6 \cdot \nu' \cdot f_{cd} = 0.6 \cdot 0.850 \cdot 25.000 = 12.750 MPa",
+                r"\sigma_{Rd,max} = 0.6 \cdot \nu' \cdot f_{cd} = 0.6 \cdot 0.850 \cdot 25.000 = 12.750 \ MPa",
             ),
-            ("short", r"\sigma_{Rd,max} = 12.750 MPa"),
+            ("short", r"\sigma_{Rd,max} = 12.750 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

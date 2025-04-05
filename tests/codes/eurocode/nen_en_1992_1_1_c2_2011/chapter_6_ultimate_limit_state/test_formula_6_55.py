@@ -38,9 +38,9 @@ class TestForm6Dot55DesignStrengthConcreteStruts:
         [
             (
                 "complete",
-                r"\sigma_{Rd,max} = f_{cd} = 30.000 = 30.000 MPa",
+                r"\sigma_{Rd,max} = f_{cd} = 30.000 = 30.000 \ MPa",
             ),
-            ("short", r"\sigma_{Rd,max} = 30.000 MPa"),
+            ("short", r"\sigma_{Rd,max} = 30.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
