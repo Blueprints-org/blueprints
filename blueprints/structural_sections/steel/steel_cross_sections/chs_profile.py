@@ -48,8 +48,6 @@ class CHSSteelProfile(SteelCrossSection):
     def plot(self, *args, **kwargs) -> plt.Figure:
         """Plot the cross-section. Making use of the standard plotter.
 
-        If you want to use a custom plotter, use the .plotter attribute to plot the cross-section.
-
         Parameters
         ----------
         *args
@@ -57,7 +55,11 @@ class CHSSteelProfile(SteelCrossSection):
         **kwargs
             Additional keyword arguments passed to the plotter.
         """
-        return plot_shapes(self.chs, centroid=self.centroid, *args, **kwargs)
+        return plot_shapes(
+            self,
+            *args,
+            **kwargs,
+        )
 
 
 class CHSProfiles:

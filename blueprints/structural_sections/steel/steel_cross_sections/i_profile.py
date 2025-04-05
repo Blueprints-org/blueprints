@@ -143,8 +143,6 @@ class ISteelProfile(SteelCrossSection):
     def plot(self, *args, **kwargs) -> plt.Figure:
         """Plot the cross-section. Making use of the standard plotter.
 
-        If you want to use a custom plotter, use the .plotter attribute to plot the cross-section.
-
         Parameters
         ----------
         *args
@@ -153,14 +151,7 @@ class ISteelProfile(SteelCrossSection):
             Additional keyword arguments passed to the plotter.
         """
         return plot_shapes(
-            self.top_flange,
-            self.bottom_flange,
-            self.web,
-            self.curve_top_right,
-            self.curve_top_left,
-            self.curve_bottom_right,
-            self.curve_bottom_left,
-            centroid=self.centroid,
+            self,
             *args,
             **kwargs,
         )

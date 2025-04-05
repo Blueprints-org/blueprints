@@ -6,15 +6,15 @@ from matplotlib import patches as mplpatches
 from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Point
 
-from blueprints.structural_sections.general_cross_section import CrossSection
+from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
+from blueprints.structural_sections.steel.steel_element import SteelElement
 
 # Define color
 STEEL_COLOR = (0.683, 0.0, 0.0)
 
 
 def plot_shapes(
-    *elements: CrossSection,
-    centroid: Point,
+    profile: SteelCrossSection,
     figsize: tuple[float, float] = (15.0, 8.0),
     title: str = "Cross Section",
     font_size_title: float = 18.0,
@@ -26,10 +26,8 @@ def plot_shapes(
 
     Parameters
     ----------
-    elements : CrossSection
-        The cross-sections to plot.
-    centroid : Point
-        The centroid of the cross-section.
+    profile : SteelCrossSection
+        The steel cross-sections to plot.
     figsize : tuple[float, float], optional
         The size of the figure in inches. Default is (15.0, 8.0).
     title : str, optional
@@ -45,7 +43,7 @@ def plot_shapes(
 
     legend_text = ""
 
-    for element in elements:
+    for element in profile.elements:
         # Plot the exterior polygon
         x, y = element.geometry.exterior.xy
         patch = MplPolygon(xy=list(zip(x, y)), lw=1, fill=True, facecolor=STEEL_COLOR, edgecolor=STEEL_COLOR)
@@ -73,12 +71,9 @@ def plot_shapes(
         legend_text += f"  Area={element.area:.1f} mm²\n\n"
     legend_text = legend_text[:-2]
 
-    # Add dimension lines
-    _add_dimension_lines(ax, elements, centroid)
-
-    # Plot the centroid
-    if centroid:
-        ax.plot(centroid.x, centroid.y, "o", color="black")
+    # Add dimension lines and centroid
+    _add_dimension_lines(ax, profile.elements, profile.centroid)
+    ax.plot(profile.centroid.x, profile.centroid.y, "o", color="black")
 
     # Add legend text
     ax.text(
@@ -105,7 +100,7 @@ def plot_shapes(
     return fig
 
 
-def _add_dimension_lines(ax: plt.Axes, elements: tuple[CrossSection, ...], centroid: Point) -> None:
+def _add_dimension_lines(ax: plt.Axes, elements: list[SteelElement], centroid: Point) -> None:
     """Adds dimension lines to show the outer dimensions of the geometry.
 
     Parameters
