@@ -47,9 +47,9 @@ class TestForm6Dot64BondFactor:
             (
                 "complete",
                 r"\eta = \frac{A_s + A_P}{A_s + A_P \cdot \sqrt{\xi \cdot ⌀_s / ⌀_P}} = "
-                r"\frac{1500.000 + 1200.000}{1500.000 + 1200.000 \cdot \sqrt{0.800 \cdot 25.000 / 15.000}} = 0.936",
+                r"\frac{1500.000 + 1200.000}{1500.000 + 1200.000 \cdot \sqrt{0.800 \cdot 25.000 / 15.000}} = 0.936 \ -",
             ),
-            ("short", r"\eta = 0.936"),
+            ("short", r"\eta = 0.936 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

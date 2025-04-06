@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form6Dot64BondFactor(Formula):
@@ -34,11 +34,15 @@ class Form6Dot64BondFactor(Formula):
         a_p : MM2
             [$A_P$] Area of prestressing tendon or tendons [$mm^2$].
         xi : DIMENSIONLESS
-            [$\xi$] Ratio of bond strength between bonded tendons and ribbed steel in concrete [-].
+            [$\xi$] ratio of bond strength between bonded tendons and ribbed steel in concrete. The value is subject to the
+            relevant European Technical Approval. In the absence of this the values given in Table 6.2 may be used. [-].
         d_s : MM
-            [$\⌀_s$] Largest diameter of reinforcement [$mm$].
+            [$⌀_s$] Largest diameter of reinforcement [$mm$].
         d_p : MM
-            [$\⌀_P$] Diameter or equivalent diameter of prestressing steel [$mm$].
+            [$⌀_P$] Diameter or equivalent diameter of prestressing steel [$mm$].
+            $⌀_P = 1.6 \cdot \sqrt{A_P}$ for bundles
+            $⌀_P = 1.75 \cdot ⌀_wire}$ for single 7 wire strands where $⌀_wire$ is the wire diameter
+            $⌀_P = 1.20 \cdot ⌀_wire}$ for single 3 wire strands where $⌀_wire$ is the wire diameter
         """
         super().__init__()
         self.a_s = a_s
@@ -56,7 +60,8 @@ class Form6Dot64BondFactor(Formula):
         d_p: MM,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(a_s=a_s, a_p=a_p, xi=xi, d_s=d_s, d_p=d_p)
+        raise_if_negative(a_s=a_s, a_p=a_p, xi=xi, d_s=d_s)
+        raise_if_less_or_equal_to_zero(d_p=d_p)
 
         return (a_s + a_p) / (a_s + a_p * np.sqrt(xi * d_s / d_p))
 
@@ -80,5 +85,5 @@ class Form6Dot64BondFactor(Formula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
-            unit="",
+            unit="-",
         )
