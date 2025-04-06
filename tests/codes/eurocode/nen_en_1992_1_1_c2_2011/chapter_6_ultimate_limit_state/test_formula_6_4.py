@@ -50,9 +50,9 @@ class TestForm6Dot4ShearResistance:
             (
                 "complete",
                 r"V_{Rd,c} = \frac{I \cdot b_w}{S} \cdot \sqrt{(f_{ctd})^2 + \alpha_l \cdot \sigma_{cp} \cdot f_{ctd}} = "
-                r"\frac{1000.000 \cdot 300.000}{500.000} \cdot \sqrt{(2.500)^2 + 1.000 \cdot 1.500 \cdot 2.500} = 1897.367 N",
+                r"\frac{1000.000 \cdot 300.000}{500.000} \cdot \sqrt{(2.500)^2 + 1.000 \cdot 1.500 \cdot 2.500} = 1897.367 \ N",
             ),
-            ("short", r"V_{Rd,c} = 1897.367 N"),
+            ("short", r"V_{Rd,c} = 1897.367 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

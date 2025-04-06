@@ -237,7 +237,7 @@ Total of 304 formulas present.
 | 9.8N           | :heavy_check_mark: |         | Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks   |
 | 9.9            | :heavy_check_mark: |         | Form9Dot9MaximumSpacingSeriesOfLinks                      |
 | 9.10           | :heavy_check_mark: |         | Form9Dot10MaximumSpacingBentUpBars                        |
-| 9.11           |        :x:         |         |                                                           |
+| 9.11           | :heavy_check_mark: |         | Form9Dot11MinimumShearReinforcement                       |
 | 9.12N          | :heavy_check_mark: |         | Form9Dot12nMinimumLongitudinalReinforcementColumns        |
 | 9.13           | :heavy_check_mark: |         | Form9Dot13TensileForceToBeAnchored                        |
 | 9.14           | :heavy_check_mark: |         | Form9Dot14SplittingForceColumnOnRock                      |

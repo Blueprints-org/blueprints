@@ -63,9 +63,9 @@ class TestForm6Dot2ShearResistance:
                 r"V_{Rd,c} = \max(C_{Rd,c} \cdot k \cdot \left(100 \cdot \rho_l \cdot f_{ck}\right)^{1/3} + "
                 r"k_1 \cdot \sigma_{cp}, v_{min} + k_1 \cdot \sigma_{cp}) \cdot b_w \cdot d"
                 r" = \max(0.180 \cdot 1.000 \cdot \left(100 \cdot 0.020 \cdot 30.000\right)^{1/3} + 0.150 \cdot "
-                r"1.000, 0.035 + 0.150 \cdot 1.000) \cdot 300.000 \cdot 500.000 = 128201.426 N",
+                r"1.000, 0.035 + 0.150 \cdot 1.000) \cdot 300.000 \cdot 500.000 = 128201.426 \ N",
             ),
-            ("short", r"V_{Rd,c} = 128201.426 N"),
+            ("short", r"V_{Rd,c} = 128201.426 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -125,9 +125,9 @@ class TestForm6Dot2aSub1ThicknessFactor:
         [
             (
                 "complete",
-                r"k = \min(1 + \sqrt{\frac{200}{d}}, 2.0) = \min(1 + \sqrt{\frac{200}{500.000}}, 2.0) = 1.632 -",
+                r"k = \min(1 + \sqrt{\frac{200}{d}}, 2.0) = \min(1 + \sqrt{\frac{200}{500.000}}, 2.0) = 1.632 \ -",
             ),
-            ("short", r"k = 1.632 -"),
+            ("short", r"k = 1.632 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -184,9 +184,9 @@ class TestForm6Dot2aSub2RebarRatio:
         [
             (
                 "complete",
-                r"\rho_l = \min( \frac{A_{sl}}{b_w \cdot d}, 0.02) = \min( \frac{1500.000}{300.000 \cdot 500.000}, 0.02) = 0.010 -",
+                r"\rho_l = \min( \frac{A_{sl}}{b_w \cdot d}, 0.02) = \min( \frac{1500.000}{300.000 \cdot 500.000}, 0.02) = 0.010 \ -",
             ),
-            ("short", r"\rho_l = 0.010 -"),
+            ("short", r"\rho_l = 0.010 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

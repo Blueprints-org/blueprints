@@ -40,9 +40,9 @@ class TestForm6Dot3NShearCapacityWithoutRebar:
         [
             (
                 "complete",
-                r"v_{min} = 0.035 \cdot k^{3/2} \cdot f_{ck}^{1/2} = 0.035 \cdot 1.000^{3/2} \cdot 30.000^{1/2} = 0.192 MPa",
+                r"v_{min} = 0.035 \cdot k^{3/2} \cdot f_{ck}^{1/2} = 0.035 \cdot 1.000^{3/2} \cdot 30.000^{1/2} = 0.192 \ MPa",
             ),
-            ("short", r"v_{min} = 0.192 MPa"),
+            ("short", r"v_{min} = 0.192 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

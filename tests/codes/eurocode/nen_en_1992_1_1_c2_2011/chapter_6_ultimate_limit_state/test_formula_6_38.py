@@ -46,9 +46,9 @@ class TestForm6Dot38MaxShearStress:
         [
             (
                 "complete",
-                r"v_{Ed} = \beta \cdot \frac{V_{Ed}}{u_{i} \cdot d} = 1.200 \cdot \frac{500.000}{300.000 \cdot 200.000} = 0.010 MPa",
+                r"v_{Ed} = \beta \cdot \frac{V_{Ed}}{u_{i} \cdot d} = 1.200 \cdot \frac{500.000}{300.000 \cdot 200.000} = 0.010 \ MPa",
             ),
-            ("short", r"v_{Ed} = 0.010 MPa"),
+            ("short", r"v_{Ed} = 0.010 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

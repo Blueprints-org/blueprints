@@ -58,9 +58,9 @@ class TestForm6Dot52PunchingShearResistance:
                 r"v_{Rd,cs} = 0.75 \cdot v_{Rd,c} + 1.5 \cdot \frac{ d}{s_r} \cdot A_{sw} \cdot "
                 r"f_{ywd,ef} \cdot \frac{1}{u_{1} \cdot d} \cdot \sin(\alpha) = "
                 r"0.75 \cdot 1.500 + 1.5 \cdot \frac{ 200.000}{150.000} \cdot 1000.000 \cdot 500.000 "
-                r"\cdot \frac{1}{400.000 \cdot 200.000} \cdot \sin(45.000) = 9.964 MPa",
+                r"\cdot \frac{1}{400.000 \cdot 200.000} \cdot \sin(45.000) = 9.964 \ MPa",
             ),
-            ("short", r"v_{Rd,cs} = 9.964 MPa"),
+            ("short", r"v_{Rd,cs} = 9.964 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -119,9 +119,9 @@ class TestForm6Dot52Sub1EffectiveYieldStrength:
         [
             (
                 "complete",
-                r"f_{ywd,ef} = \min\left(250 + 0.25 \cdot d, f_{ywd}\right) = \min\left(250 + 0.25 \cdot 500.000, 400.000\right) = 375.000 MPa",
+                r"f_{ywd,ef} = \min\left(250 + 0.25 \cdot d, f_{ywd}\right) = \min\left(250 + 0.25 \cdot 500.000, 400.000\right) = 375.000 \ MPa",
             ),
-            ("short", r"f_{ywd,ef} = 375.000 MPa"),
+            ("short", r"f_{ywd,ef} = 375.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
