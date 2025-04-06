@@ -44,9 +44,9 @@ class TestForm6Dot36ExternalContourRadiusCircularColumnHeads:
         [
             (
                 "complete",
-                r"r_{cont,ext} = l_{H} + 2 \cdot d + 0.5 \cdot c = 1000.000 + 2 \cdot 500.000 + 0.5 \cdot 300.000 = 2150.000 mm",
+                r"r_{cont,ext} = l_{H} + 2 \cdot d + 0.5 \cdot c = 1000.000 + 2 \cdot 500.000 + 0.5 \cdot 300.000 = 2150.000 \ mm",
             ),
-            ("short", r"r_{cont,ext} = 2150.000 mm"),
+            ("short", r"r_{cont,ext} = 2150.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

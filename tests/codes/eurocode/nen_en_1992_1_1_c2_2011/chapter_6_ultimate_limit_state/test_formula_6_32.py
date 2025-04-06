@@ -40,9 +40,9 @@ class TestForm6Dot32EffectiveDepthSlab:
         [
             (
                 "complete",
-                r"d_{eff} = \frac{d_{y} + d_{z}}{2} = \frac{200.000 + 300.000}{2} = 250.000 mm",
+                r"d_{eff} = \frac{d_{y} + d_{z}}{2} = \frac{200.000 + 300.000}{2} = 250.000 \ mm",
             ),
-            ("short", r"d_{eff} = 250.000 mm"),
+            ("short", r"d_{eff} = 250.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
