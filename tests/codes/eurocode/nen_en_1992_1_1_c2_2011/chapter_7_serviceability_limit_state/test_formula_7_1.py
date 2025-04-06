@@ -48,9 +48,9 @@ class TestForm7Dot1MinReinforcingSteel:
             (
                 "complete",
                 r"A_{s,min} = \frac{k_c \cdot k \cdot f_{ct,eff} \cdot A_{ct}}{\sigma_s} = "
-                r"\frac{1.000 \cdot 0.650 \cdot 2.900 \cdot 1000.000}{435.000} = 4.333 mm^2",
+                r"\frac{1.000 \cdot 0.650 \cdot 2.900 \cdot 1000.000}{435.000} = 4.333 \ mm^2",
             ),
-            ("short", r"A_{s,min} = 4.333 mm^2"),
+            ("short", r"A_{s,min} = 4.333 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

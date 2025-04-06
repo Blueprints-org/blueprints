@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_6n import Form7Dot6nMaxBarDiameterBending
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm7Dot6nMaxBarDiameterBending:
@@ -43,13 +43,14 @@ class TestForm7Dot6nMaxBarDiameterBending:
             (16.0, 2.5, 0.8, -200.0, 500.0, 450.0),  # h_cr is negative
             (16.0, 2.5, 0.8, 200.0, -500.0, 450.0),  # h is negative
             (16.0, 2.5, 0.8, 200.0, 500.0, -450.0),  # d is negative
+            (16.0, 2.5, 0.8, 200.0, 500.0, 500.0),  # d equals h
         ],
     )
     def test_raise_error_when_invalid_values_are_given(
         self, diam_s_star: float, f_ct_eff: float, k_c: float, h_cr: float, h: float, d: float
     ) -> None:
         """Test invalid values."""
-        with pytest.raises(NegativeValueError):
+        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form7Dot6nMaxBarDiameterBending(
                 diam_s_star=diam_s_star,
                 f_ct_eff=f_ct_eff,
@@ -66,9 +67,9 @@ class TestForm7Dot6nMaxBarDiameterBending:
                 "complete",
                 r"⌀_s = ⌀^*_s \cdot \left(\frac{f_{ct,eff}}{2.9}\right) \cdot \left(\frac{k_c \cdot h_{cr}}{2 \cdot ( h - d)}\right) = "
                 r"16.000 \cdot \left(\frac{2.500}{2.9}\right) \cdot \left(\frac{0.800 \cdot 200.000}{2 \cdot ( 500.000 - 450.000)}\right) "
-                r"= 22.069 mm",
+                r"= 22.069 \ mm",
             ),
-            ("short", r"⌀_s = 22.069 mm"),
+            ("short", r"⌀_s = 22.069 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

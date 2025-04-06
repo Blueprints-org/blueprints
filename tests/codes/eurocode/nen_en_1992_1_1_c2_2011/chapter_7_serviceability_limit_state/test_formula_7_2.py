@@ -50,9 +50,9 @@ class TestForm7Dot2StressDistributionCoefficient:
                 r"k_c = min\left(0.4 \cdot \left(1 - \frac{\sigma_c}{k_1 \cdot \left(\frac{ h}{min( h, 1000)}\right) "
                 r"\cdot f_{ct,eff}}\right), 1\right) = "
                 r"min\left(0.4 \cdot \left(1 - \frac{10.000}{1.500 \cdot \left(\frac{ 500.000}{min( 500.000, 1000)}\right) "
-                r"\cdot 25.000}\right), 1\right) = 0.293 -",
+                r"\cdot 25.000}\right), 1\right) = 0.293 \ -",
             ),
-            ("short", r"k_c = 0.293 -"),
+            ("short", r"k_c = 0.293 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -109,9 +109,9 @@ class TestForm7Dot2Sub1AxialForceCoefficient:
                 "complete",
                 r"k_1 = \begin{cases} 1.5 & \text{if } N_{Ed} > 0 \\ \frac{2 \cdot min(h, 1000)}{3 \cdot h} & \text{if } N_{Ed} \le 0 \end{cases} = "
                 r"\begin{cases} 1.5 & \text{if } 5.000 > 0 \\ \frac{2 \cdot min(500.000, 1000)}{3 \cdot 500.000} & \text{if } 5.000 "
-                r"\le 0 \end{cases} = 1.500 -",
+                r"\le 0 \end{cases} = 1.500 \ -",
             ),
-            ("short", r"k_1 = 1.500 -"),
+            ("short", r"k_1 = 1.500 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

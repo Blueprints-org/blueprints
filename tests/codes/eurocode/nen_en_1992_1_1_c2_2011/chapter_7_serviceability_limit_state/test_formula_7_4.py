@@ -54,9 +54,9 @@ class TestForm7Dot4MeanStressConcrete:
         [
             (
                 "complete",
-                r"\sigma_c = \frac{N_{Ed}}{b \cdot h} = \frac{1000.000}{200.000 \cdot 300.000} = 0.017 MPa",
+                r"\sigma_c = \frac{N_{Ed}}{b \cdot h} = \frac{1000.000}{200.000 \cdot 300.000} = 0.017 \ MPa",
             ),
-            ("short", r"\sigma_c = 0.017 MPa"),
+            ("short", r"\sigma_c = 0.017 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

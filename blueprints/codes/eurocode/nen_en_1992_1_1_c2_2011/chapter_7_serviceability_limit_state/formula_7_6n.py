@@ -4,11 +4,11 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form7Dot6nMaxBarDiameterBending(Formula):
-    r"""Class representing formula 7.6n for the calculation of [$\diam_s$]."""
+    r"""Class representing formula 7.6n for the calculation of [$⌀_s$]."""
 
     label = "7.6n"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -22,14 +22,14 @@ class Form7Dot6nMaxBarDiameterBending(Formula):
         h: MM,
         d: MM,
     ) -> None:
-        r"""[$\diam_s$] Calculation of the maximum bar diameter for bending [$mm$].
+        r"""[$⌀_s$] Calculation of the maximum bar diameter for bending [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.3(2) - Formula (7.6n)
 
         Parameters
         ----------
         diam_s_star : MM
-            [$\diam^*_s$] Maximum bar size given in the Table 7.2N [$mm$].
+            [$⌀^*_s$] Maximum bar size given in the Table 7.2N [$mm$].
         f_ct_eff : MPA
             [$f_{ct,eff}$] Mean value of the tensile strength of the concrete effective at the time
             when the cracks may first be expected to occur [$MPa$].
@@ -62,6 +62,8 @@ class Form7Dot6nMaxBarDiameterBending(Formula):
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(diam_s_star=diam_s_star, f_ct_eff=f_ct_eff, k_c=k_c, h_cr=h_cr, h=h, d=d)
+        denominator: MM = 2 * (h - d)
+        raise_if_less_or_equal_to_zero(denominator=denominator)
 
         return diam_s_star * (f_ct_eff / 2.9) * (k_c * h_cr) / (2 * (h - d))
 

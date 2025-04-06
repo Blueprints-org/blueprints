@@ -31,9 +31,9 @@ class Form7Dot5AdjustedBondStrengthRatio(Formula):
         xi : DIMENSIONLESS
             [$\Xi$] Ratio of bond strength of prestressing and reinforcing steel.
         diam_s : MM
-            [$\diam_s$] Largest bar diameter of reinforcing steel [$mm$].
+            [$⌀_s$] Largest bar diameter of reinforcing steel [$mm$].
         diam_p : MM
-            [$\diam_p$] Equivalent diameter of tendon [$mm$].
+            [$⌀_p$] Equivalent diameter of tendon [$mm$].
         """
         super().__init__()
         self.xi = xi
