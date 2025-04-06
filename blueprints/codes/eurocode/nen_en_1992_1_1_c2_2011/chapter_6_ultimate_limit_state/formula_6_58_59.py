@@ -53,7 +53,9 @@ class Form6Dot58And59TensileForce(Formula):
         raise_if_less_or_equal_to_zero(b=b, capital_h=capital_h)
 
         h = capital_h / 2
-        return 1 / 4 * (b - a) / b * f if b <= capital_h / 2 else 1 / 4 * (1 - 0.7 * a / h) * f
+        if b <= capital_h / 2:
+             return 1 / 4 * (b - a) / b * f
+        return 1 / 4 * (1 - 0.7 * a / h) * f
 
     def latex(self) -> LatexFormula:
         r"""Returns LatexFormula object for formula 6.58/6.59."""
