@@ -161,12 +161,12 @@ Total of 304 formulas present.
 | 6.55           |        :x:         |         |                                                           |
 | 6.56           |        :x:         |         |                                                           |
 | 6.57N          |        :x:         |         |                                                           |
-| 6.58           |        :x:         |         |                                                           |
-| 6.59           | :heavy_check_mark: |         | TestForm6Dot58And59TensileForce                           |
-| 6.60           | :heavy_check_mark: |         | TestForm6Dot58And59TensileForce                           |
-| 6.61           |        :x:         |         |                                                           |
-| 6.62           |        :x:         |         |                                                           |
-| 6.63           |        :x:         |         |                                                           |
+| 6.58           | :heavy_check_mark: |         | Form6Dot58And59TensileForce                               |
+| 6.59           | :heavy_check_mark: |         | Form6Dot58And59TensileForce                               |
+| 6.60           | :heavy_check_mark: |         | Form6Dot60DesignValueCompressiveStressResistance          |
+| 6.61           | :heavy_check_mark: |         | Form6Dot61DesignValueCompressiveStressResistance          |
+| 6.62           | :heavy_check_mark: |         | Form6Dot62DesignValueCompressiveStressResistance          |
+| 6.63           | :heavy_check_mark: |         | Form6Dot63ConcentratedResistanceForce                     |
 | 6.64           |        :x:         |         |                                                           |
 | 6.65           |        :x:         |         |                                                           |
 | 6.66           |        :x:         |         |                                                           |
@@ -180,9 +180,9 @@ Total of 304 formulas present.
 | 6.74           |        :x:         |         |                                                           |
 | 6.75           |        :x:         |         |                                                           |
 | 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
-| 6.77           |        :x:         |         |                                                           |
-| 6.78           |        :x:         |         |                                                           |
-| 6.79           |        :x:         |         |                                                           |
+| 6.77           | :heavy_check_mark: |         | Form6Dot77FatigueVerification                             |
+| 6.78           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
+| 6.79           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
 | 7.1            |        :x:         |         |                                                           |
 | 7.2            |        :x:         |         |                                                           |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
@@ -236,7 +236,7 @@ Total of 304 formulas present.
 | 9.8N           | :heavy_check_mark: |         | Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks   |
 | 9.9            | :heavy_check_mark: |         | Form9Dot9MaximumSpacingSeriesOfLinks                      |
 | 9.10           | :heavy_check_mark: |         | Form9Dot10MaximumSpacingBentUpBars                        |
-| 9.11           |        :x:         |         |                                                           |
+| 9.11           | :heavy_check_mark: |         | Form9Dot11MinimumShearReinforcement                       |
 | 9.12N          | :heavy_check_mark: |         | Form9Dot12nMinimumLongitudinalReinforcementColumns        |
 | 9.13           | :heavy_check_mark: |         | Form9Dot13TensileForceToBeAnchored                        |
 | 9.14           | :heavy_check_mark: |         | Form9Dot14SplittingForceColumnOnRock                      |

@@ -75,5 +75,5 @@ class Form6Dot43BetaRectangular(Formula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
-            unit="",
+            unit="-",
         )

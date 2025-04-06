@@ -77,9 +77,9 @@ class TestForm6Dot11abcNCompressionChordCoefficient:
                 r"& \text{if } \sigma_{cp} \gt 0.5 f_{cd} \end{cases} = "
                 r"\begin{cases} 1 + \frac{5.000}{30.000} & \text{if } 0 \lt 5.000 \leq 0.25 \cdot 30.000 \\ 1.250 & \text{if } "
                 r"0.25 \cdot 30.000 \lt 5.000 \leq 0.5 \cdot 30.000 \\ 2.5 \left(1 - \frac{5.000}{30.000}\right) & \text{if } "
-                r"5.000 \gt 0.5 \cdot 30.000 \end{cases} = 1.167 -",
+                r"5.000 \gt 0.5 \cdot 30.000 \end{cases} = 1.167 \ -",
             ),
-            ("short", r"\alpha_{cw} = 1.167 -"),
+            ("short", r"\alpha_{cw} = 1.167 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

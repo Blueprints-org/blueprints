@@ -41,9 +41,9 @@ class TestForm6Dot46BetaCorner:
         [
             (
                 "complete",
-                r"\beta = \frac{u_1}{u_{1^*}} = \frac{500.000}{400.000} = 1.250 -",
+                r"\beta = \frac{u_1}{u_{1^*}} = \frac{500.000}{400.000} = 1.250 \ -",
             ),
-            ("short", r"\beta = 1.250 -"),
+            ("short", r"\beta = 1.250 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
