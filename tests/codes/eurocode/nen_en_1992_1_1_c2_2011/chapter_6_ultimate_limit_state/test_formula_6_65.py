@@ -39,9 +39,9 @@ class TestForm6Dot65ConcreteCompressionStrut:
             (
                 "complete",
                 r"\theta_{fat} = \tan^{-1}\left(\min\left(\sqrt{\tan(\theta)}, 1\right)\right)"
-                r" = \tan^{-1}\left(\min\left(\sqrt{\tan(30.000)}, 1\right)\right) = 37.229 degrees",
+                r" = \tan^{-1}\left(\min\left(\sqrt{\tan(30.000)}, 1\right)\right) = 37.229 \ degrees",
             ),
-            ("short", r"\theta_{fat} = 37.229 degrees"),
+            ("short", r"\theta_{fat} = 37.229 \ degrees"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

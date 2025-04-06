@@ -36,9 +36,10 @@ class Form6Dot65ConcreteCompressionStrut(Formula):
         theta: DEG,
     ) -> DEG:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(theta=theta)
-
         theta_rad = np.deg2rad(theta)
+        tangent_theta = np.tan(theta_rad)
+        raise_if_negative(tangent_theta=tangent_theta)
+
         theta_fat_rad = np.arctan(np.minimum(np.sqrt(np.tan(theta_rad)), 1))
         return np.rad2deg(theta_fat_rad)
 
