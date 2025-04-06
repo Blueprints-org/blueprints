@@ -33,7 +33,7 @@ class Form6Dot58And59TensileForce(Formula):
         b : MM
             [$b$] Width of the locally widened section [$mm$].
         capital_h : MM
-            [$H$] Height of the widened section [$mm$].
+            [$H$] Height of the widened section. Also used to calculate h: $h=H/2$ [$mm$].
         """
         super().__init__()
         self.f = f
@@ -52,9 +52,10 @@ class Form6Dot58And59TensileForce(Formula):
         raise_if_negative(f=f, a=a)
         raise_if_less_or_equal_to_zero(b=b, capital_h=capital_h)
 
+        # calculate h from capital_h with Figure 6.25b
         h = capital_h / 2
         if b <= capital_h / 2:
-             return 1 / 4 * (b - a) / b * f
+            return 1 / 4 * (b - a) / b * f
         return 1 / 4 * (1 - 0.7 * a / h) * f
 
     def latex(self) -> LatexFormula:

@@ -9,7 +9,23 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 class TestForm6Dot58And59TensileForce:
     """Validation for formula 6.58/6.59 from NEN-EN 1992-1-1+C2:2011."""
 
-    def test_evaluation(self) -> None:
+    def test_evaluation58(self) -> None:
+        """Tests the evaluation of the result."""
+        # Example values
+        f = 500.0
+        a = 50.0
+        b = 100.0
+        capital_h = 400.0
+
+        # Object to test
+        formula = Form6Dot58And59TensileForce(f=f, a=a, b=b, capital_h=capital_h)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 62.5
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_evaluation59(self) -> None:
         """Tests the evaluation of the result."""
         # Example values
         f = 500.0
@@ -50,9 +66,9 @@ class TestForm6Dot58And59TensileForce:
                 r"\frac{1}{4} \cdot \left(1 - 0.7 \cdot \frac{ a}{\frac{H}{2}}\right) \cdot F & \text{if } b > \frac{H}{2} \end{cases}"
                 r" = \begin{cases} \frac{1}{4} \cdot \frac{ 300.000 - 200.000}{ 300.000} \cdot 500.000 & \text{if } 300.000 "
                 r"\leq \frac{400.000}{2} \\ \frac{1}{4} \cdot \left(1 - 0.7 \cdot \frac{ 200.000}{\frac{400.000}{2}}\right) \cdot "
-                r"500.000 & \text{if } 300.000 > \frac{400.000}{2} \end{cases} = 37.500 N",
+                r"500.000 & \text{if } 300.000 > \frac{400.000}{2} \end{cases} = 37.500 \ N",
             ),
-            ("short", r"T = 37.500 N"),
+            ("short", r"T = 37.500 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
