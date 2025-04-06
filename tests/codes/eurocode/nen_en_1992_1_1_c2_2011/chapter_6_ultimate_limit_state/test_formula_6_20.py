@@ -44,9 +44,9 @@ class TestForm6Dot20LongitudinalShearStress:
         [
             (
                 "complete",
-                r"v_{Ed} = \frac{\Delta F_{d}}{h_{f} \cdot \Delta x} = \frac{100000.000}{200.000 \cdot 500.000} = 1.000 MPa",
+                r"v_{Ed} = \frac{\Delta F_{d}}{h_{f} \cdot \Delta x} = \frac{100000.000}{200.000 \cdot 500.000} = 1.000 \ MPa",
             ),
-            ("short", r"v_{Ed} = 1.000 MPa"),
+            ("short", r"v_{Ed} = 1.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -44,9 +44,9 @@ class TestForm6Dot60DesignValueCompressiveStressResistance:
         [
             (
                 "complete",
-                r"\sigma_{Rd,max} = k_1 \cdot \nu' \cdot f_{cd} = 0.800 \cdot 0.600 \cdot 30.000 = 14.400 MPa",
+                r"\sigma_{Rd,max} = k_1 \cdot \nu' \cdot f_{cd} = 0.800 \cdot 0.600 \cdot 30.000 = 14.400 \ MPa",
             ),
-            ("short", r"\sigma_{Rd,max} = 14.400 MPa"),
+            ("short", r"\sigma_{Rd,max} = 14.400 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
