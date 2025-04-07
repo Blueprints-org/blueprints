@@ -27,7 +27,7 @@ class Form7Dot2StressDistributionCoefficient(Formula):
         Parameters
         ----------
         sigma_c : MPA
-            [$\sigma_c$] Compressive stress in the concrete [$MPa$].
+            [$\sigma_c$] Compressive stress in the concrete, according to 7.4 [$MPa$].
         k_1 : DIMENSIONLESS
             [$k_1$] Coefficient considering the effects of axial forces on the stress distribution, according to 7.2sub1 [$-$].
         h : MM
