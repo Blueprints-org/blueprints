@@ -158,9 +158,9 @@ Total of 304 formulas present.
 | 6.52           | :heavy_check_mark: |         | Form6Dot52PunchingShearResistance                         |
 | 6.53           | :heavy_check_mark: |         | Form6Dot53CheckPunchingShear                              |
 | 6.54           | :heavy_check_mark: |         | Form6Dot54ControlPerimeter                                |
-| 6.55           |        :x:         |         |                                                           |
-| 6.56           |        :x:         |         |                                                           |
-| 6.57N          |        :x:         |         |                                                           |
+| 6.55           | :heavy_check_mark: |         | Form6Dot55DesignStrengthConcreteStruts                    |
+| 6.56           | :heavy_check_mark: |         | Form6Dot56DesignStrengthConcreteStrussTransverseTension   |
+| 6.57N          | :heavy_check_mark: |         | Form6Dot57NuPrime                                         |
 | 6.58           |        :x:         |         |                                                           |
 | 6.59           |        :x:         |         |                                                           |
 | 6.60           | :heavy_check_mark: |         | Form6Dot60DesignValueCompressiveStressResistance          |
