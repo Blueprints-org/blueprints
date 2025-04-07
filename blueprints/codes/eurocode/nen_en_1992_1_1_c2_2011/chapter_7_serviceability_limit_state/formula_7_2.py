@@ -1,4 +1,4 @@
-"""Formula 7.1 and 7.2 from NEN-EN 1992-1-1+C2:2011: Chapter 7 - Serviceability Limit State."""
+"""Formula 7.2 and 7.2sub1 from NEN-EN 1992-1-1+C2:2011: Chapter 7 - Serviceability Limit State."""
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
@@ -29,7 +29,7 @@ class Form7Dot2StressDistributionCoefficient(Formula):
         sigma_c : MPA
             [$\sigma_c$] Compressive stress in the concrete [$MPa$].
         k_1 : DIMENSIONLESS
-            [$k_1$] Coefficient considering the effects of axial forces on the stress distribution [$-$].
+            [$k_1$] Coefficient considering the effects of axial forces on the stress distribution, according to 7.2sub1 [$-$].
         h : MM
             [$h$] Overall depth of the section [$mm$].
         f_ct_eff : MPA

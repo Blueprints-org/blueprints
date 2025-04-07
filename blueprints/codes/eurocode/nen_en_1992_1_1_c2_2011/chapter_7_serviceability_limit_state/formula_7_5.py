@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form7Dot5AdjustedBondStrengthRatio(Formula):
-    r"""Class representing formula 7.5 for the calculation of [$\Xi_1$]."""
+    r"""Class representing formula 7.5 for the calculation of [$\xi_1$]."""
 
     label = "7.5"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -29,7 +29,7 @@ class Form7Dot5AdjustedBondStrengthRatio(Formula):
         Parameters
         ----------
         xi : DIMENSIONLESS
-            [$\Xi$] Ratio of bond strength of prestressing and reinforcing steel.
+            [$\xi$] Ratio of bond strength of prestressing and reinforcing steel.
         diam_s : MM
             [$⌀_s$] Largest bar diameter of reinforcing steel [$mm$].
         diam_p : MM
