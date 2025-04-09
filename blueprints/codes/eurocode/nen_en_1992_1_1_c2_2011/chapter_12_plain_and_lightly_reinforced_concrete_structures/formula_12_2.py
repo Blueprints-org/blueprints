@@ -11,7 +11,7 @@ class Form12Dot2PlainConcreteBendingResistance(Formula):
     r"""Class representing formula 12.2 for the calculation of the design bending resistance of plain concrete,
     :math:`N_{Rd}`.
 
-    NEN-EN 1992-1-1+C2:2011 art.12.6.1 - Formula (12.2)
+    NEN-EN 1992-1-1+C2:2011 art.12.6.1(3) - Formula (12.2)
     """
 
     label = "12.2"
@@ -26,7 +26,7 @@ class Form12Dot2PlainConcreteBendingResistance(Formula):
     ) -> None:
         r"""[:math:`N_{Rd}`] Design bending resistance of plain concrete [:math:`N`].
 
-        NEN-EN 1992-1-1+C2:2011 art.12.6.1 - Formula (12.2)
+        NEN-EN 1992-1-1+C2:2011 art.12.6.1(3) - Formula (12.2)
 
         Parameters
         ----------
@@ -56,12 +56,9 @@ class Form12Dot2PlainConcreteBendingResistance(Formula):
         raise_if_negative(
             eta_f_cd_pl=eta_f_cd_pl,
             b=b,
-            h_w=h_w,
             e=e,
         )
         raise_if_less_or_equal_to_zero(
-            eta_f_cd_pl=eta_f_cd_pl,
-            b=b,
             h_w=h_w,
         )
         return eta_f_cd_pl * b * h_w * (1 - 2 * e / h_w)

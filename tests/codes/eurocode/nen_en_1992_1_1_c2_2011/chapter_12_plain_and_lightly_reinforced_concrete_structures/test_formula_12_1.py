@@ -5,6 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_1 import (
     Form12Dot1PlainConcreteTensileStrength,
 )
+from blueprints.type_alias import DIMENSIONLESS
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
@@ -14,12 +15,12 @@ class TestForm12Dot1PlainConcreteTensileStrength:
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
         # Example values
-        alpha_ct_pl = 0.8  # -
+        alpha_ct = 0.8  # -
         f_ctk_0_05 = 2.5  # MPa
         gamma_c = 1.5  # -
 
         # Object to test
-        form_12_1 = Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=alpha_ct_pl, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
+        form_12_1 = Form12Dot1PlainConcreteTensileStrength(alpha_ct=alpha_ct, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
 
         # Expected result, manually calculated
         manually_calculated_result = 1.333  # MPa
@@ -27,7 +28,7 @@ class TestForm12Dot1PlainConcreteTensileStrength:
         assert round(form_12_1, 3) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("alpha_ct_pl", "f_ctk_0_05", "gamma_c"),
+        ("alpha_ct", "f_ctk_0_05", "gamma_c"),
         [
             (-0.8, 2.5, 1.5),
             (0.8, -2.5, 1.5),
@@ -35,13 +36,13 @@ class TestForm12Dot1PlainConcreteTensileStrength:
     )
     def test_raise_error_when_negative_values_are_given(
         self,
-        alpha_ct_pl: float,
-        f_ctk_0_05: float,
-        gamma_c: float,
+        alpha_ct: DIMENSIONLESS,
+        f_ctk_0_05: DIMENSIONLESS,
+        gamma_c: DIMENSIONLESS,
     ) -> None:
         """Test negative values for alpha_ct_pl and f_ctk_0_05."""
         with pytest.raises(NegativeValueError):
-            Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=alpha_ct_pl, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
+            Form12Dot1PlainConcreteTensileStrength(alpha_ct=alpha_ct, f_ctk_0_05=f_ctk_0_05, gamma_c=gamma_c)
 
     @pytest.mark.parametrize(
         "gamma_c",
@@ -52,11 +53,11 @@ class TestForm12Dot1PlainConcreteTensileStrength:
     )
     def test_raise_error_when_gamma_c_is_less_or_equal_to_zero(
         self,
-        gamma_c: float,
+        gamma_c: DIMENSIONLESS,
     ) -> None:
         """Test gamma_c less or equal to zero."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form12Dot1PlainConcreteTensileStrength(alpha_ct_pl=0.8, f_ctk_0_05=2.5, gamma_c=gamma_c)
+            Form12Dot1PlainConcreteTensileStrength(alpha_ct=0.8, f_ctk_0_05=2.5, gamma_c=gamma_c)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -75,13 +76,13 @@ class TestForm12Dot1PlainConcreteTensileStrength:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        alpha_ct_pl = 0.8  # -
+        alpha_ct = 0.8  # -
         f_ctk_0_05 = 2.5  # MPa
         gamma_c = 1.5  # -
 
         # Object to test
         form_12_1_latex = Form12Dot1PlainConcreteTensileStrength(
-            alpha_ct_pl=alpha_ct_pl,
+            alpha_ct=alpha_ct,
             f_ctk_0_05=f_ctk_0_05,
             gamma_c=gamma_c,
         ).latex()

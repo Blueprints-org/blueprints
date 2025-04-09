@@ -11,7 +11,7 @@ class Form12Dot1PlainConcreteTensileStrength(Formula):
     r"""Class representing formula 12.1 for the calculation of the design tensile strength of plain concrete,
     :math:`f_{ctd,pl}`.
 
-    NEN-EN 1992-1-1+C2:2011 art.12.3.1 - Formula (12.1)
+    NEN-EN 1992-1-1+C2:2011 art.12.3.1(2) - Formula (12.1)
     """
 
     label = "12.1"
@@ -19,17 +19,17 @@ class Form12Dot1PlainConcreteTensileStrength(Formula):
 
     def __init__(
         self,
-        alpha_ct_pl: DIMENSIONLESS,
+        alpha_ct: DIMENSIONLESS,
         f_ctk_0_05: MPA,
         gamma_c: DIMENSIONLESS,
     ) -> None:
         r"""[:math:`f_{ctd,pl}`] Design tensile strength of plain concrete [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2011 art.12.3.1 - Formula (12.1)
+        NEN-EN 1992-1-1+C2:2011 art.12.3.1(2) - Formula (12.1)
 
         Parameters
         ----------
-        alpha_ct_pl : DIMENSIONLESS
+        alpha_ct : DIMENSIONLESS
             [:math:`\\alpha_{ct,pl}`] Reduction factor for plain concrete [-].
         f_ctk_0_05 : MPa
             [:math:`f_{ctk,0.05}`] Characteristic tensile strength of concrete [:math:`MPa`].
@@ -37,23 +37,23 @@ class Form12Dot1PlainConcreteTensileStrength(Formula):
             [:math:`\\gamma_{C}`] Partial safety factor for concrete [-].
         """
         super().__init__()
-        self.alpha_ct_pl = alpha_ct_pl
+        self.alpha_ct = alpha_ct
         self.f_ctk_0_05 = f_ctk_0_05
         self.gamma_c = gamma_c
 
     @staticmethod
     def _evaluate(
-        alpha_ct_pl: DIMENSIONLESS,
+        alpha_ct: DIMENSIONLESS,
         f_ctk_0_05: MPA,
         gamma_c: DIMENSIONLESS,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
-            alpha_ct_pl=alpha_ct_pl,
+            alpha_ct_pl=alpha_ct,
             f_ctk_0_05=f_ctk_0_05,
         )
         raise_if_less_or_equal_to_zero(gamma_c=gamma_c)
-        return alpha_ct_pl * f_ctk_0_05 / gamma_c
+        return alpha_ct * f_ctk_0_05 / gamma_c
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 12.1."""
@@ -61,6 +61,6 @@ class Form12Dot1PlainConcreteTensileStrength(Formula):
             return_symbol=r"f_{ctd,pl}",
             result=f"{self:.3f}",
             equation=r"\alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}}",
-            numeric_equation=rf"{self.alpha_ct_pl:.3f} \cdot \frac{{{self.f_ctk_0_05:.3f}}}{{{self.gamma_c:.3f}}}",
+            numeric_equation=rf"{self.alpha_ct:.3f} \cdot \frac{{{self.f_ctk_0_05:.3f}}}{{{self.gamma_c:.3f}}}",
             comparison_operator_label="=",
         )

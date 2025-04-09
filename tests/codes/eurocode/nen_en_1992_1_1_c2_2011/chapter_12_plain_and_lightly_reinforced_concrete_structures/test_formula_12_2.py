@@ -32,7 +32,6 @@ class TestForm12Dot2PlainConcreteBendingResistance:
         [
             (-30.0, 300.0, 500.0, 100.0),
             (30.0, -300.0, 500.0, 100.0),
-            (30.0, 300.0, -500.0, 100.0),
             (30.0, 300.0, 500.0, -100.0),
         ],
     )
@@ -50,9 +49,8 @@ class TestForm12Dot2PlainConcreteBendingResistance:
     @pytest.mark.parametrize(
         ("eta_f_cd_pl", "b", "h_w"),
         [
-            (0.0, 300.0, 500.0),
-            (30.0, 0.0, 500.0),
             (30.0, 300.0, 0.0),
+            (30.0, 300.0, -20),
         ],
     )
     def test_raise_error_when_values_are_less_or_equal_to_zero(

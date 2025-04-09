@@ -28,36 +28,36 @@ class TestForm12Dot4PlainConcreteShearStress:
         assert round(form_12_4, 3) == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("v_ed", "a_cc"),
+        ("k", "v_ed", "a_cc"),
         [
-            (0.0, 50000.0),
-            (100000.0, 0.0),
+            (1.5, 100000.0, 0.0),
         ],
     )
     def test_raise_error_when_values_are_less_or_equal_to_zero(
         self,
+        k: float,
         v_ed: float,
         a_cc: float,
     ) -> None:
         """Test values less or equal to zero for v_ed and a_cc."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form12Dot4PlainConcreteShearStress(k=1.5, v_ed=v_ed, a_cc=a_cc)
+            Form12Dot4PlainConcreteShearStress(k=k, v_ed=v_ed, a_cc=a_cc)
 
     @pytest.mark.parametrize(
-        ("v_ed", "a_cc"),
+        ("k", "v_ed", "a_cc"),
         [
-            (-100000.0, 50000.0),
-            (100000.0, -50000.0),
+            (1.5, -100000.0, 50000.0),
         ],
     )
     def test_raise_error_when_negative_values_are_given(
         self,
+        k: float,
         v_ed: float,
         a_cc: float,
     ) -> None:
         """Test negative values for v_ed and a_cc."""
         with pytest.raises(NegativeValueError):
-            Form12Dot4PlainConcreteShearStress(k=1.5, v_ed=v_ed, a_cc=a_cc)
+            Form12Dot4PlainConcreteShearStress(k=k, v_ed=v_ed, a_cc=a_cc)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),

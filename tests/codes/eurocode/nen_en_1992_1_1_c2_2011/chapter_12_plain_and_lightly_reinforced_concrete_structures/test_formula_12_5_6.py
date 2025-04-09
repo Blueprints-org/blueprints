@@ -81,7 +81,7 @@ class TestForm12Dot5PlainConcreteBendingResistance:
         [
             (
                 "complete",
-                r"f_{cvd} = \sqrt{f_{ctd, pl} ^ 2 + \sigma_{cp} \cdot f_{ctd, pl}} = " r"\sqrt{2.500 ^ 2 + 1.000 \cdot 2.500} = 2.958",
+                r"f_{cvd} = \sqrt{f_{ctd, pl} ^ 2 + \sigma_{cp} \cdot f_{ctd, pl}} = \sqrt{2.500 ^ 2 + 1.000 \cdot 2.500} = 2.958",
             ),
             ("short", r"f_{cvd} = 2.958"),
         ],

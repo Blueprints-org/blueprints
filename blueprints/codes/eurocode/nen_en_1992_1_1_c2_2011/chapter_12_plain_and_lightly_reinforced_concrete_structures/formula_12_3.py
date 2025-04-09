@@ -4,14 +4,14 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM2, MPA, N
-from blueprints.validations import raise_if_less_or_equal_to_zero
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form12Dot3PlainConcreteShearStress(Formula):
     r"""Class representing formula 12.3 for the calculation of the design shear stress of plain concrete,
     :math:`\sigma_{cp}`.
 
-    NEN-EN 1992-1-1+C2:2011 art.12.6.3 - Formula (12.3)
+    NEN-EN 1992-1-1+C2:2011 art.12.6.3(2) - Formula (12.3)
     """
 
     label = "12.3"
@@ -24,7 +24,7 @@ class Form12Dot3PlainConcreteShearStress(Formula):
     ) -> None:
         r"""[:math:`\sigma_{cp}`] Design shear stress of plain concrete [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2011 art.12.6.3 - Formula (12.3)
+        NEN-EN 1992-1-1+C2:2011 art.12.6.3(2) - Formula (12.3)
 
         Parameters
         ----------
@@ -44,9 +44,13 @@ class Form12Dot3PlainConcreteShearStress(Formula):
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(
-            n_ed=n_ed,
             a_cc=a_cc,
         )
+
+        raise_if_negative(
+            n_ed=n_ed,
+        )
+
         return n_ed / a_cc
 
     def latex(self) -> LatexFormula:

@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_3 import (
     Form12Dot3PlainConcreteShearStress,
 )
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm12Dot3PlainConcreteShearStress:
@@ -28,7 +28,6 @@ class TestForm12Dot3PlainConcreteShearStress:
     @pytest.mark.parametrize(
         ("n_ed", "a_cc"),
         [
-            (0.0, 50000.0),
             (100000.0, 0.0),
         ],
     )
@@ -39,6 +38,21 @@ class TestForm12Dot3PlainConcreteShearStress:
     ) -> None:
         """Test values less or equal to zero for n_ed and a_cc."""
         with pytest.raises(LessOrEqualToZeroError):
+            Form12Dot3PlainConcreteShearStress(n_ed=n_ed, a_cc=a_cc)
+
+    @pytest.mark.parametrize(
+        ("n_ed", "a_cc"),
+        [
+            (-100000.0, 500),
+        ],
+    )
+    def test_raise_error_when_values_are_less_to_zero(
+        self,
+        n_ed: float,
+        a_cc: float,
+    ) -> None:
+        """Test values less or equal to zero for n_ed and a_cc."""
+        with pytest.raises(NegativeValueError):
             Form12Dot3PlainConcreteShearStress(n_ed=n_ed, a_cc=a_cc)
 
     @pytest.mark.parametrize(

@@ -3,14 +3,14 @@
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.type_alias import MM2, MPA, N
+from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form12Dot4PlainConcreteShearStress(Formula):
     r"""Class representing formula 12.4 for the calculation of the design shear stress of plain concrete, :math:`\tau_{cp}`.
 
-    NEN-EN 1992-1-1+C2:2011 art.12.6.3 - Formula (12.4)
+    NEN-EN 1992-1-1+C2:2011 art.12.6.3(3) - Formula (12.4)
     """
 
     label = "12.4"
@@ -18,18 +18,18 @@ class Form12Dot4PlainConcreteShearStress(Formula):
 
     def __init__(
         self,
-        k: float,
+        k: DIMENSIONLESS,
         v_ed: N,
         a_cc: MM2,
     ) -> None:
         r"""[:math:`\tau_{cp}`] Design shear stress of plain concrete [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2011 art.12.6.3 - Formula (12.4)
+        NEN-EN 1992-1-1+C2:2011 art.12.6.3(2) - Formula (12.4)
 
         Parameters
         ----------
-        k : float
-            [:math:`k`] Nationally determined parameter [-].
+        k : DIMENSIONLESS
+            [:math:`k`] Nationally determined parameter, recommended value is 1.5 [-].
         v_ed : N
             [:math:`V_{Ed}`] Design shear force [:math:`N`].
         a_cc : MM2
@@ -42,17 +42,15 @@ class Form12Dot4PlainConcreteShearStress(Formula):
 
     @staticmethod
     def _evaluate(
-        k: float,
+        k: DIMENSIONLESS,
         v_ed: N,
         a_cc: MM2,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             v_ed=v_ed,
-            a_cc=a_cc,
         )
         raise_if_less_or_equal_to_zero(
-            v_ed=v_ed,
             a_cc=a_cc,
         )
         return k * v_ed / a_cc
