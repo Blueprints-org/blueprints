@@ -56,9 +56,9 @@ class TestForm6Dot51AppliedPunchingShearStressEccentricLoading:
                 "complete",
                 r"v_{Ed} = \frac{V_{Ed,red}}{u \cdot d} \cdot \left(1 + k \cdot \frac{M_{Ed} \cdot u}{V_{Ed,red} \cdot W}\right) = "
                 r"\frac{10000.000}{200.000 \cdot 300.000} \cdot \left(1 + 1.500 \cdot \frac{400.000 \cdot 200.000}{10000.000 \cdot 500.000}"
-                r"\right) = 0.171 MPa",
+                r"\right) = 0.171 \ MPa",
             ),
-            ("short", r"v_{Ed} = 0.171 MPa"),
+            ("short", r"v_{Ed} = 0.171 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

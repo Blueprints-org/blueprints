@@ -2,8 +2,8 @@
 Eurocode 3: Design of steel structures
 Part 1-9: Fatigue**
 
-The table presents a list of formulas from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :
-heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+The table presents a list of formulas from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :heavy_check_mark:)
+and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 11 formulas present.
 
