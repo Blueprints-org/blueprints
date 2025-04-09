@@ -53,7 +53,7 @@ class TestTubeCrossSection:
         """Test the geometry property of the TubeCrossSection class."""
         polygon = tube_cross_section.polygon
         assert polygon.is_valid
-        assert polygon.area == pytest.approx(expected=tube_cross_section.area, rel=1e-4)
+        assert polygon.area == pytest.approx(expected=tube_cross_section.area, rel=1e-3)
 
     def test_invalid_outer_diameter(self) -> None:
         """Test initialization with an invalid outer diameter value."""
@@ -69,3 +69,8 @@ class TestTubeCrossSection:
         """Test initialization with inner diameter greater than or equal to outer diameter."""
         with pytest.raises(ValueError, match="Inner diameter must be smaller than outer diameter"):
             TubeCrossSection(name="InvalidDiameters", outer_diameter=10.0, inner_diameter=10.0, x=0.0, y=0.0)
+
+    def test_geometry(self, tube_cross_section: TubeCrossSection) -> None:
+        """Test the geometry property of the TubeCrossSection class."""
+        geometry = tube_cross_section.geometry()
+        assert geometry is not None

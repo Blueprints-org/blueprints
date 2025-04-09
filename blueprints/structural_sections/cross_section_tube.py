@@ -248,6 +248,6 @@ class TubeCrossSection(CrossSection):
             minimum_mesh_size = 1.0
             mesh_size = max(self.wall_thickness / 5, minimum_mesh_size)
 
-        circular = Geometry(geom=self.polygon)
-        circular.create_mesh(mesh_sizes=mesh_size)
-        return circular
+        tube = Geometry(geom=self.polygon)
+        tube.create_mesh(mesh_sizes=mesh_size)
+        return tube

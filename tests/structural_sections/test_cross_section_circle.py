@@ -12,8 +12,8 @@ from blueprints.structural_sections.cross_section_circle import CircularCrossSec
 class TestCircularCrossSection:
     """Tests for the CircularCrossSection class."""
 
-    def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
-        """Test the geometry property of the CircularCrossSection class."""
+    def test_polygon(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the polygon property of the CircularCrossSection class."""
         assert isinstance(circular_cross_section.polygon, Polygon)
 
     def test_area(self, circular_cross_section: CircularCrossSection) -> None:
@@ -67,3 +67,8 @@ class TestCircularCrossSection:
         """Test the section object of the CircularCrossSection class."""
         section = circular_cross_section.section()
         assert isinstance(section, Section)
+
+    def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the geometry property of the CircularCrossSection class."""
+        geometry = circular_cross_section.geometry()
+        assert geometry is not None
