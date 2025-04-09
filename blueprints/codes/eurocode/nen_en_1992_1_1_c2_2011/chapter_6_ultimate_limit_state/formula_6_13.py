@@ -76,7 +76,7 @@ class Form6Dot13ShearResistanceInclinedReinforcement(Formula):
             s=s,
         )
 
-        return (a_sw / s) * z * f_ywd * (cot(theta) + cot(alpha)) * np.sin(np.radians(alpha))
+        return (a_sw / s) * z * f_ywd * (cot(theta) + cot(alpha)) * np.sin(np.deg2rad(alpha))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.13."""

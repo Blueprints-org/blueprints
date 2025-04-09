@@ -97,16 +97,15 @@ Total of 304 formulas present.
 | 5.44           | :heavy_check_mark: |         | Form5Dot44PrestressLoss                                   |
 | 5.45           | :heavy_check_mark: |         | Form5Dot45LossesDueToFriction                             |
 | 5.46           | :heavy_check_mark: |         | Form5Dot46TimeDependentLosses                             |
-| 5.47           | :heavy_check_mark: |         | TestForm5Dot47UpperCharacteristicPrestressingValue        |
-| 5.48           | :heavy_check_mark: |         | TestForm5Dot48LowerCharacteristicPrestressingValue        |
+| 5.47           | :heavy_check_mark: |         | Form5Dot47UpperCharacteristicPrestressingValue            |
+| 5.48           | :heavy_check_mark: |         | Form5Dot48LowerCharacteristicPrestressingValue            |
 | 6.1            | :heavy_check_mark: |         | Form6Dot1DesignShearStrength                              |
-| 6.2.a          |        :x:         |         |                                                           |
-| 6.2.b          |        :x:         |         |                                                           |
-| 6.3N           |        :x:         |         |                                                           |
-| 6.4            |        :x:         |         |                                                           |
-| 6.5            |        :x:         |         |                                                           |
-| 6.6N           |        :x:         |         |                                                           |
-| 6.7N           |        :x:         |         |                                                           |
+| 6.2            | :heavy_check_mark: |         | Form6Dot2ShearResistance                                  |
+| 6.3N           | :heavy_check_mark: |         | Form6Dot3NShearCapacityWithoutRebar                       |
+| 6.4            | :heavy_check_mark: |         | Form6Dot4ShearResistance                                  |
+| 6.5            | :heavy_check_mark: |         | Form6Dot5ShearForceCheck                                  |
+| 6.6N           | :heavy_check_mark: |         | Form6Dot6nStrengthReductionFactor                         |
+| 6.7N           | :heavy_check_mark: |         | Form6Dot7nCheckCotTheta                                   |
 | 6.8            | :heavy_check_mark: |         | Form6Dot8ShearResistance                                  |
 | 6.9            | :heavy_check_mark: |         | Form6Dot9MaximumShearResistance                           |
 | 6.10.abN       | :heavy_check_mark: |         | Form6Dot10abNStrengthReductionFactor                      |
@@ -119,24 +118,24 @@ Total of 304 formulas present.
 | 6.17           | :heavy_check_mark: |         | Form6Dot17NominalWebWidth                                 |
 | 6.18           | :heavy_check_mark: |         | Form6Dot18AdditionalTensileForce                          |
 | 6.19           | :heavy_check_mark: |         | Form6Dot19CheckShearForce                                 |
-| 6.20           |        :x:         |         |                                                           |
-| 6.21           |        :x:         |         |                                                           |
-| 6.22           |        :x:         |         |                                                           |
-| 6.23           |        :x:         |         |                                                           |
-| 6.24           |        :x:         |         |                                                           |
-| 6.25           |        :x:         |         |                                                           |
+| 6.20           | :heavy_check_mark: |         | Form6Dot20LongitudinalShearStress                         |
+| 6.21           | :heavy_check_mark: |         | Form6Dot21CheckTransverseReinforcement                    |
+| 6.22           | :heavy_check_mark: |         | Form6Dot22CheckCrushingCompressionStruts                  |
+| 6.23           | :heavy_check_mark: |         | Form6Dot23CheckShearStressInterface                       |
+| 6.24           | :heavy_check_mark: |         | Form6Dot24DesignShearStress                               |
+| 6.25           | :heavy_check_mark: |         | Form6Dot25DesignShearResistance                           |
 | 6.26           | :heavy_check_mark: |         | Form6Dot26ShearStressInWall                               |
 | 6.27           | :heavy_check_mark: |         | Form6Dot27ShearForceInWall                                |
 | 6.28           | :heavy_check_mark: |         | Form6Dot28RequiredCrossSectionalArea                      |
 | 6.29           | :heavy_check_mark: |         | Form6Dot29CheckTorsionShearResistance                     |
 | 6.30           | :heavy_check_mark: |         | Form6Dot30DesignTorsionalResistanceMoment                 |
 | 6.31           | :heavy_check_mark: |         | Form6Dot31CheckTorsionShearResistanceRectangular          |
-| 6.32           |        :x:         |         |                                                           |
-| 6.33           |        :x:         |         |                                                           |
-| 6.34           |        :x:         |         |                                                           |
-| 6.35           |        :x:         |         |                                                           |
-| 6.36           |        :x:         |         |                                                           |
-| 6.37           |        :x:         |         |                                                           |
+| 6.32           | :heavy_check_mark: |         | Form6Dot32EffectiveDepthSlab                              |
+| 6.33           | :heavy_check_mark: |         | Form6Dot33ContourRadiusCircularColumnHeads                |
+| 6.34           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
+| 6.35           | :heavy_check_mark: |         | Form6Dot34And35ContourRadiusRectangular                   |
+| 6.36           | :heavy_check_mark: |         | Form6Dot36ExternalContourRadiusCircularColumnHeads        |
+| 6.37           | :heavy_check_mark: |         | Form6Dot37InternalContourRadiusCircularColumnHeads        |
 | 6.38           | :heavy_check_mark: |         | Form6Dot38MaxShearStress                                  |
 | 6.39           | :heavy_check_mark: |         | Form6Dot39BetaCoefficient                                 |
 | 6.40           |        :x:         |         |                                                           |
@@ -156,18 +155,18 @@ Total of 304 formulas present.
 | 6.49           | :heavy_check_mark: |         | Form6Dot49AppliedPunchingShearStress                      |
 | 6.50           | :heavy_check_mark: |         | Form6Dot50PunchingStressResistance                        |
 | 6.51           | :heavy_check_mark: |         | Form6Dot51AppliedPunchingShearStressEccentricLoading      |
-| 6.52           |        :x:         |         |                                                           |
-| 6.53           |        :x:         |         |                                                           |
-| 6.54           |        :x:         |         |                                                           |
-| 6.55           |        :x:         |         |                                                           |
-| 6.56           |        :x:         |         |                                                           |
-| 6.57N          |        :x:         |         |                                                           |
-| 6.58           |        :x:         |         |                                                           |
-| 6.59           |        :x:         |         |                                                           |
-| 6.60           |        :x:         |         |                                                           |
-| 6.61           |        :x:         |         |                                                           |
-| 6.62           |        :x:         |         |                                                           |
-| 6.63           |        :x:         |         |                                                           |
+| 6.52           | :heavy_check_mark: |         | Form6Dot52PunchingShearResistance                         |
+| 6.53           | :heavy_check_mark: |         | Form6Dot53CheckPunchingShear                              |
+| 6.54           | :heavy_check_mark: |         | Form6Dot54ControlPerimeter                                |
+| 6.55           | :heavy_check_mark: |         | Form6Dot55DesignStrengthConcreteStruts                    |
+| 6.56           | :heavy_check_mark: |         | Form6Dot56DesignStrengthConcreteStrussTransverseTension   |
+| 6.57N          | :heavy_check_mark: |         | Form6Dot57NuPrime                                         |
+| 6.58           | :heavy_check_mark: |         | Form6Dot58And59TensileForce                               |
+| 6.59           | :heavy_check_mark: |         | Form6Dot58And59TensileForce                               |
+| 6.60           | :heavy_check_mark: |         | Form6Dot60DesignValueCompressiveStressResistance          |
+| 6.61           | :heavy_check_mark: |         | Form6Dot61DesignValueCompressiveStressResistance          |
+| 6.62           | :heavy_check_mark: |         | Form6Dot62DesignValueCompressiveStressResistance          |
+| 6.63           | :heavy_check_mark: |         | Form6Dot63ConcentratedResistanceForce                     |
 | 6.64           |        :x:         |         |                                                           |
 | 6.65           |        :x:         |         |                                                           |
 | 6.66           |        :x:         |         |                                                           |
@@ -181,9 +180,9 @@ Total of 304 formulas present.
 | 6.74           |        :x:         |         |                                                           |
 | 6.75           |        :x:         |         |                                                           |
 | 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
-| 6.77           |        :x:         |         |                                                           |
-| 6.78           |        :x:         |         |                                                           |
-| 6.79           |        :x:         |         |                                                           |
+| 6.77           | :heavy_check_mark: |         | Form6Dot77FatigueVerification                             |
+| 6.78           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
+| 6.79           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
 | 7.1            |        :x:         |         |                                                           |
 | 7.2            |        :x:         |         |                                                           |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
@@ -237,7 +236,7 @@ Total of 304 formulas present.
 | 9.8N           | :heavy_check_mark: |         | Form9Dot8nMaximumTransverseDistanceLegsSeriesShearLinks   |
 | 9.9            | :heavy_check_mark: |         | Form9Dot9MaximumSpacingSeriesOfLinks                      |
 | 9.10           | :heavy_check_mark: |         | Form9Dot10MaximumSpacingBentUpBars                        |
-| 9.11           |        :x:         |         |                                                           |
+| 9.11           | :heavy_check_mark: |         | Form9Dot11MinimumShearReinforcement                       |
 | 9.12N          | :heavy_check_mark: |         | Form9Dot12nMinimumLongitudinalReinforcementColumns        |
 | 9.13           | :heavy_check_mark: |         | Form9Dot13TensileForceToBeAnchored                        |
 | 9.14           | :heavy_check_mark: |         | Form9Dot14SplittingForceColumnOnRock                      |
