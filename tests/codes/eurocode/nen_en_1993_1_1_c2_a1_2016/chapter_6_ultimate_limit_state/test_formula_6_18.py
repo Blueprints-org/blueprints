@@ -55,9 +55,9 @@ class TestForm6Dot18DesignPlasticShearResistance:
             (
                 "complete",
                 r"V_{pl,Rd} = \frac{A_v \cdot (f_y / \sqrt{3})}{\gamma_{M0}} = "
-                r"\frac{2000.000 \cdot (355.000 / \sqrt{3})}{1.000} = 409918.691 N",
+                r"\frac{2000.000 \cdot (355.000 / \sqrt{3})}{1.000} = 409918.691 \ N",
             ),
-            ("short", r"V_{pl,Rd} = 409918.691 N"),
+            ("short", r"V_{pl,Rd} = 409918.691 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

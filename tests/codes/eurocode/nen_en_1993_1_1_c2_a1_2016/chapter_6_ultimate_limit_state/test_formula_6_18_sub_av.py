@@ -57,9 +57,9 @@ class TestForm6Dot18SubARolledIandHSection:
                 "complete",
                 r"A_v = max(A - 2 \cdot b \cdot t_f + (t_w + 2 \cdot r) \cdot t_f; \eta \cdot h_w \cdot t_w) = "
                 r"max(10000.000 - 2 \cdot 200.000 \cdot 15.000 + (8.000 + 2 \cdot 10.000) \cdot 15.000; 1.000 \cdot 250.000 \cdot 8.000) = "
-                r"4420.000 mm^2",
+                r"4420.000 \ mm^2",
             ),
-            ("short", r"A_v = 4420.000 mm^2"),
+            ("short", r"A_v = 4420.000 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -119,9 +119,9 @@ class TestForm6Dot18SubBRolledChannelSection:
             (
                 "complete",
                 r"A_v = A - 2 \cdot b \cdot t_f + (t_w + r) \cdot t_f = "
-                r"8000.000 - 2 \cdot 150.000 \cdot 12.000 + (6.000 + 8.000) \cdot 12.000 = 4568.000 mm^2",
+                r"8000.000 - 2 \cdot 150.000 \cdot 12.000 + (6.000 + 8.000) \cdot 12.000 = 4568.000 \ mm^2",
             ),
-            ("short", r"A_v = 4568.000 mm^2"),
+            ("short", r"A_v = 4568.000 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -175,9 +175,9 @@ class TestForm6Dot18SubCTSection:
             (
                 "complete",
                 r"A_v = 0.9 \cdot (A - b \cdot t_f) = "
-                r"0.9 \cdot (6000.000 - 100.000 \cdot 10.000) = 4500.000 mm^2",
+                r"0.9 \cdot (6000.000 - 100.000 \cdot 10.000) = 4500.000 \ mm^2",
             ),
-            ("short", r"A_v = 4500.000 mm^2"),
+            ("short", r"A_v = 4500.000 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -230,9 +230,9 @@ class TestForm6Dot18SubDWeldedIHandBoxSection:
             (
                 "complete",
                 r"A_v = \eta \cdot \sum (h_{w0} \cdot t_{w0} + h_{w1} \cdot t_{w1}) = "
-                r"1.000 \cdot (250.000 \cdot 8.000 + 300.000 \cdot 10.000) = 5000.000 mm^2",
+                r"1.000 \cdot (250.000 \cdot 8.000 + 300.000 \cdot 10.000) = 5000.000 \ mm^2",
             ),
-            ("short", r"A_v = 5000.000 mm^2"),
+            ("short", r"A_v = 5000.000 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -285,9 +285,9 @@ class TestForm6Dot18SubEWeldedIHandBoxSection:
             (
                 "complete",
                 r"A_v = A - \sum (h_{w0} \cdot t_{w0} + h_{w1} \cdot t_{w1}) = "
-                r"12000.000 - (250.000 \cdot 8.000 + 300.000 \cdot 10.000) = 7000.000 mm^2",
+                r"12000.000 - (250.000 \cdot 8.000 + 300.000 \cdot 10.000) = 7000.000 \ mm^2",
             ),
-            ("short", r"A_v = 7000.000 mm^2"),
+            ("short", r"A_v = 7000.000 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -339,9 +339,9 @@ class TestForm6Dot18SubF1RolledRectangularHollowSectionDepth:
             (
                 "complete",
                 r"A_v = \frac{A \cdot h}{b + h} = "
-                r"\frac{5000.000 \cdot 200.000}{100.000 + 200.000} = 3333.333 mm^2",
+                r"\frac{5000.000 \cdot 200.000}{100.000 + 200.000} = 3333.333 \ mm^2",
             ),
-            ("short", r"A_v = 3333.333 mm^2"),
+            ("short", r"A_v = 3333.333 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -393,9 +393,9 @@ class TestForm6Dot18SubF2RolledRectangularHollowSectionWidth:
             (
                 "complete",
                 r"A_v = \frac{A \cdot b}{b + h} = "
-                r"\frac{5000.000 \cdot 100.000}{100.000 + 200.000} = 1666.667 mm^2",
+                r"\frac{5000.000 \cdot 100.000}{100.000 + 200.000} = 1666.667 \ mm^2",
             ),
-            ("short", r"A_v = 1666.667 mm^2"),
+            ("short", r"A_v = 1666.667 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -443,9 +443,9 @@ class TestForm6Dot18SubGCircularHollowSection:
             (
                 "complete",
                 r"A_v = \frac{2 \cdot A}{\pi} = "
-                r"\frac{2 \cdot 4000.000}{\pi} = 2546.479 mm^2",
+                r"\frac{2 \cdot 4000.000}{\pi} = 2546.479 \ mm^2",
             ),
-            ("short", r"A_v = 2546.479 mm^2"),
+            ("short", r"A_v = 2546.479 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

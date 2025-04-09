@@ -46,9 +46,9 @@ class TestForm6Dot20ShearStress:
         [
             (
                 "complete",
-                r"\tau_{Ed} = \frac{V_{Ed} \cdot S}{I \cdot t} = \frac{1000.000 \cdot 2000.000}{3000.000 \cdot 4.000} = 166.667 MPa",
+                r"\tau_{Ed} = \frac{V_{Ed} \cdot S}{I \cdot t} = \frac{1000.000 \cdot 2000.000}{3000.000 \cdot 4.000} = 166.667 \ MPa",
             ),
-            ("short", r"\tau_{Ed} = 166.667 MPa"),
+            ("short", r"\tau_{Ed} = 166.667 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -65,9 +65,9 @@ class TestForm6Dot21ShearStressIOrHSection:
             (
                 "complete",
                 r"\tau_{Ed} = \frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6 = "
-                r"\frac{1000.000}{200.000} \text{ if } 150.000 / 200.000 \ge 0.6 = 5.000 MPa",
+                r"\frac{1000.000}{200.000} \text{ if } 150.000 / 200.000 \ge 0.6 = 5.000 \ MPa",
             ),
-            ("short", r"\tau_{Ed} = 5.000 MPa"),
+            ("short", r"\tau_{Ed} = 5.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
