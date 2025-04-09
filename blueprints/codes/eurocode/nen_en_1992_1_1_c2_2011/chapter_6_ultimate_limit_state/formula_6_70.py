@@ -5,6 +5,7 @@ from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
+from itertools import zip_longest
 
 
 class Form6Dot70FatigueDamageFactor(Formula):
@@ -21,9 +22,9 @@ class Form6Dot70FatigueDamageFactor(Formula):
         Parameters
         ----------
         n_delta_sigma_i : list[MPA]
-            [$n_{E}$] The applied number of cycles for a stress range [MPa].
+            [$n(\Delta \sigma_i)$] The applied number of cycles for a stress range [MPa].
         capital_n_delta_sigma_i : list[MPA]
-            [$N_{R}$] The resisting number of cycles for a stress range [MPa]
+            [$N(\Delta \sigma_i)$] The resisting number of cycles for a stress range [MPa]
 
         Returns
         -------
@@ -42,14 +43,16 @@ class Form6Dot70FatigueDamageFactor(Formula):
         raise_if_lists_differ_in_length(n_delta_sigma_i=n_delta_sigma_i, capital_n_delta_sigma_i=capital_n_delta_sigma_i)
         raise_if_negative(min_n_delta_sigma_i=min(n_delta_sigma_i))
         raise_if_less_or_equal_to_zero(min_capital_n_delta_sigma_i=min(capital_n_delta_sigma_i))
-        return sum([n_delta_sigma_i[i] / capital_n_delta_sigma_i[i] for i in range(len(n_delta_sigma_i))]) < 1
+        return sum(n / N for n, N in zip_longest(n_delta_sigma_i, capital_n_delta_sigma_i)) < 1
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.70."""
         _equation: str = r"\sum_{i} \frac{n(\Delta \sigma_i)}{N(\Delta \sigma_i)} < 1"
         _numeric_equation: str = ""
-        for i in range(len(self.n_delta_sigma_i)):
-            _numeric_equation = f"{_numeric_equation}\\frac{{{self.n_delta_sigma_i[i]:.3f}}}{{{self.capital_n_delta_sigma_i[i]:.3f}}} + "
+        for n, N in zip_longest(self.n_delta_sigma_i, self.capital_n_delta_sigma_i):
+            _numeric_equation += (
+                f"\\frac{{{n:.3f}}}{{{N:.3f}}} + "
+            )
         _numeric_equation = _numeric_equation[:-3] + " < 1"
         return LatexFormula(
             return_symbol=r"CHECK",

@@ -30,6 +30,7 @@ class TestForm6Dot72FatigueResistanceConcreteCompression:
         [
             (-0.8, 0.5),  # e_cd_max_equ is negative
             (0.8, -0.5),  # r_equ is negative
+            (0.8, 1.5),  # r_equ is greater than 1
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, e_cd_max_equ: float, r_equ: float) -> None:

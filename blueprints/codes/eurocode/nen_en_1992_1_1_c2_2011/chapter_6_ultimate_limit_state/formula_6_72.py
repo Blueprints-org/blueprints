@@ -42,6 +42,8 @@ class Form6Dot72FatigueResistanceConcreteCompression(Formula):
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(e_cd_max_equ=e_cd_max_equ, r_equ=r_equ)
+        in_sqrt = 1 - r_equ
+        raise_if_negative(in_sqrt=in_sqrt)
 
         return (e_cd_max_equ + 0.43 * np.sqrt(1 - r_equ)) <= 1
 

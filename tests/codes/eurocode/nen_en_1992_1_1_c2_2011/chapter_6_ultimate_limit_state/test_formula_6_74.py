@@ -41,9 +41,9 @@ class TestForm6Dot74MinimumCompressiveStressLevel:
         [
             (
                 "complete",
-                r"E_{cd,min,equ} = \frac{\sigma_{cd,min,equ}}{f_{cd,fat}} = \frac{10.000}{20.000} = 0.500 -",
+                r"E_{cd,min,equ} = \frac{\sigma_{cd,min,equ}}{f_{cd,fat}} = \frac{10.000}{20.000} = 0.500 \ -",
             ),
-            ("short", r"E_{cd,min,equ} = 0.500 -"),
+            ("short", r"E_{cd,min,equ} = 0.500 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
