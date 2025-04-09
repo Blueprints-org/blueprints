@@ -19,15 +19,20 @@ class LatexFormula:
         The formula with symbols
     numeric_equation: str, default ""
         The formula with values (numbers)
+    numeric_equation_with_units: str, default ""
+        The formula with values (numbers) and units
     comparison_operator_label: str, default "="
         The label for the comparison operators between the return symbol and the result.
         Could be changed for inequalities.
+    unit: str, default ""
+        The unit of the result
     """
 
     return_symbol: str
     result: str
     equation: str = ""
     numeric_equation: str = ""
+    numeric_equation_with_units: str = ""
     comparison_operator_label: str = "="
     unit: str = ""
 
@@ -43,7 +48,24 @@ class LatexFormula:
         """
         all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, f"{self.result}"]
         long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
-        return long_formula + f" {self.unit}" if self.unit else long_formula
+        return long_formula + rf" \ {self.unit}" if self.unit else long_formula
+
+    @property
+    def complete_with_units(self) -> str:
+        """Complete representation of the formula with units.
+
+        Returns
+        -------
+        str
+            Return symbol = equation = numeric_equation_with_units = result
+
+        """
+        # If numeric_equation_with_units is not provided, use numeric_equation
+        numeric_equation_with_units = self.numeric_equation_with_units or self.numeric_equation
+
+        all_sub_equations = [self.return_symbol, self.equation, numeric_equation_with_units, f"{self.result}"]
+        long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
+        return long_formula + rf" \ {self.unit}" if self.unit else long_formula
 
     @property
     def short(self) -> str:
@@ -56,7 +78,7 @@ class LatexFormula:
 
         """
         short_formula = f"{self.return_symbol} {self.comparison_operator_label} {self.result}"
-        return short_formula + f" {self.unit}" if self.unit else short_formula
+        return short_formula + rf" \ {self.unit}" if self.unit else short_formula
 
     def __str__(self) -> str:
         """String representation of the formula."""
@@ -143,7 +165,7 @@ def latex_replace_symbols(template: str, replacements: dict[str, str], unique_sy
 
     This function searches the template for symbols specified in the
     replacements and replaces them with their corresponding
-    values. It also checks for the occurrence of symbols based on the
+    values (and units). It also checks for the occurrence of symbols based on the
     unique_symbol_check parameter, raising an error if necessary.
 
     Examples
@@ -151,7 +173,7 @@ def latex_replace_symbols(template: str, replacements: dict[str, str], unique_sy
     >>> latex_template = r"\frac{K_{MOD}}{B}"
     >>> replacements = {"K_{MOD}": "1.0", "B": "y"}
     >>> latex_replace_symbols(latex_template, replacements)
-    '\frac{1.0}{y}
+    '\frac{1.0}{y}'
 
     Parameters
     ----------
@@ -170,13 +192,13 @@ def latex_replace_symbols(template: str, replacements: dict[str, str], unique_sy
     Returns
     -------
     str
-        The modified LaTeX string with symbols replaced.
+        The modified LaTeX string with symbols replaced by values (and units).
 
     Raises
     ------
     ValueError
         If a symbol in the dictionary is not found in the template,
-        or if a symbol appears more than once when single_symbol_search is True.
+        or if a symbol appears more than once when unique_symbol_check is True.
     """
     _filled_latex_string: str = template
     for symbol, replacement in replacements.items():

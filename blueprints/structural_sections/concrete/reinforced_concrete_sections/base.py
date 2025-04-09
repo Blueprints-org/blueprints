@@ -1,8 +1,8 @@
 """Base class of all reinforced cross-sections."""
 
 from abc import ABC
+from collections.abc import Callable
 from functools import partial
-from typing import Callable
 
 from shapely import LineString
 
