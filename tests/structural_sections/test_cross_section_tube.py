@@ -68,9 +68,14 @@ class TestTubeCrossSection:
     def test_inner_diameter_greater_than_outer(self) -> None:
         """Test initialization with inner diameter greater than or equal to outer diameter."""
         with pytest.raises(ValueError, match="Inner diameter must be smaller than outer diameter"):
-            TubeCrossSection(name="InvalidDiameters", outer_diameter=10.0, inner_diameter=10.0, x=0.0, y=0.0)
+            TubeCrossSection(name="InvalidDiameters", outer_diameter=11.0, inner_diameter=10.0, x=0.0, y=0.0)
 
     def test_geometry(self, tube_cross_section: TubeCrossSection) -> None:
         """Test the geometry property of the TubeCrossSection class."""
         geometry = tube_cross_section.geometry()
         assert geometry is not None
+
+    def test_section_properties(self, tube_cross_section: TubeCrossSection) -> None:
+        """Test the section properties of the TubeCrossSection class."""
+        section = tube_cross_section.section()
+        assert section is not None

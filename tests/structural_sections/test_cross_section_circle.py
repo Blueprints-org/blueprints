@@ -72,3 +72,8 @@ class TestCircularCrossSection:
         """Test the geometry property of the CircularCrossSection class."""
         geometry = circular_cross_section.geometry()
         assert geometry is not None
+
+    def test_section_properties(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the section properties of the CircularCrossSection class."""
+        section = circular_cross_section.section()
+        assert section is not None

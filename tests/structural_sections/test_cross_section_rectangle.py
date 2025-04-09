@@ -83,3 +83,8 @@ class TestRectangularCrossSection:
         """Test the geometry property of the RectangularCrossSection class."""
         geometry = rectangular_cross_section.geometry()
         assert geometry is not None
+
+    def test_section_properties(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the section properties of the RectangularCrossSection class."""
+        section = rectangular_cross_section.section()
+        assert section is not None
