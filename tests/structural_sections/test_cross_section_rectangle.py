@@ -1,6 +1,7 @@
 """Tests for cross-section shapes."""
 
 import pytest
+from sectionproperties.analysis import Section
 
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 
@@ -65,3 +66,8 @@ class TestRectangularCrossSection:
         """Test the geometry property of the RectangularCrossSection class."""
         polygon = rectangular_cross_section.polygon
         assert polygon.bounds == pytest.approx(expected=(50.0, 150.0, 150.0, 350.0), rel=1e-6)
+
+    def test_section(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the geometry property of the RectangularCrossSection class."""
+        section = rectangular_cross_section.section()
+        assert isinstance(section, Section)

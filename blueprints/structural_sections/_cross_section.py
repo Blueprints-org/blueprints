@@ -88,7 +88,6 @@ class CrossSection(ABC):
             Maximum mesh element area to be used within
             the Geometry-object finite-element mesh. If not provided, a default value will be used.
         """
-        raise NotImplementedError
 
     def section(self) -> Section:
         """Section object representing the cross-section."""

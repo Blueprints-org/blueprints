@@ -3,6 +3,7 @@
 import math
 
 import pytest
+from sectionproperties.analysis import Section
 from shapely import Polygon
 
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
@@ -66,3 +67,8 @@ class TestCircularCrossSection:
         """Test the bounds of the geometry property."""
         bounds = circular_cross_section.polygon.bounds
         assert bounds == pytest.approx(expected=(0.0, 150.0, 200.0, 350.0), rel=1e-6)
+
+    def test_section(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the section object of the CircularCrossSection class."""
+        section = circular_cross_section.section()
+        assert isinstance(section, Section)
