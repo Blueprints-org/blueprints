@@ -33,6 +33,6 @@ with open(readme_file, encoding="utf-8") as fd:
     else:
         raise ValueError("No match found for reference table")
 
-with mkdocs_gen_files.open(r"objects_overview\overview.md", "w") as fd:
+with mkdocs_gen_files.open("objects_overview/overview.md", "w") as fd:
     # hide navigation in the index page
     fd.write(quick_reference_content)
