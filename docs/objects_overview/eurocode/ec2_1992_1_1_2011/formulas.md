@@ -158,39 +158,38 @@ Total of 304 formulas present.
 | 6.52           | :heavy_check_mark: |         | Form6Dot52PunchingShearResistance                         |
 | 6.53           | :heavy_check_mark: |         | Form6Dot53CheckPunchingShear                              |
 | 6.54           | :heavy_check_mark: |         | Form6Dot54ControlPerimeter                                |
-| 6.55           | :heavy_check_mark: |         | Form6Dot55DesignStrengthConcreteStruts                    |
-| 6.56           | :heavy_check_mark: |         | Form6Dot56DesignStrengthConcreteStrussTransverseTension   |
-| 6.57N          | :heavy_check_mark: |         | Form6Dot57NuPrime                                         |
-| 6.58           | :heavy_check_mark: |         | Form6Dot58And59TensileForce                               |
-| 6.59           | :heavy_check_mark: |         | Form6Dot58And59TensileForce                               |
+| 6.55           |        :x:         |         |                                                           |
+| 6.56           |        :x:         |         |                                                           |
+| 6.57N          |        :x:         |         |                                                           |
+| 6.58           |        :x:         |         |                                                           |
+| 6.59           |        :x:         |         |                                                           |
 | 6.60           | :heavy_check_mark: |         | Form6Dot60DesignValueCompressiveStressResistance          |
 | 6.61           | :heavy_check_mark: |         | Form6Dot61DesignValueCompressiveStressResistance          |
 | 6.62           | :heavy_check_mark: |         | Form6Dot62DesignValueCompressiveStressResistance          |
 | 6.63           | :heavy_check_mark: |         | Form6Dot63ConcentratedResistanceForce                     |
-| 6.64           | :heavy_check_mark: |         | Form6Dot64BondFactor                                      |
-| 6.65           | :heavy_check_mark: |         | Form6Dot65ConcreteCompressionStrut                        |
+| 6.64           |        :x:         |         |                                                           |
+| 6.65           |        :x:         |         |                                                           |
 | 6.66           |        :x:         |         |                                                           |
 | 6.67           |        :x:         |         |                                                           |
 | 6.68           |        :x:         |         |                                                           |
 | 6.69           |        :x:         |         |                                                           |
-| 6.70           | :heavy_check_mark: |         | Form6Dot70FatigueDamageFactor                             |
+| 6.70           |        :x:         |         |                                                           |
 | 6.71           | :heavy_check_mark: |         | Form6Dot71CriteriaBasedOnStressRange                      |
-| 6.72           | :heavy_check_mark: |         | Form6Dot72FatigueResistanceConcreteCompression            |
-| 6.73           | :heavy_check_mark: |         | Form6Dot73StressRatio                                     |
-| 6.74           | :heavy_check_mark: |         | Form6Dot74MinimumCompressiveStressLevel                   |
-| 6.75           | :heavy_check_mark: |         | Form6Dot75MaximumCompressiveStressLevel                   |
+| 6.72           |        :x:         |         |                                                           |
+| 6.73           |        :x:         |         |                                                           |
+| 6.74           |        :x:         |         |                                                           |
+| 6.75           |        :x:         |         |                                                           |
 | 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
 | 6.77           | :heavy_check_mark: |         | Form6Dot77FatigueVerification                             |
 | 6.78           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
 | 6.79           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
-| 7.1            | :heavy_check_mark: |         | Form7Dot1MinReinforcingSteel                              |
-| 7.2            | :heavy_check_mark: |         | Form7Dot2StressDistributionCoefficient                    |
-| 7.2sub1        | :heavy_check_mark: |         | Form7Dot2Sub1AxialForceCoefficient                        |
+| 7.1            |        :x:         |         |                                                           |
+| 7.2            |        :x:         |         |                                                           |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
-| 7.4            | :heavy_check_mark: |         | Form7Dot4MeanStressConcrete                               |
-| 7.5            | :heavy_check_mark: |         | Form7Dot5AdjustedBondStrengthRatio                        |
-| 7.6N           | :heavy_check_mark: |         | Form7Dot6nMaxBarDiameterBending                           |
-| 7.7N           | :heavy_check_mark: |         | Form7Dot7nMaxBarDiameterTension                           |
+| 7.4            |        :x:         |         |                                                           |
+| 7.5            |        :x:         |         |                                                           |
+| 7.6N           |        :x:         |         |                                                           |
+| 7.7N           |        :x:         |         |                                                           |
 | 7.8            |        :x:         |         |                                                           |
 | 7.9            |        :x:         |         |                                                           |
 | 7.10           |        :x:         |         |                                                           |
