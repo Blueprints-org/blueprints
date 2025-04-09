@@ -40,9 +40,9 @@ class TestForm7Dot20EffectiveModulus:
         [
             (
                 "complete",
-                r"E_{c,eff} = \frac{E_{cm}}{1 + \phi(\infty , t_0)} = \frac{30000.000}{1 + 2.000} = 10000.000 MPa",
+                r"E_{c,eff} = \frac{E_{cm}}{1 + \phi(\infty , t_0)} = \frac{30000.000}{1 + 2.000} = 10000.000 \ MPa",
             ),
-            ("short", r"E_{c,eff} = 10000.000 MPa"),
+            ("short", r"E_{c,eff} = 10000.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

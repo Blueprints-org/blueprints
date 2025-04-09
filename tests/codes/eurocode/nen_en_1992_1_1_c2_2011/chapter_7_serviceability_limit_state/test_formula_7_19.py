@@ -44,9 +44,9 @@ class TestForm7Dot19DistributionCoefficient:
             (
                 "complete",
                 r"\zeta = 1 - \beta \left(\frac{\sigma_{sr}}{\sigma_{s}}\right)^2 = "
-                r"1 - 0.500 \left(\frac{200.000}{400.000}\right)^2 = 0.875 -",
+                r"1 - 0.500 \left(\frac{200.000}{400.000}\right)^2 = 0.875 \ -",
             ),
-            ("short", r"\zeta = 0.875 -"),
+            ("short", r"\zeta = 0.875 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

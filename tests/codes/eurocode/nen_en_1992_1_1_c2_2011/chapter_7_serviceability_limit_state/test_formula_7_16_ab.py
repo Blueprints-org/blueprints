@@ -73,9 +73,9 @@ class TestForm7Dot16abSpanDepthRatio:
                 r"3.2 \cdot \sqrt{30.000} \cdot \left(\frac{0.0020}{0.0010} - 1\right)^{3/2}\right) & "
                 r"\text{if } 0.0010 \leq 0.0020 \\ 1.000 \cdot \left(11 + 1.5 \cdot \sqrt{30.000} "
                 r"\cdot \frac{0.0020}{0.0010 - 0.0005} + \frac{1}{12} \cdot \sqrt{30.000} \cdot "
-                r"\sqrt{\frac{0.0005}{0.0020}}\right) & \text{if } 0.0010 > 0.0020 \end{cases} = 44.959 -",
+                r"\sqrt{\frac{0.0005}{0.0020}}\right) & \text{if } 0.0010 > 0.0020 \end{cases} = 44.959 \ -",
             ),
-            ("short", r"\frac{l}{d} = 44.959 -"),
+            ("short", r"\frac{l}{d} = 44.959 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
