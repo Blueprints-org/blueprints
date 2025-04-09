@@ -179,7 +179,8 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = max(point.y for point in self.geometry.exterior.coords) - self.centroid.y
+        coords = self.geometry.exterior.coords
+        distance_to_end = max(coord[1] for coord in coords) - self.centroid.y
         return self.moment_of_inertia_about_y / distance_to_end if self.area != 0 else 0
 
     @property
@@ -192,7 +193,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = self.centroid.y - min(point.y for point in self.geometry.exterior.coords)
+        distance_to_end = self.centroid.y - min(coord[1] for coord in self.geometry.exterior.coords)
         return self.moment_of_inertia_about_y / distance_to_end if self.area != 0 else 0
 
     @property
@@ -205,7 +206,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_end = max(point.x for point in self.geometry.exterior.coords) - self.centroid.x
+        distance_to_end = max(coord[0] for coord in self.geometry.exterior.coords) - self.centroid.x
         return self.moment_of_inertia_about_z / distance_to_end if self.area != 0 else 0
 
     @property
@@ -218,7 +219,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_end = self.centroid.x - min(point.x for point in self.geometry.exterior.coords)
+        distance_to_end = self.centroid.x - min(coord[0] for coord in self.geometry.exterior.coords)
         return self.moment_of_inertia_about_z / distance_to_end if self.area != 0 else 0
 
     @property

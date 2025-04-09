@@ -73,8 +73,8 @@ class AnnularSectorCrossSection:
         MM
             The height of the annular sector.
         """
-        min_y = min(point.y for point in self.geometry.exterior.coords)
-        max_y = max(point.y for point in self.geometry.exterior.coords)
+        min_y = min(y for _, y in zip(*self.geometry.exterior.coords.xy))
+        max_y = max(y for _, y in zip(*self.geometry.exterior.coords.xy))
         return max_y - min_y
 
     @property
@@ -87,8 +87,8 @@ class AnnularSectorCrossSection:
         MM
             The width of the annular sector.
         """
-        min_x = min(point.x for point in self.geometry.exterior.coords)
-        max_x = max(point.x for point in self.geometry.exterior.coords)
+        min_x = min(x for x, _ in zip(*self.geometry.exterior.coords.xy))
+        max_x = max(x for x, _ in zip(*self.geometry.exterior.coords.xy))
         return max_x - min_x
 
     @property
@@ -242,7 +242,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_top = max(point.y for point in self.geometry.exterior.coords) - self.centroid.y
+        distance_to_top = max(self.geometry.exterior.coords.xy[1]) - self.centroid.y
         return self.moment_of_inertia_about_y / distance_to_top
 
     @property
@@ -256,7 +256,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_bottom = self.centroid.y - min(point.y for point in self.geometry.exterior.coords)
+        distance_to_bottom = self.centroid.y - min(self.geometry.exterior.coords.xy[1])
         return self.moment_of_inertia_about_y / distance_to_bottom
 
     @property
@@ -270,7 +270,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_right = max(point.x for point in self.geometry.exterior.coords) - self.centroid.x
+        distance_to_right = max(self.geometry.exterior.coords.xy[0]) - self.centroid.x
         return self.moment_of_inertia_about_z / distance_to_right
 
     @property
@@ -284,7 +284,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_left = self.centroid.x - min(point.x for point in self.geometry.exterior.coords)
+        distance_to_left = self.centroid.x - min(self.geometry.exterior.coords.xy[0])
         return self.moment_of_inertia_about_z / distance_to_left
 
     @property

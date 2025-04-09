@@ -69,23 +69,23 @@ class SteelCrossSection(ABC):
     @property
     def elastic_section_modulus_about_y_positive(self) -> KG_M:
         """Elastic section modulus about the y-axis on the positive z side [mm³]."""
-        distance_to_top = max(point.y for element in self.elements for point in element.cross_section.geometry.exterior.coords) - self.centroid.y
+        distance_to_top = max(y for element in self.elements for y in element.cross_section.geometry.exterior.coords.xy[1]) - self.centroid.y
         return self.moment_of_inertia_about_y / distance_to_top
 
     @property
     def elastic_section_modulus_about_y_negative(self) -> KG_M:
         """Elastic section modulus about the y-axis on the negative z side [mm³]."""
-        distance_to_bottom = self.centroid.y - min(point.y for element in self.elements for point in element.cross_section.geometry.exterior.coords)
+        distance_to_bottom = self.centroid.y - min(y for element in self.elements for y in element.cross_section.geometry.exterior.coords.xy[1])
         return self.moment_of_inertia_about_y / distance_to_bottom
 
     @property
     def elastic_section_modulus_about_z_positive(self) -> KG_M:
         """Elastic section modulus about the z-axis on the positive y side [mm³]."""
-        distance_to_right = max(point.x for element in self.elements for point in element.cross_section.geometry.exterior.coords) - self.centroid.x
+        distance_to_right = max(x for element in self.elements for x in element.cross_section.geometry.exterior.coords.xy[0]) - self.centroid.x
         return self.moment_of_inertia_about_z / distance_to_right
 
     @property
     def elastic_section_modulus_about_z_negative(self) -> KG_M:
         """Elastic section modulus about the z-axis on the negative y side [mm³]."""
-        distance_to_left = self.centroid.x - min(point.x for element in self.elements for point in element.cross_section.geometry.exterior.coords)
+        distance_to_left = self.centroid.x - min(x for element in self.elements for x in element.cross_section.geometry.exterior.coords.xy[0])
         return self.moment_of_inertia_about_z / distance_to_left
