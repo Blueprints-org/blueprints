@@ -60,6 +60,11 @@ class TestTubeCrossSection:
         assert geometry.is_valid
         assert geometry.area == pytest.approx(expected=tube_cross_section.area, rel=1e-4)
 
+    def test_plate_thickness(self, tube_cross_section: TubeCrossSection) -> None:
+        """Test the plate thickness property of the TubeCrossSection class."""
+        expected_thickness = (100.0 - 50.0) / 2.0
+        assert tube_cross_section.plate_thickness == pytest.approx(expected=expected_thickness, rel=1e-6)
+
     def test_invalid_outer_diameter(self) -> None:
         """Test initialization with an invalid outer diameter value."""
         with pytest.raises(ValueError, match="Outer diameter must be a positive value"):
