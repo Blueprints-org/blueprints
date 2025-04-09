@@ -1,7 +1,5 @@
 """Formula 6.70 from NEN-EN 1992-1-1+C2:2011: Chapter 6 - Ultimate limit state."""
 
-from itertools import zip_longest
-
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
@@ -44,13 +42,13 @@ class Form6Dot70FatigueDamageFactor(Formula):
         raise_if_lists_differ_in_length(n_delta_sigma_i=n_delta_sigma_i, capital_n_delta_sigma_i=capital_n_delta_sigma_i)
         raise_if_negative(min_n_delta_sigma_i=min(n_delta_sigma_i))
         raise_if_less_or_equal_to_zero(min_capital_n_delta_sigma_i=min(capital_n_delta_sigma_i))
-        return sum(n / capital_n for n, capital_n in zip_longest(n_delta_sigma_i, capital_n_delta_sigma_i)) < 1
+        return sum(n / capital_n for n, capital_n in zip(n_delta_sigma_i, capital_n_delta_sigma_i)) < 1
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.70."""
         _equation: str = r"\sum_{i} \frac{n(\Delta \sigma_i)}{N(\Delta \sigma_i)} < 1"
         _numeric_equation: str = ""
-        for n, capital_n in zip_longest(self.n_delta_sigma_i, self.capital_n_delta_sigma_i):
+        for n, capital_n in zip(self.n_delta_sigma_i, self.capital_n_delta_sigma_i):
             _numeric_equation += f"\\frac{{{n:.3f}}}{{{capital_n:.3f}}} + "
         _numeric_equation = _numeric_equation[:-3] + " < 1"
         return LatexFormula(
