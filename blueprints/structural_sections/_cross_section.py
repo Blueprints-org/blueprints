@@ -111,7 +111,8 @@ class CrossSection(ABC):
             Whether to calculate warping properties.
         """
         section = self.section()
-        if geometric:
+
+        if any([geometric, plastic, warping]):
             section.calculate_geometric_properties()
         if warping:
             section.calculate_warping_properties()

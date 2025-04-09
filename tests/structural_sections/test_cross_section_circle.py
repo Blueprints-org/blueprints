@@ -12,11 +12,6 @@ from blueprints.structural_sections.cross_section_circle import CircularCrossSec
 class TestCircularCrossSection:
     """Tests for the CircularCrossSection class."""
 
-    @pytest.fixture
-    def circular_cross_section(self) -> CircularCrossSection:
-        """Return a CircularCrossSection instance."""
-        return CircularCrossSection(name="Circle", diameter=200.0, x=100.0, y=250.0)
-
     def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the geometry property of the CircularCrossSection class."""
         assert isinstance(circular_cross_section.polygon, Polygon)
