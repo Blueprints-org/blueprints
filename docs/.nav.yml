@@ -1,10 +1,7 @@
 nav:
 - index.md
-- Examples
+- examples
 - "*"
-- Objects overview:
-  - objects_overview/overview.md
-  - objects_overview/*
 - API reference:
   - API reference/overview.md
   - API reference/*
