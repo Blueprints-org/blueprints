@@ -25,8 +25,8 @@ class TestForm4Dot3NCheckExecutionTolerances:
     @pytest.mark.parametrize(
         ("delta_cdev"),
         [
-            (-1.0),     # delta_cdev
-            (0.0),      # delta_cdev is 0
+            (-1.0),  # delta_cdev
+            (0.0),  # delta_cdev is 0
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, delta_cdev: float) -> None:
