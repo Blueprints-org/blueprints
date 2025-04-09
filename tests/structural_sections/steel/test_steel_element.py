@@ -28,7 +28,6 @@ def mock_cross_section(mocker: Mock) -> Mock:
     cross_section.plastic_section_modulus_about_y = 60  # mm³
     cross_section.plastic_section_modulus_about_z = 50  # mm³
     cross_section.geometry = {"type": "rectangle", "width": 100, "height": 50}
-    cross_section.vertices = [Point(0, 0), Point(100, 0), Point(100, 50), Point(0, 50)]
     return cross_section
 
 

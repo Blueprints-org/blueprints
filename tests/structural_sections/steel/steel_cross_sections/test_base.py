@@ -58,7 +58,6 @@ def steel_cross_section(mock_steel_material: Mock, mock_steel_element: Mock) -> 
     cross_section.elastic_section_modulus_about_y_negative = 80
     cross_section.elastic_section_modulus_about_z_positive = 120
     cross_section.elastic_section_modulus_about_z_negative = 120
-    cross_section.vertices = [[Point(0, 0), Point(100, 0), Point(100, 50), Point(0, 50)], [Point(0, 0), Point(100, 0), Point(100, 50), Point(0, 50)]]
     return cross_section
 
 
