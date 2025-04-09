@@ -57,9 +57,9 @@ class TestForm6Dot28VplTRdHollowSection:
             (
                 "complete",
                 r"V_{pl,T,Rd} = \left (1 - \frac{\tau_{t,Ed}}{\left( f_y / \sqrt{3} \right) / \gamma_{M0}} \right) \cdot V_{pl,Rd} = "
-                r"\left (1 - \frac{100.000}{\left( 355.000 / \sqrt{3} \right) / 1.000} \right) \cdot 500000.000 = 256049.182 N",
+                r"\left (1 - \frac{100.000}{\left( 355.000 / \sqrt{3} \right) / 1.000} \right) \cdot 500000.000 = 256049.182 \ N",
             ),
-            ("short", r"V_{pl,T,Rd} = 256049.182 N"),
+            ("short", r"V_{pl,T,Rd} = 256049.182 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

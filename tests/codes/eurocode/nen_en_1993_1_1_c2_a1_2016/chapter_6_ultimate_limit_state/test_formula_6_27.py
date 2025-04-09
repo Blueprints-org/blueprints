@@ -82,9 +82,9 @@ class TestForm6Dot27VplTRdChannelSection:
                 r"V_{pl,T,Rd} = \left( \sqrt{1 - \frac{\tau_{t,Ed}}{1.25 \cdot \left( f_y / \sqrt{3} \right) / \gamma_{M0}}} - "
                 r"\frac{\tau_{w,Ed}}{\left( f_y / \sqrt{3} \right) / \gamma_{M0}} \right) \cdot V_{pl,Rd} = "
                 r"\left( \sqrt{1 - \frac{100.000}{1.25 \cdot \left( 355.000 / \sqrt{3} \right) / 1.000}} - "
-                r"\frac{50.000}{\left( 355.000 / \sqrt{3} \right) / 1.000} \right) \cdot 200000.000 = 107373.685 N",
+                r"\frac{50.000}{\left( 355.000 / \sqrt{3} \right) / 1.000} \right) \cdot 200000.000 = 107373.685 \ N",
             ),
-            ("short", r"V_{pl,T,Rd} = 107373.685 N"),
+            ("short", r"V_{pl,T,Rd} = 107373.685 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
