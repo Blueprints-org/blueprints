@@ -2,7 +2,6 @@
 
 import numpy as np
 import pytest
-from shapely.geometry import Point
 
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 
@@ -61,20 +60,6 @@ class TestTubeCrossSection:
         assert geometry.is_valid
         assert geometry.area == pytest.approx(expected=tube_cross_section.area, rel=1e-4)
 
-    def test_vertices(self, tube_cross_section: TubeCrossSection) -> None:
-        """Test the vertices property of the TubeCrossSection class."""
-        vertices = tube_cross_section.vertices
-        assert len(vertices) > 0
-        for vertex in vertices:
-            assert isinstance(vertex, Point)
-
-    def test_dotted_mesh(self, tube_cross_section: TubeCrossSection) -> None:
-        """Test the dotted mesh property of the TubeCrossSection class."""
-        dotted_mesh = tube_cross_section.dotted_mesh()
-        assert len(dotted_mesh) > 0
-        for point in dotted_mesh:
-            assert tube_cross_section.geometry.contains(point)
-
     def test_invalid_outer_diameter(self) -> None:
         """Test initialization with an invalid outer diameter value."""
         with pytest.raises(ValueError, match="Outer diameter must be a positive value"):
@@ -89,10 +74,3 @@ class TestTubeCrossSection:
         """Test initialization with inner diameter greater than or equal to outer diameter."""
         with pytest.raises(ValueError, match="Inner diameter must be smaller than outer diameter"):
             TubeCrossSection(name="InvalidDiameters", outer_diameter=10.0, inner_diameter=10.0, x=0.0, y=0.0)
-
-    def test_custom_mesh_size(self, tube_cross_section: TubeCrossSection) -> None:
-        """Test the dotted mesh property with a custom mesh size."""
-        dotted_mesh = tube_cross_section.dotted_mesh(max_mesh_size=10.0)
-        assert len(dotted_mesh) > 0
-        for point in dotted_mesh:
-            assert tube_cross_section.geometry.contains(point)

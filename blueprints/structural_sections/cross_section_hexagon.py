@@ -3,7 +3,6 @@
 import math
 from dataclasses import dataclass
 
-import numpy as np
 from shapely.geometry import Point, Polygon
 
 from blueprints.type_alias import MM, MM2, MM3, MM4
@@ -206,69 +205,3 @@ class HexagonalCrossSection:
             The plastic section modulus about the z-axis.
         """
         return (self.side_length**3) * math.sqrt(3) / 4
-
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the hexagonal cross-section.
-
-        Returns
-        -------
-        list[Point]
-            The vertices of the hexagon.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the hexagonal cross-section with a given mesh size and return the inner nodes of
-        each rectangle they represent.
-
-        Parameters
-        ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a tenth of the side length.
-
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
-        """
-        if max_mesh_size == 0:
-            mesh_size_width = self.side_length / 10
-            mesh_size_height = mesh_size_width / np.sqrt(3)
-        else:
-            mesh_size_width = self.side_length / np.ceil(self.side_length / max_mesh_size)
-            mesh_size_height = mesh_size_width / np.sqrt(3)
-
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size_width)
-        y_range = np.arange(y_min, y_max, mesh_size_height)
-
-        def is_point_inside_hexagon(px: MM, py: MM) -> bool:
-            """Check if a point is inside the hexagon using geometric properties.
-
-            Parameters
-            ----------
-            px : MM
-                The x-coordinate of the point of interest.
-            py : MM
-                The y-coordinate of the point of interest.
-
-            Returns
-            -------
-            bool
-                True if the point is inside the hexagon, False otherwise.
-            """
-            dx = abs(px - self.x)
-            dy = abs(py - self.y)
-            if dx > self.side_length or dy > self.side_length * math.sqrt(3) / 2:
-                return False
-            return dy <= self.side_length * math.sqrt(3) / 2 and dx <= self.side_length - dy / math.sqrt(3)
-
-        return [
-            Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2))
-            for x in x_range
-            for y in y_range
-            if is_point_inside_hexagon(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2))
-        ]

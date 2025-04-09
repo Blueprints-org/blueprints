@@ -179,7 +179,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = max(point.y for point in self.vertices) - self.centroid.y
+        distance_to_end = max(point.y for point in self.geometry.exterior.coords) - self.centroid.y
         return self.moment_of_inertia_about_y / distance_to_end if self.area != 0 else 0
 
     @property
@@ -192,7 +192,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_end = self.centroid.y - min(point.y for point in self.vertices)
+        distance_to_end = self.centroid.y - min(point.y for point in self.geometry.exterior.coords)
         return self.moment_of_inertia_about_y / distance_to_end if self.area != 0 else 0
 
     @property
@@ -205,7 +205,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_end = max(point.x for point in self.vertices) - self.centroid.x
+        distance_to_end = max(point.x for point in self.geometry.exterior.coords) - self.centroid.x
         return self.moment_of_inertia_about_z / distance_to_end if self.area != 0 else 0
 
     @property
@@ -218,7 +218,7 @@ class RightAngleCurvedCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_end = self.centroid.x - min(point.x for point in self.vertices)
+        distance_to_end = self.centroid.x - min(point.x for point in self.geometry.exterior.coords)
         return self.moment_of_inertia_about_z / distance_to_end if self.area != 0 else 0
 
     @property
@@ -246,48 +246,3 @@ class RightAngleCurvedCrossSection:
             The plastic section modulus about the z-axis.
         """
         return self.plastic_section_modulus_about_y
-
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the cross-section.
-
-        Returns
-        -------
-        list[Point]
-            The vertices of the shape.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the right-angled triangular cross-section with a quarter circle with a given mesh size and
-        return the inner nodes of each rectangle they represent.
-
-        Parameters
-        ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a twentieth of the radius.
-
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
-        """
-        if self.area == 0:
-            return [Point(self.x, self.y)]
-        mesh_size = self.radius / 20 if max_mesh_size == 0 else self.radius / np.ceil(self.radius / max_mesh_size)
-
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size)
-        y_range = np.arange(y_min, y_max, mesh_size)
-        center_radius = (
-            self.x - self.radius if self.flipped_horizontally else self.x + self.radius,
-            self.y - self.radius if self.flipped_vertically else self.y + self.radius,
-        )
-        return [
-            Point(x + mesh_size / 2, y + mesh_size / 2)
-            for x in x_range
-            for y in y_range
-            if (x + mesh_size / 2 - center_radius[0]) ** 2 + (y + mesh_size / 2 - center_radius[1]) ** 2 > self.radius**2
-        ]

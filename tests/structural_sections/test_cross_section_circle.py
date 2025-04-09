@@ -33,15 +33,6 @@ class TestCircularCrossSection:
         centroid = circular_cross_section.centroid
         assert (centroid.x, centroid.y) == pytest.approx(expected=(100.0, 250.0), rel=1e-6)
 
-    def test_vertices(self, circular_cross_section: CircularCrossSection) -> None:
-        """Test the vertices property of the CircularCrossSection class."""
-        vertices = circular_cross_section.vertices
-        first_vertex = vertices[0]
-        last_vertex = vertices[-1]
-        assert len(vertices) == 65
-        assert (first_vertex.x, first_vertex.y) == pytest.approx(expected=(200.0, 250.0), rel=1e-6)
-        assert (last_vertex.x, last_vertex.y) == pytest.approx(expected=(200.0, 250.0), rel=1e-6)
-
     def test_wrong_input(self) -> None:
         """Test the wrong input for the CircularCrossSection class."""
         with pytest.raises(ValueError):
@@ -67,11 +58,6 @@ class TestCircularCrossSection:
         assert circular_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=expected_plastic_modulus, rel=1e-6)
         assert circular_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=expected_plastic_modulus, rel=1e-6)
 
-    def test_dotted_mesh(self, circular_cross_section: CircularCrossSection) -> None:
-        """Test the dotted mesh property of the CircularCrossSection class."""
-        dotted_mesh = circular_cross_section.dotted_mesh()
-        assert len(dotted_mesh) > 0
-
     def test_radius(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the radius property of the CircularCrossSection class."""
         assert circular_cross_section.radius == pytest.approx(expected=100.0, rel=1e-6)
@@ -79,11 +65,6 @@ class TestCircularCrossSection:
     def test_plate_thickness(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the plate_thickness property of the CircularCrossSection class."""
         assert circular_cross_section.plate_thickness == pytest.approx(expected=200.0, rel=1e-6)
-
-    def test_dotted_mesh_with_custom_mesh_size(self, circular_cross_section: CircularCrossSection) -> None:
-        """Test the dotted mesh property with a custom mesh size."""
-        dotted_mesh = circular_cross_section.dotted_mesh(max_mesh_size=10.0)
-        assert len(dotted_mesh) > 0
 
     def test_geometry_bounds(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the bounds of the geometry property."""

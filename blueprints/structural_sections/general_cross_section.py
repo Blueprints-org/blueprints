@@ -65,10 +65,3 @@ class CrossSection(Protocol):
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
         """Plastic section modulus about the z-axis [mm³]."""
-
-    @property
-    def vertices(self) -> list[Point]:
-        """Vertices of the cross-section."""
-
-    def dotted_mesh(self, max_mesh_size: MM) -> list[Point]:
-        """Dotted mesh of the cross-section."""

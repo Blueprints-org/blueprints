@@ -85,11 +85,6 @@ class TestAnnularSectorCrossSection:
         assert annular_sector_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=max_elastic_section_modulus_y, rel=1e-6)
         assert annular_sector_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=max_elastic_section_modulus_z, rel=1e-6)
 
-    def test_dotted_mesh(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
-        """Test the dotted mesh property of the AnnularSectorCrossSection class."""
-        dotted_mesh = annular_sector_cross_section.dotted_mesh()
-        assert len(dotted_mesh) > 0
-
     def test_geometry(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the geometry property of the AnnularSectorCrossSection class."""
         geometry = annular_sector_cross_section.geometry
@@ -99,18 +94,6 @@ class TestAnnularSectorCrossSection:
     def test_plate_thickness(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the plate thickness property of the AnnularSectorCrossSection class."""
         assert annular_sector_cross_section.plate_thickness == pytest.approx(expected=20.0, rel=1e-6)
-
-    def test_vertices(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
-        """Test the vertices property of the AnnularSectorCrossSection class."""
-        vertices = annular_sector_cross_section.vertices
-        assert len(vertices) > 0
-
-    def test_dotted_mesh_with_custom_mesh_size(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
-        """Test the dotted mesh property with a custom mesh size."""
-        dotted_mesh = annular_sector_cross_section.dotted_mesh(max_mesh_size=10.0)
-        assert len(dotted_mesh) > 0
-        for point in dotted_mesh:
-            assert annular_sector_cross_section.geometry.contains(point)
 
     def test_invalid_radius(self) -> None:
         """Test initialization with an invalid radius value."""

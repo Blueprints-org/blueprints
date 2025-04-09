@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 
-import numpy as np
 from shapely import Point, Polygon
 
 from blueprints.type_alias import MM, MM2, MM3, MM4
@@ -207,46 +206,3 @@ class RectangularCrossSection:
             The plastic section modulus about the z-axis.
         """
         return (self.height * self.width**2) / 4
-
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the rectangular cross-section. Counter-clockwise order starting from the bottom-left corner.
-
-        Returns
-        -------
-        list[Point]
-            The vertices of the rectangle.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the rectangular cross-section with a given mesh size and return the inner nodes of
-        each rectangle they represent.
-
-        Parameters
-        ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a eigth of the smallest dimension.
-
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
-        """
-        if max_mesh_size == 0:
-            if self.width < self.height:
-                mesh_size_width = self.width / 8
-                mesh_size_height = self.height / np.ceil(self.height / mesh_size_width)
-            else:
-                mesh_size_height = self.height / 8
-                mesh_size_width = self.width / np.ceil(self.width / mesh_size_height)
-        else:
-            mesh_size_width = self.width / np.ceil(self.width / max_mesh_size)
-            mesh_size_height = self.height / np.ceil(self.height / max_mesh_size)
-
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size_width)
-        y_range = np.arange(y_min, y_max, mesh_size_height)
-        return [Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2)) for x in x_range for y in y_range]

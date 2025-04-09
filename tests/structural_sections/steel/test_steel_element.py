@@ -29,7 +29,6 @@ def mock_cross_section(mocker: Mock) -> Mock:
     cross_section.plastic_section_modulus_about_z = 50  # mm³
     cross_section.geometry = {"type": "rectangle", "width": 100, "height": 50}
     cross_section.vertices = [Point(0, 0), Point(100, 0), Point(100, 50), Point(0, 50)]
-    cross_section.dotted_mesh.return_value = [(10, 10), (20, 20)]
     return cross_section
 
 
@@ -117,16 +116,6 @@ def test_plastic_section_modulus_about_z(steel_element: SteelElement, mock_cross
 def test_geometry(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement geometry matches the mock cross-section geometry."""
     assert steel_element.geometry == mock_cross_section.geometry
-
-
-def test_vertices(steel_element: SteelElement, mock_cross_section: Mock) -> None:
-    """Test that the SteelElement vertices match the mock cross-section vertices."""
-    assert steel_element.vertices == mock_cross_section.vertices
-
-
-def test_dotted_mesh(steel_element: SteelElement, mock_cross_section: Mock) -> None:
-    """Test that the SteelElement dotted mesh matches the mock cross-section dotted mesh."""
-    assert steel_element.dotted_mesh == mock_cross_section.dotted_mesh.return_value
 
 
 def test_weight_per_meter(steel_element: SteelElement, mock_cross_section: Mock, mock_material: Mock) -> None:

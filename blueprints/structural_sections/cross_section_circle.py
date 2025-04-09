@@ -3,7 +3,6 @@
 import math
 from dataclasses import dataclass
 
-import numpy as np
 from shapely import Point, Polygon
 
 from blueprints.type_alias import MM, MM2, MM3, MM4
@@ -204,42 +203,3 @@ class CircularCrossSection:
             The plastic section modulus about the z-axis.
         """
         return (self.diameter**3) / 6
-
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the circular cross-section.
-
-        Returns
-        -------
-        list[Point]
-            The vertices of the circle.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the circular cross-section with a given mesh size and return the inner nodes of
-        each rectangle they represent.
-
-        Parameters
-        ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a twentieth of the diameter.
-
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
-        """
-        mesh_size = self.diameter / 20 if max_mesh_size == 0 else self.diameter / np.ceil(self.diameter / max_mesh_size)
-
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size)
-        y_range = np.arange(y_min, y_max, mesh_size)
-        return [
-            Point(x + mesh_size / 2, y + mesh_size / 2)
-            for x in x_range
-            for y in y_range
-            if (x + mesh_size / 2 - self.x) ** 2 + (y + mesh_size / 2 - self.y) ** 2 <= self.radius**2
-        ]

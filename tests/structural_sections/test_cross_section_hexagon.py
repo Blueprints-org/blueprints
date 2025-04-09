@@ -2,7 +2,6 @@
 
 import numpy as np
 import pytest
-from shapely.geometry import Point
 
 from blueprints.structural_sections.cross_section_hexagon import HexagonalCrossSection
 
@@ -62,28 +61,7 @@ class TestHexagonalCrossSection:
         assert geometry.is_valid
         assert geometry.area == pytest.approx(expected=hexagonal_cross_section.area, rel=1e-4)
 
-    def test_vertices(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
-        """Test the vertices property of the HexagonalCrossSection class."""
-        vertices = hexagonal_cross_section.vertices
-        assert len(vertices) == 7  # 6 vertices + 1 repeated for closure
-        for vertex in vertices:
-            assert isinstance(vertex, Point)
-
-    def test_dotted_mesh(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
-        """Test the dotted mesh property of the HexagonalCrossSection class."""
-        dotted_mesh = hexagonal_cross_section.dotted_mesh()
-        assert len(dotted_mesh) > 0
-        for point in dotted_mesh:
-            assert hexagonal_cross_section.geometry.contains(point)
-
     def test_invalid_side_length(self) -> None:
         """Test initialization with an invalid side length value."""
         with pytest.raises(ValueError, match="Side length must be a positive value"):
             HexagonalCrossSection(name="InvalidHexagon", side_length=-10.0, x=0.0, y=0.0)
-
-    def test_custom_mesh_size(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
-        """Test the dotted mesh property with a custom mesh size."""
-        dotted_mesh = hexagonal_cross_section.dotted_mesh(max_mesh_size=10.0)
-        assert len(dotted_mesh) > 0
-        for point in dotted_mesh:
-            assert hexagonal_cross_section.geometry.contains(point)

@@ -85,20 +85,6 @@ class TestCHSSteelProfile:
         expected_modulus_z_negative: float = 2.9490e6  # mm³
         assert pytest.approx(chs_profile.elastic_section_modulus_about_z_negative, rel=1e-2) == expected_modulus_z_negative
 
-    def test_plastic_section_modulus_about_y(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the plastic section modulus about the y-axis."""
-        expected_plastic_modulus_y: float = 3.874e6  # mm³
-        assert pytest.approx(chs_profile.plastic_section_modulus_about_y, rel=1e-2) == expected_plastic_modulus_y
-
-    def test_plastic_section_modulus_about_z(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the plastic section modulus about the z-axis."""
-        expected_plastic_modulus_z: float = 3.874e6  # mm³
-        assert pytest.approx(chs_profile.plastic_section_modulus_about_z, rel=1e-2) == expected_plastic_modulus_z
-
-    def test_vertices(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the vertices of the cross-section."""
-        assert len(chs_profile.vertices) > 0
-
     def test_plot(self, chs_profile: CHSSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
         fig: Figure = chs_profile.plot()

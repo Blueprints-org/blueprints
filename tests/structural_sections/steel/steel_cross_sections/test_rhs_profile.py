@@ -120,20 +120,6 @@ class TestRHSSteelProfile:
         expected_modulus_z_negative = 46.9e3  # mm³
         assert pytest.approx(rhs_cold_formed.elastic_section_modulus_about_z_negative, rel=1e-2) == expected_modulus_z_negative
 
-    def test_plastic_section_modulus_about_y_cold_formed(self, rhs_cold_formed: RHSSteelProfile) -> None:
-        """Test the plastic section modulus about the y-axis."""
-        expected_plastic_modulus_y = 72.4e3  # mm³
-        assert pytest.approx(rhs_cold_formed.plastic_section_modulus_about_y, rel=1e-2) == expected_plastic_modulus_y
-
-    def test_plastic_section_modulus_about_z_cold_formed(self, rhs_cold_formed: RHSSteelProfile) -> None:
-        """Test the plastic section modulus about the z-axis."""
-        expected_plastic_modulus_z = 54.7e3  # mm³
-        assert pytest.approx(rhs_cold_formed.plastic_section_modulus_about_z, rel=1e-2) == expected_plastic_modulus_z
-
-    def test_vertices_cold_formed(self, rhs_cold_formed: RHSSteelProfile) -> None:
-        """Test the vertices of the cross-section."""
-        assert len(rhs_cold_formed.vertices) > 0
-
     def test_plot_cold_formed(self, rhs_cold_formed: RHSSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
         fig = rhs_cold_formed.plot()

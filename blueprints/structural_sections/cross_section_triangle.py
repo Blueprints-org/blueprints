@@ -3,7 +3,6 @@
 import math
 from dataclasses import dataclass
 
-import numpy as np
 from shapely import Point, Polygon
 
 from blueprints.type_alias import MM, MM2, MM3, MM4
@@ -215,57 +214,3 @@ class RightAngledTriangularCrossSection:
             The plastic section modulus about the z-axis.
         """
         return (self.height * self.base**2) / 4
-
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the triangular cross-section.
-
-        Returns
-        -------
-        list[Point]
-            The vertices of the triangle.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the right-angled triangular cross-section with a given mesh size and return the inner nodes
-        of each rectangle they represent.
-
-        Parameters
-        ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a twentieth of the smallest dimension.
-
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
-        """
-        if self.area == 0:
-            return [Point(self.x, self.y)]
-        if max_mesh_size == 0:
-            mesh_size_width = self.base / 20
-            mesh_size_height = self.height / 20
-        else:
-            mesh_size_width = self.base / np.ceil(self.base / max_mesh_size)
-            mesh_size_height = self.height / np.ceil(self.height / max_mesh_size)
-
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size_width)
-        y_range = np.arange(y_min, y_max, mesh_size_height)
-
-        # Shift the x-range by 1/100th of the mesh size to avoid diagonal issues with the mesh
-        x_range = np.array([x + ((i % 2) * 2 - 1) * mesh_size_width / 100 for i, x in enumerate(x_range)])
-
-        left_lower = Point(self.x, self.y)
-        right_lower = Point(self.x + self.base, self.y) if not self.flipped_horizontally else Point(self.x - self.base, self.y)
-        top = Point(self.x, self.y + self.height) if not self.flipped_vertically else Point(self.x, self.y - self.height)
-
-        return [
-            Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2))
-            for x in x_range
-            for y in y_range
-            if Polygon([left_lower, right_lower, top]).contains(Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2)))
-        ]

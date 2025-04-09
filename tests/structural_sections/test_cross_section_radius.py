@@ -77,27 +77,6 @@ class TestRightAngleCurvedCrossSection:
         assert geometry.is_valid
         assert geometry.area == pytest.approx(expected=cross_section.area, rel=1e-3)
 
-    def test_vertices(self, cross_section: RightAngleCurvedCrossSection) -> None:
-        """Test the vertices property of the RightAngleCurvedCrossSection class."""
-        vertices = cross_section.vertices
-        assert len(vertices) > 0
-        for vertex in vertices:
-            assert isinstance(vertex, Point)
-
-    def test_dotted_mesh(self, cross_section: RightAngleCurvedCrossSection) -> None:
-        """Test the dotted mesh property of the RightAngleCurvedCrossSection class."""
-        dotted_mesh = cross_section.dotted_mesh()
-        assert len(dotted_mesh) > 0
-        for point in dotted_mesh:
-            assert cross_section.geometry.contains(point)
-
-    def test_custom_mesh_size(self, cross_section: RightAngleCurvedCrossSection) -> None:
-        """Test the dotted mesh property with a custom mesh size."""
-        dotted_mesh = cross_section.dotted_mesh(max_mesh_size=10.0)
-        assert len(dotted_mesh) > 0
-        for point in dotted_mesh:
-            assert cross_section.geometry.contains(point)
-
     def test_flipped_geometry(self) -> None:
         """Test the geometry property for flipped cross-sections."""
         # Test flipped horizontally
@@ -131,4 +110,3 @@ class TestRightAngleCurvedCrossSection:
         assert cross_section_zero_radius.moment_of_inertia_about_y == 0.0
         assert cross_section_zero_radius.moment_of_inertia_about_z == 0.0
         assert cross_section_zero_radius.elastic_section_modulus_about_y_positive == 0.0
-        assert len(cross_section_zero_radius.dotted_mesh()) == 1

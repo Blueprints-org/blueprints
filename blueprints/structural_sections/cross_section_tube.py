@@ -3,7 +3,6 @@
 import math
 from dataclasses import dataclass
 
-import numpy as np
 from shapely import Point, Polygon
 
 from blueprints.type_alias import MM, MM2, MM3, MM4
@@ -241,46 +240,3 @@ class TubeCrossSection:
             The plastic section modulus about the z-axis.
         """
         return (self.outer_diameter**3 - self.inner_diameter**3) / 6
-
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the circular tube cross-section.
-
-        Returns
-        -------
-        list[Point]
-            The vertices of the tube.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the circular tube cross-section with a given mesh size and return the inner nodes of each
-        rectangle they represent.
-
-        Parameters
-        ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a quarter of the thickness and 20th of diameter,
-            whichever is less.
-
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
-        """
-        if max_mesh_size == 0:
-            mesh_size = min(self.plate_thickness / 4, self.outer_diameter / 20)
-        else:
-            mesh_size = self.plate_thickness / np.ceil(self.plate_thickness / max_mesh_size)
-
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size)
-        y_range = np.arange(y_min, y_max, mesh_size)
-        return [
-            Point(float(x + mesh_size / 2), float(y + mesh_size / 2))
-            for x in x_range
-            for y in y_range
-            if self.inner_radius < math.sqrt(float((x + mesh_size / 2 - self.x) ** 2 + (y + mesh_size / 2 - self.y) ** 2)) < self.outer_radius
-        ]

@@ -73,8 +73,8 @@ class AnnularSectorCrossSection:
         MM
             The height of the annular sector.
         """
-        min_y = min(point.y for point in self.vertices)
-        max_y = max(point.y for point in self.vertices)
+        min_y = min(point.y for point in self.geometry.exterior.coords)
+        max_y = max(point.y for point in self.geometry.exterior.coords)
         return max_y - min_y
 
     @property
@@ -87,8 +87,8 @@ class AnnularSectorCrossSection:
         MM
             The width of the annular sector.
         """
-        min_x = min(point.x for point in self.vertices)
-        max_x = max(point.x for point in self.vertices)
+        min_x = min(point.x for point in self.geometry.exterior.coords)
+        max_x = max(point.x for point in self.geometry.exterior.coords)
         return max_x - min_x
 
     @property
@@ -242,7 +242,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_top = max(point.y for point in self.vertices) - self.centroid.y
+        distance_to_top = max(point.y for point in self.geometry.exterior.coords) - self.centroid.y
         return self.moment_of_inertia_about_y / distance_to_top
 
     @property
@@ -256,7 +256,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the y-axis.
         """
-        distance_to_bottom = self.centroid.y - min(point.y for point in self.vertices)
+        distance_to_bottom = self.centroid.y - min(point.y for point in self.geometry.exterior.coords)
         return self.moment_of_inertia_about_y / distance_to_bottom
 
     @property
@@ -270,7 +270,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_right = max(point.x for point in self.vertices) - self.centroid.x
+        distance_to_right = max(point.x for point in self.geometry.exterior.coords) - self.centroid.x
         return self.moment_of_inertia_about_z / distance_to_right
 
     @property
@@ -284,7 +284,7 @@ class AnnularSectorCrossSection:
         MM3
             The elastic section modulus about the z-axis.
         """
-        distance_to_left = self.centroid.x - min(point.x for point in self.vertices)
+        distance_to_left = self.centroid.x - min(point.x for point in self.geometry.exterior.coords)
         return self.moment_of_inertia_about_z / distance_to_left
 
     @property
@@ -312,49 +312,3 @@ class AnnularSectorCrossSection:
             The plastic section modulus about the z-axis.
         """
         return max(self.elastic_section_modulus_about_z_positive, self.elastic_section_modulus_about_z_negative)
-
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the annular sector cross-section.
-
-        Returns
-        -------
-        list[Point]
-            The vertices of the annular sector.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the annular sector cross-section with a given mesh size and return the inner nodes of
-        each rectangle they represent.
-
-        Parameters
-        ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a third of the thickness and 10th of radius.,
-            whichever is the minimum of the two.
-
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
-        """
-        if max_mesh_size == 0:
-            mesh_size = min(self.plate_thickness / 3, self.inner_radius / 10)
-        else:
-            mesh_size = self.thickness / np.ceil(self.thickness / max_mesh_size)
-
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size)
-        y_range = np.arange(y_min, y_max, mesh_size)
-        return [
-            Point(float(x + mesh_size / 2), float(y + mesh_size / 2))
-            for x in x_range
-            for y in y_range
-            if self.inner_radius <= math.hypot(float(x + mesh_size / 2 - self.x), float(y + mesh_size / 2 - self.y)) <= self.outer_radius
-            and self.start_angle
-            <= 90 - math.degrees(math.atan2(float(y + mesh_size / 2 - self.y), float(x + mesh_size / 2 - self.x)))
-            <= self.end_angle
-        ]

@@ -84,20 +84,6 @@ class TestISteelProfile:
         expected_modulus_z_negative = 6.761e5  # mm³
         assert pytest.approx(i_profile.elastic_section_modulus_about_z_negative, rel=1e-2) == expected_modulus_z_negative
 
-    def test_plastic_section_modulus_about_y(self, i_profile: ISteelProfile) -> None:
-        """Test the plastic section modulus about the y-axis."""
-        expected_plastic_modulus_y = 2.683e6  # mm³
-        assert pytest.approx(i_profile.plastic_section_modulus_about_y, rel=1e-2) == expected_plastic_modulus_y
-
-    def test_plastic_section_modulus_about_z(self, i_profile: ISteelProfile) -> None:
-        """Test the plastic section modulus about the z-axis."""
-        expected_plastic_modulus_z = 1.032e6  # mm³
-        assert pytest.approx(i_profile.plastic_section_modulus_about_z, rel=1e-2) == expected_plastic_modulus_z
-
-    def test_vertices(self, i_profile: ISteelProfile) -> None:
-        """Test the vertices of the cross-section."""
-        assert len(i_profile.vertices) > 0
-
     def test_plot(self, i_profile: ISteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
         fig: Figure = i_profile.plot()
