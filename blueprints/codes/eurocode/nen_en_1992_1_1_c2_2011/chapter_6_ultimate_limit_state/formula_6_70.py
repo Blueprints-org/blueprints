@@ -51,9 +51,7 @@ class Form6Dot70FatigueDamageFactor(Formula):
         _equation: str = r"\sum_{i} \frac{n(\Delta \sigma_i)}{N(\Delta \sigma_i)} < 1"
         _numeric_equation: str = ""
         for n, capital_n in zip_longest(self.n_delta_sigma_i, self.capital_n_delta_sigma_i):
-            _numeric_equation += (
-                f"\\frac{{{n:.3f}}}{{{capital_n:.3f}}} + "
-            )
+            _numeric_equation += f"\\frac{{{n:.3f}}}{{{capital_n:.3f}}} + "
         _numeric_equation = _numeric_equation[:-3] + " < 1"
         return LatexFormula(
             return_symbol=r"CHECK",
