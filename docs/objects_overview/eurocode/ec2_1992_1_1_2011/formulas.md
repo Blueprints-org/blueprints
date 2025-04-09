@@ -173,12 +173,12 @@ Total of 304 formulas present.
 | 6.67           |        :x:         |         |                                                           |
 | 6.68           |        :x:         |         |                                                           |
 | 6.69           |        :x:         |         |                                                           |
-| 6.70           |        :x:         |         |                                                           |
+| 6.70           | :heavy_check_mark: |         | Form6Dot70FatigueDamageFactor                             |
 | 6.71           | :heavy_check_mark: |         | Form6Dot71CriteriaBasedOnStressRange                      |
-| 6.72           |        :x:         |         |                                                           |
-| 6.73           |        :x:         |         |                                                           |
-| 6.74           |        :x:         |         |                                                           |
-| 6.75           |        :x:         |         |                                                           |
+| 6.72           | :heavy_check_mark: |         | Form6Dot72FatigueResistanceConcreteCompression            |
+| 6.73           | :heavy_check_mark: |         | Form6Dot73StressRatio                                     |
+| 6.74           | :heavy_check_mark: |         | Form6Dot74MinimumCompressiveStressLevel                   |
+| 6.75           | :heavy_check_mark: |         | Form6Dot75MaximumCompressiveStressLevel                   |
 | 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
 | 6.77           | :heavy_check_mark: |         | Form6Dot77FatigueVerification                             |
 | 6.78           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
