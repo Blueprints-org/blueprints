@@ -8,8 +8,8 @@ class TestUNPStandardProfileClass:
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert UNPStandardProfileClass.UNP_80.value == ("UNP80", 80, 45, 6, 8, 8)
-        assert UNPStandardProfileClass.UNP_200.value == ("UNP200", 200, 75, 8.5, 11.5, 11.5)
+        assert UNPStandardProfileClass.UNP_80.value == ("UNP80", 80, 45, 6, 8, 8, 8)
+        assert UNPStandardProfileClass.UNP_200.value == ("UNP200", 200, 75, 8.5, 11.5, 11.5, 8)
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
@@ -31,3 +31,4 @@ class TestUNPStandardProfileClass:
         assert profile.total_height == 80
         assert profile.web_thickness == 6
         assert profile.radius == 8
+        assert profile.slope == 8
