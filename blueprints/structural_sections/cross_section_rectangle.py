@@ -2,13 +2,15 @@
 
 from dataclasses import dataclass
 
+from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
 @dataclass(frozen=True)
-class RectangularCrossSection:
+class RectangularCrossSection(CrossSection):
     """
     Class to represent a rectangular cross-section for geometric calculations.
 
@@ -24,6 +26,8 @@ class RectangularCrossSection:
         The y-coordinate of the centroid of the rectangle. Default is 0.
     name : str
         The name of the rectangular cross-section, default is "Rectangle".
+    mesh_size : MM | None
+        The maximum mesh size for the geometry. Default is 2.5 mm.
     """
 
     width: MM
@@ -40,7 +44,7 @@ class RectangularCrossSection:
             raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
-    def geometry(self) -> Polygon:
+    def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the rectangular cross-section. Defines the coordinates of the rectangle based on width, height, x,
         and y. Counter-clockwise order.
@@ -74,18 +78,6 @@ class RectangularCrossSection:
             The area of the rectangle.
         """
         return self.width * self.height
-
-    @property
-    def plate_thickness(self) -> MM:
-        """
-        Get the thickness of the rectangular cross-section.
-
-        Returns
-        -------
-        MM
-            The thickness of the rectangle.
-        """
-        return min(self.width, self.height)
 
     @property
     def perimeter(self) -> MM:
@@ -206,3 +198,24 @@ class RectangularCrossSection:
             The plastic section modulus about the z-axis.
         """
         return (self.height * self.width**2) / 4
+
+    def geometry(
+        self,
+        mesh_size: MM | None = None,
+    ) -> Geometry:
+        """Return the geometry of the circular cross-section.
+
+        Properties
+        ----------
+        mesh_size : MM
+            Maximum mesh element area to be used within
+            the Geometry-object finite-element mesh. If not provided, a default value will be used.
+
+        """
+        if mesh_size is None:
+            minimum_mesh_size = 2.0
+            mesh_size = max(min(self.width, self.height) / 30, minimum_mesh_size)
+
+        circular = Geometry(geom=self.polygon)
+        circular.create_mesh(mesh_sizes=mesh_size)
+        return circular

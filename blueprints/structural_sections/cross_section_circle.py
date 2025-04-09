@@ -3,13 +3,15 @@
 import math
 from dataclasses import dataclass
 
+from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
 @dataclass(frozen=True)
-class CircularCrossSection:
+class CircularCrossSection(CrossSection):
     """
     Class to represent a circular cross-section using shapely for geometric calculations.
 
@@ -49,7 +51,7 @@ class CircularCrossSection:
         return self.diameter / 2.0
 
     @property
-    def geometry(self) -> Polygon:
+    def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the circular cross-section.
 
@@ -71,18 +73,6 @@ class CircularCrossSection:
             The area of the circle.
         """
         return math.pi * self.radius**2.0
-
-    @property
-    def plate_thickness(self) -> MM:
-        """
-        Get the plate thickness of the circular cross-section.
-
-        Returns
-        -------
-        MM
-            The plate thickness of the circle.
-        """
-        return self.diameter
 
     @property
     def perimeter(self) -> MM:
@@ -203,3 +193,24 @@ class CircularCrossSection:
             The plastic section modulus about the z-axis.
         """
         return (self.diameter**3) / 6
+
+    def geometry(
+        self,
+        mesh_size: MM | None = None,
+    ) -> Geometry:
+        """Return the geometry of the circular cross-section.
+
+        Properties
+        ----------
+        mesh_size : MM
+            Maximum mesh element area to be used within
+            the Geometry-object finite-element mesh. If not provided, a default value will be used.
+
+        """
+        if mesh_size is None:
+            minimum_mesh_size = 2.0
+            mesh_size = max(self.diameter / 30, minimum_mesh_size)
+
+        circular = Geometry(geom=self.polygon)
+        circular.create_mesh(mesh_sizes=mesh_size)
+        return circular

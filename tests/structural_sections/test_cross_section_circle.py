@@ -3,6 +3,7 @@
 import math
 
 import pytest
+from sectionproperties.analysis import Section
 from shapely import Polygon
 
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
@@ -11,14 +12,9 @@ from blueprints.structural_sections.cross_section_circle import CircularCrossSec
 class TestCircularCrossSection:
     """Tests for the CircularCrossSection class."""
 
-    @pytest.fixture
-    def circular_cross_section(self) -> CircularCrossSection:
-        """Return a CircularCrossSection instance."""
-        return CircularCrossSection(name="Circle", diameter=200.0, x=100.0, y=250.0)
-
     def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the geometry property of the CircularCrossSection class."""
-        assert isinstance(circular_cross_section.geometry, Polygon)
+        assert isinstance(circular_cross_section.polygon, Polygon)
 
     def test_area(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the area property of the CircularCrossSection class."""
@@ -62,11 +58,12 @@ class TestCircularCrossSection:
         """Test the radius property of the CircularCrossSection class."""
         assert circular_cross_section.radius == pytest.approx(expected=100.0, rel=1e-6)
 
-    def test_plate_thickness(self, circular_cross_section: CircularCrossSection) -> None:
-        """Test the plate_thickness property of the CircularCrossSection class."""
-        assert circular_cross_section.plate_thickness == pytest.approx(expected=200.0, rel=1e-6)
-
     def test_geometry_bounds(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the bounds of the geometry property."""
-        bounds = circular_cross_section.geometry.bounds
+        bounds = circular_cross_section.polygon.bounds
         assert bounds == pytest.approx(expected=(0.0, 150.0, 200.0, 350.0), rel=1e-6)
+
+    def test_section(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the section object of the CircularCrossSection class."""
+        section = circular_cross_section.section()
+        assert isinstance(section, Section)

@@ -92,7 +92,6 @@ known-third-party = [
     "matplotlib",
     "munch",
     "numpy",
-    "pandas",
     "pygal",
     "scipy",
     "shapely",

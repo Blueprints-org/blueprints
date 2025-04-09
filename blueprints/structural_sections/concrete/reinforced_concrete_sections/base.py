@@ -8,12 +8,12 @@ from shapely import LineString
 
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import (
     ReinforcementConfiguration,
 )
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.general_cross_section import CrossSection
 from blueprints.type_alias import KG_M, KG_M3, M3_M, MM2_M
 from blueprints.unit_conversion import MM3_TO_M3
 
@@ -63,7 +63,7 @@ class ReinforcedCrossSection(ABC):
         # check if all rebars are inside the cross-section.
         # needed for the case where custom configurations are added to the RCS
         for rebar in rebars:
-            if not self.cross_section.geometry.contains(other=rebar.geometry):
+            if not self.cross_section.polygon.contains(other=rebar.polygon):
                 msg = f"Rebar (diameter={rebar.diameter}, x={rebar.x}, y={rebar.y}) is not (fully) inside the cross-section."
                 raise ValueError(msg)
 
@@ -133,7 +133,7 @@ class ReinforcedCrossSection(ABC):
             Newly created Rebar
         """
         # check if given diameter/coordinates are fully inside the cross-section
-        if not rebar.geometry.within(self.cross_section.geometry):
+        if not rebar.polygon.within(self.cross_section.polygon):
             msg = f"Rebar (diameter={rebar.diameter}, x={rebar.x}, y={rebar.y}) is not (fully) inside the cross-section."
             raise ValueError(msg)
 
@@ -162,7 +162,7 @@ class ReinforcedCrossSection(ABC):
         """
         # check if the stirrup is inside the cross-section
         stirrup_outside_edge = stirrup.geometry.buffer(distance=stirrup.diameter / 2)
-        if not self.cross_section.geometry.contains(stirrup_outside_edge):
+        if not self.cross_section.polygon.contains(stirrup_outside_edge):
             msg = "Stirrup is not (fully) inside the cross-section."
             raise ValueError(msg)
 
