@@ -5,7 +5,7 @@ from enum import Enum
 from blueprints.type_alias import MM, RATIO
 
 
-class UNPStandardProfileClass(Enum):
+class UNP(Enum):
     """Enumeration of UNP steel profiles with dimensions and properties."""
 
     UNP_80 = ("UNP80", 80, 45, 6, 8, 8, 8)

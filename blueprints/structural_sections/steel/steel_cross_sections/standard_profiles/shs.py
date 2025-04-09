@@ -5,7 +5,7 @@ from enum import Enum
 from blueprints.type_alias import MM
 
 
-class SHSStandardProfileClass(Enum):
+class SHS(Enum):
     """Enumeration of SHS steel profiles with dimensions and properties.
     Note: the corners of SHS profiles are not of constant thickness but are thicker,
     this feature has not been implemented yet in Blueprints.

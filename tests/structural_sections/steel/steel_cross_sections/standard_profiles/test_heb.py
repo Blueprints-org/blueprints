@@ -1,29 +1,29 @@
-"""Test the HEBStandardProfileClass enum."""
+"""Test the HEB enum."""
 
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEBStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
 
 
-class TestHEBStandardProfileClass:
-    """Tests for the HEBStandardProfileClass enum."""
+class TestHEB:
+    """Tests for the HEB enum."""
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert HEBStandardProfileClass.HEB_100.value == ("HEB100", 100, 100, 6, 10, 12)
-        assert HEBStandardProfileClass.HEB_200.value == ("HEB200", 200, 200, 9, 15, 18)
+        assert HEB.HEB_100.value == ("HEB100", 100, 100, 6, 10, 12)
+        assert HEB.HEB_200.value == ("HEB200", 200, 200, 9, 15, 18)
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
-        assert "HEB100" in [e.value[0] for e in HEBStandardProfileClass]
-        assert "HEB200" in [e.value[0] for e in HEBStandardProfileClass]
+        assert "HEB100" in [e.value[0] for e in HEB]
+        assert "HEB200" in [e.value[0] for e in HEB]
 
     def test_enum_uniqueness(self) -> None:
         """Test that all enum values are unique."""
-        values = [e.value for e in HEBStandardProfileClass]
+        values = [e.value for e in HEB]
         assert len(values) == len(set(values))
 
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
-        profile = HEBStandardProfileClass.HEB_100
+        profile = HEB.HEB_100
         assert profile.code == "HEB100"
         assert profile.total_height == 100
         assert profile.top_flange_width == 100
