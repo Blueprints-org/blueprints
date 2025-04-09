@@ -127,7 +127,7 @@ class SteelMaterial:
         return self.e_modulus / (2 * (1 + self.poisson_ratio))
 
     def yield_strength(self, thickness: MM) -> MPA | None:
-        """Yield strength of the steel material for steel.
+        """Yield strength of the steel material for steel [$f_y$].
 
         Parameters
         ----------
@@ -142,7 +142,7 @@ class SteelMaterial:
         return Table3Dot1NominalValuesHotRolledStructuralSteel(steel_class=self.steel_class, thickness=thickness).fy
 
     def ultimate_strength(self, thickness: MM) -> MPA | None:
-        """Ultimate strength of the steel material for steel.
+        """Ultimate strength of the steel material for steel [$f_u$].
 
         Parameters
         ----------
