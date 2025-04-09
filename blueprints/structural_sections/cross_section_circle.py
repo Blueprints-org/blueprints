@@ -3,14 +3,15 @@
 import math
 from dataclasses import dataclass
 
-import numpy as np
+from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
 @dataclass(frozen=True)
-class CircularCrossSection:
+class CircularCrossSection(CrossSection):
     """
     Class to represent a circular cross-section using shapely for geometric calculations.
 
@@ -50,7 +51,7 @@ class CircularCrossSection:
         return self.diameter / 2.0
 
     @property
-    def geometry(self) -> Polygon:
+    def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the circular cross-section.
 
@@ -72,18 +73,6 @@ class CircularCrossSection:
             The area of the circle.
         """
         return math.pi * self.radius**2.0
-
-    @property
-    def plate_thickness(self) -> MM:
-        """
-        Get the plate thickness of the circular cross-section.
-
-        Returns
-        -------
-        MM
-            The plate thickness of the circle.
-        """
-        return self.diameter
 
     @property
     def perimeter(self) -> MM:
@@ -205,41 +194,23 @@ class CircularCrossSection:
         """
         return (self.diameter**3) / 6
 
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the circular cross-section.
+    def geometry(
+        self,
+        mesh_size: MM | None = None,
+    ) -> Geometry:
+        """Return the geometry of the circular cross-section.
 
-        Returns
-        -------
-        list[Point]
-            The vertices of the circle.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the circular cross-section with a given mesh size and return the inner nodes of
-        each rectangle they represent.
-
-        Parameters
+        Properties
         ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a twentieth of the diameter.
+        mesh_size : MM
+            Maximum mesh element area to be used within
+            the Geometry-object finite-element mesh. If not provided, a default value will be used.
 
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
         """
-        mesh_size = self.diameter / 20 if max_mesh_size == 0 else self.diameter / np.ceil(self.diameter / max_mesh_size)
+        if mesh_size is None:
+            minimum_mesh_size = 2.0
+            mesh_size = max(self.diameter / 30, minimum_mesh_size)
 
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size)
-        y_range = np.arange(y_min, y_max, mesh_size)
-        return [
-            Point(x + mesh_size / 2, y + mesh_size / 2)
-            for x in x_range
-            for y in y_range
-            if (x + mesh_size / 2 - self.x) ** 2 + (y + mesh_size / 2 - self.y) ** 2 <= self.radius**2
-        ]
+        circular = Geometry(geom=self.polygon)
+        circular.create_mesh(mesh_sizes=mesh_size)
+        return circular

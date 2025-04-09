@@ -2,14 +2,15 @@
 
 from dataclasses import dataclass
 
-import numpy as np
+from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
 @dataclass(frozen=True)
-class RectangularCrossSection:
+class RectangularCrossSection(CrossSection):
     """
     Class to represent a rectangular cross-section for geometric calculations.
 
@@ -25,6 +26,8 @@ class RectangularCrossSection:
         The y-coordinate of the centroid of the rectangle. Default is 0.
     name : str
         The name of the rectangular cross-section, default is "Rectangle".
+    mesh_size : MM | None
+        The maximum mesh size for the geometry. Default is 2.5 mm.
     """
 
     width: MM
@@ -41,7 +44,7 @@ class RectangularCrossSection:
             raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
-    def geometry(self) -> Polygon:
+    def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the rectangular cross-section. Defines the coordinates of the rectangle based on width, height, x,
         and y. Counter-clockwise order.
@@ -208,45 +211,23 @@ class RectangularCrossSection:
         """
         return (self.height * self.width**2) / 4
 
-    @property
-    def vertices(self) -> list[Point]:
-        """
-        Vertices of the rectangular cross-section. Counter-clockwise order starting from the bottom-left corner.
+    def geometry(
+        self,
+        mesh_size: MM | None = None,
+    ) -> Geometry:
+        """Return the geometry of the circular cross-section.
 
-        Returns
-        -------
-        list[Point]
-            The vertices of the rectangle.
-        """
-        return [Point(x, y) for x, y in self.geometry.exterior.coords]
-
-    def dotted_mesh(self, max_mesh_size: MM = 0) -> list[Point]:
-        """
-        Mesh the rectangular cross-section with a given mesh size and return the inner nodes of
-        each rectangle they represent.
-
-        Parameters
+        Properties
         ----------
-        max_mesh_size : MM
-            The maximum mesh size to use for the meshing. Default is a eigth of the smallest dimension.
+        mesh_size : MM
+            Maximum mesh element area to be used within
+            the Geometry-object finite-element mesh. If not provided, a default value will be used.
 
-        Returns
-        -------
-        list[Point]
-            The inner nodes of the meshed rectangles they represent.
         """
-        if max_mesh_size == 0:
-            if self.width < self.height:
-                mesh_size_width = self.width / 8
-                mesh_size_height = self.height / np.ceil(self.height / mesh_size_width)
-            else:
-                mesh_size_height = self.height / 8
-                mesh_size_width = self.width / np.ceil(self.width / mesh_size_height)
-        else:
-            mesh_size_width = self.width / np.ceil(self.width / max_mesh_size)
-            mesh_size_height = self.height / np.ceil(self.height / max_mesh_size)
+        if mesh_size is None:
+            minimum_mesh_size = 2.0
+            mesh_size = max(min(self.width, self.height) / 30, minimum_mesh_size)
 
-        x_min, y_min, x_max, y_max = self.geometry.bounds
-        x_range = np.arange(x_min, x_max, mesh_size_width)
-        y_range = np.arange(y_min, y_max, mesh_size_height)
-        return [Point(float(x + mesh_size_width / 2), float(y + mesh_size_height / 2)) for x in x_range for y in y_range]
+        circular = Geometry(geom=self.polygon)
+        circular.create_mesh(mesh_sizes=mesh_size)
+        return circular
