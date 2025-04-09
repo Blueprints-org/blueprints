@@ -5,7 +5,7 @@ from enum import Enum
 from blueprints.type_alias import MM
 
 
-class StripStandardProfileClass(Enum):
+class Strip(Enum):
     """Enumeration of standard steel strips."""
 
     STRIP_160x5 = ("160x5", 160, 5)

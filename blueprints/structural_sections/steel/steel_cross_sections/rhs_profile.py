@@ -7,10 +7,10 @@ from blueprints.structural_sections.cross_section_annular_sector import AnnularS
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHSStandardProfileClass
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCFStandardProfileClass
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shs import SHSStandardProfileClass
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shscf import SHSCFStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shs import SHS
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shscf import SHSCF
 from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
@@ -172,10 +172,7 @@ class RHSProfiles:
     def __init__(
         self,
         steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355,
-        profile: RHSCFStandardProfileClass
-        | RHSStandardProfileClass
-        | SHSCFStandardProfileClass
-        | SHSStandardProfileClass = RHSCFStandardProfileClass.RHSCF120x80_5,
+        profile: RHSCF | RHS | SHSCF | SHS = RHSCF.RHSCF120x80_5,
     ) -> None:
         self.steel_class = steel_class
         self.profile = profile

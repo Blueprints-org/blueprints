@@ -7,10 +7,10 @@ from blueprints.structural_sections.cross_section_radius import RightAngleCurved
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEAStandardProfileClass
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEBStandardProfileClass
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEMStandardProfileClass
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPEStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEA
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEM
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPE
 from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
@@ -171,10 +171,7 @@ class IProfiles:
     def __init__(
         self,
         steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355,
-        profile: HEAStandardProfileClass
-        | HEBStandardProfileClass
-        | HEMStandardProfileClass
-        | IPEStandardProfileClass = HEBStandardProfileClass.HEB_360,
+        profile: HEA | HEB | HEM | IPE = HEB.HEB_360,
     ) -> None:
         self.steel_class = steel_class
         self.profile = profile

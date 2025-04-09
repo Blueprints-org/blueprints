@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pytest
 
 from blueprints.materials.steel import SteelStrengthClass
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import StripStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripProfiles, StripSteelProfile
 
 
@@ -14,21 +14,21 @@ class TestStripSteelProfile:
     @pytest.fixture
     def strip_profile(self) -> StripSteelProfile:
         """Fixture to set up a Strip profile for testing."""
-        profile = StripStandardProfileClass.STRIP_160x5
+        profile = Strip.STRIP_160x5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         return StripProfiles(profile=profile, steel_class=steel_class).get_profile()
 
     def test_str(self) -> None:
         """Test the string representation of the Strip profile."""
-        profile = StripStandardProfileClass.STRIP_160x5
+        profile = Strip.STRIP_160x5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         desc = StripProfiles(profile=profile, steel_class=steel_class).__str__()
-        expected_str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: StripStandardProfileClass.STRIP_160x5"
+        expected_str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: Strip.STRIP_160x5"
         assert desc == expected_str
 
     def test_code(self) -> None:
         """Test the code of the Strip profile."""
-        profile = StripStandardProfileClass.STRIP_160x5
+        profile = Strip.STRIP_160x5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         code = StripProfiles(profile=profile, steel_class=steel_class).code()
         expected_code = "160x5"

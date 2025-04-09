@@ -5,7 +5,7 @@ from enum import Enum
 from blueprints.type_alias import MM
 
 
-class IPEStandardProfileClass(Enum):
+class IPE(Enum):
     """Enumeration of IPE steel profiles with dimensions."""
 
     IPE_80 = ("IPE80", 80, 46, 3.8, 5.2, 5)

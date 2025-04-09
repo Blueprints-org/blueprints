@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 
 from blueprints.materials.steel import SteelStrengthClass
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfiles, CHSSteelProfile
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHSStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 
 
 class TestCHSSteelProfile:
@@ -15,20 +15,20 @@ class TestCHSSteelProfile:
     @pytest.fixture
     def chs_profile(self) -> CHSSteelProfile:
         """Fixture to set up a CHS profile for testing."""
-        profile: CHSStandardProfileClass = CHSStandardProfileClass.CHS_508x16
+        profile: CHS = CHS.CHS_508x16
         steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355
         return CHSProfiles(profile=profile, steel_class=steel_class).get_profile()
 
     def test_str(self) -> None:
         """Test the string representation of the CHS profile."""
-        profile: CHSStandardProfileClass = CHSStandardProfileClass.CHS_508x16
+        profile: CHS = CHS.CHS_508x16
         steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355
-        expected_str: str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: CHSStandardProfileClass.CHS_508x16"
+        expected_str: str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: CHS.CHS_508x16"
         assert CHSProfiles(profile=profile, steel_class=steel_class).__str__() == expected_str
 
     def test_code(self) -> None:
         """Test the code of the CHS profile."""
-        profile: CHSStandardProfileClass = CHSStandardProfileClass.CHS_508x16
+        profile: CHS = CHS.CHS_508x16
         steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355
         code: str = CHSProfiles(profile=profile, steel_class=steel_class).code()
         expected_code: str = "CHS 508x16"

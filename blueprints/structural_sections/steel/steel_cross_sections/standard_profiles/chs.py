@@ -5,7 +5,7 @@ from enum import Enum
 from blueprints.type_alias import MM
 
 
-class CHSStandardProfileClass(Enum):
+class CHS(Enum):
     """Enumeration of standard CHS profiles."""
 
     CHS_21_3x2_3 = ("CHS 21.3x2.3", 21.3, 2.3)

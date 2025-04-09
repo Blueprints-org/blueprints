@@ -6,7 +6,7 @@ from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHSStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
@@ -69,14 +69,14 @@ class CHSProfiles:
     ----------
     steel_class: SteelStrengthClass
         Enumeration of steel strength classes (default: S355)
-    profile: CHSStandardProfileClass
+    profile: CHS
         Enumeration of standard CHS profiles (default: CHS_508x20)
     """
 
     def __init__(
         self,
         steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355,
-        profile: CHSStandardProfileClass = CHSStandardProfileClass.CHS_508x20,
+        profile: CHS = CHS.CHS_508x20,
     ) -> None:
         self.steel_class = steel_class
         self.profile = profile

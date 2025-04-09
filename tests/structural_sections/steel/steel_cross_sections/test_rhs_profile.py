@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 from blueprints.materials.steel import SteelStrengthClass
 from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSProfiles, RHSSteelProfile
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCFStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF
 
 
 class TestRHSSteelProfile:
@@ -14,34 +14,34 @@ class TestRHSSteelProfile:
     @pytest.fixture
     def rhs_cold_formed(self) -> RHSSteelProfile:
         """Fixture to set up a cold-formed RHS profile for testing."""
-        profile = RHSCFStandardProfileClass.RHSCF120x80_5
+        profile = RHSCF.RHSCF120x80_5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         return RHSProfiles(profile=profile, steel_class=steel_class).get_profile()
 
     def test_total_width(self) -> None:
         """Test the total width of the RHS profile."""
-        profile = RHSCFStandardProfileClass.RHSCF120x80_5
+        profile = RHSCF.RHSCF120x80_5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         rhs_profile = RHSProfiles(profile=profile, steel_class=steel_class)
         assert rhs_profile.total_width() == 80
 
     def test_total_height(self) -> None:
         """Test the total height of the RHS profile."""
-        profile = RHSCFStandardProfileClass.RHSCF120x80_5
+        profile = RHSCF.RHSCF120x80_5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         rhs_profile = RHSProfiles(profile=profile, steel_class=steel_class)
         assert rhs_profile.total_height() == 120
 
     def test_thickness(self) -> None:
         """Test the wall thickness of the RHS profile."""
-        profile = RHSCFStandardProfileClass.RHSCF120x80_5
+        profile = RHSCF.RHSCF120x80_5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         rhs_profile = RHSProfiles(profile=profile, steel_class=steel_class)
         assert rhs_profile.thickness() == 5
 
     def test_center_radius(self) -> None:
         """Test the corner radius of the RHS profile."""
-        profile = RHSCFStandardProfileClass.RHSCF120x80_5
+        profile = RHSCF.RHSCF120x80_5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         rhs_profile = RHSProfiles(profile=profile, steel_class=steel_class)
         expected_radius = 1.5 * 5  # Default center radius is 1.5 * thickness
@@ -49,7 +49,7 @@ class TestRHSSteelProfile:
 
     def test_get_profile(self) -> None:
         """Test the get_profile method of RHSProfiles."""
-        profile = RHSCFStandardProfileClass.RHSCF120x80_5
+        profile = RHSCF.RHSCF120x80_5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         rhs_profiles = RHSProfiles(profile=profile, steel_class=steel_class)
         rhs_profile = rhs_profiles.get_profile()
@@ -57,7 +57,7 @@ class TestRHSSteelProfile:
 
     def test_str_cold_formed(self) -> None:
         """Test the string representation of the RHS profile."""
-        profile = RHSCFStandardProfileClass.RHSCF120x80_5
+        profile = RHSCF.RHSCF120x80_5
         steel_class = SteelStrengthClass.EN_10025_2_S355
         expected_str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Width: 80 mm, Height: 120 mm, Thickness: 5 mm"
         assert RHSProfiles(profile=profile, steel_class=steel_class).__str__() == expected_str

@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 
 from blueprints.materials.steel import SteelStrengthClass
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import IProfiles, ISteelProfile
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEBStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
 
 
 class TestISteelProfile:
@@ -15,20 +15,20 @@ class TestISteelProfile:
     @pytest.fixture
     def i_profile(self) -> ISteelProfile:
         """Fixture to set up an I-profile for testing."""
-        profile = HEBStandardProfileClass.HEB_360
+        profile = HEB.HEB_360
         steel_class = SteelStrengthClass.EN_10025_2_S355
         return IProfiles(profile=profile, steel_class=steel_class).get_profile()
 
     def test_str(self) -> None:
         """Test the string representation of the I-profile."""
-        profile = HEBStandardProfileClass.HEB_360
+        profile = HEB.HEB_360
         steel_class = SteelStrengthClass.EN_10025_2_S355
-        expected_str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: HEBStandardProfileClass.HEB_360"
+        expected_str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: HEB.HEB_360"
         assert IProfiles(profile=profile, steel_class=steel_class).__str__() == expected_str
 
     def test_code(self) -> None:
         """Test the code of the I-profile."""
-        profile = HEBStandardProfileClass.HEB_360
+        profile = HEB.HEB_360
         code = profile.code
         expected_code = "HEB360"
         assert code == expected_code

@@ -6,7 +6,7 @@ from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import StripStandardProfileClass
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
@@ -69,14 +69,14 @@ class StripProfiles:
     ----------
     steel_class: SteelStrengthClass
         Enumeration of steel strength classes (default: S355)
-    profile: StripStandardProfileClass
+    profile: Strip
         Enumeration of standard steel strip profiles (default: STRIP_160x5)
     """
 
     def __init__(
         self,
         steel_class: SteelStrengthClass = SteelStrengthClass.EN_10025_2_S355,
-        profile: StripStandardProfileClass = StripStandardProfileClass.STRIP_160x5,
+        profile: Strip = Strip.STRIP_160x5,
     ) -> None:
         self.steel_class = steel_class
         self.profile = profile
