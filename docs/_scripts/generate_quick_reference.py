@@ -28,11 +28,11 @@ with open(readme_file, encoding="utf-8") as fd:
     match = pattern.search(readme_content)
 
     if match:
-        quick_reference_content = match.group(0).replace("##", "#")
+        quick_reference_content = match.group(0)
         quick_reference_content = replace_links(quick_reference_content)
     else:
         raise ValueError("No match found for reference table")
 
-with mkdocs_gen_files.open(r"objects_overview\index.md", "w") as fd:
+with mkdocs_gen_files.open(r"objects_overview\overview.md", "w") as fd:
     # hide navigation in the index page
     fd.write(quick_reference_content)

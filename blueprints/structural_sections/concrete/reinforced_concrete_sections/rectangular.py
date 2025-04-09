@@ -13,7 +13,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.base i
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.rectangular import RectangularCrossSectionPlotter
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.cross_section_shapes import RectangularCrossSection
+from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.type_alias import DIMENSIONLESS, MM, RATIO
 
 
@@ -30,6 +30,8 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         Material properties of the concrete.
     covers : CoversRectangular, optional
         The reinforcement covers for the cross-section [mm]. The default on all sides is 50 mm.
+    name : str
+        The name of the cross-section, default is "Rectangular Reinforced Concrete Section".
     """
 
     def __init__(
@@ -38,15 +40,18 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
         height: MM,
         concrete_material: ConcreteMaterial,
         covers: CoversRectangular = CoversRectangular(),
+        name: str = "Rectangular Reinforced Concrete Section",
     ) -> None:
         """Initialize the rectangular reinforced concrete section."""
         super().__init__(
             cross_section=RectangularCrossSection(
+                name="Rectangular Reinforced Concrete Section",
                 width=width,
                 height=height,
             ),
             concrete_material=concrete_material,
         )
+        self.name = name
         self.width = width
         self.height = height
         self.covers = covers
@@ -101,7 +106,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             Newly created stirrup configuration inside the cross-section.
         """
         # get the corners of the cross-section
-        min_x, min_y, max_x, max_y = self.cross_section.geometry.bounds
+        min_x, min_y, max_x, max_y = self.cross_section.polygon.bounds
 
         # create the corners of the stirrup configuration based on the covers present
         left_bottom_corner = Point(min_x + self.covers.left + (diameter / 2), min_y + self.covers.lower + (diameter / 2))
@@ -175,7 +180,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             Newly created stirrup configuration inside the cross-section.
         """
         # get the corners of the cross-section
-        _, min_y, _, max_y = self.cross_section.geometry.bounds
+        _, min_y, _, max_y = self.cross_section.polygon.bounds
 
         # create the corners of the stirrup configuration based on the covers present
         left_bottom_corner = Point(-width / 2, min_y + self.covers.lower + (diameter / 2))
@@ -226,7 +231,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             Reference line for the given edge of the cross-section.
         """
         # get cross-section corners
-        min_x, min_y, max_x, max_y = self.cross_section.geometry.bounds
+        min_x, min_y, max_x, max_y = self.cross_section.polygon.bounds
 
         # check if a custom cover is provided
         upper_cover = cover if cover is not None else self.covers.upper
