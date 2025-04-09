@@ -65,7 +65,3 @@ class TestRectangularCrossSection:
         """Test the geometry property of the RectangularCrossSection class."""
         polygon = rectangular_cross_section.polygon
         assert polygon.bounds == pytest.approx(expected=(50.0, 150.0, 150.0, 350.0), rel=1e-6)
-
-    def test_plate_thickness(self, rectangular_cross_section: RectangularCrossSection) -> None:
-        """Test the plate_thickness property of the RectangularCrossSection class."""
-        assert rectangular_cross_section.plate_thickness == pytest.approx(expected=100.0, rel=1e-6)

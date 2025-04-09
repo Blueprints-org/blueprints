@@ -80,18 +80,6 @@ class RectangularCrossSection(CrossSection):
         return self.width * self.height
 
     @property
-    def plate_thickness(self) -> MM:
-        """
-        Get the thickness of the rectangular cross-section.
-
-        Returns
-        -------
-        MM
-            The thickness of the rectangle.
-        """
-        return min(self.width, self.height)
-
-    @property
     def perimeter(self) -> MM:
         """
         Calculate the perimeter of the rectangular cross-section.
