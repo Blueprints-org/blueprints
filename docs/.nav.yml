@@ -3,8 +3,8 @@ nav:
 - Examples
 - "*"
 - Objects overview:
-  - objects_overview/index.md
+  - objects_overview/overview.md
   - objects_overview/*
 - API reference:
-  - API reference/Overview.md
+  - API reference/overview.md
   - API reference/*
