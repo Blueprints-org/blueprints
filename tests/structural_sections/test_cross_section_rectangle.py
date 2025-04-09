@@ -86,5 +86,5 @@ class TestRectangularCrossSection:
 
     def test_section_properties(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the section properties of the RectangularCrossSection class."""
-        section = rectangular_cross_section.section()
-        assert section is not None
+        section_properties = rectangular_cross_section.section_properties()
+        assert section_properties.mass == pytest.approx(expected=rectangular_cross_section.area, rel=1e-2)
