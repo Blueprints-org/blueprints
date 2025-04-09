@@ -147,7 +147,6 @@ figures for streamlined access and reference.
       <th>Description</th>
       <th>Formulas</th>
       <th>Tables</th>
-      <th>Figures</th>
     </tr>
   </thead>
   <tbody>
@@ -159,7 +158,6 @@ figures for streamlined access and reference.
       </td>
       <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/formulas.md">304</a></td>
       <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
-      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/figures.md">104</a></td>
     </tr>
     <tr>
       <td>NEN-EN 1993-1-1+C2+A1:2016</td>
@@ -169,7 +167,6 @@ figures for streamlined access and reference.
       </td>
       <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
       <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
-      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/figures.md">28</a></td>
     </tr>
     <tr>
       <td>NEN-EN 1993-5:2008</td>
@@ -179,7 +176,6 @@ figures for streamlined access and reference.
       </td>
       <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
       <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
-      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/figures.md">0</a></td>
     </tr>
     <tr>
       <td>NEN 9997-1+C2:2017</td>
@@ -189,7 +185,6 @@ figures for streamlined access and reference.
       </td>
       <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/formulas.md">88</a></td>
       <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/tables.md">11</a></td>
-      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/figures.md">25</a></td>
     </tr>
   </tbody>
 </table>

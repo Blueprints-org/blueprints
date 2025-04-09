@@ -2,5 +2,9 @@ nav:
 - index.md
 - Examples
 - "*"
-- objects_overview
-- API reference
+- Objects overview:
+  - objects_overview/index.md
+  - objects_overview/*
+- API reference:
+  - API reference/Overview.md
+  - API reference/*
