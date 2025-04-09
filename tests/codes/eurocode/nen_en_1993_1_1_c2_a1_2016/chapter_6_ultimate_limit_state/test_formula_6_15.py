@@ -44,9 +44,9 @@ class TestForm6Dot15McRdClass4:
             (
                 "complete",
                 r"M_{c,Rd} = \frac{W_{eff,min} \cdot f_y}{\gamma_{M0}} = "
-                r"\frac{2000.000 \cdot 355.000}{1.000} = 710000.000 Nmm",
+                r"\frac{2000.000 \cdot 355.000}{1.000} = 710000.000 \ Nmm",
             ),
-            ("short", r"M_{c,Rd} = 710000.000 Nmm"),
+            ("short", r"M_{c,Rd} = 710000.000 \ Nmm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

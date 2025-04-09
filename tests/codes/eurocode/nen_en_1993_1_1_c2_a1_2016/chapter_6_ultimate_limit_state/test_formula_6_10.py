@@ -43,9 +43,9 @@ class TestForm6Dot10NcRdClass1And2And3:
         [
             (
                 "complete",
-                r"N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = \frac{2000.000 \cdot 355.000}{1.000} = 710000.000 N",
+                r"N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = \frac{2000.000 \cdot 355.000}{1.000} = 710000.000 \ N",
             ),
-            ("short", r"N_{c,Rd} = 710000.000 N"),
+            ("short", r"N_{c,Rd} = 710000.000 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

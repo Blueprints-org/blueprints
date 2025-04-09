@@ -43,9 +43,9 @@ class TestForm6Dot13MCRdClass1And2Class1And2:
         [
             (
                 "complete",
-                r"M_{c,Rd} = \frac{W_{pl} \cdot f_y}{\gamma_{M0}} = \frac{5000.000 \cdot 355.000}{1.000} = 1775000.000 Nmm",
+                r"M_{c,Rd} = \frac{W_{pl} \cdot f_y}{\gamma_{M0}} = \frac{5000.000 \cdot 355.000}{1.000} = 1775000.000 \ Nmm",
             ),
-            ("short", r"M_{c,Rd} = 1775000.000 Nmm"),
+            ("short", r"M_{c,Rd} = 1775000.000 \ Nmm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
