@@ -5,6 +5,7 @@ from sectionproperties.post.post import SectionProperties
 
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
+from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 
 
 @pytest.fixture
@@ -25,3 +26,9 @@ def rectangular_cross_section_section_properties() -> SectionProperties:
 def circular_cross_section() -> CircularCrossSection:
     """Return a CircularCrossSection instance."""
     return CircularCrossSection(name="Circle", diameter=200.0, x=100.0, y=250.0)
+
+
+@pytest.fixture
+def tube_cross_section() -> TubeCrossSection:
+    """Return a TubeCrossSection instance."""
+    return TubeCrossSection(name="Tube", outer_diameter=100.0, inner_diameter=50.0, x=100.0, y=250.0)

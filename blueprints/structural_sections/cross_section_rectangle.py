@@ -203,7 +203,7 @@ class RectangularCrossSection(CrossSection):
         self,
         mesh_size: MM | None = None,
     ) -> Geometry:
-        """Return the geometry of the circular cross-section.
+        """Return the geometry of the rectangular cross-section.
 
         Properties
         ----------
@@ -214,8 +214,8 @@ class RectangularCrossSection(CrossSection):
         """
         if mesh_size is None:
             minimum_mesh_size = 2.0
-            mesh_size = max(min(self.width, self.height) / 30, minimum_mesh_size)
+            mesh_size = max(min(self.width, self.height) / 20, minimum_mesh_size)
 
-        circular = Geometry(geom=self.polygon)
-        circular.create_mesh(mesh_sizes=mesh_size)
-        return circular
+        rectangular = Geometry(geom=self.polygon)
+        rectangular.create_mesh(mesh_sizes=mesh_size)
+        return rectangular
