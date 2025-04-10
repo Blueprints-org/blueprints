@@ -246,4 +246,4 @@ class Table3Dot1NominalValuesHotRolledStructuralSteel:
         str
             String representation with class, thickness, and strength properties
         """
-        return f"{self.steel_class.display_name}, t={round(self.thickness, 1)}mm, fy={round(self.fy, 2)} N/mm², fu={round(self.fu, 2)} N/mm²"
+        return f"{self.steel_class.display_name}, t={round(self.thickness, 1)} mm, fy={round(self.fy, 2)} N/mm², fu={round(self.fu, 2)} N/mm²"
