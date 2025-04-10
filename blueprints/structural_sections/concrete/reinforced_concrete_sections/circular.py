@@ -1,7 +1,5 @@
 """Circular reinforced cross-section."""
 
-# ruff: noqa: PLR0913
-
 from matplotlib import pyplot as plt
 from numpy import cos, pi, sin
 from shapely import LineString, Polygon
@@ -13,7 +11,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.base i
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.circular import CircularCrossSectionPlotter
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.cross_section_shapes import CircularCrossSection
+from blueprints.structural_sections.cross_section_circle import CircularCrossSection
 from blueprints.type_alias import DIMENSIONLESS, MM, RATIO
 
 
@@ -120,8 +118,8 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         self,
         diameter: MM,
         cover: MM | None = None,
-        end_at_start: bool = False,  # ruff: noqa: PLR0913
-        start_on_half_increment: bool = False,  # ruff: noqa: PLR0913
+        end_at_start: bool = False,
+        start_on_half_increment: bool = False,
     ) -> LineString:
         """Get the reference circle for the cross-section.
 
