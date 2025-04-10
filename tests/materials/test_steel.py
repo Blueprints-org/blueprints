@@ -11,7 +11,7 @@ class TestSteelMaterial:
     def test_default_name(self) -> None:
         """Tests the default name."""
         steel = SteelMaterial()
-        assert steel.name == "NEN-EN 10025-2 S 355"
+        assert steel.name == "S 355 (NEN-EN 10025-2)"
 
     def test_custom_name(self) -> None:
         """Tests the custom name."""
@@ -55,50 +55,50 @@ class TestSteelMaterial:
 
     def test_default_yield_strength(self) -> None:
         """Tests the default yield strength."""
-        steel = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S275)
-        assert steel.yield_strength() == 275.0
+        steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
+        assert steel.yield_strength(10) == 275.0
 
     def test_custom_yield_strength(self) -> None:
         """Tests the custom yield strength."""
         steel = SteelMaterial(custom_yield_strength=300.0)
-        assert steel.yield_strength() == 300.0
+        assert steel.yield_strength(10) == 300.0
 
     def test_default_ultimate_strength(self) -> None:
         """Tests the default ultimate strength."""
-        steel = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S275)
-        assert steel.ultimate_strength() == 430.0
+        steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
+        assert steel.ultimate_strength(thickness=30) == 430.0
 
     def test_custom_ultimate_strength(self) -> None:
         """Tests the custom ultimate strength."""
         steel = SteelMaterial(custom_ultimate_strength=500.0)
-        assert steel.ultimate_strength() == 500.0
+        assert steel.ultimate_strength(thickness=30) == 500.0
 
     def test_yield_strength_above_40mm(self) -> None:
         """Tests the yield strength for thickness > 40mm."""
-        steel = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S275, thickness=50.0)
-        assert steel.yield_strength() == 255.0
+        steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
+        assert steel.yield_strength(thickness=50) == 255.0
 
     def test_ultimate_strength_above_40mm(self) -> None:
         """Tests the ultimate strength for thickness > 40mm."""
-        steel = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S275, thickness=50.0)
-        assert steel.ultimate_strength() == 410.0
+        steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
+        assert steel.ultimate_strength(thickness=50.0) == 410.0
 
     def test_yield_strength_invalid_thickness(self) -> None:
         """Tests yield strength raises ValueError for invalid thickness."""
-        steel = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S275, thickness=85.0)
+        steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
         with pytest.raises(ValueError):
-            steel.yield_strength()
+            steel.yield_strength(thickness=85.0)
 
     def test_ultimate_strength_invalid_thickness(self) -> None:
         """Tests ultimate strength raises ValueError for invalid thickness."""
-        steel = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S275, thickness=85.0)
+        steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
         with pytest.raises(ValueError):
-            steel.ultimate_strength()
+            steel.ultimate_strength(thickness=85.0)
 
     def test_diagram_type_default(self) -> None:
         """Tests the default diagram type."""
         steel = SteelMaterial()
-        assert steel.diagram_type == DiagramType.BILINEAR
+        assert steel.diagram_type == DiagramType.BI_LINEAR
 
     def test_diagram_type_custom(self) -> None:
         """Tests the custom diagram type."""
@@ -117,33 +117,33 @@ class TestSteelMaterial:
 
     def test_eq_with_different_name(self) -> None:
         """Test equality with different name."""
-        steel1 = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S355)
-        steel2 = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S355, custom_name="Custom Name")
+        steel1 = SteelMaterial(steel_class=SteelStrengthClass.S355)
+        steel2 = SteelMaterial(steel_class=SteelStrengthClass.S355, custom_name="Custom Name")
         assert steel1 == steel2
 
     def test_inequality_with_different_e_modulus(self) -> None:
         """Test inequality with different modulus of elasticity."""
-        steel1 = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S355)
-        steel2 = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S355, custom_e_modulus=200_000.0)
+        steel1 = SteelMaterial(steel_class=SteelStrengthClass.S355)
+        steel2 = SteelMaterial(steel_class=SteelStrengthClass.S355, custom_e_modulus=200_000.0)
         assert steel1 != steel2
 
     def test_inequality_with_different_steel_class(self) -> None:
         """Test inequality with different steel class."""
-        steel1 = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S355)
-        steel2 = SteelMaterial(steel_class=SteelStrengthClass.EN_10025_2_S275)
+        steel1 = SteelMaterial(steel_class=SteelStrengthClass.S355)
+        steel2 = SteelMaterial(steel_class=SteelStrengthClass.S275)
         assert steel1 != steel2
 
     def test_invalid_steel_class(self) -> None:
         """Test invalid steel class raises ValueError."""
         with pytest.raises(ValueError):
-            SteelMaterial(steel_class="INVALID_CLASS").yield_strength()  # type: ignore[arg-type]
+            SteelMaterial(steel_class="INVALID_CLASS").yield_strength(thickness=50.0)  # type: ignore[arg-type]
 
     def test_invalid_yield_above_40mm_thickness(self) -> None:
         """Test invalid thickness raises ValueError."""
         with pytest.raises(ValueError):
-            SteelMaterial(thickness=50.0, steel_class=SteelStrengthClass.EN_10219_1_S355_H).yield_strength()
+            SteelMaterial(steel_class=SteelStrengthClass.S355_H_10219_1).yield_strength(thickness=50.0)
 
     def test_invalid_ultimate_above_40mm_thickness(self) -> None:
         """Test invalid thickness raises ValueError."""
         with pytest.raises(ValueError):
-            SteelMaterial(thickness=50.0, steel_class=SteelStrengthClass.EN_10219_1_S355_H).ultimate_strength()
+            SteelMaterial(steel_class=SteelStrengthClass.S355_NH_NLH_10219_1).ultimate_strength(thickness=50.0)
