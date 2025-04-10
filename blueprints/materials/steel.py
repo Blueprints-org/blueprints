@@ -74,7 +74,9 @@ class SteelMaterial:
         """
         if self.custom_name:
             return self.custom_name
-        return self.steel_class.value[1]
+        standard_group = self.steel_class.value[0].value
+        steel_class = self.steel_class.value[1]
+        return f"{steel_class} ({standard_group})"
 
     @property
     def e_modulus(self) -> MPA:
@@ -139,6 +141,8 @@ class SteelMaterial:
         MPA | None
             Yield strength of the material at the given temperature
         """
+        if self.custom_yield_strength:
+            return self.custom_yield_strength
         return Table3Dot1NominalValuesHotRolledStructuralSteel(steel_class=self.steel_class, thickness=thickness).fy
 
     def ultimate_strength(self, thickness: MM) -> MPA | None:
@@ -154,4 +158,6 @@ class SteelMaterial:
         MPA | None
             Ultimate strength of the material at the given temperature
         """
+        if self.custom_ultimate_strength:
+            return self.custom_ultimate_strength
         return Table3Dot1NominalValuesHotRolledStructuralSteel(steel_class=self.steel_class, thickness=thickness).fu
