@@ -83,9 +83,10 @@ class TestTable3Dot1NominalValuesHotRolledStructuralSteel:
         assert "exceeds maximum supported value of 80mm" in str(excinfo.value)
 
     def test_fy_en10219_1_above_40mm(self) -> None:
-        """Test that EN 10219-1 steels with thickness > 40mm return None for fy."""
-        steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355_MH_MLH, 50)
-        assert steel.fy is None
+        """Test that EN 10219-1 steels with thickness > 40mm return ValueError for fy."""
+        steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355_MH_MLH_10219_1, 50)
+        with pytest.raises(ValueError):
+            _ = steel.fy
 
     def test_fu_small_thickness(self) -> None:
         """Test ultimate tensile strength for thickness ≤ 40mm."""
@@ -117,22 +118,23 @@ class TestTable3Dot1NominalValuesHotRolledStructuralSteel:
         assert steel_above_40.fu == 470
 
     def test_fu_en10219_1_above_40mm(self) -> None:
-        """Test that EN 10219-1 steels with thickness > 40mm return None for fu."""
-        steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355_MH_MLH, 50)
+        """Test that EN 10219-1 steels with thickness > 40mm return ValueError for fu."""
+        steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355_MH_MLH_10219_1, 50)
 
-        assert steel.fu is None
+        with pytest.raises(ValueError):
+            _ = steel.fu
 
     def test_steel_strength_class_display_name(self) -> None:
         """Test that steel strength classes have the correct display names."""
         assert SteelStrengthClass.S355.display_name == "S 355"
-        assert SteelStrengthClass.S275_M_ML.display_name == "S 275 M/ML"
-        assert SteelStrengthClass.S460_NH_NLH.display_name == "S 460 NH/NLH"
+        assert SteelStrengthClass.S275_M_ML_10025_4.display_name == "S 275 M/ML"
+        assert SteelStrengthClass.S460_NH_NLH_10219_1.display_name == "S 460 NH/NLH"
 
     def test_steel_strength_class_standard_group(self) -> None:
         """Test that steel strength classes belong to the correct standard group."""
         assert SteelStrengthClass.S355.standard_group == SteelStandardGroup.EN_10025_2
-        assert SteelStrengthClass.S275_M_ML.standard_group == SteelStandardGroup.EN_10025_4
-        assert SteelStrengthClass.S355_MH_MLH.standard_group == SteelStandardGroup.EN_10219_1
+        assert SteelStrengthClass.S275_M_ML_10025_4.standard_group == SteelStandardGroup.EN_10025_4
+        assert SteelStrengthClass.S355_MH_MLH_10219_1.standard_group == SteelStandardGroup.EN_10219_1
 
     @pytest.mark.parametrize(
         ("steel_class", "thickness", "expected_fy", "expected_fu"),
@@ -143,20 +145,20 @@ class TestTable3Dot1NominalValuesHotRolledStructuralSteel:
             (SteelStrengthClass.S355, 35, 355, 490),
             (SteelStrengthClass.S355, 75, 335, 470),
             # EN 10025-3
-            (SteelStrengthClass.S275_N_NL, 20, 275, 390),
-            (SteelStrengthClass.S275_N_NL, 60, 255, 370),
+            (SteelStrengthClass.S275_N_NL_10025_3, 20, 275, 390),
+            (SteelStrengthClass.S275_N_NL_10025_3, 60, 255, 370),
             # EN 10025-4
-            (SteelStrengthClass.S420_M_ML, 10, 420, 520),
-            (SteelStrengthClass.S420_M_ML, 70, 390, 500),
+            (SteelStrengthClass.S420_M_ML_10025_4, 10, 420, 520),
+            (SteelStrengthClass.S420_M_ML_10025_4, 70, 390, 500),
             # EN 10025-5
-            (SteelStrengthClass.S235_W, 25, 235, 360),
-            (SteelStrengthClass.S235_W, 45, 215, 340),
+            (SteelStrengthClass.S235_W_10025_5, 25, 235, 360),
+            (SteelStrengthClass.S235_W_10025_5, 45, 215, 340),
             # EN 10025-6
-            (SteelStrengthClass.S460_Q_QL_QL1, 15, 460, 570),
-            (SteelStrengthClass.S460_Q_QL_QL1, 55, 440, 550),
+            (SteelStrengthClass.S460_Q_QL_QL1_10025_6, 15, 460, 570),
+            (SteelStrengthClass.S460_Q_QL_QL1_10025_6, 55, 440, 550),
             # EN 10210-1
-            (SteelStrengthClass.S235_H, 5, 235, 360),
-            (SteelStrengthClass.S235_H, 65, 215, 340),
+            (SteelStrengthClass.S235_H_10210_1, 5, 235, 360),
+            (SteelStrengthClass.S235_H_10210_1, 65, 215, 340),
         ],
     )
     def test_steel_strength_values(
