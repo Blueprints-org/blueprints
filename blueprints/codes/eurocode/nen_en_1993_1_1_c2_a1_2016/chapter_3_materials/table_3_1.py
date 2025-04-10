@@ -84,10 +84,10 @@ class Table3Dot1NominalValuesHotRolledStructuralSteel:
     -------
     fy : MPA
         Returns the yield strength in N/mm². In the case of EN 10219-1, the values are not specified
-        for thickness > 40mm and will return None.
+        for thickness > 40 mm and will return None.
     fu : MPA
         Returns the ultimate tensile strength in N/mm². In the case of EN 10219-1, the values are not specified
-        for thickness > 40mm and will return None.
+        for thickness > 40 mm and will return None.
 
     Raises
     ------
@@ -186,20 +186,20 @@ class Table3Dot1NominalValuesHotRolledStructuralSteel:
         Raises
         ------
         ValueError
-            If the thickness is greater than 80mm
+            If the thickness is greater than 80 mm
         """
-        # Check if thickness is within valid range (≤80mm)
+        # Check if thickness is within valid range (≤80 mm)
         if self.thickness > 80:
-            raise ValueError(f"Thickness {self.thickness}mm exceeds maximum supported value of 80mm")
+            raise ValueError(f"Thickness {self.thickness} mm exceeds maximum supported value of 80 mm")
 
         strength_values = self._strength_data[self.steel_class]
 
-        # Choose value based on thickness (≤40mm or >40mm and ≤80mm)
+        # Choose value based on thickness (≤40 mm or >40 mm and ≤80 mm)
         result = strength_values[0] if self.thickness <= 40 else strength_values[2]
 
         if result is None:
             raise ValueError(
-                f"Yield strength not specified for thickness > 40mm for steel class '{self.steel_class.value}'. "
+                f"Yield strength not specified for thickness > 40 mm for steel class '{self.steel_class.value}'. "
                 f"Check {self.label} from {self.source_document}."
             )
 
@@ -218,20 +218,20 @@ class Table3Dot1NominalValuesHotRolledStructuralSteel:
         Raises
         ------
         ValueError
-            If the thickness is greater than 80mm
+            If the thickness is greater than 80 mm
         """
-        # Check if thickness is within valid range (≤80mm)
+        # Check if thickness is within valid range (≤80 mm)
         if self.thickness > 80:
-            raise ValueError(f"Thickness {self.thickness}mm exceeds maximum supported value of 80mm")
+            raise ValueError(f"Thickness {self.thickness} mm exceeds maximum supported value of 80 mm")
 
         strength_values = self._strength_data[self.steel_class]
 
-        # Choose value based on thickness (≤40mm or >40mm and ≤80mm)
+        # Choose value based on thickness (≤40 mm or >40 mm and ≤80 mm)
         result = strength_values[1] if self.thickness <= 40 else strength_values[3]
 
         if result is None:
             raise ValueError(
-                f"Yield strength not specified for thickness > 40mm for steel class '{self.steel_class.value}'. "
+                f"Yield strength not specified for thickness > 40 mm for steel class '{self.steel_class.value}'. "
                 f"Check {self.label} from {self.source_document}."
             )
 

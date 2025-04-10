@@ -74,12 +74,12 @@ class TestSteelMaterial:
         assert steel.ultimate_strength(thickness=30) == 500.0
 
     def test_yield_strength_above_40mm(self) -> None:
-        """Tests the yield strength for thickness > 40mm."""
+        """Tests the yield strength for thickness > 40 mm."""
         steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
         assert steel.yield_strength(thickness=50) == 255.0
 
     def test_ultimate_strength_above_40mm(self) -> None:
-        """Tests the ultimate strength for thickness > 40mm."""
+        """Tests the ultimate strength for thickness > 40 mm."""
         steel = SteelMaterial(steel_class=SteelStrengthClass.S275)
         assert steel.ultimate_strength(thickness=50.0) == 410.0
 

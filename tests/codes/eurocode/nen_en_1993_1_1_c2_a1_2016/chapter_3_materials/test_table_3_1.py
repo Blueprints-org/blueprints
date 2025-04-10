@@ -49,76 +49,76 @@ class TestTable3Dot1NominalValuesHotRolledStructuralSteel:
     def test_invalid_thickness_type(self) -> None:
         """Test that non-numeric thickness raises ValueError."""
         with pytest.raises(ValueError) as excinfo:
-            Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, "30mm")  # type: ignore[arg-type]
+            Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, "30 mm")  # type: ignore[arg-type]
 
         assert "Thickness must be a positive number" in str(excinfo.value)
 
     def test_fy_small_thickness(self) -> None:
-        """Test yield strength for thickness ≤ 40mm."""
-        # Test standard steel type with thickness below 40mm
+        """Test yield strength for thickness ≤ 40 mm."""
+        # Test standard steel type with thickness below 40 mm
         steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 40)
         assert steel.fy == 355
 
     def test_fy_large_thickness(self) -> None:
-        """Test yield strength for thickness > 40mm and ≤ 80mm."""
-        # Test standard steel type with thickness above 40mm
+        """Test yield strength for thickness > 40 mm and ≤ 80 mm."""
+        # Test standard steel type with thickness above 40 mm
         steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 50)
         assert steel.fy == 335
 
     def test_fy_boundary_thickness(self) -> None:
-        """Test yield strength at the boundary (40mm and 40.01mm)."""
-        # Test at exactly 40mm (should use the ≤40mm values)
+        """Test yield strength at the boundary (40 mm and 40.01mm)."""
+        # Test at exactly 40 mm (should use the ≤40 mm values)
         steel_at_40 = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 40)
         assert steel_at_40.fy == 355
 
-        # Test just above 40mm (should use the >40mm values)
+        # Test just above 40 mm (should use the >40 mm values)
         steel_above_40 = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 40.01)
         assert steel_above_40.fy == 335
 
     def test_fy_too_large_thickness(self) -> None:
-        """Test yield strength for thickness > 80mm raises error."""
+        """Test yield strength for thickness > 80 mm raises error."""
         with pytest.raises(ValueError) as excinfo:
             _ = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 81).fy
 
-        assert "exceeds maximum supported value of 80mm" in str(excinfo.value)
+        assert "exceeds maximum supported value of 80 mm" in str(excinfo.value)
 
     def test_fy_en10219_1_above_40mm(self) -> None:
-        """Test that EN 10219-1 steels with thickness > 40mm return ValueError for fy."""
+        """Test that EN 10219-1 steels with thickness > 40 mm return ValueError for fy."""
         steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355_MH_MLH_10219_1, 50)
         with pytest.raises(ValueError):
             _ = steel.fy
 
     def test_fu_small_thickness(self) -> None:
-        """Test ultimate tensile strength for thickness ≤ 40mm."""
-        # Test standard steel type with thickness below 40mm
+        """Test ultimate tensile strength for thickness ≤ 40 mm."""
+        # Test standard steel type with thickness below 40 mm
         steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 40)
         assert steel.fu == 490
 
     def test_fu_large_thickness(self) -> None:
-        """Test ultimate tensile strength for thickness > 40mm and ≤ 80mm."""
-        # Test standard steel type with thickness above 40mm
+        """Test ultimate tensile strength for thickness > 40 mm and ≤ 80 mm."""
+        # Test standard steel type with thickness above 40 mm
         steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 50)
         assert steel.fu == 470
 
     def test_fu_too_large_thickness(self) -> None:
-        """Test ultimate tensile strength for thickness > 80mm raises error."""
+        """Test ultimate tensile strength for thickness > 80 mm raises error."""
         with pytest.raises(ValueError) as excinfo:
             _ = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 90).fu
 
-        assert "exceeds maximum supported value of 80mm" in str(excinfo.value)
+        assert "exceeds maximum supported value of 80 mm" in str(excinfo.value)
 
     def test_fu_boundary_thickness(self) -> None:
-        """Test ultimate tensile strength at the boundary (40mm and 40.01mm)."""
-        # Test at exactly 40mm (should use the ≤40mm values)
+        """Test ultimate tensile strength at the boundary (40 mm and 40.01mm)."""
+        # Test at exactly 40 mm (should use the ≤40 mm values)
         steel_at_40 = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 40)
         assert steel_at_40.fu == 490
 
-        # Test just above 40mm (should use the >40mm values)
+        # Test just above 40 mm (should use the >40 mm values)
         steel_above_40 = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 40.01)
         assert steel_above_40.fu == 470
 
     def test_fu_en10219_1_above_40mm(self) -> None:
-        """Test that EN 10219-1 steels with thickness > 40mm return ValueError for fu."""
+        """Test that EN 10219-1 steels with thickness > 40 mm return ValueError for fu."""
         steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355_MH_MLH_10219_1, 50)
 
         with pytest.raises(ValueError):
@@ -176,5 +176,5 @@ class TestTable3Dot1NominalValuesHotRolledStructuralSteel:
     def test_string_representation(self) -> None:
         """Test that __str__ returns the expected string format."""
         steel = Table3Dot1NominalValuesHotRolledStructuralSteel(SteelStrengthClass.S355, 30)
-        expected_str = "S 355, t=30mm, fy=355 N/mm², fu=490 N/mm²"
+        expected_str = "S 355, t=30 mm, fy=355 N/mm², fu=490 N/mm²"
         assert str(steel) == expected_str
