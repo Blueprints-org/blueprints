@@ -1,1 +1,1 @@
-"""Common steel crossectional shapes."""
+"""Common steel cross sectional shapes."""
