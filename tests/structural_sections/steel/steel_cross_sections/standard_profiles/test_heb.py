@@ -8,13 +8,13 @@ class TestHEB:
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert HEB.HEB_100.value == ("HEB100", 100, 100, 6, 10, 12)
-        assert HEB.HEB_200.value == ("HEB200", 200, 200, 9, 15, 18)
+        assert HEB.HEB100.value == ("HEB100", 100, 100, 6, 10, 12)
+        assert HEB.HEB1000.value == ("HEB1000", 1000, 300, 19, 36, 30)
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
         assert "HEB100" in [e.value[0] for e in HEB]
-        assert "HEB200" in [e.value[0] for e in HEB]
+        assert "HEB1000" in [e.value[0] for e in HEB]
 
     def test_enum_uniqueness(self) -> None:
         """Test that all enum values are unique."""
@@ -23,8 +23,8 @@ class TestHEB:
 
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
-        profile = HEB.HEB_100
-        assert profile.code == "HEB100"
+        profile = HEB.HEB100
+        assert profile.alias == "HEB100"
         assert profile.total_height == 100
         assert profile.top_flange_width == 100
         assert profile.top_flange_thickness == 10

@@ -8,13 +8,13 @@ class TestRHS:
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert RHS.RHS50x30_2_6.value == ("RHS50x30/2.6", 50, 30, 2.6, 3.9, 2.6)
-        assert RHS.RHS100x60_8.value == ("RHS100x60/8", 100, 60, 8, 12, 8)
+        assert RHS.RHS50x30_2_6.value == ("RHS50x30x2.6", 50, 30, 2.6, 3.9, 2.6)
+        assert RHS.RHS500x300_20.value == ("RHS500x300x20", 500, 300, 20, 30, 20)
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
-        assert "RHS50x30/2.6" in [e.value[0] for e in RHS]
-        assert "RHS100x60/8" in [e.value[0] for e in RHS]
+        assert "RHS50x30x2.6" in [e.value[0] for e in RHS]
+        assert "RHS500x300x20" in [e.value[0] for e in RHS]
 
     def test_enum_uniqueness(self) -> None:
         """Test that all enum values are unique."""
@@ -24,7 +24,7 @@ class TestRHS:
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
         profile = RHS.RHS50x30_2_6
-        assert profile.code == "RHS50x30/2.6"
+        assert profile.alias == "RHS50x30x2.6"
         assert profile.total_height == 50
         assert profile.total_width == 30
         assert profile.thickness == 2.6

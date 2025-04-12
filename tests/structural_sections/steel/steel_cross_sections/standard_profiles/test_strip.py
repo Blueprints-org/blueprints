@@ -8,8 +8,8 @@ class TestStripClass:
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert Strip.STRIP_160x5.value == ("160x5", 160, 5)
-        assert Strip.STRIP_230x25.value == ("230x25", 230, 25)
+        assert Strip.STRIP160x5.value == ("160x5", 160, 5)
+        assert Strip.STRIP230x25.value == ("230x25", 230, 25)
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
@@ -23,7 +23,7 @@ class TestStripClass:
 
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
-        profile = Strip.STRIP_160x5
-        assert profile.code == "160x5"
+        profile = Strip.STRIP160x5
+        assert profile.alias == "160x5"
         assert profile.width == 160
         assert profile.height == 5

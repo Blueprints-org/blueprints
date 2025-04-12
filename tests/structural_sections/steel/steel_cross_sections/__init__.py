@@ -1,1 +1,1 @@
-"""Tests for the steel corss sections module."""
+"""Tests for the steel cross sections module."""

@@ -8,13 +8,13 @@ class TestHEM:
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert HEM.HEM_100.value == ("HEM100", 120, 106, 12, 20, 12)
-        assert HEM.HEM_200.value == ("HEM200", 220, 206, 15, 25, 18)
+        assert HEM.HEM100.value == ("HEM100", 120, 106, 12, 20, 12)
+        assert HEM.HEM1000.value == ("HEM1000", 1008, 302, 21, 40, 30)
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
         assert "HEM100" in [e.value[0] for e in HEM]
-        assert "HEM200" in [e.value[0] for e in HEM]
+        assert "HEM1000" in [e.value[0] for e in HEM]
 
     def test_enum_uniqueness(self) -> None:
         """Test that all enum values are unique."""
@@ -23,8 +23,8 @@ class TestHEM:
 
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
-        profile = HEM.HEM_100
-        assert profile.code == "HEM100"
+        profile = HEM.HEM100
+        assert profile.alias == "HEM100"
         assert profile.total_height == 120
         assert profile.top_flange_width == 106
         assert profile.top_flange_thickness == 20

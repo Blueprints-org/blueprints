@@ -8,13 +8,13 @@ class TestRHSCF:
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert RHSCF.RHSCF50x30_2_5.value == ("RHSCF50x30/2.5", 50, 30, 2.5, 5, 2.5)
-        assert RHSCF.RHSCF100x60_6_3.value == ("RHSCF100x60/6.3", 100, 60, 6.3, 15.8, 9.4)
+        assert RHSCF.RHSCF40x20_2.value == ("RHSCF40x20x2", 40, 20, 2, 4, 2)
+        assert RHSCF.RHSCF400x300_16.value == ("RHSCF400x300x16", 400, 300, 16, 48, 32)
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
-        assert "RHSCF50x30/2.5" in [e.value[0] for e in RHSCF]
-        assert "RHSCF100x60/6.3" in [e.value[0] for e in RHSCF]
+        assert "RHSCF40x20x2" in [e.value[0] for e in RHSCF]
+        assert "RHSCF400x300x16" in [e.value[0] for e in RHSCF]
 
     def test_enum_uniqueness(self) -> None:
         """Test that all enum values are unique."""
@@ -23,10 +23,10 @@ class TestRHSCF:
 
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
-        profile = RHSCF.RHSCF50x30_2_5
-        assert profile.code == "RHSCF50x30/2.5"
-        assert profile.total_height == 50
-        assert profile.total_width == 30
-        assert profile.thickness == 2.5
-        assert profile.outer_radius == 5
-        assert profile.inner_radius == 2.5
+        profile = RHSCF.RHSCF40x20_2
+        assert profile.alias == "RHSCF40x20x2"
+        assert profile.total_height == 40
+        assert profile.total_width == 20
+        assert profile.thickness == 2
+        assert profile.outer_radius == 4
+        assert profile.inner_radius == 2
