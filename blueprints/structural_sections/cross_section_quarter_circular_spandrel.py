@@ -1,4 +1,4 @@
-"""square minus quarter circle shape."""
+"""Square minus quarter circle shape: Quarter Circular Spandrel."""
 
 import math
 from dataclasses import dataclass
@@ -12,24 +12,24 @@ from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
 @dataclass(frozen=True)
-class RightAngleCurvedCrossSection(CrossSection):
+class QuarterCircularSpandrelCrossSection(CrossSection):
     """
-    Class to represent a square cross-section with a quarter circle cutout for geometric calculations.
+    Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as Quarter Circular Spandrel .
 
     Parameters
     ----------
     radius : MM
-        The length of the two sides of the triangular cross-section.
+        The length of the two sides of the cross-section.
     x : MM
         The x-coordinate of the 90-degree angle. Default is 0.
     y : MM
         The y-coordinate of the 90-degree angle. Default is 0.
     mirrored_horizontally : bool
-        Whether the triangle is mirrored horizontally. Default is False.
+        Whether the shape is mirrored horizontally. Default is False.
     mirrored_vertically : bool
-        Whether the triangle is mirrored vertically. Default is False.
+        Whether the shape is mirrored vertically. Default is False.
     name : str
-        The name of the radius cross-section. Default is "Right Angle Curved".
+        The name of the radius cross-section. Default is "QCS".
     """
 
     radius: MM
@@ -37,12 +37,12 @@ class RightAngleCurvedCrossSection(CrossSection):
     y: MM = 0
     mirrored_horizontally: bool = False
     mirrored_vertically: bool = False
-    name: str = "Right Angle Curved"
+    name: str = "QCS"
 
     @property
     def polygon(self) -> Polygon:
         """
-        Shapely Polygon representing the right-angled triangular cross-section with a quarter circle.
+        Shapely Polygon representing the cross-section.
 
         Returns
         -------
@@ -101,20 +101,8 @@ class RightAngleCurvedCrossSection(CrossSection):
         if self.radius == 0:
             return Point(self.x, self.y)
 
-        area_square = self.radius**2
-        cog_square_to_reference_point = self.radius / 2
-
-        area_quarter_circle = math.pi * self.radius**2 / 4
-        cog_quarter_circle_to_reference_point = self.radius - 4 * self.radius / 3 / np.pi
-
-        first_moment_square = area_square * cog_square_to_reference_point
-        first_moment_quarter_circle = area_quarter_circle * cog_quarter_circle_to_reference_point
-
-        total_first_moment = first_moment_square - first_moment_quarter_circle
-        total_area = area_square - area_quarter_circle
-
-        centroid_x = self.x + total_first_moment / total_area
-        centroid_y = self.y + total_first_moment / total_area
+        centroid_x = (10 - 3 * np.pi) / (12 - 3 * np.pi) * self.radius + self.x
+        centroid_y = (10 - 3 * np.pi) / (12 - 3 * np.pi) * self.radius + self.y
 
         if self.mirrored_horizontally:
             centroid_x = 2 * self.x - centroid_x
@@ -133,19 +121,7 @@ class RightAngleCurvedCrossSection(CrossSection):
         MM4
             The moment of inertia about the y-axis.
         """
-        inertia_square = self.radius**4 / 12
-        area_square = self.radius**2
-        cog_square_to_reference_point = self.radius / 2
-
-        inertia_quarter_circle = math.pi * self.radius**4 / 64
-        area_quarter_circle = math.pi * self.radius**2 / 4
-        cog_quarter_circle_to_reference_point = self.radius - 4 * self.radius / 3 / np.pi
-
-        inertia_reference_point_square = inertia_square + area_square * cog_square_to_reference_point**2
-        inertia_about_reference_point_quarter_circle = inertia_quarter_circle + area_quarter_circle * cog_quarter_circle_to_reference_point**2
-        inertia_reference_point = inertia_reference_point_square - inertia_about_reference_point_quarter_circle
-
-        return inertia_reference_point - (area_square - area_quarter_circle) * (self.centroid.y - self.y) ** 2
+        return (9 * np.pi**2 - 84 * np.pi + 176) / (144 * (4 - np.pi)) * self.radius**4
 
     @property
     def moment_of_inertia_about_z(self) -> MM4:
@@ -157,7 +133,7 @@ class RightAngleCurvedCrossSection(CrossSection):
         MM4
             The moment of inertia about the z-axis.
         """
-        return self.moment_of_inertia_about_y
+        return (9 * np.pi**2 - 84 * np.pi + 176) / (144 * (4 - np.pi)) * self.radius**4
 
     @property
     def elastic_section_modulus_about_y_positive(self) -> MM3:
@@ -222,7 +198,7 @@ class RightAngleCurvedCrossSection(CrossSection):
         MM3
             The plastic section modulus about the y-axis.
         """
-        return self.radius**3 / 30.73
+        return self.radius**3 / 31.6851045070407
 
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
@@ -235,7 +211,7 @@ class RightAngleCurvedCrossSection(CrossSection):
         MM3
             The plastic section modulus about the z-axis.
         """
-        return self.plastic_section_modulus_about_y
+        return self.radius**3 / 31.6851045070407
 
     def geometry(
         self,
@@ -252,7 +228,8 @@ class RightAngleCurvedCrossSection(CrossSection):
         """
         if mesh_size is None:
             minimum_mesh_size = 1.0
-            mesh_size = max(self.radius / 20, minimum_mesh_size)
+            mesh_length = max(self.radius / 5, minimum_mesh_size)
+            mesh_size = mesh_length**2
 
         square_with_cutout = Geometry(geom=self.polygon)
         square_with_cutout.create_mesh(mesh_sizes=mesh_size)

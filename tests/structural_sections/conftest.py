@@ -4,7 +4,7 @@ import pytest
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
-from blueprints.structural_sections.cross_section_radius import RightAngleCurvedCrossSection
+from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 
@@ -36,6 +36,6 @@ def tube_cross_section() -> TubeCrossSection:
 
 
 @pytest.fixture
-def cross_section() -> RightAngleCurvedCrossSection:
-    """Return a RightAngleCurvedCrossSection instance."""
-    return RightAngleCurvedCrossSection(radius=50.0, x=100.0, y=250.0)
+def qcs_cross_section() -> QuarterCircularSpandrelCrossSection:
+    """Return a QuarterCircularSpandrelCrossSection instance."""
+    return QuarterCircularSpandrelCrossSection(radius=50.0, x=100.0, y=250.0)
