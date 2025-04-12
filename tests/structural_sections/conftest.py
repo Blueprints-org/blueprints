@@ -3,6 +3,7 @@
 import pytest
 from sectionproperties.post.post import SectionProperties
 
+from blueprints.structural_sections.cross_section_annular_sector import AnnularSectorCrossSection
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
@@ -32,3 +33,9 @@ def circular_cross_section() -> CircularCrossSection:
 def tube_cross_section() -> TubeCrossSection:
     """Return a TubeCrossSection instance."""
     return TubeCrossSection(name="Tube", outer_diameter=100.0, inner_diameter=50.0, x=100.0, y=250.0)
+
+
+@pytest.fixture
+def annular_sector_cross_section() -> AnnularSectorCrossSection:
+    """Return an AnnularSectorCrossSection instance."""
+    return AnnularSectorCrossSection(inner_radius=90.0, thickness=20.0, start_angle=0.0, end_angle=90.0, x=100.0, y=250.0, name="AnnularSector")
