@@ -211,7 +211,8 @@ class HexagonalCrossSection(CrossSection):
         """
         if mesh_size is None:
             minimum_mesh_size = 2.0
-            mesh_size = max(self.side_length / 10, minimum_mesh_size)
+            mesh_length = max(self.side_length / 10, minimum_mesh_size)
+            mesh_size = mesh_length**2
 
         hexagon = Geometry(geom=self.polygon)
         hexagon.create_mesh(mesh_sizes=mesh_size)
