@@ -191,7 +191,7 @@ class RightAngledTriangularCrossSection(CrossSection):
         MM3
             The plastic section modulus about the y-axis.
         """
-        return (self.base * self.height**2) / 4
+        return self.base * self.height**2 / 10.2425
 
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
@@ -203,7 +203,7 @@ class RightAngledTriangularCrossSection(CrossSection):
         MM3
             The plastic section modulus about the z-axis.
         """
-        return (self.height * self.base**2) / 4
+        return self.height * self.base**2 / 10.2425
 
     def geometry(
         self,

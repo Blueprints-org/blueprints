@@ -52,10 +52,8 @@ class TestRightAngledTriangularCrossSection:
 
     def test_plastic_section_moduli(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the plastic section moduli properties of the RightAngledTriangularCrossSection class."""
-        expected_y = (100.0 * 200.0**2) / 4
-        expected_z = (200.0 * 100.0**2) / 4
-        assert triangular_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=expected_y, rel=1e-6)
-        assert triangular_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=expected_z, rel=1e-6)
+        assert triangular_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=390529.656, rel=1e-6)
+        assert triangular_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=195264.828, rel=1e-6)
 
     def test_invalid_base(self) -> None:
         """Test initialization with an invalid base value."""
@@ -82,3 +80,14 @@ class TestRightAngledTriangularCrossSection:
         """Test the section properties of the RightAngledTriangularCrossSection class."""
         section_properties = triangular_cross_section.section_properties()
         assert section_properties.mass == pytest.approx(expected=triangular_cross_section.area, rel=1e-2)
+        assert section_properties.perimeter == pytest.approx(expected=triangular_cross_section.perimeter, rel=1e-2)
+        assert section_properties.cx == pytest.approx(expected=triangular_cross_section.centroid.x, rel=1e-2)
+        assert section_properties.cy == pytest.approx(expected=triangular_cross_section.centroid.y, rel=1e-2)
+        assert section_properties.ixx_c == pytest.approx(expected=triangular_cross_section.moment_of_inertia_about_y, rel=1e-2)
+        assert section_properties.iyy_c == pytest.approx(expected=triangular_cross_section.moment_of_inertia_about_z, rel=1e-2)
+        assert section_properties.zxx_plus == pytest.approx(expected=triangular_cross_section.elastic_section_modulus_about_y_positive, rel=1e-2)
+        assert section_properties.zyy_plus == pytest.approx(expected=triangular_cross_section.elastic_section_modulus_about_z_positive, rel=1e-2)
+        assert section_properties.zxx_minus == pytest.approx(expected=triangular_cross_section.elastic_section_modulus_about_y_negative, rel=1e-2)
+        assert section_properties.zyy_minus == pytest.approx(expected=triangular_cross_section.elastic_section_modulus_about_z_negative, rel=1e-2)
+        assert section_properties.sxx == pytest.approx(expected=triangular_cross_section.plastic_section_modulus_about_y, rel=1e-2)
+        assert section_properties.syy == pytest.approx(expected=triangular_cross_section.plastic_section_modulus_about_z, rel=1e-2)
