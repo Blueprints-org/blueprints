@@ -62,16 +62,8 @@ class TestAnnularSectorCrossSection:
 
     def test_plastic_section_moduli(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the plastic section moduli properties of the AnnularSectorCrossSection class."""
-        max_elastic_section_modulus_y = max(
-            annular_sector_cross_section.elastic_section_modulus_about_y_positive,
-            annular_sector_cross_section.elastic_section_modulus_about_y_negative,
-        )
-        max_elastic_section_modulus_z = max(
-            annular_sector_cross_section.elastic_section_modulus_about_z_positive,
-            annular_sector_cross_section.elastic_section_modulus_about_z_negative,
-        )
-        assert annular_sector_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=max_elastic_section_modulus_y, rel=1e-6)
-        assert annular_sector_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=max_elastic_section_modulus_z, rel=1e-6)
+        assert annular_sector_cross_section.plastic_section_modulus_about_y is None
+        assert annular_sector_cross_section.plastic_section_modulus_about_z is None
 
     def test_polygon(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the polygon property of the AnnularSectorCrossSection class."""
@@ -175,3 +167,17 @@ class TestAnnularSectorCrossSection:
         # Moment of inertia about the z-axis
         approximate_moi_y = (approximate_height**3 * approximate_width) / 12
         assert annular_sector.moment_of_inertia_about_y == pytest.approx(expected=approximate_moi_y, rel=1e-3)
+
+    def test_section_properties(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
+        """Test the section properties of the HexagonalCrossSection class."""
+        section_properties = annular_sector_cross_section.section_properties()
+        assert section_properties.mass == pytest.approx(expected=annular_sector_cross_section.area, rel=1e-2)
+        assert section_properties.perimeter == pytest.approx(expected=annular_sector_cross_section.perimeter, rel=1e-2)
+        assert section_properties.cx == pytest.approx(expected=annular_sector_cross_section.centroid.x, rel=1e-2)
+        assert section_properties.cy == pytest.approx(expected=annular_sector_cross_section.centroid.y, rel=1e-2)
+        assert section_properties.ixx_c == pytest.approx(expected=annular_sector_cross_section.moment_of_inertia_about_y, rel=1e-2)
+        assert section_properties.iyy_c == pytest.approx(expected=annular_sector_cross_section.moment_of_inertia_about_z, rel=1e-2)
+        assert section_properties.zxx_plus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_y_positive, rel=1e-2)
+        assert section_properties.zyy_plus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_z_positive, rel=1e-2)
+        assert section_properties.zxx_minus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_y_negative, rel=1e-2)
+        assert section_properties.zyy_minus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_z_negative, rel=1e-2)

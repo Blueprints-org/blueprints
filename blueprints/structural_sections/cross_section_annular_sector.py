@@ -277,7 +277,7 @@ class AnnularSectorCrossSection(CrossSection):
         return self.moment_of_inertia_about_z / distance_to_left
 
     @property
-    def plastic_section_modulus_about_y(self) -> MM3:
+    def plastic_section_modulus_about_y(self) -> MM3 | None:
         """
         Plastic section modulus about the y-axis [mm³].
         Note: No closed form equation was found, therefore this approximation is used.
@@ -287,10 +287,10 @@ class AnnularSectorCrossSection(CrossSection):
         MM3
             The plastic section modulus about the y-axis.
         """
-        return max(self.elastic_section_modulus_about_y_positive, self.elastic_section_modulus_about_y_negative)
+        return None
 
     @property
-    def plastic_section_modulus_about_z(self) -> MM3:
+    def plastic_section_modulus_about_z(self) -> MM3 | None:
         """
         Plastic section modulus about the z-axis [mm³].
         Note: No closed form equation was found, therefore this conservative approximation is used.
@@ -300,7 +300,7 @@ class AnnularSectorCrossSection(CrossSection):
         MM3
             The plastic section modulus about the z-axis.
         """
-        return max(self.elastic_section_modulus_about_z_positive, self.elastic_section_modulus_about_z_negative)
+        return None
 
     def geometry(
         self,
