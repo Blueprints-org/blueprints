@@ -182,7 +182,7 @@ class HexagonalCrossSection(CrossSection):
         MM3
             The plastic section modulus about the y-axis.
         """
-        return self.side_length * math.sqrt(3) * 4 / 18 * self.area
+        return self.side_length * math.sqrt(3) * 2 / 9 * self.area
 
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
@@ -194,7 +194,13 @@ class HexagonalCrossSection(CrossSection):
         MM3
             The plastic section modulus about the z-axis.
         """
-        return self.side_length * math.sqrt(3) * 4 / 18 * self.area
+        area_center_rectangle = (self.side_length / 2) * (self.side_length * math.sqrt(3))
+        distance_center_rectangle = self.side_length / 4
+
+        area_outer_triangle = 1 / 2 * (self.side_length * math.sqrt(3)) * (self.side_length / 2)
+        distance_outer_triangle = self.side_length / 2 + self.side_length / 6
+
+        return 2 * (area_center_rectangle * distance_center_rectangle + area_outer_triangle * distance_outer_triangle)
 
     def geometry(
         self,

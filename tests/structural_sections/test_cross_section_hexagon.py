@@ -46,9 +46,9 @@ class TestHexagonalCrossSection:
 
     def test_plastic_section_moduli(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the plastic section moduli properties of the HexagonalCrossSection class."""
-        expected_plastic_modulus = (50.0**3) * np.sqrt(3) / 4
-        assert hexagonal_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=expected_plastic_modulus, rel=1e-6)
-        assert hexagonal_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=expected_plastic_modulus, rel=1e-6)
+        assert hexagonal_cross_section.plastic_section_modulus_about_y == pytest.approx(expected=50.0**3, rel=1e-6)
+        expected = 2 * (50 / 4 * (50 / 2) * (50 * np.sqrt(3)) + (50 * 2 / 3) * (0.5 * (50 * np.sqrt(3)) * (50 / 2)))
+        assert hexagonal_cross_section.plastic_section_modulus_about_z == pytest.approx(expected=expected, rel=1e-6)
 
     def test_polygon(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the geometry property of the HexagonalCrossSection class."""
@@ -62,11 +62,22 @@ class TestHexagonalCrossSection:
             HexagonalCrossSection(name="InvalidHexagon", side_length=-10.0, x=0.0, y=0.0)
 
     def test_geometry(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
-        """Test the geometry property of the TubeCrossSection class."""
+        """Test the geometry property of the HexagonalCrossSection class."""
         geometry = hexagonal_cross_section.geometry()
         assert geometry is not None
 
     def test_section_properties(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
-        """Test the section properties of the TubeCrossSection class."""
+        """Test the section properties of the HexagonalCrossSection class."""
         section_properties = hexagonal_cross_section.section_properties()
         assert section_properties.mass == pytest.approx(expected=hexagonal_cross_section.area, rel=1e-2)
+        assert section_properties.perimeter == pytest.approx(expected=hexagonal_cross_section.perimeter, rel=1e-2)
+        assert section_properties.cx == pytest.approx(expected=hexagonal_cross_section.centroid.x, rel=1e-2)
+        assert section_properties.cy == pytest.approx(expected=hexagonal_cross_section.centroid.y, rel=1e-2)
+        assert section_properties.ixx_c == pytest.approx(expected=hexagonal_cross_section.moment_of_inertia_about_y, rel=1e-2)
+        assert section_properties.iyy_c == pytest.approx(expected=hexagonal_cross_section.moment_of_inertia_about_z, rel=1e-2)
+        assert section_properties.zxx_plus == pytest.approx(expected=hexagonal_cross_section.elastic_section_modulus_about_y_positive, rel=1e-2)
+        assert section_properties.zyy_plus == pytest.approx(expected=hexagonal_cross_section.elastic_section_modulus_about_z_positive, rel=1e-2)
+        assert section_properties.zxx_minus == pytest.approx(expected=hexagonal_cross_section.elastic_section_modulus_about_y_negative, rel=1e-2)
+        assert section_properties.zyy_minus == pytest.approx(expected=hexagonal_cross_section.elastic_section_modulus_about_z_negative, rel=1e-2)
+        assert section_properties.sxx == pytest.approx(expected=hexagonal_cross_section.plastic_section_modulus_about_y, rel=1e-2)
+        assert section_properties.syy == pytest.approx(expected=hexagonal_cross_section.plastic_section_modulus_about_z, rel=1e-2)
