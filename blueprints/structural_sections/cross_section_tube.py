@@ -121,7 +121,7 @@ class TubeCrossSection(CrossSection):
         MM
             The perimeter of the tube.
         """
-        return 2.0 * math.pi * (self.outer_radius + self.inner_radius)
+        return 2.0 * math.pi * self.outer_radius
 
     @property
     def centroid(self) -> Point:
