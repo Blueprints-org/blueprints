@@ -60,7 +60,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
     - [x] Strips ✔️
     - [ ] Sheetpiles
 
-* Shape buidling blocks
+* Shape building blocks
     - [x] Rectangle ✔️
     - [x] Circle ✔️
     - [x] Tube / ring ✔️
