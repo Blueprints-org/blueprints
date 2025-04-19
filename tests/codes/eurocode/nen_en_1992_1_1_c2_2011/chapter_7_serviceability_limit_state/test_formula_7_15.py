@@ -47,9 +47,9 @@ class TestForm7Dot15MaximumCrackSpacing:
             (
                 "complete",
                 r"s_{r,max} = \frac{1}{\left(\frac{\cos(\theta)}{s_{r,max,y}}\right) + \left(\frac{\sin(\theta)}{s_{r,max,z}}\right)} = "
-                r"\frac{1}{\left(\frac{\cos(30.000)}{200.000}\right) + \left(\frac{\sin(30.000)}{300.000}\right)} = 166.756 mm",
+                r"\frac{1}{\left(\frac{\cos(30.000)}{200.000}\right) + \left(\frac{\sin(30.000)}{300.000}\right)} = 166.756 \ mm",
             ),
-            ("short", r"s_{r,max} = 166.756 mm"),
+            ("short", r"s_{r,max} = 166.756 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

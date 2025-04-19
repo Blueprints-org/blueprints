@@ -40,9 +40,9 @@ class TestForm7Dot8CrackWidth:
         [
             (
                 "complete",
-                r"w_k = s_{r,max} \cdot (\epsilon_{sm} - \epsilon_{cm}) = 200.000 \cdot (0.001000) = 0.200 mm",
+                r"w_k = s_{r,max} \cdot (\epsilon_{sm} - \epsilon_{cm}) = 200.000 \cdot (0.001000) = 0.200 \ mm",
             ),
-            ("short", r"w_k = 0.200 mm"),
+            ("short", r"w_k = 0.200 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

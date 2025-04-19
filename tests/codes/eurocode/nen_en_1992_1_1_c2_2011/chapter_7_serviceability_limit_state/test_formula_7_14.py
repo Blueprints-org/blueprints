@@ -40,9 +40,9 @@ class TestForm7Dot14MaximumCrackSpacing:
         [
             (
                 "complete",
-                r"s_{r,max} = 1.3 \cdot (h - x) = 1.3 \cdot (500.000 - 200.000) = 390.000 mm",
+                r"s_{r,max} = 1.3 \cdot (h - x) = 1.3 \cdot (500.000 - 200.000) = 390.000 \ mm",
             ),
-            ("short", r"s_{r,max} = 390.000 mm"),
+            ("short", r"s_{r,max} = 390.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -92,5 +92,5 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
-            unit="",
+            unit="-",
         )

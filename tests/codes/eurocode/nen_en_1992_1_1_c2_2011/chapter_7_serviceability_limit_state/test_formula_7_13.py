@@ -41,9 +41,9 @@ class TestForm7Dot13CoefficientK2:
         [
             (
                 "complete",
-                r"k_2 = \frac{\epsilon_1 + \epsilon_2}{2 \cdot \epsilon_1} = \frac{0.002 + 0.001}{2 \cdot 0.002} = 0.750 -",
+                r"k_2 = \frac{\epsilon_1 + \epsilon_2}{2 \cdot \epsilon_1} = \frac{0.002 + 0.001}{2 \cdot 0.002} = 0.750 \ -",
             ),
-            ("short", r"k_2 = 0.750 -"),
+            ("short", r"k_2 = 0.750 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

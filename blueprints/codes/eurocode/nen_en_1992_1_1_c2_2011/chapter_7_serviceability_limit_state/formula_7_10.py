@@ -73,5 +73,5 @@ class Form7Dot10RhoPEff(Formula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
-            unit="",
+            unit="-",
         )

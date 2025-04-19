@@ -45,9 +45,9 @@ class TestForm7Dot12EquivalentDiameter:
             (
                 "complete",
                 r"⌀_{eq} = \frac{n_1 \cdot ⌀_1^2 + n_2 \cdot ⌀_2^2}{n_1 \cdot ⌀_1 + n_2 \cdot ⌀_2} = "
-                r"\frac{4.000 \cdot 16.000^2 + 6.000 \cdot 20.000^2}{4.000 \cdot 16.000 + 6.000 \cdot 20.000} = 18.609 mm",
+                r"\frac{4.000 \cdot 16.000^2 + 6.000 \cdot 20.000^2}{4.000 \cdot 16.000 + 6.000 \cdot 20.000} = 18.609 \ mm",
             ),
-            ("short", r"⌀_{eq} = 18.609 mm"),
+            ("short", r"⌀_{eq} = 18.609 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

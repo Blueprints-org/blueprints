@@ -67,9 +67,9 @@ class TestForm7Dot9EpsilonSmMinusEpsilonCm:
                 r"\epsilon_{sm} - \epsilon_{cm} = \max\left(\frac{\sigma_s - k_t \cdot \frac{f_{ct,eff}}{\rho_{p,eff}} "
                 r"\cdot \left(1 + \frac{E_s}{E_{cm}} \cdot \rho_{p,eff}\right)}{E_s}; \frac{0.6 \cdot \sigma_s}{E_s}\right)"
                 r" = \max\left(\frac{400.000 - 0.600 \cdot \frac{2.500}{0.020} \cdot \left(1 + \frac{200000.000}{30000.000} "
-                r"\cdot 0.020\right)}{200000.000}; \frac{0.6 \cdot 400.000}{200000.000}\right) = 0.001575",
+                r"\cdot 0.020\right)}{200000.000}; \frac{0.6 \cdot 400.000}{200000.000}\right) = 0.001575 \ -",
             ),
-            ("short", r"\epsilon_{sm} - \epsilon_{cm} = 0.001575"),
+            ("short", r"\epsilon_{sm} - \epsilon_{cm} = 0.001575 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
