@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_eq
 
 
 class Form7Dot15MaximumCrackSpacing(Formula):
-    r"""Class representing formula 7.15 for the calculation of [$S_{r,max}$]."""
+    r"""Class representing formula 7.15 for the calculation of [$s_{r,max}$]."""
 
     label = "7.15"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -21,7 +21,8 @@ class Form7Dot15MaximumCrackSpacing(Formula):
         sr_max_y: MM,
         sr_max_z: MM,
     ) -> None:
-        r"""[$S_{r,max}$] Calculation of the maximum crack spacing [$mm$].
+        r"""[$s_{r,max}$] Calculation of the maximum crack spacing, where the angle between the axes of principal stress and the direction of the
+        reinforcement, for members reinforced in two orthogonal directions, is significant (>15 degrees) [$mm$].
 
         NEN-EN 1992-1-1+C2:2011 art.7.3.4(4) - Formula (7.15)
 
@@ -33,6 +34,7 @@ class Form7Dot15MaximumCrackSpacing(Formula):
             [$s_{r,max,y}$] Crack spacing in the y direction [$mm$].
         sr_max_z : MM
             [$s_{r,max,z}$] Crack spacing in the z direction [$mm$].
+
         """
         super().__init__()
         self.theta = theta
@@ -49,6 +51,8 @@ class Form7Dot15MaximumCrackSpacing(Formula):
         raise_if_less_or_equal_to_zero(sr_max_y=sr_max_y, sr_max_z=sr_max_z)
         raise_if_negative(theta=theta)
         raise_if_greater_than_90(theta=theta)
+        if theta <= 15:
+            raise ValueError(f"Invalid theta: {theta}. theta must be significant (>15 degrees)")
 
         return 1 / ((np.cos(np.deg2rad(theta)) / sr_max_y) + (np.sin(np.deg2rad(theta)) / sr_max_z))
 

@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM2
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form7Dot10RhoPEff(Formula):
@@ -49,13 +49,14 @@ class Form7Dot10RhoPEff(Formula):
         a_c_eff: MM2,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(a_s=a_s, xi_1=xi_1, a_p_prime=a_p_prime, a_c_eff=a_c_eff)
+        raise_if_negative(a_s=a_s, xi_1=xi_1, a_p_prime=a_p_prime)
+        raise_if_less_or_equal_to_zero(a_c_eff=a_c_eff)
 
-        return (a_s + xi_1**2 * a_p_prime) / a_c_eff
+        return (a_s + xi_1 * a_p_prime) / a_c_eff
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 7.10."""
-        _equation: str = r"\frac{A_s + \xi_1^2 \cdot A'_p}{A_{c,eff}}"
+        _equation: str = r"\frac{A_s + \xi_1 \cdot A'_p}{A_{c,eff}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {

@@ -16,7 +16,7 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[$\epsilon_{ca}(\infty)$] Autogene shrinkage at infinity [$-].
+        r"""[$\epsilon_{ca}(\infty)$] Autogene shrinkage at infinity [$-$].
 
         NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.12)
 

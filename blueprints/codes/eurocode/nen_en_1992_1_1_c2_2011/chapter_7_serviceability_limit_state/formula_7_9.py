@@ -20,7 +20,7 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
         f_ct_eff: MPA,
         rho_p_eff: DIMENSIONLESS,
         e_s: MPA,
-        e_c: MPA,
+        e_cm: MPA,
     ) -> None:
         r"""[$\epsilon_{sm} - \epsilon_{cm}$] Calculation of the strain difference [$\epsilon$].
 
@@ -38,8 +38,8 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
             [$\rho_{p,eff}$] Effective reinforcement ratio, see equation 7.10 [$-$].
         e_s : MPA
             [$e_s$] Modulus of elasticity of reinforcement [$MPa$].
-        e_c : MPA
-            [$e_c$] Modulus of elasticity of concrete [$MPa$].
+        e_cm : MPA
+            [$e_{cm}$] Modulus of elasticity of concrete [$MPa$].
         """
         super().__init__()
         self.sigma_s = sigma_s
@@ -47,8 +47,8 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
         self.f_ct_eff = f_ct_eff
         self.rho_p_eff = rho_p_eff
         self.e_s = e_s
-        self.e_c = e_c
-        self.alpha_e = e_s / e_c
+        self.e_cm = e_cm
+        self.alpha_e = e_s / e_cm
 
     @staticmethod
     def _evaluate(
@@ -57,19 +57,20 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
         f_ct_eff: MPA,
         rho_p_eff: DIMENSIONLESS,
         e_s: MPA,
-        e_c: MPA,
+        e_cm: MPA,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(sigma_s=sigma_s, k_t=k_t, f_ct_eff=f_ct_eff, rho_p_eff=rho_p_eff, e_s=e_s, e_c=e_c)
+        raise_if_negative(sigma_s=sigma_s, k_t=k_t, f_ct_eff=f_ct_eff, rho_p_eff=rho_p_eff, e_s=e_s, e_cm=e_cm)
 
-        alpha_e = e_s / e_c
-        return max((sigma_s - k_t * (f_ct_eff / rho_p_eff) * (1 + alpha_e * rho_p_eff)) / e_s, 0.6 * sigma_s / e_s)
+        alpha_e = e_s / e_cm
+        numerator = sigma_s - k_t * (f_ct_eff / rho_p_eff) * (1 + alpha_e * rho_p_eff)
+        return max(numerator / e_s, 0.6 * sigma_s / e_s)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 7.9."""
         _equation: str = (
             r"\max\left("
-            r"\frac{\sigma_s - k_t \cdot \frac{f_{ct,eff}}{\rho_{p,eff}} \cdot \left(1 + \frac{E_s}{E_c} \cdot \rho_{p,eff}\right)}{E_s}; "
+            r"\frac{\sigma_s - k_t \cdot \frac{f_{ct,eff}}{\rho_{p,eff}} \cdot \left(1 + \frac{E_s}{E_{cm}} \cdot \rho_{p,eff}\right)}{E_s}; "
             r"\frac{0.6 \cdot \sigma_s}{E_s}"
             r"\right)"
         )
@@ -81,7 +82,7 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
                 r"f_{ct,eff}": f"{self.f_ct_eff:.3f}",
                 r"\rho_{p,eff}": f"{self.rho_p_eff:.3f}",
                 r"E_s": f"{self.e_s:.3f}",
-                r"E_c": f"{self.e_c:.3f}",
+                r"E_{cm}": f"{self.e_cm:.3f}",
             },
             False,
         )

@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_10 import Form7Dot10RhoPEff
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm7Dot10RhoPEff:
@@ -13,7 +13,7 @@ class TestForm7Dot10RhoPEff:
         """Tests the evaluation of the result."""
         # Example values
         a_s = 1500.0
-        xi_1 = 0.85
+        xi_1 = 0.7225
         a_p_prime = 1200.0
         a_c_eff = 25000.0
 
@@ -28,15 +28,16 @@ class TestForm7Dot10RhoPEff:
     @pytest.mark.parametrize(
         ("a_s", "xi_1", "a_p_prime", "a_c_eff"),
         [
-            (-1500.0, 0.85, 1200.0, 25000.0),  # a_s is negative
-            (1500.0, -0.85, 1200.0, 25000.0),  # xi_1 is negative
-            (1500.0, 0.85, -1200.0, 25000.0),  # a_p_prime is negative
-            (1500.0, 0.85, 1200.0, -25000.0),  # a_c_eff is negative
+            (-1500.0, 0.7225, 1200.0, 25000.0),  # a_s is negative
+            (1500.0, -0.7225, 1200.0, 25000.0),  # xi_1 is negative
+            (1500.0, 0.7225, -1200.0, 25000.0),  # a_p_prime is negative
+            (1500.0, 0.7225, 1200.0, -25000.0),  # a_c_eff is negative
+            (1500.0, 0.7225, 1200.0, 0.0),  # a_c_eff is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, a_s: float, xi_1: float, a_p_prime: float, a_c_eff: float) -> None:
         """Test invalid values."""
-        with pytest.raises(NegativeValueError):
+        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form7Dot10RhoPEff(a_s=a_s, xi_1=xi_1, a_p_prime=a_p_prime, a_c_eff=a_c_eff)
 
     @pytest.mark.parametrize(
@@ -44,8 +45,8 @@ class TestForm7Dot10RhoPEff:
         [
             (
                 "complete",
-                r"\rho_{p,eff} = \frac{A_s + \xi_1^2 \cdot A'_p}{A_{c,eff}} = "
-                r"\frac{1500.000 + 0.850^2 \cdot 1200.000}{25000.000} = 0.095",
+                r"\rho_{p,eff} = \frac{A_s + \xi_1 \cdot A'_p}{A_{c,eff}} = "
+                r"\frac{1500.000 + 0.723 \cdot 1200.000}{25000.000} = 0.095",
             ),
             ("short", r"\rho_{p,eff} = 0.095"),
         ],
@@ -54,7 +55,7 @@ class TestForm7Dot10RhoPEff:
         """Test the latex representation of the formula."""
         # Example values
         a_s = 1500.0
-        xi_1 = 0.85
+        xi_1 = 0.7225
         a_p_prime = 1200.0
         a_c_eff = 25000.0
 

@@ -33,11 +33,12 @@ class TestForm7Dot15MaximumCrackSpacing:
             (30.0, 200.0, -300.0),  # sr_max_z is negative
             (-30.0, 200.0, 300.0),  # theta is negative
             (100.0, 200.0, 300.0),  # theta is greater than 90
+            (15.0, 200.0, 300.0),  # theta is less than or equal to 15
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, theta: float, sr_max_y: float, sr_max_z: float) -> None:
         """Test invalid values."""
-        with pytest.raises((LessOrEqualToZeroError, NegativeValueError, GreaterThan90Error)):
+        with pytest.raises((LessOrEqualToZeroError, NegativeValueError, GreaterThan90Error, ValueError)):
             Form7Dot15MaximumCrackSpacing(theta=theta, sr_max_y=sr_max_y, sr_max_z=sr_max_z)
 
     @pytest.mark.parametrize(
