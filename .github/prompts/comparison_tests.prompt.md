@@ -2,11 +2,12 @@
 
 - Write tests for all classes found in the linked file. All should be in the format as is presented in the current template. 
 - The manually calculated results should just be presented as a bool. 
-- Keep all formatting and naming conventions such as they currently are. 
+- Keep all formatting and naming conventions such as they currently are. Public docstring on top. Then pytest import. Then project imports. Then classes.
 - The latex formula always has 3 decimals. 
 - Write one test with succesful input, that retuns the answer of the equation. 
 - For all variables found in the raise_if_negative of the linked formula, write a test where its input is given as a negative value.
 - For all variables found in the raise_if_less_or_equal_to_zero of the linked formula, write a test where its input is given as zero and a test where its given as a negative value.
+- For the LaTeX complete and short presentation, make sure you add a unit at the end. For the complete_with_units, add units to all variables except for those that are dimensionless
 
 ## Template for service
 
@@ -25,11 +26,11 @@ class TestForm5Dot38aCheckRelativeSlendernessRatio:
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         # Example values
-        lambda_y = 1.0
-        lambda_z = 1.5
+        length_y = 1.0
+        length_z = 1.5
 
         # Object to test
-        formula = Form5Dot38aCheckRelativeSlendernessRatio(lambda_y=lambda_y, lambda_z=lambda_z)
+        formula = Form5Dot38aCheckRelativeSlendernessRatio(length_y=length_y, length_z=length_z)
 
         # Expected result, manually calculated
         expected_result = True
@@ -37,26 +38,32 @@ class TestForm5Dot38aCheckRelativeSlendernessRatio:
         assert formula == expected_result
 
     @pytest.mark.parametrize(
-        ("lambda_y", "lambda_z"),
+        ("length_y", "length_z"),
         [
-            (-1.0, 1.5),  # lambda_y is negative
-            (1.0, -1.5),  # lambda_z is negative
-            (0.0, 1.5),  # lambda_y is zero
-            (1.0, 0.0),  # lambda_z is zero
+            (-1.0, 1.5),  # length_y is negative
+            (1.0, -1.5),  # length_z is negative
+            (0.0, 1.5),  # length_y is zero
+            (1.0, 0.0),  # length_z is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, lambda_y: float, lambda_z: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, length_y: float, length_z: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form5Dot38aCheckRelativeSlendernessRatio(lambda_y=lambda_y, lambda_z=lambda_z)
+            Form5Dot38aCheckRelativeSlendernessRatio(length_y=length_y, length_z=length_z)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{\lambda_{y}}{\lambda_{z}} \leq 2 \text{ and } \frac{\lambda_{z}}{\lambda_{y}} \leq 2 \right) \to "
+                r"CHECK \to \left( \frac{L_{y}}{L_{z}} \leq 2 \text{ and } \frac{L_{z}}{L_{y}} \leq 2 \right) \to "
                 r"\left( \frac{1.000}{1.500} \leq 2 \text{ and } \frac{1.500}{1.000} \leq 2 \right) \to OK",
+            ),
+            (
+                "complete_with_units",
+                r"CHECK \to \left( \frac{L_{y}}{L_{z}} \leq 2 \text{ and } \frac{L_{z}}{L_{y}} \leq 2 \right) \to "
+                r"\left( \frac{1.000 \ mm}{1.500 \ mm} \leq 2 \text{ and } \frac{1.500 \ mm}{1.000 \ mm} "
+                r"\leq 2 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),
         ],
@@ -64,11 +71,11 @@ class TestForm5Dot38aCheckRelativeSlendernessRatio:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        lambda_y = 1.0
-        lambda_z = 1.5
+        length_y = 1.0
+        length_z = 1.5
 
         # Object to test
-        latex = Form5Dot38aCheckRelativeSlendernessRatio(lambda_y=lambda_y, lambda_z=lambda_z).latex()
+        latex = Form5Dot38aCheckRelativeSlendernessRatio(length_y=length_y, length_z=length_z).latex()
 
         actual = {
             "complete": latex.complete,

@@ -1,6 +1,6 @@
 ## Code notes
 
-- Write an equation such as presented in the template. 
+- Write an equation such as presented in the template. Public docstring on top. Then numpy import. Then project imports. Then classes.
 - Make sure the if statements are presented in the LaTeX fully. 
 - Keep all formatting and naming conventions such as they are presented in the template. 
 - If variable descriptions are given or found, copy precisely and fully from input or Eurocode. 
@@ -8,6 +8,7 @@
 - In the LaTeX formula, edit the return symbol such that it is the left hand side of the equation only
 - Edit the _equation variable such that it represents the right hand side of the equation only
 - LaTeX variables should be rounded to 3 decimals.  
+- The LaTex _numeric_equation_with_units should include units, except when its dimensionless
 - Import the necessary typehinting with type alias units found in type_alias.py and remove the unused imported type aliases. Forces in N, (Bending) moments in Nmm, distances in mm, areas in mm^2, Stress in MPa, angles in DEG, no unit is DIMENSIONLESS. When dealing with angles, use np.deg2rad.
 
 ## Template for service
@@ -63,11 +64,18 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.10a/bN."""
-        _equation: str = r"\begin{cases} 0.600 & \text{if } f_{ck} \leq 60 MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) & \text{if } f_{ck} > 60 MPa \end{cases}"
+        _equation: str = r"\begin{cases} 0.600 & \text{if } f_{ck} \leq 60 \ MPa \\ \max\left(0.9 - \frac{f_{ck}}{200}, 0.5\right) & \text{if } f_{ck} > 60 \ MPa \end{cases}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 "f_{ck}": f"{self.f_ck:.3f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                "f_{ck}": rf"{self.f_ck:.3f} \ MPa",
             },
             False,
         )
@@ -76,6 +84,7 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
             result=f"{self:.3f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units
             comparison_operator_label="=",
             unit="-",
         )

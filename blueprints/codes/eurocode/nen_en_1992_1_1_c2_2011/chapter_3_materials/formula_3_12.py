@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
 class Form3Dot12AutogeneShrinkageInfinity(Formula):
-    """Class representing formula 3.12, which calculates the autogene shrinkage at infinity."""
+    """Class representing formula 3.12, which calculates the autogeneous shrinkage strain at t=infinity."""
 
     source_document = NEN_EN_1992_1_1_C2_2011
     label = "3.12"
@@ -16,9 +16,8 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[$\epsilon_{ca}(\infty)$] Autogene shrinkage at infinity [$-$].
-
-        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.12)
+        r"""[$\epsilon_{ca}(\infty)$] Autogeneous shrinkage strain at t=infinity [$-$].
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.12).
 
         Parameters
         ----------

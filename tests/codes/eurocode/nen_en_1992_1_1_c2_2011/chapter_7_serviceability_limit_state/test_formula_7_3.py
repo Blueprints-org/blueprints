@@ -55,9 +55,9 @@ class TestForm7Dot3CoefficientKc:
             (
                 "complete",
                 r"k_c = \max\left(0.9 \cdot \frac{F_{cr}}{A_{ct} \cdot f_{ct,eff}}, 0.5\right) = "
-                r"\max\left(0.9 \cdot \frac{457.000}{50000.000 \cdot 2.900}, 0.5\right) = 2.837",
+                r"\max\left(0.9 \cdot \frac{457.000}{50000.000 \cdot 2.900}, 0.5\right) = 2.837 \ -",
             ),
-            ("short", r"k_c = 2.837"),
+            ("short", r"k_c = 2.837 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
