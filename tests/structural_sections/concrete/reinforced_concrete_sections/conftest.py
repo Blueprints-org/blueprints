@@ -8,6 +8,10 @@ from blueprints.structural_sections.concrete.covers import CoversRectangular
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.circular import CircularReinforcedCrossSection
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import (
+    ReinforcementByDistance,
+    ReinforcementByQuantity,
+)
 
 
 @pytest.fixture
@@ -96,3 +100,23 @@ def circular_reinforced_cross_section() -> CircularReinforcedCrossSection:
     cs.add_longitudinal_rebar(rebar=Rebar(diameter=16, x=0, y=0, material=reinforcement_steel))
 
     return cs
+
+
+@pytest.fixture
+def reinforcement_by_distance() -> ReinforcementByDistance:
+    """Creates a reinforcement by distance configuration."""
+    return ReinforcementByDistance(
+        diameter=12,
+        center_to_center=100,
+        material=ReinforcementSteelMaterial(),
+    )
+
+
+@pytest.fixture
+def reinforcement_by_quantity() -> ReinforcementByQuantity:
+    """Creates a reinforcement by quantity configuration."""
+    return ReinforcementByQuantity(
+        diameter=12,
+        material=ReinforcementSteelMaterial(),
+        n=10,
+    )

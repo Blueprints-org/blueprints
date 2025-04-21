@@ -13,15 +13,6 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinfo
 class TestReinforcementByDistance:
     """Tests for the reinforcement by distance configuration."""
 
-    @pytest.fixture
-    def reinforcement_by_distance(self) -> ReinforcementByDistance:
-        """Creates a reinforcement by distance configuration."""
-        return ReinforcementByDistance(
-            diameter=12,
-            center_to_center=100,
-            material=ReinforcementSteelMaterial(),
-        )
-
     def test_n_rebars_per_meter(self, reinforcement_by_distance: ReinforcementByDistance) -> None:
         """Test the number of rebars per meter."""
         n_rebars_per_meter = reinforcement_by_distance.n_rebars_per_meter
@@ -57,15 +48,6 @@ class TestReinforcementByDistance:
 
 class TestReinforcementByQuantity:
     """Tests for the reinforcement by quantity configuration."""
-
-    @pytest.fixture
-    def reinforcement_by_quantity(self) -> ReinforcementByQuantity:
-        """Creates a reinforcement by quantity configuration."""
-        return ReinforcementByQuantity(
-            diameter=12,
-            material=ReinforcementSteelMaterial(),
-            n=10,
-        )
 
     def test_area(self, reinforcement_by_quantity: ReinforcementByQuantity) -> None:
         """Test the area of the reinforcement."""
