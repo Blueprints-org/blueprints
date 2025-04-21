@@ -20,16 +20,16 @@ class HexagonalCrossSection(CrossSection):
     side_length : MM
         The side length of the hexagonal cross-section [mm].
     x : MM
-        The x-coordinate of the hexagon's center.
+        The x-coordinate of the hexagon's center. Default is 0.
     y : MM
-        The y-coordinate of the hexagon's center.
+        The y-coordinate of the hexagon's center. Default is 0.
     name : str
         The name of the rectangular cross-section, default is "Hexagon".
     """
 
     side_length: MM
-    x: MM
-    y: MM
+    x: MM = 0
+    y: MM = 0
     name: str = "Hexagon"
 
     def __post_init__(self) -> None:
@@ -41,7 +41,7 @@ class HexagonalCrossSection(CrossSection):
     @property
     def radius(self) -> MM:
         """
-        Calculate the radius of the circumscribed circle of the hexagon [mm].
+        Calculate the radius of the circumscribed circle of the hexagon (farthest point from the center) [mm].
 
         Returns
         -------
@@ -49,6 +49,18 @@ class HexagonalCrossSection(CrossSection):
             The radius of the circumscribed circle.
         """
         return self.side_length
+
+    @property
+    def apothem(self) -> MM:
+        """
+        Calculate the apothem of the hexagon (distance from center to midpoint of a side) [mm].
+
+        Returns
+        -------
+        MM
+            The apothem of the hexagon.
+        """
+        return self.side_length * math.sqrt(3) / 2
 
     @property
     def polygon(self) -> Polygon:
@@ -134,7 +146,7 @@ class HexagonalCrossSection(CrossSection):
         MM3
             The elastic section modulus about the y-axis.
         """
-        return self.moment_of_inertia_about_y / (self.side_length * math.sqrt(3) / 2)
+        return self.moment_of_inertia_about_y / self.apothem
 
     @property
     def elastic_section_modulus_about_y_negative(self) -> MM3:
@@ -146,7 +158,7 @@ class HexagonalCrossSection(CrossSection):
         MM3
             The elastic section modulus about the y-axis.
         """
-        return self.moment_of_inertia_about_y / (self.side_length * math.sqrt(3) / 2)
+        return self.moment_of_inertia_about_y / self.apothem
 
     @property
     def elastic_section_modulus_about_z_positive(self) -> MM3:
@@ -158,7 +170,7 @@ class HexagonalCrossSection(CrossSection):
         MM3
             The elastic section modulus about the z-axis.
         """
-        return self.moment_of_inertia_about_z / (self.side_length)
+        return self.moment_of_inertia_about_z / self.side_length
 
     @property
     def elastic_section_modulus_about_z_negative(self) -> MM3:
@@ -170,7 +182,7 @@ class HexagonalCrossSection(CrossSection):
         MM3
             The elastic section modulus about the z-axis.
         """
-        return self.moment_of_inertia_about_z / (self.side_length)
+        return self.moment_of_inertia_about_z / self.side_length
 
     @property
     def plastic_section_modulus_about_y(self) -> MM3:
