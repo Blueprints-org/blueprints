@@ -105,12 +105,14 @@ class ReinforcementByDistance(ReinforcementConfiguration):
         List[Rebar]
             List of Rebar objects.
         """
-        # max(int(n), 1) is used to ensure that at least one rebar is placed
+        if line.is_closed:
+            raise ValueError("Reinforcement configuration cannot be applied to closed lines. Start and end points must be different.")
+
         rebars = []
 
         # define the number of rebars based on the length of the line, minimum 1
         n_rebars = line.length / self.center_to_center
-        n_rebars_applied = max(int(n_rebars), 1)
+        n_rebars_applied = max(int(n_rebars), 1)  # at least one rebar
 
         # calculate the space between the rebars
         side_buffer = (line.length - (n_rebars_applied - 1) * self.center_to_center) / 2
@@ -150,6 +152,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
     ----------
     n : int
         Amount of longitudinal bars.
+
     """
 
     n: int
@@ -166,7 +169,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
             msg = f"Number of rebars must be an integer, got {self.n}"
             raise TypeError(msg)
 
-        # check that n is at least 2
+        # check that n is at least 1
         minimum_number_of_rebars = 1
         if self.n < minimum_number_of_rebars:
             msg = f"Number of rebars must be at least {minimum_number_of_rebars}, got {self.n}"
@@ -190,10 +193,16 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
         -------
         List[Rebar]
             List of Rebar objects.
+
         """
         rebars = []
+
+        # for closed lines, the first and last point in the line are the same
+        # so to avoid placing a rebar in the same position, we need to remove one of them
+        space_between_bars = line.length / self.n if line.is_closed else line.length / (self.n - 1)
+
         for index in range(self.n):
-            distance = index * line.length / (self.n - 1)
+            distance = index * space_between_bars
             point = line.interpolate(distance)
             rebars.append(
                 Rebar(
