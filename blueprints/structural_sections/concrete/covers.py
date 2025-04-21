@@ -44,22 +44,3 @@ class CoversRectangular:
     def validate(self) -> None:
         """Validate the covers."""
         raise_if_negative(upper=self.upper, right=self.right, lower=self.lower, left=self.left)
-
-
-@dataclass(frozen=True)
-class CoversCircular:
-    """Representation of the covers of a circular cross-section."""
-
-    cover: MM = DEFAULT_COVER
-
-    def __post_init__(self) -> None:
-        """Post initialization of the covers."""
-        self.validate()
-
-    def get_covers_info(self) -> str:
-        """Return a string with the cover of the cross-section."""
-        return f"Cover: {self.cover:.0f} mm"
-
-    def validate(self) -> None:
-        """Validate the cover."""
-        raise_if_negative(cover=self.cover)
