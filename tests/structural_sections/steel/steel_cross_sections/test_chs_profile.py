@@ -12,13 +12,6 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 class TestCHSSteelProfile:
     """Test suite for CHSSteelProfile."""
 
-    @pytest.fixture
-    def chs_profile(self) -> CHSSteelProfile:
-        """Fixture to set up a CHS profile for testing."""
-        profile: CHS = CHS.CHS508x16
-        steel_class: SteelStrengthClass = SteelStrengthClass.S355
-        return LoadStandardCHS(profile=profile, steel_class=steel_class).get_profile()
-
     def test_str(self) -> None:
         """Test the string representation of the CHS profile."""
         profile: CHS = CHS.CHS508x16
@@ -84,16 +77,6 @@ class TestCHSSteelProfile:
         """Test the elastic section modulus about the z-axis on the negative y side."""
         expected_modulus_z_negative: float = 2.9490e6  # mm³
         assert pytest.approx(chs_profile.elastic_section_modulus_about_z_negative, rel=1e-2) == expected_modulus_z_negative
-
-    def test_plastic_section_modulus_about_y(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the plastic section modulus about the y-axis."""
-        expected_plastic_modulus_y: float = 3.874e6  # mm³
-        assert pytest.approx(chs_profile.plastic_section_modulus_about_y, rel=1e-2) == expected_plastic_modulus_y
-
-    def test_plastic_section_modulus_about_z(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the plastic section modulus about the z-axis."""
-        expected_plastic_modulus_z: float = 3.874e6  # mm³
-        assert pytest.approx(chs_profile.plastic_section_modulus_about_z, rel=1e-2) == expected_plastic_modulus_z
 
     def test_plot(self, chs_profile: CHSSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""

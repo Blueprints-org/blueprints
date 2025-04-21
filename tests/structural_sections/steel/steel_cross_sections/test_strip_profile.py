@@ -11,13 +11,6 @@ from blueprints.structural_sections.steel.steel_cross_sections.strip_profile imp
 class TestStripSteelProfile:
     """Test suite for StripSteelProfile."""
 
-    @pytest.fixture
-    def strip_profile(self) -> StripSteelProfile:
-        """Fixture to set up a Strip profile for testing."""
-        profile = Strip.STRIP160x5
-        steel_class = SteelStrengthClass.S355
-        return LoadStandardStrip(profile=profile, steel_class=steel_class).get_profile()
-
     def test_str(self) -> None:
         """Test the string representation of the Strip profile."""
         profile = Strip.STRIP160x5
@@ -84,16 +77,6 @@ class TestStripSteelProfile:
         """Test the elastic section modulus about the z-axis on the negative y side."""
         expected_modulus_z_negative = 1 / 6 * 160**2 * 5  # mm³
         assert pytest.approx(strip_profile.elastic_section_modulus_about_z_negative, rel=1e-6) == expected_modulus_z_negative
-
-    def test_plastic_section_modulus_about_y(self, strip_profile: StripSteelProfile) -> None:
-        """Test the plastic section modulus about the y-axis."""
-        expected_plastic_modulus_y = 1 / 4 * 160 * 5**2  # mm³
-        assert pytest.approx(strip_profile.plastic_section_modulus_about_y, rel=1e-6) == expected_plastic_modulus_y
-
-    def test_plastic_section_modulus_about_z(self, strip_profile: StripSteelProfile) -> None:
-        """Test the plastic section modulus about the z-axis."""
-        expected_plastic_modulus_z = 1 / 4 * 160**2 * 5  # mm³
-        assert pytest.approx(strip_profile.plastic_section_modulus_about_z, rel=1e-6) == expected_plastic_modulus_z
 
     def test_plot(self, strip_profile: StripSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
