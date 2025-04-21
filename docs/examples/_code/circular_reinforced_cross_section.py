@@ -2,7 +2,6 @@
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
-from blueprints.structural_sections.concrete.covers import CoversCircular
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.circular import CircularReinforcedCrossSection
 
 # Define a concrete material
@@ -14,7 +13,7 @@ steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B
 # Define a circular reinforced cross-section
 cs = CircularReinforcedCrossSection(
     diameter=400,
-    covers=CoversCircular(cover=35),
+    cover=35,
     concrete_material=concrete,
 )
 
@@ -23,7 +22,6 @@ cs.add_longitudinal_reinforcement_by_quantity(
     n=5,
     diameter=25,
     material=steel,
-    start_on_half_increment=False,
 )
 
 # Add longitudinal reinforcement to the cross-section
@@ -31,7 +29,7 @@ cs.add_longitudinal_reinforcement_by_quantity(
     n=5,
     diameter=16,
     material=steel,
-    start_on_half_increment=True,
+    start_angle=45,
 )
 
 # Add stirrups to the cross-section
