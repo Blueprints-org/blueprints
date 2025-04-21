@@ -4,15 +4,16 @@ from matplotlib import pyplot as plt
 from numpy import cos, pi, sin
 from shapely import LineString, Polygon
 
+from blueprints.geometry.operations import rotate_linearring
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.concrete.covers import CoversCircular
+from blueprints.structural_sections.concrete.covers import DEFAULT_COVER
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.base import ReinforcedCrossSection
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.circular import CircularCrossSectionPlotter
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
-from blueprints.type_alias import DIMENSIONLESS, MM, RATIO
+from blueprints.type_alias import DEG, DIMENSIONLESS, MM, RATIO
 
 
 class CircularReinforcedCrossSection(ReinforcedCrossSection):
@@ -24,16 +25,11 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         The diameter of the circular cross-section [mm].
     concrete_material : ConcreteMaterial
         Material properties of the concrete.
-    covers : CoversCircular, optional
-        The reinforcement covers for the cross-section [mm]. The default is 50 mm.
+    cover : MM, optional
+        The reinforcement cover for the cross-section [mm]. The default is 50 mm.
     """
 
-    def __init__(
-        self,
-        diameter: MM,
-        concrete_material: ConcreteMaterial,
-        covers: CoversCircular = CoversCircular(),
-    ) -> None:
+    def __init__(self, diameter: MM, concrete_material: ConcreteMaterial, cover: MM = DEFAULT_COVER) -> None:
         """Initialize the circular reinforced concrete section."""
         super().__init__(
             cross_section=CircularCrossSection(
@@ -44,7 +40,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             concrete_material=concrete_material,
         )
         self.diameter = diameter
-        self.covers = covers
+        self.cover = cover
         self.plotter = CircularCrossSectionPlotter(cross_section=self)
 
     def add_stirrup_along_perimeter(
@@ -94,7 +90,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Newly created stirrup configuration inside the cross-section.
         """
         # create the stirrup configuration based on the covers present
-        radius = self.diameter / 2 - self.covers.cover - (diameter / 2)
+        radius = self.diameter / 2 - self.cover - (diameter / 2)
         stirrup_geometry = Polygon([(radius * cos(angle), radius * sin(angle)) for angle in [2 * pi * i / 100 for i in range(100)]])
 
         # add the stirrup configuration
@@ -118,8 +114,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         self,
         diameter: MM,
         cover: MM | None = None,
-        end_at_start: bool = False,
-        start_on_half_increment: bool = False,
+        start_angle: DEG = 90.0,
     ) -> LineString:
         """Get the reference circle for the cross-section.
 
@@ -129,14 +124,10 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Diameter of the rebars [mm].
         cover: MM, optional
             Cover of the rebars [mm]. If not provided, the default cover is used.
-        end_at_start: bool, optional
-            If True, the circle is rotated by half the increment.
-            If False, the rebar is placed at the top of the cross-section.
-            Default is False.
-        start_on_half_increment: bool, optional
-            If True, the circle is rotated by half the increment.
-            If False, the rebar is placed at the top of the cross-section.
-            Default is False.
+        start_angle: DEG
+            Starting position of the reference line in degrees. 90 degrees is the top of the circle.
+            0 degrees is the right side of the circle. 180 degrees is the right side of the circle.
+            Default is 90 degrees.
 
         Returns
         -------
@@ -144,8 +135,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Reference circle for the cross-section.
         """
         # calculate the effective radius for the rebars
-        end_at_start, start_on_half_increment
-        cover = cover if cover is not None else self.covers.cover
+        cover = cover if cover is not None else self.cover
 
         # check if there is a stirrup configuration present to adjust the radius
         max_stirrups_diameter = 0.0
@@ -154,9 +144,10 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
 
         radius = self.diameter / 2 - cover - max_stirrups_diameter - (diameter / 2)
 
-        # create the circle using shapely's LineString
-        angles = [pi / 2 - 2 * pi * i / 360 for i in range(360)]
-        return LineString([(radius * cos(angle), radius * sin(angle)) for angle in angles])
+        # create the circle using shapely's Point and buffer
+        circle = self.cross_section.centroid.buffer(radius, resolution=360, join_style="round")
+
+        return rotate_linearring(linearring=circle.exterior, angle_degrees=start_angle)
 
     def add_longitudinal_reinforcement_by_quantity(
         self,
@@ -164,7 +155,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         diameter: MM,
         material: ReinforcementSteelMaterial,
         cover: MM | None = None,
-        start_on_half_increment: bool = False,
+        start_angle: DEG = 90.0,
     ) -> None:
         """Add longitudinal reinforcement to the cross-section based on the quantity configuration of rebars.
 
@@ -178,23 +169,20 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
             Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
         cover: MM, optional
             Cover of the rebars [mm]. If not provided, the default cover is used.
-        start_on_half_increment: bool, optional
-            If True, the circle is rotated by half the increment.
-            If False, the rebar is placed at the top of the cross-section.
-            Default is False.
+        start_angle: DEG
+            Starting position of the first rebar. Default is 90 degrees which is the top of the circle.
+            0 degrees is the right side of the circle. 180 degrees is the right side of the circle.
         """
-        line = self._get_reference_line(diameter=diameter, cover=cover)
-        assert line
-
         return self.add_reinforcement_configuration(
-            line=self._get_reference_line,
             configuration=ReinforcementByQuantity(
-                diameter=diameter, material=material, n=n, end_at_start=True, start_on_half_increment=start_on_half_increment
+                diameter=diameter,
+                material=material,
+                n=n,
             ),
+            line=self._get_reference_line,
             cover=cover,
-            start_on_half_increment=start_on_half_increment,
             diameter=diameter,
-            end_at_start=True,
+            start_angle=start_angle,
         )
 
     def plot(self, *args, **kwargs) -> plt.Figure:
