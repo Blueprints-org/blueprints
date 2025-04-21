@@ -6,7 +6,7 @@ from matplotlib import patches as mplpatches
 from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Point
 
-from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
+from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import SteelCrossSection
 from blueprints.structural_sections.steel.steel_element import SteelElement
 
 # Define color

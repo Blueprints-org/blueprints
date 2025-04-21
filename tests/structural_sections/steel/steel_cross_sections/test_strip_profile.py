@@ -82,3 +82,8 @@ class TestStripSteelProfile:
         """Test the plot method (ensure it runs without errors)."""
         fig = strip_profile.plot(show=False)
         assert isinstance(fig, plt.Figure)
+
+    def test_geometry(self, strip_profile: StripSteelProfile) -> None:
+        """Test the geometry of the Strip profile."""
+        expected_geometry = strip_profile.geometry
+        assert expected_geometry is not None

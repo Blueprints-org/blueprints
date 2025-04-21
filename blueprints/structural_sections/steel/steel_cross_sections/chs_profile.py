@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_3_materials.table_3_1 import SteelStrengthClass
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections.base import SteelCrossSection
+from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import SteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.steel_element import SteelElement

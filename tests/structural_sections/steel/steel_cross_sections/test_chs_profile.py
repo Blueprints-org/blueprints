@@ -82,3 +82,8 @@ class TestCHSSteelProfile:
         """Test the plot method (ensure it runs without errors)."""
         fig: Figure = chs_profile.plot()
         assert isinstance(fig, plt.Figure)
+
+    def test_geometry(self, chs_profile: CHSSteelProfile) -> None:
+        """Test the geometry of the Strip profile."""
+        expected_geometry = chs_profile.geometry
+        assert expected_geometry is not None
