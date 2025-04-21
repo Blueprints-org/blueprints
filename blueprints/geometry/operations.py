@@ -3,7 +3,8 @@
 import math
 from enum import Enum, auto
 
-from shapely import Point
+import numpy as np
+from shapely import LinearRing, Point
 
 from blueprints.type_alias import RAD
 
@@ -81,3 +82,58 @@ def calculate_rotation_angle(
         angle += 2 * math.pi
 
     return angle
+
+
+def rotate_linearring(linearring: LinearRing, angle_degrees: float) -> LinearRing:
+    """
+    Rotate a Shapely LinearRing around its centroid by a specified angle.
+
+    Parameters
+    ----------
+    linearring : LinearRing
+        The Shapely LinearRing to be rotated
+    angle_degrees : float
+        The rotation angle in degrees (positive for counterclockwise)
+
+    Returns
+    -------
+    LinearRing
+        A new LinearRing that has been rotated
+
+    Examples
+    --------
+    >>> from shapely.geometry import LinearRing
+    >>> square = LinearRing([(0, 0), (1, 0), (1, 1), (0, 1)])
+    >>> rotated = rotate_linearring(square, 45)
+    """
+    # Convert angle from degrees to radians
+    angle_radians = np.radians(angle_degrees)
+
+    # Get the centroid as the rotation point
+    centroid = linearring.centroid
+
+    # Extract coordinates from the LinearRing
+    coords = list(linearring.coords)
+
+    # Create rotation matrix
+    rotation_matrix = np.array([[np.cos(angle_radians), -np.sin(angle_radians)], [np.sin(angle_radians), np.cos(angle_radians)]])
+
+    # Initialize an empty list for the rotated coordinates
+    rotated_coords = []
+
+    # Rotate each point around the centroid
+    for point in coords:
+        # Translate point to origin (subtract centroid coordinates)
+        translated = np.array([point[0] - centroid.x, point[1] - centroid.y])
+
+        # Apply rotation
+        rotated_point = np.dot(rotation_matrix, translated)
+
+        # Translate back (add centroid coordinates)
+        final_point = (rotated_point[0] + centroid.x, rotated_point[1] + centroid.y)
+
+        # Append to the list of rotated coordinates
+        rotated_coords.append(final_point)
+
+    # Create and return a new LinearRing with the rotated coordinates
+    return LinearRing(rotated_coords)
