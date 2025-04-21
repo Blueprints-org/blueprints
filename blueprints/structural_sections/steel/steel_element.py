@@ -113,7 +113,7 @@ class SteelElement:
         return self.material.density * (self.cross_section.area * MM2_TO_M2)
 
     @property
-    def yield_strength(self) -> MPA | None:
+    def yield_strength(self) -> MPA:
         """
         Calculate the yield strength of the steel element.
 
@@ -122,10 +122,13 @@ class SteelElement:
         MPa
             The yield strength of the steel element.
         """
-        return self.material.yield_strength(thickness=self.nominal_thickness)
+        fy = self.material.yield_strength(thickness=self.nominal_thickness)
+        if fy is None:
+            raise ValueError("Yield strength is not defined for this material.")
+        return fy
 
     @property
-    def ultimate_strength(self) -> MPA | None:
+    def ultimate_strength(self) -> MPA:
         """
         Calculate the ultimate strength of the steel element.
 
@@ -134,4 +137,7 @@ class SteelElement:
         MPa
             The ultimate strength of the steel element.
         """
-        return self.material.ultimate_strength(thickness=self.nominal_thickness)
+        fu = self.material.ultimate_strength(thickness=self.nominal_thickness)
+        if fu is None:
+            raise ValueError("Ultimate strength is not defined for this material.")
+        return fu
