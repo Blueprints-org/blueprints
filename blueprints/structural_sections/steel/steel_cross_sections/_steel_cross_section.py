@@ -38,26 +38,6 @@ class SteelCrossSection(ABC):
             combined_polygon = combined_polygon.union(element.polygon)
         return combined_polygon
 
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the cross-section.
-
-        Properties
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        """
-        if mesh_size is None:
-            mesh_size = 2.0
-
-        circular = Geometry(geom=self.polygon)
-        circular.create_mesh(mesh_sizes=mesh_size)
-        return circular
-
     @property
     def steel_volume_per_meter(self) -> M3_M:
         """Total volume of the reinforced cross-section per meter length [m³/m]."""
@@ -70,7 +50,7 @@ class SteelCrossSection(ABC):
         return self.steel_material.density * self.steel_volume_per_meter
 
     @property
-    def steel_area(self) -> MM2:
+    def area(self) -> MM2:
         """Total cross sectional area of the steel element [mm²]."""
         return sum(element.area for element in self.elements)
 
@@ -79,8 +59,8 @@ class SteelCrossSection(ABC):
         """Centroid of the steel cross-section."""
         area_weighted_centroids_x = sum(element.centroid.x * element.area for element in self.elements)
         area_weighted_centroids_y = sum(element.centroid.y * element.area for element in self.elements)
-        centroid_x = area_weighted_centroids_x / self.steel_area
-        centroid_y = area_weighted_centroids_y / self.steel_area
+        centroid_x = area_weighted_centroids_x / self.area
+        centroid_y = area_weighted_centroids_y / self.area
         return Point(centroid_x, centroid_y)
 
     @property
@@ -121,9 +101,29 @@ class SteelCrossSection(ABC):
         distance_to_left = self.centroid.x - min(x for element in self.elements for x, _ in element.geometry.points)
         return self.moment_of_inertia_about_z / distance_to_left
 
+    def geometry(
+        self,
+        mesh_size: MM | None = None,
+    ) -> Geometry:
+        """Return the geometry of the cross-section.
+
+        Properties
+        ----------
+        mesh_size : MM
+            Maximum mesh element area to be used within
+            the Geometry-object finite-element mesh. If not provided, a default value will be used.
+
+        """
+        if mesh_size is None:
+            mesh_size = 2.0
+
+        geom = Geometry(geom=self.polygon)
+        geom.create_mesh(mesh_sizes=mesh_size)
+        return geom
+
     def section(self) -> Section:
         """Section object representing the cross-section."""
-        return Section(geometry=self.geometry())
+        return Section(geometry=self.geometry)
 
     def section_properties(
         self,

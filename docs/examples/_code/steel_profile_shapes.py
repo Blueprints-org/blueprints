@@ -21,7 +21,7 @@ print(f"Moment of inertia about y-axis: {chs_profile.moment_of_inertia_about_y} 
 print(f"Moment of inertia about z-axis: {chs_profile.moment_of_inertia_about_z} mm⁴")
 print(f"Elastic section modulus about y-axis: {chs_profile.elastic_section_modulus_about_y_negative} mm³")
 print(f"Elastic section modulus about z-axis: {chs_profile.elastic_section_modulus_about_z_positive} mm³")
-print(f"Area: {chs_profile.steel_area} mm²")
+print(f"Area: {chs_profile.area} mm²")
 
 # Example usage for custom CHS profile
 custom_chs_profile = CHSSteelProfile(outer_diameter=150, wall_thickness=10, steel_class=steel_class)
@@ -34,7 +34,7 @@ strip_profile.plot(show=True)
 # Example usage for custom Strip profile
 custom_strip_profile = StripSteelProfile(
     width=100,
-    height=30,
+    height=41,
     steel_class=steel_class,
 )
 custom_strip_profile.plot(show=True)

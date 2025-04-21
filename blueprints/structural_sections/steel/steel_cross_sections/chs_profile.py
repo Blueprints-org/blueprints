@@ -44,7 +44,7 @@ class CHSSteelProfile(SteelCrossSection):
             y=0,
         )
         self.steel_material = SteelMaterial(steel_class=steel_class)
-        self.elements = [SteelElement(cross_section=self.chs, material=self.steel_material)]
+        self.elements = [SteelElement(cross_section=self.chs, material=self.steel_material, nominal_thickness=self.thickness)]
 
     def plot(self, *args, **kwargs) -> plt.Figure:
         """Plot the cross-section. Making use of the standard plotter.

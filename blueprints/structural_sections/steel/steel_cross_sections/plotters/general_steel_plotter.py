@@ -58,7 +58,7 @@ def plot_shapes(
     ax.plot(profile.centroid.x, profile.centroid.y, "o", color="black")
 
     # Add legend text
-    legend_text = f"Total area: {profile.steel_area:.1f} mm²\n"
+    legend_text = f"Total area: {profile.area:.1f} mm²\n"
     legend_text += f"Weight per meter: {profile.steel_weight_per_meter:.1f} kg/m\n"
     legend_text += f"Moment of inertia about y: {profile.moment_of_inertia_about_y:.0f} mm⁴\n"
     legend_text += f"Moment of inertia about z: {profile.moment_of_inertia_about_z:.0f} mm⁴\n"

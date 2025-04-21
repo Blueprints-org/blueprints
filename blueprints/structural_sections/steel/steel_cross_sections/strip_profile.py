@@ -34,6 +34,7 @@ class StripSteelProfile(SteelCrossSection):
         """Initialize the Steel Strip profile."""
         self.width = width
         self.height = height
+        self.thickness = min(width, height)  # Nominal thickness is the minimum of width and height
 
         self.strip = RectangularCrossSection(
             name="Steel Strip",
@@ -44,7 +45,8 @@ class StripSteelProfile(SteelCrossSection):
         )
 
         self.steel_material = SteelMaterial(steel_class=steel_class)
-        self.elements = [SteelElement(cross_section=self.strip, material=self.steel_material)]
+
+        self.elements = [SteelElement(cross_section=self.strip, material=self.steel_material, nominal_thickness=self.thickness)]
 
     def plot(self, *args, **kwargs) -> plt.Figure:
         """Plot the cross-section. Making use of the standard plotter.

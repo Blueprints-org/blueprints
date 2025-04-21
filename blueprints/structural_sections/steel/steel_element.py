@@ -23,12 +23,12 @@ class SteelElement:
     material : SteelMaterial
         The material of the steel element.
     nominal_thickness : MM
-        The nominal thickness of the steel element, default is 10.0 mm.
+        The nominal thickness of the steel element
     """
 
     cross_section: CrossSection
     material: SteelMaterial
-    nominal_thickness: MM = 10.0  # mm
+    nominal_thickness: MM
 
     def __post_init__(self) -> None:
         """Check if the material is a SteelMaterial."""

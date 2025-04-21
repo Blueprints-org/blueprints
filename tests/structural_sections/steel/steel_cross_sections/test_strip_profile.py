@@ -37,10 +37,10 @@ class TestStripSteelProfile:
         expected_weight = 0.160 * 0.005 * 7850  # kg/m
         assert pytest.approx(strip_profile.steel_weight_per_meter, rel=1e-6) == expected_weight
 
-    def test_steel_area(self, strip_profile: StripSteelProfile) -> None:
+    def test_area(self, strip_profile: StripSteelProfile) -> None:
         """Test the steel cross-sectional area."""
         expected_area = 160 * 5  # mm²
-        assert pytest.approx(strip_profile.steel_area, rel=1e-6) == expected_area
+        assert pytest.approx(strip_profile.area, rel=1e-6) == expected_area
 
     def test_centroid(self, strip_profile: StripSteelProfile) -> None:
         """Test the centroid of the steel cross-section."""
@@ -87,3 +87,16 @@ class TestStripSteelProfile:
         """Test the geometry of the Strip profile."""
         expected_geometry = strip_profile.geometry
         assert expected_geometry is not None
+
+    def test_section_properties(self, strip_profile: StripSteelProfile) -> None:
+        """Test the section properties of the Strip profile."""
+        section_properties = strip_profile.section_properties()
+        assert section_properties.mass == pytest.approx(expected=strip_profile.area, rel=1e-2)
+        assert section_properties.cx == pytest.approx(expected=strip_profile.centroid.x, rel=1e-2)
+        assert section_properties.cy == pytest.approx(expected=strip_profile.centroid.y, rel=1e-2)
+        assert section_properties.ixx_c == pytest.approx(expected=strip_profile.moment_of_inertia_about_y, rel=1e-2)
+        assert section_properties.iyy_c == pytest.approx(expected=strip_profile.moment_of_inertia_about_z, rel=1e-2)
+        assert section_properties.zxx_plus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_y_positive, rel=1e-2)
+        assert section_properties.zyy_plus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_z_positive, rel=1e-2)
+        assert section_properties.zxx_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_y_negative, rel=1e-2)
+        assert section_properties.zyy_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_z_negative, rel=1e-2)
