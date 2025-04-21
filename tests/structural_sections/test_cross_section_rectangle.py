@@ -78,3 +78,13 @@ class TestRectangularCrossSection:
         """Test the section properties of the RectangularCrossSection class."""
         assert rectangular_cross_section_section_properties.syy == pytest.approx(expected=500000.0, rel=1e-6)
         assert rectangular_cross_section_section_properties.sxx == pytest.approx(expected=1000000.0, rel=1e-6)
+
+    def test_geometry(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the geometry property of the RectangularCrossSection class."""
+        geometry = rectangular_cross_section.geometry()
+        assert geometry is not None
+
+    def test_section_properties(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the section properties of the RectangularCrossSection class."""
+        section_properties = rectangular_cross_section.section_properties()
+        assert section_properties.mass == pytest.approx(expected=rectangular_cross_section.area, rel=1e-2)
