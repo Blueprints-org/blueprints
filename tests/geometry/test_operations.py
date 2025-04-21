@@ -3,9 +3,9 @@
 import math
 
 import pytest
-from shapely import Point
+from shapely import LinearRing, Point
 
-from blueprints.geometry.operations import CoordinateSystemOptions, calculate_rotation_angle
+from blueprints.geometry.operations import CoordinateSystemOptions, calculate_rotation_angle, rotate_linearring
 from blueprints.type_alias import RAD
 
 
@@ -81,3 +81,41 @@ class TestCalculateRotationAngle:
         """Test if the rotation angle is calculated correctly for the given keypoints and coordinate system."""
         result = calculate_rotation_angle(start_point=start_point, end_point=end_point, coordinate_system=coordinate_system)
         assert result == expected_result
+
+
+class TestRotateLinearRing:
+    """Tests for the rotate_linearring function."""
+
+    @pytest.mark.parametrize(
+        ("linearring", "angle_degrees", "expected_coords"),
+        [
+            # Test case: No rotation (0 degrees)
+            (LinearRing([(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]), 0, [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]),
+            # Test case: 90 degrees rotation
+            (LinearRing([(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]), 90, [(0, 1), (-1, 0), (0, -1), (1, 0), (0, 1)]),
+            # Test case: 180 degrees rotation
+            (LinearRing([(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]), 180, [(-1, 0), (0, -1), (1, 0), (0, 1), (-1, 0)]),
+            # Test case: 270 degrees rotation
+            (LinearRing([(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]), 270, [(0, -1), (1, 0), (0, 1), (-1, 0), (0, -1)]),
+            # Test case: 360 degrees rotation (full rotation)
+            (LinearRing([(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]), 360, [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]),
+            # Test case: 45 degrees rotation
+            (
+                LinearRing([(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]),
+                45,
+                [
+                    (math.sqrt(2) / 2, math.sqrt(2) / 2),
+                    (-math.sqrt(2) / 2, math.sqrt(2) / 2),
+                    (-math.sqrt(2) / 2, -math.sqrt(2) / 2),
+                    (math.sqrt(2) / 2, -math.sqrt(2) / 2),
+                    (math.sqrt(2) / 2, math.sqrt(2) / 2),
+                ],
+            ),
+            # Test case: Negative rotation (-90 degrees)
+            (LinearRing([(1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)]), -90, [(0, -1), (1, 0), (0, 1), (-1, 0), (0, -1)]),
+        ],
+    )
+    def test_rotation(self, linearring: LinearRing, angle_degrees: float, expected_coords: list) -> None:
+        """Test if the LinearRing is rotated correctly."""
+        rotated = rotate_linearring(linearring=linearring, angle_degrees=angle_degrees)
+        assert list(rotated.coords) == pytest.approx(expected_coords)

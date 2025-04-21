@@ -121,6 +121,9 @@ def rotate_linearring(linearring: LinearRing, angle_degrees: float) -> LinearRin
     # Initialize an empty list for the rotated coordinates
     rotated_coords = []
 
+    # Define a threshold for floating-point precision
+    presition_threshold = 1e-10
+
     # Rotate each point around the centroid
     for point in coords:
         # Translate point to origin (subtract centroid coordinates)
@@ -128,6 +131,9 @@ def rotate_linearring(linearring: LinearRing, angle_degrees: float) -> LinearRin
 
         # Apply rotation
         rotated_point = np.dot(rotation_matrix, translated)
+
+        # Apply numerical precision fix - round values very close to zero to exactly zero
+        rotated_point = np.where(np.abs(rotated_point) < presition_threshold, 0, rotated_point)
 
         # Translate back (add centroid coordinates)
         final_point = (rotated_point[0] + centroid.x, rotated_point[1] + centroid.y)
