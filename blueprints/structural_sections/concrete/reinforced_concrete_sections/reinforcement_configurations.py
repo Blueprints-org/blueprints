@@ -22,20 +22,10 @@ class ReinforcementConfiguration(ABC):
         Diameter of the rebar [mm].
     material : ReinforcementSteelMaterial
         Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
-    end_at_start : bool, optional
-        If True, the reinforcement configuration ends at the start of the line.
-        If False, the reinforcement configuration ends at another point.
-        Default is False.
-    start_on_half_increment: bool, optional
-        If True, the circle is rotated by half the increment.
-        If False, the rebar is placed at the top of the cross-section.
-        Default is False.
     """
 
     diameter: MM
     material: ReinforcementSteelMaterial
-    end_at_start: bool = False
-    start_on_half_increment: bool = False
 
     def __post_init__(self) -> None:
         """Post initialization of the reinforcement configuration."""
@@ -115,12 +105,13 @@ class ReinforcementByDistance(ReinforcementConfiguration):
         List[Rebar]
             List of Rebar objects.
         """
-        # max(int(n), 1) is used to ensure that at least one rebar is placed
+        if line.is_closed:
+            raise ValueError("Reinforcement configuration cannot be applied to closed lines. Start and end points must be different.")
         rebars = []
 
         # define the number of rebars based on the length of the line, minimum 1
-        n_rebars = line.length / self.center_to_center - 1 if self.end_at_start else line.length / self.center_to_center
-        n_rebars_applied = max(int(n_rebars), 1)
+        n_rebars = line.length / self.center_to_center
+        n_rebars_applied = max(int(n_rebars), 1)  # at least one rebar
 
         # calculate the space between the rebars
         side_buffer = (line.length - (n_rebars_applied - 1) * self.center_to_center) / 2
@@ -204,10 +195,13 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
 
         """
         rebars = []
-        start = line.length / self.n / 2 if self.start_on_half_increment else 0
+
+        # for closed lines, the first and last point in the line are the same
+        # so to avoid placing a rebar in the same position, we need to remove one of them
+        space_between_bars = line.length / self.n if line.is_closed else line.length / (self.n - 1)
 
         for index in range(self.n):
-            distance = start + index * line.length / (self.n if self.end_at_start else self.n - 1)
+            distance = index * space_between_bars
             point = line.interpolate(distance)
             rebars.append(
                 Rebar(
