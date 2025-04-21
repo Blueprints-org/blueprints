@@ -9,11 +9,6 @@ from blueprints.structural_sections.cross_section_hexagon import HexagonalCrossS
 class TestHexagonalCrossSection:
     """Tests for the HexagonalCrossSection class."""
 
-    @pytest.fixture
-    def hexagonal_cross_section(self) -> HexagonalCrossSection:
-        """Return a HexagonalCrossSection instance."""
-        return HexagonalCrossSection(name="Hexagon", side_length=50.0, x=100.0, y=250.0)
-
     def test_area(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the area property of the HexagonalCrossSection class."""
         expected_area = (3 * np.sqrt(3) / 2) * 50.0**2
@@ -69,7 +64,7 @@ class TestHexagonalCrossSection:
     def test_section_properties(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the section properties of the HexagonalCrossSection class."""
         section_properties = hexagonal_cross_section.section_properties()
-        assert section_properties.mass == pytest.approx(expected=hexagonal_cross_section.area, rel=1e-2)
+        assert section_properties.area == pytest.approx(expected=hexagonal_cross_section.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=hexagonal_cross_section.perimeter, rel=1e-2)
         assert section_properties.cx == pytest.approx(expected=hexagonal_cross_section.centroid.x, rel=1e-2)
         assert section_properties.cy == pytest.approx(expected=hexagonal_cross_section.centroid.y, rel=1e-2)
