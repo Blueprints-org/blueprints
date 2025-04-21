@@ -107,6 +107,7 @@ class ReinforcementByDistance(ReinforcementConfiguration):
         """
         if line.is_closed:
             raise ValueError("Reinforcement configuration cannot be applied to closed lines. Start and end points must be different.")
+
         rebars = []
 
         # define the number of rebars based on the length of the line, minimum 1

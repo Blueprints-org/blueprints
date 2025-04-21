@@ -45,6 +45,12 @@ class TestReinforcementByDistance:
         assert all(rebar.diameter == 12 for rebar in rebars)
         assert all(rebar.material == ReinforcementSteelMaterial() for rebar in rebars)
 
+    def test_error_when_using_linearring(self, reinforcement_by_distance: ReinforcementByDistance) -> None:
+        """Test the error when using a Linearring."""
+        linearring = LineString([(0, 0), (1000, 0), (1000, 1000), (0, 1000), (0, 0)])
+        with pytest.raises(ValueError):
+            reinforcement_by_distance.to_rebars(line=linearring)
+
 
 class TestReinforcementByQuantity:
     """Tests for the reinforcement by quantity configuration."""
