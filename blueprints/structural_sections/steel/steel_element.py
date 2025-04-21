@@ -38,7 +38,7 @@ class SteelElement:
     @property
     def geometry(self) -> Geometry:
         """Return the geometry of the steel element."""
-        return self.cross_section.geometry
+        return self.cross_section.geometry()
 
     @property
     def name(self) -> str:

@@ -16,7 +16,7 @@ class TestStripSteelProfile:
         profile = Strip.STRIP160x5
         steel_class = SteelStrengthClass.S355
         desc = LoadStandardStrip(profile=profile, steel_class=steel_class).__str__()
-        expected_str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: StripStandardProfileClass.STRIP_160x5"
+        expected_str = "Steel class: SteelStrengthClass.S355, Profile: Strip.STRIP160x5"
         assert desc == expected_str
 
     def test_code(self) -> None:

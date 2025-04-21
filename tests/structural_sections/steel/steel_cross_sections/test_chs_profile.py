@@ -16,7 +16,7 @@ class TestCHSSteelProfile:
         """Test the string representation of the CHS profile."""
         profile: CHS = CHS.CHS508x16
         steel_class: SteelStrengthClass = SteelStrengthClass.S355
-        expected_str: str = "Steel class: SteelStrengthClass.EN_10025_2_S355, Profile: CHS.CHS_508x16"
+        expected_str: str = "Steel class: SteelStrengthClass.S355, Profile: CHS.CHS508x16"
         assert LoadStandardCHS(profile=profile, steel_class=steel_class).__str__() == expected_str
 
     def test_code(self) -> None:
