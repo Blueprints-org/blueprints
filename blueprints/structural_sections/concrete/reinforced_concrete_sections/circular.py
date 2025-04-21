@@ -145,7 +145,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         radius = self.diameter / 2 - cover - max_stirrups_diameter - (diameter / 2)
 
         # create the circle using shapely's Point and buffer
-        circle = self.cross_section.centroid.buffer(radius, resolution=360, join_style="round")
+        circle = self.cross_section.centroid.buffer(radius, quad_segs=360, join_style="round")
 
         return rotate_linearring(linearring=circle.exterior, angle_degrees=start_angle)
 
