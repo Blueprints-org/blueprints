@@ -2,10 +2,11 @@
 
 from dataclasses import dataclass
 
-from shapely import Point, Polygon
+from sectionproperties.pre import Geometry
+from shapely import Point
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.general_cross_section import CrossSection
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import KG_M, MM, MM2, MM3, MM4, MPA
 from blueprints.unit_conversion import MM2_TO_M2
 
@@ -21,15 +22,23 @@ class SteelElement:
         The cross-section of the steel element.
     material : SteelMaterial
         The material of the steel element.
+    nominal_thickness : MM
+        The nominal thickness of the steel element, default is 10.0 mm.
     """
 
     cross_section: CrossSection
     material: SteelMaterial
+    nominal_thickness: MM = 10.0  # mm
 
     def __post_init__(self) -> None:
         """Check if the material is a SteelMaterial."""
         if not isinstance(self.material, SteelMaterial):
             raise TypeError(f"Expected a SteelMaterial, but got: {type(self.material)}")
+
+    @property
+    def geometry(self) -> Geometry:
+        """Return the geometry of the steel element."""
+        return self.cross_section.geometry
 
     @property
     def name(self) -> str:
@@ -92,21 +101,6 @@ class SteelElement:
         return self.cross_section.plastic_section_modulus_about_z
 
     @property
-    def geometry(self) -> Polygon:
-        """Return the geometry of the steel element."""
-        return self.cross_section.geometry
-
-    @property
-    def vertices(self) -> list[Point]:
-        """Return the vertices of the steel element."""
-        return self.cross_section.vertices
-
-    @property
-    def dotted_mesh(self) -> list:
-        """Return the dotted mesh of the steel element."""
-        return self.cross_section.dotted_mesh(max_mesh_size=0)
-
-    @property
     def weight_per_meter(self) -> KG_M:
         """
         Calculate the weight per meter of the steel element.
@@ -119,7 +113,7 @@ class SteelElement:
         return self.material.density * (self.cross_section.area * MM2_TO_M2)
 
     @property
-    def yield_strength(self) -> MPA:
+    def yield_strength(self) -> MPA | None:
         """
         Calculate the yield strength of the steel element.
 
@@ -128,10 +122,10 @@ class SteelElement:
         MPa
             The yield strength of the steel element.
         """
-        return 0
+        return self.material.yield_strength(thickness=self.nominal_thickness)
 
     @property
-    def ultimate_strength(self) -> MPA:
+    def ultimate_strength(self) -> MPA | None:
         """
         Calculate the ultimate strength of the steel element.
 
@@ -140,4 +134,4 @@ class SteelElement:
         MPa
             The ultimate strength of the steel element.
         """
-        return 0
+        return self.material.ultimate_strength(thickness=self.nominal_thickness)
