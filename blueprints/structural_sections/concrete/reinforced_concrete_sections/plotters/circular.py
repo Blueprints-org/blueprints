@@ -246,7 +246,7 @@ class CircularCrossSectionPlotter:
             self.axes[axes_i].add_patch(
                 mplpatches.Circle(
                     xy=(0, 0),
-                    radius=self.cross_section.diameter / 2 - self.cross_section.covers.cover,
+                    radius=self.cross_section.diameter / 2 - self.cross_section.cover,
                     edgecolor=STIRRUP_COLOR,
                     facecolor=STIRRUP_COLOR,
                 )
@@ -254,7 +254,7 @@ class CircularCrossSectionPlotter:
             self.axes[axes_i].add_patch(
                 mplpatches.Circle(
                     xy=(0, 0),
-                    radius=self.cross_section.diameter / 2 - self.cross_section.covers.cover - stirrup.diameter,
+                    radius=self.cross_section.diameter / 2 - self.cross_section.cover - stirrup.diameter,
                     edgecolor=RCS_CROSS_SECTION_COLOR,
                     facecolor=RCS_CROSS_SECTION_COLOR,
                 )
@@ -340,7 +340,7 @@ class CircularCrossSectionPlotter:
         """Add covers info to legend text."""
         covers_text = ""
         if self.cross_section.stirrups or self.cross_section.longitudinal_rebars:
-            covers_text += "\n" + self.cross_section.covers.get_covers_info()
+            covers_text += f"\nCover: {self.cross_section.cover:.0f} mm"
         return covers_text
 
     def _add_legend(
