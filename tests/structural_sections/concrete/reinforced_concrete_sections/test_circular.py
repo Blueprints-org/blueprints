@@ -6,7 +6,6 @@ from shapely import LineString, Polygon
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
-from blueprints.structural_sections.concrete.covers import CoversCircular
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.circular import CircularReinforcedCrossSection
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
@@ -25,16 +24,14 @@ class TestCircularReinforcedCrossSection:
         # Define the reinforcement steel material
         reinforcement_steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B)
 
-        covers = CoversCircular(25)
-
         # Define the cross-section
-        cs = CircularReinforcedCrossSection(diameter=400, concrete_material=concrete, covers=covers)
+        cs = CircularReinforcedCrossSection(diameter=400, concrete_material=concrete, cover=25)
 
         # Add longitudinal reinforcement
-        cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=25, material=reinforcement_steel, start_on_half_increment=True)
+        cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=25, material=reinforcement_steel)
 
         # Add longitudinal reinforcement
-        cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=10, material=reinforcement_steel, start_on_half_increment=False)
+        cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=10, material=reinforcement_steel, start_angle=45)
 
         # Add stirrups
         cs.add_stirrup_along_perimeter(diameter=25, distance=200, material=reinforcement_steel)
