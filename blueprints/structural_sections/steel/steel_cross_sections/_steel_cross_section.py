@@ -2,6 +2,8 @@
 
 from abc import ABC
 
+from sectionproperties.analysis import Section
+from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely.geometry import Point, Polygon
 
@@ -118,3 +120,34 @@ class SteelCrossSection(ABC):
         """Elastic section modulus about the z-axis on the negative y side [mm³]."""
         distance_to_left = self.centroid.x - min(x for element in self.elements for x, _ in element.geometry.points)
         return self.moment_of_inertia_about_z / distance_to_left
+
+    def section(self) -> Section:
+        """Section object representing the cross-section."""
+        return Section(geometry=self.geometry())
+
+    def section_properties(
+        self,
+        geometric: bool = True,
+        plastic: bool = True,
+        warping: bool = True,
+    ) -> SectionProperties:
+        """Calculate and return the section properties of the cross-section.
+
+        Parameters
+        ----------
+        geometric : bool
+            Whether to calculate geometric properties.
+        plastic: bool
+            Whether to calculate plastic properties.
+        warping: bool
+            Whether to calculate warping properties.
+        """
+        section = self.section()
+
+        if any([geometric, plastic, warping]):
+            section.calculate_geometric_properties()
+        if warping:
+            section.calculate_warping_properties()
+        if plastic:
+            section.calculate_plastic_properties()
+        return section.section_props
