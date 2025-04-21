@@ -43,12 +43,12 @@ def plot_shapes(
 
     for element in profile.elements:
         # Plot the exterior polygon
-        x, y = element.geometry.exterior.xy
+        x, y = element.polygon.exterior.xy
         patch = MplPolygon(xy=list(zip(x, y)), lw=1, fill=True, facecolor=STEEL_COLOR, edgecolor=STEEL_COLOR)
         ax.add_patch(patch)
 
         # Plot the interior polygons (holes) if any
-        for interior in element.geometry.interiors:
+        for interior in element.polygon.interiors:
             x, y = interior.xy
             patch = MplPolygon(xy=list(zip(x, y)), lw=0, fill=True, facecolor="white")
             ax.add_patch(patch)
@@ -103,7 +103,7 @@ def _add_dimension_lines(ax: plt.Axes, elements: list[SteelElement], centroid: P
     # Calculate the bounds of all elements in the geometry
     min_x, min_y, max_x, max_y = float("inf"), float("inf"), float("-inf"), float("-inf")
     for element in elements:
-        bounds = element.geometry.bounds
+        bounds = element.polygon.bounds
         min_x = min(min_x, bounds[0])
         min_y = min(min_y, bounds[1])
         max_x = max(max_x, bounds[2])

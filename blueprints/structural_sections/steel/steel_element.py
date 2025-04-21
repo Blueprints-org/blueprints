@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from sectionproperties.pre import Geometry
-from shapely import Point
+from shapely import Point, Polygon
 
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections._cross_section import CrossSection
@@ -39,6 +39,11 @@ class SteelElement:
     def geometry(self) -> Geometry:
         """Return the geometry of the steel element."""
         return self.cross_section.geometry()
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the steel element."""
+        return self.cross_section.polygon
 
     @property
     def name(self) -> str:

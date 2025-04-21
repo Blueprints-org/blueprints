@@ -2,11 +2,12 @@
 
 from abc import ABC
 
-from shapely.geometry import Point
+from sectionproperties.pre import Geometry
+from shapely.geometry import Point, Polygon
 
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_element import SteelElement
-from blueprints.type_alias import KG_M, M3_M, MM2
+from blueprints.type_alias import KG_M, M3_M, MM, MM2
 from blueprints.unit_conversion import MM3_TO_M3
 
 
@@ -26,6 +27,34 @@ class SteelCrossSection(ABC):
         """
         self.steel_material = steel_material  # pragma: no cover
         self.elements: list[SteelElement] = []  # pragma: no cover
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the steel cross-section."""
+        combined_polygon = self.elements[0].polygon
+        for element in self.elements[1:]:
+            combined_polygon = combined_polygon.union(element.polygon)
+        return combined_polygon
+
+    def geometry(
+        self,
+        mesh_size: MM | None = None,
+    ) -> Geometry:
+        """Return the geometry of the cross-section.
+
+        Properties
+        ----------
+        mesh_size : MM
+            Maximum mesh element area to be used within
+            the Geometry-object finite-element mesh. If not provided, a default value will be used.
+
+        """
+        if mesh_size is None:
+            mesh_size = 2.0
+
+        circular = Geometry(geom=self.polygon)
+        circular.create_mesh(mesh_sizes=mesh_size)
+        return circular
 
     @property
     def steel_volume_per_meter(self) -> M3_M:
