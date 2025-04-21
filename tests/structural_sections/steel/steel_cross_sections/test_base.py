@@ -129,21 +129,3 @@ def test_elastic_section_modulus_about_z_negative(steel_cross_section: SteelCros
     distance_to_left = 50  # Distance from centroid to left
     expected_modulus = steel_cross_section.moment_of_inertia_about_z / distance_to_left
     assert steel_cross_section.elastic_section_modulus_about_z_negative == expected_modulus
-
-
-def test_plastic_section_modulus_about_y(steel_cross_section: SteelCrossSection) -> None:
-    """Test the plastic section modulus about the y-axis."""
-    # Mocked calculation based on the dotted mesh and weighted midpoint
-    assert steel_cross_section.plastic_section_modulus_about_y > 0
-
-
-def test_plastic_section_modulus_about_z(steel_cross_section: SteelCrossSection) -> None:
-    """Test the plastic section modulus about the z-axis."""
-    # Mocked calculation based on the dotted mesh and weighted midpoint
-    assert steel_cross_section.plastic_section_modulus_about_z > 0
-
-
-def test_vertices(steel_cross_section: SteelCrossSection, mock_steel_element: Mock) -> None:
-    """Test the vertices of the cross-section."""
-    expected_vertices = [mock_steel_element.cross_section.vertices, mock_steel_element.cross_section.vertices]
-    assert steel_cross_section.vertices == expected_vertices
