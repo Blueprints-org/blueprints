@@ -118,4 +118,5 @@ class TestRotateLinearRing:
     def test_rotation(self, linearring: LinearRing, angle_degrees: float, expected_coords: list) -> None:
         """Test if the LinearRing is rotated correctly."""
         rotated = rotate_linearring(linearring=linearring, angle_degrees=angle_degrees)
-        assert list(rotated.coords) == pytest.approx(expected_coords, rel=1e-4)
+        for obtained, expected in zip(rotated.coords, expected_coords):
+            assert obtained == pytest.approx(expected, rel=1e-4)
