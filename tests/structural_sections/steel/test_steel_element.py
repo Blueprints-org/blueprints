@@ -3,47 +3,8 @@
 from unittest.mock import Mock
 
 import pytest
-from shapely.geometry import Point
 
-from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections.steel.steel_element import SteelElement
-
-
-@pytest.fixture
-def mock_cross_section(mocker: Mock) -> Mock:
-    """Mock a CrossSection object."""
-    cross_section: Mock = mocker.Mock(spec=CrossSection)
-    cross_section.name = "MockSection"
-    cross_section.area = 683  # mm²
-    cross_section.perimeter = 400  # mm
-    cross_section.centroid = Point(50, 50)
-    cross_section.moment_of_inertia_about_y = 2000  # mm⁴
-    cross_section.moment_of_inertia_about_z = 3000  # mm⁴
-    cross_section.elastic_section_modulus_about_y_positive = 100  # mm³
-    cross_section.elastic_section_modulus_about_y_negative = 90  # mm³
-    cross_section.elastic_section_modulus_about_z_positive = 80  # mm³
-    cross_section.elastic_section_modulus_about_z_negative = 70  # mm³
-    cross_section.plastic_section_modulus_about_y = 60  # mm³
-    cross_section.plastic_section_modulus_about_z = 50  # mm³
-    cross_section.geometry = {"type": "rectangle", "width": 100, "height": 50}
-    return cross_section
-
-
-@pytest.fixture
-def mock_material(mocker: Mock) -> Mock:
-    """Mock a SteelMaterial object."""
-    material: Mock = mocker.Mock(spec=SteelMaterial)
-    material.density = 7850  # kg/m³
-    material.yield_strength.return_value = 250  # MPa
-    material.ultimate_strength.return_value = 400  # MPa
-    return material
-
-
-@pytest.fixture
-def steel_element(mock_cross_section: Mock, mock_material: Mock) -> SteelElement:
-    """Create a SteelElement instance using mocked cross-section and material."""
-    return SteelElement(cross_section=mock_cross_section, material=mock_material, nominal_thickness=10)
 
 
 def test_name(steel_element: SteelElement, mock_cross_section: Mock) -> None:
@@ -120,12 +81,6 @@ def test_yield_strength(steel_element: SteelElement, mock_material: Mock) -> Non
 def test_ultimate_strength(steel_element: SteelElement, mock_material: Mock) -> None:
     """Test that the SteelElement ultimate strength matches the mock material ultimate strength."""
     assert steel_element.ultimate_strength == mock_material.ultimate_strength.return_value
-
-
-def test_invalid_material_type(mock_cross_section: Mock) -> None:
-    """Test that creating a SteelElement with an invalid material type raises a TypeError."""
-    with pytest.raises(TypeError):
-        SteelElement(cross_section=mock_cross_section, material=mock_material, nominal_thickness=10)
 
 
 def test_invalid_yield_strength(steel_element: SteelElement, mock_material: Mock) -> None:

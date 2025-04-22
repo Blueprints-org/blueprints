@@ -30,11 +30,6 @@ class SteelElement:
     material: SteelMaterial
     nominal_thickness: MM
 
-    def __post_init__(self) -> None:
-        """Check if the material is a SteelMaterial."""
-        if not isinstance(self.material, SteelMaterial):
-            raise TypeError(f"Expected a SteelMaterial, but got: {type(self.material)}")
-
     @property
     def geometry(self) -> Geometry:
         """Return the geometry of the steel element."""
