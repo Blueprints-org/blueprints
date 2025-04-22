@@ -16,7 +16,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.strip_profile imp
 steel_class = SteelStrengthClass.S355
 
 # Example usage for CHS profile
-chs_profile = LoadStandardCHS(profile=CHS.CHS273x5, steel_class=steel_class).get_profile()
+chs_profile = LoadStandardCHS(profile=CHS.CHS273x5, steel_class=steel_class).get_profile(corrosion_inside=0, corrosion_outside=1)
 chs_profile.plot(show=True)
 print(f"Steel class: {chs_profile.steel_material}")
 print(f"Moment of inertia about y-axis: {chs_profile.moment_of_inertia_about_y} mm⁴")
@@ -30,7 +30,7 @@ custom_chs_profile = CHSSteelProfile(outer_diameter=150, wall_thickness=10, stee
 custom_chs_profile.plot(show=True)
 
 # Example usage for Strip profile
-strip_profile = LoadStandardStrip(profile=Strip.STRIP160x5, steel_class=steel_class).get_profile()
+strip_profile = LoadStandardStrip(profile=Strip.STRIP160x5, steel_class=steel_class).get_profile(corrosion=1)
 strip_profile.plot(show=True)
 
 # Example usage for custom Strip profile
@@ -42,7 +42,7 @@ custom_strip_profile = StripSteelProfile(
 custom_strip_profile.plot(show=True)
 
 # Example usage for HEB600 profile
-heb_profile = LoadStandardIProfile(profile=HEB.HEB600, steel_class=steel_class).get_profile()
+heb_profile = LoadStandardIProfile(profile=HEB.HEB600, steel_class=steel_class).get_profile(corrosion=7)
 heb_profile.plot(show=True)
 
 # Example usage for custom I profile
