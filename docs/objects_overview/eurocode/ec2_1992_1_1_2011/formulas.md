@@ -41,7 +41,7 @@ Total of 304 formulas present.
 | 3.30           | :heavy_check_mark: |         | Form3Dot30RatioLossOfPreStressClass3                      |
 | 4.1            | :heavy_check_mark: |         | Form4Dot1NominalConcreteCover                             |
 | 4.2            | :heavy_check_mark: |         | Form4Dot2MinimumConcreteCover                             |
-| 4.3N           |        :x:         |         |                                                           |
+| 4.3N           | :heavy_check_mark: |         | Form4Dot3NCheckExecutionTolerances                        |
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
 | 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
@@ -191,14 +191,14 @@ Total of 304 formulas present.
 | 7.5            | :heavy_check_mark: |         | Form7Dot5AdjustedBondStrengthRatio                        |
 | 7.6N           | :heavy_check_mark: |         | Form7Dot6nMaxBarDiameterBending                           |
 | 7.7N           | :heavy_check_mark: |         | Form7Dot7nMaxBarDiameterTension                           |
-| 7.8            |        :x:         |         |                                                           |
-| 7.9            |        :x:         |         |                                                           |
-| 7.10           |        :x:         |         |                                                           |
-| 7.11           |        :x:         |         |                                                           |
-| 7.12           |        :x:         |         |                                                           |
-| 7.13           |        :x:         |         |                                                           |
-| 7.14           |        :x:         |         |                                                           |
-| 7.15           |        :x:         |         |                                                           |
+| 7.8            | :heavy_check_mark: |         | Form7Dot8CrackWidth                                       |
+| 7.9            | :heavy_check_mark: |         | Form7Dot9EpsilonSmMinusEpsilonCm                          |
+| 7.10           | :heavy_check_mark: |         | Form7Dot10RhoPEff                                         |
+| 7.11           | :heavy_check_mark: |         | Form7Dot11MaximumCrackSpacing                             |
+| 7.12           | :heavy_check_mark: |         | Form7Dot12EquivalentDiameter                              |
+| 7.13           | :heavy_check_mark: |         | Form7Dot13CoefficientK2                                   |
+| 7.14           | :heavy_check_mark: |         | Form7Dot14MaximumCrackSpacing                             |
+| 7.15           | :heavy_check_mark: |         | Form7Dot15MaximumCrackSpacing                             |
 | 7.16.a         |        :x:         |         |                                                           |
 | 7.16.b         |        :x:         |         |                                                           |
 | 7.17           |        :x:         |         |                                                           |
