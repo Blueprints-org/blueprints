@@ -11,6 +11,12 @@ from blueprints.structural_sections.steel.steel_element import SteelElement
 
 
 @pytest.fixture
+def mocker() -> Mock:
+    """Provide a mocker instance for mocking objects."""
+    return Mock()
+
+
+@pytest.fixture
 def mock_cross_section(mocker: Mock) -> CrossSection:
     """Mock a CrossSection object."""
     cross_section: Mock = mocker.Mock(spec=CrossSection)
