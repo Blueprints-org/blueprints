@@ -59,4 +59,12 @@ def hexagonal_cross_section() -> HexagonalCrossSection:
 @pytest.fixture
 def annular_sector_cross_section() -> AnnularSectorCrossSection:
     """Return an AnnularSectorCrossSection instance."""
-    return AnnularSectorCrossSection(inner_radius=90.0, thickness=20.0, start_angle=0.0, end_angle=90.0, x=100.0, y=250.0, name="AnnularSector")
+    return AnnularSectorCrossSection(
+        inner_radius=90.0,
+        thickness=20.0,
+        start_angle=0.0,
+        end_angle=90.0,
+        x=100.0,
+        y=250.0,
+        name="AnnularSector",
+    )
