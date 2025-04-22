@@ -5,6 +5,7 @@ from sectionproperties.post.post import SectionProperties
 
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
 from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
+from blueprints.structural_sections.cross_section_hexagon import HexagonalCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 
@@ -39,3 +40,9 @@ def tube_cross_section() -> TubeCrossSection:
 def qcs_cross_section() -> QuarterCircularSpandrelCrossSection:
     """Return a QuarterCircularSpandrelCrossSection instance."""
     return QuarterCircularSpandrelCrossSection(radius=50.0, x=100.0, y=250.0)
+
+
+@pytest.fixture  
+def hexagonal_cross_section() -> HexagonalCrossSection:
+    """Return a HexagonalCrossSection instance."""
+    return HexagonalCrossSection(name="Hexagon", side_length=50.0, x=100.0, y=250.0)

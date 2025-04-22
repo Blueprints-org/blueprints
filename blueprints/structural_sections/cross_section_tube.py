@@ -94,8 +94,8 @@ class TubeCrossSection(CrossSection):
             The shapely Polygon representing the tube.
         """
         resolution = 64
-        outer_circle = self.centroid.buffer(self.outer_radius, resolution=resolution)
-        inner_circle = self.centroid.buffer(self.inner_radius, resolution=resolution)
+        outer_circle = self.centroid.buffer(self.outer_radius, quad_segs=resolution)
+        inner_circle = self.centroid.buffer(self.inner_radius, quad_segs=resolution)
         difference = outer_circle.difference(inner_circle)
         return Polygon(difference)  # type: ignore[arg-type]
 
@@ -121,7 +121,7 @@ class TubeCrossSection(CrossSection):
         MM
             The perimeter of the tube.
         """
-        return 2.0 * math.pi * (self.outer_radius + self.inner_radius)
+        return 2.0 * math.pi * self.outer_radius
 
     @property
     def centroid(self) -> Point:
