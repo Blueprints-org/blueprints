@@ -22,8 +22,8 @@ class TestQuarterCircularSpandrelCrossSection:
 
     def test_centroid(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
         """Test the centroid property of the QuarterCircularSpandrelCrossSection class."""
-        centroid = qcs_cross_section.centroid
-        assert isinstance(centroid, Point)
+        expected_perimeter = Point(111.1683969472876, 261.1683969472876)
+        assert qcs_cross_section.centroid == pytest.approx(expected=expected_perimeter, rel=1e-6)
 
     def test_moments_of_inertia(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
         """Test the moments of inertia properties of the QuarterCircularSpandrelCrossSection class."""
