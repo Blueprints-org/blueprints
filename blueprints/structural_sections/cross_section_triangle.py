@@ -1,6 +1,5 @@
 """Triangular cross-section shape."""
 
-import math
 from dataclasses import dataclass
 
 from sectionproperties.pre import Geometry
@@ -79,7 +78,7 @@ class RightAngledTriangularCrossSection(CrossSection):
         MM2
             The area of the triangle.
         """
-        return self.base * self.height / 2
+        return self.polygon.area
 
     @property
     def perimeter(self) -> MM:
@@ -91,7 +90,7 @@ class RightAngledTriangularCrossSection(CrossSection):
         MM
             The perimeter of the triangle.
         """
-        return self.base + self.height + math.sqrt(self.base**2 + self.height**2)
+        return self.polygon.exterior.length
 
     @property
     def centroid(self) -> Point:
@@ -103,7 +102,7 @@ class RightAngledTriangularCrossSection(CrossSection):
         Point
             The centroid of the triangle.
         """
-        return Point(self.x + self.base / 3, self.y + self.height / 3)
+        return self.polygon.centroid
 
     @property
     def moment_of_inertia_about_y(self) -> MM4:
