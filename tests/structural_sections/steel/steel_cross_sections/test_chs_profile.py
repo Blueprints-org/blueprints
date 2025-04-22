@@ -84,12 +84,12 @@ class TestCHSSteelProfile:
         assert isinstance(fig, plt.Figure)
 
     def test_geometry(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the geometry of the Strip profile."""
+        """Test the geometry of the CHS profile."""
         expected_geometry = chs_profile.geometry
         assert expected_geometry is not None
 
     def test_section_properties(self, chs_profile: CHSSteelProfile) -> None:
-        """Test the section properties of the Strip profile."""
+        """Test the section properties of the CHS profile."""
         section_properties = chs_profile.section_properties()
         assert section_properties.mass == pytest.approx(expected=chs_profile.area, rel=1e-2)
         assert section_properties.cx == pytest.approx(expected=chs_profile.centroid.x, rel=1e-2)

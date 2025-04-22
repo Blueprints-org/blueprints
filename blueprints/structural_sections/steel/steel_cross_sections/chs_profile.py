@@ -68,19 +68,20 @@ class LoadStandardCHS:
 
     Parameters
     ----------
+    profile: CHS
+        Enumeration of standard CHS profiles
     steel_class: SteelStrengthClass
         Enumeration of steel strength classes (default: S355)
-    profile: CHS
-        Enumeration of standard CHS profiles (default: CHS508x20)
+
     """
 
     def __init__(
         self,
+        profile: CHS,
         steel_class: SteelStrengthClass = SteelStrengthClass.S355,
-        profile: CHS = CHS.CHS508x20,
     ) -> None:
-        self.steel_class = steel_class
         self.profile = profile
+        self.steel_class = steel_class
 
     def __str__(self) -> str:
         """Return the steel class and profile."""
@@ -117,7 +118,7 @@ class LoadStandardCHS:
         adjusted_thickness = self.thickness() - corrosion_outside - corrosion_inside
 
         if adjusted_thickness <= 0:
-            raise ValueError("Adjusted wall thickness must be greater than zero.")
+            raise ValueError("The profile has fully corroded.")
 
         return CHSSteelProfile(
             outer_diameter=adjusted_outer_diameter,

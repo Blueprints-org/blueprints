@@ -70,19 +70,19 @@ class LoadStandardStrip:
 
     Parameters
     ----------
+    profile: Strip
+        Enumeration of standard steel strip profiles
     steel_class: SteelStrengthClass
         Enumeration of steel strength classes (default: S355)
-    profile: Strip
-        Enumeration of standard steel strip profiles (default: STRIP160x5)
     """
 
     def __init__(
         self,
+        profile: Strip,
         steel_class: SteelStrengthClass = SteelStrengthClass.S355,
-        profile: Strip = Strip.STRIP160x5,
     ) -> None:
-        self.steel_class = steel_class
         self.profile = profile
+        self.steel_class = steel_class
 
     def __str__(self) -> str:
         """Return the steel class and profile."""
@@ -110,4 +110,8 @@ class LoadStandardStrip:
         """
         width = self.width() - corrosion * 2
         height = self.height() - corrosion * 2
+
+        if width <= 0 or height <= 0:
+            raise ValueError("The profile has fully corroded.")
+
         return StripSteelProfile(width=width, height=height, steel_class=self.steel_class)
