@@ -79,7 +79,7 @@ class TestRightAngledTriangularCrossSection:
     def test_section_properties(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the section properties of the RightAngledTriangularCrossSection class."""
         section_properties = triangular_cross_section.section_properties()
-        assert section_properties.mass == pytest.approx(expected=triangular_cross_section.area, rel=1e-2)
+        assert section_properties.area == pytest.approx(expected=triangular_cross_section.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=triangular_cross_section.perimeter, rel=1e-2)
         assert section_properties.cx == pytest.approx(expected=triangular_cross_section.centroid.x, rel=1e-2)
         assert section_properties.cy == pytest.approx(expected=triangular_cross_section.centroid.y, rel=1e-2)
