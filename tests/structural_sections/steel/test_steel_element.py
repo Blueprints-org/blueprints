@@ -43,7 +43,7 @@ def mock_material(mocker: Mock) -> Mock:
 @pytest.fixture
 def steel_element(mock_cross_section: Mock, mock_material: Mock) -> SteelElement:
     """Create a SteelElement instance using mocked cross-section and material."""
-    return SteelElement(cross_section=mock_cross_section, material=mock_material)
+    return SteelElement(cross_section=mock_cross_section, material=mock_material, nominal_thickness=10)
 
 
 def test_name(steel_element: SteelElement, mock_cross_section: Mock) -> None:
@@ -125,7 +125,7 @@ def test_ultimate_strength(steel_element: SteelElement, mock_material: Mock) -> 
 def test_invalid_material_type(mock_cross_section: Mock) -> None:
     """Test that creating a SteelElement with an invalid material type raises a TypeError."""
     with pytest.raises(TypeError):
-        SteelElement(cross_section=mock_cross_section, material=mock_material)
+        SteelElement(cross_section=mock_cross_section, material=mock_material, nominal_thickness=10)
 
 
 def test_invalid_yield_strength(steel_element: SteelElement, mock_material: Mock) -> None:

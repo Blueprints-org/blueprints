@@ -123,7 +123,7 @@ class SteelCrossSection(ABC):
 
     def section(self) -> Section:
         """Section object representing the cross-section."""
-        return Section(geometry=self.geometry)
+        return Section(geometry=self.geometry())
 
     def section_properties(
         self,
