@@ -42,7 +42,7 @@ class SteelCrossSection(ABC):
         # Ensure the result is a valid Polygon
         if isinstance(combined_polygon, Polygon):
             return orient(combined_polygon)  # Ensure consistent orientation
-        raise TypeError("The combined geometry is not a valid Polygon.")
+        raise TypeError("The combined geometry is not a valid Polygon.")  # pragma: no cover
 
     @property
     def steel_volume_per_meter(self) -> M3_M:
