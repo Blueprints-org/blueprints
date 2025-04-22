@@ -52,6 +52,24 @@ Define a custom strip profile by specifying its width and height:
 --8<-- "examples/_code/steel_profile_shapes.py:34:40"
 ```
 
+## Strip Profiles
+
+### Standard I Profile
+
+Predefined I profiles are also available:
+
+```python
+--8<-- "examples/_code/steel_profile_shapes.py:40:42"
+```
+
+### Custom Strip Profile
+
+Define a custom strip profile by specifying its width and height:
+
+```python
+--8<-- "examples/_code/steel_profile_shapes.py:44:61"
+```
+
 ## Visualizing Profiles
 
 For each profile, the `plot` method is used to visualize the shape. The plots will display the geometry of the profiles, making it easier to understand their dimensions and configurations.

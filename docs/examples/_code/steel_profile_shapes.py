@@ -6,7 +6,9 @@ This example demonstrates how to create and visualize different steel profile sh
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_3_materials.table_3_1 import SteelStrengthClass
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile, LoadStandardCHS
+from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile, LoadStandardIProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import LoadStandardStrip, StripSteelProfile
 
@@ -38,3 +40,21 @@ custom_strip_profile = StripSteelProfile(
     steel_class=steel_class,
 )
 custom_strip_profile.plot(show=True)
+
+# Example usage for HEB600 profile
+heb_profile = LoadStandardIProfile(profile=HEB.HEB600, steel_class=steel_class).get_profile()
+heb_profile.plot(show=True)
+
+# Example usage for custom I profile
+custom_i_profile = ISteelProfile(
+    top_flange_width=300,  # mm
+    top_flange_thickness=20,  # mm
+    bottom_flange_width=200,  # mm
+    bottom_flange_thickness=10,  # mm
+    total_height=600,  # mm
+    web_thickness=10,  # mm
+    steel_class=steel_class,
+    top_radius=15,  # mm
+    bottom_radius=8,  # mm
+)
+custom_i_profile.plot(show=True)
