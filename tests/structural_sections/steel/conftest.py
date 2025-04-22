@@ -11,7 +11,7 @@ from blueprints.structural_sections.steel.steel_element import SteelElement
 
 
 @pytest.fixture
-def mock_cross_section(mocker: Mock) -> Mock:
+def mock_cross_section(mocker: Mock) -> CrossSection:
     """Mock a CrossSection object."""
     cross_section: Mock = mocker.Mock(spec=CrossSection)
     cross_section.name = "MockSection"
@@ -31,7 +31,7 @@ def mock_cross_section(mocker: Mock) -> Mock:
 
 
 @pytest.fixture
-def mock_material(mocker: Mock) -> Mock:
+def mock_material(mocker: Mock) -> SteelMaterial:
     """Mock a SteelMaterial object."""
     material: Mock = mocker.Mock(spec=SteelMaterial)
     material.density = 7850  # kg/m³
