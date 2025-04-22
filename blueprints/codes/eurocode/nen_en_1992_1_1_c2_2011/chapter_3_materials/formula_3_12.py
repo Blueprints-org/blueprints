@@ -17,8 +17,7 @@ class Form3Dot12AutogeneShrinkageInfinity(Formula):
         f_ck: MPA,
     ) -> None:
         r"""[$\epsilon_{ca}(\infty)$] Autogeneous shrinkage strain at t=infinity [$-$].
-
-        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.12)
+        NEN-EN 1992-1-1+C2:2011 art.3.1.4(6) - Formula (3.12).
 
         Parameters
         ----------
