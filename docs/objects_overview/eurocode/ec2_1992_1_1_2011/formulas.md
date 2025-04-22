@@ -41,7 +41,7 @@ Total of 304 formulas present.
 | 3.30           | :heavy_check_mark: |         | Form3Dot30RatioLossOfPreStressClass3                      |
 | 4.1            | :heavy_check_mark: |         | Form4Dot1NominalConcreteCover                             |
 | 4.2            | :heavy_check_mark: |         | Form4Dot2MinimumConcreteCover                             |
-| 4.3N           |        :x:         |         |                                                           |
+| 4.3N           | :heavy_check_mark: |         | Form4Dot3NCheckExecutionTolerances                        |
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
 | 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
