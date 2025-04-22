@@ -171,7 +171,7 @@ class TestAnnularSectorCrossSection:
     def test_section_properties(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the section properties of the HexagonalCrossSection class."""
         section_properties = annular_sector_cross_section.section_properties()
-        assert section_properties.mass == pytest.approx(expected=annular_sector_cross_section.area, rel=1e-2)
+        assert section_properties.area == pytest.approx(expected=annular_sector_cross_section.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=annular_sector_cross_section.perimeter, rel=1e-2)
         assert section_properties.cx == pytest.approx(expected=annular_sector_cross_section.centroid.x, rel=1e-2)
         assert section_properties.cy == pytest.approx(expected=annular_sector_cross_section.centroid.y, rel=1e-2)
