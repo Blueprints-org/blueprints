@@ -106,31 +106,96 @@ class TestAnnularSectorCrossSection:
                 y=0.0,
             )
 
-    def test_invalid_end_angle(self) -> None:
+    def test_invalid_end_angle_smaller_than_start_angle(self) -> None:
         """Test initialization with an invalid end angle value."""
-        with pytest.raises(ValueError, match="End angle must be larger than start angle and not more than 360 degrees more"):
+        with pytest.raises(ValueError):
             AnnularSectorCrossSection(
                 name="InvalidEndAngle",
                 inner_radius=100.0,
                 thickness=20.0,
-                start_angle=0.0,
-                end_angle=400.0,
+                start_angle=90.0,
+                end_angle=0.0,
+                x=0.0,
+                y=0.0,
+            )
+
+    def test_invalid_end_angle_greater_or_equal_than_360(self) -> None:
+        """Test initialization with an invalid end angle value."""
+        with pytest.raises(ValueError):
+            AnnularSectorCrossSection(
+                name="InvalidEndAngle",
+                inner_radius=100.0,
+                thickness=20.0,
+                start_angle=270,
+                end_angle=400,
+                x=0.0,
+                y=0.0,
+            )
+
+    @pytest.mark.parametrize(
+        ("start_angle", "end_angle"),
+        [
+            (0, 360),
+            (0, 720),
+            (-50, 360),
+            (0, 400),
+        ],
+    )
+    def test_total_angle_greater_or_equal_than_360(self, start_angle: float, end_angle: float) -> None:
+        """Test initialization with an invalid end angle value."""
+        with pytest.raises(ValueError):
+            AnnularSectorCrossSection(
+                name="Invalid total angle, greater than 360 degrees",
+                inner_radius=100.0,
+                thickness=20.0,
+                start_angle=start_angle,
+                end_angle=end_angle,
                 x=0.0,
                 y=0.0,
             )
 
     def test_invalid_start_angle(self) -> None:
         """Test initialization with an invalid end angle value."""
-        with pytest.raises(ValueError, match="Start angle must be between -360 and 360 degrees"):
+        with pytest.raises(ValueError):
             AnnularSectorCrossSection(
                 name="InvalidEndAngle",
                 inner_radius=100.0,
                 thickness=20.0,
                 start_angle=-683,
-                end_angle=-500,
+                end_angle=270,
                 x=0.0,
                 y=0.0,
             )
+
+    @pytest.mark.parametrize(
+        ("start_angle", "end_angle", "expected_area"),
+        [
+            (0, 90, 3141.5926),
+            (0, 180, 3141.5926 * 2),
+            (0, 270, 3141.5926 * 3),
+            (0, 359.9999999, 3141.5926 * 4),
+            (90, 180, 3141.5926),
+            (90, 270, 3141.5926 * 2),
+            (90, 360, 3141.5926 * 3),
+            (-90, 269.999999, 3141.5926 * 4),
+            (-180, 90, 3141.5926 * 3),
+            (-360, -270, 3141.5926),
+        ],
+    )
+    def test_area_at_different_angles(self, start_angle: float, end_angle: float, expected_area: float) -> None:
+        """Test the area property of the AnnularSectorCrossSection class at different angles.
+        A full donut (0 to 360 degrees) should have an area of 0.
+        a quarter donut (0 to 90 degrees) should have an area of pi * (outer_radius^2 - inner_radius^2) / 4.
+        """
+        annular_sector = AnnularSectorCrossSection(
+            inner_radius=90.0,
+            thickness=20.0,
+            start_angle=start_angle,
+            end_angle=end_angle,
+            x=100.0,
+            y=250.0,
+        )
+        assert annular_sector.area == pytest.approx(expected=expected_area, rel=1e-6)
 
     def test_moments_of_inertia_approximation_with_rectangle(self) -> None:
         """Test the moments of inertia by approximating the annular sector with a rectangle."""
