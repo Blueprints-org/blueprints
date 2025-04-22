@@ -1,6 +1,5 @@
-"""Circular cross-section shape."""
+"""Triangular cross-section shape."""
 
-import math
 from dataclasses import dataclass
 
 from sectionproperties.pre import Geometry
@@ -11,92 +10,99 @@ from blueprints.type_alias import MM, MM2, MM3, MM4
 
 
 @dataclass(frozen=True)
-class CircularCrossSection(CrossSection):
+class RightAngledTriangularCrossSection(CrossSection):
     """
-    Class to represent a circular cross-section using shapely for geometric calculations.
+    Class to represent a right-angled triangular with a right angle at the bottom left corner cross-section for geometric calculations.
 
     Parameters
     ----------
-    diameter : MM
-        The diameter of the circular cross-section [mm].
+    base : MM
+        The base length of the triangular cross-section.
+    height : MM
+        The height of the triangular cross-section.
     x : MM
-        The x-coordinate of the circle's center.
+        The x-coordinate of the 90-degree angle. Default is 0.
     y : MM
-        The y-coordinate of the circle's center.
+        The y-coordinate of the 90-degree angle. Default is 0.
+    mirrored_horizontally : bool
+        Whether the triangle is mirrored horizontally. Default is False.
+    mirrored_vertically : bool
+        Whether the triangle is mirrored vertically. Default is False.
     name : str
-        The name of the rectangular cross-section, default is "Circle".
+        The name of the rectangular cross-section, default is "Triangle".
     """
 
-    diameter: MM
-    x: MM
-    y: MM
-    name: str = "Circle"
+    base: MM
+    height: MM
+    x: MM = 0
+    y: MM = 0
+    mirrored_horizontally: bool = False
+    mirrored_vertically: bool = False
+    name: str = "Triangle"
 
     def __post_init__(self) -> None:
-        """Post-initialization to validate the diameter."""
-        if self.diameter <= 0:
-            msg = f"Diameter must be a positive value, but got {self.diameter}"
-            raise ValueError(msg)
-
-    @property
-    def radius(self) -> MM:
-        """
-        Calculate the radius of the circular cross-section [mm].
-
-        Returns
-        -------
-        MM
-            The radius of the circle.
-        """
-        return self.diameter / 2.0
+        """Post-initialization to validate the width and height."""
+        if self.base < 0:
+            raise ValueError(f"Base must be a positive value, but got {self.base}")
+        if self.height < 0:
+            raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
     def polygon(self) -> Polygon:
         """
-        Shapely Polygon representing the circular cross-section.
+        Shapely Polygon representing the right-angled triangular cross-section.
 
         Returns
         -------
         Polygon
-            The shapely Polygon representing the circle.
+            The shapely Polygon representing the triangle.
         """
-        return self.centroid.buffer(self.radius)
+        left_lower = (self.x, self.y)
+        right_lower = (self.x + self.base, self.y)
+        top = (self.x, self.y + self.height)
+
+        if self.mirrored_horizontally:
+            right_lower = (2 * left_lower[0] - right_lower[0], right_lower[1])
+        if self.mirrored_vertically:
+            top = (top[0], 2 * left_lower[1] - top[1])
+
+        return Polygon([left_lower, right_lower, top])
 
     @property
     def area(self) -> MM2:
         """
-        Calculate the area of the circular cross-section [mm²].
+        Calculate the area of the triangular cross-section.
 
         Returns
         -------
         MM2
-            The area of the circle.
+            The area of the triangle.
         """
-        return math.pi * self.radius**2.0
+        return self.polygon.area
 
     @property
     def perimeter(self) -> MM:
         """
-        Calculate the perimeter (circumference) of the circular cross-section [mm].
+        Calculate the perimeter of the triangular cross-section.
 
         Returns
         -------
         MM
-            The perimeter of the circle.
+            The perimeter of the triangle.
         """
-        return math.pi * self.radius * 2.0
+        return self.polygon.exterior.length
 
     @property
     def centroid(self) -> Point:
         """
-        Get the centroid of the circular cross-section.
+        Get the centroid of the triangular cross-section.
 
         Returns
         -------
         Point
-            The centroid of the circle.
+            The centroid of the triangle.
         """
-        return Point(self.x, self.y)
+        return self.polygon.centroid
 
     @property
     def moment_of_inertia_about_y(self) -> MM4:
@@ -108,7 +114,7 @@ class CircularCrossSection(CrossSection):
         MM4
             The moment of inertia about the y-axis.
         """
-        return (math.pi / 64) * self.diameter**4
+        return (self.base * self.height**3) / 36
 
     @property
     def moment_of_inertia_about_z(self) -> MM4:
@@ -120,7 +126,7 @@ class CircularCrossSection(CrossSection):
         MM4
             The moment of inertia about the z-axis.
         """
-        return (math.pi / 64) * self.diameter**4
+        return (self.height * self.base**3) / 36
 
     @property
     def elastic_section_modulus_about_y_positive(self) -> MM3:
@@ -132,7 +138,8 @@ class CircularCrossSection(CrossSection):
         MM3
             The elastic section modulus about the y-axis.
         """
-        return self.moment_of_inertia_about_y / (self.diameter / 2)
+        distance_to_end = self.height / 3 * 2
+        return self.moment_of_inertia_about_y / distance_to_end
 
     @property
     def elastic_section_modulus_about_y_negative(self) -> MM3:
@@ -144,7 +151,8 @@ class CircularCrossSection(CrossSection):
         MM3
             The elastic section modulus about the y-axis.
         """
-        return self.moment_of_inertia_about_y / (self.diameter / 2)
+        distance_to_end = self.height / 3
+        return self.moment_of_inertia_about_y / distance_to_end
 
     @property
     def elastic_section_modulus_about_z_positive(self) -> MM3:
@@ -156,7 +164,8 @@ class CircularCrossSection(CrossSection):
         MM3
             The elastic section modulus about the z-axis.
         """
-        return self.moment_of_inertia_about_z / (self.diameter / 2)
+        distance_to_end = self.base / 3 * 2
+        return self.moment_of_inertia_about_z / distance_to_end
 
     @property
     def elastic_section_modulus_about_z_negative(self) -> MM3:
@@ -168,7 +177,8 @@ class CircularCrossSection(CrossSection):
         MM3
             The elastic section modulus about the z-axis.
         """
-        return self.moment_of_inertia_about_z / (self.diameter / 2)
+        distance_to_end = self.base / 3
+        return self.moment_of_inertia_about_z / distance_to_end
 
     @property
     def plastic_section_modulus_about_y(self) -> MM3:
@@ -180,7 +190,7 @@ class CircularCrossSection(CrossSection):
         MM3
             The plastic section modulus about the y-axis.
         """
-        return (self.diameter**3) / 6
+        return self.base * self.height**2 / 10.2425
 
     @property
     def plastic_section_modulus_about_z(self) -> MM3:
@@ -192,26 +202,30 @@ class CircularCrossSection(CrossSection):
         MM3
             The plastic section modulus about the z-axis.
         """
-        return (self.diameter**3) / 6
+        return self.height * self.base**2 / 10.2425
 
     def geometry(
         self,
         mesh_size: MM | None = None,
     ) -> Geometry:
-        """Return the geometry of the circular cross-section.
+        """Return the geometry of the triangular cross-section.
 
-        Properties
+        Parameters
         ----------
         mesh_size : MM
             Maximum mesh element area to be used within
             the Geometry-object finite-element mesh. If not provided, a default value will be used.
 
+        Returns
+        -------
+        Geometry
+            The Geometry object representing the triangular cross-section.
         """
         if mesh_size is None:
             minimum_mesh_size = 2.0
-            mesh_length = max(self.diameter / 20, minimum_mesh_size)
+            mesh_length = max(min(self.base, self.height) / 20, minimum_mesh_size)
             mesh_size = mesh_length**2
 
-        circular = Geometry(geom=self.polygon)
-        circular.create_mesh(mesh_sizes=mesh_size)
-        return circular
+        triangular = Geometry(geom=self.polygon)
+        triangular.create_mesh(mesh_sizes=mesh_size)
+        return triangular
