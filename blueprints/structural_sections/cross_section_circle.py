@@ -209,7 +209,8 @@ class CircularCrossSection(CrossSection):
         """
         if mesh_size is None:
             minimum_mesh_size = 2.0
-            mesh_size = max(self.diameter / 20, minimum_mesh_size)
+            mesh_length = max(self.diameter / 20, minimum_mesh_size)
+            mesh_size = mesh_length**2
 
         circular = Geometry(geom=self.polygon)
         circular.create_mesh(mesh_sizes=mesh_size)

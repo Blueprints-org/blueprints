@@ -214,7 +214,8 @@ class RectangularCrossSection(CrossSection):
         """
         if mesh_size is None:
             minimum_mesh_size = 2.0
-            mesh_size = max(min(self.width, self.height) / 20, minimum_mesh_size)
+            mesh_length = max(min(self.width, self.height) / 20, minimum_mesh_size)
+            mesh_size = mesh_length**2
 
         rectangular = Geometry(geom=self.polygon)
         rectangular.create_mesh(mesh_sizes=mesh_size)
