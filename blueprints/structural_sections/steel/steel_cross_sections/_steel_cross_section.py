@@ -6,7 +6,8 @@ from sectionproperties.analysis import Section
 from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely.geometry import Point, Polygon
-from shapely.geometry.base import BaseGeometry  # Add this import for type checking
+from shapely.geometry.base import BaseGeometry
+from shapely.geometry.polygon import orient  # Add this import for ensuring valid polygons
 
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_element import SteelElement
@@ -37,7 +38,11 @@ class SteelCrossSection(ABC):
         combined_polygon: BaseGeometry = self.elements[0].polygon
         for element in self.elements[1:]:
             combined_polygon = combined_polygon.union(element.polygon)
-        return Polygon(combined_polygon) if not combined_polygon.is_empty else Polygon()
+
+        # Ensure the result is a valid Polygon
+        if isinstance(combined_polygon, Polygon):
+            return orient(combined_polygon)  # Ensure consistent orientation
+        raise TypeError("The combined geometry is not a valid Polygon.")
 
     @property
     def steel_volume_per_meter(self) -> M3_M:
