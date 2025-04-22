@@ -100,3 +100,14 @@ class TestStripSteelProfile:
         assert section_properties.zyy_plus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_z_positive, rel=1e-2)
         assert section_properties.zxx_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_y_negative, rel=1e-2)
         assert section_properties.zyy_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_z_negative, rel=1e-2)
+
+    def test_get_profile_with_corrosion(self) -> None:
+        """Test the Strip profile with 2 mm corrosion applied."""
+        profile: Strip = Strip.STRIP160x5
+        steel_class: SteelStrengthClass = SteelStrengthClass.S355
+
+        loader = LoadStandardStrip(profile=profile, steel_class=steel_class)
+
+        # Ensure the profile raises an error if fully corroded
+        with pytest.raises(ValueError, match="The profile has fully corroded."):
+            loader.get_profile(corrosion=2.5)

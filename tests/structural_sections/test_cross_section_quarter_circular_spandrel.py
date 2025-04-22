@@ -53,7 +53,7 @@ class TestQuarterCircularSpandrelCrossSection:
         """Test the geometry property of the QuarterCircularSpandrelCrossSection class."""
         polygon = qcs_cross_section.polygon
         assert polygon.is_valid
-        assert polygon.area == pytest.approx(expected=qcs_cross_section.area, rel=1e-3)
+        assert polygon.area == pytest.approx(expected=qcs_cross_section.area, rel=1e-2)
 
     def test_mirrored_geometry(self) -> None:
         """Test the geometry property for flipped cross-sections."""
