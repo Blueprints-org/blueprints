@@ -76,7 +76,7 @@ class TestCircularCrossSection:
     def test_section_properties(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the section properties of the CircularCrossSection class."""
         section_properties = circular_cross_section.section_properties()
-        assert section_properties.mass == pytest.approx(expected=circular_cross_section.area, rel=1e-2)
+        assert section_properties.area == pytest.approx(expected=circular_cross_section.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=circular_cross_section.perimeter, rel=1e-2)
         assert section_properties.cx == pytest.approx(expected=circular_cross_section.centroid.x, rel=1e-2)
         assert section_properties.cy == pytest.approx(expected=circular_cross_section.centroid.y, rel=1e-2)

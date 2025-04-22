@@ -78,7 +78,7 @@ class TestTubeCrossSection:
     def test_section_properties(self, tube_cross_section: TubeCrossSection) -> None:
         """Test the section properties of the TubeCrossSection class."""
         section_properties = tube_cross_section.section_properties()
-        assert section_properties.mass == pytest.approx(expected=tube_cross_section.area, rel=1e-2)
+        assert section_properties.area == pytest.approx(expected=tube_cross_section.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=tube_cross_section.perimeter, rel=1e-2)
         assert section_properties.cx == pytest.approx(expected=tube_cross_section.centroid.x, rel=1e-2)
         assert section_properties.cy == pytest.approx(expected=tube_cross_section.centroid.y, rel=1e-2)
