@@ -49,10 +49,19 @@ class AnnularSectorCrossSection(CrossSection):
             raise ValueError(f"Radius must be zero or positive, but got {self.inner_radius}")
         if self.thickness <= 0:
             raise ValueError(f"Thickness must be a positive value, but got {self.thickness}")
-        if not (-360 < self.start_angle < 360):
+        if self.start_angle > 360 or self.start_angle < -360:
             raise ValueError(f"Start angle must be between -360 and 360 degrees, but got {self.start_angle}")
-        if not (self.start_angle < self.end_angle < self.start_angle + 360):
-            raise ValueError(f"End angle must be larger than start angle and not more than 360 degrees more, but got {self.end_angle}")
+        if self.end_angle > 360 or self.end_angle < -360:
+            raise ValueError(f"End angle must be between -360 and 360 degrees, but got {self.end_angle}")
+        if self.end_angle <= self.start_angle:
+            raise ValueError(f"End angle must be greater than start angle, but got end angle {self.end_angle} and start angle {self.start_angle}")
+        if self.end_angle - self.start_angle >= 360:
+            raise ValueError(
+                f"The total angle made between start and end angle must be less than 360 degrees, but got "
+                f"{self.end_angle - self.start_angle} degrees (end {self.end_angle} - start {self.start_angle})\n\n"
+                f"In case you want to create a full circle (donut shape), "
+                "use a tube cross section instead (TubeCrossSection)."
+            )
 
     @property
     def radius_centerline(self) -> MM:
