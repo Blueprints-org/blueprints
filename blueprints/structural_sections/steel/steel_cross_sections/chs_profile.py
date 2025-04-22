@@ -98,6 +98,29 @@ class LoadStandardCHS:
         """Return the wall thickness of the CHS profile."""
         return self.profile.thickness
 
-    def get_profile(self) -> CHSSteelProfile:
-        """Return the CHS profile."""
-        return CHSSteelProfile(outer_diameter=self.diameter(), wall_thickness=self.thickness(), steel_class=self.steel_class)
+    def get_profile(self, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> CHSSteelProfile:
+        """Return the CHS profile with optional corrosion adjustments.
+
+        Parameters
+        ----------
+        corrosion_outside : MM, optional
+            Corrosion thickness to be subtracted from the outer diameter [mm] (default: 0).
+        corrosion_inside : MM, optional
+            Corrosion thickness to be added to the inner diameter [mm] (default: 0).
+
+        Returns
+        -------
+        CHSSteelProfile
+            The adjusted CHS steel profile considering corrosion effects.
+        """
+        adjusted_outer_diameter = self.diameter() - 2 * corrosion_outside
+        adjusted_thickness = self.thickness() - corrosion_outside - corrosion_inside
+
+        if adjusted_thickness <= 0:
+            raise ValueError("Adjusted wall thickness must be greater than zero.")
+
+        return CHSSteelProfile(
+            outer_diameter=adjusted_outer_diameter,
+            wall_thickness=adjusted_thickness,
+            steel_class=self.steel_class,
+        )

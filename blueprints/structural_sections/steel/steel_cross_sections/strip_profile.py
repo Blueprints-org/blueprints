@@ -100,6 +100,14 @@ class LoadStandardStrip:
         """Return the height (thickness) of the strip profile."""
         return self.profile.height
 
-    def get_profile(self) -> StripSteelProfile:
-        """Return the strip profile."""
-        return StripSteelProfile(width=self.width(), height=self.height(), steel_class=self.steel_class)
+    def get_profile(self, corrosion: MM = 0) -> StripSteelProfile:
+        """Return the strip profile.
+
+        Parameters
+        ----------
+        corrosion : MM, optional
+            Corrosion thickness per side (default is 0).
+        """
+        width = self.width() - corrosion * 2
+        height = self.height() - corrosion * 2
+        return StripSteelProfile(width=width, height=height, steel_class=self.steel_class)
