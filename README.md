@@ -84,14 +84,14 @@ Our mission is to reduce the cost and time associated with civil engineering cal
     - [x] Rectangle ✔️
     - [x] Circle ✔️
     - [x] Tube / ring ✔️
-    - [ ] Right triangle ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
-    - [ ] Hexagon ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+    - [x] Right triangle ✔️
+    - [x] Hexagon ✔️
+    - [x] Quarter Circular Spandrel ✔️
     - [ ] Annular Sector (partial ring) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
-    - [ ] Quarter Circular Spandrel ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Reinforced Concrete Section
     - [x] Rectangular section ✔️
-    - [ ] Circular section ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+    - [x] Circular section ✔️
 
 * Strain-stress analysis for reinforced concrete sections:
   - [ ] Rectangular section ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
