@@ -99,7 +99,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 * Concrete checks
   - [x] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4) ✔️
-  - [x] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ✔️
+  - [x] [Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4)](https://cloud.viktor.ai/public/blueprints-nominal-concrete-cover) ✔️
   - [x] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8) ✔️
   - [x] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2) ✔️
   - [x] Shear Resistance circular shapes ✔️
