@@ -49,8 +49,8 @@ class Form6Dot22CheckShearBucklingResistance(Formula):
         eta: DIMENSIONLESS,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(h_w=h_w, epsilon=epsilon)
-        raise_if_negative(t_w=t_w, eta=eta)
+        raise_if_less_or_equal_to_zero(t_w=t_w, eta=eta)
+        raise_if_negative(h_w=h_w, epsilon=epsilon)
 
         return (h_w / t_w) > (72 * (epsilon / eta))
 

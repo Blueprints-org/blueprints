@@ -28,12 +28,12 @@ class TestForm6Dot22CheckShearBucklingResistance:
     @pytest.mark.parametrize(
         ("h_w", "t_w", "epsilon", "eta"),
         [
-            (0.0, 5.0, 1.0, 1.0),  # h_w is zero
-            (500.0, 5.0, 0.0, 1.0),  # epsilon is zero
             (-500.0, 5.0, 1.0, 1.0),  # h_w is negative
             (500.0, 5.0, -1.0, 1.0),  # epsilon is negative
             (500.0, -5.0, 1.0, 1.0),  # t_w is negative
             (500.0, 5.0, 1.0, -1.0),  # eta is negative
+            (500.0, 5.0, 1.0, 0.0),  # eta is less than or equal to zero
+            (500.0, 0.0, 1.0, 1.0),  # t_w is less than or equal to zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, h_w: float, t_w: float, epsilon: float, eta: float) -> None:
