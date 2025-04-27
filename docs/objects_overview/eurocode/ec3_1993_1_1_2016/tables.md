@@ -9,7 +9,7 @@ Total of 20 tables present.
 
 | Table number | Done | Remarks | Object name |
 |:-------------|:----:|:--------|:------------|
-| 3.1          | :x:  |         |             |
+| 3.1          | :x:  |         | Table3Dot1NominalValuesHotRolledStructuralSteel |
 | 3.2          | :x:  |         |             |
 | 5.1          | :x:  |         |             |
 | 5.2          | :x:  |         |             |
