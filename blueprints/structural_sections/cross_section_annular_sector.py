@@ -51,8 +51,6 @@ class AnnularSectorCrossSection(CrossSection):
             raise ValueError(f"Thickness must be a positive value, but got {self.thickness}")
         if self.start_angle > 360 or self.start_angle < -360:
             raise ValueError(f"Start angle must be between -360 and 360 degrees, but got {self.start_angle}")
-        if self.end_angle > 360 or self.end_angle < -360:
-            raise ValueError(f"End angle must be between -360 and 360 degrees, but got {self.end_angle}")
         if self.end_angle <= self.start_angle:
             raise ValueError(f"End angle must be greater than start angle, but got end angle {self.end_angle} and start angle {self.start_angle}")
         if self.end_angle - self.start_angle >= 360:

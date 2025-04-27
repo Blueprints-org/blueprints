@@ -119,19 +119,6 @@ class TestAnnularSectorCrossSection:
                 y=0.0,
             )
 
-    def test_invalid_end_angle_greater_or_equal_than_360(self) -> None:
-        """Test initialization with an invalid end angle value."""
-        with pytest.raises(ValueError):
-            AnnularSectorCrossSection(
-                name="InvalidEndAngle",
-                inner_radius=100.0,
-                thickness=20.0,
-                start_angle=270,
-                end_angle=400,
-                x=0.0,
-                y=0.0,
-            )
-
     @pytest.mark.parametrize(
         ("start_angle", "end_angle"),
         [
@@ -246,3 +233,25 @@ class TestAnnularSectorCrossSection:
         assert section_properties.zyy_plus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_z_positive, rel=1e-2)
         assert section_properties.zxx_minus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_y_negative, rel=1e-2)
         assert section_properties.zyy_minus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_z_negative, rel=1e-2)
+
+    def test_section_properties_359_degrees(self, annular_sector_cross_section_359_degrees: AnnularSectorCrossSection) -> None:
+        """Test the section properties of the HexagonalCrossSection class with 359 degrees."""
+        section_properties = annular_sector_cross_section_359_degrees.section_properties()
+        assert section_properties.area == pytest.approx(expected=annular_sector_cross_section_359_degrees.area, rel=1e-2)
+        assert section_properties.perimeter == pytest.approx(expected=annular_sector_cross_section_359_degrees.perimeter, rel=1e-2)
+        assert section_properties.cx == pytest.approx(expected=annular_sector_cross_section_359_degrees.centroid.x, rel=1e-2)
+        assert section_properties.cy == pytest.approx(expected=annular_sector_cross_section_359_degrees.centroid.y, rel=1e-2)
+        assert section_properties.ixx_c == pytest.approx(expected=annular_sector_cross_section_359_degrees.moment_of_inertia_about_y, rel=1e-2)
+        assert section_properties.iyy_c == pytest.approx(expected=annular_sector_cross_section_359_degrees.moment_of_inertia_about_z, rel=1e-2)
+        assert section_properties.zxx_plus == pytest.approx(
+            expected=annular_sector_cross_section_359_degrees.elastic_section_modulus_about_y_positive, rel=1e-2
+        )
+        assert section_properties.zyy_plus == pytest.approx(
+            expected=annular_sector_cross_section_359_degrees.elastic_section_modulus_about_z_positive, rel=1e-2
+        )
+        assert section_properties.zxx_minus == pytest.approx(
+            expected=annular_sector_cross_section_359_degrees.elastic_section_modulus_about_y_negative, rel=1e-2
+        )
+        assert section_properties.zyy_minus == pytest.approx(
+            expected=annular_sector_cross_section_359_degrees.elastic_section_modulus_about_z_negative, rel=1e-2
+        )
