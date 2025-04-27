@@ -47,7 +47,7 @@ class Form6Dot21ShearStressIOrHSection(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(v_ed=v_ed, a_f=a_f)
         raise_if_less_or_equal_to_zero(a_w=a_w)
-        if a_f / a_w < 0.6:
+        if not a_f / a_w >= 0.6:
             raise ValueError("A_f / A_w must be greater than or equal to 0.6")
 
         return v_ed / a_w
