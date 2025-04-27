@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2
-from blueprints.validations import raise_if_lists_differ_in_length, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
 
 
 class Form6Dot18SubARolledIandHSection(Formula):
@@ -44,7 +44,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
         tw : MM
             [$t_w$] Web thickness [$mm$]. If the web thickness is not constant, tw should be taken as the minimum thickness.
         eta : DIMENSIONLESS, optional
-            [$\eta$] See EN 1993-1-5. Note, $eta$ may be conservatively taken equal to 1.0.
+            [$\eta$] Dimensionless conversionfactor, see EN 1993-1-5 5.1. Note, $eta$ may be conservatively taken equal to 1.0.
         """
         super().__init__()
         self.a = a
@@ -71,7 +71,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
         av = a - 2 * b * tf + (tw + 2 * r) * tf
         av_min = eta * hw * tw
 
-        return max(av, av_min)
+        return max(0, av, av_min)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18suba."""
@@ -148,7 +148,7 @@ class Form6Dot18SubBRolledChannelSection(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a=a, b=b, tf=tf, tw=tw, r=r)
 
-        return a - 2 * b * tf + (tw + r) * tf
+        return max(0, a - 2 * b * tf + (tw + r) * tf)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subb."""
@@ -174,8 +174,8 @@ class Form6Dot18SubBRolledChannelSection(Formula):
         )
 
 
-class Form6Dot18SubCTSection(Formula):
-    r"""Class representing formula 6.18subc for the calculation of shear area for a T-section with load parallel to web."""
+class Form6Dot18SubCTSectionRolled(Formula):
+    r"""Class representing formula 6.18subc for the calculation of shear area for a rolled T-section with load parallel to web."""
 
     label = "6.18subc"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
@@ -185,6 +185,8 @@ class Form6Dot18SubCTSection(Formula):
         a: MM2,
         b: MM,
         tf: MM,
+        tw: MM,
+        r: MM,
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for a T-section with load parallel to web [$mm^2$].
 
@@ -198,32 +200,105 @@ class Form6Dot18SubCTSection(Formula):
             [$b$] Overall breadth [$mm$].
         tf : MM
             [$t_f$] Flange thickness [$mm$].
+        tw : MM
+            [$t_w$] Web thickness [$mm$]. If the web thickness is not constant, tw should be taken as the minimum thickness.
+        r : MM
+            [$r$] Root radius [$mm$].
         """
         super().__init__()
         self.a = a
         self.b = b
         self.tf = tf
+        self.tw = tw
+        self.r = r
 
     @staticmethod
     def _evaluate(
         a: MM2,
         b: MM,
         tf: MM,
+        tw: MM,
+        r: MM,
     ) -> MM2:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(a=a, b=b, tf=tf)
+        raise_if_negative(a=a, b=b, tf=tf, tw=tw, r=r)
 
-        return 0.9 * (a - b * tf)
+        return max(0, a - b * tf + (tw + 2 * r) * tf / 2)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subc."""
-        _equation: str = r"0.9 \cdot (A - b \cdot t_f)"
+        _equation: str = r"A - b \cdot t_f + (t_w + 2 \cdot r) \cdot \frac{t_f}{2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 r"A": f"{self.a:.3f}",
                 r"b": f"{self.b:.3f}",
                 r"t_f": f"{self.tf:.3f}",
+                r"t_w": f"{self.tw:.3f}",
+                r" r": f" {self.r:.3f}",
+            },
+            False,
+        )
+        return LatexFormula(
+            return_symbol=r"A_v",
+            result=f"{self:.3f}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            comparison_operator_label="=",
+            unit="mm^2",
+        )
+
+
+class Form6Dot18SubCTSectionWelded(Formula):
+    r"""Class representing formula 6.18subc for the calculation of shear area for a welded T-section with load parallel to web."""
+
+    label = "6.18subc"
+    source_document = NEN_EN_1993_1_1_C2_A1_2016
+
+    def __init__(
+        self,
+        tf: MM,
+        tw: MM,
+        h: MM,
+    ) -> None:
+        r"""[$A_v$] Calculation of the shear area for a T-section with load parallel to web [$mm^2$].
+
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subc)
+
+        Parameters
+        ----------
+        tf : MM
+            [$t_f$] Flange thickness [$mm$].
+        tw : MM
+            [$t_w$] Web thickness [$mm$]. If the web thickness is not constant, tw should be taken as the minimum thickness.
+        h : MM
+            [$h$] Overall depth [$mm$].
+        """
+        super().__init__()
+        self.tf = tf
+        self.tw = tw
+        self.h = h
+
+    @staticmethod
+    def _evaluate(
+        tf: MM,
+        tw: MM,
+        h: MM,
+    ) -> MM2:
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(tf=tf, tw=tw, h=h)
+
+        return max(0, tw * (h * tf / 2))
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 6.18subc."""
+        _equation: str = r"t_w \cdot (h \cdot t_f / 2)"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"t_f": f"{self.tf:.3f}",
+                r"t_w": f"{self.tw:.3f}",
+                r"h": f"{self.h:.3f}",
             },
             False,
         )
@@ -245,8 +320,8 @@ class Form6Dot18SubDWeldedIHandBoxSection(Formula):
 
     def __init__(
         self,
-        hw: list[MM],
-        tw: list[MM],
+        hw_list: list[MM],
+        tw_list: list[MM],
         eta: DIMENSIONLESS,
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for welded I, H, and box sections with load parallel to web [$mm^2$].
@@ -255,41 +330,38 @@ class Form6Dot18SubDWeldedIHandBoxSection(Formula):
 
         Parameters
         ----------
-        hw : list[MM]
+        hw_list : list[MM]
             [$h_w$] List of depths of the web [$mm$].
-        tw : list[MM]
+        tw_list : list[MM]
             [$t_w$] List of web thicknesses [$mm$]. If the web thickness is not constant, tw should be taken as the minimum thickness.
         eta : DIMENSIONLESS
             [$\eta$] See EN 1993-1-5. Note, $eta$ may be conservatively taken equal to 1.0.
         """
         super().__init__()
-        self.hw = hw
-        self.tw = tw
+        self.hw_list = hw_list
+        self.tw_list = tw_list
         self.eta = eta
 
     @staticmethod
     def _evaluate(
-        hw: list[MM],
-        tw: list[MM],
+        hw_list: list[MM],
+        tw_list: list[MM],
         eta: DIMENSIONLESS,
     ) -> MM2:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(eta=eta)
-        for h, t in zip(hw, tw):
+        for h, t in zip(hw_list, tw_list):
             raise_if_negative(h=h, t=t)
-        raise_if_lists_differ_in_length(hw=hw, tw=tw)
+        raise_if_lists_differ_in_length(hw_list=hw_list, tw_list=tw_list)
 
-        return eta * sum(h * t for h, t in zip(hw, tw))
+        return max(0, eta * sum(h * t for h, t in zip(hw_list, tw_list)))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subd."""
-        _equation: str = r"\eta \cdot \sum (h_{w0} \cdot t_{w0}"
-        for i in range(1, len(self.hw)):
-            _equation += rf" + h_{{w{i}}} \cdot t_{{w{i}}}"
-        _equation += ")"
-        _numeric_equation: str = rf"{self.eta:.3f} \cdot (" + rf"{self.hw[0]:.3f} \cdot {self.tw[0]:.3f}"
-        for i in range(1, len(self.hw)):
-            _numeric_equation += rf" + {self.hw[i]:.3f} \cdot {self.tw[i]:.3f}"
+        _equation: str = r"\eta \cdot \sum (h_{w} \cdot t_{w})"
+        _numeric_equation: str = rf"{self.eta:.3f} \cdot (" + rf"{self.hw_list[0]:.3f} \cdot {self.tw_list[0]:.3f}"
+        for i in range(1, len(self.hw_list)):
+            _numeric_equation += rf" + {self.hw_list[i]:.3f} \cdot {self.tw_list[i]:.3f}"
         _numeric_equation += ")"
         return LatexFormula(
             return_symbol=r"A_v",
@@ -312,8 +384,8 @@ class Form6Dot18SubEWeldedIHandBoxSection(Formula):
     def __init__(
         self,
         a: MM2,
-        hw: list[MM],
-        tw: list[MM],
+        hw_list: list[MM],
+        tw_list: list[MM],
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for welded I, H, channel, and box sections with load parallel to flanges [$mm^2$].
 
@@ -323,39 +395,36 @@ class Form6Dot18SubEWeldedIHandBoxSection(Formula):
         ----------
         a : MM2
             [$A$] Cross-sectional area [$mm^2$].
-        hw : list[MM]
+        hw_list : list[MM]
             [$h_w$] List of depths of the web [$mm$].
-        tw : list[MM]
+        tw_list : list[MM]
             [$t_w$] List of web thicknesses [$mm$]. If the web thickness is not constant, tw should be taken as the minimum thickness.
         """
         super().__init__()
         self.a = a
-        self.hw = hw
-        self.tw = tw
+        self.hw_list = hw_list
+        self.tw_list = tw_list
 
     @staticmethod
     def _evaluate(
         a: MM2,
-        hw: list[MM],
-        tw: list[MM],
+        hw_list: list[MM],
+        tw_list: list[MM],
     ) -> MM2:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a=a)
-        for h, t in zip(hw, tw):
+        for h, t in zip(hw_list, tw_list):
             raise_if_negative(h=h, t=t)
-        raise_if_lists_differ_in_length(hw=hw, tw=tw)
+        raise_if_lists_differ_in_length(hw=hw_list, tw_list=tw_list)
 
-        return a - sum(h * t for h, t in zip(hw, tw))
+        return max(0, a - sum(h * t for h, t in zip(hw_list, tw_list)))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18sube."""
-        _equation: str = r"A - \sum (h_{w0} \cdot t_{w0}"
-        for i in range(1, len(self.hw)):
-            _equation += rf" + h_{{w{i}}} \cdot t_{{w{i}}}"
-        _equation += ")"
-        _numeric_equation: str = rf"{self.a:.3f} - (" + rf"{self.hw[0]:.3f} \cdot {self.tw[0]:.3f}"
-        for i in range(1, len(self.hw)):
-            _numeric_equation += rf" + {self.hw[i]:.3f} \cdot {self.tw[i]:.3f}"
+        _equation: str = r"A - \sum (h_{w} \cdot t_{w})"
+        _numeric_equation: str = rf"{self.a:.3f} - (" + rf"{self.hw_list[0]:.3f} \cdot {self.tw_list[0]:.3f}"
+        for i in range(1, len(self.hw_list)):
+            _numeric_equation += rf" + {self.hw_list[i]:.3f} \cdot {self.tw_list[i]:.3f}"
         _numeric_equation += ")"
         return LatexFormula(
             return_symbol=r"A_v",
@@ -407,8 +476,9 @@ class Form6Dot18SubF1RolledRectangularHollowSectionDepth(Formula):
     ) -> MM2:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a=a, b=b, h=h)
-
-        return a * h / (b + h)
+        denominator = b + h
+        raise_if_less_or_equal_to_zero(denominator=denominator)
+        return max(0, a * h / (b + h))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subf1."""
@@ -472,8 +542,9 @@ class Form6Dot18SubF2RolledRectangularHollowSectionWidth(Formula):
     ) -> MM2:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a=a, b=b, h=h)
-
-        return a * b / (b + h)
+        denominator = b + h
+        raise_if_less_or_equal_to_zero(denominator=denominator)
+        return max(0, a * b / (b + h))
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subf2."""
@@ -526,7 +597,7 @@ class Form6Dot18SubGCircularHollowSection(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a=a)
 
-        return 2 * a / np.pi
+        return max(0, 2 * a / np.pi)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subg."""
