@@ -15,11 +15,11 @@ class TestForm7Dot21CurvatureDueToShrinkage:
         epsilon_cs = 0.0003  # dimensionless
         es = 200000.0  # MPa
         ec_eff = 30000.0  # MPa
-        s = 50000.0  # mm^3
-        i = 200000.0  # mm^4
+        capital_s = 50000.0  # mm^3
+        capital_i = 200000.0  # mm^4
 
         # Object to test
-        formula = Form7Dot21CurvatureDueToShrinkage(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, s=s, i=i)
+        formula = Form7Dot21CurvatureDueToShrinkage(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, capital_s=capital_s, capital_i=capital_i)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.0005  # dimensionless
@@ -27,19 +27,19 @@ class TestForm7Dot21CurvatureDueToShrinkage:
         assert formula == pytest.approx(manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("epsilon_cs", "es", "ec_eff", "s", "i"),
+        ("epsilon_cs", "es", "ec_eff", "capital_s", "capital_i"),
         [
             (-0.0003, 200000.0, 30000.0, 50000.0, 200000.0),  # epsilon_cs is negative
             (0.0003, -200000.0, 30000.0, 50000.0, 200000.0),  # es is negative
             (0.0003, 200000.0, -30000.0, 50000.0, 200000.0),  # ec_eff is negative
-            (0.0003, 200000.0, 30000.0, -50000.0, 200000.0),  # s is negative
-            (0.0003, 200000.0, 30000.0, 50000.0, -200000.0),  # i is negative
+            (0.0003, 200000.0, 30000.0, -50000.0, 200000.0),  # capital_s is negative
+            (0.0003, 200000.0, 30000.0, 50000.0, -200000.0),  # capital_i is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, epsilon_cs: float, es: float, ec_eff: float, s: float, i: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, epsilon_cs: float, es: float, ec_eff: float, capital_s: float, capital_i: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form7Dot21CurvatureDueToShrinkage(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, s=s, i=i)
+            Form7Dot21CurvatureDueToShrinkage(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, capital_s=capital_s, capital_i=capital_i)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -58,11 +58,11 @@ class TestForm7Dot21CurvatureDueToShrinkage:
         epsilon_cs = 0.0003  # dimensionless
         es = 200000.0  # MPa
         ec_eff = 30000.0  # MPa
-        s = 50000.0  # mm^3
-        i = 200000.0  # mm^4
+        capital_s = 50000.0  # mm^3
+        capital_i = 200000.0  # mm^4
 
         # Object to test
-        latex = Form7Dot21CurvatureDueToShrinkage(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, s=s, i=i).latex()
+        latex = Form7Dot21CurvatureDueToShrinkage(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, capital_s=capital_s, capital_i=capital_i).latex()
 
         actual = {
             "complete": latex.complete,
