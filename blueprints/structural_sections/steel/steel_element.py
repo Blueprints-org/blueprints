@@ -91,12 +91,12 @@ class SteelElement:
         return self.cross_section.elastic_section_modulus_about_z_negative
 
     @property
-    def plastic_section_modulus_about_y(self) -> MM3:
+    def plastic_section_modulus_about_y(self) -> MM3 | None:
         """Plastic section modulus about the y-axis [mm³]."""
         return self.cross_section.plastic_section_modulus_about_y
 
     @property
-    def plastic_section_modulus_about_z(self) -> MM3:
+    def plastic_section_modulus_about_z(self) -> MM3 | None:
         """Plastic section modulus about the z-axis [mm³]."""
         return self.cross_section.plastic_section_modulus_about_z
 
