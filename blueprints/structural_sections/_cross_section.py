@@ -70,12 +70,12 @@ class CrossSection(ABC):
 
     @property
     @abstractmethod
-    def plastic_section_modulus_about_y(self) -> MM3:
+    def plastic_section_modulus_about_y(self) -> MM3 | None:
         """Plastic section modulus about the y-axis [mm³]."""
 
     @property
     @abstractmethod
-    def plastic_section_modulus_about_z(self) -> MM3:
+    def plastic_section_modulus_about_z(self) -> MM3 | None:
         """Plastic section modulus about the z-axis [mm³]."""
 
     @abstractmethod

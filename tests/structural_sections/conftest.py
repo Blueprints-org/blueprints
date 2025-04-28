@@ -3,6 +3,7 @@
 import pytest
 from sectionproperties.post.post import SectionProperties
 
+from blueprints.structural_sections.cross_section_annular_sector import AnnularSectorCrossSection
 from blueprints.structural_sections.cross_section_circle import CircularCrossSection
 from blueprints.structural_sections.cross_section_hexagon import HexagonalCrossSection
 from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
@@ -53,3 +54,31 @@ def qcs_cross_section() -> QuarterCircularSpandrelCrossSection:
 def hexagonal_cross_section() -> HexagonalCrossSection:
     """Return a HexagonalCrossSection instance."""
     return HexagonalCrossSection(name="Hexagon", side_length=50.0, x=100.0, y=250.0)
+
+
+@pytest.fixture
+def annular_sector_cross_section() -> AnnularSectorCrossSection:
+    """Return an AnnularSectorCrossSection instance."""
+    return AnnularSectorCrossSection(
+        inner_radius=90.0,
+        thickness=20.0,
+        start_angle=0.0,
+        end_angle=90.0,
+        x=100.0,
+        y=250.0,
+        name="AnnularSector",
+    )
+
+
+@pytest.fixture
+def annular_sector_cross_section_359_degrees() -> AnnularSectorCrossSection:
+    """Return an AnnularSectorCrossSection instance."""
+    return AnnularSectorCrossSection(
+        inner_radius=90.0,
+        thickness=20.0,
+        start_angle=90.0,
+        end_angle=90.0 + 359.0,
+        x=0.0,
+        y=0.0,
+        name="AnnularSector",
+    )
