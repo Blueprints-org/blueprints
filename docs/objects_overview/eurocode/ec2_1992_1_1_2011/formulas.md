@@ -41,7 +41,7 @@ Total of 304 formulas present.
 | 3.30           | :heavy_check_mark: |         | Form3Dot30RatioLossOfPreStressClass3                      |
 | 4.1            | :heavy_check_mark: |         | Form4Dot1NominalConcreteCover                             |
 | 4.2            | :heavy_check_mark: |         | Form4Dot2MinimumConcreteCover                             |
-| 4.3N           |        :x:         |         |                                                           |
+| 4.3N           | :heavy_check_mark: |         | Form4Dot3NCheckExecutionTolerances                        |
 | 4.4N           |        :x:         |         |                                                           |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1Imperfections                                    |
 | 5.2            | :heavy_check_mark: |         | Form5Dot2Eccentricity                                     |
@@ -167,44 +167,45 @@ Total of 304 formulas present.
 | 6.61           | :heavy_check_mark: |         | Form6Dot61DesignValueCompressiveStressResistance          |
 | 6.62           | :heavy_check_mark: |         | Form6Dot62DesignValueCompressiveStressResistance          |
 | 6.63           | :heavy_check_mark: |         | Form6Dot63ConcentratedResistanceForce                     |
-| 6.64           |        :x:         |         |                                                           |
-| 6.65           |        :x:         |         |                                                           |
+| 6.64           | :heavy_check_mark: |         | Form6Dot64BondFactor                                      |
+| 6.65           | :heavy_check_mark: |         | Form6Dot65ConcreteCompressionStrut                        |
 | 6.66           |        :x:         |         |                                                           |
 | 6.67           |        :x:         |         |                                                           |
 | 6.68           |        :x:         |         |                                                           |
 | 6.69           |        :x:         |         |                                                           |
-| 6.70           |        :x:         |         |                                                           |
+| 6.70           | :heavy_check_mark: |         | Form6Dot70FatigueDamageFactor                             |
 | 6.71           | :heavy_check_mark: |         | Form6Dot71CriteriaBasedOnStressRange                      |
-| 6.72           |        :x:         |         |                                                           |
-| 6.73           |        :x:         |         |                                                           |
-| 6.74           |        :x:         |         |                                                           |
-| 6.75           |        :x:         |         |                                                           |
+| 6.72           | :heavy_check_mark: |         | Form6Dot72FatigueResistanceConcreteCompression            |
+| 6.73           | :heavy_check_mark: |         | Form6Dot73StressRatio                                     |
+| 6.74           | :heavy_check_mark: |         | Form6Dot74MinimumCompressiveStressLevel                   |
+| 6.75           | :heavy_check_mark: |         | Form6Dot75MaximumCompressiveStressLevel                   |
 | 6.76           | :heavy_check_mark: |         | Form6Dot76DesignFatigueStrengthConcrete                   |
 | 6.77           | :heavy_check_mark: |         | Form6Dot77FatigueVerification                             |
 | 6.78           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
 | 6.79           | :heavy_check_mark: |         | Form6Dot78And79FatigueResistance                          |
-| 7.1            |        :x:         |         |                                                           |
-| 7.2            |        :x:         |         |                                                           |
+| 7.1            | :heavy_check_mark: |         | Form7Dot1MinReinforcingSteel                              |
+| 7.2            | :heavy_check_mark: |         | Form7Dot2StressDistributionCoefficient                    |
+| 7.2sub1        | :heavy_check_mark: |         | Form7Dot2Sub1AxialForceCoefficient                        |
 | 7.3            | :heavy_check_mark: |         | Form7Dot3CoefficientKc                                    |
-| 7.4            |        :x:         |         |                                                           |
-| 7.5            |        :x:         |         |                                                           |
-| 7.6N           |        :x:         |         |                                                           |
-| 7.7N           |        :x:         |         |                                                           |
-| 7.8            |        :x:         |         |                                                           |
-| 7.9            |        :x:         |         |                                                           |
-| 7.10           |        :x:         |         |                                                           |
-| 7.11           |        :x:         |         |                                                           |
-| 7.12           |        :x:         |         |                                                           |
-| 7.13           |        :x:         |         |                                                           |
-| 7.14           |        :x:         |         |                                                           |
-| 7.15           |        :x:         |         |                                                           |
+| 7.4            | :heavy_check_mark: |         | Form7Dot4MeanStressConcrete                               |
+| 7.5            | :heavy_check_mark: |         | Form7Dot5AdjustedBondStrengthRatio                        |
+| 7.6N           | :heavy_check_mark: |         | Form7Dot6nMaxBarDiameterBending                           |
+| 7.7N           | :heavy_check_mark: |         | Form7Dot7nMaxBarDiameterTension                           |
+| 7.8            | :heavy_check_mark: |         | Form7Dot8CrackWidth                                       |
+| 7.9            | :heavy_check_mark: |         | Form7Dot9EpsilonSmMinusEpsilonCm                          |
+| 7.10           | :heavy_check_mark: |         | Form7Dot10RhoPEff                                         |
+| 7.11           | :heavy_check_mark: |         | Form7Dot11MaximumCrackSpacing                             |
+| 7.12           | :heavy_check_mark: |         | Form7Dot12EquivalentDiameter                              |
+| 7.13           | :heavy_check_mark: |         | Form7Dot13CoefficientK2                                   |
+| 7.14           | :heavy_check_mark: |         | Form7Dot14MaximumCrackSpacing                             |
+| 7.15           | :heavy_check_mark: |         | Form7Dot15MaximumCrackSpacing                             |
 | 7.16.a         | :heavy_check_mark: |         | Form7Dot16abSpanDepthRatio                                |
 | 7.16.b         | :heavy_check_mark: |         | Form7Dot16abSpanDepthRatio                                |
 | 7.17           | :heavy_check_mark: |         | Form7Dot17MultiplicationFactor                            |
 | 7.18           | :heavy_check_mark: |         | Form7Dot18DeformationParameter                            |
 | 7.19           | :heavy_check_mark: |         | Form7Dot19DistributionCoefficient                         |
 | 7.20           | :heavy_check_mark: |         | Form7Dot20EffectiveModulus                                |
-| 7.21           | :heavy_check_mark: |         | Form7Dot21CurvatureDueToShrinkage                         |
+| 7.21           | :heavy_check_mark: |         | Form7Dot21CurvatureDueToShrinkage             
 | 8.1            | :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                   |
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
