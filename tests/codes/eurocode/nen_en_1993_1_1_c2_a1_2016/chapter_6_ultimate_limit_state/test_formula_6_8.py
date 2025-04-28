@@ -44,9 +44,9 @@ class TestForm6Dot8NetDesignTensionResistance:
             (
                 "complete",
                 r"N_{net,Rd} = \frac{A_{net} \cdot f_y}{\gamma_{M0}} = "
-                r"\frac{5000.000 \cdot 355.000}{1.000} = 1775000.000 N",
+                r"\frac{5000.000 \cdot 355.000}{1.000} = 1775000.000 \ N",
             ),
-            ("short", r"N_{net,Rd} = 1775000.000 N"),
+            ("short", r"N_{net,Rd} = 1775000.000 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

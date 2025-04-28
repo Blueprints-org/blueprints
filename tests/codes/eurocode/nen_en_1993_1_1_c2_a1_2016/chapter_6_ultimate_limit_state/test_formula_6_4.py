@@ -40,9 +40,9 @@ class TestForm6Dot4AxialCompression:
         [
             (
                 "complete",
-                r"\Delta M_{Ed} = N_{Ed} \cdot e_{N} = 1000.000 \cdot 50.000 = 50000.000 Nmm",
+                r"\Delta M_{Ed} = N_{Ed} \cdot e_{N} = 1000.000 \cdot 50.000 = 50000.000 \ Nmm",
             ),
-            ("short", r"\Delta M_{Ed} = 50000.000 Nmm"),
+            ("short", r"\Delta M_{Ed} = 50000.000 \ Nmm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

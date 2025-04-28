@@ -46,9 +46,9 @@ class TestForm6Dot7DesignUltimateResistanceNetCrossSection:
             (
                 "complete",
                 r"N_{u,Rd} = 0.9 \cdot \frac{A_{net} \cdot f_u}{\gamma_{M2}} = "
-                r"0.9 \cdot \frac{2000.000 \cdot 400.000}{1.100} = 654545.455 N",
+                r"0.9 \cdot \frac{2000.000 \cdot 400.000}{1.100} = 654545.455 \ N",
             ),
-            ("short", r"N_{u,Rd} = 654545.455 N"),
+            ("short", r"N_{u,Rd} = 654545.455 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

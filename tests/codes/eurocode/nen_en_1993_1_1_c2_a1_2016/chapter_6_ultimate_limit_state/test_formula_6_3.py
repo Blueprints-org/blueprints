@@ -56,9 +56,9 @@ class TestForm6Dot3ADeductionAreaStaggeredFastenerHoles:
                 "complete",
                 r"A_{deduction} = t \left( n \cdot d_0 - \sum \frac{s^2}{4 \cdot p} \right) = "
                 r"10.000 \left( 5.000 \cdot 20.000 - \left( \frac{50.000^2}{4 \cdot 100.000} + "
-                r"\frac{60.000^2}{4 \cdot 120.000} \right) \right) = 862.500 mm^2",
+                r"\frac{60.000^2}{4 \cdot 120.000} \right) \right) = 862.500 \ mm^2",
             ),
-            ("short", r"A_{deduction} = 862.500 mm^2"),
+            ("short", r"A_{deduction} = 862.500 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
