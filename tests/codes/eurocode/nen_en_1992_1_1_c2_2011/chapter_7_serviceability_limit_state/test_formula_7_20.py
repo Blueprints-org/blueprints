@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_20 import Form7Dot20EffectiveModulus
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_20 import Form7Dot20EffectiveModulusCreep
 from blueprints.validations import NegativeValueError
 
 
-class TestForm7Dot20EffectiveModulus:
+class TestForm7Dot20EffectiveModulusCreep:
     """Validation for formula 7.20 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -16,7 +16,7 @@ class TestForm7Dot20EffectiveModulus:
         phi_inf_t0 = 2.0  # dimensionless
 
         # Object to test
-        formula = Form7Dot20EffectiveModulus(e_cm=e_cm, phi_inf_t0=phi_inf_t0)
+        formula = Form7Dot20EffectiveModulusCreep(e_cm=e_cm, phi_inf_t0=phi_inf_t0)
 
         # Expected result, manually calculated
         manually_calculated_result = 10000.0  # MPa
@@ -33,7 +33,7 @@ class TestForm7Dot20EffectiveModulus:
     def test_raise_error_when_invalid_values_are_given(self, e_cm: float, phi_inf_t0: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form7Dot20EffectiveModulus(e_cm=e_cm, phi_inf_t0=phi_inf_t0)
+            Form7Dot20EffectiveModulusCreep(e_cm=e_cm, phi_inf_t0=phi_inf_t0)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -52,7 +52,7 @@ class TestForm7Dot20EffectiveModulus:
         phi_inf_t0 = 2.0  # dimensionless
 
         # Object to test
-        latex = Form7Dot20EffectiveModulus(e_cm=e_cm, phi_inf_t0=phi_inf_t0).latex()
+        latex = Form7Dot20EffectiveModulusCreep(e_cm=e_cm, phi_inf_t0=phi_inf_t0).latex()
 
         actual = {
             "complete": latex.complete,

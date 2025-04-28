@@ -71,10 +71,10 @@ class Form7Dot16abSpanDepthRatio(Formula):
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 7.16a/b."""
         _equation: str = (
-            r"\begin{cases} K \cdot \left(11 + 1.5 \cdot \sqrt{f_{ck}} \cdot \frac{\rho_0}{\rho} + "
-            r"3.2 \cdot \sqrt{f_{ck}} \cdot \left(\frac{\rho_0}{\rho} - 1\right)^{3/2}\right) & \text{if } \rho \leq \rho_0 \\ "
-            r"K \cdot \left(11 + 1.5 \cdot \sqrt{f_{ck}} \cdot \frac{\rho_0}{\rho - \rho'} + "
-            r"\frac{1}{12} \cdot \sqrt{f_{ck}} \cdot \sqrt{\frac{\rho'}{\rho_0}}\right) & \text{if } \rho > \rho_0 \end{cases}"
+            r"\begin{cases} K \cdot \left[11 + 1.5 \cdot \sqrt{f_{ck}} \cdot \frac{\rho_0}{\rho} + "
+            r"3.2 \cdot \sqrt{f_{ck}} \cdot \left(\frac{\rho_0}{\rho} - 1\right)^{3/2}\right] & \text{if } \rho \leq \rho_0 \\ "
+            r"K \cdot \left[11 + 1.5 \cdot \sqrt{f_{ck}} \cdot \frac{\rho_0}{\rho - \rho'} + "
+            r"\frac{1}{12} \cdot \sqrt{f_{ck}} \cdot \sqrt{\frac{\rho'}{\rho_0}}\right] & \text{if } \rho > \rho_0 \end{cases}"
         )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -90,6 +90,57 @@ class Form7Dot16abSpanDepthRatio(Formula):
         return LatexFormula(
             return_symbol=r"\frac{l}{d}",
             result=f"{self:.3f}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            comparison_operator_label="=",
+            unit="-",
+        )
+
+
+class Form7Dot16ReferenceReinforcementRatio(Formula):
+    r"""Class representing formula 7.16 for the calculation of [$\rho_0$]."""
+
+    label = "7.16_rho_0"
+    source_document = NEN_EN_1992_1_1_C2_2011
+
+    def __init__(
+        self,
+        f_ck: MPA,
+    ) -> None:
+        r"""[$\rho_0$] Reference reinforcement ratio [-].
+
+        NEN-EN 1992-1-1+C2:2011 art.7.4.2(2) - Formula (7.16)
+
+        Parameters
+        ----------
+        f_ck : MPA
+            [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
+        """
+        super().__init__()
+        self.f_ck = f_ck
+
+    @staticmethod
+    def _evaluate(
+        f_ck: MPA,
+    ) -> DIMENSIONLESS:
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(f_ck=f_ck)
+
+        return np.sqrt(f_ck) * 10**-3
+
+    def latex(self) -> LatexFormula:
+        """Returns LatexFormula object for formula 7.16_rho_0."""
+        _equation: str = r"\sqrt{f_{ck}} \cdot 10^{-3}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"f_{ck}": f"{self.f_ck:.3f}",
+            },
+            False,
+        )
+        return LatexFormula(
+            return_symbol=r"\rho_0",
+            result=f"{self:.6f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

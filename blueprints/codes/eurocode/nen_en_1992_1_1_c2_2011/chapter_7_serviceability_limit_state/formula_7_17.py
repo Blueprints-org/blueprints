@@ -7,8 +7,8 @@ from blueprints.type_alias import DIMENSIONLESS, MM2, N
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form7Dot17MultiplicationFactor(Formula):
-    r"""Class representing formula 7.17 for the calculation of the multiplication factor."""
+class Form7Dot1MultiplicationFactorLimitSlenderness(Formula):
+    r"""Class representing formula 7.17 for the calculation of the stress multiplication factor for the limit span to depth ratio."""
 
     label = "7.17"
     source_document = NEN_EN_1992_1_1_C2_2011

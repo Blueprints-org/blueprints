@@ -2,11 +2,13 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_17 import Form7Dot17MultiplicationFactor
+from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_17 import (
+    Form7Dot1MultiplicationFactorLimitSlenderness,
+)
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm7Dot17MultiplicationFactor:
+class TestForm7Dot1MultiplicationFactorLimitSlenderness:
     """Validation for formula 7.17 from NEN-EN 1992-1-1+C2:2011."""
 
     def test_evaluation(self) -> None:
@@ -17,7 +19,7 @@ class TestForm7Dot17MultiplicationFactor:
         a_s_prov = 250.0
 
         # Object to test
-        formula = Form7Dot17MultiplicationFactor(f_yk=f_yk, a_s_req=a_s_req, a_s_prov=a_s_prov)
+        formula = Form7Dot1MultiplicationFactorLimitSlenderness(f_yk=f_yk, a_s_req=a_s_req, a_s_prov=a_s_prov)
 
         # Expected result, manually calculated
         manually_calculated_result = 1.25  # dimensionless
@@ -38,7 +40,7 @@ class TestForm7Dot17MultiplicationFactor:
     def test_raise_error_when_invalid_values_are_given(self, f_yk: float, a_s_req: float, a_s_prov: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form7Dot17MultiplicationFactor(f_yk=f_yk, a_s_req=a_s_req, a_s_prov=a_s_prov)
+            Form7Dot1MultiplicationFactorLimitSlenderness(f_yk=f_yk, a_s_req=a_s_req, a_s_prov=a_s_prov)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -59,7 +61,7 @@ class TestForm7Dot17MultiplicationFactor:
         a_s_prov = 250.0
 
         # Object to test
-        latex = Form7Dot17MultiplicationFactor(f_yk=f_yk, a_s_req=a_s_req, a_s_prov=a_s_prov).latex()
+        latex = Form7Dot1MultiplicationFactorLimitSlenderness(f_yk=f_yk, a_s_req=a_s_req, a_s_prov=a_s_prov).latex()
 
         actual = {
             "complete": latex.complete,

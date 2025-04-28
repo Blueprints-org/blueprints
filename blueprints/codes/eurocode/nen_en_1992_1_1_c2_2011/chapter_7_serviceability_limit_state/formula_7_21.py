@@ -18,8 +18,8 @@ class Form7Dot21CurvatureDueToShrinkage(Formula):
         epsilon_cs: DIMENSIONLESS,
         es: MPA,
         ec_eff: MPA,
-        s: MM3,
-        i: MM4,
+        capital_s: MM3,
+        capital_i: MM4,
     ) -> None:
         r"""[$\frac{1}{r_{cs}}$] Calculation of the curvature due to shrinkage [$mm^{-1}$].
 
@@ -37,26 +37,29 @@ class Form7Dot21CurvatureDueToShrinkage(Formula):
             [$S$] First moment of area of the reinforcement about the centroid of the section [$mm^3$].
         i : MM4
             [$I$] Second moment of area of the section [$mm^4$].
+
+        S and i should be calculated for the uncracked condition and the fully cracked condition, the
+        final curvature being assessed by use of Expression (7.18).
         """
         super().__init__()
         self.epsilon_cs = epsilon_cs
         self.es = es
         self.ec_eff = ec_eff
-        self.s = s
-        self.i = i
+        self.capital_s = capital_s
+        self.capital_i = capital_i
 
     @staticmethod
     def _evaluate(
         epsilon_cs: DIMENSIONLESS,
         es: MPA,
         ec_eff: MPA,
-        s: MM3,
-        i: MM4,
+        capital_s: MM3,
+        capital_i: MM4,
     ) -> ONE_OVER_MM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, s=s, i=i)
+        raise_if_negative(epsilon_cs=epsilon_cs, es=es, ec_eff=ec_eff, capital_s=capital_s, capital_i=capital_i)
 
-        return epsilon_cs * es / ec_eff * (s / i)
+        return epsilon_cs * es / ec_eff * (capital_s / capital_i)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 7.21."""
@@ -67,8 +70,8 @@ class Form7Dot21CurvatureDueToShrinkage(Formula):
                 r"\epsilon_{cs}": f"{self.epsilon_cs:.4f}",
                 r"E_s": f"{self.es:.3f}",
                 r"E_{c,eff}": f"{self.ec_eff:.3f}",
-                r"S": f"{self.s:.3f}",
-                r"I": f"{self.i:.3f}",
+                r"S": f"{self.capital_s:.3f}",
+                r"I": f"{self.capital_i:.3f}",
             },
             False,
         )

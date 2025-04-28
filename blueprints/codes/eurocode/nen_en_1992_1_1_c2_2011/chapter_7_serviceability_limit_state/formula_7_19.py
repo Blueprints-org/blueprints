@@ -36,7 +36,8 @@ class Form7Dot19DistributionCoefficient(Formula):
             [$\sigma_{sr}$] Stress in the tension reinforcement calculated on the basis of a
             cracked section under the loading conditions causing first cracking [$MPa$].
         sigma_s : MPA
-            [$\sigma_{s}$] Stress in the tension reinforcement calculated on the basis of a cracked section [$MPa$].
+            [$\sigma_{s}$] Stress in the tension reinforcement calculated on the basis of a cracked section under
+            loading conditions causing first cracking [$MPa$].
         """
         super().__init__()
         self.beta = beta

@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 
 
-class Form7Dot20EffectiveModulus(Formula):
+class Form7Dot20EffectiveModulusCreep(Formula):
     r"""Class representing formula 7.20 for the calculation of [$E_{c,eff}$]."""
 
     label = "7.20"
@@ -25,7 +25,7 @@ class Form7Dot20EffectiveModulus(Formula):
         Parameters
         ----------
         e_cm : MPA
-            [$E_{cm}$] Modulus of elasticity of concrete [$MPa$].
+            [$E_{cm}$] Secant modulus of elasticity of concrete [$MPa$].
         phi_inf_t0 : DIMENSIONLESS
             [$\phi(\infty, t_0)$] Creep coefficient relevant for the load and time interval (see 3.1.3) [$-$].
         """
