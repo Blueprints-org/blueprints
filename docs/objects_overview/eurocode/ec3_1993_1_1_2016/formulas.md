@@ -33,14 +33,14 @@ Total of 108 formulas present.
 | 6.6            | :heavy_check_mark:  |         | Form6Dot6DesignPlasticRestistanceGrossCrossSection            |
 | 6.7            | :heavy_check_mark:  |         | Form6Dot7DesignUltimateResistanceNetCrossSection           |
 | 6.8            | :heavy_check_mark:  |         | Form6Dot8NetDesignTensionResistance            |
-| 6.9            | :x:  |         | Form6Dot9CheckCompressionForce            |
-| 6.10           | :x:  |         | Form6Dot10NcRdClass1And2And3            |
-| 6.11           | :x:  |         | Form6Dot11NcRdClass4            |
-| 6.12           | :x:  |         | Form6Dot12CheckBendingMoment            |
-| 6.13           | :x:  |         | Form6Dot13MCRdClass1And2            |
-| 6.14           | :x:  |         | Form6Dot14MCRdClass3            |
-| 6.15           | :x:  |         | Form6Dot15McRdClass4            |
-| 6.16           | :x:  |         | Form6Dot16CheckFlangeWithFastenerHoles            |
+| 6.9            | :heavy_check_mark:  |         | Form6Dot9CheckCompressionForce            |
+| 6.10           | :heavy_check_mark:  |         | Form6Dot10NcRdClass1And2And3            |
+| 6.11           | :heavy_check_mark:  |         | Form6Dot11NcRdClass4            |
+| 6.12           | :heavy_check_mark:  |         | Form6Dot12CheckBendingMoment            |
+| 6.13           | :heavy_check_mark:  |         | Form6Dot13MCRdClass1And2            |
+| 6.14           | :heavy_check_mark:  |         | Form6Dot14MCRdClass3            |
+| 6.15           | :heavy_check_mark:  |         | Form6Dot15McRdClass4            |
+| 6.16           | :heavy_check_mark:  |         | Form6Dot16CheckFlangeWithFastenerHoles            |
 | 6.17           | :x:  |         |             |
 | 6.18           | :x:  |         |             |
 | 6.19           | :x:  |         |             |
