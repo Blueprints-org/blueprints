@@ -13,7 +13,7 @@ body:
     attributes:
       label: "Formula Description"
       description: "Describe the formula you're suggesting to add."
-      placeholder: "Add equation XXX to YYY from Eurocode ZZZ to the project."
+      value: "Add equation XXX to YYY from Eurocode ZZZ to the project."
     validations:
       required: true
 
@@ -22,7 +22,7 @@ body:
     attributes:
       label: "Acceptance Criteria"
       description: "List the conditions that the formula must fulfill to be considered complete."
-      placeholder: "- [ ] Add the formula to the code\n- [ ] Add latex expression to the formula\n- [ ] Add unittests\n- [ ] Add docstrings\n- [ ] Update table in docs with classname(s)"
+      value: "- [ ] Add the formula to the code\n- [ ] Add latex expression to the formula\n- [ ] Add unittests\n- [ ] Add docstrings\n- [ ] Update table in docs with classname(s)"
     validations:
       required: true
 
