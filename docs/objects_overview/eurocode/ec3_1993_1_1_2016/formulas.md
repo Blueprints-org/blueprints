@@ -60,9 +60,9 @@ Total of 108 formulas present.
 | 6.33           | :x:  |         |             |
 | 6.34           | :x:  |         |             |
 | 6.35           | :x:  |         |             |
-| 6.36           | :x:  |         |             |
-| 6.37           | :x:  |         |             |
-| 6.38           | :x:  |         |             |
+| 6.36           | :heavy_check_mark:  |         | Form6Dot36MomentReduction            |
+| 6.37           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
+| 6.38           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
 | 6.39           | :x:  |         |             |
 | 6.40           | :x:  |         |             |
 | 6.41           | :x:  |         |             |
