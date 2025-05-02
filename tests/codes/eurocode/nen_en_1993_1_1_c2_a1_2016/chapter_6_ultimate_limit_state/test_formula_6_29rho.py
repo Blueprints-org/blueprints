@@ -114,6 +114,20 @@ class TestForm6Dot29RhoWithTorsion:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation2(self) -> None:
+        """Tests the evaluation of the result."""
+        # Example values
+        v_ed = 100.0
+        v_pl_t_rd = 1000.0
+
+        # Object to test
+        formula = Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=v_pl_t_rd)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 0.00  # dimensionless
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("v_ed", "v_pl_t_rd"),
         [
