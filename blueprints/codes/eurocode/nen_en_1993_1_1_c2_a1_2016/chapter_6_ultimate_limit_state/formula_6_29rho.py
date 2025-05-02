@@ -50,7 +50,12 @@ class Form6Dot29Rho(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.29rho."""
-        _equation: str = r"\max\left(0, \left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right) \right)^2"
+        _equation: str = (
+            r"\begin{cases} "
+            r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,Rd} \\ "
+            r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,Rd} "
+            r"\end{cases}"
+        )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -65,7 +70,7 @@ class Form6Dot29Rho(Formula):
                 r"V_{Ed}": rf"{self.v_ed:.3f} \ N",
                 r"V_{pl,Rd}": rf"{self.v_pl_rd:.3f} \ N",
             },
-            True,
+            False,
         )
         return LatexFormula(
             return_symbol=r"\rho",
@@ -121,7 +126,12 @@ class Form6Dot29RhoWithTorsion(Formula):
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 6.29rho with torsion."""
-        _equation: str = r"\max\left(0, \left( \frac{2 \cdot V_{Ed}}{V_{pl,T,Rd}} - 1 \right) \right)^2"
+        _equation: str = (
+            r"\begin{cases} "
+            r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,T,Rd} \\ "
+            r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,T,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,T,Rd} "
+            r"\end{cases}"
+        )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -136,7 +146,7 @@ class Form6Dot29RhoWithTorsion(Formula):
                 r"V_{Ed}": rf"{self.v_ed:.3f} \ N",
                 r"V_{pl,T,Rd}": rf"{self.v_pl_t_rd:.3f} \ N",
             },
-            True,
+            False,
         )
         return LatexFormula(
             return_symbol=r"\rho",

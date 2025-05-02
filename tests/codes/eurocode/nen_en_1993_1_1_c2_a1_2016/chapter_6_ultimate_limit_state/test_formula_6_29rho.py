@@ -68,13 +68,23 @@ class TestForm6Dot29Rho:
         [
             (
                 "complete",
-                r"\rho = \max\left(0, \left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right) \right)^2 = "
-                r"\max\left(0, \left( \frac{2 \cdot 300.000}{500.000} - 1 \right) \right)^2 = 0.040 \ -",
+                r"\rho = \begin{cases} "
+                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,Rd} \\ "
+                r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,Rd} "
+                r"\end{cases} = \begin{cases} "
+                r"0 & \text{if } 300.000 \leq 0.5 \cdot 500.000 \\ "
+                r"\left( \frac{2 \cdot 300.000}{500.000} - 1 \right)^2 & \text{if } 300.000 > 0.5 \cdot 500.000 "
+                r"\end{cases} = 0.040 \ -",
             ),
             (
                 "complete_with_units",
-                r"\rho = \max\left(0, \left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right) \right)^2 = "
-                r"\max\left(0, \left( \frac{2 \cdot 300.000 \ N}{500.000 \ N} - 1 \right) \right)^2 = 0.040 \ -",
+                r"\rho = \begin{cases} "
+                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,Rd} \\ "
+                r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,Rd} "
+                r"\end{cases} = \begin{cases} "
+                r"0 & \text{if } 300.000 \ N \leq 0.5 \cdot 500.000 \ N \\ "
+                r"\left( \frac{2 \cdot 300.000 \ N}{500.000 \ N} - 1 \right)^2 & \text{if } 300.000 \ N > 0.5 \cdot 500.000 \ N "
+                r"\end{cases} = 0.040 \ -",
             ),
             ("short", r"\rho = 0.040 \ -"),
         ],
@@ -156,13 +166,23 @@ class TestForm6Dot29RhoWithTorsion:
         [
             (
                 "complete",
-                r"\rho = \max\left(0, \left( \frac{2 \cdot V_{Ed}}{V_{pl,T,Rd}} - 1 \right) \right)^2 = "
-                r"\max\left(0, \left( \frac{2 \cdot 600.000}{1000.000} - 1 \right) \right)^2 = 0.040 \ -",
+                r"\rho = \begin{cases} "
+                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,T,Rd} \\ "
+                r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,T,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,T,Rd} "
+                r"\end{cases} = \begin{cases} "
+                r"0 & \text{if } 600.000 \leq 0.5 \cdot 1000.000 \\ "
+                r"\left( \frac{2 \cdot 600.000}{1000.000} - 1 \right)^2 & \text{if } 600.000 > 0.5 \cdot 1000.000 "
+                r"\end{cases} = 0.040 \ -",
             ),
             (
                 "complete_with_units",
-                r"\rho = \max\left(0, \left( \frac{2 \cdot V_{Ed}}{V_{pl,T,Rd}} - 1 \right) \right)^2 = "
-                r"\max\left(0, \left( \frac{2 \cdot 600.000 \ N}{1000.000 \ N} - 1 \right) \right)^2 = 0.040 \ -",
+                r"\rho = \begin{cases} "
+                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,T,Rd} \\ "
+                r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,T,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,T,Rd} "
+                r"\end{cases} = \begin{cases} "
+                r"0 & \text{if } 600.000 \ N \leq 0.5 \cdot 1000.000 \ N \\ "
+                r"\left( \frac{2 \cdot 600.000 \ N}{1000.000 \ N} - 1 \right)^2 & \text{if } 600.000 \ N > 0.5 \cdot 1000.000 \ N "
+                r"\end{cases} = 0.040 \ -",
             ),
             ("short", r"\rho = 0.040 \ -"),
         ],
