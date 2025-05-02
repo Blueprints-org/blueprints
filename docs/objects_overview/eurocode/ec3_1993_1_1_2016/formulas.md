@@ -53,8 +53,9 @@ Total of 108 formulas present.
 | 6.26           | :x:  |         |             |
 | 6.27           | :x:  |         |             |
 | 6.28           | :x:  |         |             |
-| 6.29           | :x:  |         |             |
-| 6.30           | :x:  |         |             |
+| 6.29           | :x:  |         | Form6Dot29ReducedYieldStrength            |
+| 6.29 (rho)     | :x:  |         | Form6Dot29Rho and Form6Dot29RhoWithTorsion            |
+| 6.30           | :x:  |         | Form6Dot30ReducedPlasticResistanceMoment            |
 | 6.31           | :x:  |         |             |
 | 6.32           | :x:  |         |             |
 | 6.33           | :x:  |         |             |
