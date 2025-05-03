@@ -9,6 +9,7 @@
 - LaTeX variables should be rounded to 3 decimals.  
 - The LaTex _numeric_equation_with_units should include units, except when its dimensionless
 - Import the necessary typehinting with type alias units found in type_alias.py and remove the unused imported type aliases. Forces in N, (Bending) moments in Nmm, distances in mm, areas in mm^2, Stress in MPa, angles in DEG, no unit is DIMENSIONLESS. When dealing with angles, use np.deg2rad.
+- Test the value of denominators with raise_if_less_or_equal_to_zero. For all others, test with raise_if_negative.
 
 ## Template for service
 
