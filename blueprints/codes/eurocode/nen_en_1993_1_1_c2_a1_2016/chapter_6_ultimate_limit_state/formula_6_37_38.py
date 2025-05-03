@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import MM, MM2, NMM, N
+from blueprints.type_alias import NMM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -16,11 +16,8 @@ class Form6Dot37Dot38MomentReduction(Formula):
     def __init__(
         self,
         mpl_z_rd: NMM,
-        capital_a: MM2,
-        b: MM,
-        tf: MM,
-        n_ed: N,
-        n_pl_rd: N,
+        a: float,
+        n: float,
     ) -> None:
         r"""[$M_{N,z,Rd}$] Reduced bending moment [$Nmm$].
 
@@ -30,65 +27,45 @@ class Form6Dot37Dot38MomentReduction(Formula):
         ----------
         mpl_z_rd : NMM
             [$M_{pl,z,Rd}$] Plastic bending moment about the z-axis [$Nmm$].
-        A : MM2
-            [$A$] Cross-sectional area [$mm^2$].
-        b : MM
-            [$b$] Width of the cross-section [$mm$].
-        tf : MM
-            [$t_f$] Thickness of the flange [$mm$].
-        n_ed : N
-            [$N_{Ed}$] Design axial force [$N$].
-        n_pl_rd : N
-            [$N_{pl,Rd}$] Plastic resistance of the cross-section [$N$].
+        a : float
+            Reduction factor for cross-sectional area.
+        n : float
+            Axial force ratio.
         """
         super().__init__()
         self.mpl_z_rd = mpl_z_rd
-        self.capital_a = capital_a
-        self.b = b
-        self.tf = tf
-        self.n_ed = n_ed
-        self.n_pl_rd = n_pl_rd
+        self.a = a
+        self.n = n
 
     @staticmethod
     def _evaluate(
         mpl_z_rd: NMM,
-        capital_a: MM2,
-        b: MM,
-        tf: MM,
-        n_ed: N,
-        n_pl_rd: N,
+        a: float,
+        n: float,
     ) -> NMM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(mpl_z_rd=mpl_z_rd, n_ed=n_ed)
-        raise_if_less_or_equal_to_zero(capital_a=capital_a, b=b, tf=tf, n_pl_rd=n_pl_rd)
+        raise_if_negative(mpl_z_rd=mpl_z_rd, n=n)
+        raise_if_less_or_equal_to_zero(a=a)
 
-        a = min((capital_a - 2 * b * tf) / capital_a, 0.5)
-        n = n_ed / n_pl_rd
         denominator = 1 - a
-
         raise_if_less_or_equal_to_zero(denominator=denominator)
 
         if n <= a:
             return mpl_z_rd
-        return mpl_z_rd * (1 - ((n - a) / (1 - a)) ** 2)
+        return mpl_z_rd * (1 - ((n - a) / denominator) ** 2)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formulas 6.37 and 6.38."""
         _equation: str = (
-            r"\begin{cases} M_{pl,z,Rd} & \text{if } \frac{N_{Ed}}{N_{pl,Rd}} \leq \frac{A - 2 \cdot b \cdot t_f}{A} \\ "
-            r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{\frac{N_{Ed}}{N_{pl,Rd}} - \frac{A - 2 \cdot b \cdot t_f}{A}}"
-            r"{1 - \frac{A - 2 \cdot b \cdot t_f}{A}}\right)^2\right] & \text{if } \frac{N_{Ed}}{N_{pl,Rd}} > "
-            r"\frac{A - 2 \cdot b \cdot t_f}{A} \end{cases}"
+            r"\begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
+            r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{ n - a}{1 - a}\right)^2\right] & \text{if } n > a \end{cases}"
         )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 "M_{pl,z,Rd}": f"{self.mpl_z_rd:.3f}",
-                "N_{Ed}": f"{self.n_ed:.3f}",
-                "N_{pl,Rd}": f"{self.n_pl_rd:.3f}",
-                "A": f"{self.capital_a:.3f}",
-                " b": f" {self.b:.3f}",
-                "t_f": f"{self.tf:.3f}",
+                " n": f" {self.n:.3f}",
+                " a": f" {self.a:.3f}",
             },
             False,
         )
@@ -96,11 +73,8 @@ class Form6Dot37Dot38MomentReduction(Formula):
             _equation,
             {
                 "M_{pl,z,Rd}": rf"{self.mpl_z_rd:.3f} \ Nmm",
-                "N_{Ed}": rf"{self.n_ed:.3f} \ N",
-                "N_{pl,Rd}": rf"{self.n_pl_rd:.3f} \ N",
-                "A": rf"{self.capital_a:.3f} \ mm^2",
-                " b": rf" {self.b:.3f} \ mm",
-                "t_f": rf"{self.tf:.3f} \ mm",
+                " n": rf" {self.n:.3f}",
+                " a": rf" {self.a:.3f}",
             },
             False,
         )

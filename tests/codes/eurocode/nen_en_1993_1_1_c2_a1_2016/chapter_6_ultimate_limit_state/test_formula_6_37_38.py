@@ -13,14 +13,11 @@ class TestForm6Dot37Dot38MomentReduction:
         """Tests the evaluation of the result."""
         # Example values
         mpl_z_rd = 60000.0
-        capital_a = 25000.0
-        b = 120.0
-        tf = 15.0
-        n_ed = 15000.0
-        n_pl_rd = 30000.0
+        a = 0.4
+        n = 0.3
 
         # Object to test
-        formula = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, capital_a=capital_a, b=b, tf=tf, n_ed=n_ed, n_pl_rd=n_pl_rd)
+        formula = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n)
 
         # Expected result, manually calculated
         manually_calculated_result = 60000.0
@@ -31,14 +28,11 @@ class TestForm6Dot37Dot38MomentReduction:
         """Tests the evaluation of the result."""
         # Example values
         mpl_z_rd = 60000.0
-        capital_a = 25000.0
-        b = 120.0
-        tf = 15.0
-        n_ed = 29000.0
-        n_pl_rd = 30000.0
+        a = 0.5
+        n = 0.9666666667
 
         # Object to test
-        formula = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, capital_a=capital_a, b=b, tf=tf, n_ed=n_ed, n_pl_rd=n_pl_rd)
+        formula = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n)
 
         # Expected result, manually calculated
         manually_calculated_result = 7733.333333
@@ -46,64 +40,47 @@ class TestForm6Dot37Dot38MomentReduction:
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("mpl_z_rd", "n_ed"),
+        ("mpl_z_rd", "n"),
         [
-            (-60000.0, 15000.0),  # mpl_z_rd is negative
-            (60000.0, -15000.0),  # n_ed is negative
+            (-60000.0, 0.5),  # mpl_z_rd is negative
+            (60000.0, -0.5),  # n is negative
         ],
     )
-    def test_raise_error_when_negative_values_are_given(self, mpl_z_rd: float, n_ed: float) -> None:
+    def test_raise_error_when_negative_values_are_given(self, mpl_z_rd: float, n: float) -> None:
         """Test invalid negative values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, capital_a=25000.0, b=120.0, tf=15.0, n_ed=n_ed, n_pl_rd=30000.0)
+            Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=0.4, n=n)
 
     @pytest.mark.parametrize(
-        ("capital_a", "b", "tf", "n_pl_rd"),
+        "a",
         [
-            (0.0, 120.0, 15.0, 30000.0),  # capital_a is zero
-            (25000.0, 0.0, 15.0, 30000.0),  # b is zero
-            (25000.0, 120.0, 0.0, 30000.0),  # tf is zero
-            (25000.0, 120.0, 15.0, 0.0),  # n_pl_rd is zero
-            (-25000.0, 120.0, 15.0, 30000.0),  # capital_a is negative
-            (25000.0, -120.0, 15.0, 30000.0),  # b is negative
-            (25000.0, 120.0, -15.0, 30000.0),  # tf is negative
-            (25000.0, 120.0, 15.0, -30000.0),  # n_pl_rd is negative
+            0.0,  # a is zero
+            -0.1,  # a is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, capital_a: float, b: float, tf: float, n_pl_rd: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, a: float) -> None:
         """Test invalid zero or negative values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form6Dot37Dot38MomentReduction(mpl_z_rd=60000.0, capital_a=capital_a, b=b, tf=tf, n_ed=15000.0, n_pl_rd=n_pl_rd)
+            Form6Dot37Dot38MomentReduction(mpl_z_rd=60000.0, a=a, n=0.5)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } \frac{N_{Ed}}{N_{pl,Rd}} "
-                r"\leq \frac{A - 2 \cdot b \cdot t_f}{A} \\ "
-                r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{\frac{N_{Ed}}{N_{pl,Rd}} - \frac{A - 2 \cdot b \cdot t_f}{A}}"
-                r"{1 - \frac{A - 2 \cdot b \cdot t_f}{A}}\right)^2\right] & \text{if } \frac{N_{Ed}}{N_{pl,Rd}} "
-                r"> \frac{A - 2 \cdot b \cdot t_f}{A} \end{cases} = "
-                r"\begin{cases} 60000.000 & \text{if } \frac{15000.000}{30000.000} \leq "
-                r"\frac{25000.000 - 2 \cdot 120.000 \cdot 15.000}{25000.000} \\ "
-                r"60000.000 \cdot \left[1 - \left(\frac{\frac{15000.000}{30000.000} - \frac{25000.000 - "
-                r"2 \cdot 120.000 \cdot 15.000}{25000.000}}{1 - \frac{25000.000 - 2 \cdot 120.000 \cdot 15.000}{25000.000}}\right)^2"
-                r"\right] & \text{if } \frac{15000.000}{30000.000} > \frac{25000.000 - 2 \cdot 120.000 \cdot 15.000}{25000.000} "
-                r"\end{cases} = 60000.000 \ Nmm",
+                r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
+                r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{ n - a}{1 - a}\right)^2\right] & \text{if } n > a \end{cases} = "
+                r"\begin{cases} 60000.000 & \text{if } 0.300 \leq 0.400 \\ "
+                r"60000.000 \cdot \left[1 - \left(\frac{ 0.300 - 0.400}{1 - 0.400}\right)^2\right] & "
+                r"\text{if } 0.300 > 0.400 \end{cases} = 60000.000 \ Nmm",
             ),
             (
                 "complete_with_units",
-                r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } \frac{N_{Ed}}{N_{pl,Rd}} \leq \frac{A - 2 \cdot b \cdot t_f}{A} \\ "
-                r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{\frac{N_{Ed}}{N_{pl,Rd}} - \frac{A - 2 \cdot b \cdot t_f}{A}}"
-                r"{1 - \frac{A - 2 \cdot b \cdot t_f}{A}}\right)^2\right] & \text{if } \frac{N_{Ed}}{N_{pl,Rd}} "
-                r"> \frac{A - 2 \cdot b \cdot t_f}{A} \end{cases} = "
-                r"\begin{cases} 60000.000 \ Nmm & \text{if } \frac{15000.000 \ N}{30000.000 \ N} \leq \frac{25000.000 \ mm^2 - "
-                r"2 \cdot 120.000 \ mm \cdot 15.000 \ mm}{25000.000 \ mm^2} \\ "
-                r"60000.000 \ Nmm \cdot \left[1 - \left(\frac{\frac{15000.000 \ N}{30000.000 \ N} - \frac{25000.000 \ mm^2 - "
-                r"2 \cdot 120.000 \ mm \cdot 15.000 \ mm}{25000.000 \ mm^2}}{1 - \frac{25000.000 \ mm^2 - 2 \cdot 120.000 \ mm \cdot "
-                r"15.000 \ mm}{25000.000 \ mm^2}}\right)^2\right] & \text{if } \frac{15000.000 \ N}{30000.000 \ N} > \frac{25000.000 "
-                r"\ mm^2 - 2 \cdot 120.000 \ mm \cdot 15.000 \ mm}{25000.000 \ mm^2} \end{cases} = 60000.000 \ Nmm",
+                r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
+                r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{ n - a}{1 - a}\right)^2\right] & \text{if } n > a \end{cases} = "
+                r"\begin{cases} 60000.000 \ Nmm & \text{if } 0.300 \leq 0.400 \\ "
+                r"60000.000 \ Nmm \cdot \left[1 - \left(\frac{ 0.300 - 0.400}{1 - 0.400}\right)^2\right] & "
+                r"\text{if } 0.300 > 0.400 \end{cases} = 60000.000 \ Nmm",
             ),
             ("short", r"M_{N,z,Rd} = 60000.000 \ Nmm"),
         ],
@@ -112,14 +89,11 @@ class TestForm6Dot37Dot38MomentReduction:
         """Test the latex representation of the formula."""
         # Example values
         mpl_z_rd = 60000.0
-        capital_a = 25000.0
-        b = 120.0
-        tf = 15.0
-        n_ed = 15000.0
-        n_pl_rd = 30000.0
+        a = 0.4
+        n = 0.3
 
         # Object to test
-        latex = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, capital_a=capital_a, b=b, tf=tf, n_ed=n_ed, n_pl_rd=n_pl_rd).latex()
+        latex = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n).latex()
 
         actual = {
             "complete": latex.complete,
