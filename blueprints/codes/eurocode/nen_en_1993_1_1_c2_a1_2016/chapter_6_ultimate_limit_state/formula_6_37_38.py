@@ -28,9 +28,9 @@ class Form6Dot37Dot38MomentReduction(Formula):
         mpl_z_rd : NMM
             [$M_{pl,z,Rd}$] Plastic bending moment about the z-axis [$Nmm$].
         a : float
-            Reduction factor for cross-sectional area.
+            Reduction factor for cross-sectional area, see equation 6.38a.
         n : float
-            Axial force ratio.
+            Axial force ratio, see equation 6.38n.
         """
         super().__init__()
         self.mpl_z_rd = mpl_z_rd
