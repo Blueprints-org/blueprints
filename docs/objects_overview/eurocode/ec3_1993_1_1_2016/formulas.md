@@ -63,8 +63,8 @@ Total of 108 formulas present.
 | 6.36           | :heavy_check_mark:  |         | Form6Dot36MomentReduction            |
 | 6.37           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
 | 6.38           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
-| 6.38n          | :heavy_check_mark:  |         |             |
-| 6.38a          | :heavy_check_mark:  |         |             |
+| 6.38n          | :heavy_check_mark:  |         | Form6Dot38N           |
+| 6.38a          | :heavy_check_mark:  |         | Form6Dot38A            |
 | 6.39           | :x:  |         |             |
 | 6.40           | :x:  |         |             |
 | 6.41           | :x:  |         |             |
