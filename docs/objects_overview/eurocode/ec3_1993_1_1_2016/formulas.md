@@ -63,8 +63,10 @@ Total of 108 formulas present.
 | 6.36           | :x:  |         |             |
 | 6.37           | :x:  |         |             |
 | 6.38           | :x:  |         |             |
-| 6.39           | :x:  |         |             |
-| 6.40           | :x:  |         |             |
+| 6.39           | :heavy_check_mark:  |         | Form6Dot39ReducedBendingMomentResistance            |
+| 6.40           | :heavy_check_mark:  |         | Form6Dot40ReducedBendingMomentResistance            |
+| 6.40 a_w       | :heavy_check_mark:  |         | Form6Dot40awHollowSections and Form6Dot40awWeldedBoxSections            |
+| 6.40 a_f       | :heavy_check_mark:  |         | Form6Dot40afHollowSections and Form6Dot40afWeldedBoxSections            |
 | 6.41           | :x:  |         |             |
 | 6.42           | :x:  |         |             |
 | 6.43           | :x:  |         |             |
