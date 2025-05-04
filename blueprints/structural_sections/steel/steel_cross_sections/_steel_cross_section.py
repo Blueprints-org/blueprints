@@ -29,8 +29,8 @@ class SteelCrossSection(ABC):
         steel_material : SteelMaterial
             Material properties of the steel.
         """
-        self.steel_material = steel_material  # pragma: no cover
-        self.elements: list[SteelElement] = []  # pragma: no cover
+        self.steel_material = steel_material
+        self.elements: list[SteelElement] = []
 
     @property
     def polygon(self) -> Polygon:
@@ -42,13 +42,13 @@ class SteelCrossSection(ABC):
         # Ensure the result is a valid Polygon
         if isinstance(combined_polygon, Polygon):
             return orient(combined_polygon)  # Ensure consistent orientation
-        raise TypeError("The combined geometry is not a valid Polygon.")  # pragma: no cover
+        raise TypeError("The combined geometry is not a valid Polygon.")
 
     @property
     def steel_volume_per_meter(self) -> M3_M:
         """Total volume of the reinforced cross-section per meter length [m³/m]."""
         length = 1000  # mm
-        return sum(element.area * length * MM3_TO_M3 for element in self.elements)
+        return self.polygon.area * length * MM3_TO_M3
 
     @property
     def steel_weight_per_meter(self) -> KG_M:
@@ -57,17 +57,13 @@ class SteelCrossSection(ABC):
 
     @property
     def area(self) -> MM2:
-        """Total cross sectional area of the steel element [mm²]."""
-        return sum(element.area for element in self.elements)
+        """Total cross-sectional area of the steel element [mm²]."""
+        return self.polygon.area
 
     @property
     def centroid(self) -> Point:
         """Centroid of the steel cross-section."""
-        area_weighted_centroids_x = sum(element.centroid.x * element.area for element in self.elements)
-        area_weighted_centroids_y = sum(element.centroid.y * element.area for element in self.elements)
-        centroid_x = area_weighted_centroids_x / self.area
-        centroid_y = area_weighted_centroids_y / self.area
-        return Point(centroid_x, centroid_y)
+        return self.polygon.centroid
 
     @property
     def moment_of_inertia_about_y(self) -> KG_M:
