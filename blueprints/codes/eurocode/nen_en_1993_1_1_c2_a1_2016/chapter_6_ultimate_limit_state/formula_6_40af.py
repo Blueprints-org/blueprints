@@ -21,7 +21,7 @@ class Form6Dot40afHollowSections(Formula):
     ) -> None:
         r"""[$a_f$] Calculation of the reduction factor for hollow sections (dimensionless).
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9 - Formula (6.40af)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.40af)
 
         Parameters
         ----------
@@ -95,7 +95,7 @@ class Form6Dot40afWeldedBoxSections(Formula):
     ) -> None:
         r"""[$a_f$] Calculation of the reduction factor for welded box sections (dimensionless).
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9 - Formula (6.40af)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.40af)
 
         Parameters
         ----------

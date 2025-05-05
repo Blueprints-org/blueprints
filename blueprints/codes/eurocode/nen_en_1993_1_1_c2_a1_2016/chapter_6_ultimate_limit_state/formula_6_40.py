@@ -21,7 +21,7 @@ class Form6Dot40ReducedBendingMomentResistance(Formula):
     ) -> None:
         r"""[$M_{N,z,Rd}$] Calculation of the reduced bending moment [$Nmm$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9 - Formula (6.40)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.40)
 
         Parameters
         ----------
