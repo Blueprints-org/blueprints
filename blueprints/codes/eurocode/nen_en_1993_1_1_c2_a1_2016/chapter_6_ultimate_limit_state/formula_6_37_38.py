@@ -21,7 +21,7 @@ class Form6Dot37Dot38MomentReduction(Formula):
     ) -> None:
         r"""[$M_{N,z,Rd}$] Reduced bending moment [$Nmm$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9(5) - Formulas (6.37 and 6.38)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formulas (6.37 and 6.38)
 
         Parameters
         ----------
