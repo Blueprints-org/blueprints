@@ -22,8 +22,15 @@ from blueprints.type_alias import MM
 @dataclass(kw_only=True)
 class ISteelProfile(CombinedSteelCrossSection):
     """Representation of an I-Profile steel section.
+    This can be used to create a custom I-profile or to create an I-profile from a standard profile.
 
-    Parameters
+    For standard profiles, use the `from_standard_profile` class method.
+    For example,
+    ```python
+    i_profile = ISteelProfile.from_standard_profile(profile=HEA.HEA200, steel_material=SteelMaterial(SteelStrengthClass.S355))
+    ```
+
+    Attributes
     ----------
     steel_material : SteelMaterial
         Steel material properties for the profile.
