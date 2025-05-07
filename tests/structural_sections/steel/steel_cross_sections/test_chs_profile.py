@@ -5,37 +5,28 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_3_materials.table_3_1 import SteelStrengthClass
-from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile, LoadStandardCHS
+from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 
 
 class TestCHSSteelProfile:
     """Test suite for CHSSteelProfile."""
 
-    def test_str(self) -> None:
-        """Test the string representation of the CHS profile."""
-        profile: CHS = CHS.CHS508x16
-        steel_class: SteelStrengthClass = SteelStrengthClass.S355
-        expected_str: str = "Steel class: SteelStrengthClass.S355, Profile: CHS.CHS508x16"
-        assert LoadStandardCHS(profile=profile, steel_class=steel_class).__str__() == expected_str
-
-    def test_code(self) -> None:
+    def test_code(self, chs_profile: CHSSteelProfile) -> None:
         """Test the code of the CHS profile."""
-        profile: CHS = CHS.CHS508x16
-        steel_class: SteelStrengthClass = SteelStrengthClass.S355
-        alias: str = LoadStandardCHS(profile=profile, steel_class=steel_class).alias()
         expected_alias: str = "CHS 508x16"
-        assert alias == expected_alias
+        assert chs_profile.name == expected_alias
 
     def test_steel_volume_per_meter(self, chs_profile: CHSSteelProfile) -> None:
         """Test the steel volume per meter."""
         expected_volume: float = 2.47e-2  # m³/m
-        assert pytest.approx(chs_profile.steel_volume_per_meter, rel=1e-2) == expected_volume
+        assert pytest.approx(chs_profile.volume_per_meter, rel=1e-2) == expected_volume
 
     def test_steel_weight_per_meter(self, chs_profile: CHSSteelProfile) -> None:
         """Test the steel weight per meter."""
         expected_weight: float = 2.47e-2 * 7850  # kg/m
-        assert pytest.approx(chs_profile.steel_weight_per_meter, rel=1e-2) == expected_weight
+        assert pytest.approx(chs_profile.weight_per_meter, rel=1e-2) == expected_weight
 
     def test_area(self, chs_profile: CHSSteelProfile) -> None:
         """Test the steel cross-sectional area."""
@@ -103,11 +94,11 @@ class TestCHSSteelProfile:
 
     def test_get_profile_with_corrosion(self) -> None:
         """Test the CHS profile with 20 mm corrosion applied."""
-        profile: CHS = CHS.CHS508x16
-        steel_class: SteelStrengthClass = SteelStrengthClass.S355
-
-        loader = LoadStandardCHS(profile=profile, steel_class=steel_class)
-
         # Ensure the profile raises an error if fully corroded
         with pytest.raises(ValueError, match="The profile has fully corroded."):
-            loader.get_profile(corrosion_outside=5, corrosion_inside=11)
+            CHSSteelProfile.from_standard_profile(
+                profile=CHS.CHS508x16,
+                steel_material=SteelMaterial(SteelStrengthClass.S355),
+                corrosion_outside=5,  # mm
+                corrosion_inside=11,  # mm
+            )
