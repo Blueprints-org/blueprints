@@ -1,20 +1,18 @@
 """Defines a general steel plotter for cross sections and its characteristics."""
-# ruff: noqa: PLR0913, F821
 
 import matplotlib.pyplot as plt
 from matplotlib import patches as mplpatches
 from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Point
 
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import SteelCrossSection
-from blueprints.structural_sections.steel.steel_element import SteelElement
+from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 
 # Define color
 STEEL_COLOR = (0.683, 0.0, 0.0)
 
 
 def plot_shapes(
-    profile: SteelCrossSection,
+    profile: CombinedSteelCrossSection,
     figsize: tuple[float, float] = (15.0, 8.0),
     title: str = "",
     font_size_title: float = 18.0,
@@ -43,34 +41,41 @@ def plot_shapes(
 
     for element in profile.elements:
         # Plot the exterior polygon
-        x, y = element.polygon.exterior.xy
+        x, y = element.cross_section.polygon.exterior.xy
         patch = MplPolygon(xy=list(zip(x, y)), lw=1, fill=True, facecolor=STEEL_COLOR, edgecolor=STEEL_COLOR)
         ax.add_patch(patch)
 
         # Plot the interior polygons (holes) if any
-        for interior in element.polygon.interiors:
+        for interior in element.cross_section.polygon.interiors:
             x, y = interior.xy
             patch = MplPolygon(xy=list(zip(x, y)), lw=0, fill=True, facecolor="white")
             ax.add_patch(patch)
 
     # Add dimension lines and centroid
-    _add_dimension_lines(ax, profile.elements, profile.centroid)
+    _add_dimension_lines(ax=ax, profile=profile, centroid=profile.centroid)
     ax.plot(profile.centroid.x, profile.centroid.y, "o", color="black")
 
     # Add legend text
-    legend_text = f"Total area: {profile.area:.1f} mm²\n"
-    legend_text += f"Weight per meter: {profile.steel_weight_per_meter:.1f} kg/m\n"
-    legend_text += f"Moment of inertia about y: {profile.moment_of_inertia_about_y:.0f} mm⁴\n"
-    legend_text += f"Moment of inertia about z: {profile.moment_of_inertia_about_z:.0f} mm⁴\n"
-    legend_text += f"Steel quality: {profile.steel_material.name}\n"
+    legend_text = f"""
+{profile.name}\n
+Area: {profile.area:.1f} mm²
+Weight per meter: {profile.weight_per_meter:.1f} kg/m
+Moment of inertia about y: {profile.moment_of_inertia_about_y:.0f} mm⁴
+Moment of inertia about z: {profile.moment_of_inertia_about_z:.0f} mm⁴
+"""
 
-    ax.text(
-        x=0.05,
-        y=0.95,
-        s=legend_text,
+    # Add the steel quality if all elements have the same material
+    if len({element.material.name for element in profile.elements}) == 1:
+        legend_text += f"Steel quality: {profile.elements[0].material.name}\n"
+
+    # Get the boundaries of the plot
+    _, min_y, max_x, _ = profile.polygon.bounds
+
+    # Add the legend text to the plot
+    ax.annotate(
+        xy=(max_x + 10, min_y),
+        text=legend_text,
         transform=ax.transAxes,
-        verticalalignment="top",
-        horizontalalignment="left",
         fontsize=font_size_legend,
     )
 
@@ -85,32 +90,29 @@ def plot_shapes(
         plt.show()  # pragma: no cover
 
     assert fig is not None
+
     return fig
 
 
-def _add_dimension_lines(ax: plt.Axes, elements: list[SteelElement], centroid: Point) -> None:
+def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centroid: Point) -> None:
     """Adds dimension lines to show the outer dimensions of the geometry.
 
     Parameters
     ----------
     ax : plt.Axes
         The matplotlib axes to draw on.
-    elements : tuple[CrossSection, ...]
+    profile : tuple[CrossSection, ...]
         The cross-sections to plot.
     centroid : Point
         The centroid of the cross-section.
     """
-    # Calculate the bounds of all elements in the geometry
-    min_x, min_y, max_x, max_y = float("inf"), float("inf"), float("-inf"), float("-inf")
-    for element in elements:
-        bounds = element.polygon.bounds
-        min_x = min(min_x, bounds[0])
-        min_y = min(min_y, bounds[1])
-        max_x = max(max_x, bounds[2])
-        max_y = max(max_y, bounds[3])
+    # Define the offset for the dimension lines
+    offset_dimension_lines = max(profile.height, profile.width) / 20
 
-    width = max_x - min_x
-    height = max_y - min_y
+    # Calculate the bounds of all elements in the geometry
+    min_x, min_y, max_x, max_y = profile.polygon.bounds
+
+    # Calculate the width and height of the geometry relative to the centroid
     centroid_width = centroid.x - min_x
     centroid_height = centroid.y - min_y
 
@@ -118,53 +120,32 @@ def _add_dimension_lines(ax: plt.Axes, elements: list[SteelElement], centroid: P
     diameter_line_style = {
         "arrowstyle": mplpatches.ArrowStyle(stylename="<->", head_length=0.5, head_width=0.5),
     }
-    offset_width = max(height, width) / 20
+
+    # HORIZONTAL DIMENSION LINES (BELOW THE GEOMETRY)
+    # Add the width dimension lines (below the geometry)
     ax.annotate(
         text="",
-        xy=(min_x, min_y - offset_width),
-        xytext=(max_x, min_y - offset_width),
+        xy=(min_x, min_y - offset_dimension_lines * 2),
+        xytext=(max_x, min_y - offset_dimension_lines * 2),
         verticalalignment="center",
         horizontalalignment="center",
         arrowprops=diameter_line_style,
         annotation_clip=False,
     )
     ax.text(
-        s=f"{width:.1f} mm",
+        s=f"b= {profile.width:.1f} mm",
         x=(min_x + max_x) / 2,
-        y=min_y - offset_width - 1,
+        y=min_y - offset_dimension_lines * 2 + 6,
         verticalalignment="top",
         horizontalalignment="center",
         fontsize=10,
     )
 
-    # Add the height dimension line (on the right side of the geometry)
-    offset_height = offset_width
+    # Add the height dimension lines (on the left side of the geometry)
     ax.annotate(
         text="",
-        xy=(max_x + offset_height, max_y),
-        xytext=(max_x + offset_height, min_y),
-        verticalalignment="center",
-        horizontalalignment="center",
-        arrowprops=diameter_line_style,
-        rotation=90,
-        annotation_clip=False,
-    )
-    ax.text(
-        s=f"{height:.1f} mm",
-        x=max_x + offset_height + 1 + height / 200,
-        y=(min_y + max_y) / 2,
-        verticalalignment="center",
-        horizontalalignment="left",
-        fontsize=10,
-        rotation=90,
-    )
-
-    # Add the distance from the left to the centroid (below the geometry, double offset)
-    offset_centroid_left_bottom = 2 * offset_width
-    ax.annotate(
-        text="",
-        xy=(min_x, min_y - offset_centroid_left_bottom),
-        xytext=(centroid.x, min_y - offset_centroid_left_bottom),
+        xy=(min_x, min_y - offset_dimension_lines),
+        xytext=(centroid.x, min_y - offset_dimension_lines),
         verticalalignment="center",
         horizontalalignment="center",
         arrowprops=diameter_line_style,
@@ -173,18 +154,18 @@ def _add_dimension_lines(ax: plt.Axes, elements: list[SteelElement], centroid: P
     ax.text(
         s=f"{centroid_width:.1f} mm",
         x=(min_x + centroid.x) / 2,
-        y=min_y - offset_centroid_left_bottom - 1,
+        y=min_y - offset_dimension_lines + 6,
         verticalalignment="top",
         horizontalalignment="center",
         fontsize=10,
     )
 
-    # Add the distance from the bottom to the centroid (on the right side, double offset)
-    offset_centroid_bottom_right = 2 * offset_height
+    # HEIGHT DIMENSION LINES (ON THE LEFT SIDE OF THE GEOMETRY)
+    # Add the distance from the bottom to the centroid (on the left side)
     ax.annotate(
         text="",
-        xy=(max_x + offset_centroid_bottom_right, min_y),
-        xytext=(max_x + offset_centroid_bottom_right, centroid.y),
+        xy=(-max_x - offset_dimension_lines, min_y),
+        xytext=(-max_x - offset_dimension_lines, centroid.y),
         verticalalignment="center",
         horizontalalignment="center",
         arrowprops=diameter_line_style,
@@ -193,8 +174,29 @@ def _add_dimension_lines(ax: plt.Axes, elements: list[SteelElement], centroid: P
     )
     ax.text(
         s=f"{centroid_height:.1f} mm",
-        x=max_x + offset_centroid_bottom_right + 1 + height / 200,
+        x=-(max_x + offset_dimension_lines + 6),
         y=(min_y + centroid.y) / 2,
+        verticalalignment="center",
+        horizontalalignment="left",
+        fontsize=10,
+        rotation=90,
+    )
+
+    # # Add the height dimension line (on the left side of the geometry)
+    ax.annotate(
+        text="",
+        xy=(-max_x - offset_dimension_lines * 2, max_y),
+        xytext=(-max_x - offset_dimension_lines * 2, min_y),
+        verticalalignment="center",
+        horizontalalignment="center",
+        arrowprops=diameter_line_style,
+        rotation=90,
+        annotation_clip=False,
+    )
+    ax.text(
+        s=f"h= {profile.height:.1f} mm",
+        x=-(max_x + offset_dimension_lines * 2 + 6),
+        y=(min_y + max_y) / 2,
         verticalalignment="center",
         horizontalalignment="left",
         fontsize=10,
