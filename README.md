@@ -27,6 +27,26 @@ Join us in this effort to build a future where engineering standards are program
 
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
+## Contributors
+
+Here are some of the amazing contributors who have helped make Blueprints possible:
+
+| Name                   | Company             |
+|------------------------|---------------------|
+| Enrique García Méndez  | Royal BAM Group     |
+| Johan Tuls             | Royal BAM Group     |
+| Rick de Goeij          | Royal BAM Group     |
+| Gerjan Dorgelo         | Antea Group         |
+| Simone de Rijke        | Antea Group         |
+| Wichard Bron           | WSP                 |
+| Sina Zeltaat           | WSP                 |
+| Maarten Weehuizen      | VIKTOR              |
+| Rick van Dijk          | VIKTOR              |
+| Pablo Vásconez         | CEMS                |
+| Bart-Jan van der Gaag  | Royal HaskoningDHV  |
+| Rami Evans             | Royal HaskoningDHV  |
+| Marijn Drillenburg     | Royal HaskoningDHV  |
+
 ## Mission
 
 Our mission is to reduce the cost and time associated with civil engineering calculations by:
@@ -40,7 +60,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 ## (Upcoming) Features
 
 * Eurocode formulas [templates for making formula](https://github.com/orgs/Blueprints-org/discussions/432)
-    - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow)
+    - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
     - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
     - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
     - [ ] NEN-EN 1993-5:2008 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
@@ -49,26 +69,44 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Material definitions
     - [x] Concrete (NEN-EN 1992) ✔️
     - [x] Rebar Steel (NEN-EN 1992) ✔️
+    - [x] Steel (NEN-EN 1993) ✔️
     - [x] Soil (NEN-EN 1997) ✔️
+ 
+* Common steel profile database
+    - [x] HEA / HEB / HEM / IPE ✔️
+    - [x] CHS ✔️
+    - [x] RHS / SHS / RHSCF / SHSCF ✔️
+    - [x] UNP ✔️
+    - [x] Strips ✔️
+    - [ ] Sheetpiles
+
+* Shape building blocks
+    - [x] Rectangle ✔️
+    - [x] Circle ✔️
+    - [x] Tube / ring ✔️
+    - [x] Right triangle ✔️
+    - [x] Hexagon ✔️
+    - [x] Quarter Circular Spandrel ✔️
+    - [ ] Annular Sector (partial ring) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Reinforced Concrete Section
     - [x] Rectangular section ✔️
-    - [ ] Circular section
+    - [x] Circular section ✔️
 
 * Strain-stress analysis for reinforced concrete sections:
   - [ ] Rectangular section ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
-  - [ ] Circular section
+  - [ ] Circular section 
 
 * Concrete checks
-  - [x] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ✔️
-  - [ ] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8)
-  - [ ] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2)
-  - [ ] Shear Resistance circular shapes;
-  - [ ] Torsion (NEN-EN 1992-1-1: Chapter 6.3)
-  - [ ] Punching Shear (NEN-EN 1992-1-1: Chapter 6.4)
-  - [ ] Fatigue (NEN-EN 1992-1-1: Chapter 6.8)
-  - [ ] Crack Control (NEN-EN 1992-1-1: Chapter 7.3)
-  - [ ] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4)
+  - [x] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4) ✔️
+  - [x] [Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4)](https://cloud.viktor.ai/public/blueprints-nominal-concrete-cover) ✔️
+  - [x] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8) ✔️
+  - [x] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2) ✔️
+  - [x] Shear Resistance circular shapes ✔️
+  - [x] Torsion (NEN-EN 1992-1-1: Chapter 6.3) ✔️
+  - [x] Punching Shear (NEN-EN 1992-1-1: Chapter 6.4) ✔️
+  - [ ] Fatigue (NEN-EN 1992-1-1: Chapter 6.8) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+  - [ ] Crack Control (NEN-EN 1992-1-1: Chapter 7.3) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Timber checks (NEN-EN 1995)
    - *To Be Determined*

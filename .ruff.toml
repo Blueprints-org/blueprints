@@ -75,6 +75,8 @@ ignore = [
     "RUF002", # ambiguous-unicode-character-docstring
     "RUF003", # ambiguous-unicode-character-comment
 ]
+[lint.per-file-ignores] 
+"docs/*" = ["T201"]
 
 [format]
 quote-style = "double"
@@ -92,7 +94,6 @@ known-third-party = [
     "matplotlib",
     "munch",
     "numpy",
-    "pandas",
     "pygal",
     "scipy",
     "shapely",
