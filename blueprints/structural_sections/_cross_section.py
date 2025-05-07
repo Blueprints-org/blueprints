@@ -24,19 +24,19 @@ class CrossSection(ABC):
         """Shapely Polygon representing the cross-section."""
 
     @property
-    @abstractmethod
     def area(self) -> MM2:
         """Area of the cross-section [mm²]."""
+        return self.polygon.area
 
     @property
-    @abstractmethod
     def perimeter(self) -> MM:
         """Perimeter of the cross-section [mm]."""
+        return self.polygon.length
 
     @property
-    @abstractmethod
     def centroid(self) -> Point:
         """Centroid of the cross-section [mm]."""
+        return self.polygon.centroid
 
     @property
     @abstractmethod
@@ -78,9 +78,8 @@ class CrossSection(ABC):
     def plastic_section_modulus_about_z(self) -> MM3 | None:
         """Plastic section modulus about the z-axis [mm³]."""
 
-    @abstractmethod
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
-        """Abstract method to be implemented by subclasses to return the geometry of the cross-section.
+        """Geometry of the cross-section.
 
         Properties
         ----------
@@ -88,6 +87,12 @@ class CrossSection(ABC):
             Maximum mesh element area to be used within
             the Geometry-object finite-element mesh. If not provided, a default value will be used.
         """
+        if mesh_size is None:
+            mesh_size = 2.0
+
+        geom = Geometry(geom=self.polygon)
+        geom.create_mesh(mesh_sizes=mesh_size)
+        return geom
 
     def section(self) -> Section:
         """Section object representing the cross-section."""
