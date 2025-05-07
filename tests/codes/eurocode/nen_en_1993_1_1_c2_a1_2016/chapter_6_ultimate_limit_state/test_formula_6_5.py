@@ -17,9 +17,9 @@ class TestForm6Dot5UnityCheckTensileStrength:
         form = Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
 
         # Expected result, manually calculated
-        expected = 0.7
+        expected = True
 
-        assert form == pytest.approx(expected)
+        assert form == expected
 
     @pytest.mark.parametrize(
         ("n_ed", "n_t_rd"),
@@ -35,12 +35,12 @@ class TestForm6Dot5UnityCheckTensileStrength:
     @pytest.mark.parametrize(
         ("n_ed", "n_t_rd"),
         [
-            (7, 0),  # n_ed is negative
+            (7, 0),  # n_t_rd is zero
             (7, -10),  # n_t_rd is negative
         ],
     )
     def test_raise_error_when_negative_or_zero_n_t_rd_is_given(self, n_ed: float, n_t_rd: float) -> None:
-        """Test a zero value for n_t_rd."""
+        """Test a zero or negative value for n_t_rd."""
         with pytest.raises(LessOrEqualToZeroError):
             Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
 
@@ -49,9 +49,10 @@ class TestForm6Dot5UnityCheckTensileStrength:
         [
             (
                 "complete",
-                r"N_{Ed}/N_{t,Rd} = N_{Ed} / N_{t,Rd} = 7.00 / 10.00 = 0.70",
+                r"CHECK \to \left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right) \to "
+                r"\left( \frac{7.000}{10.000} \leq 1 \right) \to OK",
             ),
-            ("short", r"N_{Ed}/N_{t,Rd} = 0.70"),
+            ("short", r"CHECK \to OK"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -61,8 +62,11 @@ class TestForm6Dot5UnityCheckTensileStrength:
         n_t_rd = 10  # kN
 
         # Object to test
-        form_6_5_latex = Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd).latex()
+        latex = Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd).latex()
 
-        actual = {"complete": form_6_5_latex.complete, "short": form_6_5_latex.short}
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
 
-        assert actual[representation] == expected, f"{representation} representation failed."
+        assert expected == actual[representation], f"{representation} representation failed."

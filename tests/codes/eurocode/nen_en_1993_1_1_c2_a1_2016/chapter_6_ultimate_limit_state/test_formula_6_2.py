@@ -1,4 +1,4 @@
-"""Testing formula 6.5 of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.2 of NEN-EN 1993-1-1+C2+A1:2016."""
 
 import pytest
 
