@@ -23,7 +23,11 @@ class SteelElement:
     material : SteelMaterial
         The material of the steel element.
     nominal_thickness : MM
-        The nominal thickness of the steel element
+        The nominal thickness of the steel element.
+
+        This is used to calculate the yield and ultimate strength of the steel element.
+        But be aware that there is no internal check to make sure that the given nominal thickness
+        is actually the thickness of the cross-section.
     """
 
     cross_section: CrossSection
