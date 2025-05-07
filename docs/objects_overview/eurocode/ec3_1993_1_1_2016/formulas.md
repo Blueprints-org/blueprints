@@ -56,7 +56,7 @@ Total of 108 formulas present.
 | 6.29           | :x:  |         |             |
 | 6.30           | :x:  |         |             |
 | 6.31           | :heavy_check_mark:  |         | Form6Dot31CheckBendingAndAxialForce             |
-| 6.32           | :x:  |         |             |
+| 6.32           | :heavy_check_mark:  |         | Form6Dot32MNrdRectangular            |
 | 6.33           | :heavy_check_mark:  |         | Form6Dot33CheckAxialForceY            |
 | 6.34           | :heavy_check_mark:  |         | Form6Dot34CheckAxialForceY            |
 | 6.35           | :heavy_check_mark:  |         | Form6Dot35CheckAxialForceZ            |
