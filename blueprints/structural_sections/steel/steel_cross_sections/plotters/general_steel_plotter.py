@@ -86,6 +86,7 @@ Moment of inertia about z: {profile.moment_of_inertia_about_z:.0f} mm⁴
     ax.grid(True)
     ax.axis("equal")
     ax.axis("off")
+    ax.set_xlim(profile.polygon.bounds[0] - offset, profile.polygon.bounds[2] + offset)
 
     if show:
         plt.show()  # pragma: no cover
