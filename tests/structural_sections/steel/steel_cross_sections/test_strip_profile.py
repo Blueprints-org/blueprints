@@ -91,6 +91,24 @@ class TestStripSteelProfile:
         assert section_properties.zxx_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_y_negative, rel=1e-2)
         assert section_properties.zyy_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_z_negative, rel=1e-2)
 
+    def test_yield_strength(self, strip_profile: StripSteelProfile) -> None:
+        """Test the yield strength of the Strip profile."""
+        assert strip_profile.yield_strength == 355
+
+    def test_ultimate_strength(self, strip_profile: StripSteelProfile) -> None:
+        """Test the ultimate strength of the Strip profile."""
+        assert strip_profile.ultimate_strength == 490
+
+    def test_plastic_section_modulus_about_y(self, strip_profile: StripSteelProfile) -> None:
+        """Test the plastic section modulus about the y-axis."""
+        expected_plastic_modulus_y = 1 / 4 * 160 * 5**2
+        assert pytest.approx(strip_profile.plastic_section_modulus_about_y, rel=1e-6) == expected_plastic_modulus_y
+
+    def test_plastic_section_modulus_about_z(self, strip_profile: StripSteelProfile) -> None:
+        """Test the plastic section modulus about the z-axis."""
+        expected_plastic_modulus_z = 1 / 4 * 5 * 160**2
+        assert pytest.approx(strip_profile.plastic_section_modulus_about_z, rel=1e-6) == expected_plastic_modulus_z
+
     def test_get_profile_with_corrosion(self) -> None:
         """Test the Strip profile with 2 mm corrosion applied."""
         # Ensure the profile raises an error if fully corroded
