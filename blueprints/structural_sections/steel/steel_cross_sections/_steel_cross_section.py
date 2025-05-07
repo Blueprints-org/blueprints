@@ -10,7 +10,7 @@ from shapely.geometry.polygon import orient
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections.steel.steel_element import SteelElement
-from blueprints.type_alias import KG_M, M3_M, MM3, MPA
+from blueprints.type_alias import KG_M, M3_M, MM, MM3, MPA
 from blueprints.unit_conversion import MM3_TO_M3
 
 
@@ -52,6 +52,16 @@ class CombinedSteelCrossSection(CrossSection, ABC):
 
         # Ensure consistent orientation
         return orient(combined_polygon)
+
+    @property
+    def height(self) -> MM:
+        """Height of the cross-section [mm]."""
+        return self.polygon.bounds[3] - self.polygon.bounds[1]
+
+    @property
+    def width(self) -> MM:
+        """Width of the cross-section [mm]."""
+        return self.polygon.bounds[2] - self.polygon.bounds[0]
 
     @property
     def volume_per_meter(self) -> M3_M:
