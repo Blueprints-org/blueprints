@@ -5,36 +5,28 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_3_materials.table_3_1 import SteelStrengthClass
-from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile, LoadStandardIProfile
+from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
 
 
 class TestISteelProfile:
     """Test suite for ISteelProfile."""
 
-    def test_str(self) -> None:
-        """Test the string representation of the I-profile."""
-        profile = HEB.HEB360
-        steel_class = SteelStrengthClass.S355
-        expected_str = "Steel class: SteelStrengthClass.S355, Profile: HEB.HEB360"
-        assert LoadStandardIProfile(profile=profile, steel_class=steel_class).__str__() == expected_str
-
-    def test_alias(self) -> None:
+    def test_alias(self, i_profile: ISteelProfile) -> None:
         """Test the alias of the I-profile."""
-        profile = HEB.HEB360
-        alias = profile.alias
         expected_alias = "HEB360"
-        assert alias == expected_alias
+        assert i_profile.name == expected_alias
 
     def test_steel_volume_per_meter(self, i_profile: ISteelProfile) -> None:
         """Test the steel volume per meter."""
         expected_volume = 1.806e-2  # m³/m
-        assert pytest.approx(i_profile.steel_volume_per_meter, rel=1e-2) == expected_volume
+        assert pytest.approx(i_profile.volume_per_meter, rel=1e-2) == expected_volume
 
     def test_steel_weight_per_meter(self, i_profile: ISteelProfile) -> None:
         """Test the steel weight per meter."""
         expected_weight = 1.806e-2 * 7850  # kg/m
-        assert pytest.approx(i_profile.steel_weight_per_meter, rel=1e-2) == expected_weight
+        assert pytest.approx(i_profile.weight_per_meter, rel=1e-2) == expected_weight
 
     def test_steel_area(self, i_profile: ISteelProfile) -> None:
         """Test the steel cross-sectional area."""
@@ -102,11 +94,10 @@ class TestISteelProfile:
 
     def test_get_profile_with_corrosion(self) -> None:
         """Test the EHB profile with 20 mm corrosion applied."""
-        profile: HEB = HEB.HEB360
-        steel_class: SteelStrengthClass = SteelStrengthClass.S355
-
-        loader = LoadStandardIProfile(profile=profile, steel_class=steel_class)
-
         # Ensure the profile raises an error if fully corroded
         with pytest.raises(ValueError, match="The profile has fully corroded."):
-            loader.get_profile(corrosion=20.0)
+            ISteelProfile.from_standard_profile(
+                profile=HEB.HEB360,
+                steel_material=SteelMaterial(SteelStrengthClass.S355),
+                corrosion=20,  # mm
+            )
