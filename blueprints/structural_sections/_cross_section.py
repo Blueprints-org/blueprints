@@ -25,7 +25,13 @@ class CrossSection(ABC):
 
     @property
     def area(self) -> MM2:
-        """Area of the cross-section [mm²]."""
+        """Area of the cross-section [mm²].
+
+        When using circular cross-sections, the area is an approximation of the area of the polygon.
+        The area is calculated using the `area` property of the Shapely Polygon.
+
+        In case you need an exact answer then you need to override this method in the derived class.
+        """
         return self.polygon.area
 
     @property
