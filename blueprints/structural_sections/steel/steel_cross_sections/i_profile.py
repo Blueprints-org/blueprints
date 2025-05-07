@@ -209,12 +209,12 @@ class ISteelProfile(CombinedSteelCrossSection):
             name=profile.alias,
         )
 
-    def plot(self, plotter: Callable[..., plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
+    def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
         """Plot the cross-section. Making use of the standard plotter.
 
         Parameters
         ----------
-        plotter : Callable[..., plt.Figure] | None
+        plotter : Callable[CombinedSteelCrossSection, plt.Figure] | None
             The plotter function to use. If None, the default Blueprints plotter for steel sections is used.
         *args
             Additional arguments passed to the plotter.
