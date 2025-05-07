@@ -21,12 +21,12 @@ class CHSSteelProfile(CombinedSteelCrossSection):
 
     Attributes
     ----------
+    steel_material : SteelMaterial
+        The material properties of the steel.
     outer_diameter : MM
         The outer diameter of the CHS profile [mm].
     wall_thickness : MM
         The wall thickness of the CHS profile [mm].
-    steel_material : SteelMaterial
-        The material properties of the steel.
     """
 
     steel_material: SteelMaterial
