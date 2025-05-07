@@ -33,14 +33,14 @@ Total of 108 formulas present.
 | 6.6            | :x:  |         |             |
 | 6.7            | :x:  |         |             |
 | 6.8            | :x:  |         |             |
-| 6.9            | :x:  |         |             |
-| 6.10           | :x:  |         |             |
-| 6.11           | :x:  |         |             |
-| 6.12           | :x:  |         |             |
-| 6.13           | :x:  |         |             |
-| 6.14           | :x:  |         |             |
-| 6.15           | :x:  |         |             |
-| 6.16           | :x:  |         |             |
+| 6.9            | :heavy_check_mark:  |         | Form6Dot9CheckCompressionForce            |
+| 6.10           | :heavy_check_mark:  |         | Form6Dot10NcRdClass1And2And3            |
+| 6.11           | :heavy_check_mark:  |         | Form6Dot11NcRdClass4            |
+| 6.12           | :heavy_check_mark:  |         | Form6Dot12CheckBendingMoment            |
+| 6.13           | :heavy_check_mark:  |         | Form6Dot13MCRdClass1And2            |
+| 6.14           | :heavy_check_mark:  |         | Form6Dot14MCRdClass3            |
+| 6.15           | :heavy_check_mark:  |         | Form6Dot15McRdClass4            |
+| 6.16           | :heavy_check_mark:  |         | Form6Dot16CheckFlangeWithFastenerHoles            |
 | 6.17           | :x:  |         |             |
 | 6.18           | :x:  |         |             |
 | 6.19           | :x:  |         |             |
@@ -55,17 +55,17 @@ Total of 108 formulas present.
 | 6.28           | :heavy_check_mark:  |         | Form6Dot28VplTRdHollowSection            |
 | 6.29           | :x:  |         |             |
 | 6.30           | :x:  |         |             |
-| 6.31           | :x:  |         |             |
-| 6.32           | :x:  |         |             |
-| 6.33           | :x:  |         |             |
-| 6.34           | :x:  |         |             |
-| 6.35           | :x:  |         |             |
+| 6.31           | :heavy_check_mark:  |         | Form6Dot31CheckBendingAndAxialForce             |
+| 6.32           | :heavy_check_mark:  |         | Form6Dot32MNrdRectangular            |
+| 6.33           | :heavy_check_mark:  |         | Form6Dot33CheckAxialForceY            |
+| 6.34           | :heavy_check_mark:  |         | Form6Dot34CheckAxialForceY            |
+| 6.35           | :heavy_check_mark:  |         | Form6Dot35CheckAxialForceZ            |
 | 6.36           | :x:  |         |             |
 | 6.37           | :x:  |         |             |
 | 6.38           | :x:  |         |             |
 | 6.39           | :x:  |         |             |
 | 6.40           | :x:  |         |             |
-| 6.41           | :x:  |         |             |
+| 6.41           | :heavy_check_mark:  |         | Form6Dot41BiaxialBendingCheck            |
 | 6.42           | :x:  |         |             |
 | 6.43           | :x:  |         |             |
 | 6.44           | :x:  |         |             |
