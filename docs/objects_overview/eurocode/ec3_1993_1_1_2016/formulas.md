@@ -47,12 +47,12 @@ Total of 108 formulas present.
 | 6.20           | :x:  |         |             |
 | 6.21           | :x:  |         |             |
 | 6.22           | :x:  |         |             |
-| 6.23           | :x:  |         |             |
-| 6.24           | :x:  |         |             |
-| 6.25           | :x:  |         |             |
-| 6.26           | :x:  |         |             |
-| 6.27           | :x:  |         |             |
-| 6.28           | :x:  |         |             |
+| 6.23           | :heavy_check_mark:  |         | Form6Dot23CheckTorsionalMoment            |
+| 6.24           | :heavy_check_mark:  |         | Form6Dot24TotalTorsionalMoment            |
+| 6.25           | :heavy_check_mark:  |         | Form6Dot25CheckCombinedShearForceAndTorsionalMoment            |
+| 6.26           | :heavy_check_mark:  |         | Form6Dot26VplTRdIOrHSection            |
+| 6.27           | :heavy_check_mark:  |         | Form6Dot27VplTRdChannelSection            |
+| 6.28           | :heavy_check_mark:  |         | Form6Dot28VplTRdHollowSection            |
 | 6.29           | :x:  |         |             |
 | 6.30           | :x:  |         |             |
 | 6.31           | :heavy_check_mark:  |         | Form6Dot31CheckBendingAndAxialForce             |
