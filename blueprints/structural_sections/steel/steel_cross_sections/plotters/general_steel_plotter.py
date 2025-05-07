@@ -69,11 +69,12 @@ Moment of inertia about z: {profile.moment_of_inertia_about_z:.0f} mm⁴
         legend_text += f"Steel quality: {profile.elements[0].material.name}\n"
 
     # Get the boundaries of the plot
-    _, min_y, max_x, _ = profile.polygon.bounds
+    _, min_y, _, _ = profile.polygon.bounds
+    offset = (profile.width / 2) + (profile.width / 20)
 
     # Add the legend text to the plot
     ax.annotate(
-        xy=(max_x + 10, min_y),
+        xy=(offset, min_y),
         text=legend_text,
         transform=ax.transAxes,
         fontsize=font_size_legend,
@@ -108,6 +109,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
     """
     # Define the offset for the dimension lines
     offset_dimension_lines = max(profile.height, profile.width) / 20
+    offset_text = offset_dimension_lines / 2
 
     # Calculate the bounds of all elements in the geometry
     min_x, min_y, max_x, max_y = profile.polygon.bounds
@@ -135,7 +137,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
     ax.text(
         s=f"b= {profile.width:.1f} mm",
         x=(min_x + max_x) / 2,
-        y=min_y - offset_dimension_lines * 2 + 6,
+        y=min_y - offset_dimension_lines * 2 + offset_text,
         verticalalignment="top",
         horizontalalignment="center",
         fontsize=10,
@@ -154,7 +156,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
     ax.text(
         s=f"{centroid_width:.1f} mm",
         x=(min_x + centroid.x) / 2,
-        y=min_y - offset_dimension_lines + 6,
+        y=min_y - offset_dimension_lines + offset_text,
         verticalalignment="top",
         horizontalalignment="center",
         fontsize=10,
@@ -174,7 +176,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
     )
     ax.text(
         s=f"{centroid_height:.1f} mm",
-        x=-(max_x + offset_dimension_lines + 6),
+        x=-(max_x + offset_dimension_lines + offset_text),
         y=(min_y + centroid.y) / 2,
         verticalalignment="center",
         horizontalalignment="left",
@@ -195,7 +197,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
     )
     ax.text(
         s=f"h= {profile.height:.1f} mm",
-        x=-(max_x + offset_dimension_lines * 2 + 6),
+        x=-(max_x + offset_dimension_lines * 2 + offset_text),
         y=(min_y + max_y) / 2,
         verticalalignment="center",
         horizontalalignment="left",
