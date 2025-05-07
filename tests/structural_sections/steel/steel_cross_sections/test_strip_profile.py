@@ -4,38 +4,28 @@ import matplotlib.pyplot as plt
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_3_materials.table_3_1 import SteelStrengthClass
+from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
-from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import LoadStandardStrip, StripSteelProfile
+from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripSteelProfile
 
 
 class TestStripSteelProfile:
     """Test suite for StripSteelProfile."""
 
-    def test_str(self) -> None:
-        """Test the string representation of the Strip profile."""
-        profile = Strip.STRIP160x5
-        steel_class = SteelStrengthClass.S355
-        desc = LoadStandardStrip(profile=profile, steel_class=steel_class).__str__()
-        expected_str = "Steel class: SteelStrengthClass.S355, Profile: Strip.STRIP160x5"
-        assert desc == expected_str
-
-    def test_code(self) -> None:
+    def test_code(self, strip_profile: StripSteelProfile) -> None:
         """Test the code of the Strip profile."""
-        profile = Strip.STRIP160x5
-        steel_class = SteelStrengthClass.S355
-        alias = LoadStandardStrip(profile=profile, steel_class=steel_class).alias()
         expected_alias = "160x5"
-        assert alias == expected_alias
+        assert strip_profile.name == expected_alias
 
     def test_steel_volume_per_meter(self, strip_profile: StripSteelProfile) -> None:
         """Test the steel volume per meter."""
         expected_volume = 0.160 * 0.005  # m³/m
-        assert pytest.approx(strip_profile.steel_volume_per_meter, rel=1e-6) == expected_volume
+        assert pytest.approx(strip_profile.volume_per_meter, rel=1e-6) == expected_volume
 
     def test_steel_weight_per_meter(self, strip_profile: StripSteelProfile) -> None:
         """Test the steel weight per meter."""
         expected_weight = 0.160 * 0.005 * 7850  # kg/m
-        assert pytest.approx(strip_profile.steel_weight_per_meter, rel=1e-6) == expected_weight
+        assert pytest.approx(strip_profile.weight_per_meter, rel=1e-6) == expected_weight
 
     def test_area(self, strip_profile: StripSteelProfile) -> None:
         """Test the steel cross-sectional area."""
@@ -103,11 +93,10 @@ class TestStripSteelProfile:
 
     def test_get_profile_with_corrosion(self) -> None:
         """Test the Strip profile with 2 mm corrosion applied."""
-        profile: Strip = Strip.STRIP160x5
-        steel_class: SteelStrengthClass = SteelStrengthClass.S355
-
-        loader = LoadStandardStrip(profile=profile, steel_class=steel_class)
-
         # Ensure the profile raises an error if fully corroded
         with pytest.raises(ValueError, match="The profile has fully corroded."):
-            loader.get_profile(corrosion=2.5)
+            StripSteelProfile.from_standard_profile(
+                profile=Strip.STRIP160x5,
+                steel_material=SteelMaterial(SteelStrengthClass.S355),
+                corrosion=2.5,
+            )
