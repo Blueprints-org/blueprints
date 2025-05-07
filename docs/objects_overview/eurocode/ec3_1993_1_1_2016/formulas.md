@@ -65,7 +65,7 @@ Total of 108 formulas present.
 | 6.38           | :x:  |         |             |
 | 6.39           | :x:  |         |             |
 | 6.40           | :x:  |         |             |
-| 6.41           | :x:  |         |             |
+| 6.41           | :heavy_check_mark:  |         | Form6Dot41BiaxialBendingCheck            |
 | 6.42           | :x:  |         |             |
 | 6.43           | :x:  |         |             |
 | 6.44           | :x:  |         |             |
