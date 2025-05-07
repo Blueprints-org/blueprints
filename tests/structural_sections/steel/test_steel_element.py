@@ -9,62 +9,62 @@ from blueprints.structural_sections.steel.steel_element import SteelElement
 
 def test_name(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement name matches the mock cross-section name."""
-    assert steel_element.name == mock_cross_section.name
+    assert steel_element.cross_section.name == mock_cross_section.name
 
 
 def test_area(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement area matches the mock cross-section area."""
-    assert steel_element.area == mock_cross_section.area
+    assert steel_element.cross_section.area == mock_cross_section.area
 
 
 def test_perimeter(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement perimeter matches the mock cross-section perimeter."""
-    assert steel_element.perimeter == mock_cross_section.perimeter
+    assert steel_element.cross_section.perimeter == mock_cross_section.perimeter
 
 
 def test_centroid(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement centroid matches the mock cross-section centroid."""
-    assert steel_element.centroid == mock_cross_section.centroid
+    assert steel_element.cross_section.centroid == mock_cross_section.centroid
 
 
 def test_moment_of_inertia_about_y(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement moment of inertia about Y matches the mock cross-section."""
-    assert steel_element.moment_of_inertia_about_y == mock_cross_section.moment_of_inertia_about_y
+    assert steel_element.cross_section.moment_of_inertia_about_y == mock_cross_section.moment_of_inertia_about_y
 
 
 def test_moment_of_inertia_about_z(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement moment of inertia about Z matches the mock cross-section."""
-    assert steel_element.moment_of_inertia_about_z == mock_cross_section.moment_of_inertia_about_z
+    assert steel_element.cross_section.moment_of_inertia_about_z == mock_cross_section.moment_of_inertia_about_z
 
 
 def test_elastic_section_modulus_about_y_positive(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement elastic section modulus about Y+ matches the mock cross-section."""
-    assert steel_element.elastic_section_modulus_about_y_positive == mock_cross_section.elastic_section_modulus_about_y_positive
+    assert steel_element.cross_section.elastic_section_modulus_about_y_positive == mock_cross_section.elastic_section_modulus_about_y_positive
 
 
 def test_elastic_section_modulus_about_y_negative(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement elastic section modulus about Y- matches the mock cross-section."""
-    assert steel_element.elastic_section_modulus_about_y_negative == mock_cross_section.elastic_section_modulus_about_y_negative
+    assert steel_element.cross_section.elastic_section_modulus_about_y_negative == mock_cross_section.elastic_section_modulus_about_y_negative
 
 
 def test_elastic_section_modulus_about_z_positive(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement elastic section modulus about Z+ matches the mock cross-section."""
-    assert steel_element.elastic_section_modulus_about_z_positive == mock_cross_section.elastic_section_modulus_about_z_positive
+    assert steel_element.cross_section.elastic_section_modulus_about_z_positive == mock_cross_section.elastic_section_modulus_about_z_positive
 
 
 def test_elastic_section_modulus_about_z_negative(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement elastic section modulus about Z- matches the mock cross-section."""
-    assert steel_element.elastic_section_modulus_about_z_negative == mock_cross_section.elastic_section_modulus_about_z_negative
+    assert steel_element.cross_section.elastic_section_modulus_about_z_negative == mock_cross_section.elastic_section_modulus_about_z_negative
 
 
 def test_plastic_section_modulus_about_y(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement plastic section modulus about Y matches the mock cross-section."""
-    assert steel_element.plastic_section_modulus_about_y == mock_cross_section.plastic_section_modulus_about_y
+    assert steel_element.cross_section.plastic_section_modulus_about_y == mock_cross_section.plastic_section_modulus_about_y
 
 
 def test_plastic_section_modulus_about_z(steel_element: SteelElement, mock_cross_section: Mock) -> None:
     """Test that the SteelElement plastic section modulus about Z matches the mock cross-section."""
-    assert steel_element.plastic_section_modulus_about_z == mock_cross_section.plastic_section_modulus_about_z
+    assert steel_element.cross_section.plastic_section_modulus_about_z == mock_cross_section.plastic_section_modulus_about_z
 
 
 def test_weight_per_meter(steel_element: SteelElement, mock_cross_section: Mock, mock_material: Mock) -> None:
