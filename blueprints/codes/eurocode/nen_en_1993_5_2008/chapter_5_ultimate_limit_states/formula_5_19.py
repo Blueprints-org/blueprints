@@ -1,4 +1,4 @@
-"""Formula 5.19 from NEN-EN 1993-5:2008: Chapter 5 – Ultimate limit state."""
+"""Formula 5.19 from NEN-EN 1993-5:2008: Chapter 5 - Ultimate limit state."""
 
 from blueprints.codes.eurocode.nen_en_1993_5_2008 import NEN_EN_1993_5_2008
 from blueprints.codes.formula import Formula
@@ -20,7 +20,7 @@ class Form5Dot19CompressionCheckClass3Profiles(Formula):
     ) -> None:
         r"""Compression check for class 3 profiles: design axial force [$N_{Ed}$] should not exceed 10% of plastic resistance [$N_{pl,Rd}$].
 
-        NEN-EN 1993-5:2008 art. 5.2.3 (10) – Formula (5.19)
+        NEN-EN 1993-5:2008 art. 5.2.3 (10) - Formula (5.19)
 
         Parameters
         ----------
