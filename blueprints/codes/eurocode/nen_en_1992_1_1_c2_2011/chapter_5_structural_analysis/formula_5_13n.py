@@ -15,15 +15,7 @@ class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
     label = "5.13N"
     source_document = NEN_EN_1992_1_1_C2_2011
 
-    def __init__(
-        self,
-        a: DIMENSIONLESS,
-        b: DIMENSIONLESS,
-        c: DIMENSIONLESS,
-        n_ed: N,
-        a_c: MM2,
-        f_cd: MPA
-    ) -> None:
+    def __init__(self, a: DIMENSIONLESS, b: DIMENSIONLESS, c: DIMENSIONLESS, n_ed: N, a_c: MM2, f_cd: MPA) -> None:
         """[$λ_{lim}$] Calculation of the slenderness limit, where second order effects may be ignored (dimensionless).
 
         Note:
@@ -61,14 +53,7 @@ class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
         self.f_cd = f_cd
 
     @staticmethod
-    def _evaluate(
-        a: DIMENSIONLESS,
-        b: DIMENSIONLESS,
-        c: DIMENSIONLESS,
-        n_ed: N,
-        a_c: MM2,
-        f_cd: MPA
-    ) -> DIMENSIONLESS:
+    def _evaluate(a: DIMENSIONLESS, b: DIMENSIONLESS, c: DIMENSIONLESS, n_ed: N, a_c: MM2, f_cd: MPA) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a=a, b=b, c=c)
         raise_if_less_or_equal_to_zero(a_c=a_c, f_cd=f_cd, n_ed=n_ed)
