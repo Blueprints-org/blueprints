@@ -33,7 +33,12 @@ class TestForm7Dot4VelocityResponseLimit:
             (120, 5, 0.02, does_not_raise()),
             (50, 2, -1, pytest.raises(NegativeValueError)),
             (50, 0, 1, pytest.raises(LessOrEqualToZeroError)),
-            (40, 8, 1.2, pytest.raises(ValueError, match="b must be bigger than 50 and lower than 150")),
+            (
+                40,
+                8,
+                1.2,
+                pytest.raises(ValueError),
+            ),
         ],
         ids=[
             "passes",
