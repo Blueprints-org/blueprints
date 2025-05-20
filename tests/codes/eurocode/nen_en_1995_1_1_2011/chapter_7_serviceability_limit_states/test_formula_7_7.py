@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm7Dot7NumberOfFOVibrations:
-    """Validation for formula 7.7 from from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+    """Validation for formula 7.7 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
 
     @pytest.mark.parametrize(
         ("f_1", "b", "length", "ei_l", "ei_b", "expected_result"),

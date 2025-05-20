@@ -49,9 +49,9 @@ class Form7Dot7NumberOfFOVibrations(Formula):
         """Evaluate the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(f_1=f_1, b=b, length=length, ei_l=ei_l, ei_b=ei_b)
         if f_1 > Form7Dot7NumberOfFOVibrations.f_40:
-            raise ValueError(f"Value of $f_1$ ({f_1:.3f}) exceeds the allowed limit of 40.")
-        if ei_l <= ei_b:
-            raise ValueError(r"$EI_l$ ({ei_l:.2f}) must be bigger than $EI_b$ ({ei_b:.2f}).")
+            raise ValueError(f"Value of $f_1$ ({f_1:.3f}) exceeds the allowed limit of {Form7Dot7NumberOfFOVibrations.f_40}.")
+        if not ei_b < ei_l:
+            raise ValueError(rf"$EI_l$ ({ei_l:.2f}) must be bigger than $EI_b$ ({ei_b:.2f}).")
         return (((40 / f_1) ** 2 - 1) * (b / length) ** 4 * ei_l / ei_b) ** 0.25
 
     def latex(self) -> LatexFormula:
@@ -66,4 +66,9 @@ class Form7Dot7NumberOfFOVibrations(Formula):
             "l ": f"{self.length:.2f}",
             "b": f"{self.b:.2f}",
         }
-        return LatexFormula(return_symbol=r"n_{40}", result=f"{self:.2f}", equation=eq_for, numeric_equation=latex_replace_symbols(eq_for, repl_symb))
+        return LatexFormula(
+            return_symbol=r"n_{40}",
+            result=f"{self:.2f}",
+            equation=eq_for,
+            numeric_equation=latex_replace_symbols(eq_for, repl_symb),
+        )
