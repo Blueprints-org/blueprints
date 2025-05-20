@@ -25,7 +25,8 @@ class Form7Dot5NaturalFrequency(Formula):
         length : M
             [$l$] Span of the floor [$m$].
         ei_l : NM2_M
-            [$(EI)_{l}$] Equivalent bending stiffness of the floor around the axis perpendicular to the longitudinal axis of the beam [$Nm^{2}/m$].
+            [$(EI)_{l}$] Equivalent plate bending stiffness of the floor around the axis perpendicular to the
+            longitudinal axis of the beam [$Nm^{2}/m$].
         m : KG_M2
             [$m$] Mass per unit area [$kg/m^{2}$].
 
@@ -43,9 +44,8 @@ class Form7Dot5NaturalFrequency(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(m=m, length=length)
         raise_if_negative(ei_l=ei_l)
-        pi = math.pi
         sqrt_ei_m = (ei_l / m) ** 0.5
-        return pi / (2 * length**2) * sqrt_ei_m
+        return (math.pi / (2 * length**2)) * sqrt_ei_m
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 7.5."""
