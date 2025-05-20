@@ -56,4 +56,9 @@ class Form7Dot3RatioDeflectionPointLoadUC(Formula):
             "F": f"{self.f:.2f}",
             r"\alpha": f"{self.alpha:.2f}",
         }
-        return LatexFormula(return_symbol=r"UC", result=f"{self:.2f}", equation=eq_for, numeric_equation=latex_replace_symbols(eq_for, repl_symb))
+        return LatexFormula(
+            return_symbol=r"UC",
+            result=f"{self:.2f}",
+            equation=eq_for,
+            numeric_equation=latex_replace_symbols(eq_for, repl_symb),
+        )
