@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, KNM, MM2, MPA, N
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import EqualToZeroError, raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
@@ -27,20 +27,21 @@ class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
         Parameters
         ----------
         a : DIMENSIONLESS
-            [$A$] calculation value, based on the effective creep ratio. Follows from equation 5.13A. If unknown, A = 0,7.
-
+            [$A$] calculation value, based on the effective creep ratio [$-$].
+            Follows from equation 5.13A. If unknown, A = 0,7.
+            Use your own implementation of this value or use the `SubForm5Dot13aCreepRatio` class.
         b : DIMENSIONLESS
-            [$B$] calculation value, based on the mechanical reinforcement ratio. Follows from equation 5.13B. If unknown, B = 1,1.
-
+            [$B$] calculation value, based on the mechanical reinforcement ratio [$-$].
+            Follows from equation 5.13B. If unknown, B = 1,1.
+            Use your own implementation of this value or use the `SubForm5Dot13bMechanicalReinforcementFactor` class.
         c : DIMENSIONLESS
-            [$C$] calculation value, based on the moment ratio. Follows from equation 5.13C. If unknown, C = 0,7.
-
+            [$C$] calculation value, based on the moment ratio [$-$].
+            Follows from equation 5.13C. If unknown, C = 0,7.
+            Use your own implementation of this value or use the `SubForm5Dot13cMomentRatio` class.
         n_ed : N
             [$N_{Ed}$] is the design value of the axial force [$N$].
-
         a_c : MM2
-            [$A_c$] is the area of concrete section [$mm^2$].
-
+            [$A_c$] is the area of the concrete section [$mm^2$].
         f_cd :
             [$f_{cd}$] is the design value of concrete compressive strength [$MPa$].
         """
@@ -59,11 +60,11 @@ class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
         raise_if_less_or_equal_to_zero(a_c=a_c, f_cd=f_cd, n_ed=n_ed)
 
         n = n_ed / (a_c * f_cd)
-        return 20 * a * b * c * np.sqrt(n)
+        return (20 * a * b * c) / np.sqrt(n)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13N."""
-        _equation: str = r"20 \cdot A \cdot B \cdot C \cdot \sqrt{\frac{N_{Ed}}{A_c \cdot f_{cd}}}"
+        _equation: str = r"\frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -99,10 +100,10 @@ class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
         )
 
 
-class Form5Dot13aCreepFactor(Formula):
-    r"""Class representing formula 5.13a for [$A$] in formula (5.13N)."""
+class SubForm5Dot13aCreepRatio(Formula):
+    r"""Class representing sub-formula for [$A$] in formula (5.13N)."""
 
-    label = "5.13a"
+    label = "5.13"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
@@ -111,7 +112,7 @@ class Form5Dot13aCreepFactor(Formula):
     ) -> None:
         r"""[$A$] Calculation of the factor [$A$] in formula (5.13N).
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.3.1 (1) - formula (5.13a)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.3.1 (1) - formula (5.13N)
 
         Parameters
         ----------
@@ -150,10 +151,10 @@ class Form5Dot13aCreepFactor(Formula):
         )
 
 
-class Form5Dot13bMechanicalReinforcementFactor(Formula):
-    r"""Class representing formula 5.13b for [$B$] in formula (5.13N)."""
+class SubForm5Dot13bMechanicalReinforcementFactor(Formula):
+    r"""Class representing sub-formula for [$B$] in formula (5.13N)."""
 
-    label = "5.13b"
+    label = "5.13"
     source_document = NEN_EN_1992_1_1_C2_2011
 
     def __init__(
@@ -165,19 +166,16 @@ class Form5Dot13bMechanicalReinforcementFactor(Formula):
     ) -> None:
         r"""[$B$] Calculation of the factor [$B$] in formula (5.13N).
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.3.1 (1) - formula (5.13b)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.3.1 (1) - formula (5.13N)
 
         Parameters
         ----------
         a_s : MM2
             [$A_s$] is the total area of longitudinal reinforcement [$mm^2$].
-
         f_yd : MPA
             [$f_{yd}$] is the design yield stress of the reinforcement [$MPa$].
-
         a_c : MM2
             [$A_c$] is the area of concrete section [$mm^2$].
-
         f_cd : MPA
             [$f_{cd}$] is the design value of concrete compressive strength [$MPa$].
         """
@@ -198,11 +196,12 @@ class Form5Dot13bMechanicalReinforcementFactor(Formula):
         raise_if_negative(a_s=a_s, f_yd=f_yd)
         raise_if_less_or_equal_to_zero(a_c=a_c, f_cd=f_cd)
 
-        return (a_s * f_yd) / (a_c * f_cd)
+        mechanical_reinforcement_ratio = (a_s * f_yd) / (a_c * f_cd)
+        return np.sqrt(1 + 2 * mechanical_reinforcement_ratio)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13b."""
-        _equation: str = r"\frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}"
+        _equation: str = r"\sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -234,8 +233,8 @@ class Form5Dot13bMechanicalReinforcementFactor(Formula):
         )
 
 
-class Form5Dot13cMomentFactor(Formula):
-    r"""Class representing formula 5.13c for [$C$] in formula (5.13N)."""
+class SubForm5Dot13cMomentRatio(Formula):
+    r"""Class representing sub-formula for [$C$] in formula (5.13N)."""
 
     label = "5.13c"
     source_document = NEN_EN_1992_1_1_C2_2011
@@ -247,13 +246,12 @@ class Form5Dot13cMomentFactor(Formula):
     ) -> None:
         r"""[$C$] Calculation of the factor [$C$] in formula (5.13N).
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.3.1 (1) - formula (5.13b)
+        NEN-EN 1992-1-1+C2:2011 art.5.8.3.1 (1) - formula (5.13)
 
         Parameters
         ----------
         m_01 : KNM
             [$M_{01}$] is one of the first order end moments [$kNm$].
-
         m_02 : KNM
             [$M_{02}$] is one of the first order end moments [$kNm$].
         """
@@ -267,14 +265,17 @@ class Form5Dot13cMomentFactor(Formula):
         m_02: KNM,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(m_01=m_01)
-        raise_if_less_or_equal_to_zero(m_02=m_02)
+        if m_02 == 0.0:
+            raise EqualToZeroError(value_name="m_02", value=m_02)
 
-        return m_01 / m_02
+        if not abs(m_02) >= abs(m_01):
+            raise ValueError("The absolute value of M_02 must be equal to or larger than the absolute value of M_01.")
+
+        return 1.7 - (m_01 / m_02)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13b."""
-        _equation: str = r"\frac{M_{01}}{M_{02}}"
+        _equation: str = r"1.7 - \frac{M_{01}}{M_{02}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {

@@ -1,14 +1,17 @@
 """Testing formula 5.13N of NEN-EN 1992-1-1+C2:2011."""
 
+from contextlib import AbstractContextManager
+from contextlib import nullcontext as does_not_raise
+
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_13n import (
-    Form5Dot13aCreepFactor,
-    Form5Dot13bMechanicalReinforcementFactor,
-    Form5Dot13cMomentFactor,
     Form5Dot13nSlendernessCriterionIsolatedMembers,
+    SubForm5Dot13aCreepRatio,
+    SubForm5Dot13bMechanicalReinforcementFactor,
+    SubForm5Dot13cMomentRatio,
 )
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import EqualToZeroError, LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm5Dot13nSlendernessCriterionIsolatedMembers:
@@ -20,15 +23,15 @@ class TestForm5Dot13nSlendernessCriterionIsolatedMembers:
         a = 0.7
         b = 1.1
         c = 0.7
-        n_ed = 1000000.0
-        a_c = 500000.0
-        f_cd = 20.0
+        n_ed = 1_000_000
+        a_c = 500_000
+        f_cd = 20
 
         # Object to test
         formula = Form5Dot13nSlendernessCriterionIsolatedMembers(a=a, b=b, c=c, n_ed=n_ed, a_c=a_c, f_cd=f_cd)
 
         # Expected result, manually calculated
-        manually_calculated_result = 3.409
+        manually_calculated_result = 34.0893
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
@@ -66,15 +69,17 @@ class TestForm5Dot13nSlendernessCriterionIsolatedMembers:
         [
             (
                 "complete",
-                r"\lambda_{lim} = 20 \cdot A \cdot B \cdot C \cdot \sqrt{\frac{N_{Ed}}{A_c \cdot f_{cd}}} = "
-                r"20 \cdot 0.700 \cdot 1.100 \cdot 0.700 \cdot \sqrt{\frac{1000000.000}{500000.000 \cdot 20.000}} = 3.409 \ -",
+                r"\lambda_{lim} = \frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}} = "
+                r"\frac{20 \cdot 0.700 \cdot 1.100 \cdot 0.700}{\sqrt{1000000.000 \cdot 500000.000 \cdot 20.000}} "
+                r"= 34.089 \ -",
             ),
             (
                 "complete_with_units",
-                r"\lambda_{lim} = 20 \cdot A \cdot B \cdot C \cdot \sqrt{\frac{N_{Ed}}{A_c \cdot f_{cd}}} = "
-                r"20 \cdot 0.700 \cdot 1.100 \cdot 0.700 \cdot \sqrt{\frac{1000000.000 \ N}{500000.000 \ mm^2 \cdot 20.000 \ MPa}} = 3.409 \ -",
+                r"\lambda_{lim} = \frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}} = "
+                r"\frac{20 \cdot 0.700 \cdot 1.100 \cdot 0.700}{\sqrt{1000000.000 \ N \cdot 500000.000 "
+                r"\ mm^2 \cdot 20.000 \ MPa}} = 34.089 \ -",
             ),
-            ("short", r"\lambda_{lim} = 3.409 \ -"),
+            ("short", r"\lambda_{lim} = 34.089 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -108,7 +113,7 @@ class TestForm5Dot13aCreepFactor:
         phi_ef = 2.5
 
         # Object to test
-        formula = Form5Dot13aCreepFactor(phi_ef=phi_ef)
+        formula = SubForm5Dot13aCreepRatio(phi_ef=phi_ef)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.6666666667
@@ -118,7 +123,7 @@ class TestForm5Dot13aCreepFactor:
     def test_raise_error_when_invalid_values_are_given(self) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form5Dot13aCreepFactor(phi_ef=-1.0)
+            SubForm5Dot13aCreepRatio(phi_ef=-1.0)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -136,7 +141,7 @@ class TestForm5Dot13aCreepFactor:
         phi_ef = 2.5
 
         # Object to test
-        latex = Form5Dot13aCreepFactor(phi_ef=phi_ef).latex()
+        latex = SubForm5Dot13aCreepRatio(phi_ef=phi_ef).latex()
 
         actual = {
             "complete": latex.complete,
@@ -159,10 +164,10 @@ class TestForm5Dot13bMechanicalReinforcementFactor:
         f_cd = 20.0
 
         # Object to test
-        formula = Form5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd)
+        formula = SubForm5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd)
 
         # Expected result, manually calculated
-        manually_calculated_result = 2.5  # dimensionless
+        manually_calculated_result = 2.4494  # dimensionless
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
@@ -176,7 +181,7 @@ class TestForm5Dot13bMechanicalReinforcementFactor:
     def test_raise_error_when_negative_values_are_given(self, a_s: float, f_yd: float, a_c: float, f_cd: float) -> None:
         """Test negative values."""
         with pytest.raises(NegativeValueError):
-            Form5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd)
+            SubForm5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd)
 
     @pytest.mark.parametrize(
         ("a_s", "f_yd", "a_c", "f_cd"),
@@ -190,22 +195,22 @@ class TestForm5Dot13bMechanicalReinforcementFactor:
     def test_raise_error_when_less_or_equal_to_zero_values_are_given(self, a_s: float, f_yd: float, a_c: float, f_cd: float) -> None:
         """Test less or equal to zero values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd)
+            SubForm5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"B = \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}} = "
-                r"\frac{1000.000 \cdot 500.000}{10000.000 \cdot 20.000} = 2.500 \ -",
+                r"B = \sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}} = \sqrt{1 + 2 \cdot "
+                r"\frac{1000.000 \cdot 500.000}{10000.000 \cdot 20.000}} = 2.449 \ -",
             ),
             (
                 "complete_with_units",
-                r"B = \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}} = "
-                r"\frac{1000.000 \ mm^2 \cdot 500.000 \ MPa}{10000.000 \ mm^2 \cdot 20.000 \ MPa} = 2.500 \ -",
+                r"B = \sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}} = \sqrt{1 + 2 \cdot "
+                r"\frac{1000.000 \ mm^2 \cdot 500.000 \ MPa}{10000.000 \ mm^2 \cdot 20.000 \ MPa}} = 2.449 \ -",
             ),
-            ("short", r"B = 2.500 \ -"),
+            ("short", r"B = 2.449 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -217,7 +222,7 @@ class TestForm5Dot13bMechanicalReinforcementFactor:
         f_cd = 20.0
 
         # Object to test
-        latex = Form5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd).latex()
+        latex = SubForm5Dot13bMechanicalReinforcementFactor(a_s=a_s, f_yd=f_yd, a_c=a_c, f_cd=f_cd).latex()
 
         actual = {
             "complete": latex.complete,
@@ -238,40 +243,45 @@ class TestForm5Dot13cMomentFactor:
         m_02 = 150.0
 
         # Object to test
-        formula = Form5Dot13cMomentFactor(m_01=m_01, m_02=m_02)
+        formula = SubForm5Dot13cMomentRatio(m_01=m_01, m_02=m_02)
 
         # Expected result, manually calculated
-        manually_calculated_result = 0.666667  # dimensionless
+        manually_calculated_result = 1.033333  # dimensionless
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_raise_error_when_m_01_is_negative(self) -> None:
-        """Test invalid value for m_01."""
-        with pytest.raises(NegativeValueError):
-            Form5Dot13cMomentFactor(m_01=-100.0, m_02=150.0)
-
-    def test_raise_error_when_m_02_is_zero(self) -> None:
-        """Test invalid value for m_02 (zero)."""
-        with pytest.raises(LessOrEqualToZeroError):
-            Form5Dot13cMomentFactor(m_01=100.0, m_02=0.0)
-
-    def test_raise_error_when_m_02_is_negative(self) -> None:
-        """Test invalid value for m_02 (negative)."""
-        with pytest.raises(LessOrEqualToZeroError):
-            Form5Dot13cMomentFactor(m_01=100.0, m_02=-150.0)
+    @pytest.mark.parametrize(
+        ("m_01", "m_02", "expectation"),
+        [
+            (100.0, 150.0, does_not_raise()),
+            (70, 70, does_not_raise()),  # m_01 == m_02
+            (150, 0, pytest.raises(EqualToZeroError)),  # m_02 is zero
+            (100, 50, pytest.raises(ValueError)),  # m_02 > m_01
+        ],
+        ids=[
+            "passes",
+            "m_01==m_02",
+            "m_02=0",
+            "m_02>m_01",
+        ],
+    )
+    def test_raise_error_incorrect_args(self, m_01: float, m_02: float, expectation: AbstractContextManager) -> None:
+        """Test if errors are raised."""
+        with expectation:
+            assert SubForm5Dot13cMomentRatio(m_01=m_01, m_02=m_02) is not None
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"C = \frac{M_{01}}{M_{02}} = \frac{100.000}{150.000} = 0.667 \ -",
+                r"C = 1.7 - \frac{M_{01}}{M_{02}} = 1.7 - \frac{100.000}{150.000} = 1.033 \ -",
             ),
             (
                 "complete_with_units",
-                r"C = \frac{M_{01}}{M_{02}} = \frac{100.000 \ kNm}{150.000 \ kNm} = 0.667 \ -",
+                r"C = 1.7 - \frac{M_{01}}{M_{02}} = 1.7 - \frac{100.000 \ kNm}{150.000 \ kNm} = 1.033 \ -",
             ),
-            ("short", r"C = 0.667 \ -"),
+            ("short", r"C = 1.033 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -281,7 +291,7 @@ class TestForm5Dot13cMomentFactor:
         m_02 = 150.0
 
         # Object to test
-        latex = Form5Dot13cMomentFactor(m_01=m_01, m_02=m_02).latex()
+        latex = SubForm5Dot13cMomentRatio(m_01=m_01, m_02=m_02).latex()
 
         actual = {
             "complete": latex.complete,
