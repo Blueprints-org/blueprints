@@ -23,6 +23,9 @@ class Form7Dot21CurvatureDueToShrinkage(Formula):
     ) -> None:
         r"""[$\frac{1}{r_{cs}}$] Calculation of the curvature due to shrinkage [$mm^{-1}$].
 
+        S and i should be calculated for the uncracked condition and the fully cracked condition, the
+        final curvature being assessed by use of Expression (7.18).
+
         NEN-EN 1992-1-1+C2:2011 art.7.4.3(6) - Formula (7.21)
 
         Parameters
@@ -37,9 +40,6 @@ class Form7Dot21CurvatureDueToShrinkage(Formula):
             [$S$] First moment of area of the reinforcement about the centroid of the section [$mm^3$].
         i : MM4
             [$I$] Second moment of area of the section [$mm^4$].
-
-        S and i should be calculated for the uncracked condition and the fully cracked condition, the
-        final curvature being assessed by use of Expression (7.18).
         """
         super().__init__()
         self.epsilon_cs = epsilon_cs
