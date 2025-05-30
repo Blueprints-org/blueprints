@@ -59,7 +59,10 @@ Total of 304 formulas present.
 | 5.10b          | :heavy_check_mark: |         | Form5Dot10bRedistributionOfMomentsUpperFck                |
 | 5.11N          | :heavy_check_mark: |         | Form5Dot11nShearSlendernessCorrectionFactor               |
 | 5.12N          | :heavy_check_mark: |         | Form5Dot12nRatioDistancePointZeroAndMaxMoment             |
-| 5.13N          |        :x:         |         |                                                           |
+| 5.13N          | :heavy_check_mark: |         | Form5Dot13nSlendernessCriterionIsolatedMembers            |
+| 5.13a          | :heavy_check_mark: |         | SubForm5Dot13aCreepRatio                                  |
+| 5.13b          | :heavy_check_mark: |         | SubForm5Dot13bMechanicalReinforcementFactor               |
+| 5.13c          | :heavy_check_mark: |         | SubForm5Dot13cMomentRatio                                 |
 | 5.14           | :heavy_check_mark: |         | Form5Dot14SlendernessRatio                                |
 | 5.15           | :heavy_check_mark: |         | Form5Dot15EffectiveLengthBraced                           |
 | 5.16           | :heavy_check_mark: |         | Form5Dot16EffectiveLengthUnbraced                         |
@@ -199,13 +202,13 @@ Total of 304 formulas present.
 | 7.13           | :heavy_check_mark: |         | Form7Dot13CoefficientK2                                   |
 | 7.14           | :heavy_check_mark: |         | Form7Dot14MaximumCrackSpacing                             |
 | 7.15           | :heavy_check_mark: |         | Form7Dot15MaximumCrackSpacing                             |
-| 7.16.a         |        :x:         |         |                                                           |
-| 7.16.b         |        :x:         |         |                                                           |
-| 7.17           |        :x:         |         |                                                           |
-| 7.18           |        :x:         |         |                                                           |
-| 7.19           |        :x:         |         |                                                           |
-| 7.20           |        :x:         |         |                                                           |
-| 7.21           |        :x:         |         |                                                           |
+| 7.16.a         | :heavy_check_mark: |         | Form7Dot16abSpanDepthRatio                                |
+| 7.16.b         | :heavy_check_mark: |         | Form7Dot16abSpanDepthRatio                                |
+| 7.17           | :heavy_check_mark: |         | Form7Dot17MultiplicationFactor                            |
+| 7.18           | :heavy_check_mark: |         | Form7Dot18DeformationParameter                            |
+| 7.19           | :heavy_check_mark: |         | Form7Dot19DistributionCoefficient                         |
+| 7.20           | :heavy_check_mark: |         | Form7Dot20EffectiveModulus                                |
+| 7.21           | :heavy_check_mark: |         | Form7Dot21CurvatureDueToShrinkage             
 | 8.1            | :heavy_check_mark: |         | Form8Dot1RequiredMinimumMandrelDiameter                   |
 | 8.2            | :heavy_check_mark: |         | Form8Dot2UltimateBondStress                               |
 | 8.3            | :heavy_check_mark: |         | Form8Dot3RequiredAnchorageLength                          |
