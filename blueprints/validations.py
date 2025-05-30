@@ -9,6 +9,14 @@ class LessOrEqualToZeroError(Exception):
         super().__init__(message)
 
 
+class EqualToZeroError(Exception):
+    """Raised when a value is equal to zero."""
+
+    def __init__(self, value_name: str, value: float) -> None:
+        message = f"Invalid value for '{value_name}': {value}. Values for '{value_name}' cannot be equal to zero."
+        super().__init__(message)
+
+
 class NegativeValueError(Exception):
     """Raised when a value is negative."""
 
