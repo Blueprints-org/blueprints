@@ -267,12 +267,12 @@ Total of 304 formulas present.
 | 11.6.52        |        :x:         |         |                                                           |
 | 11.6.53        |        :x:         |         |                                                           |
 | 11.6.63        |        :x:         |         |                                                           |
-| 12.1           |        :x:         |         |                                                           |
-| 12.2           |        :x:         |         |                                                           |
-| 12.3           |        :x:         |         |                                                           |
-| 12.4           |        :x:         |         |                                                           |
-| 12.5           |        :x:         |         |                                                           |
-| 12.6           |        :x:         |         |                                                           |
+| 12.1           | :heavy_check_mark: |         | Form12Dot1PlainConcreteTensileStrength                    |
+| 12.2           | :heavy_check_mark: |         | Form12Dot2PlainConcreteBendingResistance                  |
+| 12.3           | :heavy_check_mark: |         | Form12Dot3PlainConcreteShearStress                        |
+| 12.4           | :heavy_check_mark: |         | Form12Dot4PlainConcreteShearStress                        |
+| 12.5           | :heavy_check_mark: |         | Form12Dot5And6PlainConcreteBendingResistance              |
+| 12.6           | :heavy_check_mark: |         | Form12Dot5And6PlainConcreteBendingResistance              |
 | 12.7           |        :x:         |         |                                                           |
 | 12.8           |        :x:         |         |                                                           |
 | 12.9           |        :x:         |         |                                                           |
