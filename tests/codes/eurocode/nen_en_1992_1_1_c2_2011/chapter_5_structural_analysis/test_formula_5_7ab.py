@@ -1,13 +1,13 @@
-"""Testing formula 5.7a and 5.7b of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 5.7a and 5.7b of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_7ab import Form5Dot7abFlangeEffectiveFlangeWidth
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_7ab import Form5Dot7abFlangeEffectiveFlangeWidth
 from blueprints.validations import NegativeValueError
 
 
 class TestForm5Dot7abFlangeEffectiveFlangeWidth:
-    """Validation for formula 5.7a and 5.7b from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.7a and 5.7b from EN 1992-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("b_i", "l_0", "b_eff_i"),

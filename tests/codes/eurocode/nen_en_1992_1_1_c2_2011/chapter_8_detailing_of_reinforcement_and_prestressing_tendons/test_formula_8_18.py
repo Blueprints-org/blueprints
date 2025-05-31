@@ -1,19 +1,19 @@
-"""Testing formula 8.18 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 8.18 of EN 1992-1-1:2004."""
 
 # pylint: disable=duplicate-code
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_16 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_16 import (
     Form8Dot16BasicTransmissionLength,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_18 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_18 import (
     Form8Dot18DesignValueTransmissionLength2,
 )
 from blueprints.validations import NegativeValueError
 
 
 class TestForm8Dot18DesignValueTransmissionLength2:
-    """Validation for formula 8.18 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 8.18 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

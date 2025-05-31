@@ -1,13 +1,13 @@
-"""Testing formula 6.41 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.41 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_41 import Form6Dot41W1Rectangular
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_41 import Form6Dot41W1Rectangular
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot41W1Rectangular:
-    """Validation for formula 6.41 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.41 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -1,8 +1,8 @@
-"""Testing formula 8.8N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 8.8N of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
     Form8Dot8nAnchorageCapacityWeldedTransverseBar,
     SubForm8Dot8nConcreteStress,
     SubForm8Dot8nDesignLengthOfTransverseBar,
@@ -11,7 +11,7 @@ from blueprints.validations import NegativeValueError
 
 
 class TestForm8Dot8nAnchorageCapacityWeldedTransverseBar:
-    """Validation for formula 8.8N from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 8.8N from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

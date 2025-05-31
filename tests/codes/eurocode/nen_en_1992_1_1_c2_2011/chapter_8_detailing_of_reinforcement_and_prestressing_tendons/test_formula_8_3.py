@@ -1,15 +1,15 @@
-"""Testing formula 8.3 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 8.3 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_3 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_3 import (
     Form8Dot3RequiredAnchorageLength,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot3RequiredAnchorageLength:
-    """Validation for formula 8.3 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 8.3 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

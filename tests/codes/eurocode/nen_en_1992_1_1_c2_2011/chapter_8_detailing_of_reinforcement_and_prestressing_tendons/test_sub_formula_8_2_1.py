@@ -1,14 +1,14 @@
-"""Testing sub-formulas for 8.2 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing sub-formulas for 8.2 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_2 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_2 import (
     SubForm8Dot2CoefficientQualityOfBond,
 )
 
 
 class TestSubForm8Dot2CoefficientQualityOfBond:
-    """Validation for sub-formula 8.2 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 8.2 from EN 1992-1-1:2004."""
 
     def test_evaluation_good(self) -> None:
         """Test the evaluation of the result."""

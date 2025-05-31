@@ -1,12 +1,12 @@
-"""Testing formula 3.18 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 3.18 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_18 import Form3Dot18CompressiveStressConcrete
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_18 import Form3Dot18CompressiveStressConcrete
 
 
 class TestForm3Dot18CompressiveStressConcrete:
-    """Validation for formula 3.18 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 3.18 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

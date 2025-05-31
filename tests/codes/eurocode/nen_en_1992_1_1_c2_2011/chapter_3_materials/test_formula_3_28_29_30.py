@@ -1,12 +1,12 @@
-"""Testing test formula for 3.28, 3.29 and 3.30 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing test formula for 3.28, 3.29 and 3.30 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.sub_formula_3_28_29_30 import SubForm3Dot282930Mu
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.sub_formula_3_28_29_30 import SubForm3Dot282930Mu
 
 
 class TestSubForm3Dot282930Mu:
-    """Validation for formula for 3.28, 3.29 and 3.30 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula for 3.28, 3.29 and 3.30 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

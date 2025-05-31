@@ -1,13 +1,13 @@
-"""Testing formula 5.26 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 5.26 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_26 import Form5Dot26FactorKc, Form5Dot26FactorKs
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_26 import Form5Dot26FactorKc, Form5Dot26FactorKs
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm5Dot26FactorKs:
-    """Validation for formula 5.26 (Factor Ks) from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.26 (Factor Ks) from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -54,7 +54,7 @@ class TestForm5Dot26FactorKs:
 
 
 class TestForm5Dot26FactorKc:
-    """Validation for formula 5.26 (Factor Kc) from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.26 (Factor Kc) from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

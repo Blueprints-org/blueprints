@@ -1,13 +1,13 @@
-"""Testing formula 4.3N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 4.3N of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_3n import Form4Dot3NCheckExecutionTolerances
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_3n import Form4Dot3NCheckExecutionTolerances
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm4Dot3NCheckExecutionTolerances:
-    """Validation for formula 4.3N from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 4.3N from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

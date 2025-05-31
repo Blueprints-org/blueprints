@@ -1,11 +1,11 @@
-"""Testing formula 8.15 from NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 8.15 from EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_2 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_2 import (
     SubForm8Dot2CoefficientQualityOfBond,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_15 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_15 import (
     Form8Dot15PrestressTransferStress,
     SubForm8Dot15EtaP1,
     SubForm8Dot15TensileStrengthAtRelease,
@@ -14,7 +14,7 @@ from blueprints.validations import NegativeValueError
 
 
 class TestForm8Dot15Form8Dot15PrestressTransferStress:
-    """Validation for formula 8.15 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 8.15 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

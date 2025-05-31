@@ -1,16 +1,16 @@
-"""Testing sub-formula 2 from 8.15 from NEN-EN 1992-1-1+C2:2011."""
+"""Testing sub-formula 2 from 8.15 from EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_4 import Form3Dot4DevelopmentTensileStrength
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_15 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_4 import Form3Dot4DevelopmentTensileStrength
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_15 import (
     SubForm8Dot15TensileStrengthAtRelease,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestSubForm8Dot15TensileStrengthAtRelease:
-    """Validation for sub-formula 2 from 8.15 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 2 from 8.15 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

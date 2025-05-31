@@ -1,8 +1,8 @@
-"""Testing formula 6.71 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.71 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_71 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_71 import (
     Form6Dot71CriteriaBasedOnStressRange,
     Form6Dot71CriteriaBasedOnStressRangeLHS,
     Form6Dot71CriteriaBasedOnStressRangeRHS,
@@ -11,7 +11,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot71CriteriaBasedOnStressRangeLHS:
-    """Validation for LHS formula 6.71 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for LHS formula 6.71 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -65,7 +65,7 @@ class TestForm6Dot71CriteriaBasedOnStressRangeLHS:
 
 
 class TestForm6Dot71CriteriaBasedOnStressRangeRHS:
-    """Validation for RHS formula 6.71 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for RHS formula 6.71 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -128,7 +128,7 @@ class TestForm6Dot71CriteriaBasedOnStressRangeRHS:
 
 
 class TestForm6Dot71CriteriaBasedOnStressRange:
-    """Validation for formula 6.71 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.71 from EN 1992-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("gamma_f_fat", "delta_sigma_s_equ_n_star", "gamma_s_fat", "delta_sigma_rsk_n_star", "result_manual"),

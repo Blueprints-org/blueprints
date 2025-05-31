@@ -60,7 +60,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 ## (Upcoming) Features
 
 * Eurocode formulas [templates for making formula](https://github.com/orgs/Blueprints-org/discussions/432)
-    - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
+    - [ ] EN 1992-1-1:2004 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
     - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
     - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
     - [ ] NEN-EN 1993-5:2008 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
@@ -189,7 +189,7 @@ figures for streamlined access and reference.
   </thead>
   <tbody>
     <tr>
-      <td>NEN-EN 1992-1-1+C2:2011</td>
+      <td>EN 1992-1-1:2004</td>
       <td>
         Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/nen_en_1992_1_1_c2_2011">code</a>)

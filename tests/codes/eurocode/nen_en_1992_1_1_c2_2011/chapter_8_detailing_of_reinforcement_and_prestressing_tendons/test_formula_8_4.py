@@ -1,24 +1,24 @@
-"""Testing formula 8.4 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 8.4 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_3 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_3 import (
     Form8Dot3RequiredAnchorageLength,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_4 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_4 import (
     Form8Dot4DesignAnchorageLength,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_6 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_6 import (
     Form8Dot6MinimumTensionAnchorage,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_7 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_7 import (
     Form8Dot7MinimumCompressionAnchorage,
 )
 from blueprints.validations import NegativeValueError
 
 
 class TestForm8Dot4DesignAnchorageLength:
-    """Validation for formula 8.4 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 8.4 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

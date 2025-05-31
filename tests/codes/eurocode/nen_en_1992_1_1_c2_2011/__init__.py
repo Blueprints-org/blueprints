@@ -1,1 +1,1 @@
-"""Tests for Eurocode NEN-EN 1992-1-1+C2:2011."""
+"""Tests for Eurocode EN 1992-1-1:2004."""

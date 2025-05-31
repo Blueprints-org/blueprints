@@ -1,4 +1,4 @@
-"""Constants for the calculation of nominal concrete cover according to NEN-EN 1992-1-1+C2:2011."""
+"""Constants for the calculation of nominal concrete cover according to EN 1992-1-1:2004."""
 
 from dataclasses import dataclass, field
 
@@ -9,17 +9,17 @@ from blueprints.type_alias import MM
 
 @dataclass(frozen=True)
 class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
-    """Constants for the calculation of nominal concrete cover according to NEN-EN 1992-1-1+C2:2011."""
+    """Constants for the calculation of nominal concrete cover according to EN 1992-1-1:2004."""
 
     CODE_SUFFIX: str = field(default="+C2:2011", init=False)
 
-    # According to art. 4.4.1.2 (11) from NEN-EN 1992-1-1+C2:2011
+    # According to art. 4.4.1.2 (11) from EN 1992-1-1:2004
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = field(default=5, init=False)
 
-    # According to art. 4.4.1.3 (1) from NEN-EN 1992-1-1+C2:2011
+    # According to art. 4.4.1.3 (1) from EN 1992-1-1:2004
     DEFAULT_DELTA_C_DEV: MM = field(default_factory=int)
 
-    # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1+C2:2011
+    # According to art. 4.4.1.2 (13) from EN 1992-1-1:2004
     COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -37,7 +37,7 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
 
     @staticmethod
     def minimum_cover_with_regard_to_casting_surface(c_min_dur: MM, casting_surface: CastingSurface) -> MM:
-        """Calculate the minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from NEN-EN 1992-1-1+C2:2011."""
+        """Calculate the minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from EN 1992-1-1:2004."""
         match casting_surface:
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
                 return 0  # No additional requirements
@@ -48,7 +48,7 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
 
     @staticmethod
     def minimum_cover_with_regard_to_casting_surface_latex(casting_surface: CastingSurface) -> str:
-        """LateX representation of minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from NEN-EN 1992-1-1+C2:2011."""
+        """LateX representation of minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from EN 1992-1-1:2004."""
         match casting_surface:
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
                 return f"0 (No additional requirements for {casting_surface.value})"

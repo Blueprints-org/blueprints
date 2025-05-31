@@ -67,7 +67,7 @@ class TestNominalConcreteCoverConstantsBase:
 
 
 class TestNominalConcreteCoverConstants2011C2:
-    """Tests for the constants class for the calculation of nominal concrete cover according to NEN-EN 1992-1-1+C2:2011."""
+    """Tests for the constants class for the calculation of nominal concrete cover according to EN 1992-1-1:2004."""
 
     def test_instantiation(self) -> None:
         """Test that the class can be instantiated."""

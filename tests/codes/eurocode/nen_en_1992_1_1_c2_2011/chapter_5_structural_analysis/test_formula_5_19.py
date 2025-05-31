@@ -1,13 +1,13 @@
-"""Testing formula 5.19 from NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 5.19 from EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_19 import Form5Dot19EffectiveCreepCoefficient
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_19 import Form5Dot19EffectiveCreepCoefficient
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm5Dot19EffectiveCreepCoefficient:
-    """Validation for formula 5.19 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.19 from EN 1992-1-1:2004."""
 
     @pytest.fixture
     def form_5_19(self) -> Form5Dot19EffectiveCreepCoefficient:
