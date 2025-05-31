@@ -1,4 +1,4 @@
-"""Formula 5.13N from NEN-EN 1992-1-1 C2:2011: Chapter 5 Structural Analysis."""
+"""Formula 5.13N from EN 1992-1-1:2004: Chapter 5 Structural Analysis."""
 
 import numpy as np
 

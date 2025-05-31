@@ -21,7 +21,7 @@ class Form7Dot3CoefficientKc(Formula):
     ) -> None:
         r"""[$kc$] Calculates kc for flanges of tubular cross-sections and T-sections [$-$].
 
-        NEN-EN 1992-1-1:2011 art.7.3.2(2) - Formula (7.3)
+        EN 1992-1-1:2004 art.7.3.2(2) - Formula (7.3)
 
         Parameters
         ----------

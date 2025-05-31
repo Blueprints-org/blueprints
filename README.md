@@ -98,15 +98,15 @@ Our mission is to reduce the cost and time associated with civil engineering cal
   - [ ] Circular section 
 
 * Concrete checks
-  - [x] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4) ✔️
-  - [x] [Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4)](https://cloud.viktor.ai/public/blueprints-nominal-concrete-cover) ✔️
-  - [x] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8) ✔️
-  - [x] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2) ✔️
+  - [x] Creep and Shrinkage (EN 1992-1-1: Chapter 3.1.4) ✔️
+  - [x] [Nominal concrete cover (EN 1992-1-1: Chapter 4)](https://cloud.viktor.ai/public/blueprints-nominal-concrete-cover) ✔️
+  - [x] Anchorage- and Laplengths (EN 1992-1-1: Chapter 8) ✔️
+  - [x] Shear Resistance (EN 1992-1-1: Chapter 6.2) ✔️
   - [x] Shear Resistance circular shapes ✔️
-  - [x] Torsion (NEN-EN 1992-1-1: Chapter 6.3) ✔️
-  - [x] Punching Shear (NEN-EN 1992-1-1: Chapter 6.4) ✔️
-  - [ ] Fatigue (NEN-EN 1992-1-1: Chapter 6.8) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
-  - [ ] Crack Control (NEN-EN 1992-1-1: Chapter 7.3) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+  - [x] Torsion (EN 1992-1-1: Chapter 6.3) ✔️
+  - [x] Punching Shear (EN 1992-1-1: Chapter 6.4) ✔️
+  - [ ] Fatigue (EN 1992-1-1: Chapter 6.8) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+  - [ ] Crack Control (EN 1992-1-1: Chapter 7.3) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Timber checks (NEN-EN 1995)
    - *To Be Determined*

@@ -1,4 +1,4 @@
-"""Formula 5.11N from NEN-EN 1992-1-1 C2:2011: Chapter 5 Structural Analysis."""
+"""Formula 5.11N from EN 1992-1-1:2004: Chapter 5 Structural Analysis."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
