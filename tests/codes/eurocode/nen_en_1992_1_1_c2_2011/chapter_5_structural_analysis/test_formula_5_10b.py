@@ -1,13 +1,13 @@
-"""Testing formula 5.10b from NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 5.10b from EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_10b import Form5Dot10bRedistributionOfMomentsUpperFck
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_10b import Form5Dot10bRedistributionOfMomentsUpperFck
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm5Dot10bRedistributionOfMomentsUpperFck:
-    """Validation for formula 5.10b from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.10b from EN 1992-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("delta", "k3", "k4", "xu", "d", "result_manual"),

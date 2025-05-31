@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_18 import Form5Dot18ComparisonGeneralSecondOrderEffects
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_18 import Form5Dot18ComparisonGeneralSecondOrderEffects
 from blueprints.validations import LessOrEqualToZeroError
 
 

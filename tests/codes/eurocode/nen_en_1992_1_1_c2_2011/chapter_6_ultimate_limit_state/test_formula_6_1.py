@@ -1,12 +1,12 @@
-"""Testing formula 3.1 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 3.1 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_1 import Form6Dot1DesignShearStrength
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_1 import Form6Dot1DesignShearStrength
 
 
 class TestForm6Dot1DesignShearStrength:
-    """Validation for formula 6.1 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.1 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

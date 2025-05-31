@@ -1,13 +1,13 @@
-"""Testing formula 6.25 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.25 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_25 import Form6Dot25DesignShearResistance
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_25 import Form6Dot25DesignShearResistance
 from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot25DesignShearResistance:
-    """Validation for formula 6.25 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.25 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

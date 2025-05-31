@@ -1,13 +1,13 @@
-"""Testing formula 5.21 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 5.21 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_21 import Form5Dot21NominalStiffness
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_21 import Form5Dot21NominalStiffness
 from blueprints.validations import NegativeValueError
 
 
 class TestForm5Dot21NominalStiffness:
-    """Validation for formula 5.21 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.21 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

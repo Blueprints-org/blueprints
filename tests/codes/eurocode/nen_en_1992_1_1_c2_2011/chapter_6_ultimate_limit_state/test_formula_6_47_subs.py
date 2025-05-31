@@ -1,8 +1,8 @@
-"""Testing formula 6.47 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.47 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_47_subs import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_47_subs import (
     SubForm6Dot47FactorK,
     SubForm6Dot47FactorRhoL,
     SubForm6Dot47FactorSigmaCp,
@@ -13,7 +13,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestSubForm6Dot47FactorK:
-    """Validation for sub-formula 1 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 1 of formula 6.47 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -68,7 +68,7 @@ class TestSubForm6Dot47FactorK:
 
 
 class TestSubForm6Dot47FactorRhoL:
-    """Validation for sub-formula 2 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 2 of formula 6.47 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -125,7 +125,7 @@ class TestSubForm6Dot47FactorRhoL:
 
 
 class TestSubForm6Dot47FactorSigmaCp:
-    """Validation for sub-formula 3 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 3 of formula 6.47 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -181,7 +181,7 @@ class TestSubForm6Dot47FactorSigmaCp:
 
 
 class TestSubForm6Dot47FactorSigmaCy:
-    """Validation for sub-formula 4 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 4 of formula 6.47 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -238,7 +238,7 @@ class TestSubForm6Dot47FactorSigmaCy:
 
 
 class TestSubForm6Dot47FactorSigmaCz:
-    """Validation for sub-formula 5 of formula 6.47 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 5 of formula 6.47 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

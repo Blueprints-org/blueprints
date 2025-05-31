@@ -1,13 +1,13 @@
-"""Testing formula 6.57N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.57N of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_57n import Form6Dot57NNuPrime
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_57n import Form6Dot57NNuPrime
 from blueprints.validations import NegativeValueError
 
 
 class TestForm6Dot57NNuPrime:
-    """Validation for formula 6.57N from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.57N from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -1,9 +1,9 @@
-"""Testing table 4.2 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing table 4.2 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_14 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_14 import (
     Form8Dot14EquivalentDiameterBundledBars,
 )
 from blueprints.type_alias import MM
@@ -11,7 +11,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestTable4Dot2MinimumCoverWithRegardToBond:
-    """Validation for table 4.2 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for table 4.2 from EN 1992-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("diameter", "nominal_max_aggregate_size_greater_than_32_mm", "expected_result"),

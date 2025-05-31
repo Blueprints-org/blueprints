@@ -1,8 +1,8 @@
-"""Testing sub-formula 1 for 8.8N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing sub-formula 1 for 8.8N of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_8n import (
     SubForm8Dot8nConcreteStress,
     SubForm8Dot8nDesignLengthOfTransverseBar,
 )
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestSubForm8Dot8nDesignLengthOfTransverseBar:
-    """Validation for sub-formula 8.8N from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 8.8N from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

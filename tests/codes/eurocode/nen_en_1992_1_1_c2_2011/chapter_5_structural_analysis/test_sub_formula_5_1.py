@@ -1,8 +1,8 @@
-"""Testing sub-formulas for 5.1 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing sub-formulas for 5.1 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_1 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_1 import (
     SubForm5Dot1ReductionFactorLengthOrHeight,
     SubForm5Dot1ReductionFactorNumberOfMembers,
 )
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestSubForm5Dot1ReductionFactorLengthOrHeight:
-    """Validation for sub-formula (αh) for 5.1 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula (αh) for 5.1 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -63,7 +63,7 @@ class TestSubForm5Dot1ReductionFactorLengthOrHeight:
 
 
 class TestSubForm5Dot1ReductionFactorNumberOfMembers:
-    """Validation for sub-formula (αm) for 5.1 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula (αm) for 5.1 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

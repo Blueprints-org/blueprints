@@ -1,8 +1,8 @@
-"""Testing formula 4.5N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 4.5N of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,
@@ -10,19 +10,19 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     FreezeThaw,
     Table4Dot1ExposureClasses,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_3 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_3 import (
     ConcreteMaterial,
     ConcreteStrengthClass,
     Table4Dot3ConcreteStructuralClass,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_5n import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_5n import (
     Table4Dot5nMinimumCoverDurabilityPrestressingSteel,
 )
 from blueprints.type_alias import MM
 
 
 class TestTable4Dot5nMinimumCoverDurabilityPrestressingSteel:
-    """Validation for table 4.5N from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for table 4.5N from EN 1992-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("exposure_classes", "structural_class", "expected_result"),

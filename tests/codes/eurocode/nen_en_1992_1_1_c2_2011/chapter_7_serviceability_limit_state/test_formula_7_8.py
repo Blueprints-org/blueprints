@@ -1,13 +1,13 @@
-"""Testing formula 7.8 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 7.8 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_8 import Form7Dot8CrackWidth
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_7_serviceability_limit_state.formula_7_8 import Form7Dot8CrackWidth
 from blueprints.validations import NegativeValueError
 
 
 class TestForm7Dot8CrackWidth:
-    """Validation for formula 7.8 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 7.8 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

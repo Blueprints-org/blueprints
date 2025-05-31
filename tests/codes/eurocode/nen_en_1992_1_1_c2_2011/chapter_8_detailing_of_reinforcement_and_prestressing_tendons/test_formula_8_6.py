@@ -1,18 +1,18 @@
-"""Testing formula 8.6 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 8.6 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_3 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_3 import (
     Form8Dot3RequiredAnchorageLength,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_6 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_6 import (
     Form8Dot6MinimumTensionAnchorage,
 )
 from blueprints.validations import NegativeValueError
 
 
 class TestForm8Dot6MinimumTensionAnchorage:
-    """Validation for formula 8.6 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 8.6 from EN 1992-1-1:2004."""
 
     def test_evaluation_first_term_decisive(self) -> None:
         """Test the evaluation of the result if the first term is decisive."""

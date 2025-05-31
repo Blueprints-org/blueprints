@@ -1,13 +1,13 @@
-"""Testing formulas 6.34 and 6.35 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formulas 6.34 and 6.35 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_34_35 import Form6Dot34And35ContourRadiusRectangular
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_34_35 import Form6Dot34And35ContourRadiusRectangular
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot34And35ContourRadiusRectangular:
-    """Validation for formulas 6.34 and 6.35 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formulas 6.34 and 6.35 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -1,12 +1,12 @@
-"""Testing sub-formula for 3.4 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing sub-formula for 3.4 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_3_materials.formula_3_4 import SubForm3Dot4CoefficientAgeConcreteAlpha
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_4 import SubForm3Dot4CoefficientAgeConcreteAlpha
 
 
 class TestSubForm3Dot4CoefficientAgeConcreteAlpha:
-    """Validation for sub-formula 3.4 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for sub-formula 3.4 from EN 1992-1-1:2004."""
 
     def test_t_between_0_and_28(self) -> None:
         """Test the evaluation of the result."""

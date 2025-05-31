@@ -1,13 +1,13 @@
-"""Testing formula 6.10a/bN of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.10a/bN of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_10abn import Form6Dot10abNStrengthReductionFactor
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_10abn import Form6Dot10abNStrengthReductionFactor
 from blueprints.validations import NegativeValueError
 
 
 class TestForm6Dot10abNStrengthReductionFactor:
-    """Validation for formula 6.10a/bN from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.10a/bN from EN 1992-1-1:2004."""
 
     def test_evaluation_above_60(self) -> None:
         """Tests the evaluation of the result."""

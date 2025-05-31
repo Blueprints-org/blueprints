@@ -1,11 +1,11 @@
-"""Testing formula 5.13N of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 5.13N of EN 1992-1-1:2004."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_5_structural_analysis.formula_5_13n import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_5_structural_analysis.formula_5_13n import (
     Form5Dot13nSlendernessCriterionIsolatedMembers,
     SubForm5Dot13aCreepRatio,
     SubForm5Dot13bMechanicalReinforcementFactor,
@@ -15,7 +15,7 @@ from blueprints.validations import EqualToZeroError, LessOrEqualToZeroError, Neg
 
 
 class TestForm5Dot13nSlendernessCriterionIsolatedMembers:
-    """Validation for formula 5.13N from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.13N from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -105,7 +105,7 @@ class TestForm5Dot13nSlendernessCriterionIsolatedMembers:
 
 
 class TestForm5Dot13aCreepFactor:
-    """Validation for formula 5.13a from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.13a from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -153,7 +153,7 @@ class TestForm5Dot13aCreepFactor:
 
 
 class TestForm5Dot13bMechanicalReinforcementFactor:
-    """Validation for formula 5.13b from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.13b from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -234,7 +234,7 @@ class TestForm5Dot13bMechanicalReinforcementFactor:
 
 
 class TestForm5Dot13cMomentFactor:
-    """Validation for formula 5.13c from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 5.13c from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

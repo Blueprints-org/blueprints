@@ -1,15 +1,15 @@
-"""Testing formula 6.11a/b/cN of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.11a/b/cN of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_11abcn import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_11abcn import (
     Form6Dot11abcNCompressionChordCoefficient,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot11abcNCompressionChordCoefficient:
-    """Validation for formula 6.11a/b/cN from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.11a/b/cN from EN 1992-1-1:2004."""
 
     def test_evaluation_below_0_25(self) -> None:
         """Tests the evaluation of the result for sigma_cp/f_cd < 0.25."""

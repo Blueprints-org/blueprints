@@ -1,8 +1,8 @@
-"""Testing formula 7.16.a and 7.16.b of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 7.16.a and 7.16.b of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_7_serviceability_limit_state.formula_7_16_ab import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_7_serviceability_limit_state.formula_7_16_ab import (
     Form7Dot16abSpanDepthRatio,
     Form7Dot16ReferenceReinforcementRatio,
 )
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm7Dot16abSpanDepthRatio:
-    """Validation for formula 7.16a/b from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 7.16a/b from EN 1992-1-1:2004."""
 
     def test_evaluation_rho_less_than_rho_0(self) -> None:
         """Tests the evaluation of the result when rho <= rho_0."""
@@ -102,7 +102,7 @@ class TestForm7Dot16abSpanDepthRatio:
 
 
 class TestForm7Dot16ReferenceReinforcementRatio:
-    """Validation for reference reinforcement ratio calculation from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for reference reinforcement ratio calculation from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -159,7 +159,7 @@ class ExposureClassesBase:
     def no_risk(self) -> bool:
         """Check if all exposure classes are 'Not applicable'.
 
-        This represents X0 class designation according to table 4.1 from NEN-EN 1992-1-1+C2:2011.
+        This represents X0 class designation according to table 4.1 from EN 1992-1-1:2004.
 
         Returns
         -------

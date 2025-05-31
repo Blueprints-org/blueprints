@@ -1,15 +1,15 @@
-"""Testing formula 6.31 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.31 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_31 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_31 import (
     Form6Dot31CheckTorsionShearResistanceRectangular,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot31CheckTorsionShearResistanceRectangular:
-    """Validation for formula 6.31 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.31 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

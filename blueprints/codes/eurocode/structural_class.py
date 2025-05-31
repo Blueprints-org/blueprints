@@ -167,7 +167,7 @@ class AbstractConcreteStructuralClassCalculator(ABC):
     def source_document(self) -> str:
         """Property for the source document.
 
-        For example, "NEN-EN 1992-1-1+C2:2011"
+        For example, "EN 1992-1-1:2004"
         Try to use the official and complete name of the document including publishing year, if possible.
 
         Returns

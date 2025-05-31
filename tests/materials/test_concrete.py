@@ -1,4 +1,4 @@
-"""Test Concrete material from table 3.1 of NEN-EN 1992-1-1+C2:2011."""
+"""Test Concrete material from table 3.1 of EN 1992-1-1:2004."""
 
 import pytest
 
