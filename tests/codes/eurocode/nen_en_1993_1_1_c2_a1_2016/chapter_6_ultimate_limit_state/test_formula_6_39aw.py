@@ -3,13 +3,13 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_39aw import (
-    Form6Dot40awHollowSections,
-    Form6Dot40awWeldedBoxSections,
+    Form6Dot39awHollowSections,
+    Form6Dot39awWeldedBoxSections,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot40awHollowSections:
+class TestForm6Dot39awHollowSections:
     """Validation for formula 6.39aw (hollow sections) from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
@@ -18,7 +18,7 @@ class TestForm6Dot40awHollowSections:
         b = 200.0
         t = 10.0
 
-        formula = Form6Dot40awHollowSections(a=a, b=b, t=t)
+        formula = Form6Dot39awHollowSections(a=a, b=b, t=t)
         manually_calculated_result = 0.42857142857  # dimensionless
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
@@ -34,7 +34,7 @@ class TestForm6Dot40awHollowSections:
     def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, t: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot40awHollowSections(a=a, b=b, t=t)
+            Form6Dot39awHollowSections(a=a, b=b, t=t)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -59,7 +59,7 @@ class TestForm6Dot40awHollowSections:
         b = 200.0
         t = 10.0
 
-        latex = Form6Dot40awHollowSections(a=a, b=b, t=t).latex()
+        latex = Form6Dot39awHollowSections(a=a, b=b, t=t).latex()
 
         actual = {
             "complete": latex.complete,
@@ -70,7 +70,7 @@ class TestForm6Dot40awHollowSections:
         assert expected == actual[representation], f"{representation} representation failed."
 
 
-class TestForm6Dot40awWeldedBoxSections:
+class TestForm6Dot39awWeldedBoxSections:
     """Validation for formula 6.39aw (welded box sections) from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
@@ -79,7 +79,7 @@ class TestForm6Dot40awWeldedBoxSections:
         b = 200.0
         t_f = 10.0
 
-        formula = Form6Dot40awWeldedBoxSections(a=a, b=b, t_f=t_f)
+        formula = Form6Dot39awWeldedBoxSections(a=a, b=b, t_f=t_f)
         manually_calculated_result = 0.42857142857  # dimensionless
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
@@ -95,7 +95,7 @@ class TestForm6Dot40awWeldedBoxSections:
     def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, t_f: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot40awWeldedBoxSections(a=a, b=b, t_f=t_f)
+            Form6Dot39awWeldedBoxSections(a=a, b=b, t_f=t_f)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -120,7 +120,7 @@ class TestForm6Dot40awWeldedBoxSections:
         b = 200.0
         t_f = 10.0
 
-        latex = Form6Dot40awWeldedBoxSections(a=a, b=b, t_f=t_f).latex()
+        latex = Form6Dot39awWeldedBoxSections(a=a, b=b, t_f=t_f).latex()
 
         actual = {
             "complete": latex.complete,

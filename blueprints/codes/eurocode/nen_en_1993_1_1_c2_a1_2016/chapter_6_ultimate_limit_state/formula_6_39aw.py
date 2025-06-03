@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MM, MM2
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot40awHollowSections(Formula):
+class Form6Dot39awHollowSections(Formula):
     r"""Class representing formula 6.39aw for [$a_w$] in hollow sections."""
 
     label = "6.39aw_hollow"
@@ -81,7 +81,7 @@ class Form6Dot40awHollowSections(Formula):
         )
 
 
-class Form6Dot40awWeldedBoxSections(Formula):
+class Form6Dot39awWeldedBoxSections(Formula):
     r"""Class representing formula 6.39aw for [$a_w$] in welded box sections."""
 
     label = "6.39aw_welded_box"
