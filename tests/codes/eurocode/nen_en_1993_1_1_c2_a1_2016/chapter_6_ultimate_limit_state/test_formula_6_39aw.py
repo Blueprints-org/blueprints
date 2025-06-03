@@ -1,8 +1,8 @@
-"""Testing formula 6.40aw of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.39aw of NEN-EN 1993-1-1+C2+A1:2016."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_40aw import (
+from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_39aw import (
     Form6Dot40awHollowSections,
     Form6Dot40awWeldedBoxSections,
 )
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot40awHollowSections:
-    """Validation for formula 6.40aw (hollow sections) from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.39aw (hollow sections) from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -71,7 +71,7 @@ class TestForm6Dot40awHollowSections:
 
 
 class TestForm6Dot40awWeldedBoxSections:
-    """Validation for formula 6.40aw (welded box sections) from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.39aw (welded box sections) from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

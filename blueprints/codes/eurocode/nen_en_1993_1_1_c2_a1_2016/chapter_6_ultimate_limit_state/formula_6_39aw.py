@@ -1,4 +1,4 @@
-"""Formula 6.40aw from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.39aw from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
@@ -8,9 +8,9 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot40awHollowSections(Formula):
-    r"""Class representing formula 6.40aw for [$a_w$] in hollow sections."""
+    r"""Class representing formula 6.39aw for [$a_w$] in hollow sections."""
 
-    label = "6.40aw_hollow"
+    label = "6.39aw_hollow"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
 
     def __init__(
@@ -21,7 +21,7 @@ class Form6Dot40awHollowSections(Formula):
     ) -> None:
         r"""[$a_w$] Calculation of the reduction factor for hollow sections (dimensionless).
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.40aw)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.39aw)
 
         Parameters
         ----------
@@ -50,7 +50,7 @@ class Form6Dot40awHollowSections(Formula):
         return min((a - 2 * b * t) / a, 0.5)
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.40aw."""
+        """Returns LatexFormula object for formula 6.39aw."""
         _equation: str = r"\min \left( \frac{A - 2 \cdot b \cdot t}{A}, 0.5 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -82,9 +82,9 @@ class Form6Dot40awHollowSections(Formula):
 
 
 class Form6Dot40awWeldedBoxSections(Formula):
-    r"""Class representing formula 6.40aw for [$a_w$] in welded box sections."""
+    r"""Class representing formula 6.39aw for [$a_w$] in welded box sections."""
 
-    label = "6.40aw_welded_box"
+    label = "6.39aw_welded_box"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
 
     def __init__(
@@ -95,7 +95,7 @@ class Form6Dot40awWeldedBoxSections(Formula):
     ) -> None:
         r"""[$a_w$] Calculation of the reduction factor for welded box sections (dimensionless).
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.40aw)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.39aw)
 
         Parameters
         ----------
@@ -124,7 +124,7 @@ class Form6Dot40awWeldedBoxSections(Formula):
         return min((a - 2 * b * t_f) / a, 0.5)
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.40aw."""
+        """Returns LatexFormula object for formula 6.39aw."""
         _equation: str = r"\min \left( \frac{A - 2 \cdot b \cdot t_f}{A}, 0.5 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
