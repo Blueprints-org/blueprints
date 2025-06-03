@@ -30,7 +30,7 @@ class Form6Dot39ReducedBendingMomentResistance(Formula):
         n : DIMENSIONLESS
             [$n$] Axial force ratio, see equation 6.38n (dimensionless).
         a_w : DIMENSIONLESS
-            [$a_w$] Reduction factor for the web (dimensionless).
+            [$a_w$] Reduction factor for the web (dimensionless), see equation 6.39aw.
         """
         super().__init__()
         self.mpl_y_rd = mpl_y_rd
