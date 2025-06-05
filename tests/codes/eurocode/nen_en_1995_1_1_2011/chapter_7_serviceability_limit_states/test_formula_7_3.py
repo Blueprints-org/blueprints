@@ -1,4 +1,4 @@
-"""Testing formula 7.3 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Testing formula 7.3 from EN 1995-1-1:2004."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm7Dot3RatioDeflectionPointLoadUCt:
-    """Validation for formula 7.3 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+    """Validation for formula 7.3 from EN 1995-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("w", "f", "alpha", "expected_result"),

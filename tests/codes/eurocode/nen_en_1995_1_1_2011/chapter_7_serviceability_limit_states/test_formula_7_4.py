@@ -1,4 +1,4 @@
-"""Testing formula 7.4 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Testing formula 7.4 from EN 1995-1-1:2004."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm7Dot4VelocityResponseLimit:
-    """Validation for formula 7.4 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+    """Validation for formula 7.4 from EN 1995-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("b", "f_1", "ksi", "expected_result"),

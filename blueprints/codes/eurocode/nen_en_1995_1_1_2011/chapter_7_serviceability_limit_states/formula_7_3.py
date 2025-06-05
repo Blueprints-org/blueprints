@@ -1,6 +1,6 @@
-"""Formula 7.3 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Formula 7.3 from EN 1995-1-1:2004."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011 import NEN_EN_1995_1_1_2011_2012
+from blueprints.codes.eurocode.nen_en_1995_1_1_2011 import EN_1995_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, KN, MM, MM_KN
@@ -14,14 +14,14 @@ class Form7Dot3RatioDeflectionPointLoadUC(Formula):
     """
 
     label = "7.3"
-    source_document = NEN_EN_1995_1_1_2011_2012
+    source_document = EN_1995_1_1_2004
 
     def __init__(self, w: MM, f: KN, alpha: MM_KN) -> None:
         r"""
         [\frac{w/F}{\alpha}] Unity check of ratio between maximum instantaneous vertical deflection caused by a
         vertical static point load F and the applied force F.
 
-        NEN-EN 1995-1-1 art 7.3.3(2) - Formula (7.3)
+        EN 1995-1-1:2004 art 7.3.3(2) - Formula (7.3)
 
         Parameters
         ----------
