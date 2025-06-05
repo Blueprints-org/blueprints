@@ -63,7 +63,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
     - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
     - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
     - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
-    - [ ] NEN-EN 1993-5:2008 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
+    - [ ] EN 1993-5:2007 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
     - [ ] NEN 9997-1+C2:2017 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
  
 * Material definitions
@@ -207,13 +207,13 @@ figures for streamlined access and reference.
       <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
     </tr>
     <tr>
-      <td>NEN-EN 1993-5:2008</td>
+      <td>EN 1993-5:2007</td>
       <td>
         Eurocode 3: Design of steel structures – Part 5: Piling
-        (<a href="blueprints/codes/eurocode/nen_en_1993_5_2008">code</a>)
+        (<a href="blueprints/codes/eurocode/en_1993_5_2007">code</a>)
       </td>
-      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
-      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1993_5_2007/formulas.md">63</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1993_5_2007/tables.md">0</a></td>
     </tr>
     <tr>
       <td>NEN 9997-1+C2:2017</td>
