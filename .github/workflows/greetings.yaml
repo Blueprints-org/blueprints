@@ -17,17 +17,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const creatorLogin = context.payload.pull_request.user.login;
-            const { data: pullRequests } = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'all'
-            });
-
-            const userPullRequests = pullRequests.filter(pr => pr.user.login === creatorLogin);
-            const contributionCount = userPullRequests.length;
-
-            const prComment = `Thank you so much for contributing to Blueprints! This is your Pull Request # ${contributionCount} to this project. 
+            const prComment = `Thank you so much for contributing to Blueprints! 
             Your contributions help thousands of engineers work more efficiently and accurately.\n\nNow that you've created your pull request, please don't go away; take a look at the bottom of this page for the automated checks that should already be running. If they pass, great! If not, please click on 'Details' and see if you can fix the problem they've identified. A maintainer should be along shortly to review your pull request and help get it added!`;
             
             github.rest.issues.createComment({
