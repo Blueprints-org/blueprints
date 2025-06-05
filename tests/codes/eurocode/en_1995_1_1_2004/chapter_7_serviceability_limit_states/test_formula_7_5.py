@@ -5,7 +5,7 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011.chapter_7_serviceability_limit_states.formula_7_5 import Form7Dot5NaturalFrequency
+from blueprints.codes.eurocode.en_1995_1_1_2004.chapter_7_serviceability_limit_states.formula_7_5 import Form7Dot5NaturalFrequency
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 

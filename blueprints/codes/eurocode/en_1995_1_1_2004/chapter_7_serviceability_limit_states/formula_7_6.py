@@ -1,6 +1,6 @@
 """Formula 7.6 from EN 1995-1-1:2004."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011 import EN_1995_1_1_2004
+from blueprints.codes.eurocode.en_1995_1_1_2004 import EN_1995_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import HZ, KG_M2, M_NS2, M
