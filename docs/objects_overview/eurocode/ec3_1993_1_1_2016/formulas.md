@@ -41,12 +41,13 @@ Total of 108 formulas present.
 | 6.14           | :heavy_check_mark:  |         | Form6Dot14MCRdClass3            |
 | 6.15           | :heavy_check_mark:  |         | Form6Dot15McRdClass4            |
 | 6.16           | :heavy_check_mark:  |         | Form6Dot16CheckFlangeWithFastenerHoles            |
-| 6.17           | :x:  |         |             |
-| 6.18           | :x:  |         |             |
-| 6.19           | :x:  |         |             |
-| 6.20           | :x:  |         |             |
-| 6.21           | :x:  |         |             |
-| 6.22           | :x:  |         |             |
+| 6.17           | :heavy_check_mark:  |         | Form6Dot17CheckShearForce            |
+| 6.18           | :heavy_check_mark:  |         | Form6Dot18DesignPlasticShearResistance          |
+| 6.18 A_v       | :heavy_check_mark:  |         | Various equations          |
+| 6.19           | :heavy_check_mark:  |         | Form6Dot19CheckDesignElasticShearResistance          |
+| 6.20           | :heavy_check_mark:  |         | Form6Dot20ShearStress           |
+| 6.21           | :heavy_check_mark:  |         | Form6Dot21ShearStressIOrHSection            |
+| 6.22           | :heavy_check_mark:  |         | Form6Dot22CheckShearBucklingResistance            |
 | 6.23           | :heavy_check_mark:  |         | Form6Dot23CheckTorsionalMoment            |
 | 6.24           | :heavy_check_mark:  |         | Form6Dot24TotalTorsionalMoment            |
 | 6.25           | :heavy_check_mark:  |         | Form6Dot25CheckCombinedShearForceAndTorsionalMoment            |
