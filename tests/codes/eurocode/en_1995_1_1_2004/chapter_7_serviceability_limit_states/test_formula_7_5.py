@@ -1,16 +1,16 @@
-"""Testing formula 7.5 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Testing formula 7.5 from EN 1995-1-1:2004."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011.chapter_7_serviceability_limit_states.formula_7_5 import Form7Dot5NaturalFrequency
+from blueprints.codes.eurocode.en_1995_1_1_2004.chapter_7_serviceability_limit_states.formula_7_5 import Form7Dot5NaturalFrequency
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm7Dot5NaturalFrequency:
-    """Validation for formula 7.5 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+    """Validation for formula 7.5 from EN 1995-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("length", "ei_l", "m", "expected_result"),
