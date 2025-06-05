@@ -6,7 +6,7 @@ from blueprints.checks.nominal_concrete_cover.constants.base import NominalConcr
 from blueprints.checks.nominal_concrete_cover.constants.constants_nen_en_1992_1_1_c2_2011 import NominalConcreteCoverConstants2011C2
 from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
 from blueprints.checks.nominal_concrete_cover.nominal_concrete_cover import NominalConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,
@@ -14,7 +14,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     FreezeThaw,
     Table4Dot1ExposureClasses,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
 from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.type_alias import MM

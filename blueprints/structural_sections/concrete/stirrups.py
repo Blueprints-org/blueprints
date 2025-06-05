@@ -84,7 +84,7 @@ class StirrupConfiguration:
     @property
     def mandrel_diameter_factor(self) -> DIMENSIONLESS:
         """Diameter factor of mandrel.
-        Standard values given by Dutch Annex Table 8.1Na - NEN-EN 1992-1-1+C2:2011/NB+A1:2020
+        Standard values given by Dutch Annex Table 8.1Na - EN 1992-1-1:2004/NB+A1:2020
         (default: 4⌀ for ⌀<=16mm and 5⌀ for ⌀>16mm).
         """
         if self._mandrel_diameter_factor:
