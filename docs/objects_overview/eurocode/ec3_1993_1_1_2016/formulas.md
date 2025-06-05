@@ -48,25 +48,27 @@ Total of 108 formulas present.
 | 6.20           | :heavy_check_mark:  |         | Form6Dot20ShearStress           |
 | 6.21           | :heavy_check_mark:  |         | Form6Dot21ShearStressIOrHSection            |
 | 6.22           | :heavy_check_mark:  |         | Form6Dot22CheckShearBucklingResistance            |
-| 6.23           | :x:  |         |             |
-| 6.24           | :x:  |         |             |
-| 6.25           | :x:  |         |             |
-| 6.26           | :x:  |         |             |
-| 6.27           | :x:  |         |             |
-| 6.28           | :x:  |         |             |
+| 6.23           | :heavy_check_mark:  |         | Form6Dot23CheckTorsionalMoment            |
+| 6.24           | :heavy_check_mark:  |         | Form6Dot24TotalTorsionalMoment            |
+| 6.25           | :heavy_check_mark:  |         | Form6Dot25CheckCombinedShearForceAndTorsionalMoment            |
+| 6.26           | :heavy_check_mark:  |         | Form6Dot26VplTRdIOrHSection            |
+| 6.27           | :heavy_check_mark:  |         | Form6Dot27VplTRdChannelSection            |
+| 6.28           | :heavy_check_mark:  |         | Form6Dot28VplTRdHollowSection            |
 | 6.29           | :x:  |         |             |
 | 6.30           | :x:  |         |             |
-| 6.31           | :x:  |         |             |
-| 6.32           | :x:  |         |             |
-| 6.33           | :x:  |         |             |
-| 6.34           | :x:  |         |             |
-| 6.35           | :x:  |         |             |
+| 6.31           | :heavy_check_mark:  |         | Form6Dot31CheckBendingAndAxialForce             |
+| 6.32           | :heavy_check_mark:  |         | Form6Dot32MNrdRectangular            |
+| 6.33           | :heavy_check_mark:  |         | Form6Dot33CheckAxialForceY            |
+| 6.34           | :heavy_check_mark:  |         | Form6Dot34CheckAxialForceY            |
+| 6.35           | :heavy_check_mark:  |         | Form6Dot35CheckAxialForceZ            |
 | 6.36           | :x:  |         |             |
 | 6.37           | :x:  |         |             |
 | 6.38           | :x:  |         |             |
-| 6.39           | :x:  |         |             |
-| 6.40           | :x:  |         |             |
-| 6.41           | :x:  |         |             |
+| 6.39           | :heavy_check_mark:  |         | Form6Dot39ReducedBendingMomentResistance            |
+| 6.39 a_w       | :heavy_check_mark:  |         | Form6Dot39awHollowSections and Form6Dot39awWeldedBoxSections            |
+| 6.40           | :heavy_check_mark:  |         | Form6Dot40ReducedBendingMomentResistance            |
+| 6.40 a_f       | :heavy_check_mark:  |         | Form6Dot40afHollowSections and Form6Dot40afWeldedBoxSections            |
+| 6.41           | :heavy_check_mark:  |         | Form6Dot41BiaxialBendingCheck            |
 | 6.42           | :x:  |         |             |
 | 6.43           | :x:  |         |             |
 | 6.44           | :x:  |         |             |
