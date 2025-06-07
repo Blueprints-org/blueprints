@@ -61,9 +61,11 @@ Total of 108 formulas present.
 | 6.33           | :heavy_check_mark:  |         | Form6Dot33CheckAxialForceY            |
 | 6.34           | :heavy_check_mark:  |         | Form6Dot34CheckAxialForceY            |
 | 6.35           | :heavy_check_mark:  |         | Form6Dot35CheckAxialForceZ            |
-| 6.36           | :x:  |         |             |
-| 6.37           | :x:  |         |             |
-| 6.38           | :x:  |         |             |
+| 6.36           | :heavy_check_mark:  |         | Form6Dot36MomentReduction            |
+| 6.37           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
+| 6.38           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
+| 6.38n          | :heavy_check_mark:  |         | Form6Dot38N           |
+| 6.38a          | :heavy_check_mark:  |         | Form6Dot38A            |
 | 6.39           | :heavy_check_mark:  |         | Form6Dot39ReducedBendingMomentResistance            |
 | 6.39 a_w       | :heavy_check_mark:  |         | Form6Dot39awHollowSections and Form6Dot39awWeldedBoxSections            |
 | 6.40           | :heavy_check_mark:  |         | Form6Dot40ReducedBendingMomentResistance            |
