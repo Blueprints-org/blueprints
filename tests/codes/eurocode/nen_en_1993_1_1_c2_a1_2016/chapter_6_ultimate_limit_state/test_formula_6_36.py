@@ -54,13 +54,13 @@ class TestForm6Dot36MomentReduction:
     @pytest.mark.parametrize(
         "a",
         [
-            0.0,  # a is zero
-            -0.1,  # a is negative
+            2.0,  # denominator will be zero
+            -1.0,  # a is negative
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, a: float) -> None:
         """Test invalid zero or negative values."""
-        with pytest.raises(LessOrEqualToZeroError):
+        with pytest.raises((LessOrEqualToZeroError, NegativeValueError)):
             Form6Dot36MomentReduction(mpl_y_rd=10000.0, a=a, n=0.5)
 
     @pytest.mark.parametrize(

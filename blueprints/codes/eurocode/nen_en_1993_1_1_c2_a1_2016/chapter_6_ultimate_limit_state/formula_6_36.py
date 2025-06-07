@@ -44,8 +44,7 @@ class Form6Dot36MomentReduction(Formula):
         n: float,
     ) -> NMM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(a=a)
-        raise_if_negative(mpl_y_rd=mpl_y_rd, n=n)
+        raise_if_negative(mpl_y_rd=mpl_y_rd, n=n, a=a)
 
         denominator = 1 - 0.5 * a
         raise_if_less_or_equal_to_zero(denominator=denominator)
