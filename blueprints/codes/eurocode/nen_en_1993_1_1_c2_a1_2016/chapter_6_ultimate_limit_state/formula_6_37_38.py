@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import MM, MM2, NMM, N
+from blueprints.type_alias import MM, MM2, NMM, N, DIMENSIONLESS
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -16,8 +16,8 @@ class Form6Dot37Dot38MomentReduction(Formula):
     def __init__(
         self,
         mpl_z_rd: NMM,
-        a: float,
-        n: float,
+        a: DIMENSIONLESS,
+        n: DIMENSIONLESS,
     ) -> None:
         r"""[$M_{N,z,Rd}$] Reduced bending moment [$Nmm$].
 
@@ -27,9 +27,9 @@ class Form6Dot37Dot38MomentReduction(Formula):
         ----------
         mpl_z_rd : NMM
             [$M_{pl,z,Rd}$] Plastic bending moment about the z-axis [$Nmm$].
-        a : float
+        a : DIMENSIONLESS
             Reduction factor for cross-sectional area, see equation 6.38a.
-        n : float
+        n : DIMENSIONLESS
             Axial force ratio, see equation 6.38n.
         """
         super().__init__()
@@ -40,8 +40,8 @@ class Form6Dot37Dot38MomentReduction(Formula):
     @staticmethod
     def _evaluate(
         mpl_z_rd: NMM,
-        a: float,
-        n: float,
+        a: DIMENSIONLESS,
+        n: DIMENSIONLESS,
     ) -> NMM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(mpl_z_rd=mpl_z_rd, n=n)
