@@ -28,15 +28,15 @@ class Form5Dot39SimplifiedCriterionBiaxialBending(Formula):
         Parameters
         ----------
         m_edz : KNM
-            [:math:`M_{Edz}`] Design moment including second order moment in z-direction [:math:`kNm`].
+            [$M_{Edz}$] Design moment including second order moment in z-direction [$kNm$].
         m_rdz : KNM
-            [:math:`M_{Rdz}`] Design moment resistance in z-direction [:math:`kNm`].
+            [$M_{Rdz}$] Design moment resistance in z-direction [$kNm$].
         m_edy : KNM
-            [:math:`M_{Edy}`] Design moment including second order moment in y-direction [:math:`kNm`].
+            [$M_{Edy}$] Design moment including second order moment in y-direction [$kNm$].
         m_rdy : KNM
-            [:math:`M_{Rdy}`] Design moment resistance in y-direction [:math:`kNm`].
+            [$M_{Rdy}$] Design moment resistance in y-direction [$kNm$].
         a : DIMENSIONLESS
-            [:math:`a`] Exponent for the interaction formula, for circular and elliptical cross sections: a = 2, for rectengular see table [-].
+            [$a$] Exponent for the interaction formula, for circular and elliptical cross sections: a = 2, for rectangular see table [-].
         """
         super().__init__()
         self.m_edz = m_edz

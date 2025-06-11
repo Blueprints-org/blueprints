@@ -17,7 +17,7 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = field(default=5, init=False)
 
     # According to art. 4.4.1.3 (1) from NEN-EN 1992-1-1+C2:2011
-    DEFAULT_DELTA_C_DEV: MM = field(default=10, init=False)
+    DEFAULT_DELTA_C_DEV: MM = field(default_factory=int)
 
     # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1+C2:2011
     COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = field(default_factory=dict)
@@ -32,6 +32,8 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
                 AbrasionClass.XM3: 15,  # k3 according to art. 4.4.1.2 (13)
             }
             object.__setattr__(self, "COVER_INCREASE_FOR_ABRASION_CLASS", abrasion_class_cover_increase)
+        if not self.DEFAULT_DELTA_C_DEV:
+            object.__setattr__(self, "DEFAULT_DELTA_C_DEV", 10)
 
     @staticmethod
     def minimum_cover_with_regard_to_casting_surface(c_min_dur: MM, casting_surface: CastingSurface) -> MM:
@@ -51,6 +53,6 @@ class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
                 return f"0 (No additional requirements for {casting_surface.value})"
             case CastingSurface.PREPARED_GROUND:
-                return f"k1 ≥ c_{{min,dur}} + 40 mm for {casting_surface.value}"
+                return f"k1 \\ge c_{{min,dur}} + 40 mm for {casting_surface.value}"
             case CastingSurface.DIRECTLY_AGAINST_SOIL:
-                return f"k2 ≥ c_{{min,dur}} + 75 mm for {casting_surface.value}"
+                return f"k2 \\ge c_{{min,dur}} + 75 mm for {casting_surface.value}"

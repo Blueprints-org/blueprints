@@ -1,0 +1,46 @@
+name: '🔧 Formula Request'
+description: Suggest a new formula to be implemented for Blueprints
+title: "[🔧 Formula Request]: Add formulas from chapter XXX from Eurocode YYY."
+labels: [ enhancement ]
+
+body:
+  - type: markdown
+    attributes:
+      value: "## Blueprints Formula Request Template"
+
+  - type: textarea
+    id: formula-description
+    attributes:
+      label: "Formula Description"
+      description: "Describe the formula you're suggesting to add."
+      value: "Add equation XXX to YYY from Eurocode ZZZ to the project."
+    validations:
+      required: true
+
+  - type: textarea
+    id: formula-acceptance-criteria
+    attributes:
+      label: "Acceptance Criteria"
+      description: "List the conditions that the formula must fulfill to be considered complete."
+      value: "- [ ] Add the formula to the code\n- [ ] Add latex expression to the formula\n- [ ] Add unittests\n- [ ] Add docstrings\n- [ ] Update table in docs with classname(s)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: formula-dependencies
+    attributes:
+      label: "Dependencies"
+      description: "List any dependencies, like third-party libraries or specific hardware, needed for this formula."
+      placeholder: "List any dependencies here."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "I have checked that this formula does not already exist in the issue tracker."
+        - label: "I have read and understood the contribution guidelines."
+    validations:
+      required: true

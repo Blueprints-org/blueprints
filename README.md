@@ -1,3 +1,4 @@
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/blueprints-org)
 [![Run Tests](https://github.com/Blueprints-org/blueprints/actions/workflows/test.yaml/badge.svg)](https://github.com/Blueprints-org/blueprints/actions/workflows/test.yaml)
 [![Read the Docs](https://img.shields.io/readthedocs/blueprints?logo=readthedocs&label=Read%20the%20docs&link=https%3A%2F%2Fblueprints.readthedocs.io%2Fen%2Flatest%2F)](https://blueprints.readthedocs.io/en/latest/)
 [![codecov](https://codecov.io/gh/Blueprints-org/blueprints/branch/main/graph/badge.svg?token=vwYQBShr9q)](https://codecov.io/gh/Blueprints-org/blueprints)
@@ -6,11 +7,10 @@
 [![Python versions](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue?style=flat&logo=python)](https://badge.fury.io/py/blueprints)
 
 
-
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/source/_static/blueprints_banner.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/source/_static/blueprints_banner.png">
-  <img alt="blueprints banner" src="docs/source/_static/blueprints_banner.png">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/_overrides/assets/images/blueprints_banner.png">
+  <img alt="blueprints banner" src="docs/_overrides/assets/images/blueprints_banner.png">
 </picture>
 
 Welcome to `Blueprints`, the go-to repository for civil engineering professionals and enthusiasts!
@@ -27,6 +27,26 @@ Join us in this effort to build a future where engineering standards are program
 
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
+## Contributors
+
+Here are some of the amazing contributors who have helped make Blueprints possible:
+
+| Name                   | Company             |
+|------------------------|---------------------|
+| Enrique García Méndez  | Royal BAM Group     |
+| Johan Tuls             | Royal BAM Group     |
+| Rick de Goeij          | Royal BAM Group     |
+| Gerjan Dorgelo         | Antea Group         |
+| Simone de Rijke        | Antea Group         |
+| Wichard Bron           | WSP                 |
+| Sina Zeltaat           | WSP                 |
+| Maarten Weehuizen      | VIKTOR              |
+| Rick van Dijk          | VIKTOR              |
+| Pablo Vásconez         | CEMS                |
+| Bart-Jan van der Gaag  | Royal HaskoningDHV  |
+| Rami Evans             | Royal HaskoningDHV  |
+| Marijn Drillenburg     | Royal HaskoningDHV  |
+
 ## Mission
 
 Our mission is to reduce the cost and time associated with civil engineering calculations by:
@@ -39,8 +59,8 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 ## (Upcoming) Features
 
-* Eurocode formulas
-    - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow)
+* Eurocode formulas [templates for making formula](https://github.com/orgs/Blueprints-org/discussions/432)
+    - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
     - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
     - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
     - [ ] NEN-EN 1993-5:2008 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
@@ -49,26 +69,44 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Material definitions
     - [x] Concrete (NEN-EN 1992) ✔️
     - [x] Rebar Steel (NEN-EN 1992) ✔️
+    - [x] Steel (NEN-EN 1993) ✔️
     - [x] Soil (NEN-EN 1997) ✔️
+ 
+* Common steel profile database
+    - [x] HEA / HEB / HEM / IPE ✔️
+    - [x] CHS ✔️
+    - [x] RHS / SHS / RHSCF / SHSCF ✔️
+    - [x] UNP ✔️
+    - [x] Strips ✔️
+    - [ ] Sheetpiles
+
+* Shape building blocks
+    - [x] Rectangle ✔️
+    - [x] Circle ✔️
+    - [x] Tube / ring ✔️
+    - [x] Right triangle ✔️
+    - [x] Hexagon ✔️
+    - [x] Quarter Circular Spandrel ✔️
+    - [ ] Annular Sector (partial ring) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Reinforced Concrete Section
     - [x] Rectangular section ✔️
-    - [ ] Circular section
+    - [x] Circular section ✔️
 
 * Strain-stress analysis for reinforced concrete sections:
   - [ ] Rectangular section ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
-  - [ ] Circular section
+  - [ ] Circular section 
 
 * Concrete checks
-  - [x] Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4) ✔️
-  - [ ] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8)
-  - [ ] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2)
-  - [ ] Shear Resistance circular shapes;
-  - [ ] Torsion (NEN-EN 1992-1-1: Chapter 6.3)
-  - [ ] Punching Shear (NEN-EN 1992-1-1: Chapter 6.4)
-  - [ ] Fatigue (NEN-EN 1992-1-1: Chapter 6.8)
-  - [ ] Crack Control (NEN-EN 1992-1-1: Chapter 7.3)
-  - [ ] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4)
+  - [x] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4) ✔️
+  - [x] [Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4)](https://cloud.viktor.ai/public/blueprints-nominal-concrete-cover) ✔️
+  - [x] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8) ✔️
+  - [x] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2) ✔️
+  - [x] Shear Resistance circular shapes ✔️
+  - [x] Torsion (NEN-EN 1992-1-1: Chapter 6.3) ✔️
+  - [x] Punching Shear (NEN-EN 1992-1-1: Chapter 6.4) ✔️
+  - [ ] Fatigue (NEN-EN 1992-1-1: Chapter 6.8) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+  - [ ] Crack Control (NEN-EN 1992-1-1: Chapter 7.3) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Timber checks (NEN-EN 1995)
    - *To Be Determined*
@@ -76,7 +114,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Steel checks (NEN-EN 1993)
   - *To Be Determined*
 
-* Geotechnical checks (NEN-EN 9997-1
+* Geotechnical checks (NEN-EN 9997-1)
   - *To Be Determined*
 
 * Common calculations
@@ -88,12 +126,32 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 <summary> Progress definitions </summary>
 
-| Icon | Definition  |
-| ---  | ---------   |
-| ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange) | Just started |
-| ![](https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow) | Making progress |
-| ![](https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen) | In Review |
-| ✔️  | Done |
+<table border="1">
+  <thead>
+    <tr>
+      <th>Icon</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange" alt="20% Icon"></td>
+      <td>Just started</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/50-%25-grey?style=plastic&labelColor=yellow" alt="50% Icon"></td>
+      <td>Making progress</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/80%25--grey?style=plastic&labelColor=yellowgreen" alt="80% Icon"></td>
+      <td>In Review</td>
+    </tr>
+    <tr>
+      <td>✔️</td>
+      <td>Done</td>
+    </tr>
+  </tbody>
+</table>
 
 </details>
 
@@ -127,7 +185,6 @@ figures for streamlined access and reference.
       <th>Description</th>
       <th>Formulas</th>
       <th>Tables</th>
-      <th>Figures</th>
     </tr>
   </thead>
   <tbody>
@@ -137,9 +194,8 @@ figures for streamlined access and reference.
         Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/nen_en_1992_1_1_c2_2011">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/ec2_1992_1_1_2011/formulas.md">304</a></td>
-      <td><a href="docs/source/codes/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
-      <td><a href="docs/source/codes/eurocode/ec2_1992_1_1_2011/figures.md">104</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/formulas.md">304</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
     </tr>
     <tr>
       <td>NEN-EN 1993-1-1+C2+A1:2016</td>
@@ -147,9 +203,8 @@ figures for streamlined access and reference.
         NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/nen_en_1993_1_1_c2_a1_2016">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
-      <td><a href="docs/source/codes/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
-      <td><a href="docs/source/codes/eurocode/ec3_1993_1_1_2016/figures.md">28</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
+      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
     </tr>
     <tr>
       <td>NEN-EN 1993-5:2008</td>
@@ -157,9 +212,8 @@ figures for streamlined access and reference.
         Eurocode 3: Design of steel structures – Part 5: Piling
         (<a href="blueprints/codes/eurocode/nen_en_1993_5_2008">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_en_1993_5_2008/figures.md">0</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
     </tr>
     <tr>
       <td>prEN 1995-1-1:2023</td>
@@ -177,9 +231,8 @@ figures for streamlined access and reference.
         Eurocode 7: Geotechnical design of structures - Part 1: General rules
         (<a href="blueprints/codes/eurocode/nen_9997_1_c2_2017">code</a>)
       </td>
-      <td><a href="docs/source/codes/eurocode/nen_9997_1_c2_2017/formulas.md">88</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_9997_1_c2_2017/tables.md">11</a></td>
-      <td><a href="docs/source/codes/eurocode/nen_9997_1_c2_2017/figures.md">25</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/formulas.md">88</a></td>
+      <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/tables.md">11</a></td>
     </tr>
   </tbody>
 </table>

@@ -42,9 +42,9 @@ class TestForm5Dot35EffectiveDepth:
         [
             (
                 "complete",
-                r"d = \frac{h}{2} + i_s = \frac{300.000}{2} + 50.000 = 200.000 mm",
+                r"d = \frac{h}{2} + i_s = \frac{300.000}{2} + 50.000 = 200.000 \ mm",
             ),
-            ("short", r"d = 200.000 mm"),
+            ("short", r"d = 200.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
