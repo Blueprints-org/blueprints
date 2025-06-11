@@ -1,6 +1,6 @@
-"""Formula 4.2 from NEN-EN 1993-1-8+C2:2011: Chapter 4 - Welded Connections."""
+"""Formula 4.2 from EN 1993-1-8:2005: Chapter 4 - Welded Connections."""
 
-from blueprints.codes.eurocode.nen_en_1993_1_8_c2_2011 import NEN_EN_1993_1_8_C2_2011
+from blueprints.codes.eurocode.en_1993_1_8_2005 import EN_1993_1_8_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
@@ -11,7 +11,7 @@ class Form4Dot2CheckWeldedConnection(Formula):
     r"""Class representing formula 4.2 for checking welded connections."""
 
     label = "4.2"
-    source_document = NEN_EN_1993_1_8_C2_2011
+    source_document = EN_1993_1_8_2005
 
     def __init__(
         self,
@@ -20,7 +20,7 @@ class Form4Dot2CheckWeldedConnection(Formula):
     ) -> None:
         r"""Check the force in the weld per unit length against its resistance.
 
-        NEN-EN 1993-1-8+C2:2011 art.4.5.3.3(1) - Formula (4.2)
+        EN 1993-1-8:2005 art.4.5.3.3(1) - Formula (4.2)
 
         Parameters
         ----------
