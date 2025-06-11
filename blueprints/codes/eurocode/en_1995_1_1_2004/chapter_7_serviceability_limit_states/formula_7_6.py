@@ -1,6 +1,6 @@
-"""Formula 7.6 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Formula 7.6 from EN 1995-1-1:2004."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011 import NEN_EN_1995_1_1_2011_2012
+from blueprints.codes.eurocode.en_1995_1_1_2004 import EN_1995_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import HZ, KG_M2, M_NS2, M
@@ -11,12 +11,12 @@ class Form7Dot6VelocityResponse(Formula):
     r"""Class representing formula 7.6 for the calculation of velocity response [$v$] of a unit impulse load."""
 
     label = "7.6"
-    source_document = NEN_EN_1995_1_1_2011_2012
+    source_document = EN_1995_1_1_2004
 
     def __init__(self, n_40: HZ, m: KG_M2, length: M, b: M) -> None:
         r"""[$v$] The velocity response of a unit impulse load, in [$m/(Ns^2)$].
 
-        NEN-EN 1995-1-1 art 7.3.3(5) - Formula (7.6)
+        EN 1995-1-1:2004 art 7.3.3(5) - Formula (7.6)
 
         Parameters
         ----------

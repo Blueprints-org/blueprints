@@ -1,16 +1,16 @@
-"""Testing formula 7.3 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Testing formula 7.3 from EN 1995-1-1:2004."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011.chapter_7_serviceability_limit_states.formula_7_3 import Form7Dot3RatioDeflectionPointLoadUC
+from blueprints.codes.eurocode.en_1995_1_1_2004.chapter_7_serviceability_limit_states.formula_7_3 import Form7Dot3RatioDeflectionPointLoadUC
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm7Dot3RatioDeflectionPointLoadUCt:
-    """Validation for formula 7.3 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+    """Validation for formula 7.3 from EN 1995-1-1:2004."""
 
     @pytest.mark.parametrize(
         ("w", "f", "alpha", "expected_result"),

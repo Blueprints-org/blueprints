@@ -1,6 +1,6 @@
-"""Formula 7.4 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Formula 7.4 from EN 1995-1-1:2004."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011 import NEN_EN_1995_1_1_2011_2012
+from blueprints.codes.eurocode.en_1995_1_1_2004 import EN_1995_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, HZ, M_NS2
@@ -11,7 +11,7 @@ class Form7Dot4VelocityResponseLimit(Formula):
     r"""Class representing formula 7.4 for the calculation of the upper limit of the velocity response of a unit impulse load."""
 
     label = "7.4"
-    source_document = NEN_EN_1995_1_1_2011_2012
+    source_document = EN_1995_1_1_2004
 
     # Constants for validation
     b_50 = 50
@@ -20,7 +20,7 @@ class Form7Dot4VelocityResponseLimit(Formula):
     def __init__(self, b: DIMENSIONLESS, f_1: HZ, ksi: DIMENSIONLESS) -> None:
         r"""[v_{limit}] Upper limit of the velocity response of a unit impulse load, in [$m/(Ns^2)$].
 
-        NEN-EN 1995-1-1 art 7.3.3(2) - Formula (7.4)
+        EN 1995-1-1:2004 art 7.3.3(2) - Formula (7.4)
 
         Parameters
         ----------

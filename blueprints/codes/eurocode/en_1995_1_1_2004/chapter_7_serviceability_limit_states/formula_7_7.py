@@ -1,6 +1,6 @@
-"""Formula 7.7 from NEN-EN 1995-1-1+C1+A1:2011/C1:2012."""
+"""Formula 7.7 from EN 1995-1-1:2004."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2011 import NEN_EN_1995_1_1_2011_2012
+from blueprints.codes.eurocode.en_1995_1_1_2004 import EN_1995_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, HZ, NM2_M, M
@@ -11,14 +11,14 @@ class Form7Dot7NumberOfFOVibrations(Formula):
     r"""Class representing formula 7.7 for the calculations of the number of first-order vibrations with a natural frequency less than 40Hz."""
 
     label = "7.7"
-    source_document = NEN_EN_1995_1_1_2011_2012
+    source_document = EN_1995_1_1_2004
     # frequency limit to check
     f_40 = 40
 
     def __init__(self, f_1: HZ, b: M, length: M, ei_l: NM2_M, ei_b: NM2_M) -> None:
         r"""[$n_{40}$] The number of first-order vibrations with a natural frequency less than 40Hz [$-$].
 
-        NEN-EN 1995-1-1 art 7.3.3(5) - Formula (7.7)
+        EN 1995-1-1:2004 art 7.3.3(5) - Formula (7.7)
 
         Parameters
         ----------
