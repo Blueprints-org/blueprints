@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_27 import Form6Dot27VplTRdChannelSection
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_27 import Form6Dot27VplTRdChannelSection
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 

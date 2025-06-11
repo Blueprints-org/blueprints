@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_3_materials.table_3_1 import (
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import (
     SteelStandardGroup,
     SteelStrengthClass,
     Table3Dot1NominalValuesHotRolledStructuralSteel,

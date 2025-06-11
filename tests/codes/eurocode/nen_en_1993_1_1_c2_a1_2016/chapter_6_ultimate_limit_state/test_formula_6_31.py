@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_31 import Form6Dot31CheckBendingAndAxialForce
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_31 import Form6Dot31CheckBendingAndAxialForce
 from blueprints.validations import NegativeValueError
 
 

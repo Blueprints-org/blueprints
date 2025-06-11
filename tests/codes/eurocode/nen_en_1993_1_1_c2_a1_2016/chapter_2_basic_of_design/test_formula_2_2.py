@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_2_basic_of_design.formula_2_2 import Form2Dot2CharacteristicValueResistance
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_2_basic_of_design.formula_2_2 import Form2Dot2CharacteristicValueResistance
 from blueprints.validations import NegativeValueError
 
 
