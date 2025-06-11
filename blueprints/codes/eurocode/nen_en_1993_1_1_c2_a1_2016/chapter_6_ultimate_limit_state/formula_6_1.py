@@ -1,17 +1,17 @@
 """Formula 6.1 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate limit state."""
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
+from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form6Dot1ElasticVerification(Formula):
     r"""Class representing formula 6.1 for the elastic verification with the yield criterion."""
 
     label = "6.1"
-    source_document = NEN_EN_1992_1_1_C2_2011
+    source_document = NEN_EN_1993_1_1_C2_A1_2016
 
     def __init__(
         self,
@@ -23,7 +23,7 @@ class Form6Dot1ElasticVerification(Formula):
     ) -> None:
         r"""Elastic verification with the yield criterion.
 
-        NEN-EN 1993-1-1+C2:2011 art.6.2.1(5) - Formula (6.1)
+        NEN-EN 1993-1-1+C2:2016 art.6.2.1(5) - Formula (6.1)
 
         Parameters
         ----------
@@ -54,7 +54,8 @@ class Form6Dot1ElasticVerification(Formula):
         gamma_m0: DIMENSIONLESS,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(sigma_x_ed=sigma_x_ed, sigma_z_ed=sigma_z_ed, tau_ed=tau_ed, f_y=f_y, gamma_m0=gamma_m0)
+        raise_if_negative(sigma_x_ed=sigma_x_ed, sigma_z_ed=sigma_z_ed, tau_ed=tau_ed)
+        raise_if_less_or_equal_to_zero(gamma_m0=gamma_m0, f_y=f_y)
 
         term1 = (sigma_x_ed / (f_y / gamma_m0)) ** 2
         term2 = (sigma_z_ed / (f_y / gamma_m0)) ** 2

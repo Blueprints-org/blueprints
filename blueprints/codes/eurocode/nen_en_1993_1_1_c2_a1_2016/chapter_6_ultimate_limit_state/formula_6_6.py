@@ -30,7 +30,7 @@ class Form6Dot6DesignPlasticRestistanceGrossCrossSection(Formula):
         f_y : MPA
             [$f_y$] Yield strength of the material [$MPa$].
         gamma_m0 : DIMENSIONLESS
-            [$\gamma_{M0}$] Partial safety factor for resistance of cross-sections whatever the class is.
+            [$\gamma_{M0}$] Partial safety factor for resistance of cross-sections, irrespective of the class.
         """
         super().__init__()
         self.a = a

@@ -3,12 +3,12 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_3 import (
-    Form6Dot3ADeductionAreaStaggeredFastenerHoles,
+    Form6Dot3MinDeductionAreaStaggeredFastenerHoles,
 )
 from blueprints.validations import LessOrEqualToZeroError, ListsNotSameLengthError, NegativeValueError
 
 
-class TestForm6Dot3ADeductionAreaStaggeredFastenerHoles:
+class TestForm6Dot3MinDeductionAreaStaggeredFastenerHoles:
     """Validation for formula 6.3 from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
@@ -21,7 +21,7 @@ class TestForm6Dot3ADeductionAreaStaggeredFastenerHoles:
         p = [100.0, 120.0]
 
         # Object to test
-        formula = Form6Dot3ADeductionAreaStaggeredFastenerHoles(t=t, n=n, d_0=d_0, s=s, p=p)
+        formula = Form6Dot3MinDeductionAreaStaggeredFastenerHoles(t=t, n=n, d_0=d_0, s=s, p=p)
 
         # Expected result, manually calculated
         manually_calculated_result = 862.5  # mm^2
@@ -47,7 +47,7 @@ class TestForm6Dot3ADeductionAreaStaggeredFastenerHoles:
     def test_raise_error_when_invalid_values_are_given(self, t: float, n: float, d_0: float, s: list[float], p: list[float]) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError, ListsNotSameLengthError)):
-            Form6Dot3ADeductionAreaStaggeredFastenerHoles(t=t, n=n, d_0=d_0, s=s, p=p)
+            Form6Dot3MinDeductionAreaStaggeredFastenerHoles(t=t, n=n, d_0=d_0, s=s, p=p)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -71,7 +71,7 @@ class TestForm6Dot3ADeductionAreaStaggeredFastenerHoles:
         p = [100.0, 120.0]
 
         # Object to test
-        latex = Form6Dot3ADeductionAreaStaggeredFastenerHoles(t=t, n=n, d_0=d_0, s=s, p=p).latex()
+        latex = Form6Dot3MinDeductionAreaStaggeredFastenerHoles(t=t, n=n, d_0=d_0, s=s, p=p).latex()
 
         actual = {
             "complete": latex.complete,

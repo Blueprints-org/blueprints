@@ -27,8 +27,8 @@ Total of 108 formulas present.
 | 5.14           | :x:  |         |             |
 | 6.1            | :heavy_check_mark:  |         | Form6Dot1ElasticVerification                     |
 | 6.2            | :heavy_check_mark:  |         | Form6Dot2UtilizationRatio                        |
-| 6.3            | :heavy_check_mark:  |         | Form6Dot3ADeductionAreaStaggeredFastenerHoles    |
-| 6.4            | :heavy_check_mark:                 |         | Form6Dot4AxialCompression                  |
+| 6.3            | :heavy_check_mark:  |         | Form6Dot3MinDeductionAreaStaggeredFastenerHoles    |
+| 6.4            | :heavy_check_mark:  |         | Form6Dot4AdditionalMoment                  |
 | 6.5            | :heavy_check_mark:  |         | Form6Dot5UnityCheckTensileStrength               |
 | 6.6            | :heavy_check_mark:  |         | Form6Dot6DesignPlasticRestistanceGrossCrossSection            |
 | 6.7            | :heavy_check_mark:  |         | Form6Dot7DesignUltimateResistanceNetCrossSection           |

@@ -1,6 +1,7 @@
 """Formula 6.3 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate limit state."""
 
-# pylint: disable=arguments-differ
+from collections.abc import Sequence
+
 from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
@@ -8,8 +9,8 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
 
 
-class Form6Dot3ADeductionAreaStaggeredFastenerHoles(Formula):
-    """Class representing formula 6.3 for the calculation of the area deduction [$A_{deduction}$]."""
+class Form6Dot3MinDeductionAreaStaggeredFastenerHoles(Formula):
+    """Class representing formula 6.3 for the calculation of the minimum area deduction for staggered fastener holes [$A_{deduction}$]."""
 
     label = "6.3"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
@@ -19,25 +20,26 @@ class Form6Dot3ADeductionAreaStaggeredFastenerHoles(Formula):
         t: MM,
         n: MM,
         d_0: MM,
-        s: list[MM],
-        p: list[MM],
+        s: Sequence[MM],
+        p: Sequence[MM],
     ) -> None:
-        """[$A_{deduction}$] Calculation of the area deduction [$mm^2$].
+        """[$A_{deduction}$] Calculation of the area deduction for staggered fastener holes [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.3 - Formula (6.3)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.2.2 (4) b) - Formula (6.3)
+        section (4) a) should be handled separately.
 
         Parameters
         ----------
         t : MM
             [$t$] Thickness [$mm$].
         n : MM
-            [$n$] Number of holes extending in any diagonal or zig-zag line progressively across the member [$mm$].
+            [$n$] Number of holes extending in any diagonal or zig-zag line progressively across the member, see Figure 6.1 [$mm$].
         d_0 : MM
             [$d_0$] Diameter of hole [$mm$].
-        s : list[MM]
+        s : Sequence[MM]
             [$s$] Staggered pitch, the spacing of the centres of two consecutive holes in the
             chain measured parallel to the member axis [$mm$].
-        p : list[MM]
+        p : Sequence[MM]
             [$p$] Spacing of the centres of the same two holes measured perpendicular to the member axis [$mm$].
         """
         super().__init__()
@@ -52,8 +54,8 @@ class Form6Dot3ADeductionAreaStaggeredFastenerHoles(Formula):
         t: MM,
         n: MM,
         d_0: MM,
-        s: list[MM],
-        p: list[MM],
+        s: Sequence[MM],
+        p: Sequence[MM],
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(t=t, n=n, d_0=d_0)

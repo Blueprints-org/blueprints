@@ -7,7 +7,7 @@ from blueprints.type_alias import MM, NMM, N
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot4AxialCompression(Formula):
+class Form6Dot4AdditionalMoment(Formula):
     r"""Class representing formula 6.4 for the calculation of additional moment [$\Delta M_{Ed}$]."""
 
     label = "6.4"
@@ -21,6 +21,11 @@ class Form6Dot4AxialCompression(Formula):
         r"""[$\Delta M_{Ed}$] Calculation of the additional moment [$Nmm$].
 
         NEN-EN 1993-1-1+C2+A1:2016 art.6.2.2.5(4) - Formula (6.4)
+        Where a class 4 cross section is subjected to an axial compression force, the method given in EN 1993-1-5 should be used to
+        determine the possible shift [$e_{N}$] of the centroid of the effective area [$A_{eff}$] relative to the centre of gravity
+        of the gross cross section and the resulting additional moment according to this formula.
+
+        Note: The sign of the additional moment depends on the effect in the combination of internal forces and moments, see 6.2.9.3(2).
 
         Parameters
         ----------
@@ -28,6 +33,8 @@ class Form6Dot4AxialCompression(Formula):
             [$N_{Ed}$] Axial compression force [$N$].
         e_n : MM
             [$e_{N}$] Shift of the centroid of the effective area relative to the centre of gravity of the gross cross section [$mm$].
+            The method given in EN 1993-1-5 should be used to determine the possible shift [$e_{N}$] of the centroid of the effective
+            area [$A_{eff$] relative to the centre of gravity of the gross cross section.
         """
         super().__init__()
         self.n_ed = n_ed

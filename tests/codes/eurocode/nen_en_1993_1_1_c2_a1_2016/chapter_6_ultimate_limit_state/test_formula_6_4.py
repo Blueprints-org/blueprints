@@ -2,11 +2,11 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_4 import Form6Dot4AxialCompression
+from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_4 import Form6Dot4AdditionalMoment
 from blueprints.validations import NegativeValueError
 
 
-class TestForm6Dot4AxialCompression:
+class TestForm6Dot4AdditionalMoment:
     """Validation for formula 6.4 from NEN-EN 1993-1-1+C2+A1:2016."""
 
     def test_evaluation(self) -> None:
@@ -16,7 +16,7 @@ class TestForm6Dot4AxialCompression:
         e_n = 50.0
 
         # Object to test
-        formula = Form6Dot4AxialCompression(n_ed=n_ed, e_n=e_n)
+        formula = Form6Dot4AdditionalMoment(n_ed=n_ed, e_n=e_n)
 
         # Expected result, manually calculated
         manually_calculated_result = 50000.0  # Nmm
@@ -33,7 +33,7 @@ class TestForm6Dot4AxialCompression:
     def test_raise_error_when_invalid_values_are_given(self, n_ed: float, e_n: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot4AxialCompression(n_ed=n_ed, e_n=e_n)
+            Form6Dot4AdditionalMoment(n_ed=n_ed, e_n=e_n)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -52,7 +52,7 @@ class TestForm6Dot4AxialCompression:
         e_n = 50.0
 
         # Object to test
-        latex = Form6Dot4AxialCompression(n_ed=n_ed, e_n=e_n).latex()
+        latex = Form6Dot4AdditionalMoment(n_ed=n_ed, e_n=e_n).latex()
 
         actual = {
             "complete": latex.complete,

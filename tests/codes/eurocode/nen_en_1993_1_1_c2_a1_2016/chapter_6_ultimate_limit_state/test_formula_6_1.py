@@ -40,6 +40,8 @@ class TestForm6Dot1ElasticVerification:
             (100.0, 50.0, -30.0, 355.0, 1.0),  # tau_ed is negative
             (100.0, 50.0, 30.0, -355.0, 1.0),  # f_y is negative
             (100.0, 50.0, 30.0, 355.0, -1.0),  # gamma_m0 is negative
+            (100.0, 50.0, 30.0, 355.0, 0.0),  # gamma_m0 is zero
+            (100.0, 50.0, 30.0, 0.0, 1.0),  # f_y is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(
