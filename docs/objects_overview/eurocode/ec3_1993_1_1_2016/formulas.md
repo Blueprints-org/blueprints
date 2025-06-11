@@ -54,8 +54,9 @@ Total of 108 formulas present.
 | 6.26           | :heavy_check_mark:  |         | Form6Dot26VplTRdIOrHSection            |
 | 6.27           | :heavy_check_mark:  |         | Form6Dot27VplTRdChannelSection            |
 | 6.28           | :heavy_check_mark:  |         | Form6Dot28VplTRdHollowSection            |
-| 6.29           | :x:  |         |             |
-| 6.30           | :x:  |         |             |
+| 6.29           | :heavy_check_mark:  |         | Form6Dot29ReducedYieldStrength            |
+| 6.29 (rho)     | :heavy_check_mark:  |         | Form6Dot29Rho and Form6Dot29RhoWithTorsion            |
+| 6.30           | :heavy_check_mark:  |         | Form6Dot30ReducedPlasticResistanceMoment            |
 | 6.31           | :heavy_check_mark:  |         | Form6Dot31CheckBendingAndAxialForce             |
 | 6.32           | :heavy_check_mark:  |         | Form6Dot32MNrdRectangular            |
 | 6.33           | :heavy_check_mark:  |         | Form6Dot33CheckAxialForceY            |
