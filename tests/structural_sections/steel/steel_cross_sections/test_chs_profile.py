@@ -13,6 +13,11 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 class TestCHSSteelProfile:
     """Test suite for CHSSteelProfile."""
 
+    def test_name(self, chs_profile: CHSSteelProfile) -> None:
+        """Test the name of the CHS profile."""
+        expected_name: str = "CHS 508x16"
+        assert chs_profile.name == expected_name
+
     def test_code(self, chs_profile: CHSSteelProfile) -> None:
         """Test the code of the CHS profile."""
         expected_alias: str = "CHS 508x16"
@@ -102,3 +107,14 @@ class TestCHSSteelProfile:
                 corrosion_outside=5,  # mm
                 corrosion_inside=11,  # mm
             )
+
+    def test_corrosion_in_name(self) -> None:
+        """Test that the name includes corrosion information."""
+        chs_profile_with_corrosion = CHSSteelProfile.from_standard_profile(
+            profile=CHS.CHS508x16,
+            steel_material=SteelMaterial(SteelStrengthClass.S355),
+            corrosion_outside=1,  # mm
+            corrosion_inside=2,  # mm
+        )
+        expected_name_with_corrosion = "CHS 508x16 (corrosion  in: 2 mm, out: 1 mm)"
+        assert chs_profile_with_corrosion.name == expected_name_with_corrosion
