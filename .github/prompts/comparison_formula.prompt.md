@@ -15,9 +15,9 @@
 ## Template for service
 
 ```python
-"""Formula 5.38a from NEN-EN 1992-1-1+C2:2011: Chapter 5 - Structural Analysis."""
+"""Formula 5.38a from EN 1992-1-1:2004: Chapter 5 - Structural Analysis."""
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
+from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, DEG, KG, N, NMM, MM, MM2, MM3, MM4, MPA
@@ -28,16 +28,16 @@ class Form5Dot38aCheckRelativeLengthRatio(Formula):
     r"""Class representing formula 5.38a for check of length ratio."""
 
     label = "5.38a"
-    source_document = NEN_EN_1992_1_1_C2_2011
+    source_document = EN_1992_1_1_2004
 
     def __init__(
-        self,
-        length_y: MM,
-        length_z: MM,
+            self,
+            length_y: MM,
+            length_z: MM,
     ) -> None:
         r"""Check the ratio of the length in y-direction and z-direction.
 
-        NEN-EN 1992-1-1+C2:2011 art.5.8.XXXXXXX - Formula (5.38a)
+        EN 1992-1-1:2004 art.5.8.XXXXXXX - Formula (5.38a)
 
         Parameters
         ----------
@@ -52,8 +52,8 @@ class Form5Dot38aCheckRelativeLengthRatio(Formula):
 
     @staticmethod
     def _evaluate(
-        length_y: MM,
-        length_z: MM,
+            length_y: MM,
+            length_z: MM,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(length_y=length_y, length_z=length_z)
@@ -85,8 +85,8 @@ class Form5Dot38aCheckRelativeLengthRatio(Formula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units
-            comparison_operator_label="\\to",
-            unit="",
+        comparison_operator_label = "\\to",
+        unit = "",
         )
-        
+
 ```

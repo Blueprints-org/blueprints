@@ -7,9 +7,9 @@ from blueprints.checks.nominal_concrete_cover.constants.base import (
     NominalConcreteCoverConstantsBase as ConstantsBase,
 )
 from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,
@@ -17,8 +17,8 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     FreezeThaw,
     Table4Dot1ExposureClasses,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_4n import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_4n import (
     Table4Dot4nMinimumCoverDurabilityReinforcementSteel,
 )
 from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
