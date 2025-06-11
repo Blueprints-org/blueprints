@@ -1,4 +1,4 @@
-"""Formula 12.4 from NEN-EN 1992-1-1+C2:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
+"""Formula 12.4 from EN 1992-1-1:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 class Form12Dot4PlainConcreteShearStress(Formula):
     r"""Class representing formula 12.4 for the calculation of the design shear stress of plain concrete, :math:`\tau_{cp}`.
 
-    NEN-EN 1992-1-1+C2:2004 art.12.6.3(3) - Formula (12.4)
+    EN 1992-1-1:2004 art.12.6.3(3) - Formula (12.4)
     """
 
     label = "12.4"
@@ -24,7 +24,7 @@ class Form12Dot4PlainConcreteShearStress(Formula):
     ) -> None:
         r"""[:math:`\tau_{cp}`] Design shear stress of plain concrete [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2004 art.12.6.3(2) - Formula (12.4)
+        EN 1992-1-1:2004 art.12.6.3(2) - Formula (12.4)
 
         Parameters
         ----------
@@ -79,7 +79,7 @@ class Form12Dot4PlainConcreteShearStressComparison:
     def __init__(self, sigma_cp: MPA, sigma_c_lim: MPA) -> None:
         r"""[:math:`σ_{cp} ≤ σ_{c,lim}`] Comparison of design shear stress and limit compressive stress.
 
-        NEN-EN 1992-1-1+C2:2004 art.12.6.3
+        EN 1992-1-1:2004 art.12.6.3
 
         Parameters
         ----------

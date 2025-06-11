@@ -1,4 +1,4 @@
-"""Testing formula 12.5 and 12.6 of NEN-EN 1992-1-1+C2:2004."""
+"""Testing formula 12.5 and 12.6 of EN 1992-1-1:2004."""
 
 import pytest
 
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm12Dot5PlainConcreteBendingResistance:
-    """Validation for formula 12.5 from NEN-EN 1992-1-1+C2:2004."""
+    """Validation for formula 12.5 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
