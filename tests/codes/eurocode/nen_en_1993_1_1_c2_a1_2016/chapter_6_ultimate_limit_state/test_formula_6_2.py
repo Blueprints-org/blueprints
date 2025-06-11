@@ -1,4 +1,4 @@
-"""Testing formula 6.5 of EN 1993-1-1:2005."""
+"""Testing formula 6.2 of EN 1993-1-1:2005."""
 
 import pytest
 
