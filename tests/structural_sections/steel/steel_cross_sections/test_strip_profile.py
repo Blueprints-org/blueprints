@@ -118,3 +118,13 @@ class TestStripSteelProfile:
                 steel_material=SteelMaterial(SteelStrengthClass.S355),
                 corrosion=2.5,
             )
+
+    def test_corrosion_in_name(self, strip_profile: StripSteelProfile) -> None:
+        """Test that the corrosion is included in the profile name."""
+        profile_with_corrosion = StripSteelProfile.from_standard_profile(
+            profile=Strip.STRIP160x5,
+            steel_material=SteelMaterial(SteelStrengthClass.S355),
+            corrosion=1,
+        )
+        expected_name = f"{strip_profile.name} (corrosion: 1 mm)"
+        assert profile_with_corrosion.name == expected_name
