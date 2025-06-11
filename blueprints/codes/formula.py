@@ -92,8 +92,8 @@ class ComparisonFormula(Formula):
 
     def __new__(cls, *args, **kwargs) -> "ComparisonFormula":
         """Method for creating a new instance of the class."""
-        lhs = cls._evaluate_lhs(**kwargs)
-        rhs = cls._evaluate_rhs(**kwargs)
+        lhs = cls._evaluate_lhs(*args, **kwargs)
+        rhs = cls._evaluate_rhs(*args, **kwargs)
         result = cls._evaluate(*args, **kwargs)
         instance = float.__new__(cls, result)
         instance._lhs = lhs  # noqa: SLF001
@@ -103,7 +103,7 @@ class ComparisonFormula(Formula):
 
     @staticmethod
     @abstractmethod
-    def _evaluate_lhs(**kwargs) -> float:
+    def _evaluate_lhs(*args, **kwargs) -> float:
         """Abstract method for the logic of the left-hand side of the comparison formula.
 
         Returns
@@ -114,7 +114,7 @@ class ComparisonFormula(Formula):
 
     @staticmethod
     @abstractmethod
-    def _evaluate_rhs(**kwargs) -> float:
+    def _evaluate_rhs(*args, **kwargs) -> float:
         """Abstract method for the logic of the right-hand side of the comparison formula.
 
         Returns

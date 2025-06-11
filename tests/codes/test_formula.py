@@ -76,12 +76,12 @@ class ComparisonFormulaTest(ComparisonFormula):
         return ComparisonFormulaTest._evaluate_lhs(a=a, b=b) <= ComparisonFormulaTest._evaluate_rhs(c=c)
 
     @staticmethod
-    def _evaluate_lhs(a: float, b: float, **_) -> float:  # type: ignore[override]
+    def _evaluate_lhs(a: float, b: float, **_) -> float:
         """Left-hand side value of the comparison."""
         return a + b
 
     @staticmethod
-    def _evaluate_rhs(c: float, **_) -> float:  # type: ignore[override]
+    def _evaluate_rhs(c: float, **_) -> float:
         """Right-hand side value of the comparison."""
         return c / 2
 
