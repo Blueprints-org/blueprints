@@ -41,30 +41,36 @@ Total of 108 formulas present.
 | 6.14           | :heavy_check_mark:  |         | Form6Dot14MCRdClass3            |
 | 6.15           | :heavy_check_mark:  |         | Form6Dot15McRdClass4            |
 | 6.16           | :heavy_check_mark:  |         | Form6Dot16CheckFlangeWithFastenerHoles            |
-| 6.17           | :x:  |         |             |
-| 6.18           | :x:  |         |             |
-| 6.19           | :x:  |         |             |
-| 6.20           | :x:  |         |             |
-| 6.21           | :x:  |         |             |
-| 6.22           | :x:  |         |             |
+| 6.17           | :heavy_check_mark:  |         | Form6Dot17CheckShearForce            |
+| 6.18           | :heavy_check_mark:  |         | Form6Dot18DesignPlasticShearResistance          |
+| 6.18 A_v       | :heavy_check_mark:  |         | Various equations          |
+| 6.19           | :heavy_check_mark:  |         | Form6Dot19CheckDesignElasticShearResistance          |
+| 6.20           | :heavy_check_mark:  |         | Form6Dot20ShearStress           |
+| 6.21           | :heavy_check_mark:  |         | Form6Dot21ShearStressIOrHSection            |
+| 6.22           | :heavy_check_mark:  |         | Form6Dot22CheckShearBucklingResistance            |
 | 6.23           | :heavy_check_mark:  |         | Form6Dot23CheckTorsionalMoment            |
 | 6.24           | :heavy_check_mark:  |         | Form6Dot24TotalTorsionalMoment            |
 | 6.25           | :heavy_check_mark:  |         | Form6Dot25CheckCombinedShearForceAndTorsionalMoment            |
 | 6.26           | :heavy_check_mark:  |         | Form6Dot26VplTRdIOrHSection            |
 | 6.27           | :heavy_check_mark:  |         | Form6Dot27VplTRdChannelSection            |
 | 6.28           | :heavy_check_mark:  |         | Form6Dot28VplTRdHollowSection            |
-| 6.29           | :x:  |         |             |
-| 6.30           | :x:  |         |             |
+| 6.29           | :heavy_check_mark:  |         | Form6Dot29ReducedYieldStrength            |
+| 6.29 (rho)     | :heavy_check_mark:  |         | Form6Dot29Rho and Form6Dot29RhoWithTorsion            |
+| 6.30           | :heavy_check_mark:  |         | Form6Dot30ReducedPlasticResistanceMoment            |
 | 6.31           | :heavy_check_mark:  |         | Form6Dot31CheckBendingAndAxialForce             |
 | 6.32           | :heavy_check_mark:  |         | Form6Dot32MNrdRectangular            |
 | 6.33           | :heavy_check_mark:  |         | Form6Dot33CheckAxialForceY            |
 | 6.34           | :heavy_check_mark:  |         | Form6Dot34CheckAxialForceY            |
 | 6.35           | :heavy_check_mark:  |         | Form6Dot35CheckAxialForceZ            |
-| 6.36           | :x:  |         |             |
-| 6.37           | :x:  |         |             |
-| 6.38           | :x:  |         |             |
-| 6.39           | :x:  |         |             |
-| 6.40           | :x:  |         |             |
+| 6.36           | :heavy_check_mark:  |         | Form6Dot36MomentReduction            |
+| 6.37           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
+| 6.38           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
+| 6.38n          | :heavy_check_mark:  |         | Form6Dot38N           |
+| 6.38a          | :heavy_check_mark:  |         | Form6Dot38A            |
+| 6.39           | :heavy_check_mark:  |         | Form6Dot39ReducedBendingMomentResistance            |
+| 6.39 a_w       | :heavy_check_mark:  |         | Form6Dot39awHollowSections and Form6Dot39awWeldedBoxSections            |
+| 6.40           | :heavy_check_mark:  |         | Form6Dot40ReducedBendingMomentResistance            |
+| 6.40 a_f       | :heavy_check_mark:  |         | Form6Dot40afHollowSections and Form6Dot40afWeldedBoxSections            |
 | 6.41           | :heavy_check_mark:  |         | Form6Dot41BiaxialBendingCheck            |
 | 6.42           | :x:  |         |             |
 | 6.43           | :x:  |         |             |
