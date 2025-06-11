@@ -1,5 +1,7 @@
 """Module for validation actions inside of Blueprints."""
 
+from collections.abc import Sequence
+
 
 class LessOrEqualToZeroError(Exception):
     """Raised when a value is less than or equal to zero."""
@@ -101,18 +103,18 @@ def raise_if_greater_than_90(**kwargs: float) -> None:
             raise GreaterThan90Error(value_name=key, value=value)
 
 
-def raise_if_lists_differ_in_length(**kwargs: list) -> None:
-    """Check if all provided lists are of the same length.
+def raise_if_lists_differ_in_length(**kwargs: Sequence) -> None:
+    """Check if all provided Sequences are of the same length.
 
     Parameters
     ----------
-    **kwargs : dict[str, list]
-        A dictionary of keyword arguments where keys are list names and values are the lists to check.
+    **kwargs : dict[str, Sequence]
+        A dictionary of keyword arguments where keys are list names and values are the Sequences to check.
 
     Raises
     ------
     ListsNotSameLengthError
-        If any two lists are not of the same length.
+        If any two Sequences are not of the same length.
     """
     # Convert the kwargs items to a list of (name, list) tuples
     lists = list(kwargs.items())
