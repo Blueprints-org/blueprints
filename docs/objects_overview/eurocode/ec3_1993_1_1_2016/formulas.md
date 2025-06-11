@@ -1,5 +1,5 @@
-**NEN-EN 1993-1-1+C2+A1 - December 2016
-Eurocode 3: Design of steel structures
+**NEN-EN 1993-1-1+C2+A1 - December 2016  
+Eurocode 3: Design of steel structures  
 Part 1-1: General rules and rules for buildings**
 
 The table presents a list of formulas from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :heavy_check_mark:)
@@ -25,14 +25,14 @@ Total of 108 formulas present.
 | 5.12           | :x:  |         |             |
 | 5.13           | :x:  |         |             |
 | 5.14           | :x:  |         |             |
-| 6.1            | :x:  |         |             |
-| 6.2            | :heavy_check_mark:  |         | Form6Dot2UtilizationRatio            |
-| 6.3            | :x:  |         |             |
-| 6.4            | :x:  |         |             |
-| 6.5            | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength |
-| 6.6            | :x:  |         |             |
-| 6.7            | :x:  |         |             |
-| 6.8            | :x:  |         |             |
+| 6.1            | :heavy_check_mark:  |         | Form6Dot1ElasticVerification                     |
+| 6.2            | :heavy_check_mark:  |         | Form6Dot2UtilizationRatio                        |
+| 6.3            | :heavy_check_mark:  |         | Form6Dot3MinDeductionAreaStaggeredFastenerHoles    |
+| 6.4            | :heavy_check_mark:  |         | Form6Dot4AdditionalMoment                  |
+| 6.5            | :heavy_check_mark:  |         | Form6Dot5UnityCheckTensileStrength               |
+| 6.6            | :heavy_check_mark:  |         | Form6Dot6DesignPlasticRestistanceGrossCrossSection            |
+| 6.7            | :heavy_check_mark:  |         | Form6Dot7DesignUltimateResistanceNetCrossSection           |
+| 6.8            | :heavy_check_mark:  |         | Form6Dot8NetDesignTensionResistance            |
 | 6.9            | :heavy_check_mark:  |         | Form6Dot9CheckCompressionForce            |
 | 6.10           | :heavy_check_mark:  |         | Form6Dot10NcRdClass1And2And3            |
 | 6.11           | :heavy_check_mark:  |         | Form6Dot11NcRdClass4            |
