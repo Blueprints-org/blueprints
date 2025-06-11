@@ -44,14 +44,14 @@ class Form6Dot25CheckCombinedShearForceAndTorsionalMoment(Formula):
 
         return v_ed / v_pl_t_rd <= 1.0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.25."""
         _equation: str = r"\left( \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "V_{Ed}": f"{self.v_ed:.3f}",
-                "V_{pl,T,Rd}": f"{self.v_pl_t_rd:.3f}",
+                "V_{Ed}": f"{self.v_ed:.{n}f}",
+                "V_{pl,T,Rd}": f"{self.v_pl_t_rd:.{n}f}",
             },
             False,
         )

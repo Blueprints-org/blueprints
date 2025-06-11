@@ -50,20 +50,20 @@ class Form6Dot4AdditionalMoment(Formula):
 
         return n_ed * e_n
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.4."""
         _equation: str = r"N_{Ed} \cdot e_{N}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"e_{N}": f"{self.e_n:.3f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"e_{N}": f"{self.e_n:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\Delta M_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

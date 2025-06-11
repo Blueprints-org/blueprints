@@ -45,13 +45,13 @@ class Form6Dot16NominalWebWidth(Formula):
 
         return b_w - 0.5 * sum(diameters)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.16."""
         return LatexFormula(
             return_symbol=r"b_{w,nom}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"b_{w} - 0.5 \cdot \sum(⌀)",
-            numeric_equation=rf"{self.b_w:.3f} - 0.5 \cdot \left({' + '.join([f'{d:.3f}' for d in self.diameters])} \right)",
+            numeric_equation=rf"{self.b_w:.{n}f} - 0.5 \cdot \left({' + '.join([f'{d:.{n}f}' for d in self.diameters])} \right)",
             comparison_operator_label="=",
             unit="mm",
         )

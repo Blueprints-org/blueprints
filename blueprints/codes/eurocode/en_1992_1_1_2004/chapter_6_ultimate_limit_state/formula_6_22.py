@@ -55,14 +55,14 @@ class Form6Dot22CheckCrushingCompressionStruts(Formula):
 
         return v_ed <= nu * f_cd * np.sin(np.radians(theta_f)) * np.cos(np.radians(theta_f))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.22."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"v_{Ed} \leq \nu \cdot f_{cd} \cdot \sin(\theta_{f}) \cdot \cos(\theta_{f})",
-            numeric_equation=rf"{self.v_ed:.3f} \leq {self.nu:.3f} \cdot {self.f_cd:.3f} \cdot \sin({self.theta_f:.3f}) "
-            rf"\cdot \cos({self.theta_f:.3f})",
+            numeric_equation=rf"{self.v_ed:.{n}f} \leq {self.nu:.{n}f} \cdot {self.f_cd:.{n}f} \cdot \sin({self.theta_f:.{n}f}) "
+            rf"\cdot \cos({self.theta_f:.{n}f})",
             comparison_operator_label="\\to",
             unit="",
         )

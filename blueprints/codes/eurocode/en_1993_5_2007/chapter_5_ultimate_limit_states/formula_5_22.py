@@ -49,22 +49,22 @@ class Form5Dot22ReducedMomentResistanceClass3(Formula):
 
         return m_c_rd * (1 - n_ed / n_pl_rd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.22."""
         _equation: str = r"M_{c,Rd} \cdot \left(1 - \frac{N_{Ed}}{N_{pl,Rd}}\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{c,Rd}": f"{self.m_c_rd:.3f}",
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"N_{pl,Rd}": f"{self.n_pl_rd:.3f}",
+                r"M_{c,Rd}": f"{self.m_c_rd:.{n}f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
         )
 
         return LatexFormula(
             return_symbol=r"M_{N,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

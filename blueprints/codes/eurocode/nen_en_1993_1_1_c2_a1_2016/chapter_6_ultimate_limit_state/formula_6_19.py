@@ -49,15 +49,15 @@ class Form6Dot19CheckDesignElasticShearResistance(Formula):
 
         return tau_ed / (f_y / (3**0.5 * gamma_m0)) <= 1.0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.19."""
         _equation: str = r"\left( \frac{\tau_{Ed}}{f_{y} / (\sqrt{3} \cdot \gamma_{M0})} \leq 1.0 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\tau_{Ed}": f"{self.tau_ed:.3f}",
-                r"f_{y}": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
+                r"\tau_{Ed}": f"{self.tau_ed:.{n}f}",
+                r"f_{y}": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
             False,
         )

@@ -47,13 +47,13 @@ class Form6Dot36ExternalContourRadiusCircularColumnHeads(Formula):
         raise_if_negative(l_h=l_h, d=d, c=c)
         return l_h + 2 * d + 0.5 * c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.36."""
         return LatexFormula(
             return_symbol=r"r_{cont,ext}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"l_{H} + 2 \cdot d + 0.5 \cdot c",
-            numeric_equation=rf"{self.l_h:.3f} + 2 \cdot {self.d:.3f} + 0.5 \cdot {self.c:.3f}",
+            numeric_equation=rf"{self.l_h:.{n}f} + 2 \cdot {self.d:.{n}f} + 0.5 \cdot {self.c:.{n}f}",
             comparison_operator_label="=",
             unit="mm",
         )

@@ -44,20 +44,20 @@ class Form6Dot73StressRatio(Formula):
 
         return e_cd_min_equ / e_cd_max_equ
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.73."""
         _equation: str = r"\frac{E_{cd,min,equ}}{E_{cd,max,equ}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"E_{cd,min,equ}": f"{self.e_cd_min_equ:.3f}",
-                r"E_{cd,max,equ}": f"{self.e_cd_max_equ:.3f}",
+                r"E_{cd,min,equ}": f"{self.e_cd_min_equ:.{n}f}",
+                r"E_{cd,max,equ}": f"{self.e_cd_max_equ:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"R_{equ}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

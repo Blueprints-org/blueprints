@@ -43,13 +43,13 @@ class Form6Dot23CheckShearStressInterface(Formula):
 
         return v_edi <= v_rdi
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.23."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"v_{Edi} \leq v_{Rdi}",
-            numeric_equation=rf"{self.v_edi:.3f} \leq {self.v_rdi:.3f}",
+            numeric_equation=rf"{self.v_edi:.{n}f} \leq {self.v_rdi:.{n}f}",
             comparison_operator_label="\\to",
             unit="",
         )

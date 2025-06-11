@@ -48,7 +48,7 @@ class Form6Dot29Rho(Formula):
             return 0
         return ((2 * v_ed / v_pl_rd) - 1) ** 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.29rho."""
         _equation: str = (
             r"\begin{cases} "
@@ -59,22 +59,22 @@ class Form6Dot29Rho(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed}": f"{self.v_ed:.3f}",
-                r"V_{pl,Rd}": f"{self.v_pl_rd:.3f}",
+                r"V_{Ed}": f"{self.v_ed:.{n}f}",
+                r"V_{pl,Rd}": f"{self.v_pl_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed}": rf"{self.v_ed:.3f} \ N",
-                r"V_{pl,Rd}": rf"{self.v_pl_rd:.3f} \ N",
+                r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
+                r"V_{pl,Rd}": rf"{self.v_pl_rd:.{n}f} \ N",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\rho",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
@@ -124,7 +124,7 @@ class Form6Dot29RhoWithTorsion(Formula):
             return 0
         return ((2 * v_ed / v_pl_t_rd) - 1) ** 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.29rho with torsion."""
         _equation: str = (
             r"\begin{cases} "
@@ -135,22 +135,22 @@ class Form6Dot29RhoWithTorsion(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed}": f"{self.v_ed:.3f}",
-                r"V_{pl,T,Rd}": f"{self.v_pl_t_rd:.3f}",
+                r"V_{Ed}": f"{self.v_ed:.{n}f}",
+                r"V_{pl,T,Rd}": f"{self.v_pl_t_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed}": rf"{self.v_ed:.3f} \ N",
-                r"V_{pl,T,Rd}": rf"{self.v_pl_t_rd:.3f} \ N",
+                r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
+                r"V_{pl,T,Rd}": rf"{self.v_pl_t_rd:.{n}f} \ N",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\rho",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

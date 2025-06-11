@@ -49,30 +49,30 @@ class Form6Dot39awHollowSections(Formula):
 
         return min((a - 2 * b * t) / a, 0.5)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.39aw."""
         _equation: str = r"\min \left( \frac{A - 2 \cdot b \cdot t}{A}, 0.5 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r" t": f" {self.t:.3f}",
+                r"A": f"{self.a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r" t": f" {self.t:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"A": rf"{self.a:.3f} \ mm^2",
-                r"b": rf"{self.b:.3f} \ mm",
-                r" t": rf" {self.t:.3f} \ mm",
+                r"A": rf"{self.a:.{n}f} \ mm^2",
+                r"b": rf"{self.b:.{n}f} \ mm",
+                r" t": rf" {self.t:.{n}f} \ mm",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"a_w",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
@@ -123,30 +123,30 @@ class Form6Dot39awWeldedBoxSections(Formula):
 
         return min((a - 2 * b * t_f) / a, 0.5)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.39aw."""
         _equation: str = r"\min \left( \frac{A - 2 \cdot b \cdot t_f}{A}, 0.5 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"t_f": f"{self.t_f:.3f}",
+                r"A": f"{self.a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"t_f": f"{self.t_f:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"A": rf"{self.a:.3f} \ mm^2",
-                r"b": rf"{self.b:.3f} \ mm",
-                r"t_f": rf"{self.t_f:.3f} \ mm",
+                r"A": rf"{self.a:.{n}f} \ mm^2",
+                r"b": rf"{self.b:.{n}f} \ mm",
+                r"t_f": rf"{self.t_f:.{n}f} \ mm",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"a_w",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

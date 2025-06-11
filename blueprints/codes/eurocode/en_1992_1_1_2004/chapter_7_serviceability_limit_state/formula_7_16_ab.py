@@ -68,7 +68,7 @@ class Form7Dot16abSpanDepthRatio(Formula):
 
         return l_over_d
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.16a/b."""
         _equation: str = (
             r"\begin{cases} K \cdot \left[11 + 1.5 \cdot \sqrt{f_{ck}} \cdot \frac{\rho_0}{\rho} + "
@@ -79,17 +79,17 @@ class Form7Dot16abSpanDepthRatio(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"K": f"{self.capital_k:.3f}",
-                r"f_{ck}": f"{self.f_ck:.3f}",
-                r"\rho_0": f"{self.rho_0:.4f}",
-                r"\rho'": f"{self.rho_prime:.4f}",
-                r"\rho": f"{self.rho:.4f}",
+                r"K": f"{self.capital_k:.{n}f}",
+                r"f_{ck}": f"{self.f_ck:.{n}f}",
+                r"\rho_0": f"{self.rho_0:.{n + 1}f}",
+                r"\rho'": f"{self.rho_prime:.{n + 1}f}",
+                r"\rho": f"{self.rho:.{n + 1}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\frac{l}{d}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -128,13 +128,13 @@ class Form7Dot16ReferenceReinforcementRatio(Formula):
 
         return np.sqrt(f_ck) * 10**-3
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.16_rho_0."""
         _equation: str = r"\sqrt{f_{ck}} \cdot 10^{-3}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"f_{ck}": f"{self.f_ck:.3f}",
+                r"f_{ck}": f"{self.f_ck:.{n}f}",
             },
             False,
         )

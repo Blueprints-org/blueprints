@@ -43,22 +43,22 @@ class Form6Dot31CheckBendingAndAxialForce(Formula):
 
         return m_ed <= m_n_rd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.31."""
         _equation: str = r"M_{Ed} \leq M_{N,Rd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "M_{Ed}": f"{self.m_ed:.3f}",
-                "M_{N,Rd}": f"{self.m_n_rd:.3f}",
+                "M_{Ed}": f"{self.m_ed:.{n}f}",
+                "M_{N,Rd}": f"{self.m_n_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                "M_{Ed}": rf"{self.m_ed:.3f} \ Nmm",
-                "M_{N,Rd}": rf"{self.m_n_rd:.3f} \ Nmm",
+                "M_{Ed}": rf"{self.m_ed:.{n}f} \ Nmm",
+                "M_{N,Rd}": rf"{self.m_n_rd:.{n}f} \ Nmm",
             },
             False,
         )

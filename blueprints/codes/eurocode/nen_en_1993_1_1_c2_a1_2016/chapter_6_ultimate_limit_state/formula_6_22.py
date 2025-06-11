@@ -54,16 +54,16 @@ class Form6Dot22CheckShearBucklingResistance(Formula):
 
         return (h_w / t_w) > (72 * (epsilon / eta))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.22."""
         _equation: str = r"\left( \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"h_w": f"{self.h_w:.3f}",
-                r"t_w": f"{self.t_w:.3f}",
-                r"\epsilon": f"{self.epsilon:.3f}",
-                r"\eta": f"{self.eta:.3f}",
+                r"h_w": f"{self.h_w:.{n}f}",
+                r"t_w": f"{self.t_w:.{n}f}",
+                r"\epsilon": f"{self.epsilon:.{n}f}",
+                r"\eta": f"{self.eta:.{n}f}",
             },
             False,
         )

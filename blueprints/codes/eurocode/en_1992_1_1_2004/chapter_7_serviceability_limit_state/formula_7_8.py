@@ -44,20 +44,20 @@ class Form7Dot8CrackWidth(Formula):
 
         return s_r_max * epsilon_sm_minus_epsilon_cm
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.8."""
         _equation: str = r"s_{r,max} \cdot (\epsilon_{sm} - \epsilon_{cm})"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"s_{r,max}": f"{self.s_r_max:.3f}",
-                r"\epsilon_{sm} - \epsilon_{cm}": f"{self.epsilon_sm_minus_epsilon_cm:.6f}",
+                r"s_{r,max}": f"{self.s_r_max:.{n}f}",
+                r"\epsilon_{sm} - \epsilon_{cm}": f"{self.epsilon_sm_minus_epsilon_cm:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"w_k",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

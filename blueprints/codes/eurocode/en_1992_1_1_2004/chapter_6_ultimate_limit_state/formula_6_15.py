@@ -79,16 +79,16 @@ class Form6Dot15ShearReinforcementResistance(Formula):
 
         return left_side <= right_side
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.15."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{\frac{1}{2} \cdot \alpha_{cw} "
             r"\cdot \nu_{1} \cdot f_{cd}}{\sin(\alpha)}",
-            numeric_equation=rf"\frac{{{self.a_sw_max:.3f} \cdot {self.f_ywd:.3f}}}{{{self.b_w:.3f} \cdot "
-            rf"{self.s:.3f}}} \leq \frac{{\frac{{1}}{{2}} \cdot {self.alpha_cw:.3f} \cdot {self.nu_1:.3f} "
-            rf"\cdot {self.f_cd:.3f}}}{{\sin({self.alpha:.3f})}}",
+            numeric_equation=rf"\frac{{{self.a_sw_max:.{n}f} \cdot {self.f_ywd:.{n}f}}}{{{self.b_w:.{n}f} \cdot "
+            rf"{self.s:.{n}f}}} \leq \frac{{\frac{{1}}{{2}} \cdot {self.alpha_cw:.{n}f} \cdot {self.nu_1:.{n}f} "
+            rf"\cdot {self.f_cd:.{n}f}}}{{\sin({self.alpha:.{n}f})}}",
             comparison_operator_label="\\to",
             unit="",
         )

@@ -61,23 +61,23 @@ class Form6Dot44BetaRectangular(Formula):
 
         return (u1 / u1_star) + k * (u1 / w_1) * e_par
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.44."""
         _equation: str = r"\frac{u_1}{u_{1^*}} + k \cdot \frac{u_1}{W_1} \cdot e_{par}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"u_1": f"{self.u1:.3f}",
-                r"u_{1^*}": f"{self.u1_star:.3f}",
-                r"k": f"{self.k:.3f}",
-                r"W_1": f"{self.w_1:.3f}",
-                r"e_{par}": f"{self.e_par:.3f}",
+                r"u_1": f"{self.u1:.{n}f}",
+                r"u_{1^*}": f"{self.u1_star:.{n}f}",
+                r"k": f"{self.k:.{n}f}",
+                r"W_1": f"{self.w_1:.{n}f}",
+                r"e_{par}": f"{self.e_par:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\beta",
-            result=f"{self._evaluate(self.u1, self.u1_star, self.k, self.w_1, self.e_par):.3f}",
+            result=f"{self._evaluate(self.u1, self.u1_star, self.k, self.w_1, self.e_par):.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

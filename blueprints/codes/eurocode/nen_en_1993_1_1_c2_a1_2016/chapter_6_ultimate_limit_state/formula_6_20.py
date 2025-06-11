@@ -55,22 +55,22 @@ class Form6Dot20ShearStress(Formula):
 
         return (v_ed * s) / (i * t)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.20."""
         _equation: str = r"\frac{V_{Ed} \cdot S}{I \cdot t}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed}": f"{self.v_ed:.3f}",
-                r"S": f"{self.s:.3f}",
-                r"I": f"{self.i:.3f}",
-                r" t": f" {self.t:.3f}",
+                r"V_{Ed}": f"{self.v_ed:.{n}f}",
+                r"S": f"{self.s:.{n}f}",
+                r"I": f"{self.i:.{n}f}",
+                r" t": f" {self.t:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\tau_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

@@ -63,23 +63,23 @@ class Form7Dot1MinReinforcingSteel(Formula):
 
         return (k_c * k * f_ct_eff * a_ct) / sigma_s
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.1."""
         _equation: str = r"\frac{k_c \cdot k \cdot f_{ct,eff} \cdot A_{ct}}{\sigma_s}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"k_c": f"{self.k_c:.3f}",
-                r"k": f"{self.k:.3f}",
-                r"f_{ct,eff}": f"{self.f_ct_eff:.3f}",
-                r"A_{ct}": f"{self.a_ct:.3f}",
-                r"\sigma_s": f"{self.sigma_s:.3f}",
+                r"k_c": f"{self.k_c:.{n}f}",
+                r"k": f"{self.k:.{n}f}",
+                r"f_{ct,eff}": f"{self.f_ct_eff:.{n}f}",
+                r"A_{ct}": f"{self.a_ct:.{n}f}",
+                r"\sigma_s": f"{self.sigma_s:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_{s,min}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

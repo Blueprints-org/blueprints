@@ -52,30 +52,30 @@ class Form6Dot36MomentReduction(Formula):
         result = mpl_y_rd * (1 - n) / denominator
         return min(result, mpl_y_rd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.36."""
         _equation: str = r"\min\left(M_{pl,y,Rd}, M_{pl,y,Rd} \cdot (1 - n) / (1 - 0.5 \cdot a)\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "M_{pl,y,Rd}": f"{self.mpl_y_rd:.3f}",
-                " n": f" {self.n:.3f}",
-                "a": f"{self.a:.3f}",
+                "M_{pl,y,Rd}": f"{self.mpl_y_rd:.{n}f}",
+                " n": f" {self.n:.{n}f}",
+                "a": f"{self.a:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                "M_{pl,y,Rd}": rf"{self.mpl_y_rd:.3f} \ Nmm",
-                " n": rf" {self.n:.3f}",
-                "a": rf"{self.a:.3f}",
+                "M_{pl,y,Rd}": rf"{self.mpl_y_rd:.{n}f} \ Nmm",
+                " n": rf" {self.n:.{n}f}",
+                "a": rf"{self.a:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"M_{N,y,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

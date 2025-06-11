@@ -52,13 +52,13 @@ class Form6Dot33ContourRadiusCircularColumnHeads(Formula):
 
         return 2 * d + l_h + 0.5 * c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.33."""
         return LatexFormula(
             return_symbol=r"r_{cont}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"2 \cdot d + l_{H} + 0.5 \cdot c",
-            numeric_equation=rf"2 \cdot {self.d:.3f} + {self.l_h:.3f} + 0.5 \cdot {self.c:.3f}",
+            numeric_equation=rf"2 \cdot {self.d:.{n}f} + {self.l_h:.{n}f} + 0.5 \cdot {self.c:.{n}f}",
             comparison_operator_label="=",
             unit="mm",
         )

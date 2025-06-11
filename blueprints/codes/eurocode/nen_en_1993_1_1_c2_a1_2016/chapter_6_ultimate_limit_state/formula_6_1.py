@@ -64,7 +64,7 @@ class Form6Dot1ElasticVerification(Formula):
 
         return term1 + term2 - term3 + term4 <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.1."""
         _equation: str = (
             r"\left( \frac{\sigma_{x,\text{Ed}}}{f_y / \gamma_{M0}} \right)^2 "
@@ -76,11 +76,11 @@ class Form6Dot1ElasticVerification(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\sigma_{x,\text{Ed}}": f"{self.sigma_x_ed:.3f}",
-                r"\sigma_{z,\text{Ed}}": f"{self.sigma_z_ed:.3f}",
-                r"\tau_{\text{Ed}}": f"{self.tau_ed:.3f}",
-                r"f_y": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
+                r"\sigma_{x,\text{Ed}}": f"{self.sigma_x_ed:.{n}f}",
+                r"\sigma_{z,\text{Ed}}": f"{self.sigma_z_ed:.{n}f}",
+                r"\tau_{\text{Ed}}": f"{self.tau_ed:.{n}f}",
+                r"f_y": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
             False,
         )

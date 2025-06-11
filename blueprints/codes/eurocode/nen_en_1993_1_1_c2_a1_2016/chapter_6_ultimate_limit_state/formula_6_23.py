@@ -44,14 +44,14 @@ class Form6Dot23CheckTorsionalMoment(Formula):
 
         return t_ed / t_rd <= 1.0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.23."""
         _equation: str = r"\left( \frac{T_{Ed}}{T_{Rd}} \leq 1.0 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "T_{Ed}": f"{self.t_ed:.3f}",
-                "T_{Rd}": f"{self.t_rd:.3f}",
+                "T_{Ed}": f"{self.t_ed:.{n}f}",
+                "T_{Rd}": f"{self.t_rd:.{n}f}",
             },
             False,
         )

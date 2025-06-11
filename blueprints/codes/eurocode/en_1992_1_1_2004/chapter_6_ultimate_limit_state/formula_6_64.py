@@ -65,23 +65,23 @@ class Form6Dot64BondFactor(Formula):
 
         return (a_s + a_p) / (a_s + a_p * np.sqrt(xi * d_s / d_p))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.64."""
         _equation: str = r"\frac{A_s + A_P}{A_s + A_P \cdot \sqrt{\xi \cdot ⌀_s / ⌀_P}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_s": f"{self.a_s:.3f}",
-                r"A_P": f"{self.a_p:.3f}",
-                r"\xi": f"{self.xi:.3f}",
-                r"⌀_s": f"{self.d_s:.3f}",
-                r"⌀_P": f"{self.d_p:.3f}",
+                r"A_s": f"{self.a_s:.{n}f}",
+                r"A_P": f"{self.a_p:.{n}f}",
+                r"\xi": f"{self.xi:.{n}f}",
+                r"⌀_s": f"{self.d_s:.{n}f}",
+                r"⌀_P": f"{self.d_p:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\eta",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

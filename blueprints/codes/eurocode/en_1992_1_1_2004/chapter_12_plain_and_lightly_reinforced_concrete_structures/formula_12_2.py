@@ -63,13 +63,13 @@ class Form12Dot2PlainConcreteBendingResistance(Formula):
         )
         return eta_f_cd_pl * b * h_w * (1 - 2 * e / h_w)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 12.2."""
         return LatexFormula(
             return_symbol=r"N_{Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\eta f_{cd,pl} \cdot b \cdot h_w \cdot \left(1 - \frac{2e}{h_w}\right)",
-            numeric_equation=rf"{self.eta_f_cd_pl:.3f} \cdot {self.b:.3f} \cdot {self.h_w:.3f} "
-            rf"\cdot \left(1 - \frac{{2 \cdot {self.e:.3f}}}{{{self.h_w:.3f}}}\right)",
+            numeric_equation=rf"{self.eta_f_cd_pl:.{n}f} \cdot {self.b:.{n}f} \cdot {self.h_w:.{n}f} "
+            rf"\cdot \left(1 - \frac{{2 \cdot {self.e:.{n}f}}}{{{self.h_w:.{n}f}}}\right)",
             comparison_operator_label="=",
         )

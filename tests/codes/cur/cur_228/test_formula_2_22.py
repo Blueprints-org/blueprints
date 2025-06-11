@@ -65,10 +65,10 @@ class TestForm2Dot22ModulusHorizontalSubgrade:
                 (
                     "k_{h} = \\frac{2 \\cdot R}{E_{p}} \\cdot \\frac{4 \\cdot 2.65^{\\alpha} + 3 "
                     "\\alpha}{18} = \\frac{2 \\cdot 0.20}{2.47} \\cdot \\frac{4 \\cdot "
-                    "2.65^{0.33} + 3 \\cdot 0.33}{18} = 17.01 kN/m^3"
+                    "2.65^{0.33} + 3 \\cdot 0.33}{18} = 17.01 \\ kN/m^3"
                 ),
             ),
-            ("short", "k_{h} = 17.01 kN/m^3"),
+            ("short", r"k_{h} = 17.01 \ kN/m^3"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

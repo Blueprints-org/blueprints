@@ -61,28 +61,28 @@ class Form6Dot34CheckAxialForceY(Formula):
 
         return n_ed <= (0.5 * h_w * t_w * f_y) / gamma_m0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.34."""
         _equation: str = r"N_{Ed} \leq \frac{0.5 \cdot h_{w} \cdot t_{w} \cdot f_{y}}{\gamma_{M0}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"h_{w}": f"{self.h_w:.3f}",
-                r"t_{w}": f"{self.t_w:.3f}",
-                r"f_{y}": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"h_{w}": f"{self.h_w:.{n}f}",
+                r"t_{w}": f"{self.t_w:.{n}f}",
+                r"f_{y}": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
-                r"h_{w}": rf"{self.h_w:.3f} \ mm",
-                r"t_{w}": rf"{self.t_w:.3f} \ mm",
-                r"f_{y}": rf"{self.f_y:.3f} \ MPa",
-                r"\gamma_{M0}": rf"{self.gamma_m0:.3f}",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                r"h_{w}": rf"{self.h_w:.{n}f} \ mm",
+                r"t_{w}": rf"{self.t_w:.{n}f} \ mm",
+                r"f_{y}": rf"{self.f_y:.{n}f} \ MPa",
+                r"\gamma_{M0}": rf"{self.gamma_m0:.{n}f}",
             },
             True,
         )

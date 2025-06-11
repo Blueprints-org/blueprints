@@ -58,13 +58,13 @@ class Form6Dot24DesignShearStress(Formula):
 
         return beta * v_ed / (z * b_i)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.24."""
         return LatexFormula(
             return_symbol=r"v_{Edi}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\beta \cdot \frac{V_{Ed}}{z \cdot b_{i}}",
-            numeric_equation=rf"{self.beta:.3f} \cdot \frac{{{self.v_ed:.3f}}}{{{self.z:.3f} \cdot {self.b_i:.3f}}}",
+            numeric_equation=rf"{self.beta:.{n}f} \cdot \frac{{{self.v_ed:.{n}f}}}{{{self.z:.{n}f} \cdot {self.b_i:.{n}f}}}",
             comparison_operator_label="=",
             unit="MPa",
         )
