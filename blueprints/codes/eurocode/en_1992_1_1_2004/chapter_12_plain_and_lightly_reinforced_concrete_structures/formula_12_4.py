@@ -1,6 +1,6 @@
-"""Formula 12.4 from NEN-EN 1992-1-1+C2:2011: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
+"""Formula 12.4 from NEN-EN 1992-1-1+C2:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
+from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
@@ -10,11 +10,11 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 class Form12Dot4PlainConcreteShearStress(Formula):
     r"""Class representing formula 12.4 for the calculation of the design shear stress of plain concrete, :math:`\tau_{cp}`.
 
-    NEN-EN 1992-1-1+C2:2011 art.12.6.3(3) - Formula (12.4)
+    NEN-EN 1992-1-1+C2:2004 art.12.6.3(3) - Formula (12.4)
     """
 
     label = "12.4"
-    source_document = NEN_EN_1992_1_1_C2_2011
+    source_document = EN_1992_1_1_2004
 
     def __init__(
         self,
@@ -24,7 +24,7 @@ class Form12Dot4PlainConcreteShearStress(Formula):
     ) -> None:
         r"""[:math:`\tau_{cp}`] Design shear stress of plain concrete [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2011 art.12.6.3(2) - Formula (12.4)
+        NEN-EN 1992-1-1+C2:2004 art.12.6.3(2) - Formula (12.4)
 
         Parameters
         ----------
@@ -48,7 +48,7 @@ class Form12Dot4PlainConcreteShearStress(Formula):
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
-            v_ed=v_ed, 
+            v_ed=v_ed,
             k=k,
         )
         raise_if_less_or_equal_to_zero(
@@ -74,12 +74,12 @@ class Form12Dot4PlainConcreteShearStressComparison:
     r"""Class representing the comparison of σcp and σc,lim for plain concrete shear stress."""
 
     label = "12.4 Comparison"
-    source_document = NEN_EN_1992_1_1_C2_2011
+    source_document = EN_1992_1_1_2004
 
     def __init__(self, sigma_cp: MPA, sigma_c_lim: MPA) -> None:
         r"""[:math:`σ_{cp} ≤ σ_{c,lim}`] Comparison of design shear stress and limit compressive stress.
 
-        NEN-EN 1992-1-1+C2:2011 art.12.6.3
+        NEN-EN 1992-1-1+C2:2004 art.12.6.3
 
         Parameters
         ----------

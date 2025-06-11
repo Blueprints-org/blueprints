@@ -1,12 +1,12 @@
-"""Formula 12.5 and 12.6 from NEN-EN 1992-1-1+C2:2011: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
+"""Formula 12.5 and 12.6 from NEN-EN 1992-1-1+C2:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011 import NEN_EN_1992_1_1_C2_2011
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_3 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_3 import (
     Form12Dot3PlainConcreteShearStress,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_4 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_4 import (
     Form12Dot4PlainConcreteShearStressComparison,
 )
 from blueprints.codes.formula import Formula
@@ -19,11 +19,11 @@ class Form12Dot5And6PlainConcreteBendingResistance(Formula):
     r"""Class representing formula 12.5 and 12.6 for the calculation of the design bending resistance of plain concrete,
     :math:`f_{cvd}`.
 
-    NEN-EN 1992-1-1+C2:2011 art.12.6.1 - Formula (12.5)
+    NEN-EN 1992-1-1+C2:2004 art.12.6.1 - Formula (12.5)
     """
 
     label = "12.5/12.6"
-    source_document = NEN_EN_1992_1_1_C2_2011
+    source_document = EN_1992_1_1_2004
 
     def __init__(
         self,
@@ -33,7 +33,7 @@ class Form12Dot5And6PlainConcreteBendingResistance(Formula):
     ) -> None:
         r"""[:math:`f_{cvd}`] Design bending resistance of plain concrete [:math=`MPa`].
 
-        NEN-EN 1992-1-1+C2:2011 art.12.6.1 - Formula (12.5)
+        NEN-EN 1992-1-1+C2:2004 art.12.6.1 - Formula (12.5)
 
         Parameters
         ----------

@@ -1,18 +1,16 @@
-"""Testing formula 12.5 and 12.6 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 12.5 and 12.6 of NEN-EN 1992-1-1+C2:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_3 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_5_6 import (
     Form12Dot3PlainConcreteShearStress,
-)
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_5_6 import (
     Form12Dot5And6PlainConcreteBendingResistance,
 )
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm12Dot5PlainConcreteBendingResistance:
-    """Validation for formula 12.5 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 12.5 from NEN-EN 1992-1-1+C2:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
