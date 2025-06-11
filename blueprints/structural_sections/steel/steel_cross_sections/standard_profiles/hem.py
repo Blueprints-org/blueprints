@@ -17,7 +17,7 @@ class HEM(Enum):
     HEM220 = ("HEM220", 240, 226, 15.5, 26, 18)
     HEM240 = ("HEM240", 270, 248, 18, 32, 21)
     HEM260 = ("HEM260", 290, 268, 18, 32.5, 24)
-    HEM280 = ("HEM280", 310, 288, 18.5, 33, 24)
+    HEM280 = ("HEM280", 310, 288, 18.5, 39, 24)
     HEM300 = ("HEM300", 340, 310, 21, 39, 27)
     HEM320 = ("HEM320", 359, 309, 21, 40, 27)
     HEM340 = ("HEM340", 377, 309, 21, 40, 27)
@@ -35,13 +35,23 @@ class HEM(Enum):
 
     def __init__(self, alias: str, h: MM, b: MM, t_w: MM, t_f: MM, radius: MM) -> None:
         """Initialize HEM profile.
-        Args:
-            alias (str): Profile alias.
-            h (MM): Total height.
-            b (MM): Total width.
-            t_w (MM): Web thickness.
-            t_f (MM): Flange thickness.
-            radius (MM): Radius.
+
+        This method sets the profile's alias, dimensions, and radii.
+
+        Parameters
+        ----------
+        alias: str
+            Profile alias.
+        h: MM
+            Total height of the profile.
+        b: MM
+            Total width of the profile.
+        t_w: MM
+            Web thickness of the profile.
+        t_f: MM
+            Flange thickness of the profile.
+        radius: MM
+            Radius of the profile.
         """
         self.alias = alias
         self.top_flange_width = b
