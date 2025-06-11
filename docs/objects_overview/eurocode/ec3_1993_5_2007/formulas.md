@@ -1,4 +1,4 @@
-**NEN-EN 1993-5 - februari 2008
+**EN 1993-5 - februari 2007
 Eurocode 3: Design of steel structures
 Part 5: Piling**
 
