@@ -21,16 +21,16 @@ class Form6Dot36MomentReduction(Formula):
     ) -> None:
         r"""[$M_{N,y,Rd}$] Reduced bending moment [$Nmm$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9(5) - Formula (6.36)
+        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.36)
 
         Parameters
         ----------
         mpl_y_rd : NMM
             [$M_{pl,y,Rd}$] Plastic bending moment about the y-axis [$Nmm$].
         a : DIMENSIONLESS
-            Reduction factor for cross-sectional area, see equation 6.38a [-].
+            Reduction factor for cross-sectional area, see formula 6.38a (`Form6Dot38A`) [-].
         n : DIMENSIONLESS
-            Axial force ratio, see equation 6.38n [-].
+            Axial force ratio, see formula 6.38n (`Form6Dot38N`) [-].
         """
         super().__init__()
         self.mpl_y_rd = mpl_y_rd
