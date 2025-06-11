@@ -25,7 +25,7 @@ class Form6Dot29ReducedYieldStrength(Formula):
         Parameters
         ----------
         rho : DIMENSIONLESS
-            [$\rho$] Reduction factor for shear force, see 6.2.8(3) (dimensionless).
+            [$\rho$] Reduction factor for shear force, see equation 6.29rho (dimensionless).
         f_y : MPA
             [$f_y$] Yield strength of the material [$MPa$].
         """

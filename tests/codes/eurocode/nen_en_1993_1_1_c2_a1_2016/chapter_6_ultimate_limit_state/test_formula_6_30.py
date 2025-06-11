@@ -97,14 +97,14 @@ class TestForm6Dot30ReducedPlasticResistanceMoment:
         [
             (
                 "complete",
-                r"M_{y,v,Rd} = \min\left(\frac{\left[W_{pl,y} - \frac{\rho \cdot (h_w \cdot t_w)^2}"
+                r"M_{y,V,Rd} = \min\left(\frac{\left[W_{pl,y} - \frac{\rho \cdot (h_w \cdot t_w)^2}"
                 r"{4 \cdot t_w}\right] \cdot f_y}{\gamma_{M0}}, M_{y,c,Rd}\right) = "
                 r"\min\left(\frac{\left[500000.000 - \frac{0.500 \cdot (300.000 \cdot 10.000)^2}"
                 r"{4 \cdot 10.000}\right] \cdot 355.000}{1.000}, 10000000000.000\right) = 137562500.000 \ Nmm",
             ),
             (
                 "complete_with_units",
-                r"M_{y,v,Rd} = \min\left(\frac{\left[W_{pl,y} - \frac{\rho \cdot (h_w \cdot t_w)^2}{4 \cdot t_w}\right] "
+                r"M_{y,V,Rd} = \min\left(\frac{\left[W_{pl,y} - \frac{\rho \cdot (h_w \cdot t_w)^2}{4 \cdot t_w}\right] "
                 r"\cdot f_y}{\gamma_{M0}}, M_{y,c,Rd}\right) = "
                 r"\min\left(\frac{\left[500000.000 \ mm^3 - \frac{0.500 \cdot (300.000 \ mm \cdot 10.000 \ mm)^2}"
                 r"{4 \cdot 10.000 \ mm}\right] \cdot 355.000 \ MPa}{1.000}, 10000000000.000 \ Nmm\right) = 137562500.000 \ Nmm",

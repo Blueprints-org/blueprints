@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot30ReducedPlasticResistanceMoment(Formula):
-    r"""Class representing formula 6.30 for the calculation of [$M_{y,v,Rd}$]."""
+    r"""Class representing formula 6.30 for the calculation of [$M_{y,V,Rd}$]."""
 
     label = "6.30"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
@@ -23,7 +23,7 @@ class Form6Dot30ReducedPlasticResistanceMoment(Formula):
         gamma_m0: DIMENSIONLESS,
         m_y_c_rd: NMM,
     ) -> None:
-        r"""[$M_{y,v,Rd}$] Reduced design plastic resistance moment [$Nmm$].
+        r"""[$M_{y,V,Rd}$] Reduced design plastic resistance moment [$Nmm$].
 
         NEN-EN 1993-1-1+A1:2016 art.6.2.8(5) - Formula (6.30)
 
@@ -32,7 +32,7 @@ class Form6Dot30ReducedPlasticResistanceMoment(Formula):
         w_pl_y : MM3
             [$W_{pl,y}$] Plastic section modulus about the y axis [$mm^3$].
         rho : DIMENSIONLESS
-            [$\rho$] Shear force ratio (see 6.2.8 (3) or (4)) [-].
+            [$\rho$] Shear force ratio (see 6.2.8 (3) or equation 6.29 (rho)) [-].
         h_w : MM
             [$h_w$] Web height [$mm$].
         t_w : MM
@@ -103,7 +103,7 @@ class Form6Dot30ReducedPlasticResistanceMoment(Formula):
             False,
         )
         return LatexFormula(
-            return_symbol=r"M_{y,v,Rd}",
+            return_symbol=r"M_{y,V,Rd}",
             result=f"{self:.3f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
