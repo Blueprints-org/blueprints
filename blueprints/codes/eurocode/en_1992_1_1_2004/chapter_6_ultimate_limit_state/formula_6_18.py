@@ -53,13 +53,13 @@ class Form6Dot18AdditionalTensileForce(Formula):
 
         return 0.5 * v_ed * (cot(theta) - cot(alpha))
 
-    def latex(self, n: int = 3) -> LatexFormula:  # noqa: ARG002
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18."""
         return LatexFormula(
             return_symbol=r"\Delta F_{td}",
-            result=f"{self:.{3}f}",
+            result=f"{self:.{n}f}",
             equation=r"0.5 \cdot V_{Ed} \cdot \left(\cot(\theta) - \cot(\alpha)\right)",
-            numeric_equation=rf"0.5 \cdot {self.v_ed:.{3}f} \cdot \left(\cot({self.theta:.{3}f}) - \cot({self.alpha:.{3}f})\right)",
+            numeric_equation=rf"0.5 \cdot {self.v_ed:.{n}f} \cdot \left(\cot({self.theta:.{n}f}) - \cot({self.alpha:.{n}f})\right)",
             comparison_operator_label="=",
             unit="kN",
         )
