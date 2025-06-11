@@ -10,10 +10,10 @@ Follow the steps below to explore the usage of different steel profile shapes (o
 
 ## Define the Steel Class
 
-Start by defining the steel class to be used for the profiles:
+Start by defining the steel material to be used for the profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:17:18"
+--8<-- "examples/_code/steel_profile_shapes.py:15:16"
 ```
 
 ## Circular Hollow Section (CHS) Profiles
@@ -23,7 +23,7 @@ Start by defining the steel class to be used for the profiles:
 Structual parameters are automatically calculated and can be obtained with:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:20:28"
+--8<-- "examples/_code/steel_profile_shapes.py:18:31"
 ```
 
 ### Custom CHS Profile
@@ -31,7 +31,7 @@ Structual parameters are automatically calculated and can be obtained with:
 Alternatively, define a custom CHS profile by specifying its dimensions:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:30:32"
+--8<-- "examples/_code/steel_profile_shapes.py:33:39"
 ```
 
 ## Strip Profiles
@@ -41,7 +41,7 @@ Alternatively, define a custom CHS profile by specifying its dimensions:
 Predefined strip profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:30:32"
+--8<-- "examples/_code/steel_profile_shapes.py:41:47"
 ```
 
 ### Custom Strip Profile
@@ -49,7 +49,7 @@ Predefined strip profiles are also available:
 Define a custom strip profile by specifying its width and height:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:34:40"
+--8<-- "examples/_code/steel_profile_shapes.py:49:55"
 ```
 
 ## Strip Profiles
@@ -59,7 +59,7 @@ Define a custom strip profile by specifying its width and height:
 Predefined I profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:40:42"
+--8<-- "examples/_code/steel_profile_shapes.py:57:63"
 ```
 
 ### Custom Strip Profile
@@ -67,7 +67,7 @@ Predefined I profiles are also available:
 Define a custom strip profile by specifying its width and height:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:44:61"
+--8<-- "examples/_code/steel_profile_shapes.py:65:77"
 ```
 
 ## Visualizing Profiles
