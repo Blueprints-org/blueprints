@@ -3,13 +3,13 @@
 import numpy as np
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
-from blueprints.codes.formula import Formula
+from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
-from blueprints.validations import raise_if_less_or_equal_to_zero
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form5Dot8CheckSlenderness(Formula):
+class Form5Dot8CheckSlenderness(ComparisonFormula):
     r"""Class representing formula 5.8 for check of slenderness."""
 
     label = "5.8"
@@ -29,7 +29,8 @@ class Form5Dot8CheckSlenderness(Formula):
         Parameters
         ----------
         lambda_bar : DIMENSIONLESS
-            [$\lambda_{bar}$] Non-dimensional slenderness [-].
+            [$\lambda_{bar}$] In-plane non-dimensional slenderness calculated for the member
+            considered as hinged at its ends [-].
         a : MM2
             [$A$] Cross-sectional area [$mm^2$].
         f_y : MPA
@@ -44,6 +45,24 @@ class Form5Dot8CheckSlenderness(Formula):
         self.n_ed = n_ed
 
     @staticmethod
+    def _evaluate_lhs(lambda_bar: DIMENSIONLESS, *_args, **_kwargs) -> float:
+        """Evaluates the left-hand side of the comparison. See __init__ for details."""
+        raise_if_negative(lambda_bar=lambda_bar)
+        return lambda_bar
+
+    @staticmethod
+    def _evaluate_rhs(a: MM2, f_y: MPA, n_ed: N, *_args, **_kwargs) -> float:
+        """Evaluates the right-hand side of the comparison. See __init__ for details."""
+        raise_if_less_or_equal_to_zero(n_ed=n_ed)
+        raise_if_negative(a=a, f_y=f_y)
+        return 0.5 * np.sqrt(a * f_y / n_ed)
+
+    @property
+    def unity_check(self) -> float:
+        """Returns the unity check value."""
+        return self.lhs / self.rhs
+
+    @staticmethod
     def _evaluate(
         lambda_bar: DIMENSIONLESS,
         a: MM2,
@@ -51,23 +70,32 @@ class Form5Dot8CheckSlenderness(Formula):
         n_ed: N,
     ) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(lambda_bar=lambda_bar, A=a, f_y=f_y, N_Ed=n_ed)
+        lhs = Form5Dot8CheckSlenderness._evaluate_lhs(lambda_bar=lambda_bar)
+        rhs = Form5Dot8CheckSlenderness._evaluate_rhs(a=a, f_y=f_y, n_ed=n_ed)
+        return lhs > rhs
 
-        return lambda_bar > 0.5 * np.sqrt(a * f_y / n_ed)
+    def __bool__(self) -> bool:
+        """Allow truth-checking of the check object itself."""
+        return self._evaluate(
+            lambda_bar=self.lambda_bar,
+            a=self.a,
+            f_y=self.f_y,
+            n_ed=self.n_ed,
+        )
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula 5.8."""
         n = 2
-        _equation: str = r"\left( \lambda_{bar} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} \right)"
+        _equation: str = r"\left( \overline{\lambda} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\lambda_{bar}": f"{self.lambda_bar:.{n}f}",
+                r"\lambda": f"{self.lambda_bar:.{n}f}",
                 "A": f"{self.a:.{n}f}",
                 "f_{y}": f"{self.f_y:.{n}f}",
                 "N_{Ed}": f"{self.n_ed:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"CHECK",

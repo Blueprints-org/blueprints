@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_8 import Form5Dot8CheckSlenderness
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm5Dot8CheckSlenderness:
@@ -28,22 +28,50 @@ class TestForm5Dot8CheckSlenderness:
     @pytest.mark.parametrize(
         ("lambda_bar", "a", "f_y", "n_ed"),
         [
-            (-1.0, 1000.0, 355.0, 100000.0),  # lambda_bar is negative
-            (1.0, -1000.0, 355.0, 100000.0),  # a is negative
-            (1.0, 1000.0, -355.0, 100000.0),  # f_y is negative
             (1.0, 1000.0, 355.0, -100000.0),  # n_ed is negative
-            (0.0, 1000.0, 355.0, 100000.0),  # lambda_bar is zero
-            (1.0, 0.0, 355.0, 100000.0),  # a is zero
-            (1.0, 1000.0, 0.0, 100000.0),  # f_y is zero
             (1.0, 1000.0, 355.0, 0.0),  # n_ed is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, lambda_bar: float, a: float, f_y: float, n_ed: float) -> None:
+    def test_raise_error_when_invalid_values_less_or_equal_to_zero(self, lambda_bar: float, a: float, f_y: float, n_ed: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form5Dot8CheckSlenderness(lambda_bar, a, f_y, n_ed)
+            Form5Dot8CheckSlenderness(
+                lambda_bar=lambda_bar,
+                a=a,
+                f_y=f_y,
+                n_ed=n_ed,
+            )
 
-    def test_latex(self) -> None:
+    @pytest.mark.parametrize(
+        ("lambda_bar", "a", "f_y", "n_ed"),
+        [
+            (-1.0, 1000.0, 355.0, 100000.0),  # lambda_bar is negative
+            (1.0, -1000.0, 355.0, 100000.0),  # a is negative
+            (1.0, 1000.0, -355.0, 100000.0),  # f_y is negative
+        ],
+    )
+    def test_raise_error_when_negative(self, lambda_bar: float, a: float, f_y: float, n_ed: float) -> None:
+        """Test invalid values."""
+        with pytest.raises(NegativeValueError):
+            Form5Dot8CheckSlenderness(
+                lambda_bar=lambda_bar,
+                a=a,
+                f_y=f_y,
+                n_ed=n_ed,
+            )
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to \left( \overline{\lambda} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} "
+                r"\right) \to \left( \overline{1.00} > 0.5 \sqrt{\frac{1000.00 \cdot 355.00}{100000.00}} \right) \to OK",
+            ),
+            ("short", r"CHECK \to OK"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
         lambda_bar = 1.0
@@ -52,13 +80,16 @@ class TestForm5Dot8CheckSlenderness:
         n_ed = 100000.0
 
         # Object to test
-        formula = Form5Dot8CheckSlenderness(lambda_bar=lambda_bar, a=a, f_y=f_y, n_ed=n_ed)
-        latex = formula.latex()
+        latex = Form5Dot8CheckSlenderness(
+            lambda_bar=lambda_bar,
+            a=a,
+            f_y=f_y,
+            n_ed=n_ed,
+        ).latex()
 
-        expected_equation = r"\left( \lambda_{bar} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} \right)"
-        expected_numeric_equation = r"\left( 1.00 > 0.5 \sqrt{\frac{1000.00 \cdot 355.00}{100000.00}} \right)"
-        expected_result = "OK"
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
 
-        assert latex.equation == expected_equation
-        assert latex.numeric_equation == expected_numeric_equation
-        assert latex.result == expected_result
+        assert expected == actual[representation], f"{representation} representation failed."
