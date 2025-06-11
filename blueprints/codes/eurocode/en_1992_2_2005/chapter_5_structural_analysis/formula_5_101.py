@@ -1,8 +1,8 @@
-"""Formula 5.101 from NEN-EN 1992-2:2005: Chapter 5 - Structural Analysis."""
+"""Formula 5.101 from EN 1992-2:2005: Chapter 5 - Structural Analysis."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.nen_en_1992_2_2005 import NEN_EN_1992_2_2005_C1_2005
+from blueprints.codes.eurocode.en_1992_2_2005 import EN_1992_2_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, M
@@ -13,7 +13,7 @@ class Form5Dot101Imperfections(Formula):
     r"""Class representing formula 5.101 for the calculation of initial inclination imperfections, [$$\Theta_i$$]."""
 
     label = "5.101"
-    source_document = NEN_EN_1992_2_2005_C1_2005
+    source_document = EN_1992_2_2005
 
     def __init__(
         self,
@@ -23,7 +23,7 @@ class Form5Dot101Imperfections(Formula):
         r"""[$$\Theta_i$$] Initial inclination imperfections, [$$\Theta_i$$], is a ratio between height
         and inclination of the member [$$-$$].
 
-        NEN-EN 1992-2:2005 art.5.2(5) - Formula (5.101)
+        EN 1992-2:2005 art.5.2(5) - Formula (5.101)
 
         Parameters
         ----------
@@ -65,7 +65,7 @@ class Form5Dot101Sub1ReductionFactorLengthOrHeight(Formula):
     """
 
     label = "5.101"
-    source_document = NEN_EN_1992_2_2005_C1_2005
+    source_document = EN_1992_2_2005
 
     def __init__(
         self,
