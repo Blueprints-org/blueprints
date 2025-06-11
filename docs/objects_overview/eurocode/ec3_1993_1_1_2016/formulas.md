@@ -1,9 +1,9 @@
-**NEN-EN 1993-1-1+C2+A1 - December 2016
-Eurocode 3: Design of steel structures
+**NEN-EN 1993-1-1+C2+A1 - December 2016  
+Eurocode 3: Design of steel structures  
 Part 1-1: General rules and rules for buildings**
 
-The table presents a list of formulas from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :
-heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+The table presents a list of formulas from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :heavy_check_mark:)
+and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 108 formulas present.
 
@@ -25,47 +25,53 @@ Total of 108 formulas present.
 | 5.12           | :x:  |         |             |
 | 5.13           | :x:  |         |             |
 | 5.14           | :x:  |         |             |
-| 6.1            | :x:  |         |             |
-| 6.2            | :heavy_check_mark:  |         | Form6Dot2UtilizationRatio            |
-| 6.3            | :x:  |         |             |
-| 6.4            | :x:  |         |             |
-| 6.5            | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength |
-| 6.6            | :x:  |         |             |
-| 6.7            | :x:  |         |             |
-| 6.8            | :x:  |         |             |
-| 6.9            | :x:  |         |             |
-| 6.10           | :x:  |         |             |
-| 6.11           | :x:  |         |             |
-| 6.12           | :x:  |         |             |
-| 6.13           | :x:  |         |             |
-| 6.14           | :x:  |         |             |
-| 6.15           | :x:  |         |             |
-| 6.16           | :x:  |         |             |
-| 6.17           | :x:  |         |             |
-| 6.18           | :x:  |         |             |
-| 6.19           | :x:  |         |             |
-| 6.20           | :x:  |         |             |
-| 6.21           | :x:  |         |             |
-| 6.22           | :x:  |         |             |
-| 6.23           | :x:  |         |             |
-| 6.24           | :x:  |         |             |
-| 6.25           | :x:  |         |             |
-| 6.26           | :x:  |         |             |
-| 6.27           | :x:  |         |             |
-| 6.28           | :x:  |         |             |
-| 6.29           | :x:  |         |             |
-| 6.30           | :x:  |         |             |
-| 6.31           | :x:  |         |             |
-| 6.32           | :x:  |         |             |
-| 6.33           | :x:  |         |             |
-| 6.34           | :x:  |         |             |
-| 6.35           | :x:  |         |             |
-| 6.36           | :x:  |         |             |
-| 6.37           | :x:  |         |             |
-| 6.38           | :x:  |         |             |
-| 6.39           | :x:  |         |             |
-| 6.40           | :x:  |         |             |
-| 6.41           | :x:  |         |             |
+| 6.1            | :heavy_check_mark:  |         | Form6Dot1ElasticVerification                     |
+| 6.2            | :heavy_check_mark:  |         | Form6Dot2UtilizationRatio                        |
+| 6.3            | :heavy_check_mark:  |         | Form6Dot3MinDeductionAreaStaggeredFastenerHoles    |
+| 6.4            | :heavy_check_mark:  |         | Form6Dot4AdditionalMoment                  |
+| 6.5            | :heavy_check_mark:  |         | Form6Dot5UnityCheckTensileStrength               |
+| 6.6            | :heavy_check_mark:  |         | Form6Dot6DesignPlasticRestistanceGrossCrossSection            |
+| 6.7            | :heavy_check_mark:  |         | Form6Dot7DesignUltimateResistanceNetCrossSection           |
+| 6.8            | :heavy_check_mark:  |         | Form6Dot8NetDesignTensionResistance            |
+| 6.9            | :heavy_check_mark:  |         | Form6Dot9CheckCompressionForce            |
+| 6.10           | :heavy_check_mark:  |         | Form6Dot10NcRdClass1And2And3            |
+| 6.11           | :heavy_check_mark:  |         | Form6Dot11NcRdClass4            |
+| 6.12           | :heavy_check_mark:  |         | Form6Dot12CheckBendingMoment            |
+| 6.13           | :heavy_check_mark:  |         | Form6Dot13MCRdClass1And2            |
+| 6.14           | :heavy_check_mark:  |         | Form6Dot14MCRdClass3            |
+| 6.15           | :heavy_check_mark:  |         | Form6Dot15McRdClass4            |
+| 6.16           | :heavy_check_mark:  |         | Form6Dot16CheckFlangeWithFastenerHoles            |
+| 6.17           | :heavy_check_mark:  |         | Form6Dot17CheckShearForce            |
+| 6.18           | :heavy_check_mark:  |         | Form6Dot18DesignPlasticShearResistance          |
+| 6.18 A_v       | :heavy_check_mark:  |         | Various equations          |
+| 6.19           | :heavy_check_mark:  |         | Form6Dot19CheckDesignElasticShearResistance          |
+| 6.20           | :heavy_check_mark:  |         | Form6Dot20ShearStress           |
+| 6.21           | :heavy_check_mark:  |         | Form6Dot21ShearStressIOrHSection            |
+| 6.22           | :heavy_check_mark:  |         | Form6Dot22CheckShearBucklingResistance            |
+| 6.23           | :heavy_check_mark:  |         | Form6Dot23CheckTorsionalMoment            |
+| 6.24           | :heavy_check_mark:  |         | Form6Dot24TotalTorsionalMoment            |
+| 6.25           | :heavy_check_mark:  |         | Form6Dot25CheckCombinedShearForceAndTorsionalMoment            |
+| 6.26           | :heavy_check_mark:  |         | Form6Dot26VplTRdIOrHSection            |
+| 6.27           | :heavy_check_mark:  |         | Form6Dot27VplTRdChannelSection            |
+| 6.28           | :heavy_check_mark:  |         | Form6Dot28VplTRdHollowSection            |
+| 6.29           | :heavy_check_mark:  |         | Form6Dot29ReducedYieldStrength            |
+| 6.29 (rho)     | :heavy_check_mark:  |         | Form6Dot29Rho and Form6Dot29RhoWithTorsion            |
+| 6.30           | :heavy_check_mark:  |         | Form6Dot30ReducedPlasticResistanceMoment            |
+| 6.31           | :heavy_check_mark:  |         | Form6Dot31CheckBendingAndAxialForce             |
+| 6.32           | :heavy_check_mark:  |         | Form6Dot32MNrdRectangular            |
+| 6.33           | :heavy_check_mark:  |         | Form6Dot33CheckAxialForceY            |
+| 6.34           | :heavy_check_mark:  |         | Form6Dot34CheckAxialForceY            |
+| 6.35           | :heavy_check_mark:  |         | Form6Dot35CheckAxialForceZ            |
+| 6.36           | :heavy_check_mark:  |         | Form6Dot36MomentReduction            |
+| 6.37           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
+| 6.38           | :heavy_check_mark:  |         | Form6Dot37Dot38MomentReduction            |
+| 6.38n          | :heavy_check_mark:  |         | Form6Dot38N           |
+| 6.38a          | :heavy_check_mark:  |         | Form6Dot38A            |
+| 6.39           | :heavy_check_mark:  |         | Form6Dot39ReducedBendingMomentResistance            |
+| 6.39 a_w       | :heavy_check_mark:  |         | Form6Dot39awHollowSections and Form6Dot39awWeldedBoxSections            |
+| 6.40           | :heavy_check_mark:  |         | Form6Dot40ReducedBendingMomentResistance            |
+| 6.40 a_f       | :heavy_check_mark:  |         | Form6Dot40afHollowSections and Form6Dot40afWeldedBoxSections            |
+| 6.41           | :heavy_check_mark:  |         | Form6Dot41BiaxialBendingCheck            |
 | 6.42           | :x:  |         |             |
 | 6.43           | :x:  |         |             |
 | 6.44           | :x:  |         |             |

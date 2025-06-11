@@ -8,11 +8,9 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from enum import Enum
 from functools import total_ordering
-from typing import Self, TypeVar
+from typing import Self
 
 from blueprints.utils.abc_enum_meta import ABCEnumMeta
-
-T = TypeVar("T", bound="Exposure")
 
 
 @total_ordering
@@ -76,7 +74,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         raise TypeError("Only the same exposure class types can be compared with each other!")
 
     @classmethod
-    def options(cls: type[T]) -> list[str]:
+    def options(cls) -> list[str]:
         """Return all the possible options within a subclass.
 
         Returns
@@ -161,7 +159,7 @@ class ExposureClassesBase:
     def no_risk(self) -> bool:
         """Check if all exposure classes are 'Not applicable'.
 
-        This represents X0 class designation according to table 4.1 from NEN-EN 1992-1-1+C2:2011.
+        This represents X0 class designation according to table 4.1 from EN 1992-1-1:2004.
 
         Returns
         -------

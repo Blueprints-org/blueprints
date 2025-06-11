@@ -12,7 +12,8 @@ extra_javascript:
   - https://unpkg.com/katex@0/dist/katex.min.js
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
   - assets/javascripts/readthedocs.js
-  
+  - assets/javascripts/notebook_examples.js
+
 copyright: "2025 &copy; Blueprints"
 
 theme:
@@ -88,6 +89,10 @@ plugins:
             docstring_section_style: list
             show_if_no_docstring: false
   - awesome-nav
+  - mkdocs-jupyter:
+      include: ["*.ipynb"]
+      execute: true
+      include_source: True
 
 markdown_extensions: 
   - pymdownx.highlight:

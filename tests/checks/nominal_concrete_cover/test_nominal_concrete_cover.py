@@ -3,10 +3,10 @@
 import pytest
 
 from blueprints.checks.nominal_concrete_cover.constants.base import NominalConcreteCoverConstantsBase
-from blueprints.checks.nominal_concrete_cover.constants.constants_nen_en_1992_1_1_c2_2011 import NominalConcreteCoverConstants2011C2
+from blueprints.checks.nominal_concrete_cover.constants.constants_en_1992_1_1_2004 import NominalConcreteCoverConstants
 from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
 from blueprints.checks.nominal_concrete_cover.nominal_concrete_cover import NominalConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,
@@ -14,7 +14,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     FreezeThaw,
     Table4Dot1ExposureClasses,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
 from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.type_alias import MM
@@ -47,7 +47,7 @@ class TestNominalConcreteCover:
             (
                 25,
                 False,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 structural_class,
                 Carbonation.XC1,
                 Chloride.XD1,
@@ -63,7 +63,7 @@ class TestNominalConcreteCover:
             (
                 25,
                 False,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 structural_class,
                 "XC1",
                 "XD1",
@@ -79,7 +79,7 @@ class TestNominalConcreteCover:
             (
                 32,
                 True,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 6,
                 Carbonation.XC3,
                 Chloride.XD2,
@@ -95,7 +95,7 @@ class TestNominalConcreteCover:
             (
                 20,
                 False,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 2,
                 Carbonation.XC1,
                 Chloride.XD3,
@@ -159,7 +159,7 @@ class TestNominalConcreteCover:
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
-                constants=NominalConcreteCoverConstants2011C2(),
+                constants=NominalConcreteCoverConstants(),
                 structural_class=structural_class,
                 carbonation=Carbonation.XC1,
                 chloride=Chloride.XD1,
@@ -185,7 +185,7 @@ class TestNominalConcreteCover:
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
-                constants=NominalConcreteCoverConstants2011C2(),
+                constants=NominalConcreteCoverConstants(),
                 structural_class=structural_class,
                 carbonation=Carbonation.XC1,
                 chloride=Chloride.XD1,
@@ -211,7 +211,7 @@ class TestNominalConcreteCover:
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
-                constants=NominalConcreteCoverConstants2011C2(),
+                constants=NominalConcreteCoverConstants(),
                 structural_class=structural_class,
                 carbonation=Carbonation.XC1,
                 chloride=Chloride.XD1,
@@ -229,7 +229,7 @@ class TestNominalConcreteCover:
         nominal_concrete_cover = NominalConcreteCover(
             reinforcement_diameter=25,
             nominal_max_aggregate_size=40,
-            constants=NominalConcreteCoverConstants2011C2(),
+            constants=NominalConcreteCoverConstants(),
             structural_class=structural_class,
             carbonation=Carbonation.XC1,
             chloride=Chloride.XD1,
