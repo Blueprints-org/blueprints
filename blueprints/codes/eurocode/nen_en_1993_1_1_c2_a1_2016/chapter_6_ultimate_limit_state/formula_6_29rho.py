@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form6Dot29Rho(Formula):
-    r"""Class representing formula 6.29rho for the calculation of [$\rho$]."""
+    r"""Class representing formula 6.29rho for the calculation of [$\rho$], where no torsion is present."""
 
     label = "6.29rho"
     source_document = NEN_EN_1993_1_1_C2_A1_2016
@@ -18,7 +18,7 @@ class Form6Dot29Rho(Formula):
         v_ed: N,
         v_pl_rd: N,
     ) -> None:
-        r"""[$\rho$] Calculation of the reduction factor [$\text{dimensionless}$].
+        r"""[$\rho$] Calculation of the reduction factor, where no torsion is present [$\text{dimensionless}$].
 
         NEN-EN 1993-1-1+C2+A1:2016 art.6.2.10(3) - Formula (6.29rho)
 
