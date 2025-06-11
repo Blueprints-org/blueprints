@@ -85,3 +85,73 @@ class Formula(float, ABC):
             The result of the formula.
             This is an abstract method and must be implemented in all subclasses.
         """
+
+
+class ComparisonFormula(Formula):
+    """Base class for comparison formulas used in the codes."""
+
+    def __new__(cls, *args, **kwargs) -> "ComparisonFormula":
+        """Method for creating a new instance of the class."""
+        lhs = cls._evaluate_lhs(*args, **kwargs)
+        rhs = cls._evaluate_rhs(*args, **kwargs)
+        result = cls._evaluate(*args, **kwargs)
+        instance = float.__new__(cls, result)
+        instance._lhs = lhs  # noqa: SLF001
+        instance._rhs = rhs  # noqa: SLF001
+        instance._initialized = False  # noqa: SLF001
+        return instance
+
+    @staticmethod
+    @abstractmethod
+    def _evaluate_lhs(*args, **kwargs) -> float:
+        """Abstract method for the logic of the left-hand side of the comparison formula.
+
+        Returns
+        -------
+        float
+            The left-hand side value of the comparison.
+        """
+
+    @staticmethod
+    @abstractmethod
+    def _evaluate_rhs(*args, **kwargs) -> float:
+        """Abstract method for the logic of the right-hand side of the comparison formula.
+
+        Returns
+        -------
+        float
+            The right-hand side value of the comparison.
+        """
+
+    @property
+    def lhs(self) -> float:
+        """Property for getting the left-hand side of the comparison.
+
+        Returns
+        -------
+        float
+            The left-hand side value of the comparison.
+        """
+        return self._lhs  # type: ignore[attr-defined]
+
+    @property
+    def rhs(self) -> float:
+        """Property for getting the right-hand side of the comparison.
+
+        Returns
+        -------
+        float
+            The right-hand side value of the comparison.
+        """
+        return self._rhs  # type: ignore[attr-defined]
+
+    @property
+    @abstractmethod
+    def unity_check(self) -> float:
+        """Property to present the unity check of the formula.
+
+        Returns
+        -------
+        float
+            The unity check.
+        """
