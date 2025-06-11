@@ -61,8 +61,8 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 * Eurocode formulas [templates for making formula](https://github.com/orgs/Blueprints-org/discussions/432)
     - [ ] EN 1992-1-1:2004 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
-    - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
-    - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
+    - [ ] EN 1993-1-1:2005 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange) 
+    - [ ] EN 1993-1-9:2005 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
     - [ ] EN 1993-5:2007 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
     - [ ] NEN 9997-1+C2:2017 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
  
@@ -198,9 +198,9 @@ figures for streamlined access and reference.
       <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
     </tr>
     <tr>
-      <td>NEN-EN 1993-1-1+C2+A1:2016</td>
+      <td>EN 1993-1-1:2005</td>
       <td>
-        NEN-EN 1993-1-1+C2+A1:2016 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings
+        EN 1993-1-1:2005 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/nen_en_1993_1_1_c2_a1_2016">code</a>)
       </td>
       <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
