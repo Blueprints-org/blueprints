@@ -30,7 +30,7 @@ class Form6Dot30ReducedPlasticResistanceMoment(Formula):
         Parameters
         ----------
         w_pl_y : MM3
-            [$W_{pl,y}$] Plastic section modulus about the y axis [$mm^3$].
+            [$W_{pl,y}$] Plastic section modulus about the y-axis [$mm^3$].
         rho : DIMENSIONLESS
             [$\rho$] Shear force ratio (see 6.2.8 (3) or equation 6.29 (rho)) [-].
         h_w : MM
