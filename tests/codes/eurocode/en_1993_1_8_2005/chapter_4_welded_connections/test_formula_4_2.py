@@ -1,13 +1,13 @@
-"""Testing formula 4.2 of NEN-EN 1993-1-8+C2:2011."""
+"""Testing formula 4.2 of EN 1993-1-8:2005."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_8_c2_2011.chapter_4_welded_connections.formula_4_2 import Form4Dot2CheckWeldedConnection
+from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_4_welded_connections.formula_4_2 import Form4Dot2CheckWeldedConnection
 from blueprints.validations import NegativeValueError
 
 
 class TestForm4Dot2CheckWeldedConnection:
-    """Validation for formula 4.2 from NEN-EN 1993-1-8+C2:2011."""
+    """Validation for formula 4.2 from EN 1993-1-8:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
