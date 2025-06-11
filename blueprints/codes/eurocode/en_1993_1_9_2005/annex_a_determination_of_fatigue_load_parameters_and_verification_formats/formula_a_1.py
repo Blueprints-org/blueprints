@@ -1,6 +1,6 @@
-"""Formula A.1 from NEN-EN 1993-1-9+C2:2012: Annex A - Determination of fatigue load parameters and verification formats."""
+"""Formula A.1 from EN 1993-1-9:2005: Annex A - Determination of fatigue load parameters and verification formats."""
 
-from blueprints.codes.eurocode.nen_en_1993_1_9_c2_2012 import NEN_EN_1993_1_9_C2_2012
+from blueprints.codes.eurocode.en_1993_1_9_2005 import EN_1993_1_9_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS
@@ -11,12 +11,12 @@ class FormADot1DamageDuringDesignLife(Formula):
     """Class representing formula A.1 for the calculation of the damage during the design life [$D_d$]."""
 
     label = "A.1"
-    source_document = NEN_EN_1993_1_9_C2_2012
+    source_document = EN_1993_1_9_2005
 
     def __init__(self, n_e: list[DIMENSIONLESS], n_r: list[DIMENSIONLESS]) -> None:
         r"""[$D_d$] The calculation of the damage during the design life [$-$].
 
-        NEN-EN 1993-1-9+C2:2012 art.A.5 - Formula (A.1)
+        EN 1993-1-9:2005 art.A.5 - Formula (A.1)
 
         Parameters
         ----------
