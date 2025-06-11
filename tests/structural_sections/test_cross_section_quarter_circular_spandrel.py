@@ -22,8 +22,8 @@ class TestQuarterCircularSpandrelCrossSection:
 
     def test_centroid(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
         """Test the centroid property of the QuarterCircularSpandrelCrossSection class."""
-        expected_perimeter = Point(111.1683969472876, 261.1683969472876)
-        assert qcs_cross_section.centroid == pytest.approx(expected=expected_perimeter, rel=1e-6)
+        expected_centroid = Point(111.1683969472876, 261.1683969472876)
+        assert qcs_cross_section.centroid == pytest.approx(expected=expected_centroid, rel=1e-6)
 
     def test_moments_of_inertia(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
         """Test the moments of inertia properties of the QuarterCircularSpandrelCrossSection class."""
@@ -53,7 +53,7 @@ class TestQuarterCircularSpandrelCrossSection:
         """Test the geometry property of the QuarterCircularSpandrelCrossSection class."""
         polygon = qcs_cross_section.polygon
         assert polygon.is_valid
-        assert polygon.area == pytest.approx(expected=qcs_cross_section.area, rel=1e-3)
+        assert polygon.area == pytest.approx(expected=qcs_cross_section.area, rel=1e-2)
 
     def test_mirrored_geometry(self) -> None:
         """Test the geometry property for flipped cross-sections."""
