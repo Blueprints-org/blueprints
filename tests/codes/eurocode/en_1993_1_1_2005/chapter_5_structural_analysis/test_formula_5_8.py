@@ -1,5 +1,6 @@
 """Testing formula 5.8 of EN 1993-1-1:2005."""
 
+import numpy as np
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_8 import Form5Dot8CheckSlenderness
@@ -22,8 +23,10 @@ class TestForm5Dot8CheckSlenderness:
 
         # Expected result, manually calculated
         expected_result = True
+        expected_unity_check = lambda_bar / (0.5 * np.sqrt(a * f_y / n_ed))
 
         assert formula == expected_result
+        assert formula.unity_check == expected_unity_check
 
     @pytest.mark.parametrize(
         ("lambda_bar", "a", "f_y", "n_ed"),
