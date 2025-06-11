@@ -48,7 +48,8 @@ class Form12Dot4PlainConcreteShearStress(Formula):
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
-            v_ed=v_ed,
+            v_ed=v_ed, 
+            k=k,
         )
         raise_if_less_or_equal_to_zero(
             a_cc=a_cc,
