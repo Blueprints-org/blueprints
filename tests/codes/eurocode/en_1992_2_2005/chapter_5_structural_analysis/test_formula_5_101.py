@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_2_2005.chapter_5_structural_analysis.formula_5_101 import (
+from blueprints.codes.eurocode.en_1992_2_2005.chapter_5_structural_analysis.formula_5_101 import (
     Form5Dot101Imperfections,
     Form5Dot101Sub1ReductionFactorLengthOrHeight,
 )
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm5Dot101Imperfections:
-    """Validation for formula 5.101 from NEN-EN 1992-2:2005."""
+    """Validation for formula 5.101 from EN 1992-2:2005."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -72,7 +72,7 @@ class TestForm5Dot101Imperfections:
 
 
 class TestForm5Dot101Sub1ReductionFactorLengthOrHeight:
-    """Validation for subformula of 5.101 from NEN-EN 1992-2:2005."""
+    """Validation for subformula of 5.101 from EN 1992-2:2005."""
 
     @pytest.mark.parametrize(
         ("length", "expected"),
