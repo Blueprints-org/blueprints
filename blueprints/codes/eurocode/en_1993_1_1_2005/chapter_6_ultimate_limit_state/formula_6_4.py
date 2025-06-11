@@ -1,4 +1,4 @@
-"""Formula 6.4 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.4 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
@@ -20,7 +20,7 @@ class Form6Dot4AdditionalMoment(Formula):
     ) -> None:
         r"""[$\Delta M_{Ed}$] Calculation of the additional moment [$Nmm$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.2.5(4) - Formula (6.4)
+        EN 1993-1-1:2005 art.6.2.2.5(4) - Formula (6.4)
         Where a class 4 cross section is subjected to an axial compression force, the method given in EN 1993-1-5 should be used to
         determine the possible shift [$e_{N}$] of the centroid of the effective area [$A_{eff}$] relative to the centre of gravity
         of the gross cross section and the resulting additional moment according to this formula.

@@ -1,8 +1,8 @@
-"""Formula 5.8 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 5 - Structural Analysis."""
+"""Formula 5.8 from EN 1993-1-1:2005: Chapter 5 - Structural Analysis."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
@@ -13,7 +13,7 @@ class Form5Dot8CheckSlenderness(Formula):
     r"""Class representing formula 5.8 for check of slenderness."""
 
     label = "5.8"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -24,7 +24,7 @@ class Form5Dot8CheckSlenderness(Formula):
     ) -> None:
         r"""Check the slenderness ratio.
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.5.3.2(6) - Formula (5.8)
+        EN 1993-1-1:2005 art.5.3.2(6) - Formula (5.8)
 
         Parameters
         ----------

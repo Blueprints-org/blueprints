@@ -1,4 +1,4 @@
-"""Formula 6.7 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.7 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
@@ -21,7 +21,7 @@ class Form6Dot7DesignUltimateResistanceNetCrossSection(Formula):
     ) -> None:
         r"""[$N_{u,Rd}$] Calculation of the design tension resistance [$N$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.3(2) - Formula (6.7)
+        EN 1993-1-1:2005 art.6.2.3(2) - Formula (6.7)
 
         Parameters
         ----------
