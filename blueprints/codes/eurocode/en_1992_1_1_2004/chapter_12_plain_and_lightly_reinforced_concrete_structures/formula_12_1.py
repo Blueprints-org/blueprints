@@ -1,4 +1,4 @@
-"""Formula 12.1 from NEN-EN 1992-1-1+C2:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
+"""Formula 12.1 from EN 1992-1-1:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -11,7 +11,7 @@ class Form12Dot1PlainConcreteTensileStrength(Formula):
     r"""Class representing formula 12.1 for the calculation of the design tensile strength of plain concrete,
     :math:`f_{ctd,pl}`.
 
-    NEN-EN 1992-1-1+C2:2004 art.12.3.1(2) - Formula (12.1)
+    EN 1992-1-1:2004 art.12.3.1(2) - Formula (12.1)
     """
 
     label = "12.1"
@@ -25,7 +25,7 @@ class Form12Dot1PlainConcreteTensileStrength(Formula):
     ) -> None:
         r"""[:math:`f_{ctd,pl}`] Design tensile strength of plain concrete [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2004 art.12.3.1(2) - Formula (12.1)
+        EN 1992-1-1:2004 art.12.3.1(2) - Formula (12.1)
 
         Parameters
         ----------
