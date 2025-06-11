@@ -1,15 +1,15 @@
-"""Testing formula 6.3 of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.3 of EN 1993-1-1:2005."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_3 import (
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_3 import (
     Form6Dot3MinDeductionAreaStaggeredFastenerHoles,
 )
 from blueprints.validations import LessOrEqualToZeroError, ListsNotSameLengthError, NegativeValueError
 
 
 class TestForm6Dot3MinDeductionAreaStaggeredFastenerHoles:
-    """Validation for formula 6.3 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.3 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

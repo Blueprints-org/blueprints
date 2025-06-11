@@ -12,7 +12,7 @@ class Form6Dot16CheckFlangeWithFastenerHoles(Formula):
 
     label = "6.16"
     source_document = EN_1993_1_1_2005
-EN_1993_1_1_2005
+
     def __init__(
         self,
         a_f_net: MM2,

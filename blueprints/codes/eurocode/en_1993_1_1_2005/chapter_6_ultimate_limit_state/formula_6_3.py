@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
@@ -13,7 +13,7 @@ class Form6Dot3MinDeductionAreaStaggeredFastenerHoles(Formula):
     """Class representing formula 6.3 for the calculation of the minimum area deduction for staggered fastener holes [$A_{deduction}$]."""
 
     label = "6.3"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,

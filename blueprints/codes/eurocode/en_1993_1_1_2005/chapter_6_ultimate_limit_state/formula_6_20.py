@@ -12,7 +12,7 @@ class Form6Dot20ShearStress(Formula):
 
     label = "6.20"
     source_document = EN_1993_1_1_2005
-EN_1993_1_1_2005
+
     def __init__(
         self,
         v_ed: N,

@@ -1,13 +1,13 @@
-"""Testing formula 6.1 of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.1 of EN 1993-1-1:2005."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016.chapter_6_ultimate_limit_state.formula_6_1 import Form6Dot1ElasticVerification
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_1 import Form6Dot1ElasticVerification
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot1ElasticVerification:
-    """Validation for formula 6.1 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.1 from EN 1993-1-1+C2+A1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
