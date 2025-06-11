@@ -8,7 +8,7 @@ from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
-class NominalConcreteCoverConstants2011C2(NominalConcreteCoverConstantsBase):
+class NominalConcreteCoverConstants(NominalConcreteCoverConstantsBase):
     """Constants for the calculation of nominal concrete cover according to EN 1992-1-1:2004."""
 
     CODE_SUFFIX: str = field(default="+C2:2011", init=False)
