@@ -1,9 +1,9 @@
-**NEN-EN 1993-1-1+C2 - September 2012
+**NEN-EN 1993-1-9+C2 - September 2012
 Eurocode 3: Design of steel structures
 Part 1-9: Fatigue**
 
-The table presents a list of tables from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :
-heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+The table presents a list of tables from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :heavy_check_mark:)
+and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
 
 Total of 16 tables present.
 

@@ -1,5 +1,10 @@
 """Module to keep track of type aliases used in Blueprints."""
 
+# <editor-fold desc="COUNTERS">
+AMOUNT = int
+"""Amount, represented as a int."""
+# </editor-fold>
+
 # <editor-fold desc="DISTANCES">
 MM = float
 """Millimeters (mm), represented as a float."""
@@ -25,6 +30,8 @@ KG = float
 """Kilograms (kg), represented as a float."""
 KG_M3 = float
 """Kilograms per cubic meter (kg/m³), represented as a float."""
+KG_M2 = float
+"""Kilograms per square meter (kg/m2), represented as a float."""
 KG_M = float
 """Kilograms per meter (kg/m), represented as a float."""
 # </editor-fold>
@@ -134,6 +141,8 @@ RATIO = float
 """Ratio, represented as a float."""
 PER_DEGREE = float
 """Per degree (1/°), represented as a float."""
+MM_KN = float
+"""Ratio of deflection over applied load."""
 DIMENSIONLESS = float
 """Dimensionless, represented as a float."""
 # </editor-fold>
@@ -162,6 +171,8 @@ M_PER_S = float
 """Velocity (m/s), represented as a float."""
 KM_PER_H = float
 """Velocity (km/h), represented as a float."""
+M_NS2 = float
+"""Velocity response of unit impulse load (m/Ns²), represented as a float."""
 # </editor-fold>
 
 # <editor-fold desc="ACCELERATIONS">
@@ -169,4 +180,9 @@ M_PER_S2 = float
 """Acceleration (m/s²), represented as a float."""
 MM_PER_S2 = float
 """Acceleration (mm/s²), represented as a float."""
+# </editor-fold>
+
+# <editor-fold desc="STIFFNESSES">
+NM2_M = float
+"""Bending stiffness (Nm²/m), represented as a float."""
 # </editor-fold>
