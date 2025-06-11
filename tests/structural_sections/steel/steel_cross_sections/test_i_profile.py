@@ -101,3 +101,13 @@ class TestISteelProfile:
                 steel_material=SteelMaterial(SteelStrengthClass.S355),
                 corrosion=20,  # mm
             )
+
+    def test_corrosion_in_name(self) -> None:
+        """Test that the name includes corrosion information."""
+        i_profile_with_corrosion = ISteelProfile.from_standard_profile(
+            profile=HEB.HEB360,
+            steel_material=SteelMaterial(SteelStrengthClass.S355),
+            corrosion=2,  # mm
+        )
+        expected_name_with_corrosion = "HEB360 (corrosion: 2 mm)"
+        assert i_profile_with_corrosion.name == expected_name_with_corrosion
