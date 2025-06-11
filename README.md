@@ -60,10 +60,10 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 ## (Upcoming) Features
 
 * Eurocode formulas [templates for making formula](https://github.com/orgs/Blueprints-org/discussions/432)
-    - [ ] NEN-EN 1992-1-1+C2:2011 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
+    - [ ] EN 1992-1-1:2004 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
     - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
     - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
-    - [ ] NEN-EN 1993-5:2008 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
+    - [ ] EN 1993-5:2007 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
     - [ ] NEN 9997-1+C2:2017 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
  
 * Material definitions
@@ -98,15 +98,15 @@ Our mission is to reduce the cost and time associated with civil engineering cal
   - [ ] Circular section 
 
 * Concrete checks
-  - [x] Creep and Shrinkage (NEN-EN 1992-1-1: Chapter 3.1.4) ✔️
-  - [x] [Nominal concrete cover (NEN-EN 1992-1-1: Chapter 4)](https://cloud.viktor.ai/public/blueprints-nominal-concrete-cover) ✔️
-  - [x] Anchorage- and Laplengths (NEN-EN 1992-1-1: Chapter 8) ✔️
-  - [x] Shear Resistance (NEN-EN 1992-1-1: Chapter 6.2) ✔️
+  - [x] Creep and Shrinkage (EN 1992-1-1: Chapter 3.1.4) ✔️
+  - [x] [Nominal concrete cover (EN 1992-1-1: Chapter 4)](https://cloud.viktor.ai/public/blueprints-nominal-concrete-cover) ✔️
+  - [x] Anchorage- and Laplengths (EN 1992-1-1: Chapter 8) ✔️
+  - [x] Shear Resistance (EN 1992-1-1: Chapter 6.2) ✔️
   - [x] Shear Resistance circular shapes ✔️
-  - [x] Torsion (NEN-EN 1992-1-1: Chapter 6.3) ✔️
-  - [x] Punching Shear (NEN-EN 1992-1-1: Chapter 6.4) ✔️
-  - [ ] Fatigue (NEN-EN 1992-1-1: Chapter 6.8) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
-  - [ ] Crack Control (NEN-EN 1992-1-1: Chapter 7.3) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+  - [x] Torsion (EN 1992-1-1: Chapter 6.3) ✔️
+  - [x] Punching Shear (EN 1992-1-1: Chapter 6.4) ✔️
+  - [ ] Fatigue (EN 1992-1-1: Chapter 6.8) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
+  - [ ] Crack Control (EN 1992-1-1: Chapter 7.3) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Timber checks (NEN-EN 1995)
    - *To Be Determined*
@@ -189,7 +189,7 @@ figures for streamlined access and reference.
   </thead>
   <tbody>
     <tr>
-      <td>NEN-EN 1992-1-1+C2:2011</td>
+      <td>EN 1992-1-1:2004</td>
       <td>
         Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/nen_en_1992_1_1_c2_2011">code</a>)
@@ -207,13 +207,13 @@ figures for streamlined access and reference.
       <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
     </tr>
     <tr>
-      <td>NEN-EN 1993-5:2008</td>
+      <td>EN 1993-5:2007</td>
       <td>
         Eurocode 3: Design of steel structures – Part 5: Piling
-        (<a href="blueprints/codes/eurocode/nen_en_1993_5_2008">code</a>)
+        (<a href="blueprints/codes/eurocode/en_1993_5_2007">code</a>)
       </td>
-      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/formulas.md">63</a></td>
-      <td><a href="docs/objects_overview/eurocode/nen_en_1993_5_2008/tables.md">0</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1993_5_2007/formulas.md">63</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1993_5_2007/tables.md">0</a></td>
     </tr>
     <tr>
       <td>NEN 9997-1+C2:2017</td>
