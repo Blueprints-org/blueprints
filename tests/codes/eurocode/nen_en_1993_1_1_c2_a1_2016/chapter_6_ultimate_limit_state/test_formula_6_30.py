@@ -109,7 +109,7 @@ class TestForm6Dot30ReducedPlasticResistanceMoment:
                 r"\min\left(\frac{\left[500000.000 \ mm^3 - \frac{0.500 \cdot (300.000 \ mm \cdot 10.000 \ mm)^2}"
                 r"{4 \cdot 10.000 \ mm}\right] \cdot 355.000 \ MPa}{1.000}, 10000000000.000 \ Nmm\right) = 137562500.000 \ Nmm",
             ),
-            ("short", r"M_{y,v,Rd} = 137562500.000 \ Nmm"),
+            ("short", r"M_{y,V,Rd} = 137562500.000 \ Nmm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
