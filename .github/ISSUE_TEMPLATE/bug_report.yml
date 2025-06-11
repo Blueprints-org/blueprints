@@ -14,7 +14,7 @@ body:
           required: true
         - label: >
             I have confirmed this bug exists on the
-            [latest version](https://pypi.org/project/blueprints/) of Blueprints.
+            [latest version](https://pypi.org/project/blue-prints/) of Blueprints.
           required: true
 
   - type: textarea
