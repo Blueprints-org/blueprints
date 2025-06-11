@@ -1,4 +1,4 @@
-"""Formula 12.2 from NEN-EN 1992-1-1+C2:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
+"""Formula 12.2 from EN 1992-1-1:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -11,7 +11,7 @@ class Form12Dot2PlainConcreteBendingResistance(Formula):
     r"""Class representing formula 12.2 for the calculation of the design bending resistance of plain concrete,
     :math:`N_{Rd}`.
 
-    NEN-EN 1992-1-1+C2:2004 art.12.6.1(3) - Formula (12.2)
+    EN 1992-1-1:2004 art.12.6.1(3) - Formula (12.2)
     """
 
     label = "12.2"
@@ -26,7 +26,7 @@ class Form12Dot2PlainConcreteBendingResistance(Formula):
     ) -> None:
         r"""[:math:`N_{Rd}`] Design bending resistance of plain concrete [:math:`N`].
 
-        NEN-EN 1992-1-1+C2:2004 art.12.6.1(3) - Formula (12.2)
+        EN 1992-1-1:2004 art.12.6.1(3) - Formula (12.2)
 
         Parameters
         ----------

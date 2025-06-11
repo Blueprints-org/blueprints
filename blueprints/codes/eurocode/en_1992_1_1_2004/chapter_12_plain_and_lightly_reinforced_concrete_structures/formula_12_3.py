@@ -1,4 +1,4 @@
-"""Formula 12.3 from NEN-EN 1992-1-1+C2:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
+"""Formula 12.3 from EN 1992-1-1:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -11,7 +11,7 @@ class Form12Dot3PlainConcreteShearStress(Formula):
     r"""Class representing formula 12.3 for the calculation of the design shear stress of plain concrete,
     :math:`\sigma_{cp}`.
 
-    NEN-EN 1992-1-1+C2:2004 art.12.6.3(2) - Formula (12.3)
+    EN 1992-1-1:2004 art.12.6.3(2) - Formula (12.3)
     """
 
     label = "12.3"
@@ -24,7 +24,7 @@ class Form12Dot3PlainConcreteShearStress(Formula):
     ) -> None:
         r"""[:math:`\sigma_{cp}`] Design shear stress of plain concrete [:math:`MPa`].
 
-        NEN-EN 1992-1-1+C2:2004 art.12.6.3(2) - Formula (12.3)
+        EN 1992-1-1:2004 art.12.6.3(2) - Formula (12.3)
 
         Parameters
         ----------

@@ -1,4 +1,4 @@
-"""Formula 12.5 and 12.6 from NEN-EN 1992-1-1+C2:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
+"""Formula 12.5 and 12.6 from EN 1992-1-1:2004: Chapter 12 - Plain and Lightly Reinforced Concrete Structures."""
 
 import numpy as np
 
@@ -19,7 +19,7 @@ class Form12Dot5And6PlainConcreteBendingResistance(Formula):
     r"""Class representing formula 12.5 and 12.6 for the calculation of the design bending resistance of plain concrete,
     :math:`f_{cvd}`.
 
-    NEN-EN 1992-1-1+C2:2004 art.12.6.1 - Formula (12.5)
+    EN 1992-1-1:2004 art.12.6.1 - Formula (12.5)
     """
 
     label = "12.5/12.6"
@@ -33,7 +33,7 @@ class Form12Dot5And6PlainConcreteBendingResistance(Formula):
     ) -> None:
         r"""[:math:`f_{cvd}`] Design bending resistance of plain concrete [:math=`MPa`].
 
-        NEN-EN 1992-1-1+C2:2004 art.12.6.1 - Formula (12.5)
+        EN 1992-1-1:2004 art.12.6.1 - Formula (12.5)
 
         Parameters
         ----------
