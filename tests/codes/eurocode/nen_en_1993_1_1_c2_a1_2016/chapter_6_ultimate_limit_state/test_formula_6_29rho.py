@@ -1,4 +1,4 @@
-"""Testing formula 6.29rho of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.29rho of EN 1993-1-1:2005."""
 
 import pytest
 
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot29Rho:
-    """Validation for formula 6.29rho from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.29rho from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -108,7 +108,7 @@ class TestForm6Dot29Rho:
 
 
 class TestForm6Dot29RhoWithTorsion:
-    """Validation for formula 6.29rho with torsion from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.29rho with torsion from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -1,6 +1,6 @@
-"""Formula 6.13 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.13 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM3, MPA, NMM
@@ -11,7 +11,7 @@ class Form6Dot13MCRdClass1And2(Formula):
     r"""Class representing formula 6.13 for the calculation of [$M_{c,Rd}$]."""
 
     label = "6.13"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -22,7 +22,7 @@ class Form6Dot13MCRdClass1And2(Formula):
         r"""[$M_{c,Rd}$] Calculation of the design resistance of the cross-section for bending about one principal axis [$Nmm$].
         This equation is only valid for cross-sections with class 1, or 2.
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.5(2) - Formula (6.13)
+        EN 1993-1-1:2005 art.6.2.5(2) - Formula (6.13)
 
         Parameters
         ----------

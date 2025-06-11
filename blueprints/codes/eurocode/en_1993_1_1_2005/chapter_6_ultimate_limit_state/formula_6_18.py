@@ -1,8 +1,8 @@
-"""Formula 6.18 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.18 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
@@ -13,7 +13,7 @@ class Form6Dot18DesignPlasticShearResistance(Formula):
     r"""Class representing formula 6.18 for the calculation of [$V_{pl,Rd}$]."""
 
     label = "6.18"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -23,7 +23,7 @@ class Form6Dot18DesignPlasticShearResistance(Formula):
     ) -> None:
         r"""[$V_{pl,Rd}$] Calculation of the design plastic shear resistance [$N$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(2) - Formula (6.18)
+        EN 1993-1-1:2005 art.6.2.6(2) - Formula (6.18)
 
         Parameters
         ----------

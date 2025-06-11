@@ -1,7 +1,7 @@
-"""Formula 6.5 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate limit state."""
+"""Formula 6.5 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state."""
 
 # pylint: disable=arguments-differ
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, RATIO
@@ -12,7 +12,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
     """Class representing formula 6.5 for the unity check for tensile strength."""
 
     label = "6.5"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -21,7 +21,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
     ) -> None:
         r"""[$N_{Ed}/N_{t,Rd}$] Unity check for tensile strength of an element in tension.
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.3(1) - Formula (6.5)
+        EN 1993-1-1:2005 art.6.2.3(1) - Formula (6.5)
 
         Parameters
         ----------

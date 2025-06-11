@@ -1,10 +1,10 @@
-"""Table 3.1 of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Table 3.1 of EN 1993-1-1:2005."""
 
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import ClassVar
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.type_alias import MM, MPA
 
 
@@ -69,7 +69,7 @@ class SteelStrengthClass(Enum):
 
 @dataclass(frozen=True)
 class Table3Dot1NominalValuesHotRolledStructuralSteel:
-    """Implementation of table 3.1 from NEN-EN 1993-1-1+C2+A1:2016.
+    """Implementation of table 3.1 from EN 1993-1-1:2005.
 
     Nominal values for yield strength (fy) and ultimate tensile strength (fu) for hot-rolled structural steel.
 
@@ -107,7 +107,7 @@ class Table3Dot1NominalValuesHotRolledStructuralSteel:
     steel_class: SteelStrengthClass
     thickness: MM
     label: str = field(init=False, default="Table 3.1")
-    source_document: str = field(init=False, default=NEN_EN_1993_1_1_C2_A1_2016)
+    source_document: str = field(init=False, default=EN_1993_1_1_2005)
 
     # Class variable containing all strength data
     # Format: {SteelStrengthClass: (fy_t≤40, fu_t≤40, fy_t>40, fu_t>40)}

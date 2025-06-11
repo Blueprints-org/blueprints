@@ -1,6 +1,6 @@
-"""Formula 6.16 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.16 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM2, MPA
@@ -11,8 +11,8 @@ class Form6Dot16CheckFlangeWithFastenerHoles(Formula):
     r"""Class representing formula 6.16 for the test of the stresses where there are fastener holes in the tension flange."""
 
     label = "6.16"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
-
+    source_document = EN_1993_1_1_2005
+EN_1993_1_1_2005
     def __init__(
         self,
         a_f_net: MM2,
@@ -24,7 +24,7 @@ class Form6Dot16CheckFlangeWithFastenerHoles(Formula):
     ) -> None:
         r"""Test the stresses where there are fastener holes in the tension flange.
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.5(4) - Formula (6.16)
+        EN 1993-1-1:2005 art.6.2.5(4) - Formula (6.16)
 
         Parameters
         ----------

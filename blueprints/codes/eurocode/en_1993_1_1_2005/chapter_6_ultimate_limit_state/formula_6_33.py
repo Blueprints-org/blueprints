@@ -1,6 +1,6 @@
-"""Formula 6.33 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.33 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
@@ -11,7 +11,7 @@ class Form6Dot33CheckAxialForceY(Formula):
     r"""Class representing formula 6.33 for checking axial force about the y-y axis."""
 
     label = "6.33"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -22,7 +22,7 @@ class Form6Dot33CheckAxialForceY(Formula):
         allowance need not be made for the effect of the axial force on the
         plastic resistance moment about the y-y axis when 6.33 and 6.34 are satisfied.
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9(4) - Formula (6.33)
+        EN 1993-1-1:2005 art.6.2.9(4) - Formula (6.33)
 
         Parameters
         ----------

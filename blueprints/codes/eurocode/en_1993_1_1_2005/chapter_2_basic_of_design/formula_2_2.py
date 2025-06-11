@@ -1,6 +1,6 @@
-"""Formula 2.2 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 2: Basis of design."""
+"""Formula 2.2 from EN 1993-1-1:2005: Chapter 2: Basis of design."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS
@@ -11,12 +11,12 @@ class Form2Dot2CharacteristicValueResistance(Formula):
     """Class representing formula 2.2 for the calculation of the characteristic value of the resistance [$R_k$]."""
 
     label = "2.2"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(self, r_d: DIMENSIONLESS, gamma_mi: DIMENSIONLESS) -> None:
         r"""[$R_k$] Characteristic value of the resistance [$kN$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.2.5(2) - Formula (2.2)
+        EN 1993-1-1:2005 art.2.5(2) - Formula (2.2)
 
         Parameters
         ----------

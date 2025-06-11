@@ -1,4 +1,4 @@
-"""Testing formula 6.11 of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.11 of EN 1993-1-1:2005."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot11NcRdClass4:
-    """Validation for formula 6.11 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.11 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

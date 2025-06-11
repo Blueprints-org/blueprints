@@ -1,1 +1,1 @@
-"""Module containing all formulas from NEN_EN_1993_1_1_C2_A1_2016: Chapter 6 - Ultimate limit state."""
+"""Module containing all formulas from EN_1993_1_1_2005: Chapter 6 - Ultimate limit state."""

@@ -1,4 +1,4 @@
-"""Testing formulas 6.37 and 6.38 from NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formulas 6.37 and 6.38 from EN 1993-1-1:2005."""
 
 import pytest
 
@@ -11,7 +11,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot37Dot38MomentReduction:
-    """Validation for formulas 6.37 and 6.38 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formulas 6.37 and 6.38 from EN 1993-1-1:2005."""
 
     def test_evaluation_37(self) -> None:
         """Tests the evaluation of the result."""
@@ -110,7 +110,7 @@ class TestForm6Dot37Dot38MomentReduction:
 
 
 class TestForm6Dot38N:
-    """Validation for formula 6.38n from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.38n from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -182,7 +182,7 @@ class TestForm6Dot38N:
 
 
 class TestForm6Dot38A:
-    """Validation for formula 6.38a from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.38a from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

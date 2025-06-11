@@ -1,4 +1,4 @@
-"""Testing subformulas a to g from 6.18 of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing subformulas a to g from 6.18 of EN 1993-1-1:2005."""
 
 import pytest
 
@@ -17,7 +17,7 @@ from blueprints.validations import ListsNotSameLengthError, NegativeValueError
 
 
 class TestForm6Dot18SubARolledIandHSection:
-    """Validation for formula 6.18suba from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18suba from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -84,7 +84,7 @@ class TestForm6Dot18SubARolledIandHSection:
 
 
 class TestForm6Dot18SubBRolledChannelSection:
-    """Validation for formula 6.18subb from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18subb from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -144,7 +144,7 @@ class TestForm6Dot18SubBRolledChannelSection:
 
 
 class TestForm6Dot18SubCRolledTSectionRolled:
-    """Validation for formula 6.18subc from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18subc from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -204,7 +204,7 @@ class TestForm6Dot18SubCRolledTSectionRolled:
 
 
 class TestForm6Dot18SubCRolledTSectionWelded:
-    """Validation for formula 6.18subc from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18subc from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -258,7 +258,7 @@ class TestForm6Dot18SubCRolledTSectionWelded:
 
 
 class TestForm6Dot18SubDWeldedIHandBoxSection:
-    """Validation for formula 6.18subd from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18subd from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -313,7 +313,7 @@ class TestForm6Dot18SubDWeldedIHandBoxSection:
 
 
 class TestForm6Dot18SubEWeldedIHandBoxSection:
-    """Validation for formula 6.18sube from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18sube from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -368,7 +368,7 @@ class TestForm6Dot18SubEWeldedIHandBoxSection:
 
 
 class TestForm6Dot18SubF1RolledRectangularHollowSectionDepth:
-    """Validation for formula 6.18subf1 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18subf1 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -422,7 +422,7 @@ class TestForm6Dot18SubF1RolledRectangularHollowSectionDepth:
 
 
 class TestForm6Dot18SubF2RolledRectangularHollowSectionWidth:
-    """Validation for formula 6.18subf2 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18subf2 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -476,7 +476,7 @@ class TestForm6Dot18SubF2RolledRectangularHollowSectionWidth:
 
 
 class TestForm6Dot18SubGCircularHollowSection:
-    """Validation for formula 6.18subg from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.18subg from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

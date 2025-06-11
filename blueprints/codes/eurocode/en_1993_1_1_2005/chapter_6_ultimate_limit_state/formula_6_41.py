@@ -1,6 +1,6 @@
-"""formula 6.41 from nen-en 1993-1-1+c2+a1:2016: chapter 6 - ultimate limit state."""
+"""formula 6.41 from EN 1993-1-1:2005: chapter 6 - ultimate limit state."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, NMM
@@ -11,7 +11,7 @@ class Form6Dot41BiaxialBendingCheck(Formula):
     r"""class representing formula 6.41 for bi-axial bending."""
 
     label = "6.41"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -24,7 +24,7 @@ class Form6Dot41BiaxialBendingCheck(Formula):
     ) -> None:
         r"""Check the bi-axial bending criterion.
 
-        nen-en 1993-1-1+c2+a1:2016 art.6.2.9.1(6) - formula (6.41)
+        EN 1993-1-1:2005 art.6.2.9.1(6) - formula (6.41)
 
         Parameters
         ----------

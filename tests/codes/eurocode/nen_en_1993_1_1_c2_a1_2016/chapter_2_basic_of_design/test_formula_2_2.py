@@ -1,4 +1,4 @@
-"""Testing formula 2.2 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 2: Basis of design."""
+"""Testing formula 2.2 from EN 1993-1-1:2005: Chapter 2: Basis of design."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import NegativeValueError
 
 
 class TestForm2Dot2CharacteristicValueResistance:
-    """Validation for formula 2.2 from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 2.2 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

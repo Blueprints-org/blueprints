@@ -1,4 +1,4 @@
-"""Testing formula 6.39aw of NEN-EN 1993-1-1+C2+A1:2016."""
+"""Testing formula 6.39aw of EN 1993-1-1:2005."""
 
 import pytest
 
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot39awHollowSections:
-    """Validation for formula 6.39aw (hollow sections) from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.39aw (hollow sections) from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -71,7 +71,7 @@ class TestForm6Dot39awHollowSections:
 
 
 class TestForm6Dot39awWeldedBoxSections:
-    """Validation for formula 6.39aw (welded box sections) from NEN-EN 1993-1-1+C2+A1:2016."""
+    """Validation for formula 6.39aw (welded box sections) from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -1,7 +1,7 @@
-"""Formula 6.2 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate limit state."""
+"""Formula 6.2 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state."""
 
 # pylint: disable=arguments-differ
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN, KNM, RATIO
@@ -12,13 +12,13 @@ class Form6Dot2UtilizationRatio(Formula):
     """Class representing form 6.2 for the calculation of the utilization ratio [$UC$]."""
 
     label = "6.2"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(self, n_ed: KN, n_rd: KN, m_y_ed: KNM, m_y_rd: KNM, m_z_ed: KNM, m_z_rd: KNM) -> None:
         r"""
         [$UC$] The calculation of the utilization ratio [$-$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.1(7) - Formula (6.2)
+        EN 1993-1-1:2005 art.6.2.1(7) - Formula (6.2)
 
         Parameters
         ----------

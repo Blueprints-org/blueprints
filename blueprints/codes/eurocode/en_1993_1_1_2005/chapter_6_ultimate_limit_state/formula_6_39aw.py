@@ -1,6 +1,6 @@
-"""Formula 6.39aw from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.39aw from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2
@@ -11,7 +11,7 @@ class Form6Dot39awHollowSections(Formula):
     r"""Class representing formula 6.39aw for [$a_w$] in hollow sections."""
 
     label = "6.39aw_hollow"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -21,7 +21,7 @@ class Form6Dot39awHollowSections(Formula):
     ) -> None:
         r"""[$a_w$] Calculation of the reduction factor for hollow sections (dimensionless).
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.39aw)
+        EN 1993-1-1:2005 art.6.2.9.1(5) - Formula (6.39aw)
 
         Parameters
         ----------
@@ -85,7 +85,7 @@ class Form6Dot39awWeldedBoxSections(Formula):
     r"""Class representing formula 6.39aw for [$a_w$] in welded box sections."""
 
     label = "6.39aw_welded_box"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -95,7 +95,7 @@ class Form6Dot39awWeldedBoxSections(Formula):
     ) -> None:
         r"""[$a_w$] Calculation of the reduction factor for welded box sections (dimensionless).
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formula (6.39aw)
+        EN 1993-1-1:2005 art.6.2.9.1(5) - Formula (6.39aw)
 
         Parameters
         ----------

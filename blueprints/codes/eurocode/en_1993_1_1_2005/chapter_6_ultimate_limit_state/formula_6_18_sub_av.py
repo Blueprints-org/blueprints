@@ -1,8 +1,8 @@
-"""Subformula a trough g from 6.18 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Subformula a trough g from 6.18 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2
@@ -13,7 +13,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
     r"""Class representing formula 6.18suba for the calculation of shear area for a rolled I and H section."""
 
     label = "6.18suba"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -27,7 +27,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for a rolled I and H section with load parallel to web [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18suba)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18suba)
 
         Parameters
         ----------
@@ -103,7 +103,7 @@ class Form6Dot18SubBRolledChannelSection(Formula):
     r"""Class representing formula 6.18subb for the calculation of shear area for a rolled channel section."""
 
     label = "6.18subb"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -115,7 +115,7 @@ class Form6Dot18SubBRolledChannelSection(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for a rolled channel section with load parallel to web [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subb)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18subb)
 
         Parameters
         ----------
@@ -178,7 +178,7 @@ class Form6Dot18SubCTSectionRolled(Formula):
     r"""Class representing formula 6.18subc for the calculation of shear area for a rolled T-section with load parallel to web."""
 
     label = "6.18subc"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -190,7 +190,7 @@ class Form6Dot18SubCTSectionRolled(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for a T-section with load parallel to web [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subc)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18subc)
 
         Parameters
         ----------
@@ -253,7 +253,7 @@ class Form6Dot18SubCTSectionWelded(Formula):
     r"""Class representing formula 6.18subc for the calculation of shear area for a welded T-section with load parallel to web."""
 
     label = "6.18subc"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -263,7 +263,7 @@ class Form6Dot18SubCTSectionWelded(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for a T-section with load parallel to web [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subc)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18subc)
 
         Parameters
         ----------
@@ -316,7 +316,7 @@ class Form6Dot18SubDWeldedIHandBoxSection(Formula):
     r"""Class representing formula 6.18subd for the calculation of shear area for welded I, H, and box sections with load parallel to web."""
 
     label = "6.18subd"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -326,7 +326,7 @@ class Form6Dot18SubDWeldedIHandBoxSection(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for welded I, H, and box sections with load parallel to web [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subd)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18subd)
 
         Parameters
         ----------
@@ -379,7 +379,7 @@ class Form6Dot18SubEWeldedIHandBoxSection(Formula):
     """
 
     label = "6.18sube"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -389,7 +389,7 @@ class Form6Dot18SubEWeldedIHandBoxSection(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for welded I, H, channel, and box sections with load parallel to flanges [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18sube)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18sube)
 
         Parameters
         ----------
@@ -442,7 +442,7 @@ class Form6Dot18SubF1RolledRectangularHollowSectionDepth(Formula):
     """
 
     label = "6.18subf1"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -452,7 +452,7 @@ class Form6Dot18SubF1RolledRectangularHollowSectionDepth(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for rolled rectangular hollow sections of uniform thickness with load parallel to depth [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subf1)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18subf1)
 
         Parameters
         ----------
@@ -508,7 +508,7 @@ class Form6Dot18SubF2RolledRectangularHollowSectionWidth(Formula):
     """
 
     label = "6.18subf2"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -518,7 +518,7 @@ class Form6Dot18SubF2RolledRectangularHollowSectionWidth(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for rolled rectangular hollow sections of uniform thickness with load parallel to width [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subf2)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18subf2)
 
         Parameters
         ----------
@@ -572,7 +572,7 @@ class Form6Dot18SubGCircularHollowSection(Formula):
     r"""Class representing formula 6.18subg for the calculation of shear area for circular hollow sections and tubes of uniform thickness."""
 
     label = "6.18subg"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -580,7 +580,7 @@ class Form6Dot18SubGCircularHollowSection(Formula):
     ) -> None:
         r"""[$A_v$] Calculation of the shear area for circular hollow sections and tubes of uniform thickness [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(3) - Formula (6.18subg)
+        EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18subg)
 
         Parameters
         ----------

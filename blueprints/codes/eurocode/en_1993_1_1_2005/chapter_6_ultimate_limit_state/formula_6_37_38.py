@@ -1,6 +1,6 @@
-"""Formulas 6.37 and 6.38 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate limit state."""
+"""Formulas 6.37 and 6.38 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, NMM, N
@@ -11,7 +11,7 @@ class Form6Dot37Dot38MomentReduction(Formula):
     r"""Class representing formulas 6.37 and 6.38 for the calculation of reduced bending moment."""
 
     label = "6.37/6.38"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -21,7 +21,7 @@ class Form6Dot37Dot38MomentReduction(Formula):
     ) -> None:
         r"""[$M_{N,z,Rd}$] Reduced bending moment [$Nmm$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9.1(5) - Formulas (6.37 and 6.38)
+        EN 1993-1-1:2005 art.6.2.9.1(5) - Formulas (6.37 and 6.38)
 
         Parameters
         ----------
@@ -93,12 +93,12 @@ class Form6Dot38N(Formula):
     r"""Class representing formula 6.38 for the calculation of [$n$]."""
 
     label = "6.38n"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(self, n_ed: N, n_pl_rd: N) -> None:
         r"""[$n$] Axial force ratio [dimensionless].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9(5) - Formula (6.38n)
+        EN 1993-1-1:2005 art.6.2.9(5) - Formula (6.38n)
 
         Parameters
         ----------
@@ -152,12 +152,12 @@ class Form6Dot38A(Formula):
     r"""Class representing formula 6.38 for the calculation of [$a$]."""
 
     label = "6.38a"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(self, capital_a: MM2, b: MM, tf: MM) -> None:
         r"""[$a$] Reduction factor for cross-sectional area [dimensionless].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.9(5) - Formula (6.38a)
+        EN 1993-1-1:2005 art.6.2.9(5) - Formula (6.38a)
 
         Parameters
         ----------

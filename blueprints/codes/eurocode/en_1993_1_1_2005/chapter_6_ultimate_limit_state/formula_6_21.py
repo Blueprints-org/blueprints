@@ -1,6 +1,6 @@
-"""Formula 6.21 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.21 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2005 import NEN_EN_1993_1_1_C2_A1_2016
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM2, MPA, N
@@ -11,7 +11,7 @@ class Form6Dot21ShearStressIOrHSection(Formula):
     r"""Class representing formula 6.21 for the calculation of [$\tau_{Ed}$]."""
 
     label = "6.21"
-    source_document = NEN_EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2005
 
     def __init__(
         self,
@@ -22,7 +22,7 @@ class Form6Dot21ShearStressIOrHSection(Formula):
         r"""[$\tau_{Ed}$] Calculation of the design elastic shear stress [$MPa$].
         For I- or H-sections the shear stress in the web may be taken with this equation.
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.6(5) - Formula (6.21)
+        EN 1993-1-1:2005 art.6.2.6(5) - Formula (6.21)
 
         Parameters
         ----------
