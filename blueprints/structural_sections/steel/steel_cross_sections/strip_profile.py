@@ -84,11 +84,15 @@ class StripSteelProfile(CombinedSteelCrossSection):
         if width <= 0 or height <= 0:
             raise ValueError("The profile has fully corroded.")
 
+        name = profile.alias
+        if corrosion:
+            name += f" (corrosion: {corrosion} mm)"
+
         return cls(
             steel_material=steel_material,
             strip_width=width,
             strip_height=height,
-            name=profile.alias,
+            name=name,
         )
 
     def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:

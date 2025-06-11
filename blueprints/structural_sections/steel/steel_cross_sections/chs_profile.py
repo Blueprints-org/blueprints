@@ -84,11 +84,19 @@ class CHSSteelProfile(CombinedSteelCrossSection):
         if adjusted_thickness <= 0:
             raise ValueError("The profile has fully corroded.")
 
+        name = profile.alias
+        if corrosion_inside or corrosion_outside:
+            name += (
+                f" (corrosion {'' if not corrosion_inside else f' in: {corrosion_inside} mm'}"
+                f"{', ' if corrosion_inside and corrosion_outside else ''}"
+                f"{'' if not corrosion_outside else f'out: {corrosion_outside} mm'})"
+            )
+
         return cls(
             outer_diameter=adjusted_outer_diameter,
             wall_thickness=adjusted_thickness,
             steel_material=steel_material,
-            name=profile.alias,
+            name=name,
         )
 
     def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:

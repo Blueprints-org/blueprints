@@ -203,6 +203,10 @@ class ISteelProfile(CombinedSteelCrossSection):
         ):
             raise ValueError("The profile has fully corroded.")
 
+        name = profile.alias
+        if corrosion:
+            name += f" (corrosion: {corrosion} mm)"
+
         return cls(
             top_flange_width=top_flange_width,
             top_flange_thickness=top_flange_thickness,
@@ -213,7 +217,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             steel_material=steel_material,
             top_radius=profile.top_radius,
             bottom_radius=profile.bottom_radius,
-            name=profile.alias,
+            name=name,
         )
 
     def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
