@@ -29,7 +29,7 @@ class Form5Dot8CheckSlenderness(ComparisonFormula):
         Parameters
         ----------
         lambda_bar : DIMENSIONLESS
-            [$\lambda_{bar}$] In-plane non-dimensional slenderness calculated for the member
+            [$\overline{\lambda}$] In-plane non-dimensional slenderness calculated for the member
             considered as hinged at its ends [-].
         a : MM2
             [$A$] Cross-sectional area [$mm^2$].
