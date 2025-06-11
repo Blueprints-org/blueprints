@@ -1,15 +1,15 @@
-"""Testing formula A.1 from NEN-EN 1993-1-9+C2:2012: Annex A - Determination of fatigue load parameters and verification formats."""
+"""Testing formula A.1 from EN 1993-1-9:2005: Annex A - Determination of fatigue load parameters and verification formats."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_9_c2_2012.annex_a_determination_of_fatigue_load_parameters_and_verification_formats.formula_a_1 import (
+from blueprints.codes.eurocode.en_1993_1_9_2005.annex_a_determination_of_fatigue_load_parameters_and_verification_formats.formula_a_1 import (
     FormADot1DamageDuringDesignLife,
 )
 from blueprints.validations import LessOrEqualToZeroError, ListsNotSameLengthError, NegativeValueError
 
 
 class TestFormADot1DamageDuringDesignLife:
-    """Validation for formula A.1 from NEN-EN 1993-1-9+C2:2012."""
+    """Validation for formula A.1 from EN 1993-1-9:2005."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

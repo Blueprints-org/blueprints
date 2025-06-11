@@ -1,15 +1,15 @@
-"""Testing formula A.1 from NEN-EN 1993-1-9+C2:2012: Annex A - Determination of fatigue load parameters and verification formats."""
+"""Testing formula A.1 from EN 1993-1-9:2005: Annex A - Determination of fatigue load parameters and verification formats."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1993_1_9_c2_2012.annex_a_determination_of_fatigue_load_parameters_and_verification_formats.formula_a_2 import (
+from blueprints.codes.eurocode.en_1993_1_9_2005.annex_a_determination_of_fatigue_load_parameters_and_verification_formats.formula_a_2 import (
     FormADot2CriteriaBasedOnDamageAccumulation,
 )
 from blueprints.validations import NegativeValueError
 
 
 class TestFormADot2CriteriaBasedOnDamageAccumulation:
-    """Validation for formula A.2 from NEN-EN 1993-1-9+C2:2012."""
+    """Validation for formula A.2 from EN 1993-1-9:2005."""
 
     @pytest.mark.parametrize(
         ("d_d", "result_manual"),

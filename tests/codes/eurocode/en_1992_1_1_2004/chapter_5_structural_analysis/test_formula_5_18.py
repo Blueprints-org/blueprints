@@ -1,4 +1,4 @@
-"""Testing formula 5.18 from NEN-EN 1993-1-9+C2:2012."""
+"""Testing formula 5.18 from EN 1993-1-9:2005."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
-    """Testing formula 5.18 from NEN-EN 1993-1-9+C2:2012."""
+    """Testing formula 5.18 from EN 1993-1-9:2005."""
 
     @pytest.mark.parametrize(
         ("f_ved", "k_1", "n_s", "length", "e_cd", "i_c", "result_manual"),

@@ -62,7 +62,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 * Eurocode formulas [templates for making formula](https://github.com/orgs/Blueprints-org/discussions/432)
     - [ ] EN 1992-1-1:2004 ![](https://img.shields.io/badge/80-%25-grey?style=plastic&labelColor=yellowgreen)
     - [ ] NEN-EN 1993-1-1+C2+A1:2016 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)       
-    - [ ] NEN-EN 1993-1-9+C2:2012 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
+    - [ ] EN 1993-1-9:2005 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)    
     - [ ] EN 1993-5:2007 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)           
     - [ ] NEN 9997-1+C2:2017 ![](https://img.shields.io/badge/20%25-grey?style=plastic&labelColor=orange)
  
