@@ -25,7 +25,7 @@ jobs:
       - name: Install python ${{ env.DEFAULT_PYTHON_VERSION }} using uv
         run: uv python install ${{ env.DEFAULT_PYTHON_VERSION }}
 
-      - name: Install package
+      - name: Install packages
         run: uv sync --group test -p ${{ env.DEFAULT_PYTHON_VERSION }} --frozen --no-group dev --no-group docs
 
       - name: Generate coverage report

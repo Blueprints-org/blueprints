@@ -7,28 +7,30 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
+env:
+  UV_VERSION: 0.6.17
+  DEFAULT_PYTHON_VERSION: '3.13'
+
 jobs:
   tests:
+    name: Code coverage with python ${{ env.DEFAULT_PYTHON_VERSION }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.12"]
 
-    name: Code coverage with python ${{ matrix.python-version }}
     steps:
-    - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v4
 
-    - name: install uv
-      uses: astral-sh/setup-uv@v6
+      - name: Install uv version ${{ env.UV_VERSION }}
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
 
-    - name: Setup python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Install python ${{ env.DEFAULT_PYTHON_VERSION }} using uv
+        run: uv python install ${{ env.DEFAULT_PYTHON_VERSION }}
 
-    - name: Install package
-      run: uv pip install -e .[dev] --system
+      - name: Install packages
+        run: uv sync --group test -p ${{ env.DEFAULT_PYTHON_VERSION }} --frozen --no-group dev --no-group docs
 
-    - name: Check code coverage is 100%
-      run: |
-        pytest --cov=./blueprints --cov-report term-missing:skip-covered --cov-fail-under=100
+      - name: Check code coverage is 100%
+        run: |
+          uv run pytest --cov=./blueprints --cov-report term-missing:skip-covered --cov-fail-under=100
