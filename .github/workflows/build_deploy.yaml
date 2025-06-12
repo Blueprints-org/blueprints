@@ -12,56 +12,51 @@ on:
   release:
     types: [published]
 
+env:
+  UV_VERSION: 0.6.17
+  DEFAULT_PYTHON_VERSION: '3.13'
+
 jobs:
   deploy:
     name: Test and Build Python Release Package with Release Dependencies
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.12"]
+    permissions:
+      id-token: write
+      contents: write
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: install uv
-        uses: astral-sh/setup-uv@v6
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Check out the repository
+        uses: actions/checkout@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          fetch-depth: 2
 
-      - name: Install dependencies
-        run: |
-          uv pip install .[minimal_requirements] --system
-          uv pip install .[dev] --system
-          uv pip install build --system
-          uv pip install types-shapely --system
+      - name: Install uv version ${{ env.UV_VERSION }}
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+
+      - name: Install python ${{ env.DEFAULT_PYTHON_VERSION }} using uv
+        run: uv python install ${{ env.DEFAULT_PYTHON_VERSION }}
 
       - name: Run checks with ruff
         run: |
-          ruff check .
+          uv run ruff check .
 
       - name: Check if code is formatted correctly
         run: |
-          ruff format . --check
+          uv run ruff format . --check
 
       - name: Run type checks with mypy
         run: |
-          mypy
+          uv run mypy
 
       - name: Run tests with pytest
         run: |
-          python -m pytest --pspec tests/
+          uv run pytest --pspec tests/
 
-      - name: Build a binary wheel and a source tarball
-        run: >-
-          python -m
-          build
-          --sdist
-          --wheel
-          --outdir dist/
-          .
+      - name: Build package
+        run: uv build
+
       - name: Publish distribution to PyPI (https://pypi.org/project/blue-prints)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
