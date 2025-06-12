@@ -63,7 +63,7 @@ jobs:
 #          user: __token__
 #          password: ${{ secrets.BLUEPRINTS_PYPI_API_TOKEN }}
 
-      - name: Publish distribution to TestPyPI (https://pypi.org/project/blue-prints)
+      - name: Publish distribution to TestPyPI (https://test.pypi.org/project/blue-prints)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.BLUEPRINTS_TEST_PYPI_API_TOKEN }}
