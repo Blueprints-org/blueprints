@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+env:
+  UV_VERSION: 0.6.17
+
 jobs:
   min_build:
     name: Run Code Checks and Tests with Minimum Dependencies
@@ -13,36 +16,34 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.12", "3.13"]
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v4
 
-      - name: install uv
+      - name: Install uv version ${{ env.UV_VERSION }}
         uses: astral-sh/setup-uv@v6
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          version: ${{ env.UV_VERSION }}
+
+      - name: Install python ${{ matrix.python-version }} using uv
+        run: uv python install ${{ matrix.python-version }}
 
       - name: Install dependencies
-        shell: bash
-        run: |
-          uv pip install . --system
-          uv pip install .[minimal_requirements] --system
-          uv pip install .[dev] --system
+        run: uv sync --group test -p ${{ matrix.python-version }} --frozen --no-group docs
 
       - name: Run checks with ruff
         run: |
-          ruff check .
+          uv run ruff check .
 
       - name: Check if code is formatted correctly
         run: |
-          ruff format . --check
+          uv run ruff format . --check
 
       - name: Run type checks with mypy
         run: |
-          mypy -p blueprints
+          uv run mypy -p blueprints
 
       - name: Run tests with pytest
         run: |
-          pytest --pspec tests/ --verbose
+          uv run pytest --pspec tests/ --verbose
