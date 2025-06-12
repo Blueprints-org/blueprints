@@ -57,8 +57,14 @@ jobs:
       - name: Build package
         run: uv build
 
-      - name: Publish distribution to PyPI (https://pypi.org/project/blue-prints)
+#      - name: Publish distribution to PyPI (https://pypi.org/project/blue-prints)
+#        uses: pypa/gh-action-pypi-publish@release/v1
+#        with:
+#          user: __token__
+#          password: ${{ secrets.BLUEPRINTS_PYPI_API_TOKEN }}
+
+      - name: Publish distribution to TestPyPI (https://pypi.org/project/blue-prints)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.BLUEPRINTS_PYPI_API_TOKEN }}
+          password: ${{ secrets.BLUEPRINTS_TEST_PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
