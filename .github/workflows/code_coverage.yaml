@@ -4,36 +4,36 @@ on:
   push:
     branches: [main]
 
+env:
+  UV_VERSION: 0.6.17
+  DEFAULT_PYTHON_VERSION: '3.13'
+
 jobs:
   tests:
+    name: Code coverage with python ${{ env.DEFAULT_PYTHON_VERSION }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ '3.12' ]
 
-    name: Code coverage with python ${{ matrix.python-version }}
     steps:
-    - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v4
 
-    - name: install uv
-      uses: astral-sh/setup-uv@v6
+      - name: Install uv version ${{ env.UV_VERSION }}
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
 
-    - name: Setup python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Install python ${{ env.DEFAULT_PYTHON_VERSION }} using uv
+        run: uv python install ${{ env.DEFAULT_PYTHON_VERSION }}
 
-    - name: Install package
-      run: uv pip install -e .[dev] --system
+      - name: Install package
+        run: uv sync --group test -p ${{ env.DEFAULT_PYTHON_VERSION }} --frozen --no-group dev --no-group docs
 
-    - name: Generate coverage report
-      run: |
-        uv pip install pytest --system
-        uv pip install pytest-cov --system
-        pytest --cov=./blueprints --cov-report=xml
+      - name: Generate coverage report
+        run: |
+          uv run pytest --cov=./blueprints --cov-report=xml
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v5
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
