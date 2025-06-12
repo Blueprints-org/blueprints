@@ -67,7 +67,7 @@ test = [
 ]
 
 [tool.uv]
-default-groups = ["dev", "docs", "test"]
+default-groups = ["dev", "test"]
 
 [tool.mypy]
 packages = "blueprints"
