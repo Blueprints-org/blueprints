@@ -47,13 +47,13 @@ class Form7Dot5NaturalFrequency(Formula):
         sqrt_ei_m = (ei_l / m) ** 0.5
         return (math.pi / (2 * length**2)) * sqrt_ei_m
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:  # noqa: ARG002
         """Returns LatexFormula object for formula 7.5."""
         eq1: str = r"\frac{\pi}{2 \cdot l^{2}} \cdot \sqrt{\frac{(EI)_{l}}{m}}"
-        repl_symb = {"m": f"{self.m:.2f}", " l": f" {self.length:.2f}", "(EI)_{l}": f"{self.ei_l:.2f}"}
+        repl_symb = {"m": f"{self.m:.{2}f}", " l": f" {self.length:.{2}f}", "(EI)_{l}": f"{self.ei_l:.{2}f}"}
         return LatexFormula(
             return_symbol=r"f_{1}",
-            result=f"{self:.2f}",
+            result=f"{self:.{2}f}",
             equation=eq1,
             numeric_equation=latex_replace_symbols(eq1, repl_symb),
             comparison_operator_label="=",

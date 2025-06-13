@@ -60,13 +60,14 @@ class Form6Dot8ShearResistance(Formula):
 
         return (a_sw / s) * z * f_ywd * cot(theta)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.8."""
         return LatexFormula(
             return_symbol=r"V_{Rd,s}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{A_{sw}}{s} \cdot z \cdot f_{ywd} \cdot \cot(\theta)",
-            numeric_equation=rf"\frac{{{self.a_sw:.3f}}}{{{self.s:.3f}}} \cdot {self.z:.3f} \cdot {self.f_ywd:.3f} \cdot \cot({self.theta:.3f})",
+            numeric_equation=rf"\frac{{{self.a_sw:.{n}f}}}{{{self.s:.{n}f}}} \cdot {self.z:.{n}f} \cdot "
+            rf"{self.f_ywd:.{n}f} \cdot \cot({self.theta:.{n}f})",
             comparison_operator_label="=",
             unit="N",
         )

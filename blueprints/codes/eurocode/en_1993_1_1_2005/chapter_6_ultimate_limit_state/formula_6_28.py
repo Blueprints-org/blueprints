@@ -56,22 +56,22 @@ class Form6Dot28VplTRdHollowSection(Formula):
 
         return (1 - tau_t_ed / ((f_y / np.sqrt(3)) / gamma_m0)) * v_pl_rd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.28."""
         _equation: str = r"\left (1 - \frac{\tau_{t,Ed}}{\left( f_y / \sqrt{3} \right) / \gamma_{M0}} \right) \cdot V_{pl,Rd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\tau_{t,Ed}": f"{self.tau_t_ed:.3f}",
-                r"f_y": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
-                r"V_{pl,Rd}": f"{self.v_pl_rd:.3f}",
+                r"\tau_{t,Ed}": f"{self.tau_t_ed:.{n}f}",
+                r"f_y": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
+                r"V_{pl,Rd}": f"{self.v_pl_rd:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"V_{pl,T,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

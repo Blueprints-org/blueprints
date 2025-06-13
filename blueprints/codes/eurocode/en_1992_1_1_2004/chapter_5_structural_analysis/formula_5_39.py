@@ -59,14 +59,14 @@ class Form5Dot39SimplifiedCriterionBiaxialBending(Formula):
 
         return (m_edz / m_rdz) ** a + (m_edy / m_rdy) ** a <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.39."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\left( \frac{M_{Edz}}{M_{Rdz}} \right)^{a} + \left( \frac{M_{Edy}}{M_{Rdy}} \right)^{a} \leq 1",
-            numeric_equation=rf"\left( \frac{{{self.m_edz:.3f}}}{{{self.m_rdz:.3f}}} \right)^{{{self.a:.3f}}} + "
-            rf"\left( \frac{{{self.m_edy:.3f}}}{{{self.m_rdy:.3f}}} \right)^{{{self.a:.3f}}} \leq 1",
+            numeric_equation=rf"\left( \frac{{{self.m_edz:.{n}f}}}{{{self.m_rdz:.{n}f}}} \right)^{{{self.a:.{n}f}}} + "
+            rf"\left( \frac{{{self.m_edy:.{n}f}}}{{{self.m_rdy:.{n}f}}} \right)^{{{self.a:.{n}f}}} \leq 1",
             comparison_operator_label="\\to",
             unit="",
         )

@@ -35,12 +35,12 @@ class Form2Dot2CharacteristicValueResistance(Formula):
         raise_if_negative(r_d=r_d, gamma_mi=gamma_mi)
         return r_d * gamma_mi
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.10."""
         return LatexFormula(
             return_symbol=r"R_{k}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"R_d \cdot \gamma_{Mi}",
-            numeric_equation=rf"{self.r_d:.2f} \cdot {self.gamma_mi:.2f}",
+            numeric_equation=rf"{self.r_d:.{n}f} \cdot {self.gamma_mi:.{n}f}",
             comparison_operator_label="=",
         )

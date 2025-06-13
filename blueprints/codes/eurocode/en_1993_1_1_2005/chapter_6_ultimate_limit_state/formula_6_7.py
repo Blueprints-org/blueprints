@@ -49,21 +49,21 @@ class Form6Dot7DesignUltimateResistanceNetCrossSection(Formula):
 
         return 0.9 * a_net * f_u / gamma_m2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.7."""
         _equation: str = r"0.9 \cdot \frac{A_{net} \cdot f_u}{\gamma_{M2}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_{net}": f"{self.a_net:.3f}",
-                r"f_u": f"{self.f_u:.3f}",
-                r"\gamma_{M2}": f"{self.gamma_m2:.3f}",
+                r"A_{net}": f"{self.a_net:.{n}f}",
+                r"f_u": f"{self.f_u:.{n}f}",
+                r"\gamma_{M2}": f"{self.gamma_m2:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"N_{u,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

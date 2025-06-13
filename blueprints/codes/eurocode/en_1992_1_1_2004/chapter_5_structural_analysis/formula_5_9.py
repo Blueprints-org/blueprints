@@ -54,11 +54,11 @@ class Form5Dot9DesignSupportMomentReduction(Formula):
         )
         return f_ed_sup * t / 8
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.9."""
         return LatexFormula(
             return_symbol=r"ΔM_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{F_{Ed,sup} \cdot t}{8}",
             numeric_equation=rf"\frac{{{self.f_ed_sup} \cdot {self.t}}}{{8}}",
             comparison_operator_label="=",

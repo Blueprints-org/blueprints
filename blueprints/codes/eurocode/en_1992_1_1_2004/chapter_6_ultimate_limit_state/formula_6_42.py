@@ -52,21 +52,21 @@ class Form6Dot42BetaCircular(Formula):
 
         return 1 + 0.6 * np.pi * e / (diameter + 4 * d)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.42."""
         _equation: str = r"1 + 0.6 \cdot \pi \cdot \frac{e}{D + 4 \cdot d}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r" d": f" {self.d:.3f}",
-                r"D": f"{self.diameter:.3f}",
-                r"e": f"{self.e:.3f}",
+                r" d": f" {self.d:.{n}f}",
+                r"D": f"{self.diameter:.{n}f}",
+                r"e": f"{self.e:.{n}f}",
             },
             True,
         )
         return LatexFormula(
             return_symbol=r"\beta",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

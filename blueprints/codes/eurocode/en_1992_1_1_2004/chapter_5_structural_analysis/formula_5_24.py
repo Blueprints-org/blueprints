@@ -44,12 +44,12 @@ class Form5Dot24AxialForceCorrectionFactor(Formula):
         k2 = n * lambda_factor / 170
         return min(k2, 0.20)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.24."""
         return LatexFormula(
             return_symbol=r"k_2",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min(0.20; n \cdot \frac{λ}{170})",
-            numeric_equation=rf"\min(0.20; {self.n:.3f} \cdot \frac{{{self.lambda_factor:.3f}}}{{170}})",
+            numeric_equation=rf"\min(0.20; {self.n:.{n}f} \cdot \frac{{{self.lambda_factor:.{n}f}}}{{170}})",
             comparison_operator_label="=",
         )

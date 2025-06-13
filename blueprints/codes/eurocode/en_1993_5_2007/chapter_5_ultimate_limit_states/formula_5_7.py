@@ -67,14 +67,14 @@ class Form5Dot7ShearBucklingResistance(Formula):
             raise ValueError("The thickness of the flange should be less than the height of the web.")
         return ((h - t_f) * t_w * f_bv / gamma_m_0) * N_TO_KN
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.7."""
         return LatexFormula(
             return_symbol=r"V_{b,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=latex_fraction(numerator=r"\left(h - t_f \right) t_w f_{bv}", denominator=r"\gamma_{M0}"),
             numeric_equation=latex_fraction(
-                numerator=rf"({self.h:.2f} - {self.t_f:.2f}) \cdot {self.t_w} \cdot {self.f_bv:.3f}",
+                numerator=rf"({self.h:.{n}f} - {self.t_f:.{n}f}) \cdot {self.t_w} \cdot {self.f_bv:.{n}f}",
                 denominator=self.gamma_m_0,
             ),
             comparison_operator_label="=",

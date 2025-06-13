@@ -58,7 +58,7 @@ class Form6Dot58And59TensileForce(Formula):
             return 1 / 4 * (b - a) / b * f
         return 1 / 4 * (1 - 0.7 * a / h) * f
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         r"""Returns LatexFormula object for formula 6.58/6.59."""
         _equation: str = (
             r"\begin{cases} \frac{1}{4} \cdot \frac{ b - a}{ b} \cdot F & \text{if } b \leq "
@@ -68,16 +68,16 @@ class Form6Dot58And59TensileForce(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "F": f"{self.f:.3f}",
-                " a": f" {self.a:.3f}",
-                " b": f" {self.b:.3f}",
-                "H": f"{self.capital_h:.3f}",
+                "F": f"{self.f:.{n}f}",
+                " a": f" {self.a:.{n}f}",
+                " b": f" {self.b:.{n}f}",
+                "H": f"{self.capital_h:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"T",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

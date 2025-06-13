@@ -49,30 +49,30 @@ class Form6Dot39ReducedBendingMomentResistance(Formula):
 
         return min(mpl_y_rd * (1 - n) / (1 - 0.5 * a_w), mpl_y_rd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.39."""
         _equation: str = r"\min \left( M_{pl,y,Rd} \cdot \frac{1 - n}{1 - 0.5 \cdot a_w}, M_{pl,y,Rd} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{pl,y,Rd}": f"{self.mpl_y_rd:.3f}",
-                r" n": f" {self.n:.3f}",
-                r"a_w": f"{self.a_w:.3f}",
+                r"M_{pl,y,Rd}": f"{self.mpl_y_rd:.{n}f}",
+                r" n": f" {self.n:.{n}f}",
+                r"a_w": f"{self.a_w:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{pl,y,Rd}": rf"{self.mpl_y_rd:.3f} \ Nmm",
-                r" n": rf" {self.n:.3f}",
-                r"a_w": rf"{self.a_w:.3f}",
+                r"M_{pl,y,Rd}": rf"{self.mpl_y_rd:.{n}f} \ Nmm",
+                r" n": rf" {self.n:.{n}f}",
+                r"a_w": rf"{self.a_w:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"M_{N,y,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

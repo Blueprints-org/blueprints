@@ -58,19 +58,19 @@ class Form9Dot1nMinimumTensileReinforcementBeam(Formula):
         raise_if_negative(f_ctm=f_ctm, f_yk=f_yk, b_t=b_t, d=d)
         return max(0.26 * (f_ctm / f_yk) * b_t * d, 0.0013 * b_t * d)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.1N."""
-        fraction = latex_fraction(numerator=f"{self.f_ctm:.2f}", denominator=f"{self.f_yk:.2f}")
+        fraction = latex_fraction(numerator=f"{self.f_ctm:.{n}f}", denominator=f"{self.f_yk:.{n}f}")
         return LatexFormula(
             return_symbol=r"A_{s,min}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=latex_max_curly_brackets(
                 rf"0.26 \cdot {latex_fraction(numerator=r'f_{ctm}', denominator=r'f_{yk}')} \cdot b_t \cdot d",
                 r"0.0013 \cdot b_t \cdot d",
             ),
             numeric_equation=latex_max_curly_brackets(
-                rf"0.26 \cdot {fraction} \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
-                rf"0.0013 \cdot {self.b_t:.2f} \cdot {self.d:.2f}",
+                rf"0.26 \cdot {fraction} \cdot {self.b_t:.{n}f} \cdot {self.d:.{n}f}",
+                rf"0.0013 \cdot {self.b_t:.{n}f} \cdot {self.d:.{n}f}",
             ),
             comparison_operator_label="=",
         )

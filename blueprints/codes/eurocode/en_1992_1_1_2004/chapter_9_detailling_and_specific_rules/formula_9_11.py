@@ -70,7 +70,7 @@ class Form9Dot11MinimumShearReinforcement(Formula):
 
         return rhs / lhs
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 9.11."""
         _equation: str = (
             r"\frac{0.08 \cdot \sqrt{f_{ck}}}{f_{yk}} \cdot \frac{s_r \cdot s_t}{1.5 \cdot "
@@ -79,17 +79,17 @@ class Form9Dot11MinimumShearReinforcement(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\alpha": f"{self.alpha:.3f}",
-                "s_r": f"{self.s_r:.3f}",
-                "s_t": f"{self.s_t:.3f}",
-                "f_{ck}": f"{self.f_ck:.3f}",
-                "f_{yk}": f"{self.f_yk:.3f}",
+                r"\alpha": f"{self.alpha:.{n}f}",
+                "s_r": f"{self.s_r:.{n}f}",
+                "s_t": f"{self.s_t:.{n}f}",
+                "f_{ck}": f"{self.f_ck:.{n}f}",
+                "f_{yk}": f"{self.f_yk:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_{sw,min}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

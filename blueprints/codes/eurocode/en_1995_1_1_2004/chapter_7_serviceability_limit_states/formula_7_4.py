@@ -51,17 +51,17 @@ class Form7Dot4VelocityResponseLimit(Formula):
         raise_if_negative(ksi=ksi)
         return b ** (f_1 * ksi - 1)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.4."""
         eq_for: str = r"b^{(f_1 \cdot \xi - 1)}"
         repl_symb = {
-            "b": f"{self.b:.1f}",
-            "f_1": f"{self.f_1:.2f}",
-            r"\xi": f"{self.ksi:.2f}",
+            "b": f"{self.b:.{n}f}",
+            "f_1": f"{self.f_1:.{n}f}",
+            r"\xi": f"{self.ksi:.{n}f}",
         }
         return LatexFormula(
             return_symbol=r"v_{lim}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=eq_for,
             numeric_equation=latex_replace_symbols(eq_for, repl_symb),
         )

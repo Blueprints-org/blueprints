@@ -48,17 +48,17 @@ class Form7Dot3RatioDeflectionPointLoadUC(Formula):
         ratio = w / f
         return ratio / alpha
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.3."""
         eq_for: str = r"\frac{w/F}{\alpha}"
         repl_symb = {
-            "w": f"{self.w:.3f}",
-            "F": f"{self.f:.2f}",
-            r"\alpha": f"{self.alpha:.2f}",
+            "w": f"{self.w:.{n}f}",
+            "F": f"{self.f:.{n}f}",
+            r"\alpha": f"{self.alpha:.{n}f}",
         }
         return LatexFormula(
             return_symbol=r"UC",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=eq_for,
             numeric_equation=latex_replace_symbols(eq_for, repl_symb),
         )

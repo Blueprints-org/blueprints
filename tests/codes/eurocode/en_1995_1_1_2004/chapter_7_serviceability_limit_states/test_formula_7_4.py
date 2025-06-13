@@ -60,14 +60,14 @@ class TestForm7Dot4VelocityResponseLimit:
                 2,  # HZ
                 1,  # DIMENSIONLESS
                 r"v_{lim} = 50.000",
-                r"v_{lim} = b^{(f_1 \cdot \xi - 1)} = 50.0^{(2.00 \cdot 1.00 - 1)} = 50.000",
+                r"v_{lim} = b^{(f_1 \cdot \xi - 1)} = 50.000^{(2.000 \cdot 1.000 - 1)} = 50.000",
             ),
             (
                 120,  # DIMENSIONLESS
                 5,  # HZ
                 0.02,  # DIMENSIONLESS
                 r"v_{lim} = 0.013",
-                r"v_{lim} = b^{(f_1 \cdot \xi - 1)} = 120.0^{(5.00 \cdot 0.02 - 1)} = 0.013",
+                r"v_{lim} = b^{(f_1 \cdot \xi - 1)} = 120.000^{(5.000 \cdot 0.020 - 1)} = 0.013",
             ),
         ],
         ids=["decimal result", "integer result"],

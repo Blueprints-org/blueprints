@@ -2,6 +2,8 @@
 
 from abc import ABC, abstractmethod
 
+from blueprints.codes.latex_formula import LatexFormula
+
 
 class Formula(float, ABC):
     """Abstract base class for formulas used in the codes."""
@@ -83,6 +85,22 @@ class Formula(float, ABC):
         -------
         float | bool
             The result of the formula.
+            This is an abstract method and must be implemented in all subclasses.
+        """
+
+    @abstractmethod
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Abstract method for the latex representation of the formula.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of decimal places to round the result to.
+
+        Returns
+        -------
+        LatexFormula
+            The latex representation of the formula.
             This is an abstract method and must be implemented in all subclasses.
         """
 

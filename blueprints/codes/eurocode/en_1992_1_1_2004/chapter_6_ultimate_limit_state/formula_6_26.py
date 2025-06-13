@@ -47,13 +47,13 @@ class Form6Dot26ShearStressInWall(Formula):
 
         return t_ed / (2 * a_k)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.26."""
         return LatexFormula(
             return_symbol=r"\tau_{t,i}t_{ef,i}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{T_{Ed}}{2 \cdot A_{k}}",
-            numeric_equation=rf"\frac{{{self.t_ed:.3f}}}{{2 \cdot {self.a_k:.3f}}}",
+            numeric_equation=rf"\frac{{{self.t_ed:.{n}f}}}{{2 \cdot {self.a_k:.{n}f}}}",
             comparison_operator_label="=",
             unit="N/mm",
         )

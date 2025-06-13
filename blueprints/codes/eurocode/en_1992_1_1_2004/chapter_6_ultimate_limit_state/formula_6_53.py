@@ -58,17 +58,17 @@ class Form6Dot53CheckPunchingShear(Formula):
 
         return (beta * v_ed / (u_0 * d)) <= v_rd_max
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.53."""
         _equation: str = r"\frac{\beta \cdot V_{Ed}}{u_{0} \cdot d} \leq v_{Rd,max}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\beta": f"{self.beta:.3f}",
-                r"V_{Ed}": f"{self.v_ed:.3f}",
-                r"u_{0}": f"{self.u_0:.3f}",
-                r" d": f" {self.d:.3f}",
-                r"v_{Rd,max}": f"{self.v_rd_max:.3f}",
+                r"\beta": f"{self.beta:.{n}f}",
+                r"V_{Ed}": f"{self.v_ed:.{n}f}",
+                r"u_{0}": f"{self.u_0:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
+                r"v_{Rd,max}": f"{self.v_rd_max:.{n}f}",
             },
             False,
         )

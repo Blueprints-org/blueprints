@@ -71,15 +71,15 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
         raise_if_less_or_equal_to_zero(diameter_l=diameter_l)
         return min(f_wd, N_TO_KN * 16 * a_s * f_cd * (diameter_t / diameter_l))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.9."""
         return LatexFormula(
             return_symbol=r"F_{btd}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right)",
             numeric_equation=(
-                rf"\min \left( {self.f_wd:.2f}, 1000 \cdot 16 \cdot {self.a_s:.2f} \cdot {self.f_cd:.2f} \cdot "
-                rf"\frac{{{self.diameter_t:.2f}}}{{{self.diameter_l:.2f}}} \right)"
+                rf"\min \left( {self.f_wd:.{n}f}, 1000 \cdot 16 \cdot {self.a_s:.{n}f} \cdot {self.f_cd:.{n}f} \cdot "
+                rf"\frac{{{self.diameter_t:.{n}f}}}{{{self.diameter_l:.{n}f}}} \right)"
             ),
             comparison_operator_label="=",
         )

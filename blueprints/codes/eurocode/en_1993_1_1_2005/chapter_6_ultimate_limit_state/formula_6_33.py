@@ -45,22 +45,22 @@ class Form6Dot33CheckAxialForceY(Formula):
 
         return n_ed <= 0.25 * n_pl_rd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.33."""
         _equation: str = r"N_{Ed} \leq 0.25 \cdot N_{pl,Rd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"N_{pl,Rd}": f"{self.n_pl_rd:.3f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
-                r"N_{pl,Rd}": rf"{self.n_pl_rd:.3f} \ N",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ N",
             },
             True,
         )

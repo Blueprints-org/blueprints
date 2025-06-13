@@ -48,21 +48,21 @@ class Form7Dot1MultiplicationFactorLimitSlenderness(Formula):
 
         return 500 / (f_yk * a_s_req / a_s_prov)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.17."""
         _equation: str = r"\frac{500}{f_{yk} \cdot \frac{A_{s,req}}{A_{s,prov}}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"f_{yk}": f"{self.f_yk:.3f}",
-                r"A_{s,req}": f"{self.a_s_req:.3f}",
-                r"A_{s,prov}": f"{self.a_s_prov:.3f}",
+                r"f_{yk}": f"{self.f_yk:.{n}f}",
+                r"A_{s,req}": f"{self.a_s_req:.{n}f}",
+                r"A_{s,prov}": f"{self.a_s_prov:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\frac{310}{\sigma_s}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

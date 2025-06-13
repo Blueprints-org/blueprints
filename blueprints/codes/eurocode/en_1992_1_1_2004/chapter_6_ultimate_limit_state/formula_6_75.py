@@ -44,20 +44,20 @@ class Form6Dot75MaximumCompressiveStressLevel(Formula):
 
         return sigma_cd_max_equ / f_cd_fat
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.75."""
         _equation: str = r"\frac{\sigma_{cd,max,equ}}{f_{cd,fat}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\sigma_{cd,max,equ}": f"{self.sigma_cd_max_equ:.3f}",
-                r"f_{cd,fat}": f"{self.f_cd_fat:.3f}",
+                r"\sigma_{cd,max,equ}": f"{self.sigma_cd_max_equ:.{n}f}",
+                r"f_{cd,fat}": f"{self.f_cd_fat:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"E_{cd,max,equ}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

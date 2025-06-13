@@ -43,22 +43,22 @@ class Form4Dot2CheckWeldedConnection(Formula):
 
         return fw_ed <= fw_rd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 4.2."""
         _equation: str = r"F_{w,Ed} \leq F_{w,Rd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "F_{w,Ed}": f"{self.fw_ed:.3f}",
-                "F_{w,Rd}": f"{self.fw_rd:.3f}",
+                "F_{w,Ed}": f"{self.fw_ed:.{n}f}",
+                "F_{w,Rd}": f"{self.fw_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                "F_{w,Ed}": rf"{self.fw_ed:.3f} \ N",
-                "F_{w,Rd}": rf"{self.fw_rd:.3f} \ N",
+                "F_{w,Ed}": rf"{self.fw_ed:.{n}f} \ N",
+                "F_{w,Rd}": rf"{self.fw_rd:.{n}f} \ N",
             },
             False,
         )

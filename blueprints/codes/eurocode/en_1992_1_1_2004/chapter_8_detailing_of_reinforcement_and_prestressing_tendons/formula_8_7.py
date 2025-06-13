@@ -43,14 +43,14 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
         raise_if_negative(diameter=diameter, l_b_rqd=l_b_rqd)
         return max(0.6 * l_b_rqd, 10 * diameter, 100)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
         return LatexFormula(
             return_symbol=r"l_{b,min}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=latex_max_curly_brackets(r"0.6 \cdot l_{b,rqd}", r"10 \cdot Ø", r"100 \ \text{mm}"),
             numeric_equation=latex_max_curly_brackets(
-                rf"0.6 \cdot {self.l_b_rqd:.2f}",
+                rf"0.6 \cdot {self.l_b_rqd:.{n}f}",
                 rf"10 \cdot {self.diameter}",
                 r"100",
             ),

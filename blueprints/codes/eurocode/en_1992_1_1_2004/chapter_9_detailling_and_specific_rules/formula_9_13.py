@@ -47,12 +47,12 @@ class Form9Dot13TensileForceToBeAnchored(Formula):
         raise_if_negative(r=r, z_e=z_e, z_i=z_i)
         return r * z_e / z_i
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.13."""
         return LatexFormula(
             return_symbol=r"F_s",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"R \cdot z_e / z_i",
-            numeric_equation=rf"{self.r:.2f} \cdot {self.z_e:.2f} / {self.z_i:.2f}",
+            numeric_equation=rf"{self.r:.{n}f} \cdot {self.z_e:.{n}f} / {self.z_i:.{n}f}",
             comparison_operator_label="=",
         )

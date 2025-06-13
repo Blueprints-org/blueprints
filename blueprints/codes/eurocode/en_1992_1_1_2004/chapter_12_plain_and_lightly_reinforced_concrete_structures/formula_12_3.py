@@ -53,12 +53,12 @@ class Form12Dot3PlainConcreteShearStress(Formula):
 
         return n_ed / a_cc
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 12.3."""
         return LatexFormula(
             return_symbol=r"\sigma_{cp}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{N_{Ed}}{A_{cc}}",
-            numeric_equation=rf"\frac{{{self.n_ed:.3f}}}{{{self.a_cc:.3f}}}",
+            numeric_equation=rf"\frac{{{self.n_ed:.{n}f}}}{{{self.a_cc:.{n}f}}}",
             comparison_operator_label="=",
         )

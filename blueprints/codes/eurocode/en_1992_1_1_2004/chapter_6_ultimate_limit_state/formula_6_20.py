@@ -49,13 +49,13 @@ class Form6Dot20LongitudinalShearStress(Formula):
 
         return delta_f_d / (h_f * delta_x)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.20."""
         return LatexFormula(
             return_symbol=r"v_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{\Delta F_{d}}{h_{f} \cdot \Delta x}",
-            numeric_equation=rf"\frac{{{self.delta_f_d:.3f}}}{{{self.h_f:.3f} \cdot {self.delta_x:.3f}}}",
+            numeric_equation=rf"\frac{{{self.delta_f_d:.{n}f}}}{{{self.h_f:.{n}f} \cdot {self.delta_x:.{n}f}}}",
             comparison_operator_label="=",
             unit="MPa",
         )

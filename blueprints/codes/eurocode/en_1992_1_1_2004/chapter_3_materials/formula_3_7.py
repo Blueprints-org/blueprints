@@ -48,12 +48,12 @@ class Form3Dot7NonLinearCreepCoefficient(Formula):
         raise_if_negative(phi_inf_t0=phi_inf_t0, k_sigma=k_sigma)
         return phi_inf_t0 * np.exp(1.5 * (k_sigma - 0.45))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.7."""
         return LatexFormula(
             return_symbol=r"\varphi_{nl}(\infty, t_0)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\varphi(\infty, t_0) \cdot \exp( 1.5 ( k_{\sigma} - 0.45))",
-            numeric_equation=rf"{self.phi_inf_t0:.3f} \cdot \exp( 1.5 ( {self.k_sigma:.3f} - 0.45))",
+            numeric_equation=rf"{self.phi_inf_t0:.{n}f} \cdot \exp( 1.5 ( {self.k_sigma:.{n}f} - 0.45))",
             comparison_operator_label="=",
         )

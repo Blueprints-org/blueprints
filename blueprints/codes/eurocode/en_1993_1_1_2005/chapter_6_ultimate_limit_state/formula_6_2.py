@@ -62,16 +62,16 @@ class Form6Dot2UtilizationRatio(Formula):
 
         return (n_ed / n_rd) + (m_y_ed / m_y_rd) + (m_z_ed / m_z_rd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for form 6.2."""
         numeric_equation = (
-            rf"\frac{{{self.n_ed:.3f}}}{{{self.n_rd:.3f}}} + "
-            rf"\frac{{{self.m_y_ed:.3f}}}{{{self.m_y_rd:.3f}}} + "
-            rf"\frac{{{self.m_z_ed:.3f}}}{{{self.m_z_rd:.3f}}}"
+            rf"\frac{{{self.n_ed:.{n}f}}}{{{self.n_rd:.{n}f}}} + "
+            rf"\frac{{{self.m_y_ed:.{n}f}}}{{{self.m_y_rd:.{n}f}}} + "
+            rf"\frac{{{self.m_z_ed:.{n}f}}}{{{self.m_z_rd:.{n}f}}}"
         )
         return LatexFormula(
             return_symbol=r"UC",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{N_{Ed}}{N_{Rd}} + \frac{M_{y,Ed}}{M_{y,Rd}} + \frac{M_{z,Ed}}{M_{z,Rd}}",
             numeric_equation=numeric_equation,
             comparison_operator_label="=",

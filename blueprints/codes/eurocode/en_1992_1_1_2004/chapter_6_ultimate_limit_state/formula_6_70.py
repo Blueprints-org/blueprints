@@ -44,12 +44,12 @@ class Form6Dot70FatigueDamageFactor(Formula):
         raise_if_less_or_equal_to_zero(min_capital_n_delta_sigma_i=min(capital_n_delta_sigma_i))
         return sum(n / capital_n for n, capital_n in zip(n_delta_sigma_i, capital_n_delta_sigma_i)) < 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.70."""
         _equation: str = r"\sum_{i} \frac{n(\Delta \sigma_i)}{N(\Delta \sigma_i)} < 1"
         _numeric_equation: str = ""
-        for n, capital_n in zip(self.n_delta_sigma_i, self.capital_n_delta_sigma_i):
-            _numeric_equation += f"\\frac{{{n:.3f}}}{{{capital_n:.3f}}} + "
+        for n_idx, capital_n in zip(self.n_delta_sigma_i, self.capital_n_delta_sigma_i):
+            _numeric_equation += f"\\frac{{{n_idx:.{n}f}}}{{{capital_n:.{n}f}}} + "
         _numeric_equation = _numeric_equation[:-3] + " < 1"
         return LatexFormula(
             return_symbol=r"CHECK",

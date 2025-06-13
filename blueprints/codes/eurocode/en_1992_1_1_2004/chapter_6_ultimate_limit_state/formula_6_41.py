@@ -50,15 +50,15 @@ class Form6Dot41W1Rectangular(Formula):
 
         return (c_1**2) / 2 + c_1 * c_2 + 4 * c_2 * d + 16 * d**2 + 2 * np.pi * d * c_1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.41."""
         return LatexFormula(
             return_symbol=r"W_1",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{c_1^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot d^2 + 2 \cdot \pi \cdot d \cdot c_1",
-            numeric_equation=rf"\frac{{{self.c_1:.3f}^2}}{{2}} + {self.c_1:.3f} \cdot "
-            rf"{self.c_2:.3f} + 4 \cdot {self.c_2:.3f} \cdot {self.d:.3f} + 16 \cdot {self.d:.3f}^2 + "
-            rf"2 \cdot \pi \cdot {self.d:.3f} \cdot {self.c_1:.3f}",
+            numeric_equation=rf"\frac{{{self.c_1:.{n}f}^2}}{{2}} + {self.c_1:.{n}f} \cdot "
+            rf"{self.c_2:.{n}f} + 4 \cdot {self.c_2:.{n}f} \cdot {self.d:.{n}f} + 16 \cdot {self.d:.{n}f}^2 + "
+            rf"2 \cdot \pi \cdot {self.d:.{n}f} \cdot {self.c_1:.{n}f}",
             comparison_operator_label="=",
             unit="mm^2",
         )

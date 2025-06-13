@@ -57,11 +57,11 @@ class Form5Dot7EffectiveFlangeWidth(Formula):
         )
         return min(sum(b_eff_i) + b_w, b)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.7."""
         return LatexFormula(
             return_symbol=r"b_{eff}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\sum b_{eff,i}+b_w\le b",
             numeric_equation=rf"\sum ({'+'.join(str(b_eff) for b_eff in self.b_eff_i)})+{self.b_w}\le {self.b}",
             comparison_operator_label="=",

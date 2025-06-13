@@ -44,14 +44,14 @@ class Form6Dot12CheckBendingMoment(Formula):
 
         return m_ed / m_c_rd <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.12."""
         _equation: str = r"\left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "M_{Ed}": f"{self.m_ed:.3f}",
-                "M_{c,Rd}": f"{self.m_c_rd:.3f}",
+                "M_{Ed}": f"{self.m_ed:.{n}f}",
+                "M_{c,Rd}": f"{self.m_c_rd:.{n}f}",
             },
             False,
         )

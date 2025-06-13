@@ -67,19 +67,19 @@ class Form6Dot3MinDeductionAreaStaggeredFastenerHoles(Formula):
 
         return t * (n * d_0 - sum((s_i**2) / (4 * p_i) for s_i, p_i in zip(s, p)))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.3."""
         _equation: str = r"t \left( n \cdot d_0 - \sum \frac{s^2}{4 \cdot p} \right)"
         _numeric_equation: str = (
-            rf"{self.t:.3f} \left( {self.n:.3f} \cdot {self.d_0:.3f} - \left( \frac{{{self.s[0]:.3f}^2}}"
-            rf"{{4 \cdot {self.p[0]:.3f}}}"
+            rf"{self.t:.{n}f} \left( {self.n:.{n}f} \cdot {self.d_0:.{n}f} - \left( \frac{{{self.s[0]:.{n}f}^2}}"
+            rf"{{4 \cdot {self.p[0]:.{n}f}}}"
         )
         for s_i, p_i in zip(self.s[1:], self.p[1:]):
-            _numeric_equation += rf" + \frac{{{s_i:.3f}^2}}{{4 \cdot {p_i:.3f}}}"
+            _numeric_equation += rf" + \frac{{{s_i:.{n}f}^2}}{{4 \cdot {p_i:.{n}f}}}"
         _numeric_equation += r" \right) \right)"
         return LatexFormula(
             return_symbol=r"A_{deduction}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

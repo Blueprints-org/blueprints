@@ -40,13 +40,13 @@ class Form6Dot7nCheckCotTheta(Formula):
 
         return (cot(theta) >= 1) and (cot(theta) <= 2.5)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.7n."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"1 \leq \cot(\theta) \leq 2.5",
-            numeric_equation=rf"1 \leq \cot({self.theta:.3f}) \leq 2.5",
+            numeric_equation=rf"1 \leq \cot({self.theta:.{n}f}) \leq 2.5",
             comparison_operator_label="\\to",
             unit="",
         )

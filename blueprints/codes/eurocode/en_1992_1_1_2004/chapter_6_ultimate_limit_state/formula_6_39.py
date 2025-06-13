@@ -63,13 +63,13 @@ class Form6Dot39BetaCoefficient(Formula):
 
         return 1 + k * m_ed / v_ed * u_1 / w_1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.39."""
         return LatexFormula(
             return_symbol=r"\beta",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"1 + k \cdot \frac{M_{Ed}}{V_{Ed}} \cdot \frac{u_1}{W_1}",
-            numeric_equation=rf"1 + {self.k:.3f} \cdot \frac{{{self.m_ed:.3f}}}{{{self.v_ed:.3f}}} \cdot \frac{{{self.u_1:.3f}}}{{{self.w_1:.3f}}}",
+            numeric_equation=rf"1 + {self.k:.{n}f} \cdot \frac{{{self.m_ed:.{n}f}}}{{{self.v_ed:.{n}f}}} \cdot \frac{{{self.u_1:.{n}f}}}{{{self.w_1:.{n}f}}}",  # noqa: E501
             comparison_operator_label="=",
             unit="-",
         )

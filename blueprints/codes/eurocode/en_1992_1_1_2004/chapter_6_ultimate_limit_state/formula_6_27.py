@@ -44,13 +44,13 @@ class Form6Dot27ShearForceInWall(Formula):
 
         return tau_t_i_t_ef_i * z_i
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.27."""
         return LatexFormula(
             return_symbol=r"V_{Ed,i}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\tau_{t,i} t_{ef,i} \cdot z_{i}",
-            numeric_equation=rf"{self.tau_t_i_t_ef_i:.3f} \cdot {self.z_i:.3f}",
+            numeric_equation=rf"{self.tau_t_i_t_ef_i:.{n}f} \cdot {self.z_i:.{n}f}",
             comparison_operator_label="=",
             unit="N",
         )

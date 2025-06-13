@@ -62,23 +62,23 @@ class Form7Dot7nMaxBarDiameterTension(Formula):
 
         return diam_s_star * (f_ct_eff / 2.9) * (h_cr) / (8 * (h - d))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.7n."""
         _equation: str = r"⌀^*_s \cdot \left(\frac{f_{ct,eff}}{2.9}\right) \cdot \left(\frac{h_{cr}}{8 \cdot ( h - d)}\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"⌀^*_s": f"{self.diam_s_star:.3f}",
-                r"f_{ct,eff}": f"{self.f_ct_eff:.3f}",
-                r"h_{cr}": f"{self.h_cr:.3f}",
-                r" h": f" {self.h:.3f}",
-                r" d": f" {self.d:.3f}",
+                r"⌀^*_s": f"{self.diam_s_star:.{n}f}",
+                r"f_{ct,eff}": f"{self.f_ct_eff:.{n}f}",
+                r"h_{cr}": f"{self.h_cr:.{n}f}",
+                r" h": f" {self.h:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"⌀_s",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

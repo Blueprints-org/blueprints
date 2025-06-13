@@ -69,7 +69,7 @@ class Form6Dot52PunchingShearResistance(Formula):
 
         return 0.75 * v_rd_c + 1.5 * (d / s_r) * a_sw * f_ywd_ef * (1 / (u_1 * d)) * np.sin(np.deg2rad(alpha))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.52."""
         _equation: str = (
             r"0.75 \cdot v_{Rd,c} + 1.5 \cdot \frac{ d}{s_r} \cdot A_{sw} \cdot f_{ywd,ef} \cdot \frac{1}{u_{1} \cdot d} \cdot \sin(\alpha)"
@@ -77,19 +77,19 @@ class Form6Dot52PunchingShearResistance(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"v_{Rd,c}": f"{self.v_rd_c:.3f}",
-                r"s_r": f"{self.s_r:.3f}",
-                r"A_{sw}": f"{self.a_sw:.3f}",
-                r"f_{ywd,ef}": f"{self.f_ywd_ef:.3f}",
-                r"u_{1}": f"{self.u_1:.3f}",
-                r"\alpha": f"{self.alpha:.3f}",
-                r" d": f" {self.d:.3f}",
+                r"v_{Rd,c}": f"{self.v_rd_c:.{n}f}",
+                r"s_r": f"{self.s_r:.{n}f}",
+                r"A_{sw}": f"{self.a_sw:.{n}f}",
+                r"f_{ywd,ef}": f"{self.f_ywd_ef:.{n}f}",
+                r"u_{1}": f"{self.u_1:.{n}f}",
+                r"\alpha": f"{self.alpha:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"v_{Rd,cs}",
-            result=f"{self._evaluate(self.v_rd_c, self.d, self.s_r, self.a_sw, self.f_ywd_ef, self.u_1, self.alpha):.3f}",
+            result=f"{self._evaluate(self.v_rd_c, self.d, self.s_r, self.a_sw, self.f_ywd_ef, self.u_1, self.alpha):.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -136,20 +136,20 @@ class Form6Dot52Sub1EffectiveYieldStrength(Formula):
 
         return min(250 + 0.25 * d, f_ywd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.52sub1."""
         _equation: str = r"\min\left(250 + 0.25 \cdot d, f_{ywd}\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"f_{ywd}": f"{self.f_ywd:.3f}",
-                r" d": f" {self.d:.3f}",
+                r"f_{ywd}": f"{self.f_ywd:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"f_{ywd,ef}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

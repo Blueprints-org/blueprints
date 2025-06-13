@@ -49,12 +49,13 @@ class Form5Dot21NominalStiffness(Formula):
         raise_if_negative(k_c=k_c, e_cd=e_cd, i_c=i_c, k_s=k_s, e_s=e_s, i_s=i_s)
         return k_c * e_cd * i_c + k_s * e_s * i_s
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.21."""
         return LatexFormula(
             return_symbol=r"EI",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"K_{c} \cdot E_{cd} \cdot I_{c} + K_{s} \cdot E_{s} \cdot I_{s}",
-            numeric_equation=rf"{self.k_c:.3f} \cdot {self.e_cd:.3f} \cdot {self.i_c:.3f} + {self.k_s:.3f} \cdot {self.e_s:.3f} \cdot {self.i_s:.3f}",
+            numeric_equation=rf"{self.k_c:.{n}f} \cdot {self.e_cd:.{n}f} "
+            rf"\cdot {self.i_c:.{n}f} + {self.k_s:.{n}f} \cdot {self.e_s:.{n}f} \cdot {self.i_s:.{n}f}",
             comparison_operator_label="=",
         )

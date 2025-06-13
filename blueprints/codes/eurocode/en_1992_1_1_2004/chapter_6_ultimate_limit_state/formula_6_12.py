@@ -72,14 +72,14 @@ class Form6Dot12CheckMaxEffectiveCrossSectionalAreaShearReinf(Formula):
 
         return (a_sw_max * f_ywd / (b_w * s)) <= (0.5 * alpha_cw * nu_1 * f_cd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.12."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{1}{2} \cdot \alpha_{cw} \cdot \nu_{1} \cdot f_{cd}",
-            numeric_equation=rf"\frac{{{self.a_sw_max:.3f} \cdot {self.f_ywd:.3f}}}{{{self.b_w:.3f} \cdot {self.s:.3f}}}"
-            rf" \leq \frac{{1}}{{2}} \cdot {self.alpha_cw:.3f} \cdot {self.nu_1:.3f} \cdot {self.f_cd:.3f}",
+            numeric_equation=rf"\frac{{{self.a_sw_max:.{n}f} \cdot {self.f_ywd:.{n}f}}}{{{self.b_w:.{n}f} \cdot {self.s:.{n}f}}}"
+            rf" \leq \frac{{1}}{{2}} \cdot {self.alpha_cw:.{n}f} \cdot {self.nu_1:.{n}f} \cdot {self.f_cd:.{n}f}",
             comparison_operator_label="\\to",
             unit="",
         )

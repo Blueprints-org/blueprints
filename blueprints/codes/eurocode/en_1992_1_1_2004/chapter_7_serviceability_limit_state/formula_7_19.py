@@ -56,21 +56,21 @@ class Form7Dot19DistributionCoefficient(Formula):
 
         return 1 - beta * (sigma_sr / sigma_s) ** 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.19."""
         _equation: str = r"1 - \beta \left(\frac{\sigma_{sr}}{\sigma_{s}}\right)^2"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\beta": f"{self.beta:.3f}",
-                r"\sigma_{sr}": f"{self.sigma_sr:.3f}",
-                r"\sigma_{s}": f"{self.sigma_s:.3f}",
+                r"\beta": f"{self.beta:.{n}f}",
+                r"\sigma_{sr}": f"{self.sigma_sr:.{n}f}",
+                r"\sigma_{s}": f"{self.sigma_s:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\zeta",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

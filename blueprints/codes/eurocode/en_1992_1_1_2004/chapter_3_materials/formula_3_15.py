@@ -57,12 +57,12 @@ class Form3Dot15DesignValueCompressiveStrength(Formula):
             raise ValueError(f"Invalid gamma_c: {gamma_c}. gamma_c cannot be negative or zero")
         return alpha_cc * f_ck / gamma_c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.15."""
         return LatexFormula(
             return_symbol=r"f_{cd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\alpha_{cc} \cdot f_{ck} / \gamma_C",
-            numeric_equation=rf"{self.alpha_cc:.3f} \cdot {self.f_ck:.3f} / {self.gamma_c:.3f}",
+            numeric_equation=rf"{self.alpha_cc:.{n}f} \cdot {self.f_ck:.{n}f} / {self.gamma_c:.{n}f}",
             comparison_operator_label="=",
         )

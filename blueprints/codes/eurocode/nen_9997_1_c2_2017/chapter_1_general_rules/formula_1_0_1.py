@@ -44,11 +44,11 @@ class Form1Dot0Dot1EquivalentPilePointCenterline(Formula):
             raise ValueError("b must be less than or equal to 1.5 * a")
         return 1.13 * a * np.sqrt(b / a)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 1.0.1."""
         return LatexFormula(
             return_symbol=r"D_{eq}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"1.13 \cdot a \cdot \sqrt{\frac{min(b, 1.5 \cdot a)}{a}}",
             numeric_equation=rf"1.13 \cdot {self.a} \cdot \sqrt{latex_fraction(numerator=self.b, denominator=self.a)}",
             comparison_operator_label="=",

@@ -55,13 +55,13 @@ class Form6Dot19CheckShearForce(Formula):
 
         return v_ed <= a_sw * f_ywd * np.sin(np.deg2rad(alpha))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.19."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"V_{Ed} \leq A_{sw} \cdot f_{ywd} \cdot \sin(\alpha)",
-            numeric_equation=rf"{self.v_ed:.3f} \leq {self.a_sw:.3f} \cdot {self.f_ywd:.3f} \cdot \sin({self.alpha:.3f})",
+            numeric_equation=rf"{self.v_ed:.{n}f} \leq {self.a_sw:.{n}f} \cdot {self.f_ywd:.{n}f} \cdot \sin({self.alpha:.{n}f})",
             comparison_operator_label="\\to",
             unit="",
         )

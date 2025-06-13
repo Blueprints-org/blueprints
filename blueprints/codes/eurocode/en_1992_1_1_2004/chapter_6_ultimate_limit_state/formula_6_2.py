@@ -90,16 +90,16 @@ class Form6Dot2ShearResistance(Formula):
 
         return max(result_62a, result_62b)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.2."""
         return LatexFormula(
             return_symbol=r"V_{Rd,c}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\max(C_{Rd,c} \cdot k \cdot \left(100 \cdot \rho_l \cdot f_{ck}\right)^{1/3} + k_1 \cdot "
             r"\sigma_{cp}, v_{min} + k_1 \cdot \sigma_{cp}) \cdot b_w \cdot d",
-            numeric_equation=rf"\max({self.c_rd_c:.3f} \cdot {self.k:.3f} \cdot \left(100 \cdot {self.rho_l:.3f} "
-            rf"\cdot {self.f_ck:.3f}\right)^{{1/3}} + {self.k_1:.3f} \cdot {self.sigma_cp:.3f}, {self.v_min:.3f} + "
-            rf"{self.k_1:.3f} \cdot {self.sigma_cp:.3f}) \cdot {self.b_w:.3f} \cdot {self.d:.3f}",
+            numeric_equation=rf"\max({self.c_rd_c:.{n}f} \cdot {self.k:.{n}f} \cdot \left(100 \cdot {self.rho_l:.{n}f} "
+            rf"\cdot {self.f_ck:.{n}f}\right)^{{1/3}} + {self.k_1:.{n}f} \cdot {self.sigma_cp:.{n}f}, {self.v_min:.{n}f} + "
+            rf"{self.k_1:.{n}f} \cdot {self.sigma_cp:.{n}f}) \cdot {self.b_w:.{n}f} \cdot {self.d:.{n}f}",
             comparison_operator_label="=",
             unit="N",
         )
@@ -136,13 +136,13 @@ class Form6Dot2aSub1ThicknessFactor(Formula):
 
         return min(1 + (200 / d) ** 0.5, 2.0)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.2a Sub 1."""
         return LatexFormula(
             return_symbol=r"k",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min(1 + \sqrt{\frac{200}{d}}, 2.0)",
-            numeric_equation=rf"\min(1 + \sqrt{{\frac{{200}}{{{self.d:.3f}}}}}, 2.0)",
+            numeric_equation=rf"\min(1 + \sqrt{{\frac{{200}}{{{self.d:.{n}f}}}}}, 2.0)",
             comparison_operator_label="=",
             unit="-",
         )
@@ -190,13 +190,13 @@ class Form6Dot2aSub2RebarRatio(Formula):
 
         return min(a_sl / (b_w * d), 0.02)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.2a Sub 2."""
         return LatexFormula(
             return_symbol=r"\rho_l",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min( \frac{A_{sl}}{b_w \cdot d}, 0.02)",
-            numeric_equation=rf"\min( \frac{{{self.A_sl:.3f}}}{{{self.b_w:.3f} \cdot {self.d:.3f}}}, 0.02)",
+            numeric_equation=rf"\min( \frac{{{self.A_sl:.{n}f}}}{{{self.b_w:.{n}f} \cdot {self.d:.{n}f}}}, 0.02)",
             comparison_operator_label="=",
             unit="-",
         )

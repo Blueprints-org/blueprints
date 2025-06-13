@@ -43,12 +43,12 @@ class TestForm5Dot5PlasticShearResistance:
         [
             (
                 "complete",
-                r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = 23.09401076758503",
+                r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = 23.09",
             ),
-            ("short", r"V_{pl,Rd} = 23.09401076758503"),
+            ("short", r"V_{pl,Rd} = 23.09"),
             (
                 "string",
-                r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = 23.09401076758503",
+                r"V_{pl,Rd} = \frac{A_v f_y}{\sqrt{3} \gamma_{M0}} = \frac{200 \cdot 100}{\sqrt{3} \cdot 0.5} = 23.09",
             ),
         ],
     )

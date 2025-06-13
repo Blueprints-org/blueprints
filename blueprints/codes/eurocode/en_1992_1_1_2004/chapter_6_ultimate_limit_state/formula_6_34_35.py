@@ -70,15 +70,15 @@ class Form6Dot34And35ContourRadiusRectangular(Formula):
 
         return min(2 * d + 0.56 * sqrt(l_1 * l_2), 2 * d + 0.69 * l_1)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formulas 6.34 and 6.35."""
         return LatexFormula(
             return_symbol=r"r_{cont}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"min\left(2 \cdot d + 0.56 \cdot \sqrt{(c_1 + 2 \cdot l_{H1}) \cdot (c_2 + 2 \cdot l_{H2})}, "
             r"2 \cdot d + 0.69 \cdot (c_1 + 2 \cdot l_{H1})\right)",
-            numeric_equation=rf"min\left(2 \cdot {self.d:.3f} + 0.56 \cdot \sqrt{{({self.c_1:.3f} + 2 \cdot {self.l_h1:.3f}) \cdot "
-            rf"({self.c_2:.3f} + 2 \cdot {self.l_h2:.3f})}}, 2 \cdot {self.d:.3f} + 0.69 \cdot ({self.c_1:.3f} + 2 \cdot {self.l_h1:.3f})\right)",
+            numeric_equation=rf"min\left(2 \cdot {self.d:.{n}f} + 0.56 \cdot \sqrt{{({self.c_1:.{n}f} + 2 \cdot {self.l_h1:.{n}f}) \cdot "
+            rf"({self.c_2:.{n}f} + 2 \cdot {self.l_h2:.{n}f})}}, 2 \cdot {self.d:.{n}f} + 0.69 \cdot ({self.c_1:.{n}f} + 2 \cdot {self.l_h1:.{n}f})\right)",  # noqa: E501
             comparison_operator_label="=",
             unit="mm",
         )

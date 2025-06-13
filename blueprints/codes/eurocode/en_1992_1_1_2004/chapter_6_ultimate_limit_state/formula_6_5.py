@@ -63,13 +63,13 @@ class Form6Dot5ShearForceCheck(Formula):
         )
         return v_ed <= 0.5 * b_w * d * nu * f_cd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.38a."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"V_{Ed} \leq 0.5 \cdot b_w \cdot d \cdot \nu \cdot f_{cd}",
-            numeric_equation=rf"{self.v_ed:.3f} \leq 0.5 \cdot {self.b_w:.3f} \cdot {self.d:.3f} \cdot {self.nu:.3f} \cdot {self.f_cd:.3f}",
+            numeric_equation=rf"{self.v_ed:.{n}f} \leq 0.5 \cdot {self.b_w:.{n}f} \cdot {self.d:.{n}f} \cdot {self.nu:.{n}f} \cdot {self.f_cd:.{n}f}",
             comparison_operator_label="\\to",
             unit="",
         )

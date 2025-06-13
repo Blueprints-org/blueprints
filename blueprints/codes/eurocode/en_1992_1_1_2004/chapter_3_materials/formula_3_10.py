@@ -61,13 +61,14 @@ class Form3Dot10CoefficientAgeConcreteDryingShrinkage(Formula):
             raise ValueError(f"Invalid h_0: {h_0}. h_0 cannot be negative or zero")
         return (t - t_s) / ((t - t_s) + 0.04 * np.sqrt(h_0**3))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 3.10 formula."""
         return LatexFormula(
             return_symbol=r"\beta_{ds}(t,t_s)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{(t - t_s)}{(t - t_s) + 0.04 \sqrt{h_0^3}}",
-            numeric_equation=rf"\frac{{({self.t:.2f} - {self.t_s:.2f})}}{{({self.t:.2f} - {self.t_s:.2f}) + 0.04 \sqrt{{{self.h_0:.2f}^3}}}}",
+            numeric_equation=rf"\frac{{({self.t:.{n}f} - {self.t_s:.{n}f})}}{{({self.t:.{n}f} - {self.t_s:.{n}f}) + "
+            rf"0.04 \sqrt{{{self.h_0:.{n}f}^3}}}}",
             comparison_operator_label="=",
         )
 
@@ -110,12 +111,12 @@ class SubForm3Dot10FictionalCrossSection(Formula):
             raise ValueError(f"Invalid u: {u}. u cannot be negative or zero")
         return 2 * a_c / u
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 3.10 subformula."""
         return LatexFormula(
             return_symbol=r"h_0",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"2 \cdot A_c / u",
-            numeric_equation=rf"2 \cdot {self.a_c:.2f} / {self.u:.2f}",
+            numeric_equation=rf"2 \cdot {self.a_c:.{n}f} / {self.u:.{n}f}",
             comparison_operator_label="=",
         )

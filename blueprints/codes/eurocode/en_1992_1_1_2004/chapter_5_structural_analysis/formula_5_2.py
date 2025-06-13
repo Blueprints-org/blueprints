@@ -44,12 +44,12 @@ class Form5Dot2Eccentricity(Formula):
         raise_if_less_or_equal_to_zero(l_0=l_0)
         return theta_i * l_0 / 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.2."""
         return LatexFormula(
             return_symbol=r"e_i",
             result=f"{self:.4f}",
             equation=r"\theta_i \cdot l_0 / 2",
-            numeric_equation=rf"{self.theta_i:.3f} \cdot {self.l_0:.3f} / 2",
+            numeric_equation=rf"{self.theta_i:.{n}f} \cdot {self.l_0:.{n}f} / 2",
             comparison_operator_label="=",
         )

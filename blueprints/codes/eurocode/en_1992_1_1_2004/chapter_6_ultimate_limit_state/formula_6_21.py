@@ -66,14 +66,14 @@ class Form6Dot21CheckTransverseReinforcement(Formula):
 
         return (a_sf * f_yd / s_f) >= (v_ed * h_f / cot(theta_f))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.21."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\left( \frac{A_{sf} \cdot f_{yd}}{s_{f}} \geq \frac{v_{Ed} \cdot h_{f}}{\cot(\theta_{f})} \right)",
-            numeric_equation=rf"\left( \frac{{{self.a_sf:.3f} \cdot {self.f_yd:.3f}}}{{{self.s_f:.3f}}} \geq \frac{{{self.v_ed:.3f} "
-            rf"\cdot {self.h_f:.3f}}}{{\cot({self.theta_f:.3f})}} \right)",
+            numeric_equation=rf"\left( \frac{{{self.a_sf:.{n}f} \cdot {self.f_yd:.{n}f}}}{{{self.s_f:.{n}f}}} \geq \frac{{{self.v_ed:.{n}f} "
+            rf"\cdot {self.h_f:.{n}f}}}{{\cot({self.theta_f:.{n}f})}} \right)",
             comparison_operator_label="\\to",
             unit="",
         )

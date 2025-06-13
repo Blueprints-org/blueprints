@@ -61,23 +61,23 @@ class Form7Dot21CurvatureDueToShrinkage(Formula):
 
         return epsilon_cs * es / ec_eff * (capital_s / capital_i)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.21."""
         _equation: str = r"\epsilon_{cs} \cdot \frac{E_s}{E_{c,eff}} \cdot \frac{S}{I}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\epsilon_{cs}": f"{self.epsilon_cs:.4f}",
-                r"E_s": f"{self.es:.3f}",
-                r"E_{c,eff}": f"{self.ec_eff:.3f}",
-                r"S": f"{self.capital_s:.3f}",
-                r"I": f"{self.capital_i:.3f}",
+                r"\epsilon_{cs}": f"{self.epsilon_cs:.{n + 1}f}",
+                r"E_s": f"{self.es:.{n}f}",
+                r"E_{c,eff}": f"{self.ec_eff:.{n}f}",
+                r"S": f"{self.capital_s:.{n}f}",
+                r"I": f"{self.capital_i:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\frac{1}{r_{cs}}",
-            result=f"{self:.6f}",
+            result=f"{self:.{n + 3}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

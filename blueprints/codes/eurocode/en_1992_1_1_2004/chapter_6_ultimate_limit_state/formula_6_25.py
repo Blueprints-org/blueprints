@@ -100,16 +100,16 @@ class Form6Dot25DesignShearResistance(Formula):
 
         return min(term1, term2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.25."""
         return LatexFormula(
             return_symbol=r"v_{Rdi}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min \left( c \cdot f_{ctd} + \mu \cdot \sigma_{n} + \frac{A_{s}}{A_{i}} \cdot f_{yd} \cdot "
             r"(\mu \cdot \sin(\alpha) + \cos(\alpha)); 0.5 \cdot \nu \cdot f_{cd} \right)",
-            numeric_equation=rf"\min \left( {self.c:.3f} \cdot {self.f_ctd:.3f} + {self.mu:.3f} \cdot {self.sigma_n:.3f} "
-            rf"+ \frac{{{self.a_s:.3f}}}{{{self.a_i:.3f}}} \cdot {self.f_yd:.3f} \cdot ({self.mu:.3f} \cdot \sin({self.alpha:.3f}) "
-            rf"+ \cos({self.alpha:.3f})); 0.5 \cdot {self.nu:.3f} \cdot {self.f_cd:.3f} \right)",
+            numeric_equation=rf"\min \left( {self.c:.{n}f} \cdot {self.f_ctd:.{n}f} + {self.mu:.{n}f} \cdot {self.sigma_n:.{n}f} "
+            rf"+ \frac{{{self.a_s:.{n}f}}}{{{self.a_i:.{n}f}}} \cdot {self.f_yd:.{n}f} \cdot ({self.mu:.{n}f} \cdot \sin({self.alpha:.{n}f}) "
+            rf"+ \cos({self.alpha:.{n}f})); 0.5 \cdot {self.nu:.{n}f} \cdot {self.f_cd:.{n}f} \right)",
             comparison_operator_label="=",
             unit="MPa",
         )

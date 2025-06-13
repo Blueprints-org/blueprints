@@ -55,12 +55,12 @@ class Form12Dot1PlainConcreteTensileStrength(Formula):
         raise_if_less_or_equal_to_zero(gamma_c=gamma_c)
         return alpha_ct * f_ctk_0_05 / gamma_c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 12.1."""
         return LatexFormula(
             return_symbol=r"f_{ctd,pl}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}}",
-            numeric_equation=rf"{self.alpha_ct:.3f} \cdot \frac{{{self.f_ctk_0_05:.3f}}}{{{self.gamma_c:.3f}}}",
+            numeric_equation=rf"{self.alpha_ct:.{n}f} \cdot \frac{{{self.f_ctk_0_05:.{n}f}}}{{{self.gamma_c:.{n}f}}}",
             comparison_operator_label="=",
         )

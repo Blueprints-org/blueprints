@@ -54,7 +54,7 @@ class Form6Dot37Dot38MomentReduction(Formula):
             return mpl_z_rd
         return mpl_z_rd * (1 - ((n - a) / denominator) ** 2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formulas 6.37 and 6.38."""
         _equation: str = (
             r"\begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
@@ -63,24 +63,24 @@ class Form6Dot37Dot38MomentReduction(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "M_{pl,z,Rd}": f"{self.mpl_z_rd:.3f}",
-                " n": f" {self.n:.3f}",
-                " a": f" {self.a:.3f}",
+                "M_{pl,z,Rd}": f"{self.mpl_z_rd:.{n}f}",
+                " n": f" {self.n:.{n}f}",
+                " a": f" {self.a:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                "M_{pl,z,Rd}": rf"{self.mpl_z_rd:.3f} \ Nmm",
-                " n": rf" {self.n:.3f}",
-                " a": rf" {self.a:.3f}",
+                "M_{pl,z,Rd}": rf"{self.mpl_z_rd:.{n}f} \ Nmm",
+                " n": rf" {self.n:.{n}f}",
+                " a": rf" {self.a:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"M_{N,z,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
@@ -118,28 +118,28 @@ class Form6Dot38N(Formula):
         raise_if_negative(n_ed=n_ed)
         return n_ed / n_pl_rd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.38n."""
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"N_{pl,Rd}": f"{self.n_pl_rd:.3f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
-                r"N_{pl,Rd}": rf"{self.n_pl_rd:.3f} \ N",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ N",
             },
             True,
         )
         return LatexFormula(
             return_symbol=r"n",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
@@ -181,30 +181,30 @@ class Form6Dot38A(Formula):
         a = (capital_a - 2 * b * tf) / capital_a
         return min(a, 0.5)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.38a."""
         _equation: str = r"\min\left(\frac{A - 2 \cdot b \cdot t_f}{A}, 0.5\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.capital_a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"t_f": f"{self.tf:.3f}",
+                r"A": f"{self.capital_a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"t_f": f"{self.tf:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"A": rf"{self.capital_a:.3f} \ mm^2",
-                r"b": rf"{self.b:.3f} \ mm",
-                r"t_f": rf"{self.tf:.3f} \ mm",
+                r"A": rf"{self.capital_a:.{n}f} \ mm^2",
+                r"b": rf"{self.b:.{n}f} \ mm",
+                r"t_f": rf"{self.tf:.{n}f} \ mm",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"a",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

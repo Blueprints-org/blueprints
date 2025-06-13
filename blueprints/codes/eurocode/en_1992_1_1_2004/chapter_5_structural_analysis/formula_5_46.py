@@ -89,19 +89,20 @@ class Form5Dot46Part1TimeDependentForceLosses(Formula):
 
         return a_p * Form5Dot46Part2TimeDependentStressLosses(a_p, epsilon_cs, e_p, e_cm, delta_sigma_pr, phi_t_t0, sigma_c_qp, a_c, i_c, z_cp)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.46."""
         return LatexFormula(
             return_symbol=r"\Delta P_{c+s+r}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"A_p \cdot \frac{\epsilon_{cs} \cdot E_p + 0.8 \cdot \Delta \sigma_{pr} + \frac{E_p}{E_{cm}} \cdot "
             r"\phi(t, t_0) \cdot \sigma_{c,QP}}{1 + \frac{E_p}{E_{cm}} \cdot \frac{A_p}{A_c} \cdot \left(1 + \frac{A_c}{I_c} "
             r"\cdot z_{cp}^2\right) \cdot \left(1 + 0.8 \cdot \phi(t, t_0)\right)}",
-            numeric_equation=rf"{self.a_p:.3f} \cdot \frac{{{self.epsilon_cs:.6f} \cdot {self.e_p:.3f} + 0.800"
-            rf" \cdot {self.delta_sigma_pr:.3f} + \frac{{{self.e_p:.3f}}}{{{self.e_cm:.3f}}} \cdot {self.phi_t_t0:.3f} "
-            rf"\cdot {self.sigma_c_qp:.3f}}}{{1 + \frac{{{self.e_p:.3f}}}{{{self.e_cm:.3f}}} \cdot \frac{{{self.a_p:.3f}}}{{{self.a_c:.3f}}} "
-            rf"\cdot \left(1 + \frac{{{self.a_c:.3f}}}{{{self.i_c:.3f}}} \cdot {self.z_cp:.3f}^2\right) \cdot \left(1 + 0.800 "
-            rf"\cdot {self.phi_t_t0:.3f}\right)}}",
+            numeric_equation=rf"{self.a_p:.{n}f} \cdot \frac{{{self.epsilon_cs:.6f} \cdot {self.e_p:.{n}f} + 0.800"
+            rf" \cdot {self.delta_sigma_pr:.{n}f} + \frac{{{self.e_p:.{n}f}}}{{{self.e_cm:.{n}f}}} \cdot {self.phi_t_t0:.{n}f} "
+            rf"\cdot {self.sigma_c_qp:.{n}f}}}{{1 + \frac{{{self.e_p:.{n}f}}}{{{self.e_cm:.{n}f}}} "
+            rf"\cdot \frac{{{self.a_p:.{n}f}}}{{{self.a_c:.{n}f}}} "
+            rf"\cdot \left(1 + \frac{{{self.a_c:.{n}f}}}{{{self.i_c:.{n}f}}} \cdot {self.z_cp:.{n}f}^2\right) \cdot \left(1 + 0.800 "
+            rf"\cdot {self.phi_t_t0:.{n}f}\right)}}",
             comparison_operator_label="=",
             unit="N",
         )
@@ -199,19 +200,20 @@ class Form5Dot46Part2TimeDependentStressLosses(Formula):
         denominator = 1 + (e_p / e_cm) * (a_p / a_c) * (1 + (a_c / i_c) * z_cp**2) * (1 + 0.8 * phi_t_t0)
         return numerator / denominator
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.46 for stress losses."""
         return LatexFormula(
             return_symbol=r"\Delta \sigma_{p,c+s+r}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{\epsilon_{cs} \cdot E_p + 0.8 \cdot \Delta \sigma_{pr} + \frac{E_p}{E_{cm}} \cdot "
             r"\phi(t, t_0) \cdot \sigma_{c,QP}}{1 + \frac{E_p}{E_{cm}} \cdot \frac{A_p}{A_c} \cdot \left(1 + \frac{A_c}{I_c} "
             r"\cdot z_{cp}^2\right) \cdot \left(1 + 0.8 \cdot \phi(t, t_0)\right)}",
-            numeric_equation=rf"\frac{{{self.epsilon_cs:.6f} \cdot {self.e_p:.3f} + 0.800"
-            rf" \cdot {self.delta_sigma_pr:.3f} + \frac{{{self.e_p:.3f}}}{{{self.e_cm:.3f}}} \cdot {self.phi_t_t0:.3f} "
-            rf"\cdot {self.sigma_c_qp:.3f}}}{{1 + \frac{{{self.e_p:.3f}}}{{{self.e_cm:.3f}}} \cdot \frac{{{self.a_p:.3f}}}{{{self.a_c:.3f}}} "
-            rf"\cdot \left(1 + \frac{{{self.a_c:.3f}}}{{{self.i_c:.3f}}} \cdot {self.z_cp:.3f}^2\right) \cdot \left(1 + 0.800 "
-            rf"\cdot {self.phi_t_t0:.3f}\right)}}",
+            numeric_equation=rf"\frac{{{self.epsilon_cs:.6f} \cdot {self.e_p:.{n}f} + 0.800"
+            rf" \cdot {self.delta_sigma_pr:.{n}f} + \frac{{{self.e_p:.{n}f}}}{{{self.e_cm:.{n}f}}} \cdot {self.phi_t_t0:.{n}f} "
+            rf"\cdot {self.sigma_c_qp:.{n}f}}}{{1 + \frac{{{self.e_p:.{n}f}}}{{{self.e_cm:.{n}f}}} "
+            rf"\cdot \frac{{{self.a_p:.{n}f}}}{{{self.a_c:.{n}f}}} "
+            rf"\cdot \left(1 + \frac{{{self.a_c:.{n}f}}}{{{self.i_c:.{n}f}}} \cdot {self.z_cp:.{n}f}^2\right) \cdot \left(1 + 0.800 "
+            rf"\cdot {self.phi_t_t0:.{n}f}\right)}}",
             comparison_operator_label="=",
             unit="MPa",
         )

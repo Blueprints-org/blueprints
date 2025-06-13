@@ -56,22 +56,22 @@ class Form6Dot43BetaRectangular(Formula):
 
         return 1 + 1.8 * np.sqrt((ey / bz) ** 2 + (ez / by) ** 2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.43."""
         _equation: str = r"1 + 1.8 \cdot \sqrt{\left(\frac{e_y}{b_z}\right)^2 + \left(\frac{e_z}{b_y}\right)^2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"e_y": f"{self.ey:.3f}",
-                r"e_z": f"{self.ez:.3f}",
-                r"b_y": f"{self.by:.3f}",
-                r"b_z": f"{self.bz:.3f}",
+                r"e_y": f"{self.ey:.{n}f}",
+                r"e_z": f"{self.ez:.{n}f}",
+                r"b_y": f"{self.by:.{n}f}",
+                r"b_z": f"{self.bz:.{n}f}",
             },
             True,
         )
         return LatexFormula(
             return_symbol=r"\beta",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

@@ -40,12 +40,12 @@ class Form2Dot1aDesignValueLoad(Formula):
         raise_if_negative(gamma_f=gamma_f)
         return gamma_f * f_rep
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 2.1a."""
         return LatexFormula(
             return_symbol=r"F_d",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\gamma_F \cdot F_{rep}",
-            numeric_equation=rf"{self.gamma_f:.2f} \cdot {self.f_rep:.2f}",
+            numeric_equation=rf"{self.gamma_f:.{n}f} \cdot {self.f_rep:.{n}f}",
             comparison_operator_label="=",
         )

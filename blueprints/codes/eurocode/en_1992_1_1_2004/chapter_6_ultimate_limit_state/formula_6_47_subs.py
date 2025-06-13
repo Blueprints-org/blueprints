@@ -34,19 +34,19 @@ class SubForm6Dot47FactorK(Formula):
         raise_if_less_or_equal_to_zero(d=d)
         return min(1 + np.sqrt(200 / d), 2.0)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for sub-formula 6.47 (factor k)."""
         _equation: str = r"\min \left( 1 + \sqrt{\frac{200}{d}}, 2.0 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"d": f"{self.d:.3f}",
+                r"d": f"{self.d:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"k",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -84,20 +84,20 @@ class SubForm6Dot47FactorRhoL(Formula):
         raise_if_negative(rho_ly=rho_ly, rho_lz=rho_lz)
         return min(np.sqrt(rho_ly * rho_lz), 0.02)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for sub-formula 6.47 (factor rho_l)."""
         _equation: str = r"\min \left( \sqrt{\rho_{ly} \cdot \rho_{lz}}, 0.02 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\rho_{ly}": f"{self.rho_ly:.3f}",
-                r"\rho_{lz}": f"{self.rho_lz:.3f}",
+                r"\rho_{ly}": f"{self.rho_ly:.{n}f}",
+                r"\rho_{lz}": f"{self.rho_lz:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\rho_l",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -135,20 +135,20 @@ class SubForm6Dot47FactorSigmaCp(Formula):
         raise_if_negative(sigma_cy=sigma_cy, sigma_cz=sigma_cz)
         return (sigma_cy + sigma_cz) / 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for sub-formula 6.47 (sigma_cp)."""
         _equation: str = r"\frac{\sigma_{cy} + \sigma_{cz}}{2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\sigma_{cy}": f"{self.sigma_cy:.3f}",
-                r"\sigma_{cz}": f"{self.sigma_cz:.3f}",
+                r"\sigma_{cy}": f"{self.sigma_cy:.{n}f}",
+                r"\sigma_{cz}": f"{self.sigma_cz:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\sigma_{cp}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -186,20 +186,20 @@ class SubForm6Dot47FactorSigmaCy(Formula):
         raise_if_negative(n_ed_y=n_ed_y)
         return n_ed_y / a_cy
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for sub-formula 6.47 (sigma_cy)."""
         _equation: str = r"\frac{N_{Ed,y}}{A_{cy}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed,y}": f"{self.n_ed_y:.3f}",
-                r"A_{cy}": f"{self.a_cy:.3f}",
+                r"N_{Ed,y}": f"{self.n_ed_y:.{n}f}",
+                r"A_{cy}": f"{self.a_cy:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\sigma_{cy}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -237,20 +237,20 @@ class SubForm6Dot47FactorSigmaCz(Formula):
         raise_if_negative(n_ed_z=n_ed_z)
         return n_ed_z / a_cz
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for sub-formula 6.47 sigma_cz."""
         _equation: str = r"\frac{N_{Ed,z}}{A_{cz}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed,z}": f"{self.n_ed_z:.3f}",
-                r"A_{cz}": f"{self.a_cz:.3f}",
+                r"N_{Ed,z}": f"{self.n_ed_z:.{n}f}",
+                r"A_{cz}": f"{self.a_cz:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\sigma_{cz}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

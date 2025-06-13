@@ -49,21 +49,21 @@ class Form6Dot49AppliedPunchingShearStress(Formula):
         raise_if_negative(v_ed_red=v_ed_red, u=u, d=d)
         return v_ed_red / (u * d)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.49."""
         _equation: str = r"\frac{V_{Ed,red}}{u \cdot d}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"V_{Ed,red}": f"{self.v_ed_red:.3f}",
-                r"u": f"{self.u:.3f}",
-                r" d": f" {self.d:.3f}",
+                r"V_{Ed,red}": f"{self.v_ed_red:.{n}f}",
+                r"u": f"{self.u:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"v_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

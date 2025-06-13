@@ -72,14 +72,14 @@ class Form6Dot30DesignTorsionalResistanceMoment(Formula):
 
         return 2 * nu * alpha_cw * f_cd * a_k * t_ef_i * np.sin(np.deg2rad(theta)) * np.cos(np.deg2rad(theta))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.30."""
         return LatexFormula(
             return_symbol=r"T_{Rd,max}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"2 \cdot \nu \cdot \alpha_{cw} \cdot f_{cd} \cdot A_{k} \cdot t_{ef,i} \cdot \sin(\theta) \cdot \cos(\theta)",
-            numeric_equation=rf"2 \cdot {self.nu:.3f} \cdot {self.alpha_cw:.3f} \cdot {self.f_cd:.3f} \cdot {self.a_k:.3f} "
-            rf"\cdot {self.t_ef_i:.3f} \cdot \sin({self.theta:.3f}) \cdot \cos({self.theta:.3f})",
+            numeric_equation=rf"2 \cdot {self.nu:.{n}f} \cdot {self.alpha_cw:.{n}f} \cdot {self.f_cd:.{n}f} \cdot {self.a_k:.{n}f} "
+            rf"\cdot {self.t_ef_i:.{n}f} \cdot \sin({self.theta:.{n}f}) \cdot \cos({self.theta:.{n}f})",
             comparison_operator_label="=",
             unit="Nmm",
         )

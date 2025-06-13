@@ -73,14 +73,14 @@ class Form6Dot9MaximumShearResistance(Formula):
 
         return alpha_cw * b_w * z * nu_1 * f_cd / (cot(theta) + np.tan(np.deg2rad(theta)))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.9."""
         return LatexFormula(
             return_symbol=r"V_{Rd,max}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\alpha_{cw} \cdot b_{w} \cdot z \cdot \nu_{1} \cdot \frac{f_{cd}}{\cot(\theta) + \tan(\theta)}",
-            numeric_equation=rf"{self.alpha_cw:.3f} \cdot {self.b_w:.3f} \cdot {self.z:.3f} \cdot {self.nu_1:.3f} \cdot"
-            rf" \frac{{{self.f_cd:.3f}}}{{\cot({self.theta:.3f}) + \tan({self.theta:.3f})}}",
+            numeric_equation=rf"{self.alpha_cw:.{n}f} \cdot {self.b_w:.{n}f} \cdot {self.z:.{n}f} \cdot {self.nu_1:.{n}f} \cdot"
+            rf" \frac{{{self.f_cd:.{n}f}}}{{\cot({self.theta:.{n}f}) + \tan({self.theta:.{n}f})}}",
             comparison_operator_label="=",
             unit="N",
         )

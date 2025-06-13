@@ -41,11 +41,11 @@ class Form5Dot17EffectiveLengthBucklingLoad(Formula):
         raise_if_less_or_equal_to_zero(n_b=n_b)
         return math.pi * math.sqrt(ei / n_b)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
         return LatexFormula(
             return_symbol=r"l_0",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\pi \cdot \sqrt{\frac{EI}{N_{b}}}",
             numeric_equation=rf"\pi \cdot \sqrt{{\frac{{{self.ei}}}{{{self.n_b}}}}}",
             comparison_operator_label="=",

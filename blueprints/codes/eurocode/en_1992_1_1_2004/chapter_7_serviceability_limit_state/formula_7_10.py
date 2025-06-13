@@ -54,22 +54,22 @@ class Form7Dot10RhoPEff(Formula):
 
         return (a_s + xi_1 * a_p_prime) / a_c_eff
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.10."""
         _equation: str = r"\frac{A_s + \xi_1 \cdot A'_p}{A_{c,eff}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_s": f"{self.a_s:.3f}",
-                r"\xi_1": f"{self.xi_1:.3f}",
-                r"A'_p": f"{self.a_p_prime:.3f}",
-                r"A_{c,eff}": f"{self.a_c_eff:.3f}",
+                r"A_s": f"{self.a_s:.{n}f}",
+                r"\xi_1": f"{self.xi_1:.{n}f}",
+                r"A'_p": f"{self.a_p_prime:.{n}f}",
+                r"A_{c,eff}": f"{self.a_c_eff:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\rho_{p,eff}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

@@ -54,11 +54,11 @@ class Form5Dot8RelativeWebSlenderness(Formula):
         raise_if_less_or_equal_to_zero(c=c, t_w=t_w, f_y=f_y, e=e)
         return 0.346 * (c / t_w) * np.sqrt(f_y / e)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.8."""
         return LatexFormula(
             return_symbol=r"\overline{\lambda}",
-            result=str(self),
+            result=f"{self:.{n}f}",
             equation=rf"0.346 \cdot {latex_fraction(numerator='c', denominator='t_w')} \sqrt{{{latex_fraction(numerator='f_y', denominator='E')}}}",
             numeric_equation=rf"0.346 \cdot {latex_fraction(numerator=self.c, denominator=self.t_w)} \sqrt{{"
             rf"{latex_fraction(numerator=self.f_y, denominator=self.e)}}}",

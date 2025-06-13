@@ -44,20 +44,20 @@ class Form6Dot46BetaCorner(Formula):
 
         return u1 / u1_star
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.46."""
         _equation: str = r"\frac{u_1}{u_{1^*}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"u_1": f"{self.u1:.3f}",
-                r"u_{1^*}": f"{self.u1_star:.3f}",
+                r"u_1": f"{self.u1:.{n}f}",
+                r"u_{1^*}": f"{self.u1_star:.{n}f}",
             },
             True,
         )
         return LatexFormula(
             return_symbol=r"\beta",
-            result=f"{self._evaluate(self.u1, self.u1_star):.3f}",
+            result=f"{self._evaluate(self.u1, self.u1_star):.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

@@ -71,14 +71,14 @@ class Form6Dot4ShearResistance(Formula):
 
         return i * b_w / s * (f_ctd**2 + alpha_l * sigma_cp * f_ctd) ** 0.5
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.4."""
         return LatexFormula(
             return_symbol=r"V_{Rd,c}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{I \cdot b_w}{S} \cdot \sqrt{(f_{ctd})^2 + \alpha_l \cdot \sigma_{cp} \cdot f_{ctd}}",
-            numeric_equation=rf"\frac{{{self.i:.3f} \cdot {self.b_w:.3f}}}{{{self.s:.3f}}} \cdot "
-            rf"\sqrt{{({self.f_ctd:.3f})^2 + {self.alpha_l:.3f} \cdot {self.sigma_cp:.3f} \cdot {self.f_ctd:.3f}}}",
+            numeric_equation=rf"\frac{{{self.i:.{n}f} \cdot {self.b_w:.{n}f}}}{{{self.s:.{n}f}}} \cdot "
+            rf"\sqrt{{({self.f_ctd:.{n}f})^2 + {self.alpha_l:.{n}f} \cdot {self.sigma_cp:.{n}f} \cdot {self.f_ctd:.{n}f}}}",
             comparison_operator_label="=",
             unit="N",
         )

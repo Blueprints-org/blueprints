@@ -44,12 +44,12 @@ class Form3Dot19And20EffectivePressureZoneHeight(Formula):
             return 0.8 - (f_ck - 50) / 400
         raise ValueError(f"Invalid f_ck: {f_ck}. Maximum of f_ck is 90 MPa")
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.19 and 3.20."""
         return LatexFormula(
             return_symbol=r"\lambda",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"0.8" if self.f_ck <= 50 else r"0.8 - (f_{ck} - 50) / 400",
-            numeric_equation=r"0.8" if self.f_ck <= 50 else rf"0.8 - ({self.f_ck:.3f} - 50) / 400",
+            numeric_equation=r"0.8" if self.f_ck <= 50 else rf"0.8 - ({self.f_ck:.{n}f} - 50) / 400",
             comparison_operator_label="=",
         )

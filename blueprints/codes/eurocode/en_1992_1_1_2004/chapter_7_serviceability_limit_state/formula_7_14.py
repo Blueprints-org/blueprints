@@ -45,20 +45,20 @@ class Form7Dot14MaximumCrackSpacing(Formula):
 
         return 1.3 * (h - x)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.14."""
         _equation: str = r"1.3 \cdot (h - x)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"h": f"{self.h:.3f}",
-                r"x": f"{self.x:.3f}",
+                r"h": f"{self.h:.{n}f}",
+                r"x": f"{self.x:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"s_{r,max}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

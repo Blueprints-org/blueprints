@@ -35,12 +35,12 @@ class Form5Dot27EffectiveDesignModulusElasticity(Formula):
         raise_if_negative(e_cd=e_cd, phi_ef=phi_ef)
         return e_cd / (1 + phi_ef)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.27."""
         return LatexFormula(
             return_symbol=r"E_{cd,eff}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{E_{cd}}{1 + \phi_{ef}}",
-            numeric_equation=rf"\frac{{{self.e_cd:.3f}}}{{1 + {self.phi_ef:.3f}}}",
+            numeric_equation=rf"\frac{{{self.e_cd:.{n}f}}}{{1 + {self.phi_ef:.{n}f}}}",
             comparison_operator_label="=",
         )

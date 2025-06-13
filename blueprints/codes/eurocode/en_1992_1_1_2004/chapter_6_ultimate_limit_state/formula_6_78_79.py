@@ -66,7 +66,7 @@ class Form6Dot78And79FatigueResistance(Formula):
 
         return output
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.78/6.79."""
         _equation: str = (
             r"\begin{cases} \frac{\left|V_{Ed,max}\right|}{\left|V_{Rd,c}\right|} \leq "
@@ -79,10 +79,10 @@ class Form6Dot78And79FatigueResistance(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "V_{Ed,max}": f"{self.v_ed_max:.3f}",
-                "V_{Ed,min}": f"{self.v_ed_min:.3f}",
-                "V_{Rd,c}": f"{self.v_rd_c:.3f}",
-                "f_{ck}": f"{self.f_ck:.3f}",
+                "V_{Ed,max}": f"{self.v_ed_max:.{n}f}",
+                "V_{Ed,min}": f"{self.v_ed_min:.{n}f}",
+                "V_{Rd,c}": f"{self.v_rd_c:.{n}f}",
+                "f_{ck}": f"{self.f_ck:.{n}f}",
             },
             False,
         )

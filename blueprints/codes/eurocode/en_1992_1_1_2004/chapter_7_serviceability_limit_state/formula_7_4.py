@@ -50,21 +50,21 @@ class Form7Dot4MeanStressConcrete(Formula):
 
         return n_ed / (b * h)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.4."""
         _equation: str = r"\frac{N_{Ed}}{b \cdot h}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"h": f"{self.h:.3f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"h": f"{self.h:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"\sigma_c",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

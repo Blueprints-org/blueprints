@@ -54,14 +54,14 @@ class Form6Dot29CheckTorsionShearResistance(Formula):
 
         return (t_ed / t_rd_max + v_ed / v_rd_max) <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.29."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\left( \frac{T_{Ed}}{T_{Rd,max}} + \frac{V_{Ed}}{V_{Rd,max}} \leq 1 \right)",
-            numeric_equation=rf"\left( \frac{{{self.t_ed:.3f}}}{{{self.t_rd_max:.3f}}} + "
-            rf"\frac{{{self.v_ed:.3f}}}{{{self.v_rd_max:.3f}}} \leq 1 \right)",
+            numeric_equation=rf"\left( \frac{{{self.t_ed:.{n}f}}}{{{self.t_rd_max:.{n}f}}} + "
+            rf"\frac{{{self.v_ed:.{n}f}}}{{{self.v_rd_max:.{n}f}}} \leq 1 \right)",
             comparison_operator_label="\\to",
             unit="",
         )

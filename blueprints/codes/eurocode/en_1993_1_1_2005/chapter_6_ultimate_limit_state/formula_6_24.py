@@ -43,20 +43,20 @@ class Form6Dot24TotalTorsionalMoment(Formula):
 
         return t_t_ed + t_w_ed
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.24."""
         _equation: str = r"T_{t,Ed} + T_{w,Ed}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"T_{t,Ed}": f"{self.t_t_ed:.3f}",
-                r"T_{w,Ed}": f"{self.t_w_ed:.3f}",
+                r"T_{t,Ed}": f"{self.t_t_ed:.{n}f}",
+                r"T_{w,Ed}": f"{self.t_w_ed:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"T_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

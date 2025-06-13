@@ -62,18 +62,18 @@ class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
         n = n_ed / (a_c * f_cd)
         return (20 * a * b * c) / np.sqrt(n)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13N."""
         _equation: str = r"\frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_c": f"{self.a_c:.3f}",
-                r"A": f"{self.a:.3f}",
-                r"B": f"{self.b:.3f}",
-                r"C": f"{self.c:.3f}",
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"f_{cd}": f"{self.f_cd:.3f}",
+                r"A_c": f"{self.a_c:.{n}f}",
+                r"A": f"{self.a:.{n}f}",
+                r"B": f"{self.b:.{n}f}",
+                r"C": f"{self.c:.{n}f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"f_{cd}": f"{self.f_cd:.{n}f}",
             },
             True,
         )
@@ -81,17 +81,17 @@ class Form5Dot13nSlendernessCriterionIsolatedMembers(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"A_c": rf"{self.a_c:.3f} \ mm^2",
-                r"A": f"{self.a:.3f}",
-                r"B": f"{self.b:.3f}",
-                r"C": f"{self.c:.3f}",
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
-                r"f_{cd}": rf"{self.f_cd:.3f} \ MPa",
+                r"A_c": rf"{self.a_c:.{n}f} \ mm^2",
+                r"A": f"{self.a:.{n}f}",
+                r"B": f"{self.b:.{n}f}",
+                r"C": f"{self.c:.{n}f}",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
             },
         )
         return LatexFormula(
             return_symbol=r"\lambda_{lim}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
@@ -131,19 +131,19 @@ class SubForm5Dot13aCreepRatio(Formula):
 
         return 1 / (1 + 0.2 * phi_ef)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13a."""
         _equation: str = r"\frac{1}{(1 + 0.2 \cdot \phi_{ef})}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\phi_{ef}": f"{self.phi_ef:.3f}",
+                r"\phi_{ef}": f"{self.phi_ef:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -199,32 +199,32 @@ class SubForm5Dot13bMechanicalReinforcementFactor(Formula):
         mechanical_reinforcement_ratio = (a_s * f_yd) / (a_c * f_cd)
         return np.sqrt(1 + 2 * mechanical_reinforcement_ratio)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13b."""
         _equation: str = r"\sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_s": f"{self.a_s:.3f}",
-                r"f_{yd}": f"{self.f_yd:.3f}",
-                r"A_c": f"{self.a_c:.3f}",
-                r"f_{cd}": f"{self.f_cd:.3f}",
+                r"A_s": f"{self.a_s:.{n}f}",
+                r"f_{yd}": f"{self.f_yd:.{n}f}",
+                r"A_c": f"{self.a_c:.{n}f}",
+                r"f_{cd}": f"{self.f_cd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"A_s": rf"{self.a_s:.3f} \ mm^2",
-                r"f_{yd}": rf"{self.f_yd:.3f} \ MPa",
-                r"A_c": rf"{self.a_c:.3f} \ mm^2",
-                r"f_{cd}": rf"{self.f_cd:.3f} \ MPa",
+                r"A_s": rf"{self.a_s:.{n}f} \ mm^2",
+                r"f_{yd}": rf"{self.f_yd:.{n}f} \ MPa",
+                r"A_c": rf"{self.a_c:.{n}f} \ mm^2",
+                r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"B",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
@@ -273,27 +273,27 @@ class SubForm5Dot13cMomentRatio(Formula):
 
         return 1.7 - (m_01 / m_02)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13b."""
         _equation: str = r"1.7 - \frac{M_{01}}{M_{02}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{01}": f"{self.m_01:.3f}",
-                r"M_{02}": f"{self.m_02:.3f}",
+                r"M_{01}": f"{self.m_01:.{n}f}",
+                r"M_{02}": f"{self.m_02:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{01}": rf"{self.m_01:.3f} \ kNm",
-                r"M_{02}": rf"{self.m_02:.3f} \ kNm",
+                r"M_{01}": rf"{self.m_01:.{n}f} \ kNm",
+                r"M_{02}": rf"{self.m_02:.{n}f} \ kNm",
             },
         )
         return LatexFormula(
             return_symbol=r"C",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

@@ -54,12 +54,12 @@ class Form9Dot3ShiftInMomentDiagram(Formula):
         raise_if_negative(z=z, a_l=a_l)
         return abs(v_ed) * a_l / z + n_ed
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.3."""
         return LatexFormula(
             return_symbol=r"F_E",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"|V_{Ed}| \cdot a_l / z + N_{Ed}",
-            numeric_equation=rf"|{self.v_ed:.2f}| \cdot {self.a_l:.2f} / {self.z:.2f} + {self.n_ed:.2f}",
+            numeric_equation=rf"|{self.v_ed:.{n}f}| \cdot {self.a_l:.{n}f} / {self.z:.{n}f} + {self.n_ed:.{n}f}",
             comparison_operator_label="=",
         )

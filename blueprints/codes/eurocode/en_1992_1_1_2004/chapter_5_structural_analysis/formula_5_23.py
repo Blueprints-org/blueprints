@@ -32,12 +32,12 @@ class Form5Dot23FactorConcreteStrengthClass(Formula):
         raise_if_negative(f_ck=f_ck)
         return (f_ck / 20) ** 0.5
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.23."""
         return LatexFormula(
             return_symbol=r"k_{1}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\sqrt{\frac{f_{ck}}{20}}",
-            numeric_equation=rf"\sqrt{{\frac{{{self.f_ck:.3f}}}{{20}}}}",
+            numeric_equation=rf"\sqrt{{\frac{{{self.f_ck:.{n}f}}}{{20}}}}",
             comparison_operator_label="=",
         )
