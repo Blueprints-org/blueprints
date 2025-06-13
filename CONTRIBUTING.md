@@ -30,6 +30,53 @@ We enforce a code of conduct for all maintainers and contributors. For more deta
 4. **Run Tests:** Please run tests to make sure your changes don't break existing functionality.
 5. **Submit a Pull Request:** Submit your changes as a pull request, providing detailed information in the PR description.
 
+## How to set up your development environment
+
+`blueprints` uses `uv` for python project management. `uv` can be installed with pip:
+
+```shell
+pip install uv
+```
+For other methods check [this](https://docs.astral.sh/uv/getting-started/installation/).
+
+`uv` can then be used to install the latest compatible version of python:
+
+```shell
+uv python install 3.13
+```
+
+`blueprints` and it's development dependencies can be installed with:
+
+```shell
+uv sync
+```
+
+or if you want to install all optional dependencies, you can run:
+```shell
+uv sync --all-extras
+```
+Refer to the `uv` [documentation](https://docs.astral.sh/uv/) for more information relating to using `uv` for project management.
+
+## How to test the project
+
+### Pre-commit
+
+[Pre-commit](https://pre-commit.com/) ensures code quality and consistency.
+
+These can be run against all files in the project with:
+
+```shell
+uv run pre-commit run --all-files
+```
+
+However, the best way to ensure code quality is by installing the git pre-commit hook:
+
+```shell
+uv run pre-commit install
+```
+
+This will run `pre-commit` against all changed files when attempting to `git commit`. You will need to fix the offending files prior to being able to commit a change unless you run `git commit --no-verify`.
+
 ## Code Quality Tools
 
 We use ruff and mypy to enforce code quality. Make sure to run these before submitting a PR. We encourage you to use our pre-commit
