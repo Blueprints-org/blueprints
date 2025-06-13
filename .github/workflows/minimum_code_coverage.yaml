@@ -1,5 +1,5 @@
 # This workflow will make sure that incoming changes via pull requests
-# will not decrease the code coverage to less than 100%.
+# will not decrease the code coverage to less than 100%. 
 
 name: Check code coverage is 100%
 
