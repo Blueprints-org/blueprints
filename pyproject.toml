@@ -15,14 +15,15 @@ keywords = [
     "Structural engineering",
     "Structural analysis",
     "Eurocodes",
-    "Dutch building codes",
+    "European building codes",
 ]
+license = { text = "MIT" }
 classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3.11",
-    "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+    "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
     "matplotlib>=3.7.2",
