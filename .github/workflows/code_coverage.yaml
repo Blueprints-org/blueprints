@@ -6,7 +6,7 @@ on:
 
 jobs:
   tests:
-    name: Code coverage with python ${{ env.DEFAULT_PYTHON_VERSION }}
+    name: Code coverage report
     runs-on: ubuntu-latest
 
     steps:
