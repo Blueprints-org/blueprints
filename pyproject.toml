@@ -33,11 +33,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://blueprints.readthedocs.io"
-Documentation = "https://blueprints.readthedocs.io"
-Repository = "https://github.com/Blueprints-org/blueprints"
-Issues = "https://github.com/Blueprints-org/blueprints/issues"
-Changelog = "https://github.com/Blueprints-org/blueprints/releases"
+homepage = "https://blueprints.readthedocs.io"
+documentation = "https://blueprints.readthedocs.io"
+repository = "https://github.com/Blueprints-org/blueprints"
+issues = "https://github.com/Blueprints-org/blueprints/issues"
+changelog = "https://github.com/Blueprints-org/blueprints/releases"
 
 [dependency-groups]
 dev = [
