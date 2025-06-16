@@ -7,10 +7,6 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
-env:
-  UV_VERSION: 0.6.17
-  DEFAULT_PYTHON_VERSION: '3.13'
-
 jobs:
   tests:
     name: Check code coverage is 100%
@@ -20,16 +16,19 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Install uv version ${{ env.UV_VERSION }}
+      - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      - name: Install python ${{ env.DEFAULT_PYTHON_VERSION }} using uv
-        run: uv python install ${{ env.DEFAULT_PYTHON_VERSION }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
 
       - name: Install packages
-        run: uv sync --group test -p ${{ env.DEFAULT_PYTHON_VERSION }} --frozen --no-group dev --no-group docs
+        run: uv sync --group test --frozen --no-group dev --no-group docs
 
       - name: Check code coverage is 100%
         run: |
