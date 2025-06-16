@@ -1,20 +1,10 @@
-# This workflow will upload a Python Package using Twine when a release is created
-# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# See https://docs.astral.sh/uv/guides/package/
 
 name: Test, build and deploy after release
 
 on:
   release:
     types: [published]
-
-env:
-  UV_VERSION: 0.6.17
-  DEFAULT_PYTHON_VERSION: '3.13'
 
 jobs:
   deploy:
@@ -30,13 +20,16 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Install uv version ${{ env.UV_VERSION }}
+      - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      - name: Install python ${{ env.DEFAULT_PYTHON_VERSION }} using uv
-        run: uv python install ${{ env.DEFAULT_PYTHON_VERSION }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
 
       - name: Run checks with ruff
         run: |
@@ -57,14 +50,14 @@ jobs:
       - name: Build package
         run: uv build
 
-#      - name: Publish distribution to PyPI (https://pypi.org/project/blue-prints)
-#        uses: pypa/gh-action-pypi-publish@release/v1
-#        with:
-#          user: __token__
-#          password: ${{ secrets.BLUEPRINTS_PYPI_API_TOKEN }}
-
       - name: Publish distribution to TestPyPI (https://test.pypi.org/project/blue-prints)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.BLUEPRINTS_TEST_PYPI_API_TOKEN }}
           repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish distribution to PyPI (https://pypi.org/project/blue-prints)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.BLUEPRINTS_PYPI_API_TOKEN }}
