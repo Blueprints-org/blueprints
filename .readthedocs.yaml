@@ -1,13 +1,14 @@
 # .readthedocs.yaml
 # Read the Docs configuration file
-# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html and
+# https://docs.readthedocs.com/platform/stable/build-customization.html#install-dependencies-with-uv for details
 
 # Required
 version: 2
 
 # Set the OS, Python version and other tools you might need
 build:
-  os: ubuntu-24.04
+  os: ubuntu-latest
   tools:
     python: "3.13"
   jobs:
