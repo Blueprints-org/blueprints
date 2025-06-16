@@ -13,10 +13,11 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Install uv version ${{ env.UV_VERSION }}
+      - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
       - name: Set up Python
         uses: actions/setup-python@v5

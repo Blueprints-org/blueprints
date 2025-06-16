@@ -6,28 +6,26 @@ on:
     branches:
       - main
 
-env:
-  UV_VERSION: 0.6.17
-
 jobs:
   min_build:
     name: Run Code Checks and Tests with Minimum Dependencies
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.12", "3.13"]
+        python-version:
+            - "3.12"
+            - "3.13"
 
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Install uv version ${{ env.UV_VERSION }}
+      - name: Install uv and set the python version
         uses: astral-sh/setup-uv@v6
         with:
-          version: ${{ env.UV_VERSION }}
-
-      - name: Install python ${{ matrix.python-version }} using uv
-        run: uv python install ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
       - name: Install dependencies
         run: uv sync --group test -p ${{ matrix.python-version }} --frozen --no-group docs
