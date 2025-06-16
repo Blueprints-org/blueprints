@@ -51,7 +51,7 @@ For other methods check [this](https://docs.astral.sh/uv/getting-started/install
 uv python install 3.13
 ```
 
-`blueprints` and it's development dependencies can be installed with:
+`blueprints` and its development dependencies can be installed with:
 
 ```shell
 uv sync
