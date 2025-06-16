@@ -25,11 +25,10 @@ jobs:
           python-version-file: "pyproject.toml"
 
       - name: Install packages
-        run: uv sync --group test --frozen --no-group dev --no-group docs
+        run: make ci-install
 
       - name: Generate coverage report
-        run: |
-          uv run pytest --cov=./blueprints --cov-report=xml
+        run: make coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5

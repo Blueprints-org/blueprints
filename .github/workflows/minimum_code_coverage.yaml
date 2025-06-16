@@ -28,8 +28,7 @@ jobs:
           python-version-file: "pyproject.toml"
 
       - name: Install packages
-        run: uv sync --group test --frozen --no-group dev --no-group docs
+        run: make ci-install
 
       - name: Check code coverage is 100%
-        run: |
-          uv run pytest --cov=./blueprints --cov-report term-missing:skip-covered --cov-fail-under=100
+        run: make check-coverage

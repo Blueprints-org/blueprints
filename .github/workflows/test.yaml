@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  min_build:
+  test:
     name: Run Code Checks and Tests with Minimum Dependencies
     runs-on: "ubuntu-latest"
     strategy:
@@ -20,28 +20,28 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Install uv and set the python version
+      - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          python-version: ${{ matrix.python-version }}
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
-      - name: Install dependencies
-        run: uv sync --group test -p ${{ matrix.python-version }} --frozen --no-group docs
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-      - name: Run checks with ruff
-        run: |
-          uv run ruff check .
-
-      - name: Check if code is formatted correctly
-        run: |
-          uv run ruff format . --check
-
-      - name: Run type checks with mypy
-        run: |
-          uv run mypy -p blueprints
+      - name: Install CI/CD dependencies (excluding dev dependencies)
+        run: make ci-install
 
       - name: Run tests with pytest
-        run: |
-          uv run pytest --pspec tests/ --verbose
+        run: make test
+
+      - name: Run checks with ruff
+        run: make lint
+
+      - name: Check if code is formatted correctly
+        run: make format
+
+      - name: Run type checks with mypy
+        run: make typecheck
