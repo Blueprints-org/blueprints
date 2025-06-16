@@ -57,9 +57,9 @@ uv python install 3.13
 uv sync
 ```
 
-or if you want to install all optional dependencies, you can run:
+or if you want to install all optional dependency groups, you can run:
 ```shell
-uv sync --all-extras
+uv sync --all-groups
 ```
 Refer to the `uv` [documentation](https://docs.astral.sh/uv/) for more information relating to using `uv` for project management.
 
