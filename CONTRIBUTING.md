@@ -31,6 +31,12 @@ We enforce a code of conduct for all maintainers and contributors. For more deta
 5. **Submit a Pull Request:** Submit your changes as a pull request, providing detailed information in the PR description.
 
 ## How to set up your development environment
+If you plan to contribute to `blueprints`, you should begin by cloning the repository:
+
+```shell
+git clone https://github.com/Blueprints-org/blueprints.git
+cd blueprints
+```
 
 `blueprints` uses `uv` for python project management. `uv` can be installed with pip:
 
@@ -59,28 +65,30 @@ Refer to the `uv` [documentation](https://docs.astral.sh/uv/) for more informati
 
 ## How to test the project
 
-### Pre-commit
-
-[Pre-commit](https://pre-commit.com/) ensures code quality and consistency.
-
-These can be run against all files in the project with:
+### Running Tests
+`blueprints` has a comprehensive test suite, and all PR's must introduce and pass appropriate tests. 
+Coverage of 100% is also enforced. To run the tests, use pytest:
 
 ```shell
-uv run pre-commit run --all-files
+uv run pytest
 ```
 
-However, the best way to ensure code quality is by installing the git pre-commit hook:
+### Pre-commit
+`blueprints` uses pre-commit hooks to manage code quality, including formatting, linting, and type-safety. 
+All PRs must pass the pre-commit hooks, which are run as part of the CI process. 
+To install the pre-commit hooks, run:
 
 ```shell
 uv run pre-commit install
 ```
+This will run `pre-commit` against all changed files when attempting to `git commit`. 
+You will need to fix the offending files prior to being able to commit a change unless you run `git commit --no-verify`.
 
-This will run `pre-commit` against all changed files when attempting to `git commit`. You will need to fix the offending files prior to being able to commit a change unless you run `git commit --no-verify`.
+Alternatively, you can run the pre-commit hooks manually against all files:
 
-## Code Quality Tools
-
-We use ruff and mypy to enforce code quality. Make sure to run these before submitting a PR. We encourage you to use our pre-commit
-hooks, you can find instructions in this [file](.pre-commit-config.yaml).
+```shell
+pre-commit run --all-files
+```
 
 ## Branching Strategy
 
@@ -92,15 +100,9 @@ We use Git flow for our branching strategy. Only create branches from issues/fea
 - All code must be in English
 - Max ~400 lines per PR
 - Use Typehints and Docstrings (numpy style)
-- Add unit tests. Aim for high test coverage.
+- Add unit tests. (100% coverage is enforced)
 - Update the user documentation on the site, if applicable
 - Include examples for new features
-
-## Review Process
-
-- A rotating release manager will assign a minimum of 2 reviewers to your pull request.
-- There will be a minimum review time of 2 days to allow for other contributors to provide input.
-- Merging occurs automatically once the PR is approved by at least two maintainers and all comments are resolved.
 
 ## Issues
 
