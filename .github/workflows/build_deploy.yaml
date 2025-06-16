@@ -29,24 +29,22 @@ jobs:
         with:
           python-version-file: "pyproject.toml"
 
-      - name: Run checks with ruff
-        run: |
-          uv run ruff check .
-
-      - name: Check if code is formatted correctly
-        run: |
-          uv run ruff format . --check
-
-      - name: Run type checks with mypy
-        run: |
-          uv run mypy
-
+      # Run the tests before the linting and formatting checks to ensure that dev dependencies are not required for the tests.
       - name: Run tests with pytest
         run: |
-          uv run pytest --pspec tests/
+          make test
+
+      - name: Run linting checks with ruff
+        run: make lint
+
+      - name: Run formatting checks with ruff
+        run: make format
+
+      - name: Run type checks with mypy
+        run: make typecheck
 
       - name: Build package
-        run: uv build
+        run: make build
 
       - name: Publish distribution to TestPyPI (https://test.pypi.org/project/blue-prints)
         uses: pypa/gh-action-pypi-publish@release/v1

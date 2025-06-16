@@ -15,7 +15,9 @@ DOCS 			:= --group docs
 NO_DOCS  		:= --no-group docs
 SYNC			:= $(UV) sync --locked
 RUN     		:= $(UV) run
-PYTEST  		:= $(RUN) pytest
+BUILD 			:= $(UV) build
+PYTEST  		:= $(RUN) $(NO_DEV) pytest
+COVERAGE		:= $(PYTEST) --cov=./blueprints
 MYPY    		:= $(RUN) mypy
 RUFF    		:= $(RUN) ruff
 
@@ -37,7 +39,7 @@ install:                       ## Create venv and sync all dependencies
 	$(SYNC) $(ALL)
 
 .PHONY: ci-install
-ci-install:                       ## Sync dependencies for CI/CD tests
+ci-install:                    ## Sync dependencies for CI/CD tests
 
 	$(SYNC) $(NO_DEV)
 
@@ -61,19 +63,30 @@ typecheck:                     ## Run static type checks with mypy
 #─────────────────────────────────────────────────────────────────────────────
 .PHONY: test
 test:                          ## Run tests with pytest
-	$(PYTEST) --pspec tests/ --verbose
+	$(PYTEST) --pspec tests/
 
-.PHONY: coverage-report
-coverage-report:               ## Run tests and generate coverage reports
-	$(PYTEST) --cov=./blueprints --cov-report=xml
+.PHONY: test-verbose
+test-verbose:                  ## Run tests with pytest (verbose output)
+	$(PYTEST) --pspec tests/ --verbose
 
 .PHONY: check-coverage
 check-coverage:                ## Run tests and check 100% coverage
-	$(PYTEST) --cov=./blueprints --cov-report term-missing:skip-covered --cov-fail-under=100
+	$(COVERAGE) --cov-report term-missing:skip-covered --cov-fail-under=100
+
+.PHONY: coverage-report
+coverage-report:               ## Run tests and generate coverage reports
+	$(COVERAGE) --cov-report=xml
 
 .PHONY: coverage-html
 coverage-html:                 ## Run tests and generate an html coverage report
-	$(PYTEST) --cov=./blueprints --cov-report html
+	$(COVERAGE) --cov-report html
+
+#─────────────────────────────────────────────────────────────────────────────
+# Build targets
+#─────────────────────────────────────────────────────────────────────────────
+.PHONY: build
+build:                         ## Build the project
+	$(BUILD)
 
 #─────────────────────────────────────────────────────────────────────────────
 # Cleanup

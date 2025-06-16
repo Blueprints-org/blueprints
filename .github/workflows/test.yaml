@@ -34,13 +34,14 @@ jobs:
       - name: Install CI/CD dependencies (excluding dev dependencies)
         run: make ci-install
 
+      # Run the tests before the linting and formatting checks to ensure that dev dependencies are not required for the tests.
       - name: Run tests with pytest
-        run: make test
+        run: make test-verbose
 
-      - name: Run checks with ruff
+      - name: Run linting checks with ruff
         run: make lint
 
-      - name: Check if code is formatted correctly
+      - name: Run formatting checks with ruff
         run: make format
 
       - name: Run type checks with mypy

@@ -28,7 +28,7 @@ jobs:
         run: make ci-install
 
       - name: Generate coverage report
-        run: make coverage
+        run: make coverage-report
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
