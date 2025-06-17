@@ -1,7 +1,8 @@
 """Test cases for the structural class definitions."""
 
+from typing import Self
+
 import pytest
-from typing_extensions import Self
 
 from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase as ExposureClasses
 from blueprints.codes.eurocode.structural_class import (

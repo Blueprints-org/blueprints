@@ -7,41 +7,42 @@ on:
       - main
 
 jobs:
-  min_build:
+  test:
     name: Run Code Checks and Tests with Minimum Dependencies
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version:
+            - "3.12"
+            - "3.13"
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install .
-          pip install .[minimal_requirements]
-          pip install .[dev]
-          pip install pandas-stubs
-          pip install types-shapely
+      - name: Install CI/CD dependencies (excluding dev dependencies)
+        run: make ci-install
 
-      - name: Run checks with ruff
-        run: |
-          ruff check .
+      # Run the tests before the linting and formatting checks to ensure that dev dependencies are not required for the tests.
+      - name: Run tests with pytest
+        run: make test-verbose
 
-      - name: Check if code is formatted correctly
-        run: |
-          ruff format . --check
+      - name: Run linting checks with ruff
+        run: make lint
+
+      - name: Run formatting checks with ruff
+        run: make format
 
       - name: Run type checks with mypy
-        run: |
-          mypy -p blueprints
-
-      - name: Run tests with pytest
-        run: |
-          python -m pytest --pspec tests/ --verbose
+        run: make typecheck

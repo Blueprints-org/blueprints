@@ -1,0 +1,75 @@
+/* hide site_name in header */
+.md-header__topic {
+    display: none;
+}
+
+/* make logo slightly bigger */
+.md-header__button.md-logo {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 5;
+    padding-bottom: 0;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+    height: 50%;
+    width: 50%;
+}
+
+/* the module name can be too long, set break settings to prevent overlapping the TOC */
+.doc.doc-heading {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  
+}
+
+.doc.doc-heading:hover {
+    overflow: visible;            /* Reveal the full content */
+    width: 80%;
+    white-space: normal;          /* Allow text to wrap */
+    z-index: 10;                  /* Ensure it overlays nearby elements */
+    max-width: fit-content;       /* Expand to content width */
+    word-break: break-word;       /* Enable word breaks */
+}
+
+/* alternative code highlighting equal to vscode default */
+
+:root > * {
+    --md-code-hl-comment-color: #6a9955;
+    --md-code-hl-name-color: #4ec9b0;
+    --md-code-hl-bg-color: #1e1e1e;
+    --md-code-hl-string-color: #ce9178;
+}
+
+/* specific style for sd (docstring) class to match string color */
+.highlight .sd {
+    color: var(--md-code-hl-string-color);
+}
+/* specific style for kc (boolean) class to match special color */
+.highlight .kc {
+    color: var(--md-code-hl-special-color);
+}
+
+[data-md-color-scheme="default"] {
+    /* Accent color shades */
+    --md-primary-fg-color:#002855;
+
+    /* Accent color shades */
+    --md-accent-fg-color: #00BFFF;
+
+}
+
+[data-md-color-scheme="slate"] 
+{
+    /* Accent color shades */
+    --md-primary-fg-color:#002855;
+
+    /* Accent color shades */
+    --md-accent-fg-color: #00BFFF;
+}
+
+.md-content {
+    --md-typeset-a-color: #00BFFF;
+}

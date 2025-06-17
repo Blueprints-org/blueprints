@@ -2,14 +2,15 @@
 according to Table 4.1 from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement.
 """
 
+import re
 from abc import abstractmethod
+from collections.abc import Iterator
+from dataclasses import dataclass
 from enum import Enum
 from functools import total_ordering
-from typing import NamedTuple, Type, TypeVar
+from typing import Self
 
 from blueprints.utils.abc_enum_meta import ABCEnumMeta
-
-T = TypeVar("T", bound="Exposure")
 
 
 @total_ordering
@@ -40,13 +41,13 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         Boolean
             True if both arguments are of the same severity (In this case they will both be literally the same).
         """
-        if isinstance(other, self.__class__):
-            _self_severity = int(self.value[-1]) if self.value != "Not applicable" else 0
-            _other_severity = int(other.value[-1]) if other.value != "Not applicable" else 0
-            return _self_severity == _other_severity
-        raise TypeError("Only the same exposure class types can be compared with each other!")
+        if not isinstance(other, self.__class__):
+            raise TypeError("Only the same exposure class types can be compared with each other!")
+        _self_severity = int(self.value[-1]) if self.value != "Not applicable" else 0
+        _other_severity = int(other.value[-1]) if other.value != "Not applicable" else 0
+        return _self_severity == _other_severity
 
-    def __gt__(self, other: object) -> bool:
+    def __gt__(self, other: Self) -> bool:
         """Definition of '>' operator for the comparison of the severity of the exposure classifications.
 
         Parameters
@@ -73,7 +74,7 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         raise TypeError("Only the same exposure class types can be compared with each other!")
 
     @classmethod
-    def options(cls: Type[T]) -> list[str]:
+    def options(cls) -> list[str]:
         """Return all the possible options within a subclass.
 
         Returns
@@ -104,6 +105,17 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
             description of the environment based on the instance
         """
 
+    @classmethod
+    def snake_case(cls) -> str:
+        """Converts the name of a subclass to snake_case which can be used in a parametrization class.
+
+        Returns
+        -------
+        str
+            the name of a subclass in snake_case
+        """
+        return re.sub(r"(?<!^)(?=[A-Z])", "_", cls.__name__).lower()
+
 
 @total_ordering
 class CarbonationBase(Exposure):
@@ -130,7 +142,8 @@ class ChemicalBase(Exposure):
     """Enum Class which indicates the classification of chemical attack."""
 
 
-class ExposureClassesBase(NamedTuple):
+@dataclass(frozen=True)
+class ExposureClassesBase:
     """Parent class which serves as a container for the Exposure classes.
 
     Exposure classes related to environmental conditions in accordance with EN 206-1
@@ -146,14 +159,14 @@ class ExposureClassesBase(NamedTuple):
     def no_risk(self) -> bool:
         """Check if all exposure classes are 'Not applicable'.
 
-        This represents X0 class designation according to table 4.1 from NEN-EN 1992-1-1+C2:2011.
+        This represents X0 class designation according to table 4.1 from EN 1992-1-1:2004.
 
         Returns
         -------
         bool
             True if all exposure classes are 'Not applicable'
         """
-        return all(exposure_class.value == "Not applicable" for exposure_class in self)
+        return all(exposure_class.value == "Not applicable" for exposure_class in self.__dict__.values())
 
     def __str__(self) -> str:
         """String representation of the ExposureClasses object.
@@ -163,4 +176,14 @@ class ExposureClassesBase(NamedTuple):
         str
             String representation of the ExposureClasses object
         """
-        return "X0" if self.no_risk else ", ".join(enum.value for enum in self if enum.value != "Not applicable")
+        return "X0" if self.no_risk else ", ".join(enum.value for enum in self.__dict__.values() if enum.value != "Not applicable")
+
+    def __iter__(self) -> Iterator[Exposure]:
+        """Iterator for the ExposureClasses object.
+
+        Returns
+        -------
+        Iterable[Exposure]
+            Iterator for the ExposureClasses object
+        """
+        return iter(self.__dict__.values())
