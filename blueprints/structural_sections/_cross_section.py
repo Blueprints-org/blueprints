@@ -45,44 +45,44 @@ class CrossSection(ABC):
         return self.polygon.centroid
 
     @property
-    @abstractmethod
     def moment_of_inertia_about_y(self) -> MM4:
         """Moments of inertia of the cross-section [mm⁴]."""
+        return self.section_properties().ixx_c
 
     @property
-    @abstractmethod
     def moment_of_inertia_about_z(self) -> MM4:
         """Moments of inertia of the cross-section [mm⁴]."""
+        return self.section_properties().iyy_c
 
     @property
-    @abstractmethod
     def elastic_section_modulus_about_y_positive(self) -> MM3:
         """Elastic section modulus about the y-axis on the positive z side [mm³]."""
+        return self.section_properties().zxx_plus
 
     @property
-    @abstractmethod
     def elastic_section_modulus_about_y_negative(self) -> MM3:
         """Elastic section modulus about the y-axis on the negative z side [mm³]."""
+        return self.section_properties().zxx_minus
 
     @property
-    @abstractmethod
     def elastic_section_modulus_about_z_positive(self) -> MM3:
         """Elastic section modulus about the z-axis on the positive y side [mm³]."""
+        return self.section_properties().zyy_plus
 
     @property
-    @abstractmethod
     def elastic_section_modulus_about_z_negative(self) -> MM3:
         """Elastic section modulus about the z-axis on the negative y side [mm³]."""
+        return self.section_properties().zyy_minus
 
     @property
-    @abstractmethod
     def plastic_section_modulus_about_y(self) -> MM3 | None:
         """Plastic section modulus about the y-axis [mm³]."""
+        return self.section_properties().sxx
 
     @property
-    @abstractmethod
     def plastic_section_modulus_about_z(self) -> MM3 | None:
         """Plastic section modulus about the z-axis [mm³]."""
+        return self.section_properties().syy
 
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
         """Geometry of the cross-section.
