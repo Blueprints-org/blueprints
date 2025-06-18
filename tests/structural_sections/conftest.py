@@ -10,6 +10,7 @@ from blueprints.structural_sections.cross_section_quarter_circular_spandrel impo
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.cross_section_triangle import RightAngledTriangularCrossSection
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
+from blueprints.structural_sections.cross_section_rhscf_corner import RHSCFCornerCrossSection
 
 
 @pytest.fixture
@@ -81,4 +82,16 @@ def annular_sector_cross_section_359_degrees() -> AnnularSectorCrossSection:
         x=0.0,
         y=0.0,
         name="AnnularSector",
+    )
+
+@pytest.fixture
+def rhscf_corner_cross_section() -> RHSCFCornerCrossSection:
+    """Return an RHSCFCornerCrossSection instance."""
+    return RHSCFCornerCrossSection(
+        thickness_vertical=10.0,
+        thickness_horizontal=20.0,
+        inner_radius=5.0,
+        outer_radius=10.0,
+        x=0.0,
+        y=0.0,
     )

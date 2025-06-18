@@ -14,7 +14,6 @@ from blueprints.type_alias import MM, MM2
 class RHSCFCornerCrossSection(CrossSection):
     """
     Rectangular Hollow Section (RHSCF) corner cross-section.
-    Rectangle with a quarter-annular corner at the lower-left corner (see pink area in image).
 
     Parameters
     ----------
@@ -45,11 +44,11 @@ class RHSCFCornerCrossSection(CrossSection):
     def __post_init__(self) -> None:
         """Validate input parameters after initialization."""
         if self.thickness_vertical <= 0:
-            raise ValueError(f"thickness_vertical must be positive, got {self.thickness_vertical}")
+            raise ValueError(f"Thickness vertical must be positive, got {self.thickness_vertical}")
         if self.thickness_horizontal <= 0:
-            raise ValueError(f"thickness_horizontal must be positive, got {self.thickness_horizontal}")
-        if self.inner_radius < 0:
-            raise ValueError(f"Inner radius must be zero or positive, got {self.inner_radius}")
+            raise ValueError(f"Thickness horizontal must be positive, got {self.thickness_horizontal}")
+        if self.inner_radius <= 0:
+            raise ValueError(f"Inner radius must be positive, got {self.inner_radius}")
         if self.outer_radius <= 0:
             raise ValueError(f"Outer radius must be positive, got {self.outer_radius}")
 
@@ -67,16 +66,15 @@ class RHSCFCornerCrossSection(CrossSection):
     def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the RHSCF corner cross-section.
-        Rectangle with a quarter-annular fillet at the lower-left corner.
         """
-        # Rectangle corners (counter-clockwise, starting from lower-left)
+
         ll = (self.x + self.inner_radius, self.y)
         lr = (self.x + self.width_rectangle, self.y)
         ur = (self.x + self.width_rectangle, self.y + self.height_rectangle - self.outer_radius)
         ul = (self.x, self.y + self.height_rectangle)
 
-        # Quarter-annulus fillet (centered at lower-left corner)
         n = 32
+
         # Outer arc (from vertical to horizontal)
         outer_arc = [
             (
@@ -85,6 +83,7 @@ class RHSCFCornerCrossSection(CrossSection):
             )
             for i in range(n)
         ]
+        
         # Inner arc (from horizontal to vertical, reversed)
         inner_arc = [
             (
