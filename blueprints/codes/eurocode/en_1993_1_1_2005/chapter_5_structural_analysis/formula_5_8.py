@@ -83,9 +83,8 @@ class Form5Dot8CheckSlenderness(ComparisonFormula):
             n_ed=self.n_ed,
         )
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.8."""
-        n = 2
         _equation: str = r"\left( \overline{\lambda} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,

@@ -67,14 +67,14 @@ class Form5Dot19CompressionCheckClass3Profiles(ComparisonFormula):
         """Allow truth-checking of the check object itself."""
         return self._evaluate(self.n_ed, self.n_pl_rd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.19."""
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"N_{pl,Rd}": f"{self.n_pl_rd:.3f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
         )
