@@ -65,9 +65,9 @@ class TestForm2Dot21ModulusHorizontalSubgrade:
             (
                 "complete",
                 (
-                    "k_{h} = \\frac{1}{3 \\cdot E_{p}} \\cdot \\left[1.3 \\cdot R_{0} \\left( 2.65 \\frac{R}{R_0}\\right)^\\alpha + \\alpha \\cdot  "
-                    "R \\right] = \\frac{1}{3 \\cdot 2.5} \\cdot\\left[1.3 \\cdot 0.3 \\left( 2.65 \\cdot \\frac{0.5}{0.3}\\right)^{0.33}+ 0.33 "
-                    "\\cdot 0.5\\right] = 9.19 \\ kN/m^3"
+                    r"k_{h} = \\frac{1}{3 \\cdot E_{p}} \\cdot \\left[1.3 \\cdot R_{0} \\left( 2.65 \\frac{R}{R_0}\\right)^\\alpha + \\alpha \\cdot  "
+                    r"R \\right] = \\frac{1}{3 \\cdot 2.5} \\cdot\\left[1.3 \\cdot 0.3 \\left( 2.65 \\cdot \\frac{0.5}{0.3}\\right)^{0.33}+ 0.33 "
+                    r"\\cdot 0.5\\right] = 9.19 \\ kN/m^3"
                 ),
             ),
             ("short", r"k_{h} = 9.19 \ kN/m^3"),

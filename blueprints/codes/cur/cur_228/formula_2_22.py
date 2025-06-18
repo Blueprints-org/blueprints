@@ -39,7 +39,7 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
 
     @staticmethod
     def _evaluate(r: M, e_p: KPA, alpha: DIMENSIONLESS) -> KN_M3:
-        """Return the Menard stiffness k_h when r < 0.3 m [kN/m3]."""
+        """Return the Menard stiffness k_h when r < 0.3 m [kN/m³]."""
         raise_if_negative(e_p=e_p)
         raise_if_less_or_equal_to_zero(r=r, alpha=alpha)
         if r < R_0:
