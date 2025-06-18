@@ -42,13 +42,13 @@ class Form6Dot32EffectiveDepthSlab(Formula):
         raise_if_negative(d_y=d_y, d_z=d_z)
         return (d_y + d_z) / 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.32."""
         return LatexFormula(
             return_symbol=r"d_{eff}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{d_{y} + d_{z}}{2}",
-            numeric_equation=rf"\frac{{{self.d_y:.3f} + {self.d_z:.3f}}}{{2}}",
+            numeric_equation=rf"\frac{{{self.d_y:.{n}f} + {self.d_z:.{n}f}}}{{2}}",
             comparison_operator_label="=",
             unit="mm",
         )

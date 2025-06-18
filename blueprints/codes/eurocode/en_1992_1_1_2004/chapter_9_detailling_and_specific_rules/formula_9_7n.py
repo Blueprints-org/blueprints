@@ -49,12 +49,12 @@ class Form9Dot7nMaximumDistanceBentUpBars(Formula):
 
         return 0.6 * d * (1 + cot_alpha)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.7N."""
         return LatexFormula(
             return_symbol=r"s_{b,max}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"0.6 \cdot d \cdot \left( 1 + cot(\alpha) \right)",
-            numeric_equation=rf"0.6 \cdot {self.d:.2f} \cdot \left( 1 + cot({self.alpha:.2f}) \right)",
+            numeric_equation=rf"0.6 \cdot {self.d:.{n}f} \cdot \left( 1 + cot({self.alpha:.{n}f}) \right)",
             comparison_operator_label="=",
         )

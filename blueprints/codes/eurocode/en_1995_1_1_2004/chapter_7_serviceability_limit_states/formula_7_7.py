@@ -54,21 +54,21 @@ class Form7Dot7NumberOfFOVibrations(Formula):
             raise ValueError(rf"$EI_l$ ({ei_l:.2f}) must be bigger than $EI_b$ ({ei_b:.2f}).")
         return (((40 / f_1) ** 2 - 1) * (b / length) ** 4 * ei_l / ei_b) ** 0.25
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 7.7."""
         eq_for: str = (
             r"\left\{\left ( \left (\frac{40}{f_1} \right )^2 -1 \right)\left ( \frac{b}{l } \right )^4 \frac{(EI)_l}{(EI)_b}\right\}^{0.25}"
         )
         repl_symb = {
-            "(EI)_l": f"{self.ei_l:.2f}",
-            "(EI)_b": f"{self.ei_b:.2f}",
-            "f_1": f"{self.f_1:.2f}",
-            "l ": f"{self.length:.2f}",
-            "b": f"{self.b:.2f}",
+            "(EI)_l": f"{self.ei_l:.{n}f}",
+            "(EI)_b": f"{self.ei_b:.{n}f}",
+            "f_1": f"{self.f_1:.{n}f}",
+            "l ": f"{self.length:.{n}f}",
+            "b": f"{self.b:.{n}f}",
         }
         return LatexFormula(
             return_symbol=r"n_{40}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=eq_for,
             numeric_equation=latex_replace_symbols(eq_for, repl_symb),
         )

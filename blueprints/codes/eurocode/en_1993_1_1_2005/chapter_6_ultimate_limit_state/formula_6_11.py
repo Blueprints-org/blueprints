@@ -50,21 +50,21 @@ class Form6Dot11NcRdClass4(Formula):
 
         return a_eff * f_y / gamma_m0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.11."""
         _equation: str = r"\frac{A_{eff} \cdot f_y}{\gamma_{M0}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_{eff}": f"{self.a_eff:.3f}",
-                r"f_y": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
+                r"A_{eff}": f"{self.a_eff:.{n}f}",
+                r"f_y": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"N_{c,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

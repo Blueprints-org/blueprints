@@ -56,21 +56,21 @@ class Form7Dot15MaximumCrackSpacing(Formula):
 
         return 1 / ((np.cos(np.deg2rad(theta)) / sr_max_y) + (np.sin(np.deg2rad(theta)) / sr_max_z))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.15."""
         _equation: str = r"\frac{1}{\left(\frac{\cos(\theta)}{s_{r,max,y}}\right) + \left(\frac{\sin(\theta)}{s_{r,max,z}}\right)}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\theta": f"{self.theta:.3f}",
-                r"s_{r,max,y}": f"{self.sr_max_y:.3f}",
-                r"s_{r,max,z}": f"{self.sr_max_z:.3f}",
+                r"\theta": f"{self.theta:.{n}f}",
+                r"s_{r,max,y}": f"{self.sr_max_y:.{n}f}",
+                r"s_{r,max,z}": f"{self.sr_max_z:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"s_{r,max}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

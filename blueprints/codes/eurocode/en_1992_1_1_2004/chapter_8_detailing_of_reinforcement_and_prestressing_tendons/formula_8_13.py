@@ -45,12 +45,12 @@ class Form8Dot13AdditionalShearReinforcement(Formula):
         raise_if_negative(a_s=a_s, n_2=n_2)
         return 0.25 * a_s * n_2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.13."""
         return LatexFormula(
             return_symbol=r"A_{sv}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"0.25 \cdot A_s \cdot n_2",
-            numeric_equation=rf"0.25 \cdot {self.a_s:.2f} \cdot {self.n_2:.2f}",
+            numeric_equation=rf"0.25 \cdot {self.a_s:.{n}f} \cdot {self.n_2:.{n}f}",
             comparison_operator_label="=",
         )

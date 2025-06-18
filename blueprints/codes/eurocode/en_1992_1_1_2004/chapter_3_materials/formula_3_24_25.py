@@ -49,20 +49,20 @@ class Form3Dot24And25IncreasedCharacteristicCompressiveStrength(Formula):
             return f_ck * (1.000 + 5.0 * sigma_2 / f_ck)
         return f_ck * (1.125 + 2.5 * sigma_2 / f_ck)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 3.24 and 3.25."""
         if self.sigma_2 <= 0.05 * self.f_ck:
             return LatexFormula(
                 return_symbol=r"f_{ck,c}",
-                result=f"{self:.2f}",
+                result=f"{self:.{n}f}",
                 equation=r"f_{ck} \cdot (1.000 + 5.0 \cdot \sigma_2 / f_{ck})",
-                numeric_equation=rf"{self.f_ck:.2f} \cdot (1.000 + 5.0 \cdot {self.sigma_2:.2f} / {self.f_ck:.2f})",
+                numeric_equation=rf"{self.f_ck:.{n}f} \cdot (1.000 + 5.0 \cdot {self.sigma_2:.{n}f} / {self.f_ck:.{n}f})",
                 comparison_operator_label="=",
             )
         return LatexFormula(
             return_symbol=r"f_{ck,c}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"f_{ck} \cdot (1.125 + 2.5 \cdot \sigma_2 / f_{ck})",
-            numeric_equation=rf"{self.f_ck:.2f} \cdot (1.125 + 2.5 \cdot {self.sigma_2:.2f} / {self.f_ck:.2f})",
+            numeric_equation=rf"{self.f_ck:.{n}f} \cdot (1.125 + 2.5 \cdot {self.sigma_2:.{n}f} / {self.f_ck:.{n}f})",
             comparison_operator_label="=",
         )

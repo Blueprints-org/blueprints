@@ -78,14 +78,14 @@ class Form6Dot13ShearResistanceInclinedReinforcement(Formula):
 
         return (a_sw / s) * z * f_ywd * (cot(theta) + cot(alpha)) * np.sin(np.deg2rad(alpha))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.13."""
         return LatexFormula(
             return_symbol=r"V_{Rd,s}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{A_{sw}}{s} \cdot z \cdot f_{ywd} \cdot \left(\cot(\theta) + \cot(\alpha)\right) \cdot \sin(\alpha)",
-            numeric_equation=rf"\frac{{{self.a_sw:.3f}}}{{{self.s:.3f}}} \cdot {self.z:.3f} \cdot {self.f_ywd:.3f} \cdot "
-            rf"\left(\cot({self.theta:.3f}) + \cot({self.alpha:.3f})\right) \cdot \sin({self.alpha:.3f})",
+            numeric_equation=rf"\frac{{{self.a_sw:.{n}f}}}{{{self.s:.{n}f}}} \cdot {self.z:.{n}f} \cdot {self.f_ywd:.{n}f} \cdot "
+            rf"\left(\cot({self.theta:.{n}f}) + \cot({self.alpha:.{n}f})\right) \cdot \sin({self.alpha:.{n}f})",
             comparison_operator_label="=",
             unit="N",
         )

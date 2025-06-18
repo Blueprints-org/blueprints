@@ -49,18 +49,18 @@ class Form6Dot11abcNCompressionChordCoefficient(Formula):
             return 1.25
         return 2.5 * (1 - sigma_cp / f_cd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.11a/b/cN."""
         return LatexFormula(
             return_symbol=r"\alpha_{cw}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\begin{cases} 1 + \frac{\sigma_{cp}}{f_{cd}} & \text{if } 0 \lt \sigma_{cp} \leq 0.25 f_{cd} \\ "
             r"1.25 & \text{if } 0.25 f_{cd} \lt \sigma_{cp} \leq 0.5 f_{cd} \\ "
             r"2.5 \left(1 - \frac{\sigma_{cp}}{f_{cd}}\right) & \text{if } \sigma_{cp} \gt 0.5 f_{cd} \end{cases}",
-            numeric_equation=rf"\begin{{cases}} 1 + \frac{{{self.sigma_cp:.3f}}}{{{self.f_cd:.3f}}} & \text{{if }} 0 \lt {self.sigma_cp:.3f} "
-            rf"\leq 0.25 \cdot {self.f_cd:.3f} \\ 1.250 & \text{{if }} 0.25 \cdot {self.f_cd:.3f} \lt {self.sigma_cp:.3f} \leq "
-            rf"0.5 \cdot {self.f_cd:.3f} \\ 2.5 \left(1 - \frac{{{self.sigma_cp:.3f}}}{{{self.f_cd:.3f}}}\right) & "
-            rf"\text{{if }} {self.sigma_cp:.3f} \gt 0.5 \cdot {self.f_cd:.3f} \end{{cases}}",
+            numeric_equation=rf"\begin{{cases}} 1 + \frac{{{self.sigma_cp:.{n}f}}}{{{self.f_cd:.{n}f}}} & \text{{if }} 0 \lt {self.sigma_cp:.{n}f} "
+            rf"\leq 0.25 \cdot {self.f_cd:.{n}f} \\ 1.250 & \text{{if }} 0.25 \cdot {self.f_cd:.{n}f} \lt {self.sigma_cp:.{n}f} \leq "
+            rf"0.5 \cdot {self.f_cd:.{n}f} \\ 2.5 \left(1 - \frac{{{self.sigma_cp:.{n}f}}}{{{self.f_cd:.{n}f}}}\right) & "
+            rf"\text{{if }} {self.sigma_cp:.{n}f} \gt 0.5 \cdot {self.f_cd:.3f} \end{{cases}}",
             comparison_operator_label="=",
             unit="-",
         )

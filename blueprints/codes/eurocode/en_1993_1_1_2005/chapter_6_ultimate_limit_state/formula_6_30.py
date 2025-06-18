@@ -71,7 +71,7 @@ class Form6Dot30ReducedPlasticResistanceMoment(Formula):
         m_y_v_rd = (w_pl_y - (rho * a_w**2) / (4 * t_w)) * f_y / gamma_m0
         return min(m_y_v_rd, m_y_c_rd)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.30."""
         _equation: str = (
             r"\min\left(\frac{\left[W_{pl,y} - \frac{\rho \cdot (h_w \cdot t_w)^2}{4 \cdot t_w}\right] \cdot f_y}{\gamma_{M0}}, M_{y,c,Rd}\right)"
@@ -79,32 +79,32 @@ class Form6Dot30ReducedPlasticResistanceMoment(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"W_{pl,y}": f"{self.w_pl_y:.3f}",
-                r"\rho": f"{self.rho:.3f}",
-                r"h_w": f"{self.h_w:.3f}",
-                r"t_w": f"{self.t_w:.3f}",
-                r"f_y": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
-                r"M_{y,c,Rd}": f"{self.m_y_c_rd:.3f}",
+                r"W_{pl,y}": f"{self.w_pl_y:.{n}f}",
+                r"\rho": f"{self.rho:.{n}f}",
+                r"h_w": f"{self.h_w:.{n}f}",
+                r"t_w": f"{self.t_w:.{n}f}",
+                r"f_y": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
+                r"M_{y,c,Rd}": f"{self.m_y_c_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"W_{pl,y}": rf"{self.w_pl_y:.3f} \ mm^3",
-                r"\rho": rf"{self.rho:.3f}",
-                r"h_w": rf"{self.h_w:.3f} \ mm",
-                r"t_w": rf"{self.t_w:.3f} \ mm",
-                r"f_y": rf"{self.f_y:.3f} \ MPa",
-                r"\gamma_{M0}": rf"{self.gamma_m0:.3f}",
-                r"M_{y,c,Rd}": rf"{self.m_y_c_rd:.3f} \ Nmm",
+                r"W_{pl,y}": rf"{self.w_pl_y:.{n}f} \ mm^3",
+                r"\rho": rf"{self.rho:.{n}f}",
+                r"h_w": rf"{self.h_w:.{n}f} \ mm",
+                r"t_w": rf"{self.t_w:.{n}f} \ mm",
+                r"f_y": rf"{self.f_y:.{n}f} \ MPa",
+                r"\gamma_{M0}": rf"{self.gamma_m0:.{n}f}",
+                r"M_{y,c,Rd}": rf"{self.m_y_c_rd:.{n}f} \ Nmm",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"M_{y,V,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

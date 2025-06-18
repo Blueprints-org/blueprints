@@ -43,14 +43,14 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         raise_if_negative(n_ed=n_ed)
         return (n_ed / n_t_rd) <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.5."""
         _equation: str = r"\left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "N_{Ed}": f"{self.n_ed:.3f}",
-                "N_{t,Rd}": f"{self.n_t_rd:.3f}",
+                "N_{Ed}": f"{self.n_ed:.{n}f}",
+                "N_{t,Rd}": f"{self.n_t_rd:.{n}f}",
             },
             False,
         )

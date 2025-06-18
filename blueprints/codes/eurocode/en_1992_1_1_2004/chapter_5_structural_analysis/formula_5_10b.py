@@ -75,12 +75,12 @@ class Form5Dot10bRedistributionOfMomentsUpperFck:
         """Return the result of the comparison."""
         return self.latex().complete
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.10b."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\delta \geq k_3 + k_4 \frac{x_u}{d}",
-            numeric_equation=rf"{self.left_hand_side:.3f} \geq {self.k3} + {self.k4} \frac{{{self.xu}}}{{{self.d}}}",
+            numeric_equation=rf"{self.left_hand_side:.{n}f} \geq {self.k3} + {self.k4} \frac{{{self.xu}}}{{{self.d}}}",
             comparison_operator_label=r"\rightarrow",
         )

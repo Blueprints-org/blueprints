@@ -56,13 +56,13 @@ class Form8Dot2UltimateBondStress(Formula):
         raise_if_negative(eta_1=eta_1, eta_2=eta_2, f_ctd=f_ctd)
         return 2.25 * eta_1 * eta_2 * f_ctd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns a representation of the formula in LaTeX format."""
         return LatexFormula(
             return_symbol=r"f_{bd}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd}",
-            numeric_equation=rf"2.25 \cdot {self.eta_1:.2f} \cdot {self.eta_2:.2f} \cdot {self.f_ctd:.2f}",
+            numeric_equation=rf"2.25 \cdot {self.eta_1:.{n}f} \cdot {self.eta_2:.{n}f} \cdot {self.f_ctd:.{n}f}",
             comparison_operator_label="=",
         )
 
@@ -128,13 +128,13 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
             return 1
         return (132 - diameter) / 100
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
         numerical_equation = "1.00" if self.diameter <= 32 else f"(132 - {self.diameter}) / 100"
 
         return LatexFormula(
             return_symbol=r"\eta_2",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\begin{matrix} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{matrix}",
             numeric_equation=numerical_equation,
             comparison_operator_label="=",

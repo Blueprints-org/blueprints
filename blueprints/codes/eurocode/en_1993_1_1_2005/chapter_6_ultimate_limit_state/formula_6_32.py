@@ -49,30 +49,30 @@ class Form6Dot32MNrdRectangular(Formula):
 
         return m_pl_rd * (1 - (n_ed / n_pl_rd) ** 2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.32."""
         _equation: str = r"M_{pl,Rd} \cdot \left[ 1 - \left( \frac{N_{Ed}}{N_{pl,Rd}} \right)^2 \right]"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{pl,Rd}": f"{self.m_pl_rd:.3f}",
-                r"N_{Ed}": f"{self.n_ed:.3f}",
-                r"N_{pl,Rd}": f"{self.n_pl_rd:.3f}",
+                r"M_{pl,Rd}": f"{self.m_pl_rd:.{n}f}",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{pl,Rd}": rf"{self.m_pl_rd:.3f} \ Nmm",
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
-                r"N_{pl,Rd}": rf"{self.n_pl_rd:.3f} \ N",
+                r"M_{pl,Rd}": rf"{self.m_pl_rd:.{n}f} \ Nmm",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ N",
             },
             True,
         )
         return LatexFormula(
             return_symbol=r"M_{N,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

@@ -53,22 +53,22 @@ class Form7Dot12EquivalentDiameter(Formula):
 
         return (n_1 * diam_1**2 + n_2 * diam_2**2) / (n_1 * diam_1 + n_2 * diam_2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.12."""
         _equation: str = r"\frac{n_1 \cdot ⌀_1^2 + n_2 \cdot ⌀_2^2}{n_1 \cdot ⌀_1 + n_2 \cdot ⌀_2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"n_1": f"{self.n_1:.3f}",
-                r"⌀_1": f"{self.diam_1:.3f}",
-                r"n_2": f"{self.n_2:.3f}",
-                r"⌀_2": f"{self.diam_2:.3f}",
+                r"n_1": f"{self.n_1:.{n}f}",
+                r"⌀_1": f"{self.diam_1:.{n}f}",
+                r"n_2": f"{self.n_2:.{n}f}",
+                r"⌀_2": f"{self.diam_2:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"⌀_{eq}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

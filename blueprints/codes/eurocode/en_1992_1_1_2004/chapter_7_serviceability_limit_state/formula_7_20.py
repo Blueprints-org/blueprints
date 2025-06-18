@@ -43,20 +43,20 @@ class Form7Dot20EffectiveModulusCreep(Formula):
 
         return e_cm / (1 + phi_inf_t0)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.20."""
         _equation: str = r"\frac{E_{cm}}{1 + \phi(\infty , t_0)}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"E_{cm}": f"{self.e_cm:.3f}",
-                r"\phi(\infty , t_0)": f"{self.phi_inf_t0:.3f}",
+                r"E_{cm}": f"{self.e_cm:.{n}f}",
+                r"\phi(\infty , t_0)": f"{self.phi_inf_t0:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"E_{c,eff}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

@@ -42,11 +42,11 @@ class Form5Dot10ReductionFactorShearArea(Formula):
         raise_if_less_or_equal_to_zero(v_ed=v_ed, v_pl_rd=v_pl_rd)
         return (2 * v_ed / v_pl_rd - 1) ** 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.10."""
         return LatexFormula(
             return_symbol=r"\rho",
-            result=str(self),
+            result=f"{self:.{n}f}",
             equation=r"\left(2 \cdot \frac{V_{Ed}}{V_{pl,Rd}} - 1\right)^2",
             numeric_equation=rf"\left(2 \cdot \frac{{{self.v_ed}}}{{{self.v_pl_rd}}} - 1\right)^2",
             comparison_operator_label="=",

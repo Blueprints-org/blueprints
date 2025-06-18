@@ -41,12 +41,12 @@ class Form3Dot18CompressiveStressConcrete(Formula):
             raise ValueError(f"Invalid f_cd: {f_cd}. f_cd cannot be negative")
         return f_cd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.18."""
         return LatexFormula(
             return_symbol=r"\sigma_c",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"f_{cd}",
-            numeric_equation=rf"{self.f_cd:.3f}",
+            numeric_equation=rf"{self.f_cd:.{n}f}",
             comparison_operator_label="=",
         )

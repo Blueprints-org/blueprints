@@ -60,22 +60,22 @@ class Form5Dot38aCheckRelativeLengthRatio(Formula):
 
         return (length_y / length_z <= 2) and (length_z / length_y <= 2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.38a."""
         _equation: str = r"\left( \frac{L_{y}}{L_{z}} \leq 2 \text{ and } \frac{L_{z}}{L_{y}} \leq 2 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "length_y": f"{self.length_y:.3f}",
-                "length_z": f"{self.length_z:.3f}",
+                "length_y": f"{self.length_y:.{n}f}",
+                "length_z": f"{self.length_z:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                "length_y": rf"{self.length_y:.3f} \ mm",
-                "length_z": rf"{self.length_z:.3f} \ mm",
+                "length_y": rf"{self.length_y:.{n}f} \ mm",
+                "length_z": rf"{self.length_z:.{n}f} \ mm",
             },
             False,
         )

@@ -56,13 +56,13 @@ class Form12Dot4PlainConcreteShearStress(Formula):
         )
         return k * v_ed / a_cc
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 12.4."""
         return LatexFormula(
             return_symbol=r"\tau_{cp}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"k \cdot \frac{V_{Ed}}{A_{cc}}",
-            numeric_equation=rf"{self.k:.3f} \cdot \frac{{{self.v_ed:.3f}}}{{{self.a_cc:.3f}}}",
+            numeric_equation=rf"{self.k:.{n}f} \cdot \frac{{{self.v_ed:.{n}f}}}{{{self.a_cc:.{n}f}}}",
             comparison_operator_label="=",
         )
 

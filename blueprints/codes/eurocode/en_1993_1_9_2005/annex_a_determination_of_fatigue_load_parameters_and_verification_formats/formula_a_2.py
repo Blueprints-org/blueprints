@@ -41,12 +41,12 @@ class FormADot2CriteriaBasedOnDamageAccumulation(Formula):
         raise_if_negative(d_d=d_d)
         return d_d <= 1.0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula A.2."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self <= 1 else r"NOT\;OK",
             equation=r"D_d \leq 1.0",
-            numeric_equation=rf"{self.d_d:.3f} \leq 1.0",
+            numeric_equation=rf"{self.d_d:.{n}f} \leq 1.0",
             comparison_operator_label=r"\rightarrow",
         )

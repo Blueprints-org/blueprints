@@ -88,7 +88,7 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
         n_pl_rd: KN = a * f_y / gamma_m0 * N_TO_KN
         return (n_ed / (chi * n_pl_rd * (gamma_m0 / gamma_m1)) + 1.15 * m_ed / (m_c_rd * (gamma_m0 / gamma_m1))) <= 1.0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.13."""
         _equation: str = (
             r"\frac{N_{Ed}}{\chi \cdot (A \cdot f_{y} / \gamma_{M0}) \cdot \left( \frac{\gamma_{M0}}{\gamma_{M1}} \right)} + "
@@ -97,14 +97,14 @@ class Form5Dot13SimplifiedBucklingCheck(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "N_{Ed}": f"{self.n_ed:.3f}",
-                "M_{Ed}": f"{self.m_ed:.3f}",
-                "A": f"{self.a:.2f} / 10^6",
+                "N_{Ed}": f"{self.n_ed:.{n}f}",
+                "M_{Ed}": f"{self.m_ed:.{n}f}",
+                "A": f"{self.a:.{n}f} / 10^6",
                 "f_{y}": f"{self.f_y:.1f} \\cdot 10^3",
-                "M_{c,Rd}": f"{self.m_c_rd:.3f}",
+                "M_{c,Rd}": f"{self.m_c_rd:.{n}f}",
                 r"\gamma_{M0}": f"{self.gamma_m0:.1f}",
                 r"\gamma_{M1}": f"{self.gamma_m1:.1f}",
-                r"\chi": f"{self.chi:.3f}",
+                r"\chi": f"{self.chi:.{n}f}",
             },
             False,
         )

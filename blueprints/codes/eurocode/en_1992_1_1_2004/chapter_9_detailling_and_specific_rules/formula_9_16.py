@@ -52,12 +52,12 @@ class Form9Dot16MinimumForceOnInternalBeamLine(Formula):
         raise_if_negative(q_3=q_3, l_1=l_1, l_2=l_2, q_4=q_4)
         return max(q_3 * (l_1 + l_2) / 2, q_4)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.16."""
         return LatexFormula(
             return_symbol=r"F_{tie}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"min(q_3 \cdot (l_1 + l_2) / 2, Q_4)",
-            numeric_equation=rf"min({self.q_3:.2f} \cdot ({self.l_1:.2f} + {self.l_2:.2f}) / 2, {self.q_4:.2f})",
+            numeric_equation=rf"min({self.q_3:.{n}f} \cdot ({self.l_1:.{n}f} + {self.l_2:.{n}f}) / 2, {self.q_4:.{n}f})",
             comparison_operator_label="=",
         )

@@ -74,30 +74,30 @@ class Form6Dot41BiaxialBendingCheck(Formula):
 
         return (my_ed / m_n_y_rd) ** alpha + (mz_ed / m_n_z_rd) ** beta <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.41."""
         _equation: str = r"\left[ \frac{M_{y,Ed}}{M_{N,y,Rd}} \right]^{\alpha} + \left[ \frac{M_{z,Ed}}{M_{N,z,Rd}} \right]^{\beta} \leq 1"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "M_{y,Ed}": f"{self.my_ed:.3f}",
-                "M_{N,y,Rd}": f"{self.m_n_y_rd:.3f}",
-                "M_{z,Ed}": f"{self.mz_ed:.3f}",
-                "M_{N,z,Rd}": f"{self.m_n_z_rd:.3f}",
-                r"\alpha": f"{self.alpha:.3f}",
-                r"\beta": f"{self.beta:.3f}",
+                "M_{y,Ed}": f"{self.my_ed:.{n}f}",
+                "M_{N,y,Rd}": f"{self.m_n_y_rd:.{n}f}",
+                "M_{z,Ed}": f"{self.mz_ed:.{n}f}",
+                "M_{N,z,Rd}": f"{self.m_n_z_rd:.{n}f}",
+                r"\alpha": f"{self.alpha:.{n}f}",
+                r"\beta": f"{self.beta:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                "M_{y,Ed}": rf"{self.my_ed:.3f} \ Nmm",
-                "M_{N,y,Rd}": rf"{self.m_n_y_rd:.3f} \ Nmm",
-                "M_{z,Ed}": rf"{self.mz_ed:.3f} \ Nmm",
-                "M_{N,z,Rd}": rf"{self.m_n_z_rd:.3f} \ Nmm",
-                r"\alpha": rf"{self.alpha:.3f}",
-                r"\beta": rf"{self.beta:.3f}",
+                "M_{y,Ed}": rf"{self.my_ed:.{n}f} \ Nmm",
+                "M_{N,y,Rd}": rf"{self.m_n_y_rd:.{n}f} \ Nmm",
+                "M_{z,Ed}": rf"{self.mz_ed:.{n}f} \ Nmm",
+                "M_{N,z,Rd}": rf"{self.m_n_z_rd:.{n}f} \ Nmm",
+                r"\alpha": rf"{self.alpha:.{n}f}",
+                r"\beta": rf"{self.beta:.{n}f}",
             },
             False,
         )

@@ -48,13 +48,13 @@ class Form5Dot101Imperfections(Formula):
         raise_if_negative(theta_0=theta_0, alpha_h=alpha_h)
         return theta_0 * alpha_h
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.101."""
         return LatexFormula(
             return_symbol=r"\theta_i",
-            result=f"{self:.4f}",
+            result=f"{self:.{n + 1}f}",
             equation=r"\theta_0 \cdot \alpha_h",
-            numeric_equation=rf"{self.theta_0:.3f} \cdot {self.alpha_h:.3f}",
+            numeric_equation=rf"{self.theta_0:.{n}f} \cdot {self.alpha_h:.{n}f}",
             comparison_operator_label="=",
         )
 
@@ -93,12 +93,12 @@ class Form5Dot101Sub1ReductionFactorLengthOrHeight(Formula):
         raise_if_less_or_equal_to_zero(length=length)
         return min(1, 2 / np.sqrt(length))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.101 subformula 1."""
         return LatexFormula(
             return_symbol=r"\alpha_h",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min(2 / \sqrt{l}, 1)",
-            numeric_equation=rf"\min( 2 / \sqrt{{{self.length:.3f}}}, 1)",
+            numeric_equation=rf"\min( 2 / \sqrt{{{self.length:.{n}f}}}, 1)",
             comparison_operator_label="=",
         )

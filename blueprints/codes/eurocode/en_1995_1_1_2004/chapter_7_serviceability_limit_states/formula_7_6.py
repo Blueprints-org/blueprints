@@ -45,13 +45,13 @@ class Form7Dot6VelocityResponse(Formula):
         raise_if_less_or_equal_to_zero(n_40=n_40, m=m, length=length, b=b)
         return 4 * (0.4 + 0.6 * n_40) / (m * b * length + 200)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 7.6."""
         eq_form: str = r"\frac{4 \cdot (0.4 + 0.6 \cdot n_{40})}{m \cdot b \cdot l + 200}"
-        repl_symb = {"n_{40}": f"{self.n_40:.2f}", "m": f"{self.m:.2f}", "l": f"{self.length:.2f}", "b": f"{self.b:.2f}"}
+        repl_symb = {"n_{40}": f"{self.n_40:.{n}f}", "m": f"{self.m:.{n}f}", "l": f"{self.length:.{n}f}", "b": f"{self.b:.{n}f}"}
         return LatexFormula(
             return_symbol=r"v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n + 1}f}",
             equation=eq_form,
             numeric_equation=latex_replace_symbols(eq_form, repl_symb),
             comparison_operator_label="=",

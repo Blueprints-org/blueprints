@@ -45,11 +45,11 @@ class Form4Dot1NominalConcreteCover(Formula):
         raise_if_negative(c_min=c_min, delta_c_dev=delta_c_dev)
         return c_min + delta_c_dev
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 1) -> LatexFormula:
         """Returns LatexFormula object for formula 4.1."""
         return LatexFormula(
             return_symbol=r"c_{nom}",
-            result=str(self),
+            result=f"{self:.{n}f}",
             equation=r"c_{min}+\Delta c_{dev}",
             numeric_equation=f"{self.c_min}+{self.delta_c_dev}",
             comparison_operator_label="=",

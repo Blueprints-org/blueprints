@@ -47,12 +47,12 @@ class Form9Dot14SplittingForceColumnOnRock(Formula):
         raise_if_negative(c=c, h=h, n_ed=n_ed)
         return 0.25 * (1 - (c / h)) * n_ed
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.14."""
         return LatexFormula(
             return_symbol=r"F_s",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"0.25 \cdot ( 1 - c / h ) \cdot N_{Ed}",
-            numeric_equation=rf"0.25 \cdot ( 1 - {self.c:.2f} / {self.h:.2f} ) \cdot {self.n_ed:.2f}",
+            numeric_equation=rf"0.25 \cdot ( 1 - {self.c:.{n}f} / {self.h:.{n}f} ) \cdot {self.n_ed:.{n}f}",
             comparison_operator_label="=",
         )

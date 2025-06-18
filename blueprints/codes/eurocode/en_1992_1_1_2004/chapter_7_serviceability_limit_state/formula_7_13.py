@@ -37,20 +37,20 @@ class Form7Dot13CoefficientK2(Formula):
 
         return (epsilon_1 + epsilon_2) / (2 * epsilon_1)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.13."""
         _equation: str = r"\frac{\epsilon_1 + \epsilon_2}{2 \cdot \epsilon_1}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\epsilon_1": f"{self.epsilon_1:.3f}",
-                r"\epsilon_2": f"{self.epsilon_2:.3f}",
+                r"\epsilon_1": f"{self.epsilon_1:.{n}f}",
+                r"\epsilon_2": f"{self.epsilon_2:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"k_2",
-            result=f"{self._evaluate(self.epsilon_1, self.epsilon_2):.3f}",
+            result=f"{self._evaluate(self.epsilon_1, self.epsilon_2):.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

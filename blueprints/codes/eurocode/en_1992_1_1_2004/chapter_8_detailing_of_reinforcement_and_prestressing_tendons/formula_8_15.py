@@ -60,13 +60,13 @@ class Form8Dot15PrestressTransferStress(Formula):
         )
         return eta_p1 * eta_1 * f_ctd_t
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.15."""
         return LatexFormula(
             return_symbol=r"f_{bpt}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t)",
-            numeric_equation=rf"{self.eta_p1:.2f} \cdot {self.eta_1:.2f} \cdot {self.f_ctd_t:.2f}",
+            numeric_equation=rf"{self.eta_p1:.{n}f} \cdot {self.eta_1:.{n}f} \cdot {self.f_ctd_t:.{n}f}",
             comparison_operator_label="=",
         )
 
@@ -110,11 +110,11 @@ class SubForm8Dot15EtaP1(Formula):
             case _:
                 raise ValueError(f"Invalid type of wire: {type_of_wire}. Options: 'indented' or '3_7_wire_strands'")
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the first subformula of formula 8.15."""
         return LatexFormula(
             return_symbol=r"\eta_{p1}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"type\;of\;wire",
             numeric_equation=f"{self.type_of_wire}".replace(" ", r"\;"),
             comparison_operator_label=r"\rightarrow",
@@ -169,12 +169,12 @@ class SubForm8Dot15TensileStrengthAtRelease(Formula):
         raise_if_less_or_equal_to_zero(gamma_c=gamma_c)
         return alpha_ct * 0.7 * f_ctm_t / gamma_c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the second subformula of formula 8.15."""
         return LatexFormula(
             return_symbol=r"f_{ctd}(t)",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c}",
-            numeric_equation=rf"\frac{{{self.alpha_ct:.2f} \cdot 0.7 \cdot {self.f_ctm_t:.2f}}}{{{self.gamma_c:.2f}}}",
+            numeric_equation=rf"\frac{{{self.alpha_ct:.{n}f} \cdot 0.7 \cdot {self.f_ctm_t:.{n}f}}}{{{self.gamma_c:.{n}f}}}",
             comparison_operator_label="=",
         )

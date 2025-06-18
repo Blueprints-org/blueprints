@@ -66,7 +66,7 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
         numerator = sigma_s - k_t * (f_ct_eff / rho_p_eff) * (1 + alpha_e * rho_p_eff)
         return max(numerator / e_s, 0.6 * sigma_s / e_s)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.9."""
         _equation: str = (
             r"\max\left("
@@ -77,12 +77,12 @@ class Form7Dot9EpsilonSmMinusEpsilonCm(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\sigma_s": f"{self.sigma_s:.3f}",
-                r"k_t": f"{self.k_t:.3f}",
-                r"f_{ct,eff}": f"{self.f_ct_eff:.3f}",
-                r"\rho_{p,eff}": f"{self.rho_p_eff:.3f}",
-                r"E_s": f"{self.e_s:.3f}",
-                r"E_{cm}": f"{self.e_cm:.3f}",
+                r"\sigma_s": f"{self.sigma_s:.{n}f}",
+                r"k_t": f"{self.k_t:.{n}f}",
+                r"f_{ct,eff}": f"{self.f_ct_eff:.{n}f}",
+                r"\rho_{p,eff}": f"{self.rho_p_eff:.{n}f}",
+                r"E_s": f"{self.e_s:.{n}f}",
+                r"E_{cm}": f"{self.e_cm:.{n}f}",
             },
             False,
         )

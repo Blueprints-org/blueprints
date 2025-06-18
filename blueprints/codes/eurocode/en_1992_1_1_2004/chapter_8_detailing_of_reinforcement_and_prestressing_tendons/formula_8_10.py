@@ -125,16 +125,16 @@ class Form8Dot10DesignLapLength(Formula):
         )
         return max(alpha_1 * alpha_2 * alpha_3 * alpha_5 * alpha_6 * l_b_rqd, l_0_min)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
         return LatexFormula(
             return_symbol=r"l_{0}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=latex_max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_5 \cdot \alpha_6 \cdot l_{b,rqd}", r"l_{0,min}"),
             numeric_equation=latex_max_curly_brackets(
-                rf"{self.alpha_1:.2f} \cdot {self.alpha_2:.2f} \cdot {self.alpha_3:.2f} \cdot "
-                rf"{self.alpha_5:.2f} \cdot {self.alpha_6:.2f} \cdot {self.l_b_rqd:.2f}",
-                f"{self.l_0_min:.2f}",
+                rf"{self.alpha_1:.{n}f} \cdot {self.alpha_2:.{n}f} \cdot {self.alpha_3:.{n}f} \cdot "
+                rf"{self.alpha_5:.{n}f} \cdot {self.alpha_6:.{n}f} \cdot {self.l_b_rqd:.{n}f}",
+                f"{self.l_0_min:.{n}f}",
             ),
             comparison_operator_label="=",
         )
@@ -167,13 +167,13 @@ class SubForm8Dot10Alpha6(Formula):
         value_max_1_5 = min((rho_1 / 25) ** 0.5, 1.5)
         return max(value_max_1_5, 1)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
         argument_1_formula = r"\left(\frac{\rho_1}{25}\right)^{0.5}"
-        numerical_argument_1 = rf"\left(\frac{{{self.rho_1:.2f}}}{{25}}\right)^{{0.5}}"
+        numerical_argument_1 = rf"\left(\frac{{{self.rho_1:.{n}f}}}{{25}}\right)^{{0.5}}"
         return LatexFormula(
             return_symbol=r"\alpha_6",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=f"{latex_max_curly_brackets(latex_min_curly_brackets(argument_1_formula, '1.5'), '1')}",
             numeric_equation=f"{latex_max_curly_brackets(latex_min_curly_brackets(numerical_argument_1, '1.5'), '1')}",
             comparison_operator_label="=",

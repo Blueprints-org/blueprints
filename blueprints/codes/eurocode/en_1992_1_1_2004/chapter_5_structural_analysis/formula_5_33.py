@@ -53,13 +53,13 @@ class Form5Dot33NominalSecondOrderMoment(Formula):
 
         return n_ed * curvature * (l_o**2) / c
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.33."""
         return LatexFormula(
             return_symbol=r"M_{2}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"N_{Ed} \cdot \left(\frac{1}{r}\right) \cdot \frac{l_{o}^2}{c}",
-            numeric_equation=rf"{self.n_ed:.3f} \cdot \left({self.curvature:.3f}\right) " rf"\cdot \frac{{{self.l_o:.3f}^2}}{{{self.c:.3f}}}",
+            numeric_equation=rf"{self.n_ed:.{n}f} \cdot \left({self.curvature:.{n}f}\right) " rf"\cdot \frac{{{self.l_o:.{n}f}^2}}{{{self.c:.{n}f}}}",
             comparison_operator_label="=",
             unit="kNm",
         )
