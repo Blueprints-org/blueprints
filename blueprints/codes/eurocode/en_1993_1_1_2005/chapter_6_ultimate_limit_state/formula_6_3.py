@@ -1,4 +1,4 @@
-"""Formula 6.3 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 6 - Ultimate limit state."""
+"""Formula 6.3 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state."""
 
 from collections.abc import Sequence
 
@@ -25,7 +25,7 @@ class Form6Dot3MinDeductionAreaStaggeredFastenerHoles(Formula):
     ) -> None:
         """[$A_{deduction}$] Calculation of the area deduction for staggered fastener holes [$mm^2$].
 
-        NEN-EN 1993-1-1+C2+A1:2016 art.6.2.2.2 (4) b) - Formula (6.3)
+        EN 1993-1-1:2005 art.6.2.2.2 (4) b) - Formula (6.3)
         section (4) a) should be handled separately.
 
         Parameters

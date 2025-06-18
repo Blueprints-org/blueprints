@@ -15,7 +15,7 @@ class Form2Dot22ModulusHorizontalSubgrade(Formula):
     n_decimals: int = 2
 
     def __init__(self, r: M, e_p: KPA, alpha: DIMENSIONLESS) -> None:
-        """Calculates the modulus of horizontal subgrade reaction (k_h) using Menard stiffness for r < 0.3 m.
+        """Calculates the modulus of horizontal subgrade reaction ($k_h$) using Menard stiffness for r < 0.3 m.
 
         Parameters
         ----------

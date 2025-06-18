@@ -1,9 +1,11 @@
-**NEN-EN 1993-5 - februari 2008
+**EN 1993-5 - februari 2007
 Eurocode 3: Design of steel structures
 Part 5: Piling**
 
 The table presents a list of formulas from the Eurocode 3 standards for steel structures, part 5 Piling, tracking their implementation status
 (:x: or :heavy_check_mark:) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.
+
+Total of 63 formulas present.
 
 Total of 63 formulas present.
 
@@ -25,9 +27,9 @@ Total of 63 formulas present.
 | 5.14           |        :x:         |         |                                                  |
 | 5.15           |        :x:         |         |                                                  |
 | 5.16           | :heavy_check_mark: |         | Form5Dot16PlasticDesignResistance                |
-| 5.17           |        :x:         |         |                                                  |
-| 5.18           |        :x:         |         |                                                  |
-| 5.19           |        :x:         |         |                                                  |
+| 5.17           | :heavy_check_mark: |         | Form5Dot17CompressionCheckZProfilesClass1And2    |
+| 5.18           | :heavy_check_mark: |         | Form5Dot18CompressionCheckUProfilesClass1And2    |
+| 5.19           | :heavy_check_mark: |         | Form5Dot19CompressionCheckClass3Profiles         |
 | 5.20           | :heavy_check_mark: |         | Form5Dot20ReducedMomentResistanceClass2ZProfiles |
 | 5.21           | :heavy_check_mark: |         | Form5Dot21ReducedMomentResistanceClass2UProfiles |
 | 5.22           | :heavy_check_mark: |         | Form5Dot22ReducedMomentResistanceClass3          |
