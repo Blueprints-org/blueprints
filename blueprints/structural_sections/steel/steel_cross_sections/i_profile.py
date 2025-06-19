@@ -50,6 +50,8 @@ class ISteelProfile(CombinedSteelCrossSection):
         The radius of the curved corners of the top flange. Default is None, the corner radius is then taken as the thickness.
     bottom_radius : MM | None
         The radius of the curved corners of the bottom flange. Default is None, the corner radius is then taken as the thickness.
+    name : str
+        The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value.
     """
 
     steel_material: SteelMaterial
