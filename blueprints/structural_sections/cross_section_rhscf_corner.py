@@ -93,7 +93,7 @@ class RHSCFCornerCrossSection(CrossSection):
             for i in range(n)
         ][::-1]
 
-        points = [ll, lr, ur, *outer_arc, ul, *inner_arc]
+        points = [lr, *outer_arc, ul, *inner_arc]
         return Polygon(points)
 
     @property
@@ -121,3 +121,33 @@ class RHSCFCornerCrossSection(CrossSection):
         geom = Geometry(geom=self.polygon)
         geom.create_mesh(mesh_sizes=mesh_size)
         return geom
+
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+
+    # Example parameters
+    thickness_vertical = 10
+    thickness_horizontal = 10
+    inner_radius = 10
+    outer_radius = 10
+    x = 0
+    y = 0
+
+    section = RHSCFCornerCrossSection(
+        thickness_vertical=thickness_vertical,
+        thickness_horizontal=thickness_horizontal,
+        inner_radius=inner_radius,
+        outer_radius=outer_radius,
+        x=x,
+        y=y,
+    )
+
+    poly = section.polygon
+
+    fig, ax = plt.subplots()
+    x, y = poly.exterior.xy
+    ax.plot(x, y, label="RHSCF Corner")
+    ax.set_aspect("equal")
+    ax.set_title("RHSCF Corner Cross-Section Example")
+    ax.legend()
+    plt.show()
