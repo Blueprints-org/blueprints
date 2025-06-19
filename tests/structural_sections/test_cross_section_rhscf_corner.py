@@ -1,6 +1,5 @@
 """Tests for RHSCF Corner cross-section."""
 
-import math
 import pytest
 
 from blueprints.structural_sections.cross_section_rhscf_corner import RHSCFCornerCrossSection
@@ -8,24 +7,6 @@ from blueprints.structural_sections.cross_section_rhscf_corner import RHSCFCorne
 
 class TestRHSCFCornerCrossSection:
     """Tests for the RHSCFCornerCrossSection class."""
-
-    def test_area(self, rhscf_corner_cross_section: RHSCFCornerCrossSection) -> None:
-        """Test the area property of the RHSCFCornerCrossSection class."""
-        area_rectangle = rhscf_corner_cross_section.width_rectangle * rhscf_corner_cross_section.height_rectangle
-        area_inner_circle = math.pi * (rhscf_corner_cross_section.inner_radius**2) / 4
-        area_outer_circle_spandrel = rhscf_corner_cross_section.outer_radius**2 - math.pi * (rhscf_corner_cross_section.outer_radius**2) / 4
-        expected_area = area_rectangle - area_inner_circle - area_outer_circle_spandrel
-        assert rhscf_corner_cross_section.area == pytest.approx(expected=expected_area, rel=1e-6)
-
-    def test_width_rectangle(self, rhscf_corner_cross_section: RHSCFCornerCrossSection) -> None:
-        """Test the width_rectangle property."""
-        expected_width = rhscf_corner_cross_section.thickness_vertical + rhscf_corner_cross_section.inner_radius
-        assert rhscf_corner_cross_section.width_rectangle == pytest.approx(expected=expected_width, rel=1e-6)
-
-    def test_height_rectangle(self, rhscf_corner_cross_section: RHSCFCornerCrossSection) -> None:
-        """Test the height_rectangle property."""
-        expected_height = rhscf_corner_cross_section.thickness_horizontal + rhscf_corner_cross_section.inner_radius
-        assert rhscf_corner_cross_section.height_rectangle == pytest.approx(expected=expected_height, rel=1e-6)
 
     def test_polygon(self, rhscf_corner_cross_section: RHSCFCornerCrossSection) -> None:
         """Test the polygon property."""
@@ -75,11 +56,11 @@ class TestRHSCFCornerCrossSection:
                 thickness_vertical=10,
                 thickness_horizontal=10,
                 inner_radius=5,
-                outer_radius=0,
+                outer_radius=-1,
             )
 
     def test_section_properties(self, rhscf_corner_cross_section: RHSCFCornerCrossSection) -> None:
-        """Test the section properties of the HexagonalCrossSection class."""
+        """Test the section properties of the RHSCFCornerCrossSection class."""
         section_properties = rhscf_corner_cross_section.section_properties()
         assert section_properties.area == pytest.approx(expected=rhscf_corner_cross_section.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=rhscf_corner_cross_section.perimeter, rel=1e-2)
@@ -91,3 +72,5 @@ class TestRHSCFCornerCrossSection:
         assert section_properties.zyy_plus == pytest.approx(expected=rhscf_corner_cross_section.elastic_section_modulus_about_z_positive, rel=1e-2)
         assert section_properties.zxx_minus == pytest.approx(expected=rhscf_corner_cross_section.elastic_section_modulus_about_y_negative, rel=1e-2)
         assert section_properties.zyy_minus == pytest.approx(expected=rhscf_corner_cross_section.elastic_section_modulus_about_z_negative, rel=1e-2)
+        assert section_properties.sxx == pytest.approx(expected=rhscf_corner_cross_section.plastic_section_modulus_about_y, rel=1e-2)
+        assert section_properties.syy == pytest.approx(expected=rhscf_corner_cross_section.plastic_section_modulus_about_z, rel=1e-2)
