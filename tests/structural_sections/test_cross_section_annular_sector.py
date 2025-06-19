@@ -221,7 +221,7 @@ class TestAnnularSectorCrossSection:
         assert annular_sector.moment_of_inertia_about_y == pytest.approx(expected=approximate_moi_y, rel=1e-3)
 
     def test_section_properties(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
-        """Test the section properties of the HexagonalCrossSection class."""
+        """Test the section properties of the AnnularSectorCrossSection class."""
         section_properties = annular_sector_cross_section.section_properties()
         assert section_properties.area == pytest.approx(expected=annular_sector_cross_section.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=annular_sector_cross_section.perimeter, rel=1e-2)
@@ -235,7 +235,7 @@ class TestAnnularSectorCrossSection:
         assert section_properties.zyy_minus == pytest.approx(expected=annular_sector_cross_section.elastic_section_modulus_about_z_negative, rel=1e-2)
 
     def test_section_properties_359_degrees(self, annular_sector_cross_section_359_degrees: AnnularSectorCrossSection) -> None:
-        """Test the section properties of the HexagonalCrossSection class with 359 degrees."""
+        """Test the section properties of the AnnularSectorCrossSection class with 359 degrees."""
         section_properties = annular_sector_cross_section_359_degrees.section_properties()
         assert section_properties.area == pytest.approx(expected=annular_sector_cross_section_359_degrees.area, rel=1e-2)
         assert section_properties.perimeter == pytest.approx(expected=annular_sector_cross_section_359_degrees.perimeter, rel=1e-2)
