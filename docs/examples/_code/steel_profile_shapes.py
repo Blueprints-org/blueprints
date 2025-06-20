@@ -82,22 +82,29 @@ steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
 
 # Example usage for RHS profile
 rhs_profile = RHSSteelProfile.from_standard_profile(
-    profile=RHS.RHS400x200_16,
+    profile=RHS.RHS250x150_12_5,
     steel_material=steel_material,
     corrosion_inside=0,  # mm
-    corrosion_outside=0,  # mm
+    corrosion_outside=1,  # mm
 )
-print(rhs_profile.elements[0].cross_section.polygon)
-import matplotlib.pyplot as plt
+rhs_profile.plot(show=True)
 
-plt.figure()
-for i in range(8):
-    polygon = rhs_profile.elements[i].cross_section.polygon
-    # Convert polygon to list of (x, y) tuples
-    coords = list(polygon) if isinstance(polygon, (list, tuple)) else list(polygon.exterior.coords)
-    x, y = zip(*coords)
-    
-    plt.plot(x + (x[0],), y + (y[0],), 'b-')
-    plt.axis('equal')
-    plt.title(f"RHS Profile Polygon - Element {i}")
-plt.show()
+# Example usage for custom RHS profile
+custom_rhs_profile = RHSSteelProfile(
+    steel_material=steel_material,
+    total_width=300,            # mm
+    total_height=200,           # mm
+    left_wall_thickness=12,     # mm
+    right_wall_thickness=40,    # mm
+    top_wall_thickness=9,      # mm
+    bottom_wall_thickness=7,   # mm
+    top_right_inner_radius=50,      # mm (optional)
+    top_left_inner_radius=5,       # mm (optional)
+    bottom_right_inner_radius=9,   # mm (optional)
+    bottom_left_inner_radius=14,    # mm (optional)
+    top_right_outer_radius=55,      # mm (optional)
+    top_left_outer_radius=13,       # mm (optional)
+    bottom_right_outer_radius=10,  # mm (optional)
+    bottom_left_outer_radius=12,   # mm (optional)
+)
+custom_rhs_profile.plot(show=True)
