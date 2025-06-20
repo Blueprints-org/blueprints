@@ -92,6 +92,9 @@ def rhscf_corner_cross_section() -> RHSCFCornerCrossSection:
         thickness_horizontal=20.0,
         inner_radius=5.0,
         outer_radius=10.0,
-        x=0.0,
-        y=0.0,
+        x=69.0,
+        y=683.0,
+        mirrored_horizontally=True,
+        mirrored_vertically=True,
+        name="Corner"
     )
