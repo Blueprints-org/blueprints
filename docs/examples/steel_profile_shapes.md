@@ -13,7 +13,7 @@ Follow the steps below to explore the usage of different steel profile shapes (o
 Start by defining the steel material to be used for the profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:15:16"
+--8<-- "examples/_code/steel_profile_shapes.py:15:17"
 ```
 
 ## Circular Hollow Section (CHS) Profiles
