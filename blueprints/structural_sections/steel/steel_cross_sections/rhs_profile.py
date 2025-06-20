@@ -259,7 +259,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         name = profile.alias
         if corrosion_inside or corrosion_outside:
             name += (
-                f" (corrosion {'' if not corrosion_inside else f' in: {corrosion_inside} mm'}"
+                f" (corrosion {'' if not corrosion_inside else f'in: {corrosion_inside} mm'}"
                 f"{', ' if corrosion_inside and corrosion_outside else ''}"
                 f"{'' if not corrosion_outside else f'out: {corrosion_outside} mm'})"
             )

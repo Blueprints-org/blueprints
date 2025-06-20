@@ -15,28 +15,28 @@ class TestRHSSteelProfile:
 
     def test_name(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the name of the RHS profile."""
-        expected_name: str = "RHSCF 400x200x16"
+        expected_name: str = "RHS400x200x16"
         print(f"Profile name: {rhs_profile.name}")
         assert rhs_profile.name == expected_name
 
     def test_code(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the code of the RHS profile."""
-        expected_alias: str = "RHSCF 400x200x16"
+        expected_alias: str = "RHS400x200x16"
         assert rhs_profile.name == expected_alias
 
     def test_steel_volume_per_meter(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the steel volume per meter."""
-        expected_volume: float = 0.017100  # m³/m
+        expected_volume: float = 0.017900  # m³/m
         assert pytest.approx(rhs_profile.volume_per_meter, rel=1e-2) == expected_volume
 
     def test_steel_weight_per_meter(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the steel weight per meter."""
-        expected_weight: float = 0.01700 * 7850  # kg/m
+        expected_weight: float = 0.017900 * 7850  # kg/m
         assert pytest.approx(rhs_profile.weight_per_meter, rel=1e-2) == expected_weight
 
     def test_area(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the steel cross-sectional area."""
-        expected_area: float = 17100  # mm²
+        expected_area: float = 17900  # mm²
         assert pytest.approx(rhs_profile.area, rel=1e-2) == expected_area
 
     def test_centroid(self, rhs_profile: RHSSteelProfile) -> None:
@@ -47,32 +47,32 @@ class TestRHSSteelProfile:
 
     def test_moment_of_inertia_about_y(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the moment of inertia about the y-axis."""
-        expected_moi_y: float = 3.7789e8  # mm⁴
+        expected_moi_y: float = 3.5740e8  # mm⁴
         assert pytest.approx(rhs_profile.moment_of_inertia_about_y, rel=1e-2) == expected_moi_y
 
     def test_moment_of_inertia_about_z(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the moment of inertia about the z-axis."""
-        expected_moi_z: float = 1.1056e8  # mm⁴
+        expected_moi_z: float = 1.1820e8  # mm⁴
         assert pytest.approx(rhs_profile.moment_of_inertia_about_z, rel=1e-2) == expected_moi_z
 
     def test_elastic_section_modulus_about_y_positive(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the elastic section modulus about the y-axis on the positive z side."""
-        expected_modulus_y_positive: float = 1.8895e6  # mm³
+        expected_modulus_y_positive: float = 1.7870e6  # mm³
         assert pytest.approx(rhs_profile.elastic_section_modulus_about_y_positive, rel=1e-2) == expected_modulus_y_positive
 
     def test_elastic_section_modulus_about_y_negative(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the elastic section modulus about the y-axis on the negative z side."""
-        expected_modulus_y_negative: float = 1.8895e6  # mm³
+        expected_modulus_y_negative: float = 1.7870e6  # mm³
         assert pytest.approx(rhs_profile.elastic_section_modulus_about_y_negative, rel=1e-2) == expected_modulus_y_negative
 
     def test_elastic_section_modulus_about_z_positive(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the elastic section modulus about the z-axis on the positive y side."""
-        expected_modulus_z_positive: float = 1.1060e6  # mm³
+        expected_modulus_z_positive: float = 1.1820e6  # mm³
         assert pytest.approx(rhs_profile.elastic_section_modulus_about_z_positive, rel=1e-2) == expected_modulus_z_positive
 
     def test_elastic_section_modulus_about_z_negative(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the elastic section modulus about the z-axis on the negative y side."""
-        expected_modulus_z_negative: float = 1.1060e6  # mm³
+        expected_modulus_z_negative: float = 1.1820e6  # mm³
         assert pytest.approx(rhs_profile.elastic_section_modulus_about_z_negative, rel=1e-2) == expected_modulus_z_negative
 
     def test_plot(self, rhs_profile: RHSSteelProfile) -> None:
@@ -119,5 +119,5 @@ class TestRHSSteelProfile:
                 corrosion_outside=1,  # mm
                 corrosion_inside=1,  # mm
         )
-        expected_name_with_corrosion = "RHS 400x200_16 (corrosion in: 1 mm, out: 1 mm)"
+        expected_name_with_corrosion = "RHS400x200x16 (corrosion in: 1 mm, out: 1 mm)"
         assert rhs_profile_with_corrosion.name == expected_name_with_corrosion

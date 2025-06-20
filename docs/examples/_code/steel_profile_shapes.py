@@ -13,7 +13,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile impor
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripSteelProfile
 
@@ -83,7 +83,7 @@ custom_i_profile.plot(show=False)
 
 # Example usage for RHS profile
 rhs_profile = RHSSteelProfile.from_standard_profile(
-    profile=RHSCF.RHSCF400x300_16,
+    profile=RHS.RHS400x200_16,
     steel_material=steel_material,
     corrosion_inside=0,  # mm
     corrosion_outside=0,  # mm (set to a small positive value to avoid zero thickness)
