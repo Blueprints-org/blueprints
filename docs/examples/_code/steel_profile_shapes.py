@@ -83,10 +83,10 @@ custom_i_profile.plot(show=False)
 
 # Example usage for RHS profile
 rhs_profile = RHSSteelProfile.from_standard_profile(
-    profile=RHSCF.RHS400x200_16,
+    profile=RHSCF.RHSCF400x300_16,
     steel_material=steel_material,
     corrosion_inside=0,  # mm
-    corrosion_outside=0,  # mm
+    corrosion_outside=0,  # mm (set to a small positive value to avoid zero thickness)
 )
 rhs_profile.plot(show=False)
 

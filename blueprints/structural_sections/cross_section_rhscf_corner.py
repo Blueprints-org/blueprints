@@ -102,6 +102,10 @@ class RHSCFCornerCrossSection(CrossSection):
         ][::-1]
 
         points = [lr, *outer_arc, ul, *inner_arc]
+        # Remove consecutive duplicate points
+        points = [pt for i, pt in enumerate(points) if i == 0 or pt != points[i - 1]]
+        if len(points) > 1 and points[0] == points[-1]:
+            points.pop()
 
         if self.mirrored_horizontally:
             points = [(2 * self.x - x, y) for x, y in points]
@@ -135,33 +139,4 @@ class RHSCFCornerCrossSection(CrossSection):
         geom = Geometry(geom=self.polygon)
         geom.create_mesh(mesh_sizes=mesh_size)
         return geom
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
-    # Example parameters
-    thickness_vertical = 10
-    thickness_horizontal = 10
-    inner_radius = 10
-    outer_radius = 10
-    x = 0
-    y = 0
-
-    section = RHSCFCornerCrossSection(
-        thickness_vertical=thickness_vertical,
-        thickness_horizontal=thickness_horizontal,
-        inner_radius=inner_radius,
-        outer_radius=outer_radius,
-        x=x,
-        y=y,
-    )
-
-    poly = section.polygon
-
-    fig, ax = plt.subplots()
-    x, y = poly.exterior.xy
-    ax.plot(x, y, label="RHSCF Corner")
-    ax.set_aspect("equal")
-    ax.set_title("RHSCF Corner Cross-Section Example")
-    ax.legend()
-    plt.show()
+    
