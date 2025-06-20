@@ -13,7 +13,7 @@ Follow the steps below to explore the usage of different steel profile shapes (o
 Start by defining the steel material to be used for the profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:15:16"
+--8<-- "examples/_code/steel_profile_shapes.py:20:21"
 ```
 
 ## Circular Hollow Section (CHS) Profiles
@@ -23,7 +23,7 @@ Start by defining the steel material to be used for the profiles:
 Structual parameters are automatically calculated and can be obtained with:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:18:31"
+--8<-- "examples/_code/steel_profile_shapes.py:23:36"
 ```
 
 ### Custom CHS Profile
@@ -31,7 +31,7 @@ Structual parameters are automatically calculated and can be obtained with:
 Alternatively, define a custom CHS profile by specifying its dimensions:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:33:39"
+--8<-- "examples/_code/steel_profile_shapes.py:38:44"
 ```
 
 ## Strip Profiles
@@ -41,7 +41,7 @@ Alternatively, define a custom CHS profile by specifying its dimensions:
 Predefined strip profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:41:47"
+--8<-- "examples/_code/steel_profile_shapes.py:46:52"
 ```
 
 ### Custom Strip Profile
@@ -49,7 +49,7 @@ Predefined strip profiles are also available:
 Define a custom strip profile by specifying its width and height:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:49:55"
+--8<-- "examples/_code/steel_profile_shapes.py:54:60"
 ```
 
 ## Strip Profiles
@@ -59,15 +59,31 @@ Define a custom strip profile by specifying its width and height:
 Predefined I profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:57:63"
+--8<-- "examples/_code/steel_profile_shapes.py:62:68"
 ```
 
-### Custom Strip Profile
+### Custom I Profile
 
-Define a custom strip profile by specifying its width and height:
+Define a custom I profile by specifying its width, height, thickness and radii:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:65:77"
+--8<-- "examples/_code/steel_profile_shapes.py:70:82"
+```
+
+### Standard RHS/SHS/RHSCF/SHSCF Profile
+
+Predefined RHS/SHS/RHSCF/SHSCF profiles are also available:
+
+```python
+--8<-- "examples/_code/steel_profile_shapes.py:84:91"
+```
+
+### Custom RHS/SHS/RHSCF/SHSCF Profile
+
+Define a custom RHS/SHS/RHSCF/SHSCF profile by specifying its width, height, thickness and radii:
+
+```python
+--8<-- "examples/_code/steel_profile_shapes.py:93:111"
 ```
 
 ## Visualizing Profiles
