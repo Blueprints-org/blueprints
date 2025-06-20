@@ -98,14 +98,14 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             name="Top Wall",
             width=self.top_wall_width,
             height=self.top_wall_thickness,
-            x=0,
+            x=(self.left_wall_thickness - self.right_wall_thickness + self.top_left_inner_radius - self.top_right_inner_radius) / 2,
             y=(self.total_height - self.top_wall_thickness) / 2,
         )
         self.bottom_wall = RectangularCrossSection(
             name="Bottom Wall",
             width=self.bottom_wall_width,
             height=self.bottom_wall_thickness,
-            x=0,
+            x=(self.left_wall_thickness - self.right_wall_thickness + self.bottom_left_inner_radius - self.bottom_right_inner_radius) / 2,
             y=-(self.total_height - self.bottom_wall_thickness) / 2,
         )
         self.left_wall = RectangularCrossSection(
@@ -113,14 +113,14 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             width=self.left_wall_thickness,
             height=self.left_wall_height,
             x=-(self.total_width - self.left_wall_thickness) / 2,
-            y=0,
+            y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_left_inner_radius - self.bottom_left_inner_radius) / 2,
         )
         self.right_wall = RectangularCrossSection(
             name="Right Wall",
             width=self.right_wall_thickness,
             height=self.right_wall_height,
             x=(self.total_width - self.right_wall_thickness) / 2,
-            y=0,
+            y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_right_inner_radius - self.bottom_right_inner_radius) / 2,
         )
 
         # Create the corner sections
@@ -139,6 +139,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             outer_radius=self.top_left_outer_radius,
             x=-self.total_width / 2 + self.left_wall_thickness + self.top_left_inner_radius,
             y=self.total_height / 2 - self.top_wall_thickness - self.top_left_inner_radius,
+            mirrored_horizontally=True,
         )
         self.bottom_right_corner = RHSCFCornerCrossSection(
             thickness_vertical=self.bottom_wall_thickness,
@@ -147,6 +148,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             outer_radius=self.bottom_right_outer_radius,
             x=self.total_width / 2 - self.right_wall_thickness - self.bottom_right_inner_radius,
             y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_right_inner_radius,
+            mirrored_vertically=True,
         )
         self.bottom_left_corner = RHSCFCornerCrossSection(
             thickness_vertical=self.bottom_wall_thickness,
@@ -155,6 +157,8 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             outer_radius=self.bottom_left_outer_radius,
             x=-self.total_width / 2 + self.left_wall_thickness + self.bottom_left_inner_radius,
             y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_left_inner_radius,
+            mirrored_horizontally=True,
+            mirrored_vertically=True,
         )
 
         # Create the steel elements
@@ -225,8 +229,8 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             Corrosion thickness to be added to the inner diameter [mm] (default: 0).
         """
 
-        total_width = profile.total_width - corrosion_outside - corrosion_inside
-        total_height = profile.total_height - corrosion_outside - corrosion_inside
+        total_width = profile.total_width - 2 * corrosion_outside
+        total_height = profile.total_height - 2 * corrosion_outside
 
         top_wall_thickness = profile.thickness - corrosion_outside - corrosion_inside
         bottom_wall_thickness = profile.thickness - corrosion_outside - corrosion_inside
