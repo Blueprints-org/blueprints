@@ -26,9 +26,13 @@ class RHSCFCornerCrossSection(CrossSection):
     outer_radius : MM
         Outer radius of the corner
     x : MM
-        x-coordinate of the lower-left corner (default 0)
+        x-coordinate of the center of the inner_radius (default 0)
     y : MM
-        y-coordinate of the lower-left corner (default 0)
+        y-coordinate of the center of the inner_radius (default 0)
+    mirrored_horizontally : bool
+        Whether the shape is mirrored horizontally (default False, meaning right corner)
+    mirrored_vertically : bool
+        Whether the shape is mirrored vertically (default False, meaning top corner)
     name : str
         Name of the cross-section (default "RHSCF Corner")
     """
@@ -39,6 +43,8 @@ class RHSCFCornerCrossSection(CrossSection):
     outer_radius: MM
     x: MM = 0
     y: MM = 0
+    mirrored_horizontally: bool = False
+    mirrored_vertically: bool = False
     name: str = "RHSCF Corner"
 
     def __post_init__(self) -> None:
@@ -51,16 +57,20 @@ class RHSCFCornerCrossSection(CrossSection):
             raise ValueError(f"Inner radius must be positive, got {self.inner_radius}")
         if self.outer_radius <= 0:
             raise ValueError(f"Outer radius must be positive, got {self.outer_radius}")
+        if self.outer_radius > self.inner_radius + min(self.thickness_vertical, self.thickness_horizontal):
+            raise ValueError(
+                f"Outer radius {self.outer_radius} must be smaller than or equal to inner radius {self.inner_radius} plus the thickness {min(self.thickness_vertical, self.thickness_horizontal)}"
+            )
 
     @property
     def width_rectangle(self) -> MM:
         """Width of the rectangle part of the RHSCF corner cross-section [mm]."""
-        return self.thickness_vertical + self.inner_radius
+        return self.thickness_horizontal + self.inner_radius
 
     @property
     def height_rectangle(self) -> MM:
         """Height of the rectangle part of the RHSCF corner cross-section [mm]."""
-        return self.thickness_horizontal + self.inner_radius
+        return self.thickness_vertical + self.inner_radius
 
     @property
     def polygon(self) -> Polygon:
@@ -68,12 +78,10 @@ class RHSCFCornerCrossSection(CrossSection):
         Shapely Polygon representing the RHSCF corner cross-section.
         """
 
-        ll = (self.x + self.inner_radius, self.y)
         lr = (self.x + self.width_rectangle, self.y)
-        ur = (self.x + self.width_rectangle, self.y + self.height_rectangle - self.outer_radius)
         ul = (self.x, self.y + self.height_rectangle)
 
-        n = 32
+        n = 16
 
         # Outer arc (from vertical to horizontal)
         outer_arc = [
@@ -94,6 +102,12 @@ class RHSCFCornerCrossSection(CrossSection):
         ][::-1]
 
         points = [lr, *outer_arc, ul, *inner_arc]
+
+        if self.mirrored_horizontally:
+            points = [(2 * self.x - x, y) for x, y in points]
+        if self.mirrored_vertically:
+            points = [(x, 2 * self.y - y) for x, y in points]
+
         return Polygon(points)
 
     @property
