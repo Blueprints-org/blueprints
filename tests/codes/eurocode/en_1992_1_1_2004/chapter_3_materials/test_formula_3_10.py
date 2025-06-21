@@ -67,9 +67,9 @@ class TestForm3Dot10CoefficientAgeConcreteDryingShrinkage:
             (
                 "complete",
                 r"\beta_{ds}(t,t_s) = \frac{(t - t_s)}{(t - t_s) + 0.04 \sqrt{h_0^3}} = "
-                r"\frac{(10.00 - 2.00)}{(10.00 - 2.00) + 0.04 \sqrt{200.00^3}} = 0.066",
+                r"\frac{(10.00 - 2.00)}{(10.00 - 2.00) + 0.04 \sqrt{200.00^3}} = 0.07",
             ),
-            ("short", r"\beta_{ds}(t,t_s) = 0.066"),
+            ("short", r"\beta_{ds}(t,t_s) = 0.07"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

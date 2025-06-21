@@ -51,21 +51,21 @@ class Form6Dot18DesignPlasticShearResistance(Formula):
 
         return (a_v * (f_y / np.sqrt(3))) / gamma_m0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18."""
         _equation: str = r"\frac{A_v \cdot (f_y / \sqrt{3})}{\gamma_{M0}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_v": f"{self.a_v:.3f}",
-                r"f_y": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
+                r"A_v": f"{self.a_v:.{n}f}",
+                r"f_y": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"V_{pl,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

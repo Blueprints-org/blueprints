@@ -51,21 +51,21 @@ class Form6Dot63ConcentratedResistanceForce(Formula):
 
         return min(a_c0 * f_cd * np.sqrt(a_c1 / a_c0), 3 * f_cd * a_c0)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.63."""
         _equation: str = r"\min \left( A_{c0} \cdot f_{cd} \cdot \sqrt{\frac{A_{c1}}{A_{c0}}}, 3 \cdot f_{cd} \cdot A_{c0} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_{c0}": f"{self.a_c0:.3f}",
-                r"A_{c1}": f"{self.a_c1:.3f}",
-                r"f_{cd}": f"{self.f_cd:.3f}",
+                r"A_{c0}": f"{self.a_c0:.{n}f}",
+                r"A_{c1}": f"{self.a_c1:.{n}f}",
+                r"f_{cd}": f"{self.f_cd:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"F_{Rdu}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

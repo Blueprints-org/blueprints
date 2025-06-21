@@ -57,15 +57,15 @@ class Form3Dot30RatioLossOfPreStressClass3(Formula):
             raise ValueError(f"Invalid t: {t}. t cannot be negative")
         return 1.98 * rho_1000 * np.exp(8 * mu) * (t / 1000) ** (0.75 * (1 - mu)) * 10**-5
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.30."""
         return LatexFormula(
             return_symbol=r"\frac{\Delta \sigma_{pr}}{\sigma_{pl}}",
             result=f"{self:.6f}",
             equation=r"1.98 \cdot \rho_{1000} \cdot e^{8 \cdot \mu} \left( \frac{t}{1000} \right)^{0.75 \cdot (1 - \mu)} \cdot 10^{-5}",
             numeric_equation=(
-                rf"1.98 \cdot {self.rho_1000:.3f} \cdot e^{{8 \cdot {self.mu:.3f}}} \left( \frac{{{self.t:.3f}}}{{1000}} \right)"
-                rf"^{{0.75 \cdot (1 - {self.mu:.3f})}} \cdot 10^{{-5}}"
+                rf"1.98 \cdot {self.rho_1000:.{n}f} \cdot e^{{8 \cdot {self.mu:.{n}f}}} \left( \frac{{{self.t:.{n}f}}}{{1000}} \right)"
+                rf"^{{0.75 \cdot (1 - {self.mu:.{n}f})}} \cdot 10^{{-5}}"
             ),
             comparison_operator_label="=",
         )

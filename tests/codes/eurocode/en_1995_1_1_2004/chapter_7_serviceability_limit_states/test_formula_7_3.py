@@ -53,15 +53,15 @@ class TestForm7Dot3RatioDeflectionPointLoadUCt:
                 0.0020,  # DIMENSIONLESS
                 1,  # HZ
                 0.0200,  # DIMENSIONLESS
-                r"UC = 0.10",
-                r"UC = \frac{w/F}{\alpha} = \frac{0.002/1.00}{0.02} = 0.10",
+                r"UC = 0.100",
+                r"UC = \frac{w/F}{\alpha} = \frac{0.002/1.000}{0.020} = 0.100",
             ),
             (
                 1,  # DIMENSIONLESS
                 1,  # HZ
                 1,  # DIMENSIONLESS
-                r"UC = 1.00",
-                r"UC = \frac{w/F}{\alpha} = \frac{1.000/1.00}{1.00} = 1.00",
+                r"UC = 1.000",
+                r"UC = \frac{w/F}{\alpha} = \frac{1.000/1.000}{1.000} = 1.000",
             ),
         ],
         ids=["decimal result", "integer result"],

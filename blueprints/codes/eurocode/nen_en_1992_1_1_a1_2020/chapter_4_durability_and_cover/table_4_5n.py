@@ -64,11 +64,11 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
         return calculated_cover
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 0) -> LatexFormula:
         """Returns LatexFormula object for table 4.5N."""
         return LatexFormula(
             return_symbol=r"c_{min,dur}",
-            result=f"{self:.0f}",
+            result=f"{self:.{n}f}",
             equation=rf"structural class {self.structural_class} & exposure classes ({self.exposure_classes})",
             comparison_operator_label="=",
         )

@@ -49,15 +49,15 @@ class Form5Dot40aCheckLateralInstability(Formula):
 
         return (l_0t / b <= 50 / (h / b) ** (1 / 3)) and (h / b <= 2.5)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.40a."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\left( \frac{l_{0t}}{b} \leq \frac{50}{\left( h/b \right)^{1/3}} \text{ and } \frac{h}{b} \leq 2.5 \right)",
-            numeric_equation=rf"\left( \frac{{{self.l_0t:.3f}}}{{{self.b:.3f}}} \leq \frac{{50}}{{\left("
-            rf" {self.h:.3f}/{self.b:.3f} \right)^{{1/3}}}} \text{{ and }} "
-            rf"\frac{{{self.h:.3f}}}{{{self.b:.3f}}} \leq 2.5 \right)",
+            numeric_equation=rf"\left( \frac{{{self.l_0t:.{n}f}}}{{{self.b:.{n}f}}} \leq \frac{{50}}{{\left("
+            rf" {self.h:.{n}f}/{self.b:.{n}f} \right)^{{1/3}}}} \text{{ and }} "
+            rf"\frac{{{self.h:.{n}f}}}{{{self.b:.{n}f}}} \leq 2.5 \right)",
             comparison_operator_label="\\to",
             unit="",
         )

@@ -55,7 +55,7 @@ class Form7Dot2StressDistributionCoefficient(Formula):
         h_star = h if h < 1000 else 1000
         return min(0.4 * (1 - (sigma_c / (k_1 * (h / h_star) * f_ct_eff))), 1)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.2."""
         _equation: str = (
             r"min\left(0.4 \cdot \left(1 - \frac{\sigma_c}{k_1 \cdot \left(\frac{ h}{min( h, 1000)}\right) \cdot f_{ct,eff}}\right), 1\right)"
@@ -63,16 +63,16 @@ class Form7Dot2StressDistributionCoefficient(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\sigma_c": f"{self.sigma_c:.3f}",
-                r"k_1": f"{self.k_1:.3f}",
-                r" h": f" {self.h:.3f}",
-                r"f_{ct,eff}": f"{self.f_ct_eff:.3f}",
+                r"\sigma_c": f"{self.sigma_c:.{n}f}",
+                r"k_1": f"{self.k_1:.{n}f}",
+                r" h": f" {self.h:.{n}f}",
+                r"f_{ct,eff}": f"{self.f_ct_eff:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"k_c",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -119,20 +119,20 @@ class Form7Dot2Sub1AxialForceCoefficient(Formula):
         h_star = h if h < 1000 else 1000
         return 1.5 if n_ed > 0 else 2 * h_star / (3 * h)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.2sub1."""
         _equation: str = r"\begin{cases} 1.5 & \text{if } N_{Ed} > 0 \\ \frac{2 \cdot min(h, 1000)}{3 \cdot h} & \text{if } N_{Ed} \le 0 \end{cases}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "N_{Ed}": f"{self.n_ed:.3f}",
-                "h": f"{self.h:.3f}",
+                "N_{Ed}": f"{self.n_ed:.{n}f}",
+                "h": f"{self.h:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"k_1",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

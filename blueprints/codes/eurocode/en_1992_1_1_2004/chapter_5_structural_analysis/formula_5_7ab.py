@@ -51,11 +51,11 @@ class Form5Dot7abFlangeEffectiveFlangeWidth(Formula):
         )
         return min(0.2 * b_i + 0.1 * l_0, 0.2 * l_0, b_i)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.7ab."""
         return LatexFormula(
             return_symbol=r"b_{eff,i}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"0.2b_{i}+0.1l_{0} \le 0.2l_{0}\text{ and }b_{eff,i}\le b_{i}",
             numeric_equation=rf"0.2\cdot{self.b_i}+0.1\cdot{self.l_0} \le 0.2\cdot{self.l_0}\text{{ and }}b_{{eff,i}}\le {self.b_i}",
             comparison_operator_label="=",

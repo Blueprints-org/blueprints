@@ -73,25 +73,25 @@ class Form6Dot18SubARolledIandHSection(Formula):
 
         return max(0, av, av_min)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18suba."""
         _equation: str = r"max(A - 2 \cdot b \cdot t_f + (t_w + 2 \cdot r) \cdot t_f; \eta \cdot h_w \cdot t_w)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"h_w": f"{self.hw:.3f}",
-                r"r": f"{self.r:.3f}",
-                r"t_f": f"{self.tf:.3f}",
-                r"t_w": f"{self.tw:.3f}",
-                r"\eta": f"{self.eta:.3f}",
+                r"A": f"{self.a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"h_w": f"{self.hw:.{n}f}",
+                r"r": f"{self.r:.{n}f}",
+                r"t_f": f"{self.tf:.{n}f}",
+                r"t_w": f"{self.tw:.{n}f}",
+                r"\eta": f"{self.eta:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -150,23 +150,23 @@ class Form6Dot18SubBRolledChannelSection(Formula):
 
         return max(0, a - 2 * b * tf + (tw + r) * tf)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subb."""
         _equation: str = r"A - 2 \cdot b \cdot t_f + (t_w + r) \cdot t_f"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"t_f": f"{self.tf:.3f}",
-                r"t_w": f"{self.tw:.3f}",
-                r"r": f"{self.r:.3f}",
+                r"A": f"{self.a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"t_f": f"{self.tf:.{n}f}",
+                r"t_w": f"{self.tw:.{n}f}",
+                r"r": f"{self.r:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -225,23 +225,23 @@ class Form6Dot18SubCTSectionRolled(Formula):
 
         return max(0, a - b * tf + (tw + 2 * r) * tf / 2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subc."""
         _equation: str = r"A - b \cdot t_f + (t_w + 2 \cdot r) \cdot \frac{t_f}{2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"t_f": f"{self.tf:.3f}",
-                r"t_w": f"{self.tw:.3f}",
-                r" r": f" {self.r:.3f}",
+                r"A": f"{self.a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"t_f": f"{self.tf:.{n}f}",
+                r"t_w": f"{self.tw:.{n}f}",
+                r" r": f" {self.r:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -290,21 +290,21 @@ class Form6Dot18SubCTSectionWelded(Formula):
 
         return max(0, tw * (h * tf / 2))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subc."""
         _equation: str = r"t_w \cdot (h \cdot t_f / 2)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"t_f": f"{self.tf:.3f}",
-                r"t_w": f"{self.tw:.3f}",
-                r"h": f"{self.h:.3f}",
+                r"t_f": f"{self.tf:.{n}f}",
+                r"t_w": f"{self.tw:.{n}f}",
+                r"h": f"{self.h:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -356,16 +356,16 @@ class Form6Dot18SubDWeldedIHandBoxSection(Formula):
 
         return max(0, eta * sum(h * t for h, t in zip(hw_list, tw_list)))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subd."""
         _equation: str = r"\eta \cdot \sum (h_{w} \cdot t_{w})"
-        _numeric_equation: str = rf"{self.eta:.3f} \cdot (" + rf"{self.hw_list[0]:.3f} \cdot {self.tw_list[0]:.3f}"
+        _numeric_equation: str = rf"{self.eta:.{n}f} \cdot (" + rf"{self.hw_list[0]:.{n}f} \cdot {self.tw_list[0]:.{n}f}"
         for i in range(1, len(self.hw_list)):
-            _numeric_equation += rf" + {self.hw_list[i]:.3f} \cdot {self.tw_list[i]:.3f}"
+            _numeric_equation += rf" + {self.hw_list[i]:.{n}f} \cdot {self.tw_list[i]:.{n}f}"
         _numeric_equation += ")"
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -419,16 +419,16 @@ class Form6Dot18SubEWeldedIHandBoxSection(Formula):
 
         return max(0, a - sum(h * t for h, t in zip(hw_list, tw_list)))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18sube."""
         _equation: str = r"A - \sum (h_{w} \cdot t_{w})"
-        _numeric_equation: str = rf"{self.a:.3f} - (" + rf"{self.hw_list[0]:.3f} \cdot {self.tw_list[0]:.3f}"
+        _numeric_equation: str = rf"{self.a:.{n}f} - (" + rf"{self.hw_list[0]:.{n}f} \cdot {self.tw_list[0]:.{n}f}"
         for i in range(1, len(self.hw_list)):
-            _numeric_equation += rf" + {self.hw_list[i]:.3f} \cdot {self.tw_list[i]:.3f}"
+            _numeric_equation += rf" + {self.hw_list[i]:.{n}f} \cdot {self.tw_list[i]:.{n}f}"
         _numeric_equation += ")"
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -480,21 +480,21 @@ class Form6Dot18SubF1RolledRectangularHollowSectionDepth(Formula):
         raise_if_less_or_equal_to_zero(denominator=denominator)
         return max(0, a * h / (b + h))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subf1."""
         _equation: str = r"\frac{A \cdot h}{b + h}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"h": f"{self.h:.3f}",
+                r"A": f"{self.a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"h": f"{self.h:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -546,21 +546,21 @@ class Form6Dot18SubF2RolledRectangularHollowSectionWidth(Formula):
         raise_if_less_or_equal_to_zero(denominator=denominator)
         return max(0, a * b / (b + h))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subf2."""
         _equation: str = r"\frac{A \cdot b}{b + h}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
-                r"b": f"{self.b:.3f}",
-                r"h": f"{self.h:.3f}",
+                r"A": f"{self.a:.{n}f}",
+                r"b": f"{self.b:.{n}f}",
+                r"h": f"{self.h:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",
@@ -599,19 +599,19 @@ class Form6Dot18SubGCircularHollowSection(Formula):
 
         return max(0, 2 * a / np.pi)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subg."""
         _equation: str = r"\frac{2 \cdot A}{\pi}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A": f"{self.a:.3f}",
+                r"A": f"{self.a:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"A_v",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

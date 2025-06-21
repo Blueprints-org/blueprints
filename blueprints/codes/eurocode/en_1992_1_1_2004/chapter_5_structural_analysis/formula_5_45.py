@@ -66,14 +66,14 @@ class Form5Dot45LossesDueToFriction(Formula):
 
         return p_max * (1 - (np.e ** (-mu * (theta + k * x))))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.45."""
         return LatexFormula(
             return_symbol=r"\Delta P_{\mu}(x)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"P_{max} \cdot \left( 1 - e^{-\mu \cdot (\theta + k \cdot x)} \right)",
-            numeric_equation=rf"{self.p_max:.3f} \cdot \left( 1 - e^{{-{self.mu:.3f} \cdot ({self.theta:.3f} + "
-            rf"{self.k:.3f} \cdot {self.x:.3f})}} \right)",
+            numeric_equation=rf"{self.p_max:.{n}f} \cdot \left( 1 - e^{{-{self.mu:.{n}f} \cdot ({self.theta:.{n}f} + "
+            rf"{self.k:.{n}f} \cdot {self.x:.{n}f})}} \right)",
             comparison_operator_label="=",
             unit="kN",
         )

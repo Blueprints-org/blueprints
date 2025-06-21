@@ -38,13 +38,13 @@ class Form2Dot2DesignValueGeotechnicalParameter(Formula):
         raise_if_less_or_equal_to_zero(gamma_m=gamma_m)
         return x_k / gamma_m
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 2.2."""
-        numerator = f"{self.x_k:.3f}"
-        denominator = f"{self.gamma_m:.3f}"
+        numerator = f"{self.x_k:.{n}f}"
+        denominator = f"{self.gamma_m:.{n}f}"
         return LatexFormula(
             return_symbol="X_d",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{X_{k}}{\gamma_M}",
             numeric_equation=f"{latex_fraction(numerator=numerator, denominator=denominator)}",
             comparison_operator_label="=",

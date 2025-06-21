@@ -75,25 +75,25 @@ class Form7Dot11MaximumCrackSpacing(Formula):
 
         return k_3 * c + k_1 * k_2 * k_4 * diam / rho_p_eff
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 7.11."""
         _equation: str = r"k_3 \cdot c + k_1 \cdot k_2 \cdot k_4 \cdot \frac{⌀}{\rho_{p,eff}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"k_3": f"{self.k_3:.3f}",
-                r"c ": f"{self.c:.3f} ",
-                r"k_1": f"{self.k_1:.3f}",
-                r"k_2": f"{self.k_2:.3f}",
-                r"k_4": f"{self.k_4:.3f}",
-                r"⌀": f"{self.diam:.3f}",
-                r"\rho_{p,eff}": f"{self.rho_p_eff:.3f}",
+                r"k_3": f"{self.k_3:.{n}f}",
+                r"c ": f"{self.c:.{n}f} ",
+                r"k_1": f"{self.k_1:.{n}f}",
+                r"k_2": f"{self.k_2:.{n}f}",
+                r"k_4": f"{self.k_4:.{n}f}",
+                r"⌀": f"{self.diam:.{n}f}",
+                r"\rho_{p,eff}": f"{self.rho_p_eff:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"s_{r,max}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

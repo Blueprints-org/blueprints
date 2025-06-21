@@ -43,13 +43,13 @@ class Form6Dot3NShearCapacityWithoutRebar(Formula):
 
         return 0.035 * k**1.5 * f_ck**0.5
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.3N."""
         return LatexFormula(
             return_symbol=r"v_{min}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"0.035 \cdot k^{3/2} \cdot f_{ck}^{1/2}",
-            numeric_equation=rf"0.035 \cdot {self.k:.3f}^{{3/2}} \cdot {self.f_ck:.3f}^{{1/2}}",
+            numeric_equation=rf"0.035 \cdot {self.k:.{n}f}^{{3/2}} \cdot {self.f_ck:.{n}f}^{{1/2}}",
             comparison_operator_label="=",
             unit="MPa",
         )

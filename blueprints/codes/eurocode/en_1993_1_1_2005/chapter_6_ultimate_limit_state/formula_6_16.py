@@ -64,18 +64,18 @@ class Form6Dot16CheckFlangeWithFastenerHoles(Formula):
 
         return (a_f_net * 0.9 * f_u / gamma_m2) >= (a_f * f_y / gamma_m0)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.16."""
         _equation: str = r"\left( \frac{A_{f,net} \cdot 0.9 \cdot f_{u}}{\gamma_{M2}} \geq \frac{A_{f} \cdot f_{y}}{\gamma_{M0}} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"A_{f,net}": f"{self.a_f_net:.3f}",
-                r"f_{u}": f"{self.f_u:.3f}",
-                r"\gamma_{M2}": f"{self.gamma_m2:.3f}",
-                r"A_{f}": f"{self.a_f:.3f}",
-                r"f_{y}": f"{self.f_y:.3f}",
-                r"\gamma_{M0}": f"{self.gamma_m0:.3f}",
+                r"A_{f,net}": f"{self.a_f_net:.{n}f}",
+                r"f_{u}": f"{self.f_u:.{n}f}",
+                r"\gamma_{M2}": f"{self.gamma_m2:.{n}f}",
+                r"A_{f}": f"{self.a_f:.{n}f}",
+                r"f_{y}": f"{self.f_y:.{n}f}",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
             False,
         )

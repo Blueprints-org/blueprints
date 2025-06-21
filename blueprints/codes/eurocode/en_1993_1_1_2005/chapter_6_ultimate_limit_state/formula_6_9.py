@@ -44,14 +44,14 @@ class Form6Dot9CheckCompressionForce(Formula):
 
         return n_ed / n_c_rd <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.9."""
         _equation: str = r"\left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "N_{Ed}": f"{self.n_ed:.3f}",
-                "N_{c,Rd}": f"{self.n_c_rd:.3f}",
+                "N_{Ed}": f"{self.n_ed:.{n}f}",
+                "N_{c,Rd}": f"{self.n_c_rd:.{n}f}",
             },
             False,
         )

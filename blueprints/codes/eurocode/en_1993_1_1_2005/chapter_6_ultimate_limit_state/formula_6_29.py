@@ -44,28 +44,28 @@ class Form6Dot29ReducedYieldStrength(Formula):
 
         return (1 - rho) * f_y
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.29."""
         _equation: str = r"(1 - \rho) \cdot f_y"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\rho": f"{self.rho:.3f}",
-                r"f_y": f"{self.f_y:.3f}",
+                r"\rho": f"{self.rho:.{n}f}",
+                r"f_y": f"{self.f_y:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"\rho": rf"{self.rho:.3f}",
-                r"f_y": rf"{self.f_y:.3f} \ MPa",
+                r"\rho": rf"{self.rho:.{n}f}",
+                r"f_y": rf"{self.f_y:.{n}f} \ MPa",
             },
             True,
         )
         return LatexFormula(
             return_symbol=r"f_{y,red}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

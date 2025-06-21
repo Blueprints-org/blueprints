@@ -54,7 +54,7 @@ class Form6Dot77FatigueVerification(Formula):
 
         return sigma_c_max / f_cd_fat <= min(0.5 + 0.45 * sigma_c_min / f_cd_fat, 0.9 if f_ck <= 50 else 0.8)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.77."""
         _equation: str = (
             r"\frac{\sigma_{c,max}}{f_{cd,fat}} \leq \min\left(0.5 + 0.45 \cdot \frac{\sigma_{c,min}}{f_{cd,fat}}, \begin{cases} 0.9 & "
@@ -63,10 +63,10 @@ class Form6Dot77FatigueVerification(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\sigma_{c,max}": f"{self.sigma_c_max:.3f}",
-                r"\sigma_{c,min}": f"{self.sigma_c_min:.3f}",
-                "f_{cd,fat}": f"{self.f_cd_fat:.3f}",
-                "f_{ck}": f"{self.f_ck:.3f}",
+                r"\sigma_{c,max}": f"{self.sigma_c_max:.{n}f}",
+                r"\sigma_{c,min}": f"{self.sigma_c_min:.{n}f}",
+                "f_{cd,fat}": f"{self.f_cd_fat:.{n}f}",
+                "f_{ck}": f"{self.f_ck:.{n}f}",
             },
             False,
         )

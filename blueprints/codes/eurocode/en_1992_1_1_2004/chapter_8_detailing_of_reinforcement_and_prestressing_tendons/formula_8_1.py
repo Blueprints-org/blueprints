@@ -63,15 +63,15 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         )
         return f_bt * KN_TO_N * ((1 / a_b) + 1 / (2 * diameter)) / f_cd
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.1."""
         return LatexFormula(
             return_symbol=r"Ø_{m,min}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}}",
             numeric_equation=(
-                rf"\frac{{{self.f_bt:.2f} \cdot 1000 \cdot \left( \frac{{1}}{{{self.a_b:.2f}}}"
-                rf" + \frac{{1}}{{2 \cdot {self.diameter:.2f}}} \right)}}{{{self.f_cd:.2f}}}"
+                rf"\frac{{{self.f_bt:.{n}f} \cdot 1000 \cdot \left( \frac{{1}}{{{self.a_b:.{n}f}}}"
+                rf" + \frac{{1}}{{2 \cdot {self.diameter:.{n}f}}} \right)}}{{{self.f_cd:.{n}f}}}"
             ),
             comparison_operator_label="=",
         )

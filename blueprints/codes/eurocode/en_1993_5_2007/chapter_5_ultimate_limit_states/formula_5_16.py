@@ -49,13 +49,13 @@ class Form5Dot16PlasticDesignResistance(Formula):
 
         return (a * f_y) / gamma_m0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.16."""
         return LatexFormula(
             return_symbol=r"N_{pl,Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{A \cdot f_y}{\gamma_{M0}}",
-            numeric_equation=rf"\frac{{{self.a:.3f} \cdot {self.f_y:.3f}}}{{{self.gamma_m0:.3f}}}",
+            numeric_equation=rf"\frac{{{self.a:.{n}f} \cdot {self.f_y:.{n}f}}}{{{self.gamma_m0:.{n}f}}}",
             comparison_operator_label="=",
             unit="N",
         )

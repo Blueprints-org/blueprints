@@ -44,12 +44,12 @@ class Form3Dot21And22EffectiveStrength(Formula):
             return 1.0 - (f_ck - 50) / 200
         raise ValueError(f"Invalid f_ck: {f_ck}. Maximum of f_ck is 90 MPa")
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         r"""Returns LatexFormula object for formula 3.21 and 3.22."""
         return LatexFormula(
             return_symbol=r"\eta",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"1.0" if self.f_ck <= 50 else r"1.0 - (f_{ck} - 50) / 200",
-            numeric_equation=r"1.0" if self.f_ck <= 50 else rf"1.0 - ({self.f_ck:.3f} - 50) / 200",
+            numeric_equation=r"1.0" if self.f_ck <= 50 else rf"1.0 - ({self.f_ck:.{n}f} - 50) / 200",
             comparison_operator_label="=",
         )

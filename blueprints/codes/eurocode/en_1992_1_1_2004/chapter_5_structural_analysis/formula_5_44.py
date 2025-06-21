@@ -64,18 +64,18 @@ class Form5Dot44PrestressLoss(Formula):
 
         return a_p * e_p * sum(x * (y / z) for x, y, z in zip(j, delta_sigma_c_t, e_cm_t))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.43."""
-        numeric_equation = rf"{self.a_p:.3f} \cdot {self.e_p:.3f} \cdot \left( "
+        numeric_equation = rf"{self.a_p:.{n}f} \cdot {self.e_p:.{n}f} \cdot \left( "
         for i in range(len(self.j)):
-            numeric_equation += rf"\frac{{{self.j[i]} \cdot {self.delta_sigma_c_t[i]:.3f}}}{{{self.e_cm_t[i]:.3f}}}"
+            numeric_equation += rf"\frac{{{self.j[i]} \cdot {self.delta_sigma_c_t[i]:.{n}f}}}{{{self.e_cm_t[i]:.{n}f}}}"
             if i < len(self.j) - 1:
                 numeric_equation += " + "
         numeric_equation += r" \right)"
 
         return LatexFormula(
             return_symbol=r"\Delta P_{el}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"A_{p} \cdot E_{p} \cdot \sum_{i=1}^{n} \frac{j_{i} \cdot \Delta \sigma_{c,i}(t)}{E_{cm,i}(t)}",
             numeric_equation=numeric_equation,
             comparison_operator_label="=",

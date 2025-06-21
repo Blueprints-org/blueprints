@@ -37,13 +37,13 @@ class Form4Dot3NCheckExecutionTolerances(Formula):
 
         return 5 <= delta_cdev <= 10
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 4.3N."""
         _equation: str = r"5 \leq \Delta c_{dev} \leq 10"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\Delta c_{dev}": f"{self.delta_cdev:.3f}",
+                r"\Delta c_{dev}": f"{self.delta_cdev:.{n}f}",
             },
             False,
         )

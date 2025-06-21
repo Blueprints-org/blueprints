@@ -57,13 +57,13 @@ class Form5Dot12nRatioDistancePointZeroAndMaxMoment(Formula):
         )
         return m_sd / (v_sd * d)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.12N."""
-        numerator = f"{self.m_sd:.3f}"
-        denominator = f"{self.v_sd:.3f} \\cdot {self.d:.3f}"
+        numerator = f"{self.m_sd:.{n}f}"
+        denominator = f"{self.v_sd:.{n}f} \\cdot {self.d:.{n}f}"
         return LatexFormula(
             return_symbol="λ",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{M_{sd}}{V_{sd} \cdot d}",
             numeric_equation=f"{latex_fraction(numerator=numerator, denominator=denominator)}",
             comparison_operator_label="=",

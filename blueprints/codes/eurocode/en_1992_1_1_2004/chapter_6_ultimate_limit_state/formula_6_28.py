@@ -67,14 +67,14 @@ class Form6Dot28RequiredCrossSectionalArea(Formula):
 
         return (u_k / f_yd) * (t_ed / (2 * a_k)) * cot(theta)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.28."""
         return LatexFormula(
             return_symbol=r"\Sigma A_{sl}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{u_k}{f_{yd}} \cdot \frac{T_{Ed}}{2 \cdot A_k} \cdot \cot(\theta)",
-            numeric_equation=rf"\frac{{{self.u_k:.3f}}}{{{self.f_yd:.3f}}} \cdot \frac{{{self.t_ed:.3f}}}"
-            rf"{{2 \cdot {self.a_k:.3f}}} \cdot \cot({self.theta:.3f})",
+            numeric_equation=rf"\frac{{{self.u_k:.{n}f}}}{{{self.f_yd:.{n}f}}} \cdot \frac{{{self.t_ed:.{n}f}}}"
+            rf"{{2 \cdot {self.a_k:.{n}f}}} \cdot \cot({self.theta:.{n}f})",
             comparison_operator_label="=",
             unit="mm^2",
         )

@@ -80,11 +80,11 @@ class Form8Dot5ProductAlphas235(Formula):
         # The product of alpha values 2, 3, 5 can't be smaller than 0.7
         return max(alpha_2 * alpha_3 * alpha_5, 0.7)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
         return LatexFormula(
             return_symbol="",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"\alpha_2 \cdot \alpha_3 \cdot \alpha_5 \ge 0.7",
             numeric_equation=rf"{self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_5} \ge 0.7",
             comparison_operator_label="\\to",

@@ -52,14 +52,14 @@ class Form5Dot37CreepFactor(Formula):
 
         return max(1 + (0.35 + f_ck / 200 - lambda_ / 150) * phi_ef, 1)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.37."""
         return LatexFormula(
             return_symbol=r"K_{\phi}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\max\left(1 + \left(0.35 + \frac{f_{ck}}{200} - \frac{\lambda}{150}\right) \cdot \phi_{ef}; 1\right)",
-            numeric_equation=rf"\max\left(1 + \left(0.35 + \frac{{{self.f_ck:.3f}}}{{200}} - \frac{{{self.lambda_:.3f}}}{{150}}\right) "
-            rf"\cdot {self.phi_ef:.3f}; 1\right)",
+            numeric_equation=rf"\max\left(1 + \left(0.35 + \frac{{{self.f_ck:.{n}f}}}{{200}} - \frac{{{self.lambda_:.{n}f}}}{{150}}\right) "
+            rf"\cdot {self.phi_ef:.{n}f}; 1\right)",
             comparison_operator_label="=",
             unit="-",
         )

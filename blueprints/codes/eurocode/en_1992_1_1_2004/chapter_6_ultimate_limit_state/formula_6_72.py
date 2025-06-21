@@ -47,14 +47,14 @@ class Form6Dot72FatigueResistanceConcreteCompression(Formula):
 
         return (e_cd_max_equ + 0.43 * np.sqrt(1 - r_equ)) <= 1
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.72."""
         _equation: str = r"E_{cd,max,equ} + 0.43 \cdot \sqrt{1 - R_{equ}} \leq 1"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "E_{cd,max,equ}": f"{self.e_cd_max_equ:.3f}",
-                "R_{equ}": f"{self.r_equ:.3f}",
+                "E_{cd,max,equ}": f"{self.e_cd_max_equ:.{n}f}",
+                "R_{equ}": f"{self.r_equ:.{n}f}",
             },
             False,
         )

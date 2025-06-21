@@ -100,10 +100,10 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
                 "complete",
                 (
                     r"Ø_{m,min} = \frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}} "
-                    r"= \frac{80.00 \cdot 1000 \cdot \left( \frac{1}{200.00} + \frac{1}{2 \cdot 16.00} \right)}{30.00} = 96.67"
+                    r"= \frac{80.000 \cdot 1000 \cdot \left( \frac{1}{200.000} + \frac{1}{2 \cdot 16.000} \right)}{30.000} = 96.667"
                 ),
             ),
-            ("short", r"Ø_{m,min} = 96.67"),
+            ("short", r"Ø_{m,min} = 96.667"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

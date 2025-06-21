@@ -54,12 +54,12 @@ class Form3Dot26IncreasedStrainAtMaxStrength(Formula):
             raise ValueError(f"Invalid f_ck_c: {f_ck_c}. f_ck_c cannot be negative")
         return epsilon_c2 * (f_ck_c / f_ck) ** 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.26."""
         return LatexFormula(
             return_symbol=r"\epsilon_{c2,c}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\epsilon_{c2} \cdot ( f_{ck,c} / f_{ck} )^2",
-            numeric_equation=rf"{self.epsilon_c2:.3f} \cdot ( {self.f_ck_c:.3f} / {self.f_ck:.3f} )^2",
+            numeric_equation=rf"{self.epsilon_c2:.{n}f} \cdot ( {self.f_ck_c:.{n}f} / {self.f_ck:.{n}f} )^2",
             comparison_operator_label="=",
         )

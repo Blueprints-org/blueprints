@@ -33,11 +33,11 @@ class Form5Dot26FactorKs(Formula):
             raise ValueError(f"Invalid rho: {rho}. rho cannot be less than 0.01")
         return 0.0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.26 K_s."""
         return LatexFormula(
             return_symbol=r"K_s",
-            result=f"{self._evaluate(self.rho):.3f}",
+            result=f"{self._evaluate(self.rho):.{n}f}",
             equation=r"0",
             numeric_equation="0",
             comparison_operator_label="=",
@@ -74,12 +74,12 @@ class Form5Dot26FactorKc(Formula):
         raise_if_less_or_equal_to_zero(phi_ef=phi_ef)
         return 0.3 / (1 + 0.5 * phi_ef)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.26 K_c."""
         return LatexFormula(
             return_symbol=r"K_c",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{0.3}{1 + 0.5 \cdot \phi_{ef}}",
-            numeric_equation=rf"\frac{{{0.3}}}{{1 + 0.5 \cdot {self.phi_ef:.3f}}}",
+            numeric_equation=rf"\frac{{{0.3}}}{{1 + 0.5 \cdot {self.phi_ef:.{n}f}}}",
             comparison_operator_label="=",
         )

@@ -58,11 +58,11 @@ class Form5Dot2DesignMomentResistanceClass1Or2(Formula):
         )
         return beta_b * (w_pl * MM3_TO_M3) * (f_y * MPA_TO_KPA) / gamma_m_0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.2."""
         return LatexFormula(
             return_symbol=r"M_{c,Rd}",
-            result=str(self),
+            result=f"{self:.{n}f}",
             equation=r"\beta_B W_{pl} f_y / \gamma_{M0}",
             numeric_equation=rf"{self.beta_b} \cdot {self.w_pl} \cdot {self.f_y} / {self.gamma_m_0} / 1000000",
             comparison_operator_label="=",

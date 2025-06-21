@@ -38,11 +38,11 @@ class Form5Dot19EffectiveCreepCoefficient(Formula):
         raise_if_less_or_equal_to_zero(m0_ed=m0_ed)
         return phi_inf_t0 * (m0_eqp / m0_ed)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.19."""
         return LatexFormula(
             return_symbol=r"\phi_{ef}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\phi (\infty,t_0) \cdot \frac{M_{0,Eqp}}{M_{0,Ed}}",
             numeric_equation=rf"{self.phi_inf_t0} \cdot \frac{{{self.m0_eqp}}}{{{self.m0_ed}}}",
             comparison_operator_label="=",

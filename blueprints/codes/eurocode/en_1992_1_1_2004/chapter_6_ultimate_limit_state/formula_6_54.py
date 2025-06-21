@@ -54,22 +54,22 @@ class Form6Dot54ControlPerimeter(Formula):
 
         return beta * v_ed / (v_rd_c * d)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.54."""
         _equation: str = r"\frac{\beta \cdot V_{Ed}}{v_{Rd,c} \cdot d}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\beta": f"{self.beta:.3f}",
-                r"V_{Ed}": f"{self.v_ed:.3f}",
-                r"v_{Rd,c}": f"{self.v_rd_c:.3f}",
-                r" d": f" {self.d:.3f}",
+                r"\beta": f"{self.beta:.{n}f}",
+                r"V_{Ed}": f"{self.v_ed:.{n}f}",
+                r"v_{Rd,c}": f"{self.v_rd_c:.{n}f}",
+                r" d": f" {self.d:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"u_{out,ef}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="=",

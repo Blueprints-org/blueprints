@@ -55,12 +55,12 @@ class Form5Dot3bTransverseForceBracedMembers(Formula):
         raise_if_negative(theta_i=theta_i, n_axial_force=n_axial_force)
         return 2 * theta_i * n_axial_force
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.3b."""
         return LatexFormula(
             return_symbol=r"H_{i}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"2\theta_{i}N",
-            numeric_equation=rf"2\cdot{self.theta_i:.3f}\cdot{self.n_axial_force:.2f}",
+            numeric_equation=rf"2\cdot{self.theta_i:.{n}f}\cdot{self.n_axial_force:.{n}f}",
             comparison_operator_label="=",
         )

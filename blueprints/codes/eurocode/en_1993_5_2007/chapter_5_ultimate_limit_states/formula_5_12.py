@@ -61,13 +61,13 @@ class Form5Dot12ElasticCriticalLoad(Formula):
 
         return (e * i * beta_d * (np.pi**2)) / (l**2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.12."""
         return LatexFormula(
             return_symbol=r"N_{cr}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{E \cdot I \cdot \beta_D \cdot \pi^2}{l^2}",
-            numeric_equation=rf"\frac{{{self.e:.3f} \cdot {self.i:.3f} \cdot {self.beta_d:.3f} \cdot \pi^2}}{{{self.l:.3f}^2}}",
+            numeric_equation=rf"\frac{{{self.e:.{n}f} \cdot {self.i:.{n}f} \cdot {self.beta_d:.{n}f} \cdot \pi^2}}{{{self.l:.{n}f}^2}}",
             comparison_operator_label="=",
             unit="N",
         )

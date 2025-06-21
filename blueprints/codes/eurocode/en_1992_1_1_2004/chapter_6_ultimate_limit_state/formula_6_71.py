@@ -46,13 +46,13 @@ class Form6Dot71CriteriaBasedOnStressRangeLHS(Formula):
         raise_if_negative(gamma_f_fat=gamma_f_fat, delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star)
         return gamma_f_fat * delta_sigma_s_equ_n_star
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for left hand side formula 6.71."""
         return LatexFormula(
             return_symbol=r"\Delta \sigma_{Ed}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*)",
-            numeric_equation=rf"{self.gamma_f_fat:.3f} \cdot {self.delta_sigma_s_equ_n_star:.3f}",
+            numeric_equation=rf"{self.gamma_f_fat:.{n}f} \cdot {self.delta_sigma_s_equ_n_star:.{n}f}",
             comparison_operator_label=r"=",
         )
 
@@ -94,13 +94,13 @@ class Form6Dot71CriteriaBasedOnStressRangeRHS(Formula):
         raise_if_less_or_equal_to_zero(gamma_s_fat=gamma_s_fat)
         return delta_sigma_rsk_n_star / gamma_s_fat
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for right hand side formula 6.71."""
         return LatexFormula(
             return_symbol=r"\Delta \sigma_{Rd}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
-            numeric_equation=rf"\frac{{{self.delta_sigma_rsk_n_star:.3f}}}{{{self.gamma_s_fat:.3f}}}",
+            numeric_equation=rf"\frac{{{self.delta_sigma_rsk_n_star:.{n}f}}}{{{self.gamma_s_fat:.{n}f}}}",
             comparison_operator_label=r"=",
         )
 
@@ -183,15 +183,15 @@ class Form6Dot71CriteriaBasedOnStressRange:
         """Return the result of the formula."""
         return self.latex().complete
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.71."""
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             equation=r"\gamma_{F,fat} \cdot \Delta \sigma_{s,equ} (N^*) \leq \frac{\Delta \sigma_{Rsk} (N^*)}{\gamma_{s,fat}}",
             numeric_equation=(
-                rf"{self.gamma_f_fat:.3f} \cdot {self.delta_sigma_s_equ_n_star:.3f} "
-                rf"\leq \frac{{{self.delta_sigma_rsk_n_star:.3f}}}{{{self.gamma_s_fat:.3f}}}"
+                rf"{self.gamma_f_fat:.{n}f} \cdot {self.delta_sigma_s_equ_n_star:.{n}f} "
+                rf"\leq \frac{{{self.delta_sigma_rsk_n_star:.{n}f}}}{{{self.gamma_s_fat:.{n}f}}}"
             ),
             comparison_operator_label=r"\rightarrow",
         )

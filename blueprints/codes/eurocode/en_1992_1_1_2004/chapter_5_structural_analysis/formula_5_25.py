@@ -33,12 +33,12 @@ class Form5Dot25AxialForceCorrectionFactor(Formula):
         k2 = n * 0.30
         return min(k2, 0.20)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.25."""
         return LatexFormula(
             return_symbol=r"k_{2}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min(0.20; n \cdot 0.30)",
-            numeric_equation=rf"\min(0.20; {self.n:.3f} \cdot 0.30)",
+            numeric_equation=rf"\min(0.20; {self.n:.{n}f} \cdot 0.30)",
             comparison_operator_label="=",
         )

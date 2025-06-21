@@ -57,12 +57,12 @@ class Form3Dot9DryingShrinkage(Formula):
             raise ValueError(f"Negative k_h: {k_h}. k_h cannot be negative")
         return beta_ds_tt_s * k_h * epsilon_cd_0
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 3.9."""
         return LatexFormula(
             return_symbol=r"\epsilon_{cd}(t)",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\beta_{ds}(t,t_s) \cdot k_h \cdot \epsilon_{cd,0}",
-            numeric_equation=rf"{self.beta_ds_tt_s:.3f} \cdot {self.k_h:.3f} \cdot {self.epsilon_cd_0:.3f}",
+            numeric_equation=rf"{self.beta_ds_tt_s:.{n}f} \cdot {self.k_h:.{n}f} \cdot {self.epsilon_cd_0:.{n}f}",
             comparison_operator_label="=",
         )

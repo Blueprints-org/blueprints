@@ -60,12 +60,12 @@ class Form9Dot2ShiftInMomentDiagram(Formula):
 
         return z * (cot_theta - cot_alpha) / 2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 9.2."""
         return LatexFormula(
             return_symbol=r"a_l",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=r"z \cdot \left( \cot(\theta) - \cot(\alpha) \right) / 2",
-            numeric_equation=rf"{self.z:.2f} \cdot \left( \cot({self.theta:.2f}) - \cot({self.alpha:.2f}) \right) / 2",
+            numeric_equation=rf"{self.z:.{n}f} \cdot \left( \cot({self.theta:.{n}f}) - \cot({self.alpha:.{n}f}) \right) / 2",
             comparison_operator_label="=",
         )

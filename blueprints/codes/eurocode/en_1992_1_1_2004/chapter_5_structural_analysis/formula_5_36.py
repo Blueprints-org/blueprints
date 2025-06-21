@@ -67,16 +67,17 @@ class Form5Dot36RelativeAxialForce(Formula):
         n = n_ed / (ac * fcd)
         return min((nu - n) / (nu - n_bal), 1)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.36."""
         return LatexFormula(
             return_symbol=r"K_{r}",
-            result=f"{self:.3f}",
+            result=f"{self:.{n}f}",
             equation=r"\min\left(\frac{\left(1 + \frac{A_{s} \cdot f_{yd}}{A_{c} \cdot f_{cd}}\right) - "
             r"\frac{N_{Ed}}{A_{c} \cdot f_{cd}}}{\left(1 + \frac{A_{s} \cdot f_{yd}}{A_{c} \cdot f_{cd}}\right) - n_{bal}}, 1\right)",
-            numeric_equation=rf"\min\left(\frac{{\left(1 + \frac{{{self.as_:.3f} \cdot {self.fyd:.3f}}}{{{self.ac:.3f} \cdot "
-            rf"{self.fcd:.3f}}}\right) - \frac{{{self.n_ed:.3f}}}{{{self.ac:.3f} \cdot {self.fcd:.3f}}}}}{{\left(1 + \frac{{{self.as_:.3f} \cdot "
-            rf"{self.fyd:.3f}}}{{{self.ac:.3f} \cdot {self.fcd:.3f}}}\right) - {self.n_bal:.3f}}}, 1\right)",
+            numeric_equation=rf"\min\left(\frac{{\left(1 + \frac{{{self.as_:.{n}f} \cdot {self.fyd:.{n}f}}}{{{self.ac:.{n}f} \cdot "
+            rf"{self.fcd:.{n}f}}}\right) - \frac{{{self.n_ed:.{n}f}}}{{{self.ac:.{n}f}"
+            rf" \cdot {self.fcd:.{n}f}}}}}{{\left(1 + \frac{{{self.as_:.{n}f} \cdot "
+            rf"{self.fyd:.{n}f}}}{{{self.ac:.{n}f} \cdot {self.fcd:.{n}f}}}\right) - {self.n_bal:.{n}f}}}, 1\right)",
             comparison_operator_label="=",
             unit="-",
         )
