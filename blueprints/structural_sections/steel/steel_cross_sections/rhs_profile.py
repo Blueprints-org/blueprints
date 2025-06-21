@@ -1,4 +1,4 @@
-"""I-Profile steel section."""
+"""RHS- and SHS-Profile steel section."""
 
 from collections.abc import Callable
 from dataclasses import dataclass
