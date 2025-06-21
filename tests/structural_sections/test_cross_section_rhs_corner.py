@@ -59,6 +59,19 @@ class TestRHSCFCornerCrossSection:
                 outer_radius=-1,
             )
 
+    def test_invalid_outer_radius_greater_than_inner_plus_thickness(self) -> None:
+        """Test initialization with an outer radius greater than inner radius plus thickness."""
+        with pytest.raises(
+            ValueError,
+            match="Outer radius 20 must be smaller than or equal to inner radius 5 plus the thickness 10",
+        ):
+            RHSCFCornerCrossSection(
+                thickness_vertical=10,
+                thickness_horizontal=10,
+                inner_radius=5,
+                outer_radius=20,
+            )
+
     def test_section_properties(self, rhscf_corner_cross_section: RHSCFCornerCrossSection) -> None:
         """Test the section properties of the RHSCFCornerCrossSection class."""
         section_properties = rhscf_corner_cross_section.section_properties()

@@ -104,8 +104,6 @@ class RHSCFCornerCrossSection(CrossSection):
         points = [lr, *outer_arc, ul, *inner_arc]
         # Remove consecutive duplicate points
         points = [pt for i, pt in enumerate(points) if i == 0 or pt != points[i - 1]]
-        if len(points) > 1 and points[0] == points[-1]:
-            points.pop()
 
         if self.mirrored_horizontally:
             points = [(2 * self.x - x, y) for x, y in points]
@@ -133,7 +131,7 @@ class RHSCFCornerCrossSection(CrossSection):
         """
         if mesh_size is None:
             minimum_mesh_size = 2.0
-            mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 20, minimum_mesh_size)
+            mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 3, minimum_mesh_size)
             mesh_size = mesh_length**2
 
         geom = Geometry(geom=self.polygon)

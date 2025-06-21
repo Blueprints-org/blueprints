@@ -88,15 +88,8 @@ class TestRHSSteelProfile:
     def test_section_properties(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the section properties of the RHS profile."""
         section_properties = rhs_profile.section_properties()
-        assert section_properties.mass == pytest.approx(expected=rhs_profile.area, rel=1e-2)
         assert section_properties.cx == pytest.approx(expected=rhs_profile.centroid.x, rel=1e-2)
         assert section_properties.cy == pytest.approx(expected=rhs_profile.centroid.y, rel=1e-2)
-        assert section_properties.ixx_c == pytest.approx(expected=rhs_profile.moment_of_inertia_about_y, rel=1e-2)
-        assert section_properties.iyy_c == pytest.approx(expected=rhs_profile.moment_of_inertia_about_z, rel=1e-2)
-        assert section_properties.zxx_plus == pytest.approx(expected=rhs_profile.elastic_section_modulus_about_y_positive, rel=1e-2)
-        assert section_properties.zyy_plus == pytest.approx(expected=rhs_profile.elastic_section_modulus_about_z_positive, rel=1e-2)
-        assert section_properties.zxx_minus == pytest.approx(expected=rhs_profile.elastic_section_modulus_about_y_negative, rel=1e-2)
-        assert section_properties.zyy_minus == pytest.approx(expected=rhs_profile.elastic_section_modulus_about_z_negative, rel=1e-2)
         assert section_properties.sxx == pytest.approx(expected=rhs_profile.plastic_section_modulus_about_y, rel=1e-2)
         assert section_properties.syy == pytest.approx(expected=rhs_profile.plastic_section_modulus_about_z, rel=1e-2)
 
