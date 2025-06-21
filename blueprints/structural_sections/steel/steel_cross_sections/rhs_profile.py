@@ -7,14 +7,14 @@ from typing import Self
 from matplotlib import pyplot as plt
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.cross_section_rhs_corner import RHSCFCornerCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
+from blueprints.structural_sections.cross_section_rhs_corner import RHSCFCornerCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shs import SHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shscf import SHSCF 
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shs import SHS
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shscf import SHSCF
 from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
@@ -84,14 +84,24 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         self.bottom_left_inner_radius = self.bottom_left_inner_radius if self.bottom_left_inner_radius is not None else self.bottom_wall_thickness
         self.top_right_outer_radius = self.top_right_outer_radius if self.top_right_outer_radius is not None else 2 * self.top_wall_thickness
         self.top_left_outer_radius = self.top_left_outer_radius if self.top_left_outer_radius is not None else 2 * self.top_wall_thickness
-        self.bottom_right_outer_radius = self.bottom_right_outer_radius if self.bottom_right_outer_radius is not None else 2 * self.bottom_wall_thickness
+        self.bottom_right_outer_radius = (
+            self.bottom_right_outer_radius if self.bottom_right_outer_radius is not None else 2 * self.bottom_wall_thickness
+        )
         self.bottom_left_outer_radius = self.bottom_left_outer_radius if self.bottom_left_outer_radius is not None else 2 * self.bottom_wall_thickness
 
         # calculate the lengths of the rectangular sections
-        self.right_wall_height = self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_right_inner_radius - self.bottom_right_inner_radius
-        self.left_wall_height = self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_left_inner_radius - self.bottom_left_inner_radius
-        self.top_wall_width = self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.top_right_inner_radius - self.top_left_inner_radius
-        self.bottom_wall_width = self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius
+        self.right_wall_height = (
+            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_right_inner_radius - self.bottom_right_inner_radius
+        )
+        self.left_wall_height = (
+            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_left_inner_radius - self.bottom_left_inner_radius
+        )
+        self.top_wall_width = (
+            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.top_right_inner_radius - self.top_left_inner_radius
+        )
+        self.bottom_wall_width = (
+            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius
+        )
 
         # Create the cross-sections for the flanges and web
         self.top_wall = RectangularCrossSection(
@@ -228,7 +238,6 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         corrosion_inside : MM, optional
             Corrosion thickness to be added to the inner diameter [mm] (default: 0).
         """
-
         total_width = profile.total_width - 2 * corrosion_outside
         total_height = profile.total_height - 2 * corrosion_outside
 

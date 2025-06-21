@@ -9,8 +9,8 @@ from blueprints.materials.steel import SteelMaterial
 
 # ruff: noqa: T201
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile
-from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSSteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
+from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSSteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
@@ -93,20 +93,20 @@ rhs_profile.plot(show=False)
 # Example usage for custom RHS profile
 custom_rhs_profile = RHSSteelProfile(
     steel_material=steel_material,
-    total_width=300,            # mm
-    total_height=200,           # mm
-    left_wall_thickness=12,     # mm
-    right_wall_thickness=40,    # mm
-    top_wall_thickness=9,      # mm
-    bottom_wall_thickness=7,   # mm
-    top_right_inner_radius=50,      # mm (optional)
-    top_left_inner_radius=5,       # mm (optional)
-    bottom_right_inner_radius=9,   # mm (optional)
-    bottom_left_inner_radius=14,    # mm (optional)
-    top_right_outer_radius=55,      # mm (optional)
-    top_left_outer_radius=13,       # mm (optional)
+    total_width=300,  # mm
+    total_height=200,  # mm
+    left_wall_thickness=12,  # mm
+    right_wall_thickness=40,  # mm
+    top_wall_thickness=9,  # mm
+    bottom_wall_thickness=7,  # mm
+    top_right_inner_radius=50,  # mm (optional)
+    top_left_inner_radius=5,  # mm (optional)
+    bottom_right_inner_radius=9,  # mm (optional)
+    bottom_left_inner_radius=14,  # mm (optional)
+    top_right_outer_radius=55,  # mm (optional)
+    top_left_outer_radius=13,  # mm (optional)
     bottom_right_outer_radius=10,  # mm (optional)
-    bottom_left_outer_radius=12,   # mm (optional)
+    bottom_left_outer_radius=12,  # mm (optional)
 )
 custom_rhs_profile.plot(show=False)
 

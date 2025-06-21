@@ -189,4 +189,3 @@ class RHSCF(Enum):
         self.outer_radius = r0
         self.inner_radius = ri
         self.center_radius = (r0 + ri) / 2
-
