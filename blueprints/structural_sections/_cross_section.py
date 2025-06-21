@@ -45,14 +45,16 @@ class CrossSection(ABC):
         return self.polygon.centroid
 
     @property
-    def moment_of_inertia_about_y(self) -> MM4 | None:
+    def moment_of_inertia_about_y(self) -> MM4:
         """Moments of inertia of the cross-section [mm⁴]."""
-        return self.section_properties().ixx_c
+        ixx_c = self.section_properties().ixx_c
+        return ixx_c if ixx_c is not None else MM4(0)
 
     @property
-    def moment_of_inertia_about_z(self) -> MM4 | None:
+    def moment_of_inertia_about_z(self) -> MM4:
         """Moments of inertia of the cross-section [mm⁴]."""
-        return self.section_properties().iyy_c
+        iyy_c = self.section_properties().iyy_c
+        return iyy_c if iyy_c is not None else MM4(0)
 
     @property
     def elastic_section_modulus_about_y_positive(self) -> MM3 | None:
