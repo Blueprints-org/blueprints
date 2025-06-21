@@ -59,7 +59,8 @@ class RHSCFCornerCrossSection(CrossSection):
             raise ValueError(f"Outer radius must be positive, got {self.outer_radius}")
         if self.outer_radius > self.inner_radius + min(self.thickness_vertical, self.thickness_horizontal):
             raise ValueError(
-                f"Outer radius {self.outer_radius} must be smaller than or equal to inner radius {self.inner_radius} plus the thickness {min(self.thickness_vertical, self.thickness_horizontal)}"
+                f"Outer radius {self.outer_radius} must be smaller than or equal to inner radius {self.inner_radius} "
+                f"plus the thickness {min(self.thickness_vertical, self.thickness_horizontal)}"
             )
 
     @property
@@ -74,10 +75,7 @@ class RHSCFCornerCrossSection(CrossSection):
 
     @property
     def polygon(self) -> Polygon:
-        """
-        Shapely Polygon representing the RHSCF corner cross-section.
-        """
-
+        """Shapely Polygon representing the RHSCF corner cross-section."""
         lr = (self.x + self.width_rectangle, self.y)
         ul = (self.x, self.y + self.height_rectangle)
 
@@ -91,7 +89,7 @@ class RHSCFCornerCrossSection(CrossSection):
             )
             for i in range(n)
         ]
-        
+
         # Inner arc (from horizontal to vertical, reversed)
         inner_arc = [
             (
@@ -137,4 +135,3 @@ class RHSCFCornerCrossSection(CrossSection):
         geom = Geometry(geom=self.polygon)
         geom.create_mesh(mesh_sizes=mesh_size)
         return geom
-    
