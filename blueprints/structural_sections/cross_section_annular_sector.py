@@ -110,8 +110,8 @@ class AnnularSectorCrossSection(CrossSection):
             The shapely Polygon representing the annular sector.
         """
         center = Point(self.x, self.y)
-        inner_circle = center.buffer(self.inner_radius, resolution=64)
-        outer_circle = center.buffer(self.outer_radius, resolution=64)
+        inner_circle = center.buffer(self.inner_radius, quad_segs=64)
+        outer_circle = center.buffer(self.outer_radius, quad_segs=64)
 
         inner_ring = rotate(inner_circle, -self.start_angle, origin=center)
         outer_ring = rotate(outer_circle, -self.start_angle, origin=center)

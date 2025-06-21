@@ -8,6 +8,7 @@ from blueprints.structural_sections.cross_section_circle import CircularCrossSec
 from blueprints.structural_sections.cross_section_hexagon import HexagonalCrossSection
 from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
+from blueprints.structural_sections.cross_section_rhs_corner import RHSCFCornerCrossSection
 from blueprints.structural_sections.cross_section_triangle import RightAngledTriangularCrossSection
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 
@@ -81,4 +82,20 @@ def annular_sector_cross_section_359_degrees() -> AnnularSectorCrossSection:
         x=0.0,
         y=0.0,
         name="AnnularSector",
+    )
+
+
+@pytest.fixture
+def rhscf_corner_cross_section() -> RHSCFCornerCrossSection:
+    """Return an RHSCFCornerCrossSection instance."""
+    return RHSCFCornerCrossSection(
+        thickness_vertical=10.0,
+        thickness_horizontal=20.0,
+        inner_radius=5.0,
+        outer_radius=10.0,
+        x=69.0,
+        y=683.0,
+        mirrored_horizontally=True,
+        mirrored_vertically=True,
+        name="Corner",
     )

@@ -98,7 +98,7 @@ class TestCHSSteelProfile:
         assert section_properties.zyy_minus == pytest.approx(expected=chs_profile.elastic_section_modulus_about_z_negative, rel=1e-2)
 
     def test_get_profile_with_corrosion(self) -> None:
-        """Test the CHS profile with 20 mm corrosion applied."""
+        """Test the CHS profile with 16 mm corrosion applied."""
         # Ensure the profile raises an error if fully corroded
         with pytest.raises(ValueError, match="The profile has fully corroded."):
             CHSSteelProfile.from_standard_profile(
@@ -116,5 +116,5 @@ class TestCHSSteelProfile:
             corrosion_outside=1,  # mm
             corrosion_inside=2,  # mm
         )
-        expected_name_with_corrosion = "CHS 508x16 (corrosion  in: 2 mm, out: 1 mm)"
+        expected_name_with_corrosion = "CHS 508x16 (corrosion in: 2 mm, out: 1 mm)"
         assert chs_profile_with_corrosion.name == expected_name_with_corrosion
