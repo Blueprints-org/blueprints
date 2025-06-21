@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.structural_sections.cross_section_rhscf_corner import RHSCFCornerCrossSection
+from blueprints.structural_sections.cross_section_rhs_corner import RHSCFCornerCrossSection
 
 
 class TestRHSCFCornerCrossSection:

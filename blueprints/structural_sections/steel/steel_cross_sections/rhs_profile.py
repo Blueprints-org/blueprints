@@ -7,7 +7,7 @@ from typing import Self
 from matplotlib import pyplot as plt
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.cross_section_rhscf_corner import RHSCFCornerCrossSection
+from blueprints.structural_sections.cross_section_rhs_corner import RHSCFCornerCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
