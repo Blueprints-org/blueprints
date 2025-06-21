@@ -7,17 +7,13 @@ from functools import total_ordering
 from typing import Self, TypeVar
 
 from blueprints.codes.eurocode.exposure_classes import (
-    CarbonationBase,
-    ChemicalBase,
-    ChlorideBase,
-    ChlorideSeawaterBase,
     ExposureClassesBase,
-    FreezeThawBase,
+    Exposure,
 )
 
 
 @total_ordering
-class Carbonation(CarbonationBase):
+class Carbonation(Exposure):
     """Enum Class which indicates the classification of corrosion induced by carbonation."""
 
     NA = "Not applicable"
@@ -70,7 +66,7 @@ class Carbonation(CarbonationBase):
 
 
 @total_ordering
-class Chloride(ChlorideBase):
+class Chloride(Exposure):
     """Enum Class which indicates the classification of corrosion induced by chlorides other than by sea water."""
 
     NA = "Not applicable"
@@ -120,7 +116,7 @@ class Chloride(ChlorideBase):
 
 
 @total_ordering
-class ChlorideSeawater(ChlorideSeawaterBase):
+class ChlorideSeawater(Exposure):
     """Enum Class which indicates the classification of corrosion induced by chlorides from sea water."""
 
     NA = "Not applicable"
@@ -170,7 +166,7 @@ class ChlorideSeawater(ChlorideSeawaterBase):
 
 
 @total_ordering
-class FreezeThaw(FreezeThawBase):
+class FreezeThaw(Exposure):
     """Enum Class which indicates the classification of freeze/thaw attack with or without de-icing agents."""
 
     NA = "Not applicable"
@@ -223,7 +219,7 @@ class FreezeThaw(FreezeThawBase):
 
 
 @total_ordering
-class Chemical(ChemicalBase):
+class Chemical(Exposure):
     """Enum Class which indicates the classification of chemical attack."""
 
     NA = "Not applicable"

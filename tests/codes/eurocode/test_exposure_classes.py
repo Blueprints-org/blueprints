@@ -3,13 +3,8 @@
 import pytest
 
 from blueprints.codes.eurocode.exposure_classes import (
-    CarbonationBase,
-    ChemicalBase,
-    ChlorideBase,
-    ChlorideSeawaterBase,
-    Exposure,
     ExposureClassesBase,
-    FreezeThawBase,
+    Exposure,
 )
 
 
@@ -30,7 +25,7 @@ class DummyExposureSubclass(Exposure):
         return "Dummy environment"
 
 
-class DummyCarbonation(CarbonationBase):
+class DummyCarbonation(Exposure):
     """Dummy Carbonation subclass for testing purposes."""
 
     NA = "Not applicable"
@@ -46,7 +41,7 @@ class DummyCarbonation(CarbonationBase):
         return "Dummy environment"
 
 
-class DummyChloride(ChlorideBase):
+class DummyChloride(Exposure):
     """Dummy Chloride subclass for testing purposes."""
 
     NA = "Not applicable"
@@ -62,7 +57,7 @@ class DummyChloride(ChlorideBase):
         return "Dummy environment"
 
 
-class DummyChlorideSeawater(ChlorideSeawaterBase):
+class DummyChlorideSeawater(Exposure):
     """Dummy ChlorideSeawater subclass for testing purposes."""
 
     NA = "Not applicable"
@@ -78,7 +73,7 @@ class DummyChlorideSeawater(ChlorideSeawaterBase):
         return "Dummy environment"
 
 
-class DummyFreezeThaw(FreezeThawBase):
+class DummyFreezeThaw(Exposure):
     """Dummy FreezeThaw subclass for testing purposes."""
 
     NA = "Not applicable"
@@ -94,7 +89,7 @@ class DummyFreezeThaw(FreezeThawBase):
         return "Dummy environment"
 
 
-class DummyChemical(ChemicalBase):
+class DummyChemical(Exposure):
     """Dummy Chemical subclass for testing purposes."""
 
     NA = "Not applicable"
@@ -172,7 +167,7 @@ class TestCarbonation:
     def test_initiate_subclasses(self) -> None:
         """Check if initiating the CarbonationBase class raises a TypeError."""
         with pytest.raises(TypeError):
-            _ = CarbonationBase()  # type: ignore[abstract, call-arg]
+            _ = Exposure()  # type: ignore[abstract, call-arg]
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -189,7 +184,7 @@ class TestChloride:
     def test_initiate_subclasses(self) -> None:
         """Check if initiating the ChlorideBase class raises a TypeError."""
         with pytest.raises(TypeError):
-            _ = ChlorideBase()  # type: ignore[abstract, call-arg]
+            _ = Exposure()  # type: ignore[abstract, call-arg]
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -206,7 +201,7 @@ class TestChlorideSeawater:
     def test_initiate_subclasses(self) -> None:
         """Check if initiating the ChlorideSeawaterBase class raises a TypeError."""
         with pytest.raises(TypeError):
-            _ = ChlorideSeawaterBase()  # type: ignore[abstract, call-arg]
+            _ = Exposure()  # type: ignore[abstract, call-arg]
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -223,7 +218,7 @@ class TestFreezeThaw:
     def test_initiate_subclasses(self) -> None:
         """Check if initiating the FreezeThawBase class raises a TypeError."""
         with pytest.raises(TypeError):
-            _ = FreezeThawBase()  # type: ignore[abstract, call-arg]
+            _ = Exposure()  # type: ignore[abstract, call-arg]
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -240,7 +235,7 @@ class TestChemical:
     def test_initiate_subclasses(self) -> None:
         """Check if initiating the ChemicalBase class raises a TypeError."""
         with pytest.raises(TypeError):
-            _ = ChemicalBase()  # type: ignore[abstract, call-arg]
+            _ = Exposure()  # type: ignore[abstract, call-arg]
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""

@@ -117,43 +117,12 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
         return re.sub(r"(?<!^)(?=[A-Z])", "_", cls.__name__).lower()
 
 
-@total_ordering
-class CarbonationBase(Exposure):
-    """Enum Class which indicates the classification of corrosion induced by carbonation."""
-
-
-@total_ordering
-class ChlorideBase(Exposure):
-    """Enum Class which indicates the classification of corrosion induced by chlorides other than by sea water."""
-
-
-@total_ordering
-class ChlorideSeawaterBase(Exposure):
-    """Enum Class which indicates the classification of corrosion induced by chlorides from sea water."""
-
-
-@total_ordering
-class FreezeThawBase(Exposure):
-    """Enum Class which indicates the classification of freeze/thaw attack with or without de-icing agents."""
-
-
-@total_ordering
-class ChemicalBase(Exposure):
-    """Enum Class which indicates the classification of chemical attack."""
-
-
 @dataclass(frozen=True)
 class ExposureClassesBase:
     """Parent class which serves as a container for the Exposure classes.
 
     Exposure classes related to environmental conditions in accordance with EN 206-1
     """
-
-    carbonation: CarbonationBase
-    chloride: ChlorideBase
-    chloride_seawater: ChlorideSeawaterBase
-    freeze: FreezeThawBase
-    chemical: ChemicalBase
 
     @property
     def no_risk(self) -> bool:
