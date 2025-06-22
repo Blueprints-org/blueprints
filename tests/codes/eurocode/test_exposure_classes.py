@@ -205,6 +205,29 @@ class TestExposure:
         assert DummyExposureSubclass.DUMMY2.notation() == "DUMMY"
         assert DummyExposureSubclass.DUMMY3.notation() == "DUMMY"
 
+    def test_notation_raises_error(self) -> None:
+        """Check if the notation method raises an error when called on the base class."""
+
+        class BadNotation(Exposure):
+            """Dummy Exposure subclass with bad notation."""
+
+            NA = "Not applicable"
+            DUMMY1 = "dummy1"
+            DUMMY2 = "DUMMY"
+            DUMMY3 = "Dummy3"
+
+            @staticmethod
+            def exposure_class_description() -> str:
+                """Dummy implementation of abstract method."""
+                return ""
+
+            def description_of_the_environment(self) -> str:
+                """Dummy implementation of abstract method."""
+                return ""
+
+        with pytest.raises(ValueError):
+            _ = BadNotation.notation()
+
 
 class TestCarbonation:
     """Testing Carbonation class."""

@@ -132,7 +132,11 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
             match = re.match(r"([A-Z]+)(\d+)", option)
             if match:
                 return match.group(1)
-        raise ValueError(f"No valid notation found for {cls.__name__}. Available options: {options}")
+        raise ValueError(
+            f"No valid notation found for {cls.__name__}.\n"
+            "Either adhere to the pattern of Uppercase letters followed by at least one digit for Enum values, "
+            "or implement the notation method in the subclass."
+        )
 
 
 @dataclass(frozen=True)

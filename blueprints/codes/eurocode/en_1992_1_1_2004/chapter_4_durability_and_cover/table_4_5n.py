@@ -1,7 +1,7 @@
 """Table 4.5N from EN 1992-1-1:2004: Chapter 4 - Durability and cover to reinforcement."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import Table4Dot1ExposureClasses
 from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
@@ -19,7 +19,7 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
     def __init__(
         self,
-        exposure_classes: ExposureClassesBase,
+        exposure_classes: Table4Dot1ExposureClasses,
         structural_class: ConcreteStructuralClassBase,
     ) -> None:
         r"""[$c_{min,dur}$] Calculates the minimum concrete cover with regard to durability [$mm$] for prestressing steel.
@@ -28,7 +28,7 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
         Parameters
         ----------
-        exposure_classes: ExposureClassesBase
+        exposure_classes: Table4Dot1ExposureClasses
             The exposure classes of the concrete. Use the [$Table4Dot1ExposureClasses$] class. [$-$]
         structural_class: ConcreteStructuralClassBase
             The structural class of the concrete. Use the [$Table4Dot3ConcreteStructuralClass$] class. [$-$]
@@ -39,7 +39,7 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
     @staticmethod
     def _evaluate(
-        exposure_classes: ExposureClassesBase,
+        exposure_classes: Table4Dot1ExposureClasses,
         structural_class: ConcreteStructuralClassBase,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
