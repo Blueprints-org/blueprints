@@ -2,13 +2,11 @@
 according to Table 4.1 from EN 1992-1-1:2004: Chapter 4 - Durability and cover to reinforcement.
 """
 
-from collections.abc import Sequence
 from functools import total_ordering
-from typing import Self, TypeVar
 
 from blueprints.codes.eurocode.exposure_classes import (
-    ExposureClassesBase,
     Exposure,
+    ExposureClassesBase,
 )
 
 
@@ -53,17 +51,6 @@ class Carbonation(Exposure):
             case Carbonation.NA:
                 return "Not applicable"
 
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XC"
-
 
 @total_ordering
 class Chloride(Exposure):
@@ -103,17 +90,6 @@ class Chloride(Exposure):
             case Chloride.NA:
                 return "Not applicable"
 
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XD"
-
 
 @total_ordering
 class ChlorideSeawater(Exposure):
@@ -152,17 +128,6 @@ class ChlorideSeawater(Exposure):
                 return "Tidal, splash and spray zones"
             case ChlorideSeawater.NA:
                 return "Not applicable"
-
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XS"
 
 
 @total_ordering
@@ -206,17 +171,6 @@ class FreezeThaw(Exposure):
             case FreezeThaw.NA:
                 return "Not applicable"
 
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XF"
-
 
 @total_ordering
 class Chemical(Exposure):
@@ -256,79 +210,37 @@ class Chemical(Exposure):
             case Chemical.NA:
                 return "Not applicable"
 
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XA"
-
-
-# Define a generic type for the class
-T = TypeVar("T", bound="Table4Dot1ExposureClasses")
-
 
 class Table4Dot1ExposureClasses(ExposureClassesBase):
-    """Implementation of table 4.1 from EN 1992-1-1:2004.
+    """Class representing table 4.1 from EN 1992-1-1:2004."""
 
-    Exposure classes related to environmental conditions in accordance with EN 206-1
-    """
+    def __init__(
+        self,
+        carbonation: Carbonation = Carbonation.NA,
+        chloride: Chloride = Chloride.NA,
+        chloride_seawater: ChlorideSeawater = ChlorideSeawater.NA,
+        freeze_thaw: FreezeThaw = FreezeThaw.NA,
+        chemical: Chemical = Chemical.NA,
+    ) -> None:
+        """Implementation of table 4.1 from EN 1992-1-1:2004 par. 4.2.
 
-    carbonation: Carbonation
-    chloride: Chloride
-    chloride_seawater: ChlorideSeawater
-    freeze: FreezeThaw
-    chemical: Chemical
-
-    @classmethod
-    def from_exposure_list(cls, exposure_classes: Sequence[str]) -> Self:
-        """Create an instance from a sequence of exposure classes.
-
-        Examples
-        --------
-        >>> exposure_classes = ["XC1", "XD1", "XS1"]
-        >>> Table4Dot1ExposureClasses().from_exposure_list(exposure_classes)
-        Table4Dot1ExposureClasses(
-            carbonation=<Carbonation.XC1: 'XC1'>,
-            chloride=<Chloride.XD1: 'XD1'>,
-            chloride_seawater=<ChlorideSeawater.XS1: 'XS1'>,
-            freeze=<FreezeThaw.NA: 'Not applicable'>,
-            chemical=<Chemical.NA: 'Not applicable'>
-        )
+        Exposure classes related to environmental conditions in accordance with EN 206-1
 
         Parameters
         ----------
-        exposure_classes : Sequence[str]
-            list of exposure classes, order is not important. If an exposure class is not provided, it is set to "Not applicable"
-            You can use capital letters or lowercase letters, the method is case-insensitive.
-            For example, "XC1" and "xc1" are both valid.
-
-        Returns
-        -------
-        Self
-            instance created from the list
+        carbonation : Carbonation
+            The carbonation exposure class. Defaults to Carbonation.NA.
+        chloride : Chloride
+            The chloride exposure class. Defaults to Chloride.NA.
+        chloride_seawater : ChlorideSeawater
+            The chloride seawater exposure class. Defaults to ChlorideSeawater.NA.
+        freeze_thaw : FreezeThaw
+            The freeze/thaw exposure class. Defaults to FreezeThaw.NA.
+        chemical : Chemical
+            The chemical exposure class. Defaults to Chemical.NA.
         """
-        exposures: dict[str, Carbonation | Chloride | ChlorideSeawater | Chemical | FreezeThaw] = {}
-        classifications = {
-            classification.notation(): classification for classification in (Carbonation, Chloride, ChlorideSeawater, FreezeThaw, Chemical)
-        }
-
-        for exposure_str in exposure_classes:
-            classification = classifications.get(exposure_str[:2].upper())
-            if classification is None:
-                raise ValueError(f"Invalid exposure class: '{exposure_str}'")
-            classification_name = classification.snake_case().removesuffix("_thaw")
-            if classification_name in exposures:
-                raise ValueError(f"Duplication Error: There are multiple instances of '{classification.__name__}' class.")
-            exposures[classification_name] = classification[exposure_str.upper()]
-
-        for classification in classifications.values():
-            classification_name = classification.snake_case().removesuffix("_thaw")
-            if classification_name not in exposures:
-                exposures.setdefault(classification_name, classification.NA)
-
-        return cls(**exposures)  # type: ignore[arg-type]
+        self.carbonation = carbonation
+        self.chloride = chloride
+        self.chloride_seawater = chloride_seawater
+        self.freeze_thaw = freeze_thaw
+        self.chemical = chemical
