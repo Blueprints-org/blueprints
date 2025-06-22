@@ -1,19 +1,24 @@
+# mypy: disable-error-code="operator"
 """Tests for the Exposure classes."""
+
+from functools import total_ordering
 
 import pytest
 
 from blueprints.codes.eurocode.exposure_classes import (
-    ExposureClassesBase,
     Exposure,
+    ExposureClassesBase,
 )
 
 
+@total_ordering
 class DummyExposureSubclass(Exposure):
     """Dummy Exposure subclass for testing purposes."""
 
-    DUMMY1 = "Dummy1"
-    DUMMY2 = "Dummy2"
-    DUMMY3 = "Dummy3"
+    NA = "Not applicable"
+    DUMMY1 = "DUMMY1"
+    DUMMY2 = "DUMMY2"
+    DUMMY3 = "DUMMY3"
 
     @staticmethod
     def exposure_class_description() -> str:
@@ -25,6 +30,7 @@ class DummyExposureSubclass(Exposure):
         return "Dummy environment"
 
 
+@total_ordering
 class DummyCarbonation(Exposure):
     """Dummy Carbonation subclass for testing purposes."""
 
@@ -41,6 +47,7 @@ class DummyCarbonation(Exposure):
         return "Dummy environment"
 
 
+@total_ordering
 class DummyChloride(Exposure):
     """Dummy Chloride subclass for testing purposes."""
 
@@ -57,6 +64,7 @@ class DummyChloride(Exposure):
         return "Dummy environment"
 
 
+@total_ordering
 class DummyChlorideSeawater(Exposure):
     """Dummy ChlorideSeawater subclass for testing purposes."""
 
@@ -73,6 +81,7 @@ class DummyChlorideSeawater(Exposure):
         return "Dummy environment"
 
 
+@total_ordering
 class DummyFreezeThaw(Exposure):
     """Dummy FreezeThaw subclass for testing purposes."""
 
@@ -89,6 +98,7 @@ class DummyFreezeThaw(Exposure):
         return "Dummy environment"
 
 
+@total_ordering
 class DummyChemical(Exposure):
     """Dummy Chemical subclass for testing purposes."""
 
@@ -103,6 +113,25 @@ class DummyChemical(Exposure):
     def description_of_the_environment(self) -> str:
         """Return the description of the environment."""
         return "Dummy environment"
+
+
+class DummyExposureClasses(ExposureClassesBase):
+    """Dummy ExposureClassesBase subclass for testing purposes."""
+
+    def __init__(
+        self,
+        dummy_carbonation: DummyCarbonation,
+        dummy_chloride: DummyChloride,
+        dummy_chloride_seawater: DummyChlorideSeawater,
+        dummy_freeze_thaw: DummyFreezeThaw,
+        dummy_chemical: DummyChemical,
+    ) -> None:
+        """Initialize the DummyExposureClassesBase with dummy exposure classes."""
+        self.dummy_carbonation = dummy_carbonation
+        self.dummy_chloride = dummy_chloride
+        self.dummy_chloride_seawater = dummy_chloride_seawater
+        self.dummy_freeze_thaw = dummy_freeze_thaw
+        self.dummy_chemical = dummy_chemical
 
 
 class TestExposure:
@@ -124,12 +153,14 @@ class TestExposure:
         """Check if the > operator is working correctly."""
         assert DummyExposureSubclass.DUMMY3 > DummyExposureSubclass.DUMMY2
         assert DummyExposureSubclass.DUMMY2 > DummyExposureSubclass.DUMMY1
+        assert DummyExposureSubclass.DUMMY1 > DummyExposureSubclass.NA
 
     def test_greather_than_equal_to_operator(self) -> None:
         """Check if the >= operator is working correctly."""
         # Testing greater than
         assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY2
         assert DummyExposureSubclass.DUMMY2 >= DummyExposureSubclass.DUMMY1
+        assert DummyExposureSubclass.DUMMY1 >= DummyExposureSubclass.NA
         # Testing equal to
         assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY3
         assert DummyExposureSubclass.DUMMY1 >= DummyExposureSubclass.DUMMY1
@@ -138,19 +169,21 @@ class TestExposure:
         """Check if the < operator is working correctly."""
         assert DummyExposureSubclass.DUMMY1 < DummyExposureSubclass.DUMMY2
         assert DummyExposureSubclass.DUMMY2 < DummyExposureSubclass.DUMMY3
+        assert DummyExposureSubclass.NA < DummyExposureSubclass.DUMMY1
 
     def test_lesser_than_equal_to_operator(self) -> None:
         """Check if the <= operator is working correctly."""
         # Testing lesser than
         assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY2
         assert DummyExposureSubclass.DUMMY2 <= DummyExposureSubclass.DUMMY3
+        assert DummyExposureSubclass.NA <= DummyExposureSubclass.DUMMY1
         # Testing equal to
         assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY1
         assert DummyExposureSubclass.DUMMY3 <= DummyExposureSubclass.DUMMY3
 
     def test_options(self) -> None:
         """Check if the options method returns all the possible options within an exposure class."""
-        assert DummyExposureSubclass.options() == ["Dummy1", "Dummy2", "Dummy3"]
+        assert DummyExposureSubclass.options() == ["Not applicable", "DUMMY1", "DUMMY2", "DUMMY3"]
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -159,6 +192,13 @@ class TestExposure:
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
         assert DummyExposureSubclass.DUMMY1.description_of_the_environment() == "Dummy environment"
+
+    def test_notation(self) -> None:
+        """Check if the notation method returns the correct notation."""
+        assert DummyExposureSubclass.notation() == "DUMMY"
+        assert DummyExposureSubclass.DUMMY1.notation() == "DUMMY"
+        assert DummyExposureSubclass.DUMMY2.notation() == "DUMMY"
+        assert DummyExposureSubclass.DUMMY3.notation() == "DUMMY"
 
 
 class TestCarbonation:
@@ -177,6 +217,10 @@ class TestCarbonation:
         """Check if the description_of_the_environment method returns the description of the environment."""
         assert DummyCarbonation.XC1.description_of_the_environment() == "Dummy environment"
 
+    def test_notation(self) -> None:
+        """Check if the notation method returns the correct notation."""
+        assert DummyCarbonation.notation() == "XC"
+
 
 class TestChloride:
     """Testing ChlorideBase class."""
@@ -193,6 +237,10 @@ class TestChloride:
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
         assert DummyChloride.XD1.description_of_the_environment() == "Dummy environment"
+
+    def test_notation(self) -> None:
+        """Check if the notation method returns the correct notation."""
+        assert DummyChloride.notation() == "XD"
 
 
 class TestChlorideSeawater:
@@ -211,6 +259,10 @@ class TestChlorideSeawater:
         """Check if the description_of_the_environment method returns the description of the environment."""
         assert DummyChlorideSeawater.XS1.description_of_the_environment() == "Dummy environment"
 
+    def test_notation(self) -> None:
+        """Check if the notation method returns the correct notation."""
+        assert DummyChlorideSeawater.notation() == "XS"
+
 
 class TestFreezeThaw:
     """Testing FreezeThawBase class."""
@@ -227,6 +279,10 @@ class TestFreezeThaw:
     def test_description_of_the_environment(self) -> None:
         """Check if the description_of_the_environment method returns the description of the environment."""
         assert DummyFreezeThaw.XF1.description_of_the_environment() == "Dummy environment"
+
+    def test_notation(self) -> None:
+        """Check if the notation method returns the correct notation."""
+        assert DummyFreezeThaw.notation() == "XF"
 
 
 class TestChemical:
@@ -245,18 +301,22 @@ class TestChemical:
         """Check if the description_of_the_environment method returns the description of the environment."""
         assert DummyChemical.XA1.description_of_the_environment() == "Dummy environment"
 
+    def test_notation(self) -> None:
+        """Check if the notation method returns the correct notation."""
+        assert DummyChemical.notation() == "XA"
+
 
 class TestExposureClasses:
     """Testing ExposureClasses class."""
 
     def test_str(self) -> None:
         """Check if the __str__ method returns the correct string representation of the exposure classes."""
-        exposure_classes = ExposureClassesBase(
-            carbonation=DummyCarbonation("XC1"),
-            chloride=DummyChloride("XD1"),
-            chloride_seawater=DummyChlorideSeawater("Not applicable"),
-            freeze=DummyFreezeThaw("XF1"),
-            chemical=DummyChemical("XA1"),
+        exposure_classes = DummyExposureClasses(
+            dummy_carbonation=DummyCarbonation("XC1"),
+            dummy_chloride=DummyChloride("XD1"),
+            dummy_chloride_seawater=DummyChlorideSeawater("Not applicable"),
+            dummy_freeze_thaw=DummyFreezeThaw("XF1"),
+            dummy_chemical=DummyChemical("XA1"),
         )
         assert str(exposure_classes) == "XC1, XD1, XF1, XA1"
 
@@ -264,36 +324,74 @@ class TestExposureClasses:
         """Check if the __str__ method returns the correct string representation of the exposure classes
         when all exposure classes are not applicable.
         """
-        exposureclasses = ExposureClassesBase(
-            carbonation=DummyCarbonation("Not applicable"),
-            chloride=DummyChloride("Not applicable"),
-            chloride_seawater=DummyChlorideSeawater("Not applicable"),
-            freeze=DummyFreezeThaw("Not applicable"),
-            chemical=DummyChemical("Not applicable"),
+        exposureclasses = DummyExposureClasses(
+            dummy_carbonation=DummyCarbonation("Not applicable"),
+            dummy_chloride=DummyChloride("Not applicable"),
+            dummy_chloride_seawater=DummyChlorideSeawater("Not applicable"),
+            dummy_freeze_thaw=DummyFreezeThaw("Not applicable"),
+            dummy_chemical=DummyChemical("Not applicable"),
         )
         assert str(exposureclasses) == "X0"
 
     def test_no_risk(self) -> None:
         """Check if the no_risk method returns True if the exposure classes are all not applicable."""
-        exposureclasses = ExposureClassesBase(
-            carbonation=DummyCarbonation("Not applicable"),
-            chloride=DummyChloride("Not applicable"),
-            chloride_seawater=DummyChlorideSeawater("Not applicable"),
-            freeze=DummyFreezeThaw("Not applicable"),
-            chemical=DummyChemical("Not applicable"),
+        exposureclasses = DummyExposureClasses(
+            dummy_carbonation=DummyCarbonation("Not applicable"),
+            dummy_chloride=DummyChloride("Not applicable"),
+            dummy_chloride_seawater=DummyChlorideSeawater("Not applicable"),
+            dummy_freeze_thaw=DummyFreezeThaw("Not applicable"),
+            dummy_chemical=DummyChemical("Not applicable"),
         )
         assert exposureclasses.no_risk is True
 
     def test_no_risk_false(self) -> None:
         """Check if the no_risk method returns False if at least one exposure class is applicable."""
-        exposureclasses = ExposureClassesBase(
-            carbonation=DummyCarbonation("XC1"),
-            chloride=DummyChloride("XD1"),
-            chloride_seawater=DummyChlorideSeawater("Not applicable"),
-            freeze=DummyFreezeThaw("XF1"),
-            chemical=DummyChemical("XA1"),
+        exposureclasses = DummyExposureClasses(
+            dummy_carbonation=DummyCarbonation("XC1"),
+            dummy_chloride=DummyChloride("XD1"),
+            dummy_chloride_seawater=DummyChlorideSeawater("Not applicable"),
+            dummy_freeze_thaw=DummyFreezeThaw("XF1"),
+            dummy_chemical=DummyChemical("XA1"),
         )
         assert exposureclasses.no_risk is False
+
+    def test_iter(self) -> None:
+        """Check if the __iter__ method returns an iterator over the exposure classes."""
+        exposure_classes = DummyExposureClasses(
+            dummy_carbonation=DummyCarbonation("XC1"),
+            dummy_chloride=DummyChloride("XD1"),
+            dummy_chloride_seawater=DummyChlorideSeawater("XS1"),
+            dummy_freeze_thaw=DummyFreezeThaw("XF1"),
+            dummy_chemical=DummyChemical("XA1"),
+        )
+        iterator = iter(exposure_classes)
+        assert next(iterator) == DummyCarbonation("XC1")
+        assert next(iterator) == DummyChloride("XD1")
+        assert next(iterator) == DummyChlorideSeawater("XS1")
+        assert next(iterator) == DummyFreezeThaw("XF1")
+        assert next(iterator) == DummyChemical("XA1")
+
+    def test_from_exposure_list(self) -> None:
+        """Check if the from_exposure_list method creates an instance from a sequence of exposure classes."""
+        carbonation = "XC1"
+        chloride = "XD1"
+        chloride_seawater = "XS1"
+        freeze_thaw = "XF1"
+        exposure_classes = DummyExposureClasses.from_exposure_list([carbonation, chloride, chloride_seawater, freeze_thaw])
+        assert exposure_classes.dummy_carbonation == DummyCarbonation(carbonation)
+        assert exposure_classes.dummy_chloride == DummyChloride(chloride)
+        assert exposure_classes.dummy_chloride_seawater == DummyChlorideSeawater(chloride_seawater)
+        assert exposure_classes.dummy_freeze_thaw == DummyFreezeThaw(freeze_thaw)
+        assert exposure_classes.dummy_chemical == DummyChemical("Not applicable")
+
+    def test_from_exposure_list_empty(self) -> None:
+        """Check if the from_exposure_list method creates an instance with all exposure classes as not applicable."""
+        exposure_classes = DummyExposureClasses.from_exposure_list([])
+        assert exposure_classes.dummy_carbonation == DummyCarbonation("Not applicable")
+        assert exposure_classes.dummy_chloride == DummyChloride("Not applicable")
+        assert exposure_classes.dummy_chloride_seawater == DummyChlorideSeawater("Not applicable")
+        assert exposure_classes.dummy_freeze_thaw == DummyFreezeThaw("Not applicable")
+        assert exposure_classes.dummy_chemical == DummyChemical("Not applicable")
 
 
 def test_comparing_different_types_raises_error() -> None:
