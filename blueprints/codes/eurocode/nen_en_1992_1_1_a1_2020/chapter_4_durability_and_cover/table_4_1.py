@@ -51,17 +51,6 @@ class Carbonation(Exposure):
             case Carbonation.NA:
                 return "Not applicable"
 
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XC"
-
 
 @total_ordering
 class Chloride(Exposure):
@@ -101,17 +90,6 @@ class Chloride(Exposure):
             case Chloride.NA:
                 return "Not applicable"
 
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XD"
-
 
 @total_ordering
 class ChlorideSeawater(Exposure):
@@ -150,17 +128,6 @@ class ChlorideSeawater(Exposure):
                 return "Tidal, splash and spray zones"
             case ChlorideSeawater.NA:
                 return "Not applicable"
-
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XS"
 
 
 @total_ordering
@@ -204,17 +171,6 @@ class FreezeThaw(Exposure):
             case FreezeThaw.NA:
                 return "Not applicable"
 
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XF"
-
 
 @total_ordering
 class Chemical(Exposure):
@@ -253,17 +209,6 @@ class Chemical(Exposure):
                 return "Highly aggressive chemical environment according to EN 206-1, Table 2"
             case Chemical.NA:
                 return "Not applicable"
-
-    @staticmethod
-    def notation() -> str:
-        """Static method which returns the notation of this exposure class.
-
-        Returns
-        -------
-        str
-            notation of this exposure class
-        """
-        return "XA"
 
 
 class Table4Dot1ExposureClasses(ExposureClassesBase):

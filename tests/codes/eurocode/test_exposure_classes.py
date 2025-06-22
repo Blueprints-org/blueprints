@@ -137,6 +137,11 @@ class DummyExposureClasses(ExposureClassesBase):
 class TestExposure:
     """Testing Exposure parent class."""
 
+    def test_initiate_abc_class(self) -> None:
+        """Check if initiating the Exposure class raises a TypeError."""
+        with pytest.raises(TypeError):
+            _ = Exposure()  # type: ignore[abstract, call-arg]
+
     def test_equal_to_operator(self) -> None:
         """Check if the == operator is working correctly."""
         assert DummyExposureSubclass.DUMMY1 == DummyExposureSubclass.DUMMY1
@@ -202,12 +207,7 @@ class TestExposure:
 
 
 class TestCarbonation:
-    """Testing CarbonationBase class."""
-
-    def test_initiate_subclasses(self) -> None:
-        """Check if initiating the CarbonationBase class raises a TypeError."""
-        with pytest.raises(TypeError):
-            _ = Exposure()  # type: ignore[abstract, call-arg]
+    """Testing Carbonation class."""
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -223,12 +223,7 @@ class TestCarbonation:
 
 
 class TestChloride:
-    """Testing ChlorideBase class."""
-
-    def test_initiate_subclasses(self) -> None:
-        """Check if initiating the ChlorideBase class raises a TypeError."""
-        with pytest.raises(TypeError):
-            _ = Exposure()  # type: ignore[abstract, call-arg]
+    """Testing Chloride class."""
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -244,12 +239,7 @@ class TestChloride:
 
 
 class TestChlorideSeawater:
-    """Testing ChlorideSeawaterBase class."""
-
-    def test_initiate_subclasses(self) -> None:
-        """Check if initiating the ChlorideSeawaterBase class raises a TypeError."""
-        with pytest.raises(TypeError):
-            _ = Exposure()  # type: ignore[abstract, call-arg]
+    """Testing ChlorideSeawater class."""
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -265,12 +255,7 @@ class TestChlorideSeawater:
 
 
 class TestFreezeThaw:
-    """Testing FreezeThawBase class."""
-
-    def test_initiate_subclasses(self) -> None:
-        """Check if initiating the FreezeThawBase class raises a TypeError."""
-        with pytest.raises(TypeError):
-            _ = Exposure()  # type: ignore[abstract, call-arg]
+    """Testing FreezeThaw class."""
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""
@@ -286,12 +271,7 @@ class TestFreezeThaw:
 
 
 class TestChemical:
-    """Testing ChemicalBase class."""
-
-    def test_initiate_subclasses(self) -> None:
-        """Check if initiating the ChemicalBase class raises a TypeError."""
-        with pytest.raises(TypeError):
-            _ = Exposure()  # type: ignore[abstract, call-arg]
+    """Testing Chemical class."""
 
     def test_exposure_class_description_implemented(self) -> None:
         """Check if the exposure_class_description method returns the description of the subclass."""

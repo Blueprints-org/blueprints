@@ -143,6 +143,7 @@ class ExposureClassesBase:
     """
 
     _not_applicable_key: ClassVar[str] = "Not applicable"
+    """Key for the 'Not applicable' exposure class. Can be overridden in subclasses if needed."""
 
     @property
     def no_risk(self) -> bool:
@@ -153,7 +154,7 @@ class ExposureClassesBase:
         Returns
         -------
         bool
-            True if all exposure classes are euqal to _not_applicable_key ("Not applicable")
+            True if all exposure classes are euqal to _not_applicable_key ("Not applicable" by default)
         """
         return all(exposure_class.value == self.__class__._not_applicable_key for exposure_class in self.__dict__.values())  # noqa: SLF001
 
@@ -165,14 +166,14 @@ class ExposureClassesBase:
         str
             String representation of the ExposureClasses object
         """
-        return "X0" if self.no_risk else ", ".join(enum.value for enum in self.__dict__.values() if enum.value != "Not applicable")
+        return "X0" if self.no_risk else ", ".join(enum.value for enum in self.__dict__.values() if enum.value != self.__class__._not_applicable_key)  # noqa: SLF001
 
     def __iter__(self) -> Iterator[Exposure]:
         """Iterator for the ExposureClasses object.
 
         Returns
         -------
-        Iterable[Exposure]
+        Iterator[Exposure]
             Iterator for the ExposureClasses object
         """
         return iter(self.__dict__.values())
@@ -189,7 +190,7 @@ class ExposureClassesBase:
             carbonation=<Carbonation.XC1: 'XC1'>,
             chloride=<Chloride.XD1: 'XD1'>,
             chloride_seawater=<ChlorideSeawater.XS1: 'XS1'>,
-            freeze=<FreezeThaw.NA: 'Not applicable'>,
+            freeze_thaw=<FreezeThaw.NA: 'Not applicable'>,
             chemical=<Chemical.NA: 'Not applicable'>
         )
 
@@ -197,7 +198,7 @@ class ExposureClassesBase:
         ----------
         exposure_classes : Sequence[str]
             sequence of exposure classes, order is not important.
-            If an exposure class is not provided, but is defined in the __init__, it is set to "Not applicable"
+            If an exposure class is not provided, but is defined in the __init__, it is set to the value of _not_applicable_key ("Not applicable").
             You can use capital letters or lowercase letters, the method is case-insensitive.
             For example, "XC1" and "xc1" are both valid.
 
@@ -223,4 +224,4 @@ class ExposureClassesBase:
             if classification_name not in exposures:
                 exposures.setdefault(classification_name, classification(cls._not_applicable_key))
 
-        return cls(**exposures)  # type: ignore[arg-type]
+        return cls(**exposures)
