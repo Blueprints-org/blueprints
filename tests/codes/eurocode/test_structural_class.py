@@ -4,13 +4,19 @@ from typing import Self
 
 import pytest
 
-from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase as ExposureClasses
 from blueprints.codes.eurocode.structural_class import (
     AbstractConcreteStructuralClassCalculator,
     ConcreteStructuralClassBase,
 )
 from blueprints.materials.concrete import ConcreteMaterial
-from tests.codes.eurocode.test_exposure_classes import DummyCarbonation, DummyChemical, DummyChloride, DummyChlorideSeawater, DummyFreezeThaw
+from tests.codes.eurocode.test_exposure_classes import (
+    DummyCarbonation,
+    DummyChemical,
+    DummyChloride,
+    DummyChlorideSeawater,
+    DummyExposureClasses,
+    DummyFreezeThaw,
+)
 
 
 class MockConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalculator):
@@ -22,7 +28,7 @@ class MockConcreteStructuralClassCalculator(AbstractConcreteStructuralClassCalcu
 
     def __init__(
         self,
-        exposure_classes: ExposureClasses,
+        exposure_classes: DummyExposureClasses,
         design_working_life: float,
         concrete_material: ConcreteMaterial,
         plate_geometry: bool,
@@ -69,12 +75,12 @@ class MockConcreteStructuralClass(ConcreteStructuralClassBase):
 @pytest.fixture
 def structural_class() -> MockConcreteStructuralClass:
     """Fixture that returns an instance of the structural class for testing."""
-    exposure_classes = ExposureClasses(
-        carbonation=DummyCarbonation.XC1,
-        chloride=DummyChloride.NA,
-        chloride_seawater=DummyChlorideSeawater.NA,
-        freeze=DummyFreezeThaw.NA,
-        chemical=DummyChemical.XA1,
+    exposure_classes = DummyExposureClasses(
+        dummy_carbonation=DummyCarbonation.XC1,
+        dummy_chloride=DummyChloride.NA,
+        dummy_chloride_seawater=DummyChlorideSeawater.NA,
+        dummy_freeze_thaw=DummyFreezeThaw.NA,
+        dummy_chemical=DummyChemical.XA1,
     )
     design_working_life = 50.0
     concrete_material = ConcreteMaterial()
@@ -92,12 +98,12 @@ def structural_class() -> MockConcreteStructuralClass:
 @pytest.fixture
 def calculator() -> MockConcreteStructuralClassCalculator:
     """Fixture that returns an instance of the calculator for testing."""
-    exposure_classes = ExposureClasses(
-        carbonation=DummyCarbonation.XC1,
-        chloride=DummyChloride.NA,
-        chloride_seawater=DummyChlorideSeawater.NA,
-        freeze=DummyFreezeThaw.NA,
-        chemical=DummyChemical.XA1,
+    exposure_classes = DummyExposureClasses(
+        dummy_carbonation=DummyCarbonation.XC1,
+        dummy_chloride=DummyChloride.NA,
+        dummy_chloride_seawater=DummyChlorideSeawater.NA,
+        dummy_freeze_thaw=DummyFreezeThaw.NA,
+        dummy_chemical=DummyChemical.XA1,
     )
     design_working_life = 50.0
     concrete_material = ConcreteMaterial()
