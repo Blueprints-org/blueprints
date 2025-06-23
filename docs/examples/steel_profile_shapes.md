@@ -28,7 +28,7 @@ Structual parameters are automatically calculated and can be obtained with:
 
 A plot of this profile can be generated using the `plot` method:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:26"
+---8<-- "examples/_code/steel_profile_shapes.py:26:26"
 ```
 ![CHS273x5 with 4mm corrosion](./_images/steel_profile_chs_273_5_corrosion_4.png)
 
@@ -60,13 +60,13 @@ Alternatively, define a custom CHS profile by specifying its dimensions:
 
 A plot of this custom profile can be generated using the `plot` method:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:41"
+---8<-- "examples/_code/steel_profile_shapes.py:41:41"
 ```
 ![Custom CHS Profile](./_images/steel_profile_chs_custom_chs.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:42"
+---8<-- "examples/_code/steel_profile_shapes.py:42:42"
 ```
 ```terminaloutput
 All section properties of custom CHS profile: SectionProperties(area=np.float64(4397.788151305911), perimeter=471.2270701716454, mass=np.float64(4397.788151305911), ea=np.float64(4397.788151305911), ga=np.float64(2198.8940756529555), nu_eff=np.float64(0.0), e_eff=np.float64(1.0), g_eff=np.float64(0.5), qx=np.float64(-4.3075942812720314e-10), qy=np.float64(-2.837632351315733e-10), ixx_g=np.float64(10828466.102927726), iyy_g=np.float64(10828466.10292771), ixy_g=np.float64(-2.5585791263438296e-09), cx=np.float64(-6.452408014408574e-14), cy=np.float64(-9.79491083487708e-14), ixx_c=np.float64(10828466.102927726), iyy_c=np.float64(10828466.10292771), ixy_c=np.float64(-2.5585791263438573e-09), zxx_plus=np.float64(144379.54803903616), zxx_minus=np.float64(144379.54803903654), zyy_plus=np.float64(144379.54803903602), zyy_minus=np.float64(144379.54803903628), rx_c=np.float64(49.621092091432914), ry_c=np.float64(49.621092091432885), i11_c=np.float64(10828466.102927726), i22_c=np.float64(10828466.10292771), phi=0.0, z11_plus=np.float64(144379.54803903616), z11_minus=np.float64(144379.54803903654), z22_plus=np.float64(144379.54803903602), z22_minus=np.float64(144379.54803903628), r11_c=np.float64(49.621092091432914), r22_c=np.float64(49.621092091432885), j=np.float64(21656932.205855437), my_xx=np.float64(144379.54803903613), my_yy=np.float64(144379.54803903602), my_11=np.float64(144379.54803903613), my_22=np.float64(144379.54803903602), omega=array([-1.16366227e-11, -2.61335265e-11, -1.27721256e-11, ...,
@@ -87,14 +87,14 @@ Predefined strip profiles are also available:
 
 A plot of this profile can be generated using the `plot` method:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:50"
+---8<-- "examples/_code/steel_profile_shapes.py:50:50"
 ```
 
 ![Standard Strip Profile](./_images/steel_profile_strip_160_5_corrosion_1.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:51"
+---8<-- "examples/_code/steel_profile_shapes.py:51:51"
 ```
 
 ### Custom Strip Profile
@@ -107,14 +107,14 @@ Define a custom strip profile by specifying its width and height:
 
 A plot of this custom profile can be generated using the `plot` method:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:59"
+---8<-- "examples/_code/steel_profile_shapes.py:59:59"
 ```
 
 ![Custom Strip Profile](./_images/steel_profile_custom_strip.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:60"
+---8<-- "examples/_code/steel_profile_shapes.py:60:60"
 ```
 
 ## I Profiles (IPE, HEA, HEB, etc.)
@@ -129,13 +129,13 @@ Predefined I profiles are also available:
 
 A plot of this profile can be generated using the `plot` method:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:68"
+---8<-- "examples/_code/steel_profile_shapes.py:68:69"
 ```
 ![Standard I Profile](./_images/steel_profile_heb_600_corrosion_7.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:69"
+---8<-- "examples/_code/steel_profile_shapes.py:69:69"
 ```
 
 It you desire to use a different standard profile, you can change the `profile_name` parameter in the `IProfile` constructor.
@@ -152,14 +152,14 @@ Define a custom strip profile by specifying its width and height:
 
 A plot of this custom profile can be generated using the `plot` method:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:83"
+---8<-- "examples/_code/steel_profile_shapes.py:83:83"
 ```
 
 ![Custom I Profile](./_images/steel_profile_custom_i_profile.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:84"
+---8<-- "examples/_code/steel_profile_shapes.py:84:84"
 ```
 
 ## Visualizing Profiles
