@@ -62,7 +62,7 @@ A plot of this custom profile can be generated using the `plot` method:
 ```python
 ---8<-- "examples/_code/steel_profile_shapes.py:41:41"
 ```
-![Custom CHS Profile](./_images/steel_profile_chs_custom_chs.png)
+![Custom CHS Profile](./_images/steel_profile_custom_chs.png)
 
 Its properties can be accessed as follows:
 ```python
@@ -129,9 +129,9 @@ Predefined I profiles are also available:
 
 A plot of this profile can be generated using the `plot` method:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:68:69"
+---8<-- "examples/_code/steel_profile_shapes.py:68:68"
 ```
-![Standard I Profile](./_images/steel_profile_heb_600_corrosion_7.png)
+![Standard I Profile](./_images/steel_profile_heb600_corrosion_7.png)
 
 Its properties can be accessed as follows:
 ```python
@@ -161,10 +161,6 @@ Its properties can be accessed as follows:
 ```python
 ---8<-- "examples/_code/steel_profile_shapes.py:84:84"
 ```
-
-## Visualizing Profiles
-
-For each profile, the `plot` method is used to visualize the shape. The plots will display the geometry of the profiles, making it easier to understand their dimensions and configurations.
 
 <a name="full-code-example">
 ## Full Code Example
