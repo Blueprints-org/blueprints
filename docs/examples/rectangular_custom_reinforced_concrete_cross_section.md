@@ -6,8 +6,8 @@ hide:
 
 And just to show that you can create any RCS you like, here is a custom one:
 
+![Rectangular Reinforced Cross-section](./_images/rectangular_reinforced_cross_section_custom.png)
+
 ```python
 --8<-- "examples/_code/rectangular_reinforced_cross_section_custom.py"
 ```
-
-![Rectangular Reinforced Cross-section](./_images/rectangular_reinforced_cross_section_custom.png)
