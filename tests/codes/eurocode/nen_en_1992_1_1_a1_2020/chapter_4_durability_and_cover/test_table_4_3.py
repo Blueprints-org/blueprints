@@ -21,19 +21,13 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_
 )
 from blueprints.type_alias import YEARS
 
-DUMMY_EXPOSURE_CLASSES_NA = Table4Dot1ExposureClasses(
-    carbonation=Carbonation.NA,
-    chloride=Chloride.NA,
-    chloride_seawater=ChlorideSeawater.NA,
-    freeze=FreezeThaw.NA,
-    chemical=Chemical.NA,
-)
+DUMMY_EXPOSURE_CLASSES_NA = Table4Dot1ExposureClasses()
 
 DUMMY_EXPOSURE_CLASSES = Table4Dot1ExposureClasses(
     carbonation=Carbonation.XC2,
     chloride=Chloride.XD1,
     chloride_seawater=ChlorideSeawater.XS1,
-    freeze=FreezeThaw.NA,
+    freeze_thaw=FreezeThaw.NA,
     chemical=Chemical.XA2,
 )
 

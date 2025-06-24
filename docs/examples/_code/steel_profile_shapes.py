@@ -34,6 +34,7 @@ print(f"Moment of inertia about z-axis: {chs_profile.moment_of_inertia_about_z} 
 print(f"Elastic section modulus about y-axis: {chs_profile.elastic_section_modulus_about_y_negative} mm³")
 print(f"Elastic section modulus about z-axis: {chs_profile.elastic_section_modulus_about_z_positive} mm³")
 print(f"Area: {chs_profile.area} mm²")
+print(chs_profile.section_properties())
 
 # Example usage for custom CHS profile
 custom_chs_profile = CHSSteelProfile(
@@ -41,7 +42,9 @@ custom_chs_profile = CHSSteelProfile(
     wall_thickness=10,
     steel_material=steel_material,
 )
-custom_chs_profile.plot(show=False)
+
+custom_chs_profile.plot(show=True)
+print(custom_chs_profile.section_properties())
 
 # Example usage for Strip profile
 strip_profile = StripSteelProfile.from_standard_profile(
@@ -49,7 +52,9 @@ strip_profile = StripSteelProfile.from_standard_profile(
     steel_material=steel_material,
     corrosion=1,  # mm
 )
-strip_profile.plot(show=False)
+
+strip_profile.plot(show=True)
+print(strip_profile.section_properties())
 
 # Example usage for custom Strip profile
 custom_strip_profile = StripSteelProfile(
@@ -57,7 +62,9 @@ custom_strip_profile = StripSteelProfile(
     strip_height=41,
     steel_material=steel_material,
 )
-custom_strip_profile.plot(show=False)
+
+custom_strip_profile.plot(show=True)
+print(custom_strip_profile.section_properties())
 
 # Example usage for HEB600 profile
 heb_profile = ISteelProfile.from_standard_profile(
@@ -65,7 +72,9 @@ heb_profile = ISteelProfile.from_standard_profile(
     steel_material=steel_material,
     corrosion=7,  # mm
 )
-heb_profile.plot(show=False)
+
+heb_profile.plot(show=True)
+print(heb_profile.section_properties())
 
 # Example usage for custom I profile
 custom_i_profile = ISteelProfile(
@@ -79,6 +88,7 @@ custom_i_profile = ISteelProfile(
     top_radius=15,  # mm
     bottom_radius=8,  # mm
 )
+print(custom_i_profile.section_properties())
 custom_i_profile.plot(show=False)
 
 # Example usage for RHS profile
