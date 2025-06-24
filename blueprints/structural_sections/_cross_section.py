@@ -138,7 +138,7 @@ class CrossSection(ABC):
                 "sf_yy_minus": "sf_zz_minus",
             }
             # Rename keys in-place and remove old keys
-            for old_key, new_key in key_map.items():
+            for old_key, new_key in sorted(key_map.items(), key=lambda item: item[0], reverse=True):
                 if old_key in props:
                     props[new_key] = props.pop(old_key)
 

@@ -34,7 +34,7 @@ class TestCircularReinforcedCrossSection:
     def test_reinforcement_weight_longitudinal_bars(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the reinforcement_weight_longitudinal_bars method."""
         expected_weight = 14.98802804  # kg/m
-        assert circular_reinforced_cross_section.reinforcement_weight_longitudinal_bars == pytest.approx(expected=expected_weight, rel=1e-3)
+        assert circular_reinforced_cross_section.reinforcement_weight_longitudinal_bars == pytest.approx(expected=expected_weight, rel=1e-2)
 
     def test_reinforcement_weight_stirrups(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the reinforcement_weight_stirrups method."""

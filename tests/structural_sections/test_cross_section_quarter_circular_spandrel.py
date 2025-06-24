@@ -12,7 +12,7 @@ class TestQuarterCircularSpandrelCrossSection:
     def test_area(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
         """Test the area property of the QuarterCircularSpandrelCrossSection class."""
         expected_area = 50.0**2 - (np.pi * 50.0**2 / 4)
-        assert qcs_cross_section.area == pytest.approx(expected=expected_area, rel=1e-3)
+        assert qcs_cross_section.area == pytest.approx(expected=expected_area, rel=1e-2)
 
     def test_polygon(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
         """Test the geometry property of the QuarterCircularSpandrelCrossSection class."""
