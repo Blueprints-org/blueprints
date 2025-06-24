@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from sectionproperties.pre import Geometry
-from shapely import Polygon
+from shapely import Point, Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import MM
@@ -59,7 +59,8 @@ class CircularCrossSection(CrossSection):
         Polygon
             The shapely Polygon representing the circle.
         """
-        return self.centroid.buffer(self.radius)
+        centroid = Point(self.x, self.y)
+        return centroid.buffer(self.radius)
 
     def geometry(
         self,
