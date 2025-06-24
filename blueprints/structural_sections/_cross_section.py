@@ -66,6 +66,7 @@ class CrossSection(ABC):
 
     def section_properties(
         self,
+        coordinate_system: str = "YZ",
         geometric: bool = True,
         plastic: bool = True,
         warping: bool = True,
@@ -74,6 +75,10 @@ class CrossSection(ABC):
 
         Parameters
         ----------
+        coordinate_system : str
+            Coordinate system to use for the section properties.
+            Default is "YZ", Y=horizontal, Z=vertical, X reserved for longitudinal direction.
+            Other options is "XY", X=horizontal, Y=vertical, Z reserved for longitudinal direction.
         geometric : bool
             Whether to calculate geometric properties.
         plastic: bool
@@ -89,4 +94,54 @@ class CrossSection(ABC):
             section.calculate_warping_properties()
         if plastic:
             section.calculate_plastic_properties()
+
+        if coordinate_system == "YZ":
+            # Remap section property keys for YZ coordinate system
+            key_map = {
+                "qx": "qy",
+                "qy": "qz",
+                "ixx_g": "iyy_g",
+                "iyy_g": "izz_g",
+                "ixy_g": "iyz_g",
+                "cx": "cy",
+                "cy": "cz",
+                "ixx_c": "iyy_c",
+                "iyy_c": "izz_c",
+                "ixy_c": "iyz_c",
+                "zxx_plus": "zyy_plus",
+                "zxx_minus": "zyy_minus",
+                "zyy_plus": "zzz_plus",
+                "zyy_minus": "zzz_minus",
+                "rx_c": "ry_c",
+                "ry_c": "rz_c",
+                "my_xx": "my_yy",
+                "my_yy": "my_zz",
+                "x_se": "y_se",
+                "y_se": "z_se",
+                "x_st": "y_st",
+                "y_st": "z_st",
+                "a_sx": "a_sy",
+                "a_sy": "a_sz",
+                "a_sxy": "a_syz",
+                "beta_x_plus": "beta_y_plus",
+                "beta_x_minus": "beta_y_minus",
+                "beta_y_plus": "beta_z_plus",
+                "beta_y_minus": "beta_z_minus",
+                "x_pc": "y_pc",
+                "y_pc": "z_pc",
+                "sxx": "syy",
+                "syy": "szz",
+                "sf_xx_plus": "sf_yy_plus",
+                "sf_xx_minus": "sf_yy_minus",
+                "sf_yy_plus": "sf_zz_plus",
+                "sf_yy_minus": "sf_zz_minus",
+            }
+            # Rename keys in-place and remove old keys
+            props = section.section_props.asdict()
+            for old_key, new_key in key_map.items():
+                if old_key in props:
+                    props[new_key] = props.pop(old_key)
+            # Update the section_props object with the modified dict
+            section.section_props.__dict__.update(props)
+
         return section.section_props
