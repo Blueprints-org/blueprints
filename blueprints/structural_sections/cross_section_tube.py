@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from sectionproperties.pre import Geometry
-from shapely import Polygon
+from shapely import Point, Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import MM
@@ -92,9 +92,10 @@ class TubeCrossSection(CrossSection):
         Polygon
             The shapely Polygon representing the tube.
         """
+        center = Point(self.x, self.y)
         quad_segs = 64
-        outer_circle = self.centroid.buffer(self.outer_radius, quad_segs=quad_segs)
-        inner_circle = self.centroid.buffer(self.inner_radius, quad_segs=quad_segs)
+        outer_circle = center.buffer(self.outer_radius, quad_segs=quad_segs)
+        inner_circle = center.buffer(self.inner_radius, quad_segs=quad_segs)
         difference = outer_circle.difference(inner_circle)
         return Polygon(difference)  # type: ignore[arg-type]
 
