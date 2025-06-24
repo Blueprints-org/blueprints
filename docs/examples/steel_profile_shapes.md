@@ -13,7 +13,7 @@ Follow the steps below to explore the usage of different steel profile shapes (o
 Start by defining the steel material to be used for the profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:15:17"
+--8<-- "examples/_code/steel_profile_shapes.py:20:21"
 ```
 
 ## Circular Hollow Section (CHS) Profiles
@@ -23,18 +23,18 @@ Start by defining the steel material to be used for the profiles:
 Structual parameters are automatically calculated and can be obtained with:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:18:25"
+--8<-- "examples/_code/steel_profile_shapes.py:23:29"
 ```
 
-A plot of this profile can be generated using the `plot` method:
+A plot of this profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:26:26"
+---8<-- "examples/_code/steel_profile_shapes.py:31:31"
 ```
 ![CHS273x5 with 4mm corrosion](./_images/steel_profile_chs_273_5_corrosion_4.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:27:33"
+---8<-- "examples/_code/steel_profile_shapes.py:32:38"
 ```
 ```terminaloutput
 Steel class: SteelMaterial(steel_class=<SteelStrengthClass.S355: (<SteelStandardGroup.EN_10025_2: 'NEN-EN 10025-2'>, 'S 355')>, density=7850.0, diagram_type=<DiagramType.BI_LINEAR: 'Bi-Linear'>, quality_class=None, custom_name=None, custom_e_modulus=None, custom_poisson_ratio=None, custom_thermal_coefficient=None, custom_yield_strength=None, custom_ultimate_strength=None)
@@ -55,18 +55,18 @@ All section properties: SectionProperties(area=np.float64(829.2971942461268), pe
 Alternatively, define a custom CHS profile by specifying its dimensions:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:35:40"
+--8<-- "examples/_code/steel_profile_shapes.py:40:45"
 ```
 
-A plot of this custom profile can be generated using the `plot` method:
+A plot of this custom profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:41:41"
+---8<-- "examples/_code/steel_profile_shapes.py:47:47"
 ```
 ![Custom CHS Profile](./_images/steel_profile_custom_chs.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:42:42"
+---8<-- "examples/_code/steel_profile_shapes.py:48:48"
 ```
 ```terminaloutput
 All section properties of custom CHS profile: SectionProperties(area=np.float64(4397.788151305911), perimeter=471.2270701716454, mass=np.float64(4397.788151305911), ea=np.float64(4397.788151305911), ga=np.float64(2198.8940756529555), nu_eff=np.float64(0.0), e_eff=np.float64(1.0), g_eff=np.float64(0.5), qx=np.float64(-4.3075942812720314e-10), qy=np.float64(-2.837632351315733e-10), ixx_g=np.float64(10828466.102927726), iyy_g=np.float64(10828466.10292771), ixy_g=np.float64(-2.5585791263438296e-09), cx=np.float64(-6.452408014408574e-14), cy=np.float64(-9.79491083487708e-14), ixx_c=np.float64(10828466.102927726), iyy_c=np.float64(10828466.10292771), ixy_c=np.float64(-2.5585791263438573e-09), zxx_plus=np.float64(144379.54803903616), zxx_minus=np.float64(144379.54803903654), zyy_plus=np.float64(144379.54803903602), zyy_minus=np.float64(144379.54803903628), rx_c=np.float64(49.621092091432914), ry_c=np.float64(49.621092091432885), i11_c=np.float64(10828466.102927726), i22_c=np.float64(10828466.10292771), phi=0.0, z11_plus=np.float64(144379.54803903616), z11_minus=np.float64(144379.54803903654), z22_plus=np.float64(144379.54803903602), z22_minus=np.float64(144379.54803903628), r11_c=np.float64(49.621092091432914), r22_c=np.float64(49.621092091432885), j=np.float64(21656932.205855437), my_xx=np.float64(144379.54803903613), my_yy=np.float64(144379.54803903602), my_11=np.float64(144379.54803903613), my_22=np.float64(144379.54803903602), omega=array([-1.16366227e-11, -2.61335265e-11, -1.27721256e-11, ...,
@@ -82,19 +82,19 @@ All section properties of custom CHS profile: SectionProperties(area=np.float64(
 Predefined strip profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:44:49"
+--8<-- "examples/_code/steel_profile_shapes.py:50:55"
 ```
 
-A plot of this profile can be generated using the `plot` method:
+A plot of this profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:50:50"
+---8<-- "examples/_code/steel_profile_shapes.py:57:57"
 ```
 
 ![Standard Strip Profile](./_images/steel_profile_strip_160_5_corrosion_1.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:51:51"
+---8<-- "examples/_code/steel_profile_shapes.py:58:58"
 ```
 
 ### Custom Strip Profile
@@ -102,19 +102,19 @@ Its properties can be accessed as follows:
 Define a custom strip profile by specifying its width and height:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:53:58"
+--8<-- "examples/_code/steel_profile_shapes.py:60:65"
 ```
 
-A plot of this custom profile can be generated using the `plot` method:
+A plot of this custom profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:59:59"
+---8<-- "examples/_code/steel_profile_shapes.py:67:67"
 ```
 
 ![Custom Strip Profile](./_images/steel_profile_custom_strip.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:60:60"
+---8<-- "examples/_code/steel_profile_shapes.py:68:68"
 ```
 
 ## I Profiles (IPE, HEA, HEB, etc.)
@@ -124,42 +124,87 @@ Its properties can be accessed as follows:
 Predefined I profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:62:67"
+--8<-- "examples/_code/steel_profile_shapes.py:70:75"
 ```
 
-A plot of this profile can be generated using the `plot` method:
+A plot of this profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:68:68"
+---8<-- "examples/_code/steel_profile_shapes.py:77:77"
 ```
 ![Standard I Profile](./_images/steel_profile_heb600_corrosion_7.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:69:69"
+---8<-- "examples/_code/steel_profile_shapes.py:78:78"
 ```
 
 It you desire to use a different standard profile, you can change the `profile_name` parameter in the `IProfile` constructor.
 There are many standard profiles available, such as `IPE`, `HEA`, `HEB`, `HEM`, etc. to be used as the `profile_name`.
 Check all available profiles in this package: `blueprints.structural_sections.steel.steel_cross_sections.standard_profiles`.
 
-### Custom Strip Profile
+### Custom I Profile
 
-Define a custom strip profile by specifying its width and height:
+Define a custom I profile by specifying its width and height:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes.py:71:82"
+--8<-- "examples/_code/steel_profile_shapes.py:80:91"
 ```
 
-A plot of this custom profile can be generated using the `plot` method:
+A plot of this custom profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:83:83"
+---8<-- "examples/_code/steel_profile_shapes.py:93:93"
 ```
 
 ![Custom I Profile](./_images/steel_profile_custom_i_profile.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes.py:84:84"
+---8<-- "examples/_code/steel_profile_shapes.py:94:94"
+```
+
+## Rectangular Hollow Profiles (RHS, SHS, RHSCF, SHSCF)
+
+### Standard RHS Profile
+
+Predefined RHS profiles are also available:
+
+```python
+--8<-- "examples/_code/steel_profile_shapes.py:96:102"
+```
+
+A plot of this profile can be generated using the `plot` method. A show=True makes the plot appear:
+```python
+---8<-- "examples/_code/steel_profile_shapes.py:104:104"
+```
+![Standard I Profile](./_images/steel_profile_rhs_400x200x16_corrosion_0.png)
+
+Its properties can be accessed as follows:
+```python
+---8<-- "examples/_code/steel_profile_shapes.py:105:105"
+```
+
+It you desire to use a different standard profile, you can change the `profile_name` parameter in the `IProfile` constructor.
+There are many standard profiles available, such as `SHS`, `RHS`, `SHSCF`, `RHSCF`, etc. to be used as the `profile_name`.
+Check all available profiles in this package: `blueprints.structural_sections.steel.steel_cross_sections.standard_profiles`.
+
+### Custom RHS Profile
+
+Define a custom RHS profile by specifying its width and height:
+
+```python
+--8<-- "examples/_code/steel_profile_shapes.py:107:124"
+```
+
+A plot of this custom profile can be generated using the `plot` method. A show=True makes the plot appear:
+```python
+---8<-- "examples/_code/steel_profile_shapes.py:126:126"
+```
+
+![Custom RHS Profile](./_images/steel_profile_custom_rhs.png)
+
+Its properties can be accessed as follows:
+```python
+---8<-- "examples/_code/steel_profile_shapes.py:127:127"
 ```
 
 <a name="full-code-example">

@@ -27,6 +27,7 @@ chs_profile = CHSSteelProfile.from_standard_profile(
     corrosion_inside=0,  # mm
     corrosion_outside=4,  # mm
 )
+
 chs_profile.plot(show=False)
 print(f"Steel class: {chs_profile.steel_material}")
 print(f"Moment of inertia about y-axis: {chs_profile.moment_of_inertia_about_y} mm⁴")
@@ -43,7 +44,7 @@ custom_chs_profile = CHSSteelProfile(
     steel_material=steel_material,
 )
 
-custom_chs_profile.plot(show=True)
+custom_chs_profile.plot(show=False)
 print(custom_chs_profile.section_properties())
 
 # Example usage for Strip profile
@@ -53,7 +54,7 @@ strip_profile = StripSteelProfile.from_standard_profile(
     corrosion=1,  # mm
 )
 
-strip_profile.plot(show=True)
+strip_profile.plot(show=False)
 print(strip_profile.section_properties())
 
 # Example usage for custom Strip profile
@@ -63,7 +64,7 @@ custom_strip_profile = StripSteelProfile(
     steel_material=steel_material,
 )
 
-custom_strip_profile.plot(show=True)
+custom_strip_profile.plot(show=False)
 print(custom_strip_profile.section_properties())
 
 # Example usage for HEB600 profile
@@ -73,7 +74,7 @@ heb_profile = ISteelProfile.from_standard_profile(
     corrosion=7,  # mm
 )
 
-heb_profile.plot(show=True)
+heb_profile.plot(show=False)
 print(heb_profile.section_properties())
 
 # Example usage for custom I profile
@@ -88,6 +89,7 @@ custom_i_profile = ISteelProfile(
     top_radius=15,  # mm
     bottom_radius=8,  # mm
 )
+
 print(custom_i_profile.section_properties())
 custom_i_profile.plot(show=False)
 
@@ -96,8 +98,10 @@ rhs_profile = RHSSteelProfile.from_standard_profile(
     profile=RHS.RHS400x200_16,
     steel_material=steel_material,
     corrosion_inside=0,  # mm
-    corrosion_outside=0,  # mm (set to a small positive value to avoid zero thickness)
+    corrosion_outside=0,  # mm
 )
+
+print(rhs_profile.section_properties())
 rhs_profile.plot(show=False)
 
 # Example usage for custom RHS profile
@@ -118,6 +122,8 @@ custom_rhs_profile = RHSSteelProfile(
     bottom_right_outer_radius=10,  # mm (optional)
     bottom_left_outer_radius=12,  # mm (optional)
 )
+
+print(custom_rhs_profile.section_properties())
 custom_rhs_profile.plot(show=False)
 
 plt.show()
