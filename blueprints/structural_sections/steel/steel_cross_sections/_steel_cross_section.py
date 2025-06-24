@@ -93,7 +93,6 @@ class CombinedSteelCrossSection(CrossSection, ABC):
         MPa
             The yield strength of the steel element.
         """
-        # let's find the minimum yield strength of all elements
         return min(element.yield_strength for element in self.elements)
 
     @property
@@ -108,5 +107,4 @@ class CombinedSteelCrossSection(CrossSection, ABC):
         MPa
             The ultimate strength of the steel element.
         """
-        # let's find the minimum ultimate strength of all elements
         return min(element.ultimate_strength for element in self.elements)
