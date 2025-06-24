@@ -95,6 +95,7 @@ class CrossSection(ABC):
         if plastic:
             section.calculate_plastic_properties()
 
+        props = section.section_props.asdict()
         if coordinate_system == "YZ":
             # Remap section property keys for YZ coordinate system
             key_map = {
@@ -137,11 +138,8 @@ class CrossSection(ABC):
                 "sf_yy_minus": "sf_zz_minus",
             }
             # Rename keys in-place and remove old keys
-            props = section.section_props.asdict()
             for old_key, new_key in key_map.items():
                 if old_key in props:
                     props[new_key] = props.pop(old_key)
-            # Update the section_props object with the modified dict
-            section.section_props.__dict__.update(props)
-
-        return section.section_props
+        # Always return a SectionProperties object with the same format
+        return SectionProperties(**props)
