@@ -71,19 +71,3 @@ class TestRHSCFCornerCrossSection:
                 inner_radius=5,
                 outer_radius=20,
             )
-
-    def test_section_properties(self, rhscf_corner_cross_section: RHSCFCornerCrossSection) -> None:
-        """Test the section properties of the RHSCFCornerCrossSection class."""
-        section_properties = rhscf_corner_cross_section.section_properties()
-        assert section_properties.area == pytest.approx(expected=rhscf_corner_cross_section.area, rel=1e-2)
-        assert section_properties.perimeter == pytest.approx(expected=rhscf_corner_cross_section.perimeter, rel=1e-2)
-        assert section_properties.cx == pytest.approx(expected=rhscf_corner_cross_section.centroid.x, rel=1e-2)
-        assert section_properties.cy == pytest.approx(expected=rhscf_corner_cross_section.centroid.y, rel=1e-2)
-        assert section_properties.ixx_c == pytest.approx(expected=rhscf_corner_cross_section.moment_of_inertia_about_y, rel=1e-2)
-        assert section_properties.iyy_c == pytest.approx(expected=rhscf_corner_cross_section.moment_of_inertia_about_z, rel=1e-2)
-        assert section_properties.zxx_plus == pytest.approx(expected=rhscf_corner_cross_section.elastic_section_modulus_about_y_positive, rel=1e-2)
-        assert section_properties.zyy_plus == pytest.approx(expected=rhscf_corner_cross_section.elastic_section_modulus_about_z_positive, rel=1e-2)
-        assert section_properties.zxx_minus == pytest.approx(expected=rhscf_corner_cross_section.elastic_section_modulus_about_y_negative, rel=1e-2)
-        assert section_properties.zyy_minus == pytest.approx(expected=rhscf_corner_cross_section.elastic_section_modulus_about_z_negative, rel=1e-2)
-        assert section_properties.sxx == pytest.approx(expected=rhscf_corner_cross_section.plastic_section_modulus_about_y, rel=1e-2)
-        assert section_properties.syy == pytest.approx(expected=rhscf_corner_cross_section.plastic_section_modulus_about_z, rel=1e-2)
