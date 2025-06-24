@@ -141,5 +141,17 @@ class CrossSection(ABC):
             for old_key, new_key in key_map.items():
                 if old_key in props:
                     props[new_key] = props.pop(old_key)
-        # Always return a SectionProperties object with the same format
-        return SectionProperties(**props)
+
+        class CrossSectionProperties:
+            """Custom section properties container."""
+
+            def __init__(self, **kwargs) -> None:
+                """Initialize with properties."""
+                for k, v in kwargs.items():
+                    setattr(self, k, v)
+
+            def asdict(self) -> dict:
+                """Convert properties to a dictionary."""
+                return self.__dict__
+
+        return CrossSectionProperties(**props)

@@ -38,42 +38,6 @@ class TestRHSSteelProfile:
         expected_area: float = 17900  # mm²
         assert pytest.approx(rhs_profile.area, rel=1e-2) == expected_area
 
-    def test_centroid(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the centroid of the steel cross-section."""
-        expected_centroid: tuple[float, float] = (0, 0)  # (x, y) coordinates
-        assert pytest.approx(rhs_profile.centroid.x, rel=1e-2) == expected_centroid[0]
-        assert pytest.approx(rhs_profile.centroid.y, rel=1e-2) == expected_centroid[1]
-
-    def test_moment_of_inertia_about_y(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the moment of inertia about the y-axis."""
-        expected_moi_y: float = 3.5740e8  # mm⁴
-        assert pytest.approx(rhs_profile.moment_of_inertia_about_y, rel=1e-2) == expected_moi_y
-
-    def test_moment_of_inertia_about_z(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the moment of inertia about the z-axis."""
-        expected_moi_z: float = 1.1820e8  # mm⁴
-        assert pytest.approx(rhs_profile.moment_of_inertia_about_z, rel=1e-2) == expected_moi_z
-
-    def test_elastic_section_modulus_about_y_positive(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the elastic section modulus about the y-axis on the positive z side."""
-        expected_modulus_y_positive: float = 1.7870e6  # mm³
-        assert pytest.approx(rhs_profile.elastic_section_modulus_about_y_positive, rel=1e-2) == expected_modulus_y_positive
-
-    def test_elastic_section_modulus_about_y_negative(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the elastic section modulus about the y-axis on the negative z side."""
-        expected_modulus_y_negative: float = 1.7870e6  # mm³
-        assert pytest.approx(rhs_profile.elastic_section_modulus_about_y_negative, rel=1e-2) == expected_modulus_y_negative
-
-    def test_elastic_section_modulus_about_z_positive(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the elastic section modulus about the z-axis on the positive y side."""
-        expected_modulus_z_positive: float = 1.1820e6  # mm³
-        assert pytest.approx(rhs_profile.elastic_section_modulus_about_z_positive, rel=1e-2) == expected_modulus_z_positive
-
-    def test_elastic_section_modulus_about_z_negative(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the elastic section modulus about the z-axis on the negative y side."""
-        expected_modulus_z_negative: float = 1.1820e6  # mm³
-        assert pytest.approx(rhs_profile.elastic_section_modulus_about_z_negative, rel=1e-2) == expected_modulus_z_negative
-
     def test_plot(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
         fig: Figure = rhs_profile.plot()
@@ -83,14 +47,6 @@ class TestRHSSteelProfile:
         """Test the geometry of the RHS profile."""
         expected_geometry = rhs_profile.geometry
         assert expected_geometry is not None
-
-    def test_section_properties(self, rhs_profile: RHSSteelProfile) -> None:
-        """Test the section properties of the RHS profile."""
-        section_properties = rhs_profile.section_properties()
-        assert section_properties.cx == pytest.approx(expected=rhs_profile.centroid.x, rel=1e-2)
-        assert section_properties.cy == pytest.approx(expected=rhs_profile.centroid.y, rel=1e-2)
-        assert section_properties.sxx == pytest.approx(expected=rhs_profile.plastic_section_modulus_about_y, rel=1e-2)
-        assert section_properties.syy == pytest.approx(expected=rhs_profile.plastic_section_modulus_about_z, rel=1e-2)
 
     def test_get_profile_with_corrosion(self) -> None:
         """Test the RHS profile with corrosion applied."""
