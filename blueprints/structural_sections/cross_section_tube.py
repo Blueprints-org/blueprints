@@ -1,13 +1,12 @@
 """Circular tube cross-section shape."""
 
-import math
 from dataclasses import dataclass
 
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import MM, MM2, MM3, MM4
+from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
@@ -93,143 +92,12 @@ class TubeCrossSection(CrossSection):
         Polygon
             The shapely Polygon representing the tube.
         """
-        resolution = 64
-        outer_circle = self.centroid.buffer(self.outer_radius, quad_segs=resolution)
-        inner_circle = self.centroid.buffer(self.inner_radius, quad_segs=resolution)
+        center = Point(self.x, self.y)
+        quad_segs = 64
+        outer_circle = center.buffer(self.outer_radius, quad_segs=quad_segs)
+        inner_circle = center.buffer(self.inner_radius, quad_segs=quad_segs)
         difference = outer_circle.difference(inner_circle)
         return Polygon(difference)  # type: ignore[arg-type]
-
-    @property
-    def area(self) -> MM2:
-        """
-        Calculate the area of the circular tube cross-section [mm²].
-
-        Returns
-        -------
-        MM2
-            The area of the tube.
-        """
-        return math.pi * (self.outer_radius**2.0 - self.inner_radius**2.0)
-
-    @property
-    def perimeter(self) -> MM:
-        """
-        Calculate the perimeter (circumference) of the circular tube cross-section [mm].
-
-        Returns
-        -------
-        MM
-            The perimeter of the tube.
-        """
-        return 2.0 * math.pi * self.outer_radius
-
-    @property
-    def centroid(self) -> Point:
-        """
-        Get the centroid of the circular tube cross-section.
-
-        Returns
-        -------
-        Point
-            The centroid of the tube.
-        """
-        return Point(self.x, self.y)
-
-    @property
-    def moment_of_inertia_about_y(self) -> MM4:
-        """
-        Moments of inertia of the tube cross-section about the y-axis [mm⁴].
-
-        Returns
-        -------
-        MM4
-            The moment of inertia about the y-axis.
-        """
-        return (math.pi / 64) * (self.outer_diameter**4 - self.inner_diameter**4)
-
-    @property
-    def moment_of_inertia_about_z(self) -> MM4:
-        """
-        Moments of inertia of the tube cross-section about the z-axis [mm⁴].
-
-        Returns
-        -------
-        MM4
-            The moment of inertia about the z-axis.
-        """
-        return (math.pi / 64) * (self.outer_diameter**4 - self.inner_diameter**4)
-
-    @property
-    def elastic_section_modulus_about_y_positive(self) -> MM3:
-        """
-        Elastic section modulus about the y-axis on the positive z side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the y-axis.
-        """
-        return self.moment_of_inertia_about_y / self.outer_radius
-
-    @property
-    def elastic_section_modulus_about_y_negative(self) -> MM3:
-        """
-        Elastic section modulus about the y-axis on the negative z side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the y-axis.
-        """
-        return self.moment_of_inertia_about_y / self.outer_radius
-
-    @property
-    def elastic_section_modulus_about_z_positive(self) -> MM3:
-        """
-        Elastic section modulus about the z-axis on the positive y side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the z-axis.
-        """
-        return self.moment_of_inertia_about_z / self.outer_radius
-
-    @property
-    def elastic_section_modulus_about_z_negative(self) -> MM3:
-        """
-        Elastic section modulus about the z-axis on the negative y side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the z-axis.
-        """
-        return self.moment_of_inertia_about_z / self.outer_radius
-
-    @property
-    def plastic_section_modulus_about_y(self) -> MM3:
-        """
-        Plastic section modulus about the y-axis [mm³].
-
-        Returns
-        -------
-        MM3
-            The plastic section modulus about the y-axis.
-        """
-        return (self.outer_diameter**3 - self.inner_diameter**3) / 6
-
-    @property
-    def plastic_section_modulus_about_z(self) -> MM3:
-        """
-        Plastic section modulus about the z-axis [mm³].
-
-        Returns
-        -------
-        MM3
-            The plastic section modulus about the z-axis.
-        """
-        return (self.outer_diameter**3 - self.inner_diameter**3) / 6
 
     def geometry(
         self,

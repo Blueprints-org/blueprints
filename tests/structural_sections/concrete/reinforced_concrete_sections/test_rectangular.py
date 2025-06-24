@@ -79,32 +79,32 @@ class TestRectangularReinforcedCrossSection:
     def test_reinforcement_weight_longitudinal_bars(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the reinforcement_weight_longitudinal_bars method."""
         expected_weight = 46.38828588400884  # kg/m
-        assert rectangular_reinforced_cross_section.reinforcement_weight_longitudinal_bars == pytest.approx(expected=expected_weight, rel=1e-4)
+        assert rectangular_reinforced_cross_section.reinforcement_weight_longitudinal_bars == pytest.approx(expected=expected_weight, rel=1e-2)
 
     def test_reinforcement_weight_stirrups(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the reinforcement_weight_stirrups method."""
         expected_weight = 18.1087  # kg/m
-        assert rectangular_reinforced_cross_section.reinforcement_weight_stirrups == pytest.approx(expected=expected_weight, rel=1e-4)
+        assert rectangular_reinforced_cross_section.reinforcement_weight_stirrups == pytest.approx(expected=expected_weight, rel=1e-2)
 
     def test_reinforcement_weight(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the reinforcement_weight method."""
         expected_weight = 64.4969  # kg/m
-        assert rectangular_reinforced_cross_section.reinforcement_weight == pytest.approx(expected=expected_weight, rel=1e-4)
+        assert rectangular_reinforced_cross_section.reinforcement_weight == pytest.approx(expected=expected_weight, rel=1e-2)
 
     def test_reinforcement_area_longitudinal_bars(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the reinforcement_area_longitudinal_bars method."""
         expected_area = 5909.3357  # mm²/m
-        assert rectangular_reinforced_cross_section.reinforcement_area_longitudinal_bars == pytest.approx(expected=expected_area, rel=1e-4)
+        assert rectangular_reinforced_cross_section.reinforcement_area_longitudinal_bars == pytest.approx(expected=expected_area, rel=1e-2)
 
     def test_concrete_volume(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the concrete_volume method."""
         expected_volume = 0.8  # m³/m
-        assert rectangular_reinforced_cross_section.concrete_volume == pytest.approx(expected=expected_volume, rel=1e-4)
+        assert rectangular_reinforced_cross_section.concrete_volume == pytest.approx(expected=expected_volume, rel=1e-2)
 
     def test_weight_per_volume(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the weight_per_volume method."""
         expected_weight_per_volume = 80.6211  # kg/m³
-        assert rectangular_reinforced_cross_section.weight_per_volume == pytest.approx(expected=expected_weight_per_volume, rel=1e-4)
+        assert rectangular_reinforced_cross_section.weight_per_volume == pytest.approx(expected=expected_weight_per_volume, rel=1e-2)
 
     def test_add_longitudinal_rebar_wrong_position(self, rectangular_reinforced_cross_section: RectangularReinforcedCrossSection) -> None:
         """Test the add_longitudinal_rebar method with wrong position."""

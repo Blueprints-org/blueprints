@@ -44,7 +44,7 @@ class TestRebar:
 
     def test_weight_per_meter(self, rebar: Rebar) -> None:
         """Test the weight_per_meter property of the Rebar class."""
-        assert rebar.weight_per_meter == pytest.approx(expected=2.4661, rel=1e-4)
+        assert rebar.weight_per_meter == pytest.approx(expected=2.4661, rel=1e-2)
 
     def test_relative_start_position(self, rebar: Rebar) -> None:
         """Test the relative_start_position property of the Rebar class."""

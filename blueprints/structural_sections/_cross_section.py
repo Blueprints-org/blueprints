@@ -7,7 +7,7 @@ from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.type_alias import MM, MM2, MM3, MM4
+from blueprints.type_alias import MM, MM2
 
 
 class CrossSection(ABC):
@@ -44,46 +44,6 @@ class CrossSection(ABC):
         """Centroid of the cross-section [mm]."""
         return self.polygon.centroid
 
-    @property
-    @abstractmethod
-    def moment_of_inertia_about_y(self) -> MM4:
-        """Moments of inertia of the cross-section [mm⁴]."""
-
-    @property
-    @abstractmethod
-    def moment_of_inertia_about_z(self) -> MM4:
-        """Moments of inertia of the cross-section [mm⁴]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_y_positive(self) -> MM3:
-        """Elastic section modulus about the y-axis on the positive z side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_y_negative(self) -> MM3:
-        """Elastic section modulus about the y-axis on the negative z side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_z_positive(self) -> MM3:
-        """Elastic section modulus about the z-axis on the positive y side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_z_negative(self) -> MM3:
-        """Elastic section modulus about the z-axis on the negative y side [mm³]."""
-
-    @property
-    @abstractmethod
-    def plastic_section_modulus_about_y(self) -> MM3 | None:
-        """Plastic section modulus about the y-axis [mm³]."""
-
-    @property
-    @abstractmethod
-    def plastic_section_modulus_about_z(self) -> MM3 | None:
-        """Plastic section modulus about the z-axis [mm³]."""
-
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
         """Geometry of the cross-section.
 
@@ -106,6 +66,7 @@ class CrossSection(ABC):
 
     def section_properties(
         self,
+        coordinate_system: str = "YZ",
         geometric: bool = True,
         plastic: bool = True,
         warping: bool = True,
@@ -114,6 +75,10 @@ class CrossSection(ABC):
 
         Parameters
         ----------
+        coordinate_system : str
+            Coordinate system to use for the section properties.
+            Default is "YZ", Y=horizontal, Z=vertical, X reserved for longitudinal direction.
+            Other options is "XY", X=horizontal, Y=vertical, Z reserved for longitudinal direction.
         geometric : bool
             Whether to calculate geometric properties.
         plastic: bool
@@ -129,4 +94,64 @@ class CrossSection(ABC):
             section.calculate_warping_properties()
         if plastic:
             section.calculate_plastic_properties()
-        return section.section_props
+
+        props = section.section_props.asdict()
+        if coordinate_system == "YZ":
+            # Remap section property keys for YZ coordinate system
+            key_map = {
+                "qx": "qy",
+                "qy": "qz",
+                "ixx_g": "iyy_g",
+                "iyy_g": "izz_g",
+                "ixy_g": "iyz_g",
+                "cx": "cy",
+                "cy": "cz",
+                "ixx_c": "iyy_c",
+                "iyy_c": "izz_c",
+                "ixy_c": "iyz_c",
+                "zxx_plus": "zyy_plus",
+                "zxx_minus": "zyy_minus",
+                "zyy_plus": "zzz_plus",
+                "zyy_minus": "zzz_minus",
+                "rx_c": "ry_c",
+                "ry_c": "rz_c",
+                "my_xx": "my_yy",
+                "my_yy": "my_zz",
+                "x_se": "y_se",
+                "y_se": "z_se",
+                "x_st": "y_st",
+                "y_st": "z_st",
+                "a_sx": "a_sy",
+                "a_sy": "a_sz",
+                "a_sxy": "a_syz",
+                "beta_x_plus": "beta_y_plus",
+                "beta_x_minus": "beta_y_minus",
+                "beta_y_plus": "beta_z_plus",
+                "beta_y_minus": "beta_z_minus",
+                "x_pc": "y_pc",
+                "y_pc": "z_pc",
+                "sxx": "syy",
+                "syy": "szz",
+                "sf_xx_plus": "sf_yy_plus",
+                "sf_xx_minus": "sf_yy_minus",
+                "sf_yy_plus": "sf_zz_plus",
+                "sf_yy_minus": "sf_zz_minus",
+            }
+            # Rename keys in-place and remove old keys
+            for old_key, new_key in sorted(key_map.items(), key=lambda item: item[0], reverse=True):
+                if old_key in props:
+                    props[new_key] = props.pop(old_key)
+
+        class CrossSectionProperties:
+            """Custom section properties container."""
+
+            def __init__(self, **kwargs) -> None:
+                """Initialize with properties."""
+                for k, v in kwargs.items():
+                    setattr(self, k, v)
+
+            def asdict(self) -> dict:
+                """Convert properties to a dictionary."""
+                return self.__dict__
+
+        return CrossSectionProperties(**props)

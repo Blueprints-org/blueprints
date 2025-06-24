@@ -7,8 +7,10 @@ from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
+from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSSteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripSteelProfile
 
@@ -43,3 +45,11 @@ def empty_combined_steel_cross_section() -> CombinedSteelCrossSection:
     return CombinedSteelCrossSection(
         name="Empty Combined Steel Cross Section",
     )
+
+
+@pytest.fixture
+def rhs_profile() -> RHSSteelProfile:
+    """Fixture to set up an RHS profile for testing."""
+    profile = RHS.RHS400x200_16
+    steel_class = SteelStrengthClass.S355
+    return RHSSteelProfile.from_standard_profile(profile=profile, steel_material=SteelMaterial(steel_class))
