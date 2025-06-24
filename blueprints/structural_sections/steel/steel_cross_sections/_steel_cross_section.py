@@ -10,7 +10,7 @@ from shapely.geometry.polygon import orient
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections.steel.steel_element import SteelElement
-from blueprints.type_alias import KG_M, M3_M, MM, MM3, MPA
+from blueprints.type_alias import KG_M, M3_M, MM, MPA
 from blueprints.unit_conversion import MM3_TO_M3
 
 
@@ -80,58 +80,6 @@ class CombinedSteelCrossSection(CrossSection, ABC):
             The weight per meter of the steel element.
         """
         return sum(element.weight_per_meter for element in self.elements)
-
-    @property
-    def moment_of_inertia_about_y(self) -> KG_M:
-        """Moment of inertia about the y-axis per meter length [mm⁴]."""
-        body_moments_of_inertia = sum(element.cross_section.moment_of_inertia_about_y for element in self.elements)
-        parallel_axis_theorem = sum(
-            element.cross_section.area * (element.cross_section.centroid.y - self.centroid.y) ** 2 for element in self.elements
-        )
-        return body_moments_of_inertia + parallel_axis_theorem
-
-    @property
-    def moment_of_inertia_about_z(self) -> KG_M:
-        """Moment of inertia about the z-axis per meter length [mm⁴]."""
-        body_moments_of_inertia = sum(element.cross_section.moment_of_inertia_about_z for element in self.elements)
-        parallel_axis_theorem = sum(
-            element.cross_section.area * (element.cross_section.centroid.x - self.centroid.x) ** 2 for element in self.elements
-        )
-        return body_moments_of_inertia + parallel_axis_theorem
-
-    @property
-    def elastic_section_modulus_about_y_positive(self) -> KG_M:
-        """Elastic section modulus about the y-axis on the positive z side [mm³]."""
-        distance_to_top = max(y for _, y in self.polygon.exterior.coords) - self.centroid.y
-        return self.moment_of_inertia_about_y / distance_to_top
-
-    @property
-    def elastic_section_modulus_about_y_negative(self) -> KG_M:
-        """Elastic section modulus about the y-axis on the negative z side [mm³]."""
-        distance_to_bottom = self.centroid.y - min(y for _, y in self.polygon.exterior.coords)
-        return self.moment_of_inertia_about_y / distance_to_bottom
-
-    @property
-    def elastic_section_modulus_about_z_positive(self) -> KG_M:
-        """Elastic section modulus about the z-axis on the positive y side [mm³]."""
-        distance_to_right = max(x for x, _ in self.polygon.exterior.coords) - self.centroid.x
-        return self.moment_of_inertia_about_z / distance_to_right
-
-    @property
-    def elastic_section_modulus_about_z_negative(self) -> KG_M:
-        """Elastic section modulus about the z-axis on the negative y side [mm³]."""
-        distance_to_left = self.centroid.x - min(x for x, _ in self.polygon.exterior.coords)
-        return self.moment_of_inertia_about_z / distance_to_left
-
-    @property
-    def plastic_section_modulus_about_y(self) -> MM3 | None:
-        """Plastic section modulus about the y-axis [mm³]."""
-        return self.section_properties().sxx
-
-    @property
-    def plastic_section_modulus_about_z(self) -> MM3 | None:
-        """Plastic section modulus about the z-axis [mm³]."""
-        return self.section_properties().syy
 
     @property
     def yield_strength(self) -> MPA:
