@@ -29,12 +29,6 @@ chs_profile = CHSSteelProfile.from_standard_profile(
 )
 
 chs_profile.plot(show=False)
-print(f"Steel class: {chs_profile.steel_material}")
-print(f"Moment of inertia about y-axis: {chs_profile.moment_of_inertia_about_y} mm⁴")
-print(f"Moment of inertia about z-axis: {chs_profile.moment_of_inertia_about_z} mm⁴")
-print(f"Elastic section modulus about y-axis: {chs_profile.elastic_section_modulus_about_y_negative} mm³")
-print(f"Elastic section modulus about z-axis: {chs_profile.elastic_section_modulus_about_z_positive} mm³")
-print(f"Area: {chs_profile.area} mm²")
 print(chs_profile.section_properties())
 
 # Example usage for custom CHS profile
