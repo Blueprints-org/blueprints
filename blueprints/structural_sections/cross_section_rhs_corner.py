@@ -7,7 +7,7 @@ from sectionproperties.pre import Geometry
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import MM, MM2
+from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
@@ -109,14 +109,6 @@ class RHSCFCornerCrossSection(CrossSection):
             points = [(x, 2 * self.y - y) for x, y in points]
 
         return Polygon(points)
-
-    @property
-    def area(self) -> MM2:
-        """Area of the RHSCF corner cross-section [mm²]."""
-        area_rectangle = self.width_rectangle * self.height_rectangle
-        area_inner_circle = math.pi * (self.inner_radius**2) / 4
-        area_outer_circle_spandrel = self.outer_radius**2 - math.pi * (self.outer_radius**2) / 4
-        return area_rectangle - area_inner_circle - area_outer_circle_spandrel
 
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
         """
