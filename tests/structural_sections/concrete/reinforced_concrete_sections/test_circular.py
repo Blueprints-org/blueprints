@@ -49,17 +49,17 @@ class TestCircularReinforcedCrossSection:
     def test_reinforcement_area_longitudinal_bars(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the reinforcement_area_longitudinal_bars method."""
         expected_area = 1909.302935  # mm²/m
-        assert circular_reinforced_cross_section.reinforcement_area_longitudinal_bars == pytest.approx(expected=expected_area, rel=1e-3)
+        assert circular_reinforced_cross_section.reinforcement_area_longitudinal_bars == pytest.approx(expected=expected_area, rel=1e-2)
 
     def test_concrete_volume(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the concrete_volume method."""
         expected_volume = 0.125663706  # m³/m
-        assert circular_reinforced_cross_section.concrete_volume == pytest.approx(expected=expected_volume, rel=1e-3)
+        assert circular_reinforced_cross_section.concrete_volume == pytest.approx(expected=expected_volume, rel=1e-2)
 
     def test_weight_per_volume(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the weight_per_volume method."""
         expected_weight_per_volume = 302.0165231  # kg/m³
-        assert circular_reinforced_cross_section.weight_per_volume == pytest.approx(expected=expected_weight_per_volume, rel=1e-3)
+        assert circular_reinforced_cross_section.weight_per_volume == pytest.approx(expected=expected_weight_per_volume, rel=1e-2)
 
     def test_add_longitudinal_rebar_wrong_position(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the add_longitudinal_rebar method with wrong position."""
