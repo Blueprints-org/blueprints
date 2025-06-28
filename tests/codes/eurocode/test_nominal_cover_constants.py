@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from blueprints.checks.nominal_concrete_cover.constants.base import AbrasionClass, CastingSurface, NominalConcreteCoverConstantsBase
+from blueprints.codes.eurocode.nominal_cover_constants import AbrasionClass, CastingSurface, NominalConcreteCoverConstantsBase
 from blueprints.type_alias import MM
 
 

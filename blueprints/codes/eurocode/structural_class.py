@@ -1,4 +1,4 @@
-"""Generic module for the concrete structural class according to NEN-EN 1992-1-1 Concrete - General."""
+"""Generic module for the concrete structural class according to EN 1992-1-1 Concrete - General."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ class ConcreteStructuralClassBase(int):
     This Class can be used to keep track of the operations of the structural class of the concrete element.
 
     In accordance with:
-    NEN-EN 1992-1-1 Concrete - General
+    EN 1992-1-1 Concrete - General
     """
 
     def __new__(
@@ -103,7 +103,7 @@ class AbstractConcreteStructuralClassCalculator(ABC):
     """(Abstract class for) Structural class calculator of the concrete element.
 
     This abstract class is in accordance with:
-    NEN-EN 1992-1-1 Concrete - General
+    EN 1992-1-1 Concrete - General
 
     This abstract class should be implemented in for each specific release of the Eurocode.
     """

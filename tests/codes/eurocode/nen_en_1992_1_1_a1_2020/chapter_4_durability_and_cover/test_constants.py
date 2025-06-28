@@ -2,10 +2,10 @@
 
 import pytest
 
-from blueprints.checks.nominal_concrete_cover.constants.base import AbrasionClass, CastingSurface
 from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.constants import (
     NominalConcreteCoverConstants2020A1,
 )
+from blueprints.codes.eurocode.nominal_cover_constants import AbrasionClass, CastingSurface
 from blueprints.type_alias import MM
 
 
