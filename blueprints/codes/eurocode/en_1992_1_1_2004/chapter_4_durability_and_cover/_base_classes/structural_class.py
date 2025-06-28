@@ -5,7 +5,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, Self
 
-from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase as ExposureClasses
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.exposure_classes import (
+    ExposureClassesBase as ExposureClasses,
+)
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.type_alias import YEARS
 

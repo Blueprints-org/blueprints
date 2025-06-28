@@ -3,6 +3,14 @@ r"""Calculation of nominal concrete cover from EN 1992-1-1: Chapter 4 - Durabili
 from dataclasses import dataclass, field
 from typing import Literal
 
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
+    AbrasionClass,
+    CastingSurface,
+)
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
+    NominalConcreteCoverConstantsBase as ConstantsBase,
+)
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.structural_class import ConcreteStructuralClassBase
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
@@ -17,14 +25,6 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.t
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_4n import (
     Table4Dot4nMinimumCoverDurabilityReinforcementSteel,
 )
-from blueprints.codes.eurocode.nominal_cover_constants import (
-    AbrasionClass,
-    CastingSurface,
-)
-from blueprints.codes.eurocode.nominal_cover_constants import (
-    NominalConcreteCoverConstantsBase as ConstantsBase,
-)
-from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
 from blueprints.codes.latex_formula import latex_max_curly_brackets
 from blueprints.type_alias import MM
 

@@ -3,6 +3,12 @@
 import pytest
 
 from blueprints.checks.nominal_concrete_cover.nominal_concrete_cover import NominalConcreteCover
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
+    AbrasionClass,
+    CastingSurface,
+    NominalConcreteCoverConstantsBase,
+)
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.structural_class import ConcreteStructuralClassBase
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.constants import NominalConcreteCoverConstants
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
@@ -13,8 +19,6 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.t
     Table4Dot1ExposureClasses,
 )
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
-from blueprints.codes.eurocode.nominal_cover_constants import AbrasionClass, CastingSurface, NominalConcreteCoverConstantsBase
-from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.type_alias import MM
 

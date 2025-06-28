@@ -6,13 +6,16 @@ from collections.abc import Sequence
 from typing import Self
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.structural_class import (
+    AbstractConcreteStructuralClassCalculator,
+    ConcreteStructuralClassBase,
+)
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chloride,
     ChlorideSeawater,
     Table4Dot1ExposureClasses,
 )
-from blueprints.codes.eurocode.structural_class import AbstractConcreteStructuralClassCalculator, ConcreteStructuralClassBase
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.type_alias import YEARS
 

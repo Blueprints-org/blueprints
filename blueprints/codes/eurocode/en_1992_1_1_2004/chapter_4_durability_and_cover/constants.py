@@ -2,7 +2,11 @@
 
 from dataclasses import dataclass, field
 
-from blueprints.codes.eurocode.nominal_cover_constants import AbrasionClass, CastingSurface, NominalConcreteCoverConstantsBase
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
+    AbrasionClass,
+    CastingSurface,
+    NominalConcreteCoverConstantsBase,
+)
 from blueprints.type_alias import MM
 
 
