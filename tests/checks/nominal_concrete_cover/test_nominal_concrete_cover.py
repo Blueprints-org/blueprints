@@ -1,4 +1,4 @@
-"""Testing nominal concrete cover check of NEN-EN 1992-1-1."""
+"""Testing nominal concrete cover check of EN 1992-1-1."""
 
 import pytest
 
@@ -23,7 +23,7 @@ structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, Concr
 
 
 class TestNominalConcreteCover:
-    """Validation for nominal concrete cover check from NEN-EN 1992-1-1."""
+    """Validation for nominal concrete cover check from EN 1992-1-1."""
 
     @pytest.mark.parametrize(
         (
@@ -242,7 +242,7 @@ class TestNominalConcreteCover:
         )
 
         assert (
-            nominal_concrete_cover.latex() == r"Nominal~concrete~cover~according~to~art.~4.4.1~from~NEN-EN~1992-1-1+C2:2011:\newline~"
+            nominal_concrete_cover.latex() == r"Nominal~concrete~cover~according~to~art.~4.4.1~from~EN~1992-1-1:2004:\newline~"
             r"\max~\left\{Nominal~concrete~cover~according~to~art.~4.4.1~(c_{nom});~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)\right\}\newline~"
             r"=~\max~\left\{55.0;~110.0\right\}~=~110.0~mm\newline~"
             r"\newline~"

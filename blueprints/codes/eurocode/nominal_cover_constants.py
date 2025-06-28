@@ -35,7 +35,8 @@ class CastingSurface(Enum):
 class NominalConcreteCoverConstantsBase(ABC):
     """Base class for constants for the calculation of nominal concrete cover."""
 
-    CODE_SUFFIX: str  # Suffix for the code, e.g. "+C2:2011"
+    CODE_PREFIX: str  # Prefix for the code representing the country, e.g. "NEN-, DIN-, BS-, etc."
+    CODE_SUFFIX: str  # Suffix for the code representing the publication year, e.g. "+C2:2011"
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM
     COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM]
     DEFAULT_DELTA_C_DEV: MM

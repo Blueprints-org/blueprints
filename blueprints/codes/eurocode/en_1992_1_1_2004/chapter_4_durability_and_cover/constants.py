@@ -10,7 +10,9 @@ from blueprints.type_alias import MM
 class NominalConcreteCoverConstants(NominalConcreteCoverConstantsBase):
     """Constants for the calculation of nominal concrete cover according to EN 1992-1-1:2004."""
 
-    CODE_SUFFIX: str = field(default="+C2:2011", init=False)
+    CODE_PREFIX: str = field(default="", init=False)
+
+    CODE_SUFFIX: str = field(default=":2004", init=False)
 
     # According to art. 4.4.1.2 (11) from EN 1992-1-1:2004
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = field(default=5, init=False)

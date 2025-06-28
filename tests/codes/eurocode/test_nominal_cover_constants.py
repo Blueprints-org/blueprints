@@ -12,7 +12,8 @@ from blueprints.type_alias import MM
 class DummyConstants(NominalConcreteCoverConstantsBase):
     """Dummy constants for testing purposes."""
 
-    CODE_SUFFIX: str = "DUMMY"
+    CODE_PREFIX: str = "DUMMY_PREFIX-"
+    CODE_SUFFIX: str = ":DUMMY_SUFFIX"
     COVER_INCREASE_FOR_ABRASION_CLASS: dict[AbrasionClass, MM] = field(default_factory=dict)
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = 5
     DEFAULT_DELTA_C_DEV: MM = 5
@@ -45,7 +46,7 @@ class TestNominalConcreteCoverConstantsBase:
     def test_abstract_method(self) -> None:
         """Test that the abstract method raises a TypeError."""
         with pytest.raises(TypeError):
-            _ = NominalConcreteCoverConstantsBase("_", 0, {}, 0)  # type: ignore[abstract]
+            _ = NominalConcreteCoverConstantsBase("_", "_", 0, {}, 0)  # type: ignore[abstract]
 
     def test_instantiation(self) -> None:
         """Test that the class can be instantiated."""
@@ -58,6 +59,7 @@ class TestNominalConcreteCoverConstantsBase:
             "XM3": 15,
         }
         assert constants.DEFAULT_DELTA_C_DEV == 5
-        assert constants.CODE_SUFFIX == "DUMMY"
+        assert constants.CODE_PREFIX == "DUMMY_PREFIX-"
+        assert constants.CODE_SUFFIX == ":DUMMY_SUFFIX"
         assert constants.minimum_cover_with_regard_to_casting_surface(0, CastingSurface.PERMANENTLY_EXPOSED) == 0
         assert constants.minimum_cover_with_regard_to_casting_surface_latex(CastingSurface.PERMANENTLY_EXPOSED) == ""

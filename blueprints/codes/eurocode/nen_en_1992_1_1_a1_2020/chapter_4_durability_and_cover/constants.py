@@ -7,8 +7,10 @@ from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
-class NominalConcreteCoverConstants2020A1(NominalConcreteCoverConstantsBase):
+class NominalConcreteCoverConstants(NominalConcreteCoverConstantsBase):
     """Constants for the calculation of nominal concrete cover according to NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020."""
+
+    CODE_PREFIX: str = field(default="NEN-", init=False)
 
     CODE_SUFFIX: str = field(default=":2005+A1:2015+NB:2016+A1:2020", init=False)
 

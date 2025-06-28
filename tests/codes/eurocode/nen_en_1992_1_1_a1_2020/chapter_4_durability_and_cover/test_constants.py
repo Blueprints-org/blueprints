@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.constants import (
-    NominalConcreteCoverConstants2020A1,
+    NominalConcreteCoverConstants,
 )
 from blueprints.codes.eurocode.nominal_cover_constants import AbrasionClass, CastingSurface
 from blueprints.type_alias import MM
@@ -14,7 +14,7 @@ class TestNominalConcreteCoverConstants2020A1:
 
     def test_instantiation(self) -> None:
         """Test that the class can be instantiated."""
-        constants = NominalConcreteCoverConstants2020A1()
+        constants = NominalConcreteCoverConstants()
         assert constants.COVER_INCREASE_FOR_UNEVEN_SURFACE == 5
         assert constants.COVER_INCREASE_FOR_ABRASION_CLASS == {
             AbrasionClass.NA: 0,
@@ -27,13 +27,13 @@ class TestNominalConcreteCoverConstants2020A1:
     def test_instantiation_with_custom_cover_increase_uneven_surfaces(self) -> None:
         """Test that the class cannot be instantiated with custom value for the cover increase for uneven surfaces."""
         with pytest.raises(TypeError, match=".* got an unexpected keyword argument .*"):
-            _ = NominalConcreteCoverConstants2020A1(  # type: ignore[call-arg]
+            _ = NominalConcreteCoverConstants(  # type: ignore[call-arg]
                 COVER_INCREASE_FOR_UNEVEN_SURFACE=10,
             )
 
     def test_instantiation_with_custom_cover_increase_abraison_class(self) -> None:
         """Test that the class can be instantiated with custom value for the cover increase for abrasion class."""
-        custom_constants = NominalConcreteCoverConstants2020A1(  # type: ignore[call-arg]
+        custom_constants = NominalConcreteCoverConstants(  # type: ignore[call-arg]
             COVER_INCREASE_FOR_ABRASION_CLASS={
                 AbrasionClass.NA: 0,
             },
@@ -44,19 +44,19 @@ class TestNominalConcreteCoverConstants2020A1:
 
     def test_instantiation_with_custom_delta_c_dev(self) -> None:
         """Test that the class can be instantiated with custom value for the default delta c_dev."""
-        custom_constants = NominalConcreteCoverConstants2020A1(  # type: ignore[call-arg]
+        custom_constants = NominalConcreteCoverConstants(  # type: ignore[call-arg]
             DEFAULT_DELTA_C_DEV=13,
         )
         assert custom_constants.DEFAULT_DELTA_C_DEV == 13
 
     def test_instantiation_with_default_delta_c_dev(self) -> None:
         """Test that the class can be instantiated with default value for the default delta c_dev."""
-        custom_constants = NominalConcreteCoverConstants2020A1()
+        custom_constants = NominalConcreteCoverConstants()
         assert custom_constants.DEFAULT_DELTA_C_DEV == 5  # Default value
 
     def test_post_init(self) -> None:
         """Test that the post-init method sets default values."""
-        constants = NominalConcreteCoverConstants2020A1()
+        constants = NominalConcreteCoverConstants()
         assert constants.COVER_INCREASE_FOR_ABRASION_CLASS == {
             AbrasionClass.NA: 0,
             AbrasionClass.XM1: 0,
@@ -75,7 +75,7 @@ class TestNominalConcreteCoverConstants2020A1:
     )
     def test_minimum_cover_with_regard_to_casting_surface(self, c_min_dur: MM, casting_surface: CastingSurface, expected_result: MM) -> None:
         """Test the method for the calculation of the minimum cover with regard to casting surface."""
-        constants = NominalConcreteCoverConstants2020A1()
+        constants = NominalConcreteCoverConstants()
         assert constants.minimum_cover_with_regard_to_casting_surface(c_min_dur, casting_surface) == expected_result
 
     @pytest.mark.parametrize(
@@ -89,5 +89,5 @@ class TestNominalConcreteCoverConstants2020A1:
     )
     def test_minimum_cover_with_regard_to_casting_surface_latex(self, casting_surface: CastingSurface, expected_result: str) -> None:
         """Test the method for the calculation of the minimum cover with regard to casting surface in LaTeX."""
-        constants = NominalConcreteCoverConstants2020A1()
+        constants = NominalConcreteCoverConstants()
         assert constants.minimum_cover_with_regard_to_casting_surface_latex(casting_surface) == expected_result
