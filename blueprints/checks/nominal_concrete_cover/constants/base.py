@@ -1,10 +1,34 @@
-"""Base class for constants for the calculation of nominal concrete cover."""
+"""Definitions and base classes for constants for the calculation of nominal concrete cover according to art. 4.4.1 from EN 1992-1-1:2004."""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from enum import Enum
 
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
 from blueprints.type_alias import MM
+
+
+class AbrasionClass(Enum):
+    """Enum representing the abrasion class of the concrete surface.
+
+    According to art. 4.4.1.2 (13) from EN 1992-1-1:2004
+    """
+
+    NA = "Not applicable"
+    XM1 = "XM1"
+    XM2 = "XM2"
+    XM3 = "XM3"
+
+
+class CastingSurface(Enum):
+    """Enum representing the casting surface of the concrete.
+
+    According to art. 4.4.1.3 (4) from EN 1992-1-1:2004
+    """
+
+    PERMANENTLY_EXPOSED = "Permanently exposed"
+    FORMWORK = "Formwork"
+    PREPARED_GROUND = "Prepared ground (including blinding)"
+    DIRECTLY_AGAINST_SOIL = "Directly against soil"
 
 
 @dataclass(frozen=True)
@@ -19,9 +43,9 @@ class NominalConcreteCoverConstantsBase(ABC):
     @staticmethod
     @abstractmethod
     def minimum_cover_with_regard_to_casting_surface(c_min_dur: MM, casting_surface: CastingSurface) -> MM:
-        """Calculate the minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from NEN-EN 1992-1-1."""
+        """Calculate the minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from EN 1992-1-1."""
 
     @staticmethod
     @abstractmethod
     def minimum_cover_with_regard_to_casting_surface_latex(casting_surface: CastingSurface) -> str:
-        """LateX representation of minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from NEN-EN 1992-1-1."""
+        """LateX representation of minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from EN 1992-1-1."""

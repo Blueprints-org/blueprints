@@ -2,10 +2,9 @@
 
 import pytest
 
-from blueprints.checks.nominal_concrete_cover.constants.base import NominalConcreteCoverConstantsBase
-from blueprints.checks.nominal_concrete_cover.constants.constants_en_1992_1_1_2004 import NominalConcreteCoverConstants
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
+from blueprints.checks.nominal_concrete_cover.constants.base import AbrasionClass, CastingSurface, NominalConcreteCoverConstantsBase
 from blueprints.checks.nominal_concrete_cover.nominal_concrete_cover import NominalConcreteCover
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.constants import NominalConcreteCoverConstants
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,

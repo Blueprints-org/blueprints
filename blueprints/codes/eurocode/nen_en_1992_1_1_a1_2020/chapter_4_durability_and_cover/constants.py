@@ -2,8 +2,7 @@
 
 from dataclasses import dataclass, field
 
-from blueprints.checks.nominal_concrete_cover.constants.base import NominalConcreteCoverConstantsBase
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
+from blueprints.checks.nominal_concrete_cover.constants.base import AbrasionClass, CastingSurface, NominalConcreteCoverConstantsBase
 from blueprints.type_alias import MM
 
 

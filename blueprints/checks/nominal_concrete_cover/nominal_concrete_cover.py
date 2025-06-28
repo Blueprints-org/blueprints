@@ -4,9 +4,12 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 from blueprints.checks.nominal_concrete_cover.constants.base import (
+    AbrasionClass,
+    CastingSurface,
+)
+from blueprints.checks.nominal_concrete_cover.constants.base import (
     NominalConcreteCoverConstantsBase as ConstantsBase,
 )
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
