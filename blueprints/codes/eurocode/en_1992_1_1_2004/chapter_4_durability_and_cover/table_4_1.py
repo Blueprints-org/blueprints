@@ -4,7 +4,7 @@ according to Table 4.1 from EN 1992-1-1:2004: Chapter 4 - Durability and cover t
 
 from functools import total_ordering
 
-from blueprints.codes.eurocode.exposure_classes import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.exposure_classes import (
     Exposure,
     ExposureClassesBase,
 )

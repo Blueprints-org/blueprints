@@ -1,5 +1,5 @@
 """Module for the concrete exposure classes
-according to Table 4.1 from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement.
+according to Table 4.1 from EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement.
 """
 
 import re
