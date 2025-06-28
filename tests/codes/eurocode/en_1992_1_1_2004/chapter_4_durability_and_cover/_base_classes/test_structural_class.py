@@ -9,7 +9,7 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._
     ConcreteStructuralClassBase,
 )
 from blueprints.materials.concrete import ConcreteMaterial
-from tests.codes.eurocode.test_exposure_classes import (
+from tests.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.test_exposure_classes import (
     DummyCarbonation,
     DummyChemical,
     DummyChloride,
