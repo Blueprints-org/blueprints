@@ -224,6 +224,15 @@ figures for streamlined access and reference.
       <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/formulas.md">88</a></td>
       <td><a href="docs/objects_overview/eurocode/nen_9997_1_c2_2017/tables.md">11</a></td>
     </tr>
+    <tr>
+      <td>prEN 1995-1-1:2023</td>
+      <td>
+        Eurocode 5: Design of timber structures – Part 1-1: General rules and rules for buildings (pre-standard)
+        (<a href="blueprints/codes/eurocode/pren_1995_1_1_2023">code</a>)
+      </td>
+      <td><a href="docs/objects_overview/eurocode/pren_1995_1_1_2023/formulas.md">3</a></td>
+      <td><a href="docs/objects_overview/eurocode/pren_1995_1_1_2023/tables.md">0</a></td>
+    </tr>
   </tbody>
 </table>
 
