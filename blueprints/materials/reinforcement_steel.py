@@ -83,6 +83,8 @@ class ReinforcementSteelMaterial:
         Type of fabrication (default=SteelFabrication.HOT_ROLLED)
     diagram_type: ReinforcementDiagramType
         Type of stress-strain diagram (default=ReinforcementDiagramType.BILINEAR_INCLINED)
+    material_factor: DIMENSIONLESS
+        Partial safety factor [$\gamma_c$] for reinforcement steel according to NEN-EN 1992-1-1 art.2.4.2.4 [$-$] (default= 1.15)
     custom_name: str
         User-defined name of the material (default= name of steel quality; example: 'B500B')
     custom_e_s: MPA
@@ -96,6 +98,7 @@ class ReinforcementSteelMaterial:
     bar_surface: ReinforcementBarSurface = field(default=ReinforcementBarSurface.RIBBED)
     steel_fabrication: SteelFabrication = field(default=SteelFabrication.HOT_ROLLED)
     diagram_type: ReinforcementDiagramType = field(default=ReinforcementDiagramType.BILINEAR_NOT_INCLINED)
+    material_factor: DIMENSIONLESS = field(default=1.15)
     custom_name: str | None = field(default=None, compare=False)
     custom_e_s: MPA | None = field(default=None, metadata={"unit": "MPa"})
 
@@ -135,6 +138,17 @@ class ReinforcementSteelMaterial:
             Example: 500.0 (for B500B)
         """
         return float(self.steel_quality.value[1:-1])
+
+    @property
+    def f_yd(self) -> MPA:
+        r"""[$f_{yd}$] Design yield strength of reinforcement (NEN-EN 1992-1-1 art.3.2.7 (2)) [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 434.78 (for B500B)
+        """
+        return self.f_yk / self.material_factor
 
     @property
     def steel_class(self) -> str:
