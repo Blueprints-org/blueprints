@@ -84,7 +84,8 @@ class ReinforcementSteelMaterial:
     diagram_type: ReinforcementDiagramType
         Type of stress-strain diagram (default=ReinforcementDiagramType.BILINEAR_INCLINED)
     material_factor: DIMENSIONLESS
-        Partial safety factor [$\gamma_s$] for reinforcement steel according to NEN-EN 1992-1-1 art.2.4.2.4 [$-$] (default= 1.15)
+        Partial safety factor [$\gamma_s$] for reinforcement steel according to EN 1992-1-1 art.2.4.2.4 (1) [$-$] [default= 1.15 (for persistent & transient)]
+        Accidental design situations $\gamma_s = 1.0$
     custom_name: str
         User-defined name of the material (default= name of steel quality; example: 'B500B')
     custom_e_s: MPA
