@@ -157,6 +157,8 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 ## Installation
 
+Python >=3.12 is required.
+
 For the last release:
 
 ```shell
