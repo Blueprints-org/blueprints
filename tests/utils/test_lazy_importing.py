@@ -15,6 +15,15 @@ class TestLazyImporting:
 
         assert en == en2
 
+    def test_import_errors(self) -> None:
+        """Test what happens when a module is not found."""
+        with pytest.raises(ModuleNotFoundError):
+            import blueprints.codes.eurocode.non_existing_module as non_existing
+
+        with pytest.raises(ModuleNotFoundError):
+            import blueprints.codes.non_existing_module as non_existing2
+
+
     def test_norm_items(self) -> None:
         """From all norms, test the inputs of at least 1 (edgecase) formula, to ensure the nen/__init__ works."""
         # Normal import
