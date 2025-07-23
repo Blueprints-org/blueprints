@@ -49,10 +49,10 @@ class QuarterCircularSpandrelCrossSection(CrossSection):
 
     def __post_init__(self) -> None:
         """Validate input parameters after initialization."""
-        if self.thickness_vertical <= 0:
-            raise ValueError(f"Thickness vertical must be positive, got {self.thickness_vertical}")
-        if self.thickness_horizontal <= 0:
-            raise ValueError(f"Thickness horizontal must be positive, got {self.thickness_horizontal}")
+        if self.thickness_vertical < 0:
+            raise ValueError(f"Thickness vertical must be non-negative, got {self.thickness_vertical}")
+        if self.thickness_horizontal < 0:
+            raise ValueError(f"Thickness horizontal must be non-negative, got {self.thickness_horizontal}")
         if self.inner_radius < 0:
             raise ValueError(f"Inner radius must be non-negative, got {self.inner_radius}")
         if self.outer_radius < 0:

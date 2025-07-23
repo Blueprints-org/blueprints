@@ -283,32 +283,3 @@ class ISteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
-
-
-if __name__ == "__main__":
-    """Example usage of the ISteelProfile class."""
-
-    import matplotlib.pyplot as plt
-
-    from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
-
-    # Example: Create and plot a custom I-profile
-    steel_material = SteelMaterial(SteelStrengthClass.S355)
-    i_profile = ISteelProfile(
-        steel_material=steel_material,
-        top_flange_width=200,
-        top_flange_thickness=15,
-        bottom_flange_width=200,
-        bottom_flange_thickness=15,
-        total_height=300,
-        web_thickness=10,
-    )
-    # Get polygons and plot
-    fig, ax = plt.subplots()
-    for element in i_profile.elements:
-        poly = element.cross_section.polygon
-        x, y = zip(*poly.exterior.coords)
-        ax.fill(x, y, alpha=0.5, label=element.cross_section.name)
-    ax.set_aspect("equal")
-    ax.legend()
-    plt.show()

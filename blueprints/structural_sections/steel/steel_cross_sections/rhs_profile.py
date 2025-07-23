@@ -311,32 +311,3 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
-
-
-if __name__ == "__main__":
-    """Example usage of the RHSSteelProfile class."""
-
-    import matplotlib.pyplot as plt
-
-    from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
-
-    # Example: Create and plot a custom RHS-profile
-    steel_material = SteelMaterial(SteelStrengthClass.S355)
-    rhs_profile = RHSSteelProfile(
-        steel_material=steel_material,
-        total_width=200,
-        total_height=100,
-        left_wall_thickness=12,
-        right_wall_thickness=12,
-        top_wall_thickness=12,
-        bottom_wall_thickness=12,
-    )
-    # Get polygons and plot
-    fig, ax = plt.subplots()
-    for element in rhs_profile.elements:
-        poly = element.cross_section.polygon
-        x, y = zip(*poly.exterior.coords)
-        ax.fill(x, y, alpha=0.5, label=element.cross_section.name)
-    ax.set_aspect("equal")
-    ax.legend()
-    plt.show()
