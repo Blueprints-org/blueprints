@@ -1,5 +1,6 @@
 """Test suite for the CHSSteelProfile class."""
 
+import matplotlib.pyplot as plt
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
@@ -30,6 +31,12 @@ class TestCHSSteelProfile:
         """Test the steel weight per meter."""
         expected_weight: float = 2.47e-2 * 7850  # kg/m
         assert pytest.approx(chs_profile.weight_per_meter, rel=1e-2) == expected_weight
+
+    def test_plot_shapes(self, chs_profile: CHSSteelProfile) -> None:
+        """Test the plotting of the CHS profile shapes."""
+        fig = chs_profile.plot(show=False)
+        assert fig is not None
+        assert isinstance(fig, plt.Figure)
 
     def test_get_profile_with_corrosion(self) -> None:
         """Test the CHS profile with 16 mm corrosion applied."""

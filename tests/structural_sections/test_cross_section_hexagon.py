@@ -29,3 +29,18 @@ class TestHexagonalCrossSection:
         """Test the geometry property of the HexagonalCrossSection class."""
         geometry = hexagonal_cross_section.geometry()
         assert geometry is not None
+
+    def test_apothem(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
+        """Test the apothem property of the HexagonalCrossSection class."""
+        expected_apothem = hexagonal_cross_section.side_length * np.sqrt(3) / 2
+        assert hexagonal_cross_section.apothem == pytest.approx(expected=expected_apothem, rel=1e-6)
+
+    def test_perimter(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
+        """Test the perimeter property of the HexagonalCrossSection class."""
+        expected_perimeter = 6 * hexagonal_cross_section.side_length
+        assert hexagonal_cross_section.perimeter == pytest.approx(expected=expected_perimeter, rel=1e-6)
+
+    def test_parameters_as_dict(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
+        """Test the parameters_as_dict method of the HexagonalCrossSection class."""
+        params = hexagonal_cross_section.section_properties().asdict()
+        assert params

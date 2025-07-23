@@ -45,3 +45,8 @@ class TestQuarterCircularSpandrelCrossSection:
         """Test the behavior when radius is zero."""
         qcs_cross_section_zero_radius = QuarterCircularSpandrelCrossSection(radius=0.0, x=0.0, y=0.0)
         assert qcs_cross_section_zero_radius.area == 0.0
+
+    def test_geometry(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
+        """Test the geometry property of the QuarterCircularSpandrelCrossSection class."""
+        geometry = qcs_cross_section.geometry()
+        assert geometry is not None
