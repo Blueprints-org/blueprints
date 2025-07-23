@@ -13,7 +13,7 @@ Follow the steps below to explore the usage of different steel profile shapes (o
 Start by importing the needed elements and defining the steel material to be used for the profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/chs_profile.py:12:13"
+--30<-- "examples/_code/steel_profile_shapes/chs_profile.py:12:13"
 ```
 
 ## Circular Hollow Section (CHS) Profiles
@@ -23,18 +23,18 @@ Start by importing the needed elements and defining the steel material to be use
 Structual parameters are automatically calculated and can be obtained with:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/chs_profile.py:15:21"
+--30<-- "examples/_code/steel_profile_shapes/chs_profile.py:15:21"
 ```
 
 A plot of this profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes/chs_profile.py:23:23"
+---30<-- "examples/_code/steel_profile_shapes/chs_profile.py:23:23"
 ```
-![CHS273x5 with 4mm corrosion](./_images/steel_profile_shapes/steel_profile_chs_273_5_corrosion_4.png)
+![CHS273x5 with 4mm corrosion](../_images/steel_profile_shapes/steel_profile_chs_273_5_corrosion_4.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes/chs_profile.py:24:24"
+---30<-- "examples/_code/steel_profile_shapes/chs_profile.py:24:24"
 ```
 ```terminaloutput
 Steel class: SteelMaterial(steel_class=<SteelStrengthClass.S355: (<SteelStandardGroup.EN_10025_2: 'NEN-EN 10025-2'>, 'S 355')>, density=7850.0, diagram_type=<DiagramType.BI_LINEAR: 'Bi-Linear'>, quality_class=None, custom_name=None, custom_e_modulus=None, custom_poisson_ratio=None, custom_thermal_coefficient=None, custom_yield_strength=None, custom_ultimate_strength=None)
@@ -55,18 +55,18 @@ All section properties: SectionProperties(area=np.float64(829.2971942461268), pe
 Alternatively, define a custom CHS profile by specifying its dimensions:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/chs_profile.py:26:31"
+--30<-- "examples/_code/steel_profile_shapes/chs_profile.py:26:31"
 ```
 
 A plot of this custom profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes/chs_profile.py:33:33"
+---30<-- "examples/_code/steel_profile_shapes/chs_profile.py:33:33"
 ```
-![Custom CHS Profile](./_images/steel_profile_shapes/steel_profile_custom_chs.png)
+![Custom CHS Profile](../_images/steel_profile_shapes/steel_profile_custom_chs.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes/chs_profile.py:34:34"
+---30<-- "examples/_code/steel_profile_shapes/chs_profile.py:34:34"
 ```
 ```terminaloutput
 All section properties of custom CHS profile: SectionProperties(area=np.float64(4397.788151305911), perimeter=471.2270701716454, mass=np.float64(4397.788151305911), ea=np.float64(4397.788151305911), ga=np.float64(2198.8940756529555), nu_eff=np.float64(0.0), e_eff=np.float64(1.0), g_eff=np.float64(0.5), qx=np.float64(-4.3075942812720314e-10), qy=np.float64(-2.837632351315733e-10), ixx_g=np.float64(10828466.102927726), iyy_g=np.float64(10828466.10292771), ixy_g=np.float64(-2.5585791263438296e-09), cx=np.float64(-6.452408014408574e-14), cy=np.float64(-9.79491083487708e-14), ixx_c=np.float64(10828466.102927726), iyy_c=np.float64(10828466.10292771), ixy_c=np.float64(-2.5585791263438573e-09), zxx_plus=np.float64(144379.54803903616), zxx_minus=np.float64(144379.54803903654), zyy_plus=np.float64(144379.54803903602), zyy_minus=np.float64(144379.54803903628), rx_c=np.float64(49.621092091432914), ry_c=np.float64(49.621092091432885), i11_c=np.float64(10828466.102927726), i22_c=np.float64(10828466.10292771), phi=0.0, z11_plus=np.float64(144379.54803903616), z11_minus=np.float64(144379.54803903654), z22_plus=np.float64(144379.54803903602), z22_minus=np.float64(144379.54803903628), r11_c=np.float64(49.621092091432914), r22_c=np.float64(49.621092091432885), j=np.float64(21656932.205855437), my_xx=np.float64(144379.54803903613), my_yy=np.float64(144379.54803903602), my_11=np.float64(144379.54803903613), my_22=np.float64(144379.54803903602), omega=array([-1.16366227e-11, -2.61335265e-11, -1.27721256e-11, ...,
@@ -79,6 +79,6 @@ All section properties of custom CHS profile: SectionProperties(area=np.float64(
 ## Full Code Example
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/chs_profile.py"
+--30<-- "examples/_code/steel_profile_shapes/chs_profile.py"
 ```
 </a>

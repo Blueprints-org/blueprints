@@ -13,7 +13,7 @@ Follow the steps below to explore the usage of different steel profile shapes (o
 Start by importing the needed elements and defining the steel material to be used for the profiles:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/rhs_profile.py:12:13"
+--30<-- "examples/_code/steel_profile_shapes/rhs_profile.py:12:13"
 ```
 
 ## Rectangular Hollow Profiles (RHS, SHS, RHSCF, SHSCF)
@@ -23,18 +23,18 @@ Start by importing the needed elements and defining the steel material to be use
 Predefined RHS profiles are also available:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/rhs_profile.py:15:21"
+--30<-- "examples/_code/steel_profile_shapes/rhs_profile.py:15:21"
 ```
 
 A plot of this profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes/rhs_profile.py:23:23"
+---30<-- "examples/_code/steel_profile_shapes/rhs_profile.py:23:23"
 ```
-![Standard I Profile](./_images/steel_profile_shapes/steel_profile_rhs_400x200x16_corrosion_0.png)
+![Standard I Profile](../_images/steel_profile_shapes/steel_profile_rhs_400x200x16_corrosion_0.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes/rhs_profile.py:24:24"
+---30<-- "examples/_code/steel_profile_shapes/rhs_profile.py:24:24"
 ```
 
 It you desire to use a different standard profile, you can change the `profile_name` parameter in the `IProfile` constructor.
@@ -46,25 +46,25 @@ Check all available profiles in this package: `blueprints.structural_sections.st
 Define a custom RHS profile by specifying its width and height:
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/rhs_profile.py:26:43"
+--30<-- "examples/_code/steel_profile_shapes/rhs_profile.py:26:43"
 ```
 
 A plot of this custom profile can be generated using the `plot` method. A show=True makes the plot appear:
 ```python
----8<-- "examples/_code/steel_profile_shapes/rhs_profile.py:45:45"
+---30<-- "examples/_code/steel_profile_shapes/rhs_profile.py:45:45"
 ```
 
-![Custom RHS Profile](./_images/steel_profile_shapes/steel_profile_custom_rhs.png)
+![Custom RHS Profile](../_images/steel_profile_shapes/steel_profile_custom_rhs.png)
 
 Its properties can be accessed as follows:
 ```python
----8<-- "examples/_code/steel_profile_shapes/rhs_profile.py:46:46"
+---30<-- "examples/_code/steel_profile_shapes/rhs_profile.py:46:46"
 ```
 
 <a name="full-code-example">
 ## Full Code Example
 
 ```python
---8<-- "examples/_code/steel_profile_shapes/rhs_profile.py"
+--30<-- "examples/_code/steel_profile_shapes/rhs_profile.py"
 ```
 </a>
