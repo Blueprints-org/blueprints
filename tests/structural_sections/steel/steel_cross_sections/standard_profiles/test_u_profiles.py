@@ -82,7 +82,7 @@ class TestUProfiles:
 
     def test_profile_count(self) -> None:
         """Test that all profiles are present."""
-        # Based on the JSON data, there should be 40 GU/PU profiles
+        # There should be 40 GU/PU profiles
         assert len(USections) == 40
 
     def test_specific_profiles(self) -> None:
