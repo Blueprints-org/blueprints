@@ -66,7 +66,7 @@ class CrossSection(ABC):
 
     def section_properties(
         self,
-        coordinate_system: str = "YZ",
+        coordinate_system: str = "XY",
         geometric: bool = True,
         plastic: bool = True,
         warping: bool = True,
@@ -77,8 +77,8 @@ class CrossSection(ABC):
         ----------
         coordinate_system : str
             Coordinate system to use for the section properties.
-            Default is "YZ", Y=horizontal, Z=vertical, X reserved for longitudinal direction.
-            Other options is "XY", X=horizontal, Y=vertical, Z reserved for longitudinal direction.
+            Default is "XY", X=horizontal, Y=vertical, Z reserved for longitudinal direction.
+            Other options is "YZ", Y=horizontal, Z=vertical, X reserved for longitudinal direction (only available asdict()).
         geometric : bool
             Whether to calculate geometric properties.
         plastic: bool
