@@ -23,7 +23,7 @@ class TestQuarterCircularSpandrelCrossSection:
         """Test initialization with an invalid vertical thickness."""
         with pytest.raises(ValueError, match="Thickness vertical must be non-negative"):
             QuarterCircularSpandrelCrossSection(
-                thickness_vertical=0,
+                thickness_vertical=-1,
                 thickness_horizontal=10,
                 inner_radius=5,
                 outer_radius=10,
@@ -34,7 +34,7 @@ class TestQuarterCircularSpandrelCrossSection:
         with pytest.raises(ValueError, match="Thickness horizontal must be non-negative"):
             QuarterCircularSpandrelCrossSection(
                 thickness_vertical=10,
-                thickness_horizontal=0,
+                thickness_horizontal=-1,
                 inner_radius=5,
                 outer_radius=10,
             )
