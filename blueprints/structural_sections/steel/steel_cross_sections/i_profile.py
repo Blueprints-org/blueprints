@@ -6,7 +6,7 @@ from typing import Self
 
 from matplotlib import pyplot as plt
 
-from blueprints.materials.steel import SteelMaterial
+from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
 from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
@@ -71,23 +71,43 @@ class ISteelProfile(CombinedSteelCrossSection):
         self.bottom_radius = self.bottom_radius if self.bottom_radius is not None else self.bottom_flange_thickness
 
         # Calculate web height
-        self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness
+        self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
+        self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
+        self.width_outstand_bottom_flange = (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2
 
         # Create the cross-sections for the flanges and web
-        self.top_flange = RectangularCrossSection(
-            name="Top Flange",
-            width=self.top_flange_width,
+        self.top_right_flange = RectangularCrossSection(
+            name="Top Right Flange",
+            width=self.width_outstand_top_flange,
             height=self.top_flange_thickness,
-            x=0,
-            y=(self.web_height + self.top_flange_thickness) / 2,
+            x=self.top_flange_width / 2 - self.width_outstand_top_flange / 2,
+            y=(self.total_height - self.top_flange_thickness) / 2,
         )
-        self.bottom_flange = RectangularCrossSection(
-            name="Bottom Flange",
-            width=self.bottom_flange_width,
+
+        self.top_left_flange = RectangularCrossSection(
+            name="Top Left Flange",
+            width=self.width_outstand_top_flange,
+            height=self.top_flange_thickness,
+            x=-self.top_flange_width / 2 + self.width_outstand_top_flange / 2,
+            y=(self.total_height - self.top_flange_thickness) / 2,
+        )
+
+        self.bottom_right_flange = RectangularCrossSection(
+            name="Bottom Right Flange",
+            width=self.width_outstand_bottom_flange,
             height=self.bottom_flange_thickness,
-            x=0,
-            y=-(self.web_height + self.bottom_flange_thickness) / 2,
+            x=self.bottom_flange_width / 2 - self.width_outstand_bottom_flange / 2,
+            y=-(self.total_height - self.bottom_flange_thickness) / 2,
         )
+
+        self.bottom_left_flange = RectangularCrossSection(
+            name="Bottom Left Flange",
+            width=self.width_outstand_bottom_flange,
+            height=self.bottom_flange_thickness,
+            x=-self.bottom_flange_width / 2 + self.width_outstand_bottom_flange / 2,
+            y=-(self.total_height - self.bottom_flange_thickness) / 2,
+        )
+
         self.web = RectangularCrossSection(
             name="Web",
             width=self.web_thickness,
@@ -101,44 +121,62 @@ class ISteelProfile(CombinedSteelCrossSection):
             name="Curve top right",
             radius=self.top_radius,
             x=self.web_thickness / 2,
-            y=self.web_height / 2,
+            y=self.total_height / 2 - self.top_flange_thickness,
             mirrored_horizontally=False,
             mirrored_vertically=True,
+            thickness_at_horizontal=self.web_thickness / 2,
+            thickness_at_vertical=self.top_flange_thickness,
         )
         self.curve_top_left = QuarterCircularSpandrelCrossSection(
             name="Curve top left",
             radius=self.top_radius,
             x=-self.web_thickness / 2,
-            y=self.web_height / 2,
+            y=self.total_height / 2 - self.top_flange_thickness,
             mirrored_horizontally=True,
             mirrored_vertically=True,
+            thickness_at_horizontal=self.web_thickness / 2,
+            thickness_at_vertical=self.top_flange_thickness,
         )
         self.curve_bottom_right = QuarterCircularSpandrelCrossSection(
             name="Curve bottom right",
             radius=self.bottom_radius,
             x=self.web_thickness / 2,
-            y=-self.web_height / 2,
+            y=-self.total_height / 2 + self.bottom_flange_thickness,
             mirrored_horizontally=False,
             mirrored_vertically=False,
+            thickness_at_horizontal=self.web_thickness / 2,
+            thickness_at_vertical=self.bottom_flange_thickness,
         )
         self.curve_bottom_left = QuarterCircularSpandrelCrossSection(
             name="Curve bottom left",
             radius=self.bottom_radius,
             x=-self.web_thickness / 2,
-            y=-self.web_height / 2,
+            y=-self.total_height / 2 + self.bottom_flange_thickness,
             mirrored_horizontally=True,
             mirrored_vertically=False,
+            thickness_at_horizontal=self.web_thickness / 2,
+            thickness_at_vertical=self.bottom_flange_thickness,
         )
 
         # Create the steel elements
         self.elements = [
             SteelElement(
-                cross_section=self.top_flange,
+                cross_section=self.top_right_flange,
                 material=self.steel_material,
                 nominal_thickness=self.top_flange_thickness,
             ),
             SteelElement(
-                cross_section=self.bottom_flange,
+                cross_section=self.top_left_flange,
+                material=self.steel_material,
+                nominal_thickness=self.top_flange_thickness,
+            ),
+            SteelElement(
+                cross_section=self.bottom_right_flange,
+                material=self.steel_material,
+                nominal_thickness=self.bottom_flange_thickness,
+            ),
+            SteelElement(
+                cross_section=self.bottom_left_flange,
                 material=self.steel_material,
                 nominal_thickness=self.bottom_flange_thickness,
             ),
@@ -241,3 +279,28 @@ class ISteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
+
+
+if __name__ == "__main__":
+    # Example: Create and plot a custom I-profile
+
+    steel_material = SteelMaterial(SteelStrengthClass.S355)
+    i_profile = ISteelProfile(
+        steel_material=steel_material,
+        top_flange_width=200,
+        top_flange_thickness=15,
+        bottom_flange_width=200,
+        bottom_flange_thickness=15,
+        total_height=300,
+        web_thickness=10,
+    )
+
+    # Get polygons and plot
+    fig, ax = plt.subplots()
+    for element in i_profile.elements:
+        poly = element.cross_section.polygon
+        x, y = zip(*poly.exterior.coords)
+        ax.fill(x, y, alpha=0.5, label=element.cross_section.name)
+    ax.set_aspect("equal")
+    ax.legend()
+    plt.show()
