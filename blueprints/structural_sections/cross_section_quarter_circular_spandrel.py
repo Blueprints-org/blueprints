@@ -30,7 +30,7 @@ class QuarterCircularSpandrelCrossSection(CrossSection):
     y : MM
         y-coordinate of the center of the inner_radius (default 0)
     mirrored_horizontally : bool
-        Whether the shape is mirrored horizontally (default False, meaning right corner)
+        Whether the shape is mirrored horizontally (default False, meaning right handside corner)
     mirrored_vertically : bool
         Whether the shape is mirrored vertically (default False, meaning top corner)
     name : str

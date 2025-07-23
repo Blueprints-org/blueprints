@@ -74,7 +74,7 @@ class CrossSection(ABC):
 
         Parameters
         ----------
-        geometric : bool(only available asd
+        geometric : bool
             Whether to calculate geometric properties.
         plastic: bool
             Whether to calculate plastic properties.
