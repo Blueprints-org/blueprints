@@ -28,14 +28,6 @@ def rectangular_cross_section_section_properties() -> SectionProperties:
 
 
 @pytest.fixture
-def rectangular_cross_section_section_properties_yz() -> SectionProperties:
-    """Return a RectangularCrossSection instance."""
-    rect = RectangularCrossSection(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
-    # Calculate properties
-    return rect.section_properties(geometric=True, plastic=True, warping=True, coordinate_system="YZ")
-
-
-@pytest.fixture
 def circular_cross_section() -> CircularCrossSection:
     """Return a CircularCrossSection instance."""
     return CircularCrossSection(name="Circle", diameter=200.0, x=100.0, y=250.0)

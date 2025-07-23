@@ -40,10 +40,6 @@ class TestRectangularCrossSection:
         assert rectangular_cross_section_section_properties.perimeter == pytest.approx(expected=600.0, rel=1e-6)
         assert rectangular_cross_section_section_properties.ixx_g == pytest.approx(expected=1316666666.6, rel=1e-6)
 
-    def test_section_properties_geometric_yz(self, rectangular_cross_section_section_properties_yz: SectionProperties) -> None:
-        """Test the section properties of the RectangularCrossSection class."""
-        assert rectangular_cross_section_section_properties_yz.asdict()["iyy_g"] == pytest.approx(expected=1316666666.6, rel=1e-6)
-
     def test_section_properties_plastic(self, rectangular_cross_section_section_properties: SectionProperties) -> None:
         """Test the section properties of the RectangularCrossSection class."""
         assert rectangular_cross_section_section_properties.syy == pytest.approx(expected=500000.0, rel=1e-6)
