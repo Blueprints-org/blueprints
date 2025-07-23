@@ -124,7 +124,7 @@ class QuarterCircularSpandrelCrossSection(CrossSection):
         # Shift points back
         points = points_centered + np.array([self.x, self.y])
 
-        points = [tuple(pt) for pt in points]
+        points = np.array([tuple(pt) for pt in points])
 
         return Polygon(points)
 
