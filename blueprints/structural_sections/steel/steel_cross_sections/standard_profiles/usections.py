@@ -5,8 +5,8 @@ from enum import Enum
 from blueprints.type_alias import MM
 
 
-class GU(Enum):
-    """Geometrical representation of GU and PU sheet pile steel profiles (U-Section)."""
+class USections(Enum):
+    """Geometrical representation of GU and PU sheet pile steel profiles (U-Sections)."""
 
     # GU profiles
     GU_6N = (

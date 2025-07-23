@@ -1,6 +1,6 @@
 """Test the GU enum."""
 
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.gu import GU
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.usections import USections
 
 
 class TestGU:
@@ -8,7 +8,7 @@ class TestGU:
 
     def test_enum_values(self) -> None:
         """Test that enum values are correctly defined."""
-        assert GU.GU_6N.value == (
+        assert USections.GU_6N.value == (
             "GU 6N",
             600,
             309,
@@ -27,7 +27,7 @@ class TestGU:
             1.26,
             "ArcelorMittal",
         )
-        assert GU.PU_32_PLUS_1.value == (
+        assert USections.PU_32_PLUS_1.value == (
             "PU 32+1",
             600,
             452,
@@ -49,18 +49,18 @@ class TestGU:
 
     def test_enum_membership(self) -> None:
         """Test that specific values are members of the enum."""
-        assert "GU 6N" in [e.value[0] for e in GU]
-        assert "PU 12" in [e.value[0] for e in GU]
-        assert "PU 32+1" in [e.value[0] for e in GU]
+        assert "GU 6N" in [e.value[0] for e in USections]
+        assert "PU 12" in [e.value[0] for e in USections]
+        assert "PU 32+1" in [e.value[0] for e in USections]
 
     def test_enum_uniqueness(self) -> None:
         """Test that all enum values are unique."""
-        values = [e.value for e in GU]
+        values = [e.value for e in USections]
         assert len(values) == len(set(values))
 
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
-        profile = GU.GU_6N
+        profile = USections.GU_6N
         assert profile.alias == "GU 6N"
         assert profile.b_width_single_pile == 600
         assert profile.h_height_pile == 309
@@ -83,26 +83,26 @@ class TestGU:
     def test_profile_count(self) -> None:
         """Test that all profiles are present."""
         # Based on the JSON data, there should be 40 GU/PU profiles
-        assert len(GU) == 40
+        assert len(USections) == 40
 
     def test_specific_profiles(self) -> None:
         """Test specific profiles from the JSON data."""
         # Test GU 33N
-        profile = GU.GU_33N
+        profile = USections.GU_33N
         assert profile.alias == "GU 33N"
         assert profile.h_height_pile == 452
         assert profile.tf_flange_thickness == 20.5
         assert profile.tw_web_thickness == 11.4
 
         # Test PU 12
-        profile = GU.PU_12
+        profile = USections.PU_12
         assert profile.alias == "PU 12"
         assert profile.h_height_pile == 360
         assert profile.tf_flange_thickness == 9.8
         assert profile.tw_web_thickness == 9.0
 
         # Test GU 16-400
-        profile = GU.GU_16_400
+        profile = USections.GU_16_400
         assert profile.alias == "GU 16-400"
         assert profile.b_width_single_pile == 400
         assert profile.h_height_pile == 290
