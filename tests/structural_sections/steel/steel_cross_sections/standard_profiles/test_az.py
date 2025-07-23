@@ -82,7 +82,7 @@ class TestAZ:
 
     def test_profile_count(self) -> None:
         """Test that all profiles are present."""
-        # Based on the JSON data, there should be 36 AZ profiles
+        # There should be 36 AZ profiles
         assert len(AZ) == 36
 
     def test_specific_profiles(self) -> None:
