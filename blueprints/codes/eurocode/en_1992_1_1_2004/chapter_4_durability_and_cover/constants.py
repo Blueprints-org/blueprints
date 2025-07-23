@@ -2,8 +2,11 @@
 
 from dataclasses import dataclass, field
 
-from blueprints.checks.nominal_concrete_cover.constants.base import NominalConcreteCoverConstantsBase
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
+    AbrasionClass,
+    CastingSurface,
+    NominalConcreteCoverConstantsBase,
+)
 from blueprints.type_alias import MM
 
 
@@ -11,7 +14,9 @@ from blueprints.type_alias import MM
 class NominalConcreteCoverConstants(NominalConcreteCoverConstantsBase):
     """Constants for the calculation of nominal concrete cover according to EN 1992-1-1:2004."""
 
-    CODE_SUFFIX: str = field(default="+C2:2011", init=False)
+    CODE_PREFIX: str = field(default="", init=False)
+
+    CODE_SUFFIX: str = field(default=":2004", init=False)
 
     # According to art. 4.4.1.2 (11) from EN 1992-1-1:2004
     COVER_INCREASE_FOR_UNEVEN_SURFACE: MM = field(default=5, init=False)

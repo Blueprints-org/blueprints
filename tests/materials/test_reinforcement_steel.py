@@ -36,6 +36,10 @@ class TestReinforcementSteelMaterial:
         """Tests the f_yk property."""
         assert fixture_reinforcement_steel_material_b500b.f_yk == 500
 
+    def test_f_yd(self, fixture_reinforcement_steel_material_b500b: ReinforcementSteelMaterial) -> None:
+        """Tests the f_yd property."""
+        assert fixture_reinforcement_steel_material_b500b.f_yd == pytest.approx(expected=434.78260869, rel=1e-4)
+
     def test_steel_class(self, fixture_reinforcement_steel_material_b500b: ReinforcementSteelMaterial) -> None:
         """Tests the steel_class property."""
         assert fixture_reinforcement_steel_material_b500b.steel_class == "B"
