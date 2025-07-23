@@ -7,8 +7,8 @@ from typing import Self
 from matplotlib import pyplot as plt
 
 from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
-from blueprints.structural_sections.cross_section_rhs_corner import RHSCFCornerCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
@@ -134,7 +134,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         )
 
         # Create the corner sections
-        self.top_right_corner = RHSCFCornerCrossSection(
+        self.top_right_corner = QuarterCircularSpandrelCrossSection(
             thickness_vertical=self.top_wall_thickness,
             thickness_horizontal=self.right_wall_thickness,
             inner_radius=self.top_right_inner_radius,
@@ -142,7 +142,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             x=self.total_width / 2 - self.right_wall_thickness - self.top_right_inner_radius,
             y=self.total_height / 2 - self.top_wall_thickness - self.top_right_inner_radius,
         )
-        self.top_left_corner = RHSCFCornerCrossSection(
+        self.top_left_corner = QuarterCircularSpandrelCrossSection(
             thickness_vertical=self.top_wall_thickness,
             thickness_horizontal=self.left_wall_thickness,
             inner_radius=self.top_left_inner_radius,
@@ -151,7 +151,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             y=self.total_height / 2 - self.top_wall_thickness - self.top_left_inner_radius,
             mirrored_horizontally=True,
         )
-        self.bottom_right_corner = RHSCFCornerCrossSection(
+        self.bottom_right_corner = QuarterCircularSpandrelCrossSection(
             thickness_vertical=self.bottom_wall_thickness,
             thickness_horizontal=self.right_wall_thickness,
             inner_radius=self.bottom_right_inner_radius,
@@ -160,7 +160,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_right_inner_radius,
             mirrored_vertically=True,
         )
-        self.bottom_left_corner = RHSCFCornerCrossSection(
+        self.bottom_left_corner = QuarterCircularSpandrelCrossSection(
             thickness_vertical=self.bottom_wall_thickness,
             thickness_horizontal=self.left_wall_thickness,
             inner_radius=self.bottom_left_inner_radius,
@@ -311,3 +311,32 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
+
+
+if __name__ == "__main__":
+    """Example usage of the RHSSteelProfile class."""
+
+    import matplotlib.pyplot as plt
+
+    from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
+
+    # Example: Create and plot a custom RHS-profile
+    steel_material = SteelMaterial(SteelStrengthClass.S355)
+    rhs_profile = RHSSteelProfile(
+        steel_material=steel_material,
+        total_width=200,
+        total_height=100,
+        left_wall_thickness=12,
+        right_wall_thickness=12,
+        top_wall_thickness=12,
+        bottom_wall_thickness=12,
+    )
+    # Get polygons and plot
+    fig, ax = plt.subplots()
+    for element in rhs_profile.elements:
+        poly = element.cross_section.polygon
+        x, y = zip(*poly.exterior.coords)
+        ax.fill(x, y, alpha=0.5, label=element.cross_section.name)
+    ax.set_aspect("equal")
+    ax.legend()
+    plt.show()

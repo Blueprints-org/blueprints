@@ -17,105 +17,113 @@ class QuarterCircularSpandrelCrossSection(CrossSection):
 
     Parameters
     ----------
-    radius : MM
-        The length of the two sides of the cross-section.
+    thickness_vertical : MM
+        Thickness of the vertical section
+    thickness_horizontal : MM
+        Thickness of the horizontal section
+    inner_radius : MM
+        Inner radius of the corner
+    outer_radius : MM
+        Outer radius of the corner
     x : MM
-        The x-coordinate of the 90-degree angle when thickness_horizontal would be zero. Default is 0.
+        x-coordinate of the center of the inner_radius (default 0)
     y : MM
-        The y-coordinate of the 90-degree angle when thickness_vertical would be zero. Default is 0.
+        y-coordinate of the center of the inner_radius (default 0)
     mirrored_horizontally : bool
-        Whether the shape is mirrored horizontally. Default is False.
+        Whether the shape is mirrored horizontally (default False, meaning right corner)
     mirrored_vertically : bool
-        Whether the shape is mirrored vertically. Default is False.
-    thickness_at_horizontal : MM
-        Thickness at the horizontal side of the cross-section. Default is 0.
-    thickness_at_vertical : MM
-        Thickness at the vertical side of the cross-section. Default is 0.
+        Whether the shape is mirrored vertically (default False, meaning top corner)
     name : str
-        The name of the radius cross-section. Default is "QCS".
+        Name of the cross-section (default "Corner")
     """
 
-    radius: MM
+    thickness_vertical: MM
+    thickness_horizontal: MM
+    inner_radius: MM
+    outer_radius: MM
     x: MM = 0
     y: MM = 0
     mirrored_horizontally: bool = False
     mirrored_vertically: bool = False
-    thickness_at_horizontal: MM = 0
-    thickness_at_vertical: MM = 0
-    name: str = "QCS"
+    name: str = "Corner"
 
     def __post_init__(self) -> None:
-        """Post-initialization to validate the side length."""
-        if self.radius < 0:
-            msg = f"Radius must be non-negative, but got {self.radius}"
-            raise ValueError(msg)
-        if self.thickness_at_horizontal < 0:
-            msg = f"Thickness at horizontal must be non-negative, but got {self.thickness_at_horizontal}"
-            raise ValueError(msg)
-        if self.thickness_at_vertical < 0:
-            msg = f"Thickness at vertical must be non-negative, but got {self.thickness_at_vertical}"
-            raise ValueError(msg)
+        """Validate input parameters after initialization."""
+        if self.thickness_vertical <= 0:
+            raise ValueError(f"Thickness vertical must be positive, got {self.thickness_vertical}")
+        if self.thickness_horizontal <= 0:
+            raise ValueError(f"Thickness horizontal must be positive, got {self.thickness_horizontal}")
+        if self.inner_radius < 0:
+            raise ValueError(f"Inner radius must be non-negative, got {self.inner_radius}")
+        if self.outer_radius < 0:
+            raise ValueError(f"Outer radius must be non-negative, got {self.outer_radius}")
+        if self.outer_radius > self.inner_radius + min(self.thickness_vertical, self.thickness_horizontal):
+            raise ValueError(
+                f"Outer radius {self.outer_radius} must be smaller than or equal to inner radius {self.inner_radius} "
+                f"plus the thickness {min(self.thickness_vertical, self.thickness_horizontal)}"
+            )
+
+    @property
+    def width_rectangle(self) -> MM:
+        """Width of the rectangle part of the corner cross-section [mm]."""
+        return self.thickness_horizontal + self.inner_radius
+
+    @property
+    def height_rectangle(self) -> MM:
+        """Height of the rectangle part of the corner cross-section [mm]."""
+        return self.thickness_vertical + self.inner_radius
 
     @property
     def polygon(self) -> Polygon:
-        """
-        Shapely Polygon representing the cross-section.
+        """Shapely Polygon representing the corner cross-section."""
+        lr = (self.x + self.width_rectangle, self.y)
+        ul = (self.x, self.y + self.height_rectangle)
 
-        Returns
-        -------
-        Polygon
-            The shapely Polygon representing the shape.
-        """
-        left_lower = (-self.thickness_at_horizontal, -self.thickness_at_vertical)
-        left_upper = (-self.thickness_at_horizontal, self.radius)
-        right_lower = (self.radius, -self.thickness_at_vertical)
+        n = 16
 
-        # Approximate the quarter circle with 25 straight lines.
-        # This resolution was chosen to balance performance and accuracy.
-        # Increasing the number of segments (e.g., to 50) would improve accuracy but at the cost of computational performance.
-        # Ensure this resolution meets the requirements of your specific application before using.
-        quarter_circle_points = [
-            (self.radius - self.radius * math.cos(math.pi / 2 * i / 25), self.radius - self.radius * math.sin(math.pi / 2 * i / 25))
-            for i in range(26)
+        # Outer arc (from vertical to horizontal)
+        outer_arc = [
+            (
+                self.x + self.width_rectangle - self.outer_radius + self.outer_radius * math.cos(math.radians(0 + i * 90 / (n - 1))),
+                self.y + self.height_rectangle - self.outer_radius + self.outer_radius * math.sin(math.radians(0 + i * 90 / (n - 1))),
+            )
+            for i in range(n)
         ]
 
-        # Create the polygon by combining the points
-        polygon = [*quarter_circle_points]
-        if self.thickness_at_horizontal > 0:
-            polygon = [left_upper, *polygon]
-        if self.thickness_at_vertical > 0:
-            polygon = [*polygon, right_lower]
-        polygon = [left_lower, *polygon]
+        # Inner arc (from horizontal to vertical, reversed)
+        inner_arc = [
+            (
+                self.x + self.inner_radius * math.cos(math.radians(0 + i * 90 / (n - 1))),
+                self.y + self.inner_radius * math.sin(math.radians(0 + i * 90 / (n - 1))),
+            )
+            for i in range(n)
+        ][::-1]
 
-        # mirror the points if specified
+        points = [lr, *outer_arc, ul, *inner_arc]
+        # Remove consecutive duplicate points
+        points = [pt for i, pt in enumerate(points) if i == 0 or pt != points[i - 1]]
+
         if self.mirrored_horizontally:
-            polygon = [(-x, y) for x, y in polygon]
+            points = [(2 * self.x - x, y) for x, y in points]
         if self.mirrored_vertically:
-            polygon = [(x, -y) for x, y in polygon]
+            points = [(x, 2 * self.y - y) for x, y in points]
 
-        # translate the points to the specified x and y coordinates
-        polygon = [(x + self.x, y + self.y) for x, y in polygon]
+        return Polygon(points)
 
-        return Polygon(polygon)
+    def geometry(self, mesh_size: MM | None = None) -> Geometry:
+        """
+        Return the geometry of the RHSCF corner cross-section.
 
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the square-with-cutout cross-section.
-
-        Properties
+        Parameters
         ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
+        mesh_size : MM | None
+            Maximum mesh element area to be used within the Geometry-object finite-element mesh. If not provided, a default value will be used.
         """
         if mesh_size is None:
-            minimum_mesh_size = 1.0
-            mesh_length = max(self.radius / 5, minimum_mesh_size)
+            minimum_mesh_size = 2.0
+            mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 2, minimum_mesh_size)
             mesh_size = mesh_length**2
 
-        square_with_cutout = Geometry(geom=self.polygon)
-        square_with_cutout.create_mesh(mesh_sizes=mesh_size)
-        return square_with_cutout
+        geom = Geometry(geom=self.polygon)
+        geom.create_mesh(mesh_sizes=mesh_size)
+        return geom

@@ -119,43 +119,47 @@ class ISteelProfile(CombinedSteelCrossSection):
         # Create curves for the corners of the flanges
         self.curve_top_right = QuarterCircularSpandrelCrossSection(
             name="Curve top right",
-            radius=self.top_radius,
-            x=self.web_thickness / 2,
-            y=self.total_height / 2 - self.top_flange_thickness,
-            mirrored_horizontally=False,
-            mirrored_vertically=True,
-            thickness_at_horizontal=self.web_thickness / 2,
-            thickness_at_vertical=self.top_flange_thickness,
+            inner_radius=self.top_radius,
+            outer_radius=0,
+            x=self.top_radius + self.web_thickness / 2,
+            y=self.web_height / 2,
+            mirrored_horizontally=True,
+            mirrored_vertically=False,
+            thickness_horizontal=self.web_thickness / 2,
+            thickness_vertical=self.top_flange_thickness,
         )
         self.curve_top_left = QuarterCircularSpandrelCrossSection(
             name="Curve top left",
-            radius=self.top_radius,
-            x=-self.web_thickness / 2,
-            y=self.total_height / 2 - self.top_flange_thickness,
-            mirrored_horizontally=True,
-            mirrored_vertically=True,
-            thickness_at_horizontal=self.web_thickness / 2,
-            thickness_at_vertical=self.top_flange_thickness,
+            inner_radius=self.top_radius,
+            outer_radius=0,
+            x=-self.top_radius - self.web_thickness / 2,
+            y=self.web_height / 2,
+            mirrored_horizontally=False,
+            mirrored_vertically=False,
+            thickness_horizontal=self.web_thickness / 2,
+            thickness_vertical=self.top_flange_thickness,
         )
         self.curve_bottom_right = QuarterCircularSpandrelCrossSection(
             name="Curve bottom right",
-            radius=self.bottom_radius,
-            x=self.web_thickness / 2,
-            y=-self.total_height / 2 + self.bottom_flange_thickness,
-            mirrored_horizontally=False,
-            mirrored_vertically=False,
-            thickness_at_horizontal=self.web_thickness / 2,
-            thickness_at_vertical=self.bottom_flange_thickness,
+            inner_radius=self.bottom_radius,
+            outer_radius=0,
+            x=self.bottom_radius + self.web_thickness / 2,
+            y=-self.web_height / 2,
+            mirrored_horizontally=True,
+            mirrored_vertically=True,
+            thickness_horizontal=self.web_thickness / 2,
+            thickness_vertical=self.bottom_flange_thickness,
         )
         self.curve_bottom_left = QuarterCircularSpandrelCrossSection(
             name="Curve bottom left",
-            radius=self.bottom_radius,
-            x=-self.web_thickness / 2,
-            y=-self.total_height / 2 + self.bottom_flange_thickness,
-            mirrored_horizontally=True,
-            mirrored_vertically=False,
-            thickness_at_horizontal=self.web_thickness / 2,
-            thickness_at_vertical=self.bottom_flange_thickness,
+            inner_radius=self.bottom_radius,
+            outer_radius=0,
+            x=-self.bottom_radius - self.web_thickness / 2,
+            y=-self.web_height / 2,
+            mirrored_horizontally=False,
+            mirrored_vertically=True,
+            thickness_horizontal=self.web_thickness / 2,
+            thickness_vertical=self.bottom_flange_thickness,
         )
 
         # Create the steel elements
@@ -279,3 +283,32 @@ class ISteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
+
+
+if __name__ == "__main__":
+    """Example usage of the ISteelProfile class."""
+
+    import matplotlib.pyplot as plt
+
+    from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
+
+    # Example: Create and plot a custom I-profile
+    steel_material = SteelMaterial(SteelStrengthClass.S355)
+    i_profile = ISteelProfile(
+        steel_material=steel_material,
+        top_flange_width=200,
+        top_flange_thickness=15,
+        bottom_flange_width=200,
+        bottom_flange_thickness=15,
+        total_height=300,
+        web_thickness=10,
+    )
+    # Get polygons and plot
+    fig, ax = plt.subplots()
+    for element in i_profile.elements:
+        poly = element.cross_section.polygon
+        x, y = zip(*poly.exterior.coords)
+        ax.fill(x, y, alpha=0.5, label=element.cross_section.name)
+    ax.set_aspect("equal")
+    ax.legend()
+    plt.show()
