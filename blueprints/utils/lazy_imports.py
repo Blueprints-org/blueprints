@@ -3,9 +3,10 @@
 import importlib
 import re
 from types import ModuleType
+from typing import List
 
 
-def lazy_import_get_attr(_package: str, _name: str, _chapters: [str]) -> ModuleType:
+def lazy_import_get_attr(_package: str, _name: str, _chapters: List[str]) -> ModuleType:
     """Function overrides the getattr for using modules, to allow for lazy importing.
 
     This is used as (for example):
@@ -28,12 +29,13 @@ def lazy_import_get_attr(_package: str, _name: str, _chapters: [str]) -> ModuleT
         _name (str): The __name__ coming from e.g. en_1992_1_1_2004.
         _chapters (list[str]): A list of submodules names, often coming from __all__.
     """
-
     # Parse the given Form name, to get the path to it
     match = re.match(r"(Form|SubForm|Table)(\d+|[a-zA-Z])Dot(\w+)", _name)
     if match:
         formula_type, chapter, rest = match.groups()
         num_match = re.match(r"((?:\d+And)*\d+)([a-z]*)([A-Z]\w*)", rest)
+        if not num_match:
+            raise AttributeError(f"module {_package} has no attribute {_name}")
         number_part, prefix, suffix = num_match.groups()
         formula_numbers = "_".join(number_part.split("And"))
 
