@@ -30,9 +30,12 @@ def lazy_import_get_attr(_package: str, _name: str, _chapters: [str]) -> ModuleT
     """
 
     # Parse the given Form name, to get the path to it
-    match = re.match(r"(Form|SubForm|Table)(\d+|[a-zA-Z])Dot(\d+)([a-z]*)([A-Z]\w*)", _name)
+    match = re.match(r"(Form|SubForm|Table)(\d+|[a-zA-Z])Dot(\w+)", _name)
     if match:
-        formula_type, chapter, formula, prefix, suffix = match.groups()
+        formula_type, chapter, rest = match.groups()
+        num_match = re.match(r"((?:\d+And)*\d+)([a-z]*)([A-Z]\w*)", rest)
+        number_part, prefix, suffix = num_match.groups()
+        formula_numbers = "_".join(number_part.split("And"))
 
         # get the right sub_module, based on the pattern. Pattern is always chapter_3_... or annex_a...
         if chapter.isdigit():
@@ -43,9 +46,9 @@ def lazy_import_get_attr(_package: str, _name: str, _chapters: [str]) -> ModuleT
             result = next((c for c in _chapters if pattern.search(c)), None)
 
         if formula_type == "Table":
-            module_name = f"{result}.table_{chapter.lower()}_{formula}"
+            module_name = f"{result}.table_{chapter.lower()}_{formula_numbers}"
         else:
-            module_name = f"{result}.formula_{chapter.lower()}_{formula}"
+            module_name = f"{result}.formula_{chapter.lower()}_{formula_numbers}"
 
             # If name of the formula starts with an capital N and next character is upper (name check); add n
             if prefix:
