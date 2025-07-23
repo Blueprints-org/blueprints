@@ -121,7 +121,7 @@ class RHSCFCornerCrossSection(CrossSection):
         """
         if mesh_size is None:
             minimum_mesh_size = 2.0
-            mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 3, minimum_mesh_size)
+            mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 2, minimum_mesh_size)
             mesh_size = mesh_length**2
 
         geom = Geometry(geom=self.polygon)
