@@ -15,78 +15,95 @@
 ## Template for service
 
 ```python
-"""Formula 5.38a from EN 1992-1-1:2004: Chapter 5 - Structural Analysis."""
+"""Formula 5.17 from EN 1993-5:2007: Chapter 5 - Ultimate limit state."""
 
-from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import Formula
+from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
+from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, DEG, KG, N, NMM, MM, MM2, MM3, MM4, MPA
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.type_alias import KN
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form5Dot38aCheckRelativeLengthRatio(Formula):
-    r"""Class representing formula 5.38a for check of length ratio."""
+class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
+    r"""Class representing formula 5.17 for Z-profiles of class 1 and 2: [$\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1$]."""
 
-    label = "5.38a"
-    source_document = EN_1992_1_1_2004
+    label = "5.17"
+    source_document = EN_1993_5_2007
 
     def __init__(
-            self,
-            length_y: MM,
-            length_z: MM,
+        self,
+        n_ed: KN,
+        n_pl_rd: KN,
     ) -> None:
-        r"""Check the ratio of the length in y-direction and z-direction.
+        r"""Compression check for Z-profiles of class 1 and 2.
+        Design axial force [$N_{Ed}$] should not exceed 10% of plastic resistance [$N_{pl,Rd}$].
 
-        EN 1992-1-1:2004 art.5.8.XXXXXXX - Formula (5.38a)
+        EN 1993-5:2007 art. 5.2.3 (10) - Formula (5.17)
 
         Parameters
         ----------
-        length_y : MM
-            [$L_{y}$] Length in y-direction [$mm$].
-        length_z : MM
-            [$L_{z}$] Length in z-direction [$mm$].
+        n_ed : KN
+            [$N_{Ed}$] Design value of the compression force [$kN$].
+        n_pl_rd : KN
+            [$N_{pl,Rd}$] Plastic design resistance of the cross-section [$kN$].
         """
         super().__init__()
-        self.length_y = length_y
-        self.length_z = length_z
+        self.n_ed = n_ed
+        self.n_pl_rd = n_pl_rd
+
+    @staticmethod
+    def _evaluate_lhs(
+        n_ed: KN,
+        n_pl_rd: KN,
+    ) -> float:
+        """Evaluates the left-hand side of the comparison. see __init__ for details."""
+        raise_if_less_or_equal_to_zero(n_pl_rd=n_pl_rd)
+        return n_ed / n_pl_rd
+
+    @staticmethod
+    def _evaluate_rhs(*_, **_kwargs) -> float:
+        """Evaluates the right-hand side of the comparison. see __init__ for details."""
+        return 0.1
+
+    @property
+    def unity_check(self) -> float:
+        """Returns the unity check value."""
+        return self.lhs
 
     @staticmethod
     def _evaluate(
-            length_y: MM,
-            length_z: MM,
+        n_ed: KN,
+        n_pl_rd: KN,
     ) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(length_y=length_y, length_z=length_z)
+        """Evaluates the comparison; see __init__ for details."""
+        return (
+            Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_lhs(n_ed=n_ed, n_pl_rd=n_pl_rd)
+            <= Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_rhs()
+        )
 
-        return (length_y / length_z <= 2) and (length_z / length_y <= 2)
+    def __bool__(self) -> bool:
+        """Allow truth-checking of the check object itself."""
+        return self._evaluate(self.n_ed, self.n_pl_rd)
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 5.38a."""
-        _equation: str = r"\left( \frac{L_{y}}{L_{z}} \leq 2 \text{ and } \frac{L_{z}}{L_{y}} \leq 2 \right)"
+        """Returns LatexFormula object for formula 5.17."""
+        _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                "length_y": f"{self.length_y:.{n}f}",
-                "length_z": f"{self.length_z:.{n}f}",
-            },
-            False,
-        )
-        _numeric_equation_with_units: str = latex_replace_symbols(
-            _equation,
-            {
-                "length_y": rf"{self.length_y:.{n}f} \ mm",
-                "length_z": rf"{self.length_z:.{n}f} \ mm",
+                r"N_{Ed}": f"{self.n_ed:.{n}f}",
+                r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
         )
         return LatexFormula(
             return_symbol=r"CHECK",
-            result="OK" if self.__bool__() else "\\text{Not OK}",
+            result="OK" if bool(self) else r"\text{Not OK}",
             equation=_equation,
             numeric_equation=_numeric_equation,
-            numeric_equation_with_units=_numeric_equation_with_units
-        comparison_operator_label = "\\to",
-        unit = "",
+            comparison_operator_label=r"\to",
+            unit="",
         )
+
 
 ```
