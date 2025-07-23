@@ -1,6 +1,6 @@
-**NEN-EN 1993-1-8+C2 - December 2011
+**EN 1993-1-8 - May 2005
 Eurocode 3: Design of steel structures
-Part 1-8: Design and calculation of connections
+Part 1-8: Design and calculation of connections**
 
 The table presents a list of tables from the Eurocode 3 standards for steel structures, tracking their implementation status (:x: or :heavy_check_mark:)
 and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.

@@ -1,4 +1,4 @@
-**NEN-EN 1993-1-9+C2 - September 2012
+**EN 1993-1-9 - May 2005
 Eurocode 3: Design of steel structures
 Part 1-9: Fatigue**
 
