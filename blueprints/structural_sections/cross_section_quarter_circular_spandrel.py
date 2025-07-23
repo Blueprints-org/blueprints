@@ -119,18 +119,3 @@ class QuarterCircularSpandrelCrossSection(CrossSection):
         square_with_cutout = Geometry(geom=self.polygon)
         square_with_cutout.create_mesh(mesh_sizes=mesh_size)
         return square_with_cutout
-
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
-    section = QuarterCircularSpandrelCrossSection(radius=100, thickness_at_vertical=10, thickness_at_horizontal=5)
-    poly = section.polygon
-
-    x, y = poly.exterior.xy
-    plt.figure(figsize=(6, 6))
-    plt.plot(x, y, "b-")
-    plt.fill(x, y, alpha=0.3)
-    plt.axis("equal")
-    plt.title("Quarter Circular Spandrel Cross Section")
-    plt.show()

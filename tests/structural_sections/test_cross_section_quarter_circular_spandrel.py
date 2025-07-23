@@ -9,6 +9,39 @@ from blueprints.structural_sections.cross_section_quarter_circular_spandrel impo
 class TestQuarterCircularSpandrelCrossSection:
     """Tests for the QuarterCircularSpandrelCrossSection class."""
 
+    @pytest.mark.parametrize(
+        (
+            "radius",
+            "thickness_at_horizontal",
+            "thickness_at_vertical",
+            "expected_exception",
+            "expected_message",
+        ),
+        [
+            (-1, 1, 1, ValueError, "Radius must be non-negative"),
+            (1, -1, 1, ValueError, "Thickness at horizontal must be non-negative"),
+            (1, 1, -1, ValueError, "Thickness at vertical must be non-negative"),
+        ],
+    )
+    def test_invalid_parameters_raise(
+        self,
+        radius: float,
+        thickness_at_horizontal: float,
+        thickness_at_vertical: float,
+        expected_exception: type[Exception],
+        expected_message: str,
+    ) -> None:
+        """Test that invalid parameters raise the correct exceptions."""
+        with pytest.raises(expected_exception) as exc_info:
+            QuarterCircularSpandrelCrossSection(
+                radius=radius,
+                thickness_at_horizontal=thickness_at_horizontal,
+                thickness_at_vertical=thickness_at_vertical,
+                x=0.0,
+                y=0.0,
+            )
+        assert expected_message in str(exc_info.value)
+
     def test_area(self, qcs_cross_section: QuarterCircularSpandrelCrossSection) -> None:
         """Test the area property of the QuarterCircularSpandrelCrossSection class."""
         expected_area = 50.0**2 - (np.pi * 50.0**2 / 4)
