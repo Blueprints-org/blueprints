@@ -6,7 +6,7 @@ from typing import Self
 
 from matplotlib import pyplot as plt
 
-from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
@@ -315,27 +315,3 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
-
-
-if __name__ == "__main__":
-    # Example: Create and plot a custom RHS-profile
-
-    steel_material = SteelMaterial(SteelStrengthClass.S355)
-    rhs_profile = RHSSteelProfile(
-        steel_material=steel_material,
-        total_width=200,
-        total_height=100,
-        left_wall_thickness=8,
-        right_wall_thickness=8,
-        top_wall_thickness=8,
-        bottom_wall_thickness=8,
-    )
-    # Get polygons and plot
-    fig, ax = plt.subplots()
-    for element in rhs_profile.elements:
-        poly = element.cross_section.polygon
-        x, y = zip(*poly.exterior.coords)
-        ax.fill(x, y, alpha=0.5, label=element.cross_section.name)
-    ax.set_aspect("equal")
-    ax.legend()
-    plt.show()
