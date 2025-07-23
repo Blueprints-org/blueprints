@@ -1,4 +1,4 @@
-**NEN-EN 1993-1-1+C2+A1 - December 2016
+**EN 1993-1-1 - May 2005
 Eurocode 3: Design of steel structures
 Part 1-1: General rules and rules for buildings**
 
