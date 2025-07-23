@@ -12,16 +12,17 @@
 ## Template for service
 
 ```python
-"""Testing formula 6.41 of NEN-EN 1992-1-1+C2:2011."""
+"""Testing formula 6.41 of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_6_ultimate_limit_state.formula_6_41 import Form6Dot41W1Rectangular
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_41 import
+    Form6Dot41W1Rectangular
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot41W1Rectangular:
-    """Validation for formula 6.41 from NEN-EN 1992-1-1+C2:2011."""
+    """Validation for formula 6.41 from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -55,16 +56,16 @@ class TestForm6Dot41W1Rectangular:
         ("representation", "expected"),
         [
             (
-                "complete",
-                r"W_1 = \frac{(c_1)^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot (d)^2 + 2 \cdot \pi \cdot d \cdot c_1 = "
-                r"\frac{(300.000)^2}{2} + 300.000 \cdot 400.000 + 4 \cdot 400.000 \cdot 500.000 + "
-                r"16 \cdot (500.000)^2 + 2 \cdot \pi \cdot 500.000 \cdot 300.000 = 5907477.796 \ mm^2",
+                    "complete",
+                    r"W_1 = \frac{(c_1)^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot (d)^2 + 2 \cdot \pi \cdot d \cdot c_1 = "
+                    r"\frac{(300.000)^2}{2} + 300.000 \cdot 400.000 + 4 \cdot 400.000 \cdot 500.000 + "
+                    r"16 \cdot (500.000)^2 + 2 \cdot \pi \cdot 500.000 \cdot 300.000 = 5907477.796 \ mm^2",
             ),
             (
-                "complete_with_units",
-                r"W_1 = \frac{(c_1)^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot (d)^2 + 2 \cdot \pi \cdot d \cdot c_1 = "
-                r"\frac{(300.000 \ mm)^2}{2} + 300.000 \ mm \cdot 400.000 \ mm + 4 \cdot 400.000 \ mm \cdot 500.000 \ mm + "
-                r"16 \cdot (500.000 \ mm)^2 + 2 \cdot \pi \cdot 500.000 \ mm \cdot 300.000 \ mm = 5907477.796 \ mm^2",
+                    "complete_with_units",
+                    r"W_1 = \frac{(c_1)^2}{2} + c_1 \cdot c_2 + 4 \cdot c_2 \cdot d + 16 \cdot (d)^2 + 2 \cdot \pi \cdot d \cdot c_1 = "
+                    r"\frac{(300.000 \ mm)^2}{2} + 300.000 \ mm \cdot 400.000 \ mm + 4 \cdot 400.000 \ mm \cdot 500.000 \ mm + "
+                    r"16 \cdot (500.000 \ mm)^2 + 2 \cdot \pi \cdot 500.000 \ mm \cdot 300.000 \ mm = 5907477.796 \ mm^2",
             ),
             ("short", r"W_1 = 5907477.796 \ mm^2"),
         ],

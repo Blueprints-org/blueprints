@@ -72,8 +72,8 @@ class TestChlorideSeawater:
         assert ChlorideSeawater.NA.description_of_the_environment() == "Not applicable"
 
 
-class TestFreeze:
-    """Testing Freeze class."""
+class TestFreezeThaw:
+    """Testing FreezeThaw class."""
 
     def test_options(self) -> None:
         """Check if the options method returns all the possible options within an exposure class."""
@@ -136,7 +136,7 @@ class TestTable4Dot1ExposureClasses:
         assert exposure_classes.carbonation == Carbonation.XC1
         assert exposure_classes.chloride == Chloride.XD1
         assert exposure_classes.chloride_seawater == ChlorideSeawater.XS1
-        assert exposure_classes.freeze == FreezeThaw.XF1
+        assert exposure_classes.freeze_thaw == FreezeThaw.XF1
         assert exposure_classes.chemical == Chemical.XA1
 
         # test with wrong exposure class

@@ -155,4 +155,5 @@ class StirrupConfiguration:
 
     def __str__(self) -> str:
         """String representation of the stirrup."""
-        return f"Stirrups ⌀{self.diameter}-{self.distance:.0f} mm | {self.material.name} | {self.as_w:.2f} mm²/m"
+        n = 2
+        return f"Stirrups ⌀{self.diameter}-{self.distance:.0f} mm | {self.material.name} | {self.as_w:.{n}f} mm²/m"

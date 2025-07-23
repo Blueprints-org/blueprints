@@ -1,12 +1,16 @@
-"""Testing nominal concrete cover check of NEN-EN 1992-1-1."""
+"""Testing nominal concrete cover check of EN 1992-1-1."""
 
 import pytest
 
-from blueprints.checks.nominal_concrete_cover.constants.base import NominalConcreteCoverConstantsBase
-from blueprints.checks.nominal_concrete_cover.constants.constants_nen_en_1992_1_1_c2_2011 import NominalConcreteCoverConstants2011C2
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
 from blueprints.checks.nominal_concrete_cover.nominal_concrete_cover import NominalConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
+    AbrasionClass,
+    CastingSurface,
+    NominalConcreteCoverConstantsBase,
+)
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.structural_class import ConcreteStructuralClassBase
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.constants import NominalConcreteCoverConstants
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,
@@ -14,8 +18,7 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     FreezeThaw,
     Table4Dot1ExposureClasses,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
-from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.type_alias import MM
 
@@ -24,7 +27,7 @@ structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, Concr
 
 
 class TestNominalConcreteCover:
-    """Validation for nominal concrete cover check from NEN-EN 1992-1-1."""
+    """Validation for nominal concrete cover check from EN 1992-1-1."""
 
     @pytest.mark.parametrize(
         (
@@ -47,7 +50,7 @@ class TestNominalConcreteCover:
             (
                 25,
                 False,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 structural_class,
                 Carbonation.XC1,
                 Chloride.XD1,
@@ -63,7 +66,7 @@ class TestNominalConcreteCover:
             (
                 25,
                 False,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 structural_class,
                 "XC1",
                 "XD1",
@@ -79,7 +82,7 @@ class TestNominalConcreteCover:
             (
                 32,
                 True,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 6,
                 Carbonation.XC3,
                 Chloride.XD2,
@@ -95,7 +98,7 @@ class TestNominalConcreteCover:
             (
                 20,
                 False,
-                NominalConcreteCoverConstants2011C2(),
+                NominalConcreteCoverConstants(),
                 2,
                 Carbonation.XC1,
                 Chloride.XD3,
@@ -159,7 +162,7 @@ class TestNominalConcreteCover:
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
-                constants=NominalConcreteCoverConstants2011C2(),
+                constants=NominalConcreteCoverConstants(),
                 structural_class=structural_class,
                 carbonation=Carbonation.XC1,
                 chloride=Chloride.XD1,
@@ -185,7 +188,7 @@ class TestNominalConcreteCover:
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
-                constants=NominalConcreteCoverConstants2011C2(),
+                constants=NominalConcreteCoverConstants(),
                 structural_class=structural_class,
                 carbonation=Carbonation.XC1,
                 chloride=Chloride.XD1,
@@ -211,7 +214,7 @@ class TestNominalConcreteCover:
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
-                constants=NominalConcreteCoverConstants2011C2(),
+                constants=NominalConcreteCoverConstants(),
                 structural_class=structural_class,
                 carbonation=Carbonation.XC1,
                 chloride=Chloride.XD1,
@@ -224,12 +227,12 @@ class TestNominalConcreteCover:
                 abrasion_class=AbrasionClass.XM1,
             )
 
-    def test_latex(self) -> None:
+    def test_latex_representation(self) -> None:
         """Test the latex representation of the formula."""
         nominal_concrete_cover = NominalConcreteCover(
             reinforcement_diameter=25,
             nominal_max_aggregate_size=40,
-            constants=NominalConcreteCoverConstants2011C2(),
+            constants=NominalConcreteCoverConstants(),
             structural_class=structural_class,
             carbonation=Carbonation.XC1,
             chloride=Chloride.XD1,
@@ -243,7 +246,7 @@ class TestNominalConcreteCover:
         )
 
         assert (
-            nominal_concrete_cover.latex() == r"Nominal~concrete~cover~according~to~art.~4.4.1~from~NEN-EN~1992-1-1+C2:2011:\newline~"
+            nominal_concrete_cover.latex() == r"Nominal~concrete~cover~according~to~art.~4.4.1~from~EN~1992-1-1:2004:\newline~"
             r"\max~\left\{Nominal~concrete~cover~according~to~art.~4.4.1~(c_{nom});~Minimum~cover~with~regard~to~casting~surface~according~to~art.~4.4.1.3~(4)\right\}\newline~"
             r"=~\max~\left\{55.0;~110.0\right\}~=~110.0~mm\newline~"
             r"\newline~"

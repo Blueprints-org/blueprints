@@ -3,10 +3,10 @@
 from dataclasses import dataclass
 
 from sectionproperties.pre import Geometry
-from shapely import Point, Polygon
+from shapely import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import MM, MM2, MM3, MM4
+from blueprints.type_alias import MM, MM3, MM4
 
 
 @dataclass(frozen=True)
@@ -66,42 +66,6 @@ class RectangularCrossSection(CrossSection):
                 left_upper,
             ]
         )
-
-    @property
-    def area(self) -> MM2:
-        """
-        Calculate the area of the rectangular cross-section.
-
-        Returns
-        -------
-        MM2
-            The area of the rectangle.
-        """
-        return self.width * self.height
-
-    @property
-    def perimeter(self) -> MM:
-        """
-        Calculate the perimeter of the rectangular cross-section.
-
-        Returns
-        -------
-        MM
-            The perimeter of the rectangle.
-        """
-        return 2 * (self.width + self.height)
-
-    @property
-    def centroid(self) -> Point:
-        """
-        Get the centroid of the rectangular cross-section.
-
-        Returns
-        -------
-        Point
-            The centroid of the rectangle.
-        """
-        return Point(self.x, self.y)
 
     @property
     def moment_of_inertia_about_y(self) -> MM4:

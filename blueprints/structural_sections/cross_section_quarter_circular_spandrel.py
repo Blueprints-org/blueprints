@@ -51,12 +51,15 @@ class QuarterCircularSpandrelCrossSection(CrossSection):
         """
         left_lower = (self.x, self.y)
 
-        # Approximate the quarter circle with 50 straight lines
+        # Approximate the quarter circle with 25 straight lines.
+        # This resolution was chosen to balance performance and accuracy.
+        # Increasing the number of segments (e.g., to 50) would improve accuracy but at the cost of computational performance.
+        # Ensure this resolution meets the requirements of your specific application before using.
         quarter_circle_points = [
-            (self.x + self.radius - self.radius * math.cos(math.pi / 2 * i / 50), self.y + self.radius - self.radius * math.sin(math.pi / 2 * i / 50))
-            for i in range(51)
+            (self.x + self.radius - self.radius * math.cos(math.pi / 2 * i / 25), self.y + self.radius - self.radius * math.sin(math.pi / 2 * i / 25))
+            for i in range(26)
         ]
-        for i in range(51):
+        for i in range(26):
             if self.mirrored_horizontally:
                 quarter_circle_points[i] = (2 * left_lower[0] - quarter_circle_points[i][0], quarter_circle_points[i][1])
             if self.mirrored_vertically:

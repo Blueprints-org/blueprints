@@ -1,8 +1,8 @@
 """Table 4.5N from NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020: Chapter 4 - Durability and cover to reinforcement."""
 
-from blueprints.codes.eurocode.exposure_classes import ExposureClassesBase
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.structural_class import ConcreteStructuralClassBase
 from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020 import NEN_EN_1992_1_1_A1_2020
-from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
+from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.table_4_1 import Table4Dot1ExposureClasses
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
@@ -19,7 +19,7 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
     def __init__(
         self,
-        exposure_classes: ExposureClassesBase,
+        exposure_classes: Table4Dot1ExposureClasses,
         structural_class: ConcreteStructuralClassBase,
     ) -> None:
         r"""[$c_{min,dur}$] Calculates the minimum concrete cover with regard to durability [$mm$] for prestressing steel.
@@ -28,7 +28,7 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
         Parameters
         ----------
-        exposure_classes: ExposureClassesBase
+        exposure_classes: Table4Dot1ExposureClasses
             The exposure classes of the concrete. Use the [$Table4Dot1ExposureClasses$] class. [$-$]
         structural_class: ConcreteStructuralClassBase
             The structural class of the concrete. Use the [$Table4Dot3ConcreteStructuralClass$] class. [$-$]
@@ -39,7 +39,7 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
     @staticmethod
     def _evaluate(
-        exposure_classes: ExposureClassesBase,
+        exposure_classes: Table4Dot1ExposureClasses,
         structural_class: ConcreteStructuralClassBase,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
@@ -64,11 +64,11 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
 
         return calculated_cover
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 0) -> LatexFormula:
         """Returns LatexFormula object for table 4.5N."""
         return LatexFormula(
             return_symbol=r"c_{min,dur}",
-            result=f"{self:.0f}",
+            result=f"{self:.{n}f}",
             equation=rf"structural class {self.structural_class} & exposure classes ({self.exposure_classes})",
             comparison_operator_label="=",
         )

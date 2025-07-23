@@ -2,6 +2,8 @@
 
 from abc import ABC, abstractmethod
 
+from blueprints.codes.latex_formula import LatexFormula
+
 
 class Formula(float, ABC):
     """Abstract base class for formulas used in the codes."""
@@ -51,7 +53,7 @@ class Formula(float, ABC):
     def source_document(self) -> str:
         """Property for the source document.
 
-        For example, "NEN-EN 1992-1-1+C2:2011"
+        For example, "EN 1992-1-1:2004"
         Try to use the official and complete name of the document including publishing year, if possible.
 
         Returns
@@ -84,4 +86,90 @@ class Formula(float, ABC):
         float | bool
             The result of the formula.
             This is an abstract method and must be implemented in all subclasses.
+        """
+
+    @abstractmethod
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Abstract method for the latex representation of the formula.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of decimal places to round the result to.
+
+        Returns
+        -------
+        LatexFormula
+            The latex representation of the formula.
+            This is an abstract method and must be implemented in all subclasses.
+        """
+
+
+class ComparisonFormula(Formula):
+    """Base class for comparison formulas used in the codes."""
+
+    def __new__(cls, *args, **kwargs) -> "ComparisonFormula":
+        """Method for creating a new instance of the class."""
+        lhs = cls._evaluate_lhs(*args, **kwargs)
+        rhs = cls._evaluate_rhs(*args, **kwargs)
+        result = cls._evaluate(*args, **kwargs)
+        instance = float.__new__(cls, result)
+        instance._lhs = lhs  # noqa: SLF001
+        instance._rhs = rhs  # noqa: SLF001
+        instance._initialized = False  # noqa: SLF001
+        return instance
+
+    @staticmethod
+    @abstractmethod
+    def _evaluate_lhs(*args, **kwargs) -> float:
+        """Abstract method for the logic of the left-hand side of the comparison formula.
+
+        Returns
+        -------
+        float
+            The left-hand side value of the comparison.
+        """
+
+    @staticmethod
+    @abstractmethod
+    def _evaluate_rhs(*args, **kwargs) -> float:
+        """Abstract method for the logic of the right-hand side of the comparison formula.
+
+        Returns
+        -------
+        float
+            The right-hand side value of the comparison.
+        """
+
+    @property
+    def lhs(self) -> float:
+        """Property for getting the left-hand side of the comparison.
+
+        Returns
+        -------
+        float
+            The left-hand side value of the comparison.
+        """
+        return self._lhs  # type: ignore[attr-defined]
+
+    @property
+    def rhs(self) -> float:
+        """Property for getting the right-hand side of the comparison.
+
+        Returns
+        -------
+        float
+            The right-hand side value of the comparison.
+        """
+        return self._rhs  # type: ignore[attr-defined]
+
+    @property
+    @abstractmethod
+    def unity_check(self) -> float:
+        """Property to present the unity check of the formula.
+
+        Returns
+        -------
+        float
+            The unity check.
         """
