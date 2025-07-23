@@ -30,22 +30,26 @@ def lazy_import_get_attr(_package: str, _name: str, _chapters: [str]) -> ModuleT
     """
 
     # Parse the given Form name, to get the path to it
-    match = re.match(r"(Form|SubForm|Table)(\d+)Dot(\d+)(\w*)", _name)
+    match = re.match(r"(Form|SubForm|Table)(\d+|[a-zA-Z])Dot(\d+)([a-z]*)([A-Z]\w*)", _name)
     if match:
-        formula_type, chapter, formula, remainder = match.groups()
+        formula_type, chapter, formula, prefix, suffix = match.groups()
 
-        # get the right sub_module, based on the pattern. Pattern is always chapter_3_...
-        pattern = re.compile(rf"chapter_{chapter}(_|$)")
-        result = next((c for c in _chapters if pattern.search(c)), None)
+        # get the right sub_module, based on the pattern. Pattern is always chapter_3_... or annex_a...
+        if chapter.isdigit():
+            pattern = re.compile(rf"chapter_{chapter}(_|$)")
+            result = next((c for c in _chapters if pattern.search(c)), None)
+        else:
+            pattern = re.compile(rf"annex_{chapter.lower()}(_|$)")
+            result = next((c for c in _chapters if pattern.search(c)), None)
 
         if formula_type == "Table":
-            module_name = f"{result}.table_{chapter}_{formula}"
+            module_name = f"{result}.table_{chapter.lower()}_{formula}"
         else:
-            module_name = f"{result}.formula_{chapter}_{formula}"
+            module_name = f"{result}.formula_{chapter.lower()}_{formula}"
 
             # If name of the formula starts with an capital N and next character is upper (name check); add n
-            if remainder.startswith("N") and remainder[1].isupper():
-                module_name += "n"
+            if prefix:
+                module_name += f"{prefix}"
 
         try:
             module = importlib.import_module(f".{module_name}", _package)
