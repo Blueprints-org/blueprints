@@ -196,17 +196,17 @@ figures for streamlined access and reference.
         Eurocode 2: Design of concrete structures – Part 1-1: General rules and rules for buildings
         (<a href="blueprints/codes/eurocode/en_1992_1_1_2004">code</a>)
       </td>
-      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/formulas.md">304</a></td>
-      <td><a href="docs/objects_overview/eurocode/ec2_1992_1_1_2011/tables.md">38</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1992_1_1_2004/formulas.md">304</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1992_1_1_2004/tables.md">38</a></td>
     </tr>
     <tr>
       <td>EN 1993-1-1:2005</td>
       <td>
         EN 1993-1-1:2005 | Eurocode 3: Design of steel structures – Part 1-1: General rules and rules for buildings
-        (<a href="blueprints/codes/eurocode/nen_en_1993_1_1_2005">code</a>)
+        (<a href="blueprints/codes/eurocode/en_1993_1_1_2005">code</a>)
       </td>
-      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/formulas.md">108</a></td>
-      <td><a href="docs/objects_overview/eurocode/ec3_1993_1_1_2016/tables.md">20</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1993_1_1_2005/formulas.md">108</a></td>
+      <td><a href="docs/objects_overview/eurocode/en_1993_1_1_2005/tables.md">20</a></td>
     </tr>
     <tr>
       <td>EN 1993-5:2007</td>
