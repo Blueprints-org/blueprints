@@ -2,8 +2,8 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1_a import Form2Dot1aDesignValueLoad
-from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1_b import Form2Dot1bRepresentativeValue
+from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1a import Form2Dot1aDesignValueLoad
+from blueprints.codes.eurocode.nen_9997_1_c2_2017.chapter_2_basic_of_geotechnical_design.formula_2_1b import Form2Dot1bRepresentativeValue
 from blueprints.type_alias import DIMENSIONLESS
 from blueprints.validations import NegativeValueError
 
