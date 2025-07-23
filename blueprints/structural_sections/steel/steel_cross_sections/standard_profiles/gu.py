@@ -810,7 +810,7 @@ class GU(Enum):
         "ArcelorMittal",
     )
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         alias: str,
         b_width_single_pile: MM,
