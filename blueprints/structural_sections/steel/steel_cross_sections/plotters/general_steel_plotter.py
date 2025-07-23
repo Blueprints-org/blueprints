@@ -60,8 +60,8 @@ def plot_shapes(
     {profile.name}\n
     Area: {profile.area:.1f} mm²
     Weight per meter: {profile.weight_per_meter:.1f} kg/m
-    Moment of inertia about y: {profile.section_properties(coordinate_system="YZ").asdict()["iyy_c"]:.0f} mm⁴
-    Moment of inertia about z: {profile.section_properties(coordinate_system="YZ").asdict()["izz_c"]:.0f} mm⁴
+    Moment of inertia about x: {profile.section_properties().ixx_c:.0f} mm⁴
+    Moment of inertia about y: {profile.section_properties().iyy_c:.0f} mm⁴
     """
 
     # Add the steel quality if all elements have the same material
