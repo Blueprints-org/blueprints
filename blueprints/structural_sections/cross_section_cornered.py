@@ -1,4 +1,4 @@
-"""Square minus quarter circle shape: Quarter Circular Spandrel."""
+"""Shape of a circular cornered section."""
 
 from dataclasses import dataclass
 
@@ -12,9 +12,9 @@ from blueprints.validations import raise_if_negative
 
 
 @dataclass(frozen=True)
-class QuarterCircularSpandrelCrossSection(CrossSection):
+class CorneredCrossSection(CrossSection):
     """
-    Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as Quarter Circular Spandrel.
+    Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as a circular cornered section.
 
 
 
