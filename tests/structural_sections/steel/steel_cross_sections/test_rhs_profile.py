@@ -64,8 +64,8 @@ class TestRHSSteelProfile:
         rhs_profile_with_corrosion = RHSSteelProfile.from_standard_profile(
             profile=RHS.RHS400x200_16,
             steel_material=SteelMaterial(SteelStrengthClass.S355),
-            corrosion_outside=1,  # mm
+            corrosion_outside=2,  # mm
             corrosion_inside=1,  # mm
         )
-        expected_name_with_corrosion = "RHS400x200x16 (corrosion in: 1 mm, out: 1 mm)"
+        expected_name_with_corrosion = "RHS400x200x16 (corrosion in: 1 mm, out: 2 mm)"
         assert rhs_profile_with_corrosion.name == expected_name_with_corrosion

@@ -3,6 +3,7 @@
 import pytest
 
 from blueprints.structural_sections.cross_section_quarter_circular_spandrel import QuarterCircularSpandrelCrossSection
+from blueprints.validations import NegativeValueError
 
 
 class TestQuarterCircularSpandrelCrossSection:
@@ -19,45 +20,19 @@ class TestQuarterCircularSpandrelCrossSection:
         geometry = qcs_cross_section.geometry()
         assert geometry is not None
 
-    def test_invalid_thickness_vertical(self) -> None:
-        """Test initialization with an invalid vertical thickness."""
-        with pytest.raises(ValueError, match="Thickness vertical must be non-negative"):
-            QuarterCircularSpandrelCrossSection(
-                thickness_vertical=-1,
-                thickness_horizontal=10,
-                inner_radius=5,
-                outer_radius=10,
-            )
-
-    def test_invalid_thickness_horizontal(self) -> None:
-        """Test initialization with an invalid horizontal thickness."""
-        with pytest.raises(ValueError, match="Thickness horizontal must be non-negative"):
-            QuarterCircularSpandrelCrossSection(
-                thickness_vertical=10,
-                thickness_horizontal=-1,
-                inner_radius=5,
-                outer_radius=10,
-            )
-
-    def test_invalid_inner_radius(self) -> None:
-        """Test initialization with an invalid inner radius."""
-        with pytest.raises(ValueError, match="Inner radius must be non-negative"):
-            QuarterCircularSpandrelCrossSection(
-                thickness_vertical=10,
-                thickness_horizontal=10,
-                inner_radius=-1,
-                outer_radius=10,
-            )
-
-    def test_invalid_outer_radius(self) -> None:
-        """Test initialization with an invalid outer radius."""
-        with pytest.raises(ValueError, match="Outer radius must be non-negative"):
-            QuarterCircularSpandrelCrossSection(
-                thickness_vertical=10,
-                thickness_horizontal=10,
-                inner_radius=5,
-                outer_radius=-1,
-            )
+    @pytest.mark.parametrize(
+        "kwargs",
+        [
+            {"thickness_vertical": -1, "thickness_horizontal": 10, "inner_radius": 5, "outer_radius": 10},
+            {"thickness_vertical": 10, "thickness_horizontal": -1, "inner_radius": 5, "outer_radius": 10},
+            {"thickness_vertical": 10, "thickness_horizontal": 10, "inner_radius": -1, "outer_radius": 10},
+            {"thickness_vertical": 10, "thickness_horizontal": 10, "inner_radius": 5, "outer_radius": -1},
+        ],
+    )
+    def test_raise_error_when_negative_values_are_given(self, kwargs: dict) -> None:
+        """Test NegativeValueError is raised for negative values."""
+        with pytest.raises(NegativeValueError):
+            QuarterCircularSpandrelCrossSection(**kwargs)
 
     def test_invalid_outer_radius_greater_than_inner_plus_thickness(self) -> None:
         """Test initialization with an outer radius greater than inner radius plus thickness."""
@@ -70,4 +45,15 @@ class TestQuarterCircularSpandrelCrossSection:
                 thickness_horizontal=10,
                 inner_radius=5,
                 outer_radius=20,
+            )
+
+    def test_invalid_corner_direction(self) -> None:
+        """Test initialization with an invalid corner direction."""
+        with pytest.raises(ValueError, match="corner_direction must be one of 0, 1, 2, or 3, got 4"):
+            QuarterCircularSpandrelCrossSection(
+                thickness_vertical=10,
+                thickness_horizontal=10,
+                inner_radius=5,
+                outer_radius=10,
+                corner_direction=4,
             )
