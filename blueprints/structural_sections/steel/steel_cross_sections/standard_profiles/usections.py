@@ -2,7 +2,7 @@
 
 from enum import Enum
 
-from blueprints.type_alias import MM
+from blueprints.type_alias import CM, CM2, CM3, CM4, DEG, KG, M2, MM
 
 
 class USections(Enum):
@@ -818,16 +818,16 @@ class USections(Enum):
         tf_flange_thickness: MM,
         tw_web_thickness: MM,
         bf_flange_width: MM,
-        a_flange_angle: float,
-        a_cross_sectional_area: float,
-        gsp_mass_per_single_pile: float,
-        i_y_moment_inertia: float,
-        w_el_y_elastic_section_modulus: float,
-        s_y_static_moment: float,
-        w_pl_y_plastic_section_modulus: float,
-        gw_mass_per_m: float,
-        rg_radius_of_gyration: float,
-        al_coating_area: float,
+        a_flange_angle: DEG,
+        a_cross_sectional_area: CM2,
+        gsp_mass_per_single_pile: KG,
+        i_y_moment_inertia: CM4,
+        w_el_y_elastic_section_modulus: CM3,
+        s_y_static_moment: CM3,
+        w_pl_y_plastic_section_modulus: CM3,
+        gw_mass_per_m: KG,
+        radius_of_gyration_y_y: CM,
+        al_coating_area: M2,
         manufacturer: str,
     ) -> None:
         """Initialize GU/PU sheet pile profile.
@@ -837,37 +837,38 @@ class USections(Enum):
         Parameters
         ----------
         alias: str
-            Profile alias.
+            Name of the sheet pile profile.
+            For example: "PU 18".
         b_width_single_pile: MM
-            Width of single pile.
+            (b) Width of a single pile [mm].
         h_height_pile: MM
-            Height of pile.
+            (h) Height of the wall [mm].
         tf_flange_thickness: MM
-            Flange thickness.
+            (tf) Thickness of the flange (mm).
         tw_web_thickness: MM
-            Web thickness.
+            (tw) Thickness of the web (mm).
         bf_flange_width: MM
-            Flange width.
+            (bf) Width of the flange [mm].
         a_flange_angle: float
-            Flange angle in degrees.
-        a_cross_sectional_area: float
-            Cross-sectional area in cm².
-        gsp_mass_per_single_pile: float
-            Mass per single pile in kg/m.
-        i_y_moment_inertia: float
-            Moment of inertia in cm⁴.
-        w_el_y_elastic_section_modulus: float
-            Elastic section modulus in cm³.
-        s_y_static_moment: float
-            Static moment in cm³.
-        w_pl_y_plastic_section_modulus: float
-            Plastic section modulus in cm³.
-        gw_mass_per_m: float
-            Mass per meter in kg/m.
-        rg_radius_of_gyration: float
-            Radius of gyration in cm.
-        al_coating_area: float
-            Coating area in m²/m.
+            (α) Flange angle in degrees [°].
+        a_cross_sectional_area: CM2
+            (A) Cross sectional steel area in [cm²/m].
+        gsp_mass_per_single_pile: KG
+            (Gsp) Mass per single pile in [kg/m].
+        i_y_moment_inertia: CM4
+            (Iy) Moment of inertia about the main neutral axis y-y in [cm⁴/m].
+        w_el_y_elastic_section_modulus: CM3
+            (Wel,y) Elastic section modulus in [cm³/m].
+        s_y_static_moment: CM3
+            (Sy) Static moment in [cm³/m].
+        w_pl_y_plastic_section_modulus: CM3
+            (Wpl,y) Plastic section modulus in [cm³/m].
+        gw_mass_per_m: KG
+            (G) Mass per m in [kg/m].
+        radius_of_gyration_y_y: float
+            (rg) Radius of gyration about the main neutral axis y-y in [cm].
+        al_coating_area: M2
+            (Al) Coating area. One side, excludes inside interlocks in [m²/m].
         manufacturer: str
             Manufacturer name.
         """
@@ -885,7 +886,7 @@ class USections(Enum):
         self.s_y_static_moment = s_y_static_moment
         self.w_pl_y_plastic_section_modulus = w_pl_y_plastic_section_modulus
         self.gw_mass_per_m = gw_mass_per_m
-        self.rg_radius_of_gyration = rg_radius_of_gyration
+        self.radius_of_gyration_y_y = radius_of_gyration_y_y
         self.al_coating_area = al_coating_area
         self.manufacturer = manufacturer
         self.sheet_pile_type = "U-Section"

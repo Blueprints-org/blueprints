@@ -75,7 +75,7 @@ class TestAZ:
         assert profile.s_y_static_moment == 1050
         assert profile.w_pl_y_plastic_section_modulus == 2104
         assert profile.gw_mass_per_m == 118.1
-        assert profile.rg_radius_of_gyration == 15.07
+        assert profile.radius_of_gyration_y_y == 15.07
         assert profile.al_coating_area == 1.35
         assert profile.manufacturer == "ArcelorMittal"
         assert profile.sheet_pile_type == "Z-Section"

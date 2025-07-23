@@ -3,7 +3,7 @@
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.usections import USections
 
 
-class TestGU:
+class TestUProfiles:
     """Tests for the GU enum."""
 
     def test_enum_values(self) -> None:
@@ -75,7 +75,7 @@ class TestGU:
         assert profile.s_y_static_moment == 375
         assert profile.w_pl_y_plastic_section_modulus == 765
         assert profile.gw_mass_per_m == 69.9
-        assert profile.rg_radius_of_gyration == 10.43
+        assert profile.radius_of_gyration_y_y == 10.43
         assert profile.al_coating_area == 1.26
         assert profile.manufacturer == "ArcelorMittal"
         assert profile.sheet_pile_type == "U-Section"
