@@ -16,7 +16,17 @@ class CorneredCrossSection(CrossSection):
     """
     Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as a circular cornered section.
 
-
+        .---- outer arc
+        ∨
+    . . .+-----------------------+
+    .  ⁄                         |
+    .⁄                           |<-- thickness_vertical
+    +                            |
+    |                        _ _ |<-- inner arc
+    |                      /
+    |                    /
+    |                   |
+    +-------------------+<-- thickness_horizontal
 
     Parameters
     ----------
