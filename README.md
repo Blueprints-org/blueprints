@@ -86,7 +86,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
     - [x] Tube / ring ✔️
     - [x] Right triangle ✔️
     - [x] Hexagon ✔️
-    - [x] a circular cornered section ✔️
+    - [x] A circular cornered section ✔️
     - [ ] Annular Sector (partial ring) ![](https://img.shields.io/badge/Status-In%20Pull%20Request-yellowgreen)
 
 * Reinforced Concrete Section
