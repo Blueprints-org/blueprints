@@ -9,10 +9,10 @@ class TestLazyImporting:
     def test_import_errors(self) -> None:
         """Test what happens when a module is not found."""
         with pytest.raises(ModuleNotFoundError):
-            import blueprints.codes.eurocode.non_existing_module as non_existing  # noqa: F401, I001
+            import blueprints.codes.eurocode.non_existing_module as non_existing  # noqa: F401
 
         with pytest.raises(ModuleNotFoundError):
-            import blueprints.codes.non_existing_module as non_existing2  # noqa: F401, I001
+            import blueprints.codes.non_existing_module as non_existing2  # noqa: F401
 
     def test_norm_items(self) -> None:
         """From all norms, test the inputs of at least 1 (edgecase) formula, to ensure the nen/__init__ works."""
