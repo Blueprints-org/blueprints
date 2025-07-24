@@ -14,13 +14,23 @@ for sub_module in _all_packages[:]:
 
     # write alisases for each submodule
     for alias in module.__all__:
-        real_modname = f"blueprints.codes.{sub_module}.{alias}"
         alias_modname = f"{__name__}.{alias}"
-
         if alias_modname not in sys.modules:
-            mod = importlib.import_module(real_modname)
+            mod = importlib.import_module(f".{alias}", package=f"{__name__}.{sub_module}")
             sys.modules[alias_modname] = mod
             setattr(sys.modules[__name__], alias, mod)
+
+
+def __getattr__(name):
+    if name in __all__:
+        # Determine which submodule the name comes from (you can map it dynamically if needed)
+        for sub_module in ["eurocode", "cur"]:
+            try:
+                return importlib.import_module(f".{sub_module}.{name}", __name__)
+            except ModuleNotFoundError:
+                continue
+        raise AttributeError(f"Module {name} not found in known submodules.")
+    raise AttributeError(f"module {__name__} has no attribute {name}")
 
 # set all generated packages to __all__
 __all__ = list(_all_packages)
