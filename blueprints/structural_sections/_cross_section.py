@@ -7,7 +7,7 @@ from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.type_alias import MM, MM2, MM3, MM4
+from blueprints.type_alias import MM, MM2
 
 
 class CrossSection(ABC):
@@ -43,46 +43,6 @@ class CrossSection(ABC):
     def centroid(self) -> Point:
         """Centroid of the cross-section [mm]."""
         return self.polygon.centroid
-
-    @property
-    @abstractmethod
-    def moment_of_inertia_about_y(self) -> MM4:
-        """Moments of inertia of the cross-section [mm⁴]."""
-
-    @property
-    @abstractmethod
-    def moment_of_inertia_about_z(self) -> MM4:
-        """Moments of inertia of the cross-section [mm⁴]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_y_positive(self) -> MM3:
-        """Elastic section modulus about the y-axis on the positive z side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_y_negative(self) -> MM3:
-        """Elastic section modulus about the y-axis on the negative z side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_z_positive(self) -> MM3:
-        """Elastic section modulus about the z-axis on the positive y side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_z_negative(self) -> MM3:
-        """Elastic section modulus about the z-axis on the negative y side [mm³]."""
-
-    @property
-    @abstractmethod
-    def plastic_section_modulus_about_y(self) -> MM3 | None:
-        """Plastic section modulus about the y-axis [mm³]."""
-
-    @property
-    @abstractmethod
-    def plastic_section_modulus_about_z(self) -> MM3 | None:
-        """Plastic section modulus about the z-axis [mm³]."""
 
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
         """Geometry of the cross-section.
@@ -129,4 +89,5 @@ class CrossSection(ABC):
             section.calculate_warping_properties()
         if plastic:
             section.calculate_plastic_properties()
+
         return section.section_props
