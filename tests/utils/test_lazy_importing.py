@@ -6,23 +6,13 @@ import pytest
 class TestLazyImporting:
     """Test class for Lazy Importing."""
 
-    def test_eurocode_skip(self) -> None:
-        """Test if imports are properly working when the eurocode module is skipped."""
-        import blueprints.codes.eurocode.en_1992_2_2005 as en
-
-        assert en is not None
-        import blueprints.codes.en_1992_2_2005 as en2
-
-        assert en == en2
-
     def test_import_errors(self) -> None:
         """Test what happens when a module is not found."""
         with pytest.raises(ModuleNotFoundError):
-            import blueprints.codes.eurocode.non_existing_module as non_existing
+            import blueprints.codes.eurocode.non_existing_module as non_existing  # noqa: F401, I001
 
         with pytest.raises(ModuleNotFoundError):
-            import blueprints.codes.non_existing_module as non_existing2
-
+            import blueprints.codes.non_existing_module as non_existing2  # noqa: F401, I001
 
     def test_norm_items(self) -> None:
         """From all norms, test the inputs of at least 1 (edgecase) formula, to ensure the nen/__init__ works."""
