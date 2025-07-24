@@ -25,7 +25,7 @@ def extract_code_from_notebook(notebook_path: Path) -> str:
     code_lines = []
 
     # Add a header comment
-    code_lines.append(f'# Code automatically extracted from {notebook_path.name}.\n')
+    code_lines.append(f"# Code automatically extracted from {notebook_path.name}.\n")
 
     for cell in notebook.get("cells", []):
         if cell.get("cell_type") == "code":
@@ -59,7 +59,7 @@ def main() -> None:
 
         # Calculate relative path from docs directory
         relative_path = notebook_path.relative_to(docs_dir)
-        
+
         # Generate corresponding .py file path preserving directory structure
         py_filename = notebook_path.stem + ".py"
         output_path = relative_path.parent / notebook_path.stem / py_filename
@@ -69,5 +69,6 @@ def main() -> None:
             f.write(code_content)
 
         print(f"Generated {output_path} from {relative_path}")
+
 
 main()
