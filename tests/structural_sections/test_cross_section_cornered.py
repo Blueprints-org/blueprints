@@ -2,20 +2,20 @@
 
 import pytest
 
-from blueprints.structural_sections.cross_section_cornered import CorneredCrossSection
+from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.validations import NegativeValueError
 
 
-class TestCorneredCrossSection:
-    """Tests for the CorneredCrossSection class."""
+class TestCircularCorneredCrossSection:
+    """Tests for the CircularCorneredCrossSection class."""
 
-    def test_polygon(self, qcs_cross_section: CorneredCrossSection) -> None:
+    def test_polygon(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
         """Test the polygon property."""
         polygon = qcs_cross_section.polygon
         assert polygon.is_valid
         assert len(polygon.exterior.coords) > 0
 
-    def test_geometry(self, qcs_cross_section: CorneredCrossSection) -> None:
+    def test_geometry(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
         """Test the geometry property."""
         geometry = qcs_cross_section.geometry()
         assert geometry is not None
@@ -32,7 +32,7 @@ class TestCorneredCrossSection:
     def test_raise_error_when_negative_values_are_given(self, kwargs: dict) -> None:
         """Test NegativeValueError is raised for negative values."""
         with pytest.raises(NegativeValueError):
-            CorneredCrossSection(**kwargs)
+            CircularCorneredCrossSection(**kwargs)
 
     def test_invalid_outer_radius_greater_than_inner_plus_thickness(self) -> None:
         """Test initialization with an outer radius greater than inner radius plus thickness."""
@@ -40,7 +40,7 @@ class TestCorneredCrossSection:
             ValueError,
             match="Outer radius 20 must be smaller than or equal to inner radius 5 plus the thickness 10",
         ):
-            CorneredCrossSection(
+            CircularCorneredCrossSection(
                 thickness_vertical=10,
                 thickness_horizontal=10,
                 inner_radius=5,
@@ -50,7 +50,7 @@ class TestCorneredCrossSection:
     def test_invalid_corner_direction(self) -> None:
         """Test initialization with an invalid corner direction."""
         with pytest.raises(ValueError, match="corner_direction must be one of 0, 1, 2, or 3, got 4"):
-            CorneredCrossSection(
+            CircularCorneredCrossSection(
                 thickness_vertical=10,
                 thickness_horizontal=10,
                 inner_radius=5,

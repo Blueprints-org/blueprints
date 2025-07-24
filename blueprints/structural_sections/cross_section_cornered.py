@@ -12,7 +12,7 @@ from blueprints.validations import raise_if_negative
 
 
 @dataclass(frozen=True)
-class CorneredCrossSection(CrossSection):
+class CircularCorneredCrossSection(CrossSection):
     """
     Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as a circular cornered section.
 

@@ -7,7 +7,7 @@ from typing import Self
 from matplotlib import pyplot as plt
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.cross_section_cornered import CorneredCrossSection
+from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
@@ -134,7 +134,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         )
 
         # Create the corner sections
-        self.top_right_corner = CorneredCrossSection(
+        self.top_right_corner = CircularCorneredCrossSection(
             name="Top Right Corner",
             thickness_vertical=self.top_wall_thickness,
             thickness_horizontal=self.right_wall_thickness,
@@ -144,7 +144,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             y=self.total_height / 2 - self.top_wall_thickness - self.top_right_inner_radius,
             corner_direction=0,
         )
-        self.top_left_corner = CorneredCrossSection(
+        self.top_left_corner = CircularCorneredCrossSection(
             name="Top Left Corner",
             thickness_vertical=self.top_wall_thickness,
             thickness_horizontal=self.left_wall_thickness,
@@ -154,7 +154,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             y=self.total_height / 2 - self.top_wall_thickness - self.top_left_inner_radius,
             corner_direction=1,
         )
-        self.bottom_right_corner = CorneredCrossSection(
+        self.bottom_right_corner = CircularCorneredCrossSection(
             name="Bottom Right Corner",
             thickness_vertical=self.bottom_wall_thickness,
             thickness_horizontal=self.right_wall_thickness,
@@ -164,7 +164,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_right_inner_radius,
             corner_direction=3,
         )
-        self.bottom_left_corner = CorneredCrossSection(
+        self.bottom_left_corner = CircularCorneredCrossSection(
             name="Bottom Left Corner",
             thickness_vertical=self.bottom_wall_thickness,
             thickness_horizontal=self.left_wall_thickness,

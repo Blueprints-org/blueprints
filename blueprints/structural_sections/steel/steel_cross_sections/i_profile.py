@@ -7,7 +7,7 @@ from typing import Self
 from matplotlib import pyplot as plt
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.cross_section_cornered import CorneredCrossSection
+from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
@@ -117,7 +117,7 @@ class ISteelProfile(CombinedSteelCrossSection):
         )
 
         # Create curves for the corners of the flanges
-        self.curve_top_right = CorneredCrossSection(
+        self.curve_top_right = CircularCorneredCrossSection(
             name="Curve top right",
             inner_radius=self.top_radius,
             outer_radius=0,
@@ -127,7 +127,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.top_flange_thickness,
         )
-        self.curve_top_left = CorneredCrossSection(
+        self.curve_top_left = CircularCorneredCrossSection(
             name="Curve top left",
             inner_radius=self.top_radius,
             outer_radius=0,
@@ -137,7 +137,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.top_flange_thickness,
         )
-        self.curve_bottom_right = CorneredCrossSection(
+        self.curve_bottom_right = CircularCorneredCrossSection(
             name="Curve bottom right",
             inner_radius=self.bottom_radius,
             outer_radius=0,
@@ -147,7 +147,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.bottom_flange_thickness,
         )
-        self.curve_bottom_left = CorneredCrossSection(
+        self.curve_bottom_left = CircularCorneredCrossSection(
             name="Curve bottom left",
             inner_radius=self.bottom_radius,
             outer_radius=0,
