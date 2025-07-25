@@ -16,13 +16,13 @@ class AZ(Enum):
         9.5,  # tw_web_thickness
         348,  # bf_flange_width
         55.4,  # a_flange_angle
-        150.4,  # a_cross_sectional_area
+        150.0,  # a_cross_sectional_area
         74.4,  # gsp_mass_per_single_pile
         34200,  # i_y_moment_inertia
         1800,  # w_el_y_elastic_section_modulus
         1050,  # s_y_static_moment
         2104,  # w_pl_y_plastic_section_modulus
-        118.1,  # gw_mass_per_m
+        118.0,  # gw_mass_per_m
         15.07,  # rg_radius_of_gyration
         1.35,  # al_coating_area
         "ArcelorMittal",  # manufacturer
@@ -176,7 +176,7 @@ class AZ(Enum):
         9.5,
         350,
         42.8,
-        134.7,
+        135.0,
         74.0,
         20540,
         1305,
@@ -316,13 +316,13 @@ class AZ(Enum):
         11.2,
         361,
         55.2,
-        174.1,
+        174.0,
         95.7,
         55820,
         2430,
         1435,
         2867,
-        136.7,
+        136.0,
         17.9,
         1.38,
         "ArcelorMittal",
@@ -336,13 +336,13 @@ class AZ(Enum):
         12.2,
         361,
         55.2,
-        187.2,
+        187.0,
         102.9,
         59720,
         2600,
         1535,
         3070,
-        146.9,
+        147.0,
         17.86,
         1.38,
         "ArcelorMittal",
@@ -356,13 +356,13 @@ class AZ(Enum):
         13.2,
         361,
         55.2,
-        200.2,
+        200.0,
         110.0,
         63620,
         2760,
         1635,
         3273,
-        157.2,
+        157.0,
         17.83,
         1.38,
         "ArcelorMittal",
@@ -376,13 +376,13 @@ class AZ(Enum):
         11.2,
         425,
         63.2,
-        215.9,
+        216.0,
         118.6,
         89610,
         3590,
         2055,
         4110,
-        169.5,
+        169.0,
         20.37,
         1.47,
         "ArcelorMittal",
@@ -735,15 +735,15 @@ class AZ(Enum):
         302,  # h_height_pile
         8.5,  # tf_flange_thickness
         8.5,  # tw_web_thickness
-        157,  # bf_flange_width
-        55.0,  # a_flange_angle
-        126,  # a_cross_sectional_area
-        66.1,  # gsp_mass_per_single_pile
+        360,  # bf_flange_width
+        44.3,  # a_flange_angle
+        125.7,  # a_cross_sectional_area
+        66.129,  # gsp_mass_per_single_pile
         18140,  # i_y_moment_inertia
         1200,  # w_el_y_elastic_section_modulus
         1409,  # s_y_static_moment
-        1440,  # w_pl_y_plastic_section_modulus
-        99,  # gw_mass_per_m
+        1409,  # w_pl_y_plastic_section_modulus
+        98.7,  # gw_mass_per_m
         12.0,  # radius_of_gyration_y_y
         1.35,  # al_coating_area
         "ArcelorMittal",  # manufacturer
@@ -1115,8 +1115,8 @@ class AZ(Enum):
         481,  # h_height_pile
         18.0,  # tf_flange_thickness
         14.0,  # tw_web_thickness
-        250,  # bf_flange_width
-        50.0,  # a_flange_angle
+        387,  # bf_flange_width
+        71.5,  # a_flange_angle
         291,  # a_cross_sectional_area
         132.6,  # gsp_mass_per_single_pile
         110450,  # i_y_moment_inertia
@@ -1155,8 +1155,8 @@ class AZ(Enum):
         483,  # h_height_pile
         20.0,  # tf_flange_thickness
         16.0,  # tw_web_thickness
-        251,  # bf_flange_width
-        50.0,  # a_flange_angle
+        387,  # bf_flange_width
+        71.5,  # a_flange_angle
         322,  # a_cross_sectional_area
         146.7,  # gsp_mass_per_single_pile
         121060,  # i_y_moment_inertia
