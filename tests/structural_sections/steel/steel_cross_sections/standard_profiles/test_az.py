@@ -82,8 +82,8 @@ class TestAZ:
 
     def test_profile_count(self) -> None:
         """Test that all profiles are present."""
-        # There should be 36 AZ profiles
-        assert len(AZ) == 36
+        # There should be 58 AZ profiles (36 existing + 22 old profiles)
+        assert len(AZ) == 58
 
     def test_specific_profiles(self) -> None:
         """Test specific profiles from the JSON data."""
@@ -107,3 +107,31 @@ class TestAZ:
         assert profile.b_width_single_pile == 770
         assert profile.h_height_pile == 344
         assert profile.a_flange_angle == 39.5
+
+    def test_old_profiles(self) -> None:
+        """Test some old AZ profiles from the JSON data."""
+        # Test AZ 13
+        profile = AZ.AZ_13
+        assert profile.alias == "AZ 13"
+        assert profile.b_width_single_pile == 670
+        assert profile.h_height_pile == 302
+        assert profile.tf_flange_thickness == 8.5
+        assert profile.tw_web_thickness == 8.5
+        assert profile.a_cross_sectional_area == 126
+        assert profile.gsp_mass_per_single_pile == 66.1
+        assert profile.i_y_moment_inertia == 18140
+        assert profile.w_el_y_elastic_section_modulus == 1200
+        assert profile.w_pl_y_plastic_section_modulus == 1440  # Estimated
+
+        # Test AZ 46 (has original plastic modulus)
+        profile = AZ.AZ_46
+        assert profile.alias == "AZ 46"
+        assert profile.b_width_single_pile == 580
+        assert profile.h_height_pile == 481
+        assert profile.w_pl_y_plastic_section_modulus == 5295  # From original data
+
+        # Test AZ 24-700N
+        profile = AZ.AZ_24_700N
+        assert profile.alias == "AZ 24-700N"
+        assert profile.b_width_single_pile == 700
+        assert profile.h_height_pile == 459
