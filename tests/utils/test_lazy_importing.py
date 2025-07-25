@@ -1,4 +1,4 @@
-"""Tests for the ABCEnumMeta class."""
+"""Tests for lazy importing functionality."""
 
 import pytest
 
