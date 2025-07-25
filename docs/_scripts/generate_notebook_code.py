@@ -42,6 +42,7 @@ def extract_code_from_notebook(notebook_path: Path) -> str:
                         code_lines.append("\n")
                     code_lines.append("\n")
 
+    # removes trailing whitespace and ensures a single newline at the end
     return "".join(code_lines).rstrip() + "\n"
 
 
