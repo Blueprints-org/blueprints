@@ -6,7 +6,7 @@ from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
 
 
-class SubForm3Dot282930Mu(Formula):
+class SubForm3Dot28And29And30Mu(Formula):
     """Class representing sub-formula for 3.28, 3.29 and 3.30 for the calculation of μ."""
 
     label = "3.28 - 3.29 - 3.30"
