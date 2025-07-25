@@ -1,1 +1,1 @@
-> **Note:** This example has been split into multiple files for better organization and clarity. You can find all the related example files at [https://blueprints.readthedocs.io/en/latest/examples/steel_profile_shapes/](https://blueprints.readthedocs.io/en/latest/examples/steel_profile_shapes/).
+> **Note:** This example has been split into multiple files for better organization and clarity. You can find all the related example files at [https://blueprints.readthedocs.io/en/latest/examples](https://blueprints.readthedocs.io/en/latest/examples/).
