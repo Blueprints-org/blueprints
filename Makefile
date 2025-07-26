@@ -69,6 +69,10 @@ test:                          ## Run tests with pytest (parallel execution)
 test-verbose:                  ## Run tests with pytest (verbose output)
 	$(PYTEST) tests/ --verbose -n auto
 
+.PHONY: test-light
+test-light:                    ## Run tests with pytest (lightweight, excludes slow tests)
+	$(PYTEST) tests/ --verbose -m "not slow"
+
 .PHONY: check-coverage
 check-coverage:                ## Run tests and check 100% coverage
 	$(COVERAGE) --cov-report term-missing:skip-covered --cov-fail-under=100
