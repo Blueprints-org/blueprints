@@ -33,6 +33,7 @@ class TestISteelProfile:
         expected_area = 1.806e4  # mm²
         assert pytest.approx(i_profile.area, rel=1e-2) == expected_area
 
+    @pytest.mark.slow
     def test_plot(self, i_profile: ISteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
         fig: Figure = i_profile.plot()

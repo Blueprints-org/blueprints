@@ -38,6 +38,7 @@ class TestRHSSteelProfile:
         expected_area: float = 17900  # mm²
         assert pytest.approx(rhs_profile.area, rel=1e-2) == expected_area
 
+    @pytest.mark.slow
     def test_plot(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
         fig: Figure = rhs_profile.plot()

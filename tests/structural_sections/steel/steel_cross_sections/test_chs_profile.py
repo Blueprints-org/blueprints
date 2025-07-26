@@ -32,6 +32,7 @@ class TestCHSSteelProfile:
         expected_weight: float = 2.47e-2 * 7850  # kg/m
         assert pytest.approx(chs_profile.weight_per_meter, rel=1e-2) == expected_weight
 
+    @pytest.mark.slow
     def test_plot_shapes(self, chs_profile: CHSSteelProfile) -> None:
         """Test the plotting of the CHS profile shapes."""
         fig = chs_profile.plot(show=False)

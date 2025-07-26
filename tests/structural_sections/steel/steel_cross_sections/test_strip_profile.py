@@ -32,6 +32,7 @@ class TestStripSteelProfile:
         expected_area = 160 * 5  # mm²
         assert pytest.approx(strip_profile.area, rel=1e-6) == expected_area
 
+    @pytest.mark.slow
     def test_plot(self, strip_profile: StripSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
         fig = strip_profile.plot(show=False)

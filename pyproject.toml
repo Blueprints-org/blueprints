@@ -85,3 +85,8 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["blueprints"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks as slow (deselect with '-m \"not slow\"')",
+]
