@@ -62,12 +62,12 @@ typecheck:                     ## Run static type checks with mypy
 # Testing targets
 #─────────────────────────────────────────────────────────────────────────────
 .PHONY: test
-test:                          ## Run tests with pytest
-	$(PYTEST) tests/
+test:                          ## Run tests with pytest (parallel execution)
+	$(PYTEST) tests/ -n auto
 
 .PHONY: test-verbose
 test-verbose:                  ## Run tests with pytest (verbose output)
-	$(PYTEST) tests/ --verbose
+	$(PYTEST) tests/ --verbose -n auto
 
 .PHONY: check-coverage
 check-coverage:                ## Run tests and check 100% coverage
