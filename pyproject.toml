@@ -65,6 +65,7 @@ test = [
     "pytest-describe==2.2.0",
     "pytest-pspec==0.0.4",
     "pytest-raises==0.11",
+    "pytest-xdist==3.8.0",
 ]
 
 [tool.uv]
@@ -84,3 +85,8 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["blueprints"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks as slow (deselect with '-m \"not slow\"')",
+]
