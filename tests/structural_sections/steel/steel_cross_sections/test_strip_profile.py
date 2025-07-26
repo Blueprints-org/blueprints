@@ -1,5 +1,7 @@
 """Test suite for StripSteelProfile."""
 
+from unittest.mock import MagicMock
+
 import matplotlib.pyplot as plt
 import pytest
 
@@ -35,6 +37,11 @@ class TestStripSteelProfile:
     @pytest.mark.slow
     def test_plot(self, strip_profile: StripSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
+        fig = strip_profile.plot(show=False)
+        assert isinstance(fig, plt.Figure)
+
+    def test_plot_mocked(self, strip_profile: StripSteelProfile, mock_section_properties: MagicMock) -> None:  # noqa: ARG002
+        """Test the plotting of the Strip profile shapes with mocked section properties."""
         fig = strip_profile.plot(show=False)
         assert isinstance(fig, plt.Figure)
 

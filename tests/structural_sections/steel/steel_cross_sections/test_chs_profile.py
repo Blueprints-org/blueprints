@@ -1,5 +1,7 @@
 """Test suite for the CHSSteelProfile class."""
 
+from unittest.mock import MagicMock
+
 import matplotlib.pyplot as plt
 import pytest
 
@@ -33,8 +35,14 @@ class TestCHSSteelProfile:
         assert pytest.approx(chs_profile.weight_per_meter, rel=1e-2) == expected_weight
 
     @pytest.mark.slow
-    def test_plot_shapes(self, chs_profile: CHSSteelProfile) -> None:
+    def test_plot(self, chs_profile: CHSSteelProfile) -> None:
         """Test the plotting of the CHS profile shapes."""
+        fig = chs_profile.plot(show=False)
+        assert fig is not None
+        assert isinstance(fig, plt.Figure)
+
+    def test_plot_mocked(self, chs_profile: CHSSteelProfile, mock_section_properties: MagicMock) -> None:  # noqa: ARG002
+        """Test the plotting of the CHS profile shapes with mocked section properties."""
         fig = chs_profile.plot(show=False)
         assert fig is not None
         assert isinstance(fig, plt.Figure)
