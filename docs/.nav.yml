@@ -4,9 +4,9 @@ nav:
   - examples/index.md
   - Steel Profile shapes:
     - examples/steel_profile_shapes/index.md
-    - CHS: examples/steel_profile_shapes/steel_chs_profile.md
-    - I: examples/steel_profile_shapes/steel_i_profile.md
-    - RHS: examples/steel_profile_shapes/steel_rhs_profile.md
+    - CHS: examples/steel_profile_shapes/steel_chs_profile.ipynb
+    - I: examples/steel_profile_shapes/steel_i_profile.ipynb
+    - RHS: examples/steel_profile_shapes/steel_rhs_profile.ipynb
     - Steel Strip: examples/steel_profile_shapes/steel_strip_profile.ipynb
   - Reinforced Concrete Cross Sections:
     - examples/reinforced_concrete_sections/index.md
