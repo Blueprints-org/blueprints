@@ -1,5 +1,7 @@
 """Test suite for the RHSSteelProfile class."""
 
+from unittest.mock import MagicMock
+
 import pytest
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
@@ -38,8 +40,14 @@ class TestRHSSteelProfile:
         expected_area: float = 17900  # mm²
         assert pytest.approx(rhs_profile.area, rel=1e-2) == expected_area
 
+    @pytest.mark.slow
     def test_plot(self, rhs_profile: RHSSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
+        fig: Figure = rhs_profile.plot()
+        assert isinstance(fig, plt.Figure)
+
+    def test_plot_mocked(self, rhs_profile: RHSSteelProfile, mock_section_properties: MagicMock) -> None:  # noqa: ARG002
+        """Test the plotting of the RHS profile shapes with mocked section properties."""
         fig: Figure = rhs_profile.plot()
         assert isinstance(fig, plt.Figure)
 
