@@ -1,5 +1,50 @@
 nav:
 - index.md
-- examples
-- "*"
-- API reference
+- Examples:
+  - examples/index.md
+  - Steel Profile shapes:
+    - examples/steel_profile_shapes/index.md
+    - CHS: examples/steel_profile_shapes/steel_chs_profile.md
+    - I: examples/steel_profile_shapes/steel_i_profile.md
+    - RHS: examples/steel_profile_shapes/steel_rhs_profile.md
+    - Steel Strip: examples/steel_profile_shapes/steel_strip_profile.ipynb
+  - Reinforced Concrete Cross Sections:
+    - examples/reinforced_concrete_sections/index.md
+    - Circular: examples/reinforced_concrete_sections/circular_reinforced_concrete_cross_section.ipynb
+    - Circular (Custom): examples/reinforced_concrete_sections/circular_custom_reinforced_concrete_cross_section.ipynb
+    - Rectangular: examples/reinforced_concrete_sections/rectangular_reinforced_concrete_cross_section.ipynb
+    - Rectangular (Custom): examples/reinforced_concrete_sections/rectangular_custom_reinforced_concrete_cross_section.ipynb
+  - Other Examples:
+    - examples/other_examples/index.md
+    - Nominal Concrete Cover: examples/other_examples/nominal_concrete_cover.ipynb
+- Code Standards:
+  - Eurocode Standards:
+    - EN 1992-1-1:2004 (Concrete):
+      - Formulas: codes/eurocode/en_1992_1_1_2004/formulas.md
+      - Tables: codes/eurocode/en_1992_1_1_2004/tables.md
+    - EN 1992-2:2005 (Concrete Bridges):
+      - Formulas: codes/eurocode/en_1992_2_2005/formulas.md
+      - Tables: codes/eurocode/en_1992_2_2005/tables.md
+      - Figures: codes/eurocode/en_1992_2_2005/figures.md
+    - EN 1993-1-1:2005 (Steel):
+      - Formulas: codes/eurocode/en_1993_1_1_2005/formulas.md
+      - Tables: codes/eurocode/en_1993_1_1_2005/tables.md
+    - EN 1993-1-8:2005 (Steel Joints):
+      - Formulas: codes/eurocode/en_1993_1_8_2005/formulas.md
+      - Tables: codes/eurocode/en_1993_1_8_2005/tables.md
+    - EN 1993-1-9:2005 (Steel Fatigue):
+      - Formulas: codes/eurocode/en_1993_1_9_2005/formulas.md
+      - Tables: codes/eurocode/en_1993_1_9_2005/tables.md
+    - EN 1993-5:2007 (Steel Piling):
+      - Formulas: codes/eurocode/en_1993_5_2007/formulas.md
+      - Tables: codes/eurocode/en_1993_5_2007/tables.md
+    - NEN 9997-1+C2:2017 (Geotechnical):
+      - Formulas: codes/eurocode/nen_9997_1_c2_2017/formulas.md
+      - Tables: codes/eurocode/nen_9997_1_c2_2017/tables.md
+    - NEN-EN 1992-1-1:2020:
+      - Formulas: codes/eurocode/nen_en_1992_1_1_2020/formulas.md
+      - Tables: codes/eurocode/nen_en_1992_1_1_2020/tables.md
+  - CUR Standards:
+    - CUR 228:
+      - Formulas: codes/cur/cur_228/formulas.md
+- API Reference
