@@ -90,6 +90,46 @@ Alternatively, you can run the pre-commit hooks manually against all files:
 pre-commit run --all-files
 ```
 
+## Building Documentation
+
+`blueprints` uses MkDocs with Material theme for documentation. The documentation is automatically built and deployed to [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/), but you can build it locally for development and testing.
+
+### Install Documentation Dependencies
+
+To install the documentation dependencies:
+
+```shell
+uv sync --group docs
+```
+
+### Serve Documentation Locally
+
+To serve the documentation locally with live reload (recommended for development):
+
+```shell
+uv run mkdocs serve
+```
+
+This will start a local server, typically at `http://127.0.0.1:8000`, where you can view the documentation. The server will automatically reload when you make changes to the documentation files.
+The first time you run this command, it will take a few minutes to build the documentation, but subsequent runs will be faster.
+
+### Build Static Documentation
+
+To build the static documentation files:
+
+```shell
+uv run mkdocs build
+```
+
+This creates a `site/` directory with the built HTML files.
+
+### Documentation Structure
+
+- Documentation source files are located in the `docs/` directory
+- Configuration is in `mkdocs.yml`
+- The documentation includes auto-generated API reference pages
+- Examples are provided as Jupyter notebooks in `docs/examples/`
+
 ## Branching Strategy
 
 We use Git flow for our branching strategy. Only create branches from issues/feature requests.
