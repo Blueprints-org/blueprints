@@ -11,7 +11,7 @@ readme_file = root / "README.md"
 
 def replace_links(readme_content: str) -> str:
     """Replace the relative links to the overview page by removing the .md extension."""
-    readme_content = readme_content.replace("docs/objects_overview/", "")
+    readme_content = readme_content.replace("docs/codes/", "")
     # replace the relative links to the overview page by removing the .md extension
     readme_content = re.sub(r"/\w+\.md", lambda match: match.group(0)[:-3], readme_content)
     # replace blueprints/code references by links to the API reference
@@ -33,6 +33,6 @@ with open(readme_file, encoding="utf-8") as fd:
     else:
         raise ValueError("No match found for reference table")
 
-with mkdocs_gen_files.open("objects_overview/index.md", "w") as fd:
+with mkdocs_gen_files.open("codes/index.md", "w") as fd:
     # hide navigation in the index page
     fd.write(quick_reference_content)
