@@ -55,6 +55,7 @@ plugins:
   - search
   - open-in-new-tab
   - git-revision-date-localized:
+      enable_git_follow: false
       enable_creation_date: true
       type: date
   - gen-files:
@@ -78,7 +79,7 @@ plugins:
             separate_signature: true
             show_bases: true
             show_root_heading: true
-            show_member_full_path: true
+            show_object_full_path: true
             show_root_full_path: true
             show_symbol_type_heading: true
             show_symbol_type_toc: true
