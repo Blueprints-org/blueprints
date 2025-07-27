@@ -41,7 +41,6 @@ theme:
   features:
     - toc.follow
     - navigation.indexes
-    - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
     - content.code.copy
@@ -95,6 +94,7 @@ plugins:
       include: ["*.ipynb"]
       execute: true
       include_source: True
+      ignore_h1_titles: True
 
 markdown_extensions: 
   - pymdownx.highlight:
