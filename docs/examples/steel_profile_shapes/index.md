@@ -6,10 +6,11 @@ Steel profiles are fundamental building blocks in structural engineering. This s
 
 The following steel profile examples are available:
 
-- **[Circular Hollow Sections (CHS)](steel_chs_profile.md)** - Round tubes commonly used in modern construction
-- **[I-Sections](steel_i_profile.md)** - Classic beam profiles for spanning large distances
-- **[Rectangular Hollow Sections (RHS)](steel_rhs_profile.md)** - Square and rectangular tubes for versatile applications
-- **[Strip Profiles](steel_strip_profile.ipynb)** - Flat plates for connections and custom fabrication
+|                                         CHS Profiles                                         |                                       I Profiles                                       |                                         RHS Profiles                                         |                                           Strip Profiles                                           |
+|:--------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|
+| [![CHS Profiles](../_images/chs_profiles.png)](steel_chs_profile.ipynb) | [![I Profiles](../_images/i_profiles.png)](steel_i_profile.ipynb) | [![RHS Profiles](../_images/rhs_profiles.png)](steel_rhs_profile.ipynb) | [![Strip Profiles](../_images/strip_profiles.png)](steel_strip_profile.ipynb) |
+|                       Round tubes commonly used in modern construction                       |                   Classic beam profiles for spanning large distances                   |                   Square and rectangular tubes for versatile applications                    |                         Flat plates for connections and custom fabrication                         |
+
 
 ## What You'll Learn
 
