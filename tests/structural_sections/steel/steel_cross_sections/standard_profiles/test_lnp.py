@@ -27,7 +27,8 @@ class TestLNP:
         assert profile.alias == "LNP 60x40x7"
         assert profile.height == 60
         assert profile.width == 40
-        assert profile.thickness == 7
+        assert profile.base_thickness == 7
+        assert profile.web_thickness == 7
         assert profile.root_radius == 6
         assert profile.back_radius == 0
         assert profile.toe_radius == 3
