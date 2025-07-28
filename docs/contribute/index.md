@@ -4,10 +4,6 @@ Firstly, thank you for considering contributing to Blueprints! Your help is very
 fantastic place to learn, inspire, and create. By contributing to this project, you are helping to advance the field of civil engineering. Engineers
 around the world will be thankful for your contribution.
 
-## Code of Conduct
-
-We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](.github/CODE_OF_CONDUCT.md).
-
 ## How to Contribute
 
 ### Reporting Bugs
@@ -149,7 +145,10 @@ We use Git flow for our branching strategy. Only create branches from issues/fea
 Any contributor can create an issue. No contribution is too small. If you think something is missing or could be improved, please don't hesitate to
 submit an issue or a pull request. This is intended to be a central open library for civil engineering, and your input is invaluable.
 
+## Code of Conduct
+
+We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+
 ## Contact
 
 For questions, feel free to contact Enrique at [@egarciamendez](https://github.com/egarciamendez) or any other of our maintainers.
-

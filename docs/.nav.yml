@@ -18,7 +18,9 @@ nav:
     - examples/other_examples/index.md
     - Nominal Concrete Cover: examples/other_examples/nominal_concrete_cover.ipynb
 - Code Standards:
+  - codes/index.md
   - Eurocode Standards:
+    - codes/eurocode/index.md
     - EN 1992-1-1:2004 (Concrete):
       - Formulas: codes/eurocode/en_1992_1_1_2004/formulas.md
       - Tables: codes/eurocode/en_1992_1_1_2004/tables.md
@@ -45,6 +47,13 @@ nav:
       - Formulas: codes/eurocode/nen_en_1992_1_1_2020/formulas.md
       - Tables: codes/eurocode/nen_en_1992_1_1_2020/tables.md
   - CUR Standards:
+    - codes/cur/index.md
     - CUR 228:
       - Formulas: codes/cur/cur_228/formulas.md
+- Roadmap:
+  - roadmap/index.md
+- Contribute:
+  - contribute/index.md
+  - Contributors: contribute/contributors.md
+  - Code of Conduct: ../.github/CODE_OF_CONDUCT.md
 - API reference
