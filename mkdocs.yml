@@ -17,9 +17,9 @@ extra_javascript:
 copyright: "2025 &copy; Blueprints"
 
 theme:
-  favicon: assets/images/favicon.ico
   name: material
   logo: assets/images/logo-dark-mode.png
+  favicon: assets/images/favicon.ico
   custom_dir: docs/_overrides
   palette:
     - media: "(prefers-color-scheme)"
@@ -43,6 +43,8 @@ theme:
     - navigation.indexes
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.expand
+    - navigation.top
     - content.code.copy
     - navigation.path
     - navigation.top
