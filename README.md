@@ -22,6 +22,8 @@ Blueprints is a collaborative effort between several engineering companies to st
 
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
+See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/roadmap) for detailed feature status and upcoming developments.
+
 ## Installation
 
 Python >=3.12 is required.
@@ -67,8 +69,6 @@ Design yield strength: 434.7826086956522 MPa
 - **Shape Building Blocks**: Rectangle, circle, tube, triangle, hexagon, etc.
 - **Engineering Checks**: Shear, torsion, punching, anchorage, concrete cover, etc.
 - **100% Test Coverage**: Reliable, well-tested implementations
-
-See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/roadmap) for detailed feature status and upcoming developments.
 
 ## Mission
 
