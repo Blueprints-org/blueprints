@@ -55,5 +55,5 @@ nav:
 - Contribute:
   - contribute/index.md
   - Contributors: contribute/contributors.md
-  - Code of Conduct: ../.github/CODE_OF_CONDUCT.md
+  - Code of Conduct: https://github.com/Blueprints-org/blueprints/blob/main/.github/CODE_OF_CONDUCT.md
 - API reference
