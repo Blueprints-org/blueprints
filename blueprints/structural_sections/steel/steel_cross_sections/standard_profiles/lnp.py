@@ -6,25 +6,23 @@ from blueprints.type_alias import MM
 
 
 class LNP(Enum):
-    """Geometrical representation of LNP steel profiles."""
+    r"""Geometrical representation of LNP steel profiles.
 
-    # ASCII art representation of an L-section:
-    #
-    #
-    #    ↓-- Web thickness
-    #   ┌──\ <-- Toe radius
-    #   │  │
-    #   │  │
-    #   │  │
-    #   │  │
-    # > │   \ <-- Root radius
-    # | │    \_____
-    # | │          \ <-- Base thickness
-    # | └───────────┘
-    # |     ^ Width
-    # Height
-    #
-    # The horizontal leg is at the top, the vertical leg descends from the left.
+       ↓-- Web thickness
+      ┌──\ <-- Toe radius
+      │  │
+      │  │
+      │  │
+      │  │
+    > │   \ <-- Root radius
+    | │    \_____
+    | │          \ <-- Base thickness
+    | └───────────┘
+    |     ^ Width
+    Height
+
+    The horizontal leg is at the top, the vertical leg descends from the left.
+    """
 
     LNP_40x40x4 = ("LNP 40x40x4", 40, 40, 4, 6, 3)
     LNP_40x40x5 = ("LNP 40x40x5", 40, 40, 5, 6, 3)
