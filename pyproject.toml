@@ -1,7 +1,7 @@
 [project]
 name = "blue-prints"
 version = "0.5.0"
-description = "Blueprints: Python AEC library."
+description = "Blueprints, open source python package for civil engineering calculations."
 readme = "README.md"
 requires-python = ">=3.12"
 authors = [{ name = "Blueprints" }]
