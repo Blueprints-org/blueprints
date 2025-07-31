@@ -7,7 +7,7 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form4Dot3NCheckExecutionTolerances(Formula):
+class Form4Dot3nCheckExecutionTolerances(Formula):
     r"""Class representing formula 4.3N for calculating the allowance in design for execution tolerances [$\Delta c_{dev}$] [$mm$].
 
     EN 1992-1-1:2004 art.4.4.1.3 (3) - formula (4.3N)
