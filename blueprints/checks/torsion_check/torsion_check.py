@@ -272,7 +272,7 @@ class TorsionCheck:
     def check_shear_and_torsion_stirrups_area(self) -> CheckResult:
         """Check if the the required stirrups is enough to be able to resist the occurring combination of forces."""
         # Reinforcement design yield strength
-        f_ywd = self.get_cs_stirrups_material().f_yk / 1.15
+        f_ywd = self.get_cs_stirrups_material().f_yd
 
         # Required stirrups for the shear force
         a_sw_s_w_v = self.v_ed / (self.get_cs_lever_arm() * cot(self.theta) * f_ywd)
@@ -314,7 +314,7 @@ class TorsionCheck:
     def check(self) -> bool:
         """Perform the checks."""
         # Reinforcement design yield strength
-        f_yd = self.get_cs_tension_rebars_material().f_yk / 1.15
+        f_yd = self.get_cs_tension_rebars_material().f_yd
 
         # Additional tensile force in the longitudinal reinforcement due to shear according to art. 6.2.3 (7) from EN 1992-1-1
         delta_f_td = Form6Dot18AdditionalTensileForce(self.v_ed * N_TO_KN, self.theta, self.alpha)
