@@ -45,7 +45,7 @@ dev = [
     "ruff==0.11.12",
     "pre-commit==4.2.0",
     "types-shapely==2.1.0.20250512",
-    "icecream==2.1.4",
+    "icecream==2.1.5",
 ]
 docs = [
     "mkdocs ~= 1.6.1",
