@@ -26,3 +26,5 @@ from .chapter_5_ultimate_limit_states.formula_5_21 import (
     Form5Dot21ReducedMomentResistanceClass2UProfiles as Form5Dot21ReducedMomentResistanceClass2UProfiles,
 )
 from .chapter_5_ultimate_limit_states.formula_5_22 import Form5Dot22ReducedMomentResistanceClass3 as Form5Dot22ReducedMomentResistanceClass3
+
+EN_1993_5_2007: str

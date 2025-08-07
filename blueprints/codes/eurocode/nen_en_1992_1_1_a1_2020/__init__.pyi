@@ -23,3 +23,5 @@ from .chapter_4_durability_and_cover.table_4_5n import (
 from .chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_14 import (
     Form8Dot14EquivalentDiameterBundledBars as Form8Dot14EquivalentDiameterBundledBars,
 )
+
+NEN_EN_1992_1_1_A1_2020: str

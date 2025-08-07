@@ -7,7 +7,6 @@ from .chapter_2_basic_of_design.formula_2_2 import Form2Dot2CharacteristicValueR
 from .chapter_3_materials.table_3_1 import SteelStandardGroup as SteelStandardGroup
 from .chapter_3_materials.table_3_1 import SteelStrengthClass as SteelStrengthClass
 from .chapter_3_materials.table_3_1 import Table3Dot1NominalValuesHotRolledStructuralSteel as Table3Dot1NominalValuesHotRolledStructuralSteel
-from .chapter_3_materials.table_3_1 import according as according
 from .chapter_5_structural_analysis.formula_5_8 import Form5Dot8CheckSlenderness as Form5Dot8CheckSlenderness
 from .chapter_6_ultimate_limit_state.formula_6_1 import Form6Dot1ElasticVerification as Form6Dot1ElasticVerification
 from .chapter_6_ultimate_limit_state.formula_6_2 import Form6Dot2UtilizationRatio as Form6Dot2UtilizationRatio
@@ -78,4 +77,5 @@ from .chapter_6_ultimate_limit_state.formula_6_40 import Form6Dot40ReducedBendin
 from .chapter_6_ultimate_limit_state.formula_6_40af import Form6Dot40afHollowSections as Form6Dot40afHollowSections
 from .chapter_6_ultimate_limit_state.formula_6_40af import Form6Dot40afWeldedBoxSections as Form6Dot40afWeldedBoxSections
 from .chapter_6_ultimate_limit_state.formula_6_41 import Form6Dot41BiaxialBendingCheck as Form6Dot41BiaxialBendingCheck
-from .chapter_6_ultimate_limit_state.formula_6_41 import representing as representing
+
+EN_1993_1_1_2005: str

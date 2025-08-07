@@ -384,3 +384,5 @@ from .chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_4 i
 from .chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_5_6 import (
     Form12Dot5And6PlainConcreteBendingResistance as Form12Dot5And6PlainConcreteBendingResistance,
 )
+
+EN_1992_1_1_2004: str

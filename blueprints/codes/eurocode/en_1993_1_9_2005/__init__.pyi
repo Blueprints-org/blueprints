@@ -9,3 +9,5 @@ from .annex_a_determination_of_fatigue_load_parameters_and_verification_formats.
 from .annex_a_determination_of_fatigue_load_parameters_and_verification_formats.formula_a_2 import (
     FormADot2CriteriaBasedOnDamageAccumulation as FormADot2CriteriaBasedOnDamageAccumulation,
 )
+
+EN_1993_1_9_2005: str

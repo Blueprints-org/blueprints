@@ -6,3 +6,5 @@ from .chapter_7_serviceability_limit_states.formula_7_4 import Form7Dot4Velocity
 from .chapter_7_serviceability_limit_states.formula_7_5 import Form7Dot5NaturalFrequency as Form7Dot5NaturalFrequency
 from .chapter_7_serviceability_limit_states.formula_7_6 import Form7Dot6VelocityResponse as Form7Dot6VelocityResponse
 from .chapter_7_serviceability_limit_states.formula_7_7 import Form7Dot7NumberOfFOVibrations as Form7Dot7NumberOfFOVibrations
+
+EN_1995_1_1_2004: str
