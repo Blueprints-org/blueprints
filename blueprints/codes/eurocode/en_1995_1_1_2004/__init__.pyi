@@ -1,7 +1,6 @@
-# blueprints/codes/eurocode/en_1995_1_1_2004/__init__.pyi
+# ruff: noqa: E501
 
 from . import chapter_7_serviceability_limit_states as chapter_7_serviceability_limit_states
-
 from .chapter_7_serviceability_limit_states.formula_7_3 import Form7Dot3RatioDeflectionPointLoadUC as Form7Dot3RatioDeflectionPointLoadUC
 from .chapter_7_serviceability_limit_states.formula_7_4 import Form7Dot4VelocityResponseLimit as Form7Dot4VelocityResponseLimit
 from .chapter_7_serviceability_limit_states.formula_7_5 import Form7Dot5NaturalFrequency as Form7Dot5NaturalFrequency
