@@ -117,3 +117,10 @@ markdown_extensions:
         - docs
   - pymdownx.arithmatex:
       generic: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/blueprints-org
+    - icon: fontawesome/brands/github
+      link: https://github.com/Blueprints-org/blueprints
