@@ -1,4 +1,4 @@
-**NEN-EN 1992-2 - November 2005
+**EN 1992-2 - November 2005
 Eurocode 2: Design of concrete structures
 Part 2: Concrete bridges - Design and detailing rules**
 
