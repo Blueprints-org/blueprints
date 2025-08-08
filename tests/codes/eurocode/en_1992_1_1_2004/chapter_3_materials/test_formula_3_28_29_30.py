@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.sub_formula_3_28_29_30 import SubForm3Dot282930Mu
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_28_29_30 import SubForm3Dot28And29And30Mu
 
 
 class TestSubForm3Dot282930Mu:
@@ -14,7 +14,7 @@ class TestSubForm3Dot282930Mu:
         sigma_pi = 2.4  # MPa
         f_pk = 8.5  # MPa
 
-        sub_form_3_28_29_30 = SubForm3Dot282930Mu(sigma_pi=sigma_pi, f_pk=f_pk)
+        sub_form_3_28_29_30 = SubForm3Dot28And29And30Mu(sigma_pi=sigma_pi, f_pk=f_pk)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.282353
@@ -28,7 +28,7 @@ class TestSubForm3Dot282930Mu:
         f_pk = -8.5  # MPa
 
         with pytest.raises(ValueError):
-            SubForm3Dot282930Mu(sigma_pi=sigma_pi, f_pk=f_pk)
+            SubForm3Dot28And29And30Mu(sigma_pi=sigma_pi, f_pk=f_pk)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -47,7 +47,7 @@ class TestSubForm3Dot282930Mu:
         f_pk = 8.5  # MPa
 
         # Object to test
-        sub_form_3_28_29_30_latex = SubForm3Dot282930Mu(sigma_pi=sigma_pi, f_pk=f_pk).latex()
+        sub_form_3_28_29_30_latex = SubForm3Dot28And29And30Mu(sigma_pi=sigma_pi, f_pk=f_pk).latex()
 
         actual = {"complete": sub_form_3_28_29_30_latex.complete, "short": sub_form_3_28_29_30_latex.short}
 
