@@ -147,7 +147,7 @@ class LNPProfile(CombinedSteelCrossSection):
         total_height = profile.height - 2 * corrosion
 
         web_thickness = profile.web_thickness - 2 * corrosion
-        base_thickness = profile.base_thickness + 2 * corrosion
+        base_thickness = profile.base_thickness - 2 * corrosion
 
         root_radius = profile.root_radius
         back_radius = profile.back_radius
