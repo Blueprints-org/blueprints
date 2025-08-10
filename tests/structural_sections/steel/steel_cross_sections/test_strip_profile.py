@@ -1,5 +1,7 @@
 """Test suite for StripSteelProfile."""
 
+from unittest.mock import MagicMock
+
 import matplotlib.pyplot as plt
 import pytest
 
@@ -32,44 +34,14 @@ class TestStripSteelProfile:
         expected_area = 160 * 5  # mm²
         assert pytest.approx(strip_profile.area, rel=1e-6) == expected_area
 
-    def test_centroid(self, strip_profile: StripSteelProfile) -> None:
-        """Test the centroid of the steel cross-section."""
-        expected_centroid = (0, 0)  # (x, y) coordinates
-        assert pytest.approx(strip_profile.centroid.x, rel=1e-6) == expected_centroid[0]
-        assert pytest.approx(strip_profile.centroid.y, rel=1e-6) == expected_centroid[1]
-
-    def test_moment_of_inertia_about_y(self, strip_profile: StripSteelProfile) -> None:
-        """Test the moment of inertia about the y-axis."""
-        expected_moi_y = 1 / 12 * 160 * 5**3  # mm⁴
-        assert pytest.approx(strip_profile.moment_of_inertia_about_y, rel=1e-6) == expected_moi_y
-
-    def test_moment_of_inertia_about_z(self, strip_profile: StripSteelProfile) -> None:
-        """Test the moment of inertia about the z-axis."""
-        expected_moi_z = 1 / 12 * 160**3 * 5  # mm⁴
-        assert pytest.approx(strip_profile.moment_of_inertia_about_z, rel=1e-6) == expected_moi_z
-
-    def test_elastic_section_modulus_about_y_positive(self, strip_profile: StripSteelProfile) -> None:
-        """Test the elastic section modulus about the y-axis on the positive z side."""
-        expected_modulus_y_positive = 1 / 6 * 160 * 5**2  # mm³
-        assert pytest.approx(strip_profile.elastic_section_modulus_about_y_positive, rel=1e-6) == expected_modulus_y_positive
-
-    def test_elastic_section_modulus_about_y_negative(self, strip_profile: StripSteelProfile) -> None:
-        """Test the elastic section modulus about the y-axis on the negative z side."""
-        expected_modulus_y_negative = 1 / 6 * 160 * 5**2  # mm³
-        assert pytest.approx(strip_profile.elastic_section_modulus_about_y_negative, rel=1e-6) == expected_modulus_y_negative
-
-    def test_elastic_section_modulus_about_z_positive(self, strip_profile: StripSteelProfile) -> None:
-        """Test the elastic section modulus about the z-axis on the positive y side."""
-        expected_modulus_z_positive = 1 / 6 * 160**2 * 5  # mm³
-        assert pytest.approx(strip_profile.elastic_section_modulus_about_z_positive, rel=1e-6) == expected_modulus_z_positive
-
-    def test_elastic_section_modulus_about_z_negative(self, strip_profile: StripSteelProfile) -> None:
-        """Test the elastic section modulus about the z-axis on the negative y side."""
-        expected_modulus_z_negative = 1 / 6 * 160**2 * 5  # mm³
-        assert pytest.approx(strip_profile.elastic_section_modulus_about_z_negative, rel=1e-6) == expected_modulus_z_negative
-
+    @pytest.mark.slow
     def test_plot(self, strip_profile: StripSteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
+        fig = strip_profile.plot(show=False)
+        assert isinstance(fig, plt.Figure)
+
+    def test_plot_mocked(self, strip_profile: StripSteelProfile, mock_section_properties: MagicMock) -> None:  # noqa: ARG002
+        """Test the plotting of the Strip profile shapes with mocked section properties."""
         fig = strip_profile.plot(show=False)
         assert isinstance(fig, plt.Figure)
 
@@ -78,19 +50,6 @@ class TestStripSteelProfile:
         expected_geometry = strip_profile.geometry
         assert expected_geometry is not None
 
-    def test_section_properties(self, strip_profile: StripSteelProfile) -> None:
-        """Test the section properties of the Strip profile."""
-        section_properties = strip_profile.section_properties()
-        assert section_properties.mass == pytest.approx(expected=strip_profile.area, rel=1e-2)
-        assert section_properties.cx == pytest.approx(expected=strip_profile.centroid.x, rel=1e-2)
-        assert section_properties.cy == pytest.approx(expected=strip_profile.centroid.y, rel=1e-2)
-        assert section_properties.ixx_c == pytest.approx(expected=strip_profile.moment_of_inertia_about_y, rel=1e-2)
-        assert section_properties.iyy_c == pytest.approx(expected=strip_profile.moment_of_inertia_about_z, rel=1e-2)
-        assert section_properties.zxx_plus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_y_positive, rel=1e-2)
-        assert section_properties.zyy_plus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_z_positive, rel=1e-2)
-        assert section_properties.zxx_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_y_negative, rel=1e-2)
-        assert section_properties.zyy_minus == pytest.approx(expected=strip_profile.elastic_section_modulus_about_z_negative, rel=1e-2)
-
     def test_yield_strength(self, strip_profile: StripSteelProfile) -> None:
         """Test the yield strength of the Strip profile."""
         assert strip_profile.yield_strength == 355
@@ -98,16 +57,6 @@ class TestStripSteelProfile:
     def test_ultimate_strength(self, strip_profile: StripSteelProfile) -> None:
         """Test the ultimate strength of the Strip profile."""
         assert strip_profile.ultimate_strength == 490
-
-    def test_plastic_section_modulus_about_y(self, strip_profile: StripSteelProfile) -> None:
-        """Test the plastic section modulus about the y-axis."""
-        expected_plastic_modulus_y = 1 / 4 * 160 * 5**2
-        assert pytest.approx(strip_profile.plastic_section_modulus_about_y, rel=1e-6) == expected_plastic_modulus_y
-
-    def test_plastic_section_modulus_about_z(self, strip_profile: StripSteelProfile) -> None:
-        """Test the plastic section modulus about the z-axis."""
-        expected_plastic_modulus_z = 1 / 4 * 5 * 160**2
-        assert pytest.approx(strip_profile.plastic_section_modulus_about_z, rel=1e-6) == expected_plastic_modulus_z
 
     def test_get_profile_with_corrosion(self) -> None:
         """Test the Strip profile with 2 mm corrosion applied."""

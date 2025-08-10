@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if page.nb_url %}
+        <div class="admonition tip">
+            <p class="admonition-title">Download examples</p>
+            <p>You can download the examples in your chosen format using the buttons on the right.
+            <a href="{{ page.nb_url }}" download title="Download example as notebook" class="md-content__button md-icon">
+                {% include ".icons/simple/jupyter.svg" %}
+            </a>
+            <a href="{{ page.nb_url | replace('.ipynb', '.py') }}" download title="Download example as python code" class="md-content__button md-icon">
+                {% include ".icons/simple/python.svg" %}
+            </a>
+            </p>
+        </div>
+    {% endif %}
+{{ super() }}
+{% endblock %}
+
+{% block site_meta %}
+{{ super() }}
+<meta name="readthedocs-addons-api-version" content="1" />
+{% endblock %}

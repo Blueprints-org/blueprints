@@ -56,13 +56,14 @@ def plot_shapes(
     ax.plot(profile.centroid.x, profile.centroid.y, "o", color="black")
 
     # Add legend text
+    profile_section_properties = profile.section_properties(plastic=False, warping=False)
     legend_text = f"""
-{profile.name}\n
-Area: {profile.area:.1f} mm²
-Weight per meter: {profile.weight_per_meter:.1f} kg/m
-Moment of inertia about y: {profile.moment_of_inertia_about_y:.0f} mm⁴
-Moment of inertia about z: {profile.moment_of_inertia_about_z:.0f} mm⁴
-"""
+    {profile.name}\n
+    Area: {profile.area:.1f} mm²
+    Weight per meter: {profile.weight_per_meter:.1f} kg/m
+    Moment of inertia about x: {profile_section_properties.ixx_c:.0f} mm⁴
+    Moment of inertia about y: {profile_section_properties.iyy_c:.0f} mm⁴
+    """
 
     # Add the steel quality if all elements have the same material
     if len({element.material.name for element in profile.elements}) == 1:

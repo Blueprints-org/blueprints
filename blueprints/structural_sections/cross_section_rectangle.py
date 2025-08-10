@@ -6,7 +6,7 @@ from sectionproperties.pre import Geometry
 from shapely import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import MM, MM3, MM4
+from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
@@ -66,102 +66,6 @@ class RectangularCrossSection(CrossSection):
                 left_upper,
             ]
         )
-
-    @property
-    def moment_of_inertia_about_y(self) -> MM4:
-        """
-        Moments of inertia of the cross-section about the y-axis [mm⁴].
-
-        Returns
-        -------
-        MM4
-            The moment of inertia about the y-axis.
-        """
-        return (self.width * self.height**3) / 12
-
-    @property
-    def moment_of_inertia_about_z(self) -> MM4:
-        """
-        Moments of inertia of the cross-section about the z-axis [mm⁴].
-
-        Returns
-        -------
-        MM4
-            The moment of inertia about the z-axis.
-        """
-        return (self.height * self.width**3) / 12
-
-    @property
-    def elastic_section_modulus_about_y_positive(self) -> MM3:
-        """
-        Elastic section modulus about the y-axis on the positive z side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the y-axis.
-        """
-        return self.moment_of_inertia_about_y / (self.height / 2)
-
-    @property
-    def elastic_section_modulus_about_y_negative(self) -> MM3:
-        """
-        Elastic section modulus about the y-axis on the negative z side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the y-axis.
-        """
-        return self.moment_of_inertia_about_y / (self.height / 2)
-
-    @property
-    def elastic_section_modulus_about_z_positive(self) -> MM3:
-        """
-        Elastic section modulus about the z-axis on the positive y side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the z-axis.
-        """
-        return self.moment_of_inertia_about_z / (self.width / 2)
-
-    @property
-    def elastic_section_modulus_about_z_negative(self) -> MM3:
-        """
-        Elastic section modulus about the z-axis on the negative y side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the z-axis.
-        """
-        return self.moment_of_inertia_about_z / (self.width / 2)
-
-    @property
-    def plastic_section_modulus_about_y(self) -> MM3:
-        """
-        Plastic section modulus about the y-axis [mm³].
-
-        Returns
-        -------
-        MM3
-            The plastic section modulus about the y-axis.
-        """
-        return (self.width * self.height**2) / 4
-
-    @property
-    def plastic_section_modulus_about_z(self) -> MM3:
-        """
-        Plastic section modulus about the z-axis [mm³].
-
-        Returns
-        -------
-        MM3
-            The plastic section modulus about the z-axis.
-        """
-        return (self.height * self.width**2) / 4
 
     def geometry(
         self,

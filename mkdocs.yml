@@ -17,9 +17,9 @@ extra_javascript:
 copyright: "2025 &copy; Blueprints"
 
 theme:
-  favicon: assets/images/favicon.ico
   name: material
   logo: assets/images/logo-dark-mode.png
+  favicon: assets/images/favicon.ico
   custom_dir: docs/_overrides
   palette:
     - media: "(prefers-color-scheme)"
@@ -41,9 +41,10 @@ theme:
   features:
     - toc.follow
     - navigation.indexes
-    - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.expand
+    - navigation.top
     - content.code.copy
     - navigation.path
     - navigation.top
@@ -55,13 +56,14 @@ plugins:
   - search
   - open-in-new-tab
   - git-revision-date-localized:
+      enable_git_follow: false
       enable_creation_date: true
       type: date
   - gen-files:
       scripts:
         - docs/_scripts/generate_reference_pages.py
         - docs/_scripts/generate_index.py
-        - docs/_scripts/generate_quick_reference.py
+        - docs/_scripts/generate_notebook_code.py
   - mkdocstrings:
       handlers:
         python:
@@ -77,7 +79,7 @@ plugins:
             separate_signature: true
             show_bases: true
             show_root_heading: true
-            show_member_full_path: true
+            show_object_full_path: true
             show_root_full_path: true
             show_symbol_type_heading: true
             show_symbol_type_toc: true
@@ -93,6 +95,7 @@ plugins:
       include: ["*.ipynb"]
       execute: true
       include_source: True
+      ignore_h1_titles: True
 
 markdown_extensions: 
   - pymdownx.highlight:
@@ -114,3 +117,10 @@ markdown_extensions:
         - docs
   - pymdownx.arithmatex:
       generic: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/blueprints-org
+    - icon: fontawesome/brands/github
+      link: https://github.com/Blueprints-org/blueprints

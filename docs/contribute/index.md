@@ -4,10 +4,6 @@ Firstly, thank you for considering contributing to Blueprints! Your help is very
 fantastic place to learn, inspire, and create. By contributing to this project, you are helping to advance the field of civil engineering. Engineers
 around the world will be thankful for your contribution.
 
-## Code of Conduct
-
-We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](.github/CODE_OF_CONDUCT.md).
-
 ## How to Contribute
 
 ### Reporting Bugs
@@ -90,6 +86,46 @@ Alternatively, you can run the pre-commit hooks manually against all files:
 pre-commit run --all-files
 ```
 
+## Building Documentation
+
+`blueprints` uses MkDocs with Material theme for documentation. The documentation is automatically built and deployed to [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/), but you can build it locally for development and testing.
+
+### Install Documentation Dependencies
+
+To install the documentation dependencies:
+
+```shell
+uv sync --group docs
+```
+
+### Serve Documentation Locally
+
+To serve the documentation locally with live reload (recommended for development):
+
+```shell
+uv run mkdocs serve
+```
+
+This will start a local server, typically at `http://127.0.0.1:8000`, where you can view the documentation. The server will automatically reload when you make changes to the documentation files.
+The first time you run this command, it will take a few minutes to build the documentation, but subsequent runs will be faster.
+
+### Build Static Documentation
+
+To build the static documentation files:
+
+```shell
+uv run mkdocs build
+```
+
+This creates a `site/` directory with the built HTML files.
+
+### Documentation Structure
+
+- Documentation source files are located in the `docs/` directory
+- Configuration is in `mkdocs.yml`
+- The documentation includes auto-generated API reference pages
+- Examples are provided as Jupyter notebooks in `docs/examples/`
+
 ## Branching Strategy
 
 We use Git flow for our branching strategy. Only create branches from issues/feature requests.
@@ -109,7 +145,10 @@ We use Git flow for our branching strategy. Only create branches from issues/fea
 Any contributor can create an issue. No contribution is too small. If you think something is missing or could be improved, please don't hesitate to
 submit an issue or a pull request. This is intended to be a central open library for civil engineering, and your input is invaluable.
 
+## Code of Conduct
+
+We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+
 ## Contact
 
 For questions, feel free to contact Enrique at [@egarciamendez](https://github.com/egarciamendez) or any other of our maintainers.
-

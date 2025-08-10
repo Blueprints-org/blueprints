@@ -1,10 +1,17 @@
 # Examples
 
-Here are some examples of how to use the 'Blueprints'.
+Learn how to use Blueprints with practical examples covering steel profiles, reinforced concrete sections, and other engineering calculations.
 
-- [Create a Circular Reinforced Cross-section](circular_reinforced_concrete_cross_section.md)
-- [Create a Custom Circular Reinforced Cross-section](circular_custom_reinforced_concrete_cross_section.md)
-- [Create a Rectangular Reinforced Cross-section](rectangular_reinforced_concrete_cross_section.md)
-- [Create a Custom Rectangular Reinforced Cross-section](rectangular_custom_reinforced_concrete_cross_section.md)
-- [Nominal Concrete Cover](nominal_concrete_cover.ipynb)
-- [Steel Profile Shapes](steel_profile_shapes.md)
+## [Steel Profile Shapes](steel_profile_shapes/index.md)
+Work with standard and custom steel profiles including CHS, I-sections, RHS, and strip profiles.
+
+| CHS Profiles |                                     I Profiles                                      |                                       RHS Profiles                                        |                                         Strip Profiles                                          |
+|:------------:|:-----------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
+| [![CHS Profiles](_images/chs_profiles.png)](steel_profile_shapes/steel_chs_profile.ipynb) | [![I Profiles](_images/i_profiles.png)](steel_profile_shapes/steel_i_profile.ipynb) | [![RHS Profiles](_images/rhs_profiles.png)](steel_profile_shapes/steel_rhs_profile.ipynb) | [![Strip Profiles](_images/strip_profiles.png)](steel_profile_shapes/steel_strip_profile.ipynb) |
+| Round tubes commonly used in modern construction |                 Classic beam profiles for spanning large distances                  |                  Square and rectangular tubes for versatile applications                  |                       Flat plates for connections and custom fabrication                        |
+
+## [Reinforced Concrete Cross Sections](reinforced_concrete_sections/index.md) 
+Create and analyze circular and rectangular reinforced concrete sections with standard or custom reinforcement layouts.
+
+## [Other Examples](other_examples/index.md)
+Additional calculations including concrete cover requirements and other design scenarios.

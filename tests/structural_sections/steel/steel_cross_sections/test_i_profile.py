@@ -1,5 +1,7 @@
 """Test suite for ISteelProfile."""
 
+from unittest.mock import MagicMock
+
 import pytest
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
@@ -33,44 +35,14 @@ class TestISteelProfile:
         expected_area = 1.806e4  # mm²
         assert pytest.approx(i_profile.area, rel=1e-2) == expected_area
 
-    def test_centroid(self, i_profile: ISteelProfile) -> None:
-        """Test the centroid of the steel cross-section."""
-        expected_centroid = (0, 0)  # (x, y) coordinates
-        assert pytest.approx(i_profile.centroid.x, rel=1e-2) == expected_centroid[0]
-        assert pytest.approx(i_profile.centroid.y, rel=1e-2) == expected_centroid[1]
-
-    def test_moment_of_inertia_about_y(self, i_profile: ISteelProfile) -> None:
-        """Test the moment of inertia about the y-axis."""
-        expected_moi_y = 4.319e8  # mm⁴
-        assert pytest.approx(i_profile.moment_of_inertia_about_y, rel=1e-2) == expected_moi_y
-
-    def test_moment_of_inertia_about_z(self, i_profile: ISteelProfile) -> None:
-        """Test the moment of inertia about the z-axis."""
-        expected_moi_z = 1.014e8  # mm⁴
-        assert pytest.approx(i_profile.moment_of_inertia_about_z, rel=1e-2) == expected_moi_z
-
-    def test_elastic_section_modulus_about_y_positive(self, i_profile: ISteelProfile) -> None:
-        """Test the elastic section modulus about the y-axis on the positive z side."""
-        expected_modulus_y_positive = 2.4e6  # mm³
-        assert pytest.approx(i_profile.elastic_section_modulus_about_y_positive, rel=1e-2) == expected_modulus_y_positive
-
-    def test_elastic_section_modulus_about_y_negative(self, i_profile: ISteelProfile) -> None:
-        """Test the elastic section modulus about the y-axis on the negative z side."""
-        expected_modulus_y_negative = 2.4e6  # mm³
-        assert pytest.approx(i_profile.elastic_section_modulus_about_y_negative, rel=1e-2) == expected_modulus_y_negative
-
-    def test_elastic_section_modulus_about_z_positive(self, i_profile: ISteelProfile) -> None:
-        """Test the elastic section modulus about the z-axis on the positive y side."""
-        expected_modulus_z_positive = 6.761e5  # mm³
-        assert pytest.approx(i_profile.elastic_section_modulus_about_z_positive, rel=1e-2) == expected_modulus_z_positive
-
-    def test_elastic_section_modulus_about_z_negative(self, i_profile: ISteelProfile) -> None:
-        """Test the elastic section modulus about the z-axis on the negative y side."""
-        expected_modulus_z_negative = 6.761e5  # mm³
-        assert pytest.approx(i_profile.elastic_section_modulus_about_z_negative, rel=1e-2) == expected_modulus_z_negative
-
+    @pytest.mark.slow
     def test_plot(self, i_profile: ISteelProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
+        fig: Figure = i_profile.plot()
+        assert isinstance(fig, plt.Figure)
+
+    def test_plot_mocked(self, i_profile: ISteelProfile, mock_section_properties: MagicMock) -> None:  # noqa: ARG002
+        """Test the plotting of the I-profile shapes with mocked section properties."""
         fig: Figure = i_profile.plot()
         assert isinstance(fig, plt.Figure)
 
@@ -78,19 +50,6 @@ class TestISteelProfile:
         """Test the geometry of the I profile."""
         expected_geometry = i_profile.geometry
         assert expected_geometry is not None
-
-    def test_section_properties(self, i_profile: ISteelProfile) -> None:
-        """Test the section properties of the I profile."""
-        section_properties = i_profile.section_properties()
-        assert section_properties.mass == pytest.approx(expected=i_profile.area, rel=1e-2)
-        assert section_properties.cx == pytest.approx(expected=i_profile.centroid.x, rel=1e-2)
-        assert section_properties.cy == pytest.approx(expected=i_profile.centroid.y, rel=1e-2)
-        assert section_properties.ixx_c == pytest.approx(expected=i_profile.moment_of_inertia_about_y, rel=1e-2)
-        assert section_properties.iyy_c == pytest.approx(expected=i_profile.moment_of_inertia_about_z, rel=1e-2)
-        assert section_properties.zxx_plus == pytest.approx(expected=i_profile.elastic_section_modulus_about_y_positive, rel=1e-2)
-        assert section_properties.zyy_plus == pytest.approx(expected=i_profile.elastic_section_modulus_about_z_positive, rel=1e-2)
-        assert section_properties.zxx_minus == pytest.approx(expected=i_profile.elastic_section_modulus_about_y_negative, rel=1e-2)
-        assert section_properties.zyy_minus == pytest.approx(expected=i_profile.elastic_section_modulus_about_z_negative, rel=1e-2)
 
     def test_get_profile_with_corrosion(self) -> None:
         """Test the EHB profile with 20 mm corrosion applied."""
