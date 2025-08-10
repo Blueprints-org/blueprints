@@ -95,8 +95,8 @@ class LNPProfile(CombinedSteelCrossSection):
         # Create the cross-sections for the corner
         self.corner = CircularCorneredCrossSection(
             name="Corner",
-            thickness_vertical=self.web_thickness,
-            thickness_horizontal=self.base_thickness,
+            thickness_vertical=self.base_thickness,
+            thickness_horizontal=self.web_thickness,
             inner_radius=self.root_radius,
             outer_radius=self.back_radius,
             x=self.web_thickness + self.root_radius,
