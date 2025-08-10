@@ -245,6 +245,23 @@ class Line:
             raise NotImplementedError("Line can only be compared to other Line object")
         return np.allclose(self._start, other._start) and np.allclose(self._end, other._end)
 
+    def __hash__(self) -> int:
+        """Return hash value for the Line instance.
+
+        The hash is based on the start and end points' coordinates,
+        ensuring consistency with the __eq__ method.
+
+        Returns
+        -------
+        int
+            Hash value for the instance
+        """
+        # Round coordinates to match np.allclose tolerance used in __eq__
+        # Using 8 decimal places to align with np.allclose default atol=1e-8
+        start_rounded = tuple(round(coord, 8) for coord in self._start.flatten())
+        end_rounded = tuple(round(coord, 8) for coord in self._end.flatten())
+        return hash((start_rounded, end_rounded))
+
     def __repr__(self) -> str:
         """Return the representation of the line."""
         return f"Line({self.start_point}, {self.end_point})"
