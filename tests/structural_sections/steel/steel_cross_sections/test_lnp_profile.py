@@ -80,3 +80,24 @@ class TestLNPProfile:
         )
         expected_name_with_corrosion = "LNP 100x50x6 (corrosion: 2 mm)"
         assert lnp_profile_with_corrosion.name == expected_name_with_corrosion
+
+    def test_custom_profile(self) -> None:
+        """Test creating an LNPProfile with custom dimensions and default radii."""
+        steel_material = SteelMaterial(SteelStrengthClass.S355)
+        profile = LNPProfile(
+            steel_material=steel_material,
+            total_width=120,
+            total_height=60,
+            web_thickness=8,
+            base_thickness=10,
+            root_radius=None,
+            back_radius=None,
+            web_toe_radius=None,
+            base_toe_radius=None,
+            name="Custom LNP",
+        )
+        # Check that default radii are set correctly
+        assert profile.root_radius == 8
+        assert profile.back_radius == 16
+        assert profile.web_toe_radius == 0
+        assert profile.base_toe_radius == 0
