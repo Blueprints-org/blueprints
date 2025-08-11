@@ -73,6 +73,20 @@ class Exposure(Enum, metaclass=ABCEnumMeta):
             return _self_severity > _other_severity
         raise TypeError("Only the same exposure class types can be compared with each other!")
 
+    def __hash__(self) -> int:
+        """Return hash value for the Exposure instance.
+
+        The hash is based on the class type and the severity level to ensure
+        consistency with the __eq__ method.
+
+        Returns
+        -------
+        int
+            Hash value for the instance
+        """
+        severity = int(self.value[-1]) if self.value != "Not applicable" else 0
+        return hash((self.__class__, severity))
+
     @classmethod
     def options(cls) -> list[str]:
         """Return all the possible options within a subclass.
