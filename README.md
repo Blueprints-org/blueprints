@@ -13,6 +13,16 @@
   <img alt="blueprints banner" src="docs/_overrides/assets/images/blueprints_banner.png">
 </picture>
 
+---
+
+**Documentation**: <a href="https://blueprints.readthedocs.io/en/latest/" target="_blank">https://blueprints.readthedocs.io/en/latest/</a>
+
+**Source Code**: <a href="https://github.com/Blueprints-org/blueprints" target="_blank">https://github.com/Blueprints-org/blueprints</a>
+
+**LinkedIn**: <a href="https://www.linkedin.com/company/blueprints-org" target="_blank">https://www.linkedin.com/company/blueprints-org</a>
+
+---
+
 Welcome to `Blueprints`, the go-to repository for civil engineering professionals and enthusiasts!
 
 It includes programmable engineering standards, formulas, tables, and checks across a variety of structural and geotechnical disciplines. We offer 
