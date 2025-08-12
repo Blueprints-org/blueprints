@@ -149,8 +149,8 @@ class LNPProfile(CombinedSteelCrossSection):
         web_thickness = profile.web_thickness - 2 * corrosion
         base_thickness = profile.base_thickness - 2 * corrosion
 
-        root_radius = profile.root_radius
-        back_radius = profile.back_radius
+        root_radius = profile.root_radius + corrosion
+        back_radius = max(profile.back_radius - corrosion, 0)
         base_toe_radius = min(profile.toe_radius, base_thickness)
         web_toe_radius = min(profile.toe_radius, web_thickness)
 
