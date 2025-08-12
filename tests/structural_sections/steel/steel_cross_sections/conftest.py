@@ -72,7 +72,7 @@ def rhs_profile() -> RHSSteelProfile:
 
 
 @pytest.fixture
-def lnp_profile() -> CombinedSteelCrossSection:
+def lnp_profile() -> LNPProfile:
     """Fixture to set up an LNP profile for testing."""
     profile = LNP.LNP_100x50x6
     steel_class = SteelStrengthClass.S355

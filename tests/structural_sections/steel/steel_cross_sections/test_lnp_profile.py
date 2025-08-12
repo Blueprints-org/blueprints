@@ -31,7 +31,7 @@ class TestLNPProfile:
 
     def test_steel_volume_per_meter(self, lnp_profile: LNPProfile) -> None:
         """Test the steel volume per meter."""
-        # You may need to update this value based on your implementation
+        # Expected volume per meter calculated analytically for LNP 100x50x6: (area 871 mm² = 0.000871 m²) × 1 m = 0.000871 m³/m
         expected_volume: float = 0.000871  # m³/m
         assert pytest.approx(lnp_profile.volume_per_meter, rel=1e-2) == expected_volume
 
