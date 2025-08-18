@@ -15,15 +15,6 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 class TestLNPProfile:
     """Test suite for LNPProfile."""
 
-    @pytest.fixture
-    def lnp_profile(self) -> LNPProfile:
-        """Fixture for a standard LNP profile."""
-        return LNPProfile.from_standard_profile(
-            profile=LNP.LNP_100x50x6,
-            steel_material=SteelMaterial(SteelStrengthClass.S355),
-            corrosion=0,
-        )
-
     def test_name(self, lnp_profile: LNPProfile) -> None:
         """Test the name of the LNP profile."""
         expected_name: str = "LNP 100x50x6"
