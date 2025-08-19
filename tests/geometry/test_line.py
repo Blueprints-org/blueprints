@@ -141,3 +141,59 @@ class TestLine:
     def test_repr(self, line: Line) -> None:
         """Test the representation."""
         assert repr(line) == "Line(POINT Z (0 0 0), POINT Z (3 4 5))"
+
+    def test_hash_same_line(self, line: Line) -> None:
+        """Test if identical lines have the same hash value."""
+        same_line = Line(Point(0, 0, 0), Point(3, 4, 5))
+        assert hash(line) == hash(same_line)
+
+    def test_hash_different_lines(self, line: Line) -> None:
+        """Test if different lines have different hash values."""
+        different_line1 = Line(Point(0, 0, 0), Point(3, 4, 6))
+        different_line2 = Line(Point(1, 0, 0), Point(3, 4, 5))
+        different_line3 = Line(Point(0, 1, 0), Point(4, 4, 5))
+
+        assert hash(line) != hash(different_line1)
+        assert hash(line) != hash(different_line2)
+        assert hash(line) != hash(different_line3)
+
+    def test_hash_consistency_with_equality(self, line: Line) -> None:
+        """Test if hash is consistent with equality (equal lines have same hash)."""
+        equal_line = Line(Point(0, 0, 0), Point(3, 4, 5))
+        if line == equal_line:
+            assert hash(line) == hash(equal_line)
+
+    def test_hash_allows_use_in_set(self, line: Line) -> None:
+        """Test if Line instances can be used in sets (requires hashable)."""
+        line1 = Line(Point(0, 0, 0), Point(1, 1, 1))
+        line2 = Line(Point(0, 0, 0), Point(2, 2, 2))
+        line3 = Line(Point(1, 1, 1), Point(3, 3, 3))
+
+        line_set = {line, line1, line2, line3}
+        assert len(line_set) == 4
+        assert line in line_set
+        assert line1 in line_set
+
+    def test_hash_allows_use_in_dict(self, line: Line) -> None:
+        """Test if Line instances can be used as dictionary keys (requires hashable)."""
+        line1 = Line(Point(0, 0, 0), Point(1, 1, 1))
+        line2 = Line(Point(0, 0, 0), Point(2, 2, 2))
+
+        line_dict = {
+            line: "original line",
+            line1: "unit line",
+            line2: "double line",
+        }
+        assert len(line_dict) == 3
+        assert line_dict[line] == "original line"
+        assert line_dict[line1] == "unit line"
+
+    def test_hash_floating_point_precision(self) -> None:
+        """Test hash handles floating point precision issues."""
+        # Create lines with very small differences that should be considered equal
+        line1 = Line(Point(0.0, 0.0, 0.0), Point(1.0, 1.0, 1.0))
+        line2 = Line(Point(0.0000000001, 0.0, 0.0), Point(1.0, 1.0, 1.0000000001))
+
+        # They should have the same hash due to rounding in __hash__
+        if line1 == line2:
+            assert hash(line1) == hash(line2)

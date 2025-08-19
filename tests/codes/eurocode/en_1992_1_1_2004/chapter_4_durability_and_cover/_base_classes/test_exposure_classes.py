@@ -228,6 +228,60 @@ class TestExposure:
         with pytest.raises(ValueError):
             _ = BadNotation.notation()
 
+    def test_hash_same_severity(self) -> None:
+        """Check if instances with the same severity have the same hash value."""
+        # Same instance should have same hash
+        assert hash(DummyExposureSubclass.DUMMY1) == hash(DummyExposureSubclass.DUMMY1)
+        assert hash(DummyExposureSubclass.DUMMY2) == hash(DummyExposureSubclass.DUMMY2)
+        assert hash(DummyExposureSubclass.DUMMY3) == hash(DummyExposureSubclass.DUMMY3)
+        assert hash(DummyExposureSubclass.NA) == hash(DummyExposureSubclass.NA)
+
+    def test_hash_different_severity(self) -> None:
+        """Check if instances with different severity have different hash values."""
+        # Different severities should have different hash values
+        assert hash(DummyExposureSubclass.DUMMY1) != hash(DummyExposureSubclass.DUMMY2)
+        assert hash(DummyExposureSubclass.DUMMY2) != hash(DummyExposureSubclass.DUMMY3)
+        assert hash(DummyExposureSubclass.NA) != hash(DummyExposureSubclass.DUMMY1)
+
+    def test_hash_different_types_same_severity(self) -> None:
+        """Check if instances of different types but same severity have different hash values."""
+        # Different types should have different hash values even with same severity level
+        # XC1 and XD1 both have severity 1, but should have different hashes
+        assert hash(DummyCarbonation.XC1) != hash(DummyChloride.XD1)
+        assert hash(DummyCarbonation.NA) != hash(DummyChloride.NA)
+
+    def test_hash_consistency_with_equality(self) -> None:
+        """Check if hash is consistent with equality (objects that compare equal have the same hash)."""
+        # Equal objects must have the same hash
+        exposure1 = DummyExposureSubclass.DUMMY1
+        exposure2 = DummyExposureSubclass.DUMMY1
+        if exposure1 == exposure2:
+            assert hash(exposure1) == hash(exposure2)
+
+    def test_hash_allows_use_in_set(self) -> None:
+        """Check if Exposure instances can be used in sets (requires hashable)."""
+        exposure_set = {
+            DummyExposureSubclass.DUMMY1,
+            DummyExposureSubclass.DUMMY2,
+            DummyExposureSubclass.DUMMY3,
+            DummyExposureSubclass.NA,
+        }
+        assert len(exposure_set) == 4
+        assert DummyExposureSubclass.DUMMY1 in exposure_set
+        assert DummyExposureSubclass.DUMMY2 in exposure_set
+
+    def test_hash_allows_use_in_dict(self) -> None:
+        """Check if Exposure instances can be used as dictionary keys (requires hashable)."""
+        exposure_dict = {
+            DummyExposureSubclass.DUMMY1: "severity 1",
+            DummyExposureSubclass.DUMMY2: "severity 2",
+            DummyExposureSubclass.DUMMY3: "severity 3",
+            DummyExposureSubclass.NA: "not applicable",
+        }
+        assert len(exposure_dict) == 4
+        assert exposure_dict[DummyExposureSubclass.DUMMY1] == "severity 1"
+        assert exposure_dict[DummyExposureSubclass.NA] == "not applicable"
+
 
 class TestCarbonation:
     """Testing Carbonation class."""
