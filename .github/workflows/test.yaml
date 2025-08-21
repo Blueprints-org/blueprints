@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - 715-feature-request-add-a-test-case-for-plotting-ipe-profile
 
 jobs:
   test:
