@@ -7,7 +7,7 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form4Dot4NCheckExecutionTolerances(Formula):
+class Form4Dot4nCheckExecutionTolerances(Formula):
     r"""Class representing formula 4.4N for calculating the allowance in design for execution tolerances
     [$\Delta c_{dev}$] [$mm$]. Used, where it can be assured that a very accurate measurement device is used
     for monitoring and non conforming members are rejected (e.g. precast elements).
