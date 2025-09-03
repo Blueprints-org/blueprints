@@ -9,7 +9,7 @@ from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_4 impor
 from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestFormEDot1EffBendingStiffnessLi:
+class TestFormEDot4DistanceToCentroidA2:
     """Validation for formula E.4 from NEN-EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(

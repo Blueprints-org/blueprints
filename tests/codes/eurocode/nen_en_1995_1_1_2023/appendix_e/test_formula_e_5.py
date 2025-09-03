@@ -1,4 +1,4 @@
-"""Testing Formula E.3 from NEN-EN 1995-1-1:2023."""
+"""Testing Formula E.5 from NEN-EN 1995-1-1:2023."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
@@ -9,8 +9,8 @@ from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_5 impor
 from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestFormEDot4DistanceCentroidA1:
-    """Validation for formula E.3 from NEN-EN 1995-1-1:2023."""
+class TestFormEDot5DistanceCentroidAlpha3:
+    """Validation for formula E.5 from NEN-EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("h_2", "h_3", "alpha_2", "expected_result"),

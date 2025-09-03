@@ -9,7 +9,7 @@ from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_6 impor
 from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestFormEDot7SecondMomentInertia:
+class TestFormEDot6AreaOfLayerI:
     """Validation for formula E.6 from NEN-EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(

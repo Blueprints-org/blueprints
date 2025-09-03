@@ -1,4 +1,4 @@
-"""Testing Formula E.2 from NEN-EN 1995-1-1:2023."""
+"""Testing Formula E.7 from NEN-EN 1995-1-1:2023."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
