@@ -30,7 +30,7 @@ nav:
       - Structure: guides/concepts/structure.md
       - Formulas: guides/concepts/formulas.md
       - Code Standards:
-        - guides/codes/index.md
+        - guides/concepts/codes/index.md
         - Eurocode Standards:
           - guides/concepts/codes/eurocode/index.md
           - EN 1992-1-1:2004 (Concrete):
