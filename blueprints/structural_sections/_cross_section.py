@@ -13,6 +13,12 @@ from blueprints.type_alias import MM, MM2
 class CrossSection(ABC):
     """Base class for cross-section shapes."""
 
+    ACCURACY = 6
+    """Accuracy for rounding polygon coordinates in order to avoid floating point issues.
+    This value is used in the derived classes when creating the Shapely Polygon.
+    Since the coordinates are in mm, a value of 6 means that the coordinates are rounded to
+    the nearest nanometer which is more than sufficient for structural engineering purposes."""
+
     @property
     @abstractmethod
     def name(self) -> str:

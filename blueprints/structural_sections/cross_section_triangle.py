@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+import numpy as np
 from sectionproperties.pre import Geometry
 from shapely import Polygon
 
@@ -66,7 +67,7 @@ class RightAngledTriangularCrossSection(CrossSection):
         if self.mirrored_vertically:
             top = (top[0], 2 * left_lower[1] - top[1])
 
-        return Polygon([left_lower, right_lower, top])
+        return Polygon(np.round([left_lower, right_lower, top], self.ACCURACY))
 
     def geometry(
         self,
