@@ -3,7 +3,7 @@ nav:
 - Getting Started:
   - Installation: getting_started/installation.md
   - Quick Start: getting_started/quick_start.md
-  - Changelog: https://github.com/Blueprints-org/blueprints/releases
+  - Changelog: getting_started/changelog.md
   - Roadmap: getting_started/roadmap.md
 - Guides:
     - guides/index.md
@@ -27,7 +27,7 @@ nav:
         - Nominal Concrete Cover: guides/examples/other_examples/nominal_concrete_cover.ipynb
     - Concepts:
       - guides/concepts/index.md
-      - Structure: guides/concepts/structure.md
+      - Library Organization: guides/concepts/library_organization.md
       - Formulas: guides/concepts/formulas.md
       - Code Standards:
         - guides/concepts/codes/index.md
