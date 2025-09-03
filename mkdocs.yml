@@ -55,11 +55,6 @@ theme:
 plugins:
   - search
   - open-in-new-tab
-  - gen-files:
-      scripts:
-        - docs/_scripts/generate_reference_pages.py
-        - docs/_scripts/generate_index.py
-        - docs/_scripts/generate_notebook_code.py
   - mkdocstrings:
       handlers:
         python:
