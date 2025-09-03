@@ -15,6 +15,7 @@ nav:
         - I: examples/steel_profile_shapes/steel_i_profile.ipynb
         - RHS: examples/steel_profile_shapes/steel_rhs_profile.ipynb
         - Steel Strip: examples/steel_profile_shapes/steel_strip_profile.ipynb
+        - LNP: examples/steel_profile_shapes/steel_lnp_profile.ipynb
       - Reinforced Concrete Cross Sections:
         - examples/reinforced_concrete_sections/index.md
         - Circular: examples/reinforced_concrete_sections/circular_reinforced_concrete_cross_section.ipynb

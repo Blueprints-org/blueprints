@@ -55,10 +55,6 @@ theme:
 plugins:
   - search
   - open-in-new-tab
-  - git-revision-date-localized:
-      enable_git_follow: false
-      enable_creation_date: true
-      type: date
   - gen-files:
       scripts:
         - docs/_scripts/generate_reference_pages.py
@@ -117,3 +113,10 @@ markdown_extensions:
         - docs
   - pymdownx.arithmatex:
       generic: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/blueprints-org
+    - icon: fontawesome/brands/github
+      link: https://github.com/Blueprints-org/blueprints

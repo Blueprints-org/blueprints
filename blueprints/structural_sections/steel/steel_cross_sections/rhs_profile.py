@@ -254,10 +254,10 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         top_left_inner_radius = profile.inner_radius + corrosion_inside
         bottom_right_inner_radius = profile.inner_radius + corrosion_inside
         bottom_left_inner_radius = profile.inner_radius + corrosion_inside
-        top_right_outer_radius = profile.outer_radius - corrosion_outside
-        top_left_outer_radius = profile.outer_radius - corrosion_outside
-        bottom_right_outer_radius = profile.outer_radius - corrosion_outside
-        bottom_left_outer_radius = profile.outer_radius - corrosion_outside
+        top_right_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
+        top_left_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
+        bottom_right_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
+        bottom_left_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
 
         if any(
             [

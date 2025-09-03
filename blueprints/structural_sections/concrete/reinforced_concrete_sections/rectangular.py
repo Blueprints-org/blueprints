@@ -1,6 +1,5 @@
 """Rectangular reinforced cross-section."""
 
-# ruff: noqa: PLR0913
 from typing import Literal
 
 from matplotlib import pyplot as plt
