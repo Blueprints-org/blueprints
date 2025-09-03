@@ -3,7 +3,7 @@ nav:
 - Getting Started:
   - Installation: getting_started/installation.md
   - Quick Start: getting_started/quick_start.md
-  - Changelog: https://github.com/Blueprints-org/blueprints/releases
+  - Changelog: getting_started/changelog.md
   - Roadmap: getting_started/roadmap.md
 - Guides:
     - guides/index.md
