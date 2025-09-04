@@ -44,7 +44,7 @@ dev = [
     "mypy==1.17.1",
     "ruff==0.12.7",
     "pre-commit==4.2.0",
-    "types-shapely==2.1.0.20250710",
+    "types-shapely==2.1.0.20250822",
     "icecream==2.1.5",
 ]
 docs = [
