@@ -3,6 +3,7 @@
 import math
 from dataclasses import dataclass
 
+import numpy as np
 from sectionproperties.pre import Geometry
 from shapely.geometry import Polygon
 
@@ -73,7 +74,7 @@ class HexagonalCrossSection(CrossSection):
             The shapely Polygon representing the hexagon.
         """
         angle = math.pi / 3
-        points = [(self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)) for i in range(6)]
+        points = np.round([(self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)) for i in range(6)], self.ACCURACY)
         return Polygon(points)
 
     def geometry(
