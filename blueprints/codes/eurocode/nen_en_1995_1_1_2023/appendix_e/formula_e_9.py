@@ -59,7 +59,7 @@ class FormEDot9BendingStressInILayer(Formula):
         return 0.5*e_i*h_i*m_yd/ei_ef
 
     def latex(self) -> LatexFormula:
-        """Returns LatexFormula object for formula E.8."""
+        """Returns LatexFormula object for formula E.9."""
         eq_i = f"\\frac{{0.5 E_{self.i} h_{self.i} M_{{yd}}}}{{EI_{{ef}}}}"
 
         repl_symb = {
