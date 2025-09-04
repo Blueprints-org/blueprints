@@ -65,22 +65,22 @@ class FormEDot2MechanicalConnectEfficiencyFactor(Formula):
 
         return 1 if i == l_2 else 1 / (1 + pi**2 * e_i * a_i * s_i / (k_i * length**2))
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.2."""
         l_2 = 2
         if self.i == l_2:
-            eq_i = f"{self:.2f}"
-            numeric_eq = f"{self:.2f}"
+            eq_i = f"{self:.{n}f}"
+            numeric_eq = f"{self:.{n}f}"
         else:
             eq_i = f"\\frac{{1}}{{1+\\frac{{\\pi^2 E_{self.i} A_{self.i} s_{self.i}}}{{K_{self.i} l^2}}}}"
 
-            e_istr = {f"E_{self.i}": rf"{self.e_i:.2f} \cdot"}
-            a_istr = {f"A_{self.i}": rf"{self.a_i:.2f} \cdot"}
-            s_istr = {f"s_{self.i}": rf"{self.s_i:.2f}"}
-            k_istr = {f"K_{self.i}": rf"{self.k_i:.2f} \cdot"}
-            l_str = {"l": f"{self.length:.2f}"}
+            e_istr = {f"E_{self.i}": rf"{self.e_i:.{n}f} \cdot"}
+            a_istr = {f"A_{self.i}": rf"{self.a_i:.{n}f} \cdot"}
+            s_istr = {f"s_{self.i}": rf"{self.s_i:.{n}f}"}
+            k_istr = {f"K_{self.i}": rf"{self.k_i:.{n}f} \cdot"}
+            l_str = {"l": f"{self.length:.{n}f}"}
             repl_symb = e_istr | a_istr | s_istr | k_istr | l_str
             numeric_eq = latex_replace_symbols(eq_i, repl_symb)
         return LatexFormula(
-            return_symbol=f"\\gamma_{self.i}", result=f"{self:.2f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
+            return_symbol=f"\\gamma_{self.i}", result=f"{self:.{n}f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
         )

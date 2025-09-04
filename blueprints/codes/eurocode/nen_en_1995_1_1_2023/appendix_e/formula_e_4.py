@@ -69,7 +69,7 @@ class FormEDot4DistanceToCentroidA2(Formula):
             alpha_2 = 1 / (2 * denom) * (gamma_i[0] * e_i[0] * a_i[0] * (h_i[0] + h_i[1]) - gamma_i[2] * e_i[2] * a_i[2] * (h_i[1] + h_i[2]))
         return alpha_2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.4."""
         n_up = 3
         den_eq_form = " + ".join([rf"\gamma_{i + 1} E_{i + 1} A_{i + 1}" for i in range(len(self.e_i))])
@@ -81,15 +81,15 @@ class FormEDot4DistanceToCentroidA2(Formula):
 
         eq_form = rf"\frac{{{numerator}}}{{{denom}}}"
 
-        e_istr = {f"E_{i + 1}": rf"{val:.2f} \cdot" for i, val in enumerate(self.e_i)}
-        a_istr = {f"A_{i + 1}": rf"{val:.2f}" for i, val in enumerate(self.a_i)}
-        gamma_istr = {rf"\gamma_{i + 1}": rf"{val:.2f} \cdot" for i, val in enumerate(self.gamma_i)}
-        h_istr = {rf"h_{i + 1}": rf"{val:.2f}" for i, val in enumerate(self.h_i)}
+        e_istr = {f"E_{i + 1}": rf"{val:.{n}f} \cdot" for i, val in enumerate(self.e_i)}
+        a_istr = {f"A_{i + 1}": rf"{val:.{n}f}" for i, val in enumerate(self.a_i)}
+        gamma_istr = {rf"\gamma_{i + 1}": rf"{val:.{n}f} \cdot" for i, val in enumerate(self.gamma_i)}
+        h_istr = {rf"h_{i + 1}": rf"{val:.{n}f}" for i, val in enumerate(self.h_i)}
 
         repl_symb = e_istr | a_istr | gamma_istr | h_istr
         return LatexFormula(
             return_symbol=r"\alpha_{2}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=eq_form,
             numeric_equation=latex_replace_symbols(eq_form, repl_symb, unique_symbol_check=False),
             comparison_operator_label="=",

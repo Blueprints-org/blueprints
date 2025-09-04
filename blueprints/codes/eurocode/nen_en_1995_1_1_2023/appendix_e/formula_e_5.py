@@ -46,12 +46,12 @@ class FormEDot5DistanceCentroidAlpha3(Formula):
 
         return (h_2 + h_3) / 2 - alpha_2
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.5."""
         eq_i = r"\frac{h_2 + h_3}{2} - \alpha_2"
 
-        repl_symb = {r"h_2": rf"{self.h_2:.2f}", r"h_3": rf"{self.h_3:.2f}", r"\alpha_2": rf"\left({self.alpha_2:.2f}\right)"}
+        repl_symb = {r"h_2": rf"{self.h_2:.{n}f}", r"h_3": rf"{self.h_3:.{n}f}", r"\alpha_2": rf"\left({self.alpha_2:.{n}f}\right)"}
         numeric_eq = latex_replace_symbols(eq_i, repl_symb)
         return LatexFormula(
-            return_symbol=r"\alpha_3", result=f"{self:.2f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
+            return_symbol=r"\alpha_3", result=f"{self:.{n}f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
         )

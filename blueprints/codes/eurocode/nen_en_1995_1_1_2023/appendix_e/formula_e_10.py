@@ -65,24 +65,24 @@ class FormEDot10ShearStressInLayer2(Formula):
 
         return (gamma_3 * e_3 * a_3 * alpha_3 + 0.5 * e_2 * b_2 * ((alpha_2 + h_2) / 2) ** 2) * v_d / (ei_ef * b_2)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.10."""
         eq_i = r"\left[\gamma_3 E_3 A_3 \alpha_3 + 0.5 E_2 b_2 \left(\frac{\alpha_2 + h_2}{2}\right)^2\right] \frac{V_d}{b_{2} EI_{ef}}"
 
         repl_symb = {
-            r"\gamma_3": rf"{self.gamma_3:.2f}",
-            r"E_2": rf"\cdot {self.e_2:.2f} \cdot",
-            r"E_3": rf"\cdot {self.e_3:.2f} \cdot",
-            r"A_3": rf"{self.a_3:.2f} \cdot",
-            r"\alpha_3": rf"{self.alpha_3:.2f}",
-            r"\alpha_2": rf"{self.alpha_2:.2f}",
-            r"h_2": rf"{self.h_2:.2f}",
-            r"b_{2}": rf"{self.b_2:.2f}",
-            r"b_2": rf"{self.b_2:.2f}",
-            r"V_d": rf"{self.v_d:.2f}",
-            r"EI_{ef}": rf"\cdot {self.ei_ef:.2f}",
+            r"\gamma_3": rf"{self.gamma_3:.{n}f}",
+            r"E_2": rf"\cdot {self.e_2:.{n}f} \cdot",
+            r"E_3": rf"\cdot {self.e_3:.{n}f} \cdot",
+            r"A_3": rf"{self.a_3:.{n}f} \cdot",
+            r"\alpha_3": rf"{self.alpha_3:.{n}f}",
+            r"\alpha_2": rf"{self.alpha_2:.{n}f}",
+            r"h_2": rf"{self.h_2:.{n}f}",
+            r"b_{2}": rf"{self.b_2:.{n}f}",
+            r"b_2": rf"{self.b_2:.{n}f}",
+            r"V_d": rf"{self.v_d:.{n}f}",
+            r"EI_{ef}": rf"\cdot {self.ei_ef:.{n}f}",
         }
         numeric_eq = latex_replace_symbols(eq_i, repl_symb)
         return LatexFormula(
-            return_symbol=r"\tau_{2,max}", result=f"{self:.2f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
+            return_symbol=r"\tau_{2,max}", result=f"{self:.{n}f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
         )

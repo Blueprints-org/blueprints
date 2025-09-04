@@ -48,15 +48,15 @@ class FormEDot6AreaOfLayerI(Formula):
 
         return b_i * h_i
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.6."""
         eq_i = f"b_{self.i} h_{self.i}"
 
         repl_symb = {
-            f"b_{self.i}": rf"{self.b_i:.2f} \cdot",
-            f"h_{self.i}": rf"{self.h_i:.2f}",
+            f"b_{self.i}": rf"{self.b_i:.{n}f} \cdot",
+            f"h_{self.i}": rf"{self.h_i:.{n}f}",
         }
         numeric_eq = latex_replace_symbols(eq_i, repl_symb)
         return LatexFormula(
-            return_symbol=f"A_{self.i}", result=f"{self:.2f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
+            return_symbol=f"A_{self.i}", result=f"{self:.{n}f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
         )
