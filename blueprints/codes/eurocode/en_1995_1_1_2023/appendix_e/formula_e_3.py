@@ -1,6 +1,6 @@
-"""Formula E.3 from NEN-EN 1995-1-1:2023."""
+"""Formula E.3 from EN 1995-1-1:2023."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023 import NEN_EN_1995_1_1_2023
+from blueprints.codes.eurocode.en_1995_1_1_2023 import EN_1995_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM
@@ -13,12 +13,12 @@ class FormEDot3DistanceCentroidAlpha1(Formula):
     """
 
     label = "E.3"
-    source_document = NEN_EN_1995_1_1_2023
+    source_document = EN_1995_1_1_2023
 
     def __init__(self, h_1: MM, h_2: MM, alpha_2: MM) -> None:
         r"""[$\alpha_1$] Distance between the centroid of the composite cross-section and the centroid of layer 1 of the cross-section.
 
-        NEN-EN 1995-1-1 art E.4(1) - Formula (E.3)
+        EN 1995-1-1:2023 art E.4(1) - Formula (E.3)
 
         Parameters
         ----------

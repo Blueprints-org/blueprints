@@ -1,6 +1,6 @@
-"""Formula E.10 from NEN-EN 1995-1-1:2023."""
+"""Formula E.10 from EN 1995-1-1:2023."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023 import NEN_EN_1995_1_1_2023
+from blueprints.codes.eurocode.en_1995_1_1_2023 import EN_1995_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MPA, NMM2, N
@@ -11,12 +11,12 @@ class FormEDot10ShearStressInLayer2(Formula):
     r"""Class representing formula E.10 for maximum shear stress in the cross-section, in the member web."""
 
     label = "E.10"
-    source_document = NEN_EN_1995_1_1_2023
+    source_document = EN_1995_1_1_2023
 
     def __init__(self, gamma_3: DIMENSIONLESS, e_2: MPA, e_3: MPA, a_3: MM2, alpha_2: MM, alpha_3: MM, h_2: MM, b_2: MM, v_d: N, ei_ef: NMM2) -> None:
         r"""[$\tau_{2,max}$] maximum shear stress in the cross-section, in the member web (layer 2), in [$MPa$].
 
-        NEN-EN 1995-1-1 art E.5(1) - Formula (E.10)
+        EN 1995-1-1:2023 art E.5(1) - Formula (E.10)
 
         Parameters
         ----------

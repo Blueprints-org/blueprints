@@ -1,6 +1,6 @@
-"""Formula E.4 from NEN-EN 1995-1-1:2023."""
+"""Formula E.4 from EN 1995-1-1:2023."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023 import NEN_EN_1995_1_1_2023
+from blueprints.codes.eurocode.en_1995_1_1_2023 import EN_1995_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MM4, MPA, NMM2
@@ -11,12 +11,12 @@ class FormEDot4DistanceToCentroidA2(Formula):
     r"""[$\alpha_2$] Distance between the centroid of the composite cross-section and the centroid of layer 2 of the cross-section."""
 
     label = "E.4"
-    source_document = NEN_EN_1995_1_1_2023
+    source_document = EN_1995_1_1_2023
 
     def __init__(self, e_i: list[MPA], a_i: list[MM2], gamma_i: list[DIMENSIONLESS], h_i: list[MM]) -> None:
         r"""[$(\alpha)_{2}$] Effective bending stiffness, in [$Nmm^2$].
 
-        NEN-EN 1995-1-1 art E.4(1) - Formula (E.1)
+        EN 1995-1-1:2023 art E.4(1) - Formula (E.1)
 
         Parameters
         ----------

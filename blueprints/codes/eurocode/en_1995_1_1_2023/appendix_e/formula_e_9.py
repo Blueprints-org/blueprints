@@ -1,6 +1,6 @@
-"""Formula E.9 from NEN-EN 1995-1-1:2023."""
+"""Formula E.9 from EN 1995-1-1:2023."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023 import NEN_EN_1995_1_1_2023
+from blueprints.codes.eurocode.en_1995_1_1_2023 import EN_1995_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM, MPA, NMM, NMM2
@@ -11,12 +11,12 @@ class FormEDot9BendingStressInILayer(Formula):
     r"""Class representing formula E.9 for bending stress in the i-numbered part of the cross-section."""
 
     label = "E.9"
-    source_document = NEN_EN_1995_1_1_2023
+    source_document = EN_1995_1_1_2023
 
     def __init__(self, i: int, e_i: MPA, h_i: MM, m_yd: NMM, ei_ef: NMM2) -> None:
         r"""[$\sigma_{m,i}$] axial stress in the i-numbered part of the cross-section, in [$MPa$].
 
-        NEN-EN 1995-1-1 art E.5(1) - Formula (E.9)
+        EN 1995-1-1:2023 art E.5(1) - Formula (E.9)
 
         Parameters
         ----------

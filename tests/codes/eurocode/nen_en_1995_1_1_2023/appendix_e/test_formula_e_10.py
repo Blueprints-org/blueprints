@@ -1,4 +1,4 @@
-"""Testing Formula E.10 from NEN-EN 1995-1-1:2023."""
+"""Testing Formula E.10 from EN 1995-1-1:2023."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
@@ -6,13 +6,13 @@ from dataclasses import asdict, dataclass
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_10 import FormEDot10ShearStressInLayer2
+from blueprints.codes.eurocode.en_1995_1_1_2023.appendix_e.formula_e_10 import FormEDot10ShearStressInLayer2
 from blueprints.validations import LessOrEqualToZeroError
 
 
 @dataclass(frozen=True)
 class FormE10Params:
-    """Container for the input parameters of Formula E.10 from NEN-EN 1995-1-1:2023, Annex E."""
+    """Container for the input parameters of Formula E.10 from EN 1995-1-1:2023, Annex E."""
 
     gamma_3: float
     e_2: float
@@ -27,7 +27,7 @@ class FormE10Params:
 
 
 class TestFormEDot10MaxShearStressInLayer2:
-    """Validation for formula E.10 from NEN-EN 1995-1-1:2023."""
+    """Validation for formula E.10 from EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("params", "expected_result"),

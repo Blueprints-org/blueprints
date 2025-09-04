@@ -1,8 +1,8 @@
-"""Formula E.2 from NEN-EN 1995-1-1:2023."""
+"""Formula E.2 from EN 1995-1-1:2023."""
 
 import math
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023 import NEN_EN_1995_1_1_2023
+from blueprints.codes.eurocode.en_1995_1_1_2023 import EN_1995_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MPA, N_MM
@@ -15,12 +15,12 @@ class FormEDot2MechanicalConnectEfficiencyFactor(Formula):
     """
 
     label = "E.2"
-    source_document = NEN_EN_1995_1_1_2023
+    source_document = EN_1995_1_1_2023
 
     def __init__(self, i: DIMENSIONLESS, e_i: MPA, a_i: MM2, s_i: MM, k_i: N_MM, length: MM) -> None:
         r"""[$\gamma_i$] Factor for the efficiency of the mechanical connections of the respective i-numbered parts of the cross-section.
 
-        NEN-EN 1995-1-1 art E.4(1) - Formula (E.2)
+        EN 1995-1-1:2023 art E.4(1) - Formula (E.2)
 
         Parameters
         ----------

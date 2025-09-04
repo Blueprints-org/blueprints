@@ -1,16 +1,16 @@
-"""Testing Formula E.1 from NEN-EN 1995-1-1:2023."""
+"""Testing Formula E.1 from EN 1995-1-1:2023."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_1 import FormEDot1EffBendingStiffness
+from blueprints.codes.eurocode.en_1995_1_1_2023.appendix_e.formula_e_1 import FormEDot1EffBendingStiffness
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestFormEDot1EffBendingStiffnessLi:
-    """Validation for formula E.1 from NEN-EN 1995-1-1:2023."""
+    """Validation for formula E.1 from EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("e_i", "i_i", "gamma_i", "a_i", "alpha_i", "expected_result"),
@@ -67,11 +67,9 @@ class TestFormEDot1EffBendingStiffnessLi:
                 [1, 1],
                 [1, 1],
                 r"(EI)_{ef} = 4.00",
-                r"(EI)_{ef} = E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2"
-                r" + E_2 I_2 + \gamma_2 E_2 A_2 \alpha_2^2"
-                r" = 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2"
-                r" + 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2"
-                " = 4.00",
+                r"(EI)_{ef} = (E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2) + (E_2 I_2 + \gamma_2 E_2 A_2 \alpha_2^2) = "
+                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
+                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) = 4.00",
             ),
             (
                 [1, 1, 200],
@@ -80,13 +78,11 @@ class TestFormEDot1EffBendingStiffnessLi:
                 [1, 1, 0.5],
                 [1, 1, 0.25],
                 r"(EI)_{ef} = 80005.25",
-                r"(EI)_{ef} = E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2"
-                " + E_2 I_2 + \\gamma_2 E_2 A_2 \\alpha_2^2"
-                " + E_3 I_3 + \\gamma_3 E_3 A_3 \\alpha_3^2"
-                r" = 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2"
-                r" + 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2"
-                r" + 200.00 \cdot 400.00 + 0.20 \cdot 200.00 \cdot 0.50 \cdot 0.25^2"
-                " = 80005.25",
+                r"(EI)_{ef} = (E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2) + (E_2 I_2 + \gamma_2 E_2 A_2 \alpha_2^2) + "
+                r"(E_3 I_3 + \gamma_3 E_3 A_3 \alpha_3^2) = "
+                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
+                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
+                r"(200.00 \cdot 400.00 + 0.20 \cdot 200.00 \cdot 0.50 \cdot 0.25^2) = 80005.25",
             ),
         ],
         ids=["length_2", "length_3"],

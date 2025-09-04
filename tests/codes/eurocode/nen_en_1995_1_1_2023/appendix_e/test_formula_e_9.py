@@ -1,16 +1,16 @@
-"""Testing Formula E.9 from NEN-EN 1995-1-1:2023."""
+"""Testing Formula E.9 from EN 1995-1-1:2023."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_9 import FormEDot9BendingStressInILayer
+from blueprints.codes.eurocode.en_1995_1_1_2023.appendix_e.formula_e_9 import FormEDot9BendingStressInILayer
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestFormEDot9BendingStressInILayer:
-    """Validation for formula E.9 from NEN-EN 1995-1-1:2023."""
+    """Validation for formula E.9 from EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("n_i", "e_i", "h_i", "m_yd", "ei_ef", "expected_result"),

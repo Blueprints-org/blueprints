@@ -1,6 +1,6 @@
-"""Formula E.1 from NEN-EN 1995-1-1:2023."""
+"""Formula E.1 from EN 1995-1-1:2023."""
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023 import NEN_EN_1995_1_1_2023
+from blueprints.codes.eurocode.en_1995_1_1_2023 import EN_1995_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MM4, MPA, NMM2
@@ -11,12 +11,12 @@ class FormEDot1EffBendingStiffness(Formula):
     r"""Class representing formula E.1 for the effective bending stiffness of mechanically jointed members [$(EI)_{ef}$]."""
 
     label = "E.1"
-    source_document = NEN_EN_1995_1_1_2023
+    source_document = EN_1995_1_1_2023
 
     def __init__(self, e_i: list[MPA], i_i: list[MM4], gamma_i: list[DIMENSIONLESS], a_i: list[MM2], alpha_i: list[MM]) -> None:
         r"""[$(EI)_{ef}$] Effective bending stiffness, in [$Nmm^2$].
 
-        NEN-EN 1995-1-1 art E.4(1) - Formula (E.1)
+        EN 1995-1-1:2023 art E.4(1) - Formula (E.1)
 
         Parameters
         ----------
@@ -68,7 +68,7 @@ class FormEDot1EffBendingStiffness(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.1."""
-        part_eq_form = [rf"E_{i + 1} I_{i + 1} + \gamma_{i + 1} E_{i + 1} A_{i + 1} \alpha_{i + 1}^2" for i in range(len(self.e_i))]
+        part_eq_form = [rf"(E_{i + 1} I_{i + 1} + \gamma_{i + 1} E_{i + 1} A_{i + 1} \alpha_{i + 1}^2)" for i in range(len(self.e_i))]
         eq_form = " + ".join(part_eq_form)
 
         e_istr = {f"E_{i + 1}": rf"{val:.{n}f} \cdot" for i, val in enumerate(self.e_i)}

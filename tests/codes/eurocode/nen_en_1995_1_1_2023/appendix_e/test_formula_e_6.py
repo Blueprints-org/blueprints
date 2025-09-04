@@ -1,16 +1,16 @@
-"""Testing Formula E.6 from NEN-EN 1995-1-1:2023."""
+"""Testing Formula E.6 from EN 1995-1-1:2023."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_6 import FormEDot6AreaOfLayerI
+from blueprints.codes.eurocode.en_1995_1_1_2023.appendix_e.formula_e_6 import FormEDot6AreaOfLayerI
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestFormEDot6AreaOfLayerI:
-    """Validation for formula E.6 from NEN-EN 1995-1-1:2023."""
+    """Validation for formula E.6 from EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("i", "b_i", "h_i", "expected_result"),

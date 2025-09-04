@@ -1,16 +1,16 @@
-"""Testing Formula E.2 from NEN-EN 1995-1-1:2023."""
+"""Testing Formula E.2 from EN 1995-1-1:2023."""
 
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1995_1_1_2023.appendix_e.formula_e_2 import FormEDot2MechanicalConnectEfficiencyFactor
+from blueprints.codes.eurocode.en_1995_1_1_2023.appendix_e.formula_e_2 import FormEDot2MechanicalConnectEfficiencyFactor
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestFormEDot2MechanicalConnectEfficiencyFactor:
-    """Validation for formula E.2 from NEN-EN 1995-1-1:2023."""
+    """Validation for formula E.2 from EN 1995-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("i", "e_i", "a_i", "s_i", "k_i", "length", "expected_result"),
