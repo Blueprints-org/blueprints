@@ -59,14 +59,7 @@ class RectangularCrossSection(CrossSection):
         right_lower = (self.x + self.width / 2, self.y - self.height / 2)
         right_upper = (self.x + self.width / 2, self.y + self.height / 2)
         left_upper = (self.x - self.width / 2, self.y + self.height / 2)
-        return Polygon(
-            [
-                np.round(left_lower, self.ACCURACY),
-                np.round(right_lower, self.ACCURACY),
-                np.round(right_upper, self.ACCURACY),
-                np.round(left_upper, self.ACCURACY),
-            ]
-        )
+        return Polygon(np.round([left_lower, right_lower, right_upper, left_upper], self.ACCURACY))
 
     def geometry(
         self,

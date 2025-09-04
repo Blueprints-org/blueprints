@@ -74,7 +74,7 @@ class HexagonalCrossSection(CrossSection):
             The shapely Polygon representing the hexagon.
         """
         angle = math.pi / 3
-        points = [np.round((self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)), self.ACCURACY) for i in range(6)]
+        points = np.round([(self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)) for i in range(6)], self.ACCURACY)
         return Polygon(points)
 
     def geometry(
