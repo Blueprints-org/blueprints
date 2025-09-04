@@ -10,7 +10,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class FormEDot2MechanicalConnectEfficiencyFactor(Formula):
-    r"""Class representing formula E.2 for the factors for the efficienct of the mechanical \\
+    r"""Class representing formula E.2 for the factors for the efficiency of the mechanical \\
         connections of the respective i-numbered parts of the cross-section.
     """
 
@@ -60,10 +60,9 @@ class FormEDot2MechanicalConnectEfficiencyFactor(Formula):
         # Ensure that the input parameters have valid values
         raise_if_less_or_equal_to_zero(length=length, e_i=e_i, a_i=a_i, s_i=s_i, k_i=k_i)
 
-        pi = math.pi
         l_2 = 2
 
-        return 1 if i == l_2 else 1 / (1 + pi**2 * e_i * a_i * s_i / (k_i * length**2))
+        return 1 if i == l_2 else 1 / (1 + math.pi**2 * e_i * a_i * s_i / (k_i * length**2))
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.2."""
@@ -82,5 +81,9 @@ class FormEDot2MechanicalConnectEfficiencyFactor(Formula):
             repl_symb = e_istr | a_istr | s_istr | k_istr | l_str
             numeric_eq = latex_replace_symbols(eq_i, repl_symb)
         return LatexFormula(
-            return_symbol=f"\\gamma_{self.i}", result=f"{self:.{n}f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
+            return_symbol=f"\\gamma_{self.i}",
+            result=f"{self:.{n}f}",
+            equation=eq_i,
+            numeric_equation=numeric_eq,
+            comparison_operator_label="=",
         )
