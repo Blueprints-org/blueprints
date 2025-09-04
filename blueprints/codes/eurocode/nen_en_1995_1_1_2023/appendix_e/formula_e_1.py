@@ -66,21 +66,21 @@ class FormEDot1EffBendingStiffness(Formula):
             ei_i.append(term)
         return sum(ei_i)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.1."""
         part_eq_form = [rf"E_{i + 1} I_{i + 1} + \gamma_{i + 1} E_{i + 1} A_{i + 1} \alpha_{i + 1}^2" for i in range(len(self.e_i))]
         eq_form = " + ".join(part_eq_form)
 
-        e_istr = {f"E_{i + 1}": rf"{val:.2f} \cdot" for i, val in enumerate(self.e_i)}
-        i_istr = {f"I_{i + 1}": rf"{val:.2f}" for i, val in enumerate(self.i_i)}
-        gamma_istr = {rf"\gamma_{i + 1}": rf"{val:.2f} \cdot" for i, val in enumerate(self.gamma_i)}
-        a_istr = {rf"A_{i + 1}": rf"{val:.2f}" for i, val in enumerate(self.a_i)}
-        alpha_istr = {rf"\alpha_{i + 1}": rf"\cdot {val:.2f}" for i, val in enumerate(self.alpha_i)}
+        e_istr = {f"E_{i + 1}": rf"{val:.{n}f} \cdot" for i, val in enumerate(self.e_i)}
+        i_istr = {f"I_{i + 1}": rf"{val:.{n}f}" for i, val in enumerate(self.i_i)}
+        gamma_istr = {rf"\gamma_{i + 1}": rf"{val:.{n}f} \cdot" for i, val in enumerate(self.gamma_i)}
+        a_istr = {rf"A_{i + 1}": rf"{val:.{n}f}" for i, val in enumerate(self.a_i)}
+        alpha_istr = {rf"\alpha_{i + 1}": rf"\cdot {val:.{n}f}" for i, val in enumerate(self.alpha_i)}
 
         repl_symb = e_istr | i_istr | gamma_istr | a_istr | alpha_istr
         return LatexFormula(
             return_symbol=r"(EI)_{ef}",
-            result=f"{self:.2f}",
+            result=f"{self:.{n}f}",
             equation=eq_form,
             numeric_equation=latex_replace_symbols(eq_form, repl_symb, unique_symbol_check=False),
             comparison_operator_label="=",

@@ -59,18 +59,18 @@ class FormEDot8AxialStressInILayer(Formula):
 
         return gamma_i * e_i * alpha_i * m_yd / ei_ef
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula E.8."""
         eq_i = f"\\frac{{\\gamma_{self.i} E_{self.i} \\alpha_{self.i} M_{{yd}}}}{{EI_{{ef}}}}"
 
         repl_symb = {
-            f"\\gamma_{self.i}": rf"{self.gamma_i:.2f} \cdot",
-            f"E_{self.i}": rf"{self.e_i:.2f} \cdot",
-            f"\\alpha_{self.i}": rf"{self.alpha_i:.2f} \cdot",
-            r"M_{yd}": rf"{self.m_yd:.2f}",
-            r"EI_{ef}": rf"{self.ei_ef:.2f}",
+            f"\\gamma_{self.i}": rf"{self.gamma_i:.{n}f} \cdot",
+            f"E_{self.i}": rf"{self.e_i:.{n}f} \cdot",
+            f"\\alpha_{self.i}": rf"{self.alpha_i:.{n}f} \cdot",
+            r"M_{yd}": rf"{self.m_yd:.{n}f}",
+            r"EI_{ef}": rf"{self.ei_ef:.{n}f}",
         }
         numeric_eq = latex_replace_symbols(eq_i, repl_symb)
         return LatexFormula(
-            return_symbol=rf"\sigma_{{{self.i}}}", result=f"{self:.2f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
+            return_symbol=rf"\sigma_{{{self.i}}}", result=f"{self:.{n}f}", equation=eq_i, numeric_equation=numeric_eq, comparison_operator_label="="
         )
