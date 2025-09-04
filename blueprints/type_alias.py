@@ -187,4 +187,6 @@ MM_PER_S2 = float
 # <editor-fold desc="STIFFNESSES">
 NM2_M = float
 """Bending stiffness (Nm²/m), represented as a float."""
+NMM2 = float
+"""Bending stiffness (Nmm²), represented as a float."""
 # </editor-fold>
