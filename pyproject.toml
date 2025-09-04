@@ -42,8 +42,8 @@ changelog = "https://github.com/Blueprints-org/blueprints/releases"
 [dependency-groups]
 dev = [
     "mypy==1.17.1",
-    "ruff==0.12.7",
-    "pre-commit==4.2.0",
+    "ruff==0.12.11",
+    "pre-commit==4.3.0",
     "types-shapely==2.1.0.20250822",
     "icecream==2.1.5",
 ]
@@ -60,7 +60,7 @@ docs = [
     "mkdocs-jupyter ~= 0.25.1",
 ]
 test = [
-    "pytest==8.4.1",
+    "pytest==8.4.2",
     "pytest-cov==6.2.1",
     "pytest-describe==2.2.0",
     "pytest-pspec==0.0.4",
