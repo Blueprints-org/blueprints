@@ -1,4 +1,4 @@
-"""Formula E.3 from NEN-EN 1995-1-1:2023."""
+"""Formula E.5 from NEN-EN 1995-1-1:2023."""
 
 from blueprints.codes.eurocode.nen_en_1995_1_1_2023 import NEN_EN_1995_1_1_2023
 from blueprints.codes.formula import Formula
