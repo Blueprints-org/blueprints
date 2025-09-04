@@ -56,7 +56,7 @@ class FormEDot9BendingStressInILayer(Formula):
         else:
             raise_if_negative(h_i=h_i)
 
-        return 0.5*e_i*h_i*m_yd/ei_ef
+        return 0.5 * e_i * h_i * m_yd / ei_ef
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula E.9."""

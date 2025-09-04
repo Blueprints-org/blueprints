@@ -57,7 +57,7 @@ class FormEDot8AxialStressInILayer(Formula):
         if i != 2:
             raise_if_less_or_equal_to_zero(alpha_i=alpha_i)
 
-        return gamma_i*e_i*alpha_i*m_yd/ei_ef
+        return gamma_i * e_i * alpha_i * m_yd / ei_ef
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula E.8."""

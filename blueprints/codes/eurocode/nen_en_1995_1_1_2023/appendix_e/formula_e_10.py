@@ -13,7 +13,7 @@ class FormEDot10ShearStressInLayer2(Formula):
     label = "E.10"
     source_document = NEN_EN_1995_1_1_2023
 
-    def __init__(self, gamma_3: DIMENSIONLESS, e_2:MPA, e_3: MPA, a_3: MM2, alpha_2:MM, alpha_3: MM, h_2: MM, b_2: MM, v_d: N, ei_ef: NMM2) -> None:
+    def __init__(self, gamma_3: DIMENSIONLESS, e_2: MPA, e_3: MPA, a_3: MM2, alpha_2: MM, alpha_3: MM, h_2: MM, b_2: MM, v_d: N, ei_ef: NMM2) -> None:
         r"""[$\tau_{2,max}$] maximum shear stress in the cross-section, in the member web (layer 2), in [$MPa$].
 
         NEN-EN 1995-1-1 art E.5(1) - Formula (E.10)
@@ -58,12 +58,12 @@ class FormEDot10ShearStressInLayer2(Formula):
         self.ei_ef = ei_ef
 
     @staticmethod
-    def _evaluate( gamma_3: DIMENSIONLESS, e_2:MPA, e_3: MPA, a_3: MM2, alpha_2:MM, alpha_3: MM, h_2: MM, b_2: MM, v_d: N, ei_ef: NMM2) -> MPA:
+    def _evaluate(gamma_3: DIMENSIONLESS, e_2: MPA, e_3: MPA, a_3: MM2, alpha_2: MM, alpha_3: MM, h_2: MM, b_2: MM, v_d: N, ei_ef: NMM2) -> MPA:
         """Evaluates the formula, for more information see the __init__method."""
         # Ensure that the input parameters have valid values
         raise_if_less_or_equal_to_zero(gamma_3=gamma_3, e_2=e_2, e_3=e_3, a_3=a_3, alpha_3=alpha_3, b_2=b_2, h_2=h_2, ei_ef=ei_ef)
 
-        return (gamma_3*e_3*a_3*alpha_3+0.5*e_2*b_2*((alpha_2+h_2)/2)**2)*v_d/(ei_ef*b_2)
+        return (gamma_3 * e_3 * a_3 * alpha_3 + 0.5 * e_2 * b_2 * ((alpha_2 + h_2) / 2) ** 2) * v_d / (ei_ef * b_2)
 
     def latex(self) -> LatexFormula:
         """Returns LatexFormula object for formula E.10."""
