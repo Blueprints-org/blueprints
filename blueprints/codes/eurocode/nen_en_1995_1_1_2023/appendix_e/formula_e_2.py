@@ -1,4 +1,4 @@
-"""Formula E.1 from NEN-EN 1995-1-1:2023."""
+"""Formula E.2 from NEN-EN 1995-1-1:2023."""
 
 import math
 
