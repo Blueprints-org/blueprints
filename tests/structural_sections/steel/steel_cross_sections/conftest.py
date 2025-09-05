@@ -15,6 +15,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile impor
 from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSSteelProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPE
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
@@ -48,8 +49,16 @@ def chs_profile() -> CHSSteelProfile:
 
 
 @pytest.fixture
-def i_profile() -> ISteelProfile:
-    """Fixture to set up an I-profile for testing."""
+def ipe_profile() -> ISteelProfile:
+    """Fixture to set up an I-shaped profile for testing."""
+    profile = IPE.IPE100
+    steel_class = SteelStrengthClass.S355
+    return ISteelProfile.from_standard_profile(profile=profile, steel_material=SteelMaterial(steel_class))
+
+
+@pytest.fixture
+def h_profile() -> ISteelProfile:
+    """Fixture to set up an H-shaped profile for testing."""
     profile = HEB.HEB360
     steel_class = SteelStrengthClass.S355
     return ISteelProfile.from_standard_profile(profile=profile, steel_material=SteelMaterial(steel_class))

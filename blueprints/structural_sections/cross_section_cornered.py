@@ -136,7 +136,7 @@ class CircularCorneredCrossSection(CrossSection):
 
         points = np.array([tuple(pt) for pt in points])
 
-        return Polygon(points)
+        return Polygon(np.round(points, self.ACCURACY))
 
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
         """
