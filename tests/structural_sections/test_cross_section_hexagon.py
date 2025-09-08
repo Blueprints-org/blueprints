@@ -44,3 +44,8 @@ class TestHexagonalCrossSection:
         """Test the parameters_as_dict method of the HexagonalCrossSection class."""
         params = hexagonal_cross_section.section_properties().asdict()
         assert params
+
+    def test_no_plotter_defined(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
+        """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
+        with pytest.raises(AttributeError, match="No plotter is defined."):
+            _ = hexagonal_cross_section.plotter

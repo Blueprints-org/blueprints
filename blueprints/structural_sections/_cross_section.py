@@ -104,7 +104,7 @@ class CrossSection(ABC):
     @property
     def plotter(self) -> Callable[[Any], plt.Figure]:
         """Default plotter function for the cross-section."""
-        raise NotImplementedError("Subclasses must implement the plotter property.")
+        raise AttributeError("No plotter is defined.")
 
     def plot(self, plotter: Callable[[Any], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
         """Plot the cross-section. Making use of the standard plotter.

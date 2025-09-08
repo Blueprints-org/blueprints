@@ -42,3 +42,8 @@ class TestRightAngledTriangularCrossSection:
         assert len(polygon.exterior.coords) == 4
         assert (polygon.exterior.coords[1][0], polygon.exterior.coords[1][1]) == (-100.0, 0)
         assert (polygon.exterior.coords[2][0], polygon.exterior.coords[2][1]) == (0, -200.0)
+
+    def test_no_plotter_defined(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
+        """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
+        with pytest.raises(AttributeError, match="No plotter is defined."):
+            _ = triangular_cross_section.plotter

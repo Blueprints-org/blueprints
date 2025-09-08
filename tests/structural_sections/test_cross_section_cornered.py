@@ -57,3 +57,8 @@ class TestCircularCorneredCrossSection:
                 outer_radius=10,
                 corner_direction=4,
             )
+
+    def test_no_plotter_defined(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+        """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
+        with pytest.raises(AttributeError, match="No plotter is defined."):
+            _ = qcs_cross_section.plotter
