@@ -27,11 +27,14 @@ class CHSSteelProfile(CombinedSteelCrossSection):
         The outer diameter of the CHS profile [mm].
     wall_thickness : MM
         The wall thickness of the CHS profile [mm].
+    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+        The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
     steel_material: SteelMaterial
     outer_diameter: MM
     wall_thickness: MM
+    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
         """Initialize the CHS profile."""
@@ -97,24 +100,4 @@ class CHSSteelProfile(CombinedSteelCrossSection):
             wall_thickness=adjusted_thickness,
             steel_material=steel_material,
             name=name,
-        )
-
-    def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
-        """Plot the cross-section. Making use of the standard plotter.
-
-        Parameters
-        ----------
-        plotter : Callable[CombinedSteelCrossSection, plt.Figure] | None
-            The plotter function to use. If None, the default Blueprints plotter for steel sections is used.
-        *args
-            Additional arguments passed to the plotter.
-        **kwargs
-            Additional keyword arguments passed to the plotter.
-        """
-        if plotter is None:
-            plotter = plot_shapes
-        return plotter(
-            self,
-            *args,
-            **kwargs,
         )

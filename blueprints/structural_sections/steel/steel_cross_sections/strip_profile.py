@@ -34,11 +34,14 @@ class StripSteelProfile(CombinedSteelCrossSection):
         The width of the strip profile [mm].
     height : MM
         The height (thickness) of the strip profile [mm].
+    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+        The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
     steel_material: SteelMaterial
     strip_width: MM
     strip_height: MM
+    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
         """Initialize the Steel Strip profile."""
@@ -93,24 +96,4 @@ class StripSteelProfile(CombinedSteelCrossSection):
             strip_width=width,
             strip_height=height,
             name=name,
-        )
-
-    def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
-        """Plot the cross-section. Making use of the standard plotter.
-
-        Parameters
-        ----------
-        plotter : Callable[CombinedSteelCrossSection, plt.Figure] | None
-            The plotter function to use. If None, the default Blueprints plotter for steel sections is used.
-        *args
-            Additional arguments passed to the plotter.
-        **kwargs
-            Additional keyword arguments passed to the plotter.
-        """
-        if plotter is None:
-            plotter = plot_shapes
-        return plotter(
-            self,
-            *args,
-            **kwargs,
         )

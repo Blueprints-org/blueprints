@@ -41,6 +41,8 @@ class LNPProfile(CombinedSteelCrossSection):
         The radius of the toe in the base. Default is None, the corner radius is then taken as sharp angle.
     name : str
         The name of the profile. Default is "LNP-Profile". If corrosion is applied, the name will include the corrosion value.
+    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+        The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
     steel_material: SteelMaterial
@@ -53,6 +55,7 @@ class LNPProfile(CombinedSteelCrossSection):
     web_toe_radius: MM | None
     base_toe_radius: MM | None
     name: str = "LNP-Profile"
+    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
         """Initialize the RHS- or SHS-profile steel section."""
@@ -177,24 +180,4 @@ class LNPProfile(CombinedSteelCrossSection):
             web_toe_radius=web_toe_radius,
             base_toe_radius=base_toe_radius,
             name=name,
-        )
-
-    def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
-        """Plot the cross-section. Making use of the standard plotter.
-
-        Parameters
-        ----------
-        plotter : Callable[CombinedSteelCrossSection, plt.Figure] | None
-            The plotter function to use. If None, the default Blueprints plotter for steel sections is used.
-        *args
-            Additional arguments passed to the plotter.
-        **kwargs
-            Additional keyword arguments passed to the plotter.
-        """
-        if plotter is None:
-            plotter = plot_shapes
-        return plotter(
-            self,
-            *args,
-            **kwargs,
         )
