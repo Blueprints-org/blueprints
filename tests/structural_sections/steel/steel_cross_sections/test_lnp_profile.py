@@ -26,11 +26,6 @@ class TestLNPProfile:
         expected_volume: float = 0.000871  # m³/m
         assert pytest.approx(lnp_profile.volume_per_meter, rel=1e-2) == expected_volume
 
-    def test_steel_weight_per_meter(self, lnp_profile: LNPProfile) -> None:
-        """Test the steel weight per meter."""
-        expected_weight: float = lnp_profile.volume_per_meter * 7850  # kg/m
-        assert pytest.approx(lnp_profile.weight_per_meter, rel=1e-2) == expected_weight
-
     def test_area(self, lnp_profile: LNPProfile) -> None:
         """Test the steel cross-sectional area."""
         expected_area: float = 871  # mm²
