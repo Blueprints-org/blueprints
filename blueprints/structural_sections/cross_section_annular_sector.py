@@ -71,7 +71,7 @@ class AnnularSectorCrossSection(CrossSection):
         return self.radius_centerline + self.thickness / 2.0
 
     @property
-    def height(self) -> MM:
+    def cross_section_height(self) -> MM:
         """
         Calculate the height of the annular sector cross-section [mm].
 
@@ -85,7 +85,7 @@ class AnnularSectorCrossSection(CrossSection):
         return max_y - min_y
 
     @property
-    def width(self) -> MM:
+    def cross_section_width(self) -> MM:
         """
         Calculate the width of the annular sector cross-section [mm].
 

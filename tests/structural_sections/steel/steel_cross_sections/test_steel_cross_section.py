@@ -12,6 +12,15 @@ from blueprints.structural_sections.steel.steel_element import SteelElement
 class TestCombinedSteelCrossSection:
     """Test suite for CombinedSteelCrossSection."""
 
+    def test_valid_combined_steel_cross_section(self, combined_steel_cross_section: CombinedSteelCrossSection) -> None:
+        """Test the code of the combined steel cross-section."""
+        expected_alias = "Dummy Combined Steel Cross Section"
+        assert combined_steel_cross_section.name == expected_alias
+        assert combined_steel_cross_section.polygon is not None
+        assert combined_steel_cross_section.weight_per_meter is not None
+        assert combined_steel_cross_section.yield_strength is not None
+        assert combined_steel_cross_section.ultimate_strength is not None
+
     def test_empty_combined_steel_cross_section(self, empty_combined_steel_cross_section: CombinedSteelCrossSection) -> None:
         """Test the code of the combined steel cross-section."""
         with pytest.raises(ValueError):
