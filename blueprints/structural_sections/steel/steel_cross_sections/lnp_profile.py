@@ -1,28 +1,26 @@
-"""LNP-Profile steel section."""
+"""LNP-Profile section."""
 
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Self
 
 from matplotlib import pyplot as plt
+from shapely.geometry import Polygon
 
-from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section_builder import merge_polygons
 from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
-from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
 
 @dataclass(kw_only=True)
-class LNPProfile(CombinedSteelCrossSection):
-    """Representation of an LNP steel section.
+class LNPProfile(CrossSection):
+    """Representation of an LNP section.
 
     Attributes
     ----------
-    steel_material : SteelMaterial
-        Steel material properties for the profile.
     total_width : MM
         The width of the profile [mm].
     total_height : MM
@@ -41,11 +39,10 @@ class LNPProfile(CombinedSteelCrossSection):
         The radius of the toe in the base. Default is None, the corner radius is then taken as sharp angle.
     name : str
         The name of the profile. Default is "LNP-Profile". If corrosion is applied, the name will include the corrosion value.
-    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+    plotter : Callable[[CrossSection], plt.Figure]
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
-    steel_material: SteelMaterial
     total_width: MM
     total_height: MM
     web_thickness: MM
@@ -55,10 +52,10 @@ class LNPProfile(CombinedSteelCrossSection):
     web_toe_radius: MM | None
     base_toe_radius: MM | None
     name: str = "LNP-Profile"
-    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
+    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
-        """Initialize the RHS- or SHS-profile steel section."""
+        """Initialize the LNP-profile section."""
         if self.root_radius is None:
             self.root_radius = self.web_thickness
         if self.back_radius is None:
@@ -107,30 +104,17 @@ class LNPProfile(CombinedSteelCrossSection):
             corner_direction=2,
         )
 
-        # Create the steel elements
-        self.elements = [
-            SteelElement(
-                cross_section=self.web,
-                material=self.steel_material,
-                nominal_thickness=self.web_thickness,
-            ),
-            SteelElement(
-                cross_section=self.base,
-                material=self.steel_material,
-                nominal_thickness=self.base_thickness,
-            ),
-            SteelElement(
-                cross_section=self.corner,
-                material=self.steel_material,
-                nominal_thickness=self.back_radius - self.root_radius,
-            ),
-        ]
+        self.elements = [self.web, self.base, self.corner]
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the LNP profile section."""
+        return merge_polygons(self.elements)
 
     @classmethod
     def from_standard_profile(
         cls,
         profile: LNP,
-        steel_material: SteelMaterial,
         corrosion: MM = 0,
     ) -> Self:
         """Create an LNP-profile from a set of standard profiles already defined in Blueprints.
@@ -141,8 +125,6 @@ class LNPProfile(CombinedSteelCrossSection):
         ----------
         profile : LNP
             Any of the standard profiles defined in Blueprints.
-        steel_material : SteelMaterial
-            Steel material properties for the profile.
         corrosion : MM, optional
             Corrosion thickness per side (default is 0).
         """
@@ -170,7 +152,6 @@ class LNPProfile(CombinedSteelCrossSection):
             name += f" (corrosion: {corrosion} mm)"
 
         return cls(
-            steel_material=steel_material,
             total_width=total_width,
             total_height=total_height,
             web_thickness=web_thickness,

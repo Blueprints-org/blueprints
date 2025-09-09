@@ -12,12 +12,12 @@ class TestAnnularSectorCrossSection:
     def test_width(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the width property of the AnnularSectorCrossSection class."""
         expected_width = 110.0
-        assert annular_sector_cross_section.width == pytest.approx(expected=expected_width, rel=1e-6)
+        assert annular_sector_cross_section.cross_section_width == pytest.approx(expected=expected_width, rel=1e-6)
 
     def test_height(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the height property of the AnnularSectorCrossSection class."""
         expected_height = 110.0
-        assert annular_sector_cross_section.height == pytest.approx(expected=expected_height, rel=1e-6)
+        assert annular_sector_cross_section.cross_section_height == pytest.approx(expected=expected_height, rel=1e-6)
 
     def test_polygon(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the polygon property of the AnnularSectorCrossSection class."""

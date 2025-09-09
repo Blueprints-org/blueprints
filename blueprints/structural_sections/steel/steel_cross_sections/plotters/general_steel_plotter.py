@@ -5,14 +5,14 @@ from matplotlib import patches as mplpatches
 from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Point
 
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
+from blueprints.structural_sections._cross_section import CrossSection
 
 # Define color
 STEEL_COLOR = (0.683, 0.0, 0.0)
 
 
 def plot_shapes(
-    profile: CombinedSteelCrossSection,
+    profile: CrossSection,
     figsize: tuple[float, float] = (15.0, 8.0),
     title: str = "",
     font_size_title: float = 18.0,
@@ -39,14 +39,14 @@ def plot_shapes(
     """
     fig, ax = plt.subplots(figsize=figsize)
 
-    for element in profile.elements:
+    for element in profile.elements:  # type: ignore[attr-defined]
         # Plot the exterior polygon
-        x, y = element.cross_section.polygon.exterior.xy
+        x, y = element.polygon.exterior.xy
         patch = MplPolygon(xy=list(zip(x, y)), lw=1, fill=True, facecolor=STEEL_COLOR, edgecolor=STEEL_COLOR)
         ax.add_patch(patch)
 
         # Plot the interior polygons (holes) if any
-        for interior in element.cross_section.polygon.interiors:
+        for interior in element.polygon.interiors:
             x, y = interior.xy
             patch = MplPolygon(xy=list(zip(x, y)), lw=0, fill=True, facecolor="white")
             ax.add_patch(patch)
@@ -60,18 +60,13 @@ def plot_shapes(
     legend_text = f"""
     {profile.name}\n
     Area: {profile.area:.1f} mm²
-    Weight per meter: {profile.weight_per_meter:.1f} kg/m
     Moment of inertia about x: {profile_section_properties.ixx_c:.0f} mm⁴
     Moment of inertia about y: {profile_section_properties.iyy_c:.0f} mm⁴
     """
 
-    # Add the steel quality if all elements have the same material
-    if len({element.material.name for element in profile.elements}) == 1:
-        legend_text += f"Steel quality: {profile.elements[0].material.name}\n"
-
     # Get the boundaries of the plot
     _, min_y, max_x, _ = profile.polygon.bounds
-    offset = profile.width / 20
+    offset = profile.cross_section_width / 20
 
     # Add the legend text to the plot
     ax.annotate(
@@ -97,7 +92,7 @@ def plot_shapes(
     return fig
 
 
-def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centroid: Point) -> None:
+def _add_dimension_lines(ax: plt.Axes, profile: CrossSection, centroid: Point) -> None:
     """Adds dimension lines to show the outer dimensions of the geometry.
 
     Parameters
@@ -110,7 +105,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
         The centroid of the cross-section.
     """
     # Define the offset for the dimension lines
-    offset_dimension_lines = max(profile.height, profile.width) / 20
+    offset_dimension_lines = max(profile.cross_section_height, profile.cross_section_width) / 20
     offset_text = offset_dimension_lines / 2
 
     # Calculate the bounds of all elements in the geometry
@@ -137,7 +132,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
         annotation_clip=False,
     )
     ax.text(
-        s=f"b= {profile.width:.1f} mm",
+        s=f"b= {profile.cross_section_width:.1f} mm",
         x=(min_x + max_x) / 2,
         y=min_y - offset_dimension_lines * 2 + offset_text,
         verticalalignment="top",
@@ -198,7 +193,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CombinedSteelCrossSection, centr
         annotation_clip=False,
     )
     ax.text(
-        s=f"h= {profile.height:.1f} mm",
+        s=f"h= {profile.cross_section_height:.1f} mm",
         x=(min_x - offset_dimension_lines * 2 - offset_text),
         y=(min_y + max_y) / 2,
         verticalalignment="center",

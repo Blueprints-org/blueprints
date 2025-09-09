@@ -1,32 +1,30 @@
-"""RHS- and SHS-Profile steel section."""
+"""RHS- and SHS-Profile section."""
 
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Self
 
 from matplotlib import pyplot as plt
+from shapely.geometry import Polygon
 
-from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section_builder import merge_polygons
 from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shs import SHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shscf import SHSCF
-from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
 
 @dataclass(kw_only=True)
-class RHSSteelProfile(CombinedSteelCrossSection):
-    """Representation of an SHS or RHS steel section.
+class RHSProfile(CrossSection):
+    """Representation of an SHS or RHS section.
 
     Attributes
     ----------
-    steel_material : SteelMaterial
-        Steel material properties for the profile.
     total_width : MM
         The width of the profile [mm].
     total_height : MM
@@ -57,11 +55,10 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         The outer radius of the bottom left corner. Default is None, the corner radius is then taken as twice the thickness.
     name : str
         The name of the profile. Default is "RHS-Profile". If corrosion is applied, the name will include the corrosion value.
-    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+    plotter : Callable[[CrossSection], plt.Figure]
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
-    steel_material: SteelMaterial
     total_width: MM
     total_height: MM
     left_wall_thickness: MM
@@ -77,10 +74,10 @@ class RHSSteelProfile(CombinedSteelCrossSection):
     bottom_right_outer_radius: MM | None = None
     bottom_left_outer_radius: MM | None = None
     name: str = "RHS-Profile"
-    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
+    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
-        """Initialize the RHS- or SHS-profile steel section."""
+        """Initialize the RHS- or SHS-profile section."""
         self.top_right_inner_radius = self.top_right_inner_radius if self.top_right_inner_radius is not None else self.top_wall_thickness
         self.top_left_inner_radius = self.top_left_inner_radius if self.top_left_inner_radius is not None else self.top_wall_thickness
         self.bottom_right_inner_radius = self.bottom_right_inner_radius if self.bottom_right_inner_radius is not None else self.bottom_wall_thickness
@@ -178,55 +175,26 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             corner_direction=2,
         )
 
-        # Create the steel elements
         self.elements = [
-            SteelElement(
-                cross_section=self.top_wall,
-                material=self.steel_material,
-                nominal_thickness=self.top_wall_thickness,
-            ),
-            SteelElement(
-                cross_section=self.bottom_wall,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_wall_thickness,
-            ),
-            SteelElement(
-                cross_section=self.left_wall,
-                material=self.steel_material,
-                nominal_thickness=self.left_wall_thickness,
-            ),
-            SteelElement(
-                cross_section=self.right_wall,
-                material=self.steel_material,
-                nominal_thickness=self.right_wall_thickness,
-            ),
-            SteelElement(
-                cross_section=self.top_right_corner,
-                material=self.steel_material,
-                nominal_thickness=self.top_wall_thickness,
-            ),
-            SteelElement(
-                cross_section=self.top_left_corner,
-                material=self.steel_material,
-                nominal_thickness=self.top_wall_thickness,
-            ),
-            SteelElement(
-                cross_section=self.bottom_right_corner,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_wall_thickness,
-            ),
-            SteelElement(
-                cross_section=self.bottom_left_corner,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_wall_thickness,
-            ),
+            self.top_wall,
+            self.bottom_wall,
+            self.left_wall,
+            self.right_wall,
+            self.top_right_corner,
+            self.top_left_corner,
+            self.bottom_right_corner,
+            self.bottom_left_corner,
         ]
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the RHS profile section."""
+        return merge_polygons(self.elements)
 
     @classmethod
     def from_standard_profile(
         cls,
         profile: RHS | SHS | RHSCF | SHSCF,
-        steel_material: SteelMaterial,
         corrosion_outside: MM = 0,
         corrosion_inside: MM = 0,
     ) -> Self:
@@ -238,8 +206,6 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         ----------
         profile : RHS | SHS | RHSCF | SHSCF
             Any of the standard profiles defined in Blueprints.
-        steel_material : SteelMaterial
-            Steel material properties for the profile.
         corrosion_outside : MM, optional
             Corrosion thickness to be subtracted from the outer diameter [mm] (default: 0).
         corrosion_inside : MM, optional
@@ -281,7 +247,6 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             )
 
         return cls(
-            steel_material=steel_material,
             total_width=total_width,
             total_height=total_height,
             left_wall_thickness=left_wall_thickness,

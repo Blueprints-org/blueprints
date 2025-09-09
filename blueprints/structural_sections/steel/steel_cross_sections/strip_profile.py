@@ -1,73 +1,71 @@
-"""Steel Strip Profile."""
+"""Strip Profile."""
 
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Self
 
 from matplotlib import pyplot as plt
+from shapely.geometry import Polygon
 
-from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section_builder import merge_polygons
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
-from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
 
 @dataclass(kw_only=True)
-class StripSteelProfile(CombinedSteelCrossSection):
-    """Representation of a Steel Strip profile.
+class StripProfile(CrossSection):
+    """Representation of a Strip profile.
 
-    This class is used to create a custom steel strip profile or to create a steel strip profile from a standard profile.
+    This class is used to create a custom strip profile or to create a strip profile from a standard profile.
     For standard profiles, use the `from_standard_profile` class method.
     For example,
     ```python
-    strip_profile = StripSteelProfile.from_standard_profile(profile=Strip.STRIP160x5, steel_material=SteelMaterial(SteelStrengthClass.S355))
+    strip_profile = StripProfile.from_standard_profile(profile=Strip.STRIP160x5)
     ```
 
     Attributes
     ----------
-    steel_material : SteelMaterial
-        Steel material properties for the profile.
     width : MM
         The width of the strip profile [mm].
     height : MM
         The height (thickness) of the strip profile [mm].
-    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+    name : str
+        The name of the profile. Default is "Strip Profile".
+    plotter : Callable[[CrossSection], plt.Figure]
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
-    steel_material: SteelMaterial
-    strip_width: MM
-    strip_height: MM
-    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
+    width: MM
+    height: MM
+    name: str = "Strip Profile"
+    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
-        """Initialize the Steel Strip profile."""
+        """Initialize the Strip profile."""
         # Nominal thickness is the minimum of width and height
-        self.thickness = min(self.strip_width, self.strip_height)
+        self.thickness = min(self.width, self.height)
 
         self.strip = RectangularCrossSection(
-            name="Steel Strip",
-            width=self.strip_width,
-            height=self.strip_height,
+            name="Strip",
+            width=self.width,
+            height=self.height,
             x=0,
             y=0,
         )
-        self.elements = [
-            SteelElement(
-                cross_section=self.strip,
-                material=self.steel_material,
-                nominal_thickness=self.thickness,
-            )
-        ]
+        self.elements = [self.strip]
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the strip profile cross-section."""
+        return merge_polygons(self.elements)
 
     @classmethod
     def from_standard_profile(
         cls,
         profile: Strip,
-        steel_material: SteelMaterial,
         corrosion: MM = 0,
     ) -> Self:
         """Create a strip profile from a set of standard profiles already defined in Blueprints.
@@ -76,8 +74,6 @@ class StripSteelProfile(CombinedSteelCrossSection):
         ----------
         profile : Strip
             Any of the standard strip profiles defined in Blueprints.
-        steel_material : SteelMaterial
-            Steel material properties for the profile.
         corrosion : MM, optional
             Corrosion thickness per side (default is 0).
         """
@@ -92,8 +88,7 @@ class StripSteelProfile(CombinedSteelCrossSection):
             name += f" (corrosion: {corrosion} mm)"
 
         return cls(
-            steel_material=steel_material,
-            strip_width=width,
-            strip_height=height,
+            width=width,
+            height=height,
             name=name,
         )

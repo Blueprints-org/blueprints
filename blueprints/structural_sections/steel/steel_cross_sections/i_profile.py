@@ -1,39 +1,37 @@
-"""I-Profile steel section."""
+"""I-Profile section."""
 
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Self
 
 from matplotlib import pyplot as plt
+from shapely.geometry import Polygon
 
-from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section_builder import merge_polygons
 from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEA
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEM
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPE
-from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
 
 @dataclass(kw_only=True)
-class ISteelProfile(CombinedSteelCrossSection):
-    """Representation of an I-Profile steel section.
+class IProfile(CrossSection):
+    """Representation of an I-Profile section.
     This can be used to create a custom I-profile or to create an I-profile from a standard profile.
 
     For standard profiles, use the `from_standard_profile` class method.
     For example,
     ```python
-    i_profile = ISteelProfile.from_standard_profile(profile=HEA.HEA200, steel_material=SteelMaterial(SteelStrengthClass.S355))
+    i_profile = IProfile.from_standard_profile(profile=HEA.HEA200)
     ```
 
     Attributes
     ----------
-    steel_material : SteelMaterial
-        Steel material properties for the profile.
     top_flange_width : MM
         The width of the top flange [mm].
     top_flange_thickness : MM
@@ -52,11 +50,10 @@ class ISteelProfile(CombinedSteelCrossSection):
         The radius of the curved corners of the bottom flange. Default is None, the corner radius is then taken as the thickness.
     name : str
         The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value.
-    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+    plotter : Callable[[CrossSection], plt.Figure]
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
-    steel_material: SteelMaterial
     top_flange_width: MM
     top_flange_thickness: MM
     bottom_flange_width: MM
@@ -66,10 +63,10 @@ class ISteelProfile(CombinedSteelCrossSection):
     top_radius: MM | None = None
     bottom_radius: MM | None = None
     name: str = "I-Profile"
-    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
+    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
-        """Initialize the I-profile steel section."""
+        """Initialize the I-profile section by creating its elements."""
         self.top_radius = self.top_radius if self.top_radius is not None else self.top_flange_thickness
         self.bottom_radius = self.bottom_radius if self.bottom_radius is not None else self.bottom_flange_thickness
 
@@ -161,60 +158,27 @@ class ISteelProfile(CombinedSteelCrossSection):
             thickness_vertical=self.bottom_flange_thickness,
         )
 
-        # Create the steel elements
         self.elements = [
-            SteelElement(
-                cross_section=self.top_right_flange,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.top_left_flange,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.bottom_right_flange,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.bottom_left_flange,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.web,
-                material=self.steel_material,
-                nominal_thickness=self.web_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_top_right,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_top_left,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_bottom_right,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_bottom_left,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
+            self.top_right_flange,
+            self.top_left_flange,
+            self.bottom_right_flange,
+            self.bottom_left_flange,
+            self.web,
+            self.curve_top_right,
+            self.curve_top_left,
+            self.curve_bottom_right,
+            self.curve_bottom_left,
         ]
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the I-profile section."""
+        return merge_polygons(self.elements)
 
     @classmethod
     def from_standard_profile(
         cls,
         profile: HEA | HEB | HEM | IPE,
-        steel_material: SteelMaterial,
         corrosion: MM = 0,
     ) -> Self:
         """Create an I-profile from a set of standard profiles already defined in Blueprints.
@@ -225,8 +189,6 @@ class ISteelProfile(CombinedSteelCrossSection):
         ----------
         profile : HEA | HEB | HEM | IPE
             Any of the standard profiles defined in Blueprints.
-        steel_material : SteelMaterial
-            Steel material properties for the profile.
         corrosion : MM, optional
             Corrosion thickness per side (default is 0).
         """
@@ -257,7 +219,6 @@ class ISteelProfile(CombinedSteelCrossSection):
             bottom_flange_thickness=bottom_flange_thickness,
             total_height=total_height,
             web_thickness=web_thickness,
-            steel_material=steel_material,
             top_radius=profile.top_radius,
             bottom_radius=profile.bottom_radius,
             name=name,
