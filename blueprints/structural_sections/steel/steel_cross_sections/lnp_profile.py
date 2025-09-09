@@ -8,8 +8,8 @@ from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section_builder import merge_polygons
 from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
-from blueprints.structural_sections.cross_section_editor import merge_polygons
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 from blueprints.type_alias import MM
