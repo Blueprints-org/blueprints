@@ -6,8 +6,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
@@ -19,7 +17,6 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripProfile
-from blueprints.structural_sections.steel.steel_element import SteelElement
 
 
 @pytest.fixture
@@ -56,29 +53,6 @@ def h_profile() -> IProfile:
     """Fixture to set up an H-shaped profile for testing."""
     profile = HEB.HEB360
     return IProfile.from_standard_profile(profile=profile)
-
-
-@pytest.fixture
-def empty_combined_steel_cross_section() -> CombinedSteelCrossSection:
-    """Fixture to set up a combined steel cross-section for testing."""
-    return CombinedSteelCrossSection(
-        name="Empty Combined Steel Cross Section",
-    )
-
-
-@pytest.fixture
-def combined_steel_cross_section() -> CombinedSteelCrossSection:
-    """Fixture to set up a combined steel cross-section for testing."""
-    return CombinedSteelCrossSection(
-        elements=[
-            SteelElement(
-                cross_section=IProfile.from_standard_profile(profile=HEB.HEB360),
-                material=SteelMaterial(steel_class=SteelStrengthClass.S355),
-                nominal_thickness=22.5,
-            ),
-        ],
-        name="Dummy Combined Steel Cross Section",
-    )
 
 
 @pytest.fixture
