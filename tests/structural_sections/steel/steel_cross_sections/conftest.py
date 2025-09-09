@@ -25,9 +25,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.strip_profile imp
 @pytest.fixture
 def mock_section_properties() -> Generator[MagicMock, None, None]:
     """Fixture to mock section properties with default values."""
-    with patch(
-        "blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter.CombinedSteelCrossSection.section_properties"
-    ) as mock:
+    with patch("blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter.CrossSection.section_properties") as mock:
         mock.return_value = SectionProperties(ixx_c=1.0e6, iyy_c=1.0e6)
         yield mock
 

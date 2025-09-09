@@ -10,7 +10,8 @@ from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.type_alias import MM, MM2
+from blueprints.type_alias import M3_M, MM, MM2
+from blueprints.unit_conversion import MM3_TO_M3
 
 
 class CrossSection(ABC):
@@ -52,6 +53,22 @@ class CrossSection(ABC):
     def centroid(self) -> Point:
         """Centroid of the cross-section [mm]."""
         return self.polygon.centroid
+
+    @property
+    def total_height(self) -> MM:
+        """Height of the cross-section [mm]."""
+        return self.polygon.bounds[3] - self.polygon.bounds[1]
+
+    @property
+    def total_width(self) -> MM:
+        """Width of the cross-section [mm]."""
+        return self.polygon.bounds[2] - self.polygon.bounds[0]
+
+    @property
+    def volume_per_meter(self) -> M3_M:
+        """Total volume of the reinforced cross-section per meter length [m³/m]."""
+        length = 1000  # mm
+        return self.area * length * MM3_TO_M3
 
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
         """Geometry of the cross-section.

@@ -25,11 +25,6 @@ class TestISteelProfile:
         expected_volume = 1.806e-2  # m³/m
         assert pytest.approx(h_profile.volume_per_meter, rel=1e-2) == expected_volume
 
-    def test_steel_weight_per_meter(self, h_profile: ISteelProfile) -> None:
-        """Test the steel weight per meter."""
-        expected_weight = 1.806e-2 * 7850  # kg/m
-        assert pytest.approx(h_profile.weight_per_meter, rel=1e-2) == expected_weight
-
     def test_steel_area(self, h_profile: ISteelProfile) -> None:
         """Test the steel cross-sectional area."""
         expected_area = 1.806e4  # mm²

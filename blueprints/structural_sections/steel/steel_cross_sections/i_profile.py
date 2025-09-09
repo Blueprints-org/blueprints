@@ -1,26 +1,27 @@
 """I-Profile steel section."""
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Self
 
 from matplotlib import pyplot as plt
+from shapely.geometry import Polygon
 
 from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
+from blueprints.structural_sections.cross_section_editor import merge_polygons
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEA
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEM
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPE
-from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
 
 @dataclass(kw_only=True)
-class ISteelProfile(CombinedSteelCrossSection):
+class ISteelProfile(CrossSection):
     """Representation of an I-Profile steel section.
     This can be used to create a custom I-profile or to create an I-profile from a standard profile.
 
@@ -61,20 +62,21 @@ class ISteelProfile(CombinedSteelCrossSection):
     top_flange_thickness: MM
     bottom_flange_width: MM
     bottom_flange_thickness: MM
-    total_height: MM
+    height: MM
     web_thickness: MM
     top_radius: MM | None = None
     bottom_radius: MM | None = None
     name: str = "I-Profile"
-    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
+    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
+    elements: list[CrossSection] = field(default_factory=list)  # Will be initialized in __post_init__
 
     def __post_init__(self) -> None:
-        """Initialize the I-profile steel section."""
+        """Initialize the I-profile steel section by creating its elements."""
         self.top_radius = self.top_radius if self.top_radius is not None else self.top_flange_thickness
         self.bottom_radius = self.bottom_radius if self.bottom_radius is not None else self.bottom_flange_thickness
 
         # Calculate web height
-        self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
+        self.web_height = self.height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
         self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
         self.width_outstand_bottom_flange = (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2
 
@@ -84,7 +86,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             width=self.width_outstand_top_flange,
             height=self.top_flange_thickness,
             x=self.top_flange_width / 2 - self.width_outstand_top_flange / 2,
-            y=(self.total_height - self.top_flange_thickness) / 2,
+            y=(self.height - self.top_flange_thickness) / 2,
         )
 
         self.top_left_flange = RectangularCrossSection(
@@ -92,7 +94,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             width=self.width_outstand_top_flange,
             height=self.top_flange_thickness,
             x=-self.top_flange_width / 2 + self.width_outstand_top_flange / 2,
-            y=(self.total_height - self.top_flange_thickness) / 2,
+            y=(self.height - self.top_flange_thickness) / 2,
         )
 
         self.bottom_right_flange = RectangularCrossSection(
@@ -100,7 +102,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             width=self.width_outstand_bottom_flange,
             height=self.bottom_flange_thickness,
             x=self.bottom_flange_width / 2 - self.width_outstand_bottom_flange / 2,
-            y=-(self.total_height - self.bottom_flange_thickness) / 2,
+            y=-(self.height - self.bottom_flange_thickness) / 2,
         )
 
         self.bottom_left_flange = RectangularCrossSection(
@@ -108,7 +110,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             width=self.width_outstand_bottom_flange,
             height=self.bottom_flange_thickness,
             x=-self.bottom_flange_width / 2 + self.width_outstand_bottom_flange / 2,
-            y=-(self.total_height - self.bottom_flange_thickness) / 2,
+            y=-(self.height - self.bottom_flange_thickness) / 2,
         )
 
         self.web = RectangularCrossSection(
@@ -125,7 +127,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             inner_radius=self.top_radius,
             outer_radius=0,
             x=self.top_radius + self.web_thickness / 2,
-            y=self.total_height / 2 - self.top_flange_thickness - self.top_radius,
+            y=self.height / 2 - self.top_flange_thickness - self.top_radius,
             corner_direction=1,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.top_flange_thickness,
@@ -135,7 +137,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             inner_radius=self.top_radius,
             outer_radius=0,
             x=-self.top_radius - self.web_thickness / 2,
-            y=self.total_height / 2 - self.top_flange_thickness - self.top_radius,
+            y=self.height / 2 - self.top_flange_thickness - self.top_radius,
             corner_direction=0,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.top_flange_thickness,
@@ -145,7 +147,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             inner_radius=self.bottom_radius,
             outer_radius=0,
             x=self.bottom_radius + self.web_thickness / 2,
-            y=-self.total_height / 2 + self.bottom_flange_thickness + self.bottom_radius,
+            y=-self.height / 2 + self.bottom_flange_thickness + self.bottom_radius,
             corner_direction=2,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.bottom_flange_thickness,
@@ -155,60 +157,28 @@ class ISteelProfile(CombinedSteelCrossSection):
             inner_radius=self.bottom_radius,
             outer_radius=0,
             x=-self.bottom_radius - self.web_thickness / 2,
-            y=-self.total_height / 2 + self.bottom_flange_thickness + self.bottom_radius,
+            y=-self.height / 2 + self.bottom_flange_thickness + self.bottom_radius,
             corner_direction=3,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.bottom_flange_thickness,
         )
 
-        # Create the steel elements
         self.elements = [
-            SteelElement(
-                cross_section=self.top_right_flange,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.top_left_flange,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.bottom_right_flange,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.bottom_left_flange,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.web,
-                material=self.steel_material,
-                nominal_thickness=self.web_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_top_right,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_top_left,
-                material=self.steel_material,
-                nominal_thickness=self.top_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_bottom_right,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
-            SteelElement(
-                cross_section=self.curve_bottom_left,
-                material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
-            ),
+            self.top_right_flange,
+            self.top_left_flange,
+            self.bottom_right_flange,
+            self.bottom_left_flange,
+            self.web,
+            self.curve_top_right,
+            self.curve_top_left,
+            self.curve_bottom_right,
+            self.curve_bottom_left,
         ]
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the I-profile steel section."""
+        return merge_polygons(self.elements)
 
     @classmethod
     def from_standard_profile(
@@ -255,7 +225,7 @@ class ISteelProfile(CombinedSteelCrossSection):
             top_flange_thickness=top_flange_thickness,
             bottom_flange_width=bottom_flange_width,
             bottom_flange_thickness=bottom_flange_thickness,
-            total_height=total_height,
+            height=total_height,
             web_thickness=web_thickness,
             steel_material=steel_material,
             top_radius=profile.top_radius,
