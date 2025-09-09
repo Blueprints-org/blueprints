@@ -38,20 +38,20 @@ class StripProfile(CrossSection):
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
-    strip_width: MM
-    strip_height: MM
+    width: MM
+    height: MM
     name: str = "Strip Profile"
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
         """Initialize the Strip profile."""
         # Nominal thickness is the minimum of width and height
-        self.thickness = min(self.strip_width, self.strip_height)
+        self.thickness = min(self.width, self.height)
 
         self.strip = RectangularCrossSection(
             name="Strip",
-            width=self.strip_width,
-            height=self.strip_height,
+            width=self.width,
+            height=self.height,
             x=0,
             y=0,
         )
@@ -88,7 +88,7 @@ class StripProfile(CrossSection):
             name += f" (corrosion: {corrosion} mm)"
 
         return cls(
-            strip_width=width,
-            strip_height=height,
+            width=width,
+            height=height,
             name=name,
         )

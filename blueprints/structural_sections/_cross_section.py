@@ -55,12 +55,12 @@ class CrossSection(ABC):
         return self.polygon.centroid
 
     @property
-    def total_height(self) -> MM:
+    def cross_section_height(self) -> MM:
         """Height of the cross-section [mm]."""
         return self.polygon.bounds[3] - self.polygon.bounds[1]
 
     @property
-    def total_width(self) -> MM:
+    def cross_section_width(self) -> MM:
         """Width of the cross-section [mm]."""
         return self.polygon.bounds[2] - self.polygon.bounds[0]
 

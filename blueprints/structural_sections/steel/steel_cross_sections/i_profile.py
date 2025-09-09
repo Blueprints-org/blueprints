@@ -58,7 +58,7 @@ class IProfile(CrossSection):
     top_flange_thickness: MM
     bottom_flange_width: MM
     bottom_flange_thickness: MM
-    height: MM
+    total_height: MM
     web_thickness: MM
     top_radius: MM | None = None
     bottom_radius: MM | None = None
@@ -72,7 +72,7 @@ class IProfile(CrossSection):
         self.bottom_radius = self.bottom_radius if self.bottom_radius is not None else self.bottom_flange_thickness
 
         # Calculate web height
-        self.web_height = self.height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
+        self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
         self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
         self.width_outstand_bottom_flange = (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2
 
@@ -82,7 +82,7 @@ class IProfile(CrossSection):
             width=self.width_outstand_top_flange,
             height=self.top_flange_thickness,
             x=self.top_flange_width / 2 - self.width_outstand_top_flange / 2,
-            y=(self.height - self.top_flange_thickness) / 2,
+            y=(self.total_height - self.top_flange_thickness) / 2,
         )
 
         self.top_left_flange = RectangularCrossSection(
@@ -90,7 +90,7 @@ class IProfile(CrossSection):
             width=self.width_outstand_top_flange,
             height=self.top_flange_thickness,
             x=-self.top_flange_width / 2 + self.width_outstand_top_flange / 2,
-            y=(self.height - self.top_flange_thickness) / 2,
+            y=(self.total_height - self.top_flange_thickness) / 2,
         )
 
         self.bottom_right_flange = RectangularCrossSection(
@@ -98,7 +98,7 @@ class IProfile(CrossSection):
             width=self.width_outstand_bottom_flange,
             height=self.bottom_flange_thickness,
             x=self.bottom_flange_width / 2 - self.width_outstand_bottom_flange / 2,
-            y=-(self.height - self.bottom_flange_thickness) / 2,
+            y=-(self.total_height - self.bottom_flange_thickness) / 2,
         )
 
         self.bottom_left_flange = RectangularCrossSection(
@@ -106,7 +106,7 @@ class IProfile(CrossSection):
             width=self.width_outstand_bottom_flange,
             height=self.bottom_flange_thickness,
             x=-self.bottom_flange_width / 2 + self.width_outstand_bottom_flange / 2,
-            y=-(self.height - self.bottom_flange_thickness) / 2,
+            y=-(self.total_height - self.bottom_flange_thickness) / 2,
         )
 
         self.web = RectangularCrossSection(
@@ -123,7 +123,7 @@ class IProfile(CrossSection):
             inner_radius=self.top_radius,
             outer_radius=0,
             x=self.top_radius + self.web_thickness / 2,
-            y=self.height / 2 - self.top_flange_thickness - self.top_radius,
+            y=self.total_height / 2 - self.top_flange_thickness - self.top_radius,
             corner_direction=1,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.top_flange_thickness,
@@ -133,7 +133,7 @@ class IProfile(CrossSection):
             inner_radius=self.top_radius,
             outer_radius=0,
             x=-self.top_radius - self.web_thickness / 2,
-            y=self.height / 2 - self.top_flange_thickness - self.top_radius,
+            y=self.total_height / 2 - self.top_flange_thickness - self.top_radius,
             corner_direction=0,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.top_flange_thickness,
@@ -143,7 +143,7 @@ class IProfile(CrossSection):
             inner_radius=self.bottom_radius,
             outer_radius=0,
             x=self.bottom_radius + self.web_thickness / 2,
-            y=-self.height / 2 + self.bottom_flange_thickness + self.bottom_radius,
+            y=-self.total_height / 2 + self.bottom_flange_thickness + self.bottom_radius,
             corner_direction=2,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.bottom_flange_thickness,
@@ -153,7 +153,7 @@ class IProfile(CrossSection):
             inner_radius=self.bottom_radius,
             outer_radius=0,
             x=-self.bottom_radius - self.web_thickness / 2,
-            y=-self.height / 2 + self.bottom_flange_thickness + self.bottom_radius,
+            y=-self.total_height / 2 + self.bottom_flange_thickness + self.bottom_radius,
             corner_direction=3,
             thickness_horizontal=self.web_thickness / 2,
             thickness_vertical=self.bottom_flange_thickness,
@@ -218,7 +218,7 @@ class IProfile(CrossSection):
             top_flange_thickness=top_flange_thickness,
             bottom_flange_width=bottom_flange_width,
             bottom_flange_thickness=bottom_flange_thickness,
-            height=total_height,
+            total_height=total_height,
             web_thickness=web_thickness,
             top_radius=profile.top_radius,
             bottom_radius=profile.bottom_radius,

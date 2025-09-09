@@ -59,8 +59,8 @@ class RHSProfile(CrossSection):
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
-    width: MM
-    height: MM
+    total_width: MM
+    total_height: MM
     left_wall_thickness: MM
     right_wall_thickness: MM
     top_wall_thickness: MM
@@ -91,16 +91,16 @@ class RHSProfile(CrossSection):
 
         # calculate the lengths of the rectangular sections
         self.right_wall_height = (
-            self.height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_right_inner_radius - self.bottom_right_inner_radius
+            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_right_inner_radius - self.bottom_right_inner_radius
         )
         self.left_wall_height = (
-            self.height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_left_inner_radius - self.bottom_left_inner_radius
+            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_left_inner_radius - self.bottom_left_inner_radius
         )
         self.top_wall_width = (
-            self.width - self.left_wall_thickness - self.right_wall_thickness - self.top_right_inner_radius - self.top_left_inner_radius
+            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.top_right_inner_radius - self.top_left_inner_radius
         )
         self.bottom_wall_width = (
-            self.width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius
+            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius
         )
 
         # Create the cross-sections for the flanges and web
@@ -109,27 +109,27 @@ class RHSProfile(CrossSection):
             width=self.top_wall_width,
             height=self.top_wall_thickness,
             x=(self.left_wall_thickness - self.right_wall_thickness + self.top_left_inner_radius - self.top_right_inner_radius) / 2,
-            y=(self.height - self.top_wall_thickness) / 2,
+            y=(self.total_height - self.top_wall_thickness) / 2,
         )
         self.bottom_wall = RectangularCrossSection(
             name="Bottom Wall",
             width=self.bottom_wall_width,
             height=self.bottom_wall_thickness,
             x=(self.left_wall_thickness - self.right_wall_thickness + self.bottom_left_inner_radius - self.bottom_right_inner_radius) / 2,
-            y=-(self.height - self.bottom_wall_thickness) / 2,
+            y=-(self.total_height - self.bottom_wall_thickness) / 2,
         )
         self.left_wall = RectangularCrossSection(
             name="Left Wall",
             width=self.left_wall_thickness,
             height=self.left_wall_height,
-            x=-(self.width - self.left_wall_thickness) / 2,
+            x=-(self.total_width - self.left_wall_thickness) / 2,
             y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_left_inner_radius - self.bottom_left_inner_radius) / 2,
         )
         self.right_wall = RectangularCrossSection(
             name="Right Wall",
             width=self.right_wall_thickness,
             height=self.right_wall_height,
-            x=(self.width - self.right_wall_thickness) / 2,
+            x=(self.total_width - self.right_wall_thickness) / 2,
             y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_right_inner_radius - self.bottom_right_inner_radius) / 2,
         )
 
@@ -140,8 +140,8 @@ class RHSProfile(CrossSection):
             thickness_horizontal=self.right_wall_thickness,
             inner_radius=self.top_right_inner_radius,
             outer_radius=self.top_right_outer_radius,
-            x=self.width / 2 - self.right_wall_thickness - self.top_right_inner_radius,
-            y=self.height / 2 - self.top_wall_thickness - self.top_right_inner_radius,
+            x=self.total_width / 2 - self.right_wall_thickness - self.top_right_inner_radius,
+            y=self.total_height / 2 - self.top_wall_thickness - self.top_right_inner_radius,
             corner_direction=0,
         )
         self.top_left_corner = CircularCorneredCrossSection(
@@ -150,8 +150,8 @@ class RHSProfile(CrossSection):
             thickness_horizontal=self.left_wall_thickness,
             inner_radius=self.top_left_inner_radius,
             outer_radius=self.top_left_outer_radius,
-            x=-self.width / 2 + self.left_wall_thickness + self.top_left_inner_radius,
-            y=self.height / 2 - self.top_wall_thickness - self.top_left_inner_radius,
+            x=-self.total_width / 2 + self.left_wall_thickness + self.top_left_inner_radius,
+            y=self.total_height / 2 - self.top_wall_thickness - self.top_left_inner_radius,
             corner_direction=1,
         )
         self.bottom_right_corner = CircularCorneredCrossSection(
@@ -160,8 +160,8 @@ class RHSProfile(CrossSection):
             thickness_horizontal=self.right_wall_thickness,
             inner_radius=self.bottom_right_inner_radius,
             outer_radius=self.bottom_right_outer_radius,
-            x=self.width / 2 - self.right_wall_thickness - self.bottom_right_inner_radius,
-            y=-self.height / 2 + self.bottom_wall_thickness + self.bottom_right_inner_radius,
+            x=self.total_width / 2 - self.right_wall_thickness - self.bottom_right_inner_radius,
+            y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_right_inner_radius,
             corner_direction=3,
         )
         self.bottom_left_corner = CircularCorneredCrossSection(
@@ -170,8 +170,8 @@ class RHSProfile(CrossSection):
             thickness_horizontal=self.left_wall_thickness,
             inner_radius=self.bottom_left_inner_radius,
             outer_radius=self.bottom_left_outer_radius,
-            x=-self.width / 2 + self.left_wall_thickness + self.bottom_left_inner_radius,
-            y=-self.height / 2 + self.bottom_wall_thickness + self.bottom_left_inner_radius,
+            x=-self.total_width / 2 + self.left_wall_thickness + self.bottom_left_inner_radius,
+            y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_left_inner_radius,
             corner_direction=2,
         )
 
@@ -247,8 +247,8 @@ class RHSProfile(CrossSection):
             )
 
         return cls(
-            width=total_width,
-            height=total_height,
+            total_width=total_width,
+            total_height=total_height,
             left_wall_thickness=left_wall_thickness,
             right_wall_thickness=right_wall_thickness,
             top_wall_thickness=top_wall_thickness,

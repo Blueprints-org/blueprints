@@ -6,8 +6,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
-from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import IProfile
@@ -77,9 +75,7 @@ def rhs_profile() -> RHSProfile:
 def lnp_profile() -> LNPProfile:
     """Fixture to set up an LNP profile for testing."""
     profile = LNP.LNP_100x50x6
-    steel_class = SteelStrengthClass.S355
     return LNPProfile.from_standard_profile(
         profile=profile,
-        steel_material=SteelMaterial(steel_class),
         corrosion=0,
     )

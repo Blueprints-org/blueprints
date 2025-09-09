@@ -6,8 +6,6 @@ import pytest
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
-from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 
@@ -53,7 +51,6 @@ class TestLNPProfile:
         with pytest.raises(ValueError, match="The profile has fully corroded."):
             LNPProfile.from_standard_profile(
                 profile=LNP.LNP_100x50x6,
-                steel_material=SteelMaterial(SteelStrengthClass.S355),
                 corrosion=3,  # mm, fully corroded
             )
 
@@ -61,7 +58,6 @@ class TestLNPProfile:
         """Test that the name includes corrosion information."""
         lnp_profile_with_corrosion = LNPProfile.from_standard_profile(
             profile=LNP.LNP_100x50x6,
-            steel_material=SteelMaterial(SteelStrengthClass.S355),
             corrosion=2,  # mm
         )
         expected_name_with_corrosion = "LNP 100x50x6 (corrosion: 2 mm)"
@@ -69,9 +65,7 @@ class TestLNPProfile:
 
     def test_custom_profile(self) -> None:
         """Test creating an LNPProfile with custom dimensions and default radii."""
-        steel_material = SteelMaterial(SteelStrengthClass.S355)
         profile = LNPProfile(
-            steel_material=steel_material,
             total_width=120,
             total_height=60,
             web_thickness=8,

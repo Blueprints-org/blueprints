@@ -66,7 +66,7 @@ def plot_shapes(
 
     # Get the boundaries of the plot
     _, min_y, max_x, _ = profile.polygon.bounds
-    offset = profile.total_width / 20
+    offset = profile.cross_section_width / 20
 
     # Add the legend text to the plot
     ax.annotate(
@@ -105,7 +105,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CrossSection, centroid: Point) -
         The centroid of the cross-section.
     """
     # Define the offset for the dimension lines
-    offset_dimension_lines = max(profile.total_height, profile.total_width) / 20
+    offset_dimension_lines = max(profile.cross_section_height, profile.cross_section_width) / 20
     offset_text = offset_dimension_lines / 2
 
     # Calculate the bounds of all elements in the geometry
@@ -132,7 +132,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CrossSection, centroid: Point) -
         annotation_clip=False,
     )
     ax.text(
-        s=f"b= {profile.total_width:.1f} mm",
+        s=f"b= {profile.cross_section_width:.1f} mm",
         x=(min_x + max_x) / 2,
         y=min_y - offset_dimension_lines * 2 + offset_text,
         verticalalignment="top",
@@ -193,7 +193,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CrossSection, centroid: Point) -
         annotation_clip=False,
     )
     ax.text(
-        s=f"h= {profile.total_height:.1f} mm",
+        s=f"h= {profile.cross_section_height:.1f} mm",
         x=(min_x - offset_dimension_lines * 2 - offset_text),
         y=(min_y + max_y) / 2,
         verticalalignment="center",
