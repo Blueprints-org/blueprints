@@ -10,7 +10,7 @@ from blueprints.structural_sections._cross_section import CrossSection
 
 
 def merge_polygons(elements: Sequence[CrossSection]) -> Polygon:
-    """Return the polygon of the steel cross-section."""
+    """Return the merged polygon of the cross-section elements."""
     # check if there are any elements
     if not elements:
         raise ValueError("No elements have been added to the cross-section.")
