@@ -52,6 +52,8 @@ class ISteelProfile(CombinedSteelCrossSection):
         The radius of the curved corners of the bottom flange. Default is None, the corner radius is then taken as the thickness.
     name : str
         The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value.
+    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+        The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
     steel_material: SteelMaterial
@@ -64,6 +66,7 @@ class ISteelProfile(CombinedSteelCrossSection):
     top_radius: MM | None = None
     bottom_radius: MM | None = None
     name: str = "I-Profile"
+    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
         """Initialize the I-profile steel section."""
@@ -258,24 +261,4 @@ class ISteelProfile(CombinedSteelCrossSection):
             top_radius=profile.top_radius,
             bottom_radius=profile.bottom_radius,
             name=name,
-        )
-
-    def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
-        """Plot the cross-section. Making use of the standard plotter.
-
-        Parameters
-        ----------
-        plotter : Callable[CombinedSteelCrossSection, plt.Figure] | None
-            The plotter function to use. If None, the default Blueprints plotter for steel sections is used.
-        *args
-            Additional arguments passed to the plotter.
-        **kwargs
-            Additional keyword arguments passed to the plotter.
-        """
-        if plotter is None:
-            plotter = plot_shapes
-        return plotter(
-            self,
-            *args,
-            **kwargs,
         )

@@ -49,3 +49,8 @@ class TestRectangularCrossSection:
         """Test the geometry property of the RectangularCrossSection class."""
         geometry = rectangular_cross_section.geometry()
         assert geometry is not None
+
+    def test_no_plotter_defined(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
+        with pytest.raises(AttributeError, match="No plotter is defined."):
+            _ = rectangular_cross_section.plotter

@@ -1,7 +1,10 @@
 """Cross-section base class."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
+from typing import Any
 
+import matplotlib.pyplot as plt
 from sectionproperties.analysis import Section
 from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
@@ -97,3 +100,28 @@ class CrossSection(ABC):
             section.calculate_plastic_properties()
 
         return section.section_props
+
+    @property
+    def plotter(self) -> Callable[[Any], plt.Figure]:
+        """Default plotter function for the cross-section."""
+        raise AttributeError("No plotter is defined.")
+
+    def plot(self, plotter: Callable[[Any], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
+        """Plot the cross-section. Making use of the standard plotter.
+
+        Parameters
+        ----------
+        plotter : Callable[Any, plt.Figure] | None
+            The plotter function to use. If None, the default Blueprints plotter of the subclass is used.
+        *args
+            Additional arguments passed to the plotter.
+        **kwargs
+            Additional keyword arguments passed to the plotter.
+        """
+        if plotter is None:
+            plotter = self.plotter
+        return plotter(
+            self,
+            *args,
+            **kwargs,
+        )

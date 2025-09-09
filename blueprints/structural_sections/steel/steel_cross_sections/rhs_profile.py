@@ -57,6 +57,8 @@ class RHSSteelProfile(CombinedSteelCrossSection):
         The outer radius of the bottom left corner. Default is None, the corner radius is then taken as twice the thickness.
     name : str
         The name of the profile. Default is "RHS-Profile". If corrosion is applied, the name will include the corrosion value.
+    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+        The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
     steel_material: SteelMaterial
@@ -75,6 +77,7 @@ class RHSSteelProfile(CombinedSteelCrossSection):
     bottom_right_outer_radius: MM | None = None
     bottom_left_outer_radius: MM | None = None
     name: str = "RHS-Profile"
+    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
         """Initialize the RHS- or SHS-profile steel section."""
@@ -294,24 +297,4 @@ class RHSSteelProfile(CombinedSteelCrossSection):
             bottom_right_outer_radius=bottom_right_outer_radius,
             bottom_left_outer_radius=bottom_left_outer_radius,
             name=name,
-        )
-
-    def plot(self, plotter: Callable[[CombinedSteelCrossSection], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
-        """Plot the cross-section. Making use of the standard plotter.
-
-        Parameters
-        ----------
-        plotter : Callable[CombinedSteelCrossSection, plt.Figure] | None
-            The plotter function to use. If None, the default Blueprints plotter for steel sections is used.
-        *args
-            Additional arguments passed to the plotter.
-        **kwargs
-            Additional keyword arguments passed to the plotter.
-        """
-        if plotter is None:
-            plotter = plot_shapes
-        return plotter(
-            self,
-            *args,
-            **kwargs,
         )
