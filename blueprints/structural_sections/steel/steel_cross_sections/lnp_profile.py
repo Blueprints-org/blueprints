@@ -55,7 +55,7 @@ class LNPProfile(CrossSection):
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
-        """Initialize the RHS- or SHS-profile section."""
+        """Initialize the LNP-profile section."""
         if self.root_radius is None:
             self.root_radius = self.web_thickness
         if self.back_radius is None:
