@@ -1,7 +1,7 @@
 """I-Profile section."""
 
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Self
 
 from matplotlib import pyplot as plt
@@ -64,7 +64,6 @@ class IProfile(CrossSection):
     bottom_radius: MM | None = None
     name: str = "I-Profile"
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
-    elements: list[CrossSection] = field(default_factory=list)  # Will be initialized in __post_init__
 
     def __post_init__(self) -> None:
         """Initialize the I-profile section by creating its elements."""
