@@ -1,40 +1,40 @@
-"""Circular Hollow Section (CHS) steel profile."""
+"""Circular Hollow Section (CHS) profile."""
 
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Self
 
 from matplotlib import pyplot as plt
+from shapely.geometry import Polygon
 
-from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections.cross_section_editor import merge_polygons
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
-from blueprints.structural_sections.steel.steel_element import SteelElement
 from blueprints.type_alias import MM
 
 
 @dataclass(kw_only=True)
-class CHSSteelProfile(CombinedSteelCrossSection):
-    """Representation of a Circular Hollow Section (CHS) steel profile.
+class CHSProfile(CrossSection):
+    """Representation of a Circular Hollow Section (CHS) profile.
 
     Attributes
     ----------
-    steel_material : SteelMaterial
-        The material properties of the steel.
     outer_diameter : MM
         The outer diameter of the CHS profile [mm].
     wall_thickness : MM
         The wall thickness of the CHS profile [mm].
-    plotter : Callable[[CombinedSteelCrossSection], plt.Figure]
+    name : str
+        The name of the profile. Default is "CHS Profile".
+    plotter : Callable[[CrossSection], plt.Figure]
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
 
-    steel_material: SteelMaterial
     outer_diameter: MM
     wall_thickness: MM
-    plotter: Callable[[CombinedSteelCrossSection], plt.Figure] = plot_shapes
+    name: str = "CHS Profile"
+    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
 
     def __post_init__(self) -> None:
         """Initialize the CHS profile."""
@@ -47,19 +47,17 @@ class CHSSteelProfile(CombinedSteelCrossSection):
             x=0,
             y=0,
         )
-        self.elements = [
-            SteelElement(
-                cross_section=self.chs,
-                material=self.steel_material,
-                nominal_thickness=self.wall_thickness,
-            )
-        ]
+        self.elements = [self.chs]
+
+    @property
+    def polygon(self) -> Polygon:
+        """Return the polygon of the CHS profile section."""
+        return merge_polygons(self.elements)
 
     @classmethod
     def from_standard_profile(
         cls,
         profile: CHS,
-        steel_material: SteelMaterial,
         corrosion_outside: MM = 0,
         corrosion_inside: MM = 0,
     ) -> Self:
@@ -69,8 +67,6 @@ class CHSSteelProfile(CombinedSteelCrossSection):
         ----------
         profile : CHS
             Any of the standard CHS profiles defined in Blueprints.
-        steel_material : SteelMaterial
-            Steel material properties for the profile.
         corrosion_outside : MM, optional
             Corrosion thickness to be subtracted from the outer diameter [mm] (default: 0).
         corrosion_inside : MM, optional
@@ -79,7 +75,7 @@ class CHSSteelProfile(CombinedSteelCrossSection):
         Returns
         -------
         CHSSteelProfile
-            The adjusted CHS steel profile considering corrosion effects.
+            The adjusted CHS profile considering corrosion effects.
         """
         adjusted_outer_diameter = profile.diameter - 2 * corrosion_outside
         adjusted_thickness = profile.thickness - corrosion_outside - corrosion_inside
@@ -98,6 +94,5 @@ class CHSSteelProfile(CombinedSteelCrossSection):
         return cls(
             outer_diameter=adjusted_outer_diameter,
             wall_thickness=adjusted_thickness,
-            steel_material=steel_material,
             name=name,
         )

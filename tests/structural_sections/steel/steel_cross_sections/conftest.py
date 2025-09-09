@@ -9,7 +9,7 @@ from sectionproperties.post.post import SectionProperties
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_cross_sections._steel_cross_section import CombinedSteelCrossSection
-from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSSteelProfile
+from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSSteelProfile
@@ -38,11 +38,10 @@ def strip_profile() -> StripProfile:
 
 
 @pytest.fixture
-def chs_profile() -> CHSSteelProfile:
+def chs_profile() -> CHSProfile:
     """Fixture to set up a CHS profile for testing."""
     profile: CHS = CHS.CHS508x16
-    steel_class: SteelStrengthClass = SteelStrengthClass.S355
-    return CHSSteelProfile.from_standard_profile(profile=profile, steel_material=SteelMaterial(steel_class))
+    return CHSProfile.from_standard_profile(profile=profile)
 
 
 @pytest.fixture

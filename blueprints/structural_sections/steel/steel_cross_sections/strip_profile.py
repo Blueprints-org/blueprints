@@ -32,6 +32,8 @@ class StripProfile(CrossSection):
         The width of the strip profile [mm].
     height : MM
         The height (thickness) of the strip profile [mm].
+    name : str
+        The name of the profile. Default is "Strip Profile".
     plotter : Callable[[CrossSection], plt.Figure]
         The plotter function to visualize the cross-section (default: `plot_shapes`).
     """
