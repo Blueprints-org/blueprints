@@ -290,8 +290,12 @@ class CircularCrossSectionPlotter:
             Legend text.
         """
         # start building legend
-        main_steel_material_used = self.cross_section.get_present_steel_materials()[0].name
-        legend_text = f"{self.cross_section.concrete_material.concrete_class.value} - {main_steel_material_used}"
+        steel_materials = self.cross_section.get_present_steel_materials()
+        if steel_materials:
+            main_steel_material_used = steel_materials[0].name
+            legend_text = f"{self.cross_section.concrete_material.concrete_class.value} - {main_steel_material_used}"
+        else:
+            legend_text = f"{self.cross_section.concrete_material.concrete_class.value}"
 
         legend_text += self._add_stirrups_to_legend()
         legend_text += self._add_longitudinal_rebars_to_legend()

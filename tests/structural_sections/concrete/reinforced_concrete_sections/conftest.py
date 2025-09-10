@@ -120,3 +120,37 @@ def reinforcement_by_quantity() -> ReinforcementByQuantity:
         material=ReinforcementSteelMaterial(),
         n=10,
     )
+
+
+@pytest.fixture
+def rectangular_cross_section_no_reinforcement() -> RectangularReinforcedCrossSection:
+    """Return a rectangular cross-section without longitudinal reinforcement."""
+    # Define a concrete material
+    concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C35_45)
+
+    # Define a rectangular cross-section without reinforcement
+    cs = RectangularReinforcedCrossSection(
+        name="Rectangular No Reinforcement",
+        width=1000,
+        height=800,
+        covers=CoversRectangular(upper=45, right=30, lower=35, left=50),
+        concrete_material=concrete,
+    )
+
+    return cs
+
+
+@pytest.fixture
+def circular_cross_section_no_reinforcement() -> CircularReinforcedCrossSection:
+    """Return a circular cross-section without longitudinal reinforcement."""
+    # Define a concrete material
+    concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C35_45)
+
+    # Define a circular cross-section without reinforcement
+    cs = CircularReinforcedCrossSection(
+        diameter=400, 
+        concrete_material=concrete, 
+        cover=25
+    )
+
+    return cs
