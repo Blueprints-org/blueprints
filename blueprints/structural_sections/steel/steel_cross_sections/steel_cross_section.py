@@ -9,27 +9,20 @@ from blueprints.unit_conversion import MM2_TO_M2
 
 
 @dataclass(frozen=True, kw_only=True)
-class SteelElement:
+class SteelCrossSection:
     """
-    General class for a steel cross-section element.
+    Representation of steel cross-sections for any given cross-section.
 
     Parameters
     ----------
     cross_section : CrossSection
-        The cross-section of the steel element.
+        The cross-section.
     material : SteelMaterial
-        The material of the steel element.
-    nominal_thickness : MM
-        The nominal thickness of the steel element.
-
-        This is used to calculate the yield and ultimate strength of the steel element.
-        But be aware that there is no internal check to make sure that the given nominal thickness of this steel element
-        is actually the same thickness of the cross-section.
+        The material type of the steel.
     """
 
     cross_section: CrossSection
     material: SteelMaterial
-    nominal_thickness: MM
 
     @property
     def weight_per_meter(self) -> KG_M:
@@ -43,32 +36,46 @@ class SteelElement:
         """
         return self.material.density * (self.cross_section.area * MM2_TO_M2)
 
-    @property
-    def yield_strength(self) -> MPA:
+    def yield_strength(self, nominal_thickness: MM) -> MPA:
         """
         Calculate the yield strength of the steel element.
+
+        Parameters
+        ----------
+        nominal_thickness : MM
+            The nominal thickness of the steel cross-section.
+
+        Attention: There is no internal check to make sure that the given nominal thickness of this steel cross-section
+        is actually the same thickness of the cross-section.
 
         Returns
         -------
         MPa
             The yield strength of the steel element.
         """
-        fy = self.material.yield_strength(thickness=self.nominal_thickness)
+        fy = self.material.yield_strength(thickness=nominal_thickness)
         if fy is None:
             raise ValueError("Yield strength is not defined for this material.")
         return fy
 
-    @property
-    def ultimate_strength(self) -> MPA:
+    def ultimate_strength(self, nominal_thickness: MM) -> MPA:
         """
         Calculate the ultimate strength of the steel element.
+
+        Parameters
+        ----------
+        nominal_thickness : MM
+            The nominal thickness of the steel cross-section.
+
+        Attention: There is no internal check to make sure that the given nominal thickness of this steel cross-section
+        is actually the same thickness of the cross-section.
 
         Returns
         -------
         MPa
             The ultimate strength of the steel element.
         """
-        fu = self.material.ultimate_strength(thickness=self.nominal_thickness)
+        fu = self.material.ultimate_strength(thickness=nominal_thickness)
         if fu is None:
             raise ValueError("Ultimate strength is not defined for this material.")
         return fu
