@@ -154,3 +154,12 @@ class TestRectangularReinforcedCrossSection:
         rectangular_reinforced_cross_section._single_longitudinal_rebars.append(rebar)  # noqa: SLF001
         with pytest.raises(ValueError):
             _ = rectangular_reinforced_cross_section.longitudinal_rebars
+
+    def test_plot_without_longitudinal_reinforcement(self, rectangular_cross_section_no_reinforcement: RectangularReinforcedCrossSection) -> None:
+        """Test the plot method for cross-section without longitudinal reinforcement."""
+        plot = rectangular_cross_section_no_reinforcement.plot(show=False, center_line_style={"linewidth": 0.85})
+        assert isinstance(plot, plt.Figure)
+        
+        # Test that get_present_steel_materials returns empty list
+        steel_materials = rectangular_cross_section_no_reinforcement.get_present_steel_materials()
+        assert steel_materials == []
