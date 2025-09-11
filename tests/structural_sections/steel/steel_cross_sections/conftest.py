@@ -1,14 +1,12 @@
 """Fixtures for testing steel cross sections."""
 
 from collections.abc import Generator
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from sectionproperties.post.post import SectionProperties
-from shapely.geometry import Point
 
-from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
@@ -77,34 +75,9 @@ def lnp_profile() -> LNPProfile:
 
 
 @pytest.fixture
-def mocker() -> Mock:
-    """Provide a mocker instance for mocking objects."""
-    return Mock()
-
-
-@pytest.fixture
-def mock_cross_section(mocker: Mock) -> CrossSection:
-    """Mock a CrossSection object."""
-    cross_section: Mock = mocker.Mock(spec=CrossSection)
-    cross_section.name = "MockSection"
-    cross_section.area = 683  # mm²
-    cross_section.perimeter = 400  # mm
-    cross_section.centroid = Point(50, 50)
-    cross_section.geometry = {"type": "rectangle", "width": 100, "height": 50}
-    return cross_section
-
-
-@pytest.fixture
-def mock_material(mocker: Mock) -> SteelMaterial:
-    """Mock a SteelMaterial object."""
-    material: Mock = mocker.Mock(spec=SteelMaterial)
-    material.density = 7850  # kg/m³
-    material.yield_strength.return_value = 250  # MPa
-    material.ultimate_strength.return_value = 400  # MPa
-    return material
-
-
-@pytest.fixture
-def steel_cross_section(mock_cross_section: Mock, mock_material: Mock) -> SteelCrossSection:
-    """Create a CrossSection instance using mocked cross-section and material."""
-    return SteelCrossSection(cross_section=mock_cross_section, material=mock_material)
+def steel_cross_section() -> SteelCrossSection:
+    """Fixture to set up a SteelCrossSection for testing."""
+    return SteelCrossSection(
+        cross_section=IProfile.from_standard_profile(IPE.IPE100),
+        material=SteelMaterial(steel_class=SteelStrengthClass.S275),
+    )
