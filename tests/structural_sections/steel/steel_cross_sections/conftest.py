@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from sectionproperties.post.post import SectionProperties
 
+from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
@@ -16,6 +17,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
+from blueprints.structural_sections.steel.steel_cross_sections.steel_cross_section import SteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripProfile
 
 
@@ -69,4 +71,13 @@ def lnp_profile() -> LNPProfile:
     return LNPProfile.from_standard_profile(
         profile=profile,
         corrosion=0,
+    )
+
+
+@pytest.fixture
+def steel_cross_section() -> SteelCrossSection:
+    """Fixture to set up a SteelCrossSection for testing."""
+    return SteelCrossSection(
+        cross_section=IProfile.from_standard_profile(IPE.IPE100),
+        material=SteelMaterial(steel_class=SteelStrengthClass.S275),
     )
