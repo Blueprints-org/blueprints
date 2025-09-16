@@ -114,7 +114,7 @@ class PolygonBuilder:
             Sweep angle of the arc segment in degrees;
             Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
         angle : DEG
-            The tangent direction at the line start in degrees;
+            The tangent direction at the arc start in degrees;
             0° is along the positive x-axis, 90° is along the positive y-axis.
         radius : Length
             Radius of the arc segment. Must be non-zero.
@@ -136,7 +136,7 @@ class PolygonBuilder:
             Sweep angle of the arc segment in degrees;
             Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
         angle : DEG
-            The tangent direction at the line start in degrees;
+            The tangent direction at the arc start in degrees;
             0° is along the positive x-axis, 90° is along the positive y-axis.
         radius : Length
             Radius of the arc segment. Must be non-zero.
