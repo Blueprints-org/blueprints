@@ -52,6 +52,11 @@ class TorsionCheckBase(ABC):
     verification checks. Each specific check inherits from this class and
     implements the execute method to perform its unique structural verification.
 
+    Attributes
+    ----------
+    latex_explanation : str
+        LaTeX formatted explanation populated during execution
+
     Notes
     -----
     - All check classes should inherit from this base class
@@ -59,6 +64,9 @@ class TorsionCheckBase(ABC):
     - Different checks may require different parameter combinations
     - Results are returned as CheckResult objects for consistent interpretation
     """
+
+    def __init__(self) -> None:
+        self.latex_explanation = ""
 
     @abstractmethod
     def execute(self, *args: Any, **kwargs: Any) -> CheckResult:  # noqa: ANN401
@@ -81,7 +89,6 @@ class TorsionCheckBase(ABC):
         """
 
 
-@dataclass(frozen=True)
 class ConcreteStrutCapacityCheck(TorsionCheckBase):
     """Verify that concrete compression struts can resist combined shear and torsion forces.
 
@@ -162,6 +169,23 @@ class ConcreteStrutCapacityCheck(TorsionCheckBase):
                 v_rd_max=v_rd_max,
             )
         )
+
+        # Generate explanation with LaTeX only for formulas
+        self.latex_explanation = f"""Concrete Strut Capacity Check EN 1992-1-1:2004 art. 6.3.2(4)
+
+Maximum shear resistance
+(6.9) ${v_rd_max.latex(n=2).complete}$
+
+Design torsional resistance moment
+(6.30) ${t_rd_max.latex(n=2).complete}$
+
+Combined interaction check
+(6.29) $\\frac{{T_{{Ed}}}}{{T_{{Rd,max}}}} + \\frac{{V_{{Ed}}}}{{V_{{Rd,max}}}} = \\\
+{forces.t_ed / t_rd_max:.3f} + {forces.v_ed / v_rd_max:.3f} = {utilization:.3f} {"\\leq" if is_ok else ">"} 1.0$
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})
+"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=None, provided=None)
 
 
