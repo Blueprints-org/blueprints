@@ -2,10 +2,11 @@
 
 from itertools import pairwise
 
+import numpy as np
 import pytest
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._cross_section_builder import merge_polygons
+from blueprints.structural_sections._polygon_builder import PolygonBuilder, merge_polygons
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 
 
@@ -219,3 +220,30 @@ class TestMergePolygons:
 
         with pytest.raises(TypeError, match="The combined geometry is not a valid Polygon."):
             merge_polygons(elements)
+
+
+class TestPolygonBuilderStub:
+    """Ensure the placeholder `PolygonBuilder` surface behaves as expected for now."""
+
+    def test_placeholder_methods_raise(self) -> None:
+        """Test that all placeholder methods raise NotImplementedError."""
+        builder = PolygonBuilder()
+
+        assert isinstance(builder._points, np.ndarray)  # noqa: SLF001
+        assert builder._points.shape == (0, 2)  # noqa: SLF001
+        assert builder._current is None  # noqa: SLF001
+
+        with pytest.raises(NotImplementedError):
+            builder.set_starting_point((0.0, 0.0))
+
+        with pytest.raises(NotImplementedError):
+            builder.append_line(1.0, 0.0)
+
+        with pytest.raises(NotImplementedError):
+            builder.append_arc(90.0, 0.0, 1.0)
+
+        with pytest.raises(NotImplementedError):
+            builder.create_polygon()
+
+        with pytest.raises(NotImplementedError):
+            builder.coordinates()
