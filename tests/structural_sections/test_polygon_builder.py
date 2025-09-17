@@ -234,13 +234,10 @@ class TestPolygonBuilderStub:
         assert builder._current is None  # noqa: SLF001
 
         with pytest.raises(NotImplementedError):
-            builder.add_line((0.0, 0.0), 1.0, 0.0)
+            builder.set_starting_point((0.0, 0.0))
 
         with pytest.raises(NotImplementedError):
             builder.append_line(1.0, 0.0)
-
-        with pytest.raises(NotImplementedError):
-            builder.add_arc((0.0, 0.0), 90.0, 0.0, 1.0)
 
         with pytest.raises(NotImplementedError):
             builder.append_arc(90.0, 0.0, 1.0)

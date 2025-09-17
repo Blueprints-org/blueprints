@@ -61,20 +61,13 @@ class PolygonBuilder:
         self._points: NDArray[np.float64] = np.empty((0, 2), dtype=float)
         self._current: NDArray[np.float64] | None = None
 
-    def add_line(self, start: PointLike, length: Length, angle: DEG) -> PolygonBuilder:
-        """Add a straight line segment to the polygon.
-
-        This method sets the starting point of the polygon if it is not already set.
+    def set_starting_point(self, start: PointLike) -> PolygonBuilder:
+        """Set the starting vertex for the polygon being constructed.
 
         Parameters
         ----------
         start : PointLike
-            Starting point of the line segment (x, y).
-        length : Length
-            Length of the line segment.
-        angle : DEG
-            The tangent direction at the line start in degrees;
-            0° is along the positive x-axis, 90° is along the positive y-axis.
+            Starting point of the polygon (x, y).
 
         Returns
         -------
@@ -93,32 +86,6 @@ class PolygonBuilder:
         angle : DEG
             The tangent direction at the line start in degrees;
             0° is along the positive x-axis, 90° is along the positive y-axis.
-
-        Returns
-        -------
-        PolygonBuilder
-            The PolygonBuilder instance (for method chaining).
-        """
-        raise NotImplementedError
-
-    def add_arc(self, start: PointLike, sweep: DEG, angle: DEG, radius: Length) -> PolygonBuilder:
-        """Add a circular arc segment to the polygon.
-
-        This method sets the starting point of the polygon if it is not already set.
-
-        Parameters
-        ----------
-        start : PointLike
-            Starting point of the arc segment (x, y).
-        sweep : DEG
-            Sweep angle of the arc segment in degrees;
-            Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
-        angle : DEG
-            The tangent direction at the arc start in degrees;
-            0° is along the positive x-axis, 90° is along the positive y-axis.
-        radius : Length
-            Radius of the arc segment. Must be non-zero.
-            The sign of the radius is ignored; only its magnitude is used.
 
         Returns
         -------
