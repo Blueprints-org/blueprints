@@ -54,7 +54,7 @@ class TorsionCheckBase(ABC):
 
     Attributes
     ----------
-    latex_explanation : str
+    explanation : str
         LaTeX formatted explanation populated during execution
 
     Notes
@@ -66,7 +66,7 @@ class TorsionCheckBase(ABC):
     """
 
     def __init__(self) -> None:
-        self.latex_explanation = ""
+        self.explanation = ""
 
     @abstractmethod
     def execute(self, *args: Any, **kwargs: Any) -> CheckResult:  # noqa: ANN401
@@ -171,7 +171,7 @@ class ConcreteStrutCapacityCheck(TorsionCheckBase):
         )
 
         # Generate explanation with LaTeX only for formulas
-        self.latex_explanation = f"""Concrete Strut Capacity Check EN 1992-1-1:2004 art. 6.3.2(4)
+        self.explanation = f"""Concrete Strut Capacity Check EN 1992-1-1:2004 art. 6.3.2(4)
 
 Maximum shear resistance
 (6.9) ${v_rd_max.latex(n=2).complete}$
@@ -189,7 +189,6 @@ Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})
         return CheckResult(is_ok=is_ok, utilization=utilization, required=None, provided=None)
 
 
-@dataclass(frozen=True)
 class TorsionMomentCapacityCheck(TorsionCheckBase):
     """Check if combined shear and torsion can be resisted with minimum reinforcement.
 
@@ -296,6 +295,30 @@ class TorsionMomentCapacityCheck(TorsionCheckBase):
                 v_rd_c=v_rd_c,
             )
         )
+
+        # Generate explanation with LaTeX only for formulas
+        self.explanation = f"""Torsion Moment Capacity Check EN 1992-1-1:2004 art. 6.3.2(5)
+
+The torsional shear stress τ_t,i, can be set to be equal to f_ctd = {tau_t_i:.3f} MPa
+
+Torsional cracking moment capacity
+$T_{{Rd,c}} = 2 \\cdot A_k \\cdot \\tau_{{t,i}} \\cdot t_{{ef,i}} = \\\
+
+Torsional cracking moment capacity
+$T_{{Rd,c}} = 2 \\cdot A_k \\cdot \\tau_{{t,i}} \\cdot t_{{ef,i}} = \\\
+2 \\cdot {geometry.enclosed_area():.0f} \\cdot {tau_t_i:.3f} \\cdot {geometry.effective_wall_thickness():.0f} = \\\
+{t_rd_c:.2f}$ kNm
+
+Shear resistance without stirrups
+(6.2) ${v_rd_c.latex(n=2).complete}$
+
+Combined utilization check
+(6.31) $\\frac{{T_{{Ed}}}}{{T_{{Rd,c}}}} + \\frac{{V_{{Ed}}}}{{V_{{Rd,c}}}} = \\\
+{forces.t_ed / t_rd_c:.3f} + {forces.v_ed / v_rd_c:.3f} = {utilization:.3f} {"\\leq" if is_ok else ">"} 1.0$
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})
+"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=None, provided=None)
 
 
