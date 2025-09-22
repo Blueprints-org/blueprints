@@ -1,4 +1,4 @@
-"""Module for building and editing cross-sections."""
+"""Module for building and editing polygons."""
 
 from __future__ import annotations
 
@@ -56,25 +56,20 @@ class PolygonBuilder:
     This is used to determine the number of segments when creating circular arcs.
     Smaller values lead to finer tessellation and more points in the resulting polygon."""
 
-    def __init__(self) -> None:
-        """Initialize an empty PolygonBuilder."""
-        self._points: NDArray[np.float64] = np.empty((0, 2), dtype=float)
-        self._current: NDArray[np.float64] | None = None
-
-    def set_starting_point(self, start: PointLike) -> PolygonBuilder:
-        """Set the starting vertex for the polygon being constructed.
+    def __init__(self, starting_point: PointLike) -> None:
+        """Initialize an empty PolygonBuilder.
 
         Parameters
         ----------
         start : PointLike
             Starting point of the polygon (x, y).
-
-        Returns
-        -------
-        PolygonBuilder
-            The PolygonBuilder instance (for method chaining).
         """
-        raise NotImplementedError
+        self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
+
+    @property
+    def _current_point(self) -> NDArray[np.float64]:
+        """Get the current endpoint of the polygon."""
+        return self._points[-1]
 
     def append_line(self, length: Length, angle: DEG) -> PolygonBuilder:
         """Append a straight line segment to the polygon from the current endpoint.
@@ -85,6 +80,7 @@ class PolygonBuilder:
             Length of the line segment.
         angle : DEG
             The tangent direction at the line start in degrees;
+            Angle is measured counter-clockwise from the positive x-axis;
             0° is along the positive x-axis, 90° is along the positive y-axis.
 
         Returns
@@ -92,7 +88,13 @@ class PolygonBuilder:
         PolygonBuilder
             The PolygonBuilder instance (for method chaining).
         """
-        raise NotImplementedError
+        angle_in_radians = np.deg2rad(angle)
+        direction = np.array([np.cos(angle_in_radians), np.sin(angle_in_radians)], dtype=float)
+        new_point = self._current_point + length * direction
+
+        self._points = np.concatenate((self._points, new_point[np.newaxis, :]), axis=0)
+
+        return self
 
     def append_arc(self, sweep: DEG, angle: DEG, radius: Length) -> PolygonBuilder:
         """Append a circular arc segment to the polygon from the current endpoint.
@@ -129,21 +131,5 @@ class PolygonBuilder:
         ValueError
             If there are fewer than 3 points to form a polygon.
             If the constructed polygon is not valid.
-        """
-        raise NotImplementedError
-
-    def coordinates(self, as_array: bool = True) -> np.ndarray | tuple[tuple[float, float], ...]:
-        """Get the coordinates of the points.
-
-        Parameters
-        ----------
-        as_array : bool, optional
-            If True, return as a NumPy array; otherwise, return as a tuple of PointLike tuples.
-            Default is True.
-
-        Returns
-        -------
-        np.ndarray or tuple[tuple[float, float], ...]
-            The coordinates of the built polygon points.
         """
         raise NotImplementedError

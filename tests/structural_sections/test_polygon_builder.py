@@ -227,14 +227,11 @@ class TestPolygonBuilderStub:
 
     def test_placeholder_methods_raise(self) -> None:
         """Test that all placeholder methods raise NotImplementedError."""
-        builder = PolygonBuilder()
+        builder = PolygonBuilder((0.0, 0.0))
 
         assert isinstance(builder._points, np.ndarray)  # noqa: SLF001
-        assert builder._points.shape == (0, 2)  # noqa: SLF001
-        assert builder._current is None  # noqa: SLF001
-
-        with pytest.raises(NotImplementedError):
-            builder.set_starting_point((0.0, 0.0))
+        assert builder._points.shape == (1, 2)  # noqa: SLF001
+        assert builder._current_point is not None  # noqa: SLF001
 
         with pytest.raises(NotImplementedError):
             builder.append_line(1.0, 0.0)
@@ -244,6 +241,3 @@ class TestPolygonBuilderStub:
 
         with pytest.raises(NotImplementedError):
             builder.create_polygon()
-
-        with pytest.raises(NotImplementedError):
-            builder.coordinates()
