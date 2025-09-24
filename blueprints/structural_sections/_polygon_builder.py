@@ -61,7 +61,7 @@ class PolygonBuilder:
 
         Parameters
         ----------
-        start : PointLike
+        starting_point : PointLike
             Starting point of the polygon (x, y).
         """
         self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
