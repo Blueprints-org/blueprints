@@ -222,28 +222,80 @@ class TestMergePolygons:
             merge_polygons(elements)
 
 
-class TestPolygonBuilderStub:
-    """Ensure the placeholder `PolygonBuilder` surface behaves as expected for now."""
+class TestPolygonBuilder:
+    """Tests for the PolygonBuilder class."""
 
-    def test_placeholder_methods_raise(self) -> None:
-        """Test that all placeholder methods raise NotImplementedError."""
-        builder = PolygonBuilder()
+    def test_init_starts_with_starting_point(self) -> None:
+        """The builder initializes with the given starting point."""
+        starting_point = (1.5, -2.0)
 
-        assert isinstance(builder._points, np.ndarray)  # noqa: SLF001
-        assert builder._points.shape == (0, 2)  # noqa: SLF001
-        assert builder._current is None  # noqa: SLF001
+        builder = PolygonBuilder(starting_point)
+
+        assert builder._points.shape == (1, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[0], starting_point)  # noqa: SLF001
+        np.testing.assert_allclose(builder._current_point, starting_point)  # noqa: SLF001
+
+    def test_append_line_appends_point(self) -> None:
+        """Appending a line adds a new point and updates the current endpoint."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        result = builder.append_line(5.0, 0.0)
+
+        assert result is builder
+        assert builder._points.shape == (2, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (5.0, 0.0))  # noqa: SLF001
+        np.testing.assert_allclose(builder._current_point, (5.0, 0.0))  # noqa: SLF001
+
+    def test_append_line_respects_angle(self) -> None:
+        """The endpoint reflects the given heading angle."""
+        builder = PolygonBuilder((1.5, -2.0))
+
+        builder.append_line(2.0 * np.sqrt(2), 45.0)
+
+        np.testing.assert_allclose(builder._points[-1], (3.5, 0.0))  # noqa: SLF001
+        np.testing.assert_allclose(builder._current_point, (3.5, 0.0))  # noqa: SLF001
+
+    def test_append_line_supports_chaining(self) -> None:
+        """Multiple calls extend the path while keeping the current point updated."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        builder.append_line(2.0, 0.0).append_line(2.0, 90.0)
+
+        assert builder._points.shape == (3, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (2.0, 2.0))  # noqa: SLF001
+
+    def test_append_line_negative_length(self) -> None:
+        """Appending a line with negative length moves backwards."""
+        builder = PolygonBuilder((0.0, 1.0))
+
+        builder.append_line(-3.0, 180.0)
+
+        assert builder._points.shape == (2, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (3.0, 1.0))  # noqa: SLF001
+        np.testing.assert_allclose(builder._current_point, (3.0, 1.0))  # noqa: SLF001
+
+    def test_append_line_non_standard_angle(self) -> None:
+        """Appending a line at a non-standard angle places the endpoint correctly."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        builder.append_line(10.0, 30.0)
+
+        expected_x = 10.0 * np.cos(np.deg2rad(30.0))
+        expected_y = 10.0 * np.sin(np.deg2rad(30.0))
+        assert builder._points.shape == (2, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (expected_x, expected_y))  # noqa: SLF001
+        np.testing.assert_allclose(builder._current_point, (expected_x, expected_y))  # noqa: SLF001
+
+    def test_append_arc_raises_not_implemented(self) -> None:
+        """Appending an arc raises NotImplementedError."""
+        builder = PolygonBuilder((0.0, 0.0))
 
         with pytest.raises(NotImplementedError):
-            builder.set_starting_point((0.0, 0.0))
+            builder.append_arc(90.0, 0.0, 5.0)
+
+    def test_create_polygon_raises_not_implemented(self) -> None:
+        """Creating the polygon raises NotImplementedError."""
+        builder = PolygonBuilder((0.0, 0.0))
 
         with pytest.raises(NotImplementedError):
-            builder.append_line(1.0, 0.0)
-
-        with pytest.raises(NotImplementedError):
-            builder.append_arc(90.0, 0.0, 1.0)
-
-        with pytest.raises(NotImplementedError):
-            builder.create_polygon()
-
-        with pytest.raises(NotImplementedError):
-            builder.coordinates()
+            builder.create_polygon()  # type: ignore[call-arg]
