@@ -4,6 +4,10 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
 
+from blueprints.checks.torsion_check.check_result import CheckResult
+from blueprints.checks.torsion_check.torsion_forces import TorsionForces
+from blueprints.checks.torsion_check.torsion_geometry import TorsionGeometry
+from blueprints.checks.torsion_check.torsion_materials import TorsionMaterials
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_2 import (
     Form6Dot2aSub1ThicknessFactor,
     Form6Dot2aSub2RebarRatio,
@@ -38,11 +42,6 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_9_detailling_and_specifi
 )
 from blueprints.math_helpers import cot
 from blueprints.unit_conversion import MM_TO_M
-
-from .check_result import CheckResult
-from .torsion_forces import TorsionForces
-from .torsion_geometry import TorsionGeometry
-from .torsion_materials import TorsionMaterials
 
 
 class TorsionCheckBase(ABC):
@@ -171,7 +170,7 @@ class ConcreteStrutCapacityCheck(TorsionCheckBase):
         )
 
         # Generate explanation with LaTeX only for formulas
-        self.explanation = f"""Concrete Strut Capacity Check EN 1992-1-1:2004 art. 6.3.2(4)
+        self.explanation = f"""Concrete strut capacity check EN 1992-1-1:2004 art. 6.3.2(4)
 
 Maximum shear resistance
 (6.9) ${v_rd_max.latex(n=2).complete}$
