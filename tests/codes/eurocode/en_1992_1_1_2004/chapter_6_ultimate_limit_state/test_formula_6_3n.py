@@ -1,4 +1,4 @@
-"""Testing formula 6.3N of EN 1992-1-1:2004."""
+"""Testing formula 6.3n of EN 1992-1-1:2004."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot3NShearCapacityWithoutRebar:
-    """Validation for formula 6.3N from EN 1992-1-1:2004."""
+    """Validation for formula 6.3n from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

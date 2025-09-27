@@ -1,4 +1,4 @@
-"""Testing formula 6.57N of EN 1992-1-1:2004."""
+"""Testing formula 6.57n of EN 1992-1-1:2004."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import NegativeValueError
 
 
 class TestForm6Dot57NNuPrime:
-    """Validation for formula 6.57N from EN 1992-1-1:2004."""
+    """Validation for formula 6.57n from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

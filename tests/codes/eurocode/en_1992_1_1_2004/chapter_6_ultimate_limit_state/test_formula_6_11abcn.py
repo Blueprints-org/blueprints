@@ -1,4 +1,4 @@
-"""Testing formula 6.11a/b/cN of EN 1992-1-1:2004."""
+"""Testing formula 6.11a/b/cn of EN 1992-1-1:2004."""
 
 import pytest
 
@@ -9,7 +9,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm6Dot11abcNCompressionChordCoefficient:
-    """Validation for formula 6.11a/b/cN from EN 1992-1-1:2004."""
+    """Validation for formula 6.11a/b/cn from EN 1992-1-1:2004."""
 
     def test_evaluation_below_0_25(self) -> None:
         """Tests the evaluation of the result for sigma_cp/f_cd < 0.25."""
