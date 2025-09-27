@@ -1,7 +1,6 @@
 """Individual check classes for torsion analysis."""
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from typing import Any
 
 from blueprints.checks.torsion_check.check_result import CheckResult
@@ -321,7 +320,6 @@ Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})
         return CheckResult(is_ok=is_ok, utilization=utilization, required=None, provided=None)
 
 
-@dataclass(frozen=True)
 class MaxLongitudinalReinforcementCheck(TorsionCheckBase):
     """Verify that longitudinal reinforcement doesn't exceed code maximum limits.
 
@@ -375,10 +373,22 @@ class MaxLongitudinalReinforcementCheck(TorsionCheckBase):
         a_s = geometry.cs.reinforcement_area_longitudinal_bars
         utilization = a_s / a_s_max if a_s_max > 0 else float("inf")
         is_ok = a_s_max >= a_s
+
+        self.explanation = f"""Maximum longitudinal reinforcement check EN 1992-1-1:2004 art. 9.2.1.1(3)
+
+Maximum allowed longitudinal reinforcement area
+$A_{{s,max}} = 0.04 \\cdot A_c = 0.04 \\cdot {geometry.cs.cross_section.area:.0f} = {a_s_max:.0f}$ mm²
+
+Provided longitudinal reinforcement area
+$A_s = {a_s:.0f}$ mm²
+
+Check: $A_s {"\\leq" if is_ok else ">"} A_{{s,max}}$ ⟹ ${a_s:.0f} {"\\leq" if is_ok else ">"} {a_s_max:.0f}$ mm²
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=a_s_max, provided=a_s)
 
 
-@dataclass(frozen=True)
 class MinTensileReinforcementCheck(TorsionCheckBase):
     """Ensure adequate minimum tension reinforcement to prevent brittle failure.
 
@@ -454,10 +464,22 @@ class MinTensileReinforcementCheck(TorsionCheckBase):
 
         utilization = a_st_min / a_st if a_st > 0 else float("inf")
         is_ok = a_st >= a_st_min
+
+        self.explanation = f"""Minimum tensile reinforcement check EN 1992-1-1:2004 art. 9.2.1.1(1)
+
+Minimum tensile reinforcement area
+(9.1) ${a_st_min.latex(n=2).complete}$
+
+Provided tensile reinforcement area (bottom bars)
+$A_{{st}} = {a_st:.0f}$ mm²
+
+Check: $A_{{st}} {"\\geq" if is_ok else "<"} A_{{st,min}}$ ⟹ ${a_st:.0f} {"\\geq" if is_ok else "<"} {a_st_min:.0f}$ mm²
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=a_st_min, provided=a_st)
 
 
-@dataclass(frozen=True)
 class MaxShearStirrupSpacingCheck(TorsionCheckBase):
     """Verify that shear stirrup spacing meets maximum distance requirements.
 
@@ -520,10 +542,22 @@ class MaxShearStirrupSpacingCheck(TorsionCheckBase):
 
         utilization = s / s_l_max if s_l_max > 0 else float("inf")
         is_ok = s <= s_l_max
+
+        self.explanation = f"""Maximum shear stirrup spacing check EN 1992-1-1:2004 art. 9.2.2(6)
+
+Maximum allowable stirrup spacing for shear
+(9.6) ${s_l_max.latex(n=2).complete}$
+
+Actual stirrup spacing (maximum distance between shear stirrups)
+$s = {s:.0f}$ mm
+
+Check: $s {"\\leq" if is_ok else ">"} s_{{l,max}}$ ⟹ ${s:.0f} {"\\leq" if is_ok else ">"} {s_l_max:.0f}$ mm
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=s_l_max, provided=s)
 
 
-@dataclass(frozen=True)
 class MaxTorsionStirrupSpacingCheck(TorsionCheckBase):
     """Verify that torsion stirrup spacing meets maximum distance requirements.
 
@@ -588,10 +622,27 @@ class MaxTorsionStirrupSpacingCheck(TorsionCheckBase):
 
         utilization = s / s_max if s_max > 0 else float("inf")
         is_ok = s <= s_max
+
+        self.explanation = f"""Maximum torsion stirrup spacing check EN 1992-1-1:2004 art. 9.2.3(3)
+
+Maximum allowable stirrup spacing for shear (formula 9.6)
+${s_l_max.latex(n=2).complete}$
+
+Maximum allowable stirrup spacing for torsion
+$s_{{max}} = \\min\\left(\\frac{{u}}{{8}}, s_{{l,max}}, b, h\\right) =
+\\min\\left(\\frac{{{geometry.cs.cross_section.perimeter:.0f}}}{{8}},
+{s_l_max:.0f}, {geometry.cs.width:.0f}, {geometry.cs.height:.0f}\\right) = {s_max:.0f}$ mm
+
+Actual stirrup spacing (maximum distance between torsion stirrups)
+$s = {s:.0f}$ mm
+
+Check: $s {"\\leq" if is_ok else ">"} s_{{max}}$ ⟹ ${s:.0f} {"\\leq" if is_ok else ">"} {s_max:.0f}$ mm
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=s_max, provided=s)
 
 
-@dataclass(frozen=True)
 class ShearAndTorsionStirrupAreaCheck(TorsionCheckBase):
     """Verify that total stirrup area can resist the combined shear and torsion forces.
 
@@ -679,10 +730,40 @@ class ShearAndTorsionStirrupAreaCheck(TorsionCheckBase):
 
         utilization = a_sw_s_w_total / a_sw_prov if a_sw_prov > 0 else float("inf")
         is_ok = a_sw_prov >= a_sw_s_w_total
+
+        self.explanation = f"""Combined shear and torsion stirrup area check EN 1992-1-1:2004
+
+Required stirrup area for shear force V_Ed
+(6.8) $\\frac{{A_{{sw}}}}{{s}} = \\frac{{V_{{Ed}}}}{{z \\cdot \\cot\\theta \\cdot f_{{ywd}}}} =
+\\frac{{{forces.v_ed:.1f}}}{{{geometry.lever_arm():.0f} \\cdot \\cot{forces.theta:.1f} \\cdot {f_ywd:.1f}}} =
+{a_sw_s_w_v:.4f}$ mm²/mm
+
+Shear stress in wall due to torsion T_Ed
+(6.26) ${tau_t_i_t_ef_i.latex(n=3).complete}$
+
+Shear force due to torsion in wall
+(6.27) ${v_ed_i.latex(n=1).complete}$
+
+Required stirrup area for torsion moment T_Ed
+(6.8) $\\frac{{A_{{sw,t}}}}{{s}} = \\frac{{V_{{Ed,i}}}}{{z_i \\cdot \\cot\\theta \\cdot f_{{ywd}}}} =
+\\frac{{{v_ed_i:.1f}}}{{{geometry.cs.height:.0f} \\cdot \\cot{forces.theta:.1f} \\cdot {f_ywd:.1f}}} =
+{a_sw_s_w_t:.4f}$ mm²/mm
+
+Total required stirrup area (shear + 2 x torsion for closed stirrups)
+$\\frac{{A_{{sw,total}}}}{{s}} = \\frac{{A_{{sw,V}}}}{{s}} + 2 \\cdot \\frac{{A_{{sw,T}}}}{{s}} =
+{a_sw_s_w_v:.4f} + 2 \\cdot {a_sw_s_w_t:.4f} = {a_sw_s_w_total:.4f}$ mm²/mm
+
+Provided stirrup area
+$\\frac{{A_{{sw,prov}}}}{{s}} = {a_sw_prov:.4f}$ mm²/mm
+
+Check: $\\frac{{A_{{sw,prov}}}}{{s}} {"\\geq" if is_ok else "<"} \\frac{{A_{{sw,total}}}}{{s}}$ ⟹
+${a_sw_prov:.4f} {"\\geq" if is_ok else "<"} {a_sw_s_w_total:.4f}$ mm²/mm
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=a_sw_s_w_total, provided=a_sw_prov)
 
 
-@dataclass(frozen=True)
 class MinShearReinforcementRatioCheck(TorsionCheckBase):
     """Ensure minimum shear reinforcement ratio to prevent brittle shear failure.
 
@@ -759,4 +840,17 @@ class MinShearReinforcementRatioCheck(TorsionCheckBase):
 
         utilization = rho_w_min / rho_w if rho_w > 0 else float("inf")
         is_ok = rho_w >= rho_w_min
+
+        self.explanation = f"""Minimum shear reinforcement ratio check EN 1992-1-1:2004 art. 9.2.2(5)
+
+Minimum shear reinforcement ratio
+(9.5N) ${rho_w_min.latex(n=4).complete}$
+
+Provided shear reinforcement ratio
+(9.4) ${rho_w.latex(n=4).complete}$
+
+Check: $\\rho_w {"\\geq" if is_ok else "<"} \\rho_{{w,min}}$ ⟹ ${rho_w:.4f} {"\\geq" if is_ok else "<"} {rho_w_min:.4f}$
+
+Result: {"PASS" if is_ok else "FAIL"} (Utilization: {utilization:.1%})"""
+
         return CheckResult(is_ok=is_ok, utilization=utilization, required=rho_w_min, provided=rho_w)
