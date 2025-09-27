@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot3NShearCapacityWithoutRebar(Formula):
+class Form6Dot3nShearCapacityWithoutRebar(Formula):
     r"""Class representing formula 6.3n for the calculation of the shear capacity without rebar, [$v_{min}$]."""
 
     label = "6.3n"

@@ -1,4 +1,4 @@
-"""Formula 4.3n from EN 1992-1-1:2004: Chapter 4 - Durability and cover to reinforcement."""
+"""Formula 4.3N from EN 1992-1-1:2004: Chapter 4 - Durability and cover to reinforcement."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -7,10 +7,10 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form4Dot3NCheckExecutionTolerances(Formula):
-    r"""Class representing formula 4.3n for calculating the allowance in design for execution tolerances [$\Delta c_{dev}$] [$mm$].
+class Form4Dot3nCheckExecutionTolerances(Formula):
+    r"""Class representing formula 4.3N for calculating the allowance in design for execution tolerances [$\Delta c_{dev}$] [$mm$].
 
-    EN 1992-1-1:2004 art.4.4.1.3 (3) - formula (4.3n)
+    EN 1992-1-1:2004 art.4.4.1.3 (3) - formula (4.3N)
 
     Parameters
     ----------
@@ -18,7 +18,7 @@ class Form4Dot3NCheckExecutionTolerances(Formula):
         [$\Delta c_{dev}$] Concrete cover including execution tolerances [$mm$].
     """
 
-    label = "4.3n"
+    label = "4.3N"
     source_document = EN_1992_1_1_2004
 
     def __init__(
@@ -38,7 +38,7 @@ class Form4Dot3NCheckExecutionTolerances(Formula):
         return 5 <= delta_cdev <= 10
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 4.3n."""
+        """Returns LatexFormula object for formula 4.3N."""
         _equation: str = r"5 \leq \Delta c_{dev} \leq 10"
         _numeric_equation: str = latex_replace_symbols(
             _equation,

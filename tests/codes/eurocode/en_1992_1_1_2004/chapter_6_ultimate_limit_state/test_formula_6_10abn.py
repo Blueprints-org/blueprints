@@ -1,13 +1,13 @@
-"""Testing formula 6.10a/bn of EN 1992-1-1:2004."""
+"""Testing formula 6.10a/bN of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_10abn import Form6Dot10abNStrengthReductionFactor
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_10abn import Form6Dot10abnStrengthReductionFactor
 from blueprints.validations import NegativeValueError
 
 
-class TestForm6Dot10abNStrengthReductionFactor:
-    """Validation for formula 6.10a/bn from EN 1992-1-1:2004."""
+class TestForm6Dot10abnStrengthReductionFactor:
+    """Validation for formula 6.10a/bN from EN 1992-1-1:2004."""
 
     def test_evaluation_above_60(self) -> None:
         """Tests the evaluation of the result."""
@@ -15,7 +15,7 @@ class TestForm6Dot10abNStrengthReductionFactor:
         f_ck = 75.0
 
         # Object to test
-        formula = Form6Dot10abNStrengthReductionFactor(f_ck=f_ck)
+        formula = Form6Dot10abnStrengthReductionFactor(f_ck=f_ck)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.525
@@ -28,7 +28,7 @@ class TestForm6Dot10abNStrengthReductionFactor:
         f_ck = 30.0
 
         # Object to test
-        formula = Form6Dot10abNStrengthReductionFactor(f_ck=f_ck)
+        formula = Form6Dot10abnStrengthReductionFactor(f_ck=f_ck)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.6
@@ -44,7 +44,7 @@ class TestForm6Dot10abNStrengthReductionFactor:
     def test_raise_error_when_invalid_values_are_given(self, f_ck: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot10abNStrengthReductionFactor(f_ck=f_ck)
+            Form6Dot10abnStrengthReductionFactor(f_ck=f_ck)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -65,7 +65,7 @@ class TestForm6Dot10abNStrengthReductionFactor:
         f_ck = 30.0
 
         # Object to test
-        latex = Form6Dot10abNStrengthReductionFactor(f_ck=f_ck).latex()
+        latex = Form6Dot10abnStrengthReductionFactor(f_ck=f_ck).latex()
 
         actual = {
             "complete": latex.complete,

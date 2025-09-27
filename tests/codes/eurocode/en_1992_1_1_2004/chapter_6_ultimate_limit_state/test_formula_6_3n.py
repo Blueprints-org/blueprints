@@ -1,13 +1,13 @@
-"""Testing formula 6.3n of EN 1992-1-1:2004."""
+"""Testing formula 6.3N of EN 1992-1-1:2004."""
 
 import pytest
 
-from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_3n import Form6Dot3NShearCapacityWithoutRebar
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_3n import Form6Dot3nShearCapacityWithoutRebar
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot3NShearCapacityWithoutRebar:
-    """Validation for formula 6.3n from EN 1992-1-1:2004."""
+class TestForm6Dot3nShearCapacityWithoutRebar:
+    """Validation for formula 6.3N from EN 1992-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -16,7 +16,7 @@ class TestForm6Dot3NShearCapacityWithoutRebar:
         f_ck = 30.0
 
         # Object to test
-        formula = Form6Dot3NShearCapacityWithoutRebar(k=k, f_ck=f_ck)
+        formula = Form6Dot3nShearCapacityWithoutRebar(k=k, f_ck=f_ck)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.19170289512
@@ -33,7 +33,7 @@ class TestForm6Dot3NShearCapacityWithoutRebar:
     def test_raise_error_when_invalid_values_are_given(self, k: float, f_ck: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot3NShearCapacityWithoutRebar(k=k, f_ck=f_ck)
+            Form6Dot3nShearCapacityWithoutRebar(k=k, f_ck=f_ck)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -52,7 +52,7 @@ class TestForm6Dot3NShearCapacityWithoutRebar:
         f_ck = 30.0
 
         # Object to test
-        latex = Form6Dot3NShearCapacityWithoutRebar(k=k, f_ck=f_ck).latex()
+        latex = Form6Dot3nShearCapacityWithoutRebar(k=k, f_ck=f_ck).latex()
 
         actual = {
             "complete": latex.complete,

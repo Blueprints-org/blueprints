@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot57NNuPrime(Formula):
+class Form6Dot57nNuPrime(Formula):
     r"""Class representing formula 6.57n for the calculation of [$\nu'$]."""
 
     label = "6.57n"
