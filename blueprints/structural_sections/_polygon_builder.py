@@ -12,7 +12,7 @@ from shapely.geometry.base import BaseGeometry
 from shapely.geometry.polygon import orient
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import CM, DEG, MM, RAD, M
+from blueprints.type_alias import CM, DEG, MM, M
 
 PointLike = tuple[float, float]
 Length = TypeVar("Length", M, CM, MM)
@@ -142,12 +142,11 @@ class PolygonBuilder:
         center = self._compute_arc_center(angle, sweep, radius)
         start_vector = self._current_point - center
 
-        # Determine the number of segments to approximate the arc and the rotation per segment.
+        # Determine the number of segments to approximate the arc.
         segment_count = self._segment_count_for_arc(sweep)
-        rotation_angle = np.deg2rad(sweep / segment_count)
 
         # Create the rotation matrix for the arc segments. Rotation matrix will be applied repeatedly to the start_vector.
-        rotation = self._rotation_matrix(rotation_angle)
+        rotation = self._rotation_matrix(sweep, segment_count)
 
         # Generate the intermediate points along the arc and append them to the polygon.
         arc_points = self._generate_arc_vertices(center, start_vector, rotation, segment_count)
@@ -205,21 +204,25 @@ class PolygonBuilder:
         return max(1, segments)
 
     @staticmethod
-    def _rotation_matrix(rotation_angle: RAD) -> NDArray[np.float64]:
-        """Return a 2D rotation matrix for the given angle.
+    def _rotation_matrix(sweep: DEG, segment_count: int) -> NDArray[np.float64]:
+        """Return a 2D rotation matrix for the per-segment sweep angle.
 
         This matrix can be used to rotate a vector in 2D space.
 
         Parameters
         ----------
-        rotation_angle : RAD
-            The rotation angle in radians.
+        sweep : DEG
+            Sweep angle of the arc segment in degrees;
+            Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
+        segment_count : int
+            The number of segments to approximate the arc.
 
         Returns
         -------
         NDArray[np.float64]
             A 2x2 rotation matrix.
         """
+        rotation_angle = np.deg2rad(sweep / segment_count)
         cosine = np.cos(rotation_angle)
         sine = np.sin(rotation_angle)
         return np.array([[cosine, -sine], [sine, cosine]], dtype=float)

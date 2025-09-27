@@ -415,6 +415,56 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(distances, radius, atol=1e-9)
         np.testing.assert_allclose(builder._points[-1], builder._points[0], atol=1e-9)  # noqa: SLF001
 
+    def test_compute_arc_center_respects_sweep_sign(self) -> None:
+        """Arc centre is offset to left for CCW sweeps and to right for CW sweeps."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        tangent_angle = 0.0
+        ccw_center = builder._compute_arc_center(tangent_angle, 30.0, 5.0)  # noqa: SLF001
+        cw_center = builder._compute_arc_center(tangent_angle, -30.0, 5.0)  # noqa: SLF001
+
+        np.testing.assert_allclose(ccw_center, (0.0, 5.0), atol=1e-12)
+        np.testing.assert_allclose(cw_center, (0.0, -5.0), atol=1e-12)
+
+    def test_segment_count_for_arc_uses_max_segment_angle(self) -> None:
+        """Segment count is derived from the configured maximum segment angle."""
+        builder = PolygonBuilder((0.0, 0.0), max_segment_angle=10.0)
+
+        segments = builder._segment_count_for_arc(95.0)  # noqa: SLF001
+        reverse_segments = builder._segment_count_for_arc(-95.0)  # noqa: SLF001
+
+        assert segments == 10
+        assert reverse_segments == 10
+
+    def test_rotation_matrix_returns_expected_transform(self) -> None:
+        """Rotation helper produces the standard planar rotation matrix."""
+        sweep = 90.0
+        segment_count = 1
+
+        rotation = PolygonBuilder._rotation_matrix(sweep, segment_count)  # noqa: SLF001
+
+        expected = np.array([[0.0, -1.0], [1.0, 0.0]])
+        np.testing.assert_allclose(rotation, expected, atol=1e-12)
+
+    def test_generate_arc_vertices_tracks_rotated_vectors(self) -> None:
+        """Vertex generation rotates the radius vector incrementally."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        center = np.array((0.0, 0.0))
+        start_vector = np.array((1.0, 0.0))
+        rotation = builder._rotation_matrix(90, 1)  # noqa: SLF001
+
+        points = builder._generate_arc_vertices(center, start_vector, rotation, 3)  # noqa: SLF001
+
+        expected = np.array(
+            [
+                (0.0, 1.0),
+                (-1.0, 0.0),
+                (0.0, -1.0),
+            ]
+        )
+        np.testing.assert_allclose(points, expected, atol=1e-12)
+
     def test_create_polygon_raises_not_implemented(self) -> None:
         """Creating the polygon raises NotImplementedError."""
         builder = PolygonBuilder((0.0, 0.0))
