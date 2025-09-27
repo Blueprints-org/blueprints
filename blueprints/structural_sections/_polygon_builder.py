@@ -243,6 +243,11 @@ class PolygonBuilder:
             Rotation matrix for the per-segment sweep angle.
         segment_count : int
             Number of chord segments tessellating the arc.
+
+        Returns
+        -------
+        NDArray[np.float64]
+            Array of shape (segment_count, 2) containing the coordinates of the arc points.
         """
         points = np.empty((segment_count, 2), dtype=float)
         vector = start_vector.astype(float, copy=True)
