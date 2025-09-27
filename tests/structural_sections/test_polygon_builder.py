@@ -286,12 +286,51 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[-1], (expected_x, expected_y))  # noqa: SLF001
         np.testing.assert_allclose(builder._current_point, (expected_x, expected_y))  # noqa: SLF001
 
-    def test_append_arc_raises_not_implemented(self) -> None:
-        """Appending an arc raises NotImplementedError."""
+    def test_append_arc_ccw_quarter_circle(self) -> None:
+        """A positive sweep generates a counter-clockwise arc with expected end point."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        with pytest.raises(NotImplementedError):
-            builder.append_arc(90.0, 0.0, 5.0)
+        builder.append_arc(90.0, 0.0, 5.0)
+
+        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (5.0, 5.0), atol=1e-10)  # noqa: SLF001
+
+        # All generated points remain on the circle centred at (0, 5) with radius 5.
+        centre = np.array((0.0, 5.0))
+        distances = np.linalg.norm(builder._points - centre, axis=1)  # noqa: SLF001
+        np.testing.assert_allclose(distances, 5.0, atol=1e-9)
+
+    def test_append_arc_cw_quarter_circle(self) -> None:
+        """A negative sweep turns clockwise and reaches the expected end point."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        builder.append_arc(-90.0, 0.0, 5.0)
+
+        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (5.0, -5.0), atol=1e-10)  # noqa: SLF001
+
+        centre = np.array((0.0, -5.0))
+        distances = np.linalg.norm(builder._points - centre, axis=1)  # noqa: SLF001
+        np.testing.assert_allclose(distances, 5.0, atol=1e-9)
+
+    def test_append_arc_zero_sweep_no_op(self) -> None:
+        """Zero sweep leaves the point list unchanged and returns the builder."""
+        builder = PolygonBuilder((1.0, 2.0))
+        points_before = builder._points.copy()  # noqa: SLF001
+
+        result = builder.append_arc(0.0, 0.0, 5.0)
+
+        assert result is builder
+        np.testing.assert_array_equal(builder._points, points_before)  # noqa: SLF001
+
+    def test_append_arc_zero_radius_raises(self) -> None:
+        """Zero radius is invalid and raises a ValueError."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        with pytest.raises(ValueError, match="Radius must be non-zero"):
+            builder.append_arc(45.0, 0.0, 0.0)
 
     def test_create_polygon_raises_not_implemented(self) -> None:
         """Creating the polygon raises NotImplementedError."""
