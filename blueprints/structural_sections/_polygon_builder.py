@@ -17,6 +17,15 @@ from blueprints.type_alias import CM, DEG, MM, M
 PointLike = tuple[float, float]
 Length = TypeVar("Length", M, CM, MM)
 
+# Numerical tolerance constants
+# -----------------------------
+# We treat values whose absolute magnitude is below these thresholds as zero.
+# Rationale: these are several orders above floating noise (~1e-16) yet far
+# below any meaningful geometric dimension or angle in typical structural
+# section modeling contexts.
+RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters)
+SWEEP_ZERO_ATOL_DEG: float = 1e-10  # degrees
+
 
 def merge_polygons(elements: Sequence[CrossSection]) -> Polygon:
     """Return the merged polygon of the cross-section elements."""
@@ -130,11 +139,11 @@ class PolygonBuilder:
         PolygonBuilder
             The PolygonBuilder instance (for method chaining).
         """
-        if np.isclose(radius, 0.0):
+        if np.isclose(radius, 0.0, atol=RADIUS_ZERO_ATOL, rtol=0.0):
             error_msg = "Radius must be non-zero to define an arc."
             raise ValueError(error_msg)
 
-        if np.isclose(sweep, 0.0):
+        if np.isclose(sweep, 0.0, atol=SWEEP_ZERO_ATOL_DEG, rtol=0.0):
             # A zero sweep does not change the geometry; simply return the builder.
             return self
 
