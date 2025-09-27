@@ -47,24 +47,25 @@ class PolygonBuilder:
     Notes
     -----
     `Smoothness`:
-        set `MAX_SEGMENT_ANGLE_DEGREES` to control how finely arcs are tessellated (smaller = smoother, more vertices).
+        set `max_segment_angle` to control how finely arcs are tessellated (smaller = smoother, more vertices).
         Internally this maps to Shapely's buffer `resolution`.
     """
 
-    MAX_SEGMENT_ANGLE_DEGREES = 5.0
-    """Maximum central angle (degrees) per arc chord segment when tessellating arcs.
-    This is used to determine the number of segments when creating circular arcs.
-    Smaller values lead to finer tessellation and more points in the resulting polygon."""
-
-    def __init__(self, starting_point: PointLike) -> None:
+    def __init__(self, starting_point: PointLike, max_segment_angle: DEG = 5.0) -> None:
         """Initialize an empty PolygonBuilder.
 
         Parameters
         ----------
         starting_point : PointLike
             Starting point of the polygon (x, y).
+        max_segment_angle : DEG, optional
+            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
+            This is used to determine the number of segments when creating circular arcs.
+            Smaller values lead to finer tessellation and more points in the resulting polygon.
+            Default is 5.0 degrees.
         """
         self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
+        self._max_segment_angle = max_segment_angle
 
     @property
     def _current_point(self) -> NDArray[np.float64]:
