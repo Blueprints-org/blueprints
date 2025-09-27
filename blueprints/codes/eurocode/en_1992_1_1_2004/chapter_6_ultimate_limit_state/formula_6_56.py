@@ -26,7 +26,7 @@ class Form6Dot56DesignStrengthConcreteStrussTransverseTension(Formula):
         ----------
         nu_prime : float
             [$\nu'$] Factor for transverse tension [-]. The value of $\nu'$ for use in a Country may be found in its National Annex.
-            The recommended value is given by equation (6.57n).
+            The recommended value is given by equation (6.57N).
         f_cd : float
             [$f_{cd}$] Design compressive strength of concrete [$MPa$].
         """

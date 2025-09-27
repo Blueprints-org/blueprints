@@ -1,4 +1,4 @@
-"""Formula 6.3n from EN 1992-1-1:2004: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.3N from EN 1992-1-1:2004: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -8,9 +8,9 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot3nShearCapacityWithoutRebar(Formula):
-    r"""Class representing formula 6.3n for the calculation of the shear capacity without rebar, [$v_{min}$]."""
+    r"""Class representing formula 6.3N for the calculation of the shear capacity without rebar, [$v_{min}$]."""
 
-    label = "6.3n"
+    label = "6.3N"
     source_document = EN_1992_1_1_2004
 
     def __init__(
@@ -20,7 +20,7 @@ class Form6Dot3nShearCapacityWithoutRebar(Formula):
     ) -> None:
         r"""[$v_{min}$] Shear capacity without rebar [$MPa$].
 
-        EN 1992-1-1:2004 art.6.2.2(1) - Formula (6.3n)
+        EN 1992-1-1:2004 art.6.2.2(1) - Formula (6.3N)
 
         Parameters
         ----------
@@ -44,7 +44,7 @@ class Form6Dot3nShearCapacityWithoutRebar(Formula):
         return 0.035 * k**1.5 * f_ck**0.5
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.3n."""
+        """Returns LatexFormula object for formula 6.3N."""
         return LatexFormula(
             return_symbol=r"v_{min}",
             result=f"{self:.{n}f}",

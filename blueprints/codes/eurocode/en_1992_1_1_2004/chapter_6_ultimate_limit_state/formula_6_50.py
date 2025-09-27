@@ -30,7 +30,7 @@ class Form6Dot50PunchingStressResistance(Formula):
         EN 1992-1-1:2004 art.6.4.4(2) - Formula (6.50)
 
         The values of $C_{Rd,c}$, $v_{min}$, and $k$ for use in a country may be found in its national annex.
-        The recommended value for $C_{Rd,c}$ is $0.18 / \gamma_c$, for $v_{min}$ is given by Expression (6.3n),
+        The recommended value for $C_{Rd,c}$ is $0.18 / \gamma_c$, for $v_{min}$ is given by Expression (6.3N),
         and that for $k$ is $1.0$.
 
         Parameters
@@ -48,7 +48,7 @@ class Form6Dot50PunchingStressResistance(Formula):
         a : MM
             $a$ Distance from the periphery of the column to the control perimeter considered [$mm$].
         v_min : MPA
-            $v_{min}$ Minimum shear stress capacity concrete, recommended value with Expression (6.3n) [$MPa$].
+            $v_{min}$ Minimum shear stress capacity concrete, recommended value with Expression (6.3N) [$MPa$].
         """
         super().__init__()
         self.c_rd_c = c_rd_c
