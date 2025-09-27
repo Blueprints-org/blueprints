@@ -1,4 +1,4 @@
-"""Formula 6.57N from EN 1992-1-1:2004: Chapter 6 - Ultimate Limit State."""
+"""Formula 6.57n from EN 1992-1-1:2004: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -8,9 +8,9 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot57NNuPrime(Formula):
-    r"""Class representing formula 6.57N for the calculation of [$\nu'$]."""
+    r"""Class representing formula 6.57n for the calculation of [$\nu'$]."""
 
-    label = "6.57N"
+    label = "6.57n"
     source_document = EN_1992_1_1_2004
 
     def __init__(
@@ -19,7 +19,7 @@ class Form6Dot57NNuPrime(Formula):
     ) -> None:
         r"""[$\nu'$] Calculation of [$\nu'$].
 
-        EN 1992-1-1:2004 art.6.5.2(2) - Formula (6.57N)
+        EN 1992-1-1:2004 art.6.5.2(2) - Formula (6.57n)
 
         Parameters
         ----------
@@ -39,7 +39,7 @@ class Form6Dot57NNuPrime(Formula):
         return 1 - f_ck / 250
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.57N."""
+        """Returns LatexFormula object for formula 6.57n."""
         _equation: str = r"1 - \frac{f_{ck}}{250}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,

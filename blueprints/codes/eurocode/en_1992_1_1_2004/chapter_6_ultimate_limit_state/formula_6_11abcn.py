@@ -1,4 +1,4 @@
-"""Formula 6.11a/b/cN from EN 1992-1-1:2004: Chapter 6 - Ultimate limit state."""
+"""Formula 6.11a/b/cn from EN 1992-1-1:2004: Chapter 6 - Ultimate limit state."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -8,11 +8,11 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form6Dot11abcNCompressionChordCoefficient(Formula):
-    r"""Class representing formula 6.11a/b/cN for the calculation of the coefficient taking account of the state of the stress in
+    r"""Class representing formula 6.11a/b/cn for the calculation of the coefficient taking account of the state of the stress in
     the compression chord.
     """
 
-    label = "6.11a/b/cN"
+    label = "6.11a/b/cn"
     source_document = EN_1992_1_1_2004
 
     def __init__(
@@ -22,7 +22,7 @@ class Form6Dot11abcNCompressionChordCoefficient(Formula):
     ) -> None:
         r"""[$\alpha_{cw}$] Coefficient taking account of the state of the stress in the compression chord [$-$].
 
-        EN 1992-1-1:2004 art.6.2.3(3) - Formula (6.11.aN, 6.11.bN, and 6.11.cN)
+        EN 1992-1-1:2004 art.6.2.3(3) - Formula (6.11.an, 6.11.bn, and 6.11.cn)
 
         Parameters
         ----------
@@ -50,7 +50,7 @@ class Form6Dot11abcNCompressionChordCoefficient(Formula):
         return 2.5 * (1 - sigma_cp / f_cd)
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.11a/b/cN."""
+        """Returns LatexFormula object for formula 6.11a/b/cn."""
         return LatexFormula(
             return_symbol=r"\alpha_{cw}",
             result=f"{self:.{n}f}",

@@ -30,7 +30,7 @@ class Form6Dot47PunchingShearResistance(Formula):
         EN 1992-1-1:2004 art.6.4.4(1) - Formula (6.47).
 
         The values of $C_{Rd,c}$, $v_{min}$, and $k_1$ for use in a country may be found in its national annex.
-        The recommended value for $C_{Rd,c}$ is $0.18 / \gamma_c$, for $v_{min}$ is given by Expression (6.3N),
+        The recommended value for $C_{Rd,c}$ is $0.18 / \gamma_c$, for $v_{min}$ is given by Expression (6.3n),
         and that for $k_1$ is $0.1$.
 
         Parameters
@@ -49,7 +49,7 @@ class Form6Dot47PunchingShearResistance(Formula):
             $\sigma_{cp}$ Stress in the critical section as average of the two perpendicular directions, see
              equation SubForm6Dot47FactorSigmaCp [$MPa$].
         v_min : MPA
-            $v_{min}$ Minimum shear stress capacity concrete, recommended value with Expression (6.3N) [$MPa$].
+            $v_{min}$ Minimum shear stress capacity concrete, recommended value with Expression (6.3n) [$MPa$].
         """
         super().__init__()
         self.c_rd_c = c_rd_c

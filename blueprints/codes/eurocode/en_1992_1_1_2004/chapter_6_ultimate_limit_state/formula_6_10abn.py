@@ -1,4 +1,4 @@
-"""Formula 6.10a/bN from EN 1992-1-1:2004: Chapter 6 - Ultimate limit state."""
+"""Formula 6.10a/bn from EN 1992-1-1:2004: Chapter 6 - Ultimate limit state."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
@@ -8,9 +8,9 @@ from blueprints.validations import raise_if_negative
 
 
 class Form6Dot10abNStrengthReductionFactor(Formula):
-    r"""Class representing formula 6.10a/bN for the calculation of the strength reduction factor for concrete cracked in shear."""
+    r"""Class representing formula 6.10a/bn for the calculation of the strength reduction factor for concrete cracked in shear."""
 
-    label = "6.10a/bN"
+    label = "6.10a/bn"
     source_document = EN_1992_1_1_2004
 
     def __init__(
@@ -19,7 +19,7 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
     ) -> None:
         r"""[$\nu_{1}$] Strength reduction factor for concrete cracked in shear [$-$].
 
-        EN 1992-1-1:2004 art.6.2.3(3) - Formula (6.10.aN and 6.10.bN)
+        EN 1992-1-1:2004 art.6.2.3(3) - Formula (6.10.an and 6.10.bn)
 
         Parameters
         ----------
@@ -41,7 +41,7 @@ class Form6Dot10abNStrengthReductionFactor(Formula):
         return max(0.9 - f_ck / 200, 0.5)
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 6.10a/bN."""
+        """Returns LatexFormula object for formula 6.10a/bn."""
         return LatexFormula(
             return_symbol=r"\nu_{1}",
             result=f"{self:.{n}f}",
