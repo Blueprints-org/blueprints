@@ -174,11 +174,11 @@ class PolygonBuilder:
         return self
 
     def _compute_arc_center(self, angle: DEG, sweep: DEG, radius: Length) -> NDArray[np.float64]:
-        """Return the coordinates of the arc centre.
+        """Return the coordinates of the arc center.
 
-        The circle centre lies along the `normal left` of the tangent direction at the arc start point.
-        A positive sweep turns counter-clockwise, so the centre is located to the
-        left of the tangent; a negative sweep turns clockwise, placing the centre
+        The circle center lies along the `normal left` of the tangent direction at the arc start point.
+        A positive sweep turns counter-clockwise, so the center is located to the
+        left of the tangent; a negative sweep turns clockwise, placing the center
         to the right.
 
         Parameters
@@ -197,7 +197,7 @@ class PolygonBuilder:
         Returns
         -------
         NDArray[np.float64]
-            Coordinates of the arc centre (x, y).
+            Coordinates of the arc center (x, y).
         """
         tangent_angle_rad = np.deg2rad(angle)
         normal_left = np.array([-np.sin(tangent_angle_rad), np.cos(tangent_angle_rad)], dtype=float)
@@ -258,9 +258,9 @@ class PolygonBuilder:
         Parameters
         ----------
         center : array-like of shape (2,)
-            Coordinates of the circle centre.
+            Coordinates of the circle center.
         start_vector : array-like of shape (2,)
-            Vector from the centre to the arc start point.
+            Vector from the center to the arc start point.
         rotation : array-like of shape (2, 2)
             Rotation matrix for the per-segment sweep angle.
         segment_count : int
