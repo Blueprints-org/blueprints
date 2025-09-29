@@ -313,8 +313,8 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[-1], (5.0, 5.0), atol=1e-10)  # noqa: SLF001
 
         # All generated points remain on the circle centred at (0, 5) with radius 5.
-        centre = np.array((0.0, 5.0))
-        distances = np.linalg.norm(builder._points - centre, axis=1)  # noqa: SLF001
+        center = np.array((0.0, 5.0))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
         np.testing.assert_allclose(distances, 5.0, atol=1e-9)
 
     def test_append_arc_cw_quarter_circle(self) -> None:
@@ -327,8 +327,8 @@ class TestPolygonBuilder:
         assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
         np.testing.assert_allclose(builder._points[-1], (5.0, -5.0), atol=1e-10)  # noqa: SLF001
 
-        centre = np.array((0.0, -5.0))
-        distances = np.linalg.norm(builder._points - centre, axis=1)  # noqa: SLF001
+        center = np.array((0.0, -5.0))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
         np.testing.assert_allclose(distances, 5.0, atol=1e-9)
 
     def test_append_arc_zero_sweep_no_op(self) -> None:
@@ -359,8 +359,8 @@ class TestPolygonBuilder:
         assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
 
         start = builder._points[0]  # noqa: SLF001
-        centre = start + 10.0 * np.array((-np.sin(0.0), np.cos(0.0)))
-        distances = np.linalg.norm(builder._points - centre, axis=1)  # noqa: SLF001
+        center = start + 10.0 * np.array((-np.sin(0.0), np.cos(0.0)))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
         np.testing.assert_allclose(distances, 10.0, atol=1e-9)
 
     def test_append_arc_respects_angle(self) -> None:
@@ -374,8 +374,8 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[-1], (-5.0, 5.0), atol=1e-10)  # noqa: SLF001
 
         start = builder._points[0]  # noqa: SLF001
-        centre = start + 5.0 * np.array((-np.sin(np.deg2rad(90.0)), np.cos(np.deg2rad(90.0))))
-        distances = np.linalg.norm(builder._points - centre, axis=1)  # noqa: SLF001
+        center = start + 5.0 * np.array((-np.sin(np.deg2rad(90.0)), np.cos(np.deg2rad(90.0))))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
         np.testing.assert_allclose(distances, 5.0, atol=1e-9)
 
     def test_append_arc_supports_chaining(self) -> None:
@@ -402,15 +402,15 @@ class TestPolygonBuilder:
 
         tangent_rad = np.deg2rad(angle)
         start = builder._points[0]  # noqa: SLF001
-        centre = start + radius * np.array((-np.sin(tangent_rad), np.cos(tangent_rad)))
-        start_vector = builder._points[0] - centre  # noqa: SLF001
+        center = start + radius * np.array((-np.sin(tangent_rad), np.cos(tangent_rad)))
+        start_vector = builder._points[0] - center  # noqa: SLF001
         rotation = np.array(
             [
                 [np.cos(np.deg2rad(sweep)), -np.sin(np.deg2rad(sweep))],
                 [np.sin(np.deg2rad(sweep)), np.cos(np.deg2rad(sweep))],
             ]
         )
-        expected_endpoint = centre + rotation @ start_vector
+        expected_endpoint = center + rotation @ start_vector
 
         np.testing.assert_allclose(builder._points[-1], expected_endpoint, atol=1e-10)  # noqa: SLF001
 
@@ -426,13 +426,13 @@ class TestPolygonBuilder:
         assert builder._points.shape == (segment_count + 1, 2)  # noqa: SLF001
 
         start = builder._points[0]  # noqa: SLF001
-        centre = start + radius * np.array((-np.sin(0.0), np.cos(0.0)))
-        distances = np.linalg.norm(builder._points - centre, axis=1)  # noqa: SLF001
+        center = start + radius * np.array((-np.sin(0.0), np.cos(0.0)))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
         np.testing.assert_allclose(distances, radius, atol=1e-9)
         np.testing.assert_allclose(builder._points[-1], builder._points[0], atol=1e-9)  # noqa: SLF001
 
     def test_compute_arc_center_respects_sweep_sign(self) -> None:
-        """Arc centre is offset to left for CCW sweeps and to right for CW sweeps."""
+        """Arc center is offset to left for CCW sweeps and to right for CW sweeps."""
         builder = PolygonBuilder((0.0, 0.0))
 
         tangent_angle = 0.0
