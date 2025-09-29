@@ -235,6 +235,22 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[0], starting_point)  # noqa: SLF001
         np.testing.assert_allclose(builder._current_point, starting_point)  # noqa: SLF001
 
+    def test_init_with_max_segment_angle(self) -> None:
+        """The maximum segment angle can be customized."""
+        custom_angle = 11.0
+
+        builder = PolygonBuilder((0.0, 0.0), max_segment_angle=custom_angle)
+
+        assert builder._max_segment_angle == custom_angle  # noqa: SLF001
+
+    def test_init_with_invalid_max_segment_angle_raises(self) -> None:
+        """A non-positive maximum segment angle raises a ValueError."""
+        with pytest.raises(ValueError, match="max_segment_angle must be positive"):
+            PolygonBuilder((0.0, 0.0), max_segment_angle=0.0)
+
+        with pytest.raises(ValueError, match="max_segment_angle must be positive"):
+            PolygonBuilder((0.0, 0.0), max_segment_angle=-5.0)
+
     def test_append_line_appends_point(self) -> None:
         """Appending a line adds a new point and updates the current endpoint."""
         builder = PolygonBuilder((0.0, 0.0))
