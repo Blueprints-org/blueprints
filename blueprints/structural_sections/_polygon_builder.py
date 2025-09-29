@@ -72,6 +72,11 @@ class PolygonBuilder:
             This is used to determine the number of segments when creating circular arcs.
             Smaller values lead to finer tessellation and more points in the resulting polygon.
             Default is 5.0 degrees.
+
+        Raises
+        ------
+        ValueError
+            If `max_segment_angle` is not positive.
         """
         self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
 
@@ -133,6 +138,11 @@ class PolygonBuilder:
         radius : Length
             Radius of the arc segment. Must be non-zero.
             The sign of the radius is ignored; only its magnitude is used.
+
+        Raises
+        ------
+        ValueError
+            If `radius` is zero.
 
         Returns
         -------
