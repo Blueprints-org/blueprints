@@ -7,8 +7,8 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form6Dot11abcNCompressionChordCoefficient(Formula):
-    r"""Class representing formula 6.11a/b/cN for the calculation of the coefficient taking account of the state of the stress in
+class Form6Dot11abcnCompressionChordCoefficient(Formula):
+    r"""Class representing formula 6.11a/b/cn for the calculation of the coefficient taking account of the state of the stress in
     the compression chord.
     """
 
