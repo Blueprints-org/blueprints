@@ -1,5 +1,9 @@
 """Test suite for the RHSSteelProfile class."""
 
+import matplotlib as mpl
+
+mpl.use("Agg")
+
 from unittest.mock import MagicMock
 
 import pytest
