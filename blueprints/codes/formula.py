@@ -1,6 +1,8 @@
 """Module for the abstract base class Formula."""
 
+import operator
 from abc import ABC, abstractmethod
+from typing import Any, Callable
 
 from blueprints.codes.latex_formula import LatexFormula
 
@@ -108,6 +110,12 @@ class Formula(float, ABC):
 class ComparisonFormula(Formula):
     """Base class for comparison formulas used in the codes."""
 
+    @classmethod
+    @abstractmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
+        return operator.le
+
     def __new__(cls, *args, **kwargs) -> "ComparisonFormula":
         """Method for creating a new instance of the class."""
         lhs = cls._evaluate_lhs(*args, **kwargs)
@@ -163,8 +171,7 @@ class ComparisonFormula(Formula):
         """
         return self._rhs  # type: ignore[attr-defined]
 
-    @property
-    @abstractmethod
+
     def unity_check(self) -> float:
         """Property to present the unity check of the formula.
 
@@ -173,3 +180,12 @@ class ComparisonFormula(Formula):
         float
             The unity check.
         """
+        return self.lhs / self.rhs
+
+    @classmethod
+    def _evaluate(cls, *args, **kwargs) -> bool:
+        """Implements the comparison using the class-level operator."""
+        lhs = cls._evaluate_lhs(*args, **kwargs)
+        rhs = cls._evaluate_rhs(*args, **kwargs)
+        comparison = cls._comparison_operator
+        return comparison()(lhs, rhs)
