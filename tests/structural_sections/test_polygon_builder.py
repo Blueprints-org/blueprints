@@ -586,3 +586,19 @@ class TestPolygonBuilder:
         assert polygon.area == pytest.approx(1.0, rel=0.0, abs=1e-12)
         assert polygon.length == pytest.approx(4.0, rel=0.0, abs=1e-12)
         np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-12)
+
+    def test_create_polygon_no_centroid_transform(self) -> None:
+        """The centroid is computed in the local coordinate system if no transform is given."""
+        builder = PolygonBuilder((1.0, 1.0))
+        builder.append_line(2.0, 0.0)
+        builder.append_line(2.0, 90.0)
+        builder.append_line(2.0, 180.0)
+        builder.append_line(2.0, -90.0)
+
+        polygon = builder.create_polygon(transform_centroid=False)
+
+        assert isinstance(polygon, Polygon)
+        assert polygon.is_valid
+        assert polygon.area == pytest.approx(4.0, rel=0.0, abs=1e-12)
+        assert polygon.length == pytest.approx(8.0, rel=0.0, abs=1e-12)
+        np.testing.assert_allclose(polygon.centroid.coords[0], (2.0, 2.0), atol=1e-12)
