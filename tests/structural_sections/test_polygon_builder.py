@@ -490,9 +490,99 @@ class TestPolygonBuilder:
         )
         np.testing.assert_allclose(points, expected, atol=1e-12)
 
-    def test_create_polygon_raises_not_implemented(self) -> None:
-        """Creating the polygon raises NotImplementedError."""
+    def test_create_polygon_requires_three_points(self) -> None:
+        """Creating a polygon with fewer than three points raises a ValueError."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder.append_line(1.0, 0.0)
+
+        with pytest.raises(ValueError, match="A polygon requires at least 3 points"):
+            builder.create_polygon()
+
+    def test_create_polygon_invalid_geometry(self) -> None:
+        """Self-intersecting point sets are rejected as invalid polygons."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder._points = np.array(  # noqa: SLF001
+            [
+                (0.0, 0.0),
+                (1.0, 1.0),
+                (0.0, 1.0),
+                (1.0, 0.0),
+            ],
+            dtype=float,
+        )
+
+        with pytest.raises(ValueError, match="The constructed polygon is not valid"):
+            builder.create_polygon()
+
+    def test_create_polygon_returns_valid_polygon(self) -> None:
+        """A closed path of segments produces a valid Shapely polygon."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder.append_line(1.0, 0.0)
+        builder.append_line(1.0, 90.0)
+        builder.append_line(1.0, 180.0)
+        builder.append_line(1.0, -90.0)
+
+        polygon = builder.create_polygon()
+
+        assert isinstance(polygon, Polygon)
+        assert polygon.is_valid
+        assert polygon.area == pytest.approx(1.0, rel=0.0, abs=1e-12)
+        assert polygon.length == pytest.approx(4.0, rel=0.0, abs=1e-12)
+        np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-12)
+
+    def test_create_polygon_with_arc_segments(self) -> None:
+        """Polygons built from tessellated arcs remain valid and match expected area."""
+        radius = 1.0
+        sweep = 360.0
+        builder = PolygonBuilder((radius, 0.0))
+
+        builder.append_arc(sweep, angle=0.0, radius=radius, max_segment_angle=30.0)
+
+        polygon = builder.create_polygon()
+
+        assert polygon.is_valid
+        segment_count = builder._segment_count_for_arc(sweep, max_segment_angle=30.0)  # noqa: SLF001
+        # Arc tessellation produces segment_count additional vertices plus the start point.
+        assert len(builder._points) == segment_count + 1  # noqa: SLF001
+        assert len(polygon.exterior.coords[:-1]) == segment_count + 1
+
+        per_segment_angle = np.deg2rad(sweep / segment_count)
+        expected_area = 0.5 * segment_count * radius**2 * np.sin(per_segment_angle)
+        assert polygon.area == pytest.approx(expected_area, rel=1e-12, abs=1e-12)
+        np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-12)
+
+    def test_create_polygon_with_circles(self) -> None:
+        """Polygons built from full circles remain valid and match expected area."""
+        radius = 2.5
         builder = PolygonBuilder((0.0, 0.0))
 
-        with pytest.raises(NotImplementedError):
-            builder.create_polygon()  # type: ignore[call-arg]
+        builder.append_arc(360.0, 0.0, radius, max_segment_angle := 1.0)
+
+        polygon = builder.create_polygon()
+
+        assert polygon.is_valid
+        segment_count = 360 / max_segment_angle
+        # Arc tessellation produces segment_count additional vertices plus the start point.
+        assert len(builder._points) == segment_count + 1  # noqa: SLF001
+        assert len(polygon.exterior.coords[:-1]) == segment_count + 1
+
+        expected_area = np.pi * radius**2
+        assert polygon.area == pytest.approx(expected_area, rel=1e-3)
+        np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-9)
+
+    def test_create_polygon_when_polygon_does_not_close(self) -> None:
+        """The builder automatically closes the polygon if needed."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder.append_line(1.0, 0.0)
+        builder.append_line(1.0, 90.0)
+        builder.append_line(1.0, 180.0)
+        # Note: The final line back to the start is omitted.
+        assert not np.isclose(builder._current_point, builder._points[0]).all()  # noqa: SLF001
+
+        polygon = builder.create_polygon()
+
+        assert isinstance(polygon, Polygon)
+        assert polygon.is_valid
+        assert polygon.area == pytest.approx(1.0, rel=0.0, abs=1e-12)
+        assert polygon.length == pytest.approx(4.0, rel=0.0, abs=1e-12)
+        np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-12)

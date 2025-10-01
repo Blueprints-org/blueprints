@@ -7,6 +7,7 @@ from typing import TypeVar
 
 import numpy as np
 from numpy.typing import NDArray
+from shapely import transform
 from shapely.geometry import Polygon
 from shapely.geometry.base import BaseGeometry
 from shapely.geometry.polygon import orient
@@ -290,8 +291,16 @@ class PolygonBuilder:
 
         return center + rotated
 
-    def create_polygon(self) -> Polygon:
+    def create_polygon(self, transform_centroid: bool = True) -> Polygon:
         """Create and return a Shapely Polygon from the built points.
+
+        Note that the polygon is automatically closed.
+
+        Parameters
+        ----------
+        transform_centroid : bool, optional
+            If True, the polygon is translated so that its centroid is at the origin (0, 0).
+            Default is True.
 
         Returns
         -------
@@ -304,4 +313,14 @@ class PolygonBuilder:
             If there are fewer than 3 points to form a polygon.
             If the constructed polygon is not valid.
         """
-        raise NotImplementedError
+        if len(self._points) < 3:
+            raise ValueError("A polygon requires at least 3 points.")
+
+        polygon = Polygon(self._points)
+        if not polygon.is_valid:
+            raise ValueError("The constructed polygon is not valid.")
+
+        if transform_centroid:
+            polygon = transform(polygon, lambda x: x - polygon.centroid.coords.__array__())
+
+        return polygon
