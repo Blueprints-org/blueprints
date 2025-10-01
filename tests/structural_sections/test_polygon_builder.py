@@ -235,6 +235,22 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[0], starting_point)  # noqa: SLF001
         np.testing.assert_allclose(builder._current_point, starting_point)  # noqa: SLF001
 
+    def test_init_with_max_segment_angle(self) -> None:
+        """The maximum segment angle can be customized."""
+        custom_angle = 11.0
+
+        builder = PolygonBuilder((0.0, 0.0), max_segment_angle=custom_angle)
+
+        assert builder._max_segment_angle == custom_angle  # noqa: SLF001
+
+    def test_init_with_invalid_max_segment_angle_raises(self) -> None:
+        """A non-positive maximum segment angle raises a ValueError."""
+        with pytest.raises(ValueError, match="max_segment_angle must be positive"):
+            PolygonBuilder((0.0, 0.0), max_segment_angle=0.0)
+
+        with pytest.raises(ValueError, match="max_segment_angle must be positive"):
+            PolygonBuilder((0.0, 0.0), max_segment_angle=-5.0)
+
     def test_append_line_appends_point(self) -> None:
         """Appending a line adds a new point and updates the current endpoint."""
         builder = PolygonBuilder((0.0, 0.0))
@@ -286,12 +302,184 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[-1], (expected_x, expected_y))  # noqa: SLF001
         np.testing.assert_allclose(builder._current_point, (expected_x, expected_y))  # noqa: SLF001
 
-    def test_append_arc_raises_not_implemented(self) -> None:
-        """Appending an arc raises NotImplementedError."""
+    def test_append_arc_ccw_quarter_circle(self) -> None:
+        """A positive sweep generates a counter-clockwise arc with expected end point."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        with pytest.raises(NotImplementedError):
-            builder.append_arc(90.0, 0.0, 5.0)
+        builder.append_arc(90.0, 0.0, 5.0)
+
+        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (5.0, 5.0), atol=1e-10)  # noqa: SLF001
+
+        # All generated points remain on the circle centred at (0, 5) with radius 5.
+        center = np.array((0.0, 5.0))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
+        np.testing.assert_allclose(distances, 5.0, atol=1e-9)
+
+    def test_append_arc_cw_quarter_circle(self) -> None:
+        """A negative sweep turns clockwise and reaches the expected end point."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        builder.append_arc(-90.0, 0.0, 5.0)
+
+        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (5.0, -5.0), atol=1e-10)  # noqa: SLF001
+
+        center = np.array((0.0, -5.0))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
+        np.testing.assert_allclose(distances, 5.0, atol=1e-9)
+
+    def test_append_arc_zero_sweep_no_op(self) -> None:
+        """Zero sweep leaves the point list unchanged and returns the builder."""
+        builder = PolygonBuilder((1.0, 2.0))
+        points_before = builder._points.copy()  # noqa: SLF001
+
+        result = builder.append_arc(0.0, 0.0, 5.0)
+
+        assert result is builder
+        np.testing.assert_array_equal(builder._points, points_before)  # noqa: SLF001
+
+    def test_append_arc_zero_radius_raises(self) -> None:
+        """Zero radius is invalid and raises a ValueError."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        with pytest.raises(ValueError, match="Radius must be non-zero"):
+            builder.append_arc(45.0, 0.0, 0.0)
+
+    def test_append_arc_appends_point(self) -> None:
+        """Appending an arc adds tessellated points following the circular path."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        result = builder.append_arc(45.0, 0.0, 10.0)
+
+        assert result is builder
+        expected_segments = int(np.ceil(45.0 / builder._max_segment_angle))  # noqa: SLF001
+        assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
+
+        start = builder._points[0]  # noqa: SLF001
+        center = start + 10.0 * np.array((-np.sin(0.0), np.cos(0.0)))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
+        np.testing.assert_allclose(distances, 10.0, atol=1e-9)
+
+    def test_append_arc_respects_angle(self) -> None:
+        """The total sweep honours the supplied start tangent direction."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        builder.append_arc(90.0, 90.0, 5.0)
+
+        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (-5.0, 5.0), atol=1e-10)  # noqa: SLF001
+
+        start = builder._points[0]  # noqa: SLF001
+        center = start + 5.0 * np.array((-np.sin(np.deg2rad(90.0)), np.cos(np.deg2rad(90.0))))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
+        np.testing.assert_allclose(distances, 5.0, atol=1e-9)
+
+    def test_append_arc_supports_chaining(self) -> None:
+        """Arc calls can be chained just like line segments."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        builder.append_arc(90.0, 0.0, 2.0).append_arc(-90.0, 90.0, 2.0)
+
+        first_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        second_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        expected_points = 1 + first_segments + second_segments
+        assert builder._points.shape == (expected_points, 2)  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (4.0, 4.0), atol=1e-10)  # noqa: SLF001
+
+    def test_append_arc_non_standard_angle(self) -> None:
+        """Arcs starting from arbitrary tangents terminate at the correct location."""
+        builder = PolygonBuilder((1.5, -0.75))
+
+        sweep = 60.0
+        angle = 37.0
+        radius = 12.0
+
+        builder.append_arc(sweep, angle, radius)
+
+        tangent_rad = np.deg2rad(angle)
+        start = builder._points[0]  # noqa: SLF001
+        center = start + radius * np.array((-np.sin(tangent_rad), np.cos(tangent_rad)))
+        start_vector = builder._points[0] - center  # noqa: SLF001
+        rotation = np.array(
+            [
+                [np.cos(np.deg2rad(sweep)), -np.sin(np.deg2rad(sweep))],
+                [np.sin(np.deg2rad(sweep)), np.cos(np.deg2rad(sweep))],
+            ]
+        )
+        expected_endpoint = center + rotation @ start_vector
+
+        np.testing.assert_allclose(builder._points[-1], expected_endpoint, atol=1e-10)  # noqa: SLF001
+
+    def test_append_arc_full_circle(self) -> None:
+        """A 360° sweep returns to the start point while populating the circle."""
+        builder = PolygonBuilder((3.0, 0.0))
+
+        sweep = 360.0
+        radius = 3.0
+        builder.append_arc(sweep, 0.0, radius)
+
+        segment_count = int(np.ceil(sweep / builder._max_segment_angle))  # noqa: SLF001
+        assert builder._points.shape == (segment_count + 1, 2)  # noqa: SLF001
+
+        start = builder._points[0]  # noqa: SLF001
+        center = start + radius * np.array((-np.sin(0.0), np.cos(0.0)))
+        distances = np.linalg.norm(builder._points - center, axis=1)  # noqa: SLF001
+        np.testing.assert_allclose(distances, radius, atol=1e-9)
+        np.testing.assert_allclose(builder._points[-1], builder._points[0], atol=1e-9)  # noqa: SLF001
+
+    def test_compute_arc_center_respects_sweep_sign(self) -> None:
+        """Arc center is offset to left for CCW sweeps and to right for CW sweeps."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        tangent_angle = 0.0
+        ccw_center = builder._compute_arc_center(tangent_angle, 30.0, 5.0)  # noqa: SLF001
+        cw_center = builder._compute_arc_center(tangent_angle, -30.0, 5.0)  # noqa: SLF001
+
+        np.testing.assert_allclose(ccw_center, (0.0, 5.0), atol=1e-12)
+        np.testing.assert_allclose(cw_center, (0.0, -5.0), atol=1e-12)
+
+    def test_segment_count_for_arc_uses_max_segment_angle(self) -> None:
+        """Segment count is derived from the configured maximum segment angle."""
+        builder = PolygonBuilder((0.0, 0.0), max_segment_angle=10.0)
+
+        segments = builder._segment_count_for_arc(95.0)  # noqa: SLF001
+        reverse_segments = builder._segment_count_for_arc(-95.0)  # noqa: SLF001
+
+        assert segments == 10
+        assert reverse_segments == 10
+
+    def test_rotation_matrix_returns_expected_transform(self) -> None:
+        """Rotation helper produces the standard planar rotation matrix."""
+        sweep = 90.0
+        segment_count = 1
+
+        rotation = PolygonBuilder._rotation_matrix(sweep, segment_count)  # noqa: SLF001
+
+        expected = np.array([[0.0, -1.0], [1.0, 0.0]])
+        np.testing.assert_allclose(rotation, expected, atol=1e-12)
+
+    def test_generate_arc_vertices_tracks_rotated_vectors(self) -> None:
+        """Vertex generation rotates the radius vector incrementally."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        center = np.array((0.0, 0.0))
+        start_vector = np.array((1.0, 0.0))
+        rotation = builder._rotation_matrix(90, 1)  # noqa: SLF001
+
+        points = builder._generate_arc_vertices(center, start_vector, rotation, 3)  # noqa: SLF001
+
+        expected = np.array(
+            [
+                (0.0, 1.0),
+                (-1.0, 0.0),
+                (0.0, -1.0),
+            ]
+        )
+        np.testing.assert_allclose(points, expected, atol=1e-12)
 
     def test_create_polygon_raises_not_implemented(self) -> None:
         """Creating the polygon raises NotImplementedError."""

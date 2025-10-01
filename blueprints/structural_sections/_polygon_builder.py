@@ -17,6 +17,15 @@ from blueprints.type_alias import CM, DEG, MM, M
 PointLike = tuple[float, float]
 Length = TypeVar("Length", M, CM, MM)
 
+# Numerical tolerance constants
+# -----------------------------
+# We treat values whose absolute magnitude is below these thresholds as zero.
+# Rationale: these are several orders above floating noise (~1e-16) yet far
+# below any meaningful geometric dimension or angle in typical structural
+# section modeling contexts.
+RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters)
+SWEEP_ZERO_ATOL_DEG: float = 1e-10  # degrees
+
 
 def merge_polygons(elements: Sequence[CrossSection]) -> Polygon:
     """Return the merged polygon of the cross-section elements."""
@@ -47,24 +56,33 @@ class PolygonBuilder:
     Notes
     -----
     `Smoothness`:
-        set `MAX_SEGMENT_ANGLE_DEGREES` to control how finely arcs are tessellated (smaller = smoother, more vertices).
+        set `max_segment_angle` to control how finely arcs are tessellated (smaller = smoother, more vertices).
         Internally this maps to Shapely's buffer `resolution`.
     """
 
-    MAX_SEGMENT_ANGLE_DEGREES = 5.0
-    """Maximum central angle (degrees) per arc chord segment when tessellating arcs.
-    This is used to determine the number of segments when creating circular arcs.
-    Smaller values lead to finer tessellation and more points in the resulting polygon."""
-
-    def __init__(self, starting_point: PointLike) -> None:
+    def __init__(self, starting_point: PointLike, max_segment_angle: DEG = 5.0) -> None:
         """Initialize an empty PolygonBuilder.
 
         Parameters
         ----------
         starting_point : PointLike
             Starting point of the polygon (x, y).
+        max_segment_angle : DEG, optional
+            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
+            This is used to determine the number of segments when creating circular arcs.
+            Smaller values lead to finer tessellation and more points in the resulting polygon.
+            Default is 5.0 degrees.
+
+        Raises
+        ------
+        ValueError
+            If `max_segment_angle` is not positive.
         """
         self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
+
+        if max_segment_angle <= 0:
+            raise ValueError("max_segment_angle must be positive.")
+        self._max_segment_angle = max_segment_angle
 
     @property
     def _current_point(self) -> NDArray[np.float64]:
@@ -99,6 +117,15 @@ class PolygonBuilder:
     def append_arc(self, sweep: DEG, angle: DEG, radius: Length) -> PolygonBuilder:
         """Append a circular arc segment to the polygon from the current endpoint.
 
+        Approach
+        --------
+        This method tessellates the arc into multiple straight line segments to approximate the curve.
+
+        The intermediate points along the arc are calculated and added to the polygon.
+        The intermediate points are calculated by dividing the total sweep angle into smaller segments.
+        Each segment spans an angle not exceeding `max_segment_angle`.
+        The vector from the arc center to the current endpoint is rotated incrementally to trace the arc and generate the points.
+
         Parameters
         ----------
         sweep : DEG
@@ -106,17 +133,155 @@ class PolygonBuilder:
             Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
         angle : DEG
             The tangent direction at the arc start in degrees;
+            Angle is measured counter-clockwise from the positive x-axis;
             0° is along the positive x-axis, 90° is along the positive y-axis.
         radius : Length
             Radius of the arc segment. Must be non-zero.
             The sign of the radius is ignored; only its magnitude is used.
+
+        Raises
+        ------
+        ValueError
+            If `radius` is zero.
 
         Returns
         -------
         PolygonBuilder
             The PolygonBuilder instance (for method chaining).
         """
-        raise NotImplementedError
+        if np.isclose(radius, 0.0, atol=RADIUS_ZERO_ATOL, rtol=0.0):
+            error_msg = "Radius must be non-zero to define an arc."
+            raise ValueError(error_msg)
+
+        if np.isclose(sweep, 0.0, atol=SWEEP_ZERO_ATOL_DEG, rtol=0.0):
+            # A zero sweep does not change the geometry; simply return the builder.
+            return self
+
+        # Compute the center of the arc and the vector from the center to the start point.
+        center = self._compute_arc_center(angle, sweep, radius)
+        start_vector = self._current_point - center
+
+        # Determine the number of segments to approximate the arc.
+        segment_count = self._segment_count_for_arc(sweep)
+
+        # Create the rotation matrix for the arc segments. Rotation matrix will be applied repeatedly to the start_vector.
+        rotation = self._rotation_matrix(sweep, segment_count)
+
+        # Generate the intermediate points along the arc and append them to the polygon.
+        arc_points = self._generate_arc_vertices(center, start_vector, rotation, segment_count)
+        self._points = np.concatenate((self._points, arc_points), axis=0)
+
+        return self
+
+    def _compute_arc_center(self, angle: DEG, sweep: DEG, radius: Length) -> NDArray[np.float64]:
+        """Return the coordinates of the arc center.
+
+        The circle center lies along the `normal left` of the tangent direction at the arc start point.
+        A positive sweep turns counter-clockwise, so the center is located to the
+        left of the tangent; a negative sweep turns clockwise, placing the center
+        to the right.
+
+        Parameters
+        ----------
+        angle : DEG
+            The tangent direction at the arc start in degrees;
+            Angle is measured counter-clockwise from the positive x-axis;
+            0° is along the positive x-axis, 90° is along the positive y-axis.
+        sweep : DEG
+            Sweep angle of the arc segment in degrees;
+            Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
+        radius : Length
+            Radius of the arc segment. Must be non-zero.
+            The sign of the radius is ignored; only its magnitude is used.
+
+        Returns
+        -------
+        NDArray[np.float64]
+            Coordinates of the arc center (x, y).
+        """
+        tangent_angle_rad = np.deg2rad(angle)
+        normal_left = np.array([-np.sin(tangent_angle_rad), np.cos(tangent_angle_rad)], dtype=float)
+        turn_direction = np.sign(sweep)  # +1 for CCW (left), -1 for CW (right)
+
+        return self._current_point + turn_direction * abs(radius) * normal_left
+
+    def _segment_count_for_arc(self, sweep: DEG) -> int:
+        """Return the tessellation segment count for a sweep angle.
+
+        Parameters
+        ----------
+        sweep : DEG
+            Sweep angle of the arc segment in degrees;
+            Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
+
+        Returns
+        -------
+        int
+            The number of segments to approximate the arc.
+        """
+        segments = int(np.ceil(abs(sweep) / self._max_segment_angle))
+        return max(1, segments)
+
+    @staticmethod
+    def _rotation_matrix(sweep: DEG, segment_count: int) -> NDArray[np.float64]:
+        """Return a 2D rotation matrix for the per-segment sweep angle.
+
+        This matrix can be used to rotate a vector in 2D space.
+
+        Parameters
+        ----------
+        sweep : DEG
+            Sweep angle of the arc segment in degrees;
+            Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
+        segment_count : int
+            The number of segments to approximate the arc.
+
+        Returns
+        -------
+        NDArray[np.float64]
+            A 2x2 rotation matrix.
+        """
+        rotation_angle = np.deg2rad(sweep / segment_count)
+        cosine = np.cos(rotation_angle)
+        sine = np.sin(rotation_angle)
+        return np.array([[cosine, -sine], [sine, cosine]], dtype=float)
+
+    @staticmethod
+    def _generate_arc_vertices(
+        center: NDArray[np.float64],
+        start_vector: NDArray[np.float64],
+        rotation: NDArray[np.float64],
+        segment_count: int,
+    ) -> NDArray[np.float64]:
+        """Return the coordinates tracing the arc, excluding the start point.
+
+        Parameters
+        ----------
+        center : array-like of shape (2,)
+            Coordinates of the circle center.
+        start_vector : array-like of shape (2,)
+            Vector from the center to the arc start point.
+        rotation : array-like of shape (2, 2)
+            Rotation matrix for the per-segment sweep angle.
+        segment_count : int
+            Number of chord segments tessellating the arc.
+
+        Returns
+        -------
+        NDArray[np.float64]
+            Array of shape (segment_count, 2) containing the coordinates of the arc points.
+        """
+        points = np.empty((segment_count, 2), dtype=float)
+        vector = start_vector.astype(float, copy=True)
+
+        # Incrementally rotate the radius vector to follow the arc. Repeatedly
+        # applying the rotation matrix preserves orthogonality and avoids issues
+        # with accumulating angle sums for large sweep angles.
+        for index in range(segment_count):
+            vector = rotation @ vector
+            points[index] = center + vector
+
+        return points
 
     def create_polygon(self) -> Polygon:
         """Create and return a Shapely Polygon from the built points.
