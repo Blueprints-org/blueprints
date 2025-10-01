@@ -13,7 +13,7 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.f
     Form6Dot2ShearResistance,
 )
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_3n import (
-    Form6Dot3NShearCapacityWithoutRebar,
+    Form6Dot3nShearCapacityWithoutRebar,
 )
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_9 import (
     Form6Dot9MaximumShearResistance,
@@ -72,6 +72,8 @@ class TorsionCheckBase(ABC):
 
         Parameters
         ----------
+        *args : Any
+            Variable positional parameters depending on the specific check requirements.
         **kwargs
             Variable parameters depending on the specific check requirements.
             Common parameters include:
@@ -266,7 +268,7 @@ class TorsionMomentCapacityCheck(TorsionCheckBase):
         k = Form6Dot2aSub1ThicknessFactor(d=geometry.effective_depth())
 
         # Minimum shear capacity according to art. 6.2.2 (1) from EN 1992-1-1:2004
-        v_min = Form6Dot3NShearCapacityWithoutRebar(k=k, f_ck=geometry.cs.concrete_material.f_ck)
+        v_min = Form6Dot3nShearCapacityWithoutRebar(k=k, f_ck=geometry.cs.concrete_material.f_ck)
 
         # Tensile rebar ratio according to art. 6.2.2 (1) from EN 1992-1-1:2004
         rho_l = Form6Dot2aSub2RebarRatio(a_sl=forces.a_sl, b_w=geometry.cs.width, d=geometry.effective_depth())

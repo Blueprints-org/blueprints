@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.f
     Form6Dot6nStrengthReductionFactor,
 )
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_11abcn import (
-    Form6Dot11abcNCompressionChordCoefficient,
+    Form6Dot11abcnCompressionChordCoefficient,
 )
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
@@ -141,7 +141,7 @@ class TorsionMaterials:
 
         return materials.pop()
 
-    def compression_chord_coefficient(self, sigma_cp: MPA | None) -> Form6Dot11abcNCompressionChordCoefficient | DIMENSIONLESS:
+    def compression_chord_coefficient(self, sigma_cp: MPA | None) -> Form6Dot11abcnCompressionChordCoefficient | DIMENSIONLESS:
         """Calculate compression chord coefficient accounting for prestressing effects.
 
         Determines the coefficient `α_cw` that accounts for the state of stress in
@@ -157,7 +157,7 @@ class TorsionMaterials:
 
         Returns
         -------
-        Form6Dot11abcNCompressionChordCoefficient | DIMENSIONLESS
+        Form6Dot11abcnCompressionChordCoefficient | DIMENSIONLESS
             - 1.0 if no significant compression (conservative default)
             - Calculated coefficient (>1.0) if compression enhances concrete strength
 
@@ -177,7 +177,7 @@ class TorsionMaterials:
         """
         if sigma_cp is None or sigma_cp <= 0:
             return 1.0
-        return Form6Dot11abcNCompressionChordCoefficient(
+        return Form6Dot11abcnCompressionChordCoefficient(
             sigma_cp=sigma_cp,
             f_cd=self.cs.concrete_material.f_cd,
         )
