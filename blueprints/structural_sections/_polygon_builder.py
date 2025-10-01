@@ -7,12 +7,14 @@ from typing import TypeVar
 
 import numpy as np
 from numpy.typing import NDArray
+from shapely import transform
 from shapely.geometry import Polygon
 from shapely.geometry.base import BaseGeometry
 from shapely.geometry.polygon import orient
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import CM, DEG, MM, M
+from blueprints.validations import LessOrEqualToZeroError
 
 PointLike = tuple[float, float]
 Length = TypeVar("Length", M, CM, MM)
@@ -23,8 +25,10 @@ Length = TypeVar("Length", M, CM, MM)
 # Rationale: these are several orders above floating noise (~1e-16) yet far
 # below any meaningful geometric dimension or angle in typical structural
 # section modeling contexts.
-RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters)
+RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters --> 1 nm)
+"""Absolute tolerance for radius values."""
 SWEEP_ZERO_ATOL_DEG: float = 1e-10  # degrees
+"""Absolute tolerance for sweep angles in degrees."""
 
 
 def merge_polygons(elements: Sequence[CrossSection]) -> Polygon:
@@ -60,7 +64,7 @@ class PolygonBuilder:
         Internally this maps to Shapely's buffer `resolution`.
     """
 
-    def __init__(self, starting_point: PointLike, max_segment_angle: DEG = 5.0) -> None:
+    def __init__(self, starting_point: PointLike) -> None:
         """Initialize an empty PolygonBuilder.
 
         Parameters
@@ -79,10 +83,6 @@ class PolygonBuilder:
             If `max_segment_angle` is not positive.
         """
         self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
-
-        if max_segment_angle <= 0:
-            raise ValueError("max_segment_angle must be positive.")
-        self._max_segment_angle = max_segment_angle
 
     @property
     def _current_point(self) -> NDArray[np.float64]:
@@ -114,7 +114,7 @@ class PolygonBuilder:
 
         return self
 
-    def append_arc(self, sweep: DEG, angle: DEG, radius: Length) -> PolygonBuilder:
+    def append_arc(self, sweep: DEG, angle: DEG, radius: Length, max_segment_angle: DEG = 5.0) -> PolygonBuilder:
         """Append a circular arc segment to the polygon from the current endpoint.
 
         Approach
@@ -138,6 +138,18 @@ class PolygonBuilder:
         radius : Length
             Radius of the arc segment. Must be non-zero.
             The sign of the radius is ignored; only its magnitude is used.
+        max_segment_angle : DEG, optional
+            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
+            This is used to determine the number of segments when creating circular arcs.
+            Smaller values lead to finer tessellation and more points in the resulting polygon.
+            Default is 5.0 degrees.
+
+        Raises
+        ------
+        LessOrEqualToZeroError
+            If `radius` is zero.
+        LessOrEqualToZeroError
+            If `max_segment_angle` is not positive.
 
         Raises
         ------
@@ -150,19 +162,21 @@ class PolygonBuilder:
             The PolygonBuilder instance (for method chaining).
         """
         if np.isclose(radius, 0.0, atol=RADIUS_ZERO_ATOL, rtol=0.0):
-            error_msg = "Radius must be non-zero to define an arc."
-            raise ValueError(error_msg)
+            raise LessOrEqualToZeroError(value_name="radius", value=radius)
 
         if np.isclose(sweep, 0.0, atol=SWEEP_ZERO_ATOL_DEG, rtol=0.0):
             # A zero sweep does not change the geometry; simply return the builder.
             return self
+
+        if max_segment_angle <= 0:
+            raise LessOrEqualToZeroError(value_name="max_segment_angle", value=max_segment_angle)
 
         # Compute the center of the arc and the vector from the center to the start point.
         center = self._compute_arc_center(angle, sweep, radius)
         start_vector = self._current_point - center
 
         # Determine the number of segments to approximate the arc.
-        segment_count = self._segment_count_for_arc(sweep)
+        segment_count = self._segment_count_for_arc(sweep, max_segment_angle)
 
         # Create the rotation matrix for the arc segments. Rotation matrix will be applied repeatedly to the start_vector.
         rotation = self._rotation_matrix(sweep, segment_count)
@@ -205,7 +219,7 @@ class PolygonBuilder:
 
         return self._current_point + turn_direction * abs(radius) * normal_left
 
-    def _segment_count_for_arc(self, sweep: DEG) -> int:
+    def _segment_count_for_arc(self, sweep: DEG, max_segment_angle: DEG) -> int:
         """Return the tessellation segment count for a sweep angle.
 
         Parameters
@@ -213,13 +227,17 @@ class PolygonBuilder:
         sweep : DEG
             Sweep angle of the arc segment in degrees;
             Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
+        max_segment_angle : DEG
+            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
+            This is used to determine the number of segments when creating circular arcs.
+            Smaller values lead to finer tessellation and more points in the resulting polygon.
 
         Returns
         -------
         int
-            The number of segments to approximate the arc.
+            The number of segments to approximate the arc with a minimum of 1.
         """
-        segments = int(np.ceil(abs(sweep) / self._max_segment_angle))
+        segments = int(np.ceil(abs(sweep) / max_segment_angle))
         return max(1, segments)
 
     @staticmethod
@@ -271,20 +289,33 @@ class PolygonBuilder:
         NDArray[np.float64]
             Array of shape (segment_count, 2) containing the coordinates of the arc points.
         """
-        points = np.empty((segment_count, 2), dtype=float)
-        vector = start_vector.astype(float, copy=True)
+        rotation_angle = np.arctan2(rotation[1, 0], rotation[0, 0])
+        # Build the rotation series for each tessellation step without a Python loop.
+        step_indices = np.arange(1, segment_count + 1, dtype=float)
+        cosines = np.cos(step_indices * rotation_angle)
+        sines = np.sin(step_indices * rotation_angle)
 
-        # Incrementally rotate the radius vector to follow the arc. Repeatedly
-        # applying the rotation matrix preserves orthogonality and avoids issues
-        # with accumulating angle sums for large sweep angles.
-        for index in range(segment_count):
-            vector = rotation @ vector
-            points[index] = center + vector
+        # Broadcast the start vector so each row can be rotated via element-wise trig.
+        base_vectors = np.repeat(start_vector[np.newaxis, :], segment_count, axis=0)
+        x_components = base_vectors[:, 0]
+        y_components = base_vectors[:, 1]
 
-        return points
+        rotated = np.empty_like(base_vectors)
+        rotated[:, 0] = cosines * x_components - sines * y_components
+        rotated[:, 1] = sines * x_components + cosines * y_components
 
-    def create_polygon(self) -> Polygon:
+        return center + rotated
+
+    def create_polygon(self, transform_centroid: bool = True) -> Polygon:
         """Create and return a Shapely Polygon from the built points.
+
+        Note that the polygon is automatically closed.
+
+        Parameters
+        ----------
+        transform_centroid : bool, optional
+            If True, the polygon is translated so that its centroid is at the origin (0, 0).
+            Default is True.
 
         Returns
         -------
@@ -297,4 +328,14 @@ class PolygonBuilder:
             If there are fewer than 3 points to form a polygon.
             If the constructed polygon is not valid.
         """
-        raise NotImplementedError
+        if len(self._points) < 3:
+            raise ValueError("A polygon requires at least 3 points.")
+
+        polygon = Polygon(self._points)
+        if not polygon.is_valid:
+            raise ValueError("The constructed polygon is not valid.")
+
+        if transform_centroid:
+            polygon = transform(polygon, lambda x: x - polygon.centroid.coords.__array__())
+
+        return polygon
