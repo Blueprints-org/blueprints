@@ -296,6 +296,18 @@ class TestPolygonBuilder:
         with pytest.raises(LessOrEqualToZeroError, match=r"(?i)'max_segment_angle' must be greater than zero\.?$"):
             builder.append_arc(45.0, 0.0, 5.0, max_segment_angle=-10.0)
 
+    def test_append_arc_with_changing_max_segment_angle(self) -> None:
+        """Changing the maximum segment angle affects the number of segments created."""
+        builder = PolygonBuilder((0.0, 0.0))
+
+        builder.append_arc(90.0, 0.0, 5.0, max_segment_angle=30.0)
+        expected_segments_30 = int(np.ceil(90.0 / 30.0))
+        assert builder._points.shape == (expected_segments_30 + 1, 2)  # noqa: SLF001
+
+        builder.append_arc(90.0, 90.0, 5.0, max_segment_angle=10.0)
+        expected_segments_10 = int(np.ceil(90.0 / 10.0))
+        assert builder._points.shape == (expected_segments_30 + expected_segments_10 + 1, 2)  # noqa: SLF001
+
     def test_append_arc_ccw_quarter_circle(self) -> None:
         """A positive sweep generates a counter-clockwise arc with expected end point."""
         builder = PolygonBuilder((0.0, 0.0))

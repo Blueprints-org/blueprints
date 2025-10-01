@@ -273,17 +273,22 @@ class PolygonBuilder:
         NDArray[np.float64]
             Array of shape (segment_count, 2) containing the coordinates of the arc points.
         """
-        points = np.empty((segment_count, 2), dtype=float)
-        vector = start_vector.astype(float, copy=True)
+        rotation_angle = np.arctan2(rotation[1, 0], rotation[0, 0])
+        # Build the rotation series for each tessellation step without a Python loop.
+        step_indices = np.arange(1, segment_count + 1, dtype=float)
+        cosines = np.cos(step_indices * rotation_angle)
+        sines = np.sin(step_indices * rotation_angle)
 
-        # Incrementally rotate the radius vector to follow the arc. Repeatedly
-        # applying the rotation matrix preserves orthogonality and avoids issues
-        # with accumulating angle sums for large sweep angles.
-        for index in range(segment_count):
-            vector = rotation @ vector
-            points[index] = center + vector
+        # Broadcast the start vector so each row can be rotated via element-wise trig.
+        base_vectors = np.repeat(start_vector[np.newaxis, :], segment_count, axis=0)
+        x_components = base_vectors[:, 0]
+        y_components = base_vectors[:, 1]
 
-        return points
+        rotated = np.empty_like(base_vectors)
+        rotated[:, 0] = cosines * x_components - sines * y_components
+        rotated[:, 1] = sines * x_components + cosines * y_components
+
+        return center + rotated
 
     def create_polygon(self) -> Polygon:
         """Create and return a Shapely Polygon from the built points.
