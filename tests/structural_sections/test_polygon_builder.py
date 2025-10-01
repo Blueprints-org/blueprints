@@ -8,6 +8,7 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder, merge_polygons
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestMergePolygons:
@@ -235,22 +236,6 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[0], starting_point)  # noqa: SLF001
         np.testing.assert_allclose(builder._current_point, starting_point)  # noqa: SLF001
 
-    def test_init_with_max_segment_angle(self) -> None:
-        """The maximum segment angle can be customized."""
-        custom_angle = 11.0
-
-        builder = PolygonBuilder((0.0, 0.0), max_segment_angle=custom_angle)
-
-        assert builder._max_segment_angle == custom_angle  # noqa: SLF001
-
-    def test_init_with_invalid_max_segment_angle_raises(self) -> None:
-        """A non-positive maximum segment angle raises a ValueError."""
-        with pytest.raises(ValueError, match="max_segment_angle must be positive"):
-            PolygonBuilder((0.0, 0.0), max_segment_angle=0.0)
-
-        with pytest.raises(ValueError, match="max_segment_angle must be positive"):
-            PolygonBuilder((0.0, 0.0), max_segment_angle=-5.0)
-
     def test_append_line_appends_point(self) -> None:
         """Appending a line adds a new point and updates the current endpoint."""
         builder = PolygonBuilder((0.0, 0.0))
@@ -302,13 +287,22 @@ class TestPolygonBuilder:
         np.testing.assert_allclose(builder._points[-1], (expected_x, expected_y))  # noqa: SLF001
         np.testing.assert_allclose(builder._current_point, (expected_x, expected_y))  # noqa: SLF001
 
+    def test_append_arc_with_invalid_max_segment_angle_raises(self) -> None:
+        """A non-positive maximum segment angle raises a LessOrEqualToZeroError."""
+        builder = PolygonBuilder((0.0, 0.0))
+        with pytest.raises(LessOrEqualToZeroError, match=r"(?i)'max_segment_angle' must be greater than zero\.?$"):
+            builder.append_arc(45.0, 0.0, 5.0, max_segment_angle=0.0)
+
+        with pytest.raises(LessOrEqualToZeroError, match=r"(?i)'max_segment_angle' must be greater than zero\.?$"):
+            builder.append_arc(45.0, 0.0, 5.0, max_segment_angle=-10.0)
+
     def test_append_arc_ccw_quarter_circle(self) -> None:
         """A positive sweep generates a counter-clockwise arc with expected end point."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        builder.append_arc(90.0, 0.0, 5.0)
+        builder.append_arc(90.0, 0.0, 5.0, max_segment_angle := 10.0)
 
-        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        expected_segments = int(np.ceil(90.0 / max_segment_angle))
         assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
         np.testing.assert_allclose(builder._points[-1], (5.0, 5.0), atol=1e-10)  # noqa: SLF001
 
@@ -321,9 +315,9 @@ class TestPolygonBuilder:
         """A negative sweep turns clockwise and reaches the expected end point."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        builder.append_arc(-90.0, 0.0, 5.0)
+        builder.append_arc(-90.0, 0.0, 5.0, max_segment_angle := 10.0)
 
-        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        expected_segments = int(np.ceil(90.0 / max_segment_angle))
         assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
         np.testing.assert_allclose(builder._points[-1], (5.0, -5.0), atol=1e-10)  # noqa: SLF001
 
@@ -345,17 +339,20 @@ class TestPolygonBuilder:
         """Zero radius is invalid and raises a ValueError."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        with pytest.raises(ValueError, match="Radius must be non-zero"):
+        with pytest.raises(
+            LessOrEqualToZeroError,
+            match=r"(?i)values for 'radius' must be greater than zero\.?$",
+        ):
             builder.append_arc(45.0, 0.0, 0.0)
 
     def test_append_arc_appends_point(self) -> None:
         """Appending an arc adds tessellated points following the circular path."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        result = builder.append_arc(45.0, 0.0, 10.0)
+        result = builder.append_arc(45.0, 0.0, 10.0, max_segment_angle := 10.0)
 
         assert result is builder
-        expected_segments = int(np.ceil(45.0 / builder._max_segment_angle))  # noqa: SLF001
+        expected_segments = int(np.ceil(45.0 / max_segment_angle))
         assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
 
         start = builder._points[0]  # noqa: SLF001
@@ -367,9 +364,9 @@ class TestPolygonBuilder:
         """The total sweep honours the supplied start tangent direction."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        builder.append_arc(90.0, 90.0, 5.0)
+        builder.append_arc(90.0, 90.0, 5.0, max_segment_angle := 10.0)
 
-        expected_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        expected_segments = int(np.ceil(90.0 / max_segment_angle))
         assert builder._points.shape == (expected_segments + 1, 2)  # noqa: SLF001
         np.testing.assert_allclose(builder._points[-1], (-5.0, 5.0), atol=1e-10)  # noqa: SLF001
 
@@ -382,10 +379,10 @@ class TestPolygonBuilder:
         """Arc calls can be chained just like line segments."""
         builder = PolygonBuilder((0.0, 0.0))
 
-        builder.append_arc(90.0, 0.0, 2.0).append_arc(-90.0, 90.0, 2.0)
+        builder.append_arc(90.0, 0.0, 2.0, max_segment_angle := 5).append_arc(-90.0, 90.0, 2.0, max_segment_angle=max_segment_angle)
 
-        first_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
-        second_segments = int(np.ceil(90.0 / builder._max_segment_angle))  # noqa: SLF001
+        first_segments = int(np.ceil(90.0 / max_segment_angle))
+        second_segments = int(np.ceil(90.0 / max_segment_angle))
         expected_points = 1 + first_segments + second_segments
         assert builder._points.shape == (expected_points, 2)  # noqa: SLF001
         np.testing.assert_allclose(builder._points[-1], (4.0, 4.0), atol=1e-10)  # noqa: SLF001
@@ -420,9 +417,9 @@ class TestPolygonBuilder:
 
         sweep = 360.0
         radius = 3.0
-        builder.append_arc(sweep, 0.0, radius)
+        builder.append_arc(sweep, 0.0, radius, max_segment_angle := 5.0)
 
-        segment_count = int(np.ceil(sweep / builder._max_segment_angle))  # noqa: SLF001
+        segment_count = int(np.ceil(sweep / max_segment_angle))
         assert builder._points.shape == (segment_count + 1, 2)  # noqa: SLF001
 
         start = builder._points[0]  # noqa: SLF001
@@ -444,10 +441,10 @@ class TestPolygonBuilder:
 
     def test_segment_count_for_arc_uses_max_segment_angle(self) -> None:
         """Segment count is derived from the configured maximum segment angle."""
-        builder = PolygonBuilder((0.0, 0.0), max_segment_angle=10.0)
+        builder = PolygonBuilder((0.0, 0.0))
 
-        segments = builder._segment_count_for_arc(95.0)  # noqa: SLF001
-        reverse_segments = builder._segment_count_for_arc(-95.0)  # noqa: SLF001
+        segments = builder._segment_count_for_arc(95.0, max_segment_angle=10.0)  # noqa: SLF001
+        reverse_segments = builder._segment_count_for_arc(-95.0, max_segment_angle=10.0)  # noqa: SLF001
 
         assert segments == 10
         assert reverse_segments == 10

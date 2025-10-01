@@ -13,6 +13,7 @@ from shapely.geometry.polygon import orient
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import CM, DEG, MM, M
+from blueprints.validations import LessOrEqualToZeroError
 
 PointLike = tuple[float, float]
 Length = TypeVar("Length", M, CM, MM)
@@ -23,8 +24,10 @@ Length = TypeVar("Length", M, CM, MM)
 # Rationale: these are several orders above floating noise (~1e-16) yet far
 # below any meaningful geometric dimension or angle in typical structural
 # section modeling contexts.
-RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters)
+RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters --> 1 nm)
+"""Absolute tolerance for radius values."""
 SWEEP_ZERO_ATOL_DEG: float = 1e-10  # degrees
+"""Absolute tolerance for sweep angles in degrees."""
 
 
 def merge_polygons(elements: Sequence[CrossSection]) -> Polygon:
@@ -60,29 +63,15 @@ class PolygonBuilder:
         Internally this maps to Shapely's buffer `resolution`.
     """
 
-    def __init__(self, starting_point: PointLike, max_segment_angle: DEG = 5.0) -> None:
+    def __init__(self, starting_point: PointLike) -> None:
         """Initialize an empty PolygonBuilder.
 
         Parameters
         ----------
         starting_point : PointLike
             Starting point of the polygon (x, y).
-        max_segment_angle : DEG, optional
-            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
-            This is used to determine the number of segments when creating circular arcs.
-            Smaller values lead to finer tessellation and more points in the resulting polygon.
-            Default is 5.0 degrees.
-
-        Raises
-        ------
-        ValueError
-            If `max_segment_angle` is not positive.
         """
         self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
-
-        if max_segment_angle <= 0:
-            raise ValueError("max_segment_angle must be positive.")
-        self._max_segment_angle = max_segment_angle
 
     @property
     def _current_point(self) -> NDArray[np.float64]:
@@ -114,7 +103,7 @@ class PolygonBuilder:
 
         return self
 
-    def append_arc(self, sweep: DEG, angle: DEG, radius: Length) -> PolygonBuilder:
+    def append_arc(self, sweep: DEG, angle: DEG, radius: Length, max_segment_angle: DEG = 5.0) -> PolygonBuilder:
         """Append a circular arc segment to the polygon from the current endpoint.
 
         Approach
@@ -138,11 +127,18 @@ class PolygonBuilder:
         radius : Length
             Radius of the arc segment. Must be non-zero.
             The sign of the radius is ignored; only its magnitude is used.
+        max_segment_angle : DEG, optional
+            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
+            This is used to determine the number of segments when creating circular arcs.
+            Smaller values lead to finer tessellation and more points in the resulting polygon.
+            Default is 5.0 degrees.
 
         Raises
         ------
-        ValueError
+        LessOrEqualToZeroError
             If `radius` is zero.
+        LessOrEqualToZeroError
+            If `max_segment_angle` is not positive.
 
         Returns
         -------
@@ -150,19 +146,21 @@ class PolygonBuilder:
             The PolygonBuilder instance (for method chaining).
         """
         if np.isclose(radius, 0.0, atol=RADIUS_ZERO_ATOL, rtol=0.0):
-            error_msg = "Radius must be non-zero to define an arc."
-            raise ValueError(error_msg)
+            raise LessOrEqualToZeroError(value_name="radius", value=radius)
 
         if np.isclose(sweep, 0.0, atol=SWEEP_ZERO_ATOL_DEG, rtol=0.0):
             # A zero sweep does not change the geometry; simply return the builder.
             return self
+
+        if max_segment_angle <= 0:
+            raise LessOrEqualToZeroError(value_name="max_segment_angle", value=max_segment_angle)
 
         # Compute the center of the arc and the vector from the center to the start point.
         center = self._compute_arc_center(angle, sweep, radius)
         start_vector = self._current_point - center
 
         # Determine the number of segments to approximate the arc.
-        segment_count = self._segment_count_for_arc(sweep)
+        segment_count = self._segment_count_for_arc(sweep, max_segment_angle)
 
         # Create the rotation matrix for the arc segments. Rotation matrix will be applied repeatedly to the start_vector.
         rotation = self._rotation_matrix(sweep, segment_count)
@@ -205,7 +203,7 @@ class PolygonBuilder:
 
         return self._current_point + turn_direction * abs(radius) * normal_left
 
-    def _segment_count_for_arc(self, sweep: DEG) -> int:
+    def _segment_count_for_arc(self, sweep: DEG, max_segment_angle: DEG) -> int:
         """Return the tessellation segment count for a sweep angle.
 
         Parameters
@@ -213,13 +211,17 @@ class PolygonBuilder:
         sweep : DEG
             Sweep angle of the arc segment in degrees;
             Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
+        max_segment_angle : DEG
+            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
+            This is used to determine the number of segments when creating circular arcs.
+            Smaller values lead to finer tessellation and more points in the resulting polygon.
 
         Returns
         -------
         int
-            The number of segments to approximate the arc.
+            The number of segments to approximate the arc with a minimum of 1.
         """
-        segments = int(np.ceil(abs(sweep) / self._max_segment_angle))
+        segments = int(np.ceil(abs(sweep) / max_segment_angle))
         return max(1, segments)
 
     @staticmethod
