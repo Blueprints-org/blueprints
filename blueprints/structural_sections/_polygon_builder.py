@@ -29,6 +29,8 @@ RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters --> 1 nm)
 """Absolute tolerance for radius values."""
 SWEEP_ZERO_ATOL_DEG: float = 1e-10  # degrees
 """Absolute tolerance for sweep angles in degrees."""
+DIRECTION_VECTOR_ROUND_DECIMALS: int = 15  # Because np.float64 has ~15-17 decimal digits of precision
+"""Decimal places to round direction vectors to remove floating point noise."""
 
 
 def merge_polygons(elements: Sequence[CrossSection]) -> Polygon:
@@ -107,7 +109,9 @@ class PolygonBuilder:
             The PolygonBuilder instance (for method chaining).
         """
         angle_in_radians = np.deg2rad(angle)
-        direction = np.array([np.cos(angle_in_radians), np.sin(angle_in_radians)], dtype=float)
+        # Direction vector rounded to remove floating point noise
+        # This improves accuracy when working with (factors of) right angles
+        direction = np.round(np.array([np.cos(angle_in_radians), np.sin(angle_in_radians)], dtype=float), decimals=DIRECTION_VECTOR_ROUND_DECIMALS)
         new_point = self._current_point + length * direction
 
         self._points = np.concatenate((self._points, new_point[np.newaxis, :]), axis=0)
@@ -214,7 +218,11 @@ class PolygonBuilder:
             Coordinates of the arc center (x, y).
         """
         tangent_angle_rad = np.deg2rad(angle)
-        normal_left = np.array([-np.sin(tangent_angle_rad), np.cos(tangent_angle_rad)], dtype=float)
+        # Direction vector rounded to remove floating point noise
+        # This improves accuracy when working with (factors of) right angles
+        normal_left = np.round(
+            np.array([-np.sin(tangent_angle_rad), np.cos(tangent_angle_rad)], dtype=float), decimals=DIRECTION_VECTOR_ROUND_DECIMALS
+        )
         turn_direction = np.sign(sweep)  # +1 for CCW (left), -1 for CW (right)
 
         return self._current_point + turn_direction * abs(radius) * normal_left
@@ -306,8 +314,8 @@ class PolygonBuilder:
 
         return center + rotated
 
-    def create_polygon(self, transform_centroid: bool = True) -> Polygon:
-        """Create and return a Shapely Polygon from the built points.
+    def generate_polygon(self, transform_centroid: bool = True) -> Polygon:
+        """Generate and return a Shapely Polygon from the built points.
 
         Note that the polygon is automatically closed.
 
