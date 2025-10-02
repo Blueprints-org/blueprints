@@ -336,6 +336,6 @@ class PolygonBuilder:
             raise ValueError("The constructed polygon is not valid.")
 
         if transform_centroid:
-            polygon = transform(polygon, lambda x: x - polygon.centroid.coords.__array__())
+            polygon = transform(polygon, lambda point: point - polygon.centroid.coords.__array__())
 
         return polygon
