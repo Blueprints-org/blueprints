@@ -28,7 +28,7 @@ nav:
     - Concepts:
       - guides/concepts/index.md
       - Library Organization: guides/concepts/library_organization.md
-      - Formulas: guides/concepts/formulas.md
+      - Formulas: guides/concepts/formulas.ipynb
       - Code Standards:
         - guides/concepts/codes/index.md
         - Eurocode Standards:
