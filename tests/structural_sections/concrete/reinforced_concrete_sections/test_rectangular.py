@@ -1,5 +1,9 @@
 """Tests for Rectangular Reinforced Concrete Sections."""
 
+import matplotlib as mpl
+
+mpl.use("Agg")
+
 from typing import Literal
 
 import pytest

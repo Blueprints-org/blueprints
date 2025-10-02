@@ -3,12 +3,12 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state.formula_6_11abcn import (
-    Form6Dot11abcNCompressionChordCoefficient,
+    Form6Dot11abcnCompressionChordCoefficient,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot11abcNCompressionChordCoefficient:
+class TestForm6Dot11abcnCompressionChordCoefficient:
     """Validation for formula 6.11a/b/cN from EN 1992-1-1:2004."""
 
     def test_evaluation_below_0_25(self) -> None:
@@ -18,7 +18,7 @@ class TestForm6Dot11abcNCompressionChordCoefficient:
         f_cd = 30.0
 
         # Object to test
-        formula = Form6Dot11abcNCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
+        formula = Form6Dot11abcnCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
 
         # Expected result, manually calculated
         manually_calculated_result = 1 + 1 / 6.0
@@ -32,7 +32,7 @@ class TestForm6Dot11abcNCompressionChordCoefficient:
         f_cd = 30.0
 
         # Object to test
-        formula = Form6Dot11abcNCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
+        formula = Form6Dot11abcnCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
 
         # Expected result, manually calculated
         manually_calculated_result = 1.25
@@ -46,7 +46,7 @@ class TestForm6Dot11abcNCompressionChordCoefficient:
         f_cd = 30.0
 
         # Object to test
-        formula = Form6Dot11abcNCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
+        formula = Form6Dot11abcnCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
 
         # Expected result, manually calculated
         manually_calculated_result = 5 / 6.0
@@ -65,7 +65,7 @@ class TestForm6Dot11abcNCompressionChordCoefficient:
     def test_raise_error_when_invalid_values_are_given(self, sigma_cp: float, f_cd: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot11abcNCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
+            Form6Dot11abcnCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -89,7 +89,7 @@ class TestForm6Dot11abcNCompressionChordCoefficient:
         f_cd = 30.0
 
         # Object to test
-        latex = Form6Dot11abcNCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd).latex()
+        latex = Form6Dot11abcnCompressionChordCoefficient(sigma_cp=sigma_cp, f_cd=f_cd).latex()
 
         actual = {
             "complete": latex.complete,
