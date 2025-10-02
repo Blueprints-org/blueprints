@@ -148,5 +148,5 @@ def circular_cross_section_no_reinforcement() -> CircularReinforcedCrossSection:
     return CircularReinforcedCrossSection(
         diameter=400,
         concrete_material=concrete,
-        cover=25
+        cover=25,
     )
