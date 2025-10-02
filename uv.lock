@@ -145,7 +145,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "icecream", specifier = "==2.1.8" },
-    { name = "mypy", specifier = "==1.17.1" },
+    { name = "mypy", specifier = "==1.18.2" },
     { name = "pre-commit", specifier = "==4.3.0" },
     { name = "ruff", specifier = "==0.13.2" },
     { name = "types-shapely", specifier = "==2.1.0.20250822" },
