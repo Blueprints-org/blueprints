@@ -148,7 +148,7 @@ dev = [
     { name = "mypy", specifier = "==1.18.2" },
     { name = "pre-commit", specifier = "==4.3.0" },
     { name = "ruff", specifier = "==0.13.2" },
-    { name = "types-shapely", specifier = "==2.1.0.20250822" },
+    { name = "types-shapely", specifier = "==2.1.0.20250917" },
 ]
 docs = [
     { name = "mkdocs", specifier = "~=1.6.1" },
@@ -2182,14 +2182,14 @@ wheels = [
 
 [[package]]
 name = "types-shapely"
-version = "2.1.0.20250822"
+version = "2.1.0.20250917"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/be/4a/fde686d8a9d0759ce2a22e97d617e7028e57f154c8ef3a3e3d94665c93ce/types_shapely-2.1.0.20250822.tar.gz", hash = "sha256:02ff9f1c149747e6cfd95607446cd5f300d88c0bd28270c2491e3418a1e39fe2", size = 26266, upload-time = "2025-08-22T03:03:50.545Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fa/19/7f28b10994433d43b9caa66f3b9bd6a0a9192b7ce8b5a7fc41534e54b821/types_shapely-2.1.0.20250917.tar.gz", hash = "sha256:5c56670742105aebe40c16414390d35fcaa55d6f774d328c1a18273ab0e2134a", size = 26363, upload-time = "2025-09-17T02:47:44.604Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ad/07/68f9a7be42e69bc8a4a08317d44824b3b5bb7dffd9cbf7f1b2ab85c6990b/types_shapely-2.1.0.20250822-py3-none-any.whl", hash = "sha256:d99ee4158ced475fc9ccfc24de8d59b618c45d66aaa4ccd011e66244abdc9f27", size = 37787, upload-time = "2025-08-22T03:03:49.51Z" },
+    { url = "https://files.pythonhosted.org/packages/e5/a9/554ac40810e530263b6163b30a2b623bc16aae3fb64416f5d2b3657d0729/types_shapely-2.1.0.20250917-py3-none-any.whl", hash = "sha256:9334a79339504d39b040426be4938d422cec419168414dc74972aa746a8bf3a1", size = 37813, upload-time = "2025-09-17T02:47:43.788Z" },
 ]
 
 [[package]]
