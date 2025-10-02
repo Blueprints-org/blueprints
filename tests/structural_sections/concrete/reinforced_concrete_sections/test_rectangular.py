@@ -159,7 +159,7 @@ class TestRectangularReinforcedCrossSection:
         """Test the plot method for cross-section without longitudinal reinforcement."""
         plot = rectangular_cross_section_no_reinforcement.plot(show=False, center_line_style={"linewidth": 0.85})
         assert isinstance(plot, plt.Figure)
-        
+
         # Test that get_present_steel_materials returns empty list
         steel_materials = rectangular_cross_section_no_reinforcement.get_present_steel_materials()
         assert steel_materials == []
