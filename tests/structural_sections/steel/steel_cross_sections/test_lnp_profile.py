@@ -59,7 +59,7 @@ class TestLNPProfile:
     def test_get_profile_with_corrosion(self) -> None:
         """Test the LNP profile with corrosion applied."""
         # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match="The profile has fully corroded."):
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
             LNPProfile.from_standard_profile(
                 profile=LNP.LNP_100x50x6,
                 steel_material=SteelMaterial(SteelStrengthClass.S355),
