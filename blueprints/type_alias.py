@@ -47,7 +47,7 @@ KN = float
 N_MM = float
 """Newtons per millimeter (N/mm), represented as a float."""
 N_M = float
-"""Newtons per meter (N/m), represented as a float."""
+"""Newtons per meter (N/m), represented as a float. Is also used for translational stiffness."""
 KN_M = float
 """Kilonewtons per meter (kN/m), represented as a float."""
 # </editor-fold>
@@ -189,4 +189,6 @@ NM2_M = float
 """Bending stiffness (Nm²/m), represented as a float."""
 NMM2 = float
 """Bending stiffness (Nmm²), represented as a float."""
+NM_RAD = float
+"""Rotational stiffness (Nm/rad), represented as a float."""
 # </editor-fold>

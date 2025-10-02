@@ -1,5 +1,9 @@
 """Tests for Circular Reinforced Concrete Sections."""
 
+import matplotlib as mpl
+
+mpl.use("Agg")
+
 import pytest
 from matplotlib import pyplot as plt
 from shapely import LineString, Polygon
