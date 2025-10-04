@@ -28,8 +28,11 @@ classifiers = [
 dependencies = [
     "matplotlib>=3.7.2",
     "numpy>=1.25.2",
+    "pygmsh>=7.1.17",
+    "pynastran>=1.3.4",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
+    "vtk>=9.5.2",
 ]
 
 [project.urls]
@@ -70,6 +73,12 @@ test = [
 
 [tool.uv]
 default-groups = ["dev", "test"]
+
+[[tool.uv.index]]
+url = "https://pkgs.dev.azure.com/bamict/Engines%20-%20BAM%20Digital%20Design/_packaging/engines/pypi/simple/"
+
+[[tool.uv.index]]
+url = "https://pkgs.dev.azure.com/bamict/Engines%20-%20BAM%20Digital%20Design/_packaging/dd-cli/pypi/simple/"
 
 [tool.mypy]
 packages = "blueprints"
