@@ -14,7 +14,7 @@ from shapely.geometry.polygon import orient
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import CM, DEG, MM, M
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 PointLike = tuple[float, float]
 Length = TypeVar("Length", M, CM, MM)
@@ -140,7 +140,7 @@ class PolygonBuilder:
             Angle is measured counter-clockwise from the positive x-axis;
             0° is along the positive x-axis, 90° is along the positive y-axis.
         radius : Length
-            Radius of the arc segment. Must be non-zero.
+            Radius of the arc segment. Must be positive.
             The sign of the radius is ignored; only its magnitude is used.
         max_segment_angle : DEG, optional
             Maximum central angle (degrees) per arc chord segment when tessellating arcs.
@@ -165,12 +165,12 @@ class PolygonBuilder:
         PolygonBuilder
             The PolygonBuilder instance (for method chaining).
         """
-        if np.isclose(radius, 0.0, atol=RADIUS_ZERO_ATOL, rtol=0.0):
-            raise LessOrEqualToZeroError(value_name="radius", value=radius)
-
-        if np.isclose(sweep, 0.0, atol=SWEEP_ZERO_ATOL_DEG, rtol=0.0):
-            # A zero sweep does not change the geometry; simply return the builder.
+        if np.isclose(sweep, 0.0, atol=SWEEP_ZERO_ATOL_DEG, rtol=0.0) or np.isclose(radius, 0.0, atol=RADIUS_ZERO_ATOL, rtol=0.0):
+            # A zero sweep or radius does not change the geometry; simply return the builder.
             return self
+
+        if radius < 0:
+            raise NegativeValueError(value_name="radius", value=radius)
 
         if max_segment_angle <= 0:
             raise LessOrEqualToZeroError(value_name="max_segment_angle", value=max_segment_angle)

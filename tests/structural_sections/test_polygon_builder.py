@@ -8,7 +8,7 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder, merge_polygons
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestMergePolygons:
@@ -347,15 +347,25 @@ class TestPolygonBuilder:
         assert result is builder
         np.testing.assert_array_equal(builder._points, points_before)  # noqa: SLF001
 
-    def test_append_arc_zero_radius_raises(self) -> None:
-        """Zero radius is invalid and raises a ValueError."""
+    def test_append_arc_zero_radius_no_op(self) -> None:
+        """Zero radius leaves the point list unchanged and returns the builder."""
+        builder = PolygonBuilder((1.0, 2.0))
+        points_before = builder._points.copy()  # noqa: SLF001
+
+        result = builder.append_arc(45.0, 0.0, 0.0)
+
+        assert result is builder
+        np.testing.assert_array_equal(builder._points, points_before)  # noqa: SLF001
+
+    def test_append_arc_negative_radius_raises(self) -> None:
+        """Negative radius is invalid and raises a ValueError."""
         builder = PolygonBuilder((0.0, 0.0))
 
         with pytest.raises(
-            LessOrEqualToZeroError,
-            match=r"(?i)values for 'radius' must be greater than zero\.?$",
+            NegativeValueError,
+            match=r"(?i)values for 'radius' cannot be negative\.?$",
         ):
-            builder.append_arc(45.0, 0.0, 0.0)
+            builder.append_arc(45.0, 0.0, -5.0)
 
     def test_append_arc_appends_point(self) -> None:
         """Appending an arc adds tessellated points following the circular path."""

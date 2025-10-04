@@ -1,10 +1,9 @@
 """I-Profile section."""
 
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Self
 
-import numpy as np
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
@@ -46,9 +45,9 @@ class IProfile(CrossSection):
     web_thickness : MM
         The thickness of the web [mm].
     top_radius : MM
-        The radius of the curved corners of the top flange. If not provided, the corner radius is then taken as the top flange thickness.
+        The radius of the curved corners of the top flange.
     bottom_radius : MM
-        The radius of the curved corners of the bottom flange. If not provided, the corner radius is then taken as the bottom flange thickness.
+        The radius of the curved corners of the bottom flange.
     name : str
         The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value.
     plotter : Callable[[CrossSection], plt.Figure]
@@ -56,21 +55,28 @@ class IProfile(CrossSection):
     """
 
     top_flange_width: MM
+    """ The width of the top flange [mm]. """
     top_flange_thickness: MM
+    """ The thickness of the top flange [mm]. """
     bottom_flange_width: MM
+    """ The width of the bottom flange [mm]. """
     bottom_flange_thickness: MM
+    """ The thickness of the bottom flange [mm]. """
     total_height: MM
+    """ The total height of the profile [mm]. """
     web_thickness: MM
-    top_radius: MM = field(default=float("nan"))
-    bottom_radius: MM = field(default=float("nan"))
+    """ The thickness of the web [mm]. """
+    top_radius: MM
+    """ The radius of the curved corners of the top flange [mm]. """
+    bottom_radius: MM
+    """ The radius of the curved corners of the bottom flange [mm]. """
     name: str = "I-Profile"
+    """ The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value. """
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
+    """ The plotter function to visualize the cross-section (default: `plot_shapes`). """
 
     def __post_init__(self) -> None:
         """Initialize the I-profile section by creating its elements."""
-        self.top_radius = self.top_radius if not np.isnan(self.top_radius) else self.top_flange_thickness
-        self.bottom_radius = self.bottom_radius if not np.isnan(self.bottom_radius) else self.bottom_flange_thickness
-
         # Calculate web height
         self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
         self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
