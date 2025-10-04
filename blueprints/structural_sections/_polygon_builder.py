@@ -182,11 +182,11 @@ class PolygonBuilder:
         # Determine the number of segments to approximate the arc.
         segment_count = self._segment_count_for_arc(sweep, max_segment_angle)
 
-        # Create the rotation matrix for the arc segments. Rotation matrix will be applied repeatedly to the start_vector.
-        rotation = self._rotation_matrix(sweep, segment_count)
+        # Create the per-step rotation (cos,sin) series for the arc segments.
+        rotation_series = self._arc_rotation_series(sweep, segment_count)
 
         # Generate the intermediate points along the arc and append them to the polygon.
-        arc_points = self._generate_arc_vertices(center, start_vector, rotation, segment_count)
+        arc_points = self._generate_arc_vertices(center, start_vector, rotation_series)
         self._points = np.concatenate((self._points, arc_points), axis=0)
 
         return self
@@ -249,10 +249,8 @@ class PolygonBuilder:
         return max(1, segments)
 
     @staticmethod
-    def _rotation_matrix(sweep: DEG, segment_count: int) -> NDArray[np.float64]:
-        """Return a 2D rotation matrix for the per-segment sweep angle.
-
-        This matrix can be used to rotate a vector in 2D space.
+    def _arc_rotation_series(sweep: DEG, segment_count: int) -> NDArray[np.float64]:
+        """Return per-step rotation (cos,sin) series for the arc.
 
         Parameters
         ----------
@@ -260,24 +258,25 @@ class PolygonBuilder:
             Sweep angle of the arc segment in degrees;
             Positive values indicate counter-clockwise rotation, negative values indicate clockwise rotation.
         segment_count : int
-            The number of segments to approximate the arc.
+            Number of segments approximating the arc (>=1).
 
         Returns
         -------
         NDArray[np.float64]
-            A 2x2 rotation matrix.
+            Array of shape (segment_count, 2) with columns [cos(k*θ), sin(k*θ)] for k=1..segment_count,
+            where θ = sweep/segment_count in radians.
         """
         rotation_angle = np.deg2rad(sweep / segment_count)
-        cosine = np.cos(rotation_angle)
-        sine = np.sin(rotation_angle)
-        return np.array([[cosine, -sine], [sine, cosine]], dtype=float)
+        step_indices = np.arange(1, segment_count + 1, dtype=float)
+        cosines = np.cos(step_indices * rotation_angle)
+        sines = np.sin(step_indices * rotation_angle)
+        return np.round(np.column_stack((cosines, sines)), decimals=DIRECTION_VECTOR_ROUND_DECIMALS)
 
     @staticmethod
     def _generate_arc_vertices(
         center: NDArray[np.float64],
         start_vector: NDArray[np.float64],
-        rotation: NDArray[np.float64],
-        segment_count: int,
+        rotation_series: NDArray[np.float64],
     ) -> NDArray[np.float64]:
         """Return the coordinates tracing the arc, excluding the start point.
 
@@ -287,31 +286,18 @@ class PolygonBuilder:
             Coordinates of the circle center.
         start_vector : array-like of shape (2,)
             Vector from the center to the arc start point.
-        rotation : array-like of shape (2, 2)
-            Rotation matrix for the per-segment sweep angle.
-        segment_count : int
-            Number of chord segments tessellating the arc.
+        rotation_series : array-like of shape (segment_count, 2)
+            Columns [cos(k*θ), sin(k*θ)] for k = 1 .. segment_count.
 
         Returns
         -------
         NDArray[np.float64]
             Array of shape (segment_count, 2) containing the coordinates of the arc points.
         """
-        rotation_angle = np.arctan2(rotation[1, 0], rotation[0, 0])
-        # Build the rotation series for each tessellation step without a Python loop.
-        step_indices = np.arange(1, segment_count + 1, dtype=float)
-        cosines = np.cos(step_indices * rotation_angle)
-        sines = np.sin(step_indices * rotation_angle)
-
-        # Broadcast the start vector so each row can be rotated via element-wise trig.
-        base_vectors = np.repeat(start_vector[np.newaxis, :], segment_count, axis=0)
-        x_components = base_vectors[:, 0]
-        y_components = base_vectors[:, 1]
-
-        rotated = np.empty_like(base_vectors)
-        rotated[:, 0] = cosines * x_components - sines * y_components
-        rotated[:, 1] = sines * x_components + cosines * y_components
-
+        # Rotate the single start vector by each angle: avoid repeating the vector in memory.
+        x0, y0 = start_vector
+        cosines, sines = rotation_series.T  # shapes (n,), (n,)
+        rotated = np.column_stack((cosines * x0 - sines * y0, sines * x0 + cosines * y0))
         return center + rotated
 
     def generate_polygon(self, transform_centroid: bool = True) -> Polygon:
