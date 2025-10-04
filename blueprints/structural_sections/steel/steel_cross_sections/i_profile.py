@@ -76,7 +76,7 @@ class IProfile(CrossSection):
     """ The plotter function to visualize the cross-section (default: `plot_shapes`). """
 
     def __post_init__(self) -> None:
-        """Initialize the I-profile section by creating its elements."""
+        """Post-process the I-profile section after initialization."""
         # Calculate web height
         self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
         self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
@@ -181,12 +181,16 @@ class IProfile(CrossSection):
     def polygon(self) -> Polygon:
         """Return the polygon of the I-profile section."""
         return (
+            # Start from top left corner and go clockwise
             PolygonBuilder(starting_point=(0, 0))
+            # Top flange
             .append_line(length=self.top_flange_width, angle=0)
             .append_line(length=self.top_flange_thickness, angle=270)
             .append_line(length=self.width_outstand_top_flange, angle=180)
             .append_arc(sweep=90, angle=180, radius=self.top_radius)
+            # Web
             .append_line(length=self.web_height, angle=270)
+            # Bottom flange
             .append_arc(sweep=90, angle=270, radius=self.bottom_radius)
             .append_line(length=self.width_outstand_bottom_flange, angle=0)
             .append_line(length=self.bottom_flange_thickness, angle=270)
@@ -194,7 +198,9 @@ class IProfile(CrossSection):
             .append_line(length=self.bottom_flange_thickness, angle=90)
             .append_line(length=self.width_outstand_bottom_flange, angle=0)
             .append_arc(sweep=90, angle=0, radius=self.bottom_radius)
+            # Web
             .append_line(length=self.web_height, angle=90)
+            # Top flange
             .append_arc(sweep=90, angle=90, radius=self.top_radius)
             .append_line(length=self.width_outstand_top_flange, angle=180)
             .append_line(length=self.top_flange_thickness, angle=90)
