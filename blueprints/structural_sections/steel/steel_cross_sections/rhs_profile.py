@@ -224,7 +224,7 @@ class RHSProfile(CrossSection):
             .append_arc(sweep=-90, angle=90, radius=self.top_left_inner_radius)
             .generate_polygon()
         )
-        return outer_polygon.difference(inner_polygon)
+        return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
 
     @classmethod
     def from_standard_profile(
