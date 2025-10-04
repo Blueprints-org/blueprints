@@ -4,7 +4,10 @@ import time
 
 import numpy as np
 
-from blueprints.utils.femlearn import Mesh, Loads, Boundaries, Geometry
+from blueprints.utils.femlearn.boundary_conditions import Boundaries
+from blueprints.utils.femlearn.geometry import Geometry
+from blueprints.utils.femlearn.loads import Loads
+from blueprints.utils.femlearn.mesh import Mesh
 
 
 class _ShapeFunctions:

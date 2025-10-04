@@ -1,11 +1,11 @@
-import copy
-import time
-
-import numpy as np
 from matplotlib import pyplot as plt
 
-import blueprints.utils
-from blueprints.utils.femlearn import Geometry, Mesh, Boundaries, Loads, SolverData, Solution, Nodes, Elements
+from blueprints.utils.femlearn.boundary_conditions import Boundaries, DisplacementOnPoints
+from blueprints.utils.femlearn.geometry import Geometry
+from blueprints.utils.femlearn.loads import Loads, LoadsOnPoints
+from blueprints.utils.femlearn.mesh import Mesh
+from blueprints.utils.femlearn.solution import Solution
+from blueprints.utils.femlearn.solver_data import SolverData
 
 
 class Model2d:
@@ -554,3 +554,39 @@ class Model2d:
         render_window.Render()
 
         render_window_interactor.Start()
+
+
+if __name__ == "__main__":
+    model = Model2d()
+
+    # Create geometry
+    model.geometry.makePolygon(coordinates=[[0, 0], [20, 0], [20, 4], [0, 10]])
+
+    model.geometry.plot()
+    plt.show()
+
+    # Meshing
+    model.generateTRIAngleMesh(size=2, type=6, integrationOrder=3, thickness=1, poissonRation=0.3, youngsModulus=100, planarAssumption="plane stress")
+
+    # Boundary conditions
+    disp = DisplacementOnPoints(displacements=[[0, 0], [0, "free"]], pointIds=[1, 4])
+    model.boundaries.setDisplacementOnPoints(disp)
+
+    # Loads
+    loads = LoadsOnPoints(loads=[[0, -10]], pointIds=[2])
+    model.loads.setLoadsOnPoints(loads)
+
+    model.solve()
+
+    # Y-displacement in deformed mesh with loads and BCs
+    model.plotSolution("dispY", averaged=True, deformed=True)
+    model.plotBoundaries(deformed=True)
+    model.plotLoads(deformed=True)
+    plt.show()
+
+    # Mises stress in undeformed mesh
+    model.plotSolution("stressMises", averaged=False, deformed=False)
+    model.plotMesh(deformed=False)
+    model.plotBoundaries(deformed=False)
+    model.plotLoads(deformed=False)
+    plt.show()

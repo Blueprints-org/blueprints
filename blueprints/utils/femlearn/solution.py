@@ -1,6 +1,6 @@
 import numpy as np
 
-from blueprints.utils.femlearn import Mesh
+from blueprints.utils.femlearn.mesh import Mesh
 
 
 class Solution:

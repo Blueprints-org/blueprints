@@ -1,6 +1,6 @@
 import numpy as np
 
-from blueprints.utils.femlearn import _DisplacementBaseClass
+from blueprints.utils.femlearn._base_classes import _DisplacementBaseClass
 
 
 class DisplacementOnNodes(_DisplacementBaseClass):

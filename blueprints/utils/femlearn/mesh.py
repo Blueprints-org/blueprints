@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from blueprints.utils.femlearn import _PointsBaseClass
+from blueprints.utils.femlearn._base_classes import _PointsBaseClass
 
 
 class Nodes(_PointsBaseClass):
