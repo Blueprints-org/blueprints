@@ -56,6 +56,8 @@ class TorsionCheckResults:
     additional_longitudinal_reinforcement_torsion : float | None
         Required additional longitudinal reinforcement due to torsion [mm²],
         None if torsion capacity check passes.
+    _check_instances : dict
+        Internal storage of executed check instances for accessing explanations.
 
     Notes
     -----
@@ -85,6 +87,7 @@ class TorsionCheckResults:
 
     additional_longitudinal_reinforcement_shear: float
     additional_longitudinal_reinforcement_torsion: float | None = None
+    _check_instances: dict = None  # type: ignore[assignment]
 
     def all_checks_pass(self) -> bool:
         """Evaluate overall torsional resistance adequacy.
@@ -115,6 +118,31 @@ class TorsionCheckResults:
         ...     print("Design modifications required")
         ...     # Identify which specific checks failed
         """
+        logging.info("Results:")
+
+        for check_name, utilization in self.get_check_summary().items():
+            logging.info(f"{check_name}: {utilization:.2f}")
+
+        if not self.concrete_strut_capacity.is_ok:
+            logging.warning("Concrete strut capacity is not enough. Increase cross-section or concrete class.")
+            return False
+
+        if self.torsion_moment_capacity.is_ok:
+            logging.info("The combination of shear and torsion forces can be resisted with provided reinforcement.")
+        else:
+            logging.warning(
+                "Torsion moment capacity is not enough. Additional reinforcement is required to resist this combination of shear and torsion forces."
+            )
+            if self.additional_longitudinal_reinforcement_torsion is not None:
+                logging.info(
+                    "Required additional longitudinal reinforcement for torsion (to be distributed along beam edges): "
+                    f"{self.additional_longitudinal_reinforcement_torsion:.2f} mm²"
+                )
+
+        logging.info(
+            f"The required area of the additional longitudinal reinforcement due to shear: {self.additional_longitudinal_reinforcement_shear:.2f} mm²"
+        )
+
         return all(
             [
                 self.concrete_strut_capacity.is_ok,
@@ -168,6 +196,197 @@ class TorsionCheckResults:
             "Shear and torsion stirrup area": self.shear_and_torsion_stirrup_area.utilization,
             "Min shear reinforcement ratio": self.min_shear_reinforcement_ratio.utilization,
         }
+
+    def latex(self, n: int = 1, standalone: bool = False) -> str:  # noqa: C901, PLR0912, PLR0915
+        """Generate LaTeX documentation for the torsion check results.
+
+        Creates detailed LaTeX output documenting all individual check results,
+        calculations, and conclusions from the torsional resistance verification
+        according to EN 1992-1-1:2004 art. 6.3.
+
+        Parameters
+        ----------
+        n : int, default=1
+            Section numbering level for LaTeX document structure.
+        standalone : bool, default=False
+            If True, generates a complete LaTeX document with preamble and document environment.
+            If False, generates only the content body for inclusion in another document.
+
+        Returns
+        -------
+        str
+            LaTeX string representation of the torsion check results, including:
+
+            - Individual check results with utilization ratios
+            - Calculations and formulas used
+            - Overall conclusions and recommendations
+
+        Notes
+        -----
+        - Future implementation will include complete EN 1992-1-1:2004 references
+        - Will support customizable formatting and section numbering
+        - Intended for integration with automated reporting systems
+        """
+        # Build document preamble if standalone
+        preamble = (
+            r"""\documentclass{article}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+% Increase spacing throughout document
+\usepackage{setspace}
+\setstretch{1.3}  % Increase line spacing by 30%
+
+% Add space between paragraphs
+\setlength{\parskip}{0.5em}
+
+% Add space around equations
+\setlength{\abovedisplayskip}{12pt}
+\setlength{\belowdisplayskip}{12pt}
+
+\begin{document}
+
+\title{Torsion Check Results}
+\date{}
+\maketitle
+
+"""
+            if standalone
+            else ""
+        )
+
+        # Create section header
+        heading = "\\" + "sub" * (n - 1) + "section"
+        output = f"{heading}{{Torsion Check Results}}\n\n" if not standalone else ""
+
+        # Move Utilization Summary to the top for standalone documents
+        if standalone:
+            output += "\\section{Utilization Summary}\n\n"
+            output += "\\begin{table}[h]\n"
+            output += "\\centering\n"
+            output += "\\begin{tabular}{lcc}\n"
+            output += "\\toprule\n"
+            output += "Check & Utilization & Status \\\\\n"
+            output += "\\midrule\n"
+
+            for check_name, utilization in self.get_check_summary().items():
+                status = "PASS" if utilization <= 1.0 else "FAIL"
+                output += f"{check_name} & {utilization:.3f} & {status} \\\\\n"
+
+            output += "\\bottomrule\n"
+            output += "\\end{tabular}\n"
+            output += "\\end{table}\n\n"
+
+        # Overall result summary
+        all_pass = self.all_checks_pass()
+        output += "\\textbf{Overall Result: "
+        output += "PASS" if all_pass else "FAIL"
+        output += "}\\\\[0.5em]\n\n"
+
+        # Individual check results
+        section_heading = "\\section" if standalone else heading
+        output += f"{section_heading}{{Individual Checks}}\n\n"
+
+        # Map check names to their results and stored instances
+        if self._check_instances:
+            checks_map = {
+                "Concrete Strut Capacity": (self.concrete_strut_capacity, self._check_instances.get("concrete_strut")),
+                "Torsion Moment Capacity": (self.torsion_moment_capacity, self._check_instances.get("torsion_moment")),
+                "Maximum Longitudinal Reinforcement": (self.max_longitudinal_reinforcement, self._check_instances.get("max_longitudinal")),
+                "Minimum Tensile Reinforcement": (self.min_tensile_reinforcement, self._check_instances.get("min_tensile")),
+                "Maximum Shear Stirrup Spacing": (self.max_shear_stirrup_spacing, self._check_instances.get("max_shear_spacing")),
+                "Maximum Torsion Stirrup Spacing": (self.max_torsion_stirrup_spacing, self._check_instances.get("max_torsion_spacing")),
+                "Shear and Torsion Stirrup Area": (self.shear_and_torsion_stirrup_area, self._check_instances.get("stirrup_area")),
+                "Minimum Shear Reinforcement Ratio": (self.min_shear_reinforcement_ratio, self._check_instances.get("min_shear_ratio")),
+            }
+
+            subsection_heading = "\\subsection" if standalone else heading
+            for check_name, (result, check_obj) in checks_map.items():
+                output += f"{subsection_heading}{{{check_name}}}\n\n"
+
+                # Add explanation if available from executed check
+                if check_obj and hasattr(check_obj, "explanation") and check_obj.explanation:
+                    # Format the explanation - remove "Result:" line as we'll add it separately
+                    explanation_lines = check_obj.explanation.strip().split("\n")
+                    output += "\n".join(explanation_lines) + "\n\n"
+                else:
+                    # Fallback to basic result info
+                    output += f"Utilization: {result.utilization:.1%}\\\\[0.3em]\n"
+                    output += f"Status: {'PASS' if result.is_ok else 'FAIL'}\\\\[0.5em]\n\n"
+        else:
+            # Fallback if check instances not available
+            output += "Check details not available. Please re-run the analysis.\n\n"
+
+        # Additional reinforcement requirements
+        output += f"{section_heading}{{Additional Reinforcement Requirements}}\n\n"
+        output += "\\textbf{Shear:}\\\\[0.3em]\n"
+        output += (
+            f"Additional longitudinal reinforcement due to shear: $A_{{sl,shear}} = "
+            f"{self.additional_longitudinal_reinforcement_shear:.2f}$ mm²\\\\[0.5em]\n\n"
+        )
+
+        if self.additional_longitudinal_reinforcement_torsion is not None:
+            output += "\\textbf{Torsion:}\\\\[0.3em]\n"
+            output += (
+                f"Additional longitudinal reinforcement due to torsion: $A_{{sl,torsion}} = "
+                f"{self.additional_longitudinal_reinforcement_torsion:.2f}$ mm²\\\\\n"
+            )
+            output += "(To be distributed along beam edges)\\\\[0.5em]\n\n"
+
+        # Summary table of utilizations (skip for standalone as it's already at the top)
+        if not standalone:
+            output += f"{heading}{{Utilization Summary}}\n\n"
+            output += "\\begin{table}[h]\n"
+            output += "\\centering\n"
+            output += "\\begin{tabular}{lcc}\n"
+            output += "\\hline\n"
+            output += "Check & Utilization & Status \\\\\n"
+            output += "\\hline\n"
+
+            for check_name, utilization in self.get_check_summary().items():
+                status = "PASS" if utilization <= 1.0 else "FAIL"
+                output += f"{check_name} & {utilization:.3f} & {status} \\\\\n"
+
+            output += "\\hline\n"
+            output += "\\end{tabular}\n"
+            output += "\\end{table}\n\n"
+
+        # Conclusions
+        output += f"{section_heading}{{Conclusions}}\n\n"
+
+        if all_pass:
+            output += (
+                "All torsion checks pass. The cross-section can safely resist the applied combination "
+                "of shear and torsion forces with the provided reinforcement.\n\n"
+            )
+        else:
+            output += "\\textbf{Warning:} One or more checks have failed.\\\\[0.5em]\n\n"
+
+            if not self.concrete_strut_capacity.is_ok:
+                output += (
+                    "\\textbf{Critical:} Concrete strut capacity is insufficient. This cannot be "
+                    "resolved by adding more reinforcement. Required actions:\n"
+                )
+                output += "\\begin{itemize}\n"
+                output += "  \\item Increase cross-section dimensions, or\n"
+                output += "  \\item Use higher strength concrete, or\n"
+                output += "  \\item Reduce applied loads\n"
+                output += "\\end{itemize}\n\n"
+
+            if not self.torsion_moment_capacity.is_ok:
+                output += (
+                    "\\textbf{Note:} Torsion moment capacity is insufficient with "
+                    "minimum reinforcement. Additional torsion-specific reinforcement is "
+                    "required as specified above.\\\\[0.5em]\n\n"
+                )
+
+        # Add closing document tag for standalone
+        if standalone:
+            output += "\\end{document}\n"
+
+        return preamble + output
 
 
 @dataclass(frozen=True)
@@ -257,39 +476,66 @@ class TorsionCheckOrchestrator:
         ...             print(f"Failed: {name} (utilization: {util:.2f})")
         >>> print(f"Additional shear reinforcement: {results.additional_longitudinal_reinforcement_shear:.1f} mm²")
         """
-        # Execute individual checks
-        concrete_strut = ConcreteStrutCapacityCheck().execute(
+        # Execute individual checks - store instances to preserve explanations
+        concrete_strut_check = ConcreteStrutCapacityCheck()
+        concrete_strut = concrete_strut_check.execute(
             geometry=self.geometry,
             materials=self.materials,
             forces=self.forces,
         )
-        torsion_moment = TorsionMomentCapacityCheck().execute(
+
+        torsion_moment_check = TorsionMomentCapacityCheck()
+        torsion_moment = torsion_moment_check.execute(
             geometry=self.geometry,
             forces=self.forces,
         )
-        max_longitudinal = MaxLongitudinalReinforcementCheck().execute(geometry=self.geometry)
-        min_tensile = MinTensileReinforcementCheck().execute(
+
+        max_longitudinal_check = MaxLongitudinalReinforcementCheck()
+        max_longitudinal = max_longitudinal_check.execute(geometry=self.geometry)
+
+        min_tensile_check = MinTensileReinforcementCheck()
+        min_tensile = min_tensile_check.execute(
             geometry=self.geometry,
             materials=self.materials,
         )
-        max_shear_spacing = MaxShearStirrupSpacingCheck().execute(
+
+        max_shear_spacing_check = MaxShearStirrupSpacingCheck()
+        max_shear_spacing = max_shear_spacing_check.execute(
             geometry=self.geometry,
             forces=self.forces,
         )
-        max_torsion_spacing = MaxTorsionStirrupSpacingCheck().execute(
+
+        max_torsion_spacing_check = MaxTorsionStirrupSpacingCheck()
+        max_torsion_spacing = max_torsion_spacing_check.execute(
             geometry=self.geometry,
             forces=self.forces,
         )
-        stirrup_area = ShearAndTorsionStirrupAreaCheck().execute(
+
+        stirrup_area_check = ShearAndTorsionStirrupAreaCheck()
+        stirrup_area = stirrup_area_check.execute(
             geometry=self.geometry,
             materials=self.materials,
             forces=self.forces,
         )
-        min_shear_ratio = MinShearReinforcementRatioCheck().execute(
+
+        min_shear_ratio_check = MinShearReinforcementRatioCheck()
+        min_shear_ratio = min_shear_ratio_check.execute(
             geometry=self.geometry,
             materials=self.materials,
             forces=self.forces,
         )
+
+        # Store check instances for accessing explanations in latex method
+        check_instances = {
+            "concrete_strut": concrete_strut_check,
+            "torsion_moment": torsion_moment_check,
+            "max_longitudinal": max_longitudinal_check,
+            "min_tensile": min_tensile_check,
+            "max_shear_spacing": max_shear_spacing_check,
+            "max_torsion_spacing": max_torsion_spacing_check,
+            "stirrup_area": stirrup_area_check,
+            "min_shear_ratio": min_shear_ratio_check,
+        }
 
         # Calculate additional reinforcement requirements
         f_yd = self.materials.get_tension_rebar_material().f_yd
@@ -324,101 +570,5 @@ class TorsionCheckOrchestrator:
             min_shear_reinforcement_ratio=min_shear_ratio,
             additional_longitudinal_reinforcement_shear=a_sl_shear,
             additional_longitudinal_reinforcement_torsion=a_sl_torsion,
+            _check_instances=check_instances,
         )
-
-    def check(self) -> bool:
-        """Execute analysis with console output for interactive use and backward compatibility.
-
-        Performs complete torsional analysis and prints detailed results to console.
-        This method provides immediate feedback on structural adequacy and specific
-        failure modes, making it suitable for interactive analysis and debugging.
-
-        Returns
-        -------
-        bool
-            True if all structural checks pass and design is adequate.
-            False if any check fails, indicating required design modifications.
-
-        Notes
-        -----
-        - Provides immediate console feedback for each check
-        - Reports utilization ratios for all structural checks
-        - Identifies specific failure modes and required actions
-        - Calculates and reports additional reinforcement requirements
-        - Maintained for backward compatibility with existing workflows
-
-        Examples
-        --------
-        >>> orchestrator = TorsionCheckOrchestrator(geometry, materials, forces)
-        >>> is_adequate = orchestrator.check()
-        >>> if not is_adequate:
-        ...     print("Design requires modifications")
-        """
-        results = self.execute_all_checks()
-
-        logging.info("Results:")
-
-        for check_name, utilization in results.get_check_summary().items():
-            logging.info(f"{check_name}: {utilization:.2f}")
-
-        if not results.concrete_strut_capacity.is_ok:
-            logging.warning("Concrete strut capacity is not enough. Increase cross-section or concrete class.")
-            return False
-
-        if results.torsion_moment_capacity.is_ok:
-            logging.info("The combination of shear and torsion forces can be resisted with provided reinforcement.")
-        else:
-            logging.warning(
-                "Torsion moment capacity is not enough. Additional reinforcement is required to resist this combination of shear and torsion forces."
-            )
-            if results.additional_longitudinal_reinforcement_torsion is not None:
-                logging.info(
-                    "Required additional longitudinal reinforcement for torsion (to be distributed along beam edges): "
-                    f"{results.additional_longitudinal_reinforcement_torsion:.2f} mm²"
-                )
-
-        logging.info(
-            "The required area of the additional longitudinal reinforcement due to shear: "
-            f"{results.additional_longitudinal_reinforcement_shear:.2f} mm²"
-        )
-
-        return results.all_checks_pass()
-
-    def latex(self, n: int = 1) -> str:  # noqa: ARG002
-        """Generate LaTeX documentation for the complete torsional analysis.
-
-        Creates comprehensive LaTeX output documenting all aspects of the torsional
-        resistance verification, including input parameters, individual check results,
-        calculations, and conclusions. Suitable for engineering reports and documentation.
-
-        Parameters
-        ----------
-        n : int, default=1
-            Section numbering level for LaTeX document structure.
-
-        Returns
-        -------
-        str
-            Complete LaTeX string representation of the analysis, including:
-
-            - Input parameters and cross-section properties
-            - Individual check calculations and results
-            - Utilization ratios and safety factors
-            - Additional reinforcement requirements
-            - Overall conclusions and recommendations
-
-        Notes
-        -----
-        - Currently not implemented (placeholder)
-        - Future implementation will include complete EN 1992-1-1:2004 references
-        - Will support customizable formatting and section numbering
-        - Intended for integration with automated reporting systems
-
-        Examples
-        --------
-        >>> latex_report = orchestrator.latex(n=3)
-        >>> with open("torsion_analysis.tex", "w") as f:
-        ...     f.write(latex_report)
-        """
-        # TODO: To be implemented  #noqa: FIX002, TD002, TD003
-        return ""

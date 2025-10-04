@@ -5,13 +5,12 @@ https://www.studeersnel.nl/nl/document/technische-universiteit-delft/concrete-st
 
 from dataclasses import dataclass, field
 
+from blueprints.checks.torsion_check.torsion_check_orchestrator import TorsionCheckOrchestrator, TorsionCheckResults
+from blueprints.checks.torsion_check.torsion_forces import TorsionForces
+from blueprints.checks.torsion_check.torsion_geometry import TorsionGeometry
+from blueprints.checks.torsion_check.torsion_materials import TorsionMaterials
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
 from blueprints.type_alias import DEG, MM2, MPA, NMM, N
-
-from .torsion_check_orchestrator import TorsionCheckOrchestrator
-from .torsion_forces import TorsionForces
-from .torsion_geometry import TorsionGeometry
-from .torsion_materials import TorsionMaterials
 
 
 @dataclass(frozen=True)
@@ -51,7 +50,7 @@ class TorsionCheck:
     alpha: DEG = field(default=90)
     theta: DEG = field(default=45)
 
-    def _get_orchestrator(self) -> TorsionCheckOrchestrator:
+    def _get_results(self) -> TorsionCheckResults:
         """Create the orchestrator with refactored components."""
         geometry = TorsionGeometry(cs=self.cs)
         materials = TorsionMaterials(cs=self.cs)
@@ -63,18 +62,20 @@ class TorsionCheck:
             alpha=self.alpha,
             theta=self.theta,
         )
-        return TorsionCheckOrchestrator(
+        orchestrator = TorsionCheckOrchestrator(
             geometry=geometry,
             materials=materials,
             forces=forces,
         )
 
+        return orchestrator.execute_all_checks()
+
     def check(self) -> bool:
         """Perform the checks using the refactored structure."""
-        orchestrator = self._get_orchestrator()
-        return orchestrator.check()
+        results = self._get_results()
+        return results.all_checks_pass()
 
-    def latex(self, n: int = 1) -> str:
+    def latex(self, n: int = 1, standalone: bool = True) -> str:
         """Returns the LaTeX string representation for the torsion check."""
-        orchestrator = self._get_orchestrator()
-        return orchestrator.latex(n)
+        results = self._get_results()
+        return results.latex(n=n, standalone=standalone)
