@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.structural_sections._polygon_builder import merge_polygons
+from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
@@ -44,10 +44,10 @@ class IProfile(CrossSection):
         The total height of the profile [mm].
     web_thickness : MM
         The thickness of the web [mm].
-    top_radius : MM | None
-        The radius of the curved corners of the top flange. Default is None, the corner radius is then taken as the thickness.
-    bottom_radius : MM | None
-        The radius of the curved corners of the bottom flange. Default is None, the corner radius is then taken as the thickness.
+    top_radius : MM
+        The radius of the curved corners of the top flange.
+    bottom_radius : MM
+        The radius of the curved corners of the bottom flange.
     name : str
         The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value.
     plotter : Callable[[CrossSection], plt.Figure]
@@ -55,21 +55,28 @@ class IProfile(CrossSection):
     """
 
     top_flange_width: MM
+    """ The width of the top flange [mm]. """
     top_flange_thickness: MM
+    """ The thickness of the top flange [mm]. """
     bottom_flange_width: MM
+    """ The width of the bottom flange [mm]. """
     bottom_flange_thickness: MM
+    """ The thickness of the bottom flange [mm]. """
     total_height: MM
+    """ The total height of the profile [mm]. """
     web_thickness: MM
-    top_radius: MM | None = None
-    bottom_radius: MM | None = None
+    """ The thickness of the web [mm]. """
+    top_radius: MM
+    """ The radius of the curved corners of the top flange [mm]. """
+    bottom_radius: MM
+    """ The radius of the curved corners of the bottom flange [mm]. """
     name: str = "I-Profile"
+    """ The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value. """
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
+    """ The plotter function to visualize the cross-section (default: `plot_shapes`). """
 
     def __post_init__(self) -> None:
         """Initialize the I-profile section by creating its elements."""
-        self.top_radius = self.top_radius if self.top_radius is not None else self.top_flange_thickness
-        self.bottom_radius = self.bottom_radius if self.bottom_radius is not None else self.bottom_flange_thickness
-
         # Calculate web height
         self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
         self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
@@ -173,7 +180,26 @@ class IProfile(CrossSection):
     @property
     def polygon(self) -> Polygon:
         """Return the polygon of the I-profile section."""
-        return merge_polygons(self.elements)
+        return (
+            PolygonBuilder(starting_point=(0, 0))
+            .append_line(length=self.top_flange_width, angle=0)
+            .append_line(length=self.top_flange_thickness, angle=270)
+            .append_line(length=self.width_outstand_top_flange, angle=180)
+            .append_arc(sweep=90, angle=180, radius=self.top_radius)
+            .append_line(length=self.web_height, angle=270)
+            .append_arc(sweep=90, angle=270, radius=self.bottom_radius)
+            .append_line(length=self.width_outstand_bottom_flange, angle=0)
+            .append_line(length=self.bottom_flange_thickness, angle=270)
+            .append_line(length=self.bottom_flange_width, angle=180)
+            .append_line(length=self.bottom_flange_thickness, angle=90)
+            .append_line(length=self.width_outstand_bottom_flange, angle=0)
+            .append_arc(sweep=90, angle=0, radius=self.bottom_radius)
+            .append_line(length=self.web_height, angle=90)
+            .append_arc(sweep=90, angle=90, radius=self.top_radius)
+            .append_line(length=self.width_outstand_top_flange, angle=180)
+            .append_line(length=self.top_flange_thickness, angle=90)
+            .generate_polygon()
+        )
 
     @classmethod
     def from_standard_profile(

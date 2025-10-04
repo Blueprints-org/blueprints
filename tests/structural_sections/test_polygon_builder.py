@@ -8,7 +8,7 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder, merge_polygons
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestMergePolygons:
@@ -253,8 +253,8 @@ class TestPolygonBuilder:
 
         builder.append_line(2.0 * np.sqrt(2), 45.0)
 
-        np.testing.assert_allclose(builder._points[-1], (3.5, 0.0))  # noqa: SLF001
-        np.testing.assert_allclose(builder._current_point, (3.5, 0.0))  # noqa: SLF001
+        np.testing.assert_allclose(builder._points[-1], (3.5, 0.0), atol=1e-10)  # noqa: SLF001
+        np.testing.assert_allclose(builder._current_point, (3.5, 0.0), atol=1e-10)  # noqa: SLF001
 
     def test_append_line_supports_chaining(self) -> None:
         """Multiple calls extend the path while keeping the current point updated."""
@@ -347,15 +347,25 @@ class TestPolygonBuilder:
         assert result is builder
         np.testing.assert_array_equal(builder._points, points_before)  # noqa: SLF001
 
-    def test_append_arc_zero_radius_raises(self) -> None:
-        """Zero radius is invalid and raises a ValueError."""
+    def test_append_arc_zero_radius_no_op(self) -> None:
+        """Zero radius leaves the point list unchanged and returns the builder."""
+        builder = PolygonBuilder((1.0, 2.0))
+        points_before = builder._points.copy()  # noqa: SLF001
+
+        result = builder.append_arc(45.0, 0.0, 0.0)
+
+        assert result is builder
+        np.testing.assert_array_equal(builder._points, points_before)  # noqa: SLF001
+
+    def test_append_arc_negative_radius_raises(self) -> None:
+        """Negative radius is invalid and raises a ValueError."""
         builder = PolygonBuilder((0.0, 0.0))
 
         with pytest.raises(
-            LessOrEqualToZeroError,
-            match=r"(?i)values for 'radius' must be greater than zero\.?$",
+            NegativeValueError,
+            match=r"(?i)values for 'radius' cannot be negative\.?$",
         ):
-            builder.append_arc(45.0, 0.0, 0.0)
+            builder.append_arc(45.0, 0.0, -5.0)
 
     def test_append_arc_appends_point(self) -> None:
         """Appending an arc adds tessellated points following the circular path."""
@@ -490,15 +500,15 @@ class TestPolygonBuilder:
         )
         np.testing.assert_allclose(points, expected, atol=1e-12)
 
-    def test_create_polygon_requires_three_points(self) -> None:
-        """Creating a polygon with fewer than three points raises a ValueError."""
+    def test_generate_polygon_requires_three_points(self) -> None:
+        """Generating a polygon with fewer than three points raises a ValueError."""
         builder = PolygonBuilder((0.0, 0.0))
         builder.append_line(1.0, 0.0)
 
         with pytest.raises(ValueError, match="A polygon requires at least 3 points"):
-            builder.create_polygon()
+            builder.generate_polygon()
 
-    def test_create_polygon_invalid_geometry(self) -> None:
+    def test_generate_polygon_invalid_geometry(self) -> None:
         """Self-intersecting point sets are rejected as invalid polygons."""
         builder = PolygonBuilder((0.0, 0.0))
         builder._points = np.array(  # noqa: SLF001
@@ -512,9 +522,9 @@ class TestPolygonBuilder:
         )
 
         with pytest.raises(ValueError, match="The constructed polygon is not valid"):
-            builder.create_polygon()
+            builder.generate_polygon()
 
-    def test_create_polygon_returns_valid_polygon(self) -> None:
+    def test_generate_polygon_returns_valid_polygon(self) -> None:
         """A closed path of segments produces a valid Shapely polygon."""
         builder = PolygonBuilder((0.0, 0.0))
         builder.append_line(1.0, 0.0)
@@ -522,7 +532,7 @@ class TestPolygonBuilder:
         builder.append_line(1.0, 180.0)
         builder.append_line(1.0, -90.0)
 
-        polygon = builder.create_polygon()
+        polygon = builder.generate_polygon()
 
         assert isinstance(polygon, Polygon)
         assert polygon.is_valid
@@ -530,7 +540,7 @@ class TestPolygonBuilder:
         assert polygon.length == pytest.approx(4.0, rel=0.0, abs=1e-12)
         np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-12)
 
-    def test_create_polygon_with_arc_segments(self) -> None:
+    def test_generate_polygon_with_arc_segments(self) -> None:
         """Polygons built from tessellated arcs remain valid and match expected area."""
         radius = 1.0
         sweep = 360.0
@@ -538,7 +548,7 @@ class TestPolygonBuilder:
 
         builder.append_arc(sweep, angle=0.0, radius=radius, max_segment_angle=30.0)
 
-        polygon = builder.create_polygon()
+        polygon = builder.generate_polygon()
 
         assert polygon.is_valid
         segment_count = builder._segment_count_for_arc(sweep, max_segment_angle=30.0)  # noqa: SLF001
@@ -551,14 +561,14 @@ class TestPolygonBuilder:
         assert polygon.area == pytest.approx(expected_area, rel=1e-12, abs=1e-12)
         np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-12)
 
-    def test_create_polygon_with_circles(self) -> None:
+    def test_generate_polygon_with_circles(self) -> None:
         """Polygons built from full circles remain valid and match expected area."""
         radius = 2.5
         builder = PolygonBuilder((0.0, 0.0))
 
         builder.append_arc(360.0, 0.0, radius, max_segment_angle := 1.0)
 
-        polygon = builder.create_polygon()
+        polygon = builder.generate_polygon()
 
         assert polygon.is_valid
         segment_count = 360 / max_segment_angle
@@ -570,7 +580,7 @@ class TestPolygonBuilder:
         assert polygon.area == pytest.approx(expected_area, rel=1e-3)
         np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-9)
 
-    def test_create_polygon_when_polygon_does_not_close(self) -> None:
+    def test_generate_polygon_when_polygon_does_not_close(self) -> None:
         """The builder automatically closes the polygon if needed."""
         builder = PolygonBuilder((0.0, 0.0))
         builder.append_line(1.0, 0.0)
@@ -579,7 +589,7 @@ class TestPolygonBuilder:
         # Note: The final line back to the start is omitted.
         assert not np.isclose(builder._current_point, builder._points[0]).all()  # noqa: SLF001
 
-        polygon = builder.create_polygon()
+        polygon = builder.generate_polygon()
 
         assert isinstance(polygon, Polygon)
         assert polygon.is_valid
@@ -587,7 +597,7 @@ class TestPolygonBuilder:
         assert polygon.length == pytest.approx(4.0, rel=0.0, abs=1e-12)
         np.testing.assert_allclose(polygon.centroid.coords[0], (0.0, 0.0), atol=1e-12)
 
-    def test_create_polygon_no_centroid_transform(self) -> None:
+    def test_generate_polygon_no_centroid_transform(self) -> None:
         """The centroid is computed in the local coordinate system if no transform is given."""
         builder = PolygonBuilder((1.0, 1.0))
         builder.append_line(2.0, 0.0)
@@ -595,7 +605,7 @@ class TestPolygonBuilder:
         builder.append_line(2.0, 180.0)
         builder.append_line(2.0, -90.0)
 
-        polygon = builder.create_polygon(transform_centroid=False)
+        polygon = builder.generate_polygon(transform_centroid=False)
 
         assert isinstance(polygon, Polygon)
         assert polygon.is_valid
