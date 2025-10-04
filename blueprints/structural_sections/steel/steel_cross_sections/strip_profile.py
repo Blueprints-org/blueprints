@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.structural_sections._polygon_builder import merge_polygons
+from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
@@ -39,12 +39,16 @@ class StripProfile(CrossSection):
     """
 
     width: MM
+    """The width of the strip profile [mm]."""
     height: MM
+    """The height (thickness) of the strip profile [mm]."""
     name: str = "Strip Profile"
+    """The name of the profile."""
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
+    """The plotter function to visualize the cross-section."""
 
     def __post_init__(self) -> None:
-        """Initialize the Strip profile."""
+        """Post-process the Strip profile after initialization."""
         # Nominal thickness is the minimum of width and height
         self.thickness = min(self.width, self.height)
 
@@ -60,7 +64,15 @@ class StripProfile(CrossSection):
     @property
     def polygon(self) -> Polygon:
         """Return the polygon of the strip profile cross-section."""
-        return merge_polygons(self.elements)
+        return (
+            # Start at top-left corner and go clockwise
+            PolygonBuilder((0, 0))
+            .append_line(length=self.width, angle=0)
+            .append_line(length=self.height, angle=270)
+            .append_line(length=self.width, angle=180)
+            .append_line(length=self.height, angle=90)
+            .generate_polygon()
+        )
 
     @classmethod
     def from_standard_profile(
