@@ -41,15 +41,15 @@ class Form6Dot41BiaxialBendingCheck(Formula):
         beta : DIMENSIONLESS
             [$\beta$] exponent for the z-axis term.
 
-        In which $\alpha$ and $\beta$ are constants, which may conservatively be taken as unity, otherwise as follows:
-        - I and H sections:
-            $\alpha = 2$ and $\beta = 5 \cdot n$, but $\beta \geq 1$.
-        - Circular hollow sections:
-            $\alpha = 2$ and $\beta = 2$.
-        - Rectangular hollow sections:
-            $\alpha = \beta = \frac{1.66}{1-1.13 \cdot n^2}$, but $\alpha = \beta \leq 6$.
+            In which $\alpha$ and $\beta$ are constants, which may conservatively be taken as unity, otherwise as follows:
+            - I and H sections:
+                $\alpha = 2$ and $\beta = 5 \cdot n$, but $\beta \geq 1$.
+            - Circular hollow sections:
+                $\alpha = 2$ and $\beta = 2$.
+            - Rectangular hollow sections:
+                $\alpha = \beta = \frac{1.66}{1-1.13 \cdot n^2}$, but $\alpha = \beta \leq 6$.
 
-        Where $n = N_{Ed} / N_{pl,Rd}$, see equation 6.38n.
+            Where $n = N_{Ed} / N_{pl,Rd}$, see equation 6.38n.
         """
         super().__init__()
         self.my_ed = my_ed
