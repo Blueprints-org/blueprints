@@ -147,7 +147,7 @@ submit an issue or a pull request. This is intended to be a central open library
 
 ## Code of Conduct
 
-We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+We enforce a code of conduct for all maintainers and contributors. For more details, check out [Code of Conduct](https://github.com/Blueprints-org/blueprints/blob/main/.github/CODE_OF_CONDUCT.md).
 
 ## Contact
 
