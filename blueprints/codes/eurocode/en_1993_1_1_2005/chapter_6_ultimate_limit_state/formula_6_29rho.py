@@ -28,8 +28,7 @@ class Form6Dot29Rho(Formula):
             [$V_{Ed}$] Design shear force [$N$].
         v_pl_rd : N
             [$V_{pl,Rd}$] Plastic shear resistance, obtained from 6.2.6(2) [$N$].
-
-        Note, see also 6.2.10(3)
+            Note, see also 6.2.10(3)
         """
         super().__init__()
         self.v_ed = v_ed
@@ -104,8 +103,7 @@ class Form6Dot29RhoWithTorsion(Formula):
             [$V_{Ed}$] Design shear force [$N$].
         v_pl_t_rd : N
             [$V_{pl,T,Rd}$] Plastic shear resistance with torsion [$N$].
-
-        Note, see also 6.2.7
+            Note, see also 6.2.7
         """
         super().__init__()
         self.v_ed = v_ed

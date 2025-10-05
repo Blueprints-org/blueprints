@@ -31,7 +31,6 @@ class Form7Dot18DeformationParameter(Formula):
             [$\alpha_{I}$] Value of the parameter calculated for the uncracked condition
         alpha_ll : DIMENSIONLESS
             [$\alpha_{II}$] Value of the parameter calculated for the fully cracked condition.
-        .
         """
         super().__init__()
         self.zeta = zeta
