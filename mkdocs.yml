@@ -54,6 +54,7 @@ theme:
 plugins:
   - search
   - open-in-new-tab
+  - markdown-exec
   - gen-files:
       scripts:
         - docs/_scripts/generate_reference_pages.py
