@@ -53,7 +53,7 @@ class LNPProfile(CrossSection):
     base_thickness: MM
     """ The thickness of the base [mm]. """
     root_radius: MM
-    """ The root radius of the top corner [mm].  """
+    """ The root radius of the top corner [mm]. """
     back_radius: MM
     """ The back radius of the top corner [mm]. """
     web_toe_radius: MM
@@ -131,7 +131,7 @@ class LNPProfile(CrossSection):
         """Return the polygon of the LNP profile section."""
         return (
             # Start from top left corner and go clockwise
-            PolygonBuilder((0, 0))
+            PolygonBuilder(starting_point=(0, 0))
             # Web
             .append_line(length=self.web_toe_straight_part, angle=0)
             .append_arc(sweep=-90, angle=0, radius=self.web_toe_radius)
