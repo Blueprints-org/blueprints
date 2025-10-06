@@ -20,20 +20,22 @@ from blueprints.validations import raise_if_negative
 class LNPProfile(CrossSection):
     """Representation of an LNP section.
 
+    Web is the vertical part and base is the horizontal part of the LNP-profile.
+
     Attributes
     ----------
     total_width : MM
-        The width of the profile [mm].
+        The total width of the profile [mm].
     total_height : MM
-        The height of the profile [mm].
+        The total height of the profile [mm].
     web_thickness : MM
         The thickness of the web [mm].
     base_thickness : MM
         The thickness of the base [mm].
     root_radius : MM | None
-        The root radius of the top corner.
+        The inner radius of the web-base corner.
     back_radius : MM | None
-        The back radius of the top corner.
+        The outer radius of the web-base corner.
     web_toe_radius : MM | None
         The radius of the toe in the web.
     base_toe_radius : MM | None
@@ -45,17 +47,17 @@ class LNPProfile(CrossSection):
     """
 
     total_width: MM
-    """ The width of the profile [mm]. """
+    """ The total width of the profile [mm]. """
     total_height: MM
-    """ The height of the profile [mm]. """
+    """ The total height of the profile [mm]. """
     web_thickness: MM
     """ The thickness of the web [mm]. """
     base_thickness: MM
     """ The thickness of the base [mm]. """
     root_radius: MM
-    """ The root radius of the top corner [mm]. """
+    """ The inner radius of the web-base corner [mm]. """
     back_radius: MM
-    """ The back radius of the top corner [mm]. """
+    """ The outer radius of the web-base corner [mm]. """
     web_toe_radius: MM
     """ The radius of the toe in the web [mm]. """
     base_toe_radius: MM
