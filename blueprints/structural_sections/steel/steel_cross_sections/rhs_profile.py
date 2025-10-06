@@ -200,7 +200,7 @@ class RHSProfile(CrossSection):
         """Return the polygon of the RHS profile section."""
         outer_polygon = (
             # Start at top left corner (just to the right of the top left corner) and go clockwise
-            PolygonBuilder((0, 0))
+            PolygonBuilder(starting_point=(0, 0))
             .append_line(length=self.top_wall_outer_width, angle=0)
             .append_arc(sweep=-90, angle=0, radius=self.top_right_outer_radius)
             .append_line(length=self.right_wall_outer_height, angle=270)
@@ -213,7 +213,7 @@ class RHSProfile(CrossSection):
         )
         inner_polygon = (
             # Start at top left corner (just to the right of the top left corner) and go clockwise
-            PolygonBuilder((0, 0))
+            PolygonBuilder(starting_point=(0, 0))
             .append_line(length=self.top_wall_inner_width, angle=0)
             .append_arc(sweep=-90, angle=0, radius=self.top_right_inner_radius)
             .append_line(length=self.right_wall_inner_height, angle=270)
