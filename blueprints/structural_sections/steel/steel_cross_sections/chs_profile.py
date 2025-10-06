@@ -57,14 +57,14 @@ class CHSProfile(CrossSection):
     @property
     def polygon(self) -> Polygon:
         """Return the polygon of the CHS profile section."""
-        max_segment_angle = min(5, 360 / (pi * self.outer_diameter))  # min 1 mm per segment
+        max_segment_angle = min(5, 360 / (pi * self.outer_diameter))  # min 1 mm per segment and not less than 5 degrees which is the default
         outer_polygon = (
-            PolygonBuilder((0, 0))
+            PolygonBuilder(starting_point=(0, 0))
             .append_arc(sweep=360, angle=0, radius=self.outer_diameter / 2, max_segment_angle=max_segment_angle)
             .generate_polygon()
         )
         inner_polygon = (
-            PolygonBuilder((0, 0))
+            PolygonBuilder(starting_point=(0, 0))
             .append_arc(sweep=360, angle=0, radius=self.inner_diameter / 2, max_segment_angle=max_segment_angle)
             .generate_polygon()
         )
