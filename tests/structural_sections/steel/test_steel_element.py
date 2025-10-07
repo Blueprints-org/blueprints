@@ -86,12 +86,12 @@ def test_ultimate_strength(steel_element: SteelElement, mock_material: Mock) -> 
 def test_invalid_yield_strength(steel_element: SteelElement, mock_material: Mock) -> None:
     """Test that accessing yield strength raises a ValueError if not defined."""
     mock_material.yield_strength.return_value = None
-    with pytest.raises(ValueError, match="Yield strength is not defined for this material."):
+    with pytest.raises(ValueError, match=r"Yield strength is not defined for this material."):
         _ = steel_element.yield_strength
 
 
 def test_invalid_ultimate_strength(steel_element: SteelElement, mock_material: Mock) -> None:
     """Test that accessing ultimate strength raises a ValueError if not defined."""
     mock_material.ultimate_strength.return_value = None
-    with pytest.raises(ValueError, match="Ultimate strength is not defined for this material."):
+    with pytest.raises(ValueError, match=r"Ultimate strength is not defined for this material."):
         _ = steel_element.ultimate_strength

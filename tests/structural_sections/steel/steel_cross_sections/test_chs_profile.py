@@ -1,5 +1,9 @@
 """Test suite for the CHSSteelProfile class."""
 
+import matplotlib as mpl
+
+mpl.use("Agg")
+
 from unittest.mock import MagicMock
 
 import matplotlib.pyplot as plt
@@ -50,7 +54,7 @@ class TestCHSSteelProfile:
     def test_get_profile_with_corrosion(self) -> None:
         """Test the CHS profile with 16 mm corrosion applied."""
         # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match="The profile has fully corroded."):
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
             CHSSteelProfile.from_standard_profile(
                 profile=CHS.CHS508x16,
                 steel_material=SteelMaterial(SteelStrengthClass.S355),

@@ -158,7 +158,7 @@ class TestNominalConcreteCover:
         uneven_surface: bool,
     ) -> None:
         """Test type error for uneven_surface parameter."""
-        with pytest.raises(TypeError, match="Invalid type for uneven_surface: .* Expected type is bool."):
+        with pytest.raises(TypeError, match=r"Invalid type for uneven_surface: .* Expected type is bool."):
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
@@ -184,7 +184,7 @@ class TestNominalConcreteCover:
         abrasion_class: AbrasionClass,
     ) -> None:
         """Test type error for abrasion_class parameter."""
-        with pytest.raises(TypeError, match="Invalid type for abrasion_class: .* Expected type is AbrasionClass."):
+        with pytest.raises(TypeError, match=r"Invalid type for abrasion_class: .* Expected type is AbrasionClass."):
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,
@@ -210,7 +210,7 @@ class TestNominalConcreteCover:
         casting_surface: CastingSurface,
     ) -> None:
         """Test type error for casting_surface parameter."""
-        with pytest.raises(TypeError, match="Invalid type for casting_surface: .* Expected type is CastingSurface."):
+        with pytest.raises(TypeError, match=r"Invalid type for casting_surface: .* Expected type is CastingSurface."):
             NominalConcreteCover(
                 reinforcement_diameter=25,
                 nominal_max_aggregate_size=32,

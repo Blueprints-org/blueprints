@@ -3,14 +3,14 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_37_38 import (
-    Form6Dot37Dot38MomentReduction,
+    Form6Dot37And38MomentReduction,
     Form6Dot38A,
     Form6Dot38N,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot37Dot38MomentReduction:
+class TestForm6Dot37And38MomentReduction:
     """Validation for formulas 6.37 and 6.38 from EN 1993-1-1:2005."""
 
     def test_evaluation_37(self) -> None:
@@ -21,7 +21,7 @@ class TestForm6Dot37Dot38MomentReduction:
         n = 0.3
 
         # Object to test
-        formula = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n)
+        formula = Form6Dot37And38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n)
 
         # Expected result, manually calculated
         manually_calculated_result = 60000.0
@@ -36,7 +36,7 @@ class TestForm6Dot37Dot38MomentReduction:
         n = 0.9666666667
 
         # Object to test
-        formula = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n)
+        formula = Form6Dot37And38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n)
 
         # Expected result, manually calculated
         manually_calculated_result = 7733.333333
@@ -53,7 +53,7 @@ class TestForm6Dot37Dot38MomentReduction:
     def test_raise_error_when_negative_values_are_given(self, mpl_z_rd: float, n: float) -> None:
         """Test invalid negative values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=0.4, n=n)
+            Form6Dot37And38MomentReduction(mpl_z_rd=mpl_z_rd, a=0.4, n=n)
 
     @pytest.mark.parametrize(
         "a",
@@ -65,7 +65,7 @@ class TestForm6Dot37Dot38MomentReduction:
     def test_raise_error_when_invalid_values_are_given(self, a: float) -> None:
         """Test invalid zero or negative values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form6Dot37Dot38MomentReduction(mpl_z_rd=60000.0, a=a, n=0.5)
+            Form6Dot37And38MomentReduction(mpl_z_rd=60000.0, a=a, n=0.5)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -98,7 +98,7 @@ class TestForm6Dot37Dot38MomentReduction:
         n = 0.3
 
         # Object to test
-        latex = Form6Dot37Dot38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n).latex()
+        latex = Form6Dot37And38MomentReduction(mpl_z_rd=mpl_z_rd, a=a, n=n).latex()
 
         actual = {
             "complete": latex.complete,
