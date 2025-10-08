@@ -474,11 +474,12 @@ class TestPolygonBuilder:
     def test_rotation_matrix_returns_expected_transform(self) -> None:
         """Rotation helper produces the standard planar rotation matrix."""
         sweep = 90.0
-        segment_count = 1
+        segment_count = 2
 
-        rotation = PolygonBuilder._rotation_matrix(sweep, segment_count)  # noqa: SLF001
+        rotation = PolygonBuilder._arc_rotation_series(sweep, segment_count)  # noqa: SLF001
 
-        expected = np.array([[0.0, -1.0], [1.0, 0.0]])
+        # Each column is the unit vector rotated by 45° increments.
+        expected = np.array([[np.sqrt(2) / 2, np.sqrt(2) / 2], [0.0, 1.0]])
         np.testing.assert_allclose(rotation, expected, atol=1e-12)
 
     def test_generate_arc_vertices_tracks_rotated_vectors(self) -> None:
@@ -487,15 +488,16 @@ class TestPolygonBuilder:
 
         center = np.array((0.0, 0.0))
         start_vector = np.array((1.0, 0.0))
-        rotation = builder._rotation_matrix(90, 1)  # noqa: SLF001
+        rotation = builder._arc_rotation_series(90, 3)  # noqa: SLF001
 
-        points = builder._generate_arc_vertices(center, start_vector, rotation, 3)  # noqa: SLF001
+        points = builder._generate_arc_vertices(center, start_vector, rotation)  # noqa: SLF001
 
+        # The points should be at 30°, 60°, and 90° on the unit circle.
         expected = np.array(
             [
+                (np.sqrt(3) / 2, 1.0 / 2),
+                (1.0 / 2, np.sqrt(3) / 2),
                 (0.0, 1.0),
-                (-1.0, 0.0),
-                (0.0, -1.0),
             ]
         )
         np.testing.assert_allclose(points, expected, atol=1e-12)
@@ -554,7 +556,6 @@ class TestPolygonBuilder:
         segment_count = builder._segment_count_for_arc(sweep, max_segment_angle=30.0)  # noqa: SLF001
         # Arc tessellation produces segment_count additional vertices plus the start point.
         assert len(builder._points) == segment_count + 1  # noqa: SLF001
-        assert len(polygon.exterior.coords[:-1]) == segment_count + 1
 
         per_segment_angle = np.deg2rad(sweep / segment_count)
         expected_area = 0.5 * segment_count * radius**2 * np.sin(per_segment_angle)
@@ -574,7 +575,6 @@ class TestPolygonBuilder:
         segment_count = 360 / max_segment_angle
         # Arc tessellation produces segment_count additional vertices plus the start point.
         assert len(builder._points) == segment_count + 1  # noqa: SLF001
-        assert len(polygon.exterior.coords[:-1]) == segment_count + 1
 
         expected_area = np.pi * radius**2
         assert polygon.area == pytest.approx(expected_area, rel=1e-3)

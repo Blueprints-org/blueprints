@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.structural_sections._polygon_builder import merge_polygons
+from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
@@ -37,22 +37,22 @@ class RHSProfile(CrossSection):
         The thickness of the top wall [mm].
     bottom_wall_thickness : MM
         The thickness of the bottom wall [mm].
-    top_right_inner_radius : MM | None
-        The inner radius of the top right corner. Default is None, the corner radius is then taken as the thickness.
-    top_left_inner_radius : MM | None
-        The inner radius of the top left corner. Default is None, the corner radius is then taken as the thickness.
-    bottom_right_inner_radius : MM | None
-        The inner radius of the bottom right corner. Default is None, the corner radius is then taken as the thickness.
-    bottom_left_inner_radius : MM | None
-        The inner radius of the bottom left corner. Default is None, the corner radius is then taken as the thickness.
-    top_right_outer_radius : MM | None
-        The outer radius of the top right corner. Default is None, the corner radius is then taken as twice the thickness.
-    top_left_outer_radius : MM | None
-        The outer radius of the top left corner. Default is None, the corner radius is then taken as twice the thickness.
-    bottom_right_outer_radius : MM | None
-        The outer radius of the bottom right corner. Default is None, the corner radius is then taken as twice the thickness.
-    bottom_left_outer_radius : MM | None
-        The outer radius of the bottom left corner. Default is None, the corner radius is then taken as twice the thickness.
+    top_right_inner_radius : MM
+        The inner radius of the top right corner. Default is 0.
+    top_left_inner_radius : MM
+        The inner radius of the top left corner. Default is 0.
+    bottom_right_inner_radius : MM
+        The inner radius of the bottom right corner. Default is 0.
+    bottom_left_inner_radius : MM
+        The inner radius of the bottom left corner. Default is 0.
+    top_right_outer_radius : MM
+        The outer radius of the top right corner. Default is 0.
+    top_left_outer_radius : MM
+        The outer radius of the top left corner. Default is 0.
+    bottom_right_outer_radius : MM
+        The outer radius of the bottom right corner. Default is 0.
+    bottom_left_outer_radius : MM
+        The outer radius of the bottom left corner. Default is 0.
     name : str
         The name of the profile. Default is "RHS-Profile". If corrosion is applied, the name will include the corrosion value.
     plotter : Callable[[CrossSection], plt.Figure]
@@ -60,60 +60,69 @@ class RHSProfile(CrossSection):
     """
 
     total_width: MM
+    """The total width of the profile [mm]."""
     total_height: MM
+    """The total height of the profile [mm]."""
     left_wall_thickness: MM
+    """The thickness of the left wall [mm]."""
     right_wall_thickness: MM
+    """The thickness of the right wall [mm]."""
     top_wall_thickness: MM
+    """The thickness of the top wall [mm]."""
     bottom_wall_thickness: MM
-    top_right_inner_radius: MM | None = None
-    top_left_inner_radius: MM | None = None
-    bottom_right_inner_radius: MM | None = None
-    bottom_left_inner_radius: MM | None = None
-    top_right_outer_radius: MM | None = None
-    top_left_outer_radius: MM | None = None
-    bottom_right_outer_radius: MM | None = None
-    bottom_left_outer_radius: MM | None = None
+    """The thickness of the bottom wall [mm]."""
+    top_right_inner_radius: MM = 0
+    """The inner radius of the top right corner [mm]."""
+    top_left_inner_radius: MM = 0
+    """The inner radius of the top left corner [mm]."""
+    bottom_right_inner_radius: MM = 0
+    """The inner radius of the bottom right corner [mm]."""
+    bottom_left_inner_radius: MM = 0
+    """The inner radius of the bottom left corner [mm]."""
+    top_right_outer_radius: MM = 0
+    """The outer radius of the top right corner [mm]."""
+    top_left_outer_radius: MM = 0
+    """The outer radius of the top left corner [mm]."""
+    bottom_right_outer_radius: MM = 0
+    """The outer radius of the bottom right corner [mm]."""
+    bottom_left_outer_radius: MM = 0
+    """The outer radius of the bottom left corner [mm]."""
     name: str = "RHS-Profile"
+    """The name of the profile."""
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
+    """The plotter function to visualize the cross-section."""
 
     def __post_init__(self) -> None:
         """Initialize the RHS- or SHS-profile section."""
-        self.top_right_inner_radius = self.top_right_inner_radius if self.top_right_inner_radius is not None else self.top_wall_thickness
-        self.top_left_inner_radius = self.top_left_inner_radius if self.top_left_inner_radius is not None else self.top_wall_thickness
-        self.bottom_right_inner_radius = self.bottom_right_inner_radius if self.bottom_right_inner_radius is not None else self.bottom_wall_thickness
-        self.bottom_left_inner_radius = self.bottom_left_inner_radius if self.bottom_left_inner_radius is not None else self.bottom_wall_thickness
-        self.top_right_outer_radius = self.top_right_outer_radius if self.top_right_outer_radius is not None else 2 * self.top_wall_thickness
-        self.top_left_outer_radius = self.top_left_outer_radius if self.top_left_outer_radius is not None else 2 * self.top_wall_thickness
-        self.bottom_right_outer_radius = (
-            self.bottom_right_outer_radius if self.bottom_right_outer_radius is not None else 2 * self.bottom_wall_thickness
-        )
-        self.bottom_left_outer_radius = self.bottom_left_outer_radius if self.bottom_left_outer_radius is not None else 2 * self.bottom_wall_thickness
+        self.right_wall_outer_height = self.total_height - self.top_right_outer_radius - self.bottom_right_outer_radius
+        self.left_wall_outer_height = self.total_height - self.top_left_outer_radius - self.bottom_left_outer_radius
+        self.top_wall_outer_width = self.total_width - self.top_right_outer_radius - self.top_left_outer_radius
+        self.bottom_wall_outer_width = self.total_width - self.bottom_right_outer_radius - self.bottom_left_outer_radius
 
-        # calculate the lengths of the rectangular sections
-        self.right_wall_height = (
+        self.right_wall_inner_height = (
             self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_right_inner_radius - self.bottom_right_inner_radius
         )
-        self.left_wall_height = (
+        self.left_wall_inner_height = (
             self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_left_inner_radius - self.bottom_left_inner_radius
         )
-        self.top_wall_width = (
+        self.top_wall_inner_width = (
             self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.top_right_inner_radius - self.top_left_inner_radius
         )
-        self.bottom_wall_width = (
+        self.bottom_wall_inner_width = (
             self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius
         )
 
         # Create the cross-sections for the flanges and web
         self.top_wall = RectangularCrossSection(
             name="Top Wall",
-            width=self.top_wall_width,
+            width=self.top_wall_inner_width,
             height=self.top_wall_thickness,
             x=(self.left_wall_thickness - self.right_wall_thickness + self.top_left_inner_radius - self.top_right_inner_radius) / 2,
             y=(self.total_height - self.top_wall_thickness) / 2,
         )
         self.bottom_wall = RectangularCrossSection(
             name="Bottom Wall",
-            width=self.bottom_wall_width,
+            width=self.bottom_wall_inner_width,
             height=self.bottom_wall_thickness,
             x=(self.left_wall_thickness - self.right_wall_thickness + self.bottom_left_inner_radius - self.bottom_right_inner_radius) / 2,
             y=-(self.total_height - self.bottom_wall_thickness) / 2,
@@ -121,14 +130,14 @@ class RHSProfile(CrossSection):
         self.left_wall = RectangularCrossSection(
             name="Left Wall",
             width=self.left_wall_thickness,
-            height=self.left_wall_height,
+            height=self.left_wall_inner_height,
             x=-(self.total_width - self.left_wall_thickness) / 2,
             y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_left_inner_radius - self.bottom_left_inner_radius) / 2,
         )
         self.right_wall = RectangularCrossSection(
             name="Right Wall",
             width=self.right_wall_thickness,
-            height=self.right_wall_height,
+            height=self.right_wall_inner_height,
             x=(self.total_width - self.right_wall_thickness) / 2,
             y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_right_inner_radius - self.bottom_right_inner_radius) / 2,
         )
@@ -189,7 +198,33 @@ class RHSProfile(CrossSection):
     @property
     def polygon(self) -> Polygon:
         """Return the polygon of the RHS profile section."""
-        return merge_polygons(self.elements)
+        outer_polygon = (
+            # Start at top left corner (just to the right of the top left corner) and go clockwise
+            PolygonBuilder(starting_point=(0, 0))
+            .append_line(length=self.top_wall_outer_width, angle=0)
+            .append_arc(sweep=-90, angle=0, radius=self.top_right_outer_radius)
+            .append_line(length=self.right_wall_outer_height, angle=270)
+            .append_arc(sweep=-90, angle=270, radius=self.bottom_right_outer_radius)
+            .append_line(length=self.bottom_wall_outer_width, angle=180)
+            .append_arc(sweep=-90, angle=180, radius=self.bottom_left_outer_radius)
+            .append_line(length=self.left_wall_outer_height, angle=90)
+            .append_arc(sweep=-90, angle=90, radius=self.top_left_outer_radius)
+            .generate_polygon()
+        )
+        inner_polygon = (
+            # Start at top left corner (just to the right of the top left corner) and go clockwise
+            PolygonBuilder(starting_point=(0, 0))
+            .append_line(length=self.top_wall_inner_width, angle=0)
+            .append_arc(sweep=-90, angle=0, radius=self.top_right_inner_radius)
+            .append_line(length=self.right_wall_inner_height, angle=270)
+            .append_arc(sweep=-90, angle=270, radius=self.bottom_right_inner_radius)
+            .append_line(length=self.bottom_wall_inner_width, angle=180)
+            .append_arc(sweep=-90, angle=180, radius=self.bottom_left_inner_radius)
+            .append_line(length=self.left_wall_inner_height, angle=90)
+            .append_arc(sweep=-90, angle=90, radius=self.top_left_inner_radius)
+            .generate_polygon()
+        )
+        return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
 
     @classmethod
     def from_standard_profile(
