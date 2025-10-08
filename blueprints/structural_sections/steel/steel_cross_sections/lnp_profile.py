@@ -32,13 +32,13 @@ class LNPProfile(CrossSection):
         The thickness of the web [mm].
     base_thickness : MM
         The thickness of the base [mm].
-    root_radius : MM | None
+    root_radius : MM
         The inner radius of the web-base corner.
-    back_radius : MM | None
+    back_radius : MM
         The outer radius of the web-base corner.
-    web_toe_radius : MM | None
+    web_toe_radius : MM
         The radius of the toe in the web.
-    base_toe_radius : MM | None
+    base_toe_radius : MM
         The radius of the toe in the base.
     name : str
         The name of the profile. Default is "LNP-Profile". If corrosion is applied, the name will include the corrosion value.
