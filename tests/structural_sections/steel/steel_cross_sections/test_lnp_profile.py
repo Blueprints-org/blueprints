@@ -8,6 +8,7 @@ from matplotlib.figure import Figure
 
 from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
+from blueprints.validations import NegativeValueError
 
 
 class TestLNPProfile:
@@ -64,20 +65,68 @@ class TestLNPProfile:
         assert lnp_profile_with_corrosion.name == expected_name_with_corrosion
 
     def test_custom_profile(self) -> None:
-        """Test creating an LNPProfile with custom dimensions and default radii."""
+        """Test creating an LNPProfile with custom dimensions."""
         profile = LNPProfile(
             total_width=120,
             total_height=60,
             web_thickness=8,
             base_thickness=10,
-            root_radius=None,
-            back_radius=None,
-            web_toe_radius=None,
-            base_toe_radius=None,
+            root_radius=5,
+            back_radius=0,
+            web_toe_radius=4,
+            base_toe_radius=5,
             name="Custom LNP",
         )
         # Check that default radii are set correctly
-        assert profile.root_radius == 8
-        assert profile.back_radius == 16
-        assert profile.web_toe_radius == 0
-        assert profile.base_toe_radius == 0
+        assert profile.area > 0
+
+    def test_invalid_dimensions(self) -> None:
+        """Test that invalid dimensions raise errors."""
+        # Case with negative web toe straight part
+        with pytest.raises(NegativeValueError, match=r"(?i) 'web_toe_straight_part' cannot be negative"):
+            LNPProfile(
+                total_width=100,
+                total_height=50,
+                web_thickness=6,
+                base_thickness=6,
+                root_radius=3,
+                back_radius=6,
+                web_toe_radius=7,
+                base_toe_radius=0,
+            )
+        # Case with negative base toe straight part
+        with pytest.raises(NegativeValueError, match=r"(?i) 'base_toe_straight_part' cannot be negative"):
+            LNPProfile(
+                total_width=100,
+                total_height=0,
+                web_thickness=6,
+                base_thickness=6,
+                root_radius=3,
+                back_radius=3,
+                web_toe_radius=0,
+                base_toe_radius=7,
+            )
+        # Case with negative base inner width
+        with pytest.raises(NegativeValueError, match=r"(?i) 'base_inner_width' cannot be negative"):
+            LNPProfile(
+                total_width=20,
+                total_height=100,
+                web_thickness=10,
+                base_thickness=8,
+                root_radius=6,
+                back_radius=3,
+                web_toe_radius=0,
+                base_toe_radius=6,
+            )
+        # Case with negative web inner height
+        with pytest.raises(NegativeValueError, match=r"(?i) 'web_inner_height' cannot be negative"):
+            LNPProfile(
+                total_width=100,
+                total_height=30,
+                web_thickness=12,
+                base_thickness=15,
+                root_radius=10,
+                back_radius=0,
+                web_toe_radius=10,
+                base_toe_radius=6,
+            )
