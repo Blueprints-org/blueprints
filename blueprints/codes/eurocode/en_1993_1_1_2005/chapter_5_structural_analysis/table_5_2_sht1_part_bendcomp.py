@@ -1,3 +1,5 @@
+"""Formula 5.6 from EN 1993-1-1:2005 - Classification of compression parts under bending and compression."""
+
 import numpy as np
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -8,14 +10,14 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Table5Dot2PartSubjecttoBendingandCompression(Formula):
+    """Implements EN 1993-1-1:2005 Table 5.2 (Sheet 1 of 3) for classification of compression parts under bending."""
+
     label = "5.6"
     source_document = EN_1993_1_1_2005
 
     def __init__(self, epsilon: DIMENSIONLESS, c: MM, t_w: MM, n_ed: KN, a: MM2, f_y: MPA) -> None:
         r"""
-        [$UC$] The calculation of the utilization ratio [$-$].
-
-        EN 1993-1-1:2005 Table 5.2 (sheet 1 of 3): Maximum widht-to-thickness ratios for compression parts
+        [$-$] EN 1993-1-1:2005 Table 5.2 (sheet 1 of 3): Maximum widht-to-thickness ratios for compression parts [$-$].
 
         Parameters
         ----------
@@ -46,6 +48,7 @@ class Table5Dot2PartSubjecttoBendingandCompression(Formula):
 
     @staticmethod
     def _evaluate(epsilon: float, c: MM, t_w: MM, n_ed: KN, a: MM2, f_y: MPA) -> int:
+        """Evaluate section classification based on slenderness ratios."""
         raise_if_less_or_equal_to_zero(epsilon=epsilon, c=c, t_w=t_w, a=a, f_y=f_y)
 
         alpha = min(0.5 * (1 + n_ed / (c * t_w * f_y)), 1.0)
@@ -59,11 +62,7 @@ class Table5Dot2PartSubjecttoBendingandCompression(Formula):
             beta_1w = 36 * epsilon / alpha
             beta_2w = 41.5 * epsilon / alpha
 
-        # Custom Class 3 formula per your request
-        if psi <= -1:
-            beta_3w = 62 * epsilon * (1 - psi) * np.sqrt(abs(psi))
-        else:
-            beta_3w = 42 * epsilon / (0.67 + 0.33 * psi)
+        beta_3w = 62 * epsilon * (1 - psi) * np.sqrt(abs(psi)) if psi <= -1 else 42 * epsilon / (0.67 + 0.33 * psi)
 
         if c_t_w <= beta_1w:
             return 1
@@ -74,9 +73,11 @@ class Table5Dot2PartSubjecttoBendingandCompression(Formula):
         return 4  # Slender
 
     def evaluate(self) -> int:
+        """Compute and return the section classification."""
         return self._evaluate(self.epsilon, self.c, self.t_w, self.n_ed, self.a, self.f_y)
 
-    def latex(self) -> LatexFormula:
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return a LatexFormula representation of the section classification."""
         class_num = self.evaluate()
         alpha = min(0.5 * (1 + self.n_ed * 1000 / (self.c * self.t_w * self.f_y)), 1.0)
         psi = 2 * self.n_ed * 1000 / (self.a * self.f_y) - 1
@@ -93,30 +94,25 @@ class Table5Dot2PartSubjecttoBendingandCompression(Formula):
             beta_1_label = r"\alpha \leq 0.5: \frac{c}{t_w} \leq \frac{36\varepsilon}{\alpha}"
             beta_2_label = r"\alpha \leq 0.5: \frac{c}{t_w} \leq \frac{41.5\varepsilon}{\alpha}"
 
-        if psi <= -1:
-            beta_3w = 62 * self.epsilon * (1 - psi) * np.sqrt(abs(psi))
-            beta_3_label = r"\psi \leq -1: \frac{c}{t_w} \leq 62\varepsilon(1 - \psi)\sqrt{\left|\psi\right|}"
-        else:
-            beta_3w = 42 * self.epsilon / (0.67 + 0.33 * psi)
-            beta_3_label = r"\psi > -1: \frac{c}{t_w} \leq \frac{42\varepsilon}{0.67 + 0.33\psi}"
+        beta_3w = 62 * self.epsilon * (1 - psi) * np.sqrt(abs(psi)) if psi <= -1 else 42 * self.epsilon / (0.67 + 0.33 * psi)
 
         result_label = ["Plastic", "Compact", "Semi-Compact", "Slender"][class_num - 1]
 
         symbolic_eq = (
             r"\alpha = \min\left[\frac{1}{2}\left(1 + \frac{N_{Ed}}{d \cdot t_w \cdot f_y}\right),\ 1.0\right] \\"
-            rf"\alpha = {alpha:.2f} \\"
+            rf"\alpha = {alpha:.{n}f} \\"
             r"\psi = 2 \cdot \frac{N_{Ed}}{A \cdot f_y} - 1 \\"
-            rf"\psi = {psi:.2f} \\"
+            rf"\psi = {psi:.{n}f} \\"
             rf"\text{{Class 1: }} {beta_1_label} \\"
             rf"\text{{Class 2: }} {beta_2_label} \\"
-            rf"\text{{Class 3: }} {beta_3_label}"
+            rf"\text{{Class 3: }} \frac{{c}}{{t_w}} \leq 62\varepsilon(1 - \psi)\sqrt{{|\psi|}}"
         )
 
         numeric_eq = (
-            rf"\beta_{{1w}} = {beta_1w:.1f} \\ "
-            rf"\beta_{{2w}} = {beta_2w:.1f} \\ "
-            rf"\beta_{{3w}} = {beta_3w:.1f} \\ "
-            rf"\frac{{c}}{{t_w}} = {c_t_w:.1f} \\ "
+            rf"\beta_{{1w}} = {beta_1w:.{n}f} \\ "
+            rf"\beta_{{2w}} = {beta_2w:.{n}f} \\ "
+            rf"\beta_{{3w}} = {beta_3w:.{n}f} \\ "
+            rf"\frac{{c}}{{t_w}} = {c_t_w:.{n}f} \\ "
             rf"\text{{Hence, web is Class }} {class_num}: {result_label}"
         )
 
