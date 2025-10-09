@@ -13,7 +13,7 @@ class TestTable5Dot2PartSubjecttoBendingandCompression:
     """Testing for Table 5.2 sheet 1 of 3 Part subject to bending and compression of EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
-        """Test evaluation of section classification."""
+        """Test evaluation of Table 5.2 sheet 1 of 3 Part subject to bending and compression of EN 1993-1-1:2005."""
         epsilon = 0.8375
         c = 799.9
         t_w = 25.9
