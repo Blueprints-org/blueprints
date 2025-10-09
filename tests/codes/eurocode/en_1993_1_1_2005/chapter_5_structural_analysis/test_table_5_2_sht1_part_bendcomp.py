@@ -10,7 +10,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.ta
 
 
 class TestTable5Dot2PartSubjecttoBendingandCompression:
-    """Validation for Table 5.2 - Part subject to bending and compression."""
+    """Testing for Table 5.2 sheet 1 of 3 Part subject to bending and compression of EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Test evaluation of section classification."""
