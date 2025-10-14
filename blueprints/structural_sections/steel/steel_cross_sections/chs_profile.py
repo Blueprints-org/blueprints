@@ -10,7 +10,6 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
-from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
 from blueprints.type_alias import MM
@@ -44,15 +43,6 @@ class CHSProfile(CrossSection):
     def __post_init__(self) -> None:
         """Post-process the CHS profile after initialization."""
         self.inner_diameter = self.outer_diameter - 2 * self.wall_thickness
-
-        self.chs = TubeCrossSection(
-            name="Ring",
-            outer_diameter=self.outer_diameter,
-            inner_diameter=self.inner_diameter,
-            x=0,
-            y=0,
-        )
-        self.elements = [self.chs]
 
     @property
     def polygon(self) -> Polygon:

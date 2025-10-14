@@ -9,7 +9,6 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
-from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
 from blueprints.type_alias import MM
@@ -46,20 +45,6 @@ class StripProfile(CrossSection):
     """The name of the profile."""
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
     """The plotter function to visualize the cross-section."""
-
-    def __post_init__(self) -> None:
-        """Post-process the Strip profile after initialization."""
-        # Nominal thickness is the minimum of width and height
-        self.thickness = min(self.width, self.height)
-
-        self.strip = RectangularCrossSection(
-            name="Strip",
-            width=self.width,
-            height=self.height,
-            x=0,
-            y=0,
-        )
-        self.elements = [self.strip]
 
     @property
     def polygon(self) -> Polygon:

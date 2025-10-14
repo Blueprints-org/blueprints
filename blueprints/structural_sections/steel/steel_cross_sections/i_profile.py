@@ -9,8 +9,6 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
-from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
-from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEA
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
@@ -77,105 +75,9 @@ class IProfile(CrossSection):
 
     def __post_init__(self) -> None:
         """Post-process the I-profile section after initialization."""
-        # Calculate web height
         self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
         self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
         self.width_outstand_bottom_flange = (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2
-
-        # Create the cross-sections for the flanges and web
-        self.top_right_flange = RectangularCrossSection(
-            name="Top Right Flange",
-            width=self.width_outstand_top_flange,
-            height=self.top_flange_thickness,
-            x=self.top_flange_width / 2 - self.width_outstand_top_flange / 2,
-            y=(self.total_height - self.top_flange_thickness) / 2,
-        )
-
-        self.top_left_flange = RectangularCrossSection(
-            name="Top Left Flange",
-            width=self.width_outstand_top_flange,
-            height=self.top_flange_thickness,
-            x=-self.top_flange_width / 2 + self.width_outstand_top_flange / 2,
-            y=(self.total_height - self.top_flange_thickness) / 2,
-        )
-
-        self.bottom_right_flange = RectangularCrossSection(
-            name="Bottom Right Flange",
-            width=self.width_outstand_bottom_flange,
-            height=self.bottom_flange_thickness,
-            x=self.bottom_flange_width / 2 - self.width_outstand_bottom_flange / 2,
-            y=-(self.total_height - self.bottom_flange_thickness) / 2,
-        )
-
-        self.bottom_left_flange = RectangularCrossSection(
-            name="Bottom Left Flange",
-            width=self.width_outstand_bottom_flange,
-            height=self.bottom_flange_thickness,
-            x=-self.bottom_flange_width / 2 + self.width_outstand_bottom_flange / 2,
-            y=-(self.total_height - self.bottom_flange_thickness) / 2,
-        )
-
-        self.web = RectangularCrossSection(
-            name="Web",
-            width=self.web_thickness,
-            height=self.web_height,
-            x=0,
-            y=(-self.top_flange_thickness - self.top_radius + self.bottom_flange_thickness + self.bottom_radius) / 2,
-        )
-
-        # Create curves for the corners of the flanges
-        self.curve_top_right = CircularCorneredCrossSection(
-            name="Curve top right",
-            inner_radius=self.top_radius,
-            outer_radius=0,
-            x=self.top_radius + self.web_thickness / 2,
-            y=self.total_height / 2 - self.top_flange_thickness - self.top_radius,
-            corner_direction=1,
-            thickness_horizontal=self.web_thickness / 2,
-            thickness_vertical=self.top_flange_thickness,
-        )
-        self.curve_top_left = CircularCorneredCrossSection(
-            name="Curve top left",
-            inner_radius=self.top_radius,
-            outer_radius=0,
-            x=-self.top_radius - self.web_thickness / 2,
-            y=self.total_height / 2 - self.top_flange_thickness - self.top_radius,
-            corner_direction=0,
-            thickness_horizontal=self.web_thickness / 2,
-            thickness_vertical=self.top_flange_thickness,
-        )
-        self.curve_bottom_right = CircularCorneredCrossSection(
-            name="Curve bottom right",
-            inner_radius=self.bottom_radius,
-            outer_radius=0,
-            x=self.bottom_radius + self.web_thickness / 2,
-            y=-self.total_height / 2 + self.bottom_flange_thickness + self.bottom_radius,
-            corner_direction=2,
-            thickness_horizontal=self.web_thickness / 2,
-            thickness_vertical=self.bottom_flange_thickness,
-        )
-        self.curve_bottom_left = CircularCorneredCrossSection(
-            name="Curve bottom left",
-            inner_radius=self.bottom_radius,
-            outer_radius=0,
-            x=-self.bottom_radius - self.web_thickness / 2,
-            y=-self.total_height / 2 + self.bottom_flange_thickness + self.bottom_radius,
-            corner_direction=3,
-            thickness_horizontal=self.web_thickness / 2,
-            thickness_vertical=self.bottom_flange_thickness,
-        )
-
-        self.elements = [
-            self.top_right_flange,
-            self.top_left_flange,
-            self.bottom_right_flange,
-            self.bottom_left_flange,
-            self.web,
-            self.curve_top_right,
-            self.curve_top_left,
-            self.curve_bottom_right,
-            self.curve_bottom_left,
-        ]
 
     @property
     def polygon(self) -> Polygon:

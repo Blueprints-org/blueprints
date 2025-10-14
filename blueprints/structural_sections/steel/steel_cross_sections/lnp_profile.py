@@ -9,7 +9,6 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
-from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 from blueprints.type_alias import MM
@@ -86,47 +85,6 @@ class LNPProfile(CrossSection):
             base_outer_width=self.base_outer_width,
             base_inner_width=self.base_inner_width,
         )
-
-        self.web_height = self.total_height - self.base_thickness - self.root_radius
-        self.base_width = self.total_width - self.web_thickness - self.root_radius
-
-        # Create the cross-sections for the web
-        self.web = CircularCorneredCrossSection(
-            name="Web",
-            thickness_vertical=self.web_height,
-            thickness_horizontal=self.web_thickness,
-            inner_radius=0,
-            outer_radius=self.web_toe_radius,
-            x=0,
-            y=self.root_radius + self.base_thickness,
-            corner_direction=0,
-        )
-
-        # Create the cross-sections for the base
-        self.base = CircularCorneredCrossSection(
-            name="Base",
-            thickness_vertical=self.base_thickness,
-            thickness_horizontal=self.base_width,
-            inner_radius=0,
-            outer_radius=self.base_toe_radius,
-            x=self.root_radius + self.web_thickness,
-            y=0,
-            corner_direction=0,
-        )
-
-        # Create the cross-sections for the corner
-        self.corner = CircularCorneredCrossSection(
-            name="Corner",
-            thickness_vertical=self.base_thickness,
-            thickness_horizontal=self.web_thickness,
-            inner_radius=self.root_radius,
-            outer_radius=self.back_radius,
-            x=self.web_thickness + self.root_radius,
-            y=self.base_thickness + self.root_radius,
-            corner_direction=2,
-        )
-
-        self.elements = [self.web, self.base, self.corner]
 
     @property
     def polygon(self) -> Polygon:
