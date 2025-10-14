@@ -47,6 +47,18 @@ class TestCircularCorneredCrossSection:
                 outer_radius=20,
             )
 
+    @pytest.mark.parametrize("corner_direction", [0, 1, 2, 3])
+    def test_valid_corner_direction(self, corner_direction: int) -> None:
+        """Test initialization with an invalid corner direction."""
+        cross_section = CircularCorneredCrossSection(
+            thickness_vertical=10,
+            thickness_horizontal=10,
+            inner_radius=5,
+            outer_radius=10,
+            corner_direction=corner_direction,
+        )
+        assert cross_section.polygon.is_valid
+
     def test_invalid_corner_direction(self) -> None:
         """Test initialization with an invalid corner direction."""
         with pytest.raises(ValueError, match="corner_direction must be one of 0, 1, 2, or 3, got 4"):
