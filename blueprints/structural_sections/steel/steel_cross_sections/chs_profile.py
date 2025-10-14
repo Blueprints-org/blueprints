@@ -2,13 +2,14 @@
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from math import pi
 from typing import Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.structural_sections._polygon_builder import merge_polygons
+from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections.cross_section_tube import TubeCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
@@ -32,12 +33,16 @@ class CHSProfile(CrossSection):
     """
 
     outer_diameter: MM
+    """ The outer diameter of the CHS profile [mm]. """
     wall_thickness: MM
+    """ The wall thickness of the CHS profile [mm]. """
     name: str = "CHS Profile"
+    """ The name of the profile. """
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
+    """ The plotter function to visualize the cross-section. """
 
     def __post_init__(self) -> None:
-        """Initialize the CHS profile."""
+        """Post-process the CHS profile after initialization."""
         self.inner_diameter = self.outer_diameter - 2 * self.wall_thickness
 
         self.chs = TubeCrossSection(
@@ -52,7 +57,18 @@ class CHSProfile(CrossSection):
     @property
     def polygon(self) -> Polygon:
         """Return the polygon of the CHS profile section."""
-        return merge_polygons(self.elements)
+        max_segment_angle = min(5, 360 / (pi * self.outer_diameter))  # min 1 mm per segment and not less than 5 degrees which is the default
+        outer_polygon = (
+            PolygonBuilder(starting_point=(0, 0))
+            .append_arc(sweep=360, angle=0, radius=self.outer_diameter / 2, max_segment_angle=max_segment_angle)
+            .generate_polygon()
+        )
+        inner_polygon = (
+            PolygonBuilder(starting_point=(0, 0))
+            .append_arc(sweep=360, angle=0, radius=self.inner_diameter / 2, max_segment_angle=max_segment_angle)
+            .generate_polygon()
+        )
+        return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
 
     @classmethod
     def from_standard_profile(
