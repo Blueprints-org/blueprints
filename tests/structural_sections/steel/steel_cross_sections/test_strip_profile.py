@@ -30,7 +30,7 @@ class TestStripSteelProfile:
     @pytest.mark.slow
     def test_plot(self, strip_profile: StripProfile) -> None:
         """Test the plot method (ensure it runs without errors)."""
-        fig = strip_profile.plot(show=False)
+        fig = strip_profile.plot(show=False, include_moment_of_inertia=True)
         assert isinstance(fig, plt.Figure)
 
     def test_plot_mocked(self, strip_profile: StripProfile, mock_section_properties: MagicMock) -> None:  # noqa: ARG002
