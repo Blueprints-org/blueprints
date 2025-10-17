@@ -18,6 +18,7 @@ def plot_shapes(
     font_size_title: float = 18.0,
     font_size_legend: float = 10.0,
     show: bool = False,
+    include_moment_of_inertia: bool = False,
 ) -> plt.Figure:
     """
     Plot the given shapes.
@@ -36,30 +37,34 @@ def plot_shapes(
         The font size of the legend. Default is 10.0.
     show : bool, optional
         Whether to show the plot. Default is False.
+    include_moment_of_inertia : bool, optional
+        Whether to include the moment of inertia in the legend. Default is False.
     """
     fig, ax = plt.subplots(figsize=figsize)
 
-    for element in profile.elements:  # type: ignore[attr-defined]
-        # Plot the exterior polygon
-        x, y = element.polygon.exterior.xy
-        patch = MplPolygon(xy=list(zip(x, y)), lw=1, fill=True, facecolor=STEEL_COLOR, edgecolor=STEEL_COLOR)
-        ax.add_patch(patch)
+    # Plot the exterior polygon
+    coords = profile.polygon.exterior.coords
+    patch = MplPolygon(xy=coords, lw=1, fill=True, facecolor=STEEL_COLOR, edgecolor=STEEL_COLOR)
+    ax.add_patch(patch)
 
-        # Plot the interior polygons (holes) if any
-        for interior in element.polygon.interiors:
-            x, y = interior.xy
-            patch = MplPolygon(xy=list(zip(x, y)), lw=0, fill=True, facecolor="white")
-            ax.add_patch(patch)
+    # Plot the interior polygons (holes) if any
+    for interior in profile.polygon.interiors:
+        coords = interior.coords
+        patch = MplPolygon(xy=coords, lw=0, fill=True, facecolor="white")
+        ax.add_patch(patch)
 
     # Add dimension lines and centroid
     _add_dimension_lines(ax=ax, profile=profile, centroid=profile.centroid)
     ax.plot(profile.centroid.x, profile.centroid.y, "o", color="black")
 
     # Add legend text
-    profile_section_properties = profile.section_properties(plastic=False, warping=False)
     legend_text = f"""
     {profile.name}\n
-    Area: {profile.area:.1f} mm²
+    Area: {profile.area:.1f} mm²"""
+
+    if include_moment_of_inertia:
+        profile_section_properties = profile.section_properties(plastic=False, warping=False)
+        legend_text += f"""
     Moment of inertia about x: {profile_section_properties.ixx_c:.0f} mm⁴
     Moment of inertia about y: {profile_section_properties.iyy_c:.0f} mm⁴
     """
