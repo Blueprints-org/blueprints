@@ -2,10 +2,9 @@
 
 from dataclasses import dataclass
 
-from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section import CrossSection, CrossSectionMeshSetting
 from blueprints.type_alias import MM
 
 
@@ -45,6 +44,12 @@ class TubeCrossSection(CrossSection):
         if self.inner_diameter >= self.outer_diameter:
             msg = f"Inner diameter must be smaller than outer diameter, but got inner: {self.inner_diameter}, outer: {self.outer_diameter}"
             raise ValueError(msg)
+
+    @property
+    def mesh_setting(self) -> CrossSectionMeshSetting:
+        """Mesh settings for the the geometrical calculations of the tube cross-section."""
+        mesh_length = max(self.wall_thickness / 3, 1.0)
+        return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
 
     @property
     def outer_radius(self) -> MM:
@@ -98,25 +103,3 @@ class TubeCrossSection(CrossSection):
         inner_circle = center.buffer(self.inner_radius, quad_segs=quad_segs)
         difference = outer_circle.difference(inner_circle)
         return Polygon(difference)  # type: ignore[arg-type]
-
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the tube cross-section.
-
-        Properties
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 1.0
-            mesh_length = max(self.wall_thickness / 3, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        tube = Geometry(geom=self.polygon)
-        tube.create_mesh(mesh_sizes=mesh_size)
-        return tube

@@ -3,11 +3,10 @@
 import math
 from dataclasses import dataclass
 
-from sectionproperties.pre import Geometry
 from shapely.affinity import rotate
 from shapely.geometry import Point, Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section import CrossSection, CrossSectionMeshSetting
 from blueprints.type_alias import DEG, MM
 
 
@@ -59,6 +58,12 @@ class AnnularSectorCrossSection(CrossSection):
                 f"In case you want to create a full circle (donut shape), "
                 "use a tube cross section instead (TubeCrossSection)."
             )
+
+    @property
+    def mesh_setting(self) -> CrossSectionMeshSetting:
+        """Mesh settings for the the geometrical calculations of the annular cross-section."""
+        mesh_length = max(self.thickness / 5, 1.0)
+        return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
 
     @property
     def radius_centerline(self) -> MM:
@@ -126,29 +131,3 @@ class AnnularSectorCrossSection(CrossSection):
 
         result = outer_ring.difference(inner_ring).intersection(sector)
         return Polygon(result)  # type: ignore[arg-type]
-
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the annular sector cross-section.
-
-        Parameters
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        Returns
-        -------
-        Geometry
-            The Geometry object representing the annular sector.
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 1.0
-            mesh_length = max(self.thickness / 5, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        annular_sector = Geometry(geom=self.polygon)
-        annular_sector.create_mesh(mesh_sizes=mesh_size)
-        return annular_sector

@@ -15,9 +15,14 @@ class TestCircularCorneredCrossSection:
         assert polygon.is_valid
         assert len(polygon.exterior.coords) > 0
 
+    def test_section(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+        """Test the section object."""
+        section = qcs_cross_section._section()  # noqa: SLF001
+        assert section is not None
+
     def test_geometry(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
         """Test the geometry property."""
-        geometry = qcs_cross_section.geometry()
+        geometry = qcs_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
     @pytest.mark.parametrize(

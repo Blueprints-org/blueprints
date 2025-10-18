@@ -40,9 +40,14 @@ class TestTubeCrossSection:
         with pytest.raises(ValueError, match="Inner diameter must be smaller than outer diameter"):
             TubeCrossSection(name="InvalidDiameters", outer_diameter=9.0, inner_diameter=10.0, x=0.0, y=0.0)
 
+    def test_section(self, tube_cross_section: TubeCrossSection) -> None:
+        """Test the section object of the TubeCrossSection class."""
+        section = tube_cross_section._section()  # noqa: SLF001
+        assert section is not None
+
     def test_geometry(self, tube_cross_section: TubeCrossSection) -> None:
         """Test the geometry property of the TubeCrossSection class."""
-        geometry = tube_cross_section.geometry()
+        geometry = tube_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
     def test_no_plotter_defined(self, tube_cross_section: TubeCrossSection) -> None:

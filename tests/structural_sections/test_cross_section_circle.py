@@ -30,12 +30,12 @@ class TestCircularCrossSection:
 
     def test_section(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the section object of the CircularCrossSection class."""
-        section = circular_cross_section.section()
+        section = circular_cross_section._section()  # noqa: SLF001
         assert isinstance(section, Section)
 
     def test_geometry(self, circular_cross_section: CircularCrossSection) -> None:
         """Test the geometry property of the CircularCrossSection class."""
-        geometry = circular_cross_section.geometry()
+        geometry = circular_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
     def test_no_plotter_defined(self, circular_cross_section: CircularCrossSection) -> None:

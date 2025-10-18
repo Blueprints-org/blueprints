@@ -17,9 +17,14 @@ class TestRightAngledTriangularCrossSection:
         """Test the polygon property of the RightAngledTriangularCrossSection class."""
         assert isinstance(triangular_cross_section.polygon, Polygon)
 
+    def test_section(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
+        """Test the section object of the RightAngledTriangularCrossSection class."""
+        section = triangular_cross_section._section()  # noqa: SLF001
+        assert section is not None
+
     def test_geometry(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
         """Test the geometry property of the RightAngledTriangularCrossSection class."""
-        geometry = triangular_cross_section.geometry()
+        geometry = triangular_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
     def test_invalid_base(self) -> None:

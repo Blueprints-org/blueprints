@@ -2,10 +2,9 @@
 
 from dataclasses import dataclass
 
-from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section import CrossSection, CrossSectionMeshSetting
 from blueprints.type_alias import MM
 
 
@@ -38,6 +37,12 @@ class CircularCrossSection(CrossSection):
             raise ValueError(msg)
 
     @property
+    def mesh_setting(self) -> CrossSectionMeshSetting:
+        """Mesh settings for the the geometrical calculations of the circular cross-section."""
+        mesh_length = max(self.diameter / 20, 2.0)
+        return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
+
+    @property
     def radius(self) -> MM:
         """
         Calculate the radius of the circular cross-section [mm].
@@ -61,25 +66,3 @@ class CircularCrossSection(CrossSection):
         """
         centroid = Point(self.x, self.y)
         return centroid.buffer(self.radius)
-
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the circular cross-section.
-
-        Properties
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 2.0
-            mesh_length = max(self.diameter / 20, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        circular = Geometry(geom=self.polygon)
-        circular.create_mesh(mesh_sizes=mesh_size)
-        return circular

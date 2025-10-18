@@ -29,11 +29,6 @@ class TestRectangularCrossSection:
         polygon = rectangular_cross_section.polygon
         assert polygon.bounds == pytest.approx(expected=(50.0, 150.0, 150.0, 350.0), rel=1e-6)
 
-    def test_section(self, rectangular_cross_section: RectangularCrossSection) -> None:
-        """Test the geometry property of the RectangularCrossSection class."""
-        section = rectangular_cross_section.section()
-        assert isinstance(section, Section)
-
     def test_section_properties_geometric(self, rectangular_cross_section_section_properties: SectionProperties) -> None:
         """Test the section properties of the RectangularCrossSection class."""
         assert rectangular_cross_section_section_properties.area == pytest.approx(expected=20000.0, rel=1e-6)
@@ -45,9 +40,14 @@ class TestRectangularCrossSection:
         assert rectangular_cross_section_section_properties.syy == pytest.approx(expected=500000.0, rel=1e-6)
         assert rectangular_cross_section_section_properties.sxx == pytest.approx(expected=1000000.0, rel=1e-6)
 
+    def test_section(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the geometry property of the RectangularCrossSection class."""
+        section = rectangular_cross_section._section()  # noqa: SLF001
+        assert isinstance(section, Section)
+
     def test_geometry(self, rectangular_cross_section: RectangularCrossSection) -> None:
         """Test the geometry property of the RectangularCrossSection class."""
-        geometry = rectangular_cross_section.geometry()
+        geometry = rectangular_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
     def test_no_plotter_defined(self, rectangular_cross_section: RectangularCrossSection) -> None:
