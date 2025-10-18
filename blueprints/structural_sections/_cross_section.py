@@ -21,7 +21,7 @@ class CrossSectionMeshSetting:
 
     Parameters
     ----------
-    mesh_sizes: MM | list[MM]
+    mesh_sizes: MM2 | list[MM2]
         A float describing the maximum mesh element area to be used
         within the Geometry-object finite-element mesh (may also be a list of
         length 1)
@@ -40,8 +40,8 @@ class CrossSectionMeshSetting:
         constraints). If None, the default value of the `section-properties` library is used.
     """
 
-    mesh_sizes: MM | list[MM]
-    """Maximum mesh element area to be used within the Geometry-object finite-element mesh."""
+    mesh_sizes: MM2 | list[MM2]
+    """Maximum triangular area of the mesh elements to be used within the Geometry-object finite-element mesh."""
     min_angle: DEG | None = None
     """Minimum angle (in degrees) for the mesh elements."""
     coarse: bool | None = None
