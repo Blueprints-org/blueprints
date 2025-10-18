@@ -3,10 +3,9 @@
 from dataclasses import dataclass
 
 import numpy as np
-from sectionproperties.pre import Geometry
 from shapely import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section import CrossSection, CrossSectionMeshSetting
 from blueprints.type_alias import MM
 
 
@@ -45,6 +44,12 @@ class RectangularCrossSection(CrossSection):
             raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
+    def mesh_setting(self) -> CrossSectionMeshSetting:
+        """Mesh settings for the the geometrical calculations of the rectangular cross-section."""
+        mesh_length = max(min(self.width, self.height) / 20, 2.0)
+        return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
+
+    @property
     def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the rectangular cross-section. Defines the coordinates of the rectangle based on width, height, x,
@@ -59,26 +64,4 @@ class RectangularCrossSection(CrossSection):
         right_lower = (self.x + self.width / 2, self.y - self.height / 2)
         right_upper = (self.x + self.width / 2, self.y + self.height / 2)
         left_upper = (self.x - self.width / 2, self.y + self.height / 2)
-        return Polygon(np.round([left_lower, right_lower, right_upper, left_upper], self.ACCURACY))
-
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the rectangular cross-section.
-
-        Properties
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 2.0
-            mesh_length = max(min(self.width, self.height) / 20, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        rectangular = Geometry(geom=self.polygon)
-        rectangular.create_mesh(mesh_sizes=mesh_size)
-        return rectangular
+        return Polygon(np.round([left_lower, right_lower, right_upper, left_upper], self.accuracy))

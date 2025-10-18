@@ -47,7 +47,7 @@ class TestISteelProfile:
 
     def test_geometry(self, h_profile: IProfile) -> None:
         """Test the geometry of the I profile."""
-        expected_geometry = h_profile.geometry
+        expected_geometry = h_profile._geometry  # noqa: SLF001
         assert expected_geometry is not None
 
     def test_get_profile_with_corrosion(self) -> None:

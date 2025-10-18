@@ -43,7 +43,7 @@ class TestLNPProfile:
 
     def test_geometry(self, lnp_profile: LNPProfile) -> None:
         """Test the geometry of the LNP profile."""
-        expected_geometry = getattr(lnp_profile, "geometry", None)
+        expected_geometry = lnp_profile._geometry  # noqa: SLF001
         assert expected_geometry is not None
 
     def test_get_profile_with_corrosion(self) -> None:

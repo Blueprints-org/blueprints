@@ -26,12 +26,12 @@ class TestAnnularSectorCrossSection:
 
     def test_section(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the section object of the AnnularSectorCrossSection class."""
-        section = annular_sector_cross_section.section()
+        section = annular_sector_cross_section._section()  # noqa: SLF001
         assert isinstance(section, Section)
 
     def test_geometry(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
         """Test the geometry property of the AnnularSectorCrossSection class."""
-        geometry = annular_sector_cross_section.geometry()
+        geometry = annular_sector_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
     def test_invalid_radius(self) -> None:

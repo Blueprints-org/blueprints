@@ -3,10 +3,9 @@
 from dataclasses import dataclass
 
 import numpy as np
-from sectionproperties.pre import Geometry
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section import CrossSection, CrossSectionMeshSetting
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -74,6 +73,12 @@ class CircularCorneredCrossSection(CrossSection):
             raise ValueError(f"corner_direction must be one of 0, 1, 2, or 3, got {self.corner_direction}")
 
     @property
+    def mesh_setting(self) -> CrossSectionMeshSetting:
+        """Mesh settings for the the geometrical calculations of the corner cross-section."""
+        mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 2, 2.0)
+        return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
+
+    @property
     def width_rectangle(self) -> MM:
         """Width of the rectangle part of the corner cross-section [mm]."""
         return self.thickness_horizontal + self.inner_radius
@@ -136,23 +141,4 @@ class CircularCorneredCrossSection(CrossSection):
 
         points = np.array([tuple(pt) for pt in points])
 
-        return Polygon(np.round(points, self.ACCURACY))
-
-    def geometry(self, mesh_size: MM | None = None) -> Geometry:
-        """
-        Return the geometry of the RHSCF corner cross-section.
-
-        Parameters
-        ----------
-        mesh_size : MM | None
-            Maximum mesh element area to be used within the Geometry-object finite-element mesh. If not provided, a default value
-            will be used with maximum of 2 mm or halve the smallest thickness.
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 2.0
-            mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 2, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        geom = Geometry(geom=self.polygon)
-        geom.create_mesh(mesh_sizes=mesh_size)
-        return geom
+        return Polygon(np.round(points, self.accuracy))

@@ -3,10 +3,9 @@
 from dataclasses import dataclass
 
 import numpy as np
-from sectionproperties.pre import Geometry
 from shapely import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._cross_section import CrossSection, CrossSectionMeshSetting
 from blueprints.type_alias import MM
 
 
@@ -49,6 +48,12 @@ class RightAngledTriangularCrossSection(CrossSection):
             raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
+    def mesh_setting(self) -> CrossSectionMeshSetting:
+        """Mesh settings for the the geometrical calculations of the triangular cross-section."""
+        mesh_length = max(min(self.base, self.height) / 20, 2.0)
+        return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
+
+    @property
     def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the right-angled triangular cross-section.
@@ -67,30 +72,4 @@ class RightAngledTriangularCrossSection(CrossSection):
         if self.mirrored_vertically:
             top = (top[0], 2 * left_lower[1] - top[1])
 
-        return Polygon(np.round([left_lower, right_lower, top], self.ACCURACY))
-
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the triangular cross-section.
-
-        Parameters
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        Returns
-        -------
-        Geometry
-            The Geometry object representing the triangular cross-section.
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 2.0
-            mesh_length = max(min(self.base, self.height) / 20, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        triangular = Geometry(geom=self.polygon)
-        triangular.create_mesh(mesh_sizes=mesh_size)
-        return triangular
+        return Polygon(np.round([left_lower, right_lower, top], self.accuracy))
