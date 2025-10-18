@@ -9,8 +9,6 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
-from blueprints.structural_sections.cross_section_cornered import CircularCorneredCrossSection
-from blueprints.structural_sections.cross_section_rectangle import RectangularCrossSection
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF
@@ -111,89 +109,6 @@ class RHSProfile(CrossSection):
         self.bottom_wall_inner_width = (
             self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius
         )
-
-        # Create the cross-sections for the flanges and web
-        self.top_wall = RectangularCrossSection(
-            name="Top Wall",
-            width=self.top_wall_inner_width,
-            height=self.top_wall_thickness,
-            x=(self.left_wall_thickness - self.right_wall_thickness + self.top_left_inner_radius - self.top_right_inner_radius) / 2,
-            y=(self.total_height - self.top_wall_thickness) / 2,
-        )
-        self.bottom_wall = RectangularCrossSection(
-            name="Bottom Wall",
-            width=self.bottom_wall_inner_width,
-            height=self.bottom_wall_thickness,
-            x=(self.left_wall_thickness - self.right_wall_thickness + self.bottom_left_inner_radius - self.bottom_right_inner_radius) / 2,
-            y=-(self.total_height - self.bottom_wall_thickness) / 2,
-        )
-        self.left_wall = RectangularCrossSection(
-            name="Left Wall",
-            width=self.left_wall_thickness,
-            height=self.left_wall_inner_height,
-            x=-(self.total_width - self.left_wall_thickness) / 2,
-            y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_left_inner_radius - self.bottom_left_inner_radius) / 2,
-        )
-        self.right_wall = RectangularCrossSection(
-            name="Right Wall",
-            width=self.right_wall_thickness,
-            height=self.right_wall_inner_height,
-            x=(self.total_width - self.right_wall_thickness) / 2,
-            y=-(self.top_wall_thickness - self.bottom_wall_thickness + self.top_right_inner_radius - self.bottom_right_inner_radius) / 2,
-        )
-
-        # Create the corner sections
-        self.top_right_corner = CircularCorneredCrossSection(
-            name="Top Right Corner",
-            thickness_vertical=self.top_wall_thickness,
-            thickness_horizontal=self.right_wall_thickness,
-            inner_radius=self.top_right_inner_radius,
-            outer_radius=self.top_right_outer_radius,
-            x=self.total_width / 2 - self.right_wall_thickness - self.top_right_inner_radius,
-            y=self.total_height / 2 - self.top_wall_thickness - self.top_right_inner_radius,
-            corner_direction=0,
-        )
-        self.top_left_corner = CircularCorneredCrossSection(
-            name="Top Left Corner",
-            thickness_vertical=self.top_wall_thickness,
-            thickness_horizontal=self.left_wall_thickness,
-            inner_radius=self.top_left_inner_radius,
-            outer_radius=self.top_left_outer_radius,
-            x=-self.total_width / 2 + self.left_wall_thickness + self.top_left_inner_radius,
-            y=self.total_height / 2 - self.top_wall_thickness - self.top_left_inner_radius,
-            corner_direction=1,
-        )
-        self.bottom_right_corner = CircularCorneredCrossSection(
-            name="Bottom Right Corner",
-            thickness_vertical=self.bottom_wall_thickness,
-            thickness_horizontal=self.right_wall_thickness,
-            inner_radius=self.bottom_right_inner_radius,
-            outer_radius=self.bottom_right_outer_radius,
-            x=self.total_width / 2 - self.right_wall_thickness - self.bottom_right_inner_radius,
-            y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_right_inner_radius,
-            corner_direction=3,
-        )
-        self.bottom_left_corner = CircularCorneredCrossSection(
-            name="Bottom Left Corner",
-            thickness_vertical=self.bottom_wall_thickness,
-            thickness_horizontal=self.left_wall_thickness,
-            inner_radius=self.bottom_left_inner_radius,
-            outer_radius=self.bottom_left_outer_radius,
-            x=-self.total_width / 2 + self.left_wall_thickness + self.bottom_left_inner_radius,
-            y=-self.total_height / 2 + self.bottom_wall_thickness + self.bottom_left_inner_radius,
-            corner_direction=2,
-        )
-
-        self.elements = [
-            self.top_wall,
-            self.bottom_wall,
-            self.left_wall,
-            self.right_wall,
-            self.top_right_corner,
-            self.top_left_corner,
-            self.bottom_right_corner,
-            self.bottom_left_corner,
-        ]
 
     @property
     def polygon(self) -> Polygon:
