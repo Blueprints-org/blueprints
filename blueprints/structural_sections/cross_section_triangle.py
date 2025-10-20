@@ -50,6 +50,9 @@ class RightAngledTriangularCrossSection(CrossSection):
     @property
     def mesh_setting(self) -> CrossSectionMeshSetting:
         """Mesh settings for the the geometrical calculations of the triangular cross-section."""
+        # The equation for the mesh length is the result of a fitting procedure to ensure
+        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # the analytical solution for various triangular geometries.
         mesh_length = max(min(self.base, self.height) / 20, 2.0)
         return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
 

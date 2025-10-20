@@ -41,6 +41,9 @@ class HexagonalCrossSection(CrossSection):
     @property
     def mesh_setting(self) -> CrossSectionMeshSetting:
         """Mesh settings for the the geometrical calculations of the hexagonal cross-section."""
+        # The equation for the mesh length is the result of a fitting procedure to ensure
+        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # the analytical solution for various hexagonal geometries.
         mesh_length = max(self.side_length / 10, 2.0)
         return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
 

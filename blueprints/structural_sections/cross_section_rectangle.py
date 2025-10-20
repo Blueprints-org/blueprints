@@ -46,6 +46,9 @@ class RectangularCrossSection(CrossSection):
     @property
     def mesh_setting(self) -> CrossSectionMeshSetting:
         """Mesh settings for the the geometrical calculations of the rectangular cross-section."""
+        # The equation for the mesh length is the result of a fitting procedure to ensure
+        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # the analytical solution for various rectangular geometries.
         mesh_length = max(min(self.width, self.height) / 20, 2.0)
         return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
 
