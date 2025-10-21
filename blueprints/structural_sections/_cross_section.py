@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from operator import methodcaller
+from functools import partial
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -11,41 +11,8 @@ from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.type_alias import DEG, M3_M, MM, MM2
+from blueprints.type_alias import M3_M, MM, MM2
 from blueprints.unit_conversion import MM3_TO_M3
-
-
-class MeshCreator:
-    """Wrapper for the create_mesh method of the Geometry class.
-
-    Refer to `Geometry.create_mesh` for the documentation.
-    """
-
-    def __init__(
-        self,
-        *,
-        mesh_sizes: MM2,
-        min_angle: DEG | None = None,
-        coarse: bool | None = None,
-        **kwargs,
-    ) -> None:
-        params = {
-            "mesh_sizes": mesh_sizes,
-            "min_angle": min_angle,
-            "coarse": coarse,
-            **kwargs,
-        }
-        self._mesh_settings = {key: value for key, value in params.items() if value is not None}
-        self._create_mesh = methodcaller("create_mesh", **self.mesh_settings)
-
-    def __call__(self, geometry: Geometry) -> Geometry:
-        """Create mesh for the given geometry."""
-        return self._create_mesh(geometry)
-
-    @property
-    def mesh_settings(self) -> dict[str, Any]:
-        """Return the mesh settings as a dictionary."""
-        return self._mesh_settings.copy()
 
 
 class CrossSection(ABC):
@@ -58,14 +25,14 @@ class CrossSection(ABC):
     the nearest nanometer which is more than sufficient for structural engineering purposes."""
 
     @property
-    def mesh_creator(self) -> MeshCreator:
+    def mesh_creator(self) -> partial:
         """Get the mesh creator for the cross-section."""
-        return MeshCreator(mesh_sizes=2.0)
+        return partial(Geometry.create_mesh, mesh_sizes=2.0)
 
     @property
     def mesh_settings(self) -> dict[str, Any]:
         """Get the mesh settings for the cross-section."""
-        return self.mesh_creator.mesh_settings
+        return self.mesh_creator.keywords
 
     @property
     @abstractmethod

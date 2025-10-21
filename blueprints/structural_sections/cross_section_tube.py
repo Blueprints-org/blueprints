@@ -1,10 +1,12 @@
 """Circular tube cross-section shape."""
 
 from dataclasses import dataclass
+from functools import partial
 
+from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection, MeshCreator
+from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import MM
 
 
@@ -46,13 +48,13 @@ class TubeCrossSection(CrossSection):
             raise ValueError(msg)
 
     @property
-    def mesh_creator(self) -> MeshCreator:
+    def mesh_creator(self) -> partial:
         """Mesh settings for the the geometrical calculations of the tube cross-section."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
         # a maximum of 0.1% deviation of the calculated cross-section properties compared to
         # the analytical solution for various tube geometries.
         mesh_length = max(self.wall_thickness / 3, 1.0)
-        return MeshCreator(mesh_sizes=mesh_length**2)
+        return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
 
     @property
     def outer_radius(self) -> MM:
