@@ -50,6 +50,12 @@ class TestTubeCrossSection:
         geometry = tube_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
+    def test_mesh_settings(self, tube_cross_section: TubeCrossSection) -> None:
+        """Test the mesh_settings property of the TubeCrossSection class."""
+        mesh_settings = tube_cross_section.mesh_settings
+        assert isinstance(mesh_settings, dict)
+        assert "mesh_sizes" in mesh_settings
+
     def test_no_plotter_defined(self, tube_cross_section: TubeCrossSection) -> None:
         """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
         with pytest.raises(AttributeError, match="No plotter is defined."):

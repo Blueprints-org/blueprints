@@ -38,6 +38,12 @@ class TestCircularCrossSection:
         geometry = circular_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
+    def test_mesh_settings(self, circular_cross_section: CircularCrossSection) -> None:
+        """Test the mesh_settings property of the CircularCrossSection class."""
+        mesh_settings = circular_cross_section.mesh_settings
+        assert isinstance(mesh_settings, dict)
+        assert "mesh_sizes" in mesh_settings
+
     def test_no_plotter_defined(self, circular_cross_section: CircularCrossSection) -> None:
         """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
         with pytest.raises(AttributeError, match="No plotter is defined."):

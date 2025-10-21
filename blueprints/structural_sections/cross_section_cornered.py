@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import numpy as np
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection, CrossSectionMeshSetting
+from blueprints.structural_sections._cross_section import CrossSection, MeshCreator
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -73,13 +73,13 @@ class CircularCorneredCrossSection(CrossSection):
             raise ValueError(f"corner_direction must be one of 0, 1, 2, or 3, got {self.corner_direction}")
 
     @property
-    def mesh_setting(self) -> CrossSectionMeshSetting:
+    def mesh_creator(self) -> MeshCreator:
         """Mesh settings for the the geometrical calculations of the corner cross-section."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
         # a maximum of 0.1% deviation of the calculated cross-section properties compared to
         # the analytical solution for various cornered geometries.
         mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 2, 2.0)
-        return CrossSectionMeshSetting(mesh_sizes=mesh_length**2)
+        return MeshCreator(mesh_sizes=mesh_length**2)
 
     @property
     def width_rectangle(self) -> MM:

@@ -25,6 +25,12 @@ class TestCircularCorneredCrossSection:
         geometry = qcs_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
+    def test_mesh_settings(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+        """Test the mesh_settings property."""
+        mesh_settings = qcs_cross_section.mesh_settings
+        assert isinstance(mesh_settings, dict)
+        assert "mesh_sizes" in mesh_settings
+
     @pytest.mark.parametrize(
         "kwargs",
         [

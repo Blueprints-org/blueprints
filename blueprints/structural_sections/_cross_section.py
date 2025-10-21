@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from dataclasses import dataclass
+from operator import methodcaller
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -15,37 +15,37 @@ from blueprints.type_alias import DEG, M3_M, MM, MM2
 from blueprints.unit_conversion import MM3_TO_M3
 
 
-@dataclass(frozen=True)
-class CrossSectionMeshSetting:
-    """Class to represent cross-section mesh settings.
+class MeshCreator:
+    """Wrapper for the create_mesh method of the Geometry class.
 
-    Parameters
-    ----------
-    mesh_sizes: MM2 | list[MM2]
-        A float describing the maximum mesh element area to be used
-        within the Geometry-object finite-element mesh (may also be a list of
-        length 1)
-    min_angle: DEG | None
-        The meshing algorithm adds vertices to the mesh to ensure that no
-        angle smaller than the minimum angle (in degrees, rounded to 1 decimal
-        place). Note that small angles between input segments cannot be
-        eliminated. If the minimum angle is 20.7 deg or smaller, the
-        triangulation algorithm is theoretically guaranteed to terminate (given
-        sufficient precision). The algorithm often doesn't terminate for angles
-        greater than 33 deg. Some meshes may require angles well below 20 deg to
-        avoid problems associated with insufficient floating-point precision.
-        If None, the default value of the `section-properties` library is used.
-    coarse: bool | None
-        If set to True, will create a coarse mesh (no area or quality
-        constraints). If None, the default value of the `section-properties` library is used.
+    Refer to `Geometry.create_mesh` for the documentation.
     """
 
-    mesh_sizes: MM2 | list[MM2]
-    """Maximum triangular area of the mesh elements to be used within the Geometry-object finite-element mesh."""
-    min_angle: DEG | None = None
-    """Minimum angle (in degrees) for the mesh elements."""
-    coarse: bool | None = None
-    """Whether to create a coarse mesh."""
+    def __init__(
+        self,
+        *,
+        mesh_sizes: MM2,
+        min_angle: DEG | None = None,
+        coarse: bool | None = None,
+        **kwargs,
+    ) -> None:
+        params = {
+            "mesh_sizes": mesh_sizes,
+            "min_angle": min_angle,
+            "coarse": coarse,
+            **kwargs,
+        }
+        self._mesh_settings = {key: value for key, value in params.items() if value is not None}
+        self._create_mesh = methodcaller("create_mesh", **self.mesh_settings)
+
+    def __call__(self, geometry: Geometry) -> Geometry:
+        """Create mesh for the given geometry."""
+        return self._create_mesh(geometry)
+
+    @property
+    def mesh_settings(self) -> dict[str, Any]:
+        """Return the mesh settings as a dictionary."""
+        return self._mesh_settings.copy()
 
 
 class CrossSection(ABC):
@@ -58,9 +58,14 @@ class CrossSection(ABC):
     the nearest nanometer which is more than sufficient for structural engineering purposes."""
 
     @property
-    def mesh_setting(self) -> CrossSectionMeshSetting:
-        """Mesh settings for the the geometrical calculations of the cross-section."""
-        return CrossSectionMeshSetting(mesh_sizes=2.0)
+    def mesh_creator(self) -> MeshCreator:
+        """Get the mesh creator for the cross-section."""
+        return MeshCreator(mesh_sizes=2.0)
+
+    @property
+    def mesh_settings(self) -> dict[str, Any]:
+        """Get the mesh settings for the cross-section."""
+        return self.mesh_creator.mesh_settings
 
     @property
     @abstractmethod
@@ -111,10 +116,8 @@ class CrossSection(ABC):
 
     def _geometry(self) -> Geometry:
         """Geometry object of the cross-section. This is used for section property calculations."""
-        mesh_setting = {key: value for key, value in self.mesh_setting.__dict__.items() if value is not None}
         geom = Geometry(geom=self.polygon, tol=self.accuracy)
-        geom.create_mesh(**mesh_setting)
-        return geom
+        return self.mesh_creator(geom)
 
     def _section(self) -> Section:
         """Section object representing the cross-section. This is used for section property calculations."""

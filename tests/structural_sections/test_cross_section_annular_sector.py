@@ -34,6 +34,12 @@ class TestAnnularSectorCrossSection:
         geometry = annular_sector_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
+    def test_mesh_settings(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
+        """Test the mesh_settings property of the AnnularSectorCrossSection class."""
+        mesh_settings = annular_sector_cross_section.mesh_settings
+        assert isinstance(mesh_settings, dict)
+        assert "mesh_sizes" in mesh_settings
+
     def test_invalid_radius(self) -> None:
         """Test initialization with an invalid radius value."""
         with pytest.raises(ValueError, match="Radius must be zero or positive"):

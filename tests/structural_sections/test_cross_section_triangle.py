@@ -27,6 +27,12 @@ class TestRightAngledTriangularCrossSection:
         geometry = triangular_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
+    def test_mesh_settings(self, triangular_cross_section: RightAngledTriangularCrossSection) -> None:
+        """Test the mesh_settings property of the RightAngledTriangularCrossSection class."""
+        mesh_settings = triangular_cross_section.mesh_settings
+        assert isinstance(mesh_settings, dict)
+        assert "mesh_sizes" in mesh_settings
+
     def test_invalid_base(self) -> None:
         """Test initialization with an invalid base value."""
         with pytest.raises(ValueError, match="Base must be a positive value"):
