@@ -2,6 +2,7 @@
 
 import math
 from dataclasses import dataclass
+from functools import partial
 
 import numpy as np
 from sectionproperties.pre import Geometry
@@ -40,6 +41,15 @@ class HexagonalCrossSection(CrossSection):
             raise ValueError(msg)
 
     @property
+    def mesh_creator(self) -> partial:
+        """Mesh settings for the the geometrical calculations of the hexagonal cross-section."""
+        # The equation for the mesh length is the result of a fitting procedure to ensure
+        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # the analytical solution for various hexagonal geometries.
+        mesh_length = max(self.side_length / 10, 2.0)
+        return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
+
+    @property
     def radius(self) -> MM:
         """
         Calculate the radius of the circumscribed circle of the hexagon (farthest point from the center) [mm].
@@ -74,27 +84,5 @@ class HexagonalCrossSection(CrossSection):
             The shapely Polygon representing the hexagon.
         """
         angle = math.pi / 3
-        points = np.round([(self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)) for i in range(6)], self.ACCURACY)
+        points = np.round([(self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)) for i in range(6)], self.accuracy)
         return Polygon(points)
-
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the hexagon cross-section.
-
-        Properties
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 2.0
-            mesh_length = max(self.side_length / 10, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        hexagon = Geometry(geom=self.polygon)
-        hexagon.create_mesh(mesh_sizes=mesh_size)
-        return hexagon

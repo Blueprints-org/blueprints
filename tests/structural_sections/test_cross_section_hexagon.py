@@ -25,10 +25,21 @@ class TestHexagonalCrossSection:
         with pytest.raises(ValueError, match="Side length must be a positive value"):
             HexagonalCrossSection(name="InvalidHexagon", side_length=-10.0, x=0.0, y=0.0)
 
+    def test_section(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
+        """Test the section object of the HexagonalCrossSection class."""
+        section = hexagonal_cross_section._section()  # noqa: SLF001
+        assert section is not None
+
     def test_geometry(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the geometry property of the HexagonalCrossSection class."""
-        geometry = hexagonal_cross_section.geometry()
+        geometry = hexagonal_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
+
+    def test_mesh_settings(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
+        """Test the mesh_settings property of the HexagonalCrossSection class."""
+        mesh_settings = hexagonal_cross_section.mesh_settings
+        assert isinstance(mesh_settings, dict)
+        assert "mesh_sizes" in mesh_settings
 
     def test_apothem(self, hexagonal_cross_section: HexagonalCrossSection) -> None:
         """Test the apothem property of the HexagonalCrossSection class."""

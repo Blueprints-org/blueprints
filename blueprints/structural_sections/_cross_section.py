@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
+from functools import partial
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -17,11 +18,21 @@ from blueprints.unit_conversion import MM3_TO_M3
 class CrossSection(ABC):
     """Base class for cross-section shapes."""
 
-    ACCURACY = 6
+    accuracy = 6
     """Accuracy for rounding polygon coordinates in order to avoid floating point issues.
     This value is used in the derived classes when creating the Shapely Polygon.
     Since the coordinates are in mm, a value of 6 means that the coordinates are rounded to
     the nearest nanometer which is more than sufficient for structural engineering purposes."""
+
+    @property
+    def mesh_creator(self) -> partial:
+        """Get the mesh creator for the cross-section."""
+        return partial(Geometry.create_mesh, mesh_sizes=2.0)
+
+    @property
+    def mesh_settings(self) -> dict[str, Any]:
+        """Get the mesh settings for the cross-section."""
+        return self.mesh_creator.keywords
 
     @property
     @abstractmethod
@@ -70,25 +81,14 @@ class CrossSection(ABC):
         length = 1000  # mm
         return self.area * length * MM3_TO_M3
 
-    def geometry(self, mesh_size: MM | None = None) -> Geometry:
-        """Geometry of the cross-section.
+    def _geometry(self) -> Geometry:
+        """Geometry object of the cross-section. This is used for section property calculations."""
+        geom = Geometry(geom=self.polygon, tol=self.accuracy)
+        return self.mesh_creator(geom)
 
-        Properties
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-        """
-        if mesh_size is None:
-            mesh_size = 2.0
-
-        geom = Geometry(geom=self.polygon)
-        geom.create_mesh(mesh_sizes=mesh_size)
-        return geom
-
-    def section(self) -> Section:
-        """Section object representing the cross-section."""
-        return Section(geometry=self.geometry())
+    def _section(self) -> Section:
+        """Section object representing the cross-section. This is used for section property calculations."""
+        return Section(geometry=self._geometry())
 
     def section_properties(
         self,
@@ -107,7 +107,7 @@ class CrossSection(ABC):
         warping: bool
             Whether to calculate warping properties.
         """
-        section = self.section()
+        section = self._section()
 
         if any([geometric, plastic, warping]):
             section.calculate_geometric_properties()

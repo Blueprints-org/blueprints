@@ -1,6 +1,7 @@
 """Rectangular cross-section shape."""
 
 from dataclasses import dataclass
+from functools import partial
 
 import numpy as np
 from sectionproperties.pre import Geometry
@@ -45,6 +46,15 @@ class RectangularCrossSection(CrossSection):
             raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
+    def mesh_creator(self) -> partial:
+        """Mesh settings for the the geometrical calculations of the rectangular cross-section."""
+        # The equation for the mesh length is the result of a fitting procedure to ensure
+        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # the analytical solution for various rectangular geometries.
+        mesh_length = max(min(self.width, self.height) / 20, 2.0)
+        return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
+
+    @property
     def polygon(self) -> Polygon:
         """
         Shapely Polygon representing the rectangular cross-section. Defines the coordinates of the rectangle based on width, height, x,
@@ -59,26 +69,4 @@ class RectangularCrossSection(CrossSection):
         right_lower = (self.x + self.width / 2, self.y - self.height / 2)
         right_upper = (self.x + self.width / 2, self.y + self.height / 2)
         left_upper = (self.x - self.width / 2, self.y + self.height / 2)
-        return Polygon(np.round([left_lower, right_lower, right_upper, left_upper], self.ACCURACY))
-
-    def geometry(
-        self,
-        mesh_size: MM | None = None,
-    ) -> Geometry:
-        """Return the geometry of the rectangular cross-section.
-
-        Properties
-        ----------
-        mesh_size : MM
-            Maximum mesh element area to be used within
-            the Geometry-object finite-element mesh. If not provided, a default value will be used.
-
-        """
-        if mesh_size is None:
-            minimum_mesh_size = 2.0
-            mesh_length = max(min(self.width, self.height) / 20, minimum_mesh_size)
-            mesh_size = mesh_length**2
-
-        rectangular = Geometry(geom=self.polygon)
-        rectangular.create_mesh(mesh_sizes=mesh_size)
-        return rectangular
+        return Polygon(np.round([left_lower, right_lower, right_upper, left_upper], self.accuracy))
