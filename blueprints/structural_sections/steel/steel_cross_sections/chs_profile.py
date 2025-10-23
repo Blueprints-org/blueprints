@@ -1,7 +1,7 @@
 """Circular Hollow Section (CHS) profile."""
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import pi
 from typing import Self
 
@@ -15,7 +15,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 from blueprints.type_alias import MM
 
 
-@dataclass(kw_only=True)
+@dataclass(frozen=True, kw_only=True)
 class CHSProfile(CrossSection):
     """Representation of a Circular Hollow Section (CHS) profile.
 
@@ -39,10 +39,12 @@ class CHSProfile(CrossSection):
     """ The name of the profile. """
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
     """ The plotter function to visualize the cross-section. """
+    inner_diameter: MM = field(init=False)
+    """ The inner diameter of the CHS profile [mm]. """
 
     def __post_init__(self) -> None:
         """Post-process the CHS profile after initialization."""
-        self.inner_diameter = self.outer_diameter - 2 * self.wall_thickness
+        object.__setattr__(self, "inner_diameter", self.outer_diameter - 2 * self.wall_thickness)
 
     @property
     def polygon(self) -> Polygon:

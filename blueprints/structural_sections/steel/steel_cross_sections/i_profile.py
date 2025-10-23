@@ -1,7 +1,7 @@
 """I-Profile section."""
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Self
 
 from matplotlib import pyplot as plt
@@ -17,7 +17,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 from blueprints.type_alias import MM
 
 
-@dataclass(kw_only=True)
+@dataclass(frozen=True, kw_only=True)
 class IProfile(CrossSection):
     """Representation of an I-Profile section.
     This can be used to create a custom I-profile or to create an I-profile from a standard profile.
@@ -72,12 +72,20 @@ class IProfile(CrossSection):
     """ The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value. """
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
     """ The plotter function to visualize the cross-section (default: `plot_shapes`). """
+    web_height: MM = field(init=False)
+    """ The height of the web [mm]. """
+    width_outstand_top_flange: MM = field(init=False)
+    """ The width of the outstand of the top flange [mm]. """
+    width_outstand_bottom_flange: MM = field(init=False)
+    """ The width of the outstand of the bottom flange [mm]. """
 
     def __post_init__(self) -> None:
         """Post-process the I-profile section after initialization."""
-        self.web_height = self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
-        self.width_outstand_top_flange = (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2
-        self.width_outstand_bottom_flange = (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2
+        object.__setattr__(
+            self, "web_height", self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
+        )
+        object.__setattr__(self, "width_outstand_top_flange", (self.top_flange_width - self.web_thickness - 2 * self.top_radius) / 2)
+        object.__setattr__(self, "width_outstand_bottom_flange", (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2)
 
     @property
     def polygon(self) -> Polygon:

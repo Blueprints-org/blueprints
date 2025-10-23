@@ -1,7 +1,7 @@
 """RHS- and SHS-Profile section."""
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Self
 
 from matplotlib import pyplot as plt
@@ -17,7 +17,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 from blueprints.type_alias import MM
 
 
-@dataclass(kw_only=True)
+@dataclass(frozen=True, kw_only=True)
 class RHSProfile(CrossSection):
     """Representation of an SHS or RHS section.
 
@@ -89,25 +89,49 @@ class RHSProfile(CrossSection):
     """The name of the profile."""
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
     """The plotter function to visualize the cross-section."""
+    right_wall_outer_height: MM = field(init=False)
+    """The outer height of the right wall [mm]."""
+    left_wall_outer_height: MM = field(init=False)
+    """The outer height of the left wall [mm]."""
+    top_wall_outer_width: MM = field(init=False)
+    """The outer width of the top wall [mm]."""
+    bottom_wall_outer_width: MM = field(init=False)
+    """The outer width of the bottom wall [mm]."""
+    right_wall_inner_height: MM = field(init=False)
+    """The inner height of the right wall [mm]."""
+    left_wall_inner_height: MM = field(init=False)
+    """The inner height of the left wall [mm]."""
+    top_wall_inner_width: MM = field(init=False)
+    """The inner width of the top wall [mm]."""
+    bottom_wall_inner_width: MM = field(init=False)
+    """The inner width of the bottom wall [mm]."""
 
     def __post_init__(self) -> None:
         """Initialize the RHS- or SHS-profile section."""
-        self.right_wall_outer_height = self.total_height - self.top_right_outer_radius - self.bottom_right_outer_radius
-        self.left_wall_outer_height = self.total_height - self.top_left_outer_radius - self.bottom_left_outer_radius
-        self.top_wall_outer_width = self.total_width - self.top_right_outer_radius - self.top_left_outer_radius
-        self.bottom_wall_outer_width = self.total_width - self.bottom_right_outer_radius - self.bottom_left_outer_radius
+        object.__setattr__(self, "right_wall_outer_height", self.total_height - self.top_right_outer_radius - self.bottom_right_outer_radius)
+        object.__setattr__(self, "left_wall_outer_height", self.total_height - self.top_left_outer_radius - self.bottom_left_outer_radius)
+        object.__setattr__(self, "top_wall_outer_width", self.total_width - self.top_right_outer_radius - self.top_left_outer_radius)
+        object.__setattr__(self, "bottom_wall_outer_width", self.total_width - self.bottom_right_outer_radius - self.bottom_left_outer_radius)
 
-        self.right_wall_inner_height = (
-            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_right_inner_radius - self.bottom_right_inner_radius
+        object.__setattr__(
+            self,
+            "right_wall_inner_height",
+            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_right_inner_radius - self.bottom_right_inner_radius,
         )
-        self.left_wall_inner_height = (
-            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_left_inner_radius - self.bottom_left_inner_radius
+        object.__setattr__(
+            self,
+            "left_wall_inner_height",
+            self.total_height - self.top_wall_thickness - self.bottom_wall_thickness - self.top_left_inner_radius - self.bottom_left_inner_radius,
         )
-        self.top_wall_inner_width = (
-            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.top_right_inner_radius - self.top_left_inner_radius
+        object.__setattr__(
+            self,
+            "top_wall_inner_width",
+            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.top_right_inner_radius - self.top_left_inner_radius,
         )
-        self.bottom_wall_inner_width = (
-            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius
+        object.__setattr__(
+            self,
+            "bottom_wall_inner_width",
+            self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius,
         )
 
     @property
