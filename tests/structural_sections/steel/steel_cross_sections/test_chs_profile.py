@@ -59,3 +59,8 @@ class TestCHSSteelProfile:
         )
         expected_name_with_corrosion = "CHS 508x16 (corrosion in: 2 mm, out: 1 mm)"
         assert chs_profile_with_corrosion.name == expected_name_with_corrosion
+
+    def test_immutability(self, chs_profile: CHSProfile) -> None:
+        """Test that the CHSProfile dataclass is immutable."""
+        with pytest.raises(AttributeError):
+            chs_profile.name = "New Name"  # type: ignore[misc]

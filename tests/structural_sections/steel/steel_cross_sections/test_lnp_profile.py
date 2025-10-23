@@ -130,3 +130,8 @@ class TestLNPProfile:
                 web_toe_radius=10,
                 base_toe_radius=6,
             )
+
+    def test_immutability(self, lnp_profile: LNPProfile) -> None:
+        """Test that the LNPProfile dataclass is immutable."""
+        with pytest.raises(AttributeError):
+            lnp_profile.name = "New Name"  # type: ignore[misc]
