@@ -1,7 +1,7 @@
 """LNP-Profile section."""
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Self
 
 from matplotlib import pyplot as plt
@@ -15,7 +15,7 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 
-@dataclass(kw_only=True)
+@dataclass(frozen=True, kw_only=True)
 class LNPProfile(CrossSection):
     """Representation of an LNP section.
 
@@ -65,17 +65,29 @@ class LNPProfile(CrossSection):
     """ The name of the profile. """
     plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
     """ The plotter function to visualize the cross-section. """
+    web_toe_straight_part: MM = field(init=False)
+    """ The straight part of the web before the toe radius [mm]. """
+    base_toe_straight_part: MM = field(init=False)
+    """ The straight part of the base before the toe radius [mm]. """
+    web_outer_height: MM = field(init=False)
+    """ The outer height of the web [mm]. """
+    web_inner_height: MM = field(init=False)
+    """ The inner height of the web [mm]. """
+    base_outer_width: MM = field(init=False)
+    """ The outer width of the base [mm]. """
+    base_inner_width: MM = field(init=False)
+    """ The inner width of the base [mm]. """
 
     def __post_init__(self) -> None:
         """Post-process the LNP-profile section after initialization."""
-        self.web_toe_straight_part = self.web_thickness - self.web_toe_radius
-        self.base_toe_straight_part = self.base_thickness - self.base_toe_radius
+        object.__setattr__(self, "web_toe_straight_part", self.web_thickness - self.web_toe_radius)
+        object.__setattr__(self, "base_toe_straight_part", self.base_thickness - self.base_toe_radius)
 
-        self.web_outer_height = self.total_height - self.back_radius
-        self.web_inner_height = self.total_height - self.base_thickness - self.root_radius - self.web_toe_radius
+        object.__setattr__(self, "web_outer_height", self.total_height - self.back_radius)
+        object.__setattr__(self, "web_inner_height", self.total_height - self.base_thickness - self.root_radius - self.web_toe_radius)
 
-        self.base_outer_width = self.total_width - self.back_radius
-        self.base_inner_width = self.total_width - self.web_thickness - self.root_radius - self.base_toe_radius
+        object.__setattr__(self, "base_outer_width", self.total_width - self.back_radius)
+        object.__setattr__(self, "base_inner_width", self.total_width - self.web_thickness - self.root_radius - self.base_toe_radius)
 
         raise_if_negative(
             web_toe_straight_part=self.web_toe_straight_part,

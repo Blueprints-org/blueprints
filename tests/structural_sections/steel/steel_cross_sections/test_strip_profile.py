@@ -60,3 +60,8 @@ class TestStripSteelProfile:
         )
         expected_name = f"{strip_profile.name} (corrosion: 1 mm)"
         assert profile_with_corrosion.name == expected_name
+
+    def test_immutability(self, strip_profile: StripProfile) -> None:
+        """Test that the StripProfile dataclass is immutable."""
+        with pytest.raises(AttributeError):
+            strip_profile.name = "New Name"  # type: ignore[misc]

@@ -14,7 +14,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 from blueprints.type_alias import MM
 
 
-@dataclass(kw_only=True)
+@dataclass(frozen=True, kw_only=True)
 class StripProfile(CrossSection):
     """Representation of a Strip profile.
 

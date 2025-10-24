@@ -67,3 +67,8 @@ class TestISteelProfile:
         )
         expected_name_with_corrosion = "HEB360 (corrosion: 2 mm)"
         assert i_profile_with_corrosion.name == expected_name_with_corrosion
+
+    def test_immutability(self, h_profile: IProfile) -> None:
+        """Test that the IProfile dataclass is immutable."""
+        with pytest.raises(AttributeError):
+            h_profile.name = "New Name"  # type: ignore[misc]

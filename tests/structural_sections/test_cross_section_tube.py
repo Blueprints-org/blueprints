@@ -60,3 +60,8 @@ class TestTubeCrossSection:
         """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
         with pytest.raises(AttributeError, match="No plotter is defined."):
             _ = tube_cross_section.plotter
+
+    def test_immutability(self, tube_cross_section: TubeCrossSection) -> None:
+        """Test that the TubeCrossSection dataclass is immutable."""
+        with pytest.raises(AttributeError):
+            tube_cross_section.name = "New Name"  # type: ignore[misc]

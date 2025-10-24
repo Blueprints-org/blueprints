@@ -148,3 +148,8 @@ class TestAnnularSectorCrossSection:
         """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
         with pytest.raises(AttributeError, match="No plotter is defined."):
             _ = annular_sector_cross_section.plotter
+
+    def test_immutability(self, annular_sector_cross_section: AnnularSectorCrossSection) -> None:
+        """Test that the AnnularSectorCrossSection dataclass is immutable."""
+        with pytest.raises(AttributeError):
+            annular_sector_cross_section.name = "New Name"  # type: ignore[misc]

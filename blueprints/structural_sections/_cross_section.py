@@ -2,8 +2,9 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
+from dataclasses import dataclass
 from functools import partial
-from typing import Any
+from typing import Any, ClassVar
 
 import matplotlib.pyplot as plt
 from sectionproperties.analysis import Section
@@ -15,10 +16,11 @@ from blueprints.type_alias import M3_M, MM, MM2
 from blueprints.unit_conversion import MM3_TO_M3
 
 
+@dataclass(frozen=True)
 class CrossSection(ABC):
     """Base class for cross-section shapes."""
 
-    accuracy = 6
+    accuracy: ClassVar[int] = 6
     """Accuracy for rounding polygon coordinates in order to avoid floating point issues.
     This value is used in the derived classes when creating the Shapely Polygon.
     Since the coordinates are in mm, a value of 6 means that the coordinates are rounded to
