@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_function
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import AsCrossSection
 from blueprints.type_alias import MM
 
 
@@ -282,4 +282,5 @@ class CHS(Enum):
         self.alias = alias
         self.diameter = diameter
         self.thickness = thickness
-        self.cross_section = wrap_function(CHSProfile.from_standard_profile, self)
+
+    as_cross_section = AsCrossSection(CHSProfile.from_standard_profile)
