@@ -274,10 +274,15 @@ class CHS(Enum):
 
     def __init__(self, alias: str, diameter: MM, thickness: MM) -> None:
         """Initialize standard CHS profile.
-        Args:
-            alias (str): alias of the standard CHS profile.
-            diameter (MM): Outer diameter of the CHS.
-            thickness (MM): Wall thickness of the CHS.
+
+        Parameters
+        ----------
+        alias : str
+            alias of the standard CHS profile.
+        diameter : MM
+            Outer diameter of the CHS.
+        thickness : MM
+            Wall thickness of the CHS.
         """
         self.alias = alias
         self.diameter = diameter

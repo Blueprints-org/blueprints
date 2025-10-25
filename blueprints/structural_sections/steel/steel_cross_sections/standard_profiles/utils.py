@@ -14,29 +14,34 @@ class AsCrossSection(Generic[P, R]):  # noqa: UP046
     """Descriptor to convert a function into an instance method that auto-passes the instance."""
 
     def __init__(self, func: Callable[Concatenate[S, P], R]) -> None:
-        """Initialize the descriptor with the class method to bind.
+        """Initialize the descriptor with the function to bind.
 
-        Args
-        ----
-            func: The class method to be converted into an instance method.
+        Parameters
+        ----------
+        func : Callable[Concatenate[S, P], R]
+            The function to be converted into an instance method.
         """
         self._func = func
 
     def __get__(self, obj: S, owner: type[S]) -> Callable[P, R]:
         """Bind the method to the instance.
 
-        Args
-        ----
-            obj: The instance to bind the method to.
-            owner: The class of the instance.
+        Parameters
+        ----------
+        obj : S
+            The instance to bind the method to.
+        owner : type[S]
+            The class of the instance.
 
         Returns
         -------
+        Callable[P, R]
             The bound method.
 
         Raises
         ------
-            AttributeError: If accessed on the class rather than an instance.
+        AttributeError
+            If accessed on the class rather than an instance.
         """
         if obj is None:
             raise AttributeError("Cannot access instance method on the class itself.")
