@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from unittest.mock import Mock
-
 import pytest
 
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
@@ -57,37 +55,7 @@ class TestAsCrossSection:
             method = AsCrossSection(create_from_instance)
 
         with pytest.raises(AttributeError, match="Cannot access instance method on the class itself."):
-            MockClass.method
-
-    def test_bound_method_name_assignment(self) -> None:
-        """Test that the bound method gets the correct name."""
-
-        def test_function(obj: object) -> str:  # noqa: ARG001
-            return "result"
-
-        class MockClass:
-            method = AsCrossSection(test_function)
-
-        obj = MockClass()
-        bound_method = obj.method
-
-        assert bound_method.__name__ == "test_function"
-
-    def test_bound_method_name_fallback(self) -> None:
-        """Test that the bound method name falls back to 'AsCrossSection' if function has no __name__."""
-        # Create a mock function without __name__ attribute
-        mock_func = Mock()
-        if hasattr(mock_func, "__name__"):
-            delattr(mock_func, "__name__")
-        mock_func.return_value = "result"
-
-        class MockClass:
-            method = AsCrossSection(mock_func)
-
-        obj = MockClass()
-        bound_method = obj.method
-
-        assert bound_method.__name__ == "AsCrossSection"
+            MockClass.method  # type: ignore[arg-type]
 
     def test_descriptor_with_args_and_kwargs(self) -> None:
         """Test that the descriptor correctly passes args and kwargs to the underlying function."""

@@ -3,14 +3,10 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import Concatenate, Generic, ParamSpec, TypeVar, cast
-
-S = TypeVar("S")  # Type of the instance owning the descriptor
-R = TypeVar("R")
-P = ParamSpec("P")
+from typing import Concatenate
 
 
-class AsCrossSection(Generic[P, R]):  # noqa: UP046
+class AsCrossSection[S, **P, R]:
     """Descriptor to convert a function into an instance method that auto-passes the instance."""
 
     def __init__(self, func: Callable[Concatenate[S, P], R]) -> None:
@@ -47,8 +43,6 @@ class AsCrossSection(Generic[P, R]):  # noqa: UP046
             raise AttributeError("Cannot access instance method on the class itself.")
 
         def bound(*args: P.args, **kwargs: P.kwargs) -> R:
-            return self._func(obj, *args, **kwargs)  # type: ignore[arg-type]
+            return self._func(obj, *args, **kwargs)
 
-        bound.__name__ = getattr(self._func, "__name__", self.__class__.__name__)
-
-        return cast(Callable[P, R], bound)
+        return bound
