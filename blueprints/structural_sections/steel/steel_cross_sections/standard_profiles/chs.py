@@ -290,4 +290,4 @@ class CHS(Enum):
 
     @wrap_as_instance_method(CHSProfile.from_standard_profile)
     def as_cross_section(self) -> None:
-        """Create a CHS cross section from the standard profile."""
+        """Get an instance of the CHSProfile cross section."""
