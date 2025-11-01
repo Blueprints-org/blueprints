@@ -4,180 +4,104 @@ from __future__ import annotations
 
 import pytest
 
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.chs import CHS
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import AsCrossSection
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
 
 
-class TestAsCrossSection:
-    """Tests for the AsCrossSection descriptor."""
+class TestWrapAsInstanceMethod:
+    """Tests for the wrap_as_instance_method decorator."""
 
-    def test_descriptor_initialization(self) -> None:
-        """Test that the descriptor is properly initialized with a function."""
+    def test_wrapper_passes_instance_and_arguments(self) -> None:
+        """Test that the wrapper forwards the instance and positional/keyword arguments."""
+        calls = []
 
-        def mock_function(obj: object) -> str:  # noqa: ARG001
-            return "mock_result"
+        def original(instance: Dummy, factor: int, *, offset: int = 0) -> int:
+            calls.append((instance, factor, offset))
+            return instance.base * factor + offset
 
-        descriptor = AsCrossSection(mock_function)
-        # Test that the descriptor holds the function (using indirect testing since _func is private)
-        assert hasattr(descriptor, "_func")
+        class Dummy:
+            def __init__(self, base: int) -> None:
+                self.base = base
 
-    def test_descriptor_get_with_instance(self) -> None:
-        """Test that the descriptor returns a bound method when accessed on an instance."""
+            @wrap_as_instance_method(original)
+            def method(self) -> None:
+                pytest.fail("Placeholder should not execute.")
 
-        def create_from_instance(instance: object, multiplier: int = 1) -> str:
-            return f"{getattr(instance, 'value', 'unknown')}_multiplied_{multiplier}"
+        dummy = Dummy(base=3)
+        result = dummy.method(4, offset=2)
 
-        class MockClass:
-            def __init__(self, value: str) -> None:
+        assert result == 14
+        assert calls == [(dummy, 4, 2)]
+
+    def test_wrapper_preserves_original_metadata(self) -> None:
+        """Test that the wrapper retains metadata defined on the original function."""
+
+        def original(instance: DummyValue) -> str:
+            """Original function docstring."""
+            return f"value={instance.value}"
+
+        class DummyValue:
+            def __init__(self, value: int) -> None:
                 self.value = value
 
-            method = AsCrossSection(create_from_instance)
+            @wrap_as_instance_method(original)
+            def method(self) -> None:
+                pytest.fail("Placeholder should not execute.")
 
-        obj = MockClass("test")
-        bound_method = obj.method
+        assert DummyValue.method.__name__ == original.__name__
+        assert DummyValue.method.__doc__ == original.__doc__
 
-        # Test that the bound method works correctly
-        result = bound_method(multiplier=2)
-        assert result == "test_multiplied_2"
+        dummy = DummyValue(value=7)
+        assert dummy.method() == "value=7"
 
-        # Test with default parameters
-        result_default = bound_method()
-        assert result_default == "test_multiplied_1"
+    def test_decorator_can_be_reused_across_classes(self) -> None:
+        """Test that a single decorator instance can wrap multiple class methods."""
 
-    def test_descriptor_get_without_instance_raises_error(self) -> None:
-        """Test that accessing the descriptor on the class (not instance) raises AttributeError."""
+        def original(instance, increment: int = 0) -> int:  # noqa: ANN001
+            return instance.base + increment
 
-        class MockClass:
-            @classmethod
-            def create_from_instance(cls) -> str:
-                return "result"
+        class Alpha:
+            def __init__(self, base: int) -> None:
+                self.base = base
 
-            method = AsCrossSection(create_from_instance)
+            @wrap_as_instance_method(original)
+            def as_value(self) -> None:
+                pytest.fail("Placeholder should not execute.")
 
-        with pytest.raises(AttributeError, match="Cannot access instance method on the class itself."):
-            MockClass.method  # type: ignore[arg-type]
+        class Beta:
+            def __init__(self, base: int) -> None:
+                self.base = base
 
-    def test_descriptor_with_args_and_kwargs(self) -> None:
-        """Test that the descriptor correctly passes args and kwargs to the underlying function."""
+            @wrap_as_instance_method(original)
+            def as_value(self) -> None:
+                pytest.fail("Placeholder should not execute.")
 
-        def test_function(
-            obj: object,
-            arg1: str,
-            arg2: str,
-            kwarg1: str | None = None,
-            kwarg2: str | None = None,
-        ) -> dict[str, object]:
-            return {
-                "obj_value": getattr(obj, "value", None),
-                "arg1": arg1,
-                "arg2": arg2,
-                "kwarg1": kwarg1,
-                "kwarg2": kwarg2,
-            }
+        assert Alpha(base=2).as_value(increment=3) == 5
+        assert Beta(base=10).as_value(increment=1) == 11
 
-        class MockClass:
-            def __init__(self, value: str) -> None:
-                self.value = value
+    def test_decorator_can_be_used_across_multiple_methods(self) -> None:
+        """Test that a single decorator instance can wrap multiple methods within the same class."""
 
-            method = AsCrossSection(test_function)
+        def custom_increment(instance: Counter, step: int = 1) -> int:
+            instance.count += step
+            return instance.count
 
-        obj = MockClass("test_obj")
-        result = obj.method("pos_arg1", "pos_arg2", kwarg1="kw_val1", kwarg2="kw_val2")
+        def custom_subtract(instance: Counter, value: int) -> int:
+            instance.count -= value
+            return instance.count
 
-        expected = {
-            "obj_value": "test_obj",
-            "arg1": "pos_arg1",
-            "arg2": "pos_arg2",
-            "kwarg1": "kw_val1",
-            "kwarg2": "kw_val2",
-        }
-        assert result == expected
+        class Counter:
+            def __init__(self) -> None:
+                self.count = 0
 
-    def test_descriptor_multiple_instances(self) -> None:
-        """Test that the descriptor works correctly with multiple instances of the same class."""
+            @wrap_as_instance_method(custom_increment)
+            def increment(self) -> None:
+                pytest.fail("Placeholder should not execute.")
 
-        def instance_method(obj: object, suffix: str = "") -> str:
-            return f"{getattr(obj, 'name', '')}{suffix}"
+            @wrap_as_instance_method(custom_subtract)
+            def subtract(self) -> None:
+                pytest.fail("Placeholder should not execute.")
 
-        class MockClass:
-            def __init__(self, name: str) -> None:
-                self.name = name
-
-            get_name = AsCrossSection(instance_method)
-
-        obj1 = MockClass("first")
-        obj2 = MockClass("second")
-
-        assert obj1.get_name() == "first"
-        assert obj2.get_name() == "second"
-        assert obj1.get_name("_suffix") == "first_suffix"
-        assert obj2.get_name("_suffix") == "second_suffix"
-
-    def test_real_usage_with_chs_profile(self) -> None:
-        """Test the descriptor with actual CHS profile usage."""
-        profile = CHS.CHS21_3x2_3
-
-        # Test that as_cross_section method exists and is callable
-        assert hasattr(profile, "as_cross_section")
-        assert callable(profile.as_cross_section)
-
-        # Test that it returns a cross-section object
-        cross_section = profile.as_cross_section()
-        assert cross_section is not None
-
-        # Test with corrosion parameters
-        cross_section_with_corrosion = profile.as_cross_section(
-            corrosion_outside=0.5,
-            corrosion_inside=0.3,
-        )
-        assert cross_section_with_corrosion is not None
-
-    def test_descriptor_type_annotations(self) -> None:
-        """Test that the descriptor works with proper type annotations."""
-
-        def typed_function(obj: MockClass, value: int) -> str:
-            return f"{obj.data}_{value}"
-
-        class MockClass:
-            def __init__(self, data: str) -> None:
-                self.data = data
-
-            process = AsCrossSection(typed_function)
-
-        obj = MockClass("test_data")
-        result = obj.process(42)
-        assert result == "test_data_42"
-
-    def test_descriptor_exception_handling(self) -> None:
-        """Test that exceptions in the underlying function are properly propagated."""
-
-        def failing_function(_obj: object, should_fail: bool = True) -> str:
-            if should_fail:
-                raise ValueError("Test exception")
-            return "success"
-
-        class MockClass:
-            method = AsCrossSection(failing_function)
-
-        obj = MockClass()
-
-        # Test that exception is raised
-        with pytest.raises(ValueError, match="Test exception"):
-            obj.method()
-
-        # Test that method works when not failing
-        result = obj.method(should_fail=False)
-        assert result == "success"
-
-    def test_descriptor_with_no_args_function(self) -> None:
-        """Test that the descriptor works with functions that take only the instance."""
-
-        def simple_function(obj: object) -> str:  # noqa: ARG001
-            return "simple_result"
-
-        class MockClass:
-            method = AsCrossSection(simple_function)
-
-        obj = MockClass()
-        result = obj.method()
-        assert result == "simple_result"
+        counter = Counter()
+        assert counter.increment() == 1
+        assert counter.subtract(5) == -4
+        assert counter.increment(7) == 3
