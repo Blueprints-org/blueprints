@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 
 from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import AsCrossSection
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
 from blueprints.type_alias import MM
 
 
@@ -288,4 +288,6 @@ class CHS(Enum):
         self.diameter = diameter
         self.thickness = thickness
 
-    as_cross_section = AsCrossSection(CHSProfile.from_standard_profile)
+    @wrap_as_instance_method(CHSProfile.from_standard_profile)
+    def as_cross_section(self) -> None:
+        """Create a CHS cross section from the standard profile."""
