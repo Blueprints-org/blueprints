@@ -30,7 +30,7 @@ class TestForm7Dot7NumberOfFOVibrations:
         [
             (8.96, 1.0, 5.3, 5.81e12, 3.89e11, does_not_raise()),
             (20, 1.0, 1.0, 5.82e12, 5.81e12, does_not_raise()),
-            (41, 1, 1, 2, 1, pytest.raises(ValueError, match="exceeds the allowed limit of 40.")),
+            (41, 1, 1, 2, 1, pytest.raises(ValueError, match=r"exceeds the allowed limit of 40.")),
             (20, 1, 1, 1, 1, pytest.raises(ValueError, match="must be bigger than")),
             (20, 1, 1, 1, 2, pytest.raises(ValueError, match="must be bigger than")),
             (20, 1, 1, 2, 0, pytest.raises(LessOrEqualToZeroError)),

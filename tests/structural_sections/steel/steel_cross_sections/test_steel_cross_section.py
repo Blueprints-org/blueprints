@@ -1,5 +1,9 @@
 """Test suite for CombinedSteelCrossSection."""
 
+import matplotlib as mpl
+
+mpl.use("Agg")
+
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass

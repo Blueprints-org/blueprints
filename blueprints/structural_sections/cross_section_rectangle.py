@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+import numpy as np
 from sectionproperties.pre import Geometry
 from shapely import Polygon
 
@@ -58,14 +59,7 @@ class RectangularCrossSection(CrossSection):
         right_lower = (self.x + self.width / 2, self.y - self.height / 2)
         right_upper = (self.x + self.width / 2, self.y + self.height / 2)
         left_upper = (self.x - self.width / 2, self.y + self.height / 2)
-        return Polygon(
-            [
-                left_lower,
-                right_lower,
-                right_upper,
-                left_upper,
-            ]
-        )
+        return Polygon(np.round([left_lower, right_lower, right_upper, left_upper], self.ACCURACY))
 
     def geometry(
         self,

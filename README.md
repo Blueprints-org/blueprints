@@ -15,7 +15,7 @@
 
 ---
 
-**Documentation**: <a href="https://blueprints.readthedocs.io/en/latest/" target="_blank">https://blueprints.readthedocs.io/en/latest/</a>
+**Documentation**: <a href="https://blueprints.readthedocs.io" target="_blank">https://blueprints.readthedocs.io</a>
 
 **Source Code**: <a href="https://github.com/Blueprints-org/blueprints" target="_blank">https://github.com/Blueprints-org/blueprints</a>
 
