@@ -1,6 +1,6 @@
 """Formula 5.7 from EN 1993-1-1:C2_A1_2016: Chapter 5 - Structural Analysis."""
 
-from blueprints.codes.formula import ComparisonFormula
+from blueprints.codes.formula import ComparisonFormula, Formula
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
@@ -13,11 +13,7 @@ class Form5Dot7NeglectFrameTilt(ComparisonFormula):
     label = "5.7"
     source_document = EN_1993_1_1_2005
 
-    def __init__(
-            self,
-            h_ed: N,
-            v_ed: N
-    ) -> None:
+    def __init__(self, h_ed: N, v_ed: N) -> None:
         r"""Check if the tilt in a frame in building can be neglected.
 
         EN 1993-1-1:C2_A1_2016 - Formula (5.7)
@@ -50,7 +46,7 @@ class Form5Dot7NeglectFrameTilt(ComparisonFormula):
     @property
     def unity_check(self) -> float:
         """Returns the unity check value."""
-        return self.h_ed >= 0.15 * self.v_ed
+        return self.lhs / self.rhs
 
     @staticmethod
     def _evaluate(h_ed: N, v_ed: N) -> bool:
@@ -66,9 +62,9 @@ class Form5Dot7NeglectFrameTilt(ComparisonFormula):
             v_ed=self.v_ed
         )
 
-    def latex(self, n: int = 3) -> LatexFormula:
+    def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.7."""
-        _equation: str = r"$H_{Ed} \geq 0.15 V_{Ed}$"
+        _equation: str = r"$H_{Ed} \geq 0.15\cdotV_{Ed}$"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -86,6 +82,3 @@ class Form5Dot7NeglectFrameTilt(ComparisonFormula):
             unit="",
         )
 
-if __name__ == '__main__':
-    form = Form5Dot7NeglectFrameTilt(h_ed=5, v_ed=6)
-    print(form)
