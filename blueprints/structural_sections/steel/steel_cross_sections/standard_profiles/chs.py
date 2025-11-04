@@ -1,7 +1,11 @@
 """Standard CHS profiles."""
 
+from __future__ import annotations
+
 from enum import Enum
 
+from blueprints.structural_sections.steel.steel_cross_sections.chs_profile import CHSProfile
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
 from blueprints.type_alias import MM
 
 
@@ -270,11 +274,20 @@ class CHS(Enum):
 
     def __init__(self, alias: str, diameter: MM, thickness: MM) -> None:
         """Initialize standard CHS profile.
-        Args:
-            alias (str): alias of the standard CHS profile.
-            diameter (MM): Outer diameter of the CHS.
-            thickness (MM): Wall thickness of the CHS.
+
+        Parameters
+        ----------
+        alias : str
+            alias of the standard CHS profile.
+        diameter : MM
+            Outer diameter of the CHS.
+        thickness : MM
+            Wall thickness of the CHS.
         """
         self.alias = alias
         self.diameter = diameter
         self.thickness = thickness
+
+    @wrap_as_instance_method(CHSProfile.from_standard_profile)
+    def as_cross_section(self) -> None:
+        """Get an instance of the CHSProfile cross section."""
