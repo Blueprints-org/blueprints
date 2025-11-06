@@ -7,7 +7,7 @@ from blueprints.validations import NegativeValueError
 
 
 class TestForm5Dot8NeglectFrameTilt:
-    """Validation for formula 5.8 from EN 1993-1-1:2005."""
+    """Validation for formula 5.7 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -47,8 +47,8 @@ class TestForm5Dot8NeglectFrameTilt:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"CHECK \to $H_{Ed} \geq 0.15\cdotV_{Ed}$ \to $50000.00 \geq 0.15\cdot100000.00$ \to OK"),
-            ("short", "CHECK \\to OK"),
+            ("complete", r"CHECK \to $H_{Ed} \geq 0.15 \cdot V_{Ed}$ \to $50000.00 \geq 0.15 \cdot 100000.00$ \to OK"),
+            ("short", "50000.00 \geq 0.15 \cdot 100000.00 \\to OK"),
         ]
     )
     def test_latex(self, representation: str, expected: str) -> None:
