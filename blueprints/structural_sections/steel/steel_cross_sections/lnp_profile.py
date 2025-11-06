@@ -1,8 +1,10 @@
 """LNP-Profile section."""
 
+from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -10,9 +12,11 @@ from shapely.geometry import Polygon
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
+
+if TYPE_CHECKING:
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 
 
 @dataclass(frozen=True, kw_only=True)

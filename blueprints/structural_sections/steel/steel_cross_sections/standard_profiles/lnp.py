@@ -2,6 +2,8 @@
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
 from blueprints.type_alias import MM
 
 
@@ -134,3 +136,7 @@ class LNP(Enum):
         self.root_radius = root_radius
         self.back_radius = 0
         self.toe_radius = toe_radius
+
+    @wrap_as_instance_method(LNPProfile.from_standard_profile)
+    def as_cross_section(self) -> None:
+        """Get an instance of the LNP cross section."""

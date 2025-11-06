@@ -1,5 +1,6 @@
 """Test the LNP enum."""
 
+from blueprints.structural_sections.steel.steel_cross_sections.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 
 
@@ -32,3 +33,36 @@ class TestLNP:
         assert profile.root_radius == 6
         assert profile.back_radius == 0
         assert profile.toe_radius == 3
+
+    def test_as_cross_section(self) -> None:
+        """Test that the as_cross_section method returns an LNPProfile instance."""
+        profile = LNP.LNP_60x40x7
+        cross_section = profile.as_cross_section()
+
+        assert isinstance(cross_section, LNPProfile)
+        assert cross_section.total_width == profile.width
+        assert cross_section.total_height == profile.height
+        assert cross_section.web_thickness == profile.web_thickness
+        assert cross_section.base_thickness == profile.base_thickness
+        assert cross_section.root_radius == profile.root_radius
+        assert cross_section.back_radius == profile.back_radius
+        assert cross_section.web_toe_radius == profile.toe_radius
+        assert cross_section.base_toe_radius == profile.toe_radius
+
+    def test_as_cross_section_with_corrosion(self) -> None:
+        """Test that the as_cross_section method accounts for corrosion."""
+        profile = LNP.LNP_60x40x7
+        corrosion = 0.5
+        cross_section = profile.as_cross_section(corrosion=corrosion)
+
+        expected_thickness = profile.base_thickness - 2 * corrosion
+
+        assert isinstance(cross_section, LNPProfile)
+        assert cross_section.total_width == profile.width - 2 * corrosion
+        assert cross_section.total_height == profile.height - 2 * corrosion
+        assert cross_section.web_thickness == expected_thickness
+        assert cross_section.base_thickness == expected_thickness
+        assert cross_section.root_radius == profile.root_radius + corrosion
+        assert cross_section.back_radius == profile.back_radius
+        assert cross_section.web_toe_radius == min(profile.toe_radius, expected_thickness)
+        assert cross_section.base_toe_radius == min(profile.toe_radius, expected_thickness)

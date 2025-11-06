@@ -2,6 +2,8 @@
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSProfile
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
 from blueprints.type_alias import MM
 
 
@@ -127,13 +129,23 @@ class RHS(Enum):
 
     def __init__(self, alias: str, h: MM, b: MM, t: MM, r0: MM, ri: MM) -> None:
         """Initialize RHS profile.
-        Args:
-            alias (str): Profile alias.
-            h (MM): Total height.
-            b (MM): Total width.
-            t (MM): Thickness.
-            r0 (MM): Outer radius.
-            ri (MM): Inner radius.
+
+        This method sets the profile's alias, dimensions, and radii.
+
+        Parameters
+        ----------
+        alias: str
+            Profile alias.
+        h: MM
+            Total height of the profile.
+        b: MM
+            Total width of the profile.
+        t: MM
+            Thickness of the profile.
+        r0: MM
+            Outer radius of the profile.
+        ri: MM
+            Inner radius of the profile.
         """
         self.alias = alias
         self.total_height = h
@@ -142,3 +154,7 @@ class RHS(Enum):
         self.outer_radius = r0
         self.inner_radius = ri
         self.center_radius = r0 - t / 2
+
+    @wrap_as_instance_method(RHSProfile.from_standard_profile)
+    def as_cross_section(self) -> None:
+        """Get an instance of the RHS cross section."""
