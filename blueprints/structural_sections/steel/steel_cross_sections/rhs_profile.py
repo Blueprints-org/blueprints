@@ -15,10 +15,10 @@ from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_
 from blueprints.type_alias import MM
 
 if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
-    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF
-    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shs import SHS
-    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shscf import SHSCF
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS  # pragma: no cover
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhscf import RHSCF  # pragma: no cover
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shs import SHS  # pragma: no cover
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.shscf import SHSCF  # pragma: no cover
 
 
 @dataclass(frozen=True, kw_only=True)

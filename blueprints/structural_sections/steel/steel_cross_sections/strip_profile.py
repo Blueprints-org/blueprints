@@ -15,7 +15,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_
 from blueprints.type_alias import MM
 
 if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip  # pragma: no cover
 
 
 @dataclass(frozen=True, kw_only=True)

@@ -16,7 +16,7 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP  # pragma: no cover
 
 
 @dataclass(frozen=True, kw_only=True)
