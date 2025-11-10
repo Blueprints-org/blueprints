@@ -26,7 +26,7 @@ def wrap_as_instance_method[S, R, **P](
 
     """
 
-    def decorator(instance_method: Callable[[S], None]) -> Callable[Concatenate[S, P], R]:  # noqa: ARG001
+    def decorator(_instance_method: Callable[[S], None]) -> Callable[Concatenate[S, P], R]:
         """Decorator that passes the wrapped function as an instance method.
 
         Parameters

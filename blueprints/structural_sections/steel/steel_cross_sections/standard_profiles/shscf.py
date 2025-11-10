@@ -2,6 +2,8 @@
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.steel_cross_sections.rhs_profile import RHSProfile
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
 from blueprints.type_alias import MM
 
 
@@ -159,12 +161,21 @@ class SHSCF(Enum):
 
     def __init__(self, alias: str, b: MM, t: MM, r0: MM, ri: MM) -> None:
         """Initialize SHSCF profile.
-        Args:
-            alias (str): Profile alias.
-            b (MM): Total width.
-            t (MM): Thickness.
-            r0 (MM): Outer radius.
-            ri (MM): Inner radius.
+
+        This method sets the profile's alias, dimensions, and radii.
+
+        Parameters
+        ----------
+        alias: str
+            Profile alias.
+        b: MM
+            Total width of the profile.
+        t: MM
+            Thickness of the profile.
+        r0: MM
+            Outer radius of the profile.
+        ri: MM
+            Inner radius of the profile.
         """
         self.alias = alias
         self.total_width = b
@@ -173,3 +184,7 @@ class SHSCF(Enum):
         self.inner_radius = ri
         self.outer_radius = r0
         self.center_radius = (r0 + ri) / 2
+
+    @wrap_as_instance_method(RHSProfile.from_standard_profile)
+    def as_cross_section(self) -> None:
+        """Get an instance of the SHSCF cross section."""

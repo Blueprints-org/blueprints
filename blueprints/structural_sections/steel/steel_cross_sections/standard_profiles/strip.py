@@ -2,6 +2,8 @@
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
+from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripProfile
 from blueprints.type_alias import MM
 
 
@@ -73,11 +75,22 @@ class Strip(Enum):
 
     def __init__(self, alias: str, width: MM, height: MM) -> None:
         """Initialize standard steel strip profile.
-        Args:
-            alias (str): Profile alias.
-            width (MM): Width of the strip.
-            height (MM): Height of the strip.
+
+        This method sets the profile's alias and dimensions.
+
+        Parameters
+        ----------
+        alias: str
+            Profile alias.
+        width: MM
+            Width of the strip.
+        height: MM
+            Height of the strip.
         """
         self.alias = alias
         self.width = width
         self.height = height
+
+    @wrap_as_instance_method(StripProfile.from_standard_profile)
+    def as_cross_section(self) -> None:
+        """Get an instance of the strip cross section."""

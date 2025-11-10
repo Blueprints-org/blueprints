@@ -1,6 +1,7 @@
 """Tests for the StripClass enum."""
 
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
+from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripProfile
 
 
 class TestStripClass:
@@ -27,3 +28,22 @@ class TestStripClass:
         assert profile.alias == "160x5"
         assert profile.width == 160
         assert profile.height == 5
+
+    def test_as_cross_section(self) -> None:
+        """Test that the as_cross_section method returns a StripProfile instance."""
+        profile = Strip.STRIP160x5
+        cross_section = profile.as_cross_section()
+
+        assert isinstance(cross_section, StripProfile)
+        assert cross_section.width == profile.width
+        assert cross_section.height == profile.height
+
+    def test_as_cross_section_with_corrosion(self) -> None:
+        """Test that the as_cross_section method accounts for corrosion."""
+        profile = Strip.STRIP160x5
+        corrosion = 0.7
+        cross_section = profile.as_cross_section(corrosion=corrosion)
+
+        assert isinstance(cross_section, StripProfile)
+        assert cross_section.width == profile.width - 2 * corrosion
+        assert cross_section.height == profile.height - 2 * corrosion

@@ -1,8 +1,10 @@
 """I-Profile section."""
 
+from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Self
+from typing import TYPE_CHECKING, Self, overload
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -10,11 +12,13 @@ from shapely.geometry import Polygon
 from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections.steel.steel_cross_sections.plotters.general_steel_plotter import plot_shapes
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEA
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEM
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPE
 from blueprints.type_alias import MM
+
+if TYPE_CHECKING:
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hea import HEA  # pragma: no cover
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB  # pragma: no cover
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.hem import HEM  # pragma: no cover
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.ipe import IPE  # pragma: no cover
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -116,6 +120,22 @@ class IProfile(CrossSection):
             .append_line(length=self.top_flange_thickness, angle=90)
             .generate_polygon()
         )
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: HEA, corrosion: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: HEB, corrosion: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: HEM, corrosion: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: IPE, corrosion: MM = 0) -> Self: ...
 
     @classmethod
     def from_standard_profile(

@@ -2,6 +2,8 @@
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.steel_cross_sections.i_profile import IProfile
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.utils import wrap_as_instance_method
 from blueprints.type_alias import MM
 
 
@@ -56,3 +58,7 @@ class IPE(Enum):
         self.web_thickness = t_w
         self.top_radius = radius
         self.bottom_radius = radius
+
+    @wrap_as_instance_method(IProfile.from_standard_profile)
+    def as_cross_section(self) -> None:
+        """Get an instance of the IPE cross section."""
