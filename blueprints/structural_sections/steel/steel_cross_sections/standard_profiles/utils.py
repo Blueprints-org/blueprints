@@ -7,9 +7,9 @@ from functools import wraps
 from typing import Concatenate
 
 
-def wrap_as_instance_method[S, T, R, **P](
+def wrap_as_instance_method[S, R, **P](
     func: Callable[Concatenate[S, P], R],
-) -> Callable[[Callable[[T], None]], Callable[Concatenate[S, P], R]]:
+) -> Callable[[Callable[[S], None]], Callable[Concatenate[S, P], R]]:
     """Decorator to wrap a function into an instance method that auto-passes the instance.
 
     Type parameters
@@ -26,7 +26,7 @@ def wrap_as_instance_method[S, T, R, **P](
 
     """
 
-    def decorator(_instance_method: Callable[[T], None]) -> Callable[Concatenate[S, P], R]:
+    def decorator(_instance_method: Callable[[S], None]) -> Callable[Concatenate[S, P], R]:
         """Decorator that passes the wrapped function as an instance method.
 
         Parameters

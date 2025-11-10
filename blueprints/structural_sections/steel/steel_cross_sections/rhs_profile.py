@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Self, overload
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -168,6 +168,22 @@ class RHSProfile(CrossSection):
             .generate_polygon()
         )
         return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: RHS, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: SHS, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: RHSCF, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: SHSCF, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
 
     @classmethod
     def from_standard_profile(

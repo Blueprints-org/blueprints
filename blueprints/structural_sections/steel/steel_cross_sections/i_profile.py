@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Self, overload
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -120,6 +120,22 @@ class IProfile(CrossSection):
             .append_line(length=self.top_flange_thickness, angle=90)
             .generate_polygon()
         )
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: HEA, corrosion: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: HEB, corrosion: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: HEM, corrosion: MM = 0) -> Self: ...
+
+    @overload
+    @classmethod
+    def from_standard_profile(cls, profile: IPE, corrosion: MM = 0) -> Self: ...
 
     @classmethod
     def from_standard_profile(
