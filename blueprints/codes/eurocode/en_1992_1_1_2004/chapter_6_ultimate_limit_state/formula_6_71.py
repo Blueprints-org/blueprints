@@ -1,7 +1,7 @@
 """Formula 6.71 from EN 1992-1-1:2004: Chapter 6 - Ultimate limit state."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import Formula
+from blueprints.codes.formula import ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
@@ -105,7 +105,7 @@ class Form6Dot71CriteriaBasedOnStressRangeRHS(Formula):
         )
 
 
-class Form6Dot71CriteriaBasedOnStressRange:
+class Form6Dot71CriteriaBasedOnStressRange(ComparisonFormula):
     """Class representing formula 6.71 for the calculation of the fatigue criteria based on stress range."""
 
     label = "6.71"
@@ -137,13 +137,19 @@ class Form6Dot71CriteriaBasedOnStressRange:
         -------
         None
         """
+        super().__init__()
         self.gamma_f_fat = gamma_f_fat
         self.delta_sigma_s_equ_n_star = delta_sigma_s_equ_n_star
         self.delta_sigma_rsk_n_star = delta_sigma_rsk_n_star
         self.gamma_s_fat = gamma_s_fat
 
-    @property
-    def left_hand_side(self) -> MPA:
+    @staticmethod
+    def _evaluate_lhs(
+            gamma_f_fat: DIMENSIONLESS,
+            delta_sigma_s_equ_n_star: MPA,
+            *args,
+            **kwargs
+    ) -> MPA:
         """Calculate the left hand side of the equation.
 
         Returns
@@ -151,12 +157,17 @@ class Form6Dot71CriteriaBasedOnStressRange:
             MPA: Left hand side, loading side of the equation
         """
         return Form6Dot71CriteriaBasedOnStressRangeLHS(
-            gamma_f_fat=self.gamma_f_fat,
-            delta_sigma_s_equ_n_star=self.delta_sigma_s_equ_n_star,
+            gamma_f_fat=gamma_f_fat,
+            delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
         )
 
-    @property
-    def right_hand_side(self) -> MPA:
+    @staticmethod
+    def _evaluate_rhs(
+            delta_sigma_rsk_n_star: MPA,
+            gamma_s_fat: DIMENSIONLESS,
+            *args,
+            **kwargs
+    ) -> MPA:
         """Calculate the left hand side of the equation.
 
         Returns
@@ -164,20 +175,10 @@ class Form6Dot71CriteriaBasedOnStressRange:
             MPA: Right hand side, resistance side of the equation
         """
         return Form6Dot71CriteriaBasedOnStressRangeRHS(
-            gamma_s_fat=self.gamma_s_fat,
-            delta_sigma_rsk_n_star=self.delta_sigma_rsk_n_star,
+            gamma_s_fat=gamma_s_fat,
+            delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
         )
 
-    @property
-    def ratio(self) -> DIMENSIONLESS:
-        """Ratio between left hand side and right hand side of the formula, commonly referred to as unity check."""
-        return self.left_hand_side / self.right_hand_side
-
-    def __bool__(self) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
-        lhs = Form6Dot71CriteriaBasedOnStressRangeLHS(gamma_f_fat=self.gamma_f_fat, delta_sigma_s_equ_n_star=self.delta_sigma_s_equ_n_star)
-        rhs = Form6Dot71CriteriaBasedOnStressRangeRHS(gamma_s_fat=self.gamma_s_fat, delta_sigma_rsk_n_star=self.delta_sigma_rsk_n_star)
-        return lhs <= rhs
 
     def __str__(self) -> str:
         """Return the result of the formula."""
