@@ -3,7 +3,7 @@ name = "blue-prints"
 version = "0.5.1"
 description = "Blueprints, open source python package for civil engineering calculations."
 readme = "README.md"
-requires-python = ">=3.12,<3.14"
+requires-python = ">=3.12"
 authors = [{ name = "Blueprints" }]
 maintainers = [
     { name = "Enrique García Méndez", email = "enriquegarcia@live.nl" },
@@ -26,7 +26,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "matplotlib>=3.7.2",
+    "matplotlib>=3.10.7",
     "numpy>=1.25.2",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
