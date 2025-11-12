@@ -1,5 +1,9 @@
 """Test suite for ISteelProfile."""
 
+import matplotlib as mpl
+
+mpl.use("Agg")
+
 from unittest.mock import MagicMock
 
 import pytest
@@ -60,7 +64,7 @@ class TestISteelProfile:
     def test_get_profile_with_corrosion(self) -> None:
         """Test the EHB profile with 20 mm corrosion applied."""
         # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match="The profile has fully corroded."):
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
             ISteelProfile.from_standard_profile(
                 profile=HEB.HEB360,
                 steel_material=SteelMaterial(SteelStrengthClass.S355),
