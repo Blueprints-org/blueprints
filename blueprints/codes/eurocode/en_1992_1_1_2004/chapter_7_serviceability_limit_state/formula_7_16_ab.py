@@ -23,24 +23,24 @@ class Form7Dot16abSpanDepthRatio(Formula):
         rho_0: DIMENSIONLESS,
         rho_prime: DIMENSIONLESS,
     ) -> None:
-        r"""[$\frac{l}{d}$] Limit span/depth ratio [-].
+        r"""[$\frac{l}{d}$] Limit span/depth ratio [$-$].
 
         EN 1992-1-1:2004 art.7.4.2(2) - Formula (7.16a and 7.16b)
 
         Parameters
         ----------
         capital_k : DIMENSIONLESS
-            [$K$] Factor to take into account the different structural systems [-].
+            [$K$] Factor to take into account the different structural systems [$-$].
         f_ck : MPA
             [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         rho : DIMENSIONLESS
             [$\rho$] Required tension reinforcement ratio at mid-span to resist the moment
-            due to the design loads (at support for cantilevers) [-].
+            due to the design loads (at support for cantilevers) [$-$].
         rho_0 : DIMENSIONLESS
-            [$\rho_0$] Reference reinforcement ratio [$\sqrt{f_{ck}} \cdot 10^{-3}$] [-].
+            [$\rho_0$] Reference reinforcement ratio [$\sqrt{f_{ck}} \cdot 10^{-3}$] [$-$].
         rho_prime : DIMENSIONLESS
             [$\rho'$] Required compression reinforcement ratio at mid-span to resist the moment
-            due to design loads (at support for cantilevers) [-].
+            due to design loads (at support for cantilevers) [$-$].
         """
         super().__init__()
         self.capital_k = capital_k
@@ -107,7 +107,7 @@ class Form7Dot16ReferenceReinforcementRatio(Formula):
         self,
         f_ck: MPA,
     ) -> None:
-        r"""[$\rho_0$] Reference reinforcement ratio [-].
+        r"""[$\rho_0$] Reference reinforcement ratio [$-$].
 
         EN 1992-1-1:2004 art.7.4.2(2) - Formula (7.16)
 

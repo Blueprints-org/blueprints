@@ -27,11 +27,11 @@ class Form2Dot4DesignValueGeotechnicalParameter:
 
         Parameters
         ----------
-        E_dst_d : KN
+        e_dst_d : KN
             [$E_{dst;d}$] Design value of destabilizing load effect [$kN$].
-        E_stb_d : KN
+        e_stb_d : KN
             [$E_{stb;d}$] Design value of stabilizing load effect [$kN$].
-        T_d : KN
+        t_d : KN
             [$T_d$] Design value of friction resistance [$kN$].
         """
         self.e_dst_d = e_dst_d

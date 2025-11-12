@@ -25,9 +25,9 @@ class Form5Dot24AxialForceCorrectionFactor(Formula):
         Parameters
         ----------
         n : DIMENSIONLESS
-            [$n$] Relative axial force, [$N_{ed} / (A_{c} * f_{cd})$] [-].
+            [$n$] Relative axial force, [$N_{ed} / (A_{c} * f_{cd})$] [$-$].
         lambda_factor : DIMENSIONLESS
-            [$λ$] Slenderness ratio, see 5.8.3 [-].
+            [$λ$] Slenderness ratio, see 5.8.3 [$-$].
 
         Notes
         -----

@@ -36,9 +36,9 @@ class Form7Dot21CurvatureDueToShrinkage(Formula):
             [$E_s$] Modulus of elasticity of the reinforcement [$MPa$].
         ec_eff : MPA
             [$E_{c,eff}$] Effective modulus of elasticity of the concrete [$MPa$].
-        s : MM3
+        capital_s : MM3
             [$S$] First moment of area of the reinforcement about the centroid of the section [$mm^3$].
-        i : MM4
+        capital_i : MM4
             [$I$] Second moment of area of the section [$mm^4$].
         """
         super().__init__()
