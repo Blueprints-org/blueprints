@@ -1,5 +1,9 @@
 """Formula 6.71 from EN 1992-1-1:2004: Chapter 6 - Ultimate limit state."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula
@@ -142,6 +146,11 @@ class Form6Dot71CriteriaBasedOnStressRange(ComparisonFormula):
         self.delta_sigma_s_equ_n_star = delta_sigma_s_equ_n_star
         self.delta_sigma_rsk_n_star = delta_sigma_rsk_n_star
         self.gamma_s_fat = gamma_s_fat
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Return the comparison operator for the formula."""
+        return operator.le
 
     @staticmethod
     def _evaluate_lhs(gamma_f_fat: DIMENSIONLESS, delta_sigma_s_equ_n_star: MPA, *_args, **_kwargs) -> MPA:

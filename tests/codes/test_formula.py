@@ -1,5 +1,9 @@
 """Module for testing the Formula classes."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 import pytest
 
 from blueprints.codes.formula import ComparisonFormula, Formula
@@ -67,15 +71,6 @@ class ComparisonFormulaTest(ComparisonFormula):
         self.c = c
 
     @staticmethod
-    def _evaluate(
-        a: float,
-        b: float,
-        c: float,
-    ) -> float:
-        """Dummy formula for testing purposes."""
-        return ComparisonFormulaTest._evaluate_lhs(a=a, b=b) <= ComparisonFormulaTest._evaluate_rhs(c=c)
-
-    @staticmethod
     def _evaluate_lhs(a: float, b: float, **_) -> float:
         """Left-hand side value of the comparison."""
         return a + b
@@ -85,10 +80,10 @@ class ComparisonFormulaTest(ComparisonFormula):
         """Right-hand side value of the comparison."""
         return c / 2
 
-    @property
-    def unity_check(self) -> float:
-        """Property to present the unity check of the formula."""
-        return self.lhs / self.rhs
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
+        return operator.le
 
 
 def test_comparison_formula_evaluation() -> None:
@@ -149,3 +144,8 @@ def test_comparison_formula_change_value_after_initialization() -> None:
 
     with pytest.raises(AttributeError):
         formula.a = 30
+
+
+def test_comparison_operator() -> None:
+    """Test that the comparison operator is correct."""
+    assert ComparisonFormulaTest._comparison_operator() == operator.le  # noqa: SLF001
