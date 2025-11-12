@@ -7,14 +7,14 @@ from blueprints.type_alias import N
 from blueprints.validations import raise_if_negative
 
 
-class Form5Dot7NeglectFrameTilt(ComparisonFormula):
-    r"""Class representing formula 5.7 to check if the tilt of a frame in a building can be neglected or not."""
+class Form5Dot7DisregardFrameSwayImperfections(ComparisonFormula):
+    r"""Class representing formula 5.7 to check if the sway imperfections of a frame in a building can be disregarded or not."""
 
     label = "5.7"
     source_document = EN_1993_1_1_2005
 
     def __init__(self, h_ed: N, v_ed: N) -> None:
-        r"""Check if the tilt in a frame in building can be neglected.
+        r"""Check if the sway imperfections in a frame in building can be disregarded.
 
         EN 1993-1-1:2005 - Formula (5.7)
 
@@ -50,8 +50,8 @@ class Form5Dot7NeglectFrameTilt(ComparisonFormula):
     @staticmethod
     def _evaluate(h_ed: N, v_ed: N) -> bool:
         """Evaluates the formula, for more information see the __init__ method."""
-        lhs = Form5Dot7NeglectFrameTilt._evaluate_lhs(h_ed=h_ed)
-        rhs = Form5Dot7NeglectFrameTilt._evaluate_rhs(v_ed=v_ed)
+        lhs = Form5Dot7DisregardFrameSwayImperfections._evaluate_lhs(h_ed=h_ed)
+        rhs = Form5Dot7DisregardFrameSwayImperfections._evaluate_rhs(v_ed=v_ed)
         return lhs >= rhs
 
     def __bool__(self) -> bool:
@@ -63,7 +63,7 @@ class Form5Dot7NeglectFrameTilt(ComparisonFormula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.7."""
-        _equation: str = r"$H_{Ed} \geq 0.15 \cdot V_{Ed}$"
+        _equation: str = r"H_{Ed} \geq 0.15 \cdot V_{Ed}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -73,11 +73,20 @@ class Form5Dot7NeglectFrameTilt(ComparisonFormula):
             unique_symbol_check=False
         )
         return LatexFormula(
-            return_symbol=f"CHECK",
-            result="OK" if self.__bool__() else "\\text{Not OK}",
+            return_symbol="CHECK",
+            result=r"OK" if self.__bool__() else r"\text{Not OK}",
             equation=_equation,
             numeric_equation=_numeric_equation,
-            comparison_operator_label="\\to",
+            comparison_operator_label=r"\to",
             unit="",
         )
 
+if __name__ == '__main__':
+    my_object = Form5Dot7DisregardFrameSwayImperfections(
+        h_ed=50000,
+        v_ed=100000
+    )
+
+    my_latex = my_object.latex()
+    print(my_latex.short)
+    print(my_latex.complete)
