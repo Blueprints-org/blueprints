@@ -7,7 +7,7 @@ implementation status
 ( :x: or :heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python
 entities inside of Blueprints.
 
-Total of formulas present.
+Total of 602 formulas present.
 
 | Formula number | Done | Remarks | Object name |
 |:--------------:|:----:|:--------|:------------|
