@@ -138,7 +138,7 @@ test = [
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.7.2" },
     { name = "numpy", specifier = ">=1.25.2" },
-    { name = "sectionproperties", specifier = ">=3.8.0" },
+    { name = "sectionproperties", specifier = ">=3.9.0" },
     { name = "shapely", specifier = ">=2.0.1" },
 ]
 
