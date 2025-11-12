@@ -7,11 +7,17 @@ from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 
-from blueprints.type_alias import MM, MM2, MM3, MM4
+from blueprints.type_alias import MM, MM2
 
 
 class CrossSection(ABC):
     """Base class for cross-section shapes."""
+
+    ACCURACY = 6
+    """Accuracy for rounding polygon coordinates in order to avoid floating point issues.
+    This value is used in the derived classes when creating the Shapely Polygon.
+    Since the coordinates are in mm, a value of 6 means that the coordinates are rounded to
+    the nearest nanometer which is more than sufficient for structural engineering purposes."""
 
     @property
     @abstractmethod
@@ -24,63 +30,28 @@ class CrossSection(ABC):
         """Shapely Polygon representing the cross-section."""
 
     @property
-    @abstractmethod
     def area(self) -> MM2:
-        """Area of the cross-section [mm²]."""
+        """Area of the cross-section [mm²].
+
+        When using circular cross-sections, the area is an approximation of the area of the polygon.
+        The area is calculated using the `area` property of the Shapely Polygon.
+
+        In case you need an exact answer then you need to override this method in the derived class.
+        """
+        return self.polygon.area
 
     @property
-    @abstractmethod
     def perimeter(self) -> MM:
         """Perimeter of the cross-section [mm]."""
+        return self.polygon.length
 
     @property
-    @abstractmethod
     def centroid(self) -> Point:
         """Centroid of the cross-section [mm]."""
+        return self.polygon.centroid
 
-    @property
-    @abstractmethod
-    def moment_of_inertia_about_y(self) -> MM4:
-        """Moments of inertia of the cross-section [mm⁴]."""
-
-    @property
-    @abstractmethod
-    def moment_of_inertia_about_z(self) -> MM4:
-        """Moments of inertia of the cross-section [mm⁴]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_y_positive(self) -> MM3:
-        """Elastic section modulus about the y-axis on the positive z side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_y_negative(self) -> MM3:
-        """Elastic section modulus about the y-axis on the negative z side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_z_positive(self) -> MM3:
-        """Elastic section modulus about the z-axis on the positive y side [mm³]."""
-
-    @property
-    @abstractmethod
-    def elastic_section_modulus_about_z_negative(self) -> MM3:
-        """Elastic section modulus about the z-axis on the negative y side [mm³]."""
-
-    @property
-    @abstractmethod
-    def plastic_section_modulus_about_y(self) -> MM3 | None:
-        """Plastic section modulus about the y-axis [mm³]."""
-
-    @property
-    @abstractmethod
-    def plastic_section_modulus_about_z(self) -> MM3 | None:
-        """Plastic section modulus about the z-axis [mm³]."""
-
-    @abstractmethod
     def geometry(self, mesh_size: MM | None = None) -> Geometry:
-        """Abstract method to be implemented by subclasses to return the geometry of the cross-section.
+        """Geometry of the cross-section.
 
         Properties
         ----------
@@ -88,6 +59,12 @@ class CrossSection(ABC):
             Maximum mesh element area to be used within
             the Geometry-object finite-element mesh. If not provided, a default value will be used.
         """
+        if mesh_size is None:
+            mesh_size = 2.0
+
+        geom = Geometry(geom=self.polygon)
+        geom.create_mesh(mesh_sizes=mesh_size)
+        return geom
 
     def section(self) -> Section:
         """Section object representing the cross-section."""
@@ -118,4 +95,5 @@ class CrossSection(ABC):
             section.calculate_warping_properties()
         if plastic:
             section.calculate_plastic_properties()
+
         return section.section_props

@@ -5,7 +5,7 @@ from enum import Enum
 
 from blueprints.type_alias import DIMENSIONLESS, KG_M3, MPA, PER_MILLE
 
-REBAR_STEEL_YOUNG_MODULUS = 200_000.0  # [MPa] from NEN-EN 1992-1-1 3.2.7(4)
+REBAR_STEEL_YOUNG_MODULUS = 200_000.0  # [MPa] from EN 1992-1-1 3.2.7(4)
 
 
 class ReinforcementType(Enum):
@@ -65,7 +65,7 @@ class ReinforcementDiagramType(Enum):
 
 @dataclass(frozen=True)
 class ReinforcementSteelMaterial:
-    r"""Representation of the properties of reinforcement steel suitable for use with NEN-EN 1992-1-1.
+    r"""Representation of the properties of reinforcement steel suitable for use with EN 1992-1-1:2004.
 
     Based on the analytical relations shown on table C.1 Annex C.
 
@@ -83,6 +83,10 @@ class ReinforcementSteelMaterial:
         Type of fabrication (default=SteelFabrication.HOT_ROLLED)
     diagram_type: ReinforcementDiagramType
         Type of stress-strain diagram (default=ReinforcementDiagramType.BILINEAR_INCLINED)
+    material_factor: DIMENSIONLESS
+        Partial safety factor [$\gamma_s$] for reinforcement steel according to EN 1992-1-1 art.2.4.2.4 (1) - Table 2.1N [$-$] [default= 1.15]
+        Persistent and transient        $\gamma_s = 1.15$
+        Accidental design situations    $\gamma_s = 1.0$
     custom_name: str
         User-defined name of the material (default= name of steel quality; example: 'B500B')
     custom_e_s: MPA
@@ -96,6 +100,7 @@ class ReinforcementSteelMaterial:
     bar_surface: ReinforcementBarSurface = field(default=ReinforcementBarSurface.RIBBED)
     steel_fabrication: SteelFabrication = field(default=SteelFabrication.HOT_ROLLED)
     diagram_type: ReinforcementDiagramType = field(default=ReinforcementDiagramType.BILINEAR_NOT_INCLINED)
+    material_factor: DIMENSIONLESS = field(default=1.15)
     custom_name: str | None = field(default=None, compare=False)
     custom_e_s: MPA | None = field(default=None, metadata={"unit": "MPa"})
 
@@ -137,6 +142,17 @@ class ReinforcementSteelMaterial:
         return float(self.steel_quality.value[1:-1])
 
     @property
+    def f_yd(self) -> MPA:
+        r"""[$f_{yd}$] Design yield strength of reinforcement (EN 1992-1-1:2004 art.3.2.7 (2)) [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 434.78 (for B500B)
+        """
+        return self.f_yk / self.material_factor
+
+    @property
     def steel_class(self) -> str:
         r"""Reinforcement class.
 
@@ -160,7 +176,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def ductility_factor_k(self) -> DIMENSIONLESS:
-        r"""Ductility factor k [$-$] -> ([$f_{tk}$] / [$f_{yk}$]) tabel C.1 Annex C from NEN-EN 1992-1-1.
+        r"""Ductility factor k [$-$] -> ([$f_{tk}$] / [$f_{yk}$]) tabel C.1 Annex C from EN 1992-1-1:2004.
 
         * 1.05 for steel class A
         * 1.08 for steel class B
@@ -183,7 +199,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def eps_uk(self) -> PER_MILLE:
-        r"""[$\varepsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (tabel C.1 Annex C from NEN-EN 1992-1-1).
+        r"""[$\varepsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (tabel C.1 Annex C from EN 1992-1-1:2004).
 
         * 250 ‰ for steel class A
         * 500 ‰ for steel class B

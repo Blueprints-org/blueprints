@@ -1,39 +1,39 @@
 name: Code Coverage
 
 on:
+  pull_request:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   tests:
+    name: Code coverage report
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ '3.12' ]
 
-    name: Code coverage with python ${{ matrix.python-version }}
     steps:
-    - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v5
 
-    - name: install uv
-      uses: astral-sh/setup-uv@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-    - name: Setup python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.13
 
-    - name: Install package
-      run: uv pip install -e .[dev] --system
+      - name: Install packages
+        run: make ci-install
 
-    - name: Generate coverage report
-      run: |
-        uv pip install pytest --system
-        uv pip install pytest-cov --system
-        pytest --cov=./blueprints --cov-report=xml
+      - name: Generate coverage report
+        run: make coverage-report
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v5
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true

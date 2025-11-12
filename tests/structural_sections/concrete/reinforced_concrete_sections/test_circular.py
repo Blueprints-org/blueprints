@@ -1,5 +1,9 @@
 """Tests for Circular Reinforced Concrete Sections."""
 
+import matplotlib as mpl
+
+mpl.use("Agg")
+
 import pytest
 from matplotlib import pyplot as plt
 from shapely import LineString, Polygon
@@ -34,7 +38,7 @@ class TestCircularReinforcedCrossSection:
     def test_reinforcement_weight_longitudinal_bars(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the reinforcement_weight_longitudinal_bars method."""
         expected_weight = 14.98802804  # kg/m
-        assert circular_reinforced_cross_section.reinforcement_weight_longitudinal_bars == pytest.approx(expected=expected_weight, rel=1e-3)
+        assert circular_reinforced_cross_section.reinforcement_weight_longitudinal_bars == pytest.approx(expected=expected_weight, rel=1e-2)
 
     def test_reinforcement_weight_stirrups(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the reinforcement_weight_stirrups method."""
@@ -49,17 +53,17 @@ class TestCircularReinforcedCrossSection:
     def test_reinforcement_area_longitudinal_bars(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the reinforcement_area_longitudinal_bars method."""
         expected_area = 1909.302935  # mm²/m
-        assert circular_reinforced_cross_section.reinforcement_area_longitudinal_bars == pytest.approx(expected=expected_area, rel=1e-3)
+        assert circular_reinforced_cross_section.reinforcement_area_longitudinal_bars == pytest.approx(expected=expected_area, rel=1e-2)
 
     def test_concrete_volume(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the concrete_volume method."""
         expected_volume = 0.125663706  # m³/m
-        assert circular_reinforced_cross_section.concrete_volume == pytest.approx(expected=expected_volume, rel=1e-3)
+        assert circular_reinforced_cross_section.concrete_volume == pytest.approx(expected=expected_volume, rel=1e-2)
 
     def test_weight_per_volume(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the weight_per_volume method."""
         expected_weight_per_volume = 302.0165231  # kg/m³
-        assert circular_reinforced_cross_section.weight_per_volume == pytest.approx(expected=expected_weight_per_volume, rel=1e-3)
+        assert circular_reinforced_cross_section.weight_per_volume == pytest.approx(expected=expected_weight_per_volume, rel=1e-2)
 
     def test_add_longitudinal_rebar_wrong_position(self, circular_reinforced_cross_section: CircularReinforcedCrossSection) -> None:
         """Test the add_longitudinal_rebar method with wrong position."""
@@ -109,3 +113,12 @@ class TestCircularReinforcedCrossSection:
         circular_reinforced_cross_section._single_longitudinal_rebars.append(rebar)  # noqa: SLF001
         with pytest.raises(ValueError):
             _ = circular_reinforced_cross_section.longitudinal_rebars
+
+    def test_plot_without_longitudinal_reinforcement(self, circular_cross_section_no_reinforcement: CircularReinforcedCrossSection) -> None:
+        """Test the plot method for cross-section without longitudinal reinforcement."""
+        plot = circular_cross_section_no_reinforcement.plot(show=False, center_line_style={"linewidth": 0.85})
+        assert isinstance(plot, plt.Figure)
+
+        # Test that get_present_steel_materials returns empty list
+        steel_materials = circular_cross_section_no_reinforcement.get_present_steel_materials()
+        assert steel_materials == []

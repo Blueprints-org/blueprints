@@ -3,11 +3,12 @@
 import math
 from dataclasses import dataclass
 
+import numpy as np
 from sectionproperties.pre import Geometry
-from shapely.geometry import Point, Polygon
+from shapely.geometry import Polygon
 
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import MM, MM2, MM3, MM4
+from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
@@ -73,146 +74,8 @@ class HexagonalCrossSection(CrossSection):
             The shapely Polygon representing the hexagon.
         """
         angle = math.pi / 3
-        points = [(self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)) for i in range(6)]
+        points = np.round([(self.x + self.radius * math.cos(i * angle), self.y + self.radius * math.sin(i * angle)) for i in range(6)], self.ACCURACY)
         return Polygon(points)
-
-    @property
-    def area(self) -> MM2:
-        """
-        Calculate the area of the hexagonal cross-section [mm²].
-
-        Returns
-        -------
-        MM2
-            The area of the hexagon.
-        """
-        return (3 * math.sqrt(3) / 2) * self.side_length**2
-
-    @property
-    def perimeter(self) -> MM:
-        """
-        Calculate the perimeter of the hexagonal cross-section [mm].
-
-        Returns
-        -------
-        MM
-            The perimeter of the hexagon.
-        """
-        return 6 * self.side_length
-
-    @property
-    def centroid(self) -> Point:
-        """
-        Get the centroid of the hexagonal cross-section.
-
-        Returns
-        -------
-        Point
-            The centroid of the hexagon.
-        """
-        return Point(self.x, self.y)
-
-    @property
-    def moment_of_inertia_about_y(self) -> MM4:
-        """
-        Moments of inertia of the cross-section about the y-axis [mm⁴].
-
-        Returns
-        -------
-        MM4
-            The moment of inertia about the y-axis.
-        """
-        return (5 / 16) * math.sqrt(3) * self.side_length**4
-
-    @property
-    def moment_of_inertia_about_z(self) -> MM4:
-        """
-        Moments of inertia of the cross-section about the z-axis [mm⁴].
-
-        Returns
-        -------
-        MM4
-            The moment of inertia about the z-axis.
-        """
-        return (5 / 16) * math.sqrt(3) * self.side_length**4
-
-    @property
-    def elastic_section_modulus_about_y_positive(self) -> MM3:
-        """
-        Elastic section modulus about the y-axis on the positive z side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the y-axis.
-        """
-        return self.moment_of_inertia_about_y / self.apothem
-
-    @property
-    def elastic_section_modulus_about_y_negative(self) -> MM3:
-        """
-        Elastic section modulus about the y-axis on the negative z side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the y-axis.
-        """
-        return self.moment_of_inertia_about_y / self.apothem
-
-    @property
-    def elastic_section_modulus_about_z_positive(self) -> MM3:
-        """
-        Elastic section modulus about the z-axis on the positive y side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the z-axis.
-        """
-        return self.moment_of_inertia_about_z / self.side_length
-
-    @property
-    def elastic_section_modulus_about_z_negative(self) -> MM3:
-        """
-        Elastic section modulus about the z-axis on the negative y side [mm³].
-
-        Returns
-        -------
-        MM3
-            The elastic section modulus about the z-axis.
-        """
-        return self.moment_of_inertia_about_z / self.side_length
-
-    @property
-    def plastic_section_modulus_about_y(self) -> MM3:
-        """
-        Plastic section modulus about the y-axis [mm³].
-
-        Returns
-        -------
-        MM3
-            The plastic section modulus about the y-axis.
-        """
-        return self.side_length * math.sqrt(3) * 2 / 9 * self.area
-
-    @property
-    def plastic_section_modulus_about_z(self) -> MM3:
-        """
-        Plastic section modulus about the z-axis [mm³].
-
-        Returns
-        -------
-        MM3
-            The plastic section modulus about the z-axis.
-        """
-        area_center_rectangle = (self.side_length / 2) * (self.side_length * math.sqrt(3))
-        distance_center_rectangle = self.side_length / 4
-
-        area_outer_triangle = 1 / 2 * (self.side_length * math.sqrt(3)) * (self.side_length / 2)
-        distance_outer_triangle = self.side_length / 2 + self.side_length / 6
-
-        return 2 * (area_center_rectangle * distance_center_rectangle + area_outer_triangle * distance_outer_triangle)
 
     def geometry(
         self,

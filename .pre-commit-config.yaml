@@ -17,16 +17,16 @@
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.8
+    rev: v0.12.4
     hooks:
       # Run the linter.
-      - id: ruff
+      - id: ruff-check
         args: [ --fix ]
       # Run the formatter.
       - id: ruff-format
 
   -   repo: https://github.com/pre-commit/mirrors-mypy
-      rev: v1.15.0
+      rev: v1.17.0
       hooks:
       - id: mypy
         language_version: python3.12

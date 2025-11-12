@@ -1,15 +1,19 @@
-r"""Calculation of nominal concrete cover from NEN-EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement."""
+r"""Calculation of nominal concrete cover from EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement."""
 
 from dataclasses import dataclass, field
 from typing import Literal
 
-from blueprints.checks.nominal_concrete_cover.constants.base import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
+    AbrasionClass,
+    CastingSurface,
+)
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
     NominalConcreteCoverConstantsBase as ConstantsBase,
 )
-from blueprints.checks.nominal_concrete_cover.definitions import AbrasionClass, CastingSurface
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.structural_class import ConcreteStructuralClassBase
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,
@@ -17,11 +21,10 @@ from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_
     FreezeThaw,
     Table4Dot1ExposureClasses,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
-from blueprints.codes.eurocode.nen_en_1992_1_1_c2_2011.chapter_4_durability_and_cover.table_4_4n import (
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_4n import (
     Table4Dot4nMinimumCoverDurabilityReinforcementSteel,
 )
-from blueprints.codes.eurocode.structural_class import ConcreteStructuralClassBase
 from blueprints.codes.latex_formula import latex_max_curly_brackets
 from blueprints.type_alias import MM
 
@@ -72,7 +75,7 @@ class NominalConcreteCover:
     """
 
     label = "Nominal concrete cover according to art. 4.4.1"
-    source_document = "NEN-EN 1992-1-1"
+    source_document = "EN 1992-1-1"
 
     reinforcement_diameter: MM
     nominal_max_aggregate_size: MM
@@ -107,19 +110,19 @@ class NominalConcreteCover:
             object.__setattr__(self, "chloride_seawater", ChlorideSeawater[self.chloride_seawater.upper()])
 
     def exposure_classes(self) -> Table4Dot1ExposureClasses:
-        """Exposure classes according to table 4.1 from NEN-EN 1992-1-1."""
+        """Exposure classes according to table 4.1 from EN 1992-1-1."""
         return Table4Dot1ExposureClasses(self.carbonation, self.chloride, self.chloride_seawater, FreezeThaw.NA, Chemical.NA)  # type: ignore[arg-type]
 
     def c_min_b(self) -> Table4Dot2MinimumCoverWithRegardToBond:
-        """Minimum concrete cover with regard to bond according to table 4.2 from NEN-EN 1992-1-1."""
+        """Minimum concrete cover with regard to bond according to table 4.2 from EN 1992-1-1."""
         return Table4Dot2MinimumCoverWithRegardToBond(self.reinforcement_diameter, self.nominal_max_aggregate_size > 32)
 
     def c_min_dur(self) -> Table4Dot4nMinimumCoverDurabilityReinforcementSteel:
-        """Minimum concrete cover with regard to durability according to table 4.4N from NEN-EN 1992-1-1."""
+        """Minimum concrete cover with regard to durability according to table 4.4N from EN 1992-1-1."""
         return Table4Dot4nMinimumCoverDurabilityReinforcementSteel(self.exposure_classes(), self.structural_class)  # type: ignore[arg-type]
 
     def c_min(self) -> Form4Dot2MinimumConcreteCover:
-        """Minimum concrete cover according to formula 4.2 from NEN-EN 1992-1-1."""
+        """Minimum concrete cover according to formula 4.2 from EN 1992-1-1."""
         return Form4Dot2MinimumConcreteCover(
             c_min_b=self.c_min_b(),
             c_min_dur=self.c_min_dur(),
@@ -137,20 +140,20 @@ class NominalConcreteCover:
         return self.constants.COVER_INCREASE_FOR_ABRASION_CLASS[self.abrasion_class]
 
     def c_min_total(self) -> MM:
-        """Total minimum concrete cover according to art. 4.4.1.2 (11) and (13) from NEN-EN 1992-1-1."""
+        """Total minimum concrete cover according to art. 4.4.1.2 (11) and (13) from EN 1992-1-1."""
         c_min = self.c_min()
-        # According to art. 4.4.1.2 (11) from NEN-EN 1992-1-1
+        # According to art. 4.4.1.2 (11) from EN 1992-1-1
         c_min += self.cover_increase_for_uneven_surface()  # type: ignore[assignment]
-        # According to art. 4.4.1.2 (13) from NEN-EN 1992-1-1
+        # According to art. 4.4.1.2 (13) from EN 1992-1-1
         c_min += self.cover_increase_for_abrasion_class()  # type: ignore[assignment]
         return c_min
 
     def c_nom(self) -> Form4Dot1NominalConcreteCover:
-        """Nominal concrete cover according to art. 4.4.1 from NEN-EN 1992-1-1."""
+        """Nominal concrete cover according to art. 4.4.1 from EN 1992-1-1."""
         return Form4Dot1NominalConcreteCover(c_min=self.c_min_total(), delta_c_dev=self.constants.DEFAULT_DELTA_C_DEV)
 
     def minimum_cover_with_regard_to_casting_surface(self) -> MM:
-        """Calculate the minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from NEN-EN 1992-1-1."""
+        """Calculate the minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from EN 1992-1-1."""
         return self.constants.minimum_cover_with_regard_to_casting_surface(self.c_min_dur(), self.casting_surface)
 
     def value(self) -> MM:
@@ -160,16 +163,17 @@ class NominalConcreteCover:
             self.minimum_cover_with_regard_to_casting_surface(),
         )
 
-    def latex(self) -> str:
+    def latex(self, n: int = 1) -> str:
         """Returns the lateX string representation for Nominal concrete cover check."""
+        min_surface = self.minimum_cover_with_regard_to_casting_surface()
         return r"\newline~".join(
             [
-                f"Nominal concrete cover according to art. 4.4.1 from NEN-EN 1992-1-1{self.constants.CODE_SUFFIX}:",
+                f"Nominal concrete cover according to art. 4.4.1 from {self.constants.CODE_PREFIX}EN 1992-1-1{self.constants.CODE_SUFFIX}:",
                 latex_max_curly_brackets(
                     r"Nominal concrete cover according to art. 4.4.1 (c_{nom})",
                     "Minimum cover with regard to casting surface according to art. 4.4.1.3 (4)",
                 ),
-                f"= {latex_max_curly_brackets(self.c_nom().latex().result, self.minimum_cover_with_regard_to_casting_surface())} = {self.value()} mm",
+                f"= {latex_max_curly_brackets(self.c_nom().latex().result, min_surface)} = {self.value():.{n}f} mm",
                 "",
                 "Where:",
                 f"\\hspace{{4ex}}{self.c_nom().latex().return_symbol} = {self.c_nom().latex().equation.replace('min', 'min,total')}"
