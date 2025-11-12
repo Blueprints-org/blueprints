@@ -30,6 +30,7 @@ dependencies = [
     "numpy>=1.25.2",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
+    "pytest (>=8.4.2,<9.0.0)",
 ]
 
 [project.urls]
@@ -42,7 +43,7 @@ changelog = "https://github.com/Blueprints-org/blueprints/releases"
 [dependency-groups]
 dev = [
     "mypy==1.18.2",
-    "ruff==0.13.2",
+    "ruff==0.14.3",
     "pre-commit==4.3.0",
     "types-shapely==2.1.0.20250917",
     "icecream==2.1.8",
@@ -62,7 +63,7 @@ docs = [
 test = [
     "pytest==8.4.2",
     "pytest-cov==7.0.0",
-    "pytest-describe==2.2.0",
+    "pytest-describe==3.0.0",
     "pytest-pspec==0.0.4",
     "pytest-raises==0.11",
     "pytest-xdist==3.8.0",
