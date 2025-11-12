@@ -26,7 +26,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "matplotlib>=3.7.2",
+    "matplotlib>=3.10.7",
     "numpy>=1.25.2",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",

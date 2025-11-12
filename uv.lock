@@ -136,7 +136,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "matplotlib", specifier = ">=3.7.2" },
+    { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "numpy", specifier = ">=1.25.2" },
     { name = "sectionproperties", specifier = ">=3.8.0" },
     { name = "shapely", specifier = ">=2.0.1" },
