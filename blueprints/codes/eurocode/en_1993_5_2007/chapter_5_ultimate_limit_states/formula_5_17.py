@@ -14,10 +14,6 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
     r"""Class representing formula 5.17 for Z-profiles of class 1 and 2: [$\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1$]."""
 
-    @classmethod
-    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
-        return operator.le
-
     label = "5.17"
     source_document = EN_1993_5_2007
 
@@ -41,6 +37,13 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         super().__init__()
         self.n_ed = n_ed
         self.n_pl_rd = n_pl_rd
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Returns the comparison operator for this formula.
+        LHS should be less than or equal to RHS.
+        """
+        return operator.le
 
     @staticmethod
     def _evaluate_lhs(
