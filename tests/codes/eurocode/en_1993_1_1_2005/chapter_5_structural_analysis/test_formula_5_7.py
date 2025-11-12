@@ -1,4 +1,4 @@
-"""Testing formula 5.7 of EN 1993-1-1:2005"""
+"""Testing formula 5.7 of EN 1993-1-1:2005."""
 
 import pytest
 
@@ -16,10 +16,7 @@ class TestForm5Dot8NeglectFrameTilt:
         v_ed = 100000
 
         # Create test object
-        form = Form5Dot7DisregardFrameSwayImperfections(
-            h_ed=h_ed,
-            v_ed=v_ed
-        )
+        form = Form5Dot7DisregardFrameSwayImperfections(h_ed=h_ed, v_ed=v_ed)
 
         # Expected results
         exp_result = True
@@ -32,24 +29,21 @@ class TestForm5Dot8NeglectFrameTilt:
     @pytest.mark.parametrize(
         ("h_ed", "v_ed"),
         [
-            (50000, -100000), # v_ed is negative
-            (-50000, 100000) # h_ed is negative
+            (50000, -100000),  # v_ed is negative
+            (-50000, 100000),  # h_ed is negative
         ],
     )
     def test_error_when_negative(self, h_ed: float, v_ed: float) -> None:
         """Test if correct error is raised when provide negatives or zeroes."""
         with pytest.raises(NegativeValueError):
-            Form5Dot7DisregardFrameSwayImperfections(
-                v_ed=v_ed,
-                h_ed=h_ed
-            )
+            Form5Dot7DisregardFrameSwayImperfections(v_ed=v_ed, h_ed=h_ed)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             ("complete", r"CHECK \to H_{Ed} \geq 0.15 \cdot V_{Ed} \to 50000.00 \geq 0.15 \cdot 100000.00 \to OK"),
             ("short", r"CHECK \to OK"),
-        ]
+        ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representations of the formula."""
@@ -58,14 +52,8 @@ class TestForm5Dot8NeglectFrameTilt:
         v_ed = 100000
 
         # Create test object
-        latex = Form5Dot7DisregardFrameSwayImperfections(
-            h_ed=h_ed,
-            v_ed=v_ed
-        ).latex()
+        latex = Form5Dot7DisregardFrameSwayImperfections(h_ed=h_ed, v_ed=v_ed).latex()
 
-        actual = {
-            "complete": latex.complete,
-            "short": latex.short
-        }
+        actual = {"complete": latex.complete, "short": latex.short}
 
         assert expected == actual[representation], f"{representation} representation failed ."
