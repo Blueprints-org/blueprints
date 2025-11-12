@@ -144,12 +144,7 @@ class Form6Dot71CriteriaBasedOnStressRange(ComparisonFormula):
         self.gamma_s_fat = gamma_s_fat
 
     @staticmethod
-    def _evaluate_lhs(
-            gamma_f_fat: DIMENSIONLESS,
-            delta_sigma_s_equ_n_star: MPA,
-            *args,
-            **kwargs
-    ) -> MPA:
+    def _evaluate_lhs(gamma_f_fat: DIMENSIONLESS, delta_sigma_s_equ_n_star: MPA, *_args, **_kwargs) -> MPA:
         """Calculate the left hand side of the equation.
 
         Returns
@@ -163,10 +158,10 @@ class Form6Dot71CriteriaBasedOnStressRange(ComparisonFormula):
 
     @staticmethod
     def _evaluate_rhs(
-            delta_sigma_rsk_n_star: MPA,
-            gamma_s_fat: DIMENSIONLESS,
-            *args,
-            **kwargs
+        delta_sigma_rsk_n_star: MPA,
+        gamma_s_fat: DIMENSIONLESS,
+        *_args,
+        **_kwargs,
     ) -> MPA:
         """Calculate the left hand side of the equation.
 
@@ -178,7 +173,6 @@ class Form6Dot71CriteriaBasedOnStressRange(ComparisonFormula):
             gamma_s_fat=gamma_s_fat,
             delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
         )
-
 
     def __str__(self) -> str:
         """Return the result of the formula."""

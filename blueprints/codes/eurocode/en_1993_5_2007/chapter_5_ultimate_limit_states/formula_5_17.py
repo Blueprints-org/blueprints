@@ -1,6 +1,8 @@
 """Formula 5.17 from EN 1993-5:2007: Chapter 5 - Ultimate limit state."""
+
 import operator
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
 from blueprints.codes.formula import ComparisonFormula
@@ -53,7 +55,6 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
     def _evaluate_rhs(*_, **_kwargs) -> float:
         """Evaluates the right-hand side of the comparison. see __init__ for details."""
         return 0.1
-
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
