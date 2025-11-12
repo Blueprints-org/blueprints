@@ -33,13 +33,13 @@ class Form5Dot7DisregardFrameSwayImperfections(ComparisonFormula):
         self.v_ed = v_ed
 
     @staticmethod
-    def _evaluate_lhs(h_ed: N) -> float:
+    def _evaluate_lhs(h_ed: N, *args, **kwargs) -> float: # noqa: ARG004
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
         raise_if_negative(h_ed=h_ed)
         return h_ed
 
     @staticmethod
-    def _evaluate_rhs(v_ed: N) -> float:
+    def _evaluate_rhs(v_ed: N, *args, **kwargs) -> float:  # noqa: ARG004
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         raise_if_negative(v_ed=v_ed)
         return 0.15 * v_ed
