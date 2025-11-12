@@ -1,8 +1,10 @@
 name: Code Coverage
 
 on:
+  pull_request:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   tests:
@@ -22,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version-file: "pyproject.toml"
+          python-version: 3.13
 
       - name: Install packages
         run: make ci-install
