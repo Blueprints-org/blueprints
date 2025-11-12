@@ -1,4 +1,4 @@
-"""Geometric cross sections package."""
+"""Geometric cross-sections package."""
 
 from blueprints.structural_sections.geometric_cross_sections.cross_section_annular_sector import AnnularSectorCrossSection
 from blueprints.structural_sections.geometric_cross_sections.cross_section_circle import CircularCrossSection
