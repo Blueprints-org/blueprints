@@ -30,7 +30,6 @@ dependencies = [
     "numpy>=1.25.2",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
-    "pytest (>=8.4.2,<9.0.0)",
 ]
 
 [project.urls]
