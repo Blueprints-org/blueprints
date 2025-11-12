@@ -68,4 +68,4 @@ class TestForm5Dot8NeglectFrameTilt:
             "short": latex.short
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert expected == actual[representation], f"{representation} representation failed ."
