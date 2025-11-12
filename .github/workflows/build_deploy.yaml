@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version-file: "pyproject.toml"
+          python-version: 3.13
 
       # Run the tests before the linting and formatting checks to ensure that dev dependencies are not required for the tests.
       - name: Run tests with pytest
