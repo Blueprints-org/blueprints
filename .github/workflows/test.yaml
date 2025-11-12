@@ -10,6 +10,11 @@ jobs:
   test:
     name: Run Code Checks and Tests with Minimum Dependencies
     runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version:
+            - "3.12"
+            - "3.13"
 
     steps:
       - name: Check out the repository
@@ -21,10 +26,10 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
-          python-version-file: "pyproject.toml"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install CI/CD dependencies (excluding dev dependencies)
         run: make ci-install
