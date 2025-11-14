@@ -242,7 +242,7 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
             delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
             gamma_s_fat=gamma_s_fat,
             delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
-        ).left_hand_side
+        ).lhs
 
         # Expected result, manually calculated
         expected = 15.0
@@ -263,7 +263,7 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
             delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
             gamma_s_fat=gamma_s_fat,
             delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
-        ).right_hand_side
+        ).rhs
 
         # Expected result, manually calculated
         expected = 20.0
@@ -284,7 +284,7 @@ class TestForm6Dot71CriteriaBasedOnStressRange:
             delta_sigma_s_equ_n_star=delta_sigma_s_equ_n_star,
             gamma_s_fat=gamma_s_fat,
             delta_sigma_rsk_n_star=delta_sigma_rsk_n_star,
-        ).ratio
+        ).unity_check
 
         # Expected result, manually calculated
         expected = 0.75
