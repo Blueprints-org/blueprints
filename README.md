@@ -19,6 +19,8 @@
 
 **Source Code**: <a href="https://github.com/Blueprints-org/blueprints" target="_blank">https://github.com/Blueprints-org/blueprints</a>
 
+**Discord**: <a href="https://discord.gg/hBZBqegEzA" target="_blank">https://discord.gg/hBZBqegEzA</a>
+
 **LinkedIn**: <a href="https://www.linkedin.com/company/blueprints-org" target="_blank">https://www.linkedin.com/company/blueprints-org</a>
 
 ---
