@@ -1,8 +1,9 @@
 """Module for the abstract base class Formula."""
 
+import operator
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from typing import Any
+from typing import Self
 
 from blueprints.codes.latex_formula import LatexFormula
 
@@ -110,12 +111,7 @@ class Formula(float, ABC):
 class ComparisonFormula(Formula):
     """Base class for comparison formulas used in the codes."""
 
-    @classmethod
-    @abstractmethod
-    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
-        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
-
-    def __new__(cls, *args, **kwargs) -> "ComparisonFormula":
+    def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
         lhs = cls._evaluate_lhs(*args, **kwargs)
         rhs = cls._evaluate_rhs(*args, **kwargs)
@@ -125,6 +121,11 @@ class ComparisonFormula(Formula):
         instance._rhs = rhs  # noqa: SLF001
         instance._initialized = False  # noqa: SLF001
         return instance
+
+    @classmethod
+    @abstractmethod
+    def _comparison_operator(cls) -> Callable[[float, float], bool]:
+        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
 
     @staticmethod
     @abstractmethod
@@ -174,22 +175,54 @@ class ComparisonFormula(Formula):
     def unity_check(self) -> float:
         """Property to present the unity check of the formula.
 
+        A unity check is the ratio between the left-hand side (lhs) and right-hand side (rhs) of a comparison formula.
+        The calculation is operator-dependent to ensure a unity check less than 1 always indicates the condition is satisfied:
+
+        - For le (<=) and lt (<): unity_check = lhs / rhs
+        - For ge (>=) and gt (>): unity_check = rhs / lhs
+        - For eq (==) and other operators: unity_check = lhs / rhs
+
+        A unity check < 1 indicates the condition is satisfied. A unity check >= 1 indicates the condition is not satisfied.
+
+        Examples
+        --------
+        lhs = 0.11, rhs = 0.1, Formula: lhs <= rhs, unity_check = 1.1  # NOT satisfied
+        lhs = 0.09, rhs = 0.1, Formula: lhs <= rhs, unity_check = 0.9  # satisfied
+        lhs = 0.2, rhs = 0.1, Formula: lhs >= rhs, unity_check = 0.5  # satisfied
+        lhs = 0.05, rhs = 0.1, Formula: lhs >= rhs, unity_check = 2.0  # NOT satisfied
+
         Returns
         -------
         float
-            The unity check.
+            The unity check ratio.
         """
-        return self.lhs / self.rhs
+        comparison_op = self._comparison_operator()
+        match comparison_op:
+            case operator.le | operator.lt:
+                return self.lhs / self.rhs
+            case operator.ge | operator.gt:
+                return self.rhs / self.lhs
+            case _:  # handles operator.eq and any other operators
+                return self.lhs / self.rhs
 
     def __bool__(self) -> bool:
-        """Return the boolean value of the comparison result.
+        """Return whether the comparison condition is satisfied.
+
+        Returns True if the unity check is less than or equal to 1.0, indicating the condition is satisfied.
+        This allows ComparisonFormula instances to be used directly in boolean contexts.
+
+        Examples
+        --------
+        formula = SomeComparisonFormula(...)
+        if formula:  # Equivalent to: if formula.unity_check <= 1.0
+            print("Condition satisfied")
 
         Returns
         -------
         bool
-            The boolean result of the comparison formula.
+            True if unity_check <= 1.0 (condition is satisfied), False otherwise.
         """
-        return bool(float(self))
+        return self.unity_check <= 1.0
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
