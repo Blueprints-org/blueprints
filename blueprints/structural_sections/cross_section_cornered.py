@@ -6,8 +6,9 @@ import numpy as np
 from sectionproperties.pre import Geometry
 from shapely.geometry import Polygon
 
+from blueprints.math_helpers import slope_to_angle
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import MM
+from blueprints.type_alias import MM, PERCENTAGE
 from blueprints.validations import raise_if_negative
 
 
@@ -40,6 +41,14 @@ class CircularCorneredCrossSection(CrossSection):
         Outer radius of the corner
     corner_direction : int
         ↰ = 0, ↱ = 1, ↳ = 2, ↲ = 3
+    inner_slope_at_vertical : PERCENTAGE
+        Slope of the tangent to the inner radius at the vertical section (default 0)
+    inner_slope_at_horizontal : PERCENTAGE
+        Slope of the tangent to the inner radius at the horizontal section (default 0)
+    outer_slope_at_vertical : PERCENTAGE
+        Slope of the tangent to the outer radius at the vertical section (default 0)
+    outer_slope_at_horizontal : PERCENTAGE
+        Slope of the tangent to the outer radius at the horizontal section (default 0)
     x : MM
         x-coordinate of the center of the inner_radius (default 0)
     y : MM
@@ -52,6 +61,10 @@ class CircularCorneredCrossSection(CrossSection):
     thickness_horizontal: MM
     inner_radius: MM
     outer_radius: MM
+    inner_slope_at_vertical: PERCENTAGE = 0
+    inner_slope_at_horizontal: PERCENTAGE = 0
+    outer_slope_at_vertical: PERCENTAGE = 0
+    outer_slope_at_horizontal: PERCENTAGE = 0
     x: MM = 0
     y: MM = 0
     corner_direction: int = 0  # 0 = ↰, 1 = ↱, 2 = ↳, 3 = ↲
@@ -64,6 +77,10 @@ class CircularCorneredCrossSection(CrossSection):
             thickness_horizontal=self.thickness_horizontal,
             inner_radius=self.inner_radius,
             outer_radius=self.outer_radius,
+            inner_slope_at_vertical=self.inner_slope_at_vertical,
+            inner_slope_at_horizontal=self.inner_slope_at_horizontal,
+            outer_slope_at_vertical=self.outer_slope_at_vertical,
+            outer_slope_at_horizontal=self.outer_slope_at_horizontal,
         )
         if self.outer_radius > self.inner_radius + min(self.thickness_vertical, self.thickness_horizontal):
             raise ValueError(
@@ -72,27 +89,53 @@ class CircularCorneredCrossSection(CrossSection):
             )
         if self.corner_direction not in (0, 1, 2, 3):
             raise ValueError(f"corner_direction must be one of 0, 1, 2, or 3, got {self.corner_direction}")
+        if any(
+            slope >= 100
+            for slope in [self.inner_slope_at_vertical, self.inner_slope_at_horizontal, self.outer_slope_at_vertical, self.outer_slope_at_horizontal]
+        ):
+            raise ValueError("All slopes must be less than 100%")
+
+    @property
+    def inner_angle_at_vertical(self) -> float:
+        """Angle of the tangent to the inner radius at the vertical section [radians]."""
+        return np.deg2rad(slope_to_angle(self.inner_slope_at_vertical))
+
+    @property
+    def inner_angle_at_horizontal(self) -> float:
+        """Angle of the tangent to the inner radius at the horizontal section [radians]."""
+        return np.deg2rad(slope_to_angle(self.inner_slope_at_horizontal))
+
+    @property
+    def outer_angle_at_vertical(self) -> float:
+        """Angle of the tangent to the outer radius at the vertical section [radians]."""
+        return np.deg2rad(slope_to_angle(self.outer_slope_at_vertical))
+
+    @property
+    def outer_angle_at_horizontal(self) -> float:
+        """Angle of the tangent to the outer radius at the horizontal section [radians]."""
+        return np.deg2rad(slope_to_angle(self.outer_slope_at_horizontal))
 
     @property
     def width_rectangle(self) -> MM:
-        """Width of the rectangle part of the corner cross-section [mm]."""
+        """Width of the surrounding rectangle of the corner cross-section [mm]."""
         return self.thickness_horizontal + self.inner_radius
 
     @property
     def height_rectangle(self) -> MM:
-        """Height of the rectangle part of the corner cross-section [mm]."""
+        """Height of the surrounding rectangle of the corner cross-section [mm]."""
         return self.thickness_vertical + self.inner_radius
 
     @property
     def polygon(self) -> Polygon:
         """Shapely Polygon representing the corner cross-section."""
-        lr = (self.x + self.width_rectangle, self.y)
-        ul = (self.x, self.y + self.height_rectangle)
+        lower_corner = (self.x + self.width_rectangle, self.y + np.sin(self.inner_angle_at_horizontal) * self.inner_radius)
+        upper_corner = (self.x + np.sin(self.inner_angle_at_vertical) * self.inner_radius, self.y + self.height_rectangle)
 
         n = 16
 
         # Outer arc (from vertical to horizontal)
-        theta_outer = np.linspace(0, np.pi / 2, n)
+        theta_outer = np.linspace(self.outer_angle_at_horizontal, np.pi / 2 - self.outer_angle_at_vertical, n)
+
         outer_arc = np.column_stack(
             (
                 self.x + self.width_rectangle - self.outer_radius + self.outer_radius * np.cos(theta_outer),
@@ -101,7 +144,7 @@ class CircularCorneredCrossSection(CrossSection):
         )
 
         # Inner arc (from horizontal to vertical, reversed)
-        theta_inner = np.linspace(0, np.pi / 2, n)
+        theta_inner = np.linspace(self.inner_angle_at_horizontal, np.pi / 2 - self.inner_angle_at_vertical, n)
         inner_arc = np.column_stack(
             (
                 self.x + self.inner_radius * np.cos(theta_inner),
@@ -110,7 +153,7 @@ class CircularCorneredCrossSection(CrossSection):
         )[::-1]
 
         # Combine points
-        points = np.vstack([lr, outer_arc, ul, inner_arc])
+        points = np.vstack([lower_corner, outer_arc, upper_corner, inner_arc])
 
         # Remove consecutive duplicate points
         diff = np.diff(points, axis=0)
