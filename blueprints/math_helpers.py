@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from blueprints.type_alias import DEG, DIMENSIONLESS
+from blueprints.type_alias import DEG, DIMENSIONLESS, PERCENTAGE
 from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -58,3 +58,37 @@ def csc(x: DEG) -> DIMENSIONLESS:
     raise_if_less_or_equal_to_zero(x=x)
     raise_if_greater_than_90(x=x)
     return 1 / np.sin(np.deg2rad(x))
+
+
+def slope_to_angle(slope: PERCENTAGE) -> DEG:
+    """Convert a slope (as a percentage) to an angle in degrees.
+
+    Parameters
+    ----------
+    slope : DIMENSIONLESS
+        Slope as a percentage.
+
+    Returns
+    -------
+    DEG
+        Angle in degrees.
+    """
+    return np.rad2deg(np.arctan(slope / 100))
+
+
+def angle_to_slope(angle: DEG) -> PERCENTAGE:
+    """Convert an angle in degrees to a slope (as a percentage).
+
+    Parameters
+    ----------
+    angle : DEG
+        Angle in degrees.
+
+    Returns
+    -------
+    PERCENTAGE
+        Slope as a percentage.
+    """
+    raise_if_negative(angle=angle)
+    raise_if_greater_than_90(angle=angle)
+    return np.tan(np.deg2rad(angle)) * 100
