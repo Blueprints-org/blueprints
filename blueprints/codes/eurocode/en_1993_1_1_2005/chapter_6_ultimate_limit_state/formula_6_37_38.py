@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MM, MM2, NMM, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot37Dot38MomentReduction(Formula):
+class Form6Dot37And38MomentReduction(Formula):
     r"""Class representing formulas 6.37 and 6.38 for the calculation of reduced bending moment."""
 
     label = "6.37/6.38"

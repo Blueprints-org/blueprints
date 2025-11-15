@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot10abNStrengthReductionFactor(Formula):
+class Form6Dot10abnStrengthReductionFactor(Formula):
     r"""Class representing formula 6.10a/bN for the calculation of the strength reduction factor for concrete cracked in shear."""
 
     label = "6.10a/bN"
