@@ -3,7 +3,7 @@ name = "blue-prints"
 version = "0.5.2"
 description = "Blueprints, open source python package for civil engineering calculations."
 readme = "README.md"
-requires-python = ">=3.12,<3.14"
+requires-python = ">=3.12"
 authors = [{ name = "Blueprints" }]
 maintainers = [
     { name = "Enrique García Méndez", email = "enriquegarcia@live.nl" },
