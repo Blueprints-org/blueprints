@@ -8,7 +8,7 @@ from shapely.geometry import Polygon
 
 from blueprints.math_helpers import slope_to_angle
 from blueprints.structural_sections._cross_section import CrossSection
-from blueprints.type_alias import MM, PERCENTAGE
+from blueprints.type_alias import MM, PERCENTAGE, RAD
 from blueprints.validations import raise_if_negative
 
 
@@ -17,9 +17,9 @@ class CircularCorneredCrossSection(CrossSection):
     """
     Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as a circular cornered section.
 
-        .---- outer arc     .---- outer_arc_ext_at_vertical
+        .---- outer arc     .---- o_a_ext_at_vertical
         ∨                   v
-    . . .+-----------------------+
+      . .+-----------------------+
     .  ⁄                         |
     .⁄                           |<-- thickness_vertical
     +                            |
@@ -27,14 +27,16 @@ class CircularCorneredCrossSection(CrossSection):
     |                      /
     |                    /
     |                   |
-    +-------------------+<-- thickness_horizontal
+    +-------------------+        x-- coordinate reference point
+             ^
+             .---- thickness_horizontal
 
     Parameters
     ----------
     thickness_vertical : MM
-        Thickness of the vertical section if slopes were all 0%
+        Thickness of the vertical section
     thickness_horizontal : MM
-        Thickness of the horizontal section if slopes were all 0%
+        Thickness of the horizontal section
     inner_radius : MM
         Inner radius of the corner
     outer_radius : MM
@@ -50,9 +52,9 @@ class CircularCorneredCrossSection(CrossSection):
     outer_slope_at_horizontal : PERCENTAGE
         Slope of the tangent to the outer radius at the horizontal section (default 0)
     x : MM
-        x-coordinate of intersection of vertical and horizontal sections (default 0)
+        x-coordinate of reference point
     y : MM
-        y-coordinate of intersection of vertical and horizontal sections (default 0)
+        y-coordinate of reference point
     name : str
         Name of the cross-section (default "Corner")
     """
@@ -61,13 +63,13 @@ class CircularCorneredCrossSection(CrossSection):
     thickness_horizontal: MM
     inner_radius: MM
     outer_radius: MM
+    corner_direction: int = 0  # 0 = ↰, 1 = ↱, 2 = ↳, 3 = ↲
     inner_slope_at_vertical: PERCENTAGE = 0
     inner_slope_at_horizontal: PERCENTAGE = 0
     outer_slope_at_vertical: PERCENTAGE = 0
     outer_slope_at_horizontal: PERCENTAGE = 0
     x: MM = 0
     y: MM = 0
-    corner_direction: int = 0  # 0 = ↰, 1 = ↱, 2 = ↳, 3 = ↲
     name: str = "Corner"
 
     def __post_init__(self) -> None:
@@ -92,24 +94,34 @@ class CircularCorneredCrossSection(CrossSection):
             raise ValueError("All slopes must be less than 100%")
 
     @property
-    def inner_angle_at_vertical(self) -> float:
+    def inner_angle_at_vertical(self) -> RAD:
         """Angle of the tangent to the inner radius at the vertical section [radians]."""
         return np.deg2rad(slope_to_angle(self.inner_slope_at_vertical))
 
     @property
-    def inner_angle_at_horizontal(self) -> float:
+    def inner_angle_at_horizontal(self) -> RAD:
         """Angle of the tangent to the inner radius at the horizontal section [radians]."""
         return np.deg2rad(slope_to_angle(self.inner_slope_at_horizontal))
 
     @property
-    def outer_angle_at_vertical(self) -> float:
+    def outer_angle_at_vertical(self) -> RAD:
         """Angle of the tangent to the outer radius at the vertical section [radians]."""
         return np.deg2rad(slope_to_angle(self.outer_slope_at_vertical))
 
     @property
-    def outer_angle_at_horizontal(self) -> float:
+    def outer_angle_at_horizontal(self) -> RAD:
         """Angle of the tangent to the outer radius at the horizontal section [radians]."""
         return np.deg2rad(slope_to_angle(self.outer_slope_at_horizontal))
+
+    @property
+    def total_width(self) -> MM:
+        """Total width of the cornered section [mm]."""
+        return max(self.polygon.exterior.xy[0]) - min(self.polygon.exterior.xy[0])
+
+    @property
+    def total_height(self) -> MM:
+        """Total height of the cornered section [mm]."""
+        return max(self.polygon.exterior.xy[1]) - min(self.polygon.exterior.xy[1])
 
     @property
     def polygon(self) -> Polygon:
@@ -271,17 +283,17 @@ if __name__ == "__main__":
 
     # Create a circular cornered cross-section
     section = CircularCorneredCrossSection(
-        thickness_vertical=50,
-        thickness_horizontal=100,
-        inner_radius=50,
-        outer_radius=0,
-        inner_slope_at_vertical=20,
-        inner_slope_at_horizontal=20,
-        outer_slope_at_vertical=20,
-        outer_slope_at_horizontal=20,
-        x=10,
-        y=10,
-        corner_direction=3,
+        thickness_vertical=15,
+        thickness_horizontal=40,
+        inner_radius=0,
+        outer_radius=6,
+        inner_slope_at_vertical=0,
+        inner_slope_at_horizontal=0,
+        outer_slope_at_vertical=8,
+        outer_slope_at_horizontal=0,
+        x=0,
+        y=0,
+        corner_direction=0,
     )
 
     # Get the geometry
