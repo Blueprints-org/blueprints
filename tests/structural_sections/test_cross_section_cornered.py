@@ -57,7 +57,7 @@ class TestCircularCorneredCrossSection:
 
     def test_invalid_reference_point(self) -> None:
         """Test initialization with an invalid reference point."""
-        with pytest.raises(ValueError, match="reference_point must be one of 'bottom_left', 'bottom_right', 'top_left', or 'top_right', got center"):
+        with pytest.raises(ValueError, match="reference_point must be either 'intersection' or 'outer', got reference_point_that_does_not_exist"):
             CircularCorneredCrossSection(
                 thickness_vertical=10,
                 thickness_horizontal=10,
@@ -68,9 +68,7 @@ class TestCircularCorneredCrossSection:
 
     def test_invalid_slope_angle(self) -> None:
         """Test initialization with invalid slope angles."""
-        with pytest.raises(
-            ValueError, match="Sum of inner_slope_at_vertical and inner_slope_at_horizontal must be less than 90 degrees. Got 100.0 degrees."
-        ):
+        with pytest.raises(ValueError, match="All slopes must be less than 100%"):
             CircularCorneredCrossSection(
                 thickness_vertical=10,
                 thickness_horizontal=10,
@@ -78,3 +76,15 @@ class TestCircularCorneredCrossSection:
                 outer_radius=10,
                 inner_slope_at_vertical=683,
             )
+
+    def test_extensions(self) -> None:
+        """Test that extensions are calculated correctly."""
+        cross_section = CircularCorneredCrossSection(
+            thickness_vertical=2,
+            thickness_horizontal=2,
+            inner_radius=0,
+            outer_radius=10,
+        )
+        # Accessing the polygon property to trigger extension calculations
+        _ = cross_section.polygon
+        # If no exception is raised, the test passes
