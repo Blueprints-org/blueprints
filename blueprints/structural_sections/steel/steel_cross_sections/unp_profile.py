@@ -136,10 +136,9 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             y=0,
         )
 
-        # using modelled toe radius to avoid impossible geometry with small mesh
-        modelled_top_toe_radius = (
-            min(self.top_toe_radius, 0.95 * top_thickness_at_toe) if min(self.top_toe_radius, 0.95 * top_thickness_at_toe) >= 1.0 else 0
-        )
+        # because toe radius gets interrupted by top of flange when corrosion is near maximum
+        # we use a modelled top toe radius to avoid impossible geometry
+        modelled_top_toe_radius = min(self.top_toe_radius, top_thickness_at_toe) if min(self.top_toe_radius, top_thickness_at_toe) >= 1.0 else 0
         self.top_flange = CircularCorneredCrossSection(
             name="Top flange",
             inner_radius=0,
@@ -152,9 +151,10 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             outer_slope_at_vertical=self.top_slope,
         )
 
-        # using modelled toe radius to avoid impossible geometry with small mesh
+        # because toe radius gets interrupted by top of flange when corrosion is near maximum
+        # we use a modelled top toe radius to avoid impossible geometry
         modelled_bottom_toe_radius = (
-            min(self.bottom_toe_radius, 0.95 * bottom_thickness_at_toe) if min(self.bottom_toe_radius, 0.95 * bottom_thickness_at_toe) >= 1.0 else 0
+            min(self.bottom_toe_radius, bottom_thickness_at_toe) if min(self.bottom_toe_radius, bottom_thickness_at_toe) >= 1.0 else 0
         )
         self.bottom_flange = CircularCorneredCrossSection(
             name="Bottom flange",
@@ -277,3 +277,10 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
+
+
+if __name__ == "__main__":
+    # Example: UNP140 profile
+    unp140 = UNPSteelProfile.from_standard_profile(profile=UNP.UNP140, steel_material=SteelMaterial(), corrosion=3.45)
+    unp140.plot()
+    plt.show()
