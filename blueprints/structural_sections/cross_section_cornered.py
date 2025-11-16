@@ -139,23 +139,20 @@ class CircularCorneredCrossSection(CrossSection):
         n = 16
 
         # Outer arc (from vertical to horizontal)
-        theta_outer = np.linspace(self.outer_angle_at_horizontal, np.pi / 2 - self.outer_angle_at_vertical, n)
-
         outer_arc = np.column_stack(
             (
-                self.outer_radius * np.cos(theta_outer),
-                self.outer_radius * np.sin(theta_outer),
+                self.outer_radius * np.cos(np.linspace(self.outer_angle_at_horizontal, np.pi / 2 - self.outer_angle_at_vertical, n)),
+                self.outer_radius * np.sin(np.linspace(self.outer_angle_at_horizontal, np.pi / 2 - self.outer_angle_at_vertical, n)),
             )
         )
         o_a_width = np.max(outer_arc[:, 0]) - np.min(outer_arc[:, 0])
         o_a_height = np.max(outer_arc[:, 1]) - np.min(outer_arc[:, 1])
 
         # Inner arc (from horizontal to vertical, reversed)
-        theta_inner = np.linspace(self.inner_angle_at_horizontal, np.pi / 2 - self.inner_angle_at_vertical, n)
         inner_arc = np.column_stack(
             (
-                self.inner_radius * np.cos(theta_inner),
-                self.inner_radius * np.sin(theta_inner),
+                self.inner_radius * np.cos(np.linspace(self.inner_angle_at_horizontal, np.pi / 2 - self.inner_angle_at_vertical, n)),
+                self.inner_radius * np.sin(np.linspace(self.inner_angle_at_horizontal, np.pi / 2 - self.inner_angle_at_vertical, n)),
             )
         )[::-1]
         i_a_width = np.max(inner_arc[:, 0]) - np.min(inner_arc[:, 0])
@@ -219,6 +216,9 @@ class CircularCorneredCrossSection(CrossSection):
             if all(x >= 0 for x in [i_a_ext_at_horizontal, i_a_ext_at_vertical, o_a_ext_at_horizontal, o_a_ext_at_vertical]):
                 break
 
+        if not all(x >= 0 for x in [i_a_ext_at_horizontal, i_a_ext_at_vertical, o_a_ext_at_horizontal, o_a_ext_at_vertical]):
+            raise ValueError("Could not determine valid extensions to align inner and outer arcs.")
+
         total_width = (
             o_a_width + o_a_ext_at_horizontal * np.sin(self.outer_angle_at_horizontal) + o_a_ext_at_vertical * np.cos(self.outer_angle_at_vertical)
         )
@@ -251,8 +251,8 @@ class CircularCorneredCrossSection(CrossSection):
         mask = np.any(np.diff(points, axis=0) != 0, axis=1)
         points = points[np.insert(mask, 0, True)]
 
+        # Shift points to make outer reference point at (x, y)
         if self.reference_point == "outer":
-            # Shift points to make outer reference point at (x, y)
             points[:, 0] -= total_width
             points[:, 1] -= total_height
 
@@ -286,40 +286,3 @@ class CircularCorneredCrossSection(CrossSection):
         geom = Geometry(geom=self.polygon)
         geom.create_mesh(mesh_sizes=mesh_size)
         return geom
-
-
-if __name__ == "__main__":
-    """Example usage with plot."""
-    import matplotlib.pyplot as plt
-
-    # Create a circular cornered cross-section
-    section = CircularCorneredCrossSection(
-        thickness_vertical=15,
-        thickness_horizontal=40,
-        inner_radius=0,
-        outer_radius=6,
-        inner_slope_at_vertical=0,
-        inner_slope_at_horizontal=0,
-        outer_slope_at_vertical=8,
-        outer_slope_at_horizontal=0,
-        x=0,
-        y=0,
-        corner_direction=0,
-    )
-
-    # Get the geometry
-    geom = section.geometry()
-
-    # Plot the cross-section
-    fig, ax = plt.subplots(figsize=(8, 8))
-    x, y = section.polygon.exterior.xy
-    ax.plot(x, y, "b-", linewidth=2, label="Cross-section outline")
-    ax.fill(x, y, alpha=0.3)
-    ax.set_xlabel("x [mm]")
-    ax.set_ylabel("y [mm]")
-    ax.set_title("Circular Cornered Cross-Section")
-    ax.axis("equal")
-    ax.grid(True, alpha=0.3)
-    ax.legend()
-    plt.tight_layout()
-    plt.show()
