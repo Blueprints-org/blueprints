@@ -84,10 +84,11 @@ class UNPSteelProfile(CombinedSteelCrossSection):
         )
 
         # Create curves for the corners of the flanges
-        # It is assumed that the thickness is measured vertically halfway the total width of the element
+        # It is used that the thickness is measured vertically halfway the total width of the flange
         # The results of this allign with standard UNP profiles databases
         top_angle = np.deg2rad(slope_to_angle(self.top_slope))
         bottom_angle = np.deg2rad(slope_to_angle(self.bottom_slope))
+
         top_thickness_at_web = (
             self.top_flange_thickness
             + (self.top_flange_total_width / 2 - self.web_thickness - self.top_root_fillet_radius * np.cos(top_angle)) * self.top_slope / 100
@@ -98,6 +99,9 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             * self.bottom_slope
             / 100
         )
+
+        top_thickness_at_toe = max(0, self.top_flange_thickness - (self.top_flange_total_width / 2) * self.top_slope / 100)
+        bottom_thickness_at_toe = max(0, self.bottom_flange_thickness - (self.bottom_flange_total_width / 2) * self.bottom_slope / 100)
 
         self.corner_top = CircularCorneredCrossSection(
             name="Corner top",
@@ -132,10 +136,14 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             y=0,
         )
 
+        # using modelled toe radius to avoid impossible geometry with small mesh
+        modelled_top_toe_radius = (
+            min(self.top_toe_radius, 0.95 * top_thickness_at_toe) if min(self.top_toe_radius, 0.95 * top_thickness_at_toe) >= 1.0 else 0
+        )
         self.top_flange = CircularCorneredCrossSection(
             name="Top flange",
             inner_radius=0,
-            outer_radius=self.top_toe_radius,
+            outer_radius=modelled_top_toe_radius,
             x=self.corner_top.total_width,
             y=self.total_height / 2,
             corner_direction=3,
@@ -144,10 +152,14 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             outer_slope_at_vertical=self.top_slope,
         )
 
+        # using modelled toe radius to avoid impossible geometry with small mesh
+        modelled_bottom_toe_radius = (
+            min(self.bottom_toe_radius, 0.95 * bottom_thickness_at_toe) if min(self.bottom_toe_radius, 0.95 * bottom_thickness_at_toe) >= 1.0 else 0
+        )
         self.bottom_flange = CircularCorneredCrossSection(
             name="Bottom flange",
             inner_radius=0,
-            outer_radius=self.bottom_toe_radius,
+            outer_radius=modelled_bottom_toe_radius,
             x=self.corner_bottom.total_width,
             y=-self.total_height / 2,
             corner_direction=0,
@@ -211,6 +223,10 @@ class UNPSteelProfile(CombinedSteelCrossSection):
         bottom_flange_thickness = profile.bottom_flange_thickness - corrosion * 2
         total_height = profile.total_height - corrosion * 2
         web_thickness = profile.web_thickness - corrosion * 2
+        top_root_fillet_radius = profile.root_fillet_radius + corrosion
+        bottom_root_fillet_radius = profile.root_fillet_radius + corrosion
+        top_toe_radius = max(profile.toe_radius - corrosion, 0)
+        bottom_toe_radius = max(profile.toe_radius - corrosion, 0)
 
         if any(
             [
@@ -233,10 +249,10 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             total_height=total_height,
             web_thickness=web_thickness,
             steel_material=steel_material,
-            top_root_fillet_radius=profile.root_fillet_radius,
-            top_toe_radius=profile.toe_radius,
-            bottom_root_fillet_radius=profile.root_fillet_radius,
-            bottom_toe_radius=profile.toe_radius,
+            top_root_fillet_radius=top_root_fillet_radius,
+            top_toe_radius=top_toe_radius,
+            bottom_root_fillet_radius=bottom_root_fillet_radius,
+            bottom_toe_radius=bottom_toe_radius,
             top_slope=profile.slope,
             bottom_slope=profile.slope,
             name=name,
@@ -261,17 +277,3 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
-
-
-if __name__ == "__main__":
-    # Create a UNP200 profile with S355 steel material
-    from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
-
-    unp_profile = UNPSteelProfile.from_standard_profile(
-        profile=UNP.UNP200,
-        steel_material=SteelMaterial(SteelStrengthClass.S355),
-    )
-
-    props = unp_profile.section_properties()
-    fig = unp_profile.plot()
-    plt.show()
