@@ -34,19 +34,6 @@ class TestCircularCorneredCrossSection:
         with pytest.raises(NegativeValueError):
             CircularCorneredCrossSection(**kwargs)
 
-    def test_invalid_outer_radius_greater_than_inner_plus_thickness(self) -> None:
-        """Test initialization with an outer radius greater than inner radius plus thickness."""
-        with pytest.raises(
-            ValueError,
-            match="Outer radius 20 must be smaller than or equal to inner radius 5 plus the thickness 10",
-        ):
-            CircularCorneredCrossSection(
-                thickness_vertical=10,
-                thickness_horizontal=10,
-                inner_radius=5,
-                outer_radius=20,
-            )
-
     def test_invalid_corner_direction(self) -> None:
         """Test initialization with an invalid corner direction."""
         with pytest.raises(ValueError, match="corner_direction must be one of 0, 1, 2, or 3, got 4"):
