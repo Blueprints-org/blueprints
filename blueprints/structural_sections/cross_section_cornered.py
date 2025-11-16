@@ -167,54 +167,29 @@ class CircularCorneredCrossSection(CrossSection):
         #   = o_a_height + o_a_ext_h*cos(o_angle_h) + o_a_ext_v*sin(o_angle_v)
         #
         # Four unknowns: i_a_ext_h, i_a_ext_v, o_a_ext_h, o_a_ext_v
-        # Two of them are zero, two of them are positive
-        # Currently there is no one solid way to determine which two are zero, so we try all four combinations
+        # Either the inner arcs need extension, or the outer arcs do.
+        a = np.array(
+            [
+                [np.sin(self.inner_angle_at_horizontal), np.cos(self.inner_angle_at_vertical)],
+                [np.cos(self.inner_angle_at_horizontal), np.sin(self.inner_angle_at_vertical)],
+            ]
+        )
+        b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
+        i_a_ext_at_horizontal, i_a_ext_at_vertical = np.linalg.solve(a, b)
 
-        # Try strategies: (outer_h_zero, outer_v_zero, inner_h_zero, inner_v_zero)
-        for o_h_z, o_v_z, i_h_z, i_v_z in [(1, 1, 0, 0), (0, 0, 1, 1), (1, 0, 0, 1), (0, 1, 1, 0)]:
-            if o_h_z and o_v_z:
-                a = np.array(
-                    [
-                        [np.sin(self.inner_angle_at_horizontal), np.cos(self.inner_angle_at_vertical)],
-                        [np.cos(self.inner_angle_at_horizontal), np.sin(self.inner_angle_at_vertical)],
-                    ]
-                )
-                b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
-                i_a_ext_at_horizontal, i_a_ext_at_vertical = np.linalg.solve(a, b)
-                o_a_ext_at_horizontal = o_a_ext_at_vertical = 0
-            elif i_h_z and i_v_z:
-                a = np.array(
-                    [
-                        [np.sin(self.outer_angle_at_horizontal), np.cos(self.outer_angle_at_vertical)],
-                        [np.cos(self.outer_angle_at_horizontal), np.sin(self.outer_angle_at_vertical)],
-                    ]
-                )
-                b = np.array([i_a_width + self.thickness_horizontal - o_a_width, i_a_height + self.thickness_vertical - o_a_height])
-                o_a_ext_at_horizontal, o_a_ext_at_vertical = np.linalg.solve(a, b)
-                i_a_ext_at_horizontal = i_a_ext_at_vertical = 0
-            elif o_h_z and i_v_z:
-                a = np.array(
-                    [
-                        [np.sin(self.inner_angle_at_horizontal), np.cos(self.outer_angle_at_vertical)],
-                        [np.cos(self.inner_angle_at_horizontal), np.sin(self.outer_angle_at_vertical)],
-                    ]
-                )
-                b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
-                i_a_ext_at_horizontal, o_a_ext_at_vertical = np.linalg.solve(a, b)
-                o_a_ext_at_horizontal = i_a_ext_at_vertical = 0
-            else:
-                a = np.array(
-                    [
-                        [np.sin(self.outer_angle_at_horizontal), np.cos(self.inner_angle_at_vertical)],
-                        [np.cos(self.outer_angle_at_horizontal), np.sin(self.inner_angle_at_vertical)],
-                    ]
-                )
-                b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
-                o_a_ext_at_horizontal, i_a_ext_at_vertical = np.linalg.solve(a, b)
-                i_a_ext_at_horizontal = o_a_ext_at_vertical = 0
+        if i_a_ext_at_horizontal >= 0 and i_a_ext_at_vertical >= 0:
+            o_a_ext_at_horizontal = o_a_ext_at_vertical = 0
 
-            if all(x >= 0 for x in [i_a_ext_at_horizontal, i_a_ext_at_vertical, o_a_ext_at_horizontal, o_a_ext_at_vertical]):
-                break
+        else:
+            a = np.array(
+                [
+                    [np.sin(self.outer_angle_at_horizontal), np.cos(self.outer_angle_at_vertical)],
+                    [np.cos(self.outer_angle_at_horizontal), np.sin(self.outer_angle_at_vertical)],
+                ]
+            )
+            b = np.array([i_a_width + self.thickness_horizontal - o_a_width, i_a_height + self.thickness_vertical - o_a_height])
+            o_a_ext_at_horizontal, o_a_ext_at_vertical = np.linalg.solve(a, b)
+            i_a_ext_at_horizontal = i_a_ext_at_vertical = 0
 
         total_width = (
             o_a_width + o_a_ext_at_horizontal * np.sin(self.outer_angle_at_horizontal) + o_a_ext_at_vertical * np.cos(self.outer_angle_at_vertical)
