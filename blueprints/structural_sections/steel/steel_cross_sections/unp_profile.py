@@ -277,10 +277,3 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             *args,
             **kwargs,
         )
-
-
-if __name__ == "__main__":
-    # Example: UNP140 profile
-    unp140 = UNPSteelProfile.from_standard_profile(profile=UNP.UNP140, steel_material=SteelMaterial(), corrosion=3.45)
-    unp140.plot()
-    plt.show()
