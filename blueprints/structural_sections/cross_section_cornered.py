@@ -17,8 +17,8 @@ class CircularCorneredCrossSection(CrossSection):
     """
     Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as a circular cornered section.
 
-        .---- outer arc
-        ∨
+        .---- outer arc     .---- outer_arc_ext_at_vertical
+        ∨                   v
     . . .+-----------------------+
     .  ⁄                         |
     .⁄                           |<-- thickness_vertical
@@ -32,9 +32,9 @@ class CircularCorneredCrossSection(CrossSection):
     Parameters
     ----------
     thickness_vertical : MM
-        Thickness of the vertical section
+        Thickness of the vertical section if slopes were all 0%
     thickness_horizontal : MM
-        Thickness of the horizontal section
+        Thickness of the horizontal section if slopes were all 0%
     inner_radius : MM
         Inner radius of the corner
     outer_radius : MM
@@ -50,9 +50,9 @@ class CircularCorneredCrossSection(CrossSection):
     outer_slope_at_horizontal : PERCENTAGE
         Slope of the tangent to the outer radius at the horizontal section (default 0)
     x : MM
-        x-coordinate of the center of the inner_radius (default 0)
+        x-coordinate of intersection of vertical and horizontal sections (default 0)
     y : MM
-        y-coordinate of the center of the inner_radius (default 0)
+        y-coordinate of intersection of vertical and horizontal sections (default 0)
     name : str
         Name of the cross-section (default "Corner")
     """
@@ -82,11 +82,7 @@ class CircularCorneredCrossSection(CrossSection):
             outer_slope_at_vertical=self.outer_slope_at_vertical,
             outer_slope_at_horizontal=self.outer_slope_at_horizontal,
         )
-        if self.outer_radius > self.inner_radius + min(self.thickness_vertical, self.thickness_horizontal):
-            raise ValueError(
-                f"Outer radius {self.outer_radius} must be smaller than or equal to inner radius {self.inner_radius} "
-                f"plus the thickness {min(self.thickness_vertical, self.thickness_horizontal)}"
-            )
+
         if self.corner_direction not in (0, 1, 2, 3):
             raise ValueError(f"corner_direction must be one of 0, 1, 2, or 3, got {self.corner_direction}")
         if any(
@@ -116,21 +112,8 @@ class CircularCorneredCrossSection(CrossSection):
         return np.deg2rad(slope_to_angle(self.outer_slope_at_horizontal))
 
     @property
-    def width_rectangle(self) -> MM:
-        """Width of the surrounding rectangle of the corner cross-section [mm]."""
-        return self.thickness_horizontal + self.inner_radius
-
-    @property
-    def height_rectangle(self) -> MM:
-        """Height of the surrounding rectangle of the corner cross-section [mm]."""
-        return self.thickness_vertical + self.inner_radius
-
-    @property
     def polygon(self) -> Polygon:
         """Shapely Polygon representing the corner cross-section."""
-        lower_corner = (self.x + self.width_rectangle, self.y + np.sin(self.inner_angle_at_horizontal) * self.inner_radius)
-        upper_corner = (self.x + np.sin(self.inner_angle_at_vertical) * self.inner_radius, self.y + self.height_rectangle)
-
         n = 16
 
         # Outer arc (from vertical to horizontal)
@@ -138,45 +121,126 @@ class CircularCorneredCrossSection(CrossSection):
 
         outer_arc = np.column_stack(
             (
-                self.x + self.width_rectangle - self.outer_radius + self.outer_radius * np.cos(theta_outer),
-                self.y + self.height_rectangle - self.outer_radius + self.outer_radius * np.sin(theta_outer),
+                self.outer_radius * np.cos(theta_outer),
+                self.outer_radius * np.sin(theta_outer),
             )
         )
+        o_a_width = np.max(outer_arc[:, 0]) - np.min(outer_arc[:, 0])
+        o_a_height = np.max(outer_arc[:, 1]) - np.min(outer_arc[:, 1])
 
         # Inner arc (from horizontal to vertical, reversed)
         theta_inner = np.linspace(self.inner_angle_at_horizontal, np.pi / 2 - self.inner_angle_at_vertical, n)
         inner_arc = np.column_stack(
             (
-                self.x + self.inner_radius * np.cos(theta_inner),
-                self.y + self.inner_radius * np.sin(theta_inner),
+                self.inner_radius * np.cos(theta_inner),
+                self.inner_radius * np.sin(theta_inner),
             )
         )[::-1]
+        i_a_width = np.max(inner_arc[:, 0]) - np.min(inner_arc[:, 0])
+        i_a_height = np.max(inner_arc[:, 1]) - np.min(inner_arc[:, 1])
+
+        # Based on input its possible that either the outer arc or the inner arc is wider/taller
+        # than the other (plus thickness). To align them, we need to extend one of the arcs.
+        # Solve for extensions to make inner and outer arcs align
+        # Full system of equations: i_a_width + thickness_horizontal + i_a_ext_h*sin(i_angle_h)
+        # + i_a_ext_v*cos(i_angle_v) = o_a_width + o_a_ext_h*sin(o_angle_h) + o_a_ext_v*cos(o_angle_v)
+        # and i_a_height + thickness_vertical + i_a_ext_h*cos(i_angle_h) + i_a_ext_v*sin(i_angle_v)
+        #   = o_a_height + o_a_ext_h*cos(o_angle_h) + o_a_ext_v*sin(o_angle_v)
+        #
+        # Four unknowns: i_a_ext_h, i_a_ext_v, o_a_ext_h, o_a_ext_v
+        # Two of them are zero, two of them are positive
+        # Currently there is no one solid way to determine which two are zero, so we try all four combinations
+
+        # Try strategies: (outer_h_zero, outer_v_zero, inner_h_zero, inner_v_zero)
+        for o_h_z, o_v_z, i_h_z, i_v_z in [(1, 1, 0, 0), (0, 0, 1, 1), (1, 0, 0, 1), (0, 1, 1, 0)]:
+            if o_h_z and o_v_z:
+                a = np.array(
+                    [
+                        [np.sin(self.inner_angle_at_horizontal), np.cos(self.inner_angle_at_vertical)],
+                        [np.cos(self.inner_angle_at_horizontal), np.sin(self.inner_angle_at_vertical)],
+                    ]
+                )
+                b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
+                i_a_ext_at_horizontal, i_a_ext_at_vertical = np.linalg.solve(a, b)
+                o_a_ext_at_horizontal = o_a_ext_at_vertical = 0
+            elif i_h_z and i_v_z:
+                a = np.array(
+                    [
+                        [np.sin(self.outer_angle_at_horizontal), np.cos(self.outer_angle_at_vertical)],
+                        [np.cos(self.outer_angle_at_horizontal), np.sin(self.outer_angle_at_vertical)],
+                    ]
+                )
+                b = np.array([i_a_width + self.thickness_horizontal - o_a_width, i_a_height + self.thickness_vertical - o_a_height])
+                o_a_ext_at_horizontal, o_a_ext_at_vertical = np.linalg.solve(a, b)
+                i_a_ext_at_horizontal = i_a_ext_at_vertical = 0
+            elif o_h_z and i_v_z:
+                a = np.array(
+                    [
+                        [np.sin(self.inner_angle_at_horizontal), np.cos(self.outer_angle_at_vertical)],
+                        [np.cos(self.inner_angle_at_horizontal), np.sin(self.outer_angle_at_vertical)],
+                    ]
+                )
+                b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
+                i_a_ext_at_horizontal, o_a_ext_at_vertical = np.linalg.solve(a, b)
+                o_a_ext_at_horizontal = i_a_ext_at_vertical = 0
+            else:
+                a = np.array(
+                    [
+                        [np.sin(self.outer_angle_at_horizontal), np.cos(self.inner_angle_at_vertical)],
+                        [np.cos(self.outer_angle_at_horizontal), np.sin(self.inner_angle_at_vertical)],
+                    ]
+                )
+                b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
+                o_a_ext_at_horizontal, i_a_ext_at_vertical = np.linalg.solve(a, b)
+                i_a_ext_at_horizontal = o_a_ext_at_vertical = 0
+
+            if all(x >= 0 for x in [i_a_ext_at_horizontal, i_a_ext_at_vertical, o_a_ext_at_horizontal, o_a_ext_at_vertical]):
+                break
+
+        total_width = (
+            o_a_width + o_a_ext_at_horizontal * np.sin(self.outer_angle_at_horizontal) + o_a_ext_at_vertical * np.cos(self.outer_angle_at_vertical)
+        )
+        total_height = (
+            o_a_height + o_a_ext_at_horizontal * np.cos(self.outer_angle_at_horizontal) + o_a_ext_at_vertical * np.sin(self.outer_angle_at_vertical)
+        )
+
+        # Translate outer arc points
+        outer_arc[:, 0] += o_a_ext_at_vertical * np.cos(self.outer_angle_at_vertical) - np.min(outer_arc[:, 0])
+        outer_arc[:, 1] += o_a_ext_at_horizontal * np.cos(self.outer_angle_at_horizontal) - np.min(outer_arc[:, 1])
+
+        # Translate inner arc points
+        inner_arc[:, 0] += i_a_ext_at_vertical * np.cos(self.inner_angle_at_vertical) - np.min(inner_arc[:, 0])
+        inner_arc[:, 1] += i_a_ext_at_horizontal * np.cos(self.inner_angle_at_horizontal) - np.min(inner_arc[:, 1])
 
         # Combine points
-        points = np.vstack([lower_corner, outer_arc, upper_corner, inner_arc])
+        points = np.vstack(
+            [
+                (total_width, 0),
+                outer_arc,
+                (0, total_height),
+                (0, total_height - self.thickness_vertical),
+                inner_arc,
+                (total_width - self.thickness_horizontal, 0),
+                (total_width, 0),
+            ]
+        )
 
         # Remove consecutive duplicate points
-        diff = np.diff(points, axis=0)
-        mask = np.any(diff != 0, axis=1)
-        mask = np.insert(mask, 0, True)
-        points = points[mask]
+        mask = np.any(np.diff(points, axis=0) != 0, axis=1)
+        points = points[np.insert(mask, 0, True)]
 
         # Create transformation matrices for flipping
         flip_x = np.array([[-1, 0], [0, 1]])
         flip_y = np.array([[1, 0], [0, -1]])
 
-        # Center points around (self.x, self.y)
-        points_centered = points - np.array([self.x, self.y])
-
         # Apply flips based on corner_direction
         if self.corner_direction in (1, 2):
-            points_centered = points_centered @ flip_x
+            points = points @ flip_x
         if self.corner_direction in (2, 3):
-            points_centered = points_centered @ flip_y
+            points = points @ flip_y
 
-        # Shift points back
-        points = points_centered + np.array([self.x, self.y])
-
+        # Shift points
+        points += np.array([self.x, self.y])
         points = np.array([tuple(pt) for pt in points])
 
         return Polygon(np.round(points, self.ACCURACY))
@@ -199,3 +263,40 @@ class CircularCorneredCrossSection(CrossSection):
         geom = Geometry(geom=self.polygon)
         geom.create_mesh(mesh_sizes=mesh_size)
         return geom
+
+
+if __name__ == "__main__":
+    """Example usage with plot."""
+    import matplotlib.pyplot as plt
+
+    # Create a circular cornered cross-section
+    section = CircularCorneredCrossSection(
+        thickness_vertical=50,
+        thickness_horizontal=100,
+        inner_radius=50,
+        outer_radius=0,
+        inner_slope_at_vertical=20,
+        inner_slope_at_horizontal=20,
+        outer_slope_at_vertical=20,
+        outer_slope_at_horizontal=20,
+        x=10,
+        y=10,
+        corner_direction=3,
+    )
+
+    # Get the geometry
+    geom = section.geometry()
+
+    # Plot the cross-section
+    fig, ax = plt.subplots(figsize=(8, 8))
+    x, y = section.polygon.exterior.xy
+    ax.plot(x, y, "b-", linewidth=2, label="Cross-section outline")
+    ax.fill(x, y, alpha=0.3)
+    ax.set_xlabel("x [mm]")
+    ax.set_ylabel("y [mm]")
+    ax.set_title("Circular Cornered Cross-Section")
+    ax.axis("equal")
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
