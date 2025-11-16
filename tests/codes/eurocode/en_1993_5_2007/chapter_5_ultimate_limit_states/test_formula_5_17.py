@@ -22,7 +22,7 @@ class TestForm5Dot17CompressionCheckZProfilesClass1And2:
         expected_result = True
 
         assert formula == expected_result
-        assert formula.unity_check == n_ed / n_pl_rd
+        assert formula.unity_check == (n_ed / n_pl_rd) / 0.1
 
     @pytest.mark.parametrize(
         ("n_ed", "n_pl_rd"),
