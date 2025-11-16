@@ -216,9 +216,6 @@ class CircularCorneredCrossSection(CrossSection):
             if all(x >= 0 for x in [i_a_ext_at_horizontal, i_a_ext_at_vertical, o_a_ext_at_horizontal, o_a_ext_at_vertical]):
                 break
 
-        if not all(x >= 0 for x in [i_a_ext_at_horizontal, i_a_ext_at_vertical, o_a_ext_at_horizontal, o_a_ext_at_vertical]):
-            raise ValueError("Could not determine valid extensions to align inner and outer arcs.")
-
         total_width = (
             o_a_width + o_a_ext_at_horizontal * np.sin(self.outer_angle_at_horizontal) + o_a_ext_at_vertical * np.cos(self.outer_angle_at_vertical)
         )
