@@ -173,7 +173,7 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             SteelElement(
                 cross_section=self.corner_top,
                 material=self.steel_material,
-                nominal_thickness=self.bottom_flange_thickness,
+                nominal_thickness=self.top_flange_thickness,
             ),
             SteelElement(
                 cross_section=self.corner_bottom,

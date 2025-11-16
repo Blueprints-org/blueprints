@@ -65,7 +65,7 @@ def slope_to_angle(slope: PERCENTAGE) -> DEG:
 
     Parameters
     ----------
-    slope : DIMENSIONLESS
+    slope : PERCENTAGE
         Slope as a percentage.
 
     Returns
