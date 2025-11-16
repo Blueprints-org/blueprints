@@ -17,9 +17,11 @@ class CircularCorneredCrossSection(CrossSection):
     """
     Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as a circular cornered section.
 
-        .---- outer arc     .---- o_a_ext_at_vertical
-        ∨                   v
-      . .+-----------------------+
+    .---- outer reference point
+    |
+    |   .---- outer arc     .---- o_a_ext_at_vertical
+    v   ∨                   v
+    x . .+-----------------------+
     .  ⁄                         |
     .⁄                           |<-- thickness_vertical
     +                            |
@@ -27,7 +29,7 @@ class CircularCorneredCrossSection(CrossSection):
     |                      /
     |                    /
     |                   |
-    +-------------------+        x-- coordinate reference point
+    +-------------------+        x-- intersection reference point
              ^
              .---- thickness_horizontal
 
@@ -55,6 +57,11 @@ class CircularCorneredCrossSection(CrossSection):
         x-coordinate of reference point
     y : MM
         y-coordinate of reference point
+    reference_point : str
+        Where x and y are located, options are
+        'intersection' (intersection of vertical and horizontal sections),
+        'outer' (where corner outer arc would be if it was sharp 90 degree corner)
+        (default 'intersection')
     name : str
         Name of the cross-section (default "Corner")
     """
@@ -68,6 +75,7 @@ class CircularCorneredCrossSection(CrossSection):
     inner_slope_at_horizontal: PERCENTAGE = 0
     outer_slope_at_vertical: PERCENTAGE = 0
     outer_slope_at_horizontal: PERCENTAGE = 0
+    reference_point: str = "intersection"
     x: MM = 0
     y: MM = 0
     name: str = "Corner"
@@ -85,6 +93,8 @@ class CircularCorneredCrossSection(CrossSection):
             outer_slope_at_horizontal=self.outer_slope_at_horizontal,
         )
 
+        if self.reference_point not in ("intersection", "outer"):
+            raise ValueError(f"reference_point must be either 'intersection' or 'outer', got {self.reference_point}")
         if self.corner_direction not in (0, 1, 2, 3):
             raise ValueError(f"corner_direction must be one of 0, 1, 2, or 3, got {self.corner_direction}")
         if any(
@@ -241,15 +251,16 @@ class CircularCorneredCrossSection(CrossSection):
         mask = np.any(np.diff(points, axis=0) != 0, axis=1)
         points = points[np.insert(mask, 0, True)]
 
-        # Create transformation matrices for flipping
-        flip_x = np.array([[-1, 0], [0, 1]])
-        flip_y = np.array([[1, 0], [0, -1]])
+        if self.reference_point == "outer":
+            # Shift points to make outer reference point at (x, y)
+            points[:, 0] -= total_width
+            points[:, 1] -= total_height
 
         # Apply flips based on corner_direction
         if self.corner_direction in (1, 2):
-            points = points @ flip_x
+            points = points @ np.array([[-1, 0], [0, 1]])
         if self.corner_direction in (2, 3):
-            points = points @ flip_y
+            points = points @ np.array([[1, 0], [0, -1]])
 
         # Shift points
         points += np.array([self.x, self.y])
