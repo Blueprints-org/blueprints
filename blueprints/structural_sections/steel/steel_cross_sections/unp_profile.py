@@ -85,7 +85,7 @@ class UNPSteelProfile(CombinedSteelCrossSection):
 
         # Create curves for the corners of the flanges
         # It is used that the thickness is measured vertically halfway the total width of the flange
-        # The results of this allign with standard UNP profiles databases
+        # The results of this align with standard UNP profiles databases
         top_angle = np.deg2rad(slope_to_angle(self.top_slope))
         bottom_angle = np.deg2rad(slope_to_angle(self.bottom_slope))
 

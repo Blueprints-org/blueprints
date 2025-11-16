@@ -158,7 +158,7 @@ class CircularCorneredCrossSection(CrossSection):
         i_a_width = np.max(inner_arc[:, 0]) - np.min(inner_arc[:, 0])
         i_a_height = np.max(inner_arc[:, 1]) - np.min(inner_arc[:, 1])
 
-        # Based on input its possible that either the outer arc or the inner arc is wider/taller
+        # Based on input it's possible that either the outer arc or the inner arc is wider/taller
         # than the other (plus thickness). To align them, we need to extend one of the arcs.
         # Solve for extensions to make inner and outer arcs align
         # Full system of equations: i_a_width + thickness_horizontal + i_a_ext_h*sin(i_angle_h)
