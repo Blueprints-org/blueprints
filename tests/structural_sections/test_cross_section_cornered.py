@@ -54,3 +54,27 @@ class TestCircularCorneredCrossSection:
                 outer_radius=10,
                 corner_direction=4,
             )
+
+    def test_invalid_reference_point(self) -> None:
+        """Test initialization with an invalid reference point."""
+        with pytest.raises(ValueError, match="reference_point must be one of 'bottom_left', 'bottom_right', 'top_left', or 'top_right', got center"):
+            CircularCorneredCrossSection(
+                thickness_vertical=10,
+                thickness_horizontal=10,
+                inner_radius=5,
+                outer_radius=10,
+                reference_point="reference_point_that_does_not_exist",
+            )
+
+    def test_invalid_slope_angle(self) -> None:
+        """Test initialization with invalid slope angles."""
+        with pytest.raises(
+            ValueError, match="Sum of inner_slope_at_vertical and inner_slope_at_horizontal must be less than 90 degrees. Got 100.0 degrees."
+        ):
+            CircularCorneredCrossSection(
+                thickness_vertical=10,
+                thickness_horizontal=10,
+                inner_radius=5,
+                outer_radius=10,
+                inner_slope_at_vertical=683,
+            )
