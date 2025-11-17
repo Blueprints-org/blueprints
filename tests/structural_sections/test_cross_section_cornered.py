@@ -88,3 +88,35 @@ class TestCircularCorneredCrossSection:
         # Accessing the polygon property to trigger extension calculations
         _ = cross_section.polygon
         # If no exception is raised, the test passes
+
+    def test_extreme_corrosion(self) -> None:
+        """Test handling of extreme corrosion cases leading to non-90 degree angles."""
+        corner_section = CircularCorneredCrossSection(
+            thickness_vertical=15,
+            thickness_horizontal=30,
+            inner_radius=0,
+            outer_radius=25,
+            corner_direction=0,
+            inner_slope_at_vertical=0,
+            inner_slope_at_horizontal=0,
+            outer_slope_at_vertical=8,
+            outer_slope_at_horizontal=0,
+        )
+
+        # Accessing the polygon property to trigger extension calculations
+        _ = corner_section.polygon
+
+        corner_section = CircularCorneredCrossSection(
+            thickness_vertical=30,
+            thickness_horizontal=15,
+            inner_radius=0,
+            outer_radius=25,
+            corner_direction=0,
+            inner_slope_at_vertical=0,
+            inner_slope_at_horizontal=0,
+            outer_slope_at_vertical=0,
+            outer_slope_at_horizontal=8,
+        )
+
+        # Accessing the polygon property to trigger extension calculations
+        _ = corner_section.polygon

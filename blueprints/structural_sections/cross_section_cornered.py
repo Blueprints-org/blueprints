@@ -192,6 +192,15 @@ class CircularCorneredCrossSection(CrossSection):
         outer_arc[:, 0] += o_a_ext_at_vertical * np.cos(self.outer_angle_at_vertical) - np.min(outer_arc[:, 0])
         outer_arc[:, 1] += o_a_ext_at_horizontal * np.cos(self.outer_angle_at_horizontal) - np.min(outer_arc[:, 1])
 
+        # heavy corrosion of for example UNP-elements might lead to situations where the toe radius corrodes
+        # into the flat side of the flange. This results in a non-90 degree corner
+        if o_a_ext_at_horizontal < 0:
+            x_at_y_is_zero = np.interp(0, outer_arc[:, 1], outer_arc[:, 0])
+            outer_arc = np.vstack([[x_at_y_is_zero, 0], outer_arc[outer_arc[:, 1] >= 0]])
+        if o_a_ext_at_vertical < 0:
+            y_at_x_is_zero = np.interp(0, outer_arc[:, 0][::-1], outer_arc[:, 1][::-1])
+            outer_arc = np.vstack([outer_arc[outer_arc[:, 0] >= 0], [0, y_at_x_is_zero]])
+
         # Translate inner arc points
         inner_arc[:, 0] += i_a_ext_at_vertical * np.cos(self.inner_angle_at_vertical) - np.min(inner_arc[:, 0])
         inner_arc[:, 1] += i_a_ext_at_horizontal * np.cos(self.inner_angle_at_horizontal) - np.min(inner_arc[:, 1])
@@ -209,17 +218,11 @@ class CircularCorneredCrossSection(CrossSection):
             ]
         )
 
-        # Remove points that are beyond the axes if corrosion has resulted in sharper than profile usually has
+        # Remove redundant points if corrosion has removed part of the arc
         if o_a_ext_at_horizontal < 0:
-            # Find x-coordinate where outer arc crosses y=0 using interpolation between least negative and least positive y
-            x_at_zero = np.interp(0, points[:, 1], points[:, 0])
-            points = np.vstack([[x_at_zero, 0], points[points[:, 1] >= 0]])
-            points = points[points[:, 0] <= x_at_zero]
+            points = points[points[:, 0] <= x_at_y_is_zero]
         if o_a_ext_at_vertical < 0:
-            # Find y-coordinate where outer arc crosses x=0 using interpolation between least negative and least positive x
-            y_at_zero = np.interp(0, points[:, 0], points[:, 1])
-            points = np.vstack([[0, y_at_zero], points[points[:, 0] >= 0]])
-            points = points[points[:, 1] <= y_at_zero]
+            points = points[points[:, 1] <= y_at_x_is_zero]
 
         # Remove consecutive duplicate points
         mask = np.any(np.diff(points, axis=0) != 0, axis=1)
