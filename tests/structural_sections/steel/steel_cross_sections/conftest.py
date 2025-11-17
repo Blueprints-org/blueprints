@@ -19,7 +19,9 @@ from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.lnp import LNP
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.strip import Strip
+from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.unp import UNP
 from blueprints.structural_sections.steel.steel_cross_sections.strip_profile import StripSteelProfile
+from blueprints.structural_sections.steel.steel_cross_sections.unp_profile import UNPSteelProfile
 
 
 @pytest.fixture
@@ -90,3 +92,11 @@ def lnp_profile() -> LNPProfile:
         steel_material=SteelMaterial(steel_class),
         corrosion=0,
     )
+
+
+@pytest.fixture
+def unp_profile() -> UNPSteelProfile:
+    """Fixture to set up a UNP profile for testing."""
+    profile = UNP.UNP300
+    steel_class = SteelStrengthClass.S355
+    return UNPSteelProfile.from_standard_profile(profile=profile, steel_material=SteelMaterial(steel_class), corrosion=0)
