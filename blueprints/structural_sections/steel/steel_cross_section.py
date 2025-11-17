@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Protocol
 
 from blueprints.materials.steel import SteelMaterial
@@ -31,17 +31,26 @@ class SteelCrossSection(SteelCrossSectionProtocol):
         The cross-section. This can be a predefined profile or a generic cross-section.
     material : SteelMaterial
         The material type of the steel.
+
+    Optional Parameters
+    -------------------
+    x_offset : MM, optional
+        The x-coordinate offset of the cross-section's centroid [mm]. Default is 0.0.
+    y_offset : MM, optional
+        The y-coordinate offset of the cross-section's centroid [mm]. Default is 0.0.
+    rotation_angle : DEG, optional
+        The rotation angle of the cross-section in degrees (counter-clockwise). Default is 0.0
     """
 
     cross_section: CrossSection
     """The cross-section. This can be a predefined profile or a generic cross-section."""
     material: SteelMaterial
     """The material type of the steel."""
-    x_offset: MM = 0.0
+    x_offset: MM = field(init=False, default=0.0)
     """The x-coordinate offset of the cross-section's centroid [mm]."""
-    y_offset: MM = 0.0
+    y_offset: MM = field(init=False, default=0.0)
     """The y-coordinate offset of the cross-section's centroid [mm]."""
-    rotation_angle: DEG = 0.0
+    rotation_angle: DEG = field(init=False, default=0.0)
     """The rotation angle of the cross-section in degrees (counter-clockwise)."""
 
     @property
@@ -74,10 +83,11 @@ class SteelCrossSection(SteelCrossSectionProtocol):
         SteelCrossSection
             The transformed steel cross-section.
         """
-        return SteelCrossSection(
+        transformed_section = SteelCrossSection(
             cross_section=self.cross_section,
             material=self.material,
-            x_offset=x_offset,
-            y_offset=y_offset,
-            rotation_angle=rotation_angle,
         )
+        object.__setattr__(transformed_section, "x_offset", x_offset)
+        object.__setattr__(transformed_section, "y_offset", y_offset)
+        object.__setattr__(transformed_section, "rotation_angle", rotation_angle)
+        return transformed_section
