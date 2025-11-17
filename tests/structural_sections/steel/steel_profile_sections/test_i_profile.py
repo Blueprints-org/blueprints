@@ -57,7 +57,7 @@ class TestISteelProfile:
     def test_get_profile_with_corrosion(self) -> None:
         """Test the HEB profile with 20 mm corrosion applied."""
         # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match="The profile has fully corroded."):
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
             IProfile.from_standard_profile(
                 profile=HEB.HEB360,
                 corrosion=20,  # mm

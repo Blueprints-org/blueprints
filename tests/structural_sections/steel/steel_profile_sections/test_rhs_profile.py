@@ -56,7 +56,7 @@ class TestRHSSteelProfile:
     def test_get_profile_with_corrosion(self) -> None:
         """Test the RHS profile with corrosion applied."""
         # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match="The profile has fully corroded."):
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
             RHSProfile.from_standard_profile(
                 profile=RHS.RHS400x200_16,
                 corrosion_outside=16,  # mm

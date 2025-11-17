@@ -46,7 +46,7 @@ class TestStripSteelProfile:
     def test_get_profile_with_corrosion(self) -> None:
         """Test the Strip profile with 2 mm corrosion applied."""
         # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match="The profile has fully corroded."):
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
             StripProfile.from_standard_profile(
                 profile=Strip.STRIP160x5,
                 corrosion=2.5,
