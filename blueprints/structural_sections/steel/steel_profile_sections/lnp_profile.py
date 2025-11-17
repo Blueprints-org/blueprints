@@ -151,8 +151,8 @@ class LNPProfile(CrossSection):
 
         root_radius = profile.root_radius + corrosion
         back_radius = max(profile.back_radius - corrosion, 0)
-        base_toe_radius = min(profile.toe_radius, base_thickness)
-        web_toe_radius = min(profile.toe_radius, web_thickness)
+        base_toe_radius = max(profile.toe_radius - corrosion, 0)
+        web_toe_radius = max(profile.toe_radius - corrosion, 0)
 
         if any(
             [
