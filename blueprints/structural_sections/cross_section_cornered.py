@@ -160,26 +160,16 @@ class CircularCorneredCrossSection(CrossSection):
 
         # Based on input it's possible that either the outer arc or the inner arc is wider/taller
         # than the other (plus thickness). To align them, we need to extend one of the arcs.
-        # Solve for extensions to make inner and outer arcs align
-        # Full system of equations: i_a_width + thickness_horizontal + i_a_ext_h*sin(i_angle_h)
-        # + i_a_ext_v*cos(i_angle_v) = o_a_width + o_a_ext_h*sin(o_angle_h) + o_a_ext_v*cos(o_angle_v)
-        # and i_a_height + thickness_vertical + i_a_ext_h*cos(i_angle_h) + i_a_ext_v*sin(i_angle_v)
-        #   = o_a_height + o_a_ext_h*cos(o_angle_h) + o_a_ext_v*sin(o_angle_v)
-        #
-        # Four unknowns: i_a_ext_h, i_a_ext_v, o_a_ext_h, o_a_ext_v
-        # Either the inner arcs need extension, or the outer arcs do.
-        a = np.array(
-            [
-                [np.sin(self.inner_angle_at_horizontal), np.cos(self.inner_angle_at_vertical)],
-                [np.cos(self.inner_angle_at_horizontal), np.sin(self.inner_angle_at_vertical)],
-            ]
-        )
-        b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
-        i_a_ext_at_horizontal, i_a_ext_at_vertical = np.linalg.solve(a, b)
-
-        if i_a_ext_at_horizontal >= 0 and i_a_ext_at_vertical >= 0:
+        if o_a_width > i_a_width + self.thickness_horizontal and o_a_height > i_a_height + self.thickness_vertical:
+            a = np.array(
+                [
+                    [np.sin(self.inner_angle_at_horizontal), np.cos(self.inner_angle_at_vertical)],
+                    [np.cos(self.inner_angle_at_horizontal), np.sin(self.inner_angle_at_vertical)],
+                ]
+            )
+            b = np.array([o_a_width - i_a_width - self.thickness_horizontal, o_a_height - i_a_height - self.thickness_vertical])
+            i_a_ext_at_horizontal, i_a_ext_at_vertical = np.linalg.solve(a, b)
             o_a_ext_at_horizontal = o_a_ext_at_vertical = 0
-
         else:
             a = np.array(
                 [
@@ -198,7 +188,7 @@ class CircularCorneredCrossSection(CrossSection):
             o_a_height + o_a_ext_at_horizontal * np.cos(self.outer_angle_at_horizontal) + o_a_ext_at_vertical * np.sin(self.outer_angle_at_vertical)
         )
 
-        # Translate outer arc points
+        # Translate outer arc points and allow for corrosion resulting in sharper angle
         outer_arc[:, 0] += o_a_ext_at_vertical * np.cos(self.outer_angle_at_vertical) - np.min(outer_arc[:, 0])
         outer_arc[:, 1] += o_a_ext_at_horizontal * np.cos(self.outer_angle_at_horizontal) - np.min(outer_arc[:, 1])
 
@@ -218,6 +208,18 @@ class CircularCorneredCrossSection(CrossSection):
                 (total_width, 0),
             ]
         )
+
+        # Remove points that are beyond the axes if corrosion has resulted in sharper than profile usually has
+        if o_a_ext_at_horizontal < 0:
+            # Find x-coordinate where outer arc crosses y=0 using interpolation between least negative and least positive y
+            x_at_zero = np.interp(0, points[:, 1], points[:, 0])
+            points = np.vstack([[x_at_zero, 0], points[points[:, 1] >= 0]])
+            points = points[points[:, 0] <= x_at_zero]
+        if o_a_ext_at_vertical < 0:
+            # Find y-coordinate where outer arc crosses x=0 using interpolation between least negative and least positive x
+            y_at_zero = np.interp(0, points[:, 0], points[:, 1])
+            points = np.vstack([[0, y_at_zero], points[points[:, 0] >= 0]])
+            points = points[points[:, 1] <= y_at_zero]
 
         # Remove consecutive duplicate points
         mask = np.any(np.diff(points, axis=0) != 0, axis=1)
