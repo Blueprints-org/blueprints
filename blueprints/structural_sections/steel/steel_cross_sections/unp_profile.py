@@ -100,9 +100,6 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             / 100
         )
 
-        top_thickness_at_toe = max(0, self.top_flange_thickness - (self.top_flange_total_width / 2) * self.top_slope / 100)
-        bottom_thickness_at_toe = max(0, self.bottom_flange_thickness - (self.bottom_flange_total_width / 2) * self.bottom_slope / 100)
-
         self.corner_top = CircularCorneredCrossSection(
             name="Corner top",
             inner_radius=self.top_root_fillet_radius,
@@ -136,13 +133,10 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             y=0,
         )
 
-        # because toe radius gets interrupted by top of flange when corrosion is near maximum
-        # we use a modelled top toe radius to avoid impossible geometry
-        modelled_top_toe_radius = min(self.top_toe_radius, top_thickness_at_toe) if min(self.top_toe_radius, top_thickness_at_toe) >= 1.0 else 0
         self.top_flange = CircularCorneredCrossSection(
             name="Top flange",
             inner_radius=0,
-            outer_radius=modelled_top_toe_radius,
+            outer_radius=self.top_toe_radius,
             x=self.corner_top.total_width,
             y=self.total_height / 2,
             corner_direction=3,
@@ -151,15 +145,10 @@ class UNPSteelProfile(CombinedSteelCrossSection):
             outer_slope_at_vertical=self.top_slope,
         )
 
-        # because toe radius gets interrupted by top of flange when corrosion is near maximum
-        # we use a modelled top toe radius to avoid impossible geometry
-        modelled_bottom_toe_radius = (
-            min(self.bottom_toe_radius, bottom_thickness_at_toe) if min(self.bottom_toe_radius, bottom_thickness_at_toe) >= 1.0 else 0
-        )
         self.bottom_flange = CircularCorneredCrossSection(
             name="Bottom flange",
             inner_radius=0,
-            outer_radius=modelled_bottom_toe_radius,
+            outer_radius=self.bottom_toe_radius,
             x=self.corner_bottom.total_width,
             y=-self.total_height / 2,
             corner_direction=0,
