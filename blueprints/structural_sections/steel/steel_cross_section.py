@@ -32,8 +32,11 @@ class SteelCrossSection(SteelCrossSectionProtocol):
     material : SteelMaterial
         The material type of the steel.
 
-    Optional Parameters
-    -------------------
+    Notes
+    -----
+    The following parameters are only used for positioning and orienting the cross-section
+    in the context of a combined cross-section. They can be set after instantiation using the
+    `add_steel_cross_section` method of the `CombinedSteelCrossSection` class.
     x_offset : MM, optional
         The x-coordinate offset of the cross-section's centroid [mm]. Default is 0.0.
     y_offset : MM, optional
