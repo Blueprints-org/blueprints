@@ -1,0 +1,1 @@
+"""Test steel strength checks."""
