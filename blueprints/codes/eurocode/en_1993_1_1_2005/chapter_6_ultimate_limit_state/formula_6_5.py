@@ -43,6 +43,16 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         raise_if_negative(n_ed=n_ed)
         return (n_ed / n_t_rd) <= 1
 
+    @staticmethod
+    def _evaluate_intermediate(
+        n_ed: N,
+        n_t_rd: N,
+    ) -> float:
+        """Evaluates the intermediate result N_Ed / N_t,Rd."""
+        raise_if_less_or_equal_to_zero(n_t_rd=n_t_rd)
+        raise_if_negative(n_ed=n_ed)
+        return n_ed / n_t_rd
+
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.5."""
         _equation: str = r"\left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right)"
@@ -54,9 +64,12 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
             },
             False,
         )
+        _intermediate_result: str = rf"\left( {self._evaluate_intermediate(self.n_ed, self.n_t_rd):.{n}f} \leq 1 \right)"
+
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="\\to",
