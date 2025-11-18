@@ -109,7 +109,7 @@ class SteelIProfileStrengthClass3:
             n : int, optional
                 Formula numbering for LaTeX output (default is 1).
             short : bool, optional
-                If True, returns a short LaTeX output; otherwise, returns detailed output.
+                If True, returns a short LaTeX output; otherwise, returns detailed output (default is False).
 
             Returns
             -------
@@ -154,7 +154,7 @@ class SteelIProfileStrengthClass3:
         n : int, optional
             Formula numbering for LaTeX output (default is 1).
         short : bool, optional
-            If True, returns a short LaTeX output; otherwise, returns detailed output.
+            If True, returns a short LaTeX output; otherwise, returns detailed output (default is False).
 
         Returns
         -------
