@@ -121,19 +121,19 @@ class SteelIProfileStrengthClass3:
 
             if self.load_combination.normal_force > 0:
                 text = "\\text{Normal force check: tension checks applied using chapter 6.2.3.}"
-                n_t_rd, check = self.calculation_steps()
+                if short:
+                    text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
                 if not short:
-                    text += f"\\\\\\text{{With formula 6.6:}}\\\\{n_t_rd.latex(n=n)}"
-                    text += "\\\\\\text{With formula 6.5:}"
-                text += f"\\\\{check.latex(n=n)}"
+                    for step in self.calculation_steps():
+                        text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
                 return text
 
             text = "\\text{Normal force check: compression checks applied using chapter 6.2.4.}"
-            n_c_rd, check = self.calculation_steps()
+            if short:
+                text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
             if not short:
-                text += f"\\\\\\text{{With formula 6.10:}}\\\\{n_c_rd.latex(n=n)}"
-                text += "\\\\\\text{With formula 6.9:}"
-            text += f"\\\\{check.latex(n=n)}"
+                for step in self.calculation_steps():
+                    text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
             return text
 
     # To be extended with more checks (shear, bending, torsion, various combinations and finally complete check)
