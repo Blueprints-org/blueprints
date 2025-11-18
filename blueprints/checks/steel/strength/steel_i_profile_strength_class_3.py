@@ -31,6 +31,14 @@ class SteelIProfileStrengthClass3:
         Partial safety factor for resistance of cross-sections, default is 1.0.
     """
 
+    def __init__(
+        self, profile: ISteelProfile, properties: SectionProperties, load_combination: LoadCombination, gamma_m0: DIMENSIONLESS = 1.0
+    ) -> None:
+        self.profile = profile
+        self.properties = properties
+        self.load_combination = load_combination
+        self.gamma_m0 = gamma_m0
+
     class NormalForceCheck:
         """Class to perform normal force resistance check.
 
@@ -135,3 +143,32 @@ class SteelIProfileStrengthClass3:
 
     # To be extended with more checks (shear, bending, torsion, various combinations and finally complete check)
     # ones the presented structure above is discussed and decided upon
+
+    def value(self) -> bool:
+        """Returns True if all strength criteria for the steel I-profile pass, False otherwise."""
+        # Check normal force
+        normal_force_check = self.NormalForceCheck(self.profile, self.properties, self.load_combination, self.gamma_m0)
+        return normal_force_check.value()
+
+    def latex(self, n: int = 1, short: bool = False) -> str:
+        """
+        Returns the combined LaTeX string representation for all strength checks.
+
+        Parameters
+        ----------
+        n : int, optional
+            Formula numbering for LaTeX output (default is 1).
+        short : bool, optional
+            If True, returns a short LaTeX output; otherwise, returns detailed output.
+
+        Returns
+        -------
+        str
+            Combined LaTeX representation of all strength checks.
+        """
+        all_latex = ""
+
+        # Check normal force
+        all_latex += self.NormalForceCheck(self.profile, self.properties, self.load_combination, self.gamma_m0).latex(n=n, short=short)
+
+        return all_latex
