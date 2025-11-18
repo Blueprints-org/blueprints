@@ -30,8 +30,6 @@ Welcome to `Blueprints`, the go-to repository for civil engineering professional
 It includes programmable engineering standards, formulas, tables, and checks across a variety of structural and geotechnical disciplines. We offer 
 tools for materials, geometry, and section checks, as well as a foundation of essential use cases designed to meet all key engineering needs.
 
-Blueprints is a collaborative effort between several engineering companies to streamline code, documentation, and knowledge sharing—helping you focus on the work that matters most.
-
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
 See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/roadmap) for detailed feature status and upcoming developments.
