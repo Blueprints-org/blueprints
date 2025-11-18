@@ -1,4 +1,7 @@
-"""Steel I-Profile strength check according to Eurocode 3."""
+"""Steel I-Profile strength check according to Eurocode 3.
+
+This module provides strength checks for steel I-profiles of class 3 cross-sections according to Eurocode 3.
+"""
 
 import numpy as np
 from sectionproperties.post.post import SectionProperties
@@ -14,39 +17,36 @@ from blueprints.unit_conversion import KN_TO_N
 class SteelIProfileStrengthClass3:
     """Steel I-Profile strength check for class 3.
 
-    This class performs strength checks on steel I-profiles according to Eurocode 3, for class 3 cross-sections.
+    Performs strength checks on steel I-profiles according to Eurocode 3, for class 3 cross-sections.
 
     Parameters
     ----------
     profile : ISteelProfile
         The steel I-profile to check.
+    properties : SectionProperties
+        The section properties of the profile.
     load_combination : LoadCombination
         The load combination to apply to the profile.
+    gamma_m0 : DIMENSIONLESS, optional
+        Partial safety factor for resistance of cross-sections, default is 1.0.
     """
 
-    def __init__(
-        self, profile: ISteelProfile, properties: SectionProperties, load_combination: LoadCombination, gamma_m0: DIMENSIONLESS = 1.0
-    ) -> None:
-        """Initialize the steel I-profile strength check.
+    class NormalForceCheck:
+        """Class to perform normal force resistance check.
+
+        Checks normal force resistance for steel I-profiles according to Eurocode 3, chapter 6.2.3 (tension) and 6.2.4 (compression).
 
         Parameters
         ----------
         profile : ISteelProfile
             The steel I-profile to check.
-        properties: SectionProperties
+        properties : SectionProperties
             The section properties of the profile.
         load_combination : LoadCombination
             The load combination to apply to the profile.
-        gamma_m0 : DIMENSIONLESS
+        gamma_m0 : DIMENSIONLESS, optional
             Partial safety factor for resistance of cross-sections, default is 1.0.
         """
-        self.profile = profile
-        self.properties = properties
-        self.load_combination = load_combination
-        self.gamma_m0 = gamma_m0
-
-    class NormalForceCheck:
-        """Class to perform normal force resistance check."""
 
         def __init__(
             self, profile: ISteelProfile, properties: SectionProperties, load_combination: LoadCombination, gamma_m0: DIMENSIONLESS = 1.0
@@ -61,8 +61,8 @@ class SteelIProfileStrengthClass3:
 
             Returns
             -------
-            list
-                Calculation results and check objects.
+            list of Formula
+                Calculation results and check objects. Returns an empty list if no normal force is applied.
             """
             if self.load_combination.normal_force == 0:
                 return []
@@ -99,7 +99,20 @@ class SteelIProfileStrengthClass3:
             return bool(self.calculation_steps()[-1])
 
         def latex(self, n: int = 1, short: bool = False) -> str:
-            """Returns the lateX string representation for Nominal concrete cover check."""
+            """Returns the LaTeX string representation for the normal force check.
+
+            Parameters
+            ----------
+            n : int, optional
+                Formula numbering for LaTeX output (default is 1).
+            short : bool, optional
+                If True, returns a short LaTeX output; otherwise, returns detailed output.
+
+            Returns
+            -------
+            str
+                LaTeX representation of the normal force check.
+            """
             if self.load_combination.normal_force == 0:
                 return r"\text{Normal force check: no normal force applied.} \\ CHECK \to OK"
 
