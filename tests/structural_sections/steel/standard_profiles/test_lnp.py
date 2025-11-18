@@ -64,5 +64,5 @@ class TestLNP:
         assert cross_section.base_thickness == expected_thickness
         assert cross_section.root_radius == profile.root_radius + corrosion
         assert cross_section.back_radius == profile.back_radius
-        assert cross_section.web_toe_radius == min(profile.toe_radius, expected_thickness)
-        assert cross_section.base_toe_radius == min(profile.toe_radius, expected_thickness)
+        assert cross_section.web_toe_radius == max(profile.toe_radius - corrosion, 0)
+        assert cross_section.base_toe_radius == max(profile.toe_radius - corrosion, 0)
