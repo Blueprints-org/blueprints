@@ -101,15 +101,15 @@ class SteelIProfileStrengthClass3:
                 return True
             return bool(self.calculation_steps()[-1])
 
-        def latex(self, n: int = 1, short: bool = False) -> str:
+        def latex(self, n: int = 1, summary: bool = False) -> str:
             """Returns the LaTeX string representation for the normal force check.
 
             Parameters
             ----------
             n : int, optional
                 Formula numbering for LaTeX output (default is 1).
-            short : bool, optional
-                If True, returns a short LaTeX output; otherwise, returns detailed output (default is False).
+            summary : bool, optional
+                If True, returns a summary LaTeX output; otherwise, returns detailed output (default is False).
 
             Returns
             -------
@@ -124,9 +124,9 @@ class SteelIProfileStrengthClass3:
                 text = "\\text{Normal force check: compression checks applied using chapter 6.2.4.}"
 
             if self.load_combination.normal_force != 0:
-                if short:
+                if summary:
                     text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
-                if not short:
+                else:
                     for step in self.calculation_steps():
                         text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
             return text
@@ -140,7 +140,7 @@ class SteelIProfileStrengthClass3:
         normal_force_check = self.NormalForceCheck(self.profile, self.properties, self.load_combination, self.gamma_m0)
         return normal_force_check.value()
 
-    def latex(self, n: int = 1, short: bool = False) -> str:
+    def latex(self, n: int = 1, summary: bool = False) -> str:
         """
         Returns the combined LaTeX string representation for all strength checks.
 
@@ -148,8 +148,8 @@ class SteelIProfileStrengthClass3:
         ----------
         n : int, optional
             Formula numbering for LaTeX output (default is 1).
-        short : bool, optional
-            If True, returns a short LaTeX output; otherwise, returns detailed output (default is False).
+        summary : bool, optional
+            If True, returns a summary LaTeX output; otherwise, returns detailed output (default is False).
 
         Returns
         -------
@@ -159,6 +159,6 @@ class SteelIProfileStrengthClass3:
         all_latex = ""
 
         # Check normal force
-        all_latex += self.NormalForceCheck(self.profile, self.properties, self.load_combination, self.gamma_m0).latex(n=n, short=short)
+        all_latex += self.NormalForceCheck(self.profile, self.properties, self.load_combination, self.gamma_m0).latex(n=n, summary=summary)
 
         return all_latex
