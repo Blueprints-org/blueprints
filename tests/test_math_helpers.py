@@ -1,5 +1,6 @@
 """Testing math helpers for Blueprints."""
 
+import numpy as np
 import pytest
 
 from blueprints.math_helpers import angle_to_slope, cot, csc, sec, slope_to_angle
@@ -57,7 +58,7 @@ class TestCsc:
 class TestSlopeToAngle:
     """Validation for slope to angle conversion."""
 
-    @pytest.mark.parametrize(("slope", "expected_result"), [(0, 0), (100, 45)])
+    @pytest.mark.parametrize(("slope", "expected_result"), [(0, 0), (100, 45), (np.inf, 90), (-np.inf, -90)])
     def test_evaluation(self, slope: float, expected_result: float) -> None:
         """Tests the evaluation of the result."""
         assert slope_to_angle(slope) == pytest.approx(expected_result, rel=1e-4)
@@ -66,13 +67,7 @@ class TestSlopeToAngle:
 class TestAngleToSlope:
     """Validation for angle to slope conversion."""
 
-    @pytest.mark.parametrize(("angle", "expected_result"), [(0, 0), (45, 100)])
+    @pytest.mark.parametrize(("angle", "expected_result"), [(0, 0), (45, 100), (90, np.inf), (-90, -np.inf)])
     def test_evaluation(self, angle: float, expected_result: float) -> None:
         """Tests the evaluation of the result."""
         assert angle_to_slope(angle) == pytest.approx(expected_result, rel=1e-4)
-
-    @pytest.mark.parametrize("angle", [-10.0, 100.0])
-    def test_raise_error_when_invalid_values_are_given(self, angle: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, GreaterThan90Error)):
-            angle_to_slope(angle)

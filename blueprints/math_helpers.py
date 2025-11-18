@@ -89,6 +89,10 @@ def angle_to_slope(angle: DEG) -> PERCENTAGE:
     PERCENTAGE
         Slope as a percentage.
     """
-    raise_if_negative(angle=angle)
+    if angle == 90:
+        return np.inf
+    if angle == -90:
+        return -np.inf
+    raise_if_greater_than_90(angle=-angle)
     raise_if_greater_than_90(angle=angle)
     return np.tan(np.deg2rad(angle)) * 100
