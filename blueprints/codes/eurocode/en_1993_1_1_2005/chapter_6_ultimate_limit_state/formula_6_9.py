@@ -45,7 +45,7 @@ class Form6Dot9CheckCompressionForce(Formula):
         return n_ed / n_c_rd <= 1
 
     @staticmethod
-    def _evaluate_intermediate(
+    def _unity_check(
         n_ed: N,
         n_c_rd: N,
     ) -> DIMENSIONLESS:
@@ -66,7 +66,7 @@ class Form6Dot9CheckCompressionForce(Formula):
             },
             False,
         )
-        _intermediate_result: str = rf"\left( {self._evaluate_intermediate(self.n_ed, self.n_c_rd):.{n}f} \leq 1 \right)"
+        _intermediate_result: str = rf"\left( {self._unity_check(self.n_ed, self.n_c_rd):.{n}f} \leq 1 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",

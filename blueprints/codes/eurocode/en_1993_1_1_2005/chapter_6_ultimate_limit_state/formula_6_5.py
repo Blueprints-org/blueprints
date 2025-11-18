@@ -44,7 +44,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         return (n_ed / n_t_rd) <= 1
 
     @staticmethod
-    def _evaluate_intermediate(
+    def _unity_check(
         n_ed: N,
         n_t_rd: N,
     ) -> float:
@@ -64,7 +64,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
             },
             False,
         )
-        _intermediate_result: str = rf"\left( {self._evaluate_intermediate(self.n_ed, self.n_t_rd):.{n}f} \leq 1 \right)"
+        _intermediate_result: str = rf"\left( {self._unity_check(self.n_ed, self.n_t_rd):.{n}f} \leq 1 \right)"
 
         return LatexFormula(
             return_symbol=r"CHECK",
