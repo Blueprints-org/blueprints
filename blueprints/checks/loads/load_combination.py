@@ -31,22 +31,22 @@ class LoadCombination:
     Attributes
     ----------
     normal_force : KN
-        Normal force (positive = tension, negative = compression) [kN].
+        Normal force (positive = tension, negative = compression) [kN], default is 0.
     shear_force_y : KN
-        Shear force in y-axis (horizontal) [kN].
+        Shear force in y-axis (horizontal) [kN], default is 0.
     shear_force_z : KN
-        Shear force in z-axis (vertical) [kN].
+        Shear force in z-axis (vertical) [kN], default is 0.
     bending_moment_y : KNM
-        Bending moment around y-axis [kNm].
+        Bending moment around y-axis [kNm], default is 0.
     bending_moment_z : KNM
-        Bending moment around z-axis [kNm].
+        Bending moment around z-axis [kNm], default is 0.
     torsion : KNM
-        Torsional moment [kNm].
+        Torsional moment [kNm], default is 0.
     """
 
-    normal_force: KN
-    shear_force_y: KN
-    shear_force_z: KN
-    bending_moment_y: KNM
-    bending_moment_z: KNM
-    torsion: KNM
+    normal_force: KN = 0
+    shear_force_y: KN = 0
+    shear_force_z: KN = 0
+    bending_moment_y: KNM = 0
+    bending_moment_z: KNM = 0
+    torsion: KNM = 0

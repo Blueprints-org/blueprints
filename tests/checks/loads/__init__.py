@@ -1,1 +1,1 @@
-"""Define loads."""
+"""Tests loads."""
