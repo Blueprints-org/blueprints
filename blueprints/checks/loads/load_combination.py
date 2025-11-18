@@ -1,4 +1,4 @@
-"""Load combination used for a strength or stability checks."""
+"""Load combination used for strength or stability checks."""
 
 from dataclasses import dataclass
 
@@ -7,7 +7,7 @@ from blueprints.type_alias import KN, KNM
 
 @dataclass(frozen=True)
 class LoadCombination:
-    """Load combination used for a strength or stability checks.
+    """Load combination used for strength or stability checks.
 
                 z (vertical, usually strong axis)
                 ↑
