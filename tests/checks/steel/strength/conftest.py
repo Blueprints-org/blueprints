@@ -1,4 +1,4 @@
-"""Tests for SteelIProfileStrengthClass3.NormalForceCheck according to Eurocode 3."""
+"""Fixtures for steel strength check tests."""
 
 import pytest
 from sectionproperties.post.post import SectionProperties

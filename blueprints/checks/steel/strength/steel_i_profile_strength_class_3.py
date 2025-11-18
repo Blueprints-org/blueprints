@@ -3,7 +3,6 @@
 This module provides strength checks for steel I-profiles of class 3 cross-sections according to Eurocode 3.
 """
 
-import numpy as np
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.loads.load_combination import LoadCombination
@@ -77,9 +76,7 @@ class SteelIProfileStrengthClass3:
             if self.load_combination.normal_force > 0:  # tension, based on chapter 6.2.3
                 n_ed = self.load_combination.normal_force * KN_TO_N
                 a = self.properties.area
-                f_y = np.inf
-                for element in self.profile.elements:
-                    f_y = element.yield_strength if f_y > element.yield_strength else f_y
+                f_y = min(element.yield_strength for element in self.profile.elements)
                 n_t_rd = formula_6_6.Form6Dot6DesignPlasticRestistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
                 check_tension = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
                 return [n_t_rd, check_tension]
@@ -87,9 +84,7 @@ class SteelIProfileStrengthClass3:
             # compression
             n_ed = -self.load_combination.normal_force * KN_TO_N
             a = self.properties.area
-            f_y = np.inf
-            for element in self.profile.elements:
-                f_y = element.yield_strength if f_y > element.yield_strength else f_y
+            f_y = min(element.yield_strength for element in self.profile.elements)
             n_c_rd = formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
             check_compression = formula_6_9.Form6Dot9CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd)
             return [n_c_rd, check_compression]
