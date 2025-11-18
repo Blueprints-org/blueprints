@@ -1,6 +1,5 @@
 """Tests for SteelIProfileStrengthClass3.NormalForceCheck according to Eurocode 3."""
 
-import pytest
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.loads.load_combination import LoadCombination
@@ -51,39 +50,33 @@ class TestSteelIProfileStrengthClass3NormalForceCheck:
         check = SteelIProfileStrengthClass3.NormalForceCheck(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
         assert isinstance(check.value(), bool)
 
-    @pytest.mark.parametrize(
-        ("short", "expected_substrings"),
-        [
-            (
-                True,
-                (
-                    r"\text{Normal force check: compression checks applied using chapter 6.2.4.}",
-                    r"\\CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( ",
-                    r"\frac{100000.0}{5293746.7} \leq 1 \right) \to OK",
-                ),
-            ),
-            (
-                False,
-                (
-                    r"\text{Normal force check: compression checks applied using chapter 6.2.4.}",
-                    r"\\\text{With formula 6.10:}\\N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = ",
-                    r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N\\\text{With formula 6.9:}\\CHECK ",
-                    r"\to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} ",
-                    r"\leq 1 \right) \to OK",
-                ),
-            ),
-        ],
-    )
-    def test_latex_compression(
-        self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties], short: bool, expected_substrings: tuple[str, ...]
-    ) -> None:
-        """Test latex output with short flag for compression."""
+    def test_latex_compression_short(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test short latex output."""
         (heb_profile, heb_properties) = heb_profile_and_properties
         load_compression = LoadCombination(-100, 50, 30, 25, 15, 5)
         check = SteelIProfileStrengthClass3.NormalForceCheck(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
-        latex_output = check.latex(short=short)
-        for substring in expected_substrings:
-            assert substring in latex_output
+        latex_output = check.latex(short=True)
+        expected = (
+            r"\text{Normal force check: compression checks applied using chapter 6.2.4.}"
+            r"\\CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( "
+            r"\frac{100000.0}{5293746.7} \leq 1 \right) \to OK"
+        )
+        assert expected == latex_output
+
+    def test_latex_compression_long(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test long latex output."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        load_compression = LoadCombination(-100, 50, 30, 25, 15, 5)
+        check = SteelIProfileStrengthClass3.NormalForceCheck(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
+        latex_output = check.latex(short=False)
+        expected = (
+            r"\text{Normal force check: compression checks applied using chapter 6.2.4.}\\"
+            r"\text{With formula 6.10:}\\N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
+            r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N\\\text{With formula 6.9:}\\CHECK "
+            r"\to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
+            r"\leq 1 \right) \to OK"
+        )
+        assert expected == latex_output
 
     def test_latex_tension(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test latex output with short flag for tension."""
