@@ -6,6 +6,7 @@ from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
 
+
 class AnalysisType(Enum):
     """Enumeration for analysis types."""
     ELASTIC = "elastic analysis"
@@ -57,7 +58,7 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
     @property
     def unity_check(self) -> float:
         """Returns the unity check value."""
-        return self.lhs / self.rhs
+        return self.rhs / self.lhs
 
     @staticmethod
     def _evaluate(f_cr: N, f_ed: N, analysis_type: AnalysisType) -> bool:
