@@ -117,23 +117,18 @@ class SteelIProfileStrengthClass3:
                 LaTeX representation of the normal force check.
             """
             if self.load_combination.normal_force == 0:
-                return r"\text{Normal force check: no normal force applied.} \\ CHECK \to OK"
-
-            if self.load_combination.normal_force > 0:
+                text = r"\text{Normal force check: no normal force applied.} \\ CHECK \to OK"
+            elif self.load_combination.normal_force > 0:
                 text = "\\text{Normal force check: tension checks applied using chapter 6.2.3.}"
+            elif self.load_combination.normal_force < 0:
+                text = "\\text{Normal force check: compression checks applied using chapter 6.2.4.}"
+
+            if self.load_combination.normal_force != 0:
                 if short:
                     text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
                 if not short:
                     for step in self.calculation_steps():
                         text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
-                return text
-
-            text = "\\text{Normal force check: compression checks applied using chapter 6.2.4.}"
-            if short:
-                text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
-            if not short:
-                for step in self.calculation_steps():
-                    text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
             return text
 
     # To be extended with more checks (shear, bending, torsion, various combinations and finally complete check)
