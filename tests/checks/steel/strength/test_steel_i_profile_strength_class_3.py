@@ -5,26 +5,30 @@ from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.loads.load_combination import LoadCombination
 from blueprints.checks.steel.strength.steel_i_profile_strength_class_3 import SteelIProfileStrengthClass3
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
-from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
-from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
+
+
+class TestSteelIProfileStrengthClass3:
+    """Tests for SteelIProfileStrengthClass3."""
+
+    def test_value(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test value() returns True for no normal force."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        load_none = LoadCombination(0, 0, 0, 0, 0, 0)
+        check = SteelIProfileStrengthClass3(heb_profile, heb_properties, load_none, gamma_m0=1.0)
+        assert check.value() is True
+
+    def test_latex(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test latex output for SteelIProfileStrengthClass3."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        load_none = LoadCombination(0, 0, 0, 0, 0, 0)
+        check = SteelIProfileStrengthClass3(heb_profile, heb_properties, load_none, gamma_m0=1.0)
+        latex_output = check.latex()
+        assert len(latex_output) > 0
 
 
 class TestSteelIProfileStrengthClass3NormalForceCheck:
-    """Validation for SteelIProfileStrengthClass3.NormalForceCheck."""
-
-    @pytest.fixture(scope="class")
-    def heb_profile_and_properties(self) -> tuple[ISteelProfile, SectionProperties]:
-        """Fixture to create a standard HEB profile and its section properties."""
-        steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-        heb_profile = ISteelProfile.from_standard_profile(
-            profile=HEB.HEB300,
-            steel_material=steel_material,
-            corrosion=0,
-        )
-        heb_properties = heb_profile.section_properties(geometric=True, plastic=False, warping=False)
-        return heb_profile, heb_properties
+    """Tests for SteelIProfileStrengthClass3.NormalForceCheck."""
 
     def test_value_none(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test value() returns True for no normal force."""
