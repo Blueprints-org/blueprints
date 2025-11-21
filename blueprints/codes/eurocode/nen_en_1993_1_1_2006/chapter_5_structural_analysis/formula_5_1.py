@@ -1,9 +1,12 @@
-"""Formula 5.1 from NEN-EN 1993-1-1+C2+A1:2016: Chapter 5 - Structural Analysis."""
+"""Formula 5.1 from NEN-EN 1993-1-1:2006: Chapter 5 - Structural Analysis."""
 
-from blueprints.codes.eurocode.nen_en_1993_1_1_c2_a1_2016 import EN_1993_1_1_C2_A1_2016
+import operator
+from typing import Any, Callable
+from blueprints.codes.eurocode.nen_en_1993_1_1_2006 import EN_1993_1_1_2006
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
+from blueprints.validations import raise_if_mismatch_sign
 
 
 class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
@@ -12,12 +15,12 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
     """
 
     label = "5.1"
-    source_document = EN_1993_1_1_C2_A1_2016
+    source_document = EN_1993_1_1_2006
 
     def __init__(self, f_cr: N, f_ed: N) -> None:
         r"""Check if second order effects of a structure can be disregarded.
 
-        NEN-EN 1993-1-1+C2+A1:2016 - Formula (5.1)
+        NEN-EN 1993-1-1:2006 - Formula (5.1)
 
         Parameters
         ----------
@@ -29,6 +32,15 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         super().__init__()
         self.f_cr = f_cr
         self.f_ed = f_ed
+        self._check_signs()
+
+    def _check_signs(self) -> None:
+        """Check whether signs of f_cr and f_ed match."""
+        raise_if_mismatch_sign(f_cr=self.f_cr, f_ed=self.f_ed)
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        return operator.ge
 
     @staticmethod
     def _evaluate_lhs(f_cr: N, f_ed: N, *args, **kwargs) -> float:
@@ -39,22 +51,6 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
     def _evaluate_rhs(*args, **kwargs) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         return 10
-
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.rhs / self.lhs
-
-    @staticmethod
-    def _evaluate(f_cr: N, f_ed: N) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
-        lhs = From5Dot1CriteriumDisregardSecondOrderEffects._evaluate_lhs(f_cr=f_cr, f_ed=f_ed)
-        rhs = From5Dot1CriteriumDisregardSecondOrderEffects._evaluate_rhs()
-        return lhs >= rhs
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(f_cr=self.f_cr, f_ed=self.f_ed)
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.1."""

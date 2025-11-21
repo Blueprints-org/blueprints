@@ -1,10 +1,13 @@
 """Formula 5.1 from EN 1993-1-1:2005: Chapter 5 - Structural Analysis."""
 
+import operator
+from typing import Any, Callable
 from enum import Enum
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
+from blueprints.validations import raise_if_mismatch_sign
 
 
 class AnalysisType(Enum):
@@ -39,9 +42,18 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         self.f_cr = f_cr
         self.f_ed = f_ed
         self.analysis_type = analysis_type
+        self._check_signs()
 
     _analysis_type_map = {
         AnalysisType.ELASTIC: 10, AnalysisType.PLASTIC: 15}
+
+    def _check_signs(self) -> None:
+        """Check whether signs of f_cr and f_ed match."""
+        raise_if_mismatch_sign(f_cr=self.f_cr, f_ed=self.f_ed)
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        return operator.ge
 
     @staticmethod
     def _evaluate_lhs(f_cr: N, f_ed: N, *args, **kwargs) -> float:
@@ -54,22 +66,6 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         if not isinstance(analysis_type, AnalysisType):
             raise ValueError("analysis_type must be an instance of AnalysisType Enum.")
         return From5Dot1CriteriumDisregardSecondOrderEffects._analysis_type_map[analysis_type]
-
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.rhs / self.lhs
-
-    @staticmethod
-    def _evaluate(f_cr: N, f_ed: N, analysis_type: AnalysisType) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
-        lhs = From5Dot1CriteriumDisregardSecondOrderEffects._evaluate_lhs(f_cr=f_cr, f_ed=f_ed)
-        rhs = From5Dot1CriteriumDisregardSecondOrderEffects._evaluate_rhs(analysis_type=analysis_type)
-        return lhs >= rhs
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(f_cr=self.f_cr, f_ed=self.f_ed, analysis_type=self.analysis_type)
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.1."""

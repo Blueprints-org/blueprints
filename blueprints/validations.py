@@ -1,6 +1,7 @@
 """Module for validation actions inside of Blueprints."""
 
 from collections.abc import Sequence
+from typing import List
 
 
 class LessOrEqualToZeroError(Exception):
@@ -24,6 +25,14 @@ class NegativeValueError(Exception):
 
     def __init__(self, value_name: str, value: float) -> None:
         message = f"Invalid value for '{value_name}': {value}. Values for '{value_name}' cannot be negative."
+        super().__init__(message)
+
+
+class MismatchSignError(Exception):
+    """Raised when not all the keyword values have the same sign."""
+
+    def __init__(self, value_names: List[str]) -> None:
+        message = f"Sign of values {", ".join(value_names)} should be the same."
         super().__init__(message)
 
 
@@ -82,6 +91,23 @@ def raise_if_negative(**kwargs: float) -> None:
     for key, value in kwargs.items():
         if value < 0:
             raise NegativeValueError(value_name=key, value=value)
+
+
+def raise_if_mismatch_sign(**kwargs: float) -> None:
+    """Raise a MisMatchSignError if any of the given keyword arguments have different signs.
+
+    Parameters
+    ----------
+    **kwargs : dict[str, float]
+        A dictionary of keyword arguments where keys are parameter names, and values are the values to validate.
+
+    Raises
+    ------
+    MismatchSignError
+        If any values have different signs.
+    """
+    if kwargs and not (all(v >= 0 for v in kwargs.values()) or all(v <= 0 for v in kwargs.values())):
+        raise MismatchSignError(value_names=list(kwargs.keys()))
 
 
 def raise_if_greater_than_90(**kwargs: float) -> None:
