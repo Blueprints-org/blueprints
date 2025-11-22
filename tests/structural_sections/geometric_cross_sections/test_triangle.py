@@ -3,7 +3,7 @@
 import pytest
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections.geometric_cross_sections.cross_section_triangle import RightAngledTriangularCrossSection
+from blueprints.structural_sections.geometric_cross_sections.triangle import RightAngledTriangularCrossSection
 
 
 class TestRightAngledTriangularCrossSection:

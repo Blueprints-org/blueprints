@@ -4,7 +4,7 @@ import pytest
 from sectionproperties.analysis import Section
 from shapely import Polygon
 
-from blueprints.structural_sections.geometric_cross_sections.cross_section_circle import CircularCrossSection
+from blueprints.structural_sections.geometric_cross_sections.circle import CircularCrossSection
 
 
 class TestCircularCrossSection:

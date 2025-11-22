@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.structural_sections.geometric_cross_sections.cross_section_cornered import CircularCorneredCrossSection
+from blueprints.structural_sections.geometric_cross_sections.cornered import CircularCorneredCrossSection
 from blueprints.validations import NegativeValueError
 
 
