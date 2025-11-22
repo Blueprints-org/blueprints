@@ -1,4 +1,4 @@
-"""Module containing the class definition for a combined steel cross-section, allowing for cross-sections with multiple steel materials."""
+"""Module containing the class definition for a combined steel cross-section, enabling cross-sections composed of multiple steel components with potentially different materials and geometries."""
 
 from __future__ import annotations
 
