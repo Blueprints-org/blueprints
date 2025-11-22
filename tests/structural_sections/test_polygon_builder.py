@@ -16,7 +16,7 @@ class TestMergePolygons:
 
     def test_merge_polygons_empty_list(self) -> None:
         """Test that ValueError is raised when an empty list is provided."""
-        with pytest.raises(ValueError, match="No elements have been added to the cross-section."):
+        with pytest.raises(ValueError, match=r"No elements have been added to the cross-section."):
             merge_polygons([])
 
     def test_merge_polygons_single_element(self) -> None:
@@ -219,7 +219,7 @@ class TestMergePolygons:
         rect2 = RectangularCrossSection(width=97.73, height=203.45, x=195.46, y=0.0)  # Gap between them
         elements = [rect1, rect2]
 
-        with pytest.raises(TypeError, match="The combined geometry is not a valid Polygon."):
+        with pytest.raises(TypeError, match=r"The combined geometry is not a valid Polygon."):
             merge_polygons(elements)
 
 

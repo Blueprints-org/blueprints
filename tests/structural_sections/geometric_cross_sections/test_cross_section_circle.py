@@ -46,7 +46,7 @@ class TestCircularCrossSection:
 
     def test_no_plotter_defined(self, circular_cross_section: CircularCrossSection) -> None:
         """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
-        with pytest.raises(AttributeError, match="No plotter is defined."):
+        with pytest.raises(AttributeError, match=r"No plotter is defined."):
             _ = circular_cross_section.plotter
 
     def test_immutability(self, circular_cross_section: CircularCrossSection) -> None:
