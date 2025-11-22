@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from blueprints.structural_sections.geometric_cross_sections.cross_section_hexagon import HexagonalCrossSection
+from blueprints.structural_sections.geometric_cross_sections.hexagon import HexagonalCrossSection
 
 
 class TestHexagonalCrossSection:

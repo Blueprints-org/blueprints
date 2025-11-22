@@ -3,7 +3,7 @@
 import pytest
 from sectionproperties.analysis import Section
 
-from blueprints.structural_sections.geometric_cross_sections.cross_section_annular_sector import AnnularSectorCrossSection
+from blueprints.structural_sections.geometric_cross_sections.annular_sector import AnnularSectorCrossSection
 
 
 class TestAnnularSectorCrossSection:
