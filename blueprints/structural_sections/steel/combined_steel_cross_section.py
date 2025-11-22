@@ -1,4 +1,6 @@
-"""Module containing the class definition for a combined steel cross-section, enabling cross-sections composed of multiple steel components with potentially different materials and geometries."""
+"""Module containing the class definition for a combined steel cross-section,
+enabling cross-sections composed of multiple steel components with potentially different materials and geometries.
+"""
 
 from __future__ import annotations
 
@@ -13,23 +15,22 @@ class CombinedSteelCrossSection(SteelCrossSectionProtocol):
     """Representation of a combined steel cross-section made up of multiple steel cross-sections.
 
     Usage example:
-    ```python
-    combined_section = (
-        CombinedSteelCrossSection()
-        .add_steel_cross_section(
-            steel_cross_section=main_steel_cross_section,
-            x_offset=0,
-            y_offset=0,
-            rotation_angle=0,
+    >>> # Assuming main_steel_cross_section and stiffener are predefined SteelCrossSection instances
+        combined_section = (
+            CombinedSteelCrossSection()
+            .add_steel_cross_section(
+                steel_cross_section=main_steel_cross_section,
+                x_offset=0,
+                y_offset=0,
+                rotation_angle=0,
+            )
+            .add_steel_cross_section(
+                steel_cross_section=stiffener,
+                x_offset=0,
+                y_offset=main_steel_cross_section.cross_section.cross_section_height / 2 + stiffener.cross_section.cross_section_height / 2,
+                rotation_angle=0,
+            )
         )
-        .add_steel_cross_section(
-            steel_cross_section=stiffener,
-            x_offset=0,
-            y_offset=main_steel_cross_section.cross_section.cross_section_height / 2 + stiffener.cross_section.cross_section_height / 2,
-            rotation_angle=0,
-        )
-    )
-    ```
     """
 
     _steel_cross_sections: tuple[SteelCrossSection, ...] = field(init=False, default_factory=tuple)

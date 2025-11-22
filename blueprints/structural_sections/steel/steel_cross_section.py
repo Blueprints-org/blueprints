@@ -42,7 +42,7 @@ class SteelCrossSection(SteelCrossSectionProtocol):
     y_offset : MM, optional
         The y-coordinate offset of the cross-section's centroid [mm]. Default is 0.0.
     rotation_angle : DEG, optional
-        The rotation angle of the cross-section in degrees (counter-clockwise). Default is 0.0
+        The rotation angle of the cross-section in degrees (counter-clockwise). Default is 0.0.
     """
 
     cross_section: CrossSection

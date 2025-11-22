@@ -56,7 +56,7 @@ class TestSteelCrossSection:
         steel_cross_section: SteelCrossSection,
         kwargs: dict,
     ) -> None:
-        """Test that the optional parameters can be set correctly."""
+        """Test that the optional parameters cannot be set during initialization."""
         with pytest.raises(TypeError):
             SteelCrossSection(
                 cross_section=steel_cross_section.cross_section,
