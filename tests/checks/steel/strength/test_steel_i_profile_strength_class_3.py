@@ -28,55 +28,37 @@ class TestSteelIProfileStrengthClass3:
         assert calc.check() is True
         assert len(latex_output) > 0
 
-    def test_latex_only_normal(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test latex output for SteelIProfileStrengthClass3."""
+    @pytest.mark.parametrize(
+        "forces_kwargs",
+        [
+            {"N": 0, "Vy": 0, "Vz": 0, "Mx": 0, "My": 0, "Mz": 0},  # all zero
+            {"N": 1, "Vy": 1, "Vz": 1, "Mx": 1, "My": 1, "Mz": 1},  # all ones
+            {"N": 1, "Vy": 0, "Vz": 0, "Mx": 0, "My": 0, "Mz": 0},  # only N
+            {"N": 0, "Vy": 1, "Vz": 0, "Mx": 0, "My": 0, "Mz": 0},  # only Vy
+            {"N": 0, "Vy": 0, "Vz": 1, "Mx": 0, "My": 0, "Mz": 0},  # only Vz
+            {"N": 0, "Vy": 0, "Vz": 0, "Mx": 1, "My": 0, "Mz": 0},  # only Mx
+            {"N": 0, "Vy": 0, "Vz": 0, "Mx": 0, "My": 1, "Mz": 0},  # only My
+            {"N": 0, "Vy": 0, "Vz": 0, "Mx": 0, "My": 0, "Mz": 1},  # only Mz
+            {"N": 0, "Vy": 0, "Vz": 0, "Mx": 0, "My": 1, "Mz": 1},  # My and Mz
+            {"N": 0, "Vy": 1, "Vz": 1, "Mx": 0, "My": 1, "Mz": 1},  # My, Mz and Vy, Vz
+            {"N": 1, "Vy": 0, "Vz": 0, "Mx": 0, "My": 1, "Mz": 0},  # N and My
+            {"N": 1, "Vy": 0, "Vz": 0, "Mx": 0, "My": 0, "Mz": 1},  # N and Mz
+        ],
+    )
+    def test_latex_only_single_force_permutations(
+        self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties], forces_kwargs: dict[str, float]
+    ) -> None:
+        """Test latex output for SteelIProfileStrengthClass3 with 0 and 1 for all N, Vy, Vz, Mx, My, Mz."""
         (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(N=1)
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
-        latex_output = calc.latex()
-        assert calc.check() is True
-        assert len(latex_output) > 0
 
-    def test_latex_only_shear_vy(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test latex output for SteelIProfileStrengthClass3."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(Vy=1)
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
-        latex_output = calc.latex()
-        assert calc.check() is True
-        assert len(latex_output) > 0
-
-    def test_latex_only_shear_vz(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test latex output for SteelIProfileStrengthClass3."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(Vz=1)
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
-        latex_output = calc.latex()
-        assert calc.check() is True
-        assert len(latex_output) > 0
-
-    def test_latex_only_torsion_mx(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test latex output for SteelIProfileStrengthClass3."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(Mx=1)
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
-        latex_output = calc.latex()
-        assert calc.check() is True
-        assert len(latex_output) > 0
-
-    def test_latex_only_bending_my(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test latex output for SteelIProfileStrengthClass3."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(My=1)
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
-        latex_output = calc.latex()
-        assert calc.check() is True
-        assert len(latex_output) > 0
-
-    def test_latex_only_bending_mz(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test latex output for SteelIProfileStrengthClass3."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(Mz=1)
+        result_internal_forces_1d = ResultInternalForce1D(
+            N=forces_kwargs["N"],
+            Vy=forces_kwargs["Vy"],
+            Vz=forces_kwargs["Vz"],
+            Mx=forces_kwargs["Mx"],
+            My=forces_kwargs["My"],
+            Mz=forces_kwargs["Mz"],
+        )
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex()
         assert calc.check() is True
