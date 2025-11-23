@@ -1,5 +1,6 @@
 """Tests for SteelIProfileStrengthClass3.NormalForceCheck according to Eurocode 3."""
 
+import pytest
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.forces.result_internal_forces_1d import ResultInternalForce1D
@@ -26,8 +27,8 @@ class TestSteelIProfileStrengthClass3:
         assert len(latex_output) > 0
 
 
-class TestSteelIProfileStrengthClass3NormalForceCheck:
-    """Tests for SteelIProfileStrengthClass3.NormalForcecalc."""
+class TestSteelIProfileStrengthClass3NormalForce:
+    """Tests for SteelIProfileStrengthClass3.NormalForce."""
 
     def test_check_none(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() returns True for no normal force."""
@@ -93,3 +94,31 @@ class TestSteelIProfileStrengthClass3NormalForceCheck:
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex()
         assert len(latex_output) > 0
+
+    class TestSteelIProfileStrengthClass3NotImplemented:
+        """Tests for not implemented checks in SteelIProfileStrengthClass3."""
+
+        def test_shear_force_not_implemented(self) -> None:
+            """Test that shear force check raises NotImplementedError."""
+            with pytest.raises(NotImplementedError):
+                SteelIProfileStrengthClass3.ShearForce()
+
+        def test_torsion_not_implemented(self) -> None:
+            """Test that torsion check raises NotImplementedError."""
+            with pytest.raises(NotImplementedError):
+                SteelIProfileStrengthClass3.Torsion()
+
+        def test_bending_and_shear_not_implemented(self) -> None:
+            """Test that bending and shear check raises NotImplementedError."""
+            with pytest.raises(NotImplementedError):
+                SteelIProfileStrengthClass3.BendingAndShear()
+
+        def test_multi_bending_and_axial_force_not_implemented(self) -> None:
+            """Test that multi bending and axial force check raises NotImplementedError."""
+            with pytest.raises(NotImplementedError):
+                SteelIProfileStrengthClass3.MultiBendingAndAxialForce()
+
+        def test_multi_bending_shear_and_axial_force_not_implemented(self) -> None:
+            """Test that multi bending, shear, and axial force check raises NotImplementedError."""
+            with pytest.raises(NotImplementedError):
+                SteelIProfileStrengthClass3.MultiBendingShearAndAxialForce()
