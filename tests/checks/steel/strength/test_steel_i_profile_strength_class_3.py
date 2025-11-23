@@ -17,14 +17,24 @@ class TestSteelIProfileStrengthClass3:
         result_internal_forces_1d = ResultInternalForce1D(N=0, Vy=0, Vz=0, Mx=0, My=0, Mz=0)
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         assert calc.check() is True
+        assert len(calc.latex()) > 0
 
     def test_latex(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test latex output for SteelIProfileStrengthClass3."""
         (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(N=0, Vy=0, Vz=0, Mx=0, My=0, Mz=0)
+        result_internal_forces_1d = ResultInternalForce1D(N=1, Vy=1, Vz=1, Mx=1, My=1, Mz=1)
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex()
+        assert calc.check() is True
         assert len(latex_output) > 0
+
+    def test_removal_slashes_at_start(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        r"""Test that latex output does not start with '\\'."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        result_internal_forces_1d = ResultInternalForce1D(Mz=1)
+        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
+        latex_output = calc.latex()
+        assert not latex_output.startswith(r"\\")
 
 
 class TestSteelIProfileStrengthClass3NormalForce:
@@ -84,14 +94,6 @@ class TestSteelIProfileStrengthClass3NormalForce:
         (heb_profile, heb_properties) = heb_profile_and_properties
         load_tension = ResultInternalForce1D(N=100)
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
-        latex_output = calc.latex()
-        assert len(latex_output) > 0
-
-    def test_latex_none(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test latex output with summary flag for no normal force."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_forces_1d = ResultInternalForce1D(N=0)
-        calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex()
         assert len(latex_output) > 0
 
