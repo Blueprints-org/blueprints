@@ -31,8 +31,8 @@ class TestSteelIProfileStrengthClass3:
     @pytest.mark.parametrize(
         "forces_kwargs",
         [
-            {"N": 0, "Vy": 0, "Vz": 0, "Mx": 0, "My": 0, "Mz": 0},  # all zero
-            {"N": 1, "Vy": 1, "Vz": 1, "Mx": 1, "My": 1, "Mz": 1},  # all ones
+            {"N": 0, "Vy": 0, "Vz": 0, "Mx": 0, "My": 0, "Mz": 0},  # none
+            {"N": 1, "Vy": 1, "Vz": 1, "Mx": 1, "My": 1, "Mz": 1},  # all
             {"N": 1, "Vy": 0, "Vz": 0, "Mx": 0, "My": 0, "Mz": 0},  # only N
             {"N": 0, "Vy": 1, "Vz": 0, "Mx": 0, "My": 0, "Mz": 0},  # only Vy
             {"N": 0, "Vy": 0, "Vz": 1, "Mx": 0, "My": 0, "Mz": 0},  # only Vz
