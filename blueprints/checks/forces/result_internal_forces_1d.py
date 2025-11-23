@@ -28,11 +28,11 @@ class ResultInternalForce1D:
 
         Sign conventions:
         - Normal force N_x: positive = tension, negative = compression.
-        - Shear force V_y: positive = left (positive y-direction).
-        - Shear force V_z: positive = up (positive z-direction).
-        - Torsion M_x: positive = from y to z (twisting around x-axis).
-        - Bending moment M_y: positive = from z to x (rotation around y-axis).
-        - Bending moment M_z: positive = from x to y (rotation around z-axis).
+        - Shear force V_y: positive = left (see coordinate system above).
+        - Shear force V_z: positive = up (see coordinate system above).
+        - Torsion M_x: positive = from y to z (twisting around x-axis, see coordinate system above).
+        - Bending moment M_y: positive = from z to x (rotation around y-axis, see coordinate system above).
+        - Bending moment M_z: positive = from x to y (rotation around z-axis, see coordinate system above).
 
     Attributes
     ----------
