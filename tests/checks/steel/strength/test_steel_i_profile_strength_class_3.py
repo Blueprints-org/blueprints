@@ -46,6 +46,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
         result_internal_forces_1d = ResultInternalForce1D(N=0)
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         assert calc.check() is True
+        assert len(calc.latex()) > 0
 
     def test_check_tension_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for ok tension load."""
@@ -53,7 +54,6 @@ class TestSteelIProfileStrengthClass3NormalForce:
         load_tension = ResultInternalForce1D(N=355 * 14908 / 1.0 / 1e3 * 0.99)  # 99% of capacity
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
         assert calc.check() is True
-        assert len(calc.latex()) > 0
 
     def test_check_tension_not_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for not ok tension load."""
@@ -198,6 +198,14 @@ class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
             r"\left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to \left( \frac{100000000.0}{595733834.6} \leq 1 \right) \to OK"
         )
         assert expected == latex_output
+
+    def test_latex_weak_axis_summary(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test summary latex output for weak axis."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        result_internal_forces_1d = ResultInternalForce1D(Mz=100)
+        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, axis="Mz", gamma_m0=1.0)
+        latex_output = calc.latex(summary=True)
+        assert len(latex_output) > 0
 
 
 class TestSteelIProfileStrengthClass3NotImplemented:
