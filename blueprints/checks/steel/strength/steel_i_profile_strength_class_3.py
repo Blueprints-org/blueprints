@@ -156,8 +156,8 @@ class SteelIProfileStrengthClass3:
         result_internal_forces_1d : ResultInternalForce1D
             The load combination to apply to the profile.
         axis : str
-            The axis to check ('strong' or 'weak'), default is 'strong'.
-            Strong axis corresponds to My bending moment, weak axis to Mz bending moment.
+            The axis to check ('My' or 'Mz'), default is 'My'.
+            Usually, the strong axis corresponds to My bending moment, weak axis to Mz bending moment.
         gamma_m0 : DIMENSIONLESS, optional
             Partial safety factor for resistance of cross-sections, default is 1.0.
         """
@@ -167,11 +167,11 @@ class SteelIProfileStrengthClass3:
             profile: ISteelProfile,
             properties: SectionProperties,
             result_internal_forces_1d: ResultInternalForce1D,
-            axis: str = "strong",
+            axis: str = "My",
             gamma_m0: DIMENSIONLESS = 1.0,
         ) -> None:
             # Validate the axis parameter
-            allowed_axes = ["strong", "weak"]
+            allowed_axes = ["My", "Mz"]
             if axis not in allowed_axes:
                 raise ValueError(f"Invalid axis '{axis}'. Allowed checks are {allowed_axes}.")
 
@@ -180,7 +180,7 @@ class SteelIProfileStrengthClass3:
             self.result_internal_forces_1d = result_internal_forces_1d
             self.axis = axis
             self.gamma_m0 = gamma_m0
-            self.moment = self.result_internal_forces_1d.My if self.axis == "strong" else self.result_internal_forces_1d.Mz
+            self.moment = self.result_internal_forces_1d.My if self.axis == "My" else self.result_internal_forces_1d.Mz
 
         def calculation_steps(self) -> list[Formula]:
             """Perform calculation steps for single axis bending moment resistance check.
@@ -194,17 +194,17 @@ class SteelIProfileStrengthClass3:
                 return []
 
             # Based on chapter 6.2.5
-            w_weak = (
+            w_z = (
                 min(self.properties.zyy_plus, self.properties.zyy_minus)
                 if (self.properties.zyy_plus is not None and self.properties.zyy_minus is not None)
                 else 0
             )
-            w_strong = (
+            w_y = (
                 min(self.properties.zxx_plus, self.properties.zxx_minus)
                 if (self.properties.zxx_plus is not None and self.properties.zxx_minus is not None)
                 else 0
             )
-            section_modulus = w_strong if self.axis == "strong" else w_weak
+            section_modulus = w_y if self.axis == "My" else w_z
             f_y = min(element.yield_strength for element in self.profile.elements)
 
             m_ed = abs(self.moment) * KNM_TO_NMM
@@ -300,15 +300,18 @@ class SteelIProfileStrengthClass3:
 
         Warning: Currently only normal force and single axis bending moment checks are implemented.
         """
+        # check normal force
         normal_force_check = self.NormalForce(self.profile, self.properties, self.result_internal_forces_1d, self.gamma_m0).check()
-        bending_moment_strong_axis_check = self.SingleAxisBendingMoment(
-            self.profile, self.properties, self.result_internal_forces_1d, axis="strong", gamma_m0=self.gamma_m0
+
+        # check bending moments
+        bending_moment_w_y_axis_check = self.SingleAxisBendingMoment(
+            self.profile, self.properties, self.result_internal_forces_1d, axis="My", gamma_m0=self.gamma_m0
         ).check()
-        bending_moment_weak_axis_check = self.SingleAxisBendingMoment(
-            self.profile, self.properties, self.result_internal_forces_1d, axis="weak", gamma_m0=self.gamma_m0
+        bending_moment_w_z_axis_check = self.SingleAxisBendingMoment(
+            self.profile, self.properties, self.result_internal_forces_1d, axis="Mz", gamma_m0=self.gamma_m0
         ).check()
 
-        return normal_force_check and bending_moment_strong_axis_check and bending_moment_weak_axis_check
+        return normal_force_check and bending_moment_w_y_axis_check and bending_moment_w_z_axis_check
 
     def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901, PLR0912
         """
@@ -332,16 +335,16 @@ class SteelIProfileStrengthClass3:
         if self.result_internal_forces_1d.N != 0:
             all_latex += self.NormalForce(self.profile, self.properties, self.result_internal_forces_1d, self.gamma_m0).latex(n=n, summary=summary)
 
-        # Check strong axis bending moment
+        # Check Wy axis bending moment
         if self.result_internal_forces_1d.My != 0 and self.result_internal_forces_1d.Mz == 0:
             all_latex += r"\\ " + self.SingleAxisBendingMoment(
-                self.profile, self.properties, self.result_internal_forces_1d, axis="strong", gamma_m0=self.gamma_m0
+                self.profile, self.properties, self.result_internal_forces_1d, axis="My", gamma_m0=self.gamma_m0
             ).latex(n=n, summary=summary)
 
-        # Check weak axis bending moment
+        # Check Wz axis bending moment
         if self.result_internal_forces_1d.Mz != 0 and self.result_internal_forces_1d.My == 0:
             all_latex += r"\\ " + self.SingleAxisBendingMoment(
-                self.profile, self.properties, self.result_internal_forces_1d, axis="weak", gamma_m0=self.gamma_m0
+                self.profile, self.properties, self.result_internal_forces_1d, axis="Mz", gamma_m0=self.gamma_m0
             ).latex(n=n, summary=summary)
 
         # Check single axis shear force Vz (not yet implemented)

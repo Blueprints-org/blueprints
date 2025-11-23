@@ -53,6 +53,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
         load_tension = ResultInternalForce1D(N=355 * 14908 / 1.0 / 1e3 * 0.99)  # 99% of capacity
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
         assert calc.check() is True
+        assert len(calc.latex()) > 0
 
     def test_check_tension_not_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for not ok tension load."""
@@ -128,6 +129,7 @@ class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
         result_internal_forces_1d = ResultInternalForce1D(My=0)
         calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         assert calc.check() is True
+        assert len(calc.latex()) > 0
 
     def test_check_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for ok load."""
@@ -154,15 +156,22 @@ class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
         """Test check() for ok load."""
         (heb_profile, heb_properties) = heb_profile_and_properties
         result_internal_forces_1d = ResultInternalForce1D(Mz=355 * 571000 / 1.0 / 1e6 * 0.99)  # 99% of capacity
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, axis="weak", gamma_m0=1.0)
+        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, axis="Mz", gamma_m0=1.0)
         assert calc.check() is True
 
     def test_check_weak_not_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for not ok load."""
         (heb_profile, heb_properties) = heb_profile_and_properties
         result_internal_forces_1d = ResultInternalForce1D(Mz=355 * 571000 / 1.0 / 1e6 * 1.01)  # 101% of capacity
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, axis="weak", gamma_m0=1.0)
+        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, axis="Mz", gamma_m0=1.0)
         assert calc.check() is False
+
+    def test_invalid_axis(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test that invalid axis raises ValueError."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        result_internal_forces_1d = ResultInternalForce1D(My=100)
+        with pytest.raises(ValueError):
+            SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, axis="invalid", gamma_m0=1.0)
 
     def test_latex_summary(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test summary latex output."""
@@ -171,7 +180,7 @@ class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
         calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex(summary=True)
         expected = (
-            r"\text{Bending moment strong axis checks applied using chapter 6.2.5.}"
+            r"\text{Bending moment My axis checks applied using chapter 6.2.5.}"
             r"\\ CHECK \to \left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to \left( \frac{100000000.0}{595733834.6} \leq 1 \right) \to OK"
         )
         assert expected == latex_output
@@ -183,7 +192,7 @@ class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
         calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex(summary=False)
         expected = (
-            r"\text{Bending moment strong axis checks applied using chapter 6.2.5.}"
+            r"\text{Bending moment My axis checks applied using chapter 6.2.5.}"
             r"\\ \text{With formula 6.14:}\\M_{c,Rd} = \frac{W_{el,min} \cdot f_y}{\gamma_{M0}} = "
             r"\frac{1678123.5 \cdot 355.0}{1.0} = 595733834.6 \ Nmm\\ \text{With formula 6.12:}\\CHECK \to "
             r"\left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to \left( \frac{100000000.0}{595733834.6} \leq 1 \right) \to OK"
