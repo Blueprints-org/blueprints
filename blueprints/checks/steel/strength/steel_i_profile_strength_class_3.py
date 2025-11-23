@@ -335,13 +335,13 @@ class SteelIProfileStrengthClass3:
         if self.result_internal_forces_1d.N != 0:
             all_latex += self.NormalForce(self.profile, self.properties, self.result_internal_forces_1d, self.gamma_m0).latex(n=n, summary=summary)
 
-        # Check Wy axis bending moment
+        # Check My axis bending moment (usually strong axis)
         if self.result_internal_forces_1d.My != 0 and self.result_internal_forces_1d.Mz == 0:
             all_latex += r"\\ " + self.SingleAxisBendingMoment(
                 self.profile, self.properties, self.result_internal_forces_1d, axis="My", gamma_m0=self.gamma_m0
             ).latex(n=n, summary=summary)
 
-        # Check Wz axis bending moment
+        # Check Mz axis bending moment (usually weak axis)
         if self.result_internal_forces_1d.Mz != 0 and self.result_internal_forces_1d.My == 0:
             all_latex += r"\\ " + self.SingleAxisBendingMoment(
                 self.profile, self.properties, self.result_internal_forces_1d, axis="Mz", gamma_m0=self.gamma_m0
