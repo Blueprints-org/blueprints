@@ -5,12 +5,19 @@ This module provides strength checks for steel I-profiles of class 3 cross-secti
 
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.loads.load_combination import LoadCombination
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5, formula_6_6, formula_6_9, formula_6_10
+from blueprints.checks.forces.result_internal_forces_1d import ResultInternalForce1D
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
+    formula_6_5,
+    formula_6_6,
+    formula_6_9,
+    formula_6_10,
+    formula_6_12,
+    formula_6_14,
+)
 from blueprints.codes.formula import Formula
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
 from blueprints.type_alias import DIMENSIONLESS
-from blueprints.unit_conversion import KN_TO_N
+from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM
 
 
 class SteelIProfileStrengthClass3:
@@ -24,21 +31,21 @@ class SteelIProfileStrengthClass3:
         The steel I-profile to check.
     properties : SectionProperties
         The section properties of the profile.
-    load_combination : LoadCombination
+    result_internal_forces_1d : ResultInternalForce1D
         The load combination to apply to the profile.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
     """
 
     def __init__(
-        self, profile: ISteelProfile, properties: SectionProperties, load_combination: LoadCombination, gamma_m0: DIMENSIONLESS = 1.0
+        self, profile: ISteelProfile, properties: SectionProperties, result_internal_forces_1d: ResultInternalForce1D, gamma_m0: DIMENSIONLESS = 1.0
     ) -> None:
         self.profile = profile
         self.properties = properties
-        self.load_combination = load_combination
+        self.result_internal_forces_1d = result_internal_forces_1d
         self.gamma_m0 = gamma_m0
 
-    class NormalForceCheck:
+    class NormalForce:
         """Class to perform normal force resistance check.
 
         Checks normal force resistance for steel I-profiles according to Eurocode 3, chapter 6.2.3 (tension) and 6.2.4 (compression).
@@ -49,18 +56,22 @@ class SteelIProfileStrengthClass3:
             The steel I-profile to check.
         properties : SectionProperties
             The section properties of the profile.
-        load_combination : LoadCombination
+        result_internal_forces_1d : ResultInternalForce1D
             The load combination to apply to the profile.
         gamma_m0 : DIMENSIONLESS, optional
             Partial safety factor for resistance of cross-sections, default is 1.0.
         """
 
         def __init__(
-            self, profile: ISteelProfile, properties: SectionProperties, load_combination: LoadCombination, gamma_m0: DIMENSIONLESS = 1.0
+            self,
+            profile: ISteelProfile,
+            properties: SectionProperties,
+            result_internal_forces_1d: ResultInternalForce1D,
+            gamma_m0: DIMENSIONLESS = 1.0,
         ) -> None:
             self.profile = profile
             self.properties = properties
-            self.load_combination = load_combination
+            self.result_internal_forces_1d = result_internal_forces_1d
             self.gamma_m0 = gamma_m0
 
         def calculation_steps(self) -> list[Formula]:
@@ -69,14 +80,14 @@ class SteelIProfileStrengthClass3:
             Returns
             -------
             list of Formula
-                Calculation results and check objects. Returns an empty list if no normal force is applied.
+                Calculation results. Returns an empty list if no bending moment is applied.
             """
-            if self.load_combination.normal_force == 0:
+            if self.result_internal_forces_1d.N == 0:
                 return []
-            if self.load_combination.normal_force > 0:  # tension, based on chapter 6.2.3
+            if self.result_internal_forces_1d.N > 0:  # tension, based on chapter 6.2.3
                 a = self.properties.area if self.properties.area is not None else 0
                 f_y = min(element.yield_strength for element in self.profile.elements)
-                n_ed = self.load_combination.normal_force * KN_TO_N
+                n_ed = self.result_internal_forces_1d.N * KN_TO_N
                 n_t_rd = formula_6_6.Form6Dot6DesignPlasticRestistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
                 check_tension = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
                 return [n_t_rd, check_tension]
@@ -84,12 +95,12 @@ class SteelIProfileStrengthClass3:
             # compression, based on chapter 6.2.4
             a = self.properties.area if self.properties.area is not None else 0
             f_y = min(element.yield_strength for element in self.profile.elements)
-            n_ed = -self.load_combination.normal_force * KN_TO_N
+            n_ed = -self.result_internal_forces_1d.N * KN_TO_N
             n_c_rd = formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
             check_compression = formula_6_9.Form6Dot9CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd)
             return [n_c_rd, check_compression]
 
-        def value(self) -> bool:
+        def check(self) -> bool:
             """Check normal force resistance.
 
             Returns
@@ -116,14 +127,14 @@ class SteelIProfileStrengthClass3:
             str
                 LaTeX representation of the normal force check.
             """
-            if self.load_combination.normal_force == 0:
+            if self.result_internal_forces_1d.N == 0:
                 text = r"\text{Normal force check: no normal force applied.} \\ CHECK \to OK"
-            elif self.load_combination.normal_force > 0:
-                text = "\\text{Normal force check: tension checks applied using chapter 6.2.3.}"
-            elif self.load_combination.normal_force < 0:
-                text = "\\text{Normal force check: compression checks applied using chapter 6.2.4.}"
+            elif self.result_internal_forces_1d.N > 0:
+                text = "\\text{Normal force check tension checks applied using chapter 6.2.3.}"
+            elif self.result_internal_forces_1d.N < 0:
+                text = "\\text{Normal force check compression checks applied using chapter 6.2.4.}"
 
-            if self.load_combination.normal_force != 0:
+            if self.result_internal_forces_1d.N != 0:
                 if summary:
                     text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
                 else:
@@ -131,16 +142,166 @@ class SteelIProfileStrengthClass3:
                         text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
             return text
 
-    # To be extended with more checks (shear, bending, torsion, various combinations and finally complete check)
-    # ones the presented structure above is discussed and decided upon
+    class SingleAxisBendingMoment:
+        """Class to perform single axis bending moment resistance check.
 
-    def value(self) -> bool:
-        """Returns True if all strength criteria for the steel I-profile pass, False otherwise."""
-        # Check normal force
-        normal_force_check = self.NormalForceCheck(self.profile, self.properties, self.load_combination, self.gamma_m0)
-        return normal_force_check.value()
+        Checks single axis bending moment resistance for steel I-profiles according to Eurocode 3, chapter 6.2.5. For multiple axis bending use 6.2.9.
 
-    def latex(self, n: int = 1, summary: bool = False) -> str:
+        Parameters
+        ----------
+        profile : ISteelProfile
+            The steel I-profile to check.
+        properties : SectionProperties
+            The section properties of the profile.
+        result_internal_forces_1d : ResultInternalForce1D
+            The load combination to apply to the profile.
+        axis : str
+            The axis to check ('strong' or 'weak'), default is 'strong'.
+            Strong axis corresponds to My bending moment, weak axis to Mz bending moment.
+        gamma_m0 : DIMENSIONLESS, optional
+            Partial safety factor for resistance of cross-sections, default is 1.0.
+        """
+
+        def __init__(
+            self,
+            profile: ISteelProfile,
+            properties: SectionProperties,
+            result_internal_forces_1d: ResultInternalForce1D,
+            axis: str = "strong",
+            gamma_m0: DIMENSIONLESS = 1.0,
+        ) -> None:
+            # Validate the axis parameter
+            allowed_axes = ["strong", "weak"]
+            if axis not in allowed_axes:
+                raise ValueError(f"Invalid axis '{axis}'. Allowed checks are {allowed_axes}.")
+
+            self.profile = profile
+            self.properties = properties
+            self.result_internal_forces_1d = result_internal_forces_1d
+            self.axis = axis
+            self.gamma_m0 = gamma_m0
+            self.moment = self.result_internal_forces_1d.My if self.axis == "strong" else self.result_internal_forces_1d.Mz
+
+        def calculation_steps(self) -> list[Formula]:
+            """Perform calculation steps for single axis bending moment resistance check.
+
+            Returns
+            -------
+            list of Formula
+                Calculation results. Returns an empty list if no bending moment is applied.
+            """
+            if self.moment == 0:
+                return []
+
+            # Based on chapter 6.2.5
+            w_strong = (
+                min(self.properties.zyy_plus, self.properties.zyy_minus)
+                if (self.properties.zyy_plus is not None and self.properties.zyy_minus is not None)
+                else 0
+            )
+            w_weak = (
+                min(self.properties.zxx_plus, self.properties.zxx_minus)
+                if (self.properties.zxx_plus is not None and self.properties.zxx_minus is not None)
+                else 0
+            )
+            section_modulus = w_strong if self.axis == "strong" else w_weak
+            f_y = min(element.yield_strength for element in self.profile.elements)
+
+            m_ed = abs(self.moment) * KNM_TO_NMM
+            m_c_rd = formula_6_14.Form6Dot14MCRdClass3(w_el_min=section_modulus, f_y=f_y, gamma_m0=self.gamma_m0)
+            check_moment = formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
+            return [m_c_rd, check_moment]
+
+        def check(self) -> bool:
+            """Check bending moment resistance.
+
+            Returns
+            -------
+            bool
+                True if the bending moment check passes, False otherwise.
+            """
+            if len(self.calculation_steps()) == 0:
+                return True
+            return bool(self.calculation_steps()[-1])
+
+        def latex(self, n: int = 1, summary: bool = False) -> str:
+            """Returns the LaTeX string representation for the normal force check.
+
+            Parameters
+            ----------
+            n : int, optional
+                Formula numbering for LaTeX output (default is 1).
+            summary : bool, optional
+                If True, returns a summary LaTeX output; otherwise, returns detailed output (default is False).
+
+            Returns
+            -------
+            str
+                LaTeX representation of the normal force check.
+            """
+            if self.moment == 0:
+                return rf"\\\\ \text{{Bending moment {self.axis} axis check: no bending moment applied.}} \\ CHECK \to OK"
+
+            text = rf"\\\\ \text{{Bending moment {self.axis} axis checks applied using chapter 6.2.5.}}"
+            if summary:
+                text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
+            else:
+                for step in self.calculation_steps():
+                    text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
+            return text
+
+    class ShearForce:
+        """Class to perform shear force resistance check.
+
+        Checks shear force resistance for steel I-profiles according to Eurocode 3, chapter 6.2.6.
+        """
+
+        def __init__(self) -> None:
+            raise NotImplementedError("Shear force check not yet implemented.")
+
+    class Torsion:
+        """Class to perform torsion resistance check.
+
+        Checks torsion resistance for steel I-profiles according to Eurocode 3, chapter 6.2.7.
+        """
+
+        def __init__(self) -> None:
+            raise NotImplementedError("Torsion check not yet implemented.")
+
+    class BendingAndShear:
+        """Class to perform bending and shear interaction resistance check.
+
+        Checks bending and shear interaction resistance for steel I-profiles according to Eurocode 3, chapter 6.2.8.
+        """
+
+        def __init__(self) -> None:
+            raise NotImplementedError("Bending and shear interaction check not yet implemented.")
+
+    class MultiBendingAndAxialForce:
+        """Class to perform (multi-axis) bending and axial force interaction resistance check.
+
+        Checks (multi-axis) bending and axial force interaction resistance for steel I-profiles according to Eurocode 3, chapter 6.2.8.
+        """
+
+        def __init__(self) -> None:
+            raise NotImplementedError("(Multi-axis) bending and axial force interaction check not yet implemented.")
+
+    def check(self) -> bool:
+        """Returns True if all strength criteria for the steel I-profile pass, False otherwise.
+
+        Warning: Currently only normal force and single axis bending moment checks are implemented.
+        """
+        normal_force_check = self.NormalForce(self.profile, self.properties, self.result_internal_forces_1d, self.gamma_m0).check()
+        bending_moment_strong_axis_check = self.SingleAxisBendingMoment(
+            self.profile, self.properties, self.result_internal_forces_1d, axis="strong", gamma_m0=self.gamma_m0
+        ).check()
+        bending_moment_weak_axis_check = self.SingleAxisBendingMoment(
+            self.profile, self.properties, self.result_internal_forces_1d, axis="weak", gamma_m0=self.gamma_m0
+        ).check()
+
+        return normal_force_check and bending_moment_strong_axis_check and bending_moment_weak_axis_check
+
+    def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901
         """
         Returns the combined LaTeX string representation for all strength checks.
 
@@ -159,6 +320,54 @@ class SteelIProfileStrengthClass3:
         all_latex = ""
 
         # Check normal force
-        all_latex += self.NormalForceCheck(self.profile, self.properties, self.load_combination, self.gamma_m0).latex(n=n, summary=summary)
+        if self.result_internal_forces_1d.N != 0:
+            all_latex += self.NormalForce(self.profile, self.properties, self.result_internal_forces_1d, self.gamma_m0).latex(n=n, summary=summary)
 
+        # Check strong axis bending moment
+        if self.result_internal_forces_1d.My != 0 and self.result_internal_forces_1d.Mz == 0:
+            all_latex += self.SingleAxisBendingMoment(
+                self.profile, self.properties, self.result_internal_forces_1d, axis="strong", gamma_m0=self.gamma_m0
+            ).latex(n=n, summary=summary)
+
+        # Check weak axis bending moment
+        if self.result_internal_forces_1d.Mz != 0 and self.result_internal_forces_1d.My == 0:
+            all_latex += self.SingleAxisBendingMoment(
+                self.profile, self.properties, self.result_internal_forces_1d, axis="weak", gamma_m0=self.gamma_m0
+            ).latex(n=n, summary=summary)
+
+        # Check single axis shear force (not yet implemented)
+        if abs(self.result_internal_forces_1d.Vy) > 0 or abs(self.result_internal_forces_1d.Vz) > 0:
+            all_latex += r"\\\\ \text{Warning: single axis shear force check not yet implemented.}"
+
+        # Check torsion (not yet implemented)
+        if abs(self.result_internal_forces_1d.Mx) > 0:
+            all_latex += r"\\\\ \text{Warning: torsion check not yet implemented.}"
+
+        # Check (multiple axis) bending and shear interaction (not yet implemented)
+        if (
+            max(abs(self.result_internal_forces_1d.My), abs(self.result_internal_forces_1d.Mz)) > 0
+            and max(abs(self.result_internal_forces_1d.Vy), abs(self.result_internal_forces_1d.Vz)) > 0
+        ):
+            all_latex += r"\\\\ \text{Warning: bending and shear interaction check not yet implemented.}"
+
+        # Check bending and axial force interaction (not yet implemented)
+        if (
+            max(abs(self.result_internal_forces_1d.My), abs(self.result_internal_forces_1d.Mz)) > 0 and abs(self.result_internal_forces_1d.N) > 0
+        ) or (self.result_internal_forces_1d.Mz != 0 and self.result_internal_forces_1d.My != 0):
+            all_latex += r"\\\\ \text{Warning: (multiple axis) bending and axial force interaction check not yet implemented.}"
+
+        # Check bending, shear and axial force interaction (not yet implemented)
+        if (
+            max(abs(self.result_internal_forces_1d.My), abs(self.result_internal_forces_1d.Mz)) > 0
+            and max(abs(self.result_internal_forces_1d.Vy), abs(self.result_internal_forces_1d.Vz)) > 0
+            and abs(self.result_internal_forces_1d.N) > 0
+        ):
+            all_latex += r"\\\\ \text{Warning: bending, shear and axial force interaction check not yet implemented.}"
+
+        if all_latex == "":
+            all_latex += r"\text{No internal forces applied.} \\ CHECK \to OK"
+
+        # If the LaTeX string starts with return (\\), remove it for cleaner output
+        while all_latex.startswith(r"\\"):
+            all_latex = all_latex[2:]
         return all_latex
