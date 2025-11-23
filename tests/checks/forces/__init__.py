@@ -1,0 +1,1 @@
+"""Tests internal forces."""
