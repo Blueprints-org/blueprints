@@ -280,11 +280,20 @@ class SteelIProfileStrengthClass3:
     class MultiBendingAndAxialForce:
         """Class to perform (multi-axis) bending and axial force interaction resistance check.
 
-        Checks (multi-axis) bending and axial force interaction resistance for steel I-profiles according to Eurocode 3, chapter 6.2.8.
+        Checks (multi-axis) bending and axial force interaction resistance for steel I-profiles according to Eurocode 3, chapter 6.2.9.
         """
 
         def __init__(self) -> None:
             raise NotImplementedError("(Multi-axis) bending and axial force interaction check not yet implemented.")
+
+    class MultiBendingShearAndAxialForce:
+        """Class to perform (multi-axis) bending, shear, and axial force interaction resistance check.
+
+        Checks (multi-axis) bending, shear, and axial force interaction resistance for steel I-profiles according to Eurocode 3, chapter 6.2.10.
+        """
+
+        def __init__(self) -> None:
+            raise NotImplementedError("(Multi-axis) bending, shear, and axial force interaction check not yet implemented.")
 
     def check(self) -> bool:
         """Returns True if all strength criteria for the steel I-profile pass, False otherwise.
