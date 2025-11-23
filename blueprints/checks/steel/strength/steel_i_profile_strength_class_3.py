@@ -130,9 +130,9 @@ class SteelIProfileStrengthClass3:
             if self.result_internal_forces_1d.N == 0:
                 text = r"\text{Normal force check: no normal force applied.} \\ CHECK \to OK"
             elif self.result_internal_forces_1d.N > 0:
-                text = "\\text{Normal force check tension checks applied using chapter 6.2.3.}"
+                text = r"\text{Normal force check tension checks applied using chapter 6.2.3.}"
             elif self.result_internal_forces_1d.N < 0:
-                text = "\\text{Normal force check compression checks applied using chapter 6.2.4.}"
+                text = r"\text{Normal force check compression checks applied using chapter 6.2.4.}"
 
             if self.result_internal_forces_1d.N != 0:
                 if summary:
@@ -194,12 +194,12 @@ class SteelIProfileStrengthClass3:
                 return []
 
             # Based on chapter 6.2.5
-            w_strong = (
+            w_weak = (
                 min(self.properties.zyy_plus, self.properties.zyy_minus)
                 if (self.properties.zyy_plus is not None and self.properties.zyy_minus is not None)
                 else 0
             )
-            w_weak = (
+            w_strong = (
                 min(self.properties.zxx_plus, self.properties.zxx_minus)
                 if (self.properties.zxx_plus is not None and self.properties.zxx_minus is not None)
                 else 0
@@ -240,14 +240,14 @@ class SteelIProfileStrengthClass3:
                 LaTeX representation of the normal force check.
             """
             if self.moment == 0:
-                return rf"\\\\ \text{{Bending moment {self.axis} axis check: no bending moment applied.}} \\ CHECK \to OK"
+                return f"\\text{{Bending moment {self.axis} axis check: no bending moment applied.}} \\\\ CHECK \to OK"
 
-            text = rf"\\\\ \text{{Bending moment {self.axis} axis checks applied using chapter 6.2.5.}}"
+            text = f"\\text{{Bending moment {self.axis} axis checks applied using chapter 6.2.5.}}"
             if summary:
-                text += f"\\\\{self.calculation_steps()[-1].latex(n=n)}"
+                text += f"\\\\ {self.calculation_steps()[-1].latex(n=n)}"
             else:
                 for step in self.calculation_steps():
-                    text += f"\\\\\\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
+                    text += f"\\\\ \\text{{With formula {step.label}:}}\\\\{step.latex(n=n)}"
             return text
 
     class ShearForce:
@@ -310,7 +310,7 @@ class SteelIProfileStrengthClass3:
 
         return normal_force_check and bending_moment_strong_axis_check and bending_moment_weak_axis_check
 
-    def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901
+    def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901, PLR0912
         """
         Returns the combined LaTeX string representation for all strength checks.
 
@@ -334,40 +334,40 @@ class SteelIProfileStrengthClass3:
 
         # Check strong axis bending moment
         if self.result_internal_forces_1d.My != 0 and self.result_internal_forces_1d.Mz == 0:
-            all_latex += self.SingleAxisBendingMoment(
+            all_latex += r"\\ " + self.SingleAxisBendingMoment(
                 self.profile, self.properties, self.result_internal_forces_1d, axis="strong", gamma_m0=self.gamma_m0
             ).latex(n=n, summary=summary)
 
         # Check weak axis bending moment
         if self.result_internal_forces_1d.Mz != 0 and self.result_internal_forces_1d.My == 0:
-            all_latex += self.SingleAxisBendingMoment(
+            all_latex += r"\\ " + self.SingleAxisBendingMoment(
                 self.profile, self.properties, self.result_internal_forces_1d, axis="weak", gamma_m0=self.gamma_m0
             ).latex(n=n, summary=summary)
 
         # Check single axis shear force Vz (not yet implemented)
         if self.result_internal_forces_1d.Vz != 0:
-            all_latex += r"\\\\ \text{Warning: single axis shear force Vz check not yet implemented.}"
+            all_latex += r"\\ \\ \text{Warning: single axis shear force Vz check not yet implemented.}"
 
         # Check single axis shear force Vy (not yet implemented)
         if self.result_internal_forces_1d.Vy != 0:
-            all_latex += r"\\\\ \text{Warning: single axis shear force Vy check not yet implemented.}"
+            all_latex += r"\\ \\ \text{Warning: single axis shear force Vy check not yet implemented.}"
 
         # Check torsion (not yet implemented)
         if self.result_internal_forces_1d.Mx != 0:
-            all_latex += r"\\\\ \text{Warning: torsion check not yet implemented.}"
+            all_latex += r"\\ \\ \text{Warning: torsion check not yet implemented.}"
 
         # Check (multiple axis) bending and shear interaction (not yet implemented)
         if (
             max(abs(self.result_internal_forces_1d.My), abs(self.result_internal_forces_1d.Mz)) > 0
             and max(abs(self.result_internal_forces_1d.Vy), abs(self.result_internal_forces_1d.Vz)) > 0
         ):
-            all_latex += r"\\\\ \text{Warning: bending and shear interaction check not yet implemented.}"
+            all_latex += r"\\ \\ \text{Warning: bending and shear interaction check not yet implemented.}"
 
         # Check bending and axial force interaction (not yet implemented)
         if (
             max(abs(self.result_internal_forces_1d.My), abs(self.result_internal_forces_1d.Mz)) > 0 and abs(self.result_internal_forces_1d.N) > 0
         ) or (self.result_internal_forces_1d.Mz != 0 and self.result_internal_forces_1d.My != 0):
-            all_latex += r"\\\\ \text{Warning: (multiple axis) bending and axial force interaction check not yet implemented.}"
+            all_latex += r"\\ \\ \text{Warning: (multiple axis) bending and axial force interaction check not yet implemented.}"
 
         # Check bending, shear and axial force interaction (not yet implemented)
         if (
@@ -375,12 +375,16 @@ class SteelIProfileStrengthClass3:
             and max(abs(self.result_internal_forces_1d.Vy), abs(self.result_internal_forces_1d.Vz)) > 0
             and abs(self.result_internal_forces_1d.N) > 0
         ):
-            all_latex += r"\\\\ \text{Warning: bending, shear and axial force interaction check not yet implemented.}"
+            all_latex += r"\\ \\ \text{Warning: bending, shear and axial force interaction check not yet implemented.}"
 
         if all_latex == "":
             all_latex += r"\text{No internal forces applied.} \\ CHECK \to OK"
 
         # If the LaTeX string starts with return (\\), remove it for cleaner output
-        while all_latex.startswith(r"\\"):
-            all_latex = all_latex[2:]
+        while all_latex.startswith((r"\\", " ")):
+            if all_latex.startswith(r"\\"):
+                all_latex = all_latex[2:]
+            if all_latex.startswith(" "):
+                all_latex = all_latex[1:]
+
         return all_latex
