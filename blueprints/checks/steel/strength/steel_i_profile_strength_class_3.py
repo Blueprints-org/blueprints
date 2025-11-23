@@ -335,12 +335,16 @@ class SteelIProfileStrengthClass3:
                 self.profile, self.properties, self.result_internal_forces_1d, axis="weak", gamma_m0=self.gamma_m0
             ).latex(n=n, summary=summary)
 
-        # Check single axis shear force (not yet implemented)
-        if abs(self.result_internal_forces_1d.Vy) > 0 or abs(self.result_internal_forces_1d.Vz) > 0:
-            all_latex += r"\\\\ \text{Warning: single axis shear force check not yet implemented.}"
+        # Check single axis shear force Vz (not yet implemented)
+        if self.result_internal_forces_1d.Vz != 0:
+            all_latex += r"\\\\ \text{Warning: single axis shear force Vz check not yet implemented.}"
+
+        # Check single axis shear force Vy (not yet implemented)
+        if self.result_internal_forces_1d.Vy != 0:
+            all_latex += r"\\\\ \text{Warning: single axis shear force Vy check not yet implemented.}"
 
         # Check torsion (not yet implemented)
-        if abs(self.result_internal_forces_1d.Mx) > 0:
+        if self.result_internal_forces_1d.Mx != 0:
             all_latex += r"\\\\ \text{Warning: torsion check not yet implemented.}"
 
         # Check (multiple axis) bending and shear interaction (not yet implemented)
