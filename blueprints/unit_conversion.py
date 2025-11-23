@@ -16,6 +16,7 @@ CM3_TO_MM3 = 1e3
 
 # <editor-fold desc="Moments conversion">
 NMM_TO_KNM = 1e-6
+KNM_TO_NMM = 1e6
 # </editor-fold>
 
 # <editor-fold desc="Area conversion">
