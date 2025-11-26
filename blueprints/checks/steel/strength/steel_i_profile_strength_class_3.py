@@ -128,11 +128,11 @@ class SteelIProfileStrengthClass3:
                 LaTeX representation of the normal force check.
             """
             if self.result_internal_forces_1d.N == 0:
-                text = r"\text{Normal force check: no normal force applied.} \\ CHECK \to OK"
+                text = r"\text{Checking normal force not needed as no normal force applied.} \\ CHECK \to OK"
             elif self.result_internal_forces_1d.N > 0:
-                text = r"\text{Normal force check tension checks applied using chapter 6.2.3.}"
+                text = r"\text{Checking normal force (tension) using chapter 6.2.3.}"
             elif self.result_internal_forces_1d.N < 0:
-                text = r"\text{Normal force check compression checks applied using chapter 6.2.4.}"
+                text = r"\text{Checking normal force (compression) using chapter 6.2.4.}"
 
             if self.result_internal_forces_1d.N != 0:
                 if summary:
@@ -240,9 +240,9 @@ class SteelIProfileStrengthClass3:
                 LaTeX representation of the normal force check.
             """
             if self.moment == 0:
-                return f"\\text{{Bending moment {self.axis} axis check: no bending moment applied.}} \\\\ CHECK \to OK"
+                return f"\\text{{Checking bending moment around {self.axis}-axis not needed as no bending moment was applied.}} \\\\ CHECK \to OK"
 
-            text = f"\\text{{Bending moment {self.axis} axis checks applied using chapter 6.2.5.}}"
+            text = f"\\text{{Checking bending moments around {self.axis}-axis using chapter 6.2.5.}}"
             if summary:
                 text += f"\\\\ {self.calculation_steps()[-1].latex(n=n)}"
             else:

@@ -119,7 +119,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
         latex_output = calc.latex(summary=True)
         expected = (
-            r"\text{Normal force check compression checks applied using chapter 6.2.4.}"
+            r"\text{Checking normal force (compression) using chapter 6.2.4.}"
             r"\\CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( "
             r"\frac{100000.0}{5293746.7} \leq 1 \right) \to OK"
         )
@@ -132,7 +132,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
         latex_output = calc.latex(summary=False)
         expected = (
-            r"\text{Normal force check compression checks applied using chapter 6.2.4.}\\"
+            r"\text{Checking normal force (compression) using chapter 6.2.4.}\\"
             r"\text{With formula 6.10:}\\N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
             r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N\\\text{With formula 6.9:}\\CHECK "
             r"\to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
@@ -147,7 +147,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
         latex_output = calc.latex()
         expected = (
-            r"\text{Normal force check tension checks applied using chapter 6.2.3.}\\"
+            r"\text{Checking normal force (tension) using chapter 6.2.3.}\\"
             r"\text{With formula 6.6:}\\N_{pl,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
             r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N\\\text{With formula 6.5:}\\CHECK "
             r"\to \left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
@@ -216,7 +216,7 @@ class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
         calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex(summary=True)
         expected = (
-            r"\text{Bending moment My axis checks applied using chapter 6.2.5.}"
+            r"\text{Checking bending moments around My-axis using chapter 6.2.5.}"
             r"\\ CHECK \to \left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to \left( \frac{100000000.0}{595733834.6} \leq 1 \right) \to OK"
         )
         assert expected == latex_output
@@ -228,7 +228,7 @@ class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
         calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_forces_1d, gamma_m0=1.0)
         latex_output = calc.latex(summary=False)
         expected = (
-            r"\text{Bending moment My axis checks applied using chapter 6.2.5.}"
+            r"\text{Checking bending moments around My-axis using chapter 6.2.5.}"
             r"\\ \text{With formula 6.14:}\\M_{c,Rd} = \frac{W_{el,min} \cdot f_y}{\gamma_{M0}} = "
             r"\frac{1678123.5 \cdot 355.0}{1.0} = 595733834.6 \ Nmm\\ \text{With formula 6.12:}\\CHECK \to "
             r"\left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to \left( \frac{100000000.0}{595733834.6} \leq 1 \right) \to OK"
