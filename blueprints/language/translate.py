@@ -144,18 +144,6 @@ class Translate:
         replacements_iter = iter(replacements)
 
         def repl(_: re.Match) -> str:
-            r"""Replacement function for re.sub to replace \text{...} blocks.
-
-            Parameters
-            ----------
-            _: re.Match
-                The regex match object (not used).
-
-            Returns
-            -------
-            str
-                The string with \text{...} replaced by the corresponding replacements.
-            """
             return r"\text{" + next(replacements_iter) + "}"
 
         return re.sub(r"\\text\{(.*?)\}", repl, s)
