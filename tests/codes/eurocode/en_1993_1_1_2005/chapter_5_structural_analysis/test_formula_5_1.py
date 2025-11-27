@@ -26,8 +26,8 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     @pytest.mark.parametrize(
         ("f_cr", "f_ed", "analysis_type"),
         [
-            (1000000, -100000, AnalysisType.ELASTIC),  # f_cr is negative
-            (-1000000, 100000, AnalysisType.ELASTIC),  # f_ed is negative
+            (1000000, -100000, AnalysisType.ELASTIC),  # f_ed is negative
+            (-1000000, 100000, AnalysisType.ELASTIC),  # f_cr is negative
         ],
     )
     def test_error_mismatch_sign(
@@ -55,4 +55,4 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
 
         actual = {"complete": latex.complete, "short": latex.short}
 
-        assert expected == actual[representation], f"{representation} representation failed ."
+        assert expected == actual[representation], f"{representation} representation failed."
