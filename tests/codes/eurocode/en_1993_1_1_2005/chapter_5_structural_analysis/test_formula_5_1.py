@@ -38,7 +38,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     )
     def test_error_mismatch_sign(
             self, f_cr: float, f_ed: float, analysis_type: AnalysisType) -> None:
-        """Test if correct error is raised when provide arguments with different signs."""
+        """Test if correct error is raised when provided arguments with different signs."""
         with pytest.raises(MismatchSignError):
             From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 
