@@ -64,7 +64,7 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
     def _evaluate_rhs(analysis_type: AnalysisType, *args, **kwargs) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         if not isinstance(analysis_type, AnalysisType):
-            raise ValueError("analysis_type must be an instance of AnalysisType Enum.")
+            raise TypeError("analysis_type must be an instance of AnalysisType Enum.")
         return From5Dot1CriteriumDisregardSecondOrderEffects._analysis_type_map[analysis_type]
 
     def latex(self, n: int = 2) -> LatexFormula:

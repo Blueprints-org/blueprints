@@ -35,6 +35,16 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
         with pytest.raises(MismatchSignError):
             From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 
+    @pytest.mark.parametrize(
+        ("f_cr", "f_ed", "analysis_type"),
+        [
+            (1000000, 100000, 'elastic'),  # analysis_type is not of type AnalysisType
+        ],
+    )
+    def test_type_error_analysis_type(
+            self, f_cr: float, f_ed: float, analysis_type: AnalysisType) -> None:
+        with pytest.raises(TypeError):
+            From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
