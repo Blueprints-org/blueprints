@@ -26,9 +26,8 @@ class Solution:
         """
         Contains all the solution variables of the model
         """
-
         self.mesh = mesh
-        self.meshDeformed = meshDeformed
+        self.mesh_deformed = meshDeformed
         self.dispX = dispX
         self.dispY = dispY
         self.dispTotal = dispTotal
@@ -62,7 +61,7 @@ class Solution:
             "stressZ": self.stressZ,
         }
 
-    def _getAveragedResult(self, variableName):
+    def _get_averaged_result(self, variableName):
         variable = self.variables[variableName]
         averagedResult = np.zeros([self.mesh.numberOfElements, 1], dtype=np.float64)
 

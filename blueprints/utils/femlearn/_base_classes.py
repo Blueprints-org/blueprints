@@ -40,7 +40,8 @@ class _PointsBaseClass:
         """
         Set coordinates.
 
-        Parameters:
+        Parameters
+        ----------
         coordinates (list of lists) -- List of x, y coordinates
         """
         self.coordinates = np.array(coordinates, dtype=np.float64)
@@ -52,7 +53,8 @@ class _PointsBaseClass:
         """
         Set identifiers.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of identifiers
         """
         self.ids = np.array(ids)
@@ -61,10 +63,12 @@ class _PointsBaseClass:
         """
         Get index for specific nodes.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of node identifiers
 
-        Returns:
+        Returns
+        -------
         index (numpy.ndarray) -- Array with the positions of points in the array
         """
         ids = np.array(ids)
@@ -77,10 +81,12 @@ class _PointsBaseClass:
         """
         Get coordinates and index for specific nodes.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of node identifiers
 
-        Returns:
+        Returns
+        -------
         coordinates (numpy.ndarray) -- Array of coordinates for the specified nodes
         index (numpy.ndarray) -- Array with the positions of points in the array
         """
@@ -115,7 +121,8 @@ class _PointsBaseClass:
         """
         Add a single point (or node) to the existing ones.
 
-        Parameters:
+        Parameters
+        ----------
         coordinate (list) -- A list of x, y coordinates of the point to add
         id (int or None) -- Identifier for the new point (if None, auto-generated)
         """
@@ -148,7 +155,8 @@ class _LoadsBaseClass:
         """
         Initialize a general loads object with specific attributes.
 
-        Parameters:
+        Parameters
+        ----------
         type (str) -- Load type identifier
         loads (list of lists) -- List of loads in x and y directions
         ids (list) -- List of load identifiers
@@ -177,7 +185,8 @@ class _LoadsBaseClass:
         """
         Set loads in x and y directions.
 
-        Parameters:
+        Parameters
+        ----------
         loads (list of lists) -- List of loads in x and y directions
         """
         self.loads = np.array(loads)
@@ -186,7 +195,8 @@ class _LoadsBaseClass:
         """
         Set identifiers for the loads.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of load identifiers
         """
         self.ids = np.array(ids)
@@ -201,7 +211,8 @@ class _DisplacementBaseClass:
         """
         Initialize a _DisplacementBaseClass object.
 
-        Parameters:
+        Parameters
+        ----------
         type (str) -- Type of points (default: "default")
         displacements (list of lists) -- List of displacement contraints in x and y directions ("0" for fixed, "free" for free)
         ids (list) -- List of identifiers
@@ -230,7 +241,8 @@ class _DisplacementBaseClass:
         """
         Sets the displacement constraints for the nodes.
 
-        Parameters:
+        Parameters
+        ----------
         displacement (list of lists) -- new displacement constraints in x and y directions ("0" for fixed, "1" for free)
         """
         self.displacements = displacements
@@ -239,7 +251,8 @@ class _DisplacementBaseClass:
         """
         Set identifiers for the loads.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of boundary identifiers
         """
         self.ids = np.array(ids)

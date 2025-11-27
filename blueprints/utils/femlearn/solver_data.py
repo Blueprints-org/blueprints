@@ -87,10 +87,9 @@ class _ShapeFunctions:
         """
         if eType in ["TRIA3", 3, "QUAD4", 4]:
             return self._lineLoadLinear
-        elif eType in ["TRIA6", 6, "QUAD8", 8]:
+        if eType in ["TRIA6", 6, "QUAD8", 8]:
             return self._lineLoadQuadtratic
-        else:
-            raise Exception(f"Element type {eType} not implemented")
+        raise Exception(f"Element type {eType} not implemented")
 
 
 class _GaussPoints:
@@ -98,7 +97,6 @@ class _GaussPoints:
         """
         Pre defined integration points and weights
         """
-
         # Integration wheights
         self._triaWeightsOrder1 = np.array([0.5])
         self._triaWeightsOrder3 = np.array([1 / 6, 1 / 6, 1 / 6])
@@ -144,14 +142,13 @@ class _GaussPoints:
         """
         if order == 1:
             return self._triaPointOrder1
-        elif order == 3:
+        if order == 3:
             return self._triaPointOrder3
-        elif order == 4:
+        if order == 4:
             return self._triaPointOrder4
-        elif order == 7:
+        if order == 7:
             return self._triaPointOrder7
-        else:
-            raise Exception(f"Integration Order {order} not implemented!")
+        raise Exception(f"Integration Order {order} not implemented!")
 
     def _getQuadGaussPoint(self, order=0):
         """
@@ -159,12 +156,11 @@ class _GaussPoints:
         """
         if order == 1:
             return self._quadPointOrder1
-        elif order == 4:
+        if order == 4:
             return self._quadPointOrder4
-        elif order == 9:
+        if order == 9:
             return self._quadPointOrder9
-        else:
-            raise Exception(f"Integration Order {order} not implemented!")
+        raise Exception(f"Integration Order {order} not implemented!")
 
     def _getTriaGaussWeights(self, order=0):
         """
@@ -172,14 +168,13 @@ class _GaussPoints:
         """
         if order == 1:
             return self._triaWeightsOrder1
-        elif order == 3:
+        if order == 3:
             return self._triaWeightsOrder3
-        elif order == 4:
+        if order == 4:
             return self._triaWeightsOrder4
-        elif order == 7:
+        if order == 7:
             return self._triaWeightsOrder7
-        else:
-            raise Exception(f"Integration Order {order} not implemented!")
+        raise Exception(f"Integration Order {order} not implemented!")
 
     def _getQuadGaussWeights(self, order=0):
         """
@@ -187,12 +182,11 @@ class _GaussPoints:
         """
         if order == 1:
             return self._quadWeightsOrder1
-        elif order == 4:
+        if order == 4:
             return self._quadWeightsOrder4
-        elif order == 9:
+        if order == 9:
             return self._quadWeightsOrder9
-        else:
-            raise Exception(f"Integration Order {order} not implemented!")
+        raise Exception(f"Integration Order {order} not implemented!")
 
 
 class SolverData(_GaussPoints, _ShapeFunctions):
@@ -319,13 +313,15 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         """
         Find the index of the nearest neighbor for each point in refCoordinates from the coordinates array.
 
-        Parameters:
+        Parameters
+        ----------
         coordinates : numpy array
             An Nx2 array of coordinates (x, y) to find nearest neighbors from.
         refCoordinates : numpy array
             An Mx2 array of reference coordinates (x, y).
 
-        Returns:
+        Returns
+        -------
         nearest_indices : numpy array
             An array of indices in the coordinates array corresponding to the nearest neighbors for each reference point.
         """
@@ -343,7 +339,8 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         """
         Find all nodes that lie on a line segment between two points within a given tolerance.
 
-        Parameters:
+        Parameters
+        ----------
         nodeCoords : numpy array
             An Nx2 array of node coordinates (x, y).
         pointCoords : numpy array
@@ -351,11 +348,11 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         tolerance : float
             The maximum allowable distance from the line for a node to be considered "on" the line segment.
 
-        Returns:
+        Returns
+        -------
         numpy array
             An array of indices of nodes that lie on the line segment between the two points within the tolerance.
         """
-
         # Extract the start and end points
         start = pointCoords[0]
         end = pointCoords[1]
@@ -401,7 +398,7 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         Resolve cases where the same node has multiple displacements defined
         by applying rules for x and y displacement priorities.
         """
-        nodeIds = self.nodalDisplacements.nodeIds
+        nodeIds = self.nodalDisplacements.node_ids
         displacements = self.nodalDisplacements.displacements
 
         uniqueNodeIds, counts = np.unique(nodeIds, return_counts=True)
@@ -444,14 +441,14 @@ class SolverData(_GaussPoints, _ShapeFunctions):
 
         # Update nodalDisplacements with the resolved values
         self.nodalDisplacements.displacements = displacements
-        self.nodalDisplacements.nodeIds = nodeIds
+        self.nodalDisplacements.node_ids = nodeIds
 
     def _resolveDuplicateLoads(self):
         """
         Resolve cases where the same node has multiple loads defined by summing them up.
         """
         loadIds = self.nodalLoads.ids
-        nodeIds = self.nodalLoads.nodeIds
+        nodeIds = self.nodalLoads.node_ids
         loads = self.nodalLoads.loads
 
         # Create dictionaries to hold the summed loads for each nodeId
@@ -482,15 +479,14 @@ class SolverData(_GaussPoints, _ShapeFunctions):
             new_load_ids.append(data["loadId"])
 
         # Update the arrays in nodalLoads
-        self.nodalLoads.nodeIds = np.array(new_node_ids)
+        self.nodalLoads.node_ids = np.array(new_node_ids)
         self.nodalLoads.loads = np.array(new_loads)
         self.nodalLoads.ids = np.array(new_load_ids)
 
-    def _combineBoundaries(self, geometry=Geometry(), boundaries=Boundaries()):
+    def _combine_boundaries(self, geometry=Geometry(), boundaries=Boundaries()):
         """
         Combine all the boundaries defined in the model to only nodal displacements
         """
-
         # make a deep copy of displacement on Nodes
         self.nodalDisplacements = copy.deepcopy(boundaries.displacementOnNodes)
 
@@ -525,7 +521,7 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         # Resolve conflicts for nodes with multiple displacements
         self._resolveDuplicateDisplacements()
 
-    def _combineLoads(self, geometry=Geometry(), loads=Loads()):
+    def _combine_loads(self, geometry=Geometry(), loads=Loads()):
         """
         Combine all the loads defined in the model to only nodal displacements
         """
@@ -559,7 +555,7 @@ class SolverData(_GaussPoints, _ShapeFunctions):
                     # iterate through all elements in mesh
                     for elementIndex, elementId in enumerate(self.mesh.elements.ids):
                         # find node properties of current element
-                        elementNodeIds = self.mesh.elements.nodeIds[elementIndex]
+                        elementNodeIds = self.mesh.elements.node_ids[elementIndex]
                         elementNodeIndex = self.mesh.nodes.findIndexByNodeIds(elementNodeIds)
 
                         # find all nodes of the current element that are on the current line
@@ -582,7 +578,7 @@ class SolverData(_GaussPoints, _ShapeFunctions):
                             elif len(elementNodeIds) in [6, 8, 9]:  # quadratic shape function
                                 if len(elementNodeIndexOnLine) == 2:
                                     raise ValueError(f"Load on line {lineId} appears to not end on quadratic element {elementId} vertices!")
-                                elif len(elementNodeIndexOnLine) != 3:
+                                if len(elementNodeIndexOnLine) != 3:
                                     raise ValueError(f"Quadratic element {elementId} appears to have more than three nodes on line {lineId}!")
 
                             # get line coefficients and add nodal force for each node
@@ -596,17 +592,16 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         # Resolve conflicts for nodes with multiple displacements
         self._resolveDuplicateLoads()
 
-    def _buildStiffnessMatrix(self):
+    def _build_stiffness_matrix(self):
         """
         Assemble the global stiffness matrix based on the model mesh
         """
-
         # pre-allocation based on the DOFs
         self.stiffnessMatrix = np.zeros([2 * self.mesh.numberOfNodes, 2 * self.mesh.numberOfNodes])
 
         # iterate trough all elements in the mesh and insert element stiffness matrix
         for elementIndex, id in enumerate(self.mesh.elements.ids):
-            nodeIds = self.mesh.elements.nodeIds[elementIndex]
+            nodeIds = self.mesh.elements.node_ids[elementIndex]
             nodeCoords, nodeIndex = self.mesh.nodes.findCoordinatesByNodeIds(nodeIds)
             order = self.mesh.elements.integrationOrder[elementIndex]
             E = self.mesh.elements.youngsModulus[elementIndex]
@@ -621,16 +616,15 @@ class SolverData(_GaussPoints, _ShapeFunctions):
             g = self._getMatrixGuideVector(nodeIndex)
             self.stiffnessMatrix[np.ix_(g, g)] = self.stiffnessMatrix[np.ix_(g, g)] + ke
 
-    def _buildLoadVector(self):
+    def _build_load_vector(self):
         """
         Build load vector
         """
-
         # pre-allocation of load vector
         self.loadVector = np.zeros([2 * self.mesh.numberOfNodes, 1])
 
         # get DOF index in the global load vector for each node with a load
-        index = np.array(self.mesh.nodes.findIndexByNodeIds(self.nodalLoads.nodeIds))
+        index = np.array(self.mesh.nodes.findIndexByNodeIds(self.nodalLoads.node_ids))
 
         # align x and y direction into a single vector
         loads = self.nodalLoads.loads.flatten()
@@ -639,15 +633,14 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         g = self._getMatrixGuideVector(index)
         self.loadVector[g, 0] = loads
 
-    def _applyPrescribedDisplacements(self):
+    def _apply_prescribed_displacements(self):
         """
         Consider prescribed nodal displacements by adjusting stiffness matrix and load vector
         """
-
         # Get node index for prescribed displacements other than 0
-        xDisp, xDispNodeId = self.nodalDisplacements._getPrescribedNodalDispalcementX()
+        xDisp, xDispNodeId = self.nodalDisplacements._get_prescribed_nodal_dispalcement_x()
         xDispNodeIndex = self.mesh.nodes.findIndexByNodeIds(xDispNodeId)
-        yDisp, yDispNodeId = self.nodalDisplacements._getPrescribedNodalDispalcementY()
+        yDisp, yDispNodeId = self.nodalDisplacements._get_prescribed_nodal_dispalcement_y()
         yDispNodeIndex = self.mesh.nodes.findIndexByNodeIds(yDispNodeId)
 
         # create line with all zeros for adjusting the stiffness matrix
@@ -665,15 +658,14 @@ class SolverData(_GaussPoints, _ShapeFunctions):
             self.stiffnessMatrix[nodeIndex * 2 + 1, nodeIndex * 2 + 1] = 1
             self.loadVector[nodeIndex * 2 + 1] = yDisp[dispIndex]
 
-    def _reduceStiffnesMatrixAndLoadVector(self):
+    def _reduce_stiffnes_matrix_and_load_vector(self):
         """
         Reduces sitffness matrix and load vector based on fixated nodes
         """
-
         # Get index of nodes that are fixated
-        xFixationNodeId = self.nodalDisplacements._getNodeIdsWithFixationX()  # fixated nodes in x
+        xFixationNodeId = self.nodalDisplacements._get_node_ids_with_fixation_x()  # fixated nodes in x
         xFixationNodeIndex = self.mesh.nodes.findIndexByNodeIds(xFixationNodeId)
-        yFixationNodeId = self.nodalDisplacements._getNodeIdsWithFixationY()  # fixated nodes in y
+        yFixationNodeId = self.nodalDisplacements._get_node_ids_with_fixation_y()  # fixated nodes in y
         yFixationNodeIndex = self.mesh.nodes.findIndexByNodeIds(yFixationNodeId)
 
         # get number of degrees of freedom
@@ -693,7 +685,7 @@ class SolverData(_GaussPoints, _ShapeFunctions):
         self.reducedStiffnessMatrix = np.delete(self.reducedStiffnessMatrix, self.fixedDOF, axis=1)
         self.reducedLoadVector = np.delete(self.loadVector, self.fixedDOF, axis=0)
 
-    def _solveLinearEquation(self):
+    def _solve_linear_equation(self):
         """
         Solves the linear FEM equation K*U=F by using inverse of K
         """
@@ -724,11 +716,10 @@ class SolverData(_GaussPoints, _ShapeFunctions):
 
         return dispX, dispY, dispTotal
 
-    def _getFullSolution(self):
+    def _get_full_solution(self):
         """
         Return all solution variables, create integration points and update meshes
         """
-
         # get nodal displacements and update deformed node coordinates
         dispX, dispY, dispTotal = self._getNodalSolution()
 
@@ -760,7 +751,7 @@ class SolverData(_GaussPoints, _ShapeFunctions):
 
         # iterate trough each element and gather element result and integration point data
         for elementIndex, id in enumerate(self.mesh.elements.ids):
-            nodeIds = self.mesh.elements.nodeIds[elementIndex]
+            nodeIds = self.mesh.elements.node_ids[elementIndex]
             nodeCoords, nodeIndex = self.mesh.nodes.findCoordinatesByNodeIds(nodeIds)
             deformedCoords, nodeIndex = self.meshDeformed.nodes.findCoordinatesByNodeIds(nodeIds)
             nodeSize = nodeCoords.shape[0]

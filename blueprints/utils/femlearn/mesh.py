@@ -13,7 +13,8 @@ class Nodes(_PointsBaseClass):
         """
         Initialize a node object.
 
-        Parameters:
+        Parameters
+        ----------
         coordinates (list of lists) -- List of x, y coordinates
         ids (list) -- List of identifiers
         """
@@ -32,7 +33,8 @@ class Elements:
         """
         Initialize an Elements class with specific attributes.
 
-        Parameters:
+        Parameters
+        ----------
         nodeIds (list of lists) -- Lists containing node identifiers for each element
         integrationpointIds (list of lists) -- Lists containing integration point identifiers for each element
         integrationOrder (list) -- List of integration orders for each element
@@ -42,7 +44,6 @@ class Elements:
         planarAssumption (string)  -- Assumption ("plane stress","plane strain")
         ids (list) -- List of element identifiers
         """
-
         self.nodeIds = nodeIds
         self.integrationpointIds = integrationpointIds
 
@@ -81,7 +82,8 @@ class Elements:
         """
         Set identifiers.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of identifiers
         """
         self.ids = np.array(ids)
@@ -90,7 +92,8 @@ class Elements:
         """
         Set the nodeIds attribute.
 
-        Parameters:
+        Parameters
+        ----------
         nodeIds (list of lists) -- Lists containing node identifiers for each element
         """
         self.nodeIds = nodeIds
@@ -99,10 +102,12 @@ class Elements:
         """
         Get array index for specific elements.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of element identifiers
 
-        Returns:
+        Returns
+        -------
         index (numpy.ndarray) -- Array with the positions of elements in the array
         """
         ids = np.array(ids)
@@ -114,10 +119,12 @@ class Elements:
         """
         Get node identifiers for a specific element.
 
-        Parameters:
+        Parameters
+        ----------
         id (int) -- Element identifier
 
-        Returns:
+        Returns
+        -------
         nodeIds (list) -- List with nodes of the specific element
         index (int) -- Position of the specific element in the array
         """
@@ -134,7 +141,8 @@ class Elements:
         """
         Set the integrationpointIds attribute.
 
-        Parameters:
+        Parameters
+        ----------
         integrationpointIds (list of lists) -- Lists containing integration point identifiers for each element
         """
         self.integrationpointIds = integrationpointIds
@@ -143,10 +151,12 @@ class Elements:
         """
         Get integration point identifiers for a specific element.
 
-        Parameters:
+        Parameters
+        ----------
         id (int) -- Element identifier
 
-        Returns:
+        Returns
+        -------
         integrationpointIds (list) -- List with integration points of the specific element
         index (int) -- Position of the specific element in the array
         """
@@ -163,7 +173,8 @@ class Elements:
         """
         Set the thickness attribute.
 
-        Parameters:
+        Parameters
+        ----------
         thickness (list) -- List of thickness values for each element
         """
         if np.isscalar(thickness) or len(thickness) == 1:
@@ -175,7 +186,8 @@ class Elements:
         """
         Set the youngsModulus attribute.
 
-        Parameters:
+        Parameters
+        ----------
         youngsModulus (list) -- List of Young's modulus values for each element
         """
         if np.isscalar(youngsModulus) or len(youngsModulus) == 1:
@@ -187,7 +199,8 @@ class Elements:
         """
         Set the poissonsRatio attribute.
 
-        Parameters:
+        Parameters
+        ----------
         poissonsRatio (list) -- List of Poisson's ratio values for each element
         """
         if np.isscalar(poissonsRatio) or len(poissonsRatio) == 1:
@@ -199,7 +212,8 @@ class Elements:
         """
         Set the planarAssumption attribute.
 
-        Parameters:
+        Parameters
+        ----------
         planarAssumption (string)  -- Assumption ("plane stress" or "plane strain")
         """
         if isinstance(planarAssumption, str) or len(planarAssumption) == 1:
@@ -266,7 +280,8 @@ class Elements:
         """
         Add a single element to the existing elements.
 
-        Parameters:
+        Parameters
+        ----------
         nodeId (list) -- A list of node identifiers for the new element
         integrationPointId (list) -- A list of integration point identifiers for the new element
         thickness (float) -- Thickness value of the new element
@@ -299,7 +314,8 @@ class IntegrationPoints(_PointsBaseClass):
         """
         Initialize an integration points object.
 
-        Parameters:
+        Parameters
+        ----------
         coordinates (list of lists) -- List of x, y coordinates
         ids (list) -- List of identifiers
         """
@@ -315,7 +331,8 @@ class Mesh:
         """
         Initialize a Mesh class
 
-        Parameters:
+        Parameters
+        ----------
         nodes (object) -- Object of type Nodes
         elements (object) -- Object of type Elements
         """
@@ -337,7 +354,8 @@ class Mesh:
         """
         Set the nodes object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         nodes (Nodes) -- Object of type Nodes
         """
         if isinstance(nodes, Nodes):
@@ -350,7 +368,8 @@ class Mesh:
         """
         Get the nodes object of the model.
 
-        Returns:
+        Returns
+        -------
         nodes (Nodes) -- Object of type Nodes
         """
         return self.nodes
@@ -359,7 +378,8 @@ class Mesh:
         """
         Get nodes object of model based on their identifier.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List with identifiers
 
         Return:
@@ -373,7 +393,8 @@ class Mesh:
         """
         Set the Elements object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         elements (Elements) -- Object of type Elements
         """
         if isinstance(elements, Elements):
@@ -386,7 +407,8 @@ class Mesh:
         """
         Get the Elements object of the model.
 
-        Returns:
+        Returns
+        -------
         elements (Elements) -- Object of type Elements
         """
         return self.elements
@@ -395,7 +417,8 @@ class Mesh:
         """
         Get element object of model based on their identifier.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List with element identifiers
 
         Return:
@@ -416,13 +439,13 @@ class Mesh:
         """
         Find and return a Node object with just the nodes that belong to a specific element.
 
-        Parameters:
+        Parameters
+        ----------
         id (int)-- Single element identifier
 
         Return:
         nodes (Nodes) -- Object of type Nodes
         """
-
         # Find node ids of specific element by using element method
         nodeIds, index = self.elements.findNodeIdsByElementId(id)
 
@@ -438,7 +461,8 @@ class Mesh:
         """
         Set the IntegrationPoints object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         integrationPoints (IntegrationPoints) -- Object of type IntegrationPoints
         """
         if isinstance(integrationPoints, IntegrationPoints):
@@ -450,7 +474,8 @@ class Mesh:
         """
         Get the IntegrationPoints object of the model.
 
-        Returns:
+        Returns
+        -------
         integrationPoints (IntegrationPoints) -- Object of type IntegrationPoints
         """
         return self.integrationPoints
@@ -459,11 +484,11 @@ class Mesh:
         """
         Plots the mesh
 
-        Parameters:
+        Parameters
+        ----------
         color_test (bool) -- ???
         show_ids (bool) -- True displays node identifiers
         """
-
         for elementIndex, elementNodeIds in enumerate(self.elements.nodeIds):
             elementNodeIds = np.array(elementNodeIds)
             # If elementtype is TRIA6: use defined order to get correct nodes

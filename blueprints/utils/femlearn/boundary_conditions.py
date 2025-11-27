@@ -8,63 +8,65 @@ class DisplacementOnNodes(_DisplacementBaseClass):
         """
         Initialize a DisplacementOnNodes object with specific attributes.
 
-        Parameters:
+        Parameters
+        ----------
         displacement (list of lists) -- List of displacement constraints in x and y directions ("0" for fixed, "1" for free)
         nodeIds (list) -- List of node ids to apply constraint
         ids (list) -- List of identifiers
         """
         super().__init__("displacement on node", displacements, ids)
-        self.nodeIds = np.array(nodeIds)
+        self.node_ids = np.array(nodeIds)
 
     def setNodeIds(self, nodeIds):
         """
         Sets the node ids to which the displacements are applied.
 
-        Parameters:
+        Parameters
+        ----------
         nodeIds (list) -- List of new node ids
         """
-        self.nodeIds = np.array(nodeIds)
+        self.node_ids = np.array(nodeIds)
 
-    def _getNodeIdsWithFixationX(self):
+    def _get_node_ids_with_fixation_x(self):
         """
         Returns the node Ids for which the displacements in x directions is zero.
         """
         xFixationNodeId = []
-        for index, id in enumerate(self.nodeIds):
+        for index, id in enumerate(self.node_ids):
             if self.x[index] == 0:
                 xFixationNodeId.append(id)
         return np.array(xFixationNodeId)
 
-    def _getNodeIdsWithFixationY(self):
+    def _get_node_ids_with_fixation_y(self):
         """
         Returns the node Ids for which the displacements in y directions is zero.
         """
         yFixationNodeId = []
-        for index, id in enumerate(self.nodeIds):
+        for index, id in enumerate(self.node_ids):
             if self.y[index] == 0:
                 yFixationNodeId.append(id)
         return np.array(yFixationNodeId)
 
-    def _getPrescribedNodalDispalcementX(self):
+    def _get_prescribed_nodal_dispalcement_x(self):
         """
         Returns the prescriped nodal displacement and Ids for which the displacements in x directions is not or free zero.
         """
         xDispNodeId = []
         xDisp = []
-        for index, id in enumerate(self.nodeIds):
-            if not (self.x[index] in [0, "free", None]):
+        for index, id in enumerate(self.node_ids):
+            if self.x[index] not in [0, "free", None]:
                 xDispNodeId.append(id)
                 xDisp.append(float(self.x[index]))
         return np.array(xDisp), np.array(xDispNodeId)
 
-    def _getPrescribedNodalDispalcementY(self):
+    def _get_prescribed_nodal_dispalcement_y(self):
         """
         Returns the prescriped nodal displacement and Ids for which the displacements in y directions is not or free zero.
         """
         yDispNodeId = []
         yDisp = []
-        for index, id in enumerate(self.nodeIds):
-            if not (self.y[index] in [0, "free", None]):
+        for index, id in enumerate(self.node_ids):
+            if self.y[index] not in [0, "free", None]:
                 yDispNodeId.append(id)
                 yDisp.append(float(self.y[index]))
         return np.array(yDisp), np.array(yDispNodeId)
@@ -73,12 +75,12 @@ class DisplacementOnNodes(_DisplacementBaseClass):
         """
         Add a single displacement on a node.
 
-        Parameters:
+        Parameters
+        ----------
         displacement (list) -- A list of displacement constraints (x, y) for the new boundary
         nodeId (int) -- Node identifier for the new boundary
         id (int or None) -- Identifier for the new boundary (if None, auto-generated)
         """
-
         # Check if self.displacement is empty
         if len(self.displacements[0]) == 0:
             # Initialize self.displacement with the correct shape
@@ -87,7 +89,7 @@ class DisplacementOnNodes(_DisplacementBaseClass):
             # Stack the new displacement to the existing displacement list
             self.displacements.append(displacement)
 
-        self.nodeIds = np.append(self.nodeIds, nodeId)
+        self.node_ids = np.append(self.node_ids, nodeId)
 
         # Add the new ID or generate an ID if not provided
         if id is None:
@@ -104,19 +106,21 @@ class DisplacementOnNodes(_DisplacementBaseClass):
 
         # Display point IDs
         print("Node IDs:")
-        if len(self.nodeIds) > 5:
-            print(self.nodeIds[:5], "...")
+        if len(self.node_ids) > 5:
+            print(self.node_ids[:5], "...")
         else:
-            print(self.nodeIds)
+            print(self.node_ids)
 
     def remove(self, id):
         """
         Removes the displacement associated with the given identifier of the nodal displacement boundary condition.
 
-        Parameters:
+        Parameters
+        ----------
         id (int) -- The identifier of the nodal displacement boundary condition to be removed
 
-        Returns:
+        Returns
+        -------
         bool -- True if removal was successful, False if id not found
         """
         # Find the index of the id to remove
@@ -130,7 +134,7 @@ class DisplacementOnNodes(_DisplacementBaseClass):
 
         # Remove the displacement, nodeId, and id at the found index
         self.displacements = np.delete(self.displacements, index, axis=0)
-        self.nodeIds = np.delete(self.nodeIds, index)
+        self.node_ids = np.delete(self.node_ids, index)
         self.ids = np.delete(self.ids, index)
 
         return True
@@ -141,7 +145,8 @@ class DisplacementOnPoints(_DisplacementBaseClass):
         """
         Initialize a DisplacementOnPoints object with specific attributes.
 
-        Parameters:
+        Parameters
+        ----------
         displacement (list of lists) -- List of displacement constraints in x and y directions ("0" for fixed, "1" for free)
         pointIds (list) -- List of point ids to apply constraint
         ids (list) -- List of identifiers
@@ -153,7 +158,8 @@ class DisplacementOnPoints(_DisplacementBaseClass):
         """
         Sets the point ids to which the displacements are applied.
 
-        Parameters:
+        Parameters
+        ----------
         pointIds (list) -- List of new point ids
         """
         self.pointIds = np.array(pointIds)
@@ -163,12 +169,12 @@ class DisplacementOnPoints(_DisplacementBaseClass):
         """
         Add a single displacement on a point.
 
-        Parameters:
+        Parameters
+        ----------
         displacement (list) -- A list of displacement constraints (x, y) for the new boundary
         referencePointId (int) --  point identifier for the new boundary
         id (int or None) -- Identifier for the new boundary (if None, auto-generated)
         """
-
         # Check if self.displacement is empty
         if len(self.displacements[0]) == 0:
             # Initialize self.displacement with the correct shape
@@ -205,7 +211,8 @@ class DisplacementOnLines(_DisplacementBaseClass):
         """
         Initialize a DisplacementOnLines object with specific attributes.
 
-        Parameters:
+        Parameters
+        ----------
         displacement (list of lists) -- List of displacement constraints in x and y directions ("0" for fixed, "1" for free)
         lineIds (list) -- List of line ids to apply constraint
         ids (list) -- List of identifiers
@@ -217,7 +224,8 @@ class DisplacementOnLines(_DisplacementBaseClass):
         """
         Sets the line ids to which the displacements are applied.
 
-        Parameters:
+        Parameters
+        ----------
         lineIds (list) -- List of new line ids
         """
         self.lineIds = np.array(lineIds)
@@ -227,12 +235,12 @@ class DisplacementOnLines(_DisplacementBaseClass):
         """
         Add a single displacement on a line.
 
-        Parameters:
+        Parameters
+        ----------
         displacement (list) -- A list of displacement constraints (x, y) for the new boundary
         lineId (int) --  line identifier for the new boundary
         id (int or None) -- Identifier for the new boundary (if None, auto-generated)
         """
-
         # Check if self.displacement is empty
         if len(self.displacements[0]) == 0:
             # Initialize self.displacement with the correct shape
@@ -275,7 +283,8 @@ class Boundaries:
         """
         Initialize a Mesh class
 
-        Parameters:
+        Parameters
+        ----------
         nodes (object) -- Object of type Nodes
         elements (object) -- Object of type Elements
         """
@@ -287,7 +296,8 @@ class Boundaries:
         """
         Set the displacement on nodes for the model.
 
-        Parameters:
+        Parameters
+        ----------
         DisplacementOnNodes (DisplacementOnNodes) -- Object of type DisplacementOnNodes
         """
         if isinstance(displacementOnNodes, DisplacementOnNodes):
@@ -299,7 +309,8 @@ class Boundaries:
         """
         Get the displacement on nodes for the model.
 
-        Returns:
+        Returns
+        -------
         DisplacementOnNodes (DisplacementOnNodes) -- Object of type DisplacementOnNodes
         """
         return self.displacementOnNodes
@@ -308,7 +319,8 @@ class Boundaries:
         """
         Set the displacement on geometrical points for the model.
 
-        Parameters:
+        Parameters
+        ----------
         DisplacementOnPoints (DisplacementOnPoints) -- Object of type DisplacementOnPoints
         """
         if isinstance(displacementOnPoints, DisplacementOnPoints):
@@ -320,7 +332,8 @@ class Boundaries:
         """
         Get the displacement on points for the model.
 
-        Returns:
+        Returns
+        -------
         DisplacementOnPoints (DisplacementOnPoints) -- Object of type DisplacementOnPoints
         """
         return self.displacementOnPoints
@@ -329,7 +342,8 @@ class Boundaries:
         """
         Set the displacement on lines for the model.
 
-        Parameters:
+        Parameters
+        ----------
         DisplacementOnLines (DisplacementOnLines) -- Object of type DisplacementOnLines
         """
         if isinstance(displacementOnLines, DisplacementOnLines):
@@ -341,7 +355,8 @@ class Boundaries:
         """
         Get the displacement on lines for the model.
 
-        Returns:
+        Returns
+        -------
         DisplacementOnLines (DisplacementOnLines) -- Object of type DisplacementOnLines
         """
         return self.displacementOnLines

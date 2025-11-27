@@ -128,6 +128,11 @@ docs = [
     { name = "natsort" },
     { name = "pygments" },
 ]
+femlearn = [
+    { name = "pygmsh" },
+    { name = "pynastran" },
+    { name = "vtk" },
+]
 test = [
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -167,6 +172,11 @@ docs = [
     { name = "mkdocstrings", extras = ["python"], specifier = "~=0.29.1" },
     { name = "natsort", specifier = "~=8.4.0" },
     { name = "pygments", specifier = "~=2.19.1" },
+]
+femlearn = [
+    { name = "pygmsh", specifier = ">=7.1.17" },
+    { name = "pynastran", specifier = ">=1.3.4" },
+    { name = "vtk", specifier = ">=9.5.2" },
 ]
 test = [
     { name = "pytest", specifier = "==8.4.2" },

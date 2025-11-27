@@ -12,7 +12,8 @@ class LoadsOnNodes(_LoadsBaseClass):
         """
         Initialize a LoadsOnNodes object.
 
-        Parameters:
+        Parameters
+        ----------
         loads (list of lists) -- List of loads in x and y directions
         nodeIds (list) -- List of node identifiers
         ids (list) -- List of load identifiers
@@ -24,7 +25,8 @@ class LoadsOnNodes(_LoadsBaseClass):
         """
         Set node identifiers for the loads.
 
-        Parameters:
+        Parameters
+        ----------
         nodeIds (list) -- List of node identifiers
         """
         self.nodeIds = np.array(nodeIds)
@@ -61,7 +63,8 @@ class LoadsOnNodes(_LoadsBaseClass):
         """
         Add a single node load to the existing loads.
 
-        Parameters:
+        Parameters
+        ----------
         load (list) -- A list of loads in x and y directions
         nodeId (int) -- Identifier of the node the load is applied on
         id (int or None) -- Identifier for the new load (if None, auto-generated)
@@ -96,7 +99,8 @@ class LoadsOnPoints(_LoadsBaseClass):
         """
         Initialize a LoadsOnPoints object.
 
-        Parameters:
+        Parameters
+        ----------
         loads (list of lists) -- List of loads in x and y directions
         pointIds (list) -- List of point identifiers
         ids (list) -- List of load identifiers
@@ -108,7 +112,8 @@ class LoadsOnPoints(_LoadsBaseClass):
         """
         Set point identifiers for the loads.
 
-        Parameters:
+        Parameters
+        ----------
         pointIds (list) -- List of point identifiers
         """
         self.pointIds = np.array(pointIds)
@@ -146,7 +151,8 @@ class LoadsOnPoints(_LoadsBaseClass):
         """
         Add a single point load to the existing loads.
 
-        Parameters:
+        Parameters
+        ----------
         load (list) -- A list of loads in x and y directions
         pointIds (int) --  Identifier of the point the load is applied on
         id (int or None) -- Identifier for the new load (if None, auto-generated)
@@ -174,7 +180,8 @@ class LoadsOnLines(_LoadsBaseClass):
         """
         Initialize a LoadsOnLines object.
 
-        Parameters:
+        Parameters
+        ----------
         loads (list of lists) -- List of loads in x and y directions
         lineIds (list) -- List of line identifiers
         ids (list) -- List of load identifiers
@@ -186,7 +193,8 @@ class LoadsOnLines(_LoadsBaseClass):
         """
         Set line identifiers for the loads.
 
-        Parameters:
+        Parameters
+        ----------
         lineIds (list) -- List of line identifiers
         """
         self.lineIds = np.array(lineIds)
@@ -223,7 +231,8 @@ class LoadsOnLines(_LoadsBaseClass):
         """
         Add a single line load to the existing loads.
 
-        Parameters:
+        Parameters
+        ----------
         load (list) -- A list of loads in x and y directions
         lineId (int) --  Identifier of the line the load is applied on
         id (int or None) -- Identifier for the new load (if None, auto-generated)
@@ -251,7 +260,8 @@ class Loads:
         """
         Initialize a Mesh class
 
-        Parameters:
+        Parameters
+        ----------
         nodes (object) -- Object of type Nodes
         elements (object) -- Object of type Elements
         """
@@ -263,7 +273,8 @@ class Loads:
         """
         Set the LoadsOnNodes object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         loadsOnNodes (LoadsOnNodes) -- Object of type LoadsOnNodes
         """
         if isinstance(loadsOnNodes, LoadsOnNodes):
@@ -275,7 +286,8 @@ class Loads:
         """
         Get the LoadsOnNodes object of the model.
 
-        Returns:
+        Returns
+        -------
         loadsOnNodes (LoadsOnNodes) -- Object of type LoadsOnNodes
         """
         return self.loadsOnNodes
@@ -284,7 +296,8 @@ class Loads:
         """
         Set the LoadsOnPoints object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         loadsOnPoints (LoadsOnPoints) -- Object of type LoadsOnPoints
         """
         if isinstance(loadsOnPoints, LoadsOnPoints):
@@ -296,7 +309,8 @@ class Loads:
         """
         Get the LoadsOnPoints object of the model.
 
-        Returns:
+        Returns
+        -------
         loadsOnPoints (LoadsOnPoints) -- Object of type LoadsOnPoints
         """
         return self.loadsOnPoints
@@ -305,7 +319,8 @@ class Loads:
         """
         Set the LoadsOnLines object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         loadsOnLines (LoadsOnLines) -- Object of type LoadsOnLines
         """
         if isinstance(loadsOnLines, LoadsOnLines):
@@ -317,7 +332,8 @@ class Loads:
         """
         Get the LoadsOnLines object of the model.
 
-        Returns:
+        Returns
+        -------
         loadsOnLines (LoadsOnLines) -- Object of type LoadsOnLines
         """
         return self.loadsOnLines

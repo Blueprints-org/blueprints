@@ -13,7 +13,8 @@ class Points(_PointsBaseClass):
         """
         Initialize a geometrical points object.
 
-        Parameters:
+        Parameters
+        ----------
         coordinates (list of lists) -- List of x, y coordinates
         ids (list) -- List of identifiers
         """
@@ -27,7 +28,8 @@ class Lines:
         """
         Initialize a Lines object.
 
-        Parameters:
+        Parameters
+        ----------
         pointIds (list) -- List of points for each line
         ids (list) -- List of line identifiers
         """
@@ -44,7 +46,8 @@ class Lines:
         """
         Set points for the lines.
 
-        Parameters:
+        Parameters
+        ----------
         pointIds (list) -- List of points for each line
         """
         self.pointIds = np.array(pointIds)
@@ -53,7 +56,8 @@ class Lines:
         """
         Set identifiers for the lines.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of identifiers
         """
         self.ids = np.array(ids)
@@ -62,10 +66,12 @@ class Lines:
         """
         Get index for specific lines.
 
-        Parameters:
+        Parameters
+        ----------
         ids (list) -- List of line identifiers
 
-        Returns:
+        Returns
+        -------
         index (numpy.ndarray) -- Array with the positions of lines in the array
         """
         # Check if ids is a scalar, if so, convert it to a list
@@ -105,7 +111,8 @@ class Lines:
         """
         Add a single line to the existing lines.
 
-        Parameters:
+        Parameters
+        ----------
         referencePointId (list) -- A list of points for the new line
         id (int or None) -- Identifier for the new line (if None, auto-generated)
         """
@@ -129,7 +136,8 @@ class Geometry:
         """
         Initialize a Mesh class
 
-        Parameters:
+        Parameters
+        ----------
         nodes (object) -- Object of type Nodes
         elements (object) -- Object of type Elements
         """
@@ -140,7 +148,8 @@ class Geometry:
         """
         Set the Points object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         points (Points) -- Object of type Points
         """
         if isinstance(points, Points):
@@ -152,7 +161,8 @@ class Geometry:
         """
         Set the Lines object for the model.
 
-        Parameters:
+        Parameters
+        ----------
         lines (Lines) -- Object of type Lines
         """
         if isinstance(lines, Lines):
@@ -165,7 +175,8 @@ class Geometry:
         Generates Points and Lines so that they form a polygon as defined by the vertices.
         Vertices have to be defined counterclockwise.
 
-        Parameters:
+        Parameters
+        ----------
         coordinates (list of list) -- coordinates of polygon vertices
         """
         self.points = Points(coordinates, ids=np.arange(1, len(coordinates) + 1))
@@ -176,7 +187,6 @@ class Geometry:
         lineIds[:, 0] = np.arange(1, n + 1)
         lineIds[0:-1:, 1] = np.arange(2, n + 1)
         self.lines = Lines(pointIds=lineIds)
-        pass
 
     def plot(self):
         """

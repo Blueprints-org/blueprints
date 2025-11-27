@@ -1,9 +1,18 @@
-from matplotlib import pyplot as plt
+"""Model class for 2D FEM analysis."""
+
+import copy
+import time
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pygmsh
+import vtk
+from pyNastran.bdf.bdf import BDF
 
 from blueprints.utils.femlearn.boundary_conditions import Boundaries, DisplacementOnPoints
 from blueprints.utils.femlearn.geometry import Geometry
 from blueprints.utils.femlearn.loads import Loads, LoadsOnPoints
-from blueprints.utils.femlearn.mesh import Mesh
+from blueprints.utils.femlearn.mesh import Elements, Mesh, Nodes
 from blueprints.utils.femlearn.solution import Solution
 from blueprints.utils.femlearn.solver_data import SolverData
 
@@ -13,34 +22,35 @@ class Model2d:
     Model class that holds all data for a 2D FEM model.
     """
 
-    def __init__(self, geometry=Geometry(), mesh=Mesh(), boundaries=Boundaries(), loads=Loads(), solverData=SolverData(), solution=Solution()):
+    def __init__(
+        self,
+        geometry: Geometry,
+        mesh: Mesh,
+        boundaries: Boundaries,
+        loads: Loads,
+        solver_data: SolverData,
+        solution: Solution,
+    ) -> None:
         self.geometry = geometry
         self.mesh = mesh
-        self.meshDeformed = mesh
+        self.mesh_deformed = mesh
         self.boundaries = boundaries
         self.loads = loads
-        self.solverData = solverData
+        self.solver_data = solver_data
         self.solution = solution
 
-    def printParameters(self):
-        """
-        Display all parameters of the model in a structured way.
-        """
-        print("Model parameters:")
+    def print_parameters(self) -> None:
+        """Display all parameters of the model in a structured way."""
         self.geometry.printParameters()
         self.mesh.printParameters()
         self.boundaries.printParameters()
         self.loads.printParameters()
 
-    def _checkParameters(self):
-        """
-        Check if all model parameters are valid and well defined.
-        """
-        # print("Check model parameters:")
-
+    def _check_parameters(self) -> None:
+        """Check if all model parameters are valid and well defined."""
         if not (
             self.mesh.elements.ids.shape[0]
-            == len(self.mesh.elements.nodeIds)
+            == len(self.mesh.elements.node_ids)
             == self.mesh.elements.youngsModulus.shape[0]
             == self.mesh.elements.poissonsRatio.shape[0]
             == self.mesh.elements.thickness.shape[0]
@@ -58,14 +68,22 @@ class Model2d:
             if self.boundaries.displacementOnPoints.ids.shape[0] != 0:
                 raise ValueError("No points were defined for displacement on points!")
 
-        if self.geometry.lines.ids.shape[0] == 0:
-            if self.boundaries.displacementOnLines.ids.shape[0] != 0:
-                raise ValueError("No points were defined for displacement on lines!")
+        if self.geometry.lines.ids.shape[0] == 0 and self.boundaries.displacementOnLines.ids.shape[0] != 0:
+            raise ValueError("No points were defined for displacement on lines!")
 
-    def generateQuadMesh(
-        self, nx=1, ny=1, type=4, specified_nodes=None, integrationOrder=4, thickness=[], poissonRation=[], youngsModulus=[], planarAssumption=[]
-    ):
-        """Generates a Quad mesh for a rectangle
+    def generate_quad_mesh(
+        self,
+        nx=1,
+        ny=1,
+        type=4,
+        specified_nodes=None,
+        integrationOrder=4,
+        thickness: float = [],
+        poissonRation: float = [],
+        youngsModulus: float = [],
+        planarAssumption: float = [],
+    ) -> None:
+        """Generates a Quad mesh for a rectangle.
 
         Args:
             nx (int): Number of nodes in x direction
@@ -111,126 +129,138 @@ class Model2d:
 
         self.mesh.elements.integrationOrder = np.array([integrationOrder for _ in range(self.mesh.numberOfElements)])
 
-    def generateTriangleMesh(self, size, type=3, integrationOrder=1, thickness=[], poissonRation=[], youngsModulus=[], planarAssumption=[]):
-        """Creates a triangle mesh using the pygmsh library
+    def generate_triangle_mesh(
+        self,
+        size: float,
+        type: float = 3,
+        integration_order: float = 1,
+        thickness: list[float] = [],
+        poisson_ratio: list[float] = [],
+        youngs_modulus: list[float] = [],
+        planar_assumption: list[float] = [],
+    ) -> None:
+        """Creates a triangle mesh using the pygmsh library.
 
         Args:
             size (float): element size
             type (int, optional): type of the element 3=>tria3; 6 => tria6. Defaults to 3.
-            integrationOrder (int,optional): number of integration points per element. Deaults to 4
+            integration_order (int,optional): number of integration points per element. Deaults to 4
         """
-        import pygmsh  # externe meshing bibliothek
-
         vertices = self.geometry.points.coordinates
-        with blueprints.utils.femlearn.geometry.Geometry() as pygeom:
+        with pygmsh.geo.Geometry() as pygeom:
             pygeom.add_polygon(
                 vertices,
                 mesh_size=size,
             )
 
             if type == 3:
-                keyType = 1
+                key_type = 1
             elif type == 6:
-                keyType = 2
+                key_type = 2
             else:
                 raise ValueError(f"Type TRIA-{type} not implemented!")
 
-            gmsh = pygeom.generate_mesh(order=keyType)
+            gmsh = pygeom.generate_mesh(order=key_type)
             keys = ["triangle", "triangle6", "triangle10"]
-            connectivity = np.array(gmsh.cells_dict[keys[keyType - 1]]) + 1
+            connectivity = np.array(gmsh.cells_dict[keys[key_type - 1]]) + 1
             points = np.array(gmsh.points)
             self.mesh.nodes = Nodes(coordinates=points[:, [0, 1]])
             self.mesh.nodes.setIds(self.mesh.nodes.ids)
 
             self.mesh.elements = Elements(
-                nodeIds=connectivity, thickness=thickness, youngsModulus=youngsModulus, poissonsRatio=poissonRation, planarAssumption=planarAssumption
+                nodeIds=connectivity,
+                thickness=thickness,
+                youngsModulus=youngs_modulus,
+                poissonsRatio=poisson_ratio,
+                planarAssumption=planar_assumption,
             )
             self.mesh.elements.setIds(self.mesh.elements.ids)
-            self.mesh.elements.integrationOrder = np.array([integrationOrder for _ in range(self.mesh.numberOfElements)])
-            pass
+            self.mesh.elements.integrationOrder = np.array([integration_order for _ in range(self.mesh.numberOfElements)])
 
-    def importNasFile(self, filename, integrationOrder=1, thickness=[], poissonRation=[], youngsModulus=[], planarAssumption=[]):
-        from pyNastran.bdf.bdf import BDF
-
+    def import_nas_file(
+        self,
+        filename,
+        integration_order: float = 1,
+        thickness: float = [],
+        poisson_ration: float = [],
+        youngs_modulus: float = [],
+        planar_assumption: float = [],
+    ) -> None:
         model = BDF()
 
         model.read_bdf(filename, xref=False)
 
         coords = model.get_xyz_in_coord()[:, [0, 2]]
         all_node_ids = list(model.node_ids)
-        number_of_node = model.nnodes
 
-        # nodeIDs = np.array([model.get_node_ids_with_elements([i],return_array=True) for i in model.element_ids])
-        nodeIDs = np.array([model.elements[i].node_ids for i in model.element_ids])
+        node_ids = np.array([model.elements[i].node_ids for i in model.element_ids])
 
-        if nodeIDs.shape[1] not in [3, 4, 6, 8]:
+        if node_ids.shape[1] not in [3, 4, 6, 8]:
             # If elements have Three nodes, the colummns are already in the correct order
-            raise ("Import is only implemented for elements of type: {Tria3;Tria3; Quad4; Quad8}")
+            raise "Import is only implemented for elements of type: {Tria3;Tria3; Quad4; Quad8}"
 
         self.mesh.nodes = Nodes(coordinates=coords, ids=all_node_ids)
         self.mesh.elements = Elements(
-            nodeIds=nodeIDs, thickness=thickness, youngsModulus=youngsModulus, poissonsRatio=poissonRation, planarAssumption=planarAssumption
+            nodeIds=node_ids, thickness=thickness, youngsModulus=youngs_modulus, poissonsRatio=poisson_ration, planarAssumption=planar_assumption
         )
-        self.mesh.elements.integrationOrder = np.array([integrationOrder for _ in range(self.mesh.numberOfElements)])
+        self.mesh.elements.integrationOrder = np.array([integration_order for _ in range(self.mesh.numberOfElements)])
 
-    def solve(self):
-        """
-        Assemble the equation matrices from mesh, boundaries and load definitions and solve them
-        """
-        self._checkParameters()
+    def solve(self) -> None:
+        """Assemble the equation matrices from mesh, boundaries and load definitions and solve them."""
+        self._check_parameters()
         start_time = time.perf_counter()
-        self.meshDeformed = copy.deepcopy(self.mesh)
-        self.solverData = SolverData(self.mesh, self.meshDeformed)
-        self.solverData._combineBoundaries(self.geometry, self.boundaries)
-        self.solverData._combineLoads(self.geometry, self.loads)
-        self.solverData._buildStiffnessMatrix()
-        self.solverData._buildLoadVector()
-        self.solverData._applyPrescribedDisplacements()
-        self.solverData._reduceStiffnesMatrixAndLoadVector()
-        self.solverData._solveLinearEquation()
+        self.mesh_deformed = copy.deepcopy(self.mesh)
+        self.solver_data = SolverData(self.mesh, self.mesh_deformed)
+        self.solver_data._combine_boundaries(self.geometry, self.boundaries)
+        self.solver_data._combine_loads(self.geometry, self.loads)
+        self.solver_data._build_stiffness_matrix()
+        self.solver_data._build_load_vector()
+        self.solver_data._apply_prescribed_displacements()
+        self.solver_data._reduce_stiffnes_matrix_and_load_vector()
+        self.solver_data._solve_linear_equation()
 
         end_time = time.perf_counter()
-        self.solverData.elapsedTime = end_time - start_time
+        self.solver_data.elapsedTime = end_time - start_time
 
-        self.solverData.status = "finished"
+        self.solver_data.status = "finished"
 
-        nodalSolution, elementSolution = self.solverData._getFullSolution()
+        nodal_solution, element_solution = self.solver_data._get_full_solution()
         self.solution = Solution(
             self.mesh,
-            self.meshDeformed,
-            nodalSolution[0],
-            nodalSolution[1],
-            nodalSolution[2],
-            elementSolution[0],
-            elementSolution[1],
-            elementSolution[2],
-            elementSolution[3],
-            elementSolution[4],
-            elementSolution[5],
-            elementSolution[6],
-            elementSolution[7],
-            elementSolution[8],
-            elementSolution[9],
-            elementSolution[10],
+            self.mesh_deformed,
+            nodal_solution[0],
+            nodal_solution[1],
+            nodal_solution[2],
+            element_solution[0],
+            element_solution[1],
+            element_solution[2],
+            element_solution[3],
+            element_solution[4],
+            element_solution[5],
+            element_solution[6],
+            element_solution[7],
+            element_solution[8],
+            element_solution[9],
+            element_solution[10],
         )
-        pass
 
-    def plotSolution(self, variableName, averaged=False, deformed=True):
+    def plot_solution(
+        self,
+        variable_name,
+        averaged=False,
+        deformed=True,
+    ):
         """Plots the deformed mesh with each element colored according the value of "variable".
 
 
         For each element the average of the value at its integration points or nodes is calculated and plotted.
         Args:
-            variableName (_string_): Name of the variable to be plotted. Options are:
+            variable_name (_string_): Name of the variable to be plotted. Options are:
               ['dispX', 'dispY', 'dispTotal', 'strainX', 'strainY', 'strainXY', 'stressX', 'stressY', 'stressXY', 'stress11', 'stress22', 'stress33', 'stressMises']
         """
+        variable = self.solution.variables[variable_name]
 
-        variable = self.solution.variables[variableName]
-
-        if deformed == True:
-            coords = self.solution.meshDeformed.nodes.coordinates
-        else:
-            coords = self.solution.mesh.nodes.coordinates
+        coords = self.solution.mesh_deformed.nodes.coordinates if deformed else self.solution.mesh.nodes.coordinates
 
         var_min = variable.min()
         var_max = variable.max()
@@ -238,34 +268,34 @@ class Model2d:
         fig = plt.figure(1)
         ax = fig.add_subplot()
 
-        if averaged == True:
+        if averaged:
             # If variable is calculted at the integration points: get the average value of the variable for each element
             # If the variable calculated at the nodes(displacement): the averageing is done inside the plotting loop to save computational cost
-            if variableName[:4] != "disp":
-                averagedResult = self.solution._getAveragedResult(variableName)
+            if variable_name[:4] != "disp":
+                averaged_result = self.solution._get_averaged_result(variable_name)
 
             # Iterate through all elements by iterating through the nodeIDs vector
-            for index, nodeIds in enumerate(self.mesh.elements.nodeIds):
+            for index, node_ids in enumerate(self.mesh.elements.node_ids):
                 # Get the the deformed coordinates of the nodes belonging to the current element
                 # If elementtype is TRIA6: use only first three coordinates for plotting
-                if len(nodeIds) == 6:
-                    elementNodeIndex = self.mesh.nodes.findIndexByNodeIds(nodeIds[[0, 3, 1, 4, 2, 5]])
+                if len(node_ids) == 6:
+                    element_node_index = self.mesh.nodes.findIndexByNodeIds(node_ids[[0, 3, 1, 4, 2, 5]])
                 # If elementtype is Quad8: use only first four coordinates for plotting
-                elif len(nodeIds) == 8:
-                    elementNodeIndex = self.mesh.nodes.findIndexByNodeIds(nodeIds[[0, 4, 1, 5, 2, 6, 3, 7]])
+                elif len(node_ids) == 8:
+                    element_node_index = self.mesh.nodes.findIndexByNodeIds(node_ids[[0, 4, 1, 5, 2, 6, 3, 7]])
                 else:
-                    elementNodeIndex = self.mesh.nodes.findIndexByNodeIds(nodeIds)
-                element_coords = coords[elementNodeIndex]
+                    element_node_index = self.mesh.nodes.findIndexByNodeIds(node_ids)
+                element_coords = coords[element_node_index]
 
                 # If the variable is a deformation, the average is calculated inside the loop.
                 # This way the "nodeIDs" that were calculated via "findIndexByNodeIds()" can be reused
-                if variableName[:4] == "disp":
+                if variable_name[:4] == "disp":
                     # Get the average deformation of the nodes belonging to the urrent element
                     average_variable = variable[
-                        elementNodeIndex
-                    ].mean()  # nodeIds can be used since deformations are stored in the same order as the nodes
+                        element_node_index
+                    ].mean()  # node_ids can be used since deformations are stored in the same order as the nodes
                 else:
-                    average_variable = averagedResult[index]
+                    average_variable = averaged_result[index]
 
                 # map deformation to colormap
                 cmap = plt.get_cmap("jet")
@@ -276,35 +306,34 @@ class Model2d:
 
         # If averaged = false
         else:
-            if variableName[:4] != "disp":
-                if deformed == True:
-                    coords = self.solution.meshDeformed.integrationPoints.coordinates
-                    mesh = self.solution.meshDeformed
+            if variable_name[:4] != "disp":
+                if deformed:
+                    coords = self.solution.mesh_deformed.integrationPoints.coordinates
+                    mesh = self.solution.mesh_deformed
                 else:
                     coords = self.solution.mesh.integrationPoints.coordinates
                     mesh = self.solution.mesh
+            elif deformed:
+                coords = self.solution.mesh_deformed.nodes.coordinates
+                mesh = self.solution.mesh_deformed
             else:
-                if deformed == True:
-                    coords = self.solution.meshDeformed.nodes.coordinates
-                    mesh = self.solution.meshDeformed
-                else:
-                    coords = self.solution.mesh.nodes.coordinates
-                    mesh = self.solution.mesh
+                coords = self.solution.mesh.nodes.coordinates
+                mesh = self.solution.mesh
             # map value to colormap
             cmap = plt.get_cmap("jet")
             color = cmap((variable - var_min) / (var_max - var_min))
 
             plt.scatter(coords[:, 0], coords[:, 1], c=color, s=150)
-            mesh.plotMesh()
+            mesh.plot_mesh()
             ax.set_aspect("equal", adjustable="box")
 
         sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=var_min, vmax=var_max))
         sm.set_array([])
         cbar = fig.colorbar(sm, ax=ax)
-        cbar.set_label(variableName)
+        cbar.set_label(variable_name)
         return fig
 
-    def plotBoundaries(self, deformed=False):
+    def plot_boundaries(self, deformed: bool = False) -> None:
         if self.geometry.points.ids.shape[0] == 0:
             if self.geometry.lines.ids.shape[0] != 0:
                 raise ValueError("No points were defined for lines!")
@@ -319,22 +348,19 @@ class Model2d:
             if self.loads.loadsOnLines.ids.shape[0] != 0:
                 raise ValueError("No points were defined for loads on lines!")
 
-        if self.solverData.status == "unfinished":
-            temp_solverData = SolverData(mesh=self.mesh)
-            temp_solverData._combineBoundaries(geometry=self.geometry, boundaries=self.boundaries)
-            displacementOnNodes = temp_solverData.nodalDisplacements
+        if self.solver_data.status == "unfinished":
+            temp_solver_data = SolverData(mesh=self.mesh)
+            temp_solver_data._combine_boundaries(geometry=self.geometry, boundaries=self.boundaries)
+            displacement_on_nodes = temp_solver_data.nodalDisplacements
         else:
-            displacementOnNodes = self.solverData.nodalDisplacements
+            displacement_on_nodes = self.solver_data.nodalDisplacements
 
-        x_fixed_ids = displacementOnNodes._getNodeIdsWithFixationX()
-        y_fixed_ids = displacementOnNodes._getNodeIdsWithFixationY()
-        x_displacement_values, x_displacement_ids = displacementOnNodes._getPrescribedNodalDispalcementX()
-        y_displacement_values, y_displacement_ids = displacementOnNodes._getPrescribedNodalDispalcementY()
+        x_fixed_ids = displacement_on_nodes._get_node_ids_with_fixation_x()
+        y_fixed_ids = displacement_on_nodes._get_node_ids_with_fixation_y()
+        x_displacement_values, x_displacement_ids = displacement_on_nodes._get_prescribed_nodal_dispalcement_x()
+        y_displacement_values, y_displacement_ids = displacement_on_nodes._get_prescribed_nodal_dispalcement_y()
 
-        if deformed:
-            mesh = self.solution.meshDeformed
-        else:
-            mesh = self.mesh
+        mesh = self.solution.mesh_deformed if deformed else self.mesh
 
         x_fixed_coords = mesh.nodes.findCoordinatesByNodeIds(x_fixed_ids)[0]
         y_fixed_coords = mesh.nodes.findCoordinatesByNodeIds(y_fixed_ids)[0]
@@ -377,43 +403,39 @@ class Model2d:
 
         plt.axis("square")
 
-    def plotLoads(self, deformed=False):
+    def plot_loads(self, deformed: bool = False) -> None:
         if self.geometry.points.ids.shape[0] == 0:
             if self.geometry.lines.ids.shape[0] != 0:
                 raise ValueError("No points were defined for lines!")
             if self.loads.loadsOnPoints.ids.shape[0] != 0:
                 raise ValueError("No points were defined for loads on points!")
 
-        if self.geometry.lines.ids.shape[0] == 0:
-            if self.loads.loadsOnLines.ids.shape[0] != 0:
-                raise ValueError("No points were defined for loads on lines!")
+        if self.geometry.lines.ids.shape[0] == 0 and self.loads.loadsOnLines.ids.shape[0] != 0:
+            raise ValueError("No points were defined for loads on lines!")
 
-        if self.solverData.status == "unfinished":
-            temp_solverData = SolverData(mesh=self.mesh)
-            temp_solverData._combineLoads(geometry=self.geometry, loads=self.loads)
-            loadsOnNodes = temp_solverData.nodalLoads
+        if self.solver_data.status == "unfinished":
+            temp_solver_data = SolverData(mesh=self.mesh)
+            temp_solver_data._combine_loads(geometry=self.geometry, loads=self.loads)
+            loads_on_nodes = temp_solver_data.nodalLoads
         else:
-            loadsOnNodes = self.solverData.nodalLoads
+            loads_on_nodes = self.solver_data.nodalLoads
 
-        nodeIDs = loadsOnNodes.nodeIds
+        node_ids = loads_on_nodes.node_ids
         x_force_ids = []
         y_force_ids = []
         x_force_values = []
         y_force_values = []
 
-        for i, load in enumerate(loadsOnNodes.loads):
+        for i, load in enumerate(loads_on_nodes.loads):
             if load[0] != 0:
-                x_force_ids.append(nodeIDs[i])
+                x_force_ids.append(node_ids[i])
                 x_force_values.append(load[0])
 
             if load[1] != 0:
-                y_force_ids.append(nodeIDs[i])
+                y_force_ids.append(node_ids[i])
                 y_force_values.append(load[1])
 
-        if deformed:
-            mesh = self.solution.meshDeformed
-        else:
-            mesh = self.mesh
+        mesh = self.solution.mesh_deformed if deformed else self.mesh
 
         x_force_coords = mesh.nodes.findCoordinatesByNodeIds(x_force_ids)[0]
         y_force_coords = mesh.nodes.findCoordinatesByNodeIds(y_force_ids)[0]
@@ -430,16 +452,22 @@ class Model2d:
 
         plt.axis("square")
 
-    def plotMesh(self, deformed=False, color_test=False, show_ids=False):
+    def plot_mesh(
+        self,
+        deformed: bool = False,
+        color_test: bool = False,
+        show_ids: bool = False,
+    ) -> None:
         """
-        Plots the mesh
+        Plots the mesh.
 
-        Parameters:
+        Parameters
+        ----------
         color_test (bool) -- ???
         show_ids (bool) -- True to displays node identifiers
         """
         if deformed:
-            self.meshDeformed.plotMesh(color_test=color_test, show_ids=show_ids)
+            self.mesh_deformed.plotMesh(color_test=color_test, show_ids=show_ids)
         else:
             self.mesh.plotMesh(color_test=color_test, show_ids=show_ids)
 
@@ -463,30 +491,26 @@ class Model2d:
             else:
                 cmap = plt.get_cmap('jet')
                 color = cmap(elementIndex/self.mesh.elements.ids.shape[0])
-                
+
             plt.fill(coords[:,0],coords[:,1], edgecolor='cyan', facecolor=color)
-            
+
             if show_ids == True:
                 plt.text(midpoint[0],midpoint[1], self.mesh.elements.ids[elementIndex], fontsize=12,color='cyan',ha='center',va='center')
 
                 plt.axis('square')
         """
 
-    def plotSolutionVTK(self, deformed=True, variableName="dispTotal"):
+    def plot_solution_vtk(self, deformed=True, variable_name="dispTotal") -> None:
         """
         Plot the solution using VTK.
 
-        Parameters:
+        Parameters
+        ----------
         deformed (bool) -- If True, plot the deformed shape; if False, plot the original shape.
         variableName (str) -- The name of the variable to plot (e.g., 'stressX', 'dispX', etc.)
         """
-        import vtk
-
         # Get the mesh and coordinates
-        if deformed:
-            coordinates = self.solution.meshDeformed.nodes.coordinates
-        else:
-            coordinates = self.solution.mesh.nodes.coordinates
+        coordinates = self.solution.mesh_deformed.nodes.coordinates if deformed else self.solution.mesh.nodes.coordinates
 
         # Create a VTK points object
         vtk_points = vtk.vtkPoints()
@@ -497,8 +521,7 @@ class Model2d:
         vtk_cells = vtk.vtkCellArray()
 
         # Add elements to vtk_cells
-        element_ids = self.solution.mesh.elements.ids
-        for element in self.solution.mesh.elements.nodeIds:
+        for element in self.solution.mesh.elements.node_ids:
             # Adjusting for 1-based indexing
             adjusted_element = [node_id - 1 for node_id in element]  # Convert to 0-based index
             if len(adjusted_element) == 3:  # TRIANGLE
@@ -516,11 +539,11 @@ class Model2d:
         vtk_poly_data.SetPolys(vtk_cells)
 
         # Set the scalar data for the variableName
-        data = getattr(self.solution, variableName)  # Retrieve stress data
+        data = getattr(self.solution, variable_name)  # Retrieve stress data
 
         # Create a vtkArray to hold the scalar data
         vtk_data_array = vtk.vtkFloatArray()
-        vtk_data_array.SetName(variableName)
+        vtk_data_array.SetName(variable_name)
         vtk_data_array.SetNumberOfComponents(1)
         vtk_data_array.SetNumberOfTuples(len(data))
 
@@ -566,7 +589,15 @@ if __name__ == "__main__":
     plt.show()
 
     # Meshing
-    model.generateTRIAngleMesh(size=2, type=6, integrationOrder=3, thickness=1, poissonRation=0.3, youngsModulus=100, planarAssumption="plane stress")
+    model.generate_triangle_mesh(
+        size=2,
+        type=6,
+        integration_order=3,
+        thickness=1,
+        poisson_ratio=0.3,
+        youngs_modulus=100,
+        planar_assumption="plane stress",
+    )
 
     # Boundary conditions
     disp = DisplacementOnPoints(displacements=[[0, 0], [0, "free"]], pointIds=[1, 4])
@@ -579,14 +610,14 @@ if __name__ == "__main__":
     model.solve()
 
     # Y-displacement in deformed mesh with loads and BCs
-    model.plotSolution("dispY", averaged=True, deformed=True)
-    model.plotBoundaries(deformed=True)
-    model.plotLoads(deformed=True)
+    model.plot_solution("dispY", averaged=True, deformed=True)
+    model.plot_boundaries(deformed=True)
+    model.plot_loads(deformed=True)
     plt.show()
 
     # Mises stress in undeformed mesh
-    model.plotSolution("stressMises", averaged=False, deformed=False)
-    model.plotMesh(deformed=False)
-    model.plotBoundaries(deformed=False)
-    model.plotLoads(deformed=False)
+    model.plot_solution("stressMises", averaged=False, deformed=False)
+    model.plot_mesh(deformed=False)
+    model.plot_boundaries(deformed=False)
+    model.plot_loads(deformed=False)
     plt.show()
