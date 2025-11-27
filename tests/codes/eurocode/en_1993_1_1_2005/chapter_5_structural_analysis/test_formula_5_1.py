@@ -2,7 +2,10 @@
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import From5Dot1CriteriumDisregardSecondOrderEffects, AnalysisType
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import (
+    AnalysisType,
+    From5Dot1CriteriumDisregardSecondOrderEffects,
+)
 from blueprints.validations import MismatchSignError
 
 
@@ -38,7 +41,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     @pytest.mark.parametrize(
         ("f_cr", "f_ed", "analysis_type"),
         [
-            (1000000, 100000, 'elastic'),  # analysis_type is not of type AnalysisType
+            (1000000, 100000, "elastic"),  # analysis_type is not of type AnalysisType
         ],
     )
     def test_type_error_analysis_type(

@@ -1,7 +1,6 @@
 """Module for validation actions inside of Blueprints."""
 
 from collections.abc import Sequence
-from typing import List
 
 
 class LessOrEqualToZeroError(Exception):
@@ -31,7 +30,7 @@ class NegativeValueError(Exception):
 class MismatchSignError(Exception):
     """Raised when not all the keyword values have the same sign."""
 
-    def __init__(self, value_names: List[str]) -> None:
+    def __init__(self, value_names: list[str]) -> None:
         message = f"Sign of values {", ".join(value_names)} should be the same."
         super().__init__(message)
 

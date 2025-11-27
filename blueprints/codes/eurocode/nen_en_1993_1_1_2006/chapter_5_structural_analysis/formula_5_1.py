@@ -1,7 +1,9 @@
 """Formula 5.1 from NEN-EN 1993-1-1:2006: Chapter 5 - Structural Analysis."""
 
 import operator
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
+
 from blueprints.codes.eurocode.nen_en_1993_1_1_2006 import EN_1993_1_1_2006
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
