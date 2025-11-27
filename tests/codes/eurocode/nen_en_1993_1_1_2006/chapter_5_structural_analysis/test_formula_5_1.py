@@ -14,12 +14,11 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     testdata: ClassVar[list[tuple[float, float, bool, float]]] = [
         (1000000, 100000, True, 1),
         (1000000, 110000, False, 1.10),
-        (1000000, 50000, True, 0.50)
+        (1000000, 50000, True, 0.50),
     ]
 
     @pytest.mark.parametrize("f_cr,f_ed,exp_result,exp_uc", testdata)  # noqa: PT006
-    def test_evaluation(
-            self, f_cr: float, f_ed: float, exp_result: bool, exp_uc: float) -> None:
+    def test_evaluation(self, f_cr: float, f_ed: float, exp_result: bool, exp_uc: float) -> None:
         """Test the evaluation of the result."""
         form = From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed)
         assert form == exp_result
@@ -32,12 +31,10 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
             (-1000000, 100000),  # f_cr is negative
         ],
     )
-    def test_error_mismatch_sign(
-            self, f_cr: float, f_ed: float) -> None:
+    def test_error_mismatch_sign(self, f_cr: float, f_ed: float) -> None:
         """Test if correct error is raised when provide arguments with different signs."""
         with pytest.raises(MismatchSignError):
             From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed)
-
 
     @pytest.mark.parametrize(
         ("representation", "expected"),

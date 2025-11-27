@@ -59,11 +59,8 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         _equation: str = r"\alpha_{cr} = \frac{F_{cr}}{F_{Ed}} \ge 10"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
-            replacements={
-                r"\alpha_{cr}": f"{(self.f_cr / self.f_ed):.{n}f}",
-                "F_{cr}": f"{self.f_cr:.{n}f}",
-                "F_{Ed}": f"{self.f_ed:.{n}f}"},
-            unique_symbol_check=False
+            replacements={r"\alpha_{cr}": f"{(self.f_cr / self.f_ed):.{n}f}", "F_{cr}": f"{self.f_cr:.{n}f}", "F_{Ed}": f"{self.f_ed:.{n}f}"},
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol="CHECK",
@@ -71,5 +68,5 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label=r"\to",
-            unit=""
+            unit="",
         )

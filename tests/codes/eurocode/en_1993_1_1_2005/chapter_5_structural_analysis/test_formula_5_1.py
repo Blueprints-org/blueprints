@@ -1,29 +1,25 @@
 """Testing formula 5.1 of EN 1993-1-1:2005."""
 
-from typing import ClassVar
+from typing import ClassVar, Literal
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import (
-    AnalysisType,
-    From5Dot1CriteriumDisregardSecondOrderEffects,
-)
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import From5Dot1CriteriumDisregardSecondOrderEffects
 from blueprints.validations import MismatchSignError
 
 
 class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     """Validation for formula 5.1 from EN 1993-1-1:2005."""
 
-    testdata: ClassVar[list[tuple[float, float, AnalysisType, bool, float]]] = [
-        (1000000, 100000, AnalysisType.ELASTIC, True, 1),
-        (1000000, 110000, AnalysisType.ELASTIC, False, 1.10),
-        (1000000, 50000, AnalysisType.PLASTIC, True, 0.75),
-        (1000000, 100000, AnalysisType.PLASTIC, False, 1.50)
+    testdata: ClassVar[list[tuple[float, float, str, bool, float]]] = [
+        (1000000, 100000, "elastic", True, 1),
+        (1000000, 110000, "elastic", False, 1.10),
+        (1000000, 50000, "plastic", True, 0.75),
+        (1000000, 100000, "plastic", False, 1.50),
     ]
 
     @pytest.mark.parametrize("f_cr,f_ed,analysis_type,exp_result,exp_uc", testdata)  # noqa: PT006
-    def test_evaluation(
-            self, f_cr: float, f_ed: float, analysis_type: AnalysisType, exp_result: bool, exp_uc: float) -> None:
+    def test_evaluation(self, f_cr: float, f_ed: float, analysis_type: Literal["elastic", "plastic"], exp_result: bool, exp_uc: float) -> None:
         """Test the evaluation of the result."""
         form = From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
         assert form == exp_result
@@ -32,12 +28,11 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     @pytest.mark.parametrize(
         ("f_cr", "f_ed", "analysis_type"),
         [
-            (1000000, -100000, AnalysisType.ELASTIC),  # f_ed is negative
-            (-1000000, 100000, AnalysisType.ELASTIC),  # f_cr is negative
+            (1000000, -100000, "elastic"),  # f_ed is negative
+            (-1000000, 100000, "elastic"),  # f_cr is negative
         ],
     )
-    def test_error_mismatch_sign(
-            self, f_cr: float, f_ed: float, analysis_type: AnalysisType) -> None:
+    def test_error_mismatch_sign(self, f_cr: float, f_ed: float, analysis_type: Literal["elastic", "plastic"]) -> None:
         """Test if correct error is raised when provide arguments with different signs."""
         with pytest.raises(MismatchSignError):
             From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
@@ -45,13 +40,12 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     @pytest.mark.parametrize(
         ("f_cr", "f_ed", "analysis_type"),
         [
-            (1000000, 100000, "elastic"),  # analysis_type is not of type AnalysisType
+            (1000000, 100000, "invalid_input"),  # analysis_type is not of elastic or plastic
         ],
     )
-    def test_type_error_analysis_type(
-            self, f_cr: float, f_ed: float, analysis_type: AnalysisType) -> None:
+    def test_type_error_analysis_type(self, f_cr: float, f_ed: float, analysis_type: Literal["elastic", "plastic"]) -> None:
         """Test if correct error is raised when provide wrong type."""
-        with pytest.raises(TypeError):
+        with pytest.raises(ValueError):
             From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 
     @pytest.mark.parametrize(
@@ -66,7 +60,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
         # Example values
         f_cr = 1000000
         f_ed = 100000
-        analysis_type = AnalysisType.ELASTIC
+        analysis_type = "elastic"
 
         # Create test object
         latex = From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type).latex()
