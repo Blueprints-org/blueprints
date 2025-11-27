@@ -221,5 +221,5 @@ class TestResultInternalForce1D:
 
     def test_index_less_than_one_raises_value_error(self) -> None:
         """Test that index < 1 raises ValueError."""
-        with pytest.raises(ValueError, match="index must be >= 1 (SAF specification requires index >= 1)"):
+        with pytest.raises(ValueError, match="index must be >= 1"):
             ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", index=0)
