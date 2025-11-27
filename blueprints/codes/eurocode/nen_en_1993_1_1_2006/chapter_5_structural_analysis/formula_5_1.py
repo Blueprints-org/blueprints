@@ -45,12 +45,12 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         return operator.ge
 
     @staticmethod
-    def _evaluate_lhs(f_cr: N, f_ed: N, *args, **kwargs) -> float:
+    def _evaluate_lhs(f_cr: N, f_ed: N, *args, **kwargs) -> float:  # noqa: ARG004
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
         return f_cr / f_ed
 
     @staticmethod
-    def _evaluate_rhs(*args, **kwargs) -> float:
+    def _evaluate_rhs(*args, **kwargs) -> float:  # noqa: ARG004
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         return 10
 

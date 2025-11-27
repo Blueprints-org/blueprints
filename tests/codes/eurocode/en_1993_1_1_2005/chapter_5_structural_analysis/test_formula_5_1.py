@@ -1,5 +1,7 @@
 """Testing formula 5.1 of EN 1993-1-1:2005."""
 
+from typing import ClassVar
+
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import (
@@ -12,16 +14,17 @@ from blueprints.validations import MismatchSignError
 class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     """Validation for formula 5.1 from EN 1993-1-1:2005."""
 
-    testdata = [
+    testdata: ClassVar[list[tuple[float, float, AnalysisType, bool, float]]] = [
         (1000000, 100000, AnalysisType.ELASTIC, True, 1),
         (1000000, 110000, AnalysisType.ELASTIC, False, 1.10),
         (1000000, 50000, AnalysisType.PLASTIC, True, 0.75),
         (1000000, 100000, AnalysisType.PLASTIC, False, 1.50)
     ]
 
-    @pytest.mark.parametrize("f_cr,f_ed,analysis_type,exp_result,exp_uc", testdata)
+    @pytest.mark.parametrize("f_cr,f_ed,analysis_type,exp_result,exp_uc", testdata)  # noqa: PT006
     def test_evaluation(
             self, f_cr: float, f_ed: float, analysis_type: AnalysisType, exp_result: bool, exp_uc: float) -> None:
+        """Test the evaluation of the result."""
         form = From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
         assert form == exp_result
         assert form.unity_check == pytest.approx(exp_uc)
@@ -35,6 +38,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     )
     def test_error_mismatch_sign(
             self, f_cr: float, f_ed: float, analysis_type: AnalysisType) -> None:
+        """Test if correct error is raised when provide arguments with different signs."""
         with pytest.raises(MismatchSignError):
             From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 
@@ -46,6 +50,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     )
     def test_type_error_analysis_type(
             self, f_cr: float, f_ed: float, analysis_type: AnalysisType) -> None:
+        """Test if correct error is raised when provide wrong type."""
         with pytest.raises(TypeError):
             From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 

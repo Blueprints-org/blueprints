@@ -3,7 +3,7 @@
 import operator
 from collections.abc import Callable
 from enum import Enum
-from typing import Any
+from typing import Any, ClassVar
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import ComparisonFormula
@@ -47,7 +47,7 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         self.analysis_type = analysis_type
         self._check_signs()
 
-    _analysis_type_map = {
+    _analysis_type_map: ClassVar[dict[AnalysisType, float]] = {
         AnalysisType.ELASTIC: 10, AnalysisType.PLASTIC: 15}
 
     def _check_signs(self) -> None:
@@ -59,12 +59,12 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         return operator.ge
 
     @staticmethod
-    def _evaluate_lhs(f_cr: N, f_ed: N, *args, **kwargs) -> float:
+    def _evaluate_lhs(f_cr: N, f_ed: N, *args, **kwargs) -> float:  # noqa: ARG004
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
         return f_cr / f_ed
 
     @staticmethod
-    def _evaluate_rhs(analysis_type: AnalysisType, *args, **kwargs) -> float:
+    def _evaluate_rhs(analysis_type: AnalysisType, *args, **kwargs) -> float:  # noqa: ARG004
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         if not isinstance(analysis_type, AnalysisType):
             raise TypeError("analysis_type must be an instance of AnalysisType Enum.")
