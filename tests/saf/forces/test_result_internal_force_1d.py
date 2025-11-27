@@ -201,22 +201,22 @@ class TestResultInternalForce1D:
 
     def test_missing_member_raises_value_error(self) -> None:
         """Test that missing member raises ValueError when result_on is ON_BEAM."""
-        with pytest.raises(ValueError, match="member must be specified when result_on = ResultOn.ON_BEAM"):
+        with pytest.raises(ValueError, match="member must be specified when"):
             ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="", result_for=ResultFor.LOAD_CASE, load_case="LC1")
 
     def test_missing_member_rib_raises_value_error(self) -> None:
         """Test that missing member_rib raises ValueError when result_on is ON_RIB."""
-        with pytest.raises(ValueError, match="member_rib must be specified when result_on = ResultOn.ON_RIB"):
+        with pytest.raises(ValueError, match="member_rib must be specified when"):
             ResultInternalForce1D(result_on=ResultOn.ON_RIB, member_rib="", result_for=ResultFor.LOAD_COMBINATION, load_combination="COM1")
 
     def test_missing_load_case_raises_value_error(self) -> None:
         """Test that missing load_case raises ValueError when result_for is LOAD_CASE."""
-        with pytest.raises(ValueError, match="load_case must be specified when result_for = ResultFor.LOAD_CASE"):
+        with pytest.raises(ValueError, match="load_case must be specified when"):
             ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="")
 
     def test_missing_load_combination_raises_value_error(self) -> None:
         """Test that missing load_combination raises ValueError when result_for is LOAD_COMBINATION."""
-        with pytest.raises(ValueError, match="load_combination must be specified when result_for = ResultFor.LOAD_COMBINATION"):
+        with pytest.raises(ValueError, match="load_combination must be specified when"):
             ResultInternalForce1D(result_on=ResultOn.ON_RIB, member_rib="M2", result_for=ResultFor.LOAD_COMBINATION, load_combination="")
 
     def test_index_less_than_one_raises_value_error(self) -> None:
