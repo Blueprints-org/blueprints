@@ -35,7 +35,7 @@ class Translate:
         self.dest_language = dest_language
         self.translation_dict = self._load_translation_dict(dest_language)
         self.translated = self.translate_latex(self.original, self.dest_language)
-        self.comma_languages = ["nl", "de", "fr", "es"]
+        self.comma_decimal_separator_languages = ["nl", "de", "fr", "es"]
 
     @staticmethod
     def split_latex_text_blocks(s: str) -> list:
@@ -279,11 +279,11 @@ class Translate:
         texts = self.extract_text_commands(s)
         if not texts:
             # If no text blocks, still apply period-to-comma if needed
-            return self.replace_periods_outside_text_blocks(s, to_comma=(dest_language in self.comma_languages))
+            return self.replace_periods_outside_text_blocks(s, to_comma=(dest_language in self.comma_decimal_separator_languages))
         translations = self.translate_bulk(texts, dest_language)
         replaced = self.replace_text_commands(s, translations)
         # Only replace periods with commas outside text blocks for certain languages
-        return self.replace_periods_outside_text_blocks(replaced, to_comma=(dest_language in self.comma_languages))
+        return self.replace_periods_outside_text_blocks(replaced, to_comma=(dest_language in self.comma_decimal_separator_languages))
 
     def __str__(self) -> str:
         """
