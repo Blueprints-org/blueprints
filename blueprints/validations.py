@@ -94,7 +94,7 @@ def raise_if_negative(**kwargs: float) -> None:
 
 
 def raise_if_mismatch_sign(**kwargs: float) -> None:
-    """Raise a MisMatchSignError if any of the given keyword arguments have different signs.
+    """Raise a MismatchSignError if any of the given keyword arguments have different signs.
 
     Parameters
     ----------
