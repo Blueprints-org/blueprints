@@ -125,23 +125,6 @@ class Translate:
         return results
 
     @staticmethod
-    def extract_text_commands(s: str) -> list:
-        r"""
-        Extract all substrings between \text{...} in the given string.
-
-        Parameters
-        ----------
-        s : str
-            The string to search for LaTeX \text{...} commands.
-
-        Returns
-        -------
-        list[str]
-            List of substrings found between \text{...}.
-        """
-        return re.findall(r"\\text\{(.*?)\}", s)
-
-    @staticmethod
     def replace_text_commands(s: str, replacements: list) -> str:
         r"""
         Replace all \text{...} in the string with the corresponding replacements.
@@ -224,7 +207,7 @@ class Translate:
         str
             The LaTeX string with translated \text{...} commands.
         """
-        texts = self.extract_text_commands(s)
+        texts = re.findall(r"\\text\{(.*?)\}", s)
         if not texts:
             # If no text blocks, still apply period-to-comma if needed
             return self.replace_periods_outside_text_blocks(s, to_comma=(dest_language in COMMA_LANGUAGES))
