@@ -7,7 +7,7 @@ import re
 
 from googletrans import Translator
 
-COMMA_LANGUAGES = ["nl", "de", "fr", "es"]
+COMMA_LANGUAGES = ["nl", "de", "fr", "es"]  # Languages that use comma as decimal separator
 
 
 class Translate:
