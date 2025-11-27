@@ -13,13 +13,13 @@ COMMA_LANGUAGES = ["nl", "de", "fr", "es"]
 class Translate:
     """
     Utility class for extracting and translating LaTeX text.
-    WARNING: Uses Google Translate service when translation haven't been manually entered.
+    WARNING: Uses Google Translate service when translations haven't been manually entered.
     """
 
     def __init__(self, latex: str, dest_language: str, service_urls: list[str] | None = None) -> None:
         r"""
         Initialize the Translate class with text and destination language.
-        Warning: uses Google Translate service when translation haven't been manually entered.
+        Warning: uses Google Translate service when translations haven't been manually entered.
 
         Parameters
         ----------
@@ -37,65 +37,6 @@ class Translate:
         self.dest_language = dest_language
         self.translation_dict = self._load_translation_dict(dest_language)
         self.translated = self.translate_latex(self.original, self.dest_language)
-
-    @staticmethod
-    def split_latex_text_blocks(s: str) -> list:
-        r"""
-        Split a LaTeX string into segments, separating \text{...} blocks from the rest.
-
-        Returns a list of segments: each is either a \text{...} block or a non-text block, in order.
-        """
-        pattern = re.compile(r"(\\text\{.*?\})")
-        segments = []
-        last_end = 0
-        for m in pattern.finditer(s):
-            if m.start() > last_end:
-                segments.append(s[last_end : m.start()])
-            segments.append(m.group(0))
-            last_end = m.end()
-        if last_end < len(s):
-            segments.append(s[last_end:])
-        return segments
-
-    @staticmethod
-    def replace_periods_outside_text_blocks(s: str, to_comma: bool = True) -> str:
-        r"""
-        Replace all periods with commas outside of \text{...} blocks.
-        If to_comma is False, does nothing.
-
-        Parameters
-        ----------
-        s : str
-            The LaTeX string to process.
-        to_comma : bool, optional
-            If True, replace periods with commas outside of \text{...} blocks. Default is True.
-
-        Returns
-        -------
-        str
-            The processed LaTeX string with periods replaced by commas outside of \text{...} blocks if to_comma is True.
-        """
-        if not to_comma:
-            return s
-        segments = Translate.split_latex_text_blocks(s)
-
-        def is_text_block(seg: str) -> bool:
-            r"""Check if a segment is a LaTeX \text{...} block.
-
-            Parameters
-            ----------
-            seg : str
-                The segment to check.
-
-            Returns
-            -------
-            bool
-                True if the segment is a \text{...} block, False otherwise.
-            """
-            return seg.startswith(r"\text{") and seg.endswith("}")
-
-        new_segments = [seg if is_text_block(seg) else seg.replace(".", ",") for seg in segments]
-        return "".join(new_segments)
 
     def _load_translation_dict(self, dest_language: str) -> dict:
         r"""
@@ -130,30 +71,6 @@ class Translate:
                         middle = text[len(prefix) : -len(suffix)] if len(suffix) > 0 else text[len(prefix) :]
                         return tgt.replace("**", middle)
         return None
-
-    def translate_text(self, text: str, dest_language: str) -> str:
-        r"""
-        Translate a single string to the destination language.
-        First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
-
-        Parameters
-        ----------
-        text : str
-            The string to be translated.
-        dest_language : str
-            The target language code.
-
-        Returns
-        -------
-        str
-            The translated string.
-        """
-        if hasattr(self, "translation_dict") and text in self.translation_dict:
-            return self.translation_dict[text]
-        wildcard_result = self._wildcard_match(text)
-        if wildcard_result is not None:
-            return wildcard_result
-        return self.translator.translate(text, dest=dest_language).text
 
     def translate_bulk(self, texts: list, dest_language: str) -> list:
         r"""
@@ -259,6 +176,36 @@ class Translate:
             return r"\text{" + next(replacements_iter) + "}"
 
         return re.sub(r"\\text\{(.*?)\}", repl, s)
+
+    @staticmethod
+    def replace_periods_outside_text_blocks(s: str, to_comma: bool = True) -> str:
+        r"""
+        Replace all periods with commas outside of \text{...} blocks.
+        If to_comma is False, does nothing.
+
+        Parameters
+        ----------
+        s : str
+            The LaTeX string to process.
+        to_comma : bool, optional
+            If True, replace periods with commas outside of \text{...} blocks. Default is True.
+
+        Returns
+        -------
+        str
+            The processed LaTeX string with periods replaced by commas outside of \text{...} blocks if to_comma is True.
+        """
+        if not to_comma:
+            return s
+        # Use regex to split into text blocks and non-text blocks
+        pattern = re.compile(r"(\\text\{.*?\})")
+        parts = pattern.split(s)
+
+        def is_text_block(seg: str) -> bool:
+            return seg.startswith(r"\text{") and seg.endswith("}")
+
+        new_segments = [seg if is_text_block(seg) else seg.replace(".", ",") for seg in parts]
+        return "".join(new_segments)
 
     def translate_latex(self, s: str, dest_language: str) -> str:
         r"""
