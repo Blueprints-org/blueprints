@@ -8,7 +8,7 @@ import re
 from googletrans import Translator
 
 
-class Translate:
+class TranslateLatex:
     """
     Utility class for extracting and translating LaTeX text.
     WARNING: uses Google Translate service when translations haven't been manually entered.
