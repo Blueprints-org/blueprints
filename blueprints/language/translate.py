@@ -7,8 +7,6 @@ import re
 
 from googletrans import Translator
 
-COMMA_LANGUAGES = ["nl", "de", "fr", "es"]  # Languages that use comma as decimal separator
-
 
 class Translate:
     """
@@ -36,7 +34,7 @@ class Translate:
         self.original = latex
         self.dest_language = dest_language
         self.translation_dict = self._load_translation_dict(dest_language)
-        self.translated = self.translate_latex(self.original, self.dest_language)
+        self.translated = self._translate_latex()
 
     def _load_translation_dict(self, dest_language: str) -> dict:
         r"""
@@ -72,7 +70,7 @@ class Translate:
                         return tgt.replace("**", middle)
         return None
 
-    def translate_bulk(self, texts: list, dest_language: str) -> list:
+    def _translate_bulk(self, texts: list) -> list:
         r"""
         Translate a list of strings to the destination language.
         First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
@@ -81,8 +79,6 @@ class Translate:
         ----------
         texts : list[str]
             The list of strings to be translated.
-        dest_language : str
-            The target language code.
 
         Returns
         -------
@@ -107,7 +103,7 @@ class Translate:
         # for missing texts, use Google Translate
         if missing:
             # Use Google Translate for all missing texts in bulk
-            translations = self.translator.translate(missing, dest=dest_language)
+            translations = self.translator.translate(missing, dest=self.dest_language)
             # Check if the result is a coroutine (async), and handle accordingly
             if asyncio.iscoroutine(translations):
                 try:
@@ -124,15 +120,12 @@ class Translate:
                 results[idx] = val
         return results
 
-    @staticmethod
-    def replace_text_commands(s: str, replacements: list) -> str:
+    def _replace_text_commands(self, replacements: list) -> str:
         r"""
         Replace all \text{...} in the string with the corresponding replacements.
 
         Parameters
         ----------
-        s : str
-            The string containing LaTeX \text{...} commands.
         replacements : list[str]
             The list of replacement strings.
 
@@ -146,28 +139,25 @@ class Translate:
         def repl(_: re.Match) -> str:
             return r"\text{" + next(replacements_iter) + "}"
 
-        return re.sub(r"\\text\{(.*?)\}", repl, s)
+        return re.sub(r"\\text\{(.*?)\}", repl, self.original)
 
-    @staticmethod
-    def replace_periods_outside_text_blocks(s: str, to_comma: bool = True) -> str:
+    def _check_decimal_separator(self, s: str) -> str:
         r"""
         Replace all periods with commas outside of \text{...} blocks.
-        If to_comma is False, does nothing.
 
         Parameters
         ----------
         s : str
             The LaTeX string to process.
-        to_comma : bool, optional
-            If True, replace periods with commas outside of \text{...} blocks. Default is True.
 
         Returns
         -------
         str
-            The processed LaTeX string with periods replaced by commas outside of \text{...} blocks if to_comma is True.
+            The processed LaTeX string with periods replaced by commas outside of \text{...} blocks if in a relevant language.
         """
-        if not to_comma:
+        if self.dest_language not in ["nl", "de", "fr", "es"]:  # Languages that use comma as decimal separator
             return s
+
         # Use regex to split into text blocks and non-text blocks
         pattern = re.compile(r"(\\text\{.*?\})")
         parts = pattern.split(s)
@@ -178,7 +168,7 @@ class Translate:
         new_segments = [seg if is_text_block(seg) else seg.replace(".", ",") for seg in parts]
         return "".join(new_segments)
 
-    def translate_latex(self, s: str, dest_language: str) -> str:
+    def _translate_latex(self) -> str:
         r"""
         Extract, translate, and reconstruct LaTeX string with translated text commands.
         For certain languages, also replace periods with commas outside of text blocks.
@@ -187,22 +177,20 @@ class Translate:
         ----------
         s : str
             The LaTeX string to process.
-        dest_language : str
-            The target language code.
 
         Returns
         -------
         str
             The LaTeX string with translated \text{...} commands.
         """
-        texts = re.findall(r"\\text\{(.*?)\}", s)
+        texts = re.findall(r"\\text\{(.*?)\}", self.original)
         if not texts:
             # If no text blocks, still apply period-to-comma if needed
-            return self.replace_periods_outside_text_blocks(s, to_comma=(dest_language in COMMA_LANGUAGES))
-        translations = self.translate_bulk(texts, dest_language)
-        replaced = self.replace_text_commands(s, translations)
+            return self._check_decimal_separator(self.original)
+        translations = self._translate_bulk(texts)
+        replaced = self._replace_text_commands(translations)
         # Only replace periods with commas outside text blocks for certain languages
-        return self.replace_periods_outside_text_blocks(replaced, to_comma=(dest_language in COMMA_LANGUAGES))
+        return self._check_decimal_separator(replaced)
 
     def __str__(self) -> str:
         """
