@@ -129,7 +129,7 @@ class TranslateLatex:
                         translations = asyncio.run(translations)
                     else:
                         # If an event loop is running, run the coroutine until complete
-                        translations = loop.run_until_complete(translations)  # pragma: no cover
+                        translations = loop.run_until_complete(translations)  # pragma: no cover, requires async context
                 translated_texts = [tr.text for tr in translations]
             except Exception:
                 # Failsafe: if translation fails, keep original English text
