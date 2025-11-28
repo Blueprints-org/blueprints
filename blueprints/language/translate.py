@@ -60,17 +60,22 @@ class Translate:
 
     def _wildcard_match(self, text: str) -> str | None:
         r"""
-        If a manual translation contains '**', treat it as a wildcard and match/replace the corresponding substring in the input text.
-        Returns the translated string if a wildcard match is found, else None.
+        If a manual translation contains '**', treat each as a wildcard and match/replace the corresponding substrings in the input text.
+        Supports multiple wildcards. Returns the translated string if a wildcard match is found, else None.
         """
         for src, tgt in getattr(self, "translation_dict", {}).items():
             if "**" in src:
+                # Split source pattern into fixed parts
                 parts = src.split("**")
-                if len(parts) == 2:
-                    prefix, suffix = parts
-                    if text.startswith(prefix) and text.endswith(suffix) and len(text) > len(prefix) + len(suffix):
-                        middle = text[len(prefix) : -len(suffix)] if len(suffix) > 0 else text[len(prefix) :]
-                        return tgt.replace("**", middle)
+                # Build regex pattern for matching, escaping fixed parts
+                regex = "^" + "".join(re.escape(part) + "(.*?)" for part in parts[:-1]) + re.escape(parts[-1]) + "$"
+                match = re.match(regex, text)
+                if match:
+                    # Replace each '**' in tgt with corresponding group
+                    result = tgt
+                    for i, group in enumerate(match.groups()):
+                        result = result.replace("**", group, 1)
+                    return result
         return None
 
     def _translate_bulk(self, texts: list) -> list:
@@ -226,3 +231,6 @@ if __name__ == "__main__":
     )
 
     result_nl = Translate(example_latex, "nl")
+
+    latex = r"\text{This is a test with a wildcard}"
+    result = Translate(latex, "test")
