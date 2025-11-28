@@ -54,14 +54,7 @@ class Translate:
                     next(reader, None)  # Skip header row
                     for row in reader:
                         if len(row) == 2:
-                            # Remove surrounding quotes if present
-                            src = row[0].strip()
-                            tgt = row[1].strip()
-                            if src.startswith('"') and src.endswith('"'):
-                                src = src[1:-1]
-                            if tgt.startswith('"') and tgt.endswith('"'):
-                                tgt = tgt[1:-1]
-                            translation_dict[src] = tgt
+                            translation_dict[row[0]] = row[1]
             except Exception:
                 pass
         return translation_dict
