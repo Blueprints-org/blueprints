@@ -178,20 +178,7 @@ class TranslateLatex:
         """
         # Languages that use comma as decimal separator
         comma_decimal_languages_1 = ["bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "hr", "hu", "is", "it", "lt", "lv"]
-        comma_decimal_languages_2 = [
-            "nl",
-            "no",
-            "pl",
-            "pt",
-            "ro",
-            "ru",
-            "sk",
-            "sl",
-            "sr",
-            "sv",
-            "tr",
-            "uk",
-        ]
+        comma_decimal_languages_2 = ["nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sr", "sv", "tr", "uk"]
         if self.dest_language not in comma_decimal_languages_1 + comma_decimal_languages_2:
             return s
 
