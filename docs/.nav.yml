@@ -42,7 +42,7 @@ nav:
       - Formulas: codes/eurocode/en_1993_5_2007/formulas.md
       - Tables: codes/eurocode/en_1993_5_2007/tables.md
     - EN 1995-1-1:2023 (Timber):
-        - Formulas: codes/eurocode/en_1995_1_1_2023/formulas.md
+      - Formulas: codes/eurocode/en_1995_1_1_2023/formulas.md
     - NEN 9997-1+C2:2017 (Geotechnical):
       - Formulas: codes/eurocode/nen_9997_1_c2_2017/formulas.md
       - Tables: codes/eurocode/nen_9997_1_c2_2017/tables.md
