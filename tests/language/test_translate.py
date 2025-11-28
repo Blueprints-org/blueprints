@@ -54,7 +54,7 @@ class TestTranslateLatex:
         result = TranslateLatex(example_latex, "not+a+real+language")
         assert str(result) == r"\text{This should return as just English}"
 
-    def test_convertion_of_decimal_comma(self) -> None:
+    def test_conversion_of_decimal_comma(self) -> None:
         """Test TranslateLatex with conversion of decimal comma."""
         example_latex = r"3.14"
         result = TranslateLatex(example_latex, "nl")

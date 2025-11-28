@@ -2,6 +2,7 @@
 
 import asyncio
 import csv
+import logging
 import os
 import re
 
@@ -65,6 +66,7 @@ class TranslateLatex:
         for src, tgt in getattr(self, "translation_dict", {}).items():
             if "**" in src:
                 if src.count("**") != tgt.count("**"):
+                    logging.warning(f"Mismatched wildcard counts in translation: '{src}' -> '{tgt}'")
                     continue  # Mismatched wildcard counts, skip
                 # Split source pattern into fixed parts
                 parts = src.split("**")
@@ -122,14 +124,18 @@ class TranslateLatex:
                 if asyncio.iscoroutine(translations):
                     try:
                         # Try to get the current running event loop
-                        asyncio.get_running_loop()
+                        loop = asyncio.get_running_loop()
                     except RuntimeError:
                         # If no event loop is running, run the coroutine synchronously
                         translations = asyncio.run(translations)
-                translated_texts = [tr.text for tr in translations]
+                    else:  # pragma: no cover
+                        # If an event loop is running, run the coroutine until complete
+                        translations = loop.run_until_complete(translations)
+                translated_texts = [tr.text for tr in translations]  # pragma: no cover
             except Exception:
                 # Failsafe: if translation fails, keep original English text
                 translated_texts = missing
+                logging.exception("Google translation failed, using original English text.")
 
             for idx, val in zip(missing_indices, translated_texts):
                 results[idx] = val
@@ -170,7 +176,23 @@ class TranslateLatex:
         str
             The processed LaTeX string with periods replaced by commas outside of \text{...} blocks if in a relevant language.
         """
-        if self.dest_language not in ["nl", "de", "fr", "es"]:  # Languages that use comma as decimal separator
+        # Languages that use comma as decimal separator
+        comma_decimal_languages_1 = ["bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "hr", "hu", "is", "it", "lt", "lv"]
+        comma_decimal_languages_2 = [
+            "nl",
+            "no",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "sl",
+            "sr",
+            "sv",
+            "tr",
+            "uk",
+        ]
+        if self.dest_language not in comma_decimal_languages_1 + comma_decimal_languages_2:
             return s
 
         # Use regex to split into text blocks and non-text blocks
