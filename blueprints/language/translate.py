@@ -65,6 +65,8 @@ class Translate:
         """
         for src, tgt in getattr(self, "translation_dict", {}).items():
             if "**" in src:
+                if src.count("**") != tgt.count("**"):
+                    continue  # Mismatched wildcard counts, skip
                 # Split source pattern into fixed parts
                 parts = src.split("**")
                 # Build regex pattern for matching, escaping fixed parts
