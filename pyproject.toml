@@ -26,11 +26,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
+    "googletrans>=4.0.2",
     "matplotlib>=3.10.7",
     "numpy>=1.25.2",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
-    "googletrans>=4.0.2",
 ]
 
 [project.urls]
