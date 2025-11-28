@@ -10,5 +10,5 @@ For example, if the dictionary contains:
     {"With formula **:": "Met formule **:"}
 then Translate("With formula 6.83:", "nl") will return "Met formule 6.83:".
 
-See `Translate._wildcard_match` for implementation details.
+See `Translate._wildcard_match` for implementation details. The amount of wildcards can be increased as needed.
 """
