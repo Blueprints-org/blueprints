@@ -10,7 +10,6 @@ import pytest
 
 from blueprints import cli
 
-
 PROJECT_ROOT = Path(__file__).parent.parent
 
 
@@ -64,6 +63,7 @@ def test_cli_help_command() -> None:
     """Test that CLI help command works."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", "--help"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -83,7 +83,6 @@ def test_cli_help_command() -> None:
         "format",
         "typecheck",
         "test",
-        "test-verbose",
         "test-light",
         "check-coverage",
         "coverage-report",
@@ -96,6 +95,7 @@ def test_cli_command_exists(command: str) -> None:
     """Test that all expected commands are available."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", command, "--help"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -115,6 +115,7 @@ def test_cli_clean_command_execution() -> None:
     """
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", "clean"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -137,7 +138,7 @@ def test_run_command_success() -> None:
             cli.run_command(["test_cmd"], "Success message")
 
         assert exc_info.value.code == 0
-        mock_run.assert_called_once_with(["test_cmd"], text=True)
+        mock_run.assert_called_once_with(["test_cmd"], check=False, text=True)
 
 
 def test_run_command_failure() -> None:
@@ -175,11 +176,14 @@ def test_run_command_keyboard_interrupt() -> None:
 
 def test_install_command() -> None:
     """Test install command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.subprocess.run") as mock_run:
         mock_run.return_value = MagicMock(returncode=0)
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.install()
+            cli.install(mock_ctx)
 
         assert exc_info.value.code == 0
         # Check that uv venv was called first
@@ -188,96 +192,122 @@ def test_install_command() -> None:
 
 def test_install_command_venv_failure() -> None:
     """Test install command when venv creation fails."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.subprocess.run") as mock_run:
         mock_run.return_value = MagicMock(returncode=1, stderr="venv error")
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.install()
+            cli.install(mock_ctx)
 
         assert exc_info.value.code == 1
 
 
 def test_ci_install_command() -> None:
     """Test ci-install command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.ci_install()
+        cli.ci_install(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_lint_command() -> None:
     """Test lint command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.lint()
+        cli.lint(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_format_command() -> None:
     """Test format command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.format()
+        cli.format(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_typecheck_command() -> None:
     """Test typecheck command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.typecheck()
+        cli.typecheck(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_test_command() -> None:
     """Test test command mocked execution."""
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.test()
-        mock_run.assert_called_once()
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
 
-
-def test_test_verbose_command() -> None:
-    """Test test-verbose command mocked execution."""
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.test_verbose()
+        cli.test(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_test_light_command() -> None:
     """Test test-light command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.test_light()
+        cli.test_light(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_check_coverage_command() -> None:
     """Test check-coverage command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.check_coverage()
+        cli.check_coverage(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_coverage_report_command() -> None:
     """Test coverage-report command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage_report()
+        cli.coverage_report(mock_ctx)
         mock_run.assert_called_once()
 
 
 def test_coverage_html_command() -> None:
     """Test coverage-html command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.subprocess.run") as mock_run:
         mock_run.return_value = MagicMock(returncode=0)
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.coverage_html()
+            cli.coverage_html(mock_ctx)
 
         assert exc_info.value.code == 0
 
 
 def test_build_command() -> None:
     """Test build command mocked execution."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.subprocess.run") as mock_run:
         mock_run.return_value = MagicMock(returncode=0)
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.build()
+            cli.build(mock_ctx)
 
         assert exc_info.value.code == 0
 
@@ -351,11 +381,14 @@ def test_clean_command_with_file_artifacts() -> None:
 
 def test_coverage_html_command_failure() -> None:
     """Test coverage-html command with failure."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
     with patch("blueprints.cli.subprocess.run") as mock_run:
         mock_run.return_value = MagicMock(returncode=1)
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.coverage_html()
+            cli.coverage_html(mock_ctx)
 
         assert exc_info.value.code == 1
 
@@ -367,6 +400,7 @@ def test_version_flag() -> None:
     """Test --version flag displays version."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", "--version"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -380,6 +414,7 @@ def test_version_short_flag() -> None:
     """Test -v shorthand flag displays version."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", "-v"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -393,6 +428,7 @@ def test_callback_without_command_shows_help() -> None:
     """Test callback shows help when no command given."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -407,6 +443,7 @@ def test_callback_with_command_shows_banner() -> None:
     """Test callback shows banner before executing commands."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", "clean"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -430,6 +467,7 @@ def test_banner_shows_current_version() -> None:
     """Test banner displays the correct version."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", "--version"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -444,6 +482,7 @@ def test_callback_executes_with_valid_command() -> None:
     """Test callback executes before valid commands."""
     result = subprocess.run(
         [sys.executable, "-m", "blueprints.cli", "clean", "--help"],
+        check=False,
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
@@ -518,7 +557,7 @@ def test_main_callback_narrow_terminal() -> None:
 
     with patch("blueprints.cli.shutil.get_terminal_size") as mock_size:
         # Mock a very narrow terminal
-        mock_size.return_value = type('obj', (object,), {'columns': 30})()
+        mock_size.return_value = type("obj", (object,), {"columns": 30})()
 
         # Should still work with minimum width of 40
         cli.main(mock_ctx, version_flag=False)
@@ -531,7 +570,210 @@ def test_main_callback_very_wide_terminal() -> None:
 
     with patch("blueprints.cli.shutil.get_terminal_size") as mock_size:
         # Mock a very wide terminal
-        mock_size.return_value = type('obj', (object,), {'columns': 200})()
+        mock_size.return_value = type("obj", (object,), {"columns": 200})()
 
         # Should handle wide terminals correctly
         cli.main(mock_ctx, version_flag=False)
+
+
+# Tests for Pass-Through Arguments
+
+
+def test_install_with_pass_through_args() -> None:
+    """Test install command passes extra arguments to uv."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--clear"]
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.install(mock_ctx)
+
+        assert exc_info.value.code == 0
+        # Check that --clear was passed to uv venv
+        calls = mock_run.call_args_list
+        first_call_args = calls[0][1]["args"]
+        assert "--clear" in first_call_args
+
+
+def test_install_with_python_version() -> None:
+    """Test install command passes --python flag."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--python", "3.11"]
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.install(mock_ctx)
+
+        assert exc_info.value.code == 0
+        calls = mock_run.call_args_list
+        first_call_args = calls[0][1]["args"]
+        assert "--python" in first_call_args
+        assert "3.11" in first_call_args
+
+
+def test_test_with_pass_through_args() -> None:
+    """Test test command passes extra arguments to pytest."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["-k", "test_cli"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.test(mock_ctx)
+        # Verify run_command was called with the extra args
+        call_args = mock_run.call_args[0][0]
+        assert "-k" in call_args
+        assert "test_cli" in call_args
+
+
+def test_test_with_verbose_flag() -> None:
+    """Test test command passes --verbose flag."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--verbose"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.test(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "--verbose" in call_args
+
+
+def test_lint_with_fix_flag() -> None:
+    """Test lint command passes --fix flag."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--fix"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.lint(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "--fix" in call_args
+
+
+def test_format_with_pass_through_args() -> None:
+    """Test format command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--line-length", "100"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.format(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "--line-length" in call_args
+        assert "100" in call_args
+
+
+def test_typecheck_with_pass_through_args() -> None:
+    """Test typecheck command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--strict"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.typecheck(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "--strict" in call_args
+
+
+def test_test_light_with_pass_through_args() -> None:
+    """Test test-light command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--pdb"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.test_light(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "--pdb" in call_args
+
+
+def test_ci_install_with_pass_through_args() -> None:
+    """Test ci-install command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--all-groups"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.ci_install(mock_ctx)
+        call_args = mock_run.call_args[1]["cmd"]
+        assert "--all-groups" in call_args
+
+
+def test_check_coverage_with_pass_through_args() -> None:
+    """Test check-coverage command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["-k", "test_specific"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.check_coverage(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "-k" in call_args
+        assert "test_specific" in call_args
+
+
+def test_coverage_report_with_pass_through_args() -> None:
+    """Test coverage-report command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["-x"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.coverage_report(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "-x" in call_args
+
+
+def test_coverage_html_with_pass_through_args() -> None:
+    """Test coverage-html command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["-k", "test_important"]
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.coverage_html(mock_ctx)
+
+        assert exc_info.value.code == 0
+        call_args = mock_run.call_args[0][0]
+        assert "-k" in call_args
+        assert "test_important" in call_args
+
+
+def test_build_with_pass_through_args() -> None:
+    """Test build command passes extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["--sdist"]
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.build(mock_ctx)
+
+        assert exc_info.value.code == 0
+        call_args = mock_run.call_args[0][0]
+        assert "--sdist" in call_args
+
+
+def test_commands_work_without_extra_args() -> None:
+    """Test backward compatibility - commands work without extra arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.lint(mock_ctx)
+        mock_run.assert_called_once()
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.test(mock_ctx)
+        mock_run.assert_called_once()
+
+
+def test_multiple_pass_through_args() -> None:
+    """Test commands handle multiple pass-through arguments."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["-k", "test_pattern", "--verbose", "-x"]
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.test(mock_ctx)
+        call_args = mock_run.call_args[0][0]
+        assert "-k" in call_args
+        assert "test_pattern" in call_args
+        assert "--verbose" in call_args
+        assert "-x" in call_args

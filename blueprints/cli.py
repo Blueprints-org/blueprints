@@ -9,7 +9,7 @@ import subprocess
 import sys
 from importlib.metadata import version
 from pathlib import Path
-from typing import Annotated, NoReturn, Optional
+from typing import Annotated, NoReturn
 
 try:
     import typer
@@ -40,7 +40,7 @@ console = Console()
 def main(
     ctx: typer.Context,
     version_flag: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option("--version", "-v", help="Show the CLI version."),
     ] = None,
 ) -> None:
@@ -126,7 +126,7 @@ def run_command(cmd: list[str], success_msg: str = "") -> NoReturn:
         Always exits with the command's return code or error code.
     """
     try:
-        result = subprocess.run(cmd, text=True)
+        result = subprocess.run(cmd, check=False, text=True)
 
         if result.returncode == 0 and success_msg:
             console.print(f"[bold green]{success_msg}[/bold green]")
@@ -146,17 +146,29 @@ def run_command(cmd: list[str], success_msg: str = "") -> NoReturn:
 # Environment Commands
 
 
-@app.command()
-def install() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def install(ctx: typer.Context) -> None:
     """Create venv and sync all dependencies.
 
     Creates a virtual environment and synchronizes all dependency groups.
     Equivalent to: make install
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to uv venv and uv sync.
+
+    Notes
+    -----
+    Additional arguments are passed to both uv venv and uv sync. Common examples:
+    - `--clear` : Clear existing venv before creating
+    - `--python 3.11` : Use specific Python version
     """
     console.print("[bold blue]Creating virtual environment...[/bold blue]")
 
     result = subprocess.run(
-        ["uv", "venv"],
+        check=False,
+        args=["uv", "venv", *ctx.args],
         capture_output=True,
         text=True,
     )
@@ -167,109 +179,174 @@ def install() -> None:
 
     console.print("[bold blue]Syncing all dependencies...[/bold blue]")
     run_command(
-        ["uv", "sync", "--locked", "--all-groups"],
-        "Environment setup complete!",
+        cmd=["uv", "sync", "--locked", "--all-groups", *ctx.args],
+        success_msg="Environment setup complete!",
     )
 
 
-@app.command()
-def ci_install() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def ci_install(ctx: typer.Context) -> None:
     """Sync dependencies for CI/CD tests.
 
     Synchronizes dependencies without dev dependencies for CI/CD environments.
     Equivalent to: make ci-install
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to uv sync.
+
+    Notes
+    -----
+    Additional arguments are passed directly to uv sync. Common examples:
+    - `--all-groups` : Include all dependency groups
+    - `--upgrade` : Upgrade to latest versions
     """
     console.print("[bold blue]Syncing CI dependencies...[/bold blue]")
     run_command(
-        ["uv", "sync", "--locked", "--no-dev"],
-        "CI dependencies synced!",
+        cmd=["uv", "sync", "--locked", "--no-dev", *ctx.args],
+        success_msg="CI dependencies synced!",
     )
 
 
 # Code Quality Commands
 
 
-@app.command()
-def lint() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def lint(ctx: typer.Context) -> None:
     """Lint with Ruff.
 
     Runs Ruff linter to check code style and quality issues.
     Equivalent to: make lint
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to ruff check.
+
+    Notes
+    -----
+    Additional arguments are passed directly to ruff check. Common examples:
+    - `--fix` : Auto-fix detected issues
+    - `--select E501` : Check specific rules
+    - `--show-fixes` : Show suggested fixes
     """
     console.print("[bold blue]Running Ruff linter...[/bold blue]")
-    run_command(["uv", "run", "ruff", "check", "."])
+    run_command(["uv", "run", "ruff", "check", ".", *ctx.args])
 
 
-@app.command()
-def format() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def format(ctx: typer.Context) -> None:
     """Check the formatting with Ruff.
 
     Checks code formatting compliance using Ruff's formatter.
     Equivalent to: make format
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to ruff format.
+
+    Notes
+    -----
+    Additional arguments are passed directly to ruff format. Common examples:
+    - Remove `--check` to actually format files instead of just checking
+    - `--line-length 100` : Use specific line length
+    - `--check` : Only check formatting without making changes
     """
     console.print("[bold blue]Checking formatting with Ruff...[/bold blue]")
-    run_command(["uv", "run", "ruff", "format", ".", "--check"])
+    run_command(["uv", "run", "ruff", "format", ".", *ctx.args])
 
 
-@app.command()
-def typecheck() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def typecheck(ctx: typer.Context) -> None:
     """Run static type checks with mypy.
 
     Performs static type checking on the blueprints package using mypy.
     Equivalent to: make typecheck
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to mypy.
+
+    Notes
+    -----
+    Additional arguments are passed directly to mypy. Common examples:
+    - `--strict` : Enable strict mode
+    - `--ignore-missing-imports` : Ignore missing imports
+    - `--show-error-codes` : Show error codes
     """
     console.print("[bold blue]Running mypy type checker...[/bold blue]")
-    run_command(["uv", "run", "mypy", "-p", "blueprints"])
+    run_command(["uv", "run", "mypy", "-p", "blueprints", *ctx.args])
 
 
 # Testing Commands
 
 
-@app.command()
-def test() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def test(ctx: typer.Context) -> None:
     """Run tests with pytest (parallel execution).
 
     Executes all tests in parallel using pytest with xdist plugin.
     Equivalent to: make test
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to pytest.
+
+    Notes
+    -----
+    Additional arguments are passed directly to pytest. Common examples:
+    - `-k pattern` : Run tests matching pattern
+    - `--verbose` : Verbose output
+    - `-x` : Stop on first failure
+    - `--pdb` : Drop into debugger on failure
     """
     console.print("[bold blue]Running tests...[/bold blue]")
     run_command(
-        ["uv", "run", "--no-dev", "pytest", "tests/", "-n", "auto"],
+        ["uv", "run", "--no-dev", "pytest", "tests/", "-n", "auto", *ctx.args],
     )
 
 
-@app.command()
-def test_verbose() -> None:
-    """Run tests with pytest (verbose output).
-
-    Executes all tests in parallel with verbose output for debugging.
-    Equivalent to: make test-verbose
-    """
-    console.print("[bold blue]Running tests (verbose)...[/bold blue]")
-    run_command(
-        ["uv", "run", "--no-dev", "pytest", "tests/", "--verbose", "-n", "auto"],
-    )
-
-
-@app.command()
-def test_light() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def test_light(ctx: typer.Context) -> None:
     """Run tests with pytest (lightweight, excludes slow tests).
 
     Runs fast tests only, skipping tests marked as slow for rapid iteration.
     Equivalent to: make test-light
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to pytest.
+
+    Notes
+    -----
+    Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Running lightweight tests...[/bold blue]")
     run_command(
-        ["uv", "run", "--no-dev", "pytest", "tests/", "--verbose", "-m", "not slow"],
+        ["uv", "run", "--no-dev", "pytest", "tests/", "-m", "not slow", *ctx.args],
     )
 
 
-@app.command()
-def check_coverage() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def check_coverage(ctx: typer.Context) -> None:
     """Run tests and check 100% coverage.
 
     Executes tests with coverage reporting and enforces 100% coverage requirement.
     Equivalent to: make check-coverage
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to pytest.
+
+    Notes
+    -----
+    Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Checking code coverage...[/bold blue]")
     run_command(
@@ -282,49 +359,54 @@ def check_coverage() -> None:
             "--cov-report",
             "term-missing:skip-covered",
             "--cov-fail-under=100",
+            *ctx.args,
         ],
     )
 
 
-@app.command()
-def coverage_report() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def coverage_report(ctx: typer.Context) -> None:
     """Run tests and generate coverage reports.
 
     Executes tests and generates XML coverage report for CI/CD integration.
     Equivalent to: make coverage-report
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to pytest.
+
+    Notes
+    -----
+    Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Generating coverage report...[/bold blue]")
     run_command(
-        [
-            "uv",
-            "run",
-            "--no-dev",
-            "pytest",
-            "--cov=./blueprints",
-            "--cov-report=xml",
-        ],
+        ["uv", "run", "--no-dev", "pytest", "--cov=./blueprints", "--cov-report=xml", *ctx.args],
     )
 
 
-@app.command()
-def coverage_html() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def coverage_html(ctx: typer.Context) -> None:
     """Run tests and generate an html coverage report.
 
     Executes tests and generates interactive HTML coverage report in htmlcov/.
     Equivalent to: make coverage-html
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to pytest.
+
+    Notes
+    -----
+    Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Generating HTML coverage report...[/bold blue]")
 
     result = subprocess.run(
-        [
-            "uv",
-            "run",
-            "--no-dev",
-            "pytest",
-            "--cov=./blueprints",
-            "--cov-report",
-            "html",
-        ],
+        args=["uv", "run", "--no-dev", "pytest", "--cov=./blueprints", "--cov-report", "html", *ctx.args],
+        check=False,
         text=True,
     )
 
@@ -337,17 +419,30 @@ def coverage_html() -> None:
 # Build Commands
 
 
-@app.command()
-def build() -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def build(ctx: typer.Context) -> None:
     """Build the project.
 
     Creates distribution packages (wheel and sdist) using uv build.
     Equivalent to: make build
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to uv build.
+
+    Notes
+    -----
+    Additional arguments are passed directly to uv build. Common examples:
+    - `--sdist` : Build only source distribution
+    - `--wheel` : Build only wheel
+    - `--out-dir dist` : Specify output directory
     """
     console.print("[bold blue]Building project...[/bold blue]")
 
     result = subprocess.run(
-        ["uv", "build"],
+        args=["uv", "build", *ctx.args],
+        check=False,
         text=True,
     )
 
@@ -369,6 +464,7 @@ def clean() -> None:
 
     artifacts = [
         ".venv",
+        "venv",
         "htmlcov",
         ".pytest_cache",
         ".mypy_cache",
@@ -389,14 +485,10 @@ def clean() -> None:
                     path.unlink()
                 removed.append(artifact)
             except OSError as e:
-                console.print(
-                    f"[yellow]Warning: Could not remove {artifact}: {e}[/yellow]"
-                )
+                console.print(f"[yellow]Warning: Could not remove {artifact}: {e}[/yellow]")
 
     if removed:
-        console.print(
-            f"[bold green]Removed: {', '.join(removed)}[/bold green]"
-        )
+        console.print(f"[bold green]Removed: {', '.join(removed)}[/bold green]")
     else:
         console.print("[bold green]Nothing to clean[/bold green]")
 
