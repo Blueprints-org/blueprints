@@ -28,7 +28,6 @@ class TranslateLatex:
             The LaTeX string to be translated.
         dest_language : str
             The target language code (e.g., 'nl' for Dutch, full list on https://docs.cloud.google.com/translate/docs/languages).
-            If the language code features a '-' (e.g., 'zh-Hant'), the Google Translate service expects a '_' instead (e.g., 'zh_Hant').
         service_urls : list[str], optional
             Optional list of service URLs for the translator.
         """
@@ -37,7 +36,7 @@ class TranslateLatex:
         self.translator = Translator(service_urls=service_urls)
         self.original = latex
         self.dest_language = dest_language
-        self.translation_dict = self._load_translation_dict(dest_language)
+        self.translation_dict = self._load_translation_dict(dest_language.replace("-", "_"))  # Google uses underscores instead of hyphens
         self.translated = self._translate_latex()
 
     def _load_translation_dict(self, dest_language: str) -> dict:
@@ -67,7 +66,7 @@ class TranslateLatex:
             if "**" in src:
                 if src.count("**") != tgt.count("**"):
                     logging.warning(f"Mismatched wildcard counts in translation: '{src}' -> '{tgt}'")
-                    continue  # Mismatched wildcard counts, skip
+                    continue
                 # Split source pattern into fixed parts
                 parts = src.split("**")
                 # Build regex pattern for matching, escaping fixed parts
@@ -128,10 +127,10 @@ class TranslateLatex:
                     except RuntimeError:
                         # If no event loop is running, run the coroutine synchronously
                         translations = asyncio.run(translations)
-                    else:  # pragma: no cover
+                    else:
                         # If an event loop is running, run the coroutine until complete
-                        translations = loop.run_until_complete(translations)
-                translated_texts = [tr.text for tr in translations]  # pragma: no cover
+                        translations = loop.run_until_complete(translations)  # pragma: no cover
+                translated_texts = [tr.text for tr in translations]
             except Exception:
                 # Failsafe: if translation fails, keep original English text
                 translated_texts = missing
