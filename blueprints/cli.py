@@ -493,5 +493,154 @@ def clean() -> None:
         console.print("[bold green]Nothing to clean[/bold green]")
 
 
+# Quality Assurance Commands
+
+
+@app.command(
+    context_settings={"allow_extra_args": True, "ignore_unknown_options": True}
+)
+def check(ctx: typer.Context) -> None:
+    """Run all quality checks before making a PR.
+
+    Runs lint, format check, type checking, and coverage validation in sequence.
+    This is the recommended command to run before creating a pull request.
+    Equivalent to: make check (if it existed)
+
+    Parameters
+    ----------
+    ctx : typer.Context
+        Typer context containing additional arguments to pass to sub-commands.
+
+    Notes
+    -----
+    Runs the following checks in order:
+    1. Lint with Ruff
+    2. Format check with Ruff
+    3. Type checking with mypy
+    4. Coverage validation with pytest
+
+    Additional arguments are passed to pytest (for coverage-html).
+    Examples: -x (stop on first failure), -k pattern (filter tests)
+
+    Raises
+    ------
+    SystemExit
+        Exits with non-zero code if any check fails.
+    """
+    console.print("[bold cyan]" + "=" * 60 + "[/bold cyan]")
+    console.print("[bold cyan]Running comprehensive quality checks...[/bold cyan]")
+    console.print("[bold cyan]" + "=" * 60 + "[/bold cyan]")
+
+    checks_passed = []
+    checks_failed = []
+
+    # 1. Lint
+    console.print("\n[bold blue]1. Linting with Ruff...[/bold blue]")
+    try:
+        result = subprocess.run(
+            ["uv", "run", "ruff", "check", "."] + ctx.args,
+            capture_output=False,
+            text=True,
+        )
+        if result.returncode == 0:
+            checks_passed.append("Lint")
+            console.print("[bold green]Lint: PASSED[/bold green]")
+        else:
+            checks_failed.append("Lint")
+            console.print("[bold red]Lint: FAILED[/bold red]")
+    except FileNotFoundError:
+        console.print("[bold red]Error: 'uv' not found[/bold red]")
+        sys.exit(1)
+
+    # 2. Format check
+    console.print("\n[bold blue]2. Checking formatting with Ruff...[/bold blue]")
+    result = subprocess.run(
+        ["uv", "run", "ruff", "format", ".", "--check"] + ctx.args,
+        capture_output=False,
+        text=True,
+    )
+    if result.returncode == 0:
+        checks_passed.append("Format")
+        console.print("[bold green]Format: PASSED[/bold green]")
+    else:
+        checks_failed.append("Format")
+        console.print("[bold red]Format: FAILED[/bold red]")
+
+    # 3. Type check
+    console.print("\n[bold blue]3. Running type checks with mypy...[/bold blue]")
+    result = subprocess.run(
+        ["uv", "run", "mypy", "-p", "blueprints"] + ctx.args,
+        capture_output=False,
+        text=True,
+    )
+    if result.returncode == 0:
+        checks_passed.append("Type Check")
+        console.print("[bold green]Type Check: PASSED[/bold green]")
+    else:
+        checks_failed.append("Type Check")
+        console.print("[bold red]Type Check: FAILED[/bold red]")
+
+    # 4. Coverage
+    console.print("\n[bold blue]4. Checking code coverage...[/bold blue]")
+    result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "--no-dev",
+            "pytest",
+            "--cov=./blueprints",
+            "--cov-report",
+            "html",
+        ] + ctx.args,
+        capture_output=False,
+        text=True,
+    )
+    if result.returncode == 0:
+        checks_passed.append("Coverage")
+        console.print("[bold green]Coverage: PASSED[/bold green]")
+        console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
+    else:
+        checks_failed.append("Coverage")
+        console.print("[bold red]Coverage: FAILED[/bold red]")
+
+    # Summary
+    console.print("\n[bold cyan]" + "=" * 60 + "[/bold cyan]")
+    console.print("[bold cyan]Quality Check Summary[/bold cyan]")
+    console.print("[bold cyan]" + "=" * 60 + "[/bold cyan]")
+
+    if checks_passed:
+        console.print(f"[bold green]Passed ({len(checks_passed)}): {', '.join(checks_passed)}[/bold green]")
+
+    if checks_failed:
+        console.print(f"[bold red]Failed ({len(checks_failed)}): {', '.join(checks_failed)}[/bold red]")
+        sys.exit(1)
+    else:
+        console.print("[bold green]All checks passed! Ready for PR.[/bold green]")
+        sys.exit(0)
+
+
+@app.command()
+def docs() -> None:
+    """Serve documentation locally with live reload.
+
+    Starts MkDocs development server with live reload enabled.
+    Documentation will be available at http://localhost:8000
+
+    Notes
+    -----
+    Press Ctrl+C to stop the server.
+    The browser will automatically refresh when docs are updated.
+
+    Raises
+    ------
+    SystemExit
+        Exits with code returned by mkdocs serve command.
+    """
+    console.print("[bold blue]Starting documentation server...[/bold blue]")
+    console.print("[bold green]Documentation available at http://localhost:8000[/bold green]")
+    console.print("[bold yellow]Press Ctrl+C to stop the server[/bold yellow]")
+    run_command(["mkdocs", "serve", "--livereload"])
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()

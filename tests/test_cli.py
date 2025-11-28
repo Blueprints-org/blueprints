@@ -84,10 +84,12 @@ def test_cli_help_command() -> None:
         "typecheck",
         "test",
         "test-light",
+        "check",
         "check-coverage",
         "coverage-report",
         "coverage-html",
         "build",
+        "docs",
         "clean",
     ],
 )
@@ -777,3 +779,184 @@ def test_multiple_pass_through_args() -> None:
         assert "test_pattern" in call_args
         assert "--verbose" in call_args
         assert "-x" in call_args
+
+
+# Tests for Check Command
+
+
+def test_check_command_all_pass() -> None:
+    """Test check command when all checks pass."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        # All checks return 0 (success)
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        # Should exit with 0 (success)
+        assert exc_info.value.code == 0
+        # Should have called subprocess.run 4 times (lint, format, typecheck, coverage)
+        assert mock_run.call_count == 4
+
+
+def test_check_command_lint_fails() -> None:
+    """Test check command when lint fails."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        # First call (lint) fails, rest pass
+        mock_run.side_effect = [
+            MagicMock(returncode=1),  # Lint fails
+            MagicMock(returncode=0),  # Format passes
+            MagicMock(returncode=0),  # Typecheck passes
+            MagicMock(returncode=0),  # Coverage passes
+        ]
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        # Should exit with 1 (failure)
+        assert exc_info.value.code == 1
+        # Should still run all checks
+        assert mock_run.call_count == 4
+
+
+def test_check_command_format_fails() -> None:
+    """Test check command when format fails."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        # Second call (format) fails
+        mock_run.side_effect = [
+            MagicMock(returncode=0),  # Lint passes
+            MagicMock(returncode=1),  # Format fails
+            MagicMock(returncode=0),  # Typecheck passes
+            MagicMock(returncode=0),  # Coverage passes
+        ]
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        assert exc_info.value.code == 1
+        assert mock_run.call_count == 4
+
+
+def test_check_command_typecheck_fails() -> None:
+    """Test check command when typecheck fails."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        # Third call (typecheck) fails
+        mock_run.side_effect = [
+            MagicMock(returncode=0),  # Lint passes
+            MagicMock(returncode=0),  # Format passes
+            MagicMock(returncode=1),  # Typecheck fails
+            MagicMock(returncode=0),  # Coverage passes
+        ]
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        assert exc_info.value.code == 1
+        assert mock_run.call_count == 4
+
+
+def test_check_command_coverage_fails() -> None:
+    """Test check command when coverage fails."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        # Fourth call (coverage) fails
+        mock_run.side_effect = [
+            MagicMock(returncode=0),  # Lint passes
+            MagicMock(returncode=0),  # Format passes
+            MagicMock(returncode=0),  # Typecheck passes
+            MagicMock(returncode=1),  # Coverage fails
+        ]
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        assert exc_info.value.code == 1
+        assert mock_run.call_count == 4
+
+
+def test_check_command_with_pass_through_args() -> None:
+    """Test check command passes extra arguments to sub-commands."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = ["-x"]
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        assert exc_info.value.code == 0
+        # Check that all calls include the extra args
+        for call in mock_run.call_args_list:
+            call_args = call[0][0]
+            assert "-x" in call_args
+
+
+def test_check_command_multiple_failures() -> None:
+    """Test check command when multiple checks fail."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        # Lint and coverage fail
+        mock_run.side_effect = [
+            MagicMock(returncode=1),  # Lint fails
+            MagicMock(returncode=0),  # Format passes
+            MagicMock(returncode=0),  # Typecheck passes
+            MagicMock(returncode=1),  # Coverage fails
+        ]
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        assert exc_info.value.code == 1
+        assert mock_run.call_count == 4
+
+
+def test_check_command_missing_uv() -> None:
+    """Test check command when uv is not found."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.side_effect = FileNotFoundError()
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.check(mock_ctx)
+
+        assert exc_info.value.code == 1
+
+
+# Tests for Docs Command
+
+
+def test_docs_command() -> None:
+    """Test docs command mocked execution."""
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.docs()
+        mock_run.assert_called_once()
+
+
+def test_docs_command_calls_mkdocs() -> None:
+    """Test that docs command calls mkdocs serve with livereload."""
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.docs()
+        # Get the command that was passed to run_command
+        call_args = mock_run.call_args[0][0]
+        assert "mkdocs" in call_args
+        assert "serve" in call_args
+        assert "--livereload" in call_args

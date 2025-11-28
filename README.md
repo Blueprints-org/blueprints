@@ -50,6 +50,32 @@ For the actively developed version:
 pip install git+https://github.com/Blueprints-org/blueprints.git
 ```
 
+## Developer CLI
+
+Blueprints includes a command-line interface for development automation, trying to simplify developing and contributing to the project.
+
+### Quick Start
+
+Install with CLI dependencies:
+
+```bash
+uv sync --group cli
+# or with pip
+pip install blue-prints[cli]
+```
+
+Pre-PR validation (recommended):
+
+```bash
+blueprints check
+```
+
+This runs all quality checks: lint, format, typecheck, and coverage.
+
+### Documentation
+
+For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/latest/contribute/cli/).
+
 ## Quick Start
 
 ```python

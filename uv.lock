@@ -106,11 +106,39 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
+cli = [
+    { name = "icecream" },
+    { name = "mkdocs" },
+    { name = "mkdocs-awesome-nav" },
+    { name = "mkdocs-gen-files" },
+    { name = "mkdocs-git-revision-date-localized-plugin" },
+    { name = "mkdocs-jupyter" },
+    { name = "mkdocs-material" },
+    { name = "mkdocs-open-in-new-tab" },
+    { name = "mkdocstrings", extra = ["python"] },
+    { name = "mypy" },
+    { name = "natsort" },
+    { name = "pre-commit" },
+    { name = "pygments" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-describe" },
+    { name = "pytest-pspec" },
+    { name = "pytest-raises" },
+    { name = "pytest-sugar" },
+    { name = "pytest-xdist" },
+    { name = "rich" },
+    { name = "ruff" },
+    { name = "typer" },
+    { name = "types-shapely" },
+]
 dev = [
     { name = "icecream" },
     { name = "mypy" },
     { name = "pre-commit" },
+    { name = "rich" },
     { name = "ruff" },
+    { name = "typer" },
     { name = "types-shapely" },
 ]
 docs = [
@@ -131,6 +159,7 @@ test = [
     { name = "pytest-describe" },
     { name = "pytest-pspec" },
     { name = "pytest-raises" },
+    { name = "pytest-sugar" },
     { name = "pytest-xdist" },
 ]
 
@@ -143,11 +172,39 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
+cli = [
+    { name = "icecream", specifier = "==2.1.8" },
+    { name = "mkdocs", specifier = "~=1.6.1" },
+    { name = "mkdocs-awesome-nav", specifier = "~=3.1.2" },
+    { name = "mkdocs-gen-files", specifier = "~=0.5.0" },
+    { name = "mkdocs-git-revision-date-localized-plugin", specifier = "~=1.4.7" },
+    { name = "mkdocs-jupyter", specifier = "~=0.25.1" },
+    { name = "mkdocs-material", specifier = "~=9.6.14" },
+    { name = "mkdocs-open-in-new-tab", specifier = "~=1.0.8" },
+    { name = "mkdocstrings", extras = ["python"], specifier = "~=0.29.1" },
+    { name = "mypy", specifier = "==1.18.2" },
+    { name = "natsort", specifier = "~=8.4.0" },
+    { name = "pre-commit", specifier = "==4.3.0" },
+    { name = "pygments", specifier = "~=2.19.1" },
+    { name = "pytest", specifier = "==8.4.2" },
+    { name = "pytest-cov", specifier = "==7.0.0" },
+    { name = "pytest-describe", specifier = "==3.0.0" },
+    { name = "pytest-pspec", specifier = "==0.0.4" },
+    { name = "pytest-raises", specifier = "==0.11" },
+    { name = "pytest-sugar", specifier = ">=1.1.1" },
+    { name = "pytest-xdist", specifier = "==3.8.0" },
+    { name = "rich", specifier = ">=13.7.0" },
+    { name = "ruff", specifier = "==0.14.3" },
+    { name = "typer", specifier = ">=0.9.0" },
+    { name = "types-shapely", specifier = "==2.1.0.20250917" },
+]
 dev = [
     { name = "icecream", specifier = "==2.1.8" },
     { name = "mypy", specifier = "==1.18.2" },
     { name = "pre-commit", specifier = "==4.3.0" },
+    { name = "rich", specifier = ">=13.7.0" },
     { name = "ruff", specifier = "==0.14.3" },
+    { name = "typer", specifier = ">=0.9.0" },
     { name = "types-shapely", specifier = "==2.1.0.20250917" },
 ]
 docs = [
@@ -168,6 +225,7 @@ test = [
     { name = "pytest-describe", specifier = "==3.0.0" },
     { name = "pytest-pspec", specifier = "==0.0.4" },
     { name = "pytest-raises", specifier = "==0.11" },
+    { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
 ]
 
@@ -1767,6 +1825,19 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-sugar"
+version = "1.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+    { name = "termcolor" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0b/4e/60fed105549297ba1a700e1ea7b828044842ea27d72c898990510b79b0e2/pytest-sugar-1.1.1.tar.gz", hash = "sha256:73b8b65163ebf10f9f671efab9eed3d56f20d2ca68bda83fa64740a92c08f65d", size = 16533, upload-time = "2025-08-23T12:19:35.737Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/87/d5/81d38a91c1fdafb6711f053f5a9b92ff788013b19821257c2c38c1e132df/pytest_sugar-1.1.1-py3-none-any.whl", hash = "sha256:2f8319b907548d5b9d03a171515c1d43d2e38e32bd8182a1781eb20b43344cc8", size = 11440, upload-time = "2025-08-23T12:19:34.894Z" },
+]
+
+[[package]]
 name = "pytest-xdist"
 version = "3.8.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2122,6 +2193,15 @@ wheels = [
 ]
 
 [[package]]
+name = "shellingham"
+version = "1.5.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/15/8b3609fd3830ef7b27b655beb4b4e9c62313a4e8da8c676e142cc210d58e/shellingham-1.5.4.tar.gz", hash = "sha256:8dbca0739d487e5bd35ab3ca4b36e11c4078f3a234bfce294b0a0291363404de", size = 10310, upload-time = "2023-10-24T04:13:40.426Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e0/f9/0595336914c5619e5f28a1fb793285925a8cd4b432c9da0a987836c7f822/shellingham-1.5.4-py2.py3-none-any.whl", hash = "sha256:7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686", size = 9755, upload-time = "2023-10-24T04:13:38.866Z" },
+]
+
+[[package]]
 name = "six"
 version = "1.17.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2163,6 +2243,15 @@ wheels = [
 ]
 
 [[package]]
+name = "termcolor"
+version = "3.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/87/56/ab275c2b56a5e2342568838f0d5e3e66a32354adcc159b495e374cda43f5/termcolor-3.2.0.tar.gz", hash = "sha256:610e6456feec42c4bcd28934a8c87a06c3fa28b01561d46aa09a9881b8622c58", size = 14423, upload-time = "2025-10-25T19:11:42.586Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/d5/141f53d7c1eb2a80e6d3e9a390228c3222c27705cbe7f048d3623053f3ca/termcolor-3.2.0-py3-none-any.whl", hash = "sha256:a10343879eba4da819353c55cb8049b0933890c2ebf9ad5d3ecd2bb32ea96ea6", size = 7698, upload-time = "2025-10-25T19:11:41.536Z" },
+]
+
+[[package]]
 name = "tinycss2"
 version = "1.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2200,6 +2289,21 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/eb/79/72064e6a701c2183016abbbfedaba506d81e30e232a68c9f0d6f6fcd1574/traitlets-5.14.3.tar.gz", hash = "sha256:9ed0579d3502c94b4b3732ac120375cda96f923114522847de4b3bb98b96b6b7", size = 161621, upload-time = "2024-04-19T11:11:49.746Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/00/c0/8f5d070730d7836adc9c9b6408dec68c6ced86b304a9b26a14df072a6e8c/traitlets-5.14.3-py3-none-any.whl", hash = "sha256:b74e89e397b1ed28cc831db7aea759ba6640cb3de13090ca145426688ff1ac4f", size = 85359, upload-time = "2024-04-19T11:11:46.763Z" },
+]
+
+[[package]]
+name = "typer"
+version = "0.20.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "rich" },
+    { name = "shellingham" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8f/28/7c85c8032b91dbe79725b6f17d2fffc595dff06a35c7a30a37bef73a1ab4/typer-0.20.0.tar.gz", hash = "sha256:1aaf6494031793e4876fb0bacfa6a912b551cf43c1e63c800df8b1a866720c37", size = 106492, upload-time = "2025-10-20T17:03:49.445Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/78/64/7713ffe4b5983314e9d436a90d5bd4f63b6054e2aca783a3cfc44cb95bbf/typer-0.20.0-py3-none-any.whl", hash = "sha256:5b463df6793ec1dca6213a3cf4c0f03bc6e322ac5e16e13ddd622a889489784a", size = 47028, upload-time = "2025-10-20T17:03:47.617Z" },
 ]
 
 [[package]]
