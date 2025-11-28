@@ -11,13 +11,15 @@ from googletrans import Translator
 class Translate:
     """
     Utility class for extracting and translating LaTeX text.
-    WARNING: Uses Google Translate service when translations haven't been manually entered.
+    WARNING: uses Google Translate service when translations haven't been manually entered.
+    When the services are not available, (sections of) text will be left in English.
     """
 
     def __init__(self, latex: str, dest_language: str, service_urls: list[str] | None = None) -> None:
         r"""
         Initialize the Translate class with text and destination language.
-        Warning: uses Google Translate service when translations haven't been manually entered.
+        WARNING: uses Google Translate service when translations haven't been manually entered.
+        When the services are not available, (sections of) text will be left in English.
 
         Parameters
         ----------
@@ -48,9 +50,10 @@ class Translate:
             try:
                 with open(csv_path, encoding="utf-8") as csvfile:
                     reader = csv.reader(csvfile)
+                    next(reader, None)  # Skip header row
                     for row in reader:
                         if len(row) >= 2:
-                            translation_dict[row[1].strip()] = row[2].strip()
+                            translation_dict[row[0].strip()] = row[1].strip()
             except Exception:
                 pass
         return translation_dict
@@ -93,29 +96,38 @@ class Translate:
         for i, t in enumerate(texts):
             if hasattr(self, "translation_dict") and t in self.translation_dict:
                 results.append(self.translation_dict[t])
-            elif "**" in t:
-                results.append(self._wildcard_match(t))
             else:
-                results.append(None)
-                missing.append(t)
-                missing_indices.append(i)
+                wildcard_result = self._wildcard_match(t)
+                if wildcard_result is not None:
+                    results.append(wildcard_result)
+                else:
+                    results.append(None)
+                    missing.append(t)
+                    missing_indices.append(i)
 
         # for missing texts, use Google Translate
         if missing:
-            # Use Google Translate for all missing texts in bulk
-            translations = self.translator.translate(missing, dest=self.dest_language)
-            # Check if the result is a coroutine (async), and handle accordingly
-            if asyncio.iscoroutine(translations):
-                try:
-                    # Try to get the current running event loop
-                    loop = asyncio.get_running_loop()
-                except RuntimeError:
-                    # If no event loop is running, run the coroutine synchronously
-                    translations = asyncio.run(translations)
-                else:
-                    # If an event loop is running, run the coroutine until complete
-                    translations = loop.run_until_complete(translations)
-            translated_texts = [tr.text for tr in translations]
+            # In case of network issues or other exceptions, handle gracefully
+            try:
+                # Use Google Translate for all missing texts in bulk
+                translations = self.translator.translate(missing, dest=self.dest_language)
+
+                # Check if the result is a coroutine (async), and handle accordingly
+                if asyncio.iscoroutine(translations):
+                    try:
+                        # Try to get the current running event loop
+                        loop = asyncio.get_running_loop()
+                    except RuntimeError:
+                        # If no event loop is running, run the coroutine synchronously
+                        translations = asyncio.run(translations)
+                    else:
+                        # If an event loop is running, run the coroutine until complete
+                        translations = loop.run_until_complete(translations)
+                translated_texts = [tr.text for tr in translations]
+            except Exception:
+                # Failsafe: if translation fails, keep original English text
+                translated_texts = missing
+
             for idx, val in zip(missing_indices, translated_texts):
                 results[idx] = val
         return results
