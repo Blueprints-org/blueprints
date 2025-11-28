@@ -187,11 +187,6 @@ class Translate:
         Extract, translate, and reconstruct LaTeX string with translated text commands.
         For certain languages, also replace periods with commas outside of text blocks.
 
-        Parameters
-        ----------
-        s : str
-            The LaTeX string to process.
-
         Returns
         -------
         str
