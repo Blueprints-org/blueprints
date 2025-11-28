@@ -27,6 +27,7 @@ class TranslateLatex:
             The LaTeX string to be translated.
         dest_language : str
             The target language code (e.g., 'nl' for Dutch, full list on https://docs.cloud.google.com/translate/docs/languages).
+            If the language code features a '-' (e.g., 'zh-Hant'), the Google Translate service expects a '_' instead (e.g., 'zh_Hant').
         service_urls : list[str], optional
             Optional list of service URLs for the translator.
         """
