@@ -49,9 +49,9 @@ class TestTranslateLatex:
         assert str(result) == r"\text{Mijn favoriete band is Ad Infinitum.}"
 
     def test_fake_language(self) -> None:
-        """Test TranslateLatex with obscure language code, so that it used Google Translate."""
+        """Test TranslateLatex with obscure language code, so that it uses Google Translate."""
         example_latex = r"\text{This should return as just English}"
-        result = TranslateLatex(example_latex, "not+a+real+language")
+        result = TranslateLatex(example_latex, "not-a-real-language")
         assert str(result) == r"\text{This should return as just English}"
 
     def test_conversion_of_decimal_comma(self) -> None:
