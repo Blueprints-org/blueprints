@@ -43,17 +43,25 @@ class Translate:
         Load translation dictionary from a CSV file if it exists.
         The CSV should be named '<dest_language>.csv' and be in the same directory as this script.
         Returns a dict mapping source text to translated text.
+        Handles quoted fields and commas within quotes.
         """
         csv_path = os.path.join(os.path.dirname(__file__), f"{dest_language}.csv")
         translation_dict = {}
         if os.path.isfile(csv_path):
             try:
-                with open(csv_path, encoding="utf-8") as csvfile:
+                with open(csv_path, encoding="utf-8", newline="") as csvfile:
                     reader = csv.reader(csvfile)
                     next(reader, None)  # Skip header row
                     for row in reader:
-                        if len(row) >= 2:
-                            translation_dict[row[0].strip()] = row[1].strip()
+                        if len(row) == 2:
+                            # Remove surrounding quotes if present
+                            src = row[0].strip()
+                            tgt = row[1].strip()
+                            if src.startswith('"') and src.endswith('"'):
+                                src = src[1:-1]
+                            if tgt.startswith('"') and tgt.endswith('"'):
+                                tgt = tgt[1:-1]
+                            translation_dict[src] = tgt
             except Exception:
                 pass
         return translation_dict
@@ -234,5 +242,5 @@ if __name__ == "__main__":
 
     result_nl = Translate(example_latex, "nl")
 
-    latex = r"\text{This is a test with a wildcard}"
+    latex = r"\text{This is a test}"
     result = Translate(latex, "test")
