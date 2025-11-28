@@ -3,3 +3,5 @@ en,_test
 "This ** wildcard","Different text ** here"
 "Wildcards ** used ** here ** want","Completely ** different ** text ** here"
 "This quote contains, a comma","Which is handled, correctly"
+"Special characters: %$#& (╯°□°）╯︵ ┻━┻","Works perfectly"
+"Mismatched wildcard amount ** here","Mismatched wildcard amount ** ** there"
