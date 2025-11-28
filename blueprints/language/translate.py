@@ -48,15 +48,12 @@ class Translate:
         csv_path = os.path.join(os.path.dirname(__file__), f"{dest_language}.csv")
         translation_dict = {}
         if os.path.isfile(csv_path):
-            try:
-                with open(csv_path, encoding="utf-8", newline="") as csvfile:
-                    reader = csv.reader(csvfile)
-                    next(reader, None)  # Skip header row
-                    for row in reader:
-                        if len(row) == 2:
-                            translation_dict[row[0]] = row[1]
-            except Exception:
-                pass
+            with open(csv_path, encoding="utf-8", newline="") as csvfile:
+                reader = csv.reader(csvfile)
+                next(reader, None)  # Skip header row
+                for row in reader:
+                    if len(row) == 2:
+                        translation_dict[row[0]] = row[1]
         return translation_dict
 
     def _wildcard_match(self, text: str) -> str | None:
@@ -124,13 +121,10 @@ class Translate:
                 if asyncio.iscoroutine(translations):
                     try:
                         # Try to get the current running event loop
-                        loop = asyncio.get_running_loop()
+                        asyncio.get_running_loop()
                     except RuntimeError:
                         # If no event loop is running, run the coroutine synchronously
                         translations = asyncio.run(translations)
-                    else:
-                        # If an event loop is running, run the coroutine until complete
-                        translations = loop.run_until_complete(translations)
                 translated_texts = [tr.text for tr in translations]
             except Exception:
                 # Failsafe: if translation fails, keep original English text
@@ -222,18 +216,3 @@ class Translate:
             The translated LaTeX string.
         """
         return self.translated
-
-
-if __name__ == "__main__":
-    example_latex = (
-        r"\text{Checking normal force: compression checks applied using chapter 6.2.4.}\\ "
-        r"\text{With formula 6.10:}\\N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
-        r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N\\\text{With formula 6.9:}\\CHECK "
-        r"\to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
-        r"\leq 1 \right) \to OK"
-    )
-
-    result_nl = Translate(example_latex, "nl")
-
-    latex = r"\text{This is a test}"
-    result = Translate(latex, "test")

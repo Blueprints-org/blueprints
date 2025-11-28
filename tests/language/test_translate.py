@@ -30,6 +30,18 @@ class TestCalculateRotationAngle:
         result = Translate(latex, "test")
         assert str(result) == r"\text{Which is handled, correctly}"
 
+    def test_translate_with_special_characters(self) -> None:
+        """Test Translate with special characters from CSV."""
+        latex = r"\text{Special characters: %$#& (╯°□°) ╯︵ ┻━┻}"
+        result = Translate(latex, "test")
+        assert str(result) == r"\text{Works perfectly}"
+
+    def test_translate_with_mismatched_wildcards(self) -> None:
+        """Test Translate with mismatched wildcard counts in CSV (usually continues to Google Translate, but test language does not exist)."""
+        latex = r"\text{Mismatched wildcard amount HERE}"
+        result = Translate(latex, "test")
+        assert str(result) == r"\text{Mismatched wildcard amount HERE}"
+
     def test_word_thats_not_in_dictionary(self) -> None:
         """Test Translate with word that's not in dictionary, so that it used Google Translate."""
         example_latex = r"\text{My favourite band is Ad Infinitum.}"
@@ -59,3 +71,9 @@ class TestCalculateRotationAngle:
         example_latex = r"\text{With formula 6.83:} \\ E = mc^2 = 5.3 \cdot 10^{2} J"
         result_nl = Translate(example_latex, "nl")
         assert str(result_nl) == r"\text{Met formule 6.83:} \\ E = mc^2 = 5,3 \cdot 10^{2} J"
+
+    def test_latex_with_multiple_text_blocks(self) -> None:
+        """Test Translate with LaTeX containing multiple text blocks."""
+        example_latex = r"\text{Number one} \\ \text{Number two}"
+        result_nl = Translate(example_latex, "nl")
+        assert str(result_nl) == r"\text{Nummer één} \\ \text{Nummer twee}"
