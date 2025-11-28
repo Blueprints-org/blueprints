@@ -3,7 +3,7 @@
 from blueprints.language.translate import Translate
 
 
-class TestCalculateRotationAngle:
+class TestTranslate:
     """Tests for language translations in Blueprints."""
 
     def test_translate_with_formula_manual(self) -> None:
