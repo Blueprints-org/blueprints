@@ -36,7 +36,9 @@ class TranslateLatex:
         self.translator = Translator(service_urls=service_urls)
         self.original = latex
         self.dest_language = dest_language
-        self.translation_dict = self._load_translation_dict(dest_language.replace("-", "_"))  # Google uses underscores instead of hyphens
+        self.translation_dict = self._load_translation_dict(
+            dest_language.replace("-", "_")
+        )  # Normalize for CSV filename and Google: use underscores, not hyphens
         self.translated = self._translate_latex()
 
     def _load_translation_dict(self, dest_language: str) -> dict:
