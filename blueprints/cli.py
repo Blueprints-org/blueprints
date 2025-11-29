@@ -164,20 +164,7 @@ def install(ctx: typer.Context) -> None:
     - `--clear` : Clear existing venv before creating
     - `--python 3.11` : Use specific Python version
     """
-    console.print("[bold blue]Creating virtual environment...[/bold blue]")
-
-    result = subprocess.run(
-        check=False,
-        args=["uv", "venv", *ctx.args],
-        capture_output=True,
-        text=True,
-    )
-
-    if result.returncode != 0:
-        console.print(f"[bold red]Error creating venv:[/bold red]\n{result.stderr}")
-        sys.exit(1)
-
-    console.print("[bold blue]Syncing all dependencies...[/bold blue]")
+    console.print("[bold blue]Installing all dependencies...[/bold blue]")
     run_command(
         cmd=["uv", "sync", "--locked", "--all-groups", *ctx.args],
         success_msg="Environment setup complete!",
@@ -555,7 +542,7 @@ def check(ctx: typer.Context) -> None:
     # 2. Format check
     console.print("\n[bold blue]2. Checking formatting with Ruff...[/bold blue]")
     result = subprocess.run(
-        ["uv", "run", "ruff", "format", ".", "--check"] + ctx.args,
+        args=["uv", "run", "ruff", "format", ".", "--check", *ctx.args],
         capture_output=False,
         text=True,
     )
@@ -564,12 +551,12 @@ def check(ctx: typer.Context) -> None:
         console.print("[bold green]Format: PASSED[/bold green]")
     else:
         checks_failed.append("Format")
-        console.print("[bold red]Format: FAILED[/bold red]")
+        console.print("[bold red]Format: FAILED (Use `blueprints format` to fix this)[/bold red]")
 
     # 3. Type check
     console.print("\n[bold blue]3. Running type checks with mypy...[/bold blue]")
     result = subprocess.run(
-        ["uv", "run", "mypy", "-p", "blueprints"] + ctx.args,
+        ["uv", "run", "mypy", "-p", "blueprints", *ctx.args],
         capture_output=False,
         text=True,
     )
@@ -639,7 +626,7 @@ def docs() -> None:
     console.print("[bold blue]Starting documentation server...[/bold blue]")
     console.print("[bold green]Documentation available at http://localhost:8000[/bold green]")
     console.print("[bold yellow]Press Ctrl+C to stop the server[/bold yellow]")
-    run_command(["mkdocs", "serve", "--livereload"])
+    run_command(["uv", "run", "mkdocs", "serve", "--livereload"])
 
 
 if __name__ == "__main__":  # pragma: no cover
