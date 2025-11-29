@@ -10,7 +10,11 @@ class LatexToWordConverter:
     r"""
     Converts LaTeX strings (with text and equations) to a Word document.
     Parses and adds \text{..} as normal document text and equations in equations mode.
-    Can be called as LatexToWordConverter(latex) to return a Document.
+    To create nicely formatted equations in Word, equations and lines of text should be separated by \newline.
+    Lines of text should always start with \text{...}.
+
+    Args:
+        latex: The LaTeX string, with lines separated by \newline, text in \text{...}, equations otherwise.
     """
 
     def __new__(cls, latex: str = "") -> Document:
@@ -22,7 +26,11 @@ class LatexToWordConverter:
 
     @staticmethod
     def _formula(latex_string: str) -> parse_xml:
-        """Convert a LaTeX equation string to an OMML XML element for Word."""
+        """Convert a LaTeX equation string to an OMML XML element for Word.
+
+        Args:
+            latex_string: The LaTeX string representing the equation.
+        """
         mathml_output = latex2mathml.converter.convert(latex_string)
         omml_output = mathml2omml.convert(mathml_output)
         xml_output = f'<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">{omml_output}</m:oMathPara>'
@@ -44,12 +52,13 @@ class LatexToWordConverter:
 
         # Parse lines into categories: text or equation
         for line in lines:
-            if r"\text{" in line:
+            if line.lstrip().startswith(r"\text{"):
                 parsed.append({"type": "text", "content": line.replace(r"\text{", "").replace("}", "") + "\n"})
             else:
                 parsed.append({"type": "equation", "content": line})
                 parsed.append({"type": "text", "content": "\n"})
 
+        # Add parsed content to document and format based on type of content
         p = doc.add_paragraph()
         for item in parsed:
             if item["type"] == "equation":
