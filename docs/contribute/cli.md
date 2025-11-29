@@ -20,6 +20,7 @@ pip install blue-prints[cli]
 ### Environment Setup
 
 **`blueprints install`**
+
 - Create venv and sync all dependencies
 - Supports pass-through args: `--clear`, `--python 3.13`, etc.
 - Example: `blueprints install --clear`
@@ -27,6 +28,7 @@ pip install blue-prints[cli]
 ### Quality Assurance
 
 **`blueprints check`** (Recommended before PR)
+
 - Run all quality checks in sequence: lint, format, typecheck, coverage
 - Provides detailed summary of which checks passed/failed
 - Exits with code 0 on success, 1 on any failure (CI-friendly)
@@ -38,17 +40,20 @@ pip install blue-prints[cli]
 ### Code Quality
 
 **`blueprints lint`**
+
 - Run Ruff linter for code style and quality checks
 - Supports pass-through args: `--fix`, `--select E501`, `--show-fixes`
 - Example: `blueprints lint --fix`
 
 **`blueprints format`**
+
 - Check code formatting compliance with Ruff
 - Note: Uses `--check` by default (only validates, doesn't modify)
 - Supports pass-through args: `--line-length 100`
 - Example: `blueprints format --line-length 100`
 
 **`blueprints typecheck`**
+
 - Run mypy static type checker on blueprints package
 - Supports pass-through args: `--strict`, `--ignore-missing-imports`, `--show-error-codes`
 - Example: `blueprints typecheck --strict`
@@ -56,31 +61,37 @@ pip install blue-prints[cli]
 ### Testing
 
 **`blueprints test`**
+
 - Run all tests in parallel using pytest with xdist
 - Supports pass-through args: `-k pattern`, `--verbose`, `-x`, `--pdb`
 - Example: `blueprints test -k test_cli --verbose`
 
 **`blueprints test-light`**
+
 - Run fast tests only, skipping tests marked as slow
 - Perfect for rapid iteration during development
 - Supports pass-through args
 
 **`blueprints check-coverage`**
+
 - Run tests with coverage reporting
 - Enforces 100% coverage requirement
 - Supports pass-through args
 
 **`blueprints coverage-report`**
+
 - Generate XML coverage report for CI/CD integration
 - Supports pass-through args
 
 **`blueprints coverage-html`**
+
 - Generate interactive HTML coverage report in `htmlcov/`
 - Supports pass-through args
 
 ### Documentation
 
 **`blueprints docs`**
+
 - Serve documentation locally with live reload
 - Opens documentation server at http://localhost:8000
 - Browser automatically refreshes when docs are updated
@@ -276,5 +287,5 @@ uv sync --group cli
 
 The `test` group is not installed. Reinstall:
 ```bash
-uv sync --all-groups
+uv sync --group test
 ```
