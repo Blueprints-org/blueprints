@@ -30,7 +30,7 @@ dependencies = [
     "mathml2omml>=0.0.2",
     "matplotlib>=3.10.7",
     "numpy>=1.25.2",
-    "python-docx">=1.20.0",
+    "python-docx>=1.20.0",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
 ]
