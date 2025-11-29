@@ -202,7 +202,7 @@ class SteelIProfileStrengthClass3:
         # check normal force
         return self.NormalForce(self.profile, self.properties, self.result_internal_force_1d, self.gamma_m0).check()
 
-    def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901, PLR0912
+    def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901
         """
         Returns the combined LaTeX string representation for all strength checks.
 
@@ -269,10 +269,7 @@ class SteelIProfileStrengthClass3:
             all_latex += r"\text{No internal forces applied.} \newline CHECK \to OK"
 
         # If the LaTeX string starts with return (\newline), remove it for cleaner output
-        while all_latex.startswith((r"\newline", " ")):
-            if all_latex.startswith(r"\newline"):
-                all_latex = all_latex[2:]
-            elif all_latex.startswith(" "):
-                all_latex = all_latex[1:]
+        if all_latex.startswith(r"\newline"):
+            all_latex = all_latex[8:]
 
         return all_latex
