@@ -76,12 +76,12 @@ class TestTranslateLatex:
 
     def test_combination_of_equation_and_text(self) -> None:
         """Test TranslateLatex with combination of equation and text."""
-        example_latex = r"\text{With formula 6.83:} \\ E = mc^2 = 5.3 \cdot 10^{2} J"
+        example_latex = r"\text{With formula 6.83:} \newline E = mc^2 = 5.3 \cdot 10^{2} J"
         result_nl = TranslateLatex(example_latex, "nl")
-        assert str(result_nl) == r"\text{Met formule 6.83:} \\ E = mc^2 = 5,3 \cdot 10^{2} J"
+        assert str(result_nl) == r"\text{Met formule 6.83:} \newline E = mc^2 = 5,3 \cdot 10^{2} J"
 
     def test_latex_with_multiple_text_blocks(self) -> None:
         """Test TranslateLatex with LaTeX containing multiple text blocks."""
-        example_latex = r"\text{Number one} \\ \text{Number two}"
+        example_latex = r"\text{Number one} \newline \text{Number two}"
         result_nl = TranslateLatex(example_latex, "nl")
-        assert str(result_nl) == r"\text{Nummer één} \\ \text{Nummer twee}"
+        assert str(result_nl) == r"\text{Nummer één} \newline \text{Nummer twee}"
