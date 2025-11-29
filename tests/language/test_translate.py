@@ -9,37 +9,37 @@ class TestTranslateLatex:
     def test_translate_with_formula_manual(self) -> None:
         """Test TranslateLatex with translation from CSV."""
         latex = r"\text{This is a test}"
-        result = TranslateLatex(latex, "test")
+        result = TranslateLatex(latex, "aaa_example")
         assert str(result) == r"\text{This is a translation}"
 
     def test_translate_with_formula_manual_and_wildcard(self) -> None:
         """Test TranslateLatex with wildcard translation from CSV."""
         latex = r"\text{This IS A TEST WITH A wildcard}"
-        result = TranslateLatex(latex, "test")
+        result = TranslateLatex(latex, "aaa_example")
         assert str(result) == r"\text{Different text IS A TEST WITH A here}"
 
     def test_translate_with_formula_manual_and_multiple_wildcard(self) -> None:
         """Test TranslateLatex with multiple wildcard translation from CSV."""
         latex = r"\text{Wildcards CAN BE used MULTIPLE TIMES here AND AS OFTEN AS YOU want}"
-        result = TranslateLatex(latex, "test")
+        result = TranslateLatex(latex, "aaa_example")
         assert str(result) == r"\text{Completely CAN BE different MULTIPLE TIMES text AND AS OFTEN AS YOU here}"
 
     def test_translate_with_comma_in_text(self) -> None:
         """Test TranslateLatex with comma in text from CSV."""
         latex = r"\text{This quote contains, a comma}"
-        result = TranslateLatex(latex, "test")
+        result = TranslateLatex(latex, "aaa_example")
         assert str(result) == r"\text{Which is handled, correctly}"
 
     def test_translate_with_special_characters(self) -> None:
         """Test TranslateLatex with special characters from CSV."""
         latex = r"\text{Special characters: %$#& (╯°□°) ╯︵ ┻━┻}"
-        result = TranslateLatex(latex, "test")
+        result = TranslateLatex(latex, "aaa_example")
         assert str(result) == r"\text{Works perfectly}"
 
     def test_translate_with_mismatched_wildcards(self) -> None:
         """Test TranslateLatex with mismatched wildcard counts in CSV (usually continues to Google Translate, but test language does not exist)."""
         latex = r"\text{Mismatched wildcard amount HERE}"
-        result = TranslateLatex(latex, "test")
+        result = TranslateLatex(latex, "aaa_example")
         assert str(result) == r"\text{Mismatched wildcard amount HERE}"
 
     def test_word_thats_not_in_dictionary(self) -> None:
