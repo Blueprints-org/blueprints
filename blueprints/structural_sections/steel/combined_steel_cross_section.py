@@ -6,114 +6,78 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection, SteelCrossSectionProtocol
-from blueprints.type_alias import DEG, KG_M, MM
+from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
+from blueprints.type_alias import KG_M
 
 
-@dataclass(frozen=True, kw_only=True)
-class CombinedSteelCrossSection(SteelCrossSectionProtocol):
+@dataclass(frozen=True)
+class CombinedSteelCrossSection:
     """Representation of a combined steel cross-section made up of multiple steel cross-sections.
 
+    Parameters
+    ----------
+    steel_cross_sections : tuple[SteelCrossSection, ...]
+        A tuple of SteelCrossSection instances.
+
     Usage example:
-    >>> # Assuming main_steel_cross_section and stiffener are predefined SteelCrossSection instances
-        combined_section = (
-            CombinedSteelCrossSection()
-            .add_steel_cross_section(
-                steel_cross_section=main_steel_cross_section,
-                x_offset=0,
-                y_offset=0,
-                rotation_angle=0,
-            )
-            .add_steel_cross_section(
-                steel_cross_section=stiffener,
-                x_offset=0,
-                y_offset=main_steel_cross_section.cross_section.cross_section_height / 2 + stiffener.cross_section.cross_section_height / 2,
-                rotation_angle=0,
-            )
-        )
+    >>> from blueprints.structural_sections.steel.combined_steel_cross_section import CombinedSteelCrossSection
+    >>> from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
+    >>>
+    >>> main_steel_cross_section = SteelCrossSection(cross_section=..., material=...)
+    >>> stiffener = SteelCrossSection(
+    ...     cross_section=...,
+    ...     material=...,
+    ...     horizontal_offset=0.0,
+    ...     vertical_offset=main_steel_cross_section.cross_section.cross_section_height / 2 + stiffener.cross_section.cross_section_height / 2,
+    ...     rotation_angle=0.0,
+    ... )
+    >>> # Create a combined steel cross-section with the main section and a stiffener.
+    >>> combined_section = CombinedSteelCrossSection(
+    ...     steel_cross_sections=(
+    ...         main_steel_cross_section,
+    ...         stiffener,
+    ...     )
+    ... )
+    >>> # Alternatively, you can add sections one by one.
+    >>> # This is useful for dynamically building complex cross-sections.
+    >>> complex_combined_section = CombinedSteelCrossSection()
+    >>> complex_combined_section = complex_combined_section.add_steel_cross_section(steel_cross_section=main_steel_cross_section)
+    >>> complex_combined_section = complex_combined_section.add_steel_cross_section(steel_cross_section=stiffener)
     """
 
-    _steel_cross_sections: tuple[SteelCrossSection, ...] = field(init=False, default_factory=tuple)
-    """Collection of transformed steel cross-sections."""
+    steel_cross_sections: tuple[SteelCrossSection, ...] = field(default_factory=tuple)
+    """Collection of steel cross-sections."""
 
-    @property
-    def steel_cross_sections(self) -> tuple[SteelCrossSection, ...]:
+    def __post_init__(self) -> None:
         """
-        Get the transformed steel cross-sections that make up the combined cross-section.
-
-        Returns
-        -------
-        tuple[SteelCrossSection, ...]
-            The tuple of transformed steel cross-sections.
-        """
-        return self._steel_cross_sections
-
-    @classmethod
-    def _from_steel_cross_sections(
-        cls,
-        steel_cross_sections: tuple[SteelCrossSection, ...],
-    ) -> CombinedSteelCrossSection:
-        """
-        Create a CombinedSteelCrossSection from a tuple of SteelCrossSection instances.
-
-        Parameters
-        ----------
-        steel_cross_sections : tuple[SteelCrossSection, ...]
-            A tuple of SteelCrossSection instances.
-
-        Returns
-        -------
-        CombinedSteelCrossSection
-            A new instance of CombinedSteelCrossSection.
+        Validate the steel cross-sections after initialization.
 
         Raises
         ------
-        ValueError
-            If no SteelCrossSection instances are provided.
         TypeError
             If any item in steel_cross_sections is not an instance of SteelCrossSection.
         """
-        combined_section = cls()
-        if not steel_cross_sections:
-            raise ValueError("At least one SteelCrossSection must be provided.")
-        if any(not isinstance(section, SteelCrossSection) for section in steel_cross_sections):
+        if any(not isinstance(section, SteelCrossSection) for section in self.steel_cross_sections):
             raise TypeError("All items in steel_cross_sections must be instances of SteelCrossSection.")
-        object.__setattr__(combined_section, "_steel_cross_sections", steel_cross_sections)
-        return combined_section
 
-    def add_steel_cross_section(
+    def add_steel_cross_sections(
         self,
-        steel_cross_section: SteelCrossSection,
-        x_offset: MM = 0.0,
-        y_offset: MM = 0.0,
-        rotation_angle: DEG = 0.0,
+        *steel_cross_sections: SteelCrossSection,
     ) -> CombinedSteelCrossSection:
         """
-        Add a steel cross-section to the combined cross-section.
+        Add steel cross-sections to the combined cross-section.
 
         Parameters
         ----------
-        steel_cross_section : SteelCrossSection
-            The steel cross-section to add.
-        x_offset : MM
-            The x-coordinate offset of the cross-section's centroid [mm].
-        y_offset : MM
-            The y-coordinate offset of the cross-section's centroid [mm].
-        rotation_angle : DEG
-            The rotation angle of the cross-section in degrees (counter-clockwise).
+        steel_cross_sections : SteelCrossSection
+            The steel cross-sections to add.
 
         Returns
         -------
         CombinedSteelCrossSection
-            A new instance of CombinedSteelCrossSection with the added steel cross-section.
+            A new instance of CombinedSteelCrossSection with the added steel cross-sections.
         """
-        new_positioned_section = steel_cross_section._transform(  # noqa: SLF001
-            x_offset=x_offset,
-            y_offset=y_offset,
-            rotation_angle=rotation_angle,
-        )
-        new_sections = (*self.steel_cross_sections, new_positioned_section)
-        return CombinedSteelCrossSection._from_steel_cross_sections(new_sections)
+        return CombinedSteelCrossSection(steel_cross_sections=(*self.steel_cross_sections, *steel_cross_sections))
 
     @property
     def weight_per_meter(self) -> KG_M:

@@ -35,48 +35,56 @@ class TestSteelCrossSection:
         steel_cross_section: SteelCrossSection,
     ) -> None:
         """Test that the optional parameters have correct default values."""
-        assert steel_cross_section.x_offset == 0.0
-        assert steel_cross_section.y_offset == 0.0
+        assert steel_cross_section.horizontal_offset == 0.0
+        assert steel_cross_section.vertical_offset == 0.0
         assert steel_cross_section.rotation_angle == 0.0
 
     @pytest.mark.parametrize(
         "kwargs",
         [
-            {"x_offset": 10.0},
-            {"y_offset": 20.0},
+            {"horizontal_offset": 10.0},
+            {"vertical_offset": 20.0},
             {"rotation_angle": 30.0},
-            {"x_offset": 10.0, "y_offset": 20.0},
-            {"x_offset": 10.0, "rotation_angle": 30.0},
-            {"y_offset": 20.0, "rotation_angle": 30.0},
-            {"x_offset": 10.0, "y_offset": 20.0, "rotation_angle": 30.0},
+            {"horizontal_offset": 10.0, "vertical_offset": 20.0},
+            {"horizontal_offset": 10.0, "rotation_angle": 30.0},
+            {"vertical_offset": 20.0, "rotation_angle": 30.0},
+            {"horizontal_offset": 10.0, "vertical_offset": 20.0, "rotation_angle": 30.0},
         ],
     )
-    def test_optional_parameters_non_initializable(
+    def test_initialize_with_optional_parameters(
         self,
         steel_cross_section: SteelCrossSection,
         kwargs: dict,
     ) -> None:
-        """Test that the optional parameters cannot be set during initialization."""
-        with pytest.raises(TypeError):
-            SteelCrossSection(
-                cross_section=steel_cross_section.cross_section,
-                material=steel_cross_section.material,
-                **kwargs,
-            )
+        """Test that the SteelCrossSection can be initialized with optional parameters."""
+        section = SteelCrossSection(
+            cross_section=steel_cross_section.cross_section,
+            material=steel_cross_section.material,
+            **kwargs,
+        )
+        for key, value in kwargs.items():
+            assert getattr(section, key) == value
 
     def test_transform(
         self,
         steel_cross_section: SteelCrossSection,
     ) -> None:
-        """Test that the _transform method works correctly."""
-        x_offset = 15.0
-        y_offset = 25.0
+        """Test that the transform method works correctly."""
+        original_cross_section = SteelCrossSection(
+            cross_section=steel_cross_section.cross_section,
+            material=steel_cross_section.material,
+            horizontal_offset=10.0,
+            vertical_offset=20.0,
+            rotation_angle=30.0,
+        )
+        horizontal_offset = 15.0
+        vertical_offset = 25.0
         rotation_angle = 45.0
-        transformed_section = steel_cross_section._transform(  # noqa: SLF001
-            x_offset=x_offset,
-            y_offset=y_offset,
+        transformed_section = original_cross_section.transform(
+            horizontal_offset=horizontal_offset,
+            vertical_offset=vertical_offset,
             rotation_angle=rotation_angle,
         )
-        assert transformed_section.x_offset == x_offset
-        assert transformed_section.y_offset == y_offset
-        assert transformed_section.rotation_angle == rotation_angle
+        assert transformed_section.horizontal_offset == 25.0
+        assert transformed_section.vertical_offset == 45.0
+        assert transformed_section.rotation_angle == 75.0
