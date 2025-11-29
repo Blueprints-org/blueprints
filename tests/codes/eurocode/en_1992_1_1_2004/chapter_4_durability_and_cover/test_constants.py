@@ -84,7 +84,7 @@ class TestNominalConcreteCoverConstants2004:
         [
             (CastingSurface.PERMANENTLY_EXPOSED, r"0 (No \ additional \ requirements \ for \ Permanently \ exposed)"),
             (CastingSurface.FORMWORK, r"0 (No \ additional \ requirements \ for \ Formwork)"),
-            (CastingSurface.PREPARED_GROUND, r"k1 \\ge c_{min,dur} + 40 mm \ for \ Prepared \ ground \ (including \ blinding)"),
+            (CastingSurface.PREPARED_GROUND, r"k1 \ge c_{min,dur} + 40 mm \ for \ Prepared \ ground \ (including \ blinding)"),
             (CastingSurface.DIRECTLY_AGAINST_SOIL, r"k2 \\ge c_{min,dur} + 75 mm \ for \ Directly \ against \ soil"),
         ],
     )
