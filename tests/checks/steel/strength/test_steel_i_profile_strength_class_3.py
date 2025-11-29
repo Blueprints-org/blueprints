@@ -176,116 +176,13 @@ class TestSteelIProfileStrengthClass3NormalForce:
         assert expected == latex_output
 
 
-class TestSteelIProfileStrengthClass3SingleAxisBendingMoment:
-    """Tests for SteelIProfileStrengthClass3.SingleAxisBendingMoment."""
-
-    def test_check_none(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test check() returns True for no normal force."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", my=0
-        )
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        assert calc.check() is True
-        assert len(calc.latex()) > 0
-
-    def test_check_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test check() for ok load."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", my=355 * 1678000 / 1.0 / 1e6 * 0.99
-        )  # 99% of capacity
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        assert calc.check() is True
-
-    def test_check_not_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test check() for not ok load."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", my=355 * 1678000 / 1.0 / 1e6 * 1.01
-        )  # 101% of capacity
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        assert calc.check() is False
-
-    def test_negative(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test check() for ok load."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", my=-355 * 1678000 / 1.0 / 1e6 * 0.99
-        )  # 99% of capacity, opposite sign
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        assert calc.check() is True
-
-    def test_check_weak_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test check() for ok load."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=355 * 571000 / 1.0 / 1e6 * 0.99
-        )  # 99% of capacity
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, axis="Mz", gamma_m0=1.0)
-        assert calc.check() is True
-
-    def test_check_weak_not_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test check() for not ok load."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=355 * 571000 / 1.0 / 1e6 * 1.01
-        )  # 101% of capacity
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, axis="Mz", gamma_m0=1.0)
-        assert calc.check() is False
-
-    def test_invalid_axis(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test that invalid axis raises ValueError."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", my=100
-        )
-        with pytest.raises(ValueError):
-            SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, axis="invalid", gamma_m0=1.0)
-
-    def test_latex_summary(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test summary latex output."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", my=100
-        )
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        latex_output = calc.latex(summary=True)
-        expected = (
-            r"\text{Checking bending moments around My-axis using chapter 6.2.5.}"
-            r"\\ CHECK \to \left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to \left( \frac{100000000.0}{595733834.6} \leq 1 \right) \to OK"
-        )
-        assert expected == latex_output
-
-    def test_latex_compression_long(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test long latex output."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", my=100
-        )
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        latex_output = calc.latex(summary=False)
-        expected = (
-            r"\text{Checking bending moments around My-axis using chapter 6.2.5.}"
-            r"\\ \text{With formula 6.14:}\\M_{c,Rd} = \frac{W_{el,min} \cdot f_y}{\gamma_{M0}} = "
-            r"\frac{1678123.5 \cdot 355.0}{1.0} = 595733834.6 \ Nmm\\ \text{With formula 6.12:}\\CHECK \to "
-            r"\left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to \left( \frac{100000000.0}{595733834.6} \leq 1 \right) \to OK"
-        )
-        assert expected == latex_output
-
-    def test_latex_weak_axis_summary(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        """Test summary latex output for weak axis."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=100
-        )
-        calc = SteelIProfileStrengthClass3.SingleAxisBendingMoment(heb_profile, heb_properties, result_internal_force_1d, axis="Mz", gamma_m0=1.0)
-        latex_output = calc.latex(summary=True)
-        assert len(latex_output) > 0
-
-
 class TestSteelIProfileStrengthClass3NotImplemented:
     """Tests for not implemented checks in SteelIProfileStrengthClass3."""
+
+    def test_bending_moment_not_implemented(self) -> None:
+        """Test that bending moment check raises NotImplementedError."""
+        with pytest.raises(NotImplementedError):
+            SteelIProfileStrengthClass3.SingleAxisBendingMoment()
 
     def test_shear_force_not_implemented(self) -> None:
         """Test that shear force check raises NotImplementedError."""
