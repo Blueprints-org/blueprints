@@ -39,7 +39,7 @@ class LatexToWordConverter:
             The python-docx Document object (not saved).
         """
         doc = Document()
-        lines = latex.split(r"\\")
+        lines = latex.split(r"\newline")
         parsed = []
 
         # Parse lines into categories: text or equation
