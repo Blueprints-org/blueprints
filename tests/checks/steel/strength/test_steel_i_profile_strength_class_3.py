@@ -73,14 +73,14 @@ class TestSteelIProfileStrengthClass3:
         assert len(latex_output) > 0
 
     def test_removal_slashes_at_start(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
-        r"""Test that latex output does not start with '\\'."""
+        r"""Test that latex output does not start with '\newline'."""
         (heb_profile, heb_properties) = heb_profile_and_properties
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=1
         )
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
         latex_output = calc.latex()
-        assert latex_output[:2] != r"\\"
+        assert latex_output[:8] != r"\newline"
 
 
 class TestSteelIProfileStrengthClass3NormalForce:
@@ -139,9 +139,9 @@ class TestSteelIProfileStrengthClass3NormalForce:
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
         latex_output = calc.latex(summary=True)
         expected = (
-            r"\text{Checking normal force (compression) using chapter 6.2.4.}"
-            r"\\CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( "
-            r"\frac{100000.0}{5293746.7} \leq 1 \right) \to OK"
+            r"\text{Checking normal force (compression) using chapter 6.2.4.}\newline "
+            r"CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( "
+            r"\frac{100000.0}{5293746.7} \leq 1 \right) \to OK "
         )
         assert expected == latex_output
 
@@ -152,11 +152,11 @@ class TestSteelIProfileStrengthClass3NormalForce:
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
         latex_output = calc.latex(summary=False)
         expected = (
-            r"\text{Checking normal force (compression) using chapter 6.2.4.}\\"
-            r"\text{With formula 6.10:}\\N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
-            r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N\\\text{With formula 6.9:}\\CHECK "
+            r"\text{Checking normal force (compression) using chapter 6.2.4.}\newline "
+            r"\text{With formula 6.10:} \newline N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
+            r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N \newline \text{With formula 6.9:} \newline CHECK "
             r"\to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
-            r"\leq 1 \right) \to OK"
+            r"\leq 1 \right) \to OK "
         )
         assert expected == latex_output
 
@@ -167,11 +167,11 @@ class TestSteelIProfileStrengthClass3NormalForce:
         calc = SteelIProfileStrengthClass3.NormalForce(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
         latex_output = calc.latex()
         expected = (
-            r"\text{Checking normal force (tension) using chapter 6.2.3.}\\"
-            r"\text{With formula 6.6:}\\N_{pl,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
-            r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N\\\text{With formula 6.5:}\\CHECK "
+            r"\text{Checking normal force (tension) using chapter 6.2.3.}\newline "
+            r"\text{With formula 6.6:} \newline N_{pl,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
+            r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N \newline \text{With formula 6.5:} \newline CHECK "
             r"\to \left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
-            r"\leq 1 \right) \to OK"
+            r"\leq 1 \right) \to OK "
         )
         assert expected == latex_output
 
