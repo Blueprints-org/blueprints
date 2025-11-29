@@ -78,7 +78,7 @@ class SteelIProfileStrengthClass3:
             Returns
             -------
             list of Formula
-                Calculation results. Returns an empty list if no bending moment is applied.
+                Calculation results. Returns an empty list if no normal force is applied.
             """
             if self.result_internal_force_1d.n == 0:
                 return []
@@ -272,7 +272,7 @@ class SteelIProfileStrengthClass3:
         while all_latex.startswith((r"\\", " ")):
             if all_latex.startswith(r"\\"):
                 all_latex = all_latex[2:]
-            if all_latex.startswith(" "):
+            elif all_latex.startswith(" "):
                 all_latex = all_latex[1:]
 
         return all_latex
