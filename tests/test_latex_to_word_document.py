@@ -8,7 +8,7 @@ class TestLatexToWordConverter:
 
     def test_empty_input_returns_empty_document(self) -> None:
         """Test that an empty LaTeX string returns an empty Document."""
-        assert LatexToWordConverter("")
+        assert LatexToWordConverter().convert("")
 
     def test_example_formulas_creates_document_with_paragraph(self) -> None:
         """Test that example LaTeX formulas create a Document with content."""
@@ -25,4 +25,4 @@ class TestLatexToWordConverter:
             r"\text{Binomial squared:} \newline \left( \frac{a+b}{c-d} \right)^2",
         ]
 
-        assert LatexToWordConverter(r" \newline".join(example_formulas))
+        assert LatexToWordConverter().convert(r" \newline".join(example_formulas))

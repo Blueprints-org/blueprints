@@ -247,8 +247,8 @@ class TestNominalConcreteCover:
 
         assert (
             nominal_concrete_cover.latex() == r"\text{Nominal concrete cover according to art. 4.4.1 from EN 1992-1-1:2004:}\newline "
-            r"max{Nominal concrete cover according to art. 4.4.1 } (c_{nom}) "
-            r"\text{, Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) } \newline"
+            r"\text{max(Nominal concrete cover according to art. 4.4.1 } (c_{nom}) "
+            r"\text{, Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) ) } \newline"
             r"= \max \left\{55.0; 110.0\right\} = 110.0 mm\newline \newline "
             r"\text{Where:}\newline "
             r"c_{nom} = c_{min,total}+\Delta c_{dev} = 45.0+10 = 55.0 mm\newline "

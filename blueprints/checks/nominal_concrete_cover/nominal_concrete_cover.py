@@ -169,8 +169,8 @@ class NominalConcreteCover:
         lines = [
             rf"\text{{Nominal concrete cover according to art. 4.4.1 from {self.constants.CODE_PREFIX}"
             rf"EN 1992-1-1{self.constants.CODE_SUFFIX}:}}\newline ",
-            r"max{Nominal concrete cover according to art. 4.4.1 } (c_{nom}) "
-            r"\text{, Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) } \newline",
+            r"\text{max(Nominal concrete cover according to art. 4.4.1 } (c_{nom}) "
+            r"\text{, Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) ) } \newline",
             rf"= {latex_max_curly_brackets(self.c_nom().latex().result, min_surface)} = {self.value():.{n}f} mm\newline ",
             r"\newline ",
             r"\text{Where:}\newline ",

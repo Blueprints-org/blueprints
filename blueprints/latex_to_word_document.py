@@ -19,12 +19,11 @@ class LatexToWordConverter:
         latex: The LaTeX string, with lines separated by \newline, text in \text{...}, equations otherwise.
     """
 
-    def __new__(cls, latex: str = "") -> Document:
-        """Create a new Document from LaTeX string."""
-        if latex == "":
-            return Document()
-        instance = super().__new__(cls)
-        return instance.convert(latex)
+    def __init__(self, latex: str = "") -> None:
+        """Initialize the converter and optionally convert LaTeX to a Document."""
+        self.document = None
+        if latex:
+            self.document = self.convert(latex)
 
     @staticmethod
     def _formula(latex_string: str) -> parse_xml:
