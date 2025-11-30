@@ -1,6 +1,6 @@
 # Developer CLI Guide
 
-Blueprints includes a command-line interface for development automation, trying to simplify developing and contributing to the project.
+Blueprints includes a command-line interface for development automation, designed to simplify developing and contributing to the project.
 
 ## Requirements
 
