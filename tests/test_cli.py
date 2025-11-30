@@ -8,6 +8,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
+import typer
 
 from blueprints import cli
 
@@ -371,6 +372,95 @@ def test_banner_shows_current_version() -> None:
     assert result.returncode == 0
     # Check that version appears in banner
     assert "Blueprints CLI - v" in result.stdout
+
+
+def test_main_callback_when_uv_not_installed() -> None:
+    """Test main callback shows warning when uv is not installed."""
+    with patch("blueprints.cli.shutil.which") as mock_which:
+        mock_which.return_value = None  # Simulate uv not found
+        mock_ctx = MagicMock()
+        mock_ctx.invoked_subcommand = None
+
+        with patch("blueprints.cli.console.print") as mock_print:
+            with pytest.raises(typer.Exit):
+                cli.main(mock_ctx, version_flag=None)
+
+            # Verify warning was printed
+            print_calls = [str(call) for call in mock_print.call_args_list]
+            warning_found = any(
+                "uv" in str(call).lower() and "not installed" in str(call).lower()
+                for call in print_calls
+            )
+            assert warning_found
+
+
+def test_main_callback_terminal_size_exception() -> None:
+    """Test main callback handles exception when getting terminal size."""
+    mock_ctx = MagicMock()
+    mock_ctx.invoked_subcommand = None
+    mock_ctx.get_help.return_value = "Help text"
+
+    with patch("blueprints.cli.shutil.which") as mock_which:
+        mock_which.return_value = "/usr/bin/uv"  # uv is installed
+
+        with patch("blueprints.cli.shutil.get_terminal_size") as mock_size:
+            mock_size.side_effect = Exception("Terminal size error")
+
+            with pytest.raises(typer.Exit):
+                cli.main(mock_ctx, version_flag=None)
+
+            # Verify it fell back to width of 80
+            # This is tested indirectly by the fact it doesn't crash
+
+
+def test_main_callback_with_version_flag() -> None:
+    """Test main callback handles --version flag."""
+    mock_ctx = MagicMock()
+    mock_ctx.invoked_subcommand = None
+
+    with patch("blueprints.cli.shutil.which") as mock_which:
+        mock_which.return_value = "/usr/bin/uv"
+
+        with patch("blueprints.cli.console.print") as mock_print:
+            with pytest.raises(typer.Exit):
+                cli.main(mock_ctx, version_flag=True)
+
+            # Verify version was printed
+            version_call_found = any(
+                "version" in str(call).lower()
+                for call in mock_print.call_args_list
+            )
+            assert version_call_found
+
+
+def test_main_callback_show_help_when_no_command() -> None:
+    """Test main callback shows help when no subcommand invoked."""
+    mock_ctx = MagicMock()
+    mock_ctx.invoked_subcommand = None
+    mock_ctx.get_help.return_value = "Help text"
+
+    with patch("blueprints.cli.shutil.which") as mock_which:
+        mock_which.return_value = "/usr/bin/uv"
+
+        with patch("blueprints.cli.console.print"):
+            with pytest.raises(typer.Exit):
+                cli.main(mock_ctx, version_flag=None)
+
+            # Verify get_help was called
+            mock_ctx.get_help.assert_called_once()
+
+
+def test_main_callback_with_subcommand_invoked() -> None:
+    """Test main callback doesn't exit when subcommand is invoked."""
+    mock_ctx = MagicMock()
+    mock_ctx.invoked_subcommand = "test"  # A subcommand was invoked
+
+    with patch("blueprints.cli.shutil.which") as mock_which:
+        mock_which.return_value = "/usr/bin/uv"
+
+        with patch("blueprints.cli.console.print"):
+            # Should not raise SystemExit when subcommand is present
+            cli.main(mock_ctx, version_flag=None)
 
 
 # Tests for Pass-Through Arguments
