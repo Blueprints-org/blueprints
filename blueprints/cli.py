@@ -8,7 +8,6 @@ import shutil
 import subprocess
 import sys
 from importlib.metadata import version
-from pathlib import Path
 from typing import Annotated, NoReturn
 
 try:
@@ -273,13 +272,13 @@ def typecheck(ctx: typer.Context) -> None:
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def test(
-        ctx: typer.Context,
-        light: Annotated[
-            bool,
-            typer.Option(
-                help="Run lightweight tests only, excluding slow tests for rapid iteration.",
-            ),
-        ] = False,
+    ctx: typer.Context,
+    light: Annotated[
+        bool,
+        typer.Option(
+            help="Run lightweight tests only, excluding slow tests for rapid iteration.",
+        ),
+    ] = False,  # noqa: PT028
 ) -> None:
     """Run tests with pytest.
 
@@ -332,10 +331,11 @@ def check_coverage(ctx: typer.Context) -> None:
     Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Checking code coverage...[/bold blue]")
-    import pytest
-
-    exit_code = pytest.main(
+    run_command(
         [
+            "uv",
+            "run",
+            "pytest",
             "--cov=./blueprints",
             "--cov-report",
             "term-missing:skip-covered",
@@ -343,7 +343,6 @@ def check_coverage(ctx: typer.Context) -> None:
             *ctx.args,
         ]
     )
-    sys.exit(exit_code)
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
@@ -363,12 +362,7 @@ def coverage_report(ctx: typer.Context) -> None:
     Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Generating coverage report...[/bold blue]")
-    import pytest
-
-    exit_code = pytest.main(
-        ["--cov=./blueprints", "--cov-report=xml", *ctx.args]
-    )
-    sys.exit(exit_code)
+    run_command(["uv", "run", "pytest", "--cov=./blueprints", "--cov-report=xml", *ctx.args])
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
@@ -388,19 +382,12 @@ def coverage_html(ctx: typer.Context) -> None:
     Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Generating HTML coverage report...[/bold blue]")
-    import pytest
-
-    exit_code = pytest.main(
-        ["--cov=./blueprints", "--cov-report", "html", *ctx.args]
-    )
-
-    if exit_code == 0:
-        console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
-
-    sys.exit(exit_code)
+    run_command(["uv", "run", "pytest", "--cov=./blueprints", "--cov-report", "html", *ctx.args])
+    console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
 
 
 # Quality Assurance Commands
+
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def check(ctx: typer.Context) -> None:  # noqa: PLR0915

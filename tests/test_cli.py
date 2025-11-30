@@ -90,7 +90,7 @@ def test_cli_import_error_handling() -> None:
             del sys.modules["blueprints.cli"]
 
         # Re-import the working cli module for subsequent tests
-        from blueprints import cli as cli_reloaded  # noqa: F401
+        from blueprints import cli as cli_reloaded  # noqa: F401, PLC0415
 
 
 # Tests using mocks to cover command implementations without executing them
@@ -244,13 +244,13 @@ def test_coverage_report_command() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("pytest.main") as mock_pytest:
-        mock_pytest.return_value = 0
-
-        with pytest.raises(SystemExit) as exc_info:
-            cli.coverage_report(mock_ctx)
-
-        assert exc_info.value.code == 0
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.coverage_report(mock_ctx)
+        mock_run.assert_called_once()
+        # Verify it includes coverage flags
+        call_args = mock_run.call_args[0][0]
+        assert "--cov=./blueprints" in call_args
+        assert "--cov-report=xml" in call_args
 
 
 def test_coverage_html_command() -> None:
@@ -258,13 +258,14 @@ def test_coverage_html_command() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("pytest.main") as mock_pytest:
-        mock_pytest.return_value = 0
-
-        with pytest.raises(SystemExit) as exc_info:
-            cli.coverage_html(mock_ctx)
-
-        assert exc_info.value.code == 0
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.coverage_html(mock_ctx)
+        mock_run.assert_called_once()
+        # Verify it includes coverage flags
+        call_args = mock_run.call_args[0][0]
+        assert "--cov=./blueprints" in call_args
+        assert "--cov-report" in call_args
+        assert "html" in call_args
 
 
 def test_coverage_html_command_failure() -> None:
@@ -272,8 +273,9 @@ def test_coverage_html_command_failure() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("pytest.main") as mock_pytest:
-        mock_pytest.return_value = 1
+    with patch("blueprints.cli.run_command") as mock_run:
+        # Make run_command raise SystemExit with code 1 to simulate failure
+        mock_run.side_effect = SystemExit(1)
 
         with pytest.raises(SystemExit) as exc_info:
             cli.coverage_html(mock_ctx)
@@ -463,14 +465,10 @@ def test_coverage_report_with_pass_through_args() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = ["-x"]
 
-    with patch("pytest.main") as mock_pytest:
-        mock_pytest.return_value = 0
-
-        with pytest.raises(SystemExit) as exc_info:
-            cli.coverage_report(mock_ctx)
-
-        # Verify pytest.main was called with the pass-through arg
-        call_args = mock_pytest.call_args[0][0]
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.coverage_report(mock_ctx)
+        # Verify run_command was called with the pass-through arg
+        call_args = mock_run.call_args[0][0]
         assert "-x" in call_args
 
 
@@ -479,17 +477,12 @@ def test_coverage_html_with_pass_through_args() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = ["-k", "test_important"]
 
-    with patch("pytest.main") as mock_pytest:
-        mock_pytest.return_value = 0
-
-        with pytest.raises(SystemExit) as exc_info:
-            cli.coverage_html(mock_ctx)
-
-        # Verify pytest.main was called with the pass-through args
-        call_args = mock_pytest.call_args[0][0]
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.coverage_html(mock_ctx)
+        # Verify run_command was called with the pass-through args
+        call_args = mock_run.call_args[0][0]
         assert "-k" in call_args
         assert "test_important" in call_args
-        assert exc_info.value.code == 0
 
 
 def test_commands_work_without_extra_args() -> None:
