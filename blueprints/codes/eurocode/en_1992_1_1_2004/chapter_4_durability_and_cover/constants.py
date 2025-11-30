@@ -56,8 +56,8 @@ class NominalConcreteCoverConstants(NominalConcreteCoverConstantsBase):
         """LateX representation of minimum cover with regard to casting surface according to art. 4.4.1.3 (4) from EN 1992-1-1:2004."""
         match casting_surface:
             case CastingSurface.PERMANENTLY_EXPOSED | CastingSurface.FORMWORK:
-                return rf"0 (No additional requirements for {casting_surface.value})"
+                return f"0 (No additional requirements for {casting_surface.value})"
             case CastingSurface.PREPARED_GROUND:
-                return rf"k1 \ge c_{{min,dur}} + 40 mm for {casting_surface.value}"
+                return f"k1 \\ge c_{{min,dur}} + 40 mm for {casting_surface.value}"
             case CastingSurface.DIRECTLY_AGAINST_SOIL:
-                return rf"k2 \ge c_{{min,dur}} + 75 mm for {casting_surface.value}"
+                return f"k2 \\ge c_{{min,dur}} + 75 mm for {casting_surface.value}"
