@@ -36,7 +36,7 @@ jobs:
 
       # Run the tests before the linting and formatting checks to ensure that dev dependencies are not required for the tests.
       - name: Run tests with pytest
-        run: make test-verbose
+        run: make test
 
       - name: Run linting checks with ruff
         run: make lint
