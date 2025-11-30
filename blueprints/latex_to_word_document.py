@@ -1,5 +1,7 @@
 """Module to convert LaTeX (with text and equations) to a Word document."""
 
+import re
+
 import latex2mathml.converter
 import mathml2omml
 from docx import Document
@@ -52,11 +54,16 @@ class LatexToWordConverter:
 
         # Parse lines into categories: text or equation
         for line in lines:
-            if line.lstrip().startswith(r"\text{"):
-                parsed.append({"type": "text", "content": line.replace(r"\text{", "").replace("}", "") + "\n"})
-            else:
-                parsed.append({"type": "equation", "content": line})
-                parsed.append({"type": "text", "content": "\n"})
+            # Find all \text{...} and non-\text{...} sections
+            pattern = r"\\text\{(.*?)\}|([^\n]+?)(?=(\\text\{|$))"
+            for match in re.finditer(pattern, line):
+                text_content = match.group(1)
+                eq_content = match.group(2)
+                if text_content is not None:
+                    parsed.append({"type": "text", "content": text_content})
+                elif eq_content is not None and eq_content.strip():
+                    parsed.append({"type": "equation", "content": eq_content.strip()})
+            parsed.append({"type": "text", "content": "\n"})  # Add new line after each line
 
         # Add parsed content to document and format based on type of content
         p = doc.add_paragraph()
