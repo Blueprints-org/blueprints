@@ -12,13 +12,12 @@ from docx.oxml.xmlchemy import BaseOxmlElement
 
 class LatexToWordConverter:
     r"""
-    Converts LaTeX strings (with text and equations) to a Word document.
-    Parses and adds \text{..} as normal document text and equations in equations mode.
-    To create nicely formatted equations in Word, equations and lines of text should be separated by \newline.
-    Lines of text should always start with \text{...}.
-
-    Args:
-        latex: The LaTeX string, with lines separated by \newline, text in \text{...}, equations otherwise.
+    Limitations and Usage Notes:
+    - This converter currently supports LaTeX input containing text and equations only. Figures and tables are not yet supported.
+    - Use \newline to indicate new lines. Do not use the double backslash \\ for line breaks.
+    - All text must be wrapped in \text{...}. This is also required for compatibility with the translation module.
+    - To mix text and equations, close the \text{...} block, write the equation, and then start a new \text{...} block for subsequent text.
+    - If you need to include text within an equation (e.g., as a note in brackets), use slashes between words: e.g., (note\ between\ words).
     """
 
     def __init__(self) -> None:
