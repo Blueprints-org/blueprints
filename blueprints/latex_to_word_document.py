@@ -21,11 +21,8 @@ class LatexToWordConverter:
         latex: The LaTeX string, with lines separated by \newline, text in \text{...}, equations otherwise.
     """
 
-    def __init__(self, latex: str = "") -> None:
+    def __init__(self) -> None:
         """Initialize the converter and optionally convert LaTeX to a Document."""
-        self.document = None
-        if latex:
-            self.document = self.convert(latex)
 
     @staticmethod
     def _formula(latex_string: str) -> BaseOxmlElement:
@@ -39,7 +36,7 @@ class LatexToWordConverter:
         xml_output = f'<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">{omml_output}</m:oMathPara>'
         return parse_xml(xml_output)[0]
 
-    def convert(self, latex: str) -> DocumentObject:
+    def convert_to_word(self, latex: str) -> DocumentObject:
         r"""
         Convert a LaTeX string (with text and equations) to a Word Document object.
         Args:
