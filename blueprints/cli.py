@@ -134,7 +134,7 @@ def run_command(cmd: list[str], success_msg: str = "") -> NoReturn:
 
     except FileNotFoundError:
         console.print(f"[bold red]Error: Command not found: {cmd[0]}[/bold red]")
-        console.print("[yellow]Make sure 'uv' is installed and in your PATH[/yellow]")
+        console.print(f"[yellow]Make sure '{cmd[0]}' is installed and in your PATH[/yellow]")
         sys.exit(1)
 
     except KeyboardInterrupt:
