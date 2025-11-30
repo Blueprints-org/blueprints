@@ -5,7 +5,9 @@ import re
 import latex2mathml.converter
 import mathml2omml
 from docx import Document
+from docx.document import Document as DocumentObject
 from docx.oxml import parse_xml
+from docx.oxml.xmlchemy import BaseOxmlElement
 
 
 class LatexToWordConverter:
@@ -26,7 +28,7 @@ class LatexToWordConverter:
             self.document = self.convert(latex)
 
     @staticmethod
-    def _formula(latex_string: str) -> parse_xml:
+    def _formula(latex_string: str) -> BaseOxmlElement:
         """Convert a LaTeX equation string to an OMML XML element for Word.
 
         Args:
@@ -37,7 +39,7 @@ class LatexToWordConverter:
         xml_output = f'<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">{omml_output}</m:oMathPara>'
         return parse_xml(xml_output)[0]
 
-    def convert(self, latex: str) -> Document:
+    def convert(self, latex: str) -> DocumentObject:
         r"""
         Convert a LaTeX string (with text and equations) to a Word Document object.
         Args:
