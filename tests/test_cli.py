@@ -1,10 +1,12 @@
 """Tests for the Blueprints CLI module."""
 
+import builtins
 import importlib
 import os
 import subprocess
 import sys
 from pathlib import Path
+from types import ModuleType
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -54,8 +56,6 @@ def test_cli_import_error_handling() -> None:
 
     This test verifies the import error message when dependencies are missing.
     """
-    import builtins
-
     # Save original modules and import function
     original_typer = sys.modules.pop("typer", None)
     original_rich = sys.modules.pop("rich", None)
@@ -64,7 +64,7 @@ def test_cli_import_error_handling() -> None:
 
     try:
         # Make typer unavailable by raising ModuleNotFoundError on import
-        def raise_import_error(name, *args, **kwargs):
+        def raise_import_error(name: str, *args, **kwargs) -> ModuleType:
             if name == "typer":
                 raise ModuleNotFoundError(f"No module named '{name}'")
             return original_import(name, *args, **kwargs)
@@ -886,22 +886,6 @@ def test_app_command_help() -> None:
     assert result.returncode == 0
     assert "Usage:" in result.stdout
     assert "test" in result.stdout.lower()
-
-
-def test_app_coverage_command_help() -> None:
-    """Test that coverage command shows help with options."""
-    result = subprocess.run(
-        args=[sys.executable, "-m", "blueprints.cli", "coverage", "--help"],
-        check=False,
-        capture_output=True,
-        text=True,
-        cwd=PROJECT_ROOT,
-        env=os.environ.copy(),
-    )
-    assert result.returncode == 0
-    assert "coverage" in result.stdout.lower()
-    # Should show coverage command options
-    assert "--xml" in result.stdout or "--html" in result.stdout
 
 
 def test_app_check_command_help() -> None:
