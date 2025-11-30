@@ -40,7 +40,7 @@ class LatexToWordConverter:
         r"""
         Convert a LaTeX string (with text and equations) to a Word Document object.
         Args:
-            latex: The LaTeX string, with lines separated by \\, text in \text{...}, equations otherwise.
+            latex: The LaTeX string, with lines separated by \newline, text in \text{...}, equations otherwise.
 
         Returns
         -------
@@ -61,7 +61,9 @@ class LatexToWordConverter:
                     parsed.append({"type": "text", "content": text_content})
                 elif eq_content is not None and eq_content.strip():
                     parsed.append({"type": "equation", "content": eq_content.strip()})
-            parsed.append({"type": "text", "content": "\n"})  # Add new line after each line
+            # Add new line after each line except for the last one
+            if line != lines[-1]:
+                parsed.append({"type": "text", "content": "\n"})
 
         # Add parsed content to document and format based on type of content
         p = doc.add_paragraph()
