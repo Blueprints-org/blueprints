@@ -54,14 +54,22 @@ def test_cli_import_error_handling() -> None:
 
     This test verifies the import error message when dependencies are missing.
     """
-    # Save original modules
+    import builtins
+
+    # Save original modules and import function
     original_typer = sys.modules.pop("typer", None)
     original_rich = sys.modules.pop("rich", None)
     original_cli = sys.modules.pop("blueprints.cli", None)
+    original_import = builtins.__import__
 
     try:
-        # Make typer unavailable
-        sys.modules["typer"] = None
+        # Make typer unavailable by raising ModuleNotFoundError on import
+        def raise_import_error(name, *args, **kwargs):
+            if name == "typer":
+                raise ModuleNotFoundError(f"No module named '{name}'")
+            return original_import(name, *args, **kwargs)
+
+        builtins.__import__ = raise_import_error
 
         # Try to import the cli module - should raise SystemExit
         with pytest.raises(SystemExit) as exc_info:
@@ -70,6 +78,9 @@ def test_cli_import_error_handling() -> None:
         assert exc_info.value.code == 1
 
     finally:
+        # Restore original import
+        builtins.__import__ = original_import
+
         # Restore original modules
         if original_typer is not None:
             sys.modules["typer"] = original_typer
@@ -634,15 +645,12 @@ def test_multiple_pass_through_args() -> None:
 
 def test_check_command_all_pass() -> None:
     """Test check command when all checks pass."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
     with patch("blueprints.cli.subprocess.run") as mock_run:
         # All checks return 0 (success)
         mock_run.return_value = MagicMock(returncode=0)
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
+            cli.check()
 
         # Should exit with 0 (success)
         assert exc_info.value.code == 0
@@ -652,9 +660,6 @@ def test_check_command_all_pass() -> None:
 
 def test_check_command_lint_fails() -> None:
     """Test check command when lint fails."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
     with patch("blueprints.cli.subprocess.run") as mock_run:
         # First call (lint) fails, rest pass
         mock_run.side_effect = [
@@ -665,7 +670,7 @@ def test_check_command_lint_fails() -> None:
         ]
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
+            cli.check()
 
         # Should exit with 1 (failure)
         assert exc_info.value.code == 1
@@ -675,9 +680,6 @@ def test_check_command_lint_fails() -> None:
 
 def test_check_command_format_fails() -> None:
     """Test check command when format fails."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
     with patch("blueprints.cli.subprocess.run") as mock_run:
         # Second call (format) fails
         mock_run.side_effect = [
@@ -688,7 +690,7 @@ def test_check_command_format_fails() -> None:
         ]
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
+            cli.check()
 
         assert exc_info.value.code == 1
         assert mock_run.call_count == 4
@@ -696,9 +698,6 @@ def test_check_command_format_fails() -> None:
 
 def test_check_command_typecheck_fails() -> None:
     """Test check command when typecheck fails."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
     with patch("blueprints.cli.subprocess.run") as mock_run:
         # Third call (typecheck) fails
         mock_run.side_effect = [
@@ -709,7 +708,7 @@ def test_check_command_typecheck_fails() -> None:
         ]
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
+            cli.check()
 
         assert exc_info.value.code == 1
         assert mock_run.call_count == 4
@@ -717,9 +716,6 @@ def test_check_command_typecheck_fails() -> None:
 
 def test_check_command_coverage_fails() -> None:
     """Test check command when coverage fails."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
     with patch("blueprints.cli.subprocess.run") as mock_run:
         # Fourth call (coverage) fails
         mock_run.side_effect = [
@@ -730,7 +726,7 @@ def test_check_command_coverage_fails() -> None:
         ]
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
+            cli.check()
 
         assert exc_info.value.code == 1
         assert mock_run.call_count == 4
@@ -738,9 +734,6 @@ def test_check_command_coverage_fails() -> None:
 
 def test_check_command_multiple_failures() -> None:
     """Test check command when multiple checks fail."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
     with patch("blueprints.cli.subprocess.run") as mock_run:
         # Lint and coverage fail
         mock_run.side_effect = [
@@ -751,7 +744,7 @@ def test_check_command_multiple_failures() -> None:
         ]
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
+            cli.check()
 
         assert exc_info.value.code == 1
         assert mock_run.call_count == 4
@@ -759,14 +752,11 @@ def test_check_command_multiple_failures() -> None:
 
 def test_check_command_missing_uv() -> None:
     """Test check command when uv is not found."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
     with patch("blueprints.cli.subprocess.run") as mock_run:
         mock_run.side_effect = FileNotFoundError()
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
+            cli.check()
 
         assert exc_info.value.code == 1
 
