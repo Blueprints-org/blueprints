@@ -69,6 +69,9 @@ class LatexToWordConverter:
         p = doc.add_paragraph()
         for item in parsed:
             if item["type"] == "equation":
+                # Accessing the private attribute `_p` of the python-docx Paragraph object.
+                # This is necessary because the public API does not support inserting OMML (Office Math Markup Language)
+                # elements (used for equations) directly into a paragraph.
                 p._p.append(self._formula(item["content"]))  # noqa: SLF001
             else:
                 p.add_run(item["content"])
