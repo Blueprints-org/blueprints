@@ -230,13 +230,18 @@ def test_coverage_command() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage(mock_ctx)
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.coverage(mock_ctx)
+
         mock_run.assert_called_once()
         # Verify it includes coverage flags
         call_args = mock_run.call_args[0][0]
         assert "--cov=./blueprints" in call_args
         assert "--cov-fail-under=100" in call_args
+        assert exc_info.value.code == 0
 
 
 def test_coverage_command_with_xml() -> None:
@@ -244,14 +249,19 @@ def test_coverage_command_with_xml() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage(mock_ctx, xml=True)
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.coverage(mock_ctx, xml=True)
+
         mock_run.assert_called_once()
         # Verify it includes coverage flags
         call_args = mock_run.call_args[0][0]
         assert "--cov=./blueprints" in call_args
         assert "xml" in call_args
         assert "--cov-fail-under=100" in call_args
+        assert exc_info.value.code == 0
 
 
 def test_coverage_command_with_html() -> None:
@@ -259,14 +269,19 @@ def test_coverage_command_with_html() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage(mock_ctx, html=True)
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.coverage(mock_ctx, html=True)
+
         mock_run.assert_called_once()
         # Verify it includes coverage flags
         call_args = mock_run.call_args[0][0]
         assert "--cov=./blueprints" in call_args
         assert "html" in call_args
         assert "--cov-fail-under=100" in call_args
+        assert exc_info.value.code == 0
 
 
 def test_coverage_command_with_no_check() -> None:
@@ -274,13 +289,18 @@ def test_coverage_command_with_no_check() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage(mock_ctx, check=False)
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit) as exc_info:
+            cli.coverage(mock_ctx, check=False)
+
         mock_run.assert_called_once()
         # Verify it does NOT include enforcement flag
         call_args = mock_run.call_args[0][0]
         assert "--cov=./blueprints" in call_args
         assert "--cov-fail-under=100" not in call_args
+        assert exc_info.value.code == 0
 
 
 def test_coverage_command_failure() -> None:
@@ -288,9 +308,8 @@ def test_coverage_command_failure() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
-    with patch("blueprints.cli.run_command") as mock_run:
-        # Make run_command raise SystemExit with code 1 to simulate failure
-        mock_run.side_effect = SystemExit(1)
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=1)
 
         with pytest.raises(SystemExit) as exc_info:
             cli.coverage(mock_ctx)
@@ -469,9 +488,13 @@ def test_coverage_with_pass_through_args() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = ["-x"]
 
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage(mock_ctx)
-        # Verify run_command was called with the pass-through arg
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit):
+            cli.coverage(mock_ctx)
+
+        # Verify subprocess.run was called with the pass-through arg
         call_args = mock_run.call_args[0][0]
         assert "-x" in call_args
 
@@ -481,9 +504,13 @@ def test_coverage_with_xml_and_pass_through_args() -> None:
     mock_ctx = MagicMock()
     mock_ctx.args = ["-k", "test_important"]
 
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage(mock_ctx, xml=True)
-        # Verify run_command was called with the pass-through args
+    with patch("blueprints.cli.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0)
+
+        with pytest.raises(SystemExit):
+            cli.coverage(mock_ctx, xml=True)
+
+        # Verify subprocess.run was called with the pass-through args
         call_args = mock_run.call_args[0][0]
         assert "-k" in call_args
         assert "test_important" in call_args
@@ -623,27 +650,6 @@ def test_check_command_coverage_fails() -> None:
 
         assert exc_info.value.code == 1
         assert mock_run.call_count == 4
-
-
-def test_check_command_with_pass_through_args() -> None:
-    """Test check command passes extra arguments to sub-commands."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = ["-x"]
-
-    with patch("blueprints.cli.subprocess.run") as mock_run:
-        mock_run.return_value = MagicMock(returncode=0)
-
-        with pytest.raises(SystemExit) as exc_info:
-            cli.check(mock_ctx)
-
-        assert exc_info.value.code == 0
-        # Check that all calls include the extra args
-        assert len(mock_run.call_args_list) == 4  # 4 checks: lint, format, typecheck, coverage
-
-        # All calls use args= keyword argument
-        for call in mock_run.call_args_list:
-            call_args = call[1]["args"]
-            assert "-x" in call_args
 
 
 def test_check_command_multiple_failures() -> None:

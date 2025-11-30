@@ -288,6 +288,50 @@ def test(
         )
 
 
+def _run_coverage(ctx_args: list[str], xml: bool = False, html: bool = False, check: bool = True) -> int:
+    """Helper function to run coverage tests and return exit code.
+
+    Parameters
+    ----------
+    ctx_args : list[str]
+        Pass-through arguments for pytest.
+    xml : bool
+        If True, also generate XML coverage report for CI/CD integration.
+    html : bool
+        If True, also generate interactive HTML coverage report in htmlcov/.
+    check : bool
+        If True, enforce 100% coverage requirement.
+
+    Returns
+    -------
+    int
+        Exit code from pytest (0 = success, 1 = failure).
+    """
+    # Build coverage report formats
+    reports = ["term-missing:skip-covered"]
+    if xml:
+        reports.append("xml")
+    if html:
+        reports.append("html")
+
+    # Build pytest command
+    cmd = ["uv", "run", "pytest", "--cov=./blueprints"]
+
+    # Add coverage report formats
+    for report_format in reports:
+        cmd.extend(["--cov-report", report_format])
+
+    # Add coverage enforcement if requested
+    if check:
+        cmd.append("--cov-fail-under=100")
+
+    # Add pass-through arguments
+    cmd.extend(ctx_args)
+
+    result = subprocess.run(cmd, check=False)
+    return result.returncode
+
+
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def coverage(
     ctx: typer.Context,
@@ -337,34 +381,15 @@ def coverage(
     """
     console.print("[bold blue]Running tests with coverage...[/bold blue]")
 
-    # Build coverage report formats
-    reports = ["term-missing:skip-covered"]
-    if xml:
-        reports.append("xml")
-    if html:
-        reports.append("html")
-
-    # Build pytest command
-    cmd = ["uv", "run", "pytest", "--cov=./blueprints"]
-
-    # Add coverage report formats
-    for report_format in reports:
-        cmd.extend(["--cov-report", report_format])
-
-    # Add coverage enforcement unless --no-check is specified
-    if check:
-        cmd.append("--cov-fail-under=100")
-
-    # Add pass-through arguments
-    cmd.extend(ctx.args)
-
-    run_command(cmd)
+    exit_code = _run_coverage(ctx.args, xml=xml, html=html, check=check)
 
     # Print completion messages
     if html:
         console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
-    if check:
+    if check and exit_code == 0:
         console.print("[bold green]Coverage check passed![/bold green]")
+
+    sys.exit(exit_code)
 
 
 # Quality Assurance Commands
@@ -457,13 +482,8 @@ def check(ctx: typer.Context) -> None:  # noqa: PLR0915
 
     # 4. Coverage
     console.print("\n[bold blue]4. Checking code coverage...[/bold blue]")
-    result = subprocess.run(
-        args=["uv", "run", "pytest", "--cov=./blueprints", "--cov-fail-under=100", "--cov-report", "html", *ctx.args],
-        capture_output=False,
-        text=True,
-        check=False,
-    )
-    if result.returncode == 0:
+    exit_code = _run_coverage(ctx.args, xml=False, html=True, check=True)
+    if exit_code == 0:
         checks_passed.append("Coverage")
         console.print("[bold green]Coverage: PASSED[/bold green]")
         console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
