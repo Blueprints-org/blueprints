@@ -188,17 +188,22 @@ def test_install_command() -> None:
             cli.install(mock_ctx)
 
         assert exc_info.value.code == 0
-        # Check that uv venv was called first
-        assert mock_run.call_count == 2
+        # Check that uv sync was called with correct flags
+        mock_run.assert_called_once()
+        call_cmd = mock_run.call_args[0][0]
+        assert "uv" in call_cmd
+        assert "sync" in call_cmd
+        assert "--locked" in call_cmd
+        assert "--all-groups" in call_cmd
 
 
-def test_install_command_venv_failure() -> None:
-    """Test install command when venv creation fails."""
+def test_install_command_sync_failure() -> None:
+    """Test install command when sync fails."""
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
     with patch("blueprints.cli.subprocess.run") as mock_run:
-        mock_run.return_value = MagicMock(returncode=1, stderr="venv error")
+        mock_run.return_value = MagicMock(returncode=1, stderr="sync error")
 
         with pytest.raises(SystemExit) as exc_info:
             cli.install(mock_ctx)
@@ -232,7 +237,7 @@ def test_format_command() -> None:
     mock_ctx.args = []
 
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.format(mock_ctx)
+        cli.formatting(mock_ctx)
         mock_run.assert_called_once()
 
 
@@ -582,9 +587,9 @@ def test_main_callback_very_wide_terminal() -> None:
 
 
 def test_install_with_pass_through_args() -> None:
-    """Test install command passes extra arguments to uv."""
+    """Test install command passes extra arguments to uv sync."""
     mock_ctx = MagicMock()
-    mock_ctx.args = ["--clear"]
+    mock_ctx.args = ["--upgrade"]
 
     with patch("blueprints.cli.subprocess.run") as mock_run:
         mock_run.return_value = MagicMock(returncode=0)
@@ -593,14 +598,14 @@ def test_install_with_pass_through_args() -> None:
             cli.install(mock_ctx)
 
         assert exc_info.value.code == 0
-        # Check that --clear was passed to uv venv
-        calls = mock_run.call_args_list
-        first_call_args = calls[0][1]["args"]
-        assert "--clear" in first_call_args
+        # Check that --upgrade was passed to uv sync
+        mock_run.assert_called_once()
+        call_cmd = mock_run.call_args[0][0]
+        assert "--upgrade" in call_cmd
 
 
 def test_install_with_python_version() -> None:
-    """Test install command passes --python flag."""
+    """Test install command passes --python flag to uv sync."""
     mock_ctx = MagicMock()
     mock_ctx.args = ["--python", "3.11"]
 
@@ -611,10 +616,10 @@ def test_install_with_python_version() -> None:
             cli.install(mock_ctx)
 
         assert exc_info.value.code == 0
-        calls = mock_run.call_args_list
-        first_call_args = calls[0][1]["args"]
-        assert "--python" in first_call_args
-        assert "3.11" in first_call_args
+        mock_run.assert_called_once()
+        call_cmd = mock_run.call_args[0][0]
+        assert "--python" in call_cmd
+        assert "3.11" in call_cmd
 
 
 def test_test_with_pass_through_args() -> None:
@@ -658,7 +663,7 @@ def test_format_with_pass_through_args() -> None:
     mock_ctx.args = ["--line-length", "100"]
 
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.format(mock_ctx)
+        cli.formatting(mock_ctx)
         call_args = mock_run.call_args[0][0]
         assert "--line-length" in call_args
         assert "100" in call_args
@@ -732,7 +737,7 @@ def test_coverage_html_with_pass_through_args() -> None:
             cli.coverage_html(mock_ctx)
 
         assert exc_info.value.code == 0
-        call_args = mock_run.call_args[0][0]
+        call_args = mock_run.call_args[1]["args"]
         assert "-k" in call_args
         assert "test_important" in call_args
 
@@ -749,7 +754,7 @@ def test_build_with_pass_through_args() -> None:
             cli.build(mock_ctx)
 
         assert exc_info.value.code == 0
-        call_args = mock_run.call_args[0][0]
+        call_args = mock_run.call_args[1]["args"]
         assert "--sdist" in call_args
 
 
@@ -901,8 +906,11 @@ def test_check_command_with_pass_through_args() -> None:
 
         assert exc_info.value.code == 0
         # Check that all calls include the extra args
+        assert len(mock_run.call_args_list) == 4  # 4 checks: lint, format, typecheck, coverage
+
+        # All calls use args= keyword argument
         for call in mock_run.call_args_list:
-            call_args = call[0][0]
+            call_args = call[1]["args"]
             assert "-x" in call_args
 
 

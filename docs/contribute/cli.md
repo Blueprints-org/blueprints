@@ -21,9 +21,9 @@ pip install blue-prints[cli]
 
 **`blueprints install`**
 
-- Create venv and sync all dependencies
-- Supports pass-through args: `--clear`, `--python 3.13`, etc.
-- Example: `blueprints install --clear`
+- Sync all dependencies (creates venv automatically if needed)
+- Supports pass-through args: `--upgrade`, `--python 3.13`, etc.
+- Example: `blueprints install --upgrade`
 
 ### Quality Assurance
 
@@ -160,7 +160,7 @@ All CLI commands support passing additional arguments to the underlying tools. T
 ### Install with Flags
 
 ```bash
-blueprints install --clear              # Clear existing venv before creating
+blueprints install --upgrade            # Upgrade all packages to latest versions
 blueprints install --python 3.13        # Use specific Python version
 ```
 

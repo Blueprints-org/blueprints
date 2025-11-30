@@ -99,12 +99,12 @@ def main(
     # Handle --version flag
     if version_flag:
         console.print(f"Blueprints CLI version: {__version__}")
-        raise typer.Exit()
+        raise typer.Exit()  # noqa:RSE102
 
     # Show help if no command given
     if ctx.invoked_subcommand is None:
         console.print(ctx.get_help())
-        raise typer.Exit()
+        raise typer.Exit()  # noqa:RSE102
 
 
 def run_command(cmd: list[str], success_msg: str = "") -> NoReturn:
@@ -148,20 +148,20 @@ def run_command(cmd: list[str], success_msg: str = "") -> NoReturn:
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def install(ctx: typer.Context) -> None:
-    """Create venv and sync all dependencies.
+    """Sync all dependencies and create venv if needed.
 
-    Creates a virtual environment and synchronizes all dependency groups.
-    Equivalent to: make install
+    Synchronizes all dependency groups. Creates a virtual environment
+    automatically if it doesn't exist. Equivalent to: make install
 
     Parameters
     ----------
     ctx : typer.Context
-        Typer context containing additional arguments to pass to uv venv and uv sync.
+        Typer context containing additional arguments to pass to uv sync.
 
     Notes
     -----
-    Additional arguments are passed to both uv venv and uv sync. Common examples:
-    - `--clear` : Clear existing venv before creating
+    Additional arguments are passed directly to uv sync. Common examples:
+    - `--upgrade` : Upgrade all packages to latest versions
     - `--python 3.11` : Use specific Python version
     """
     console.print("[bold blue]Installing all dependencies...[/bold blue]")
@@ -223,7 +223,7 @@ def lint(ctx: typer.Context) -> None:
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def format(ctx: typer.Context) -> None:
+def formatting(ctx: typer.Context) -> None:
     """Check the formatting with Ruff.
 
     Checks code formatting compliance using Ruff's formatter.
@@ -525,9 +525,10 @@ def check(ctx: typer.Context) -> None:
     console.print("\n[bold blue]1. Linting with Ruff...[/bold blue]")
     try:
         result = subprocess.run(
-            ["uv", "run", "ruff", "check", "."] + ctx.args,
+            args=["uv", "run", "ruff", "check", ".", *ctx.args],
             capture_output=False,
             text=True,
+            check=False,
         )
         if result.returncode == 0:
             checks_passed.append("Lint")
@@ -545,20 +546,22 @@ def check(ctx: typer.Context) -> None:
         args=["uv", "run", "ruff", "format", ".", "--check", *ctx.args],
         capture_output=False,
         text=True,
+        check=False,
     )
     if result.returncode == 0:
         checks_passed.append("Format")
         console.print("[bold green]Format: PASSED[/bold green]")
     else:
         checks_failed.append("Format")
-        console.print("[bold red]Format: FAILED (Use `blueprints format` to fix this)[/bold red]")
+        console.print("[bold red]Format: FAILED (Use `blueprints formatting` to fix this)[/bold red]")
 
     # 3. Type check
     console.print("\n[bold blue]3. Running type checks with mypy...[/bold blue]")
     result = subprocess.run(
-        ["uv", "run", "mypy", "-p", "blueprints", *ctx.args],
+        args=["uv", "run", "mypy", "-p", "blueprints", *ctx.args],
         capture_output=False,
         text=True,
+        check=False,
     )
     if result.returncode == 0:
         checks_passed.append("Type Check")
@@ -570,17 +573,10 @@ def check(ctx: typer.Context) -> None:
     # 4. Coverage
     console.print("\n[bold blue]4. Checking code coverage...[/bold blue]")
     result = subprocess.run(
-        [
-            "uv",
-            "run",
-            "--no-dev",
-            "pytest",
-            "--cov=./blueprints",
-            "--cov-report",
-            "html",
-        ] + ctx.args,
+        args=["uv", "run", "--no-dev", "pytest", "--cov=./blueprints", "--cov-report", "html", *ctx.args],
         capture_output=False,
         text=True,
+        check=False,
     )
     if result.returncode == 0:
         checks_passed.append("Coverage")
