@@ -169,6 +169,7 @@ def install(ctx: typer.Context) -> None:
         success_msg="Environment setup complete!",
     )
 
+
 # Code Quality Commands
 
 
@@ -284,7 +285,7 @@ def test(
     else:
         console.print("[bold blue]Running tests...[/bold blue]")
         run_command(
-            ["uv", "run", "pytest", "tests/", "-n", "auto",*ctx.args],
+            ["uv", "run", "pytest", "tests/", "-n", "auto", *ctx.args],
         )
 
 
@@ -315,7 +316,7 @@ def _run_coverage(ctx_args: list[str], xml: bool = False, html: bool = False, ch
         reports.append("html")
 
     # Build pytest command
-    cmd = ["uv", "run", "pytest", "--cov=./blueprints", "-n", "auto",]
+    cmd = ["uv", "run", "pytest", "--cov=./blueprints", "-n", "auto"]
 
     # Add coverage report formats
     for report_format in reports:

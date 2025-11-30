@@ -387,10 +387,7 @@ def test_main_callback_when_uv_not_installed() -> None:
 
             # Verify warning was printed
             print_calls = [str(call) for call in mock_print.call_args_list]
-            warning_found = any(
-                "uv" in str(call).lower() and "not installed" in str(call).lower()
-                for call in print_calls
-            )
+            warning_found = any("uv" in str(call).lower() and "not installed" in str(call).lower() for call in print_calls)
             assert warning_found
 
 
@@ -426,10 +423,7 @@ def test_main_callback_with_version_flag() -> None:
                 cli.main(mock_ctx, version_flag=True)
 
             # Verify version was printed
-            version_call_found = any(
-                "version" in str(call).lower()
-                for call in mock_print.call_args_list
-            )
+            version_call_found = any("version" in str(call).lower() for call in mock_print.call_args_list)
             assert version_call_found
 
 
@@ -858,11 +852,7 @@ def test_app_invalid_command() -> None:
     )
     assert result.returncode != 0
     # Should show error or usage information
-    assert (
-        "No such command" in result.stdout
-        or "No such command" in result.stderr
-        or "Usage:" in result.stdout
-    )
+    assert "No such command" in result.stdout or "No such command" in result.stderr or "Usage:" in result.stdout
 
 
 def test_app_all_expected_commands_available() -> None:
