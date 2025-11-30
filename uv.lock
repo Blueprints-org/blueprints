@@ -136,9 +136,7 @@ dev = [
     { name = "icecream" },
     { name = "mypy" },
     { name = "pre-commit" },
-    { name = "rich" },
     { name = "ruff" },
-    { name = "typer" },
     { name = "types-shapely" },
 ]
 docs = [
@@ -161,6 +159,8 @@ test = [
     { name = "pytest-raises" },
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
+    { name = "rich" },
+    { name = "typer" },
 ]
 
 [package.metadata]
@@ -202,9 +202,7 @@ dev = [
     { name = "icecream", specifier = "==2.1.8" },
     { name = "mypy", specifier = "==1.18.2" },
     { name = "pre-commit", specifier = "==4.3.0" },
-    { name = "rich", specifier = ">=13.7.0" },
     { name = "ruff", specifier = "==0.14.3" },
-    { name = "typer", specifier = ">=0.9.0" },
     { name = "types-shapely", specifier = "==2.1.0.20250917" },
 ]
 docs = [
@@ -227,6 +225,8 @@ test = [
     { name = "pytest-raises", specifier = "==0.11" },
     { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
+    { name = "rich", specifier = ">=13.7.0" },
+    { name = "typer", specifier = ">=0.9.0" },
 ]
 
 [[package]]
