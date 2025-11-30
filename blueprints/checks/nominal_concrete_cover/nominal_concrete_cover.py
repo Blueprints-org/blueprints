@@ -167,26 +167,32 @@ class NominalConcreteCover:
         """Returns the lateX string representation for Nominal concrete cover check."""
         min_surface = self.minimum_cover_with_regard_to_casting_surface()
         lines = [
-            rf"\text{{Nominal concrete cover (art. 4.4.1, {self.constants.CODE_PREFIX}EN 1992-1-1{self.constants.CODE_SUFFIX}):}}\newline ",
-            r"max\{c_{nom}, c_{min,cast}\} \newline",
+            rf"\text{{Nominal concrete cover according to art. 4.4.1 from {self.constants.CODE_PREFIX}"
+            rf"EN 1992-1-1{self.constants.CODE_SUFFIX}:}}\newline ",
+            r"max{Nominal concrete cover according to art. 4.4.1 } (c_{nom}) "
+            r"\text{, Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) } \newline",
             rf"= {latex_max_curly_brackets(self.c_nom().latex().result, min_surface)} = {self.value():.{n}f} mm\newline ",
             r"\newline ",
             r"\text{Where:}\newline ",
             rf"{self.c_nom().latex().return_symbol} = {self.c_nom().latex().equation.replace('min', 'min,total')} = "
             rf"{self.c_nom().latex().numeric_equation} = {self.c_nom().latex().result} mm\newline ",
-            r"\Delta c_{dev} \text{ per art. 4.4.1.3 (1)}\newline ",
-            r"c_{min,total} = c_{min} + \Delta c_{uneven} + \Delta c_{abrasion} = "
-            rf"{self.c_min().latex().result} + {self.cover_increase_for_uneven_surface()} + "
+            r"\Delta c_{dev} \text{ is determined according to art. 4.4.1.3 (1)}\newline ",
+            r"c_{min,total} = c_{min} + \Delta c_{uneven surface}  + \Delta c_{abrasion class} "
+            rf"= {self.c_min().latex().result} + {self.cover_increase_for_uneven_surface()} + "
             rf"{self.cover_increase_for_abrasion_class()} = {self.c_min_total()} mm\newline ",
-            r"\Delta c_{uneven}, \Delta c_{abrasion} \text{ per art. 4.4.1.2 (11),(13)}\newline ",
+            r"\Delta c_{uneven surface} \text{ and } \Delta c_{abrasion class} "
+            r"\text{ are determined according to art. 4.4.1.2 (11) and (13)}\newline ",
             rf"{self.c_min().latex().return_symbol} = {self.c_min().latex().equation} \newline = "
             rf"{self.c_min().latex().numeric_equation} = {self.c_min().latex().result} mm\newline ",
-            r"\Delta c_{dur,\gamma}, \Delta c_{dur,st}, \Delta c_{dur,add} \text{ per art. 4.4.1.2 (6),(7),(8)}\newline ",
-            rf"{self.c_min_b().latex().return_symbol} \text{{ per table 4.2, {self.c_min_b().latex().equation}}} = "
+            r"\Delta c_{dur,\gamma} , \Delta c_{dur,st} \text{ and } \Delta c_{dur,add} "
+            r"\text{ are determined according to art. 4.4.1.2 (6), (7) and (8)}\newline ",
+            rf"{self.c_min_b().latex().return_symbol} "
+            rf"\text{{ is determined according to table 4.2 based on {self.c_min_b().latex().equation}}} = "
             rf"{self.c_min_b().latex().numeric_equation} = {self.c_min_b().latex().result} mm\newline ",
-            rf"{self.c_min_dur().latex().return_symbol} \text{{ per table 4.4, {self.c_min_dur().latex().equation}}} = "
+            rf"{self.c_min_dur().latex().return_symbol} "
+            rf"\text{{ is determined according to table 4.4 based on {self.c_min_dur().latex().equation}}} = "
             rf"{self.c_min_dur().latex().result} mm\newline ",
-            r"\text{Min. cover for casting surface (art. 4.4.1.3 (4)) = }"
+            r"\text{Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) = }"
             + self.constants.minimum_cover_with_regard_to_casting_surface_latex(self.casting_surface)
             + r"\newline ",
         ]
