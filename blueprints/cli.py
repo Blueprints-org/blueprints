@@ -211,9 +211,8 @@ def formatting(ctx: typer.Context) -> None:
     Notes
     -----
     Additional arguments are passed directly to ruff format. Common examples:
-    - Remove `--check` to actually format files instead of just checking
+    - Add `--check` to only check formatting without making changes; omit it to format files
     - `--line-length 100` : Use specific line length
-    - `--check` : Only check formatting without making changes
     """
     console.print("[bold blue]Checking formatting with Ruff...[/bold blue]")
     run_command(["uv", "run", "ruff", "format", ".", *ctx.args])
