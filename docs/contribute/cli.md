@@ -43,7 +43,6 @@ pip install blue-prints[cli]
 - Provides detailed summary of which checks passed/failed
 - Exits with code 0 on success, 1 on any failure (CI-friendly)
 - Continues all checks even if one fails (full visibility)
-- Supports pass-through args: `-x` (stop on first test failure), `-k pattern` (filter tests)
 - Example: `blueprints check`
 
 
@@ -208,13 +207,6 @@ blueprints coverage --html              # Also generate HTML report
 blueprints coverage --xml --html        # Generate all three formats
 blueprints coverage --no-check          # Skip 100% coverage enforcement
 blueprints coverage -k test_pattern     # Filter tests by pattern
-```
-
-### Check with pytest Flags
-
-```bash
-blueprints check -x                     # Stop on first test failure
-blueprints check -k test_pattern        # Filter tests by pattern
 ```
 
 ## Version Information
