@@ -2,6 +2,16 @@
 
 Blueprints includes a command-line interface for development automation, trying to simplify developing and contributing to the project.
 
+## Requirements
+
+The CLI requires `uv` to be installed. If not present, you'll see a warning message with installation instructions.
+
+Install `uv`:
+```bash
+pip install uv
+# or visit https://github.com/astral-sh/uv
+```
+
 ## Installation
 
 Install the CLI with its dependencies:
@@ -45,12 +55,10 @@ pip install blue-prints[cli]
 - Supports pass-through args: `--fix`, `--select E501`, `--show-fixes`
 - Example: `blueprints lint --fix`
 
-**`blueprints format`**
+**`blueprints formatting`**
 
 - Check code formatting compliance with Ruff
-- Note: Uses `--check` by default (only validates, doesn't modify)
 - Supports pass-through args: `--line-length 100`
-- Example: `blueprints format --line-length 100`
 
 **`blueprints typecheck`**
 
@@ -87,7 +95,7 @@ pip install blue-prints[cli]
 
 **`blueprints docs`**
 
-- Serve documentation locally with live reload
+- Serve documentation locally with live reload (it might take at least five minutes to finish building)
 - Opens documentation server at http://localhost:8000
 - Browser automatically refreshes when docs are updated
 - Perfect for working on documentation
@@ -180,7 +188,7 @@ blueprints lint --show-fixes            # Show suggested fixes
 ### Format with Ruff Flags
 
 ```bash
-blueprints format --line-length 100     # Use specific line length
+blueprints formatting --line-length 100     # Use specific line length
 ```
 
 ### Type Checking with mypy Flags
@@ -189,14 +197,6 @@ blueprints format --line-length 100     # Use specific line length
 blueprints typecheck --strict           # Enable strict mode
 blueprints typecheck --show-error-codes # Show error codes
 blueprints typecheck --ignore-missing-imports  # Ignore missing imports
-```
-
-### Build with Flags
-
-```bash
-blueprints build --sdist                # Build only source distribution
-blueprints build --wheel                # Build only wheel
-blueprints build --out-dir dist         # Specify output directory
 ```
 
 ### Coverage with Options and pytest Flags
@@ -235,40 +235,6 @@ For more information:
 blueprints --help              # Show general help
 blueprints <command> --help    # Show command-specific help
 ```
-
-## Requirements
-
-The CLI requires `uv` to be installed. If not present, you'll see a warning message with installation instructions.
-
-Install `uv`:
-```bash
-pip install uv
-# or visit https://github.com/astral-sh/uv
-```
-
-## Make vs CLI
-
-Both tools are available and equivalent:
-
-- **Make**: Stable interface for CI/CD pipelines
-- **CLI**: Cross-platform developer tool (works on Windows without Make)
-
-```bash
-# These are equivalent:
-make test
-blueprints test
-
-```
-
-## Features
-
-- **Cross-platform**: Works on Windows, macOS, and Linux
-- **Pass-through arguments**: Access all underlying tool features
-- **Flexible**: Supports all uv, pytest, ruff, and mypy options
-- **Future-proof**: New tool features automatically available
-- **Windows-compatible**: No shell dependencies, pure Python implementation
-- **Rich output**: Colored terminal output for better readability
-- **CI-friendly**: Proper exit codes for automation
 
 ## Troubleshooting
 
