@@ -18,15 +18,11 @@ PROJECT_ROOT = Path(__file__).parent.parent
     "command",
     [
         "install",
-        "ci-install",
         "lint",
         "formatting",
         "typecheck",
         "test",
         "check",
-        "check-coverage",
-        "coverage-report",
-        "coverage-html",
         "docs",
     ],
 )
@@ -176,16 +172,6 @@ def test_install_command_sync_failure() -> None:
         assert exc_info.value.code == 1
 
 
-def test_ci_install_command() -> None:
-    """Test ci-install command mocked execution."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = []
-
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.ci_install(mock_ctx)
-        mock_run.assert_called_once()
-
-
 def test_lint_command() -> None:
     """Test lint command mocked execution."""
     mock_ctx = MagicMock()
@@ -239,37 +225,66 @@ def test_test_light_command() -> None:
         assert "not slow" in call_args
 
 
-def test_coverage_report_command() -> None:
-    """Test coverage-report command mocked execution."""
+def test_coverage_command() -> None:
+    """Test coverage command with default terminal report."""
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage_report(mock_ctx)
+        cli.coverage(mock_ctx)
         mock_run.assert_called_once()
         # Verify it includes coverage flags
         call_args = mock_run.call_args[0][0]
         assert "--cov=./blueprints" in call_args
-        assert "--cov-report=xml" in call_args
+        assert "--cov-fail-under=100" in call_args
 
 
-def test_coverage_html_command() -> None:
-    """Test coverage-html command mocked execution."""
+def test_coverage_command_with_xml() -> None:
+    """Test coverage command with --xml flag."""
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage_html(mock_ctx)
+        cli.coverage(mock_ctx, xml=True)
         mock_run.assert_called_once()
         # Verify it includes coverage flags
         call_args = mock_run.call_args[0][0]
         assert "--cov=./blueprints" in call_args
-        assert "--cov-report" in call_args
+        assert "xml" in call_args
+        assert "--cov-fail-under=100" in call_args
+
+
+def test_coverage_command_with_html() -> None:
+    """Test coverage command with --html flag."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.coverage(mock_ctx, html=True)
+        mock_run.assert_called_once()
+        # Verify it includes coverage flags
+        call_args = mock_run.call_args[0][0]
+        assert "--cov=./blueprints" in call_args
         assert "html" in call_args
+        assert "--cov-fail-under=100" in call_args
 
 
-def test_coverage_html_command_failure() -> None:
-    """Test coverage-html command with failure."""
+def test_coverage_command_with_no_check() -> None:
+    """Test coverage command with --no-check flag."""
+    mock_ctx = MagicMock()
+    mock_ctx.args = []
+
+    with patch("blueprints.cli.run_command") as mock_run:
+        cli.coverage(mock_ctx, check=False)
+        mock_run.assert_called_once()
+        # Verify it does NOT include enforcement flag
+        call_args = mock_run.call_args[0][0]
+        assert "--cov=./blueprints" in call_args
+        assert "--cov-fail-under=100" not in call_args
+
+
+def test_coverage_command_failure() -> None:
+    """Test coverage command with failure."""
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
@@ -278,7 +293,7 @@ def test_coverage_html_command_failure() -> None:
         mock_run.side_effect = SystemExit(1)
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.coverage_html(mock_ctx)
+            cli.coverage(mock_ctx)
 
         assert exc_info.value.code == 1
 
@@ -449,40 +464,30 @@ def test_test_light_with_pass_through_args() -> None:
         assert "not slow" in call_args
 
 
-def test_ci_install_with_pass_through_args() -> None:
-    """Test ci-install command passes extra arguments."""
-    mock_ctx = MagicMock()
-    mock_ctx.args = ["--all-groups"]
-
-    with patch("blueprints.cli.run_command") as mock_run:
-        cli.ci_install(mock_ctx)
-        call_args = mock_run.call_args[1]["cmd"]
-        assert "--all-groups" in call_args
-
-
-def test_coverage_report_with_pass_through_args() -> None:
-    """Test coverage-report command passes extra arguments."""
+def test_coverage_with_pass_through_args() -> None:
+    """Test coverage command passes extra arguments."""
     mock_ctx = MagicMock()
     mock_ctx.args = ["-x"]
 
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage_report(mock_ctx)
+        cli.coverage(mock_ctx)
         # Verify run_command was called with the pass-through arg
         call_args = mock_run.call_args[0][0]
         assert "-x" in call_args
 
 
-def test_coverage_html_with_pass_through_args() -> None:
-    """Test coverage-html command passes extra arguments."""
+def test_coverage_with_xml_and_pass_through_args() -> None:
+    """Test coverage command with --xml flag and pass-through arguments."""
     mock_ctx = MagicMock()
     mock_ctx.args = ["-k", "test_important"]
 
     with patch("blueprints.cli.run_command") as mock_run:
-        cli.coverage_html(mock_ctx)
+        cli.coverage(mock_ctx, xml=True)
         # Verify run_command was called with the pass-through args
         call_args = mock_run.call_args[0][0]
         assert "-k" in call_args
         assert "test_important" in call_args
+        assert "xml" in call_args
 
 
 def test_commands_work_without_extra_args() -> None:

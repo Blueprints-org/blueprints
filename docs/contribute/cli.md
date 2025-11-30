@@ -68,21 +68,20 @@ pip install blue-prints[cli]
 - Example: `blueprints test -k test_cli --verbose`
 - Example: `blueprints test --light` (fast tests only)
 
-**`blueprints check-coverage`**
+**`blueprints coverage`**
 
-- Run tests with coverage reporting
-- Enforces 100% coverage requirement
+- Run tests with coverage reporting and enforce 100% coverage by default
+- Generate terminal report with missing coverage details
+- Use `--xml` to also generate XML coverage report for CI/CD integration
+- Use `--html` to also generate interactive HTML coverage report in `htmlcov/`
+- Use `--no-check` to generate reports without enforcing 100% coverage
 - Supports pass-through args
-
-**`blueprints coverage-report`**
-
-- Generate XML coverage report for CI/CD integration
-- Supports pass-through args
-
-**`blueprints coverage-html`**
-
-- Generate interactive HTML coverage report in `htmlcov/`
-- Supports pass-through args
+- Examples:
+  - `blueprints coverage` - Terminal report with 100% enforcement
+  - `blueprints coverage --xml` - Terminal + XML reports with enforcement
+  - `blueprints coverage --html` - Terminal + HTML reports with enforcement
+  - `blueprints coverage --xml --html` - All three formats with enforcement
+  - `blueprints coverage --no-check` - Reports without 100% enforcement
 
 ### Documentation
 
@@ -198,6 +197,17 @@ blueprints typecheck --ignore-missing-imports  # Ignore missing imports
 blueprints build --sdist                # Build only source distribution
 blueprints build --wheel                # Build only wheel
 blueprints build --out-dir dist         # Specify output directory
+```
+
+### Coverage with Options and pytest Flags
+
+```bash
+blueprints coverage                     # Terminal report with 100% enforcement
+blueprints coverage --xml               # Also generate XML report
+blueprints coverage --html              # Also generate HTML report
+blueprints coverage --xml --html        # Generate all three formats
+blueprints coverage --no-check          # Skip 100% coverage enforcement
+blueprints coverage -k test_pattern     # Filter tests by pattern
 ```
 
 ### Check with pytest Flags

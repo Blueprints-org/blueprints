@@ -169,32 +169,6 @@ def install(ctx: typer.Context) -> None:
         success_msg="Environment setup complete!",
     )
 
-
-@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def ci_install(ctx: typer.Context) -> None:
-    """Sync dependencies for CI/CD tests.
-
-    Synchronizes dependencies without dev dependencies for CI/CD environments.
-    Equivalent to: make ci-install
-
-    Parameters
-    ----------
-    ctx : typer.Context
-        Typer context containing additional arguments to pass to uv sync.
-
-    Notes
-    -----
-    Additional arguments are passed directly to uv sync. Common examples:
-    - `--all-groups` : Include all dependency groups
-    - `--upgrade` : Upgrade to latest versions
-    """
-    console.print("[bold blue]Syncing CI dependencies...[/bold blue]")
-    run_command(
-        cmd=["uv", "sync", "--locked", "--no-dev", *ctx.args],
-        success_msg="CI dependencies synced!",
-    )
-
-
 # Code Quality Commands
 
 
@@ -315,75 +289,82 @@ def test(
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def check_coverage(ctx: typer.Context) -> None:
-    """Run tests and check 100% coverage.
-
-    Executes tests with coverage reporting and enforces 100% coverage requirement.
-    Equivalent to: make check-coverage
-
-    Parameters
-    ----------
-    ctx : typer.Context
-        Typer context containing additional arguments to pass to pytest.
-
-    Notes
-    -----
-    Additional arguments are passed directly to pytest.
-    """
-    console.print("[bold blue]Checking code coverage...[/bold blue]")
-    run_command(
-        [
-            "uv",
-            "run",
-            "pytest",
-            "--cov=./blueprints",
-            "--cov-report",
-            "term-missing:skip-covered",
-            "--cov-fail-under=100",
-            *ctx.args,
-        ]
-    )
-
-
-@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def coverage_report(ctx: typer.Context) -> None:
+def coverage(
+    ctx: typer.Context,
+    xml: Annotated[
+        bool,
+        typer.Option(
+            "--xml",
+            help="Also generate XML coverage report for CI/CD integration.",
+        ),
+    ] = False,
+    html: Annotated[
+        bool,
+        typer.Option(
+            "--html",
+            help="Also generate interactive HTML coverage report in htmlcov/.",
+        ),
+    ] = False,
+    check: Annotated[
+        bool,
+        typer.Option(
+            "--no-check",
+            help="Generate coverage reports without enforcing 100% coverage requirement.",
+        ),
+    ] = True,
+) -> None:
     """Run tests and generate coverage reports.
 
-    Executes tests and generates XML coverage report for CI/CD integration.
-    Equivalent to: make coverage-report
+    Executes tests with coverage reporting. By default, enforces 100% coverage
+    and displays terminal report. Use --xml and/or --html to generate additional
+    report formats. Use --no-check to generate reports without enforcement.
+    Equivalent to: make check-coverage / make coverage-report / make coverage-html
 
     Parameters
     ----------
     ctx : typer.Context
         Typer context containing additional arguments to pass to pytest.
+    xml : bool
+        If True, also generate XML coverage report for CI/CD integration.
+    html : bool
+        If True, also generate interactive HTML coverage report in htmlcov/.
+    check : bool
+        If False, generate coverage reports without enforcing 100% coverage requirement.
 
     Notes
     -----
     Additional arguments are passed directly to pytest.
     """
-    console.print("[bold blue]Generating coverage report...[/bold blue]")
-    run_command(["uv", "run", "pytest", "--cov=./blueprints", "--cov-report=xml", *ctx.args])
+    console.print("[bold blue]Running tests with coverage...[/bold blue]")
 
+    # Build coverage report formats
+    reports = ["term-missing:skip-covered"]
+    if xml:
+        reports.append("xml")
+    if html:
+        reports.append("html")
 
-@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def coverage_html(ctx: typer.Context) -> None:
-    """Run tests and generate an html coverage report.
+    # Build pytest command
+    cmd = ["uv", "run", "pytest", "--cov=./blueprints"]
 
-    Executes tests and generates interactive HTML coverage report in htmlcov/.
-    Equivalent to: make coverage-html
+    # Add coverage report formats
+    for report_format in reports:
+        cmd.extend(["--cov-report", report_format])
 
-    Parameters
-    ----------
-    ctx : typer.Context
-        Typer context containing additional arguments to pass to pytest.
+    # Add coverage enforcement unless --no-check is specified
+    if check:
+        cmd.append("--cov-fail-under=100")
 
-    Notes
-    -----
-    Additional arguments are passed directly to pytest.
-    """
-    console.print("[bold blue]Generating HTML coverage report...[/bold blue]")
-    run_command(["uv", "run", "pytest", "--cov=./blueprints", "--cov-report", "html", *ctx.args])
-    console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
+    # Add pass-through arguments
+    cmd.extend(ctx.args)
+
+    run_command(cmd)
+
+    # Print completion messages
+    if html:
+        console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
+    if check:
+        console.print("[bold green]Coverage check passed![/bold green]")
 
 
 # Quality Assurance Commands
@@ -477,7 +458,7 @@ def check(ctx: typer.Context) -> None:  # noqa: PLR0915
     # 4. Coverage
     console.print("\n[bold blue]4. Checking code coverage...[/bold blue]")
     result = subprocess.run(
-        args=["uv", "run", "--no-dev", "pytest", "--cov=./blueprints", "--cov-report", "html", *ctx.args],
+        args=["uv", "run", "pytest", "--cov=./blueprints", "--cov-fail-under=100", "--cov-report", "html", *ctx.args],
         capture_output=False,
         text=True,
         check=False,
