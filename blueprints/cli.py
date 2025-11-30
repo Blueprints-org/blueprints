@@ -395,18 +395,12 @@ def coverage(
 # Quality Assurance Commands
 
 
-@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def check(ctx: typer.Context) -> None:  # noqa: PLR0915
+@app.command()
+def check() -> None:  # noqa: PLR0915
     """Run all quality checks before making a PR.
 
     Runs lint, format check, type checking, and coverage validation in sequence.
     This is the recommended command to run before creating a pull request.
-    Equivalent to: make check (if it existed)
-
-    Parameters
-    ----------
-    ctx : typer.Context
-        Typer context containing additional arguments to pass to sub-commands.
 
     Notes
     -----
@@ -416,8 +410,6 @@ def check(ctx: typer.Context) -> None:  # noqa: PLR0915
     3. Type checking with mypy
     4. Coverage validation with pytest
 
-    Additional arguments are passed to pytest (for coverage-html).
-    Examples: -x (stop on first failure), -k pattern (filter tests)
 
     Raises
     ------
@@ -435,7 +427,7 @@ def check(ctx: typer.Context) -> None:  # noqa: PLR0915
     console.print("\n[bold blue]1. Linting with Ruff...[/bold blue]")
     try:
         result = subprocess.run(
-            args=["uv", "run", "ruff", "check", ".", *ctx.args],
+            args=["uv", "run", "ruff", "check", "."],
             capture_output=False,
             text=True,
             check=False,
@@ -453,7 +445,7 @@ def check(ctx: typer.Context) -> None:  # noqa: PLR0915
     # 2. Format check
     console.print("\n[bold blue]2. Checking formatting with Ruff...[/bold blue]")
     result = subprocess.run(
-        args=["uv", "run", "ruff", "format", ".", "--check", *ctx.args],
+        args=["uv", "run", "ruff", "format", ".", "--check"],
         capture_output=False,
         text=True,
         check=False,
@@ -468,7 +460,7 @@ def check(ctx: typer.Context) -> None:  # noqa: PLR0915
     # 3. Type check
     console.print("\n[bold blue]3. Running type checks with mypy...[/bold blue]")
     result = subprocess.run(
-        args=["uv", "run", "mypy", "-p", "blueprints", *ctx.args],
+        args=["uv", "run", "mypy", "-p", "blueprints"],
         capture_output=False,
         text=True,
         check=False,
@@ -482,7 +474,7 @@ def check(ctx: typer.Context) -> None:  # noqa: PLR0915
 
     # 4. Coverage
     console.print("\n[bold blue]4. Checking code coverage...[/bold blue]")
-    exit_code = _run_coverage(ctx.args, xml=False, html=True, check=True)
+    exit_code = _run_coverage(ctx_args=[], xml=False, html=True, check=True)
     if exit_code == 0:
         checks_passed.append("Coverage")
         console.print("[bold green]Coverage: PASSED[/bold green]")
