@@ -279,12 +279,12 @@ def test(
     if light:
         console.print("[bold blue]Running lightweight tests...[/bold blue]")
         run_command(
-            ["uv", "run", "pytest", "tests/", "-m", "not slow", *ctx.args],
+            ["uv", "run", "pytest", "tests/", "-n", "auto", "-m", "not slow", *ctx.args],
         )
     else:
         console.print("[bold blue]Running tests...[/bold blue]")
         run_command(
-            ["uv", "run", "pytest", "tests/", *ctx.args],
+            ["uv", "run", "pytest", "tests/", "-n", "auto",*ctx.args],
         )
 
 
@@ -315,7 +315,7 @@ def _run_coverage(ctx_args: list[str], xml: bool = False, html: bool = False, ch
         reports.append("html")
 
     # Build pytest command
-    cmd = ["uv", "run", "pytest", "--cov=./blueprints"]
+    cmd = ["uv", "run", "pytest", "--cov=./blueprints", "-n", "auto",]
 
     # Add coverage report formats
     for report_format in reports:

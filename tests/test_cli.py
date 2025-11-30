@@ -706,3 +706,157 @@ def test_docs_command_calls_mkdocs() -> None:
         assert "mkdocs" in call_args
         assert "serve" in call_args
         assert "--livereload" in call_args
+
+
+# Tests for Main App Entry Point
+
+
+def test_app_help() -> None:
+    """Test app displays help with --help flag."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode == 0
+    assert "Blueprints" in result.stdout
+    assert "Usage:" in result.stdout
+
+
+def test_app_version() -> None:
+    """Test app displays version with --version flag."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "--version"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode == 0
+    # Version output should contain version number
+    assert any(char.isdigit() for char in result.stdout)
+
+
+def test_app_short_version() -> None:
+    """Test app displays version with -v shorthand."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "-v"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode == 0
+    # Version output should contain version number
+    assert any(char.isdigit() for char in result.stdout)
+
+
+def test_app_invalid_command() -> None:
+    """Test app handles invalid commands gracefully."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "invalid-command"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode != 0
+    # Should show error or usage information
+    assert (
+        "No such command" in result.stdout
+        or "No such command" in result.stderr
+        or "Usage:" in result.stdout
+    )
+
+
+def test_app_all_expected_commands_available() -> None:
+    """Test that all expected commands are available in the app."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode == 0
+    help_text = result.stdout
+
+    # Verify all major commands are listed
+    expected_commands = [
+        "install",
+        "lint",
+        "formatting",
+        "typecheck",
+        "test",
+        "coverage",
+        "check",
+        "docs",
+    ]
+    for command in expected_commands:
+        assert command in help_text
+
+
+def test_app_command_help() -> None:
+    """Test that individual commands show help."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "test", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode == 0
+    assert "Usage:" in result.stdout
+    assert "test" in result.stdout.lower()
+
+
+def test_app_coverage_command_help() -> None:
+    """Test that coverage command shows help with options."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "coverage", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode == 0
+    assert "coverage" in result.stdout.lower()
+    # Should show coverage command options
+    assert "--xml" in result.stdout or "--html" in result.stdout
+
+
+def test_app_check_command_help() -> None:
+    """Test that check command shows help."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli", "check", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    assert result.returncode == 0
+    assert "check" in result.stdout.lower()
+
+
+def test_app_handles_no_arguments() -> None:
+    """Test that app shows help when invoked with no arguments."""
+    result = subprocess.run(
+        args=[sys.executable, "-m", "blueprints.cli"],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
+        env=os.environ.copy(),
+    )
+    # Should show help or banner
+    assert "Blueprints" in result.stdout or "Usage:" in result.stdout
