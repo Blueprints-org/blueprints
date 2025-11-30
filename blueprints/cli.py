@@ -15,9 +15,9 @@ try:
     import typer
     from rich.console import Console
 except ImportError:
-    print("CLI dependencies not installed.")
-    print("Install with: uv sync --group cli")
-    print("Or: pip install blue-prints[cli]")
+    print("CLI dependencies not installed.")  # noqa: T201
+    print("Install with: uv sync --group cli")  # noqa: T201
+    print("Or: pip install blue-prints[cli]")  # noqa: T201
     sys.exit(1)
 
 
@@ -272,16 +272,28 @@ def typecheck(ctx: typer.Context) -> None:
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def test(ctx: typer.Context) -> None:
-    """Run tests with pytest (parallel execution).
+def test(
+        ctx: typer.Context,
+        light: Annotated[
+            bool,
+            typer.Option(
+                help="Run lightweight tests only, excluding slow tests for rapid iteration.",
+            ),
+        ] = False,
+) -> None:
+    """Run tests with pytest.
 
-    Executes all tests in parallel using pytest with xdist plugin.
-    Equivalent to: make test
+    Executes tests in parallel using pytest with xdist plugin. Use --light flag
+    to skip tests marked as slow for faster iteration during development.
+    Equivalent to: make test (or make test-light with --light flag)
 
     Parameters
     ----------
     ctx : typer.Context
         Typer context containing additional arguments to pass to pytest.
+    light : bool
+        If True, exclude tests marked as slow for rapid iteration.
+        Default is False (run all tests).
 
     Notes
     -----
@@ -291,32 +303,16 @@ def test(ctx: typer.Context) -> None:
     - `-x` : Stop on first failure
     - `--pdb` : Drop into debugger on failure
     """
-    console.print("[bold blue]Running tests...[/bold blue]")
-    run_command(
-        ["uv", "run", "--no-dev", "pytest", "tests/", "-n", "auto", *ctx.args],
-    )
-
-
-@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def test_light(ctx: typer.Context) -> None:
-    """Run tests with pytest (lightweight, excludes slow tests).
-
-    Runs fast tests only, skipping tests marked as slow for rapid iteration.
-    Equivalent to: make test-light
-
-    Parameters
-    ----------
-    ctx : typer.Context
-        Typer context containing additional arguments to pass to pytest.
-
-    Notes
-    -----
-    Additional arguments are passed directly to pytest.
-    """
-    console.print("[bold blue]Running lightweight tests...[/bold blue]")
-    run_command(
-        ["uv", "run", "--no-dev", "pytest", "tests/", "-m", "not slow", *ctx.args],
-    )
+    if light:
+        console.print("[bold blue]Running lightweight tests...[/bold blue]")
+        run_command(
+            ["uv", "run", "pytest", "tests/", "-m", "not slow", *ctx.args],
+        )
+    else:
+        console.print("[bold blue]Running tests...[/bold blue]")
+        run_command(
+            ["uv", "run", "pytest", "tests/", *ctx.args],
+        )
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
@@ -336,19 +332,18 @@ def check_coverage(ctx: typer.Context) -> None:
     Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Checking code coverage...[/bold blue]")
-    run_command(
+    import pytest
+
+    exit_code = pytest.main(
         [
-            "uv",
-            "run",
-            "--no-dev",
-            "pytest",
             "--cov=./blueprints",
             "--cov-report",
             "term-missing:skip-covered",
             "--cov-fail-under=100",
             *ctx.args,
-        ],
+        ]
     )
+    sys.exit(exit_code)
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
@@ -368,9 +363,12 @@ def coverage_report(ctx: typer.Context) -> None:
     Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Generating coverage report...[/bold blue]")
-    run_command(
-        ["uv", "run", "--no-dev", "pytest", "--cov=./blueprints", "--cov-report=xml", *ctx.args],
+    import pytest
+
+    exit_code = pytest.main(
+        ["--cov=./blueprints", "--cov-report=xml", *ctx.args]
     )
+    sys.exit(exit_code)
 
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
@@ -390,103 +388,22 @@ def coverage_html(ctx: typer.Context) -> None:
     Additional arguments are passed directly to pytest.
     """
     console.print("[bold blue]Generating HTML coverage report...[/bold blue]")
+    import pytest
 
-    result = subprocess.run(
-        args=["uv", "run", "--no-dev", "pytest", "--cov=./blueprints", "--cov-report", "html", *ctx.args],
-        check=False,
-        text=True,
+    exit_code = pytest.main(
+        ["--cov=./blueprints", "--cov-report", "html", *ctx.args]
     )
 
-    if result.returncode == 0:
+    if exit_code == 0:
         console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
 
-    sys.exit(result.returncode)
-
-
-# Build Commands
-
-
-@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
-def build(ctx: typer.Context) -> None:
-    """Build the project.
-
-    Creates distribution packages (wheel and sdist) using uv build.
-    Equivalent to: make build
-
-    Parameters
-    ----------
-    ctx : typer.Context
-        Typer context containing additional arguments to pass to uv build.
-
-    Notes
-    -----
-    Additional arguments are passed directly to uv build. Common examples:
-    - `--sdist` : Build only source distribution
-    - `--wheel` : Build only wheel
-    - `--out-dir dist` : Specify output directory
-    """
-    console.print("[bold blue]Building project...[/bold blue]")
-
-    result = subprocess.run(
-        args=["uv", "build", *ctx.args],
-        check=False,
-        text=True,
-    )
-
-    if result.returncode == 0:
-        console.print("[bold green]Build complete![/bold green]")
-
-    sys.exit(result.returncode)
-
-
-@app.command()
-def clean() -> None:
-    """Remove venv and all build/test artifacts.
-
-    Removes virtual environment, build artifacts, caches, and coverage data.
-    Windows-compatible implementation using pathlib and shutil.
-    Equivalent to: make clean
-    """
-    console.print("[bold yellow]Cleaning up...[/bold yellow]")
-
-    artifacts = [
-        ".venv",
-        "venv",
-        "htmlcov",
-        ".pytest_cache",
-        ".mypy_cache",
-        ".ruff_cache",
-        ".coverage",
-        "dist",
-        "build",
-    ]
-
-    removed = []
-    for artifact in artifacts:
-        path = Path(artifact)
-        if path.exists():
-            try:
-                if path.is_dir():
-                    shutil.rmtree(path)
-                else:
-                    path.unlink()
-                removed.append(artifact)
-            except OSError as e:
-                console.print(f"[yellow]Warning: Could not remove {artifact}: {e}[/yellow]")
-
-    if removed:
-        console.print(f"[bold green]Removed: {', '.join(removed)}[/bold green]")
-    else:
-        console.print("[bold green]Nothing to clean[/bold green]")
+    sys.exit(exit_code)
 
 
 # Quality Assurance Commands
 
-
-@app.command(
-    context_settings={"allow_extra_args": True, "ignore_unknown_options": True}
-)
-def check(ctx: typer.Context) -> None:
+@app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
+def check(ctx: typer.Context) -> None:  # noqa: PLR0915
     """Run all quality checks before making a PR.
 
     Runs lint, format check, type checking, and coverage validation in sequence.

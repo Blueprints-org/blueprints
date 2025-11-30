@@ -63,14 +63,10 @@ pip install blue-prints[cli]
 **`blueprints test`**
 
 - Run all tests in parallel using pytest with xdist
-- Supports pass-through args: `-k pattern`, `--verbose`, `-x`, `--pdb`
+- Use `--light` flag to skip slow tests for rapid iteration
+- Supports pass-through args: `-k pattern`, `--verbose`, `-x`, `--pdb`, `--light`
 - Example: `blueprints test -k test_cli --verbose`
-
-**`blueprints test-light`**
-
-- Run fast tests only, skipping tests marked as slow
-- Perfect for rapid iteration during development
-- Supports pass-through args
+- Example: `blueprints test --light` (fast tests only)
 
 **`blueprints check-coverage`**
 
@@ -170,7 +166,8 @@ blueprints install --python 3.13        # Use specific Python version
 blueprints test -k test_specific        # Run tests matching pattern
 blueprints test --verbose --pdb         # Verbose output with debugger
 blueprints test -x                      # Stop on first failure
-blueprints test-light -k test_fast      # Fast tests with pattern filter
+blueprints test --light -k test_fast    # Fast tests with pattern filter
+blueprints test --light                 # Skip slow tests for rapid iteration
 ```
 
 ### Lint with Ruff Flags
