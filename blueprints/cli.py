@@ -198,10 +198,7 @@ def lint(ctx: typer.Context) -> None:
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def formatting(ctx: typer.Context) -> None:
-    """Check the formatting with Ruff.
-
-    Checks code formatting compliance using Ruff's formatter.
-    Equivalent to: make format
+    """Enforce formatting compliance using Ruff's formatter.
 
     Parameters
     ----------

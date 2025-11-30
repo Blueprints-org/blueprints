@@ -94,7 +94,7 @@ pip install blue-prints[cli]
 
 **`blueprints docs`**
 
-- Serve documentation locally with live reload (it might take at least five minutes to finish building)
+- Serve documentation locally with live reload (initial build may take 5+ minutes)
 - Opens documentation server at http://localhost:8000
 - Browser automatically refreshes when docs are updated
 - Perfect for working on documentation
