@@ -353,9 +353,7 @@ def coverage(
     ] = False,
     enforce: Annotated[
         bool,
-        typer.Option(
-            help="Enforce 100% coverage requirement (enabled by default, use --no-enforce to disable)."
-        ),
+        typer.Option(help="Enforce 100% coverage requirement (enabled by default, use --no-enforce to disable)."),
     ] = True,
 ) -> None:
     """Run tests and generate coverage reports.
