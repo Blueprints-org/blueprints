@@ -2,6 +2,14 @@
 
 This module provides a cross-platform command-line interface for common
 development tasks when working with the Blueprints package.
+
+Commands include environment setup, linting, formatting, type checking,
+testing, coverage reporting, and documentation serving.
+
+Start by running `blueprints --help` to see available commands and options.
+
+Do you want to check if your changes are ready for a pull request?
+Run `blueprints check` to run all quality checks in sequence.
 """
 
 import shutil
