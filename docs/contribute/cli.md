@@ -20,12 +20,18 @@ Install the CLI with its dependencies:
 uv sync --group cli
 ```
 
-!!! tip "Help"
+??? tip "Help"
 
     Use `blueprints --help` or `bp --help` to see available commands and options.
 
+    ```console
+    blueprints --help              # Show general help
+    blueprints <command> --help    # Show command-specific help
+    ```
+    
+    ```console
     ========================================================================
-                           Blueprints CLI - v0.5.2
+                           Blueprints CLI - vx.y.z
     ========================================================================
                                                                                                                                                                                         
      Usage: blueprints [OPTIONS] COMMAND [ARGS]...                                                                                                                                      
@@ -46,7 +52,9 @@ uv sync --group cli
     │ check        Run all quality checks before making a PR.                                                                                                                          │
     │ docs         Serve documentation locally with live reload.                                                                                                                       │
     ╰──────────────────────────────────────────────────────────────────────╯
-
+    ```
+!!! tip "Alias"
+    
     All commands can be envoked using the `bp` alias as well.
 
 ## Available Commands
@@ -56,8 +64,6 @@ uv sync --group cli
 **`blueprints install`**
 
 - Sync all dependencies (creates venv automatically if needed)
-- Supports pass-through args: `--upgrade`, `--python 3.13`, etc.
-- Example: `blueprints install --upgrade`
 
 ### Quality Assurance
 
@@ -67,52 +73,89 @@ uv sync --group cli
 - Provides detailed summary of which checks passed/failed
 - Exits with code 0 on success, 1 on any failure (CI-friendly)
 - Continues all checks even if one fails (full visibility)
-- Example: `blueprints check`
 
+??? tip "Pre-PR Workflow :rocket:"
+
+    Before submitting a pull request, run:
+
+    ```bash
+    blueprints check
+    ```
+
+    This single command validates all aspects of your changes:
+    
+    1. **Linting** - Code style and quality checks with Ruff
+    2. **Formatting** - Code formatting compliance with Ruff
+    3. **Type Checking** - Static type validation with mypy
+    4. **Coverage** - Code coverage validation and HTML report generation
+    
+    **Success Output:**
+    
+    ```console
+    ============================================================
+    Running comprehensive quality checks...
+    ============================================================
+    
+    1. Linting with Ruff...
+    Lint: PASSED
+    
+    2. Checking formatting with Ruff...
+    Format: PASSED
+    
+    3. Running type checks with mypy...
+    Type Check: PASSED
+    
+    4. Checking code coverage...
+    Coverage: PASSED
+    HTML report generated in htmlcov/
+    
+    ============================================================
+    Quality Check Summary
+    ============================================================
+    Passed (4): Lint, Format, Type Check, Coverage
+    All checks passed! Ready for PR.
+    ```
+    
+    **Failure Output:**
+    
+    If any check fails, the command will show which ones failed and exit with code 1:
+    
+    ```console
+    ============================================================
+    Quality Check Summary
+    ============================================================
+    Passed (3): Lint, Format, Type Check
+    Failed (1): Coverage
+    ```
 
 ### Code Quality
 
 **`blueprints lint`**
-
+    
 - Run Ruff linter for code style and quality checks
-- Supports pass-through args: `--fix`, `--select E501`, `--show-fixes`
-- Example: `blueprints lint --fix`
 
 **`blueprints formatting`**
-
+    
 - Check code formatting compliance with Ruff
-- Supports pass-through args: `--line-length 100`
-
+    
 **`blueprints typecheck`**
 
 - Run mypy static type checker on blueprints package
-- Supports pass-through args: `--strict`, `--ignore-missing-imports`, `--show-error-codes`
-- Example: `blueprints typecheck --strict`
 
 ### Testing
 
 **`blueprints test`**
-
+    
 - Run all tests in parallel using pytest with xdist
 - Use `--light` flag to skip slow tests for rapid iteration
-- Supports pass-through args: `-k pattern`, `--verbose`, `-x`, `--pdb`, `--light`
-- Example: `blueprints test -k test_cli --verbose`
-- Example: `blueprints test --light` (fast tests only)
-
+    
 **`blueprints coverage`**
-
+    
 - Run tests with coverage reporting and enforce 100% coverage by default
 - Generate terminal report with missing coverage details
 - Use `--xml` to also generate XML coverage report for CI/CD integration
 - Use `--html` to also generate interactive HTML coverage report in `htmlcov/`
 - Use `--no-check` to generate reports without enforcing 100% coverage
-- Supports pass-through args
-- Examples:
-  - `blueprints coverage` - Terminal report with 100% enforcement
-  - `blueprints coverage --xml` - Terminal + XML reports with enforcement
-  - `blueprints coverage --html` - Terminal + HTML reports with enforcement
-  - `blueprints coverage --xml --html` - All three formats with enforcement
-  - `blueprints coverage --no-check` - Reports without 100% enforcement
 
 ### Documentation
 
@@ -123,61 +166,7 @@ uv sync --group cli
 - Browser automatically refreshes when docs are updated
 - Perfect for working on documentation
 - Press Ctrl+C to stop the server
-- Example: `blueprints docs`
 
-## Pre-PR Workflow
-
-Before submitting a pull request, run:
-
-```bash
-blueprints check
-```
-
-This single command validates all aspects of your changes:
-
-1. **Linting** - Code style and quality checks with Ruff
-2. **Formatting** - Code formatting compliance with Ruff
-3. **Type Checking** - Static type validation with mypy
-4. **Coverage** - Code coverage validation and HTML report generation
-
-### Success Output
-
-```
-============================================================
-Running comprehensive quality checks...
-============================================================
-
-1. Linting with Ruff...
-Lint: PASSED
-
-2. Checking formatting with Ruff...
-Format: PASSED
-
-3. Running type checks with mypy...
-Type Check: PASSED
-
-4. Checking code coverage...
-Coverage: PASSED
-HTML report generated in htmlcov/
-
-============================================================
-Quality Check Summary
-============================================================
-Passed (4): Lint, Format, Type Check, Coverage
-All checks passed! Ready for PR.
-```
-
-### Failure Output
-
-If any check fails, the command will show which ones failed and exit with code 1:
-
-```
-============================================================
-Quality Check Summary
-============================================================
-Passed (3): Lint, Format, Type Check
-Failed (1): Coverage
-```
 
 ## Pass-Through Arguments
 
@@ -243,38 +232,30 @@ blueprints --version
 blueprints -v
 ```
 
-## Help
-
-For more information:
-
-```bash
-blueprints --help              # Show general help
-blueprints <command> --help    # Show command-specific help
-```
 
 ## Troubleshooting
 
-### "Error: 'uv' not found"
+=== "Error: 'uv' not found"
 
-Install `uv`:
-```bash
-pip install uv
-```
+    Install `uv`:
+    ```bash
+    pip install uv
+    ```
 
-### CLI dependencies not found
+=== "CLI dependencies not found"
 
-Install with CLI group:
-```bash
-# With pip
-pip install blue-prints[cli]
+    Install with CLI group:
+    ```bash
+    # With pip
+    pip install blue-prints[cli]
+    
+    # With uv
+    uv sync --group cli
+    ```
 
-# With uv
-uv sync --group cli
-```
+=== "Tests fail with 'No module named pytest'"
 
-### Tests fail with "No module named pytest"
-
-The `test` group is not installed. Reinstall:
-```bash
-uv sync --group test
-```
+    The `test` group is not installed. Reinstall:
+    ```bash
+    uv sync --group test
+    ```
