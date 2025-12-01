@@ -39,6 +39,10 @@ repository = "https://github.com/Blueprints-org/blueprints"
 issues = "https://github.com/Blueprints-org/blueprints/issues"
 changelog = "https://github.com/Blueprints-org/blueprints/releases"
 
+[project.scripts]
+blueprints = "blueprints.cli:app"
+bp = "blueprints.cli:app"
+
 [dependency-groups]
 dev = [
     "mypy==1.18.2",
@@ -65,7 +69,15 @@ test = [
     "pytest-describe==3.0.0",
     "pytest-pspec==0.0.4",
     "pytest-raises==0.11",
+    "pytest-sugar>=1.1.1",
     "pytest-xdist==3.8.0",
+    "typer>=0.9.0",
+    "rich>=13.7.0",
+]
+cli = [
+    {include-group = "dev"},
+    {include-group = "test"},
+    {include-group = "docs"},
 ]
 
 [tool.uv]
