@@ -17,13 +17,37 @@ pip install uv
 Install the CLI with its dependencies:
 
 ```bash
-# Using uv
 uv sync --group cli
-
-# Or using pip with extras
-pip install blue-prints[cli]
-
 ```
+
+!!! tip "Help"
+
+    Use `blueprints --help` or `bp --help` to see available commands and options.
+
+    ========================================================================
+                           Blueprints CLI - v0.5.2
+    ========================================================================
+                                                                                                                                                                                        
+     Usage: blueprints [OPTIONS] COMMAND [ARGS]...                                                                                                                                      
+                                                                                                                                                                                        
+     Blueprints - Development automation CLI                                                                                                                                            
+                                                                                                                                                                                        
+    ╭─ Options ────────────────────────────────────────────────────────────╮
+    │ --version  -v        Show the CLI version.                                                                                                                                       │
+    │ --help               Show this message and exit.                                                                                                                                 │
+    ╰──────────────────────────────────────────────────────────────────────╯
+    ╭─ Commands ───────────────────────────────────────────────────────────╮
+    │ install      Sync all dependencies and create venv if needed.                                                                                                                    │
+    │ lint         Lint with Ruff.                                                                                                                                                     │
+    │ formatting   Enforce formatting compliance using Ruff's formatter.                                                                                                               │
+    │ typecheck    Run static type checks with mypy.                                                                                                                                   │
+    │ test         Run tests with pytest.                                                                                                                                              │
+    │ coverage     Run tests and generate coverage reports.                                                                                                                            │
+    │ check        Run all quality checks before making a PR.                                                                                                                          │
+    │ docs         Serve documentation locally with live reload.                                                                                                                       │
+    ╰──────────────────────────────────────────────────────────────────────╯
+
+    All commands can be envoked using the `bp` alias as well.
 
 ## Available Commands
 

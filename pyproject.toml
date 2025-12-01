@@ -41,6 +41,7 @@ changelog = "https://github.com/Blueprints-org/blueprints/releases"
 
 [project.scripts]
 blueprints = "blueprints.cli:app"
+bp = "blueprints.cli:app"
 
 [dependency-groups]
 dev = [
