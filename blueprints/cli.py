@@ -203,7 +203,7 @@ def lint(ctx: typer.Context) -> None:
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def formatting(ctx: typer.Context) -> None:
-    """Enforce formatting compliance using Ruff's formatter.
+    """Format code using Ruff's formatter.
 
     Parameters
     ----------
@@ -216,7 +216,7 @@ def formatting(ctx: typer.Context) -> None:
     - Add `--check` to only check formatting without making changes; omit it to format files
     - `--line-length 100` : Use specific line length
     """
-    console.print("[bold blue]Checking formatting with Ruff...[/bold blue]")
+    console.print("[bold blue]Formatting code with Ruff...[/bold blue]")
     run_command(["uv", "run", "ruff", "format", ".", *ctx.args])
 
 
@@ -407,7 +407,6 @@ def check() -> None:  # noqa: PLR0915
     2. Format check with Ruff
     3. Type checking with mypy
     4. Coverage validation with pytest
-
 
     Raises
     ------

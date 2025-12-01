@@ -219,7 +219,7 @@ blueprints coverage                     # Terminal report with 100% enforcement
 blueprints coverage --xml               # Also generate XML report
 blueprints coverage --html              # Also generate HTML report
 blueprints coverage --xml --html        # Generate all three formats
-blueprints coverage --no-enforce          # Skip 100% coverage enforcement
+blueprints coverage --no-enforce        # Skip 100% coverage enforcement
 blueprints coverage -k test_pattern     # Filter tests by pattern
 ```
 
