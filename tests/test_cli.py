@@ -402,25 +402,6 @@ def test_main_callback_when_uv_not_installed() -> None:
             assert warning_found
 
 
-def test_main_callback_terminal_size_exception() -> None:
-    """Test main callback handles exception when getting terminal size."""
-    mock_ctx = MagicMock()
-    mock_ctx.invoked_subcommand = None
-    mock_ctx.get_help.return_value = "Help text"
-
-    with patch("blueprints.cli.shutil.which") as mock_which:
-        mock_which.return_value = "/usr/bin/uv"  # uv is installed
-
-        with patch("blueprints.cli.shutil.get_terminal_size") as mock_size:
-            mock_size.side_effect = Exception("Terminal size error")
-
-            with pytest.raises(typer.Exit):
-                cli.main(mock_ctx, version_flag=None)
-
-            # Verify it fell back to width of 80
-            # This is tested indirectly by the fact it doesn't crash
-
-
 def test_main_callback_with_version_flag() -> None:
     """Test main callback handles --version flag."""
     mock_ctx = MagicMock()

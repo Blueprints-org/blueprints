@@ -88,7 +88,7 @@ def main(
         )
 
     # Show banner (terminal-width-aware)
-    terminal_width = shutil.get_terminal_size(fallback=(80,24)).columns
+    terminal_width = shutil.get_terminal_size(fallback=(80, 24)).columns
 
     # Ensure minimum width
     terminal_width = max(terminal_width, 40)
