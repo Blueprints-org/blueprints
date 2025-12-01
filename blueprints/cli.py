@@ -1,7 +1,7 @@
 """Blueprints CLI - Development and build automation commands.
 
 This module provides a cross-platform command-line interface for common
-development tasks, replacing the Makefile for better Windows compatibility.
+development tasks when working with the Blueprints package.
 """
 
 import shutil
