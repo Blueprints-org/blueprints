@@ -52,7 +52,7 @@ pip install git+https://github.com/Blueprints-org/blueprints.git
 
 ## Developer CLI
 
-Blueprints includes a command-line interface for development automation, trying to simplify developing and contributing to the project.
+Blueprints includes a command-line interface for development automation, designed to simplify developing and contributing to the project.
 Maybe you want to check locally if your code passes all quality checks before making a PR? Or serve the documentation locally with live reload?
 We got you covered!
 

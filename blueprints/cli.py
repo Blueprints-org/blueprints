@@ -290,7 +290,7 @@ def test(
         )
 
 
-def _run_coverage(ctx_args: list[str], xml: bool = False, html: bool = False, check: bool = True) -> int:
+def _run_coverage(ctx_args: list[str], xml: bool = False, html: bool = False, enforce: bool = True) -> int:
     """Helper function to run coverage tests and return exit code.
 
     Parameters
@@ -301,7 +301,7 @@ def _run_coverage(ctx_args: list[str], xml: bool = False, html: bool = False, ch
         If True, also generate XML coverage report for CI/CD integration.
     html : bool
         If True, also generate interactive HTML coverage report in htmlcov/.
-    check : bool
+    enforce : bool
         If True, enforce 100% coverage requirement.
 
     Returns
@@ -324,7 +324,7 @@ def _run_coverage(ctx_args: list[str], xml: bool = False, html: bool = False, ch
         cmd.extend(["--cov-report", report_format])
 
     # Add coverage enforcement if requested
-    if check:
+    if enforce:
         cmd.append("--cov-fail-under=100")
 
     # Add pass-through arguments
@@ -351,10 +351,9 @@ def coverage(
             help="Also generate interactive HTML coverage report in htmlcov/.",
         ),
     ] = False,
-    check: Annotated[
+    enforce: Annotated[
         bool,
         typer.Option(
-            "--no-check",
             help="Generate coverage reports without enforcing 100% coverage requirement.",
         ),
     ] = True,
@@ -363,8 +362,7 @@ def coverage(
 
     Executes tests with coverage reporting. By default, enforces 100% coverage
     and displays terminal report. Use --xml and/or --html to generate additional
-    report formats. Use --no-check to generate reports without enforcement.
-    Equivalent to: make check-coverage / make coverage-report / make coverage-html
+    report formats. Use --no-enforce to generate reports without 100% coverage enforcement.
 
     Parameters
     ----------
@@ -374,7 +372,7 @@ def coverage(
         If True, also generate XML coverage report for CI/CD integration.
     html : bool
         If True, also generate interactive HTML coverage report in htmlcov/.
-    check : bool
+    enforce : bool
         If False, generate coverage reports without enforcing 100% coverage requirement.
 
     Notes
@@ -383,12 +381,12 @@ def coverage(
     """
     console.print("[bold blue]Running tests with coverage...[/bold blue]")
 
-    exit_code = _run_coverage(ctx.args, xml=xml, html=html, check=check)
+    exit_code = _run_coverage(ctx.args, xml=xml, html=html, enforce=enforce)
 
     # Print completion messages
     if html:
         console.print("[bold green]HTML report generated in htmlcov/[/bold green]")
-    if check and exit_code == 0:
+    if enforce and exit_code == 0:
         console.print("[bold green]Coverage check passed![/bold green]")
 
     sys.exit(exit_code)
@@ -457,7 +455,7 @@ def check() -> None:  # noqa: PLR0915
         console.print("[bold green]Format: PASSED[/bold green]")
     else:
         checks_failed.append("Format")
-        console.print("[bold red]Format: FAILED (Use `blueprints formatting` to fix this)[/bold red]")
+        console.print("[bold red]Format: FAILED (Use `blueprints formatting` to auto-format files)[/bold red]")
 
     # 3. Type check
     console.print("\n[bold blue]3. Running type checks with mypy...[/bold blue]")
@@ -476,7 +474,7 @@ def check() -> None:  # noqa: PLR0915
 
     # 4. Coverage
     console.print("\n[bold blue]4. Checking code coverage...[/bold blue]")
-    exit_code = _run_coverage(ctx_args=[], xml=False, html=True, check=True)
+    exit_code = _run_coverage(ctx_args=[], xml=False, html=True, enforce=True)
     if exit_code == 0:
         checks_passed.append("Coverage")
         console.print("[bold green]Coverage: PASSED[/bold green]")

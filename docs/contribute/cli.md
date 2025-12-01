@@ -136,7 +136,8 @@ uv sync --group cli
 
 **`blueprints formatting`**
     
-- Check code formatting compliance with Ruff
+- Format code in place using Ruff (modifies files by default)
+- To only check formatting compliance without making changes, add `--check`: `blueprints formatting --check`
     
 **`blueprints typecheck`**
 
@@ -155,7 +156,7 @@ uv sync --group cli
 - Generate terminal report with missing coverage details
 - Use `--xml` to also generate XML coverage report for CI/CD integration
 - Use `--html` to also generate interactive HTML coverage report in `htmlcov/`
-- Use `--no-check` to generate reports without enforcing 100% coverage
+- Use `--no-enforce` to generate reports without enforcing 100% coverage
 
 ### Documentation
 
@@ -218,7 +219,7 @@ blueprints coverage                     # Terminal report with 100% enforcement
 blueprints coverage --xml               # Also generate XML report
 blueprints coverage --html              # Also generate HTML report
 blueprints coverage --xml --html        # Generate all three formats
-blueprints coverage --no-check          # Skip 100% coverage enforcement
+blueprints coverage --no-enforce          # Skip 100% coverage enforcement
 blueprints coverage -k test_pattern     # Filter tests by pattern
 ```
 

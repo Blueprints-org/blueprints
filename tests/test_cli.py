@@ -305,7 +305,7 @@ def test_coverage_command_with_no_check() -> None:
         mock_run.return_value = MagicMock(returncode=0)
 
         with pytest.raises(SystemExit) as exc_info:
-            cli.coverage(mock_ctx, check=False)
+            cli.coverage(mock_ctx, enforce=False)
 
         mock_run.assert_called_once()
         # Verify it does NOT include enforcement flag
