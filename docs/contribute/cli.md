@@ -73,7 +73,7 @@ pip install blue-prints[cli]
 - Use `--light` flag to skip slow tests for rapid iteration
 - Supports pass-through args: `-k pattern`, `--verbose`, `-x`, `--pdb`, `--light`
 - Example: `blueprints test -k test_cli --verbose`
-- Example: `blueprints test --light` (fast tests only)
+- Example: `blueprints test --light` (skips slow tests)
 
 **`blueprints coverage`**
 
