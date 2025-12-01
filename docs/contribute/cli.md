@@ -55,7 +55,7 @@ uv sync --group cli
     ```
 !!! tip "Alias"
     
-    All commands can be envoked using the `bp` alias as well.
+    All commands can be invoked using the `bp` alias as well.
 
 ## Available Commands
 

@@ -296,8 +296,8 @@ def test_coverage_command_with_html() -> None:
         assert exc_info.value.code == 0
 
 
-def test_coverage_command_with_no_check() -> None:
-    """Test coverage command with --no-check flag."""
+def test_coverage_command_with_no_enforcement() -> None:
+    """Test coverage command with --no-enforce flag."""
     mock_ctx = MagicMock()
     mock_ctx.args = []
 
