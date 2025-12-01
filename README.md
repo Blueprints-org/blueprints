@@ -53,6 +53,8 @@ pip install git+https://github.com/Blueprints-org/blueprints.git
 ## Developer CLI
 
 Blueprints includes a command-line interface for development automation, trying to simplify developing and contributing to the project.
+Maybe you want to check locally if your code passes all quality checks before making a PR? Or serve the documentation locally with live reload?
+We got you covered!
 
 ### Quick Start
 
@@ -60,8 +62,6 @@ Install with CLI dependencies:
 
 ```bash
 uv sync --group cli
-# or with pip
-pip install blue-prints[cli]
 ```
 
 Pre-PR validation (recommended):
@@ -71,6 +71,7 @@ blueprints check
 ```
 
 This runs all quality checks: lint, format, typecheck, and coverage.
+In one single command! Simple as that. All checks passed? then you are good to go with your PR.
 
 ### Documentation
 
