@@ -59,7 +59,7 @@ docs = [
     "mkdocs-git-revision-date-localized-plugin ~= 1.4.7",
     "mkdocstrings[python] ~= 0.29.1",
     "mkdocs-gen-files ~= 0.5.0",
-    "mkdocs-awesome-nav ~= 3.1.2",
+    "mkdocs-awesome-nav>=3.1.2,<3.3.0",
     "natsort ~= 8.4.0",
     "mkdocs-jupyter ~= 0.25.1",
 ]
