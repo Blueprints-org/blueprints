@@ -12,7 +12,7 @@ Total of 108 formulas present.
 |:---------------|:------------------:|:--------|:----------------------------------------------------------------------------------|
 | 2.1            |        :x:         |         |                                                                                   |
 | 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance                                            |
-| 5.1            |        :x:         |         |                                                                                   |
+| 5.1            | :heavy_check_mark: |         | From5Dot1CriteriumDisregardSecondOrderEffects                                     |
 | 5.2            |        :x:         |         |                                                                                   |
 | 5.3            |        :x:         |         |                                                                                   |
 | 5.4            |        :x:         |         |                                                                                   |
