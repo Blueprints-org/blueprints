@@ -49,19 +49,27 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
         return f_cr / f_ed
 
     @staticmethod
+    def _limit(analysis_type: Literal["elastic", "plastic"]) -> float:
+        """Returns the limit value for the comparison based on the analysis type."""
+        analysis_type_map = {
+            "elastic": 10,
+            "plastic": 15,
+        }
+
+        limit = analysis_type_map.get(analysis_type.lower())
+
+        if limit is None:
+            raise ValueError(f"Invalid analysis type: {analysis_type}. Must be 'elastic' or 'plastic'.")
+        return limit
+
+    @staticmethod
     def _evaluate_rhs(analysis_type: Literal["elastic", "plastic"], *_args, **_kwargs) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
-        match analysis_type.lower():
-            case "elastic":
-                return 10
-            case "plastic":
-                return 15
-            case _:
-                raise ValueError(f"Invalid analysis type: {analysis_type}. Must be 'elastic' or 'plastic'.")
+        return From5Dot1CriteriumDisregardSecondOrderEffects._limit(analysis_type=analysis_type)
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.1."""
-        limit = 10 if self.analysis_type.lower() == "elastic" else 15
+        limit = self._limit(analysis_type=self.analysis_type)
         _equation: str = r"\alpha_{cr} = \frac{F_{cr}}{F_{Ed}} \ge limit"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
