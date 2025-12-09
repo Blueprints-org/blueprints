@@ -59,7 +59,7 @@ class RightAngledTriangularCrossSection(CrossSection):
         return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """
         Shapely Polygon representing the right-angled triangular cross-section.
 

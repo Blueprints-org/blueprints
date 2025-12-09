@@ -103,7 +103,7 @@ class LNPProfile(CrossSection):
         )
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """Return the polygon of the LNP profile section."""
         return (
             # Start from top left corner and go clockwise

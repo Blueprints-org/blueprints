@@ -60,7 +60,7 @@ class CircularCrossSection(CrossSection):
         return self.diameter / 2.0
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """
         Shapely Polygon representing the circular cross-section.
 

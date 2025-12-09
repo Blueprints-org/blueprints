@@ -65,3 +65,11 @@ class TestRectangularCrossSection:
         """Test that the RectangularCrossSection dataclass is immutable."""
         with pytest.raises(AttributeError):
             rectangular_cross_section.name = "New Name"  # type: ignore[misc]
+
+    def test_transform(self, rectangular_cross_section: RectangularCrossSection) -> None:
+        """Test the transform method of the RectangularCrossSection class."""
+        transformed_section = rectangular_cross_section.transform(horizontal_offset=10.0, vertical_offset=20.0, rotation=90.0)
+        assert isinstance(transformed_section, RectangularCrossSection)
+        assert pytest.approx(transformed_section.centroid.x, rel=1e-6) == rectangular_cross_section.centroid.x + 10.0
+        assert pytest.approx(transformed_section.centroid.y, rel=1e-6) == rectangular_cross_section.centroid.y + 20.0
+        assert pytest.approx(transformed_section.cross_section_height, rel=1e-6) == rectangular_cross_section.cross_section_width

@@ -55,7 +55,7 @@ class RectangularCrossSection(CrossSection):
         return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """
         Shapely Polygon representing the rectangular cross-section. Defines the coordinates of the rectangle based on width, height, x,
         and y. Counter-clockwise order.

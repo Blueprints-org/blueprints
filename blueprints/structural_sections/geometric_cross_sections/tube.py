@@ -93,7 +93,7 @@ class TubeCrossSection(CrossSection):
         return self.outer_radius - self.inner_radius
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """
         Shapely Polygon representing the circular tube cross-section.
 

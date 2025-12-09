@@ -76,3 +76,12 @@ class TestISteelProfile:
         """Test that the IProfile dataclass is immutable."""
         with pytest.raises(AttributeError):
             h_profile.name = "New Name"  # type: ignore[misc]
+
+    def test_transform(self, h_profile: IProfile) -> None:
+        """Test the transform method of the I profile."""
+        transformed_profile = h_profile.transform(horizontal_offset=1000, vertical_offset=500, rotation=90)
+        assert transformed_profile is not None
+        assert isinstance(transformed_profile, IProfile)
+        assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == h_profile.centroid.x + 1000
+        assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == h_profile.centroid.y + 500
+        assert pytest.approx(transformed_profile.cross_section_height, rel=1e-6) == h_profile.cross_section_width

@@ -51,7 +51,7 @@ class StripProfile(CrossSection):
     """The plotter function to visualize the cross-section."""
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """Return the polygon of the strip profile cross-section."""
         return (
             # Start at top-left corner and go clockwise
