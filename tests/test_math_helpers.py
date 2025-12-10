@@ -1,8 +1,9 @@
 """Testing math helpers for Blueprints."""
 
+import numpy as np
 import pytest
 
-from blueprints.math_helpers import cot, csc, sec
+from blueprints.math_helpers import angle_to_slope, cot, csc, sec, slope_to_angle
 from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
 
 
@@ -52,3 +53,21 @@ class TestCsc:
         """Test invalid values."""
         with pytest.raises((LessOrEqualToZeroError, GreaterThan90Error)):
             csc(x)
+
+
+class TestSlopeToAngle:
+    """Validation for slope to angle conversion."""
+
+    @pytest.mark.parametrize(("slope", "expected_result"), [(0, 0), (100, 45), (np.inf, 90), (-np.inf, -90)])
+    def test_evaluation(self, slope: float, expected_result: float) -> None:
+        """Tests the evaluation of the result."""
+        assert slope_to_angle(slope) == pytest.approx(expected_result, rel=1e-4)
+
+
+class TestAngleToSlope:
+    """Validation for angle to slope conversion."""
+
+    @pytest.mark.parametrize(("angle", "expected_result"), [(0, 0), (45, 100), (90, np.inf), (-90, -np.inf)])
+    def test_evaluation(self, angle: float, expected_result: float) -> None:
+        """Tests the evaluation of the result."""
+        assert angle_to_slope(angle) == pytest.approx(expected_result, rel=1e-4)

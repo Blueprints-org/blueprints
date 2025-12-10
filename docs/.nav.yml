@@ -55,6 +55,7 @@ nav:
   - roadmap/index.md
 - Contribute:
   - contribute/index.md
+  - contribute/cli.md
   - Contributors: https://github.com/Blueprints-org/blueprints/graphs/contributors
   - Code of Conduct: https://github.com/Blueprints-org/blueprints/blob/main/.github/CODE_OF_CONDUCT.md
 - API reference
