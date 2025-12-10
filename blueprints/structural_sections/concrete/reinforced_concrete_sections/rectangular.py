@@ -12,7 +12,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.base i
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.rectangular import RectangularCrossSectionPlotter
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.geometric_cross_sections import RectangularCrossSection
+from blueprints.structural_sections.geometric_cross_sections import RectangularProfile
 from blueprints.type_alias import DIMENSIONLESS, MM, RATIO
 
 
@@ -43,7 +43,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
     ) -> None:
         """Initialize the rectangular reinforced concrete section."""
         super().__init__(
-            cross_section=RectangularCrossSection(
+            profile=RectangularProfile(
                 name="Rectangular Reinforced Concrete Section",
                 width=width,
                 height=height,
@@ -105,7 +105,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             Newly created stirrup configuration inside the cross-section.
         """
         # get the corners of the cross-section
-        min_x, min_y, max_x, max_y = self.cross_section.polygon.bounds
+        min_x, min_y, max_x, max_y = self.profile.polygon.bounds
 
         # create the corners of the stirrup configuration based on the covers present
         left_bottom_corner = Point(min_x + self.covers.left + (diameter / 2), min_y + self.covers.lower + (diameter / 2))
@@ -179,7 +179,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             Newly created stirrup configuration inside the cross-section.
         """
         # get the corners of the cross-section
-        _, min_y, _, max_y = self.cross_section.polygon.bounds
+        _, min_y, _, max_y = self.profile.polygon.bounds
 
         # create the corners of the stirrup configuration based on the covers present
         left_bottom_corner = Point(-width / 2, min_y + self.covers.lower + (diameter / 2))
@@ -230,7 +230,7 @@ class RectangularReinforcedCrossSection(ReinforcedCrossSection):
             Reference line for the given edge of the cross-section.
         """
         # get cross-section corners
-        min_x, min_y, max_x, max_y = self.cross_section.polygon.bounds
+        min_x, min_y, max_x, max_y = self.profile.polygon.bounds
 
         # check if a custom cover is provided
         upper_cover = cover if cover is not None else self.covers.upper

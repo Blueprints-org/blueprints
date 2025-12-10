@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._profile import Profile
 from blueprints.type_alias import KG_M
 from blueprints.unit_conversion import MM2_TO_M2
 
@@ -13,18 +13,18 @@ from blueprints.unit_conversion import MM2_TO_M2
 @dataclass(frozen=True, kw_only=True)
 class SteelCrossSection:
     """
-    Representation of a steel cross-section for any given cross-section or profile.
+    Representation of a steel cross-section for any given profile and material.
 
     Parameters
     ----------
-    cross_section : CrossSection
-        The cross-section. This can be a predefined profile or a generic cross-section.
+    profile : Profile
+        The profile. This can be a predefined profile or a generic profile.
     material : SteelMaterial
         The material type of the steel.
     """
 
-    cross_section: CrossSection
-    """The cross-section. This can be a predefined profile or a generic cross-section."""
+    profile: Profile
+    """The profile. This can be a predefined profile or a generic profile."""
     material: SteelMaterial
     """The material type of the steel."""
 
@@ -38,4 +38,4 @@ class SteelCrossSection:
         KG_M
             The weight per meter of the steel cross-section.
         """
-        return self.material.density * (self.cross_section.area * MM2_TO_M2)
+        return self.material.density * (self.profile.area * MM2_TO_M2)

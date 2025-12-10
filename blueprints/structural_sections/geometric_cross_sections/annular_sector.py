@@ -1,4 +1,4 @@
-"""Annular sector cross-section shape."""
+"""Annular sector profile shape."""
 
 import math
 from dataclasses import dataclass
@@ -8,21 +8,21 @@ from sectionproperties.pre import Geometry
 from shapely.affinity import rotate
 from shapely.geometry import Point, Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._profile import Profile
 from blueprints.type_alias import DEG, MM
 
 
 @dataclass(frozen=True)
-class AnnularSectorCrossSection(CrossSection):
+class AnnularSectorProfile(Profile):
     """
-    Class to represent an annular sector cross-section using shapely for geometric calculations.
+    Class to represent an annular sector profile using shapely for geometric calculations.
 
     Parameters
     ----------
     inner_radius : MM
         The radius of the inner circle of the annular sector [mm].
     thickness : MM
-        The thickness of the annular sector cross-section [mm].
+        The thickness of the annular sector profile [mm].
     start_angle : DEG
         The start angle of the annular sector in degrees (top = 0 degrees, clockwise is positive).
     end_angle : DEG
@@ -32,7 +32,7 @@ class AnnularSectorCrossSection(CrossSection):
     y : MM
         The y-coordinate of the annular sector's radius center.
     name : str
-        The name of the rectangular cross-section, default is "Annular Sector".
+        The name of the annular profile, default is "Annular Sector".
     """
 
     inner_radius: MM
@@ -58,14 +58,14 @@ class AnnularSectorCrossSection(CrossSection):
                 f"The total angle made between start and end angle must be less than 360 degrees, but got "
                 f"{self.end_angle - self.start_angle} degrees (end {self.end_angle} - start {self.start_angle})\n\n"
                 f"In case you want to create a full circle (donut shape), "
-                "use a tube cross section instead (TubeCrossSection)."
+                "use a tube profile instead (TubeProfile)."
             )
 
     @property
     def mesh_creator(self) -> partial:
-        """Mesh settings for the the geometrical calculations of the annular cross-section."""
+        """Mesh settings for the the geometrical calculations of the annular profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
-        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # a maximum of 0.1% deviation of the calculated profile properties compared to
         # the analytical solution for various annular sector geometries.
         mesh_length = max(self.thickness / 5, 1.0)
         return partial(Geometry.create_mesh, mesh_sizes=mesh_length)
@@ -81,9 +81,9 @@ class AnnularSectorCrossSection(CrossSection):
         return self.radius_centerline + self.thickness / 2.0
 
     @property
-    def cross_section_height(self) -> MM:
+    def profile_height(self) -> MM:
         """
-        Calculate the height of the annular sector cross-section [mm].
+        Calculate the height of the annular sector profile [mm].
 
         Returns
         -------
@@ -95,9 +95,9 @@ class AnnularSectorCrossSection(CrossSection):
         return max_y - min_y
 
     @property
-    def cross_section_width(self) -> MM:
+    def profile_width(self) -> MM:
         """
-        Calculate the width of the annular sector cross-section [mm].
+        Calculate the width of the annular sector profile [mm].
 
         Returns
         -------
@@ -111,7 +111,7 @@ class AnnularSectorCrossSection(CrossSection):
     @property
     def _polygon(self) -> Polygon:
         """
-        Shapely Polygon representing the annular sector cross-section.
+        Shapely Polygon representing the annular sector profile.
 
         Returns
         -------

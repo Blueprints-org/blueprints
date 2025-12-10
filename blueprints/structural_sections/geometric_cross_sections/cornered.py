@@ -7,15 +7,15 @@ import numpy as np
 from sectionproperties.pre import Geometry
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._profile import Profile
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 
 @dataclass(frozen=True)
-class CircularCorneredCrossSection(CrossSection):
+class CircularCorneredProfile(Profile):
     """
-    Class to represent a square cross-section with a quarter circle cutout for geometric calculations, named as a circular cornered section.
+    Class to represent a square profile with a quarter circle cutout for geometric calculations, named as a circular cornered profile.
 
         .---- outer arc
         ∨
@@ -46,7 +46,7 @@ class CircularCorneredCrossSection(CrossSection):
     y : MM
         y-coordinate of the center of the inner_radius (default 0)
     name : str
-        Name of the cross-section (default "Corner")
+        Name of the profile (default "Corner")
     """
 
     thickness_vertical: MM
@@ -76,26 +76,26 @@ class CircularCorneredCrossSection(CrossSection):
 
     @property
     def mesh_creator(self) -> partial:
-        """Mesh settings for the the geometrical calculations of the corner cross-section."""
+        """Mesh settings for the the geometrical calculations of the corner profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
-        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # a maximum of 0.1% deviation of the calculated profile properties compared to
         # the analytical solution for various cornered geometries.
         mesh_length = max(min(self.thickness_vertical, self.thickness_horizontal) / 2, 2.0)
         return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
 
     @property
     def width_rectangle(self) -> MM:
-        """Width of the rectangle part of the corner cross-section [mm]."""
+        """Width of the rectangle part of the corner profile [mm]."""
         return self.thickness_horizontal + self.inner_radius
 
     @property
     def height_rectangle(self) -> MM:
-        """Height of the rectangle part of the corner cross-section [mm]."""
+        """Height of the rectangle part of the corner profile [mm]."""
         return self.thickness_vertical + self.inner_radius
 
     @property
     def _polygon(self) -> Polygon:
-        """Shapely Polygon representing the corner cross-section."""
+        """Shapely Polygon representing the corner profile."""
         lr = (self.x + self.width_rectangle, self.y)
         ul = (self.x, self.y + self.height_rectangle)
 

@@ -2,30 +2,30 @@
 
 import pytest
 
-from blueprints.structural_sections.geometric_cross_sections.cornered import CircularCorneredCrossSection
+from blueprints.structural_sections.geometric_cross_sections.cornered import CircularCorneredProfile
 from blueprints.validations import NegativeValueError
 
 
 class TestCircularCorneredCrossSection:
     """Tests for the CircularCorneredCrossSection class."""
 
-    def test_polygon(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+    def test_polygon(self, qcs_cross_section: CircularCorneredProfile) -> None:
         """Test the polygon property."""
         polygon = qcs_cross_section.polygon
         assert polygon.is_valid
         assert len(polygon.exterior.coords) > 0
 
-    def test_section(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+    def test_section(self, qcs_cross_section: CircularCorneredProfile) -> None:
         """Test the section object."""
         section = qcs_cross_section._section()  # noqa: SLF001
         assert section is not None
 
-    def test_geometry(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+    def test_geometry(self, qcs_cross_section: CircularCorneredProfile) -> None:
         """Test the geometry property."""
         geometry = qcs_cross_section._geometry()  # noqa: SLF001
         assert geometry is not None
 
-    def test_mesh_settings(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+    def test_mesh_settings(self, qcs_cross_section: CircularCorneredProfile) -> None:
         """Test the mesh_settings property."""
         mesh_settings = qcs_cross_section.mesh_settings
         assert isinstance(mesh_settings, dict)
@@ -43,7 +43,7 @@ class TestCircularCorneredCrossSection:
     def test_raise_error_when_negative_values_are_given(self, kwargs: dict) -> None:
         """Test NegativeValueError is raised for negative values."""
         with pytest.raises(NegativeValueError):
-            CircularCorneredCrossSection(**kwargs)
+            CircularCorneredProfile(**kwargs)
 
     def test_invalid_outer_radius_greater_than_inner_plus_thickness(self) -> None:
         """Test initialization with an outer radius greater than inner radius plus thickness."""
@@ -51,7 +51,7 @@ class TestCircularCorneredCrossSection:
             ValueError,
             match="Outer radius 20 must be smaller than or equal to inner radius 5 plus the thickness 10",
         ):
-            CircularCorneredCrossSection(
+            CircularCorneredProfile(
                 thickness_vertical=10,
                 thickness_horizontal=10,
                 inner_radius=5,
@@ -61,7 +61,7 @@ class TestCircularCorneredCrossSection:
     @pytest.mark.parametrize("corner_direction", [0, 1, 2, 3])
     def test_valid_corner_direction(self, corner_direction: int) -> None:
         """Test initialization with an invalid corner direction."""
-        cross_section = CircularCorneredCrossSection(
+        cross_section = CircularCorneredProfile(
             thickness_vertical=10,
             thickness_horizontal=10,
             inner_radius=5,
@@ -73,7 +73,7 @@ class TestCircularCorneredCrossSection:
     def test_invalid_corner_direction(self) -> None:
         """Test initialization with an invalid corner direction."""
         with pytest.raises(ValueError, match="corner_direction must be one of 0, 1, 2, or 3, got 4"):
-            CircularCorneredCrossSection(
+            CircularCorneredProfile(
                 thickness_vertical=10,
                 thickness_horizontal=10,
                 inner_radius=5,
@@ -81,20 +81,20 @@ class TestCircularCorneredCrossSection:
                 corner_direction=4,
             )
 
-    def test_no_plotter_defined(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+    def test_no_plotter_defined(self, qcs_cross_section: CircularCorneredProfile) -> None:
         """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
         with pytest.raises(AttributeError, match=r"No plotter is defined."):
             _ = qcs_cross_section.plotter
 
-    def test_immutability(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+    def test_immutability(self, qcs_cross_section: CircularCorneredProfile) -> None:
         """Test that the CircularCorneredCrossSection dataclass is immutable."""
         with pytest.raises(AttributeError):
             qcs_cross_section.name = "New Name"  # type: ignore[misc]
 
-    def test_transform(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+    def test_transform(self, qcs_cross_section: CircularCorneredProfile) -> None:
         """Test the transform method of the CircularCorneredCrossSection class."""
         transformed_section = qcs_cross_section.transform(horizontal_offset=15.0, vertical_offset=25.0, rotation=90.0)
-        assert isinstance(transformed_section, CircularCorneredCrossSection)
+        assert isinstance(transformed_section, CircularCorneredProfile)
         assert pytest.approx(transformed_section.centroid.x, rel=1e-6) == qcs_cross_section.centroid.x + 15.0
         assert pytest.approx(transformed_section.centroid.y, rel=1e-6) == qcs_cross_section.centroid.y + 25.0
-        assert pytest.approx(transformed_section.cross_section_height, rel=1e-6) == qcs_cross_section.cross_section_width
+        assert pytest.approx(transformed_section.profile_height, rel=1e-6) == qcs_cross_section.profile_width

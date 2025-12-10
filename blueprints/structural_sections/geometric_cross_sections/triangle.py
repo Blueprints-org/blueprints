@@ -1,4 +1,4 @@
-"""Triangular cross-section shape."""
+"""Triangular profile shape."""
 
 from dataclasses import dataclass
 from functools import partial
@@ -7,21 +7,21 @@ import numpy as np
 from sectionproperties.pre import Geometry
 from shapely import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._profile import Profile
 from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
-class RightAngledTriangularCrossSection(CrossSection):
+class RightAngledTriangularProfile(Profile):
     """
-    Class to represent a right-angled triangular with a right angle at the bottom left corner cross-section for geometric calculations.
+    Class to represent a right-angled triangular with a right angle at the bottom left corner profile for geometric calculations.
 
     Parameters
     ----------
     base : MM
-        The base length of the triangular cross-section.
+        The base length of the triangular profile.
     height : MM
-        The height of the triangular cross-section.
+        The height of the triangular profile.
     x : MM
         The x-coordinate of the 90-degree angle. Default is 0.
     y : MM
@@ -31,7 +31,7 @@ class RightAngledTriangularCrossSection(CrossSection):
     mirrored_vertically : bool
         Whether the triangle is mirrored vertically. Default is False.
     name : str
-        The name of the rectangular cross-section, default is "Triangle".
+        The name of the rectangular profile, default is "Triangle".
     """
 
     base: MM
@@ -51,9 +51,9 @@ class RightAngledTriangularCrossSection(CrossSection):
 
     @property
     def mesh_creator(self) -> partial:
-        """Mesh settings for the the geometrical calculations of the triangular cross-section."""
+        """Mesh settings for the the geometrical calculations of the triangular profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
-        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # a maximum of 0.1% deviation of the calculated profile properties compared to
         # the analytical solution for various triangular geometries.
         mesh_length = max(min(self.base, self.height) / 20, 2.0)
         return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
@@ -61,7 +61,7 @@ class RightAngledTriangularCrossSection(CrossSection):
     @property
     def _polygon(self) -> Polygon:
         """
-        Shapely Polygon representing the right-angled triangular cross-section.
+        Shapely Polygon representing the right-angled triangular profile.
 
         Returns
         -------

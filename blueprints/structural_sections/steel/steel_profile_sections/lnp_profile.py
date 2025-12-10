@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Self
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
+from blueprints.structural_sections._profile import Profile
 from blueprints.structural_sections.steel.steel_profile_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True, kw_only=True)
-class LNPProfile(CrossSection):
+class LNPProfile(Profile):
     """Representation of an LNP section.
 
     Web is the vertical part and base is the horizontal part of the LNP-profile.
@@ -45,8 +45,8 @@ class LNPProfile(CrossSection):
         The radius of the toe in the base.
     name : str
         The name of the profile. Default is "LNP-Profile". If corrosion is applied, the name will include the corrosion value.
-    plotter : Callable[[CrossSection], plt.Figure]
-        The plotter function to visualize the cross-section (default: `plot_shapes`).
+    plotter : Callable[[Profile], plt.Figure]
+        The plotter function to visualize the profile (default: `plot_shapes`).
     """
 
     total_width: MM
@@ -67,8 +67,8 @@ class LNPProfile(CrossSection):
     """ The radius of the toe in the base [mm]. """
     name: str = "LNP-Profile"
     """ The name of the profile. """
-    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
-    """ The plotter function to visualize the cross-section. """
+    plotter: Callable[[Profile], plt.Figure] = plot_shapes
+    """ The plotter function to visualize the profile. """
     web_toe_straight_part: MM = field(init=False)
     """ The straight part of the web before the toe radius [mm]. """
     base_toe_straight_part: MM = field(init=False)

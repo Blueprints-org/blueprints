@@ -4,64 +4,64 @@ import pytest
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.structural_sections.geometric_cross_sections import (
-    AnnularSectorCrossSection,
-    CircularCorneredCrossSection,
-    CircularCrossSection,
-    HexagonalCrossSection,
-    RectangularCrossSection,
-    RightAngledTriangularCrossSection,
-    TubeCrossSection,
+    AnnularSectorProfile,
+    CircularCorneredProfile,
+    CircularProfile,
+    HexagonalProfile,
+    RectangularProfile,
+    RightAngledTriangularProfile,
+    TubeProfile,
 )
 
 
 @pytest.fixture
-def rectangular_cross_section() -> RectangularCrossSection:
+def rectangular_cross_section() -> RectangularProfile:
     """Return a RectangularCrossSection instance."""
-    return RectangularCrossSection(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
+    return RectangularProfile(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
 def rectangular_cross_section_section_properties() -> SectionProperties:
     """Return a RectangularCrossSection instance."""
-    rect = RectangularCrossSection(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
+    rect = RectangularProfile(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
     # Calculate properties
     return rect.section_properties(geometric=True, plastic=True, warping=True)
 
 
 @pytest.fixture
-def circular_cross_section() -> CircularCrossSection:
+def circular_cross_section() -> CircularProfile:
     """Return a CircularCrossSection instance."""
-    return CircularCrossSection(name="Circle", diameter=200.0, x=100.0, y=250.0)
+    return CircularProfile(name="Circle", diameter=200.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def tube_cross_section() -> TubeCrossSection:
+def tube_cross_section() -> TubeProfile:
     """Return a TubeCrossSection instance."""
-    return TubeCrossSection(name="Tube", outer_diameter=100.0, inner_diameter=50.0, x=100.0, y=250.0)
+    return TubeProfile(name="Tube", outer_diameter=100.0, inner_diameter=50.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def triangular_cross_section() -> RightAngledTriangularCrossSection:
+def triangular_cross_section() -> RightAngledTriangularProfile:
     """Return a RightAngledTriangularCrossSection instance."""
-    return RightAngledTriangularCrossSection(name="Triangle", base=100.0, height=200.0, x=100.0, y=250.0)
+    return RightAngledTriangularProfile(name="Triangle", base=100.0, height=200.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def qcs_cross_section() -> CircularCorneredCrossSection:
+def qcs_cross_section() -> CircularCorneredProfile:
     """Return a CircularCorneredCrossSection instance."""
-    return CircularCorneredCrossSection(inner_radius=50.0, outer_radius=0, x=100.0, y=250.0, thickness_vertical=0.0, thickness_horizontal=0.0)
+    return CircularCorneredProfile(inner_radius=50.0, outer_radius=0, x=100.0, y=250.0, thickness_vertical=0.0, thickness_horizontal=0.0)
 
 
 @pytest.fixture
-def hexagonal_cross_section() -> HexagonalCrossSection:
+def hexagonal_cross_section() -> HexagonalProfile:
     """Return a HexagonalCrossSection instance."""
-    return HexagonalCrossSection(name="Hexagon", side_length=50.0, x=100.0, y=250.0)
+    return HexagonalProfile(name="Hexagon", side_length=50.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def annular_sector_cross_section() -> AnnularSectorCrossSection:
+def annular_sector_cross_section() -> AnnularSectorProfile:
     """Return an AnnularSectorCrossSection instance."""
-    return AnnularSectorCrossSection(
+    return AnnularSectorProfile(
         inner_radius=90.0,
         thickness=20.0,
         start_angle=0.0,
@@ -73,9 +73,9 @@ def annular_sector_cross_section() -> AnnularSectorCrossSection:
 
 
 @pytest.fixture
-def annular_sector_cross_section_359_degrees() -> AnnularSectorCrossSection:
+def annular_sector_cross_section_359_degrees() -> AnnularSectorProfile:
     """Return an AnnularSectorCrossSection instance."""
-    return AnnularSectorCrossSection(
+    return AnnularSectorProfile(
         inner_radius=90.0,
         thickness=20.0,
         start_angle=90.0,

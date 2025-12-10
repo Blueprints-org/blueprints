@@ -12,6 +12,6 @@ from blueprints.structural_sections.steel.steel_profile_sections.i_profile impor
 def steel_cross_section() -> SteelCrossSection:
     """Fixture to set up a SteelCrossSection for testing."""
     return SteelCrossSection(
-        cross_section=IProfile.from_standard_profile(IPE.IPE100),
+        profile=IProfile.from_standard_profile(IPE.IPE100),
         material=SteelMaterial(steel_class=SteelStrengthClass.S275),
     )

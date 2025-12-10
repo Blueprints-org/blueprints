@@ -1,4 +1,4 @@
-"""Rectangular cross-section shape."""
+"""Rectangular profile shape."""
 
 from dataclasses import dataclass
 from functools import partial
@@ -7,27 +7,27 @@ import numpy as np
 from sectionproperties.pre import Geometry
 from shapely import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._profile import Profile
 from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True)
-class RectangularCrossSection(CrossSection):
+class RectangularProfile(Profile):
     """
-    Class to represent a rectangular cross-section for geometric calculations.
+    Class to represent a rectangular profile for geometric calculations.
 
     Parameters
     ----------
     width : MM
-        The width of the rectangular cross-section.
+        The width of the rectangular profile.
     height : MM
-        The height of the rectangular cross-section.
+        The height of the rectangular profile.
     x : MM
         The x-coordinate of the centroid of the rectangle. Default is 0.
     y : MM
         The y-coordinate of the centroid of the rectangle. Default is 0.
     name : str
-        The name of the rectangular cross-section, default is "Rectangle".
+        The name of the rectangular profile, default is "Rectangle".
     mesh_size : MM | None
         The maximum mesh size for the geometry. Default is 2.5 mm.
     """
@@ -47,9 +47,9 @@ class RectangularCrossSection(CrossSection):
 
     @property
     def mesh_creator(self) -> partial:
-        """Mesh settings for the the geometrical calculations of the rectangular cross-section."""
+        """Mesh settings for the the geometrical calculations of the rectangular profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
-        # a maximum of 0.1% deviation of the calculated cross-section properties compared to
+        # a maximum of 0.1% deviation of the calculated profile properties compared to
         # the analytical solution for various rectangular geometries.
         mesh_length = max(min(self.width, self.height) / 20, 2.0)
         return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
@@ -57,7 +57,7 @@ class RectangularCrossSection(CrossSection):
     @property
     def _polygon(self) -> Polygon:
         """
-        Shapely Polygon representing the rectangular cross-section. Defines the coordinates of the rectangle based on width, height, x,
+        Shapely Polygon representing the rectangular profile. Defines the coordinates of the rectangle based on width, height, x,
         and y. Counter-clockwise order.
 
         Returns

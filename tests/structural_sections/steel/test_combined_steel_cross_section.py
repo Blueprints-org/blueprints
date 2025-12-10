@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.geometric_cross_sections import RectangularCrossSection
+from blueprints.structural_sections.geometric_cross_sections import RectangularProfile
 from blueprints.structural_sections.steel.combined_steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
@@ -19,7 +19,7 @@ def _steel_section(
 ) -> SteelCrossSection:
     """Helper factory that creates a SteelCrossSection with predictable geometry."""
     return SteelCrossSection(
-        cross_section=RectangularCrossSection(
+        profile=RectangularProfile(
             width=width,
             height=height,
             x=0.0,
@@ -79,9 +79,9 @@ class TestCombinedSteelCrossSection:
         assert combined.steel_cross_sections == (cross_section_1,)
         added_section = updated.steel_cross_sections[-1]
         assert added_section is cross_section_2
-        assert added_section.cross_section.horizontal_offset == x_offset
-        assert added_section.cross_section.vertical_offset == y_offset
-        assert added_section.cross_section.rotation == rotation_angle
+        assert added_section.profile.horizontal_offset == x_offset
+        assert added_section.profile.vertical_offset == y_offset
+        assert added_section.profile.rotation == rotation_angle
 
     def test_add_steel_cross_section_chains_sections(self) -> None:
         """Test that multiple sections can be added sequentially with preserved order."""

@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Self
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
+from blueprints.structural_sections._profile import Profile
 from blueprints.structural_sections.steel.steel_profile_sections.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True, kw_only=True)
-class StripProfile(CrossSection):
+class StripProfile(Profile):
     """Representation of a Strip profile.
 
     This class is used to create a custom strip profile or to create a strip profile from a standard profile.
@@ -37,8 +37,8 @@ class StripProfile(CrossSection):
         The height (thickness) of the strip profile [mm].
     name : str
         The name of the profile. Default is "Strip Profile".
-    plotter : Callable[[CrossSection], plt.Figure]
-        The plotter function to visualize the cross-section (default: `plot_shapes`).
+    plotter : Callable[[Profile], plt.Figure]
+        The plotter function to visualize the profile (default: `plot_shapes`).
     """
 
     width: MM
@@ -47,12 +47,12 @@ class StripProfile(CrossSection):
     """The height (thickness) of the strip profile [mm]."""
     name: str = "Strip Profile"
     """The name of the profile."""
-    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
-    """The plotter function to visualize the cross-section."""
+    plotter: Callable[[Profile], plt.Figure] = plot_shapes
+    """The plotter function to visualize the profile."""
 
     @property
     def _polygon(self) -> Polygon:
-        """Return the polygon of the strip profile cross-section."""
+        """Return the polygon of the strip profile."""
         return (
             # Start at top-left corner and go clockwise
             PolygonBuilder((0, 0))
