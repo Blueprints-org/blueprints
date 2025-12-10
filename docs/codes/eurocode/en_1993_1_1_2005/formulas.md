@@ -8,7 +8,7 @@ and any pertinent remarks. The 'Object Name' column references the corresponding
 
 The column with header 'NL' for example indicates whether a country specific implementation of the formula is 
 implemented. Naming convention for country specific formulas is 'Form{formula_number}{CountryCode}'. E.g. for 
-`From5Dot1CriteriumDisregardSecondOrderEffects` the version specific to the Netherlands would be named
+`Form5Dot1CriteriumDisregardSecondOrderEffects` the version specific to the Netherlands would be named
 `Form5Dot1NLCriteriumDisregardSecondOrderEffects`.
 
 Total of 108 formulas present.
@@ -17,7 +17,7 @@ Total of 108 formulas present.
 |:---------------|:------------------:|:--------|:----------------------------------------------------------------------------------|:------------------:|
 | 2.1            |        :x:         |         |                                                                                   |        :x:         |
 | 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance                                            |        :x:         |
-| 5.1            | :heavy_check_mark: |         | From5Dot1CriteriumDisregardSecondOrderEffects                                     | :heavy_check_mark: |
+| 5.1            | :heavy_check_mark: |         | Form5Dot1CriteriumDisregardSecondOrderEffects                                     | :heavy_check_mark: |
 | 5.2            |        :x:         |         |                                                                                   |        :x:         |
 | 5.3            |        :x:         |         |                                                                                   |        :x:         |
 | 5.4            |        :x:         |         |                                                                                   |        :x:         |

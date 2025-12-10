@@ -2,12 +2,12 @@
 
 from typing import Literal
 
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import From5Dot1CriteriumDisregardSecondOrderEffects
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import Form5Dot1CriteriumDisregardSecondOrderEffects
 from blueprints.codes.eurocode.national_annex.nl.nen_en_1993_1_1_2006 import NEN_EN_1993_1_1_2006_A1_2014_NB_2016
 from blueprints.type_alias import N
 
 
-class From5Dot1NLCriteriumDisregardSecondOrderEffects(From5Dot1CriteriumDisregardSecondOrderEffects):
+class Form5Dot1NLCriteriumDisregardSecondOrderEffects(Form5Dot1CriteriumDisregardSecondOrderEffects):
     r"""Class representing formula 5.1 to check whether second order effects of a structure can be disregarded
     or not.
 
@@ -35,6 +35,8 @@ class From5Dot1NLCriteriumDisregardSecondOrderEffects(From5Dot1CriteriumDisregar
             [$F_{cr}$] Elastic critical buckling load for global instability mode based on initial elastic stiffness.
         f_ed: N
             [$F_{Ed}$] Design loading on the structure.
+        analysis_type: Literal["elastic", "plastic"]
+            Type of analysis being performed (elastic or plastic).
         """
         super().__init__(f_cr, f_ed, analysis_type)
 
@@ -55,4 +57,4 @@ class From5Dot1NLCriteriumDisregardSecondOrderEffects(From5Dot1CriteriumDisregar
     @staticmethod
     def _evaluate_rhs(analysis_type: Literal["elastic", "plastic"], *_args, **_kwargs) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
-        return From5Dot1NLCriteriumDisregardSecondOrderEffects._limit(analysis_type=analysis_type)
+        return Form5Dot1NLCriteriumDisregardSecondOrderEffects._limit(analysis_type=analysis_type)

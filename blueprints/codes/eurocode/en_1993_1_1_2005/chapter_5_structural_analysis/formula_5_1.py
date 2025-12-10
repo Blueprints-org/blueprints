@@ -11,7 +11,7 @@ from blueprints.type_alias import N
 from blueprints.validations import raise_if_mismatch_sign
 
 
-class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
+class Form5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
     r"""Class representing formula 5.1 to check whether second order effects of a structure can be disregarded
     or not.
     """
@@ -65,7 +65,7 @@ class From5Dot1CriteriumDisregardSecondOrderEffects(ComparisonFormula):
     @staticmethod
     def _evaluate_rhs(analysis_type: Literal["elastic", "plastic"], *_args, **_kwargs) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
-        return From5Dot1CriteriumDisregardSecondOrderEffects._limit(analysis_type=analysis_type)
+        return Form5Dot1CriteriumDisregardSecondOrderEffects._limit(analysis_type=analysis_type)
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.1."""

@@ -4,11 +4,11 @@ from typing import ClassVar, Literal
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import From5Dot1CriteriumDisregardSecondOrderEffects
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import Form5Dot1CriteriumDisregardSecondOrderEffects
 from blueprints.validations import MismatchSignError
 
 
-class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
+class TestForm5Dot1CriteriumDisregardSecondOrderEffects:
     """Validation for formula 5.1 from EN 1993-1-1:2005."""
 
     testdata: ClassVar[list[tuple[float, float, str, bool, float]]] = [
@@ -16,12 +16,13 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
         (1000000, 110000, "elastic", False, 1.10),
         (1000000, 50000, "plastic", True, 0.75),
         (1000000, 100000, "plastic", False, 1.50),
+        (-1000000, -100000, "plastic", False, 1.50),
     ]
 
     @pytest.mark.parametrize("f_cr,f_ed,analysis_type,exp_result,exp_uc", testdata)  # noqa: PT006
     def test_evaluation(self, f_cr: float, f_ed: float, analysis_type: Literal["elastic", "plastic"], exp_result: bool, exp_uc: float) -> None:
         """Test the evaluation of the result."""
-        form = From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
+        form = Form5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
         assert form == exp_result
         assert form.unity_check == pytest.approx(exp_uc)
 
@@ -35,7 +36,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     def test_error_mismatch_sign(self, f_cr: float, f_ed: float, analysis_type: Literal["elastic", "plastic"]) -> None:
         """Test if correct error is raised when provide arguments with different signs."""
         with pytest.raises(MismatchSignError):
-            From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
+            Form5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 
     @pytest.mark.parametrize(
         ("f_cr", "f_ed", "analysis_type"),
@@ -46,7 +47,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
     def test_type_error_analysis_type(self, f_cr: float, f_ed: float, analysis_type: Literal["elastic", "plastic"]) -> None:
         """Test if correct error is raised when provide wrong type."""
         with pytest.raises(ValueError):
-            From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
+            Form5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -63,7 +64,7 @@ class TestFrom5Dot1CriteriumDisregardSecondOrderEffects:
         analysis_type = "elastic"
 
         # Create test object
-        latex = From5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type).latex()
+        latex = Form5Dot1CriteriumDisregardSecondOrderEffects(f_cr=f_cr, f_ed=f_ed, analysis_type=analysis_type).latex()
 
         actual = {"complete": latex.complete, "short": latex.short}
 
