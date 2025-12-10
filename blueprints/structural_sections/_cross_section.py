@@ -52,7 +52,13 @@ class CrossSection(ABC):
     @property
     @abstractmethod
     def _polygon(self) -> Polygon:
-        """Shapely Polygon representing the cross-section."""
+        """Shapely Polygon representing the cross-section not including offsets and rotation.
+
+        Important
+        ---------
+            This polygon does NOT include the offsets and rotation. Use the `polygon` property to get the correct polygon with
+            applied offsets and rotation.
+        """
 
     @property
     def polygon(self) -> Polygon:
