@@ -64,6 +64,7 @@ nav:
           - CUR 228: guides/concepts/codes/cur/cur_228/formulas.md
     - Contribute:
       - guides/contribute/index.md
+      - guides/contribute/cli.md
       - Contributors: https://github.com/Blueprints-org/blueprints/graphs/contributors
       - Code of Conduct: https://github.com/Blueprints-org/blueprints/blob/main/.github/CODE_OF_CONDUCT.md
 - API reference

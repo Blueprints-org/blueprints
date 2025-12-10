@@ -1,8 +1,10 @@
 name: Code Coverage
 
 on:
+  pull_request:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   tests:
@@ -11,10 +13,10 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -22,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version-file: "pyproject.toml"
+          python-version: 3.13
 
       - name: Install packages
         run: make ci-install
