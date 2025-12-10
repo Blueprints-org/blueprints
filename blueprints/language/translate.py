@@ -5,13 +5,16 @@ import csv
 import logging
 import os
 import re
+from typing import List, Optional
 
 try:
     from googletrans import Translator
 except ImportError:  # pragma: no cover
-    raise ImportError("\n\nThe translate features require the translate module of blueprints. Install it through:\n"
-                      "- pip install blueprints[translate]\n"
-                      "- uv add blueprints[translate]\n")   # pragma: no cover
+    raise ImportError(
+        "\n\nThe translate features require the translate module of blueprints. Install it through:\n"
+        "- pip install blueprints[translate]\n"
+        "- uv add blueprints[translate]\n"
+    )  # pragma: no cover
 
 
 class TranslateLatex:
@@ -22,11 +25,11 @@ class TranslateLatex:
     """
 
     def __init__(
-            self,
-            latex: str,
-            dest_language: str,
-            service_urls: list[str] | None = None,
-            custom_csv_path: str | None = None,
+        self,
+        latex: str,
+        dest_language: str,
+        service_urls: list[str] | None = None,
+        custom_csv_path: str | None = None,
     ) -> None:
         r"""
         Initialize the Translate class with text and destination language.
@@ -64,29 +67,30 @@ class TranslateLatex:
         Returns a dict mapping source text to translated text.
         If a translation is "-", the source text is used instead.
         """
-        translation_dict = {}
+        translation_dict: dict[str, str] = {}
         if os.path.isfile(self.csv_path):
             with open(self.csv_path, encoding="utf-8", newline="") as csvfile:
                 reader = csv.reader(csvfile)
                 header = next(reader, None)
 
-                # Find the column index for the destination language
-                try:
-                    dest_col_index = header.index(dest_language)
-                except ValueError:
-                    logging.warning(f"Language '{dest_language}' not found in CSV header: {header}")
-                    return translation_dict
+                if header:
+                    # Find the column index for the destination language
+                    try:
+                        dest_col_index = header.index(dest_language)
+                    except ValueError:
+                        logging.warning(f"Language '{dest_language}' not found in CSV header: {header}")
+                        return translation_dict
 
-                # Load translations from the appropriate column
-                for row in reader:
-                    if len(row) > dest_col_index:
-                        source_text = row[0]
-                        translation = row[dest_col_index]
-                        # If translation is "-", use the source text
-                        if translation == "-":
-                            translation_dict[source_text] = source_text
-                        else:
-                            translation_dict[source_text] = translation
+                    # Load translations from the appropriate column
+                    for row in reader:
+                        if len(row) > dest_col_index:
+                            source_text = row[0]
+                            translation = row[dest_col_index]
+                            # If translation is "-", use the source text
+                            if translation == "-":
+                                translation_dict[source_text] = source_text
+                            else:
+                                translation_dict[source_text] = translation
         return translation_dict
 
     def _wildcard_match(self, text: str) -> str | None:
@@ -112,8 +116,8 @@ class TranslateLatex:
                     return result
         return None
 
-    def _translate_bulk(self, texts: list) -> list[str]:
-        r"""f
+    def _translate_bulk(self, texts: list) -> list[str | None]:
+        r"""F
         Translate a list of strings to the destination language.
         First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
 
@@ -128,9 +132,9 @@ class TranslateLatex:
             The list of translated strings.
         """
         # Try to use CSV dictionary for all, fallback to Google Translate for missing
-        results = []
-        missing = []
-        missing_indices = []
+        results: List[Optional[str]] = []
+        missing: List[str] = []
+        missing_indices: List[int] = []
 
         for i, t in enumerate(texts):
             if hasattr(self, "translation_dict") and t in self.translation_dict:

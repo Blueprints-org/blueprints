@@ -1,4 +1,5 @@
 """Tests for language translations."""
+
 import os
 
 from blueprints.language.translate import TranslateLatex
