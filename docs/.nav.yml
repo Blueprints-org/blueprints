@@ -49,9 +49,6 @@ nav:
     - NEN-EN 1992-1-1:2020 (Concrete):
       - Formulas: codes/eurocode/nen_en_1992_1_1_2020/formulas.md
       - Tables: codes/eurocode/nen_en_1992_1_1_2020/tables.md
-    - NEN-EN 1993-1-1:2006 (Steel):
-      - Formulas: codes/eurocode/nen_en_1993_1_1_2006/formulas.md
-      - Tables: codes/eurocode/nen_en_1993_1_1_2006/tables.md
   - CUR Standards:
     - codes/cur/index.md
     - CUR 228:

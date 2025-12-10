@@ -37,10 +37,6 @@ The Eurocodes are a set of 10 European Standards (EN) that provide common struct
 - **[EN 1993-5:2007](en_1993_5_2007/formulas.md)** - Piling design  
   Specific rules for the design of steel piles and pile foundations.
 
-- **[NEN-EN 1993-1-1:2006](nen_en_1993_1_1_2006/formulas.md)** - General rules and rules for buildings  
-  Dutch implementation with national choices for the application of EN 1993-1-1.
-
-
 ### Timber Design (EN 1995)
 
 **EN 1995: Design of timber structures**
