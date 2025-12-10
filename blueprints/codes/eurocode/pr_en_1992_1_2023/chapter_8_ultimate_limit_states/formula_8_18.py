@@ -5,6 +5,7 @@ from blueprints.codes.eurocode.pr_en_1992_1_2023 import pr_EN_1992_1_1_2023
 from blueprints.type_alias import MPA, N, MM
 from blueprints.validations import raise_if_negative
 from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import latex_replace_symbols
 
 
 class Form8Dot18AverageShearStress(Formula):
@@ -45,12 +46,21 @@ class Form8Dot18AverageShearStress(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.18."""
+        _equation: str = r"\frac{V_{Ed}}{b_w \cdot z}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            replacements={r"V_{Ed}": f"{self.v_ed:.{n}f}",
+                          r"b_w": f"{self.b_w:.{n}f}",
+                          r"z": f"{self.z:.{n}f}"},
+            unique_symbol_check=False
+        )
         return LatexFormula(
             return_symbol=r"\tau_{Ed}",
             result=f"{self:.{n}f}",
-            equation=r"\frac{V_{Ed}}{b_w \cdot z}",
-            numeric_equation=rf"\frac{{{self.v_ed}}}{{{self.b_w} \cdot {self.z}}}",
-            comparison_operator_label="="
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            comparison_operator_label="=",
+            unit="MPa"
         )
 
 
