@@ -113,6 +113,8 @@ markdown_extensions:
         - docs
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.tabbed:
+      alternate_style: true
 
 extra:
   social:
