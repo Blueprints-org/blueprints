@@ -26,19 +26,16 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "googletrans>=4.0.2",
     "matplotlib>=3.10.7",
     "numpy>=1.25.2",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
 ]
 
-[project.urls]
-homepage = "https://blueprints.readthedocs.io"
-documentation = "https://blueprints.readthedocs.io"
-repository = "https://github.com/Blueprints-org/blueprints"
-issues = "https://github.com/Blueprints-org/blueprints/issues"
-changelog = "https://github.com/Blueprints-org/blueprints/releases"
+[project.optional-dependencies]
+translate = [
+    "googletrans>=4.0.2"
+]
 
 [dependency-groups]
 dev = [
@@ -67,7 +64,15 @@ test = [
     "pytest-pspec==0.0.4",
     "pytest-raises==0.11",
     "pytest-xdist==3.8.0",
+    "googletrans>=4.0.2" # optional-dependency: translate
 ]
+
+[project.urls]
+homepage = "https://blueprints.readthedocs.io"
+documentation = "https://blueprints.readthedocs.io"
+repository = "https://github.com/Blueprints-org/blueprints"
+issues = "https://github.com/Blueprints-org/blueprints/issues"
+changelog = "https://github.com/Blueprints-org/blueprints/releases"
 
 [tool.uv]
 default-groups = ["dev", "test"]

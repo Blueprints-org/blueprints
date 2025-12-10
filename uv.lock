@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -113,11 +113,15 @@ name = "blue-prints"
 version = "0.5.2"
 source = { editable = "." }
 dependencies = [
-    { name = "googletrans" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "sectionproperties" },
     { name = "shapely" },
+]
+
+[package.optional-dependencies]
+translate = [
+    { name = "googletrans" },
 ]
 
 [package.dev-dependencies]
@@ -141,6 +145,7 @@ docs = [
     { name = "pygments" },
 ]
 test = [
+    { name = "googletrans" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-describe" },
@@ -151,12 +156,13 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "googletrans", specifier = ">=4.0.2" },
+    { name = "googletrans", marker = "extra == 'translate'", specifier = ">=4.0.2" },
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "numpy", specifier = ">=1.25.2" },
     { name = "sectionproperties", specifier = ">=3.8.0" },
     { name = "shapely", specifier = ">=2.0.1" },
 ]
+provides-extras = ["translate"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -179,6 +185,7 @@ docs = [
     { name = "pygments", specifier = "~=2.19.1" },
 ]
 test = [
+    { name = "googletrans", specifier = ">=4.0.2" },
     { name = "pytest", specifier = "==8.4.2" },
     { name = "pytest-cov", specifier = "==7.0.0" },
     { name = "pytest-describe", specifier = "==3.0.0" },

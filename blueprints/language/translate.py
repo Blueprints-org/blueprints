@@ -6,7 +6,12 @@ import logging
 import os
 import re
 
-from googletrans import Translator
+try:
+    from googletrans import Translator
+except ImportError:  # pragma: no cover
+    raise ImportError("\n\nThe translate features require the translate module of blueprints. Install it through:\n"
+                      "- pip install blueprints[translate]\n"
+                      "- uv add blueprints[translate]\n")   # pragma: no cover
 
 
 class TranslateLatex:
