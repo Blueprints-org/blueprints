@@ -5,7 +5,6 @@ import csv
 import logging
 import os
 import re
-from typing import List, Optional
 
 try:
     from googletrans import Translator
@@ -132,9 +131,9 @@ class TranslateLatex:
             The list of translated strings.
         """
         # Try to use CSV dictionary for all, fallback to Google Translate for missing
-        results: List[Optional[str]] = []
-        missing: List[str] = []
-        missing_indices: List[int] = []
+        results: list[str | None] = []
+        missing: list[str] = []
+        missing_indices: list[int] = []
 
         for i, t in enumerate(texts):
             if hasattr(self, "translation_dict") and t in self.translation_dict:
