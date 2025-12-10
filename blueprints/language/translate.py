@@ -44,6 +44,7 @@ class TranslateLatex:
         self.translation_dict = self._load_translation_dict(
             dest_language.replace("-", "_")
         )  # Normalize for CSV filename and Google: use underscores, not hyphens
+        self.translation_failed = False
         self.translated = self._translate_latex()
 
     def _load_translation_dict(self, dest_language: str) -> dict:
@@ -137,8 +138,9 @@ class TranslateLatex:
                     else:
                         # If an event loop is running, run the coroutine until complete
                         translations = loop.run_until_complete(translations)  # pragma: no cover, requires async context
-                translated_texts = [tr.text for tr in translations]
+                translated_texts = [tr.text for tr in translations]  # pragma: no cover, could fail if google is offline
             except Exception:
+                self.translation_failed = True
                 # Failsafe: if translation fails, keep original English text
                 translated_texts = missing
                 logging.exception("Google translation failed, using original English text.")
