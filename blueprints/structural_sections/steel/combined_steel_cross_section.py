@@ -14,6 +14,8 @@ from blueprints.type_alias import KG_M
 class CombinedSteelCrossSection:
     """Representation of a combined steel cross-section made up of multiple steel cross-sections.
 
+    Each steel cross-section can have its own geometry and material properties, including offsets and rotations.
+
     Parameters
     ----------
     steel_cross_sections : tuple[SteelCrossSection, ...]
@@ -24,20 +26,9 @@ class CombinedSteelCrossSection:
     >>> from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
     >>>
     >>> main_steel_cross_section = SteelCrossSection(cross_section=..., material=...)
-    >>> stiffener = SteelCrossSection(
-    ...     cross_section=...,
-    ...     material=...,
-    ...     horizontal_offset=0.0,
-    ...     vertical_offset=main_steel_cross_section.cross_section.cross_section_height / 2 + stiffener.cross_section.cross_section_height / 2,
-    ...     rotation_angle=0.0,
-    ... )
+    >>> stiffener = SteelCrossSection(cross_section=..., material=...)
     >>> # Create a combined steel cross-section with the main section and a stiffener.
-    >>> combined_section = CombinedSteelCrossSection(
-    ...     steel_cross_sections=(
-    ...         main_steel_cross_section,
-    ...         stiffener,
-    ...     )
-    ... )
+    >>> combined_section = CombinedSteelCrossSection(steel_cross_sections=(main_steel_cross_section, stiffener))
     >>> # Alternatively, you can add sections one by one.
     >>> # This is useful for dynamically building complex cross-sections.
     >>> complex_combined_section = CombinedSteelCrossSection()

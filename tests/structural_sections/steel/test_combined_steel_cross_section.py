@@ -8,7 +8,15 @@ from blueprints.structural_sections.steel.combined_steel_cross_section import Co
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-def _steel_section(width: float, height: float, *, name: str = "Rectangle") -> SteelCrossSection:
+def _steel_section(
+    width: float,
+    height: float,
+    *,
+    name: str = "Rectangle",
+    horizontal_offset: float = 0.0,
+    vertical_offset: float = 0.0,
+    rotation_angle: float = 0.0,
+) -> SteelCrossSection:
     """Helper factory that creates a SteelCrossSection with predictable geometry."""
     return SteelCrossSection(
         cross_section=RectangularCrossSection(
@@ -17,6 +25,9 @@ def _steel_section(width: float, height: float, *, name: str = "Rectangle") -> S
             x=0.0,
             y=0.0,
             name=name,
+            horizontal_offset=horizontal_offset,
+            vertical_offset=vertical_offset,
+            rotation=rotation_angle,
         ),
         material=SteelMaterial(),
     )
@@ -55,7 +66,9 @@ class TestCombinedSteelCrossSection:
         x_offset = 42.0
         y_offset = -17.5
         rotation_angle = 33.0
-        cross_section_2 = cross_section_1.transform(
+        cross_section_2 = _steel_section(
+            width=12.0,
+            height=6.0,
             horizontal_offset=x_offset,
             vertical_offset=y_offset,
             rotation_angle=rotation_angle,
@@ -66,15 +79,15 @@ class TestCombinedSteelCrossSection:
         assert combined.steel_cross_sections == (cross_section_1,)
         added_section = updated.steel_cross_sections[-1]
         assert added_section is cross_section_2
-        assert added_section.horizontal_offset == x_offset
-        assert added_section.vertical_offset == y_offset
-        assert added_section.rotation_angle == rotation_angle
+        assert added_section.cross_section.horizontal_offset == x_offset
+        assert added_section.cross_section.vertical_offset == y_offset
+        assert added_section.cross_section.rotation == rotation_angle
 
     def test_add_steel_cross_section_chains_sections(self) -> None:
         """Test that multiple sections can be added sequentially with preserved order."""
         first = _steel_section(width=10.0, height=2.0)
-        second = _steel_section(width=4.0, height=7.0).transform(rotation_angle=45.0)
-        third = _steel_section(width=6.0, height=3.0).transform(horizontal_offset=5.0, vertical_offset=10.0)
+        second = _steel_section(width=4.0, height=7.0, rotation_angle=45.0)
+        third = _steel_section(width=6.0, height=3.0, horizontal_offset=5.0, vertical_offset=10.0)
         forth = _steel_section(width=8.0, height=4.0)
 
         combined = CombinedSteelCrossSection((first,))
