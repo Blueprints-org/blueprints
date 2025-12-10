@@ -1,4 +1,4 @@
-"""I-Profile section."""
+"""I-Profile."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True, kw_only=True)
 class IProfile(Profile):
-    """Representation of an I-Profile section.
+    """Representation of I-Profile.
     This can be used to create a custom I-profile or to create an I-profile from a standard profile.
 
     For standard profiles, use the `from_standard_profile` class method.
@@ -84,7 +84,7 @@ class IProfile(Profile):
     """ The width of the outstand of the bottom flange [mm]. """
 
     def __post_init__(self) -> None:
-        """Post-process the I-profile section after initialization."""
+        """Post-process the I-profile after initialization."""
         object.__setattr__(
             self, "web_height", self.total_height - self.top_flange_thickness - self.bottom_flange_thickness - self.top_radius - self.bottom_radius
         )
@@ -93,7 +93,7 @@ class IProfile(Profile):
 
     @property
     def _polygon(self) -> Polygon:
-        """Return the polygon of the I-profile section."""
+        """Return the polygon of the I-profile."""
         return (
             # Start from top left corner and go clockwise
             PolygonBuilder(starting_point=(0, 0))
@@ -170,7 +170,7 @@ class IProfile(Profile):
         ):
             raise ValueError("The profile has fully corroded.")
 
-        name = profile.alias
+        name = profile.name
         if corrosion:
             name += f" (corrosion: {corrosion} mm)"
 

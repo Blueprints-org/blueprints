@@ -25,7 +25,7 @@ class TestIPE:
     def test_enum_attributes(self) -> None:
         """Test that enum attributes are correctly assigned."""
         profile = IPE.IPE80
-        assert profile.alias == "IPE80"
+        assert profile.name == "IPE80"
         assert profile.total_height == 80
         assert profile.top_flange_width == 46
         assert profile.top_flange_thickness == 5.2
@@ -38,7 +38,7 @@ class TestIPE:
     def test_as_cross_section(self) -> None:
         """Test that the as_cross_section method returns an IProfile instance."""
         profile = IPE.IPE80
-        cross_section = profile.as_cross_section()
+        cross_section = profile
 
         assert isinstance(cross_section, IProfile)
         assert cross_section.top_flange_width == profile.top_flange_width
@@ -47,6 +47,7 @@ class TestIPE:
         assert cross_section.web_thickness == profile.web_thickness
         assert cross_section.top_radius == profile.top_radius
         assert cross_section.bottom_radius == profile.bottom_radius
+        assert cross_section.area > 0
 
     def test_as_cross_section_with_corrosion(self) -> None:
         """Test that the as_cross_section method accounts for corrosion."""

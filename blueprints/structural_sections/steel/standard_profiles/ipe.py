@@ -1,13 +1,14 @@
 """IPE Steel Profiles."""
 
 from enum import Enum
+from typing import Self
 
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
-from blueprints.structural_sections.steel.standard_profiles.utils import wrap_as_instance_method
+from blueprints.structural_sections.steel.standard_profiles.profile_enum_meta import ProfileEnumMeta
 from blueprints.type_alias import MM
 
 
-class IPE(Enum):
+class IPE(IProfile, Enum, metaclass=ProfileEnumMeta):
     """Geometrical representation of IPE steel profiles."""
 
     IPE80 = ("IPE80", 80, 46, 3.8, 5.2, 5)
@@ -29,10 +30,8 @@ class IPE(Enum):
     IPE550 = ("IPE550", 550, 210, 11.1, 17.2, 24)
     IPE600 = ("IPE600", 600, 220, 12.0, 19.0, 24)
 
-    def __init__(self, alias: str, h: MM, b: MM, t_w: MM, t_f: MM, radius: MM) -> None:
-        """Initialize IPE profile.
-
-        This method sets the profile's alias, dimensions, and radii.
+    def __new__(cls, name: str, h: MM, b: MM, t_w: MM, t_f: MM, radius: MM) -> Self:
+        """Create a new IPE profile enum member.
 
         Parameters
         ----------
@@ -48,17 +47,50 @@ class IPE(Enum):
             Flange thickness of the profile.
         radius: MM
             Radius of the profile.
-        """
-        self.alias = alias
-        self.top_flange_width = b
-        self.top_flange_thickness = t_f
-        self.bottom_flange_width = b
-        self.bottom_flange_thickness = t_f
-        self.total_height = h
-        self.web_thickness = t_w
-        self.top_radius = radius
-        self.bottom_radius = radius
 
-    @wrap_as_instance_method(IProfile.from_standard_profile)
-    def as_cross_section(self) -> None:
-        """Get an instance of the IPE cross section."""
+        Returns
+        -------
+        Self
+            The newly created IPE profile enum member.
+        """
+        obj = object.__new__(cls)
+        obj._value_ = (name, h, b, t_w, t_f, radius)
+
+        # Initialize IProfile fields
+        object.__setattr__(obj, "name", name)
+        object.__setattr__(obj, "top_flange_width", b)
+        object.__setattr__(obj, "top_flange_thickness", t_f)
+        object.__setattr__(obj, "bottom_flange_width", b)
+        object.__setattr__(obj, "bottom_flange_thickness", t_f)
+        object.__setattr__(obj, "total_height", h)
+        object.__setattr__(obj, "web_thickness", t_w)
+        object.__setattr__(obj, "top_radius", radius)
+        object.__setattr__(obj, "bottom_radius", radius)
+
+        # Compute derived fields
+        IProfile.__post_init__(obj)
+
+        return obj
+
+    def __init__(self, name: str, h: MM, b: MM, t_w: MM, t_f: MM, radius: MM) -> None:
+        """Initialize the IPE profile enum member.
+
+        Note
+        ----
+        This method is intentionally left blank because all initialization is handled in __new__.
+
+        Parameters
+        ----------
+        name: str
+            Profile name.
+        h: MM
+            Total height of the profile.
+        b: MM
+            Total width of the profile.
+        t_w: MM
+            Web thickness of the profile.
+        t_f: MM
+            Flange thickness of the profile.
+        radius: MM
+            Radius of the profile.
+        """
