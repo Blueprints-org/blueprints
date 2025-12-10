@@ -1,5 +1,7 @@
 """Module containing the class definition for a steel cross-section."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from blueprints.materials.steel import SteelMaterial
@@ -22,7 +24,9 @@ class SteelCrossSection:
     """
 
     cross_section: CrossSection
+    """The cross-section. This can be a predefined profile or a generic cross-section."""
     material: SteelMaterial
+    """The material type of the steel."""
 
     @property
     def weight_per_meter(self) -> KG_M:
