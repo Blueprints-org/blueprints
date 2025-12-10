@@ -92,7 +92,7 @@ class IProfile(CrossSection):
         object.__setattr__(self, "width_outstand_bottom_flange", (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2)
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """Return the polygon of the I-profile section."""
         return (
             # Start from top left corner and go clockwise

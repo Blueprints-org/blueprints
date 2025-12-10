@@ -139,7 +139,7 @@ class RHSProfile(CrossSection):
         )
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """Return the polygon of the RHS profile section."""
         outer_polygon = (
             # Start at top left corner (just to the right of the top left corner) and go clockwise

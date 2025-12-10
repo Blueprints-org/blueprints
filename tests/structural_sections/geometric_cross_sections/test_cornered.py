@@ -90,3 +90,11 @@ class TestCircularCorneredCrossSection:
         """Test that the CircularCorneredCrossSection dataclass is immutable."""
         with pytest.raises(AttributeError):
             qcs_cross_section.name = "New Name"  # type: ignore[misc]
+
+    def test_transform(self, qcs_cross_section: CircularCorneredCrossSection) -> None:
+        """Test the transform method of the CircularCorneredCrossSection class."""
+        transformed_section = qcs_cross_section.transform(horizontal_offset=15.0, vertical_offset=25.0, rotation=90.0)
+        assert isinstance(transformed_section, CircularCorneredCrossSection)
+        assert pytest.approx(transformed_section.centroid.x, rel=1e-6) == qcs_cross_section.centroid.x + 15.0
+        assert pytest.approx(transformed_section.centroid.y, rel=1e-6) == qcs_cross_section.centroid.y + 25.0
+        assert pytest.approx(transformed_section.cross_section_height, rel=1e-6) == qcs_cross_section.cross_section_width

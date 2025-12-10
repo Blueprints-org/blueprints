@@ -68,3 +68,11 @@ class TestCHSSteelProfile:
         """Test that the CHSProfile dataclass is immutable."""
         with pytest.raises(AttributeError):
             chs_profile.name = "New Name"  # type: ignore[misc]
+
+    def test_transform(self, chs_profile: CHSProfile) -> None:
+        """Test the transform method of the CHS profile."""
+        transformed_profile = chs_profile.transform(horizontal_offset=1000, vertical_offset=500, rotation=0)
+        assert transformed_profile is not None
+        assert isinstance(transformed_profile, CHSProfile)
+        assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == chs_profile.centroid.x + 1000
+        assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == chs_profile.centroid.y + 500

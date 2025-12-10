@@ -65,3 +65,11 @@ class TestTubeCrossSection:
         """Test that the TubeCrossSection dataclass is immutable."""
         with pytest.raises(AttributeError):
             tube_cross_section.name = "New Name"  # type: ignore[misc]
+
+    def test_transform(self, tube_cross_section: TubeCrossSection) -> None:
+        """Test the transform method of the TubeCrossSection class."""
+        transformed_section = tube_cross_section.transform(horizontal_offset=10.0, vertical_offset=20.0, rotation=90.0)
+        assert isinstance(transformed_section, TubeCrossSection)
+        assert pytest.approx(transformed_section.centroid.x, rel=1e-6) == tube_cross_section.centroid.x + 10.0
+        assert pytest.approx(transformed_section.centroid.y, rel=1e-6) == tube_cross_section.centroid.y + 20.0
+        assert pytest.approx(transformed_section.cross_section_height, rel=1e-6) == tube_cross_section.cross_section_width

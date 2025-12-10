@@ -2,17 +2,18 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import partial
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Self
 
 import matplotlib.pyplot as plt
 from sectionproperties.analysis import Section
 from sectionproperties.post.post import SectionProperties
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
+from shapely.affinity import rotate, translate
 
-from blueprints.type_alias import M3_M, MM, MM2
+from blueprints.type_alias import DEG, M3_M, MM, MM2
 from blueprints.unit_conversion import MM3_TO_M3
 
 
@@ -25,6 +26,13 @@ class CrossSection(ABC):
     This value is used in the derived classes when creating the Shapely Polygon.
     Since the coordinates are in mm, a value of 6 means that the coordinates are rounded to
     the nearest nanometer which is more than sufficient for structural engineering purposes."""
+
+    horizontal_offset: MM = field(default=0.0, kw_only=True)
+    """Horizontal offset of the cross-section [mm]. Positive values move the centroid of the cross-section to the right."""
+    vertical_offset: MM = field(default=0.0, kw_only=True)
+    """Vertical offset of the cross-section [mm]. Positive values move the centroid of the cross-section upwards."""
+    rotation: DEG = field(default=0.0, kw_only=True)
+    """Rotation of the cross-section [degrees]. Positive values rotate the cross-section counter-clockwise around its centroid."""
 
     @property
     def mesh_creator(self) -> partial:
@@ -43,8 +51,54 @@ class CrossSection(ABC):
 
     @property
     @abstractmethod
+    def _polygon(self) -> Polygon:
+        """Shapely Polygon representing the cross-section not including offsets and rotation.
+
+        Important
+        ---------
+            This polygon does NOT include the offsets and rotation. Use the `polygon` property to get the correct polygon with
+            applied offsets and rotation.
+        """
+
+    @property
     def polygon(self) -> Polygon:
-        """Shapely Polygon representing the cross-section."""
+        """Shapely Polygon representing the cross-section with applied offsets and rotation."""
+        poly = self._polygon
+
+        if self.rotation != 0.0:
+            poly = rotate(poly, self.rotation, origin="centroid", use_radians=False)
+
+        if self.horizontal_offset != 0.0 or self.vertical_offset != 0.0:
+            poly = translate(
+                poly,
+                xoff=self.horizontal_offset,
+                yoff=self.vertical_offset,
+            )
+
+        return poly
+
+    def transform(self, horizontal_offset: MM = 0.0, vertical_offset: MM = 0.0, rotation: DEG = 0.0) -> Self:
+        """Return a new cross-section with the applied transformations.
+
+        Parameters
+        ----------
+        horizontal_offset : MM
+            Horizontal offset to apply [mm]. Positive values move the centroid to the right.
+        vertical_offset : MM
+            Vertical offset to apply [mm]. Positive values move the centroid upwards.
+        rotation : DEG
+            Rotation to apply [degrees]. Positive values rotate counter-clockwise around the centroid.
+
+        Returns
+        -------
+        Self
+            New cross-section with the applied transformations.
+        """
+        self_dict = {key: value for key, value in self.__dict__.items() if self.__dataclass_fields__[key].init}
+        self_dict["horizontal_offset"] += horizontal_offset
+        self_dict["vertical_offset"] += vertical_offset
+        self_dict["rotation"] += rotation
+        return type(self)(**self_dict)
 
     @property
     def area(self) -> MM2:

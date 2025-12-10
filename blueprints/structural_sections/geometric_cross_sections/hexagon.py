@@ -74,7 +74,7 @@ class HexagonalCrossSection(CrossSection):
         return self.side_length * math.sqrt(3) / 2
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """
         Shapely Polygon representing the hexagonal cross-section.
 

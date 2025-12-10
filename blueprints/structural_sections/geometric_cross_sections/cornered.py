@@ -94,7 +94,7 @@ class CircularCorneredCrossSection(CrossSection):
         return self.thickness_vertical + self.inner_radius
 
     @property
-    def polygon(self) -> Polygon:
+    def _polygon(self) -> Polygon:
         """Shapely Polygon representing the corner cross-section."""
         lr = (self.x + self.width_rectangle, self.y)
         ul = (self.x, self.y + self.height_rectangle)
