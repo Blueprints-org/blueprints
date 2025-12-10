@@ -62,6 +62,7 @@ docs = [
     "mkdocs-awesome-nav>=3.1.2,<3.3.0",
     "natsort ~= 8.4.0",
     "mkdocs-jupyter ~= 0.25.1",
+    "markdown-exec[ansi]>=1.11.0",
 ]
 test = [
     "pytest==8.4.2",
