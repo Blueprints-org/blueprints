@@ -37,11 +37,15 @@ translate = [
     "googletrans>=4.0.2"
 ]
 
+[project.scripts]
+blueprints = "blueprints.cli:app"
+bp = "blueprints.cli:app"
+
 [dependency-groups]
 dev = [
-    "mypy==1.18.2",
-    "ruff==0.14.3",
-    "pre-commit==4.3.0",
+    "mypy==1.19.0",
+    "ruff==0.14.7",
+    "pre-commit==4.5.0",
     "types-shapely==2.1.0.20250917",
     "icecream==2.1.8",
 ]
@@ -50,10 +54,10 @@ docs = [
     "mkdocs-material ~= 9.6.14",
     "pygments ~= 2.19.1",
     "mkdocs-open-in-new-tab ~= 1.0.8",
-    "mkdocs-git-revision-date-localized-plugin ~= 1.4.7",
-    "mkdocstrings[python] ~= 0.29.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.4.7,<1.6.0",
+    "mkdocstrings[python]>=0.29.1,<1.1.0",
     "mkdocs-gen-files ~= 0.5.0",
-    "mkdocs-awesome-nav ~= 3.1.2",
+    "mkdocs-awesome-nav>=3.1.2,<3.3.0",
     "natsort ~= 8.4.0",
     "mkdocs-jupyter ~= 0.25.1",
 ]
@@ -63,8 +67,16 @@ test = [
     "pytest-describe==3.0.0",
     "pytest-pspec==0.0.4",
     "pytest-raises==0.11",
+    "pytest-sugar>=1.1.1",
     "pytest-xdist==3.8.0",
+    "typer>=0.9.0",
+    "rich>=13.7.0",
     "googletrans>=4.0.2" # optional-dependency: translate
+]
+cli = [
+    {include-group = "dev"},
+    {include-group = "test"},
+    {include-group = "docs"},
 ]
 
 [project.urls]
