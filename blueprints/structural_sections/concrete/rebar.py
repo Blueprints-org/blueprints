@@ -3,13 +3,13 @@
 from dataclasses import dataclass
 
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.geometric_cross_sections import CircularCrossSection
+from blueprints.structural_sections.geometric_profiles import CircularProfile
 from blueprints.type_alias import KG_M, RATIO
 from blueprints.unit_conversion import MM2_TO_M2
 
 
 @dataclass(frozen=True, kw_only=True)
-class Rebar(CircularCrossSection):
+class Rebar(CircularProfile):
     """
     Representation of a reinforcement bar from a cross-section perspective. For example ⌀16, ⌀20, ⌀25, ⌀32,etc.
 

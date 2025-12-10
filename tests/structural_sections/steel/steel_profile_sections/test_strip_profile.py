@@ -5,8 +5,8 @@ from unittest.mock import MagicMock
 import matplotlib.pyplot as plt
 import pytest
 
+from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
 from blueprints.structural_sections.steel.standard_profiles.strip import Strip
-from blueprints.structural_sections.steel.steel_profile_sections.strip_profile import StripProfile
 
 
 class TestStripSteelProfile:
@@ -73,4 +73,4 @@ class TestStripSteelProfile:
         assert isinstance(transformed_profile, StripProfile)
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == strip_profile.centroid.x + 1000
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == strip_profile.centroid.y + 500
-        assert pytest.approx(transformed_profile.cross_section_height, rel=1e-6) == strip_profile.cross_section_width
+        assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == strip_profile.profile_width

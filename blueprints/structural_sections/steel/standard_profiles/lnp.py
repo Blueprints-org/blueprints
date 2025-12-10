@@ -2,8 +2,8 @@
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.standard_profiles.utils import wrap_as_instance_method
-from blueprints.structural_sections.steel.steel_profile_sections.lnp_profile import LNPProfile
 from blueprints.type_alias import MM
 
 

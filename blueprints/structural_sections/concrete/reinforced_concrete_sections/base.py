@@ -8,7 +8,7 @@ from shapely import LineString
 
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._profile import Profile
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import (
     ReinforcementConfiguration,
@@ -23,19 +23,19 @@ class ReinforcedCrossSection(ABC):
 
     def __init__(
         self,
-        cross_section: CrossSection,
+        profile: Profile,
         concrete_material: ConcreteMaterial,
     ) -> None:
         """Initialize the reinforced cross-section.
 
         Parameters
         ----------
-        cross_section : CrossSection
-            Cross-section of the reinforced concrete section.
+        profile : Profile
+            profile of the reinforced concrete section.
         concrete_material : ConcreteMaterial
             Material properties of the concrete.
         """
-        self.cross_section = cross_section
+        self.profile = profile
         self.concrete_material = concrete_material
         self._reinforcement_configurations: list[tuple[LineString | Callable[..., LineString], ReinforcementConfiguration]] = []
         self._single_longitudinal_rebars: list[Rebar] = []
@@ -63,7 +63,7 @@ class ReinforcedCrossSection(ABC):
         # check if all rebars are inside the cross-section.
         # needed for the case where custom configurations are added to the RCS
         for rebar in rebars:
-            if not self.cross_section.polygon.contains(other=rebar.polygon):
+            if not self.profile.polygon.contains(other=rebar.polygon):
                 msg = f"Rebar (diameter={rebar.diameter}, x={rebar.x}, y={rebar.y}) is not (fully) inside the cross-section."
                 raise ValueError(msg)
 
@@ -98,7 +98,7 @@ class ReinforcedCrossSection(ABC):
     def concrete_volume(self) -> M3_M:
         """Total volume of the reinforced cross-section per meter length [m³/m]."""
         length = 1000  # mm
-        return self.cross_section.area * length * MM3_TO_M3
+        return self.profile.area * length * MM3_TO_M3
 
     @property
     def weight_per_volume(self) -> KG_M3:
@@ -133,7 +133,7 @@ class ReinforcedCrossSection(ABC):
             Newly created Rebar
         """
         # check if given diameter/coordinates are fully inside the cross-section
-        if not rebar.polygon.within(self.cross_section.polygon):
+        if not rebar.polygon.within(self.profile.polygon):
             msg = f"Rebar (diameter={rebar.diameter}, x={rebar.x}, y={rebar.y}) is not (fully) inside the cross-section."
             raise ValueError(msg)
 
@@ -162,7 +162,7 @@ class ReinforcedCrossSection(ABC):
         """
         # check if the stirrup is inside the cross-section
         stirrup_outside_edge = stirrup.geometry.buffer(distance=stirrup.diameter / 2)
-        if not self.cross_section.polygon.contains(stirrup_outside_edge):
+        if not self.profile.polygon.contains(stirrup_outside_edge):
             msg = "Stirrup is not (fully) inside the cross-section."
             raise ValueError(msg)
 

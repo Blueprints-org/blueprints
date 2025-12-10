@@ -9,9 +9,9 @@ from typing import TYPE_CHECKING, Self, overload
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
-from blueprints.structural_sections.steel.steel_profile_sections.plotters.general_steel_plotter import plot_shapes
+from blueprints.structural_sections._profile import Profile
+from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 
 if TYPE_CHECKING:
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True, kw_only=True)
-class IProfile(CrossSection):
+class IProfile(Profile):
     """Representation of an I-Profile section.
     This can be used to create a custom I-profile or to create an I-profile from a standard profile.
 
@@ -52,8 +52,8 @@ class IProfile(CrossSection):
         The radius of the curved corners of the bottom flange.
     name : str
         The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value.
-    plotter : Callable[[CrossSection], plt.Figure]
-        The plotter function to visualize the cross-section (default: `plot_shapes`).
+    plotter : Callable[[Profile], plt.Figure]
+        The plotter function to visualize the profile (default: `plot_shapes`).
     """
 
     top_flange_width: MM
@@ -74,8 +74,8 @@ class IProfile(CrossSection):
     """ The radius of the curved corners of the bottom flange [mm]. """
     name: str = "I-Profile"
     """ The name of the profile. Default is "I-Profile". If corrosion is applied, the name will include the corrosion value. """
-    plotter: Callable[[CrossSection], plt.Figure] = plot_shapes
-    """ The plotter function to visualize the cross-section (default: `plot_shapes`). """
+    plotter: Callable[[Profile], plt.Figure] = plot_shapes
+    """ The plotter function to visualize the profile (default: `plot_shapes`). """
     web_height: MM = field(init=False)
     """ The height of the web [mm]. """
     width_outstand_top_flange: MM = field(init=False)

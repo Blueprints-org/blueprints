@@ -1,18 +1,18 @@
-"""Defines a general steel plotter for cross sections and its characteristics."""
+"""Defines a general steel plotter for profiles and its characteristics."""
 
 import matplotlib.pyplot as plt
 from matplotlib import patches as mplpatches
 from matplotlib.patches import Polygon as MplPolygon
 from shapely.geometry import Point
 
-from blueprints.structural_sections._cross_section import CrossSection
+from blueprints.structural_sections._profile import Profile
 
 # Define color
 STEEL_COLOR = (0.683, 0.0, 0.0)
 
 
 def plot_shapes(
-    profile: CrossSection,
+    profile: Profile,
     figsize: tuple[float, float] = (15.0, 8.0),
     title: str = "",
     font_size_title: float = 18.0,
@@ -25,8 +25,8 @@ def plot_shapes(
 
     Parameters
     ----------
-    profile : SteelCrossSection
-        The steel cross-sections to plot.
+    profile : Profile
+        The profile to plot.
     figsize : tuple[float, float], optional
         The size of the figure in inches. Default is (15.0, 8.0).
     title : str, optional
@@ -71,7 +71,7 @@ def plot_shapes(
 
     # Get the boundaries of the plot
     _, min_y, max_x, _ = profile.polygon.bounds
-    offset = profile.cross_section_width / 20
+    offset = profile.profile_width / 20
 
     # Add the legend text to the plot
     ax.annotate(
@@ -97,20 +97,20 @@ def plot_shapes(
     return fig
 
 
-def _add_dimension_lines(ax: plt.Axes, profile: CrossSection, centroid: Point) -> None:
+def _add_dimension_lines(ax: plt.Axes, profile: Profile, centroid: Point) -> None:
     """Adds dimension lines to show the outer dimensions of the geometry.
 
     Parameters
     ----------
     ax : plt.Axes
         The matplotlib axes to draw on.
-    profile : tuple[CrossSection, ...]
-        The cross-sections to plot.
+    profile : tuple[Profile, ...]
+        The profiles to plot.
     centroid : Point
-        The centroid of the cross-section.
+        The centroid of the profile.
     """
     # Define the offset for the dimension lines
-    offset_dimension_lines = max(profile.cross_section_height, profile.cross_section_width) / 20
+    offset_dimension_lines = max(profile.profile_height, profile.profile_width) / 20
     offset_text = offset_dimension_lines / 2
 
     # Calculate the bounds of all elements in the geometry
@@ -137,7 +137,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CrossSection, centroid: Point) -
         annotation_clip=False,
     )
     ax.text(
-        s=f"b= {profile.cross_section_width:.1f} mm",
+        s=f"b= {profile.profile_width:.1f} mm",
         x=(min_x + max_x) / 2,
         y=min_y - offset_dimension_lines * 2 + offset_text,
         verticalalignment="top",
@@ -198,7 +198,7 @@ def _add_dimension_lines(ax: plt.Axes, profile: CrossSection, centroid: Point) -
         annotation_clip=False,
     )
     ax.text(
-        s=f"h= {profile.cross_section_height:.1f} mm",
+        s=f"h= {profile.profile_height:.1f} mm",
         x=(min_x - offset_dimension_lines * 2 - offset_text),
         y=(min_y + max_y) / 2,
         verticalalignment="center",

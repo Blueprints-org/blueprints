@@ -10,8 +10,8 @@ import pytest
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
+from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
 from blueprints.structural_sections.steel.standard_profiles.rhs import RHS
-from blueprints.structural_sections.steel.steel_profile_sections.rhs_profile import RHSProfile
 
 
 class TestRHSSteelProfile:
@@ -85,4 +85,4 @@ class TestRHSSteelProfile:
         assert isinstance(transformed_profile, RHSProfile)
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == rhs_profile.centroid.x + 1000
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == rhs_profile.centroid.y + 500
-        assert pytest.approx(transformed_profile.cross_section_height, rel=1e-6) == rhs_profile.cross_section_width
+        assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == rhs_profile.profile_width

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.standard_profiles.utils import wrap_as_instance_method
-from blueprints.structural_sections.steel.steel_profile_sections.chs_profile import CHSProfile
 from blueprints.type_alias import MM
 
 

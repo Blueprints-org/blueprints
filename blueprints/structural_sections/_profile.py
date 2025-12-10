@@ -1,4 +1,4 @@
-"""Cross-section base class."""
+"""Profile base class."""
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
@@ -14,12 +14,12 @@ from shapely import Point, Polygon
 from shapely.affinity import rotate, translate
 
 from blueprints.type_alias import DEG, M3_M, MM, MM2
-from blueprints.unit_conversion import MM3_TO_M3
+from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
 
 
 @dataclass(frozen=True)
-class CrossSection(ABC):
-    """Base class for cross-section shapes."""
+class Profile(ABC):
+    """Base class for shapes of structural cross-sections."""
 
     accuracy: ClassVar[int] = 6
     """Accuracy for rounding polygon coordinates in order to avoid floating point issues.
@@ -28,31 +28,31 @@ class CrossSection(ABC):
     the nearest nanometer which is more than sufficient for structural engineering purposes."""
 
     horizontal_offset: MM = field(default=0.0, kw_only=True)
-    """Horizontal offset of the cross-section [mm]. Positive values move the centroid of the cross-section to the right."""
+    """Horizontal offset of the profile [mm]. Positive values move the centroid of the profile to the right."""
     vertical_offset: MM = field(default=0.0, kw_only=True)
-    """Vertical offset of the cross-section [mm]. Positive values move the centroid of the cross-section upwards."""
+    """Vertical offset of the profile [mm]. Positive values move the centroid of the profile upwards."""
     rotation: DEG = field(default=0.0, kw_only=True)
-    """Rotation of the cross-section [degrees]. Positive values rotate the cross-section counter-clockwise around its centroid."""
+    """Rotation of the profile [degrees]. Positive values rotate the profile counter-clockwise around its centroid."""
 
     @property
     def mesh_creator(self) -> partial:
-        """Get the mesh creator for the cross-section."""
+        """Get the mesh creator for the profile."""
         return partial(Geometry.create_mesh, mesh_sizes=2.0)
 
     @property
     def mesh_settings(self) -> dict[str, Any]:
-        """Get the mesh settings for the cross-section."""
+        """Get the mesh settings for the profile."""
         return self.mesh_creator.keywords
 
     @property
     @abstractmethod
     def name(self) -> str:
-        """Name of the cross-section."""
+        """Name of the profile."""
 
     @property
     @abstractmethod
     def _polygon(self) -> Polygon:
-        """Shapely Polygon representing the cross-section not including offsets and rotation.
+        """Shapely Polygon representing the profile not including offsets and rotation.
 
         Important
         ---------
@@ -62,7 +62,7 @@ class CrossSection(ABC):
 
     @property
     def polygon(self) -> Polygon:
-        """Shapely Polygon representing the cross-section with applied offsets and rotation."""
+        """Shapely Polygon representing the profile with applied offsets and rotation."""
         poly = self._polygon
 
         if self.rotation != 0.0:
@@ -78,7 +78,7 @@ class CrossSection(ABC):
         return poly
 
     def transform(self, horizontal_offset: MM = 0.0, vertical_offset: MM = 0.0, rotation: DEG = 0.0) -> Self:
-        """Return a new cross-section with the applied transformations.
+        """Return a new profile with the applied transformations.
 
         Parameters
         ----------
@@ -92,7 +92,7 @@ class CrossSection(ABC):
         Returns
         -------
         Self
-            New cross-section with the applied transformations.
+            New profile with the applied transformations.
         """
         self_dict = {key: value for key, value in self.__dict__.items() if self.__dataclass_fields__[key].init}
         self_dict["horizontal_offset"] += horizontal_offset
@@ -102,9 +102,9 @@ class CrossSection(ABC):
 
     @property
     def area(self) -> MM2:
-        """Area of the cross-section [mm²].
+        """Area of the profile [mm²].
 
-        When using circular cross-sections, the area is an approximation of the area of the polygon.
+        When using circular profiles, the area is an approximation of the area of the polygon.
         The area is calculated using the `area` property of the Shapely Polygon.
 
         In case you need an exact answer then you need to override this method in the derived class.
@@ -113,37 +113,37 @@ class CrossSection(ABC):
 
     @property
     def perimeter(self) -> MM:
-        """Perimeter of the cross-section [mm]."""
+        """Perimeter of the profile [mm]."""
         return self.polygon.length
 
     @property
     def centroid(self) -> Point:
-        """Centroid of the cross-section [mm]."""
+        """Centroid of the profile [mm]."""
         return self.polygon.centroid
 
     @property
-    def cross_section_height(self) -> MM:
-        """Height of the cross-section [mm]."""
+    def profile_height(self) -> MM:
+        """Height of the profile [mm]."""
         return self.polygon.bounds[3] - self.polygon.bounds[1]
 
     @property
-    def cross_section_width(self) -> MM:
-        """Width of the cross-section [mm]."""
+    def profile_width(self) -> MM:
+        """Width of the profile [mm]."""
         return self.polygon.bounds[2] - self.polygon.bounds[0]
 
     @property
     def volume_per_meter(self) -> M3_M:
-        """Total volume of the reinforced cross-section per meter length [m³/m]."""
-        length = 1000  # mm
+        """Total volume of the reinforced profile per meter length [m³/m]."""
+        length = 1 * M_TO_MM  # mm
         return self.area * length * MM3_TO_M3
 
     def _geometry(self) -> Geometry:
-        """Geometry object of the cross-section. This is used for section property calculations."""
+        """Geometry object of the profile. This is used for section property calculations."""
         geom = Geometry(geom=self.polygon, tol=self.accuracy)
         return self.mesh_creator(geom)
 
     def _section(self) -> Section:
-        """Section object representing the cross-section. This is used for section property calculations."""
+        """Section object representing the profile. This is used for section property calculations."""
         return Section(geometry=self._geometry())
 
     def section_properties(
@@ -152,7 +152,7 @@ class CrossSection(ABC):
         plastic: bool = True,
         warping: bool = True,
     ) -> SectionProperties:
-        """Calculate and return the section properties of the cross-section.
+        """Calculate and return the section properties of the profile.
 
         Parameters
         ----------
@@ -176,11 +176,11 @@ class CrossSection(ABC):
 
     @property
     def plotter(self) -> Callable[[Any], plt.Figure]:
-        """Default plotter function for the cross-section."""
+        """Default plotter function for the profile."""
         raise AttributeError("No plotter is defined.")
 
     def plot(self, plotter: Callable[[Any], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
-        """Plot the cross-section. Making use of the standard plotter.
+        """Plot the profile. Making use of the standard plotter.
 
         Parameters
         ----------

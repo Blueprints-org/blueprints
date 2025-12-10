@@ -12,7 +12,6 @@ from shapely.geometry import Polygon
 from shapely.geometry.base import BaseGeometry
 from shapely.geometry.polygon import orient
 
-from blueprints.structural_sections._cross_section import CrossSection
 from blueprints.type_alias import CM, DEG, MM, M
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
@@ -27,26 +26,26 @@ Length = TypeVar("Length", M, CM, MM)
 # section modeling contexts.
 RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters --> 1 nm)
 """Absolute tolerance for radius values."""
-SWEEP_ZERO_ATOL_DEG: float = 1e-10  # degrees
+SWEEP_ZERO_ATOL_DEG: DEG = 1e-10  # degrees
 """Absolute tolerance for sweep angles in degrees."""
 DIRECTION_VECTOR_ROUND_DECIMALS: int = 15  # Because np.float64 has ~15-17 decimal digits of precision
 """Decimal places to round direction vectors to remove floating point noise."""
 
 
-def merge_polygons(elements: Sequence[CrossSection]) -> Polygon:
-    """Return the merged polygon of the cross-section elements."""
-    # check if there are any elements
-    if not elements:
-        raise ValueError("No elements have been added to the cross-section.")
+def merge_polygons(polygons: Sequence[Polygon]) -> Polygon:
+    """Return the merged polygon of the cross-section polygons."""
+    # check if there are any polygons
+    if not polygons:
+        raise ValueError("No polygons have been added to the cross-section.")
 
-    # return the polygon of the first element if there is only one
-    if len(elements) == 1:
-        return elements[0].polygon
+    # return the polygon of the first polygon if there is only one
+    if len(polygons) == 1:
+        return polygons[0]
 
-    # Combine the polygons of all elements if there is multiple
-    combined_polygon: BaseGeometry = elements[0].polygon
-    for element in elements[1:]:
-        combined_polygon = combined_polygon.union(element.polygon)
+    # Combine the polygons of all polygons if there is multiple
+    combined_polygon: BaseGeometry = polygons[0]
+    for polygon in polygons[1:]:
+        combined_polygon = combined_polygon.union(polygon)
 
     # Ensure the result is a valid Polygon
     if not isinstance(combined_polygon, Polygon):

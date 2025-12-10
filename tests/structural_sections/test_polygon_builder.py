@@ -7,7 +7,7 @@ import pytest
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder, merge_polygons
-from blueprints.structural_sections.geometric_cross_sections import RectangularCrossSection
+from blueprints.structural_sections.geometric_profiles import RectangularProfile
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
@@ -16,26 +16,26 @@ class TestMergePolygons:
 
     def test_merge_polygons_empty_list(self) -> None:
         """Test that ValueError is raised when an empty list is provided."""
-        with pytest.raises(ValueError, match=r"No elements have been added to the cross-section."):
+        with pytest.raises(ValueError, match=r"No polygons have been added to the cross-section."):
             merge_polygons([])
 
-    def test_merge_polygons_single_element(self) -> None:
-        """Test that the polygon of a single element is returned unchanged."""
-        rect = RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)
-        elements = [rect]
+    def test_merge_polygons_single_polygon(self) -> None:
+        """Test that the polygon of a single polygon is returned unchanged."""
+        rect = RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0)
+        polygons = [rect.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         assert result.equals(rect.polygon)
 
     def test_merge_polygons_two_touching_rectangles(self) -> None:
         """Test merging two rectangles that are touching (edge-to-edge)."""
-        rect1 = RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)
-        rect2 = RectangularCrossSection(width=97.73, height=203.45, x=97.73, y=0.0)  # Touching at edge
-        elements = [rect1, rect2]
+        rect1 = RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0)
+        rect2 = RectangularProfile(width=97.73, height=203.45, x=97.73, y=0.0)  # Touching at edge
+        polygons = [rect1.polygon, rect2.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # The result should have an area equal to the sum of both rectangles
@@ -44,11 +44,11 @@ class TestMergePolygons:
 
     def test_merge_polygons_two_overlapping_rectangles(self) -> None:
         """Test merging two overlapping rectangles."""
-        rect1 = RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)
-        rect2 = RectangularCrossSection(width=97.73, height=203.45, x=48.87, y=0.0)  # 50% overlap
-        elements = [rect1, rect2]
+        rect1 = RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0)
+        rect2 = RectangularProfile(width=97.73, height=203.45, x=48.87, y=0.0)  # 50% overlap
+        polygons = [rect1.polygon, rect2.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # The result should have an area less than the sum due to overlap
@@ -63,14 +63,14 @@ class TestMergePolygons:
     def test_merge_polygons_three_rectangles_forming_t_shape(self) -> None:
         """Test merging three rectangles forming a T-shape."""
         # Horizontal bar of T
-        rect1 = RectangularCrossSection(width=296.84, height=51.22, x=0.0, y=76.83)
+        rect1 = RectangularProfile(width=296.84, height=51.22, x=0.0, y=76.83)
         # Vertical bar of T (left part)
-        rect2 = RectangularCrossSection(width=51.22, height=102.44, x=-73.11, y=0.0)
+        rect2 = RectangularProfile(width=51.22, height=102.44, x=-73.11, y=0.0)
         # Vertical bar of T (right part)
-        rect3 = RectangularCrossSection(width=51.22, height=102.44, x=73.11, y=0.0)
-        elements = [rect1, rect2, rect3]
+        rect3 = RectangularProfile(width=51.22, height=102.44, x=73.11, y=0.0)
+        polygons = [rect1.polygon, rect2.polygon, rect3.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # Total area should be sum of all three rectangles
@@ -80,14 +80,14 @@ class TestMergePolygons:
     def test_merge_polygons_multiple_rectangles_complex_shape(self) -> None:
         """Test merging multiple rectangles creating a more complex shape."""
         # Create a plus sign shape with 5 rectangles
-        center = RectangularCrossSection(width=97.73, height=102.44, x=0.0, y=0.0)
-        top = RectangularCrossSection(width=48.87, height=51.22, x=0.0, y=76.83)
-        bottom = RectangularCrossSection(width=48.87, height=51.22, x=0.0, y=-76.83)
-        left = RectangularCrossSection(width=51.22, height=48.87, x=-74.47, y=0.0)
-        right = RectangularCrossSection(width=51.22, height=48.87, x=74.47, y=0.0)
-        elements = [center, top, bottom, left, right]
+        center = RectangularProfile(width=97.73, height=102.44, x=0.0, y=0.0)
+        top = RectangularProfile(width=48.87, height=51.22, x=0.0, y=76.83)
+        bottom = RectangularProfile(width=48.87, height=51.22, x=0.0, y=-76.83)
+        left = RectangularProfile(width=51.22, height=48.87, x=-74.47, y=0.0)
+        right = RectangularProfile(width=51.22, height=48.87, x=74.47, y=0.0)
+        polygons = [center.polygon, top.polygon, bottom.polygon, left.polygon, right.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # Check that the result is valid
@@ -99,11 +99,11 @@ class TestMergePolygons:
 
     def test_merge_polygons_identical_rectangles(self) -> None:
         """Test merging identical rectangles (complete overlap)."""
-        rect1 = RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)
-        rect2 = RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)
-        elements = [rect1, rect2]
+        rect1 = RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0)
+        rect2 = RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0)
+        polygons = [rect1.polygon, rect2.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # Area should be the same as one rectangle since they completely overlap
@@ -112,12 +112,12 @@ class TestMergePolygons:
     def test_merge_polygons_rectangles_forming_l_shape(self) -> None:
         """Test merging two rectangles forming an L-shape."""
         # Horizontal part of L
-        rect1 = RectangularCrossSection(width=194.67, height=51.22, x=0.0, y=0.0)
+        rect1 = RectangularProfile(width=194.67, height=51.22, x=0.0, y=0.0)
         # Vertical part of L (overlapping with horizontal part)
-        rect2 = RectangularCrossSection(width=48.87, height=153.66, x=-72.90, y=25.61)
-        elements = [rect1, rect2]
+        rect2 = RectangularProfile(width=48.87, height=153.66, x=-72.90, y=25.61)
+        polygons = [rect1.polygon, rect2.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # Calculate expected area: both rectangles minus the overlap
@@ -128,12 +128,12 @@ class TestMergePolygons:
     def test_merge_polygons_concentric_rectangles(self) -> None:
         """Test merging concentric rectangles (one inside another)."""
         # Outer rectangle
-        rect1 = RectangularCrossSection(width=194.67, height=307.22, x=0.0, y=0.0)
+        rect1 = RectangularProfile(width=194.67, height=307.22, x=0.0, y=0.0)
         # Inner rectangle (completely inside the outer one)
-        rect2 = RectangularCrossSection(width=97.33, height=153.61, x=0.0, y=0.0)
-        elements = [rect1, rect2]
+        rect2 = RectangularProfile(width=97.33, height=153.61, x=0.0, y=0.0)
+        polygons = [rect1.polygon, rect2.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # Area should be the same as the larger rectangle
@@ -145,13 +145,13 @@ class TestMergePolygons:
         center_x, center_y = 0.0, 0.0
         size = 48.87
 
-        top_right = RectangularCrossSection(width=size, height=size, x=center_x + size / 2, y=center_y + size / 2)
-        top_left = RectangularCrossSection(width=size, height=size, x=center_x - size / 2, y=center_y + size / 2)
-        bottom_left = RectangularCrossSection(width=size, height=size, x=center_x - size / 2, y=center_y - size / 2)
-        bottom_right = RectangularCrossSection(width=size, height=size, x=center_x + size / 2, y=center_y - size / 2)
-        elements = [top_right, top_left, bottom_left, bottom_right]
+        top_right = RectangularProfile(width=size, height=size, x=center_x + size / 2, y=center_y + size / 2)
+        top_left = RectangularProfile(width=size, height=size, x=center_x - size / 2, y=center_y + size / 2)
+        bottom_left = RectangularProfile(width=size, height=size, x=center_x - size / 2, y=center_y - size / 2)
+        bottom_right = RectangularProfile(width=size, height=size, x=center_x + size / 2, y=center_y - size / 2)
+        polygons = [top_right.polygon, top_left.polygon, bottom_left.polygon, bottom_right.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # Total area should be sum of all four rectangles
@@ -160,11 +160,11 @@ class TestMergePolygons:
 
     def test_merge_polygons_result_is_oriented(self) -> None:
         """Test that the result polygon has consistent orientation."""
-        rect1 = RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)
-        rect2 = RectangularCrossSection(width=97.73, height=203.45, x=97.73, y=0.0)  # Touching at edge
-        elements = [rect1, rect2]
+        rect1 = RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0)
+        rect2 = RectangularProfile(width=97.73, height=203.45, x=97.73, y=0.0)  # Touching at edge
+        polygons = [rect1.polygon, rect2.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         # Check that the polygon is properly oriented (should be counter-clockwise for exterior)
@@ -177,12 +177,12 @@ class TestMergePolygons:
 
     def test_merge_polygons_overlapping_rectangles_different_sizes(self) -> None:
         """Test merging rectangles of different sizes with overlaps."""
-        small_rect = RectangularCrossSection(width=48.87, height=51.22, x=0.0, y=0.0)
-        medium_rect = RectangularCrossSection(width=97.73, height=102.44, x=73.30, y=0.0)  # partial overlap
-        large_rect = RectangularCrossSection(width=194.67, height=204.88, x=0.0, y=127.66)  # overlaps with small_rect
-        elements = [small_rect, medium_rect, large_rect]
+        small_rect = RectangularProfile(width=48.87, height=51.22, x=0.0, y=0.0)
+        medium_rect = RectangularProfile(width=97.73, height=102.44, x=73.30, y=0.0)  # partial overlap
+        large_rect = RectangularProfile(width=194.67, height=204.88, x=0.0, y=127.66)  # overlaps with small_rect
+        polygons = [small_rect.polygon, medium_rect.polygon, large_rect.polygon]
 
-        result = merge_polygons(elements)
+        result = merge_polygons(polygons)
 
         assert isinstance(result, Polygon)
         assert result.is_valid
@@ -196,31 +196,34 @@ class TestMergePolygons:
         # Test with various configurations that result in connected shapes
         configurations = [
             # Single rectangle
-            [RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)],
+            [RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0).polygon],
             # Two touching rectangles
-            [RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0), RectangularCrossSection(width=97.73, height=203.45, x=97.73, y=0.0)],
+            [
+                RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0).polygon,
+                RectangularProfile(width=97.73, height=203.45, x=97.73, y=0.0).polygon,
+            ],
             # Three overlapping rectangles
             [
-                RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0),
-                RectangularCrossSection(width=97.73, height=203.45, x=78.18, y=0.0),
-                RectangularCrossSection(width=97.73, height=203.45, x=156.37, y=0.0),
+                RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0).polygon,
+                RectangularProfile(width=97.73, height=203.45, x=78.18, y=0.0).polygon,
+                RectangularProfile(width=97.73, height=203.45, x=156.37, y=0.0).polygon,
             ],
         ]
 
-        for elements in configurations:
-            result = merge_polygons(elements)
+        for polygons in configurations:
+            result = merge_polygons(polygons)
             assert isinstance(result, Polygon)
             assert result.is_valid
 
     def test_merge_polygons_disconnected_rectangles_raises_error(self) -> None:
         """Test that merging disconnected rectangles raises TypeError."""
         # Two rectangles that don't touch or overlap
-        rect1 = RectangularCrossSection(width=97.73, height=203.45, x=0.0, y=0.0)
-        rect2 = RectangularCrossSection(width=97.73, height=203.45, x=195.46, y=0.0)  # Gap between them
-        elements = [rect1, rect2]
+        rect1 = RectangularProfile(width=97.73, height=203.45, x=0.0, y=0.0)
+        rect2 = RectangularProfile(width=97.73, height=203.45, x=195.46, y=0.0)  # Gap between them
+        polygons = [rect1.polygon, rect2.polygon]
 
         with pytest.raises(TypeError, match=r"The combined geometry is not a valid Polygon."):
-            merge_polygons(elements)
+            merge_polygons(polygons)
 
 
 class TestPolygonBuilder:
