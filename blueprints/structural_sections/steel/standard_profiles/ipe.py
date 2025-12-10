@@ -4,11 +4,11 @@ from enum import Enum
 from typing import Self
 
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
-from blueprints.structural_sections.steel.standard_profiles.profile_enum_meta import ProfileEnumMeta
 from blueprints.type_alias import MM
+from blueprints.utils.abc_enum_meta import ABCEnumMeta
 
 
-class IPE(IProfile, Enum, metaclass=ProfileEnumMeta):
+class IPE(IProfile, Enum, metaclass=ABCEnumMeta):
     """Geometrical representation of IPE steel profiles."""
 
     IPE80 = ("IPE80", 80, 46, 3.8, 5.2, 5)
