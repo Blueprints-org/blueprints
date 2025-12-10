@@ -14,7 +14,7 @@ implemented. Naming convention for country specific table is 'Table{table_number
 Total of 20 tables present.
 
 | Table number |        Done        | Remarks | Object name                                     | NL  |
-|:-------------|:------------------:|:--------|:------------------------------------------------|-----|
+|:-------------|:------------------:|:--------|:------------------------------------------------|:---:|
 | 3.1          | :heavy_check_mark: |         | Table3Dot1NominalValuesHotRolledStructuralSteel | :x: |
 | 3.2          |        :x:         |         |                                                 | :x: |
 | 5.1          |        :x:         |         |                                                 | :x: |

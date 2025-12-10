@@ -13,128 +13,128 @@ implemented. Naming convention for country specific formulas is 'Form{formula_nu
 
 Total of 108 formulas present.
 
-| Formula number |        Done        | Remarks | Object name                                                                       | NL                 |
-|:---------------|:------------------:|---------|:----------------------------------------------------------------------------------|--------------------|
-| 2.1            |        :x:         |         |                                                                                   | :x:                |
-| 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance                                            | :x:                |
+| Formula number |        Done        | Remarks | Object name                                                                       |         NL         |
+|:---------------|:------------------:|:--------|:----------------------------------------------------------------------------------|:------------------:|
+| 2.1            |        :x:         |         |                                                                                   |        :x:         |
+| 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance                                            |        :x:         |
 | 5.1            | :heavy_check_mark: |         | From5Dot1CriteriumDisregardSecondOrderEffects                                     | :heavy_check_mark: |
-| 5.2            |        :x:         |         |                                                                                   | :x:                |
-| 5.3            |        :x:         |         |                                                                                   | :x:                |
-| 5.4            |        :x:         |         |                                                                                   | :x:                |
-| 5.5            |        :x:         |         |                                                                                   | :x:                |
-| 5.6            |        :x:         |         |                                                                                   | :x:                |
-| 5.7            | :heavy_check_mark: |         | Form5Dot7DisregardFrameSwayImperfections                                          | :x:                |
-| 5.8            | :heavy_check_mark: |         | Form5Dot8CheckSlenderness                                                         | :x:                |
-| 5.9            |        :x:         |         |                                                                                   | :x:                |
-| 5.10           |        :x:         |         |                                                                                   | :x:                |
-| 5.11           |        :x:         |         |                                                                                   | :x:                |
-| 5.12           |        :x:         |         |                                                                                   | :x:                |
-| 5.13           |        :x:         |         |                                                                                   | :x:                |
-| 5.14           |        :x:         |         |                                                                                   | :x:                |
-| 6.1            | :heavy_check_mark: |         | Form6Dot1ElasticVerification                                                      | :x:                |
-| 6.2            | :heavy_check_mark: |         | Form6Dot2UtilizationRatio                                                         | :x:                |
-| 6.3            | :heavy_check_mark: |         | Form6Dot3MinDeductionAreaStaggeredFastenerHoles                                   | :x:                |
-| 6.4            | :heavy_check_mark: |         | Form6Dot4AdditionalMoment                                                         | :x:                |
-| 6.5            | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength                                                | :x:                |
-| 6.6            | :heavy_check_mark: |         | Form6Dot6DesignPlasticRestistanceGrossCrossSection                                | :x:                |
-| 6.7            | :heavy_check_mark: |         | Form6Dot7DesignUltimateResistanceNetCrossSection                                  | :x:                |
-| 6.8            | :heavy_check_mark: |         | Form6Dot8NetDesignTensionResistance                                               | :x:                |
-| 6.9            | :heavy_check_mark: |         | Form6Dot9CheckCompressionForce                                                    | :x:                |
-| 6.10           | :heavy_check_mark: |         | Form6Dot10NcRdClass1And2And3                                                      | :x:                |
-| 6.11           | :heavy_check_mark: |         | Form6Dot11NcRdClass4                                                              | :x:                |
-| 6.12           | :heavy_check_mark: |         | Form6Dot12CheckBendingMoment                                                      | :x:                |
-| 6.13           | :heavy_check_mark: |         | Form6Dot13MCRdClass1And2                                                          | :x:                |
-| 6.14           | :heavy_check_mark: |         | Form6Dot14MCRdClass3                                                              | :x:                |
-| 6.15           | :heavy_check_mark: |         | Form6Dot15McRdClass4                                                              | :x:                |
-| 6.16           | :heavy_check_mark: |         | Form6Dot16CheckFlangeWithFastenerHoles                                            | :x:                |
-| 6.17           | :heavy_check_mark: |         | Form6Dot17CheckShearForce                                                         | :x:                |
-| 6.18           | :heavy_check_mark: |         | Form6Dot18DesignPlasticShearResistance                                            | :x:                |
-| 6.18 A_v       | :heavy_check_mark: |         | Various equations                                                                 | :x:                |
-| 6.19           | :heavy_check_mark: |         | Form6Dot19CheckDesignElasticShearResistance                                       | :x:                |
-| 6.20           | :heavy_check_mark: |         | Form6Dot20ShearStress                                                             | :x:                |
-| 6.21           | :heavy_check_mark: |         | Form6Dot21ShearStressIOrHSection                                                  | :x:                |
-| 6.22           | :heavy_check_mark: |         | Form6Dot22CheckShearBucklingResistance                                            | :x:                |
-| 6.23           | :heavy_check_mark: |         | Form6Dot23CheckTorsionalMoment                                                    | :x:                |
-| 6.24           | :heavy_check_mark: |         | Form6Dot24TotalTorsionalMoment                                                    | :x:                |
-| 6.25           | :heavy_check_mark: |         | Form6Dot25CheckCombinedShearForceAndTorsionalMoment                               | :x:                |
-| 6.26           | :heavy_check_mark: |         | Form6Dot26VplTRdIOrHSection                                                       | :x:                |
-| 6.27           | :heavy_check_mark: |         | Form6Dot27VplTRdChannelSection                                                    | :x:                |
-| 6.28           | :heavy_check_mark: |         | Form6Dot28VplTRdHollowSection                                                     | :x:                |
-| 6.29           | :heavy_check_mark: |         | Form6Dot29ReducedYieldStrength                                                    | :x:                |
-| 6.29 (rho)     | :heavy_check_mark: |         | Form6Dot29Rho and Form6Dot29RhoWithTorsion                                        | :x:                |
-| 6.30           | :heavy_check_mark: |         | Form6Dot30ReducedPlasticResistanceMoment                                          | :x:                |
-| 6.31           | :heavy_check_mark: |         | Form6Dot31CheckBendingAndAxialForce                                               | :x:                |
-| 6.32           | :heavy_check_mark: |         | Form6Dot32MNrdRectangular                                                         | :x:                |
-| 6.33           | :heavy_check_mark: |         | Form6Dot33CheckAxialForceY                                                        | :x:                |
-| 6.34           | :heavy_check_mark: |         | Form6Dot34CheckAxialForceY                                                        | :x:                |
-| 6.35           | :heavy_check_mark: |         | Form6Dot35CheckAxialForceZ                                                        | :x:                |
-| 6.36           | :heavy_check_mark: |         | Form6Dot36MomentReduction                                                         | :x:                |
-| 6.37           | :heavy_check_mark: |         | Form6Dot37And38MomentReduction                                                    | :x:                |
-| 6.38           | :heavy_check_mark: |         | Form6Dot37And38MomentReduction                                                    | :x:                |
-| 6.38n          | :heavy_check_mark: |         | Form6Dot38N                                                                       | :x:                |
-| 6.38a          | :heavy_check_mark: |         | Form6Dot38A                                                                       | :x:                |
-| 6.39           | :heavy_check_mark: |         | Form6Dot39ReducedBendingMomentResistance                                          | :x:                |
-| 6.39 a_w       | :heavy_check_mark: |         | Form6Dot39awHollowSections and Form6Dot39awWeldedBoxSections                      | :x:                |
-| 6.40           | :heavy_check_mark: |         | Form6Dot40ReducedBendingMomentResistance                                          | :x:                |
-| 6.40 a_f       | :heavy_check_mark: |         | Form6Dot40afHollowSections and Form6Dot40afWeldedBoxSections                      | :x:                |
-| 6.41           | :heavy_check_mark: |         | Form6Dot41BiaxialBendingCheck                                                     | :x:                |
-| 6.42           |        :x:         |         |                                                                                   | :x:                |
-| 6.43           |        :x:         |         |                                                                                   | :x:                |
-| 6.44           |        :x:         |         |                                                                                   | :x:                |
-| 6.45           |        :x:         |         |                                                                                   | :x:                |
-| 6.46           |        :x:         |         |                                                                                   | :x:                |
-| 6.47           |        :x:         |         |                                                                                   | :x:                |
-| 6.48           |        :x:         |         |                                                                                   | :x:                |
-| 6.49           |        :x:         |         |                                                                                   | :x:                |
-| 6.50           |        :x:         |         |                                                                                   | :x:                |
-| 6.51           |        :x:         |         |                                                                                   | :x:                |
-| 6.52           |        :x:         |         |                                                                                   | :x:                |
-| 6.53           |        :x:         |         |                                                                                   | :x:                |
-| 6.54           |        :x:         |         |                                                                                   | :x:                |
-| 6.55           |        :x:         |         |                                                                                   | :x:                |
-| 6.56           |        :x:         |         |                                                                                   | :x:                |
-| 6.57           |        :x:         |         |                                                                                   | :x:                |
-| 6.58           |        :x:         |         |                                                                                   | :x:                |
-| 6.59           |        :x:         |         |                                                                                   | :x:                |
-| 6.60           |        :x:         |         |                                                                                   | :x:                |
-| 6.61           |        :x:         |         |                                                                                   | :x:                |
-| 6.62           |        :x:         |         |                                                                                   | :x:                |
-| 6.63           |        :x:         |         |                                                                                   | :x:                |
-| 6.64           |        :x:         |         |                                                                                   | :x:                |
-| 6.65           |        :x:         |         |                                                                                   | :x:                |
-| 6.66           |        :x:         |         |                                                                                   | :x:                |
-| 6.67           |        :x:         |         |                                                                                   | :x:                |
-| 6.68           |        :x:         |         |                                                                                   | :x:                |
-| 6.69           |        :x:         |         |                                                                                   | :x:                |
-| 6.70           |        :x:         |         |                                                                                   | :x:                |
-| 6.71           | :heavy_check_mark: |         | FormADot2CriteriaBasedOnStressRangeLHS and FormADot2CriteriaBasedOnStressRangeRHS | :x:                |
-| 6.72           |        :x:         |         |                                                                                   | :x:                |
-| 6.73           |        :x:         |         |                                                                                   | :x:                |
-| 6.74           |        :x:         |         |                                                                                   | :x:                |
-| 6.75           |        :x:         |         |                                                                                   | :x:                |
-| BB.1           |        :x:         |         |                                                                                   | :x:                |
-| BB.2           |        :x:         |         |                                                                                   | :x:                |
-| BB.3           |        :x:         |         |                                                                                   | :x:                |
-| BB.4           |        :x:         |         |                                                                                   | :x:                |
-| BB.5           |        :x:         |         |                                                                                   | :x:                |
-| BB.6           |        :x:         |         |                                                                                   | :x:                |
-| BB.7           |        :x:         |         |                                                                                   | :x:                |
-| BB.8           |        :x:         |         |                                                                                   | :x:                |
-| BB.9           |        :x:         |         |                                                                                   | :x:                |
-| BB.10          |        :x:         |         |                                                                                   | :x:                |
-| BB.11          |        :x:         |         |                                                                                   | :x:                |
-| BB.12          |        :x:         |         |                                                                                   | :x:                |
-| BB.13          |        :x:         |         |                                                                                   | :x:                |
-| BB.14          |        :x:         |         |                                                                                   | :x:                |
-| BB.15          |        :x:         |         |                                                                                   | :x:                |
-| BB.16          |        :x:         |         |                                                                                   | :x:                |
-| BB.17          |        :x:         |         |                                                                                   | :x:                |
+| 5.2            |        :x:         |         |                                                                                   |        :x:         |
+| 5.3            |        :x:         |         |                                                                                   |        :x:         |
+| 5.4            |        :x:         |         |                                                                                   |        :x:         |
+| 5.5            |        :x:         |         |                                                                                   |        :x:         |
+| 5.6            |        :x:         |         |                                                                                   |        :x:         |
+| 5.7            | :heavy_check_mark: |         | Form5Dot7DisregardFrameSwayImperfections                                          |        :x:         |
+| 5.8            | :heavy_check_mark: |         | Form5Dot8CheckSlenderness                                                         |        :x:         |
+| 5.9            |        :x:         |         |                                                                                   |        :x:         |
+| 5.10           |        :x:         |         |                                                                                   |        :x:         |
+| 5.11           |        :x:         |         |                                                                                   |        :x:         |
+| 5.12           |        :x:         |         |                                                                                   |        :x:         |
+| 5.13           |        :x:         |         |                                                                                   |        :x:         |
+| 5.14           |        :x:         |         |                                                                                   |        :x:         |
+| 6.1            | :heavy_check_mark: |         | Form6Dot1ElasticVerification                                                      |        :x:         |
+| 6.2            | :heavy_check_mark: |         | Form6Dot2UtilizationRatio                                                         |        :x:         |
+| 6.3            | :heavy_check_mark: |         | Form6Dot3MinDeductionAreaStaggeredFastenerHoles                                   |        :x:         |
+| 6.4            | :heavy_check_mark: |         | Form6Dot4AdditionalMoment                                                         |        :x:         |
+| 6.5            | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength                                                |        :x:         |
+| 6.6            | :heavy_check_mark: |         | Form6Dot6DesignPlasticRestistanceGrossCrossSection                                |        :x:         |
+| 6.7            | :heavy_check_mark: |         | Form6Dot7DesignUltimateResistanceNetCrossSection                                  |        :x:         |
+| 6.8            | :heavy_check_mark: |         | Form6Dot8NetDesignTensionResistance                                               |        :x:         |
+| 6.9            | :heavy_check_mark: |         | Form6Dot9CheckCompressionForce                                                    |        :x:         |
+| 6.10           | :heavy_check_mark: |         | Form6Dot10NcRdClass1And2And3                                                      |        :x:         |
+| 6.11           | :heavy_check_mark: |         | Form6Dot11NcRdClass4                                                              |        :x:         |
+| 6.12           | :heavy_check_mark: |         | Form6Dot12CheckBendingMoment                                                      |        :x:         |
+| 6.13           | :heavy_check_mark: |         | Form6Dot13MCRdClass1And2                                                          |        :x:         |
+| 6.14           | :heavy_check_mark: |         | Form6Dot14MCRdClass3                                                              |        :x:         |
+| 6.15           | :heavy_check_mark: |         | Form6Dot15McRdClass4                                                              |        :x:         |
+| 6.16           | :heavy_check_mark: |         | Form6Dot16CheckFlangeWithFastenerHoles                                            |        :x:         |
+| 6.17           | :heavy_check_mark: |         | Form6Dot17CheckShearForce                                                         |        :x:         |
+| 6.18           | :heavy_check_mark: |         | Form6Dot18DesignPlasticShearResistance                                            |        :x:         |
+| 6.18 A_v       | :heavy_check_mark: |         | Various equations                                                                 |        :x:         |
+| 6.19           | :heavy_check_mark: |         | Form6Dot19CheckDesignElasticShearResistance                                       |        :x:         |
+| 6.20           | :heavy_check_mark: |         | Form6Dot20ShearStress                                                             |        :x:         |
+| 6.21           | :heavy_check_mark: |         | Form6Dot21ShearStressIOrHSection                                                  |        :x:         |
+| 6.22           | :heavy_check_mark: |         | Form6Dot22CheckShearBucklingResistance                                            |        :x:         |
+| 6.23           | :heavy_check_mark: |         | Form6Dot23CheckTorsionalMoment                                                    |        :x:         |
+| 6.24           | :heavy_check_mark: |         | Form6Dot24TotalTorsionalMoment                                                    |        :x:         |
+| 6.25           | :heavy_check_mark: |         | Form6Dot25CheckCombinedShearForceAndTorsionalMoment                               |        :x:         |
+| 6.26           | :heavy_check_mark: |         | Form6Dot26VplTRdIOrHSection                                                       |        :x:         |
+| 6.27           | :heavy_check_mark: |         | Form6Dot27VplTRdChannelSection                                                    |        :x:         |
+| 6.28           | :heavy_check_mark: |         | Form6Dot28VplTRdHollowSection                                                     |        :x:         |
+| 6.29           | :heavy_check_mark: |         | Form6Dot29ReducedYieldStrength                                                    |        :x:         |
+| 6.29 (rho)     | :heavy_check_mark: |         | Form6Dot29Rho and Form6Dot29RhoWithTorsion                                        |        :x:         |
+| 6.30           | :heavy_check_mark: |         | Form6Dot30ReducedPlasticResistanceMoment                                          |        :x:         |
+| 6.31           | :heavy_check_mark: |         | Form6Dot31CheckBendingAndAxialForce                                               |        :x:         |
+| 6.32           | :heavy_check_mark: |         | Form6Dot32MNrdRectangular                                                         |        :x:         |
+| 6.33           | :heavy_check_mark: |         | Form6Dot33CheckAxialForceY                                                        |        :x:         |
+| 6.34           | :heavy_check_mark: |         | Form6Dot34CheckAxialForceY                                                        |        :x:         |
+| 6.35           | :heavy_check_mark: |         | Form6Dot35CheckAxialForceZ                                                        |        :x:         |
+| 6.36           | :heavy_check_mark: |         | Form6Dot36MomentReduction                                                         |        :x:         |
+| 6.37           | :heavy_check_mark: |         | Form6Dot37And38MomentReduction                                                    |        :x:         |
+| 6.38           | :heavy_check_mark: |         | Form6Dot37And38MomentReduction                                                    |        :x:         |
+| 6.38n          | :heavy_check_mark: |         | Form6Dot38N                                                                       |        :x:         |
+| 6.38a          | :heavy_check_mark: |         | Form6Dot38A                                                                       |        :x:         |
+| 6.39           | :heavy_check_mark: |         | Form6Dot39ReducedBendingMomentResistance                                          |        :x:         |
+| 6.39 a_w       | :heavy_check_mark: |         | Form6Dot39awHollowSections and Form6Dot39awWeldedBoxSections                      |        :x:         |
+| 6.40           | :heavy_check_mark: |         | Form6Dot40ReducedBendingMomentResistance                                          |        :x:         |
+| 6.40 a_f       | :heavy_check_mark: |         | Form6Dot40afHollowSections and Form6Dot40afWeldedBoxSections                      |        :x:         |
+| 6.41           | :heavy_check_mark: |         | Form6Dot41BiaxialBendingCheck                                                     |        :x:         |
+| 6.42           |        :x:         |         |                                                                                   |        :x:         |
+| 6.43           |        :x:         |         |                                                                                   |        :x:         |
+| 6.44           |        :x:         |         |                                                                                   |        :x:         |
+| 6.45           |        :x:         |         |                                                                                   |        :x:         |
+| 6.46           |        :x:         |         |                                                                                   |        :x:         |
+| 6.47           |        :x:         |         |                                                                                   |        :x:         |
+| 6.48           |        :x:         |         |                                                                                   |        :x:         |
+| 6.49           |        :x:         |         |                                                                                   |        :x:         |
+| 6.50           |        :x:         |         |                                                                                   |        :x:         |
+| 6.51           |        :x:         |         |                                                                                   |        :x:         |
+| 6.52           |        :x:         |         |                                                                                   |        :x:         |
+| 6.53           |        :x:         |         |                                                                                   |        :x:         |
+| 6.54           |        :x:         |         |                                                                                   |        :x:         |
+| 6.55           |        :x:         |         |                                                                                   |        :x:         |
+| 6.56           |        :x:         |         |                                                                                   |        :x:         |
+| 6.57           |        :x:         |         |                                                                                   |        :x:         |
+| 6.58           |        :x:         |         |                                                                                   |        :x:         |
+| 6.59           |        :x:         |         |                                                                                   |        :x:         |
+| 6.60           |        :x:         |         |                                                                                   |        :x:         |
+| 6.61           |        :x:         |         |                                                                                   |        :x:         |
+| 6.62           |        :x:         |         |                                                                                   |        :x:         |
+| 6.63           |        :x:         |         |                                                                                   |        :x:         |
+| 6.64           |        :x:         |         |                                                                                   |        :x:         |
+| 6.65           |        :x:         |         |                                                                                   |        :x:         |
+| 6.66           |        :x:         |         |                                                                                   |        :x:         |
+| 6.67           |        :x:         |         |                                                                                   |        :x:         |
+| 6.68           |        :x:         |         |                                                                                   |        :x:         |
+| 6.69           |        :x:         |         |                                                                                   |        :x:         |
+| 6.70           |        :x:         |         |                                                                                   |        :x:         |
+| 6.71           | :heavy_check_mark: |         | FormADot2CriteriaBasedOnStressRangeLHS and FormADot2CriteriaBasedOnStressRangeRHS |        :x:         |
+| 6.72           |        :x:         |         |                                                                                   |        :x:         |
+| 6.73           |        :x:         |         |                                                                                   |        :x:         |
+| 6.74           |        :x:         |         |                                                                                   |        :x:         |
+| 6.75           |        :x:         |         |                                                                                   |        :x:         |
+| BB.1           |        :x:         |         |                                                                                   |        :x:         |
+| BB.2           |        :x:         |         |                                                                                   |        :x:         |
+| BB.3           |        :x:         |         |                                                                                   |        :x:         |
+| BB.4           |        :x:         |         |                                                                                   |        :x:         |
+| BB.5           |        :x:         |         |                                                                                   |        :x:         |
+| BB.6           |        :x:         |         |                                                                                   |        :x:         |
+| BB.7           |        :x:         |         |                                                                                   |        :x:         |
+| BB.8           |        :x:         |         |                                                                                   |        :x:         |
+| BB.9           |        :x:         |         |                                                                                   |        :x:         |
+| BB.10          |        :x:         |         |                                                                                   |        :x:         |
+| BB.11          |        :x:         |         |                                                                                   |        :x:         |
+| BB.12          |        :x:         |         |                                                                                   |        :x:         |
+| BB.13          |        :x:         |         |                                                                                   |        :x:         |
+| BB.14          |        :x:         |         |                                                                                   |        :x:         |
+| BB.15          |        :x:         |         |                                                                                   |        :x:         |
+| BB.16          |        :x:         |         |                                                                                   |        :x:         |
+| BB.17          |        :x:         |         |                                                                                   |        :x:         |
 
 The table below presents a list of formulas from the Eurocode 3 standards for steel structures, specific to the 
 National Annex of the Netherlands.
 
 | Formula number | Done | Remarks | Object name |
-|----------------|------|---------|-------------|
+|:---------------|:----:|:--------|:------------|
 | NB.1           | :x:  |         |             |
 | NB.2           | :x:  |         |             |
 | NB.3           | :x:  |         |             |
