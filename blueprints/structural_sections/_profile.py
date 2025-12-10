@@ -14,7 +14,7 @@ from shapely import Point, Polygon
 from shapely.affinity import rotate, translate
 
 from blueprints.type_alias import DEG, M3_M, MM, MM2
-from blueprints.unit_conversion import MM3_TO_M3
+from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
 
 
 @dataclass(frozen=True)
@@ -134,7 +134,7 @@ class Profile(ABC):
     @property
     def volume_per_meter(self) -> M3_M:
         """Total volume of the reinforced profile per meter length [m³/m]."""
-        length = 1000  # mm
+        length = 1 * M_TO_MM  # mm
         return self.area * length * MM3_TO_M3
 
     def _geometry(self) -> Geometry:
