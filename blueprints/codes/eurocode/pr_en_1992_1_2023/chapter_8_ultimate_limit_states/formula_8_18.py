@@ -1,4 +1,62 @@
+"""Formula 8.18 from prEN-1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
+
 from blueprints.codes.formula import Formula
+from blueprints.codes.eurocode.pr_en_1992_1_2023 import pr_EN_1992_1_1_2023
+from blueprints.type_alias import MPA, N, MM
+from blueprints.validations import raise_if_negative
+from blueprints.codes.latex_formula import LatexFormula
+
 
 class Form8Dot18AverageShearStress(Formula):
-    pass
+    """Class representing formula 8.18 for the calculation of the average shear stress over the cross-section
+    in regions of members without geometric discontinuities."""
+
+    label = "8.18"
+    source_document = pr_EN_1992_1_1_2023
+
+    def __init__(self, v_ed: N, b_w: MM, z: MM) -> None:
+        r"""[$\tau_{Ed}$] Average shear stress over the cross-section area.
+
+        pr_NEN-EN 1992-1-1-2023 art 8.2.1 (3) - Formula (8.18)
+
+        Parameters
+        ----------
+        v_ed : N
+            [$V_{Ed}$] Design shear force at the control section in linear members
+        b_w : MM
+            [$b_w$] Width of the cross-section of linear members.
+        z : MM
+            [$z$] Lever arm for the shear stress calculation defined as z = 0.9d
+        """
+        super().__init__()
+        self.v_ed = v_ed
+        self.b_w = b_w
+        self.z = z
+
+    @staticmethod
+    def _evaluate(v_ed: MPA, b_w: MM, z: MM, *args, **kwargs) -> float:  # noqa: ARG004
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(
+            v_ed=v_ed,
+            b_w=b_w,
+            z=z
+        )
+        return v_ed / (b_w * z)
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Returns LatexFormula object for formula 8.18."""
+        return LatexFormula(
+            return_symbol=r"\tau_{Ed}",
+            result=f"{self:.{n}f}",
+            equation=r"\frac{V_{Ed}}{b_w \cdot z}",
+            numeric_equation=rf"\frac{{{self.v_ed}}}{{{self.b_w} \cdot {self.z}}}",
+            comparison_operator_label="="
+        )
+
+
+if __name__ == '__main__':
+    my_form = Form8Dot18AverageShearStress(v_ed=10000, b_w=50, z=215)
+    print(my_form)
+    print(my_form.latex())
+    print(my_form.latex().complete)
+    print(my_form.latex().short)
