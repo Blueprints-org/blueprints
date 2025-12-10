@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.geometric_cross_sections import CircularProfile
+from blueprints.structural_sections.geometric_profiles import CircularProfile
 from blueprints.type_alias import KG_M, RATIO
 from blueprints.unit_conversion import MM2_TO_M2
 

@@ -1,7 +1,7 @@
 """Tests for the CHS enum."""
 
+from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.standard_profiles.chs import CHS
-from blueprints.structural_sections.steel.steel_profile_sections.chs_profile import CHSProfile
 
 
 class TestCHS:

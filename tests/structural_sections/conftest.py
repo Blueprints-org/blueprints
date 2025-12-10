@@ -3,7 +3,7 @@
 import pytest
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.structural_sections.geometric_cross_sections import (
+from blueprints.structural_sections.geometric_profiles import (
     AnnularSectorProfile,
     CircularCorneredProfile,
     CircularProfile,

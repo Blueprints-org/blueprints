@@ -2,8 +2,8 @@
 
 from enum import Enum
 
+from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
 from blueprints.structural_sections.steel.standard_profiles.utils import wrap_as_instance_method
-from blueprints.structural_sections.steel.steel_profile_sections.rhs_profile import RHSProfile
 from blueprints.type_alias import MM
 
 

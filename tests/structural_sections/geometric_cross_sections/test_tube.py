@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from blueprints.structural_sections.geometric_cross_sections.tube import TubeProfile
+from blueprints.structural_sections.geometric_profiles.tube import TubeProfile
 
 
 class TestTubeCrossSection:

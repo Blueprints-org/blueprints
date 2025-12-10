@@ -12,7 +12,7 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections._profile import Profile
-from blueprints.structural_sections.steel.steel_profile_sections.plotters.general_steel_plotter import plot_shapes
+from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 
 if TYPE_CHECKING:

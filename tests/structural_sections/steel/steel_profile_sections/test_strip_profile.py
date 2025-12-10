@@ -5,8 +5,8 @@ from unittest.mock import MagicMock
 import matplotlib.pyplot as plt
 import pytest
 
+from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
 from blueprints.structural_sections.steel.standard_profiles.strip import Strip
-from blueprints.structural_sections.steel.steel_profile_sections.strip_profile import StripProfile
 
 
 class TestStripSteelProfile:

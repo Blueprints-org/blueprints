@@ -6,23 +6,23 @@ from unittest.mock import MagicMock, patch
 import pytest
 from sectionproperties.post.post import SectionProperties
 
+from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
+from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
+from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
+from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
+from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
 from blueprints.structural_sections.steel.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.standard_profiles.ipe import IPE
 from blueprints.structural_sections.steel.standard_profiles.lnp import LNP
 from blueprints.structural_sections.steel.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.standard_profiles.strip import Strip
-from blueprints.structural_sections.steel.steel_profile_sections.chs_profile import CHSProfile
-from blueprints.structural_sections.steel.steel_profile_sections.i_profile import IProfile
-from blueprints.structural_sections.steel.steel_profile_sections.lnp_profile import LNPProfile
-from blueprints.structural_sections.steel.steel_profile_sections.rhs_profile import RHSProfile
-from blueprints.structural_sections.steel.steel_profile_sections.strip_profile import StripProfile
 
 
 @pytest.fixture
 def mock_section_properties() -> Generator[MagicMock, None, None]:
     """Fixture to mock section properties with default values."""
-    with patch("blueprints.structural_sections.steel.steel_profile_sections.plotters.general_steel_plotter.Profile.section_properties") as mock:
+    with patch("blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter.Profile.section_properties") as mock:
         mock.return_value = SectionProperties(ixx_c=1.0e6, iyy_c=1.0e6)
         yield mock
 

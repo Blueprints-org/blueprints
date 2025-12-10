@@ -1,7 +1,7 @@
 """Test for the HEA enum."""
 
+from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.standard_profiles.hea import HEA
-from blueprints.structural_sections.steel.steel_profile_sections.i_profile import IProfile
 
 
 class TestHEA:

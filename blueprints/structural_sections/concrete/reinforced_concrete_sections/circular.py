@@ -12,7 +12,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.base i
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.circular import CircularCrossSectionPlotter
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.geometric_cross_sections import CircularProfile
+from blueprints.structural_sections.geometric_profiles import CircularProfile
 from blueprints.type_alias import DEG, DIMENSIONLESS, MM, RATIO
 
 

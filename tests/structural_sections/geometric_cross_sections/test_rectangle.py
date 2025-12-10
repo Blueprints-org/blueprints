@@ -4,7 +4,7 @@ import pytest
 from sectionproperties.analysis import Section
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.structural_sections.geometric_cross_sections.rectangle import RectangularProfile
+from blueprints.structural_sections.geometric_profiles.rectangle import RectangularProfile
 
 
 class TestRectangularCrossSection:

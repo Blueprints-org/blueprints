@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.materials.steel import SteelMaterial
-from blueprints.structural_sections.geometric_cross_sections import RectangularProfile
+from blueprints.structural_sections.geometric_profiles import RectangularProfile
 from blueprints.structural_sections.steel.combined_steel_cross_section import CombinedSteelCrossSection
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 

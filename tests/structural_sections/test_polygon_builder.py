@@ -7,7 +7,7 @@ import pytest
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder, merge_polygons
-from blueprints.structural_sections.geometric_cross_sections import RectangularProfile
+from blueprints.structural_sections.geometric_profiles import RectangularProfile
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 

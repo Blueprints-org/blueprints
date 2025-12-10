@@ -12,7 +12,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.base i
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.rectangular import RectangularCrossSectionPlotter
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.geometric_cross_sections import RectangularProfile
+from blueprints.structural_sections.geometric_profiles import RectangularProfile
 from blueprints.type_alias import DIMENSIONLESS, MM, RATIO
 
 
