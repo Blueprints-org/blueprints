@@ -21,7 +21,13 @@ class TranslateLatex:
     When the services are not available, (sections of) text will be left in English.
     """
 
-    def __init__(self, latex: str, dest_language: str, service_urls: list[str] | None = None) -> None:
+    def __init__(
+            self,
+            latex: str,
+            dest_language: str,
+            service_urls: list[str] | None = None,
+            custom_csv_path: str | None = None,
+    ) -> None:
         r"""
         Initialize the Translate class with text and destination language.
         WARNING: uses Google Translate service when translations haven't been manually entered.
@@ -41,28 +47,46 @@ class TranslateLatex:
         self.translator = Translator(service_urls=service_urls)
         self.original = latex
         self.dest_language = dest_language
+        self.csv_path = os.path.join(os.path.dirname(__file__), "translations.csv")
+        if custom_csv_path:
+            self.csv_path = custom_csv_path
         self.translation_dict = self._load_translation_dict(
             dest_language.replace("-", "_")
         )  # Normalize for CSV filename and Google: use underscores, not hyphens
         self.translation_failed = False
         self.translated = self._translate_latex()
 
-    def _load_translation_dict(self, dest_language: str) -> dict:
+    def _load_translation_dict(self, dest_language: str) -> dict[str, str]:
         r"""
         Load translation dictionary from a CSV file if it exists.
         The CSV should be named '<dest_language>.csv' and be in the same directory as this script.
+        The CSV format has language codes as headers (e.g., en,nl,de,fr) with the first column as source.
         Returns a dict mapping source text to translated text.
-        Handles quoted fields and commas within quotes.
+        If a translation is "-", the source text is used instead.
         """
-        csv_path = os.path.join(os.path.dirname(__file__), f"{dest_language}.csv")
         translation_dict = {}
-        if os.path.isfile(csv_path):
-            with open(csv_path, encoding="utf-8", newline="") as csvfile:
+        if os.path.isfile(self.csv_path):
+            with open(self.csv_path, encoding="utf-8", newline="") as csvfile:
                 reader = csv.reader(csvfile)
-                next(reader, None)  # Skip header row
+                header = next(reader, None)
+
+                # Find the column index for the destination language
+                try:
+                    dest_col_index = header.index(dest_language)
+                except ValueError:
+                    logging.warning(f"Language '{dest_language}' not found in CSV header: {header}")
+                    return translation_dict
+
+                # Load translations from the appropriate column
                 for row in reader:
-                    if len(row) == 2:
-                        translation_dict[row[0]] = row[1]
+                    if len(row) > dest_col_index:
+                        source_text = row[0]
+                        translation = row[dest_col_index]
+                        # If translation is "-", use the source text
+                        if translation == "-":
+                            translation_dict[source_text] = source_text
+                        else:
+                            translation_dict[source_text] = translation
         return translation_dict
 
     def _wildcard_match(self, text: str) -> str | None:
@@ -88,8 +112,8 @@ class TranslateLatex:
                     return result
         return None
 
-    def _translate_bulk(self, texts: list) -> list:
-        r"""
+    def _translate_bulk(self, texts: list) -> list[str]:
+        r"""f
         Translate a list of strings to the destination language.
         First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
 

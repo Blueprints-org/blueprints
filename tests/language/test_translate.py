@@ -1,4 +1,5 @@
 """Tests for language translations."""
+import os
 
 from blueprints.language.translate import TranslateLatex
 
@@ -6,45 +7,58 @@ from blueprints.language.translate import TranslateLatex
 class TestTranslateLatex:
     """Tests for language translations in Blueprints."""
 
+    @classmethod
+    def setup_class(cls) -> None:
+        """Set up test fixtures for the class."""
+        # Path to the test CSV file
+        cls.test_csv_path = os.path.join(os.path.dirname(__file__), "aaa_example.csv")
+
     def test_translate_with_formula_manual(self) -> None:
         """Test TranslateLatex with translation from CSV."""
         latex = r"\text{This is a test}"
-        result = TranslateLatex(latex, "aaa_example")
+        result = TranslateLatex(latex, "aaa_example", custom_csv_path=self.test_csv_path)
         # csv entry is "This is a test","This is a translation"
         assert str(result) == r"\text{This is a translation}"
 
     def test_translate_with_formula_manual_and_wildcard(self) -> None:
         """Test TranslateLatex with wildcard translation from CSV."""
         latex = r"\text{This IS A TEST WITH A wildcard}"
-        result = TranslateLatex(latex, "aaa_example")
+        result = TranslateLatex(latex, "aaa_example", custom_csv_path=self.test_csv_path)
         # csv entry is "This ** wildcard","Different text ** here"
         assert str(result) == r"\text{Different text IS A TEST WITH A here}"
 
     def test_translate_with_formula_manual_and_multiple_wildcard(self) -> None:
         """Test TranslateLatex with multiple wildcard translation from CSV."""
         latex = r"\text{Wildcards CAN BE used MULTIPLE TIMES here AND AS OFTEN AS YOU want}"
-        result = TranslateLatex(latex, "aaa_example")
+        result = TranslateLatex(latex, "aaa_example", custom_csv_path=self.test_csv_path)
         # csv entry is "Wildcards ** used ** here ** want","Completely ** different ** text ** here"
         assert str(result) == r"\text{Completely CAN BE different MULTIPLE TIMES text AND AS OFTEN AS YOU here}"
 
     def test_translate_with_comma_in_text(self) -> None:
         """Test TranslateLatex with comma in text from CSV."""
         latex = r"\text{This quote contains, a comma}"
-        result = TranslateLatex(latex, "aaa_example")
+        result = TranslateLatex(latex, "aaa_example", custom_csv_path=self.test_csv_path)
         # csv entry is "This quote contains, a comma","Which is handled, correctly"
         assert str(result) == r"\text{Which is handled, correctly}"
 
     def test_translate_with_special_characters(self) -> None:
         """Test TranslateLatex with special characters from CSV."""
         latex = r"\text{Special characters: %$#& (╯°□°) ╯︵ ┻━┻}"
-        result = TranslateLatex(latex, "aaa_example")
+        result = TranslateLatex(latex, "aaa_example", custom_csv_path=self.test_csv_path)
         # csv entry is "Special characters: %$#& (╯°□°) ╯︵ ┻━┻","Works perfectly"
         assert str(result) == r"\text{Works perfectly}"
+
+    def test_not_translated_value(self) -> None:
+        """Test TranslateLatex with special characters from CSV."""
+        latex = r"This is true in all languages"
+        result = TranslateLatex(latex, "aaa_example", custom_csv_path=self.test_csv_path)
+        # csv entry is "This is true in all languages","-"
+        assert str(result) == r"This is true in all languages"
 
     def test_translate_with_mismatched_wildcards(self) -> None:
         """Test TranslateLatex with mismatched wildcard counts in CSV (usually continues to Google Translate, but test language does not exist)."""
         latex = r"\text{Mismatched wildcard amount HERE}"
-        result = TranslateLatex(latex, "aaa_example")
+        result = TranslateLatex(latex, "aaa_example", custom_csv_path=self.test_csv_path)
         # csv entry is "Mismatched wildcard amount ** here","Mismatched wildcard amount ** ** not allowed"
         assert str(result) == r"\text{Mismatched wildcard amount HERE}"
 

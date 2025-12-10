@@ -5,3 +5,4 @@ en,aaa_example
 "This quote contains, a comma","Which is handled, correctly"
 "Special characters: %$#& (╯°□°) ╯︵ ┻━┻","Works perfectly"
 "Mismatched wildcard amount ** here","Mismatched wildcard amount ** ** not allowed"
+"This is true in all languages","-"
