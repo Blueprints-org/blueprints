@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -169,7 +169,7 @@ test = [
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "numpy", specifier = ">=1.25.2" },
-    { name = "sectionproperties", specifier = ">=3.8.0" },
+    { name = "sectionproperties", specifier = ">=3.10.0" },
     { name = "shapely", specifier = ">=2.0.1" },
 ]
 
@@ -2202,7 +2202,7 @@ wheels = [
 
 [[package]]
 name = "sectionproperties"
-version = "3.9.0"
+version = "3.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cytriangle" },
@@ -2213,9 +2213,9 @@ dependencies = [
     { name = "scipy" },
     { name = "shapely" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ba/22/90516b68730dbe7ac4ef491a7a4a04e4961efc018aab6c2c5cf1b8dff186/sectionproperties-3.9.0.tar.gz", hash = "sha256:a695ee385a48d4f2ff14f54ad129a0ac01247943e7b23fd5fa55016580147803", size = 2681906, upload-time = "2025-04-26T14:35:22.145Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c0/9d/4315e9c27e8a7b4407751ef1db697f31ef45e6edbd6b29a9be329f817ee2/sectionproperties-3.10.0.tar.gz", hash = "sha256:0d7d9629d7fe427feb9a78eecea9c0313512fb8f07ade83a22afc7d4f6a844fc", size = 2727731, upload-time = "2025-12-11T05:31:25.829Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/df/48a0055f8792595dab1ef8b7c2be5d12c0dc805422fcd951cd9672b59f54/sectionproperties-3.9.0-py3-none-any.whl", hash = "sha256:ba88e2c05455f97875dc42dc67da8ae11911f991f43c3ceb68c2c11447528fce", size = 112894, upload-time = "2025-04-26T14:35:19.893Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/b6/c196ce24d50a9bee0212b8348807662a89594fb9c4cdbb119ec16e09627e/sectionproperties-3.10.0-py3-none-any.whl", hash = "sha256:72027aaa31035ab1aa69bd681dd9312a9ffe73c0dc8b4fb6ccd99878628808f0", size = 113722, upload-time = "2025-12-11T05:31:24.14Z" },
 ]
 
 [[package]]

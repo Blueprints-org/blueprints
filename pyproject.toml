@@ -28,7 +28,7 @@ classifiers = [
 dependencies = [
     "matplotlib>=3.10.7",
     "numpy>=1.25.2",
-    "sectionproperties>=3.8.0",
+    "sectionproperties>=3.10.0",
     "shapely>=2.0.1",
 ]
 
