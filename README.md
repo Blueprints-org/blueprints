@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/Blueprints-org/blueprints/branch/main/graph/badge.svg?token=vwYQBShr9q)](https://codecov.io/gh/Blueprints-org/blueprints)
 [![PyPI](https://img.shields.io/pypi/v/blue-prints?color=green)](https://pypi.org/project/blue-prints/)
 [![GitHub](https://img.shields.io/github/license/Blueprints-org/blueprints?color=green)](https://github.com/Blueprints-org/blueprints/blob/main/LICENSE)
-[![Python versions](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue?style=flat&logo=python)](https://badge.fury.io/py/blueprints)
+[![Python versions](https://img.shields.io/badge/python-3.12%20%7C%203.13%20%7C%203.14-blue?style=flat&logo=python)](https://badge.fury.io/py/blueprints)
 
 
 <picture>
