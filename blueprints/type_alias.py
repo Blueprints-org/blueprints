@@ -61,6 +61,11 @@ KNM = float
 """Kilonewton-meters (kNm), represented as a float."""
 # </editor-fold>
 
+# <editor-fold desc="MOMENTS PER UNIT LENGTH">
+KNM_M = float
+"""Kilonewton-meters per meter (kNm/m), represented as a float."""
+# </editor-fold>
+
 # <editor-fold desc="STRESSES">
 KPA = float
 """Kilopascals (KPa), represented as a float."""

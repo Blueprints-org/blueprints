@@ -22,7 +22,8 @@ class ResultOn(str, Enum):
 class ResultFor(str, Enum):
     """Enumeration for the source type of the internal force result.
 
-    Following SAF standard specification for ResultInternalForce1D.
+    Following SAF standard specification. Shared between ResultInternalForce1D
+    and ResultInternalForce2DEdge.
     """
 
     LOAD_CASE = "Load case"
