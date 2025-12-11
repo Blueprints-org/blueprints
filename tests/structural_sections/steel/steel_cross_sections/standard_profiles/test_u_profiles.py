@@ -82,8 +82,8 @@ class TestUProfiles:
 
     def test_profile_count(self) -> None:
         """Test that all profiles are present."""
-        # There should be 40 GU/PU profiles
-        assert len(USections) == 40
+        # There should be 66 GU/PU profiles (40 existing + 26 old profiles)
+        assert len(USections) == 66
 
     def test_specific_profiles(self) -> None:
         """Test specific profiles from the JSON data."""
@@ -107,3 +107,37 @@ class TestUProfiles:
         assert profile.b_width_single_pile == 400
         assert profile.h_height_pile == 290
         assert profile.a_flange_angle == 82.1
+
+    def test_old_profiles(self) -> None:
+        """Test some old U-section profiles from the JSON data."""
+        # Test GU 13-500
+        profile = USections.GU_13_500
+        assert profile.alias == "GU 13-500"
+        assert profile.b_width_single_pile == 500
+        assert profile.h_height_pile == 340
+        assert profile.tf_flange_thickness == 9.0
+        assert profile.tw_web_thickness == 8.5
+        assert profile.a_cross_sectional_area == 144
+        assert profile.gsp_mass_per_single_pile == 56.6
+        assert profile.i_y_moment_inertia == 19640
+
+        # Test JSP 3 (has estimated tw)
+        profile = USections.JSP_3
+        assert profile.alias == "JSP 3"
+        assert profile.b_width_single_pile == 400
+        assert profile.h_height_pile == 200
+        assert profile.tf_flange_thickness == 10.5
+        assert profile.tw_web_thickness == 8.4  # Estimated value
+
+        # Test L 2S
+        profile = USections.L_2S
+        assert profile.alias == "L 2S"
+        assert profile.b_width_single_pile == 400
+        assert profile.h_height_pile == 170
+        assert profile.tf_flange_thickness == 15.5
+
+        # Test PU 11R
+        profile = USections.PU_11R
+        assert profile.alias == "PU 11R"
+        assert profile.b_width_single_pile == 600
+        assert profile.h_height_pile == 360

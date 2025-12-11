@@ -810,6 +810,527 @@ class USections(Enum):
         "ArcelorMittal",
     )
 
+    # Old U-section profiles
+    GU_13_500 = (
+        "GU 13-500",
+        500,  # b_width_single_pile
+        340,  # h_height_pile
+        9.0,  # tf_flange_thickness
+        8.5,  # tw_web_thickness
+        136,  # bf_flange_width
+        50.0,  # a_flange_angle
+        144,  # a_cross_sectional_area
+        56.6,  # gsp_mass_per_single_pile
+        19640,  # i_y_moment_inertia
+        1155,  # w_el_y_elastic_section_modulus
+        1390,  # s_y_static_moment
+        1328,  # w_pl_y_plastic_section_modulus
+        113,  # gw_mass_per_m
+        11.68,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    GU_15_500 = (
+        "GU 15-500",
+        500,  # b_width_single_pile
+        340,  # h_height_pile
+        10.0,  # tf_flange_thickness
+        9.0,  # tw_web_thickness
+        136,  # bf_flange_width
+        50.0,  # a_flange_angle
+        155,  # a_cross_sectional_area
+        60.8,  # gsp_mass_per_single_pile
+        21390,  # i_y_moment_inertia
+        1260,  # w_el_y_elastic_section_modulus
+        1515,  # s_y_static_moment
+        1449,  # w_pl_y_plastic_section_modulus
+        122,  # gw_mass_per_m
+        11.75,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    JSP_2 = (
+        "JSP 2",
+        500,  # b_width_single_pile
+        340,  # h_height_pile
+        12.0,  # tf_flange_thickness
+        10.0,  # tw_web_thickness
+        136,  # bf_flange_width
+        50.0,  # a_flange_angle
+        177,  # a_cross_sectional_area
+        69.3,  # gsp_mass_per_single_pile
+        24810,  # i_y_moment_inertia
+        1460,  # w_el_y_elastic_section_modulus
+        1755,  # s_y_static_moment
+        1678,  # w_pl_y_plastic_section_modulus
+        139,  # gw_mass_per_m
+        11.84,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    JSP_3 = (
+        "JSP 3",
+        400,  # b_width_single_pile
+        200,  # h_height_pile
+        10.5,  # tf_flange_thickness
+        8.4,  # tw_web_thickness
+        80,  # bf_flange_width
+        55.0,  # a_flange_angle
+        153,  # a_cross_sectional_area
+        48.0,  # gsp_mass_per_single_pile
+        8740,  # i_y_moment_inertia
+        874,  # w_el_y_elastic_section_modulus
+        971,  # s_y_static_moment
+        1005,  # w_pl_y_plastic_section_modulus
+        120,  # gw_mass_per_m
+        7.56,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    JSP_4 = (
+        "JSP 4",
+        400,  # b_width_single_pile
+        250,  # h_height_pile
+        13.0,  # tf_flange_thickness
+        10.4,  # tw_web_thickness
+        100,  # bf_flange_width
+        55.0,  # a_flange_angle
+        191,  # a_cross_sectional_area
+        60.0,  # gsp_mass_per_single_pile
+        16800,  # i_y_moment_inertia
+        1340,  # w_el_y_elastic_section_modulus
+        1487,  # s_y_static_moment
+        1540,  # w_pl_y_plastic_section_modulus
+        150,  # gw_mass_per_m
+        9.38,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    L_2S = (
+        "L 2S",
+        400,  # b_width_single_pile
+        170,  # h_height_pile
+        15.5,  # tf_flange_thickness
+        12.4,  # tw_web_thickness
+        68,  # bf_flange_width
+        60.0,  # a_flange_angle
+        242,  # a_cross_sectional_area
+        76.1,  # gsp_mass_per_single_pile
+        38600,  # i_y_moment_inertia
+        2270,  # w_el_y_elastic_section_modulus
+        2618,  # s_y_static_moment
+        2610,  # w_pl_y_plastic_section_modulus
+        190,  # gw_mass_per_m
+        12.63,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    L_3S = (
+        "L 3S",
+        500,  # b_width_single_pile
+        340,  # h_height_pile
+        12.3,  # tf_flange_thickness
+        9.0,  # tw_web_thickness
+        136,  # bf_flange_width
+        50.0,  # a_flange_angle
+        177,  # a_cross_sectional_area
+        69.7,  # gsp_mass_per_single_pile
+        27200,  # i_y_moment_inertia
+        1600,  # w_el_y_elastic_section_modulus
+        1871,  # s_y_static_moment
+        1839,  # w_pl_y_plastic_section_modulus
+        139,  # gw_mass_per_m
+        12.4,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    L_4S = (
+        "L 4S",
+        500,  # b_width_single_pile
+        400,  # h_height_pile
+        14.1,  # tf_flange_thickness
+        10.0,  # tw_web_thickness
+        160,  # bf_flange_width
+        50.0,  # a_flange_angle
+        201,  # a_cross_sectional_area
+        78.9,  # gsp_mass_per_single_pile
+        40010,  # i_y_moment_inertia
+        2000,  # w_el_y_elastic_section_modulus
+        2389,  # s_y_static_moment
+        2300,  # w_pl_y_plastic_section_modulus
+        158,  # gw_mass_per_m
+        14.11,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    L_5S = (
+        "L 5S",
+        500,  # b_width_single_pile
+        440,  # h_height_pile
+        15.5,  # tf_flange_thickness
+        10.0,  # tw_web_thickness
+        176,  # bf_flange_width
+        50.0,  # a_flange_angle
+        219,  # a_cross_sectional_area
+        86.2,  # gsp_mass_per_single_pile
+        55010,  # i_y_moment_inertia
+        2500,  # w_el_y_elastic_section_modulus
+        2956,  # s_y_static_moment
+        2875,  # w_pl_y_plastic_section_modulus
+        172,  # gw_mass_per_m
+        15.84,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_10R = (
+        "PU 10R",
+        500,  # b_width_single_pile
+        450,  # h_height_pile
+        20.6,  # tf_flange_thickness
+        11.5,  # tw_web_thickness
+        180,  # bf_flange_width
+        50.0,  # a_flange_angle
+        270,  # a_cross_sectional_area
+        106.0,  # gsp_mass_per_single_pile
+        72000,  # i_y_moment_inertia
+        3200,  # w_el_y_elastic_section_modulus
+        3783,  # s_y_static_moment
+        3680,  # w_pl_y_plastic_section_modulus
+        212,  # gw_mass_per_m
+        16.33,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_11 = (
+        "PU 11",
+        600,  # b_width_single_pile
+        360,  # h_height_pile
+        8.0,  # tf_flange_thickness
+        7.0,  # tw_web_thickness
+        144,  # bf_flange_width
+        55.0,  # a_flange_angle
+        114,  # a_cross_sectional_area
+        53.8,  # gsp_mass_per_single_pile
+        18960,  # i_y_moment_inertia
+        1055,  # w_el_y_elastic_section_modulus
+        1245,  # s_y_static_moment
+        1213,  # w_pl_y_plastic_section_modulus
+        90,  # gw_mass_per_m
+        12.9,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_11R = (
+        "PU 11R",
+        600,  # b_width_single_pile
+        360,  # h_height_pile
+        8.8,  # tf_flange_thickness
+        8.4,  # tw_web_thickness
+        144,  # bf_flange_width
+        55.0,  # a_flange_angle
+        131,  # a_cross_sectional_area
+        61.8,  # gsp_mass_per_single_pile
+        19760,  # i_y_moment_inertia
+        1095,  # w_el_y_elastic_section_modulus
+        1336,  # s_y_static_moment
+        1259,  # w_pl_y_plastic_section_modulus
+        103,  # gw_mass_per_m
+        12.29,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_13R = (
+        "PU 13R",
+        600,  # b_width_single_pile
+        360,  # h_height_pile
+        9.0,  # tf_flange_thickness
+        7.6,  # tw_web_thickness
+        144,  # bf_flange_width
+        55.0,  # a_flange_angle
+        123,  # a_cross_sectional_area
+        58.1,  # gsp_mass_per_single_pile
+        20960,  # i_y_moment_inertia
+        1165,  # w_el_y_elastic_section_modulus
+        1370,  # s_y_static_moment
+        1339,  # w_pl_y_plastic_section_modulus
+        97,  # gw_mass_per_m
+        13.05,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_14R = (
+        "PU 14R",
+        675,  # b_width_single_pile
+        400,  # h_height_pile
+        10.0,  # tf_flange_thickness
+        7.4,  # tw_web_thickness
+        160,  # bf_flange_width
+        52.0,  # a_flange_angle
+        124,  # a_cross_sectional_area
+        65.6,  # gsp_mass_per_single_pile
+        25690,  # i_y_moment_inertia
+        1285,  # w_el_y_elastic_section_modulus
+        1515,  # s_y_static_moment
+        1477,  # w_pl_y_plastic_section_modulus
+        97,  # gw_mass_per_m
+        14.39,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_15R = (
+        "PU 15R",
+        675,  # b_width_single_pile
+        400,  # h_height_pile
+        11.0,  # tf_flange_thickness
+        8.0,  # tw_web_thickness
+        160,  # bf_flange_width
+        52.0,  # a_flange_angle
+        133,  # a_cross_sectional_area
+        70.5,  # gsp_mass_per_single_pile
+        28000,  # i_y_moment_inertia
+        1400,  # w_el_y_elastic_section_modulus
+        1655,  # s_y_static_moment
+        1610,  # w_pl_y_plastic_section_modulus
+        104,  # gw_mass_per_m
+        14.52,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_16 = (
+        "PU 16",
+        675,  # b_width_single_pile
+        400,  # h_height_pile
+        12.0,  # tf_flange_thickness
+        8.6,  # tw_web_thickness
+        160,  # bf_flange_width
+        52.0,  # a_flange_angle
+        142,  # a_cross_sectional_area
+        75.4,  # gsp_mass_per_single_pile
+        30290,  # i_y_moment_inertia
+        1515,  # w_el_y_elastic_section_modulus
+        1790,  # s_y_static_moment
+        1742,  # w_pl_y_plastic_section_modulus
+        112,  # gw_mass_per_m
+        14.63,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_20 = (
+        "PU 20",
+        600,  # b_width_single_pile
+        380,  # h_height_pile
+        12.0,  # tf_flange_thickness
+        9.0,  # tw_web_thickness
+        152,  # bf_flange_width
+        55.0,  # a_flange_angle
+        159,  # a_cross_sectional_area
+        74.7,  # gsp_mass_per_single_pile
+        30400,  # i_y_moment_inertia
+        1600,  # w_el_y_elastic_section_modulus
+        1878,  # s_y_static_moment
+        1840,  # w_pl_y_plastic_section_modulus
+        124,  # gw_mass_per_m
+        13.83,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_25 = (
+        "PU 25",
+        600,  # b_width_single_pile
+        430,  # h_height_pile
+        12.4,  # tf_flange_thickness
+        10.0,  # tw_web_thickness
+        172,  # bf_flange_width
+        50.0,  # a_flange_angle
+        179,  # a_cross_sectional_area
+        84.3,  # gsp_mass_per_single_pile
+        43000,  # i_y_moment_inertia
+        2000,  # w_el_y_elastic_section_modulus
+        2363,  # s_y_static_moment
+        2300,  # w_pl_y_plastic_section_modulus
+        141,  # gw_mass_per_m
+        15.5,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_6 = (
+        "PU 6",
+        600,  # b_width_single_pile
+        452,  # h_height_pile
+        14.2,  # tf_flange_thickness
+        10.0,  # tw_web_thickness
+        180,  # bf_flange_width
+        50.0,  # a_flange_angle
+        199,  # a_cross_sectional_area
+        93.6,  # gsp_mass_per_single_pile
+        56490,  # i_y_moment_inertia
+        2500,  # w_el_y_elastic_section_modulus
+        2899,  # s_y_static_moment
+        2875,  # w_pl_y_plastic_section_modulus
+        156,  # gw_mass_per_m
+        16.85,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_6R = (
+        "PU 6R",
+        600,  # b_width_single_pile
+        226,  # h_height_pile
+        7.5,  # tf_flange_thickness
+        6.4,  # tw_web_thickness
+        90,  # bf_flange_width
+        65.0,  # a_flange_angle
+        97,  # a_cross_sectional_area
+        45.6,  # gsp_mass_per_single_pile
+        6780,  # i_y_moment_inertia
+        600,  # w_el_y_elastic_section_modulus
+        697,  # s_y_static_moment
+        690,  # w_pl_y_plastic_section_modulus
+        76,  # gw_mass_per_m
+        8.36,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_7 = (
+        "PU 7",
+        600,  # b_width_single_pile
+        280,  # h_height_pile
+        6.0,  # tf_flange_thickness
+        6.0,  # tw_web_thickness
+        112,  # bf_flange_width
+        60.0,  # a_flange_angle
+        90,  # a_cross_sectional_area
+        42.2,  # gsp_mass_per_single_pile
+        8940,  # i_y_moment_inertia
+        640,  # w_el_y_elastic_section_modulus
+        750,  # s_y_static_moment
+        736,  # w_pl_y_plastic_section_modulus
+        70,  # gw_mass_per_m
+        9.97,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_7R = (
+        "PU 7R",
+        600,  # b_width_single_pile
+        226,  # h_height_pile
+        8.5,  # tf_flange_thickness
+        7.1,  # tw_web_thickness
+        90,  # bf_flange_width
+        65.0,  # a_flange_angle
+        106,  # a_cross_sectional_area
+        49.9,  # gsp_mass_per_single_pile
+        7570,  # i_y_moment_inertia
+        670,  # w_el_y_elastic_section_modulus
+        779,  # s_y_static_moment
+        770,  # w_pl_y_plastic_section_modulus
+        83,  # gw_mass_per_m
+        8.45,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_8 = (
+        "PU 8",
+        600,  # b_width_single_pile
+        280,  # h_height_pile
+        6.5,  # tf_flange_thickness
+        6.3,  # tw_web_thickness
+        112,  # bf_flange_width
+        60.0,  # a_flange_angle
+        94,  # a_cross_sectional_area
+        44.3,  # gsp_mass_per_single_pile
+        9580,  # i_y_moment_inertia
+        685,  # w_el_y_elastic_section_modulus
+        800,  # s_y_static_moment
+        787,  # w_pl_y_plastic_section_modulus
+        74,  # gw_mass_per_m
+        10.1,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_8R = (
+        "PU 8R",
+        600,  # b_width_single_pile
+        280,  # h_height_pile
+        8.0,  # tf_flange_thickness
+        8.0,  # tw_web_thickness
+        112,  # bf_flange_width
+        60.0,  # a_flange_angle
+        116,  # a_cross_sectional_area
+        54.5,  # gsp_mass_per_single_pile
+        11620,  # i_y_moment_inertia
+        830,  # w_el_y_elastic_section_modulus
+        983,  # s_y_static_moment
+        954,  # w_pl_y_plastic_section_modulus
+        91,  # gw_mass_per_m
+        10.01,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_9 = (
+        "PU 9",
+        600,  # b_width_single_pile
+        280,  # h_height_pile
+        7.5,  # tf_flange_thickness
+        6.9,  # tw_web_thickness
+        112,  # bf_flange_width
+        60.0,  # a_flange_angle
+        103,  # a_cross_sectional_area
+        48.7,  # gsp_mass_per_single_pile
+        10830,  # i_y_moment_inertia
+        775,  # w_el_y_elastic_section_modulus
+        905,  # s_y_static_moment
+        891,  # w_pl_y_plastic_section_modulus
+        81,  # gw_mass_per_m
+        10.25,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
+    PU_9R = (
+        "PU 9R",
+        600,  # b_width_single_pile
+        280,  # h_height_pile
+        9.0,  # tf_flange_thickness
+        8.7,  # tw_web_thickness
+        112,  # bf_flange_width
+        60.0,  # a_flange_angle
+        125,  # a_cross_sectional_area
+        58.8,  # gsp_mass_per_single_pile
+        12830,  # i_y_moment_inertia
+        915,  # w_el_y_elastic_section_modulus
+        1083,  # s_y_static_moment
+        1052,  # w_pl_y_plastic_section_modulus
+        98,  # gw_mass_per_m
+        10.13,  # radius_of_gyration_y_y
+        1.3,  # al_coating_area
+        "ArcelorMittal",  # manufacturer
+    )
+
     def __init__(  # noqa: PLR0913
         self,
         alias: str,
