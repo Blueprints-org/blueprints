@@ -101,7 +101,6 @@ source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },
-    { name = "scipy" },
     { name = "sectionproperties" },
     { name = "shapely" },
 ]
@@ -170,7 +169,6 @@ test = [
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "numpy", specifier = ">=2.3.5" },
-    { name = "scipy", specifier = ">=1.16.3" },
     { name = "sectionproperties", specifier = ">=3.10.0" },
     { name = "shapely", specifier = ">=2.1.2" },
 ]

@@ -31,7 +31,6 @@ dependencies = [
     "matplotlib>=3.10.8",
     "numpy>=2.3.5",
     "sectionproperties>=3.10.0",
-    "scipy>=1.16.3",
     "shapely>=2.1.2",
 ]
 
