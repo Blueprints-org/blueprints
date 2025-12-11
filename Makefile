@@ -4,7 +4,7 @@
 # Variables
 #─────────────────────────────────────────────────────────────────────────────
 UV      		:= uv
-PYTHON_VERSION  := 3.12
+PYTHON_VERSION  := 3.14
 VENV    		:= $(UV) venv --python $(PYTHON_VERSION)
 ALL    			:= --all-groups
 TESTS 			:= --group test
