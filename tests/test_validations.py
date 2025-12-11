@@ -12,10 +12,12 @@ from blueprints.validations import (
     GreaterThan90Error,
     LessOrEqualToZeroError,
     ListsNotSameLengthError,
+    MismatchSignError,
     NegativeValueError,
     raise_if_greater_than_90,
     raise_if_less_or_equal_to_zero,
     raise_if_lists_differ_in_length,
+    raise_if_mismatch_sign,
     raise_if_negative,
 )
 
@@ -51,6 +53,17 @@ def test_raise_if_negative_with_negative() -> None:
     """Test that NegativeValueError is raised for negative values."""
     with pytest.raises(NegativeValueError):
         raise_if_negative(a=-1)
+
+
+def test_raise_if_mismatch_sign_with_same_signs() -> None:
+    """Test that MismatchSignError is not raised when values have same signs."""
+    raise_if_mismatch_sign(a=1, b=2)
+
+
+def test_raise_if_mismatch_sign_with_different_signs() -> None:
+    """Test that MismatchSignError is raised when values have different signs."""
+    with pytest.raises(MismatchSignError):
+        raise_if_mismatch_sign(a=-1, b=2)
 
 
 def test_raise_if_greater_90_with_less_than_90() -> None:

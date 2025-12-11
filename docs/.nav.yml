@@ -52,13 +52,16 @@ nav:
           - EN 1993-5:2007 (Steel Piling):
             - Formulas: guides/concepts/codes/eurocode/en_1993_5_2007/formulas.md
             - Tables: guides/concepts/codes/eurocode/en_1993_5_2007/tables.md
-          - EN 1995-1-1-2023 (Timber): guides/concepts/codes/eurocode/en_1995_1_1_2023/formulas.md
+          - EN 1995-1-1:2023 (Timber): guides/concepts/codes/eurocode/en_1995_1_1_2023/formulas.md
           - NEN 9997-1+C2:2017 (Geotechnical):
             - Formulas: guides/concepts/codes/eurocode/nen_9997_1_c2_2017/formulas.md
             - Tables: guides/concepts/codes/eurocode/nen_9997_1_c2_2017/tables.md
-          - NEN-EN 1992-1-1:2020:
+          - NEN-EN 1992-1-1:2020 (Concrete):
             - Formulas: guides/concepts/codes/eurocode/nen_en_1992_1_1_2020/formulas.md
             - Tables: guides/concepts/codes/eurocode/nen_en_1992_1_1_2020/tables.md
+          - NEN-EN 1993-1-1:2006 (Steel):
+              - Formulas: guides/concepts/codes/eurocode/nen_en_1993_1_1_2006/formulas.md
+              - Tables: guides/concepts/codes/eurocode/nen_en_1993_1_1_2006/tables.md
         - CUR Standards:
           - guides/concepts/codes/cur/index.md
           - CUR 228: guides/concepts/codes/cur/cur_228/formulas.md
