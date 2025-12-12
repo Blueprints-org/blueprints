@@ -1,0 +1,262 @@
+# Developer CLI Guide
+
+Blueprints includes a command-line interface for development automation, designed to simplify developing and contributing to the project.
+
+## Requirements
+
+The CLI requires `uv` to be installed. If not present, you'll see a warning message with installation instructions.
+
+Install `uv`:
+```bash
+pip install uv
+# or visit https://github.com/astral-sh/uv
+```
+
+## Installation
+
+Install the CLI with its dependencies:
+
+```bash
+uv sync --group cli
+```
+
+??? tip "Help"
+
+    Use `blueprints --help` or `bp --help` to see available commands and options.
+
+    ```console
+    blueprints --help              # Show general help
+    blueprints <command> --help    # Show command-specific help
+    ```
+    
+    ```console
+    ========================================================================
+                           Blueprints CLI - vx.y.z
+    ========================================================================
+                                                                                                                                                                                        
+     Usage: blueprints [OPTIONS] COMMAND [ARGS]...                                                                                                                                      
+                                                                                                                                                                                        
+     Blueprints - Development automation CLI                                                                                                                                            
+                                                                                                                                                                                        
+    ╭─ Options ────────────────────────────────────────────────────────────╮
+    │ --version  -v        Show the CLI version.                                                                                                                                       │
+    │ --help               Show this message and exit.                                                                                                                                 │
+    ╰──────────────────────────────────────────────────────────────────────╯
+    ╭─ Commands ───────────────────────────────────────────────────────────╮
+    │ install      Sync all dependencies and create venv if needed.                                                                                                                    │
+    │ lint         Lint with Ruff.                                                                                                                                                     │
+    │ formatting   Enforce formatting compliance using Ruff's formatter.                                                                                                               │
+    │ typecheck    Run static type checks with mypy.                                                                                                                                   │
+    │ test         Run tests with pytest.                                                                                                                                              │
+    │ coverage     Run tests and generate coverage reports.                                                                                                                            │
+    │ check        Run all quality checks before making a PR.                                                                                                                          │
+    │ docs         Serve documentation locally with live reload.                                                                                                                       │
+    ╰──────────────────────────────────────────────────────────────────────╯
+    ```
+!!! tip "Alias"
+    
+    All commands can be invoked using the `bp` alias as well.
+
+## Available Commands
+
+### Environment Setup
+
+**`blueprints install`**
+
+- Sync all dependencies (creates venv automatically if needed)
+
+### Quality Assurance
+
+**`blueprints check`** (Recommended before PR)
+
+- Run all quality checks in sequence: lint, format, typecheck, coverage
+- Provides detailed summary of which checks passed/failed
+- Exits with code 0 on success, 1 on any failure (CI-friendly)
+- Continues all checks even if one fails (full visibility)
+
+??? tip "Pre-PR Workflow :rocket:"
+
+    Before submitting a pull request, run:
+
+    ```bash
+    blueprints check
+    ```
+
+    This single command validates all aspects of your changes:
+    
+    1. **Linting** - Code style and quality checks with Ruff
+    2. **Formatting** - Code formatting compliance with Ruff
+    3. **Type Checking** - Static type validation with mypy
+    4. **Coverage** - Code coverage validation and HTML report generation
+    
+    **Success Output:**
+    
+    ```console
+    ============================================================
+    Running comprehensive quality checks...
+    ============================================================
+    
+    1. Linting with Ruff...
+    Lint: PASSED
+    
+    2. Checking formatting with Ruff...
+    Format: PASSED
+    
+    3. Running type checks with mypy...
+    Type Check: PASSED
+    
+    4. Checking code coverage...
+    Coverage: PASSED
+    HTML report generated in htmlcov/
+    
+    ============================================================
+    Quality Check Summary
+    ============================================================
+    Passed (4): Lint, Format, Type Check, Coverage
+    All checks passed! Ready for PR.
+    ```
+    
+    **Failure Output:**
+    
+    If any check fails, the command will show which ones failed and exit with code 1:
+    
+    ```console
+    ============================================================
+    Quality Check Summary
+    ============================================================
+    Passed (3): Lint, Format, Type Check
+    Failed (1): Coverage
+    ```
+
+### Code Quality
+
+**`blueprints lint`**
+    
+- Run Ruff linter for code style and quality checks
+
+**`blueprints formatting`**
+    
+- Format code in place using Ruff (modifies files by default)
+- To only check formatting compliance without making changes, add `--check`: `blueprints formatting --check`
+    
+**`blueprints typecheck`**
+
+- Run mypy static type checker on blueprints package
+
+### Testing
+
+**`blueprints test`**
+    
+- Run all tests in parallel using pytest with xdist
+- Use `--light` flag to skip slow tests for rapid iteration
+    
+**`blueprints coverage`**
+    
+- Run tests with coverage reporting and enforce 100% coverage by default
+- Generate terminal report with missing coverage details
+- Use `--xml` to also generate XML coverage report for CI/CD integration
+- Use `--html` to also generate interactive HTML coverage report in `htmlcov/`
+- Use `--no-enforce` to generate reports without enforcing 100% coverage
+
+### Documentation
+
+**`blueprints docs`**
+
+- Serve documentation locally with live reload (initial build may take 5+ minutes)
+- Opens documentation server at http://localhost:8000
+- Browser automatically refreshes when docs are updated
+- Perfect for working on documentation
+- Press Ctrl+C to stop the server
+
+
+## Pass-Through Arguments
+
+All CLI commands support passing additional arguments to the underlying tools. This allows you to access tool-specific options without waiting for CLI updates.
+
+### Install with Flags
+
+```bash
+blueprints install --upgrade            # Upgrade all packages to latest versions
+blueprints install --python 3.13        # Use specific Python version
+```
+
+### Test with pytest Flags
+
+```bash
+blueprints test -k test_specific        # Run tests matching pattern
+blueprints test --verbose --pdb         # Verbose output with debugger
+blueprints test -x                      # Stop on first failure
+blueprints test --light -k test_fast    # Fast tests with pattern filter
+blueprints test --light                 # Skip slow tests for rapid iteration
+```
+
+### Lint with Ruff Flags
+
+```bash
+blueprints lint --fix                   # Auto-fix detected issues
+blueprints lint --select E501           # Check specific rules
+blueprints lint --show-fixes            # Show suggested fixes
+```
+
+### Format with Ruff Flags
+
+```bash
+blueprints formatting --line-length 100     # Use specific line length
+```
+
+### Type Checking with mypy Flags
+
+```bash
+blueprints typecheck --strict           # Enable strict mode
+blueprints typecheck --show-error-codes # Show error codes
+blueprints typecheck --ignore-missing-imports  # Ignore missing imports
+```
+
+### Coverage with Options and pytest Flags
+
+```bash
+blueprints coverage                     # Terminal report with 100% enforcement
+blueprints coverage --xml               # Also generate XML report
+blueprints coverage --html              # Also generate HTML report
+blueprints coverage --xml --html        # Generate all three formats
+blueprints coverage --no-enforce        # Skip 100% coverage enforcement
+blueprints coverage -k test_pattern     # Filter tests by pattern
+```
+
+## Version Information
+
+Check the CLI version:
+
+```bash
+blueprints --version
+# or
+blueprints -v
+```
+
+
+## Troubleshooting
+
+=== "Error: 'uv' not found"
+
+    Install `uv`:
+    ```bash
+    pip install uv
+    ```
+
+=== "CLI dependencies not found"
+
+    Install with CLI group:
+    ```bash
+    # With pip
+    pip install blue-prints[cli]
+    
+    # With uv
+    uv sync --group cli
+    ```
+
+=== "Tests fail with 'No module named pytest'"
+
+    The `test` group is not installed. Reinstall:
+    ```bash
+    uv sync --group test
+    ```

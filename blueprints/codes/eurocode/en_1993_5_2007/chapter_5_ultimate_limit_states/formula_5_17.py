@@ -1,5 +1,9 @@
 """Formula 5.17 from EN 1993-5:2007: Chapter 5 - Ultimate limit state."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
@@ -34,6 +38,13 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         self.n_ed = n_ed
         self.n_pl_rd = n_pl_rd
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Returns the comparison operator for this formula.
+        LHS should be less than or equal to RHS.
+        """
+        return operator.le
+
     @staticmethod
     def _evaluate_lhs(
         n_ed: KN,
@@ -47,26 +58,6 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
     def _evaluate_rhs(*_, **_kwargs) -> float:
         """Evaluates the right-hand side of the comparison. see __init__ for details."""
         return 0.1
-
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.lhs
-
-    @staticmethod
-    def _evaluate(
-        n_ed: KN,
-        n_pl_rd: KN,
-    ) -> bool:
-        """Evaluates the comparison; see __init__ for details."""
-        return (
-            Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_lhs(n_ed=n_ed, n_pl_rd=n_pl_rd)
-            <= Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_rhs()
-        )
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(self.n_ed, self.n_pl_rd)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
