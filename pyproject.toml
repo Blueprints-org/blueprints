@@ -26,21 +26,18 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "latex2mathml>=3.78.1",
-    "mathml2omml>=0.0.2",
     "matplotlib>=3.10.7",
     "numpy>=1.25.2",
-    "python-docx>=1.2.0",
     "sectionproperties>=3.8.0",
     "shapely>=2.0.1",
 ]
 
-[project.urls]
-homepage = "https://blueprints.readthedocs.io"
-documentation = "https://blueprints.readthedocs.io"
-repository = "https://github.com/Blueprints-org/blueprints"
-issues = "https://github.com/Blueprints-org/blueprints/issues"
-changelog = "https://github.com/Blueprints-org/blueprints/releases"
+[project.optional-dependencies]
+word = [
+    "python-docx>=1.2.0",
+    "latex2mathml>=3.78.1",
+    "mathml2omml>=0.0.2",
+]
 
 [dependency-groups]
 dev = [
@@ -69,7 +66,17 @@ test = [
     "pytest-pspec==0.0.4",
     "pytest-raises==0.11",
     "pytest-xdist==3.8.0",
+    "python-docx>=1.2.0", # optional-dependency: word
+    "latex2mathml>=3.78.1", # optional-dependency: word
+    "mathml2omml>=0.0.2", # optional-dependency: word
 ]
+
+[project.urls]
+homepage = "https://blueprints.readthedocs.io"
+documentation = "https://blueprints.readthedocs.io"
+repository = "https://github.com/Blueprints-org/blueprints"
+issues = "https://github.com/Blueprints-org/blueprints/issues"
+changelog = "https://github.com/Blueprints-org/blueprints/releases"
 
 [tool.uv]
 default-groups = ["dev", "test"]
