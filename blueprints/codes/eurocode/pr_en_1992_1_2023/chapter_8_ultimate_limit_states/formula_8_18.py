@@ -3,7 +3,7 @@
 from blueprints.codes.formula import Formula
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import pr_EN_1992_1_1_2023
 from blueprints.type_alias import MPA, N, MM
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_zero
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.codes.latex_formula import latex_replace_symbols
 
@@ -39,6 +39,9 @@ class Form8Dot18AverageShearStress(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(
             v_ed=v_ed,
+        )
+
+        raise_if_less_or_equal_to_zero(
             b_w=b_w,
             z=z
         )
@@ -65,7 +68,7 @@ class Form8Dot18AverageShearStress(Formula):
 
 
 if __name__ == '__main__':
-    my_form = Form8Dot18AverageShearStress(v_ed=10000, b_w=50, z=215)
+    my_form = Form8Dot18AverageShearStress(v_ed=10000.0, b_w=50.0, z=215.0)
     print(my_form)
     print(my_form.latex())
     print(my_form.latex().complete)
