@@ -13,7 +13,7 @@ from blueprints.saf.supports_and_hinges.rel_connects_rigid_member import (
 class TestRelConnectsRigidMemberValidInitialization:
     """Test valid initialization of RelConnectsRigidMember."""
 
-    def test_fixed_rigid_member(self):
+    def test_fixed_rigid_member(self) -> None:
         """Test fixed rigid member connection."""
         member = RelConnectsRigidMember(
             name="RM1",
@@ -28,7 +28,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         assert member.name == "RM1"
         assert member.connection_type == RigidType.FIXED
 
-    def test_custom_flexible_member(self):
+    def test_custom_flexible_member(self) -> None:
         """Test custom rigid member with flexible constraints."""
         member = RelConnectsRigidMember(
             name="RM2",
@@ -45,7 +45,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         assert member.connection_type == RigidType.CUSTOM
         assert member.ux == TranslationConstraint.FLEXIBLE
 
-    def test_with_compression_only(self):
+    def test_with_compression_only(self) -> None:
         """Test with compression only constraint."""
         member = RelConnectsRigidMember(
             name="RM3",
@@ -59,7 +59,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         )
         assert member.ux == TranslationConstraint.COMPRESSION_ONLY
 
-    def test_with_nonlinear_translation(self):
+    def test_with_nonlinear_translation(self) -> None:
         """Test with non-linear translation constraint."""
         member = RelConnectsRigidMember(
             name="RM4",
@@ -76,7 +76,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         assert member.ux == TranslationConstraint.NON_LINEAR
         assert member.ux_resistance == 100.0
 
-    def test_with_nonlinear_rotation(self):
+    def test_with_nonlinear_rotation(self) -> None:
         """Test with non-linear rotation constraint."""
         member = RelConnectsRigidMember(
             name="RM5",
@@ -93,7 +93,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         assert member.fix == RotationConstraint.NON_LINEAR
         assert member.fix_resistance == 50.0
 
-    def test_with_all_flexible(self):
+    def test_with_all_flexible(self) -> None:
         """Test with all constraints flexible."""
         member = RelConnectsRigidMember(
             name="RM6",
@@ -113,7 +113,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         )
         assert member.connection_type == RigidType.CUSTOM
 
-    def test_with_id(self):
+    def test_with_id(self) -> None:
         """Test with UUID identifier."""
         member = RelConnectsRigidMember(
             name="RM7",
@@ -128,7 +128,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         )
         assert member.id == "member-uuid"
 
-    def test_with_flexible_compression_only(self):
+    def test_with_flexible_compression_only(self) -> None:
         """Test with flexible compression only constraint."""
         member = RelConnectsRigidMember(
             name="RM8",
@@ -143,7 +143,7 @@ class TestRelConnectsRigidMemberValidInitialization:
         )
         assert member.ux == TranslationConstraint.FLEXIBLE_COMPRESSION_ONLY
 
-    def test_with_free_constraints(self):
+    def test_with_free_constraints(self) -> None:
         """Test with free constraints."""
         member = RelConnectsRigidMember(
             name="RM9",
@@ -161,7 +161,7 @@ class TestRelConnectsRigidMemberValidInitialization:
 class TestRelConnectsRigidMemberValidation:
     """Test validation of stiffness and resistance requirements."""
 
-    def test_flexible_translation_without_stiffness_raises_error(self):
+    def test_flexible_translation_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE translation without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="ux_stiffness must be specified"):
             RelConnectsRigidMember(
@@ -175,7 +175,7 @@ class TestRelConnectsRigidMemberValidation:
                 fiz=RotationConstraint.RIGID,
             )
 
-    def test_flexible_rotation_without_stiffness_raises_error(self):
+    def test_flexible_rotation_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE rotation without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="fix_stiffness must be specified"):
             RelConnectsRigidMember(
@@ -189,7 +189,7 @@ class TestRelConnectsRigidMemberValidation:
                 fiz=RotationConstraint.RIGID,
             )
 
-    def test_nonlinear_translation_without_resistance_raises_error(self):
+    def test_nonlinear_translation_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR translation without resistance raises ValueError."""
         with pytest.raises(ValueError, match="ux_resistance must be specified"):
             RelConnectsRigidMember(
@@ -204,7 +204,7 @@ class TestRelConnectsRigidMemberValidation:
                 ux_stiffness=1000.0,
             )
 
-    def test_nonlinear_rotation_without_resistance_raises_error(self):
+    def test_nonlinear_rotation_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR rotation without resistance raises ValueError."""
         with pytest.raises(ValueError, match="fix_resistance must be specified"):
             RelConnectsRigidMember(
@@ -219,7 +219,7 @@ class TestRelConnectsRigidMemberValidation:
                 fix_stiffness=100.0,
             )
 
-    def test_flexible_tension_only_without_stiffness_raises_error(self):
+    def test_flexible_tension_only_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE_TENSION_ONLY without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="uy_stiffness must be specified"):
             RelConnectsRigidMember(
@@ -237,19 +237,19 @@ class TestRelConnectsRigidMemberValidation:
 class TestEnums:
     """Test enum values."""
 
-    def test_rigid_type_values(self):
+    def test_rigid_type_values(self) -> None:
         """Test RigidType enum values."""
         assert RigidType.FIXED.value == "Fixed"
         assert RigidType.CUSTOM.value == "Custom"
 
-    def test_translation_constraint_values(self):
+    def test_translation_constraint_values(self) -> None:
         """Test TranslationConstraint enum values."""
         assert TranslationConstraint.FREE.value == "Free"
         assert TranslationConstraint.RIGID.value == "Rigid"
         assert TranslationConstraint.FLEXIBLE.value == "Flexible"
         assert TranslationConstraint.NON_LINEAR.value == "Non linear"
 
-    def test_rotation_constraint_values(self):
+    def test_rotation_constraint_values(self) -> None:
         """Test RotationConstraint enum values."""
         assert RotationConstraint.FREE.value == "Free"
         assert RotationConstraint.RIGID.value == "Rigid"
@@ -260,7 +260,7 @@ class TestEnums:
 class TestRelConnectsRigidMemberImmutability:
     """Test immutability of RelConnectsRigidMember."""
 
-    def test_frozen_dataclass(self):
+    def test_frozen_dataclass(self) -> None:
         """Test that dataclass is frozen."""
         member = RelConnectsRigidMember(
             name="RM1",
@@ -273,9 +273,9 @@ class TestRelConnectsRigidMemberImmutability:
             fiz=RotationConstraint.RIGID,
         )
         with pytest.raises(Exception):
-            member.name = "RM2"  # type: ignore
+            member.name = "RM2"  # type: ignore[misc]
 
-    def test_hashable(self):
+    def test_hashable(self) -> None:
         """Test that member can be used in sets."""
         member = RelConnectsRigidMember(
             name="RM1",
@@ -294,7 +294,7 @@ class TestRelConnectsRigidMemberImmutability:
 class TestRelConnectsRigidMemberEquality:
     """Test equality of RelConnectsRigidMember."""
 
-    def test_equal_members(self):
+    def test_equal_members(self) -> None:
         """Test that identical members are equal."""
         member1 = RelConnectsRigidMember(
             name="RM1",
@@ -318,7 +318,7 @@ class TestRelConnectsRigidMemberEquality:
         )
         assert member1 == member2
 
-    def test_unequal_members_different_types(self):
+    def test_unequal_members_different_types(self) -> None:
         """Test that members with different types are not equal."""
         member1 = RelConnectsRigidMember(
             name="RM1",

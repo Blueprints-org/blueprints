@@ -448,7 +448,7 @@ class TestStructuralSurfaceActionDistributionImmutability:
             distribution_to=DistributionTo.ONE_WAY_X,
         )
         with pytest.raises(AttributeError):
-            dist.name = "FL2"  # type: ignore
+            dist.name = "FL2"  # type: ignore[misc]
 
     def test_hash_support(self) -> None:
         """Test that frozen instances are hashable."""

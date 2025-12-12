@@ -341,7 +341,7 @@ class TestStructuralCurveConnectionImmutability:
             end_point=1.0,
         )
         with pytest.raises(AttributeError):
-            connection.name = "Sc2"  # type: ignore
+            connection.name = "Sc2"  # type: ignore[misc]
 
     def test_hash_support(self) -> None:
         """Test that frozen instances are hashable."""

@@ -378,7 +378,7 @@ class TestStructuralCurveActionThermalEquality:
             member="B1",
         )
         with pytest.raises(AttributeError):
-            thermal.delta_t = 30.0  # type: ignore
+            thermal.delta_t = 30.0  # type: ignore[misc]
 
 
 class TestStructuralCurveActionThermalEdgeCases:

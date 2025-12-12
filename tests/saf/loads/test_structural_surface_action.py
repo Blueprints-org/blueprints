@@ -304,7 +304,7 @@ class TestStructuralSurfaceActionEquality:
             two_d_member="S1",
         )
         with pytest.raises(AttributeError):
-            load.value = -20.0  # type: ignore
+            load.value = -20.0  # type: ignore[misc]
 
 
 class TestDirectionEnum:

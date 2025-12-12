@@ -401,7 +401,7 @@ class TestStructuralCurveActionFreeEquality:
             value_1=-50.0,
         )
         with pytest.raises(AttributeError):
-            load.value_1 = -75.0  # type: ignore
+            load.value_1 = -75.0  # type: ignore[misc]
 
 
 class TestEnums:

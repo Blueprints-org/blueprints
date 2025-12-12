@@ -521,7 +521,7 @@ class TestStructuralPointAction:
         )
 
         with pytest.raises(AttributeError):
-            action.name = "F2"
+            action.name = "F2"  # type: ignore[misc]
 
     def test_action_type_optional(self) -> None:
         """Test that action_type is optional."""
@@ -571,10 +571,7 @@ class TestStructuralPointAction:
     def test_all_direction_values(self) -> None:
         """Test that all Direction enum values work."""
         for direction in Direction:
-            if direction == Direction.VECTOR:
-                value = "10;20;30"
-            else:
-                value = "50"
+            value = "10;20;30" if direction == Direction.VECTOR else "50"
 
             action = StructuralPointAction(
                 name="F_TEST",

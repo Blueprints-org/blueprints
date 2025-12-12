@@ -13,7 +13,7 @@ from blueprints.saf.supports_and_hinges.rel_connects_rigid_link import (
 class TestRelConnectsRigidLinkValidInitialization:
     """Test valid initialization of RelConnectsRigidLink."""
 
-    def test_rigid_link_no_hinge(self):
+    def test_rigid_link_no_hinge(self) -> None:
         """Test fully rigid link with no hinge."""
         link = RelConnectsRigidLink(
             name="RL1",
@@ -32,7 +32,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         assert link.node2 == "N2"
         assert link.hinge_position == HingePosition.NONE
 
-    def test_flexible_link_with_stiffness(self):
+    def test_flexible_link_with_stiffness(self) -> None:
         """Test flexible link with required stiffness."""
         link = RelConnectsRigidLink(
             name="RL2",
@@ -42,7 +42,7 @@ class TestRelConnectsRigidLinkValidInitialization:
             ux=TranslationConstraint.FLEXIBLE,
             uy=TranslationConstraint.RIGID,
             uz=TranslationConstraint.RIGID,
-            fix=TranslationConstraint.RIGID,
+            fix=RotationConstraint.RIGID,
             fiy=RotationConstraint.RIGID,
             fiz=RotationConstraint.RIGID,
             ux_stiffness=2000.0,
@@ -50,7 +50,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         assert link.ux == TranslationConstraint.FLEXIBLE
         assert link.ux_stiffness == 2000.0
 
-    def test_hinge_at_end(self):
+    def test_hinge_at_end(self) -> None:
         """Test link with hinge at end."""
         link = RelConnectsRigidLink(
             name="RL3",
@@ -66,7 +66,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         )
         assert link.hinge_position == HingePosition.END
 
-    def test_hinge_at_both_ends(self):
+    def test_hinge_at_both_ends(self) -> None:
         """Test link with hinge at both ends."""
         link = RelConnectsRigidLink(
             name="RL4",
@@ -82,7 +82,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         )
         assert link.hinge_position == HingePosition.BOTH
 
-    def test_with_compression_only_constraint(self):
+    def test_with_compression_only_constraint(self) -> None:
         """Test with compression only constraint."""
         link = RelConnectsRigidLink(
             name="RL5",
@@ -98,7 +98,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         )
         assert link.ux == TranslationConstraint.COMPRESSION_ONLY
 
-    def test_with_nonlinear_constraint(self):
+    def test_with_nonlinear_constraint(self) -> None:
         """Test with non-linear constraint and required resistance."""
         link = RelConnectsRigidLink(
             name="RL6",
@@ -118,7 +118,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         assert link.ux_stiffness == 1000.0
         assert link.ux_resistance == 100.0
 
-    def test_with_flexible_rotation(self):
+    def test_with_flexible_rotation(self) -> None:
         """Test with flexible rotation constraints."""
         link = RelConnectsRigidLink(
             name="RL7",
@@ -137,7 +137,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         )
         assert link.fix == RotationConstraint.FLEXIBLE
 
-    def test_with_all_flexible_constraints(self):
+    def test_with_all_flexible_constraints(self) -> None:
         """Test with all flexible constraints."""
         link = RelConnectsRigidLink(
             name="RL8",
@@ -159,7 +159,7 @@ class TestRelConnectsRigidLinkValidInitialization:
         )
         assert all(getattr(link, attr) == TranslationConstraint.FLEXIBLE for attr in ["ux", "uy", "uz"])
 
-    def test_with_id(self):
+    def test_with_id(self) -> None:
         """Test with UUID identifier."""
         link = RelConnectsRigidLink(
             name="RL9",
@@ -180,7 +180,7 @@ class TestRelConnectsRigidLinkValidInitialization:
 class TestRelConnectsRigidLinkValidation:
     """Test validation of stiffness and resistance requirements."""
 
-    def test_flexible_ux_without_stiffness_raises_error(self):
+    def test_flexible_ux_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE ux without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="ux_stiffness must be specified"):
             RelConnectsRigidLink(
@@ -196,7 +196,7 @@ class TestRelConnectsRigidLinkValidation:
                 fiz=RotationConstraint.RIGID,
             )
 
-    def test_flexible_rotation_without_stiffness_raises_error(self):
+    def test_flexible_rotation_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE rotation without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="fix_stiffness must be specified"):
             RelConnectsRigidLink(
@@ -212,7 +212,7 @@ class TestRelConnectsRigidLinkValidation:
                 fiz=RotationConstraint.RIGID,
             )
 
-    def test_nonlinear_translation_without_resistance_raises_error(self):
+    def test_nonlinear_translation_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR translation without resistance raises ValueError."""
         with pytest.raises(ValueError, match="ux_resistance must be specified"):
             RelConnectsRigidLink(
@@ -229,7 +229,7 @@ class TestRelConnectsRigidLinkValidation:
                 ux_stiffness=1000.0,
             )
 
-    def test_nonlinear_rotation_without_resistance_raises_error(self):
+    def test_nonlinear_rotation_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR rotation without resistance raises ValueError."""
         with pytest.raises(ValueError, match="fix_resistance must be specified"):
             RelConnectsRigidLink(
@@ -246,7 +246,7 @@ class TestRelConnectsRigidLinkValidation:
                 fix_stiffness=100.0,
             )
 
-    def test_flexible_compression_without_stiffness_raises_error(self):
+    def test_flexible_compression_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE_COMPRESSION_ONLY without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="uy_stiffness must be specified"):
             RelConnectsRigidLink(
@@ -266,21 +266,21 @@ class TestRelConnectsRigidLinkValidation:
 class TestEnums:
     """Test enum values."""
 
-    def test_hinge_position_values(self):
+    def test_hinge_position_values(self) -> None:
         """Test HingePosition enum values."""
         assert HingePosition.NONE.value == "None"
         assert HingePosition.BEGIN.value == "Begin"
         assert HingePosition.END.value == "End"
         assert HingePosition.BOTH.value == "Both"
 
-    def test_translation_constraint_values(self):
+    def test_translation_constraint_values(self) -> None:
         """Test TranslationConstraint enum values."""
         assert TranslationConstraint.FREE.value == "Free"
         assert TranslationConstraint.RIGID.value == "Rigid"
         assert TranslationConstraint.FLEXIBLE.value == "Flexible"
         assert TranslationConstraint.NON_LINEAR.value == "Non linear"
 
-    def test_rotation_constraint_values(self):
+    def test_rotation_constraint_values(self) -> None:
         """Test RotationConstraint enum values."""
         assert RotationConstraint.FREE.value == "Free"
         assert RotationConstraint.RIGID.value == "Rigid"
@@ -291,7 +291,7 @@ class TestEnums:
 class TestRelConnectsRigidLinkImmutability:
     """Test immutability of RelConnectsRigidLink."""
 
-    def test_frozen_dataclass(self):
+    def test_frozen_dataclass(self) -> None:
         """Test that dataclass is frozen."""
         link = RelConnectsRigidLink(
             name="RL1",
@@ -306,9 +306,9 @@ class TestRelConnectsRigidLinkImmutability:
             fiz=RotationConstraint.RIGID,
         )
         with pytest.raises(Exception):
-            link.name = "RL2"  # type: ignore
+            link.name = "RL2"  # type: ignore[misc]
 
-    def test_hashable(self):
+    def test_hashable(self) -> None:
         """Test that link can be used in sets."""
         link = RelConnectsRigidLink(
             name="RL1",
@@ -329,7 +329,7 @@ class TestRelConnectsRigidLinkImmutability:
 class TestRelConnectsRigidLinkEquality:
     """Test equality of RelConnectsRigidLink."""
 
-    def test_equal_links(self):
+    def test_equal_links(self) -> None:
         """Test that identical links are equal."""
         link1 = RelConnectsRigidLink(
             name="RL1",
@@ -357,7 +357,7 @@ class TestRelConnectsRigidLinkEquality:
         )
         assert link1 == link2
 
-    def test_unequal_links(self):
+    def test_unequal_links(self) -> None:
         """Test that links with different names are not equal."""
         link1 = RelConnectsRigidLink(
             name="RL1",

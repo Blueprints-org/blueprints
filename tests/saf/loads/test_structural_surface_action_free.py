@@ -426,7 +426,7 @@ class TestStructuralSurfaceActionFreeImmutability:
             q="-10",
         )
         with pytest.raises(AttributeError):
-            load.name = "FF2"  # type: ignore
+            load.name = "FF2"  # type: ignore[misc]
 
     def test_hash_support(self) -> None:
         """Test that frozen instances are hashable."""

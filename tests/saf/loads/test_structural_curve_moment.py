@@ -552,7 +552,7 @@ class TestStructuralCurveMomentEquality:
             member="B1",
         )
         with pytest.raises(AttributeError):
-            moment.value_1 = 20.0  # type: ignore
+            moment.value_1 = 20.0  # type: ignore[misc]
 
 
 class TestStructuralCurveMomentEdgeCases:

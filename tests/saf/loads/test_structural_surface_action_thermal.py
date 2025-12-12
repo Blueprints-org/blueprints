@@ -244,7 +244,7 @@ class TestStructuralSurfaceActionThermalEquality:
             two_d_member="S1",
         )
         with pytest.raises(AttributeError):
-            thermal.temp_t = 30.0  # type: ignore
+            thermal.temp_t = 30.0  # type: ignore[misc]
 
 
 class TestVariationEnum:

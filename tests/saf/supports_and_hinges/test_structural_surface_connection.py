@@ -206,7 +206,7 @@ class TestStructuralSurfaceConnectionImmutability:
             c2y=10.2,
         )
         with pytest.raises(AttributeError):
-            connection.name = "Sn7"  # type: ignore
+            connection.name = "Sn7"  # type: ignore[misc]
 
     def test_hash_support(self) -> None:
         """Test that frozen instances are hashable."""

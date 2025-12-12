@@ -436,7 +436,7 @@ class TestStructuralPointSupportImmutability:
             fiz=RotationConstraint.RIGID,
         )
         with pytest.raises(AttributeError):
-            support.name = "Sn7"  # type: ignore
+            support.name = "Sn7"  # type: ignore[misc]
 
     def test_hash_support(self) -> None:
         """Test that frozen instances are hashable."""

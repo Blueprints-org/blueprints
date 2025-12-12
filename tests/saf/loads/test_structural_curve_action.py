@@ -657,7 +657,7 @@ class TestStructuralCurveActionEquality:
             member="B1",
         )
         with pytest.raises(AttributeError):
-            load.value_1 = -75.0  # type: ignore
+            load.value_1 = -75.0  # type: ignore[misc]
 
 
 class TestStructuralCurveActionEdgeCases:

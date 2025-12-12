@@ -298,7 +298,7 @@ class TestStructuralPointActionFreeEquality:
             value=-10.0,
         )
         with pytest.raises(AttributeError):
-            load.value = -20.0  # type: ignore
+            load.value = -20.0  # type: ignore[misc]
 
 
 class TestDirectionEnum:

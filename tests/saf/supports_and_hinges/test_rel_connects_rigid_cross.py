@@ -12,7 +12,7 @@ from blueprints.saf.supports_and_hinges.rel_connects_rigid_cross import (
 class TestRelConnectsRigidCrossValidInitialization:
     """Test valid initialization of RelConnectsRigidCross."""
 
-    def test_fixed_rigid_cross(self):
+    def test_fixed_rigid_cross(self) -> None:
         """Test fully fixed rigid cross connection."""
         cross = RelConnectsRigidCross(
             name="RC1",
@@ -30,7 +30,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         assert cross.member2 == "B3"
         assert cross.u1 == Constraint.RIGID
 
-    def test_flexible_cross_with_stiffness(self):
+    def test_flexible_cross_with_stiffness(self) -> None:
         """Test flexible cross with required stiffness values."""
         cross = RelConnectsRigidCross(
             name="RC2",
@@ -48,7 +48,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         assert cross.u1 == Constraint.FLEXIBLE
         assert cross.u1_stiffness == 1000.0
 
-    def test_with_flexible_rotation_constraints(self):
+    def test_with_flexible_rotation_constraints(self) -> None:
         """Test with flexible rotation constraints."""
         cross = RelConnectsRigidCross(
             name="RC3",
@@ -67,7 +67,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         assert cross.fi1 == Constraint.FLEXIBLE
         assert cross.fi1_stiffness == 100.0
 
-    def test_with_compression_only_constraint(self):
+    def test_with_compression_only_constraint(self) -> None:
         """Test with compression only constraint."""
         cross = RelConnectsRigidCross(
             name="RC4",
@@ -82,7 +82,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         )
         assert cross.u1 == Constraint.COMPRESSION_ONLY
 
-    def test_with_tension_only_constraint(self):
+    def test_with_tension_only_constraint(self) -> None:
         """Test with tension only constraint."""
         cross = RelConnectsRigidCross(
             name="RC5",
@@ -97,7 +97,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         )
         assert cross.u1 == Constraint.TENSION_ONLY
 
-    def test_with_flexible_compression_only(self):
+    def test_with_flexible_compression_only(self) -> None:
         """Test with flexible compression only constraint."""
         cross = RelConnectsRigidCross(
             name="RC6",
@@ -114,7 +114,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         assert cross.u1 == Constraint.FLEXIBLE_COMPRESSION_ONLY
         assert cross.u1_stiffness == 2000.0
 
-    def test_with_flexible_tension_only(self):
+    def test_with_flexible_tension_only(self) -> None:
         """Test with flexible tension only constraint."""
         cross = RelConnectsRigidCross(
             name="RC7",
@@ -130,7 +130,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         )
         assert cross.u2 == Constraint.FLEXIBLE_TENSION_ONLY
 
-    def test_with_nonlinear_constraint_and_resistance(self):
+    def test_with_nonlinear_constraint_and_resistance(self) -> None:
         """Test with non-linear constraint and required resistance."""
         cross = RelConnectsRigidCross(
             name="RC8",
@@ -149,7 +149,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         assert cross.u1_stiffness == 1000.0
         assert cross.u1_resistance == 100.0
 
-    def test_with_all_constraints_flexible(self):
+    def test_with_all_constraints_flexible(self) -> None:
         """Test with all constraints flexible."""
         cross = RelConnectsRigidCross(
             name="RC9",
@@ -170,7 +170,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         )
         assert all(getattr(cross, attr) == Constraint.FLEXIBLE for attr in ["u1", "u2", "u", "fi1", "fi2", "fi"])
 
-    def test_with_connection_type(self):
+    def test_with_connection_type(self) -> None:
         """Test with connection type specified."""
         cross = RelConnectsRigidCross(
             name="RC10",
@@ -186,7 +186,7 @@ class TestRelConnectsRigidCrossValidInitialization:
         )
         assert cross.connection_type == ConnectionType.FIXED
 
-    def test_with_all_optional_attributes(self):
+    def test_with_all_optional_attributes(self) -> None:
         """Test with all optional attributes."""
         cross = RelConnectsRigidCross(
             name="RC11",
@@ -210,7 +210,7 @@ class TestRelConnectsRigidCrossValidInitialization:
 class TestRelConnectsRigidCrossValidation:
     """Test validation of stiffness and resistance requirements."""
 
-    def test_flexible_u1_without_stiffness_raises_error(self):
+    def test_flexible_u1_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE u1 without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="u1_stiffness must be specified"):
             RelConnectsRigidCross(
@@ -225,7 +225,7 @@ class TestRelConnectsRigidCrossValidation:
                 fi=Constraint.RIGID,
             )
 
-    def test_flexible_u2_without_stiffness_raises_error(self):
+    def test_flexible_u2_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE u2 without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="u2_stiffness must be specified"):
             RelConnectsRigidCross(
@@ -240,7 +240,7 @@ class TestRelConnectsRigidCrossValidation:
                 fi=Constraint.RIGID,
             )
 
-    def test_flexible_u_without_stiffness_raises_error(self):
+    def test_flexible_u_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE u without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="u_stiffness must be specified"):
             RelConnectsRigidCross(
@@ -255,7 +255,7 @@ class TestRelConnectsRigidCrossValidation:
                 fi=Constraint.RIGID,
             )
 
-    def test_flexible_fi1_without_stiffness_raises_error(self):
+    def test_flexible_fi1_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE fi1 without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="fi1_stiffness must be specified"):
             RelConnectsRigidCross(
@@ -270,7 +270,7 @@ class TestRelConnectsRigidCrossValidation:
                 fi=Constraint.RIGID,
             )
 
-    def test_flexible_fi2_without_stiffness_raises_error(self):
+    def test_flexible_fi2_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE fi2 without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="fi2_stiffness must be specified"):
             RelConnectsRigidCross(
@@ -285,7 +285,7 @@ class TestRelConnectsRigidCrossValidation:
                 fi=Constraint.RIGID,
             )
 
-    def test_flexible_fi_without_stiffness_raises_error(self):
+    def test_flexible_fi_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE fi without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="fi_stiffness must be specified"):
             RelConnectsRigidCross(
@@ -300,7 +300,7 @@ class TestRelConnectsRigidCrossValidation:
                 fi=Constraint.FLEXIBLE,
             )
 
-    def test_nonlinear_u1_without_resistance_raises_error(self):
+    def test_nonlinear_u1_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR u1 without resistance raises ValueError."""
         with pytest.raises(ValueError, match="u1_resistance must be specified"):
             RelConnectsRigidCross(
@@ -316,7 +316,7 @@ class TestRelConnectsRigidCrossValidation:
                 u1_stiffness=1000.0,
             )
 
-    def test_nonlinear_u2_without_resistance_raises_error(self):
+    def test_nonlinear_u2_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR u2 without resistance raises ValueError."""
         with pytest.raises(ValueError, match="u2_resistance must be specified"):
             RelConnectsRigidCross(
@@ -332,7 +332,7 @@ class TestRelConnectsRigidCrossValidation:
                 u2_stiffness=1000.0,
             )
 
-    def test_nonlinear_u_without_resistance_raises_error(self):
+    def test_nonlinear_u_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR u without resistance raises ValueError."""
         with pytest.raises(ValueError, match="u_resistance must be specified"):
             RelConnectsRigidCross(
@@ -348,7 +348,7 @@ class TestRelConnectsRigidCrossValidation:
                 u_stiffness=1000.0,
             )
 
-    def test_nonlinear_fi1_without_resistance_raises_error(self):
+    def test_nonlinear_fi1_without_resistance_raises_error(self) -> None:
         """Test that NON_LINEAR fi1 without resistance raises ValueError."""
         with pytest.raises(ValueError, match="fi1_resistance must be specified"):
             RelConnectsRigidCross(
@@ -364,7 +364,7 @@ class TestRelConnectsRigidCrossValidation:
                 fi1_stiffness=100.0,
             )
 
-    def test_flexible_compression_only_without_stiffness_raises_error(self):
+    def test_flexible_compression_only_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE_COMPRESSION_ONLY without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="u1_stiffness must be specified"):
             RelConnectsRigidCross(
@@ -383,7 +383,7 @@ class TestRelConnectsRigidCrossValidation:
 class TestConstraintEnum:
     """Test Constraint enum."""
 
-    def test_all_constraint_values(self):
+    def test_all_constraint_values(self) -> None:
         """Test all Constraint enum values."""
         assert Constraint.FREE.value == "Free"
         assert Constraint.RIGID.value == "Rigid"
@@ -398,7 +398,7 @@ class TestConstraintEnum:
 class TestConnectionTypeEnum:
     """Test ConnectionType enum."""
 
-    def test_all_connection_type_values(self):
+    def test_all_connection_type_values(self) -> None:
         """Test all ConnectionType enum values."""
         assert ConnectionType.FIXED.value == "Fixed"
         assert ConnectionType.HINGED.value == "Hinged"
@@ -408,7 +408,7 @@ class TestConnectionTypeEnum:
 class TestRelConnectsRigidCrossImmutability:
     """Test immutability of RelConnectsRigidCross."""
 
-    def test_frozen_dataclass(self):
+    def test_frozen_dataclass(self) -> None:
         """Test that dataclass is frozen."""
         cross = RelConnectsRigidCross(
             name="RC1",
@@ -422,9 +422,9 @@ class TestRelConnectsRigidCrossImmutability:
             fi=Constraint.RIGID,
         )
         with pytest.raises(Exception):
-            cross.name = "RC2"  # type: ignore
+            cross.name = "RC2"  # type: ignore[misc]
 
-    def test_hashable(self):
+    def test_hashable(self) -> None:
         """Test that cross can be used in sets and dicts."""
         cross = RelConnectsRigidCross(
             name="RC1",
@@ -444,7 +444,7 @@ class TestRelConnectsRigidCrossImmutability:
 class TestRelConnectsRigidCrossEquality:
     """Test equality of RelConnectsRigidCross."""
 
-    def test_equal_crosses(self):
+    def test_equal_crosses(self) -> None:
         """Test that identical crosses are equal."""
         cross1 = RelConnectsRigidCross(
             name="RC1",
@@ -470,7 +470,7 @@ class TestRelConnectsRigidCrossEquality:
         )
         assert cross1 == cross2
 
-    def test_unequal_crosses_different_names(self):
+    def test_unequal_crosses_different_names(self) -> None:
         """Test that crosses with different names are not equal."""
         cross1 = RelConnectsRigidCross(
             name="RC1",

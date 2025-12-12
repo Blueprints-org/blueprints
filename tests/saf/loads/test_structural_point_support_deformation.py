@@ -398,7 +398,7 @@ class TestStructuralPointSupportDeformationImmutability:
             translation_value=10.0,
         )
         with pytest.raises(AttributeError):
-            deform.name = "RS2"  # type: ignore
+            deform.name = "RS2"  # type: ignore[misc]
 
     def test_hash_support(self) -> None:
         """Test that frozen instances are hashable."""

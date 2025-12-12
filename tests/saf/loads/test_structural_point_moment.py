@@ -322,7 +322,7 @@ class TestStructuralPointMomentEquality:
             reference_node="N1",
         )
         with pytest.raises(AttributeError):
-            moment.value = 20.0  # type: ignore
+            moment.value = 20.0  # type: ignore[misc]
 
 
 class TestMomentDirectionEnum:
