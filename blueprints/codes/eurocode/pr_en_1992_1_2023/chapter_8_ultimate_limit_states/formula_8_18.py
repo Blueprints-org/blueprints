@@ -68,7 +68,7 @@ class Form8Dot18AverageShearStress(Formula):
 
 
 if __name__ == '__main__':
-    my_form = Form8Dot18AverageShearStress(v_ed=10000.0, b_w=50.0, z=215.0)
+    my_form = Form8Dot18AverageShearStress(v_ed=10000.0, b_w=-50.0, z=215.0)
     print(my_form)
     print(my_form.latex())
     print(my_form.latex().complete)

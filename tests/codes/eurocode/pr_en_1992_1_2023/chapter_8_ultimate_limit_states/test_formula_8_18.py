@@ -1,4 +1,5 @@
 """Testing formula 8.18 of prEN 1992-1-1:2023"""
+
 import pytest
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_18 import Form8Dot18AverageShearStress
