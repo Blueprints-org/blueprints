@@ -328,25 +328,37 @@ class DoubleComparisonFormula(Formula):
 
     def __bool__(self) -> bool:
         """Return whether the double comparison condition is satisfied.
-        # TODO: Update docstring
-        Returns True if the unity check is less than or equal to 1.0, indicating the condition is satisfied.
-        This allows ComparisonFormula instances to be used directly in boolean contexts.
+        Returns True if the comparison e.g. lhs < val < rhs is satisfied.
+        This allows DoubleComparisonFormula instances to be used directly in boolean contexts.
 
         Examples
         --------
-        formula = SomeComparisonFormula(...)
-        if formula:  # Equivalent to: if formula.unity_check <= 1.0
+        formula = SomeDoubleComparisonFormula(...)
+        if formula:  # Equivalent to: if formula.__bool__
             print("Condition satisfied")
 
         Returns
         -------
         bool
-            True if unity_check <= 1.0 (condition is satisfied), False otherwise.
+            True if e.g. lhs < val < rhs (condition is satisfied), False otherwise.
         """
-        comparison_ops = (self._comparison_operator_lhs(), self._comparison_operator_rhs())
-        match comparison_ops:
-            case (operator.le, operator.le):
-                pass
+        return (self._comparison_operator_lhs()(self.lhs, self.val)
+                and self._comparison_operator_rhs()(self.val, self.rhs))
 
+    @classmethod
+    def _evaluate(cls, *args, **kwargs) -> bool:
+        """Implements the double comparison using the class-level operator."""
+        lhs = cls._evaluate_lhs(*args, **kwargs)
+        val = cls._evaluate_val(*args, **kwargs)
+        rhs = cls._evaluate_rhs(*args, **kwargs)
+        comparison_lhs = cls._comparison_operator_lhs()
+        comparison_rhs = cls._comparison_operator_rhs()
 
+        # Check that the comparison operators are valid
+        valid_comp_operators = [operator.lt, operator.le]
+        if comparison_lhs not in valid_comp_operators or comparison_rhs not in valid_comp_operators:
+                raise ValueError(
+                    "Invalid comparison operator for the double comparison formula. Select from 'operator.lt' (<) or "
+                    "'operator.le' (<=).")
 
+        return comparison_lhs(lhs, val) and comparison_rhs(val, rhs)
