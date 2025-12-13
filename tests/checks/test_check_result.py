@@ -44,9 +44,6 @@ class TestCheckResult:
         result = CheckResult(
             is_ok=False,
             utilization=1.25,
-            factor_of_safety=None,
-            required=None,
-            provided=None,
         )
         assert result.is_ok is False
         assert result.utilization == 1.25
@@ -57,10 +54,7 @@ class TestCheckResult:
         """Test creation of CheckResult with only factor_of_safety given."""
         result = CheckResult(
             is_ok=True,
-            utilization=None,
             factor_of_safety=4.0,
-            required=500.0,
-            provided=2000.0,
         )
         assert result.is_ok is True
         assert result.utilization == 0.25  # 1 / 4.0
@@ -75,6 +69,4 @@ class TestCheckResult:
                 is_ok=False,
                 utilization=0.9,
                 factor_of_safety=1.5,  # Inconsistent with utilization
-                required=None,
-                provided=None,
             )
