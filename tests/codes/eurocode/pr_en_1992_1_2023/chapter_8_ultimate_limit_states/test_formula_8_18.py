@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot18AverageShearStress:
-    """Validation for formula 8.18 form prEN 1993-1-1:2023."""
+    """Validation for formula 8.18 form prEN 1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
