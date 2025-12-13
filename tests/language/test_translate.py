@@ -56,7 +56,7 @@ class TestTranslateLatex:
         assert str(result) == r"This is true in all languages"
 
     def test_translate_with_mismatched_wildcards(self) -> None:
-        """Test TranslateLatex with mismatched wildcard counts in CSV (usually continues to Google Translate, but test language does not exist)."""
+        """Test TranslateLatex behavior when CSV entry has mismatched wildcard counts."""
         latex = r"\text{Mismatched wildcard amount HERE}"
         result = TranslateLatex(latex, "example_language", custom_csv_path=self.test_csv_path)
         # csv entry is "Mismatched wildcard amount ** here","Mismatched wildcard amount ** ** not allowed"
