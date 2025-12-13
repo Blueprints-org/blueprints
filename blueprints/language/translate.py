@@ -116,7 +116,7 @@ class TranslateLatex:
         return None
 
     def _translate_bulk(self, texts: list) -> list[str | None]:
-        r"""F
+        r"""
         Translate a list of strings to the destination language.
         First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
 
