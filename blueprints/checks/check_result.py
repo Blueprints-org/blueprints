@@ -98,7 +98,7 @@ class CheckResult:
         # If both are None, leave as is (no calculation possible)
 
     @property
-    def unitycheck(self) -> float | None:
+    def unity_check(self) -> float | None:
         """Alias for utilization (unity check)."""
         return self.utilization
 
