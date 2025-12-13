@@ -21,7 +21,7 @@ class Form5Dot25AxialForceCorrectionFactor(Formula):
         Parameters
         ----------
         n : DIMENSIONLESS
-            [$n$] Relative axial force, [$N_{ed} / (A_{c} * f_{cd})$] [-].
+            [$n$] Relative axial force, [$N_{ed} / (A_{c} * f_{cd})$] [$-$].
         """
         super().__init__()
         self.n = n
