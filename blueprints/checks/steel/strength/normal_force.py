@@ -114,8 +114,8 @@ class NormalForceClass123:
 
         if self.result_internal_force_1d.n != 0:
             if latex_format == "summary":
-                text += f"\\newline {self.calculation_steps()[-1].latex(n=n)} "
+                text += rf"\newline {self.calculation_steps()[-1].latex(n=n)} "
             else:  # long
                 for step in self.calculation_steps():
-                    text += f"\\newline \\text{{With formula {step.label}:}} \\newline {step.latex(n=n)} "
+                    text += rf"\newline \text{{With formula {step.label}:}} \newline {step.latex(n=n)} "
         return text
