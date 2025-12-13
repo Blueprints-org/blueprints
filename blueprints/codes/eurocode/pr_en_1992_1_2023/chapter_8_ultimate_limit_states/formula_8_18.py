@@ -18,7 +18,7 @@ class Form8Dot18AverageShearStress(Formula):
     def __init__(self, v_ed: N, b_w: MM, z: MM) -> None:
         r"""[$\tau_{Ed}$] Average shear stress over the cross-section area.
 
-        pr_NEN-EN 1992-1-1-2023 art 8.2.1 (3) - Formula (8.18)
+        prEN 1992-1-1:2023 art 8.2.1 (3) - Formula (8.18)
 
         Parameters
         ----------
