@@ -65,8 +65,8 @@ class TestForm8Dot4DesignAnchorageLength:
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
-            ("complete", r"\alpha_2 \cdot \alpha_3 \cdot \alpha_5 \ge 0.7 \to 1 \cdot 1 \cdot 1 \ge 0.7 \to 1.00"),
-            ("short", " \\to 1.00"),
+            ("complete", r"\alpha_2 \alpha_3 \alpha_5 \to \alpha_2 \cdot \alpha_3 \cdot \alpha_5 \ge 0.7 \to 1 \cdot 1 \cdot 1 \ge 0.7 \to 1.00"),
+            ("short", r"\alpha_2 \alpha_3 \alpha_5 \to 1.00"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:

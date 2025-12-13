@@ -50,7 +50,7 @@ class TestForm6Dot5UnityCheckTensileStrength:
             (
                 "complete",
                 r"CHECK \to \left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right) \to "
-                r"\left( \frac{7.000}{10.000} \leq 1 \right) \to OK",
+                r"\left( \frac{7.000}{10.000} \leq 1 \right) \to \left( 0.700 \leq 1 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),
         ],

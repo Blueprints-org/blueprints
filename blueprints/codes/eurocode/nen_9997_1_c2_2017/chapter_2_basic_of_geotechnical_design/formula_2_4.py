@@ -50,7 +50,7 @@ class Form2Dot4DesignValueGeotechnicalParameter:
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 2.4."""
         return LatexFormula(
-            return_symbol="",
+            return_symbol="CHECK",
             equation="E_{dst;d} \\leq E_{stb;d} + T_d",
             result="OK" if self.__bool__() else "\\text{Not OK}",
             numeric_equation=f"{self.e_dst_d:.{n}f} \\leq {self.e_stb_d:.{n}f} + {self.t_d:.{n}f} \\to {self.e_dst_d:.{n}f} \\leq "
