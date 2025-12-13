@@ -27,6 +27,14 @@ class NegativeValueError(Exception):
         super().__init__(message)
 
 
+class MismatchSignError(Exception):
+    """Raised when not all the keyword values have the same sign."""
+
+    def __init__(self, value_names: list[str]) -> None:
+        message = f"Sign of values {', '.join(value_names)} should be the same."
+        super().__init__(message)
+
+
 class GreaterThan90Error(Exception):
     """Raised when a value is greater than 90."""
 
@@ -82,6 +90,23 @@ def raise_if_negative(**kwargs: float) -> None:
     for key, value in kwargs.items():
         if value < 0:
             raise NegativeValueError(value_name=key, value=value)
+
+
+def raise_if_mismatch_sign(**kwargs: float) -> None:
+    """Raise a MismatchSignError if any of the given keyword arguments have different signs.
+
+    Parameters
+    ----------
+    **kwargs : dict[str, float]
+        A dictionary of keyword arguments where keys are parameter names, and values are the values to validate.
+
+    Raises
+    ------
+    MismatchSignError
+        If any values have different signs.
+    """
+    if kwargs and not (all(v >= 0 for v in kwargs.values()) or all(v <= 0 for v in kwargs.values())):
+        raise MismatchSignError(value_names=list(kwargs.keys()))
 
 
 def raise_if_greater_than_90(**kwargs: float) -> None:
