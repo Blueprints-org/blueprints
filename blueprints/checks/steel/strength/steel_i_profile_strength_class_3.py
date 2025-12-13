@@ -35,7 +35,7 @@ class SteelIProfileStrengthClass3:
         self.properties = properties
         self.result_internal_force_1d = result_internal_force_1d
         self.gamma_m0 = gamma_m0
-        self.NormalForce = NormalForceClass123(self.profile, self.properties, self.result_internal_force_1d, self.gamma_m0)
+        self.normal_force = NormalForceClass123(self.profile, self.properties, self.result_internal_force_1d, self.gamma_m0)
 
     def check(self) -> bool:
         """Returns True if all strength criteria for the steel I-profile pass, False otherwise.
@@ -43,7 +43,7 @@ class SteelIProfileStrengthClass3:
         Warning: Currently only normal force and single axis bending moment checks are implemented.
         """
         # check normal force
-        return self.NormalForce.check()
+        return self.normal_force.check()
 
     def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901
         """
@@ -65,7 +65,7 @@ class SteelIProfileStrengthClass3:
 
         # Check normal force
         if self.result_internal_force_1d.n != 0:
-            all_latex += self.NormalForce.latex(n=n, summary=summary)
+            all_latex += self.normal_force.latex(n=n, summary=summary)
 
         # Check My axis bending moment (not yet implemented)
         if self.result_internal_force_1d.my != 0 and self.result_internal_force_1d.mz == 0:
