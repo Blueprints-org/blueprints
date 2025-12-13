@@ -1,4 +1,4 @@
-"""LNP-Profile section."""
+"""LNP-Profile."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True, kw_only=True)
 class LNPProfile(Profile):
-    """Representation of an LNP section.
+    """Representation of an LNP profile.
 
     Web is the vertical part and base is the horizontal part of the LNP-profile.
 
@@ -83,7 +83,7 @@ class LNPProfile(Profile):
     """ The inner width of the base [mm]. """
 
     def __post_init__(self) -> None:
-        """Post-process the LNP-profile section after initialization."""
+        """Post-process the LNP-profile after initialization."""
         object.__setattr__(self, "web_toe_straight_part", self.web_thickness - self.web_toe_radius)
         object.__setattr__(self, "base_toe_straight_part", self.base_thickness - self.base_toe_radius)
 
@@ -104,7 +104,7 @@ class LNPProfile(Profile):
 
     @property
     def _polygon(self) -> Polygon:
-        """Return the polygon of the LNP profile section."""
+        """Return the polygon of the LNP profile without the offset and rotation applied."""
         return (
             # Start from top left corner and go clockwise
             PolygonBuilder(starting_point=(0, 0))

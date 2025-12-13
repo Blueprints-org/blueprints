@@ -1,4 +1,4 @@
-"""RHS- and SHS-Profile section."""
+"""RHS- and SHS-Profile."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True, kw_only=True)
 class RHSProfile(Profile):
-    """Representation of an SHS or RHS section.
+    """Representation of an SHS or RHS profile.
 
     Attributes
     ----------
@@ -111,7 +111,7 @@ class RHSProfile(Profile):
     """The inner width of the bottom wall [mm]."""
 
     def __post_init__(self) -> None:
-        """Initialize the RHS- or SHS-profile section."""
+        """Initialize the RHS- or SHS-profile."""
         object.__setattr__(self, "right_wall_outer_height", self.total_height - self.top_right_outer_radius - self.bottom_right_outer_radius)
         object.__setattr__(self, "left_wall_outer_height", self.total_height - self.top_left_outer_radius - self.bottom_left_outer_radius)
         object.__setattr__(self, "top_wall_outer_width", self.total_width - self.top_right_outer_radius - self.top_left_outer_radius)
@@ -140,7 +140,7 @@ class RHSProfile(Profile):
 
     @property
     def _polygon(self) -> Polygon:
-        """Return the polygon of the RHS profile section."""
+        """Return the polygon of the RHS profile without the offset and rotation applied."""
         outer_polygon = (
             # Start at top left corner (just to the right of the top left corner) and go clockwise
             PolygonBuilder(starting_point=(0, 0))
