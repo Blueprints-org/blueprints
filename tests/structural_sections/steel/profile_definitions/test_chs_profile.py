@@ -2,6 +2,8 @@
 
 import matplotlib as mpl
 
+from blueprints.validations import NegativeValueError
+
 mpl.use("Agg")
 
 from unittest.mock import MagicMock
@@ -44,24 +46,38 @@ class TestCHSSteelProfile:
         assert fig is not None
         assert isinstance(fig, plt.Figure)
 
-    def test_get_profile_with_corrosion(self) -> None:
-        """Test the CHS profile with 16 mm corrosion applied."""
-        # Ensure the profile raises an error if fully corroded
+    def test_profile_with_corrosion_negative_values(self) -> None:
+        """Test the CHS profile with negative corrosion values."""
+        with pytest.raises(NegativeValueError):
+            CHS.CHS508x16.with_corrosion(
+                corrosion_outside=-1,  # mm
+                corrosion_inside=1,  # mm
+            )
+
+    def test_profile_with_corrosion_zero_corrosion(self) -> None:
+        """Test that the CHS profile with zero corrosion returns the original profile."""
+        original_profile = CHS.CHS508x16
+        corroded_profile = original_profile.with_corrosion(
+            corrosion_outside=0,  # mm
+            corrosion_inside=0,  # mm
+        )
+        assert corroded_profile == original_profile
+
+    def test_profile_with_corrosion_fully_corroded(self) -> None:
+        """Test that the CHS profile with corrosion raises an error when fully corroded."""
         with pytest.raises(ValueError, match=r"The profile has fully corroded."):
-            CHSProfile.from_standard_profile(
-                profile=CHS.CHS508x16,
+            CHS.CHS508x16.with_corrosion(
                 corrosion_outside=5,  # mm
                 corrosion_inside=11,  # mm
             )
 
     def test_corrosion_in_name(self) -> None:
         """Test that the name includes corrosion information."""
-        chs_profile_with_corrosion = CHSProfile.from_standard_profile(
-            profile=CHS.CHS508x16,
+        chs_profile_with_corrosion = CHS.CHS508x16.with_corrosion(
             corrosion_outside=1,  # mm
             corrosion_inside=2,  # mm
         )
-        expected_name_with_corrosion = "CHS 508x16 (corrosion in: 2 mm, out: 1 mm)"
+        expected_name_with_corrosion = "CHS 508x16 (corrosion inside: 2 mm, corrosion outside: 1 mm)"
         assert chs_profile_with_corrosion.name == expected_name_with_corrosion
 
     def test_immutability(self, chs_profile: CHSProfile) -> None:
