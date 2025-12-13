@@ -79,7 +79,8 @@ class CheckResult:
         """Validate and synchronize utilization and factor_of_safety."""
         # If both are given, check consistency
         if self.utilization is not None and self.factor_of_safety is not None:
-            if abs(self.utilization - (1 / self.factor_of_safety)) >= 1e-6:
+            tolerance = 1e-6
+            if abs(self.utilization - (1 / self.factor_of_safety)) >= tolerance:
                 raise ValueError(
                     "utilization and factor_of_safety are inconsistent: "
                     f"utilization={self.utilization}, "
