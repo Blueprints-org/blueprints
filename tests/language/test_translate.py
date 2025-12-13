@@ -63,7 +63,7 @@ class TestTranslateLatex:
         assert str(result) == r"\text{Mismatched wildcard amount HERE}"
 
     def test_words_not_in_dictionary(self) -> None:
-        """Test TranslateLatex with words that's not in dictionary (and so off topic that it will never be),
+        """Test TranslateLatex with words that are not in dictionary (and so off topic that it will never be),
         such that it uses Google Translate.
         """
         example_latex = r"\text{My favourite band is Ad Infinitum.}"
