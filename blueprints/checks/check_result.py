@@ -98,3 +98,18 @@ class CheckResult:
             else:
                 self.factor_of_safety = 1 / self.utilization
         # If both are None, leave as is (no calculation possible)
+
+    @property
+    def unitycheck(self) -> float | None:
+        """Alias for utilization (unity check)."""
+        return self.utilization
+
+    @property
+    def uc(self) -> float | None:
+        """Alias for utilization (short for unity check)."""
+        return self.utilization
+
+    @property
+    def fos(self) -> float | None:
+        """Alias for factor_of_safety."""
+        return self.factor_of_safety

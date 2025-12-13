@@ -19,7 +19,10 @@ class TestCheckResult:
         )
         assert result.is_ok is True
         assert result.utilization == 0.5
+        assert result.uc == 0.5
+        assert result.unitycheck == 0.5
         assert result.factor_of_safety == 2.0
+        assert result.fos == 2.0
         assert result.required == 1200.0
         assert result.provided == 1600.0
 
@@ -48,6 +51,7 @@ class TestCheckResult:
         assert result.is_ok is False
         assert result.utilization == 1.25
         assert result.factor_of_safety == 0.8  # 1 / 1.25
+        assert result.fos == 0.8
 
     def test_factor_of_safety_only(self) -> None:
         """Test creation of CheckResult with only factor_of_safety given."""
@@ -60,6 +64,8 @@ class TestCheckResult:
         )
         assert result.is_ok is True
         assert result.utilization == 0.25  # 1 / 4.0
+        assert result.uc == 0.25
+        assert result.unitycheck == 0.25
         assert result.factor_of_safety == 4.0
 
     def test_failure_inconsistency(self) -> None:
