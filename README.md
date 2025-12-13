@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/Blueprints-org/blueprints/branch/main/graph/badge.svg?token=vwYQBShr9q)](https://codecov.io/gh/Blueprints-org/blueprints)
 [![PyPI](https://img.shields.io/pypi/v/blue-prints?color=green)](https://pypi.org/project/blue-prints/)
 [![GitHub](https://img.shields.io/github/license/Blueprints-org/blueprints?color=green)](https://github.com/Blueprints-org/blueprints/blob/main/LICENSE)
-[![Python versions](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue?style=flat&logo=python)](https://badge.fury.io/py/blueprints)
+[![Python versions](https://img.shields.io/badge/python-3.12%20%7C%203.13%20%7C%203.14-blue?style=flat&logo=python)](https://badge.fury.io/py/blueprints)
 
 
 <picture>
@@ -49,6 +49,33 @@ For the actively developed version:
 ```shell
 pip install git+https://github.com/Blueprints-org/blueprints.git
 ```
+
+## Developer CLI
+
+Blueprints includes a command-line interface for development automation, designed to simplify developing and contributing to the project.
+Maybe you want to check locally if your code passes all quality checks before making a PR? Or serve the documentation locally with live reload?
+We got you covered!
+
+### Quick Start
+
+Install with CLI dependencies:
+
+```bash
+uv sync --group cli
+```
+
+Pre-PR validation (recommended):
+
+```bash
+blueprints check
+```
+
+This runs all quality checks: lint, format, typecheck, and coverage.
+In one single command! Simple as that. All checks passed? then you are good to go with your PR.
+
+### Documentation
+
+For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/latest/contribute/cli/).
 
 ## Quick Start
 

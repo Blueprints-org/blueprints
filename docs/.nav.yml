@@ -1,60 +1,73 @@
 nav:
-- index.md
-- Examples:
-  - examples/index.md
-  - Steel Profile shapes:
-    - examples/steel_profile_shapes/index.md
-    - CHS: examples/steel_profile_shapes/steel_chs_profile.ipynb
-    - I: examples/steel_profile_shapes/steel_i_profile.ipynb
-    - RHS: examples/steel_profile_shapes/steel_rhs_profile.ipynb
-    - Steel Strip: examples/steel_profile_shapes/steel_strip_profile.ipynb
-    - LNP: examples/steel_profile_shapes/steel_lnp_profile.ipynb
-  - Reinforced Concrete Cross Sections:
-    - examples/reinforced_concrete_sections/index.md
-    - Circular: examples/reinforced_concrete_sections/circular_reinforced_concrete_cross_section.ipynb
-    - Circular (Custom): examples/reinforced_concrete_sections/circular_custom_reinforced_concrete_cross_section.ipynb
-    - Rectangular: examples/reinforced_concrete_sections/rectangular_reinforced_concrete_cross_section.ipynb
-    - Rectangular (Custom): examples/reinforced_concrete_sections/rectangular_custom_reinforced_concrete_cross_section.ipynb
-  - Other Examples:
-    - examples/other_examples/index.md
-    - Nominal Concrete Cover: examples/other_examples/nominal_concrete_cover.ipynb
-- Code Standards:
-  - codes/index.md
-  - Eurocode Standards:
-    - codes/eurocode/index.md
-    - EN 1992-1-1:2004 (Concrete):
-      - Formulas: codes/eurocode/en_1992_1_1_2004/formulas.md
-      - Tables: codes/eurocode/en_1992_1_1_2004/tables.md
-    - EN 1992-2:2005 (Concrete Bridges):
-      - Formulas: codes/eurocode/en_1992_2_2005/formulas.md
-      - Tables: codes/eurocode/en_1992_2_2005/tables.md
-      - Figures: codes/eurocode/en_1992_2_2005/figures.md
-    - EN 1993-1-1:2005 (Steel):
-      - Formulas: codes/eurocode/en_1993_1_1_2005/formulas.md
-      - Tables: codes/eurocode/en_1993_1_1_2005/tables.md
-    - EN 1993-1-8:2005 (Steel Joints):
-      - Formulas: codes/eurocode/en_1993_1_8_2005/formulas.md
-      - Tables: codes/eurocode/en_1993_1_8_2005/tables.md
-    - EN 1993-1-9:2005 (Steel Fatigue):
-      - Formulas: codes/eurocode/en_1993_1_9_2005/formulas.md
-      - Tables: codes/eurocode/en_1993_1_9_2005/tables.md
-    - EN 1993-5:2007 (Steel Piling):
-      - Formulas: codes/eurocode/en_1993_5_2007/formulas.md
-      - Tables: codes/eurocode/en_1993_5_2007/tables.md
-    - NEN 9997-1+C2:2017 (Geotechnical):
-      - Formulas: codes/eurocode/nen_9997_1_c2_2017/formulas.md
-      - Tables: codes/eurocode/nen_9997_1_c2_2017/tables.md
-    - NEN-EN 1992-1-1:2020:
-      - Formulas: codes/eurocode/nen_en_1992_1_1_2020/formulas.md
-      - Tables: codes/eurocode/nen_en_1992_1_1_2020/tables.md
-  - CUR Standards:
-    - codes/cur/index.md
-    - CUR 228:
-      - Formulas: codes/cur/cur_228/formulas.md
-- Roadmap:
-  - roadmap/index.md
-- Contribute:
-  - contribute/index.md
-  - Contributors: https://github.com/Blueprints-org/blueprints/graphs/contributors
-  - Code of Conduct: https://github.com/Blueprints-org/blueprints/blob/main/.github/CODE_OF_CONDUCT.md
+- Home: index.md
+- Getting Started:
+  - Installation: getting_started/installation.md
+  - Quick Start: getting_started/quick_start.md
+  - Changelog: getting_started/changelog.md
+  - Roadmap: getting_started/roadmap.md
+- Guides:
+    - guides/index.md
+    - Examples:
+      - guides/examples/index.md
+      - Steel Profile shapes:
+        - guides/examples/steel_profile_shapes/index.md
+        - CHS: guides/examples/steel_profile_shapes/steel_chs_profile.ipynb
+        - I: guides/examples/steel_profile_shapes/steel_i_profile.ipynb
+        - RHS: guides/examples/steel_profile_shapes/steel_rhs_profile.ipynb
+        - Steel Strip: guides/examples/steel_profile_shapes/steel_strip_profile.ipynb
+        - LNP: guides/examples/steel_profile_shapes/steel_lnp_profile.ipynb
+      - Reinforced Concrete Cross Sections:
+        - guides/examples/reinforced_concrete_sections/index.md
+        - Circular: guides/examples/reinforced_concrete_sections/circular_reinforced_concrete_cross_section.ipynb
+        - Circular (Custom): guides/examples/reinforced_concrete_sections/circular_custom_reinforced_concrete_cross_section.ipynb
+        - Rectangular: guides/examples/reinforced_concrete_sections/rectangular_reinforced_concrete_cross_section.ipynb
+        - Rectangular (Custom): guides/examples/reinforced_concrete_sections/rectangular_custom_reinforced_concrete_cross_section.ipynb
+      - Other Examples:
+        - guides/examples/other_examples/index.md
+        - Nominal Concrete Cover: guides/examples/other_examples/nominal_concrete_cover.ipynb
+    - Concepts:
+      - guides/concepts/index.md
+      - Library Organization: guides/concepts/library_organization.md
+      - Formulas: guides/concepts/formulas.md
+      - Code Standards:
+        - guides/concepts/codes/index.md
+        - Eurocode Standards:
+          - guides/concepts/codes/eurocode/index.md
+          - EN 1992-1-1:2004 (Concrete):
+            - Formulas: guides/concepts/codes/eurocode/en_1992_1_1_2004/formulas.md
+            - Tables: guides/concepts/codes/eurocode/en_1992_1_1_2004/tables.md
+          - EN 1992-2:2005 (Concrete Bridges):
+            - Formulas: guides/concepts/codes/eurocode/en_1992_2_2005/formulas.md
+            - Tables: guides/concepts/codes/eurocode/en_1992_2_2005/tables.md
+            - Figures: guides/concepts/codes/eurocode/en_1992_2_2005/figures.md
+          - EN 1993-1-1:2005 (Steel):
+            - Formulas: guides/concepts/codes/eurocode/en_1993_1_1_2005/formulas.md
+            - Tables: guides/concepts/codes/eurocode/en_1993_1_1_2005/tables.md
+          - EN 1993-1-8:2005 (Steel Joints):
+            - Formulas: guides/concepts/codes/eurocode/en_1993_1_8_2005/formulas.md
+            - Tables: guides/concepts/codes/eurocode/en_1993_1_8_2005/tables.md
+          - EN 1993-1-9:2005 (Steel Fatigue):
+            - Formulas: guides/concepts/codes/eurocode/en_1993_1_9_2005/formulas.md
+            - Tables: guides/concepts/codes/eurocode/en_1993_1_9_2005/tables.md
+          - EN 1993-5:2007 (Steel Piling):
+            - Formulas: guides/concepts/codes/eurocode/en_1993_5_2007/formulas.md
+            - Tables: guides/concepts/codes/eurocode/en_1993_5_2007/tables.md
+          - EN 1995-1-1:2023 (Timber): guides/concepts/codes/eurocode/en_1995_1_1_2023/formulas.md
+          - NEN 9997-1+C2:2017 (Geotechnical):
+            - Formulas: guides/concepts/codes/eurocode/nen_9997_1_c2_2017/formulas.md
+            - Tables: guides/concepts/codes/eurocode/nen_9997_1_c2_2017/tables.md
+          - NEN-EN 1992-1-1:2020 (Concrete):
+            - Formulas: guides/concepts/codes/eurocode/nen_en_1992_1_1_2020/formulas.md
+            - Tables: guides/concepts/codes/eurocode/nen_en_1992_1_1_2020/tables.md
+          - NEN-EN 1993-1-1:2006 (Steel):
+              - Formulas: guides/concepts/codes/eurocode/nen_en_1993_1_1_2006/formulas.md
+              - Tables: guides/concepts/codes/eurocode/nen_en_1993_1_1_2006/tables.md
+        - CUR Standards:
+          - guides/concepts/codes/cur/index.md
+          - CUR 228: guides/concepts/codes/cur/cur_228/formulas.md
+    - Contribute:
+      - guides/contribute/index.md
+      - guides/contribute/cli.md
+      - Contributors: https://github.com/Blueprints-org/blueprints/graphs/contributors
+      - Code of Conduct: https://github.com/Blueprints-org/blueprints/blob/main/.github/CODE_OF_CONDUCT.md
 - API reference
