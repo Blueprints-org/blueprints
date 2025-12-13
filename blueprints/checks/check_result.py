@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+import numpy as np
+
 
 @dataclass
 class CheckResult:
@@ -91,7 +93,7 @@ class CheckResult:
         # If only utilization is given, calculate factor_of_safety
         elif self.factor_of_safety is None and self.utilization is not None:
             if self.utilization == 0:
-                self.factor_of_safety = None
+                self.factor_of_safety = np.inf
             else:
                 self.factor_of_safety = 1 / self.utilization
         # If both are None, leave as is (no calculation possible)
