@@ -5,7 +5,7 @@ This module provides strength checks for steel I-profiles of class 3 cross-secti
 
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.steel.strength.normal_force import NormalForceClass123
+from blueprints.checks.eurocode.steel.strength.normal_force import NormalForceClass123
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
 from blueprints.type_alias import DIMENSIONLESS
