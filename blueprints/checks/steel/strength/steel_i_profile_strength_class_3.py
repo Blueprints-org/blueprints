@@ -45,7 +45,7 @@ class SteelIProfileStrengthClass3:
         # check normal force
         return self.normal_force.check()
 
-    def latex(self, n: int = 1, summary: bool = False) -> str:  # noqa: C901
+    def latex(self, n: int = 1, latex_format: str = "long") -> str:  # noqa: C901
         """
         Returns the combined LaTeX string representation for all strength checks.
 
@@ -53,19 +53,24 @@ class SteelIProfileStrengthClass3:
         ----------
         n : int, optional
             Formula numbering for LaTeX output (default is 1).
-        summary : bool, optional
-            If True, returns a summary LaTeX output; otherwise, returns detailed output (default is False).
+        latex_format : str, optional
+            Output format: 'long' or 'summary'.
+            'long' gives detailed output or 'summary' gives a summary.
 
         Returns
         -------
         str
             Combined LaTeX representation of all strength checks.
         """
+        allowed_formats = {"long", "summary"}
+        if latex_format not in allowed_formats:
+            raise ValueError(f"latex_format must be one of {allowed_formats}, got '{latex_format}'")
+
         all_latex = ""
 
         # Check normal force
         if self.result_internal_force_1d.n != 0:
-            all_latex += self.normal_force.latex(n=n, summary=summary)
+            all_latex += self.normal_force.latex(n=n, latex_format=latex_format)
 
         # Check My axis bending moment (not yet implemented)
         if self.result_internal_force_1d.my != 0 and self.result_internal_force_1d.mz == 0:

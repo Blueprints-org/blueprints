@@ -81,3 +81,14 @@ class TestSteelIProfileStrengthClass3:
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
         latex_output = calc.latex()
         assert latex_output[:8] != r"\newline"
+
+    def test_latex_wrong_format(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test that wrong format raises ValueError."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        result_internal_force_1d = ResultInternalForce1D(
+            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=1
+        )
+        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+
+        with pytest.raises(ValueError):
+            calc.latex(latex_format="table")

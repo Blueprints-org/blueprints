@@ -1,5 +1,6 @@
 """Tests for NormalForceClass123Check according to Eurocode 3."""
 
+import pytest
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.steel.strength.normal_force import NormalForceClass123
@@ -61,9 +62,9 @@ class TestSteelIProfileStrengthClass3NormalForce:
         (heb_profile, heb_properties) = heb_profile_and_properties
         load_compression = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=-100)
         calc = NormalForceClass123(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
-        latex_output = calc.latex(summary=True)
+        latex_output = calc.latex(latex_format="summary")
         expected = (
-            r"\text{Checking normal force (compression) using chapter 6.2.4.}\newline "
+            r"\text{Checking normal force (compression) using chapter 6.2.4.}\\newline "
             r"CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( "
             r"\frac{100000.0}{5293746.7} \leq 1 \right) \to OK "
         )
@@ -74,11 +75,11 @@ class TestSteelIProfileStrengthClass3NormalForce:
         (heb_profile, heb_properties) = heb_profile_and_properties
         load_compression = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=-100)
         calc = NormalForceClass123(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
-        latex_output = calc.latex(summary=False)
+        latex_output = calc.latex(latex_format="long")
         expected = (
-            r"\text{Checking normal force (compression) using chapter 6.2.4.}\newline "
-            r"\text{With formula 6.10:} \newline N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
-            r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N \newline \text{With formula 6.9:} \newline CHECK "
+            r"\text{Checking normal force (compression) using chapter 6.2.4.}\\newline "
+            r"\text{With formula 6.10:} \\newline N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
+            r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N \\newline \text{With formula 6.9:} \\newline CHECK "
             r"\to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
             r"\leq 1 \right) \to OK "
         )
@@ -98,3 +99,12 @@ class TestSteelIProfileStrengthClass3NormalForce:
             r"\leq 1 \right) \to OK "
         )
         assert expected == latex_output
+
+    def test_latex_wrong_format(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+        """Test that wrong format raises ValueError."""
+        (heb_profile, heb_properties) = heb_profile_and_properties
+        load_tension = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=100)
+        calc = NormalForceClass123(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
+
+        with pytest.raises(ValueError):
+            calc.latex(latex_format="table")

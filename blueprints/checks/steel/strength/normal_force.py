@@ -85,21 +85,26 @@ class NormalForceClass123:
             return True
         return bool(self.calculation_steps()[-1])
 
-    def latex(self, n: int = 1, summary: bool = False) -> str:
+    def latex(self, n: int = 1, latex_format: str = "long") -> str:
         """Returns the LaTeX string representation for the normal force check.
 
         Parameters
         ----------
         n : int, optional
             Formula numbering for LaTeX output (default is 1).
-        summary : bool, optional
-            If True, returns a summary LaTeX output; otherwise, returns detailed output (default is False).
+        latex_format : str, optional
+            Output format: 'long' or 'summary'.
+            'long' gives detailed output or 'summary' gives a summary.
 
         Returns
         -------
         str
             LaTeX representation of the normal force check.
         """
+        allowed_formats = {"long", "summary"}
+        if latex_format not in allowed_formats:
+            raise ValueError(f"latex_format must be one of {allowed_formats}, got '{latex_format}'")
+
         if self.result_internal_force_1d.n == 0:
             text = r"\text{Checking normal force not needed as no normal force applied.} \newline CHECK \to OK"
         elif self.result_internal_force_1d.n > 0:
@@ -108,9 +113,9 @@ class NormalForceClass123:
             text = r"\text{Checking normal force (compression) using chapter 6.2.4.}"
 
         if self.result_internal_force_1d.n != 0:
-            if summary:
+            if latex_format == "summary":
                 text += f"\\newline {self.calculation_steps()[-1].latex(n=n)} "
-            else:
+            else:  # long
                 for step in self.calculation_steps():
                     text += f"\\newline \\text{{With formula {step.label}:}} \\newline {step.latex(n=n)} "
         return text
