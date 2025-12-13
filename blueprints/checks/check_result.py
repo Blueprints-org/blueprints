@@ -30,6 +30,7 @@ class CheckResult:
     factor_of_safety : float | None
         One over utilization, indicating the safety margin in the design.
         Values > 1.0 indicate reserve capacity, values < 1.0 indicate
+        over-utilization requiring design changes.
     required : float | None
         The minimum value needed to satisfy the structural requirement.
         Units depend on the specific check (e.g., mm² for reinforcement area,
@@ -80,7 +81,7 @@ class CheckResult:
         """Validate and synchronize utilization and factor_of_safety."""
         # If both are given, check consistency
         if self.utilization is not None and self.factor_of_safety is not None:
-            if not abs(self.utilization - (1 / self.factor_of_safety)) < 1e-6:
+            if abs(self.utilization - (1 / self.factor_of_safety)) >= 1e-6:
                 raise ValueError(
                     "utilization and factor_of_safety are inconsistent: "
                     f"utilization={self.utilization}, "
