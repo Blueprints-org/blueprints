@@ -14,6 +14,9 @@ class CheckResult:
     Use this to understand whether your design meets code requirements and
     how efficiently you're using the available capacity.
 
+    This class can be instantiated by providing either the `unity_check` or
+    the `factor_of_safety`. The other value will be computed automatically.
+
     Parameters
     ----------
     is_ok : bool, default required
