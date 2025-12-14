@@ -157,6 +157,19 @@ class TestCheckResult:
         assert result.limit == 100
         assert result.operator == ">="
 
+    def test_provided_limit_zero(self) -> None:
+        """Test creation of CheckResult with provided and limit equal to zero."""
+        result = CheckResult(
+            provided=0,
+            limit=0,
+        )
+        assert result.is_ok is True
+        assert result.unity_check == 0.0
+        assert result.factor_of_safety == float("inf")
+        assert result.provided == 0
+        assert result.limit == 0
+        assert result.operator == "<="
+
     @pytest.mark.parametrize(
         "kwargs",
         [
@@ -188,8 +201,12 @@ class TestCheckResult:
             ({"is_ok": False, "provided": 80, "limit": 100}),
             ({"is_ok": True, "provided": 80, "limit": 100, "operator": ">="}),
             ({"is_ok": False, "provided": 150, "limit": 100, "operator": ">="}),
-            ({"provided": 80, "limit": 100, "unity_check": 0.9}),
-            ({"provided": 80, "limit": 100, "factor_of_safety": 1.1}),
+            ({"unity_check": 1.1, "factor_of_safety": 0.5}),
+            ({"unity_check": 0.9, "provided": 80, "limit": 100}),
+            ({"factor_of_safety": 1.1, "provided": 80, "limit": 100}),
+            ({"provided": 80}),
+            ({"limit": 100}),
+            ({"operator": "=="}),
         ],
     )
     def test_invalid_value_combinations(self, kwargs: dict) -> None:
@@ -205,6 +222,7 @@ class TestCheckResult:
     @pytest.mark.parametrize(
         "kwargs",
         [
+            ({}),
             ({"is_ok": False, "unity_check": 1.5}),
             ({"is_ok": True, "unity_check": 0.8}),
             ({"is_ok": False, "factor_of_safety": 0.8}),
@@ -215,11 +233,10 @@ class TestCheckResult:
             ({"is_ok": True, "provided": 150, "limit": 100, "operator": ">="}),
             ({"provided": 80, "limit": 100, "unity_check": 0.8}),
             ({"provided": 80, "limit": 100, "factor_of_safety": 1.25}),
-            ({"is_ok": True, "unity_check": 0.8, "factor_of_safety": 1.25, "provided": 80, "limit": 100, "operator": "<="}),
         ],
     )
     def test_valid_value_combinations(self, kwargs: dict) -> None:
-        """Test that invalid combinations raise ValueError.
+        """Test that valid combinations produce valid output.
 
         Parameters
         ----------

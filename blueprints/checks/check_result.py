@@ -33,7 +33,7 @@ class CheckResult:
     provided : float | None, optional
         The actual calculated value from the design (e.g., applied load, stress).
     limit : float | None, optional
-        The allowable limit for the design (e.g., capacity, code limit).
+        The allowable limit for the design (e.g., capacity, code limit), the limit value itself is acceptable.
     operator : str, optional
         The comparison operator used to evaluate the check. Typically "<=" or ">=". Default is "<=".
 
@@ -90,13 +90,15 @@ class CheckResult:
         if (self.provided is None) != (self.limit is None):
             raise ValueError("Both 'provided' and 'limit' must be None or neither None")
 
-        # if provided and limit are given, check consistency with unity_check and factor_of_safety
+        # If provided and limit are given, check consistency with unity_check/factor_of_safety/is_ok
         if self.provided is not None and self.limit is not None:
+            # Calculate unity_check based on operator
             if self.operator == "<=":
-                calculated_unity_check = self.provided / self.limit if self.limit != 0 else float("inf")
+                calculated_unity_check = 0 if self.provided == 0 else self.provided / self.limit if self.limit != 0 else float("inf")
             else:  # operator == ">="
                 calculated_unity_check = self.limit / self.provided if self.provided != 0 else float("inf")
 
+            # Consistency checks
             if self.unity_check is not None and abs(self.unity_check - calculated_unity_check) >= TOLERANCE:
                 raise ValueError("Inconsistent CheckResult: provided/limit and unity_check")
             if self.factor_of_safety is not None:
@@ -115,10 +117,10 @@ class CheckResult:
         # Consistency between unity_check and factor_of_safety, account for zero division
         if (
             self.unity_check is not None
-            and self.factor_of_safety is not None
+            and self.factor_of_safety is not None  # Both provided
             and (
-                (self.factor_of_safety == 0 and self.unity_check != float("inf"))
-                or (self.factor_of_safety != 0 and abs(self.unity_check - 1 / self.factor_of_safety) >= TOLERANCE)
+                (self.factor_of_safety == 0 and self.unity_check != float("inf"))  # Division by zero case
+                or (self.factor_of_safety != 0 and abs(self.unity_check - 1 / self.factor_of_safety) >= TOLERANCE)  # Normal case
             )
         ):
             raise ValueError(f"unity_check={self.unity_check} and factor_of_safety={self.factor_of_safety} are inconsistent")
