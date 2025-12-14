@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 from blueprints.validations import raise_if_negative
 
+TOLERANCE = 1e-6
+
 
 @dataclass
 class CheckResult:
@@ -14,70 +16,111 @@ class CheckResult:
     Use this to understand whether your design meets code requirements and
     how efficiently you're using the available capacity.
 
-    This class can be instantiated by providing either the `unity_check` or
-    the `factor_of_safety`. The other value will be computed automatically.
+    You can instantiate this class by providing only the minimum required input
+    (such as just `unity_check`, `factor_of_safety`, or a pair of `provided` and `limit`),
+    and the other values will be computed automatically. You may also provide more than the minimum,
+    but all values must be consistent or a ValueError will be raised.
 
     Parameters
     ----------
-    is_ok : bool, default required
-        Whether the structural check passes code requirements.
-        True means the design is safe and compliant, False means the
-        design fails and needs modification (stronger materials, larger
-        sections, more reinforcement, etc.).
-    unity_check : float | None, default None
-        Also known as utilization ratio or u.c.
-        Ratio of demand to capacity, indicating how much of the available
-        strength is being used. Values < 1.0 indicate reserve capacity,
-        values > 1.0 indicate over-utilization requiring design changes.
-        For example: 0.85 means 85% of capacity is used (15% safety margin),
-        1.20 means 120% unity check (20% over capacity - design fails).
-    factor_of_safety : float | None, default None
-        One over utilization, indicating the safety margin in the design.
-        Values > 1.0 indicate reserve capacity, values < 1.0 indicate
-        over-utilization requiring design changes. If utlization is zero,
-        the factor_of_safety is set to infinity.
+    is_ok : bool | None, optional
+        Indicates whether the check passed (True) or failed (False).
+        If None, it will be inferred from `unity_check` or `factor_of_safety` if available.
+    unity_check : float | None, optional
+        The ratio of applied demand to available capacity. A value <= 1.0 indicates the design passes.
+    factor_of_safety : float | None, optional
+        The margin of safety, defined as the ratio of capacity to demand. A value >= 1.0 indicates the design passes.
+    provided : float | None, optional
+        The actual calculated value from the design (e.g., applied load, stress).
+    limit : float | None, optional
+        The allowable limit for the design (e.g., capacity, code limit).
+    operator : str, optional
+        The comparison operator used to evaluate the check. Typically "<=" or ">=". Default is "<=".
 
     Examples
     --------
-    >>> result = CheckResult(
-    ...     unity_check=0.75,
-    ... )
-    >>> print(f"Using {result.unity_check * 100:.1f}% of capacity")
-    >>> print(f"Factor of Safety: {result.factor_of_safety:.2f}")
+    # Minimum input required, other fields are computed:
+    >>> CheckResult(is_ok=True)                            -> all fields None except is_ok=True
+    >>> CheckResult(unity_check=0.8)                       -> factor_of_safety=1.25, is_ok=True
+    >>> CheckResult(factor_of_safety=1.25)                 -> unity_check=0.8, is_ok=True
+    >>> CheckResult(provided=80, limit=100)                -> unity_check=0.8, factor_of_safety=1.25, is_ok=True
+    >>> CheckResult(provided=150, limit=100)               -> unity_check=1.5, factor_of_safety=0.666..., is_ok=False
+    >>> CheckResult(provided=80, limit=100, operator=">=") -> unity_check=1.25, factor_of_safety=0.8, is_ok=False
 
-    >>> result = CheckResult(
-    ...     factor_of_safety=2.0,
-    ... )
-    >>> print(f"Using {result.unity_check * 100:.1f}% of capacity")
-    >>> print(f"Factor of Safety: {result.factor_of_safety:.2f}")
+    # More complete input will also be handled, but all fields need to be consistent:
+    >>> CheckResult(is_ok=True, unity_check=0.8)           -> factor_of_safety=1.25
 
-    >>> result = CheckResult(
-    ...     unity_check=1.15,
-    ... )
-    >>> print("Design fails - 15% over capacity!")
+    # If inconsistent values are provided, a ValueError is raised:
+    >>> CheckResult(is_ok=True, unity_check=1.5)           -> ValueError: Inconsistent CheckResult: unity_check and is_ok
 
     Notes
     -----
-    - Always check `is_ok` first to determine if design modifications are needed
-    - Use `unity_check` to optimize your design efficiency
-    - Use `factor_of_safety` to understand safety margins
-    - Values close to 1.0 indicate efficient but potentially risky designs
+    - Only the minimum required input is needed; extra fields are optional but must be consistent.
+    - If you provide inconsistent combinations, a ValueError will be raised.
+    - Always check `is_ok` to determine if design modifications are needed.
+    - Use `unity_check` to optimize your design efficiency.
+    - Use `factor_of_safety` to understand safety margins.
+    - Values close to 1.0 indicate efficient but potentially risky designs.
     """
 
     is_ok: bool | None = None
     unity_check: float | None = None
     factor_of_safety: float | None = None
+    provided: float | None = None
+    limit: float | None = None
+    operator: str = "<="  # Options: "<=", ">="
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> None:  # noqa: C901 PLR0912
         """Validate and synchronize unity_check, factor_of_safety, and is_ok."""
         # Validate non-negativity
         if self.unity_check is not None:
             raise_if_negative(unity_check=self.unity_check)
         if self.factor_of_safety is not None:
             raise_if_negative(factor_of_safety=self.factor_of_safety)
+        if self.provided is not None:
+            raise_if_negative(provided=self.provided)
+        if self.limit is not None:
+            raise_if_negative(limit=self.limit)
 
-        # Consistency between unity_check and factor_of_safety
-        if self.unity_check is not None and self.factor_of_safety is not None and abs(self.unity_check - 1 / self.factor_of_safety) >= 1e-6:
+        # Validate operator
+        if self.operator not in ("<=", ">="):
+            raise ValueError(f"Invalid operator: {self.operator}. Must be one of '<=', '>='.")
+
+        # Provided and limit must both be None or both not None
+        if (self.provided is None) != (self.limit is None):
+            raise ValueError("Both 'provided' and 'limit' must be None or neither None")
+
+        # if provided and limit are given, check consistency with unity_check and factor_of_safety
+        if self.provided is not None and self.limit is not None:
+            if self.operator == "<=":
+                calculated_unity_check = self.provided / self.limit if self.limit != 0 else float("inf")
+            else:  # operator == ">="
+                calculated_unity_check = self.limit / self.provided if self.provided != 0 else float("inf")
+
+            if self.unity_check is not None and abs(self.unity_check - calculated_unity_check) >= TOLERANCE:
+                raise ValueError("Inconsistent CheckResult: provided/limit and unity_check")
+            if self.factor_of_safety is not None:
+                calculated_factor_of_safety = float("inf") if calculated_unity_check == 0 else 1 / calculated_unity_check
+                if abs(self.factor_of_safety - calculated_factor_of_safety) >= TOLERANCE:
+                    raise ValueError("Inconsistent CheckResult: provided/limit and factor_of_safety")
+            if self.is_ok is not None and (calculated_unity_check > 1) == self.is_ok:
+                raise ValueError("Inconsistent CheckResult: provided/limit and is_ok")
+
+            # Fill in missing unity_check or factor_of_safety when it passes the above checks
+            if self.unity_check is None:
+                self.unity_check = calculated_unity_check
+            if self.factor_of_safety is None:
+                self.factor_of_safety = float("inf") if calculated_unity_check == 0 else 1 / calculated_unity_check
+
+        # Consistency between unity_check and factor_of_safety, account for zero division
+        if (
+            self.unity_check is not None
+            and self.factor_of_safety is not None
+            and (
+                (self.factor_of_safety == 0 and self.unity_check != float("inf"))
+                or (self.factor_of_safety != 0 and abs(self.unity_check - 1 / self.factor_of_safety) >= TOLERANCE)
+            )
+        ):
             raise ValueError(f"unity_check={self.unity_check} and factor_of_safety={self.factor_of_safety} are inconsistent")
 
         # Consistency between is_ok and unity_check/factor_of_safety
