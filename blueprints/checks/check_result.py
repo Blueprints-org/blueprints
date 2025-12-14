@@ -83,7 +83,7 @@ class CheckResult:
             if self.factor_of_safety is not None and (self.factor_of_safety < 1) == self.is_ok:
                 raise ValueError("Inconsistent CheckResult: factor_of_safety and is_ok")
 
-        # Calculate missing value
+        # Calculate missing value for unity_check or factor_of_safety
         if self.unity_check is None and self.factor_of_safety is not None:
             self.unity_check = float("inf") if self.factor_of_safety == 0 else 1 / self.factor_of_safety
         elif self.factor_of_safety is None and self.unity_check is not None:
