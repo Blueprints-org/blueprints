@@ -98,21 +98,27 @@ class CheckResult:
             else:  # operator == ">="
                 calculated_unity_check = self.limit / self.provided if self.provided != 0 else float("inf")
 
-            # Consistency checks
+            # Consistency check with provided unity check
             if self.unity_check is not None and abs(self.unity_check - calculated_unity_check) >= TOLERANCE:
                 raise ValueError("Inconsistent CheckResult: provided/limit and unity_check")
+
+            # Consistency check with provided factor_of_safety
             if self.factor_of_safety is not None:
                 calculated_factor_of_safety = float("inf") if calculated_unity_check == 0 else 1 / calculated_unity_check
                 if abs(self.factor_of_safety - calculated_factor_of_safety) >= TOLERANCE:
                     raise ValueError("Inconsistent CheckResult: provided/limit and factor_of_safety")
+
+            # Consistency check with provided is_ok
             if self.is_ok is not None and (calculated_unity_check > 1) == self.is_ok:
                 raise ValueError("Inconsistent CheckResult: provided/limit and is_ok")
 
-            # Fill in missing unity_check or factor_of_safety when it passes the above checks
+            # Fill in missing unity_check or factor_of_safety or is_ok when it passes the above checks
             if self.unity_check is None:
                 self.unity_check = calculated_unity_check
             if self.factor_of_safety is None:
                 self.factor_of_safety = float("inf") if calculated_unity_check == 0 else 1 / calculated_unity_check
+            if self.is_ok is None:
+                self.is_ok = calculated_unity_check <= 1
 
         # Consistency between unity_check and factor_of_safety, account for zero division
         if (
