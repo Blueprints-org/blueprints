@@ -127,5 +127,3 @@ class StructuralPointActionFree:
         elif self.direction.value in self._SINGLE_AXIS_DIRECTIONS:
             if self.value is None:
                 raise ValueError(f"value must be specified when direction = {self.direction.value}")
-            if self._VECTOR_PATTERN in str(self.value):
-                raise ValueError(f"value must be a single numeric value for {self.direction.value} direction, not vector format")

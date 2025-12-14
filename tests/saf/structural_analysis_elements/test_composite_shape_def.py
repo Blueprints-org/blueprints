@@ -523,6 +523,67 @@ class TestCompositeShapeDefContourValidation:
         with pytest.raises(ValueError, match="At least 3 coordinate pairs"):
             shape.validate_contour_string("-100.0; 0.0|-100.0; 200.0")
 
+    def test_validate_contour_string_with_empty_pairs(self) -> None:
+        """Test that empty pairs are skipped correctly."""
+        contour = PolygonContour(
+            coordinates=(
+                (-100.0, 0.0),
+                (-100.0, 200.0),
+                (100.0, 200.0),
+                (100.0, 0.0),
+                (-100.0, 0.0),
+            ),
+            material_name="S235",
+        )
+        shape = CompositeShapeDef(
+            name="GEN_1",
+            polygons=(contour,),
+        )
+        # Pairs with spaces/empty elements should be skipped
+        coords = shape.validate_contour_string("-100.0; 0.0||100.0; 200.0|100.0; 0.0|-100.0; 0.0")
+        assert len(coords) == 4
+
+    def test_validate_contour_string_with_extra_semicolons(self) -> None:
+        """Test that extra semicolons raise ValueError."""
+        contour = PolygonContour(
+            coordinates=(
+                (-100.0, 0.0),
+                (-100.0, 200.0),
+                (100.0, 200.0),
+                (100.0, 0.0),
+                (-100.0, 0.0),
+            ),
+            material_name="S235",
+        )
+        shape = CompositeShapeDef(
+            name="GEN_1",
+            polygons=(contour,),
+        )
+        with pytest.raises(ValueError, match="exactly one semicolon"):
+            shape.validate_contour_string("-100.0; 0.0; extra|-100.0; 200.0|100.0; 200.0|100.0; 0.0|-100.0; 0.0")
+
+    def test_validate_polygon_with_invalid_coordinate_tuple(self) -> None:
+        """Test that invalid coordinate tuples are rejected."""
+        contour = PolygonContour(
+            coordinates=(
+                # 3D coordinate instead of 2D
+                (-100.0, 0.0, 0.0),  # type: ignore[arg-type]
+                (-100.0, 200.0),
+                (100.0, 200.0),
+                (100.0, 0.0),
+                # Closing with 3D too
+                (-100.0, 0.0, 0.0),  # type: ignore[arg-type]
+            ),
+            material_name="S235",
+            is_opening=False,
+        )
+        # Try to create shape with invalid coordinates in polygon
+        with pytest.raises(ValueError, match="tuple"):
+            CompositeShapeDef(
+                name="GEN_1",
+                polygons=(contour,),
+            )
+
 
 class TestCompositeShapeDefImmutability:
     """Test immutability of CompositeShapeDef."""

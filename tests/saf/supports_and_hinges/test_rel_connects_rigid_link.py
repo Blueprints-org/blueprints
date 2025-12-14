@@ -246,6 +246,122 @@ class TestRelConnectsRigidLinkValidation:
                 fix_stiffness=100.0,
             )
 
+    def test_nonlinear_uy_without_resistance_raises_error(self) -> None:
+        """Test that NON_LINEAR uy without resistance raises ValueError."""
+        with pytest.raises(ValueError, match="uy_resistance must be specified"):
+            RelConnectsRigidLink(
+                name="RL_uy",
+                node1="N1",
+                node2="N2",
+                hinge_position=HingePosition.NONE,
+                ux=TranslationConstraint.RIGID,
+                uy=TranslationConstraint.NON_LINEAR,
+                uz=TranslationConstraint.RIGID,
+                fix=RotationConstraint.RIGID,
+                fiy=RotationConstraint.RIGID,
+                fiz=RotationConstraint.RIGID,
+                uy_stiffness=1000.0,
+            )
+
+    def test_nonlinear_uz_without_resistance_raises_error(self) -> None:
+        """Test that NON_LINEAR uz without resistance raises ValueError."""
+        with pytest.raises(ValueError, match="uz_resistance must be specified"):
+            RelConnectsRigidLink(
+                name="RL_uz",
+                node1="N1",
+                node2="N2",
+                hinge_position=HingePosition.NONE,
+                ux=TranslationConstraint.RIGID,
+                uy=TranslationConstraint.RIGID,
+                uz=TranslationConstraint.NON_LINEAR,
+                fix=RotationConstraint.RIGID,
+                fiy=RotationConstraint.RIGID,
+                fiz=RotationConstraint.RIGID,
+                uz_stiffness=1000.0,
+            )
+
+    def test_nonlinear_fiy_without_resistance_raises_error(self) -> None:
+        """Test that NON_LINEAR fiy without resistance raises ValueError."""
+        with pytest.raises(ValueError, match="fiy_resistance must be specified"):
+            RelConnectsRigidLink(
+                name="RL_fiy",
+                node1="N1",
+                node2="N2",
+                hinge_position=HingePosition.NONE,
+                ux=TranslationConstraint.RIGID,
+                uy=TranslationConstraint.RIGID,
+                uz=TranslationConstraint.RIGID,
+                fix=RotationConstraint.RIGID,
+                fiy=RotationConstraint.NON_LINEAR,
+                fiz=RotationConstraint.RIGID,
+                fiy_stiffness=100.0,
+            )
+
+    def test_nonlinear_fiz_without_resistance_raises_error(self) -> None:
+        """Test that NON_LINEAR fiz without resistance raises ValueError."""
+        with pytest.raises(ValueError, match="fiz_resistance must be specified"):
+            RelConnectsRigidLink(
+                name="RL_fiz",
+                node1="N1",
+                node2="N2",
+                hinge_position=HingePosition.NONE,
+                ux=TranslationConstraint.RIGID,
+                uy=TranslationConstraint.RIGID,
+                uz=TranslationConstraint.RIGID,
+                fix=RotationConstraint.RIGID,
+                fiy=RotationConstraint.RIGID,
+                fiz=RotationConstraint.NON_LINEAR,
+                fiz_stiffness=100.0,
+            )
+
+    def test_flexible_uz_without_stiffness_raises_error(self) -> None:
+        """Test that FLEXIBLE uz without stiffness raises ValueError."""
+        with pytest.raises(ValueError, match="uz_stiffness must be specified"):
+            RelConnectsRigidLink(
+                name="RL_uz_flex",
+                node1="N1",
+                node2="N2",
+                hinge_position=HingePosition.NONE,
+                ux=TranslationConstraint.RIGID,
+                uy=TranslationConstraint.RIGID,
+                uz=TranslationConstraint.FLEXIBLE,
+                fix=RotationConstraint.RIGID,
+                fiy=RotationConstraint.RIGID,
+                fiz=RotationConstraint.RIGID,
+            )
+
+    def test_flexible_fiy_without_stiffness_raises_error(self) -> None:
+        """Test that FLEXIBLE fiy without stiffness raises ValueError."""
+        with pytest.raises(ValueError, match="fiy_stiffness must be specified"):
+            RelConnectsRigidLink(
+                name="RL_fiy_flex",
+                node1="N1",
+                node2="N2",
+                hinge_position=HingePosition.NONE,
+                ux=TranslationConstraint.RIGID,
+                uy=TranslationConstraint.RIGID,
+                uz=TranslationConstraint.RIGID,
+                fix=RotationConstraint.RIGID,
+                fiy=RotationConstraint.FLEXIBLE,
+                fiz=RotationConstraint.RIGID,
+            )
+
+    def test_flexible_fiz_without_stiffness_raises_error(self) -> None:
+        """Test that FLEXIBLE fiz without stiffness raises ValueError."""
+        with pytest.raises(ValueError, match="fiz_stiffness must be specified"):
+            RelConnectsRigidLink(
+                name="RL_fiz_flex",
+                node1="N1",
+                node2="N2",
+                hinge_position=HingePosition.NONE,
+                ux=TranslationConstraint.RIGID,
+                uy=TranslationConstraint.RIGID,
+                uz=TranslationConstraint.RIGID,
+                fix=RotationConstraint.RIGID,
+                fiy=RotationConstraint.RIGID,
+                fiz=RotationConstraint.FLEXIBLE,
+            )
+
     def test_flexible_compression_without_stiffness_raises_error(self) -> None:
         """Test that FLEXIBLE_COMPRESSION_ONLY without stiffness raises ValueError."""
         with pytest.raises(ValueError, match="uy_stiffness must be specified"):

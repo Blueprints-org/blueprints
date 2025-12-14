@@ -379,6 +379,38 @@ class TestRelConnectsRigidCrossValidation:
                 fi=Constraint.RIGID,
             )
 
+    def test_nonlinear_fi2_without_resistance_raises_error(self) -> None:
+        """Test that NON_LINEAR fi2 without resistance raises ValueError."""
+        with pytest.raises(ValueError, match="fi2_resistance must be specified"):
+            RelConnectsRigidCross(
+                name="RC12",
+                member1="B1",
+                member2="B2",
+                u1=Constraint.RIGID,
+                u2=Constraint.RIGID,
+                u=Constraint.RIGID,
+                fi1=Constraint.RIGID,
+                fi2=Constraint.NON_LINEAR,
+                fi=Constraint.RIGID,
+                fi2_stiffness=100.0,
+            )
+
+    def test_nonlinear_fi_without_resistance_raises_error(self) -> None:
+        """Test that NON_LINEAR fi without resistance raises ValueError."""
+        with pytest.raises(ValueError, match="fi_resistance must be specified"):
+            RelConnectsRigidCross(
+                name="RC13",
+                member1="B1",
+                member2="B2",
+                u1=Constraint.RIGID,
+                u2=Constraint.RIGID,
+                u=Constraint.RIGID,
+                fi1=Constraint.RIGID,
+                fi2=Constraint.RIGID,
+                fi=Constraint.NON_LINEAR,
+                fi_stiffness=100.0,
+            )
+
 
 class TestConstraintEnum:
     """Test Constraint enum."""

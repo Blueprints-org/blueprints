@@ -332,6 +332,16 @@ class TestStructuralMaterialValidation:
         )
         assert material.design_properties == "Fy|235;Fu|360;E|210000"
 
+    def test_valid_design_properties_with_empty_pairs(self) -> None:
+        """Test that empty pairs in design properties are skipped."""
+        material = StructuralMaterial(
+            name="S235",
+            material_type=MaterialType.STEEL,
+            quality="S235",
+            design_properties="Fy|235;;Fu|360",
+        )
+        assert material.design_properties == "Fy|235;;Fu|360"
+
 
 class TestEnums:
     """Test enum values."""
