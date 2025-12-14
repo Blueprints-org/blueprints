@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import MM, N
+from blueprints.type_alias import MM, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -16,7 +16,7 @@ class Form8Dot18AverageShearStress(Formula):
     source_document = PR_EN_1992_1_1_2023
 
     def __init__(self, v_ed: N, b_w: MM, z: MM) -> None:
-        r"""[$\tau_{Ed}$] Average shear stress over the cross-section area.
+        r"""[$\tau_{Ed}$] Average shear stress over the cross-section area in regions of members without geometric discontinuities [$MPa$].
 
         prEN 1992-1-1:2023 art 8.2.1 (3) - Formula (8.18)
 
@@ -35,12 +35,9 @@ class Form8Dot18AverageShearStress(Formula):
         self.z = z
 
     @staticmethod
-    def _evaluate(v_ed: N, b_w: MM, z: MM, *args, **kwargs) -> float:  # noqa: ARG004
+    def _evaluate(v_ed: N, b_w: MM, z: MM) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(
-            v_ed=v_ed,
-        )
-
+        raise_if_negative(v_ed=v_ed)
         raise_if_less_or_equal_to_zero(b_w=b_w, z=z)
         return v_ed / (b_w * z)
 
@@ -48,7 +45,9 @@ class Form8Dot18AverageShearStress(Formula):
         """Returns LatexFormula object for formula 8.18."""
         _equation: str = r"\frac{V_{Ed}}{b_w \cdot z}"
         _numeric_equation: str = latex_replace_symbols(
-            _equation, replacements={r"V_{Ed}": f"{self.v_ed:.{n}f}", r"b_w": f"{self.b_w:.{n}f}", r"z": f"{self.z:.{n}f}"}, unique_symbol_check=False
+            template=_equation,
+            replacements={r"V_{Ed}": f"{self.v_ed:.{n}f}", r"b_w": f"{self.b_w:.{n}f}", r"z": f"{self.z:.{n}f}"},
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"\tau_{Ed}",
