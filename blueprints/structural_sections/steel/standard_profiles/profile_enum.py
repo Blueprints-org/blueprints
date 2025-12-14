@@ -37,18 +37,19 @@ class ProfileEnum(Enum):
         obj.__init__ = ProfileEnum.__dict__["__init__"].__get__(obj, cls)
         # transform method needs to be overridden, otherwise the base class transform will be called which cannot handle the Enum instance
         obj.transform = ProfileEnum.__dict__["transform"].__get__(obj, cls)
+        # Copy all attributes from the profile instance to the new enum member instance to avoid initializing the Profile object again
+        obj.__dict__.update(profile.__dict__)
         return obj
 
-    def __init__(self, profile: Profile) -> None:
-        """Initialize the enum member as a Profile subclass instance.
+    def __init__(self, _profile: Profile) -> None:
+        """__init__ method for ProfileEnum, intentionally left empty.
 
-        This method extracts the fields from the provided Profile instance and
-        initializes the Profile subclass instance with those fields.
+        Note
+        ----
+            The profile instance is already initialized in class definition.
+            __new__ method copies all attributes from the profile instance to the enum member instance, synthetically initializing it.
+            This way, we avoid re-initializing the profile instance.
         """
-        base_profile_class: type[Profile] = self.__class__.__bases__[0]
-        initializable_keys = {key for key, value in base_profile_class.__dataclass_fields__.items() if value.init}
-        profile_dict = {key: value for key, value in profile.__dict__.items() if key in initializable_keys}
-        base_profile_class.__init__(self, **profile_dict)  # type: ignore[arg-type]
 
     def transform(self, horizontal_offset: MM = 0, vertical_offset: MM = 0, rotation: DEG = 0) -> Self:
         """Specialized transform method for ProfileEnum. It returns a new profile with the applied transformations.
