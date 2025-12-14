@@ -70,9 +70,19 @@ class CheckResult:
     limit: float | None = None
     operator: str = "<="  # Options: "<=", ">="
 
-    def __post_init__(self) -> None:  # noqa: C901 PLR0912
+    def __post_init__(self) -> None:
         """Validate and synchronize unity_check, factor_of_safety, and is_ok."""
-        # Validate non-negativity
+        self._validate_non_negativity()
+        self._validate_operator()
+        self._validate_provided_limit_pair()
+        self._handle_provided_limit_consistency()
+        self._check_unity_factor_consistency()
+        self._check_is_ok_consistency()
+        self._calculate_missing_unity_factor()
+        self._infer_is_ok()
+
+    def _validate_non_negativity(self) -> None:
+        """Validate that all relevant fields are non-negative."""
         if self.unity_check is not None:
             raise_if_negative(unity_check=self.unity_check)
         if self.factor_of_safety is not None:
@@ -82,15 +92,21 @@ class CheckResult:
         if self.limit is not None:
             raise_if_negative(limit=self.limit)
 
-        # Validate operator
+    def _validate_operator(self) -> None:
+        """Validate that the operator is either '<=' or '>='."""
         if self.operator not in ("<=", ">="):
             raise ValueError(f"Invalid operator: {self.operator}. Must be one of '<=', '>='.")
 
-        # Provided and limit must both be None or both not None
+    def _validate_provided_limit_pair(self) -> None:
+        """Ensure that provided and limit are both None or both not None."""
         if (self.provided is None) != (self.limit is None):
             raise ValueError("Both 'provided' and 'limit' must be None or neither None")
 
-        # If provided and limit are given, check consistency with unity_check/factor_of_safety/is_ok
+    def _handle_provided_limit_consistency(self) -> None:
+        """
+        If provided and limit are given, check consistency with unity_check/factor_of_safety/is_ok.
+        Fill in missing values if possible.
+        """
         if self.provided is not None and self.limit is not None:
             # Calculate unity_check based on operator
             if self.operator == "<=":
@@ -120,7 +136,8 @@ class CheckResult:
             if self.is_ok is None:
                 self.is_ok = calculated_unity_check <= 1
 
-        # Consistency between unity_check and factor_of_safety, account for zero division
+    def _check_unity_factor_consistency(self) -> None:
+        """Consistency between unity_check and factor_of_safety, account for zero division."""
         if (
             self.unity_check is not None
             and self.factor_of_safety is not None  # Both provided
@@ -131,19 +148,22 @@ class CheckResult:
         ):
             raise ValueError(f"unity_check={self.unity_check} and factor_of_safety={self.factor_of_safety} are inconsistent")
 
-        # Consistency between is_ok and unity_check/factor_of_safety
+    def _check_is_ok_consistency(self) -> None:
+        """Consistency between is_ok and unity_check/factor_of_safety."""
         if self.is_ok is not None:
             if self.unity_check is not None and (self.unity_check > 1) == self.is_ok:
                 raise ValueError("Inconsistent CheckResult: unity_check and is_ok")
             if self.factor_of_safety is not None and (self.factor_of_safety < 1) == self.is_ok:
                 raise ValueError("Inconsistent CheckResult: factor_of_safety and is_ok")
 
-        # Calculate missing value for unity_check or factor_of_safety
+    def _calculate_missing_unity_factor(self) -> None:
+        """Calculate missing value for unity_check or factor_of_safety."""
         if self.unity_check is None and self.factor_of_safety is not None:
             self.unity_check = float("inf") if self.factor_of_safety == 0 else 1 / self.factor_of_safety
         elif self.factor_of_safety is None and self.unity_check is not None:
             self.factor_of_safety = float("inf") if self.unity_check == 0 else 1 / self.unity_check
 
-        # Infer is_ok if not given
+    def _infer_is_ok(self) -> None:
+        """Infer is_ok if not given."""
         if self.is_ok is None and self.unity_check is not None:
             self.is_ok = self.unity_check <= 1
