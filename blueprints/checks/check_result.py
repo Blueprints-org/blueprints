@@ -25,6 +25,7 @@ class CheckResult:
         design fails and needs modification (stronger materials, larger
         sections, more reinforcement, etc.).
     unity_check : float | None, default None
+        Also known as utilization ratio or u.c.
         Ratio of demand to capacity, indicating how much of the available
         strength is being used. Values < 1.0 indicate reserve capacity,
         values > 1.0 indicate over-utilization requiring design changes.
