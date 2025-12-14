@@ -37,8 +37,7 @@ def strip_profile() -> StripProfile:
 @pytest.fixture
 def chs_profile() -> CHSProfile:
     """Fixture to set up a CHS profile for testing."""
-    profile: CHS = CHS.CHS508x16
-    return CHSProfile.from_standard_profile(profile=profile)
+    return CHS.CHS508x16
 
 
 @pytest.fixture
