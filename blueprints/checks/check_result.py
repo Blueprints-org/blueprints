@@ -7,51 +7,38 @@ from blueprints.validations import raise_if_negative
 TOLERANCE = 1e-6
 
 
-@dataclass
+@dataclass(frozen=True)
 class CheckResult:
     """Contains the results of a structural engineering check.
 
     This class stores the outcome of any structural verification, providing
     both pass/fail status and detailed information about capacity utilization or factor of safety.
-    Use this to understand whether your design meets code requirements and
+    Use this to understand whether your design meets code requireds and
     how efficiently you're using the available capacity.
 
     You can instantiate this class by providing only the minimum required input
-    (such as just `unity_check`, `factor_of_safety`, or a pair of `provided` and `limit`),
+    (such as just `unity_check`, `factor_of_safety`, or a pair of `provided` and `required`),
     and the other values will be computed automatically. You may also provide more than the minimum,
     but all values must be consistent or a ValueError will be raised.
 
     Parameters
     ----------
+    provided : float | None, optional
+        The actual calculated value from the design (e.g., applied load, stress).
+    required : float | None, optional
+        The allowable required (or limit) for the design (e.g., capacity, code required), the required value itself is acceptable.
+    operator : str, optional
+        The comparison operator used to evaluate the check, "<", "<=", "==", ">=", ">" or "!=".
+        Default is "<=", meaning provided <= required.
+    unity_check : float | None, optional
+        The ratio of provided to required (provided / required).
+        Where values <= 1.0 indicate passing checks.
+    factor_of_safety : float | None, optional
+        The factor of safety (required / provided).
+        Where values >= 1.0 indicate passing checks.
     is_ok : bool | None, optional
         Indicates whether the check passed (True) or failed (False).
         If None, it will be inferred from `unity_check` or `factor_of_safety` if available.
-    unity_check : float | None, optional
-        The ratio of applied demand to available capacity. A value <= 1.0 indicates the design passes.
-    factor_of_safety : float | None, optional
-        The margin of safety, defined as the ratio of capacity to demand. A value >= 1.0 indicates the design passes.
-    provided : float | None, optional
-        The actual calculated value from the design (e.g., applied load, stress).
-    limit : float | None, optional
-        The allowable limit for the design (e.g., capacity, code limit), the limit value itself is acceptable.
-    operator : str, optional
-        The comparison operator used to evaluate the check. Typically "<=" or ">=". Default is "<=".
-
-    Examples
-    --------
-    # Minimum input required, other fields are computed:
-    >>> CheckResult(is_ok=True)                            -> all fields None except is_ok=True
-    >>> CheckResult(unity_check=0.8)                       -> factor_of_safety=1.25, is_ok=True
-    >>> CheckResult(factor_of_safety=1.25)                 -> unity_check=0.8, is_ok=True
-    >>> CheckResult(provided=80, limit=100)                -> unity_check=0.8, factor_of_safety=1.25, is_ok=True
-    >>> CheckResult(provided=150, limit=100)               -> unity_check=1.5, factor_of_safety=0.666..., is_ok=False
-    >>> CheckResult(provided=80, limit=100, operator=">=") -> unity_check=1.25, factor_of_safety=0.8, is_ok=False
-
-    # More complete input will also be handled, but all fields need to be consistent:
-    >>> CheckResult(is_ok=True, unity_check=0.8)           -> factor_of_safety=1.25
-
-    # If inconsistent values are provided, a ValueError is raised:
-    >>> CheckResult(is_ok=True, unity_check=1.5)           -> ValueError: Inconsistent CheckResult: unity_check and is_ok
 
     Notes
     -----
@@ -63,19 +50,93 @@ class CheckResult:
     - Values close to 1.0 indicate efficient but potentially risky designs.
     """
 
-    is_ok: bool | None = None
+    provided: float | None = None
+    required: float | None = None
+    operator: str = "<="
     unity_check: float | None = None
     factor_of_safety: float | None = None
-    provided: float | None = None
-    limit: float | None = None
-    operator: str = "<="  # Options: "<=", ">="
+    is_ok: bool | None = None
+
+    @classmethod
+    def from_comparison(cls, provided: float, required: float, operator: str = "<=") -> "CheckResult":
+        """
+        Create a CheckResult from a direct comparison of provided and required values.
+
+        Parameters
+        ----------
+        provided : float
+            The actual value from the design (e.g., applied load, stress).
+        required : float
+            The allowable or required value (e.g., capacity, code required).
+        operator : str, optional
+            The comparison operator ("<", "<=", "==", ">=", ">", "!="). Default is "<=".
+
+        Returns
+        -------
+        CheckResult
+            A new CheckResult instance with the specified values.
+        """
+        return cls(provided=provided, required=required, operator=operator)
+
+    @classmethod
+    def from_unity_check(cls, unity_check: float) -> "CheckResult":
+        """
+        Create a CheckResult from a unity check value (provided/required).
+
+        Parameters
+        ----------
+        unity_check : float
+            The ratio of provided to required (provided / required).
+            Where values <= 1.0 indicate passing checks.
+
+        Returns
+        -------
+        CheckResult
+            A new CheckResult instance with unity_check=unity_check.
+        """
+        return cls(unity_check=unity_check)
+
+    @classmethod
+    def from_factor_of_safety(cls, factor_of_safety: float) -> "CheckResult":
+        """
+        Create a CheckResult from a factor of safety value (required/provided).
+
+        Parameters
+        ----------
+        factor_of_safety : float
+            The factor of safety (required / provided).
+            Where values >= 1.0 indicate passing checks.
+
+        Returns
+        -------
+        CheckResult
+            A new CheckResult instance with factor_of_safety=factor_of_safety.
+        """
+        return cls(factor_of_safety=factor_of_safety)
+
+    @classmethod
+    def from_bool(cls, is_ok: bool) -> "CheckResult":
+        """
+        Create a CheckResult from a boolean pass/fail value only.
+
+        Parameters
+        ----------
+        is_ok : bool
+            Whether the check passed (True) or failed (False).
+
+        Returns
+        -------
+        CheckResult
+            A new CheckResult instance with only is_ok set.
+        """
+        return cls(is_ok=is_ok)
 
     def __post_init__(self) -> None:
         """Validate and synchronize unity_check, factor_of_safety, and is_ok."""
         self._validate_non_negativity()
         self._validate_operator()
-        self._validate_provided_limit_pair()
-        self._handle_provided_limit_consistency()
+        self._validate_provided_required_pair()
+        self._handle_provided_required_consistency()
         self._check_unity_factor_consistency()
         self._check_is_ok_consistency()
         self._calculate_missing_unity_factor()
@@ -89,52 +150,71 @@ class CheckResult:
             raise_if_negative(factor_of_safety=self.factor_of_safety)
         if self.provided is not None:
             raise_if_negative(provided=self.provided)
-        if self.limit is not None:
-            raise_if_negative(limit=self.limit)
+        if self.required is not None:
+            raise_if_negative(required=self.required)
 
     def _validate_operator(self) -> None:
-        """Validate that the operator is either '<=' or '>='."""
-        if self.operator not in ("<=", ">="):
-            raise ValueError(f"Invalid operator: {self.operator}. Must be one of '<=', '>='.")
+        """Validate that the operator is one of the accepted values."""
+        if self.operator not in ("<", "<=", "==", ">=", ">", "!="):
+            raise ValueError(f"Invalid operator: {self.operator}. Must be one of '<', '<=', '==', '>=', '>'. or '!='.")
 
-    def _validate_provided_limit_pair(self) -> None:
-        """Ensure that provided and limit are both None or both not None."""
-        if (self.provided is None) != (self.limit is None):
-            raise ValueError("Both 'provided' and 'limit' must be None or neither None")
+    def _validate_provided_required_pair(self) -> None:
+        """Ensure that provided and required are both None or both not None."""
+        if (self.provided is None) != (self.required is None):
+            raise ValueError("Both 'provided' and 'required' must be None or neither None")
 
-    def _handle_provided_limit_consistency(self) -> None:
+    def _calc_unity_check(self, provided: float, required: float, operator: str) -> float:
+        """Calculate unity check based on provided, required, and operator."""
+        if operator in ("<=", "<"):
+            return 0 if provided == 0 else provided / required if required != 0 else float("inf")
+        if operator in (">=", ">"):
+            return float("inf") if provided == 0 and required != 0 else 1.0 if provided == 0 else required / provided
+        if operator == "==":
+            return (
+                0
+                if (required == 0 and abs(provided) <= TOLERANCE) or (required != 0 and abs(provided - required) / abs(required) <= TOLERANCE)
+                else float("inf")
+            )
+        return (  # operator == "!="
+            float("inf")
+            if (required == 0 and abs(provided) <= TOLERANCE)
+            else 0
+            if (required != 0 and abs(provided - required) / abs(required) > TOLERANCE)
+            else float("inf")
+        )
+
+    def _handle_provided_required_consistency(self) -> None:
         """
-        If provided and limit are given, check consistency with unity_check/factor_of_safety/is_ok.
+        If provided and required are given, check consistency with unity_check/factor_of_safety/is_ok.
         Fill in missing values if possible.
         """
-        if self.provided is not None and self.limit is not None:
-            # Calculate unity_check based on operator
-            if self.operator == "<=":
-                calculated_unity_check = 0 if self.provided == 0 else self.provided / self.limit if self.limit != 0 else float("inf")
-            else:  # operator == ">="
-                calculated_unity_check = self.limit / self.provided if self.provided != 0 else float("inf")
+        if self.provided is not None and self.required is not None:
+            calculated_unity_check = self._calc_unity_check(self.provided, self.required, self.operator)
 
             # Consistency check with provided unity check
             if self.unity_check is not None and abs(self.unity_check - calculated_unity_check) >= TOLERANCE:
-                raise ValueError("Inconsistent CheckResult: provided/limit and unity_check")
+                raise ValueError("Inconsistent CheckResult: provided/required and unity_check")
 
             # Consistency check with provided factor_of_safety
             if self.factor_of_safety is not None:
                 calculated_factor_of_safety = float("inf") if calculated_unity_check == 0 else 1 / calculated_unity_check
                 if abs(self.factor_of_safety - calculated_factor_of_safety) >= TOLERANCE:
-                    raise ValueError("Inconsistent CheckResult: provided/limit and factor_of_safety")
+                    raise ValueError("Inconsistent CheckResult: provided/required and factor_of_safety")
 
             # Consistency check with provided is_ok
             if self.is_ok is not None and (calculated_unity_check > 1) == self.is_ok:
-                raise ValueError("Inconsistent CheckResult: provided/limit and is_ok")
-
+                raise ValueError("Inconsistent CheckResult: provided/required and is_ok")
             # Fill in missing unity_check or factor_of_safety or is_ok when it passes the above checks
             if self.unity_check is None:
-                self.unity_check = calculated_unity_check
+                object.__setattr__(self, "unity_check", calculated_unity_check)
             if self.factor_of_safety is None:
-                self.factor_of_safety = float("inf") if calculated_unity_check == 0 else 1 / calculated_unity_check
+                object.__setattr__(self, "factor_of_safety", float("inf") if calculated_unity_check == 0 else 1 / calculated_unity_check)
             if self.is_ok is None:
-                self.is_ok = calculated_unity_check <= 1
+                # Determine pass/fail based on operator
+                if self.operator in ("<", ">"):
+                    object.__setattr__(self, "is_ok", calculated_unity_check < 1)
+                else:  # operator in ("<=", ">=", "==", "!=")
+                    object.__setattr__(self, "is_ok", calculated_unity_check <= 1)
 
     def _check_unity_factor_consistency(self) -> None:
         """Consistency between unity_check and factor_of_safety, account for zero division."""
@@ -151,19 +231,25 @@ class CheckResult:
     def _check_is_ok_consistency(self) -> None:
         """Consistency between is_ok and unity_check/factor_of_safety."""
         if self.is_ok is not None:
-            if self.unity_check is not None and (self.unity_check > 1) == self.is_ok:
-                raise ValueError("Inconsistent CheckResult: unity_check and is_ok")
-            if self.factor_of_safety is not None and (self.factor_of_safety < 1) == self.is_ok:
-                raise ValueError("Inconsistent CheckResult: factor_of_safety and is_ok")
+            if self.operator in ("<", ">"):
+                if self.unity_check is not None and (self.unity_check >= 1) == self.is_ok:
+                    raise ValueError("Inconsistent CheckResult: unity_check and is_ok")
+                if self.factor_of_safety is not None and (self.factor_of_safety <= 1) == self.is_ok:
+                    raise ValueError("Inconsistent CheckResult: factor_of_safety and is_ok")
+            else:  # operator in ("<=", ">=", "==", "!=")
+                if self.unity_check is not None and (self.unity_check > 1) == self.is_ok:
+                    raise ValueError("Inconsistent CheckResult: unity_check and is_ok")
+                if self.factor_of_safety is not None and (self.factor_of_safety < 1) == self.is_ok:
+                    raise ValueError("Inconsistent CheckResult: factor_of_safety and is_ok")
 
     def _calculate_missing_unity_factor(self) -> None:
         """Calculate missing value for unity_check or factor_of_safety."""
         if self.unity_check is None and self.factor_of_safety is not None:
-            self.unity_check = float("inf") if self.factor_of_safety == 0 else 1 / self.factor_of_safety
+            object.__setattr__(self, "unity_check", float("inf") if self.factor_of_safety == 0 else 1 / self.factor_of_safety)
         elif self.factor_of_safety is None and self.unity_check is not None:
-            self.factor_of_safety = float("inf") if self.unity_check == 0 else 1 / self.unity_check
+            object.__setattr__(self, "factor_of_safety", float("inf") if self.unity_check == 0 else 1 / self.unity_check)
 
     def _infer_is_ok(self) -> None:
         """Infer is_ok if not given."""
         if self.is_ok is None and self.unity_check is not None:
-            self.is_ok = self.unity_check <= 1
+            object.__setattr__(self, "is_ok", self.unity_check <= 1)
