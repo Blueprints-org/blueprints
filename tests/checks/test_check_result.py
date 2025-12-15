@@ -40,53 +40,57 @@ class TestCheckResult:
         assert result.operator == "<="
 
     @pytest.mark.parametrize(
-        ("provided", "operator", "required", "expected_is_ok"),
+        ("provided", "operator", "required", "expected_is_ok", "unity_check", "factor_of_safety"),
         [
-            (75, "<", 150, True),  # provided < required
-            (75, "<=", 150, True),
-            (75, "==", 150, False),
-            (75, ">=", 150, False),
-            (75, ">", 150, False),
-            (75, "!=", 150, True),
-            (100, "<", 100, False),  # provided == required
-            (100, "<=", 100, True),
-            (100, "==", 100, True),
-            (100, ">=", 100, True),
-            (100, ">", 100, False),
-            (100, "!=", 100, False),
-            (150, "<", 75, False),  # provided > required
-            (150, "<=", 75, False),
-            (150, "==", 75, False),
-            (150, ">=", 75, True),
-            (150, ">", 75, True),
-            (150, "!=", 75, True),
-            (0, "<", 0, False),  # Cases with zero
-            (0, "<=", 0, True),
-            (0, "==", 0, True),
-            (0, ">=", 0, True),
-            (0, ">", 0, False),
-            (0, "!=", 0, False),
-            (0, "<", 10, True),
-            (0, "<=", 10, True),
-            (0, "==", 10, False),
-            (0, ">=", 10, False),
-            (0, ">", 10, False),
-            (0, "!=", 10, True),
-            (10, "<", 0, False),
-            (10, "<=", 0, False),
-            (10, "==", 0, False),
-            (10, ">=", 0, True),
-            (10, ">", 0, True),
-            (10, "!=", 0, True),
+            (75, "<", 150, True, 0.5, 2.0),  # provided < required
+            (75, "<=", 150, True, 0.5, 2.0),
+            (75, "==", 150, False, 0.5, 2.0),
+            (75, ">=", 150, False, 0.5, 2.0),
+            (75, ">", 150, False, 0.5, 2.0),
+            (75, "!=", 150, True, 0.5, 2.0),
+            (100, "<", 100, False, 1.0, 1.0),  # provided == required
+            (100, "<=", 100, True, 1.0, 1.0),
+            (100, "==", 100, True, 1.0, 1.0),
+            (100, ">=", 100, True, 1.0, 1.0),
+            (100, ">", 100, False, 1.0, 1.0),
+            (100, "!=", 100, False, 1.0, 1.0),
+            (150, "<", 75, False, 2.0, 0.5),  # provided > required
+            (150, "<=", 75, False, 2.0, 0.5),
+            (150, "==", 75, False, 2.0, 0.5),
+            (150, ">=", 75, True, 2.0, 0.5),
+            (150, ">", 75, True, 2.0, 0.5),
+            (150, "!=", 75, True, 2.0, 0.5),
+            (0, "<", 0, False, 0.0, 0.0),  # Cases with both zero
+            (0, "<=", 0, True, 0.0, 0.0),
+            (0, "==", 0, True, 0.0, 0.0),
+            (0, ">=", 0, True, 0.0, 0.0),
+            (0, ">", 0, False, 0.0, 0.0),
+            (0, "!=", 0, False, 0.0, 0.0),
+            (0, "<", 10, True, 0.0, 0.0),  # Cases with provided is zero
+            (0, "<=", 10, True, 0.0, 0.0),
+            (0, "==", 10, False, 0.0, 0.0),
+            (0, ">=", 10, False, 0.0, 0.0),
+            (0, ">", 10, False, 0.0, 0.0),
+            (0, "!=", 10, True, 0.0, 0.0),
+            (10, "<", 0, False, 0.0, 0.0),  # Cases with required is zero
+            (10, "<=", 0, False, 0.0, 0.0),
+            (10, "==", 0, False, 0.0, 0.0),
+            (10, ">=", 0, True, 0.0, 0.0),
+            (10, ">", 0, True, 0.0, 0.0),
+            (10, "!=", 0, True, 0.0, 0.0),
         ],
     )
-    def test_from_comparison_parametrized(self, provided: float, operator: str, required: float, expected_is_ok: bool) -> None:
+    def test_from_comparison_parametrized(
+        self, provided: float, operator: str, required: float, expected_is_ok: bool, unity_check: float, factor_of_safety: float
+    ) -> None:
         """Test CheckResult.from_comparison for all operator cases and value relations, including zeros."""
         result = CheckResult.from_comparison(provided=provided, required=required, operator=operator)
         assert result.is_ok == expected_is_ok
         assert result.provided == provided
         assert result.required == required
         assert result.operator == operator
+        assert result.unity_check == pytest.approx(unity_check, 0.0001)
+        assert result.factor_of_safety == pytest.approx(factor_of_safety, 0.0001)
 
     @pytest.mark.parametrize(
         "kwargs",
