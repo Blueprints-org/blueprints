@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from blueprints.codes.formula import ComparisonFormula, Formula
+from blueprints.codes.formula import ComparisonFormula, DoubleComparisonFormula, Formula
 
 
 class FormulaTest(Formula):
@@ -321,3 +321,555 @@ def test_comparison_formula_equal_unity_check_property() -> None:
 
     # The unity check should be lhs / rhs = 10 / 10 = 1.0
     assert formula.unity_check == 1.0
+
+
+class DoubleComparisonFormulaTestLessLess(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs < val < rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_less_less_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = -30
+    b = -20
+    c = -10
+
+    # check passing condition (lhs < val < rhs) = True
+    formula = DoubleComparisonFormulaTestLessLess(a=a, b=b, c=c)
+    assert formula
+
+    a = 10
+    b = 20
+    c = 30
+
+    # check passing condition (lhs < val < rhs) = True
+    formula = DoubleComparisonFormulaTestLessLess(a=a, b=b, c=c)
+    assert formula
+
+    # check failing condition (lhs = val < rhs) = False
+    b = 10
+    formula = DoubleComparisonFormulaTestLessLess(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs < val = rhs) = False
+    b = 30
+    formula = DoubleComparisonFormulaTestLessLess(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs > val < rhs) = False
+    b = 5
+    formula = DoubleComparisonFormulaTestLessLess(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs < val > rhs) = False
+    b = 35
+    formula = DoubleComparisonFormulaTestLessLess(a=a, b=b, c=c)
+    assert not formula
+
+
+class DoubleComparisonFormulaTestLessorEqualLess(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs <= val < rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.le
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_less_or_equal_less_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = 10
+    b = 20
+    c = 30
+
+    # check passing condition (lhs <= val < rhs) = True
+    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    assert formula
+
+    # check passing condition (lhs <= val < rhs) = True
+    b = 10
+    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    assert formula
+
+    # check failing condition (lhs <= val = rhs) = False
+    b = 30
+    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs > val < rhs) = False
+    b = 5
+    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs < val > rhs) = False
+    b = 35
+    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    assert not formula
+
+
+class DoubleComparisonFormulaTestLessLessorEqual(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs < val <= rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.le
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_less_less_or_equal_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = 10
+    b = 20
+    c = 30
+
+    # check passing condition (lhs < val <= rhs) = True
+    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    assert formula
+
+    # check passing condition (lhs < val <= rhs) = True
+    b = 30
+    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    assert formula
+
+    # check failing condition (lhs = val < rhs) = False
+    b = 10
+    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs > val < rhs) = False
+    b = 5
+    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs < val > rhs) = False
+    b = 35
+    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    assert not formula
+
+
+class DoubleComparisonFormulaTestLessorEqualLessorEqual(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs <= val <= rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.le
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.le
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_less_or_equal_less_or_equal_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = 10
+    b = 20
+    c = 30
+
+    # check passing condition (lhs <= val <= rhs) = True
+    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    assert formula
+
+    # check passing condition (lhs <= val <= rhs) = True
+    b = 10
+    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    assert formula
+
+    # check passing condition (lhs <= val <= rhs) = True
+    b = 30
+    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    assert formula
+
+    # check failing condition (lhs > val < rhs) = False
+    b = 5
+    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    assert not formula
+
+    # check failing condition (lhs < val > rhs) = False
+    b = 35
+    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    assert not formula
+
+
+class DoubleComparisonFormulaTestGreaterLess(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs > val < rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.gt
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_greater_less_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = 10
+    b = 20
+    c = 30
+
+    # check raise error due to invalid operator
+    with pytest.raises(ValueError):
+        DoubleComparisonFormulaTestGreaterLess(a=a, b=b, c=c)
+
+
+class DoubleComparisonFormulaTestGreaterorEqualLess(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs >= val < rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.ge
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_greater_or_equal_less_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = 10
+    b = 20
+    c = 30
+
+    # check raise error due to invalid operator
+    with pytest.raises(ValueError):
+        DoubleComparisonFormulaTestGreaterorEqualLess(a=a, b=b, c=c)
+
+
+class DoubleComparisonFormulaTestLessGreater(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs < val > rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.gt
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_less_greater_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = 10
+    b = 20
+    c = 30
+
+    # check raise error due to invalid operator
+    with pytest.raises(ValueError):
+        DoubleComparisonFormulaTestLessGreater(a=a, b=b, c=c)
+
+
+class DoubleComparisonFormulaTestLessGreaterorEqual(DoubleComparisonFormula):
+    """
+    Dummy double comparison formula for testing purposes.
+    lhs < val >= rhs.
+    """
+
+    label = "Dummy testing comparison formula"
+    source_document = "Dummy testing document"
+
+    def __init__(
+        self,
+        a: float,
+        b: float,
+        c: float,
+    ) -> None:
+        """Dummy double comparison formula for testing purposes."""
+        super().__init__()
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @classmethod
+    def _comparison_operator_lhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the left-hand side or lower bound (operator.lt or operator.le)."""
+        return operator.lt
+
+    @classmethod
+    def _comparison_operator_rhs(cls) -> Callable[[Any, Any], bool]:
+        """Comparison operator of the right-hand side or upper bound (operator.lt or operator.le)."""
+        return operator.ge
+
+    @staticmethod
+    def _evaluate_lhs(a: float, **_) -> float:
+        """Left-hand side value of the double comparison, lower bound."""
+        return a
+
+    @staticmethod
+    def _evaluate_val(b: float, **_) -> float:
+        """Value of the comparison to check against the bounds."""
+        return b
+
+    @staticmethod
+    def _evaluate_rhs(c: float, **_) -> float:
+        """Right-hand side value of the comparison, upper bound."""
+        return c
+
+
+def test_double_comparison_formula_less_greater_or_equal_evaluation() -> None:
+    """Test that the formula returns the correct result."""
+    a = 10
+    b = 20
+    c = 30
+
+    # check raise error due to invalid operator
+    with pytest.raises(ValueError):
+        DoubleComparisonFormulaTestLessGreaterorEqual(a=a, b=b, c=c)

@@ -232,6 +232,7 @@ class ComparisonFormula(Formula):
         comparison = cls._comparison_operator
         return comparison()(lhs, rhs)
 
+
 class DoubleComparisonFormula(Formula):
     """Base class for double comparison formulas used in the codes."""
 
@@ -243,7 +244,7 @@ class DoubleComparisonFormula(Formula):
         result = cls._evaluate(*args, **kwargs)
         instance = float.__new__(cls, result)
         instance._lhs = lhs  # noqa: SLF001
-        instance._val = val # noqa: SLF001
+        instance._val = val  # noqa: SLF001
         instance._rhs = rhs  # noqa: SLF001
         instance._initialized = False  # noqa: SLF001
         return instance
@@ -252,18 +253,20 @@ class DoubleComparisonFormula(Formula):
     @abstractmethod
     def _comparison_operator_lhs(cls) -> Callable[[float, float], bool]:
         """Abstract property for the comparison operator of the left-hand side or lower bound
-         (e.g., operator.le, operator.ge, etc.)."""
+        (operator.lt or operator.le).
+        """
 
     @classmethod
     @abstractmethod
     def _comparison_operator_rhs(cls) -> Callable[[float, float], bool]:
         """Abstract property for the comparison operator of the right-hand side or upper bound
-         (e.g., operator.le, operator.ge, etc.)."""
+        (operator.lt or operator.le).
+        """
 
     @staticmethod
     @abstractmethod
     def _evaluate_lhs(*args, **kwargs) -> float:
-        """Abstract method for the logic of the left-hand side of the comparison formula.
+        """Abstract method for the logic of the left-hand side of the double comparison formula.
 
         Returns
         -------
@@ -274,7 +277,7 @@ class DoubleComparisonFormula(Formula):
     @staticmethod
     @abstractmethod
     def _evaluate_val(*args, **kwargs) -> float:
-        """Abstract method for the logic of the value of the comparison formula to check against the bounds.
+        """Abstract method for the logic of the value of the double comparison formula to check against the bounds.
 
         Returns
         -------
@@ -285,7 +288,7 @@ class DoubleComparisonFormula(Formula):
     @staticmethod
     @abstractmethod
     def _evaluate_rhs(*args, **kwargs) -> float:
-        """Abstract method for the logic of the right-hand side of the comparison formula.
+        """Abstract method for the logic of the right-hand side of the double comparison formula.
 
         Returns
         -------
@@ -295,7 +298,7 @@ class DoubleComparisonFormula(Formula):
 
     @property
     def lhs(self) -> float:
-        """Property for getting the left-hand side of the comparison.
+        """Property for getting the left-hand side of the double comparison.
 
         Returns
         -------
@@ -306,7 +309,7 @@ class DoubleComparisonFormula(Formula):
 
     @property
     def val(self) -> float:
-        """Property for getting the value of the comparison to check against the bounds.
+        """Property for getting the value of the double comparison to check against the bounds.
 
         Returns
         -------
@@ -317,7 +320,7 @@ class DoubleComparisonFormula(Formula):
 
     @property
     def rhs(self) -> float:
-        """Property for getting the right-hand side of the comparison.
+        """Property for getting the right-hand side of the double comparison.
 
         Returns
         -------
@@ -342,8 +345,8 @@ class DoubleComparisonFormula(Formula):
         bool
             True if e.g. lhs < val < rhs (condition is satisfied), False otherwise.
         """
-        return (self._comparison_operator_lhs()(self.lhs, self.val)
-                and self._comparison_operator_rhs()(self.val, self.rhs))
+        # Check of valid comparison operators is done in the _evaluate method.
+        return self._comparison_operator_lhs()(self.lhs, self.val) and self._comparison_operator_rhs()(self.val, self.rhs)
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
@@ -354,11 +357,12 @@ class DoubleComparisonFormula(Formula):
         comparison_lhs = cls._comparison_operator_lhs()
         comparison_rhs = cls._comparison_operator_rhs()
 
-        # Check that the comparison operators are valid
+        # Check that the comparison operators are valid, only operator.lt (<) and operator.le (<=) are allowed. Other
+        # operators would not make sense in a double comparison. _evaluate will always be called when creating an
+        # instance of the class, so this check will always be performed.
         valid_comp_operators = [operator.lt, operator.le]
         if comparison_lhs not in valid_comp_operators or comparison_rhs not in valid_comp_operators:
-                raise ValueError(
-                    "Invalid comparison operator for the double comparison formula. Select from 'operator.lt' (<) or "
-                    "'operator.le' (<=).")
+            raise ValueError("Invalid comparison operator for the double comparison formula. Select from 'operator.lt' (<) or 'operator.le' (<=).")
 
+        # Return the result of the double comparison
         return comparison_lhs(lhs, val) and comparison_rhs(val, rhs)
