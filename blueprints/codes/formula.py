@@ -277,12 +277,12 @@ class DoubleComparisonFormula(Formula):
     @staticmethod
     @abstractmethod
     def _evaluate_val(*args, **kwargs) -> float:
-        """Abstract method for the logic of the value of the double comparison formula to check against the bounds.
+        """Abstract method for the logic of the value to be checked against the bounds.
 
         Returns
         -------
         float
-            The right-hand side value of the comparison.
+            The middle value of the comparison.
         """
 
     @staticmethod
@@ -309,7 +309,7 @@ class DoubleComparisonFormula(Formula):
 
     @property
     def val(self) -> float:
-        """Property for getting the value of the double comparison to check against the bounds.
+        """Property for getting the middle value of the double comparison to be checked against the bounds.
 
         Returns
         -------
@@ -362,7 +362,7 @@ class DoubleComparisonFormula(Formula):
         # instance of the class, so this check will always be performed.
         valid_comp_operators = [operator.lt, operator.le]
         if comparison_lhs not in valid_comp_operators or comparison_rhs not in valid_comp_operators:
-            raise ValueError("Invalid comparison operator for the double comparison formula. Select from 'operator.lt' (<) or 'operator.le' (<=).")
+            raise ValueError("Invalid comparison operator for double comparison formula. Only 'operator.lt' (<) and 'operator.le' (<=) are supported.")
 
         # Return the result of the double comparison
         return comparison_lhs(lhs, val) and comparison_rhs(val, rhs)

@@ -52,7 +52,7 @@ def test_raise_not_implemented_error_detailed_result() -> None:
         _ = dummy_testing_formula.detailed_result
 
 
-class ComparisonFormulaTestLessorEqual(ComparisonFormula):
+class ComparisonFormulaTestLessOrEqual(ComparisonFormula):
     """Dummy comparison formula for testing purposes."""
 
     label = "Dummy testing comparison formula"
@@ -93,12 +93,12 @@ def test_comparison_formula_evaluation() -> None:
     c = 40
 
     # check passing condition (lhs <= rhs) = True
-    formula = ComparisonFormulaTestLessorEqual(a=a, b=b, c=c)
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
     assert formula
 
     # check failing condition (lhs > rhs) = False
     a = 30
-    formula = ComparisonFormulaTestLessorEqual(a=a, b=b, c=c)
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
     assert not formula
 
 
@@ -107,7 +107,7 @@ def test_comparison_formula_lhs_property() -> None:
     a = 10
     b = 5
     c = 40
-    formula = ComparisonFormulaTestLessorEqual(a=a, b=b, c=c)
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
 
     # The lhs should be a + b = 10 + 5 = 15
     assert formula.lhs == 15
@@ -118,7 +118,7 @@ def test_comparison_formula_rhs_property() -> None:
     a = 10
     b = 5
     c = 40
-    formula = ComparisonFormulaTestLessorEqual(a=a, b=b, c=c)
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
 
     # The rhs should be c / 2 = 40 / 2 = 20
     assert formula.rhs == 20
@@ -129,7 +129,7 @@ def test_comparison_formula_unity_check_property() -> None:
     a = 10
     b = 5
     c = 40
-    formula = ComparisonFormulaTestLessorEqual(a=a, b=b, c=c)
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
 
     # The unity check should be lhs / rhs = 15 / 20 = 0.75
     assert formula.unity_check == 0.75
@@ -140,7 +140,7 @@ def test_comparison_formula_change_value_after_initialization() -> None:
     a = 10
     b = 5
     c = 40
-    formula = ComparisonFormulaTestLessorEqual(a=a, b=b, c=c)
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
 
     with pytest.raises(AttributeError):
         formula.a = 30
@@ -148,7 +148,7 @@ def test_comparison_formula_change_value_after_initialization() -> None:
 
 def test_comparison_operator() -> None:
     """Test that the comparison operator is correct."""
-    assert ComparisonFormulaTestLessorEqual._comparison_operator() == operator.le  # noqa: SLF001
+    assert ComparisonFormulaTestLessOrEqual._comparison_operator() == operator.le  # noqa: SLF001
 
 
 class ComparisonFormulaTestGreaterOrEqual(ComparisonFormula):
@@ -409,7 +409,7 @@ def test_double_comparison_formula_less_less_evaluation() -> None:
     assert not formula
 
 
-class DoubleComparisonFormulaTestLessorEqualLess(DoubleComparisonFormula):
+class DoubleComparisonFormulaTestLessOrEqualLess(DoubleComparisonFormula):
     """
     Dummy double comparison formula for testing purposes.
     lhs <= val < rhs.
@@ -463,31 +463,31 @@ def test_double_comparison_formula_less_or_equal_less_evaluation() -> None:
     c = 30
 
     # check passing condition (lhs <= val < rhs) = True
-    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLess(a=a, b=b, c=c)
     assert formula
 
     # check passing condition (lhs <= val < rhs) = True
     b = 10
-    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLess(a=a, b=b, c=c)
     assert formula
 
     # check failing condition (lhs <= val = rhs) = False
     b = 30
-    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLess(a=a, b=b, c=c)
     assert not formula
 
     # check failing condition (lhs > val < rhs) = False
     b = 5
-    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLess(a=a, b=b, c=c)
     assert not formula
 
     # check failing condition (lhs < val > rhs) = False
     b = 35
-    formula = DoubleComparisonFormulaTestLessorEqualLess(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLess(a=a, b=b, c=c)
     assert not formula
 
 
-class DoubleComparisonFormulaTestLessLessorEqual(DoubleComparisonFormula):
+class DoubleComparisonFormulaTestLessLessOrEqual(DoubleComparisonFormula):
     """
     Dummy double comparison formula for testing purposes.
     lhs < val <= rhs.
@@ -541,31 +541,31 @@ def test_double_comparison_formula_less_less_or_equal_evaluation() -> None:
     c = 30
 
     # check passing condition (lhs < val <= rhs) = True
-    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessLessOrEqual(a=a, b=b, c=c)
     assert formula
 
     # check passing condition (lhs < val <= rhs) = True
     b = 30
-    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessLessOrEqual(a=a, b=b, c=c)
     assert formula
 
     # check failing condition (lhs = val < rhs) = False
     b = 10
-    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessLessOrEqual(a=a, b=b, c=c)
     assert not formula
 
     # check failing condition (lhs > val < rhs) = False
     b = 5
-    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessLessOrEqual(a=a, b=b, c=c)
     assert not formula
 
     # check failing condition (lhs < val > rhs) = False
     b = 35
-    formula = DoubleComparisonFormulaTestLessLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessLessOrEqual(a=a, b=b, c=c)
     assert not formula
 
 
-class DoubleComparisonFormulaTestLessorEqualLessorEqual(DoubleComparisonFormula):
+class DoubleComparisonFormulaTestLessOrEqualLessOrEqual(DoubleComparisonFormula):
     """
     Dummy double comparison formula for testing purposes.
     lhs <= val <= rhs.
@@ -619,27 +619,27 @@ def test_double_comparison_formula_less_or_equal_less_or_equal_evaluation() -> N
     c = 30
 
     # check passing condition (lhs <= val <= rhs) = True
-    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLessOrEqual(a=a, b=b, c=c)
     assert formula
 
     # check passing condition (lhs <= val <= rhs) = True
     b = 10
-    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLessOrEqual(a=a, b=b, c=c)
     assert formula
 
     # check passing condition (lhs <= val <= rhs) = True
     b = 30
-    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLessOrEqual(a=a, b=b, c=c)
     assert formula
 
     # check failing condition (lhs > val < rhs) = False
     b = 5
-    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLessOrEqual(a=a, b=b, c=c)
     assert not formula
 
     # check failing condition (lhs < val > rhs) = False
     b = 35
-    formula = DoubleComparisonFormulaTestLessorEqualLessorEqual(a=a, b=b, c=c)
+    formula = DoubleComparisonFormulaTestLessOrEqualLessOrEqual(a=a, b=b, c=c)
     assert not formula
 
 
@@ -701,7 +701,7 @@ def test_double_comparison_formula_greater_less_evaluation() -> None:
         DoubleComparisonFormulaTestGreaterLess(a=a, b=b, c=c)
 
 
-class DoubleComparisonFormulaTestGreaterorEqualLess(DoubleComparisonFormula):
+class DoubleComparisonFormulaTestGreaterOrEqualLess(DoubleComparisonFormula):
     """
     Dummy double comparison formula for testing purposes.
     lhs >= val < rhs.
@@ -756,7 +756,7 @@ def test_double_comparison_formula_greater_or_equal_less_evaluation() -> None:
 
     # check raise error due to invalid operator
     with pytest.raises(ValueError):
-        DoubleComparisonFormulaTestGreaterorEqualLess(a=a, b=b, c=c)
+        DoubleComparisonFormulaTestGreaterOrEqualLess(a=a, b=b, c=c)
 
 
 class DoubleComparisonFormulaTestLessGreater(DoubleComparisonFormula):
@@ -817,7 +817,7 @@ def test_double_comparison_formula_less_greater_evaluation() -> None:
         DoubleComparisonFormulaTestLessGreater(a=a, b=b, c=c)
 
 
-class DoubleComparisonFormulaTestLessGreaterorEqual(DoubleComparisonFormula):
+class DoubleComparisonFormulaTestLessGreaterOrEqual(DoubleComparisonFormula):
     """
     Dummy double comparison formula for testing purposes.
     lhs < val >= rhs.
@@ -872,4 +872,4 @@ def test_double_comparison_formula_less_greater_or_equal_evaluation() -> None:
 
     # check raise error due to invalid operator
     with pytest.raises(ValueError):
-        DoubleComparisonFormulaTestLessGreaterorEqual(a=a, b=b, c=c)
+        DoubleComparisonFormulaTestLessGreaterOrEqual(a=a, b=b, c=c)
