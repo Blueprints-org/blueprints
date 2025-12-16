@@ -257,7 +257,7 @@ class CheckResult:
                 or (self.factor_of_safety != 0 and abs(self.unity_check - 1 / self.factor_of_safety) >= TOLERANCE)  # Normal case
             )
         ):
-            raise ValueError(f"unity_check={self.unity_check} and factor_of_safety={self.factor_of_safety} are inconsistent")
+            raise ValueError("Inconsistent CheckResult: unity_check and factor_of_safety")
 
     def _check_is_ok_consistency(self) -> None:
         """Consistency between is_ok and unity_check/factor_of_safety."""
