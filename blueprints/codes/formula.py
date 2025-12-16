@@ -234,7 +234,11 @@ class ComparisonFormula(Formula):
 
 
 class DoubleComparisonFormula(Formula):
-    """Base class for double comparison formulas used in the codes."""
+    """Base class for double comparison formulas used in the codes.
+    Example: angle_min < angle < angle_max.
+
+    Note that only operator.lt (<) and operator.le (<=) are supported for both sides of the comparison.
+    """
 
     def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
@@ -362,7 +366,9 @@ class DoubleComparisonFormula(Formula):
         # instance of the class, so this check will always be performed.
         valid_comp_operators = [operator.lt, operator.le]
         if comparison_lhs not in valid_comp_operators or comparison_rhs not in valid_comp_operators:
-            raise ValueError("Invalid comparison operator for double comparison formula. Only 'operator.lt' (<) and 'operator.le' (<=) are supported.")
+            raise ValueError(
+                "Invalid comparison operator for double comparison formula. Only 'operator.lt' (<) and 'operator.le' (<=) are supported."
+            )
 
         # Return the result of the double comparison
         return comparison_lhs(lhs, val) and comparison_rhs(val, rhs)
