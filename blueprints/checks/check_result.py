@@ -120,6 +120,11 @@ class CheckResult:
             The ratio of provided to required (provided / required).
             Where values <= 1.0 indicate passing checks.
 
+        Example
+        -------
+        - CheckResult.from_unity_check(unity_check=0.8)
+          -> CheckResult with unity_check=0.8, factor_of_safety=1.25, is_ok=True, other fields None
+
         Returns
         -------
         CheckResult
@@ -138,6 +143,11 @@ class CheckResult:
             The factor of safety (required / provided).
             Where values >= 1.0 indicate passing checks.
 
+        Example
+        -------
+        - CheckResult.from_factor_of_safety(factor_of_safety=1.25)
+          -> CheckResult with factor_of_safety=1.25, unity_check=0.8, is_ok=True, other fields None
+
         Returns
         -------
         CheckResult
@@ -154,6 +164,11 @@ class CheckResult:
         ----------
         is_ok : bool
             Whether the check passed (True) or failed (False).
+
+        Example
+        -------
+        - CheckResult.from_bool(is_ok=True)
+          -> CheckResult with is_ok=True, other fields None
 
         Returns
         -------
