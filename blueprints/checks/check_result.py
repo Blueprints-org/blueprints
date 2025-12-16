@@ -27,10 +27,10 @@ class CheckResult:
         Create a CheckResult from a simple pass/fail boolean.
 
     Initialization notes:
-    - When only `is_ok` is provided, the other fields will remain None.
-    - When `unity_check` is provided, `factor_of_safety` and `is_ok` will be inferred.
-    - When `factor_of_safety` is provided, `unity_check` and `is_ok` will be inferred.
-    - When both `provided` and `required` (with optional operator) are provided,
+    - When only `is_ok` is provided: the other fields will remain None.
+    - When `unity_check` is provided: `factor_of_safety` and `is_ok` will be inferred.
+    - When `factor_of_safety` is provided: `unity_check` and `is_ok` will be inferred.
+    - When both `provided` and `required` (with optional operator) are provided:
       `unity_check`, `factor_of_safety`, and `is_ok` will be calculated based on the operator.
       Special handling is applied for zero values and "==" or "!=" operators to avoid division by zero and ensure meaningful results.
 
