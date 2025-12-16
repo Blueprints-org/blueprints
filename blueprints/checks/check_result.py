@@ -187,7 +187,7 @@ class CheckResult:
     def _validate_operator(self) -> None:
         """Validate that the operator is one of the accepted values."""
         if self.operator not in ("<", "<=", "==", ">=", ">", "!="):
-            raise ValueError(f"Invalid operator: {self.operator}. Must be one of '<', '<=', '==', '>=', '>'. or '!='.")
+            raise ValueError(f"Invalid operator: {self.operator}. Must be one of '<', '<=', '==', '>=', '>' or '!='.")
 
     def _validate_provided_required_pair(self) -> None:
         """Ensure that provided and required are both None or both not None."""
