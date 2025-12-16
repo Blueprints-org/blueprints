@@ -9,41 +9,58 @@ TOLERANCE = 1e-6
 
 @dataclass(frozen=True)
 class CheckResult:
-    """Contains the results of a structural engineering check.
+    """
+    Contains the results of an engineering check.
 
-    This class stores the outcome of any structural verification, providing
-    both pass/fail status and detailed information about capacity utilization or factor of safety.
-    Use this to understand whether your design meets code requireds and
-    how efficiently you're using the available capacity.
+    This class stores the outcome of any verification, providing both pass/fail status and detailed information about capacity
+    utilization or factor of safety. Use this to understand whether your design meets code requirements and how
+    efficiently you're using the available capacity.
 
-    You can instantiate this class by providing only the minimum required input
-    (such as just `unity_check`, `factor_of_safety`, or a pair of `provided` and `required`),
-    and the other values will be computed automatically. You may also provide more than the minimum,
-    but all values must be consistent or a ValueError will be raised.
+    Recommended initialization methods:
+    - `from_comparison(provided: float, required: float, operator: str = "<=")`:
+        Create a CheckResult from direct provided and required values with a comparison operator.
+    - `from_unity_check(unity_check: float)`:
+        Create a CheckResult from a unity check value (provided/required).
+    - `from_factor_of_safety(factor_of_safety: float)`:
+        Create a CheckResult from a factor of safety value (required/provided).
+    - `from_bool(is_ok: bool)`:
+        Create a CheckResult from a simple pass/fail boolean.
+
+    Initialization notes:
+    - When only `is_ok` is provided, the other fields will remain None.
+    - When `unity_check` is provided, `factor_of_safety` and `is_ok` will be inferred.
+    - When `factor_of_safety` is provided, `unity_check` and `is_ok` will be inferred.
+    - When both `provided` and `required` (with optional operator) are provided,
+      `unity_check`, `factor_of_safety`, and `is_ok` will be calculated based on the operator.
+      Special handling is applied for zero values and "==" or "!=" operators to avoid division by zero and ensure meaningful results.
+
+    Direct initialization:
+    - Ensure that the combination of fields provided is consistent.
+      For example:
+        - CheckResult(is_ok=True, unity_check=0.8) is valid.
+        - CheckResult(is_ok=False, unity_check=0.8) will raise a ValueError.
 
     Parameters
     ----------
     provided : float | None, optional
         The actual calculated value from the design (e.g., applied load, stress).
     required : float | None, optional
-        The allowable required (or limit) for the design (e.g., capacity, code required), the required value itself is acceptable.
+        The allowable or required value for the design (e.g., capacity, code required).
     operator : str, optional
-        The comparison operator used to evaluate the check, "<", "<=", "==", ">=", ">" or "!=".
+        The comparison operator used to evaluate the check: "<", "<=", "==", ">=", ">", or "!=".
         Default is "<=", meaning provided <= required.
     unity_check : float | None, optional
         The ratio of provided to required (provided / required).
-        Where values <= 1.0 indicate passing checks.
+        Values <= 1.0 indicate passing checks.
     factor_of_safety : float | None, optional
         The factor of safety (required / provided).
-        Where values >= 1.0 indicate passing checks.
+        Values >= 1.0 indicate passing checks.
     is_ok : bool | None, optional
         Indicates whether the check passed (True) or failed (False).
         If None, it will be inferred from `unity_check` or `factor_of_safety` if available.
 
     Notes
     -----
-    - Only the minimum required input is needed; extra fields are optional but must be consistent.
-    - If you provide inconsistent combinations, a ValueError will be raised.
     - Always check `is_ok` to determine if design modifications are needed.
     - Use `unity_check` to optimize your design efficiency.
     - Use `factor_of_safety` to understand safety margins.
@@ -61,6 +78,20 @@ class CheckResult:
     def from_comparison(cls, provided: float, required: float, operator: str = "<=") -> "CheckResult":
         """
         Create a CheckResult from a direct comparison of provided and required values.
+        Will automatically calculate unity_check, factor_of_safety, and is_ok.
+
+        Please note: When either `provided` or `required` is zero, or the operator is "==" or "!=", special handling is applied
+        to avoid division by zero and ensure meaningful results. Unity check and factor of safety calculations are adjusted such
+        that they yield either 0.0 or infinity in these edge cases, reflecting pass/fail status appropriately.
+
+        Example
+        -------
+        - CheckResult.from_comparison(provided=80, required=100, operator="<=")
+          -> CheckResult with unity_check=0.8, factor_of_safety=1.25, is_ok=True
+        - CheckResult.from_comparison(provided=120, required=100, operator="==")
+          -> CheckResult with unity_check=inf, factor_of_safety=0.0, is_ok=False
+        - CheckResult.from_comparison(provided=0, required=10, operator="<=")
+          -> CheckResult with unity_check=0.0, factor_of_safety=inf, is_ok=True
 
         Parameters
         ----------
@@ -163,25 +194,25 @@ class CheckResult:
         if (self.provided is None) != (self.required is None):
             raise ValueError("Both 'provided' and 'required' must be None or neither None")
 
-    def _calc_unity_check(self, provided: float, required: float, operator: str) -> float:
+    def _calc_unity_check(self, provided: float, required: float, operator: str) -> float:  # noqa: PLR0911
         """Calculate unity check based on provided, required, and operator."""
-        if operator in ("<=", "<"):
-            return 0 if provided == 0 else provided / required if required != 0 else float("inf")
-        if operator in (">=", ">"):
-            return float("inf") if provided == 0 and required != 0 else 1.0 if provided == 0 else required / provided
+        if operator == "<":
+            return float("inf") if required == 0 else provided / required
+        if operator == "<=":
+            return 0 if provided == 0 else float("inf") if required == 0 else provided / required
+        if operator == ">=":
+            return 0 if required == 0 else float("inf") if provided == 0 else required / provided
+        if operator == ">":
+            return float("inf") if provided == 0 else required / provided
         if operator == "==":
-            return (
-                0
-                if (required == 0 and abs(provided) <= TOLERANCE) or (required != 0 and abs(provided - required) / abs(required) <= TOLERANCE)
-                else float("inf")
-            )
-        return (  # operator == "!="
-            float("inf")
-            if (required == 0 and abs(provided) <= TOLERANCE)
-            else 0
-            if (required != 0 and abs(provided - required) / abs(required) > TOLERANCE)
-            else float("inf")
-        )
+            # For "==", unity_check is 0 if values are close, else inf
+            if provided == 0 and required == 0:
+                return 0
+            return 0 if abs(provided - required) / max(provided, required) <= TOLERANCE else float("inf")
+        # For "!=" operator, unity_check is inf if values are close, else 0
+        if provided == 0 and required == 0:
+            return float("inf")
+        return float("inf") if abs(provided - required) / max(provided, required) <= TOLERANCE else 0
 
     def _handle_provided_required_consistency(self) -> None:
         """
