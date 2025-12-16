@@ -37,8 +37,6 @@ body:
         ```python
 
         ```
-    validations:
-      required: true
 
   - type: textarea
     id: expected-behavior
@@ -46,8 +44,6 @@ body:
       label: Expected behavior
       description: >
         Describe or show a code example of the expected behavior.
-    validations:
-      required: true
 
   - type: textarea
     id: version
@@ -59,5 +55,3 @@ body:
         ```
         
         ```
-    validations:
-      required: true
