@@ -171,6 +171,7 @@ class TestCheckResult:
             ({"unity_check": float("inf"), "factor_of_safety": 0.0}),
             ({"provided": 80, "required": 100, "unity_check": 0.8}),
             ({"provided": 80, "required": 100, "factor_of_safety": 1.25}),
+            ({"provided": 80, "required": 100, "operator": "<=", "unity_check": 0.8, "factor_of_safety": 1.25, "is_ok": True}),
         ],
     )
     def test_valid_value_combinations(self, kwargs: dict) -> None:
