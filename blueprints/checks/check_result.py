@@ -1,6 +1,7 @@
 """Result data structure for structural checks."""
 
 from dataclasses import dataclass
+from typing import Literal, Self
 
 from blueprints.validations import raise_if_negative
 
@@ -69,13 +70,13 @@ class CheckResult:
 
     provided: float | None = None
     required: float | None = None
-    operator: str = Literal["<", "<=", "==", ">=", ">", "!="] = "<="
+    operator: Literal["<", "<=", "==", ">=", ">", "!="] = "<="
     unity_check: float | None = None
     factor_of_safety: float | None = None
     is_ok: bool | None = None
 
     @classmethod
-    def from_comparison(cls, provided: float, required: float, operator: str = Literal["<", "<=", "==", ">=", ">", "!="] = "<=") -> Self:
+    def from_comparison(cls, provided: float, required: float, operator: Literal["<", "<=", "==", ">=", ">", "!="] = "<=") -> Self:
         """
         Create a CheckResult from a direct comparison of provided and required values.
         Will automatically calculate unity_check, factor_of_safety, and is_ok.
