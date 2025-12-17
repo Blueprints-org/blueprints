@@ -61,7 +61,7 @@ class LatexToWordConverter:
                 elif eq_content is not None and eq_content.strip():
                     parsed.append({"type": "equation", "content": eq_content.strip()})
             # Add new line after each line except for the last one
-            if line != lines[-1]:
+            if lines and line != lines[-1]:
                 parsed.append({"type": "text", "content": "\n"})
 
         # Add parsed content to document and format based on type of content
