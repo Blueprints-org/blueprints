@@ -69,13 +69,13 @@ class CheckResult:
 
     provided: float | None = None
     required: float | None = None
-    operator: str = "<="
+    operator: str = Literal["<", "<=", "==", ">=", ">", "!="] = "<="
     unity_check: float | None = None
     factor_of_safety: float | None = None
     is_ok: bool | None = None
 
     @classmethod
-    def from_comparison(cls, provided: float, required: float, operator: str = "<=") -> "CheckResult":
+    def from_comparison(cls, provided: float, required: float, operator: str = Literal["<", "<=", "==", ">=", ">", "!="] = "<=") -> Self:
         """
         Create a CheckResult from a direct comparison of provided and required values.
         Will automatically calculate unity_check, factor_of_safety, and is_ok.
@@ -110,7 +110,7 @@ class CheckResult:
         return cls(provided=provided, required=required, operator=operator)
 
     @classmethod
-    def from_unity_check(cls, unity_check: float) -> "CheckResult":
+    def from_unity_check(cls, unity_check: float) -> Self:
         """
         Create a CheckResult from a unity check value (provided/required).
 
@@ -133,7 +133,7 @@ class CheckResult:
         return cls(unity_check=unity_check)
 
     @classmethod
-    def from_factor_of_safety(cls, factor_of_safety: float) -> "CheckResult":
+    def from_factor_of_safety(cls, factor_of_safety: float) -> Self:
         """
         Create a CheckResult from a factor of safety value (required/provided).
 
@@ -156,7 +156,7 @@ class CheckResult:
         return cls(factor_of_safety=factor_of_safety)
 
     @classmethod
-    def from_bool(cls, is_ok: bool) -> "CheckResult":
+    def from_bool(cls, is_ok: bool) -> Self:
         """
         Create a CheckResult from a boolean pass/fail value only.
 
