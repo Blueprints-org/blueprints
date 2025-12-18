@@ -1,14 +1,17 @@
-"""Formula 6.5 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state."""
+"""Formula 6.5 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
+
+import operator
+from collections.abc import Callable
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
-from blueprints.codes.formula import Formula
+from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot5UnityCheckTensileStrength(Formula):
-    """Class representing formula 6.5 for the unity check for tensile strength."""
+class Form6Dot5UnityCheckTensileStrength(ComparisonFormula):
+    r"""Class representing formula 6.5 for the unity check for tensile strength."""
 
     label = "6.5"
     source_document = EN_1993_1_1_2005
@@ -18,7 +21,7 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         n_ed: N,
         n_t_rd: N,
     ) -> None:
-        r"""[$N_{Ed}/N_{t,Rd} \leq 1$] Unity check for tensile strength of an element in tension.
+        r"""Unity check for tensile strength of an element in tension.
 
         EN 1993-1-1:2005 art.6.2.3(1) - Formula (6.5)
 
@@ -33,26 +36,36 @@ class Form6Dot5UnityCheckTensileStrength(Formula):
         self.n_ed = n_ed
         self.n_t_rd = n_t_rd
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[float, float], bool]:
+        """Returns the comparison operator for the formula."""
+        return operator.le
+
     @staticmethod
-    def _evaluate(
+    def _evaluate_lhs(
         n_ed: N,
         n_t_rd: N,
-    ) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
+    ) -> float:
+        """Evaluates the left-hand side of the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(n_t_rd=n_t_rd)
         raise_if_negative(n_ed=n_ed)
-        return (n_ed / n_t_rd) <= 1
+        return n_ed / n_t_rd
+
+    @staticmethod
+    def _evaluate_rhs(*_args, **_kwargs) -> float:
+        """Evaluates the right-hand side of the formula, for more information see the __init__ method."""
+        return 1.0
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.5."""
         _equation: str = r"\left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right)"
         _numeric_equation: str = latex_replace_symbols(
-            _equation,
-            {
+            template=_equation,
+            replacements={
                 "N_{Ed}": f"{self.n_ed:.{n}f}",
                 "N_{t,Rd}": f"{self.n_t_rd:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"CHECK",
