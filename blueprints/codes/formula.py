@@ -235,9 +235,12 @@ class ComparisonFormula(Formula):
 
 class DoubleComparisonFormula(Formula):
     """Base class for double comparison formulas used in the codes.
-    Example: angle_min < angle < angle_max.
+    Examples: angle_min < angle < angle_max or angle_min > angle > angle_max.
 
-    Note that only operator.lt (<) and operator.le (<=) are supported for both sides of the comparison.
+    Note that the comparison operators must point in the same direction for both sides:
+    - Ascending: operator.lt (<) or operator.le (<=)
+    - Descending: operator.gt (>) or operator.ge (>=)
+    Mixed directions (e.g., < and >) are not allowed.
     """
 
     def __new__(cls, *args, **kwargs) -> Self:
@@ -257,14 +260,16 @@ class DoubleComparisonFormula(Formula):
     @abstractmethod
     def _comparison_operator_lhs(cls) -> Callable[[float, float], bool]:
         """Abstract property for the comparison operator of the left-hand side or lower bound
-        (operator.lt or operator.le).
+        Must be one of: operator.lt (<), operator.le (<=), operator.gt (>), operator.ge (>=).
+        Must point in the same direction as _comparison_operator_rhs (both ascending or both descending).
         """
 
     @classmethod
     @abstractmethod
     def _comparison_operator_rhs(cls) -> Callable[[float, float], bool]:
         """Abstract property for the comparison operator of the right-hand side or upper bound
-        (operator.lt or operator.le).
+        Must be one of: operator.lt (<), operator.le (<=), operator.gt (>), operator.ge (>=).
+        Must point in the same direction as _comparison_operator_lhs (both ascending or both descending).
         """
 
     @staticmethod
@@ -361,13 +366,19 @@ class DoubleComparisonFormula(Formula):
         comparison_lhs = cls._comparison_operator_lhs()
         comparison_rhs = cls._comparison_operator_rhs()
 
-        # Check that the comparison operators are valid, only operator.lt (<) and operator.le (<=) are allowed. Other
-        # operators would not make sense in a double comparison. _evaluate will always be called when creating an
-        # instance of the class, so this check will always be performed.
-        valid_comp_operators = [operator.lt, operator.le]
-        if comparison_lhs not in valid_comp_operators or comparison_rhs not in valid_comp_operators:
+        # Check that the comparison operators are valid and consistent. Both operators must point in the same direction:
+        # either both ascending (< or <=) or both descending (> or >=). Mixed directions would not make logical sense
+        # in a double comparison. _evaluate will always be called when creating an instance of the class, so this check
+        # will always be performed.
+        ascending_comparison_operators = {operator.lt, operator.le}
+        descending_comparison_operators = {operator.gt, operator.ge}
+
+        if not (
+            {comparison_lhs, comparison_rhs} <= ascending_comparison_operators or {comparison_lhs, comparison_rhs} <= descending_comparison_operators
+        ):
             raise ValueError(
-                "Invalid comparison operator for double comparison formula. Only 'operator.lt' (<) and 'operator.le' (<=) are supported."
+                "Invalid comparison operators for double comparison formula. Both operators must point in the same direction: "
+                "either both ascending ('operator.lt' or 'operator.le') or both descending ('operator.gt' or 'operator.ge')."
             )
 
         # Return the result of the double comparison
