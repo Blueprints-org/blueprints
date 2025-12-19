@@ -34,12 +34,12 @@ dependencies = [
     "shapely>=2.1.2",
 ]
 
-[project.urls]
-homepage = "https://blueprints.readthedocs.io"
-documentation = "https://blueprints.readthedocs.io"
-repository = "https://github.com/Blueprints-org/blueprints"
-issues = "https://github.com/Blueprints-org/blueprints/issues"
-changelog = "https://github.com/Blueprints-org/blueprints/releases"
+[project.optional-dependencies]
+word = [
+    "python-docx>=1.2.0",
+    "latex2mathml>=3.78.1",
+    "mathml2omml>=0.0.2",
+]
 
 [project.scripts]
 blueprints = "blueprints.cli:app"
@@ -76,12 +76,23 @@ test = [
     "pytest-xdist==3.8.0",
     "typer>=0.9.0",
     "rich>=13.7.0",
+    "python-docx>=1.2.0", # optional-dependency: word
+    "latex2mathml>=3.78.1", # optional-dependency: word
+    "mathml2omml>=0.0.2", # optional-dependency: word
 ]
 cli = [
     {include-group = "dev"},
     {include-group = "test"},
     {include-group = "docs"},
+
 ]
+
+[project.urls]
+homepage = "https://blueprints.readthedocs.io"
+documentation = "https://blueprints.readthedocs.io"
+repository = "https://github.com/Blueprints-org/blueprints"
+issues = "https://github.com/Blueprints-org/blueprints/issues"
+changelog = "https://github.com/Blueprints-org/blueprints/releases"
 
 [tool.uv]
 default-groups = ["dev", "test"]
@@ -91,7 +102,7 @@ packages = "blueprints"
 python_version = "3.12"
 
 [[tool.mypy.overrides]]
-module = ["matplotlib.*"]
+module = ["matplotlib.*", "mathml2omml.*"]
 ignore_missing_imports = true
 
 [build-system]
