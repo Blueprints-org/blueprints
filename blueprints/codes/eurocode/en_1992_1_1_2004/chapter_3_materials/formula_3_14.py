@@ -115,7 +115,7 @@ class SubForm3Dot14K(Formula):
     label = "3.14"
 
     def __init__(self, e_cm: MPA, epsilon_c1: DIMENSIONLESS, f_cm: MPA) -> None:
-        r"""[$k$] [-].
+        r"""[$k$] [$-$].
 
         EN 1992-1-1:2004 art.3.1.5(1) - k
 
