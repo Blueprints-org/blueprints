@@ -38,6 +38,11 @@ dependencies = [
 translate = [
     "googletrans>=4.0.2"
 ]
+word = [
+    "python-docx>=1.2.0",
+    "latex2mathml>=3.78.1",
+    "mathml2omml>=0.0.2",
+]
 
 [project.scripts]
 blueprints = "blueprints.cli:app"
@@ -75,11 +80,15 @@ test = [
     "typer>=0.9.0",
     "rich>=13.7.0",
     "googletrans>=4.0.2" # optional-dependency: translate
+    "python-docx>=1.2.0", # optional-dependency: word
+    "latex2mathml>=3.78.1", # optional-dependency: word
+    "mathml2omml>=0.0.2", # optional-dependency: word
 ]
 cli = [
     {include-group = "dev"},
     {include-group = "test"},
     {include-group = "docs"},
+
 ]
 
 [project.urls]
@@ -97,7 +106,7 @@ packages = "blueprints"
 python_version = "3.12"
 
 [[tool.mypy.overrides]]
-module = ["matplotlib.*"]
+module = ["matplotlib.*", "mathml2omml.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
