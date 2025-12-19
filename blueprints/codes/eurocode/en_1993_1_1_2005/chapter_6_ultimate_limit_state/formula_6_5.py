@@ -52,7 +52,7 @@ class Form6Dot5UnityCheckTensileStrength(ComparisonFormula):
         return n_ed / n_t_rd
 
     @staticmethod
-    def _evaluate_rhs(*_args, **_kwargs) -> float:
+    def _evaluate_rhs() -> float:
         """Evaluates the right-hand side of the formula, for more information see the __init__ method."""
         return 1.0
 
