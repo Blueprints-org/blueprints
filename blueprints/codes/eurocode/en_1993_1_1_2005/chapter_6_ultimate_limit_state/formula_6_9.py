@@ -6,7 +6,7 @@ from collections.abc import Callable
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, N
+from blueprints.type_alias import N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -57,17 +57,6 @@ class Form6Dot9CheckCompressionForce(ComparisonFormula):
         """Evaluates the right-hand side of the formula, for more information see the __init__ method."""
         return 1.0
 
-    @staticmethod
-    def _unity_check(
-        n_ed: N,
-        n_c_rd: N,
-    ) -> DIMENSIONLESS:
-        """Evaluates the intermediate result N_Ed / N_c,Rd."""
-        raise_if_less_or_equal_to_zero(n_c_rd=n_c_rd)
-        raise_if_negative(n_ed=n_ed)
-
-        return n_ed / n_c_rd
-
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.9."""
         _equation: str = r"\left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right)"
@@ -79,7 +68,7 @@ class Form6Dot9CheckCompressionForce(ComparisonFormula):
             },
             unique_symbol_check=False,
         )
-        _intermediate_result: str = rf"\left( {self._unity_check(self.n_ed, self.n_c_rd):.{n}f} \leq 1 \right)"
+        _intermediate_result: str = rf"\left( {self.lhs:.{n}f} \leq 1 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",

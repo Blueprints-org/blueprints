@@ -56,16 +56,6 @@ class Form6Dot5UnityCheckTensileStrength(ComparisonFormula):
         """Evaluates the right-hand side of the formula, for more information see the __init__ method."""
         return 1.0
 
-    @staticmethod
-    def _unity_check(
-        n_ed: N,
-        n_t_rd: N,
-    ) -> float:
-        """Evaluates the intermediate result N_Ed / N_t,Rd."""
-        raise_if_less_or_equal_to_zero(n_t_rd=n_t_rd)
-        raise_if_negative(n_ed=n_ed)
-        return n_ed / n_t_rd
-
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.5."""
         _equation: str = r"\left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right)"
@@ -77,7 +67,7 @@ class Form6Dot5UnityCheckTensileStrength(ComparisonFormula):
             },
             unique_symbol_check=False,
         )
-        _intermediate_result: str = rf"\left( {self._unity_check(self.n_ed, self.n_t_rd):.{n}f} \leq 1 \right)"
+        _intermediate_result: str = rf"\left( {self.lhs:.{n}f} \leq 1 \right)"
 
         return LatexFormula(
             return_symbol=r"CHECK",
