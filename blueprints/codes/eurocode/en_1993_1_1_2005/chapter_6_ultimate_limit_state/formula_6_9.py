@@ -68,9 +68,11 @@ class Form6Dot9CheckCompressionForce(ComparisonFormula):
             },
             unique_symbol_check=False,
         )
+        _intermediate_result: str = rf"\left( {self.lhs:.{n}f} \leq 1 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else "\\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label="\\to",
