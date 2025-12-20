@@ -5,6 +5,7 @@ This module provides strength checks for steel I-profiles of class 1, 2 and 3 cr
 
 from sectionproperties.post.post import SectionProperties
 
+from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
     formula_6_5,
     formula_6_6,
@@ -73,17 +74,20 @@ class NormalForceClass123:
         check_compression = formula_6_9.Form6Dot9CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd)
         return [n_c_rd, check_compression]
 
-    def check(self) -> bool:
+    def check(self) -> CheckResult:
         """Check normal force resistance.
 
         Returns
         -------
-        bool
+        CheckResult
             True if the normal force check passes, False otherwise.
         """
         if len(self.calculation_steps()) == 0:
-            return True
-        return bool(self.calculation_steps()[-1])
+            return CheckResult.from_bool(True)
+
+        provided = abs(self.result_internal_force_1d.n * KN_TO_N)
+        required = self.calculation_steps()[0]
+        return CheckResult.from_comparison(provided=provided, required=required)
 
     def latex(self, n: int = 1, latex_format: str = "long") -> str:
         """Returns the LaTeX string representation for the normal force check.

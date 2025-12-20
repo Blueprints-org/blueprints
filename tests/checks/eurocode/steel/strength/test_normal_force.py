@@ -18,7 +18,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=0
         )
         calc = NormalForceClass123(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        assert calc.check() is True
+        assert calc.check().is_ok is True
         assert len(calc.latex()) > 0
 
     def test_check_tension_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
@@ -28,7 +28,8 @@ class TestSteelIProfileStrengthClass3NormalForce:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=355 * 14908 / 1.0 / 1e3 * 0.99
         )  # 99% of capacity
         calc = NormalForceClass123(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
-        assert calc.check() is True
+        assert calc.check().is_ok is True
+        assert pytest.approx(calc.check().unity_check, 0.005) == 0.99
 
     def test_check_tension_not_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for not ok tension load."""
@@ -37,7 +38,8 @@ class TestSteelIProfileStrengthClass3NormalForce:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=355 * 14908 / 1.0 / 1e3 * 1.01
         )  # 101% of capacity
         calc = NormalForceClass123(heb_profile, heb_properties, load_tension, gamma_m0=1.0)
-        assert calc.check() is False
+        assert calc.check().is_ok is False
+        assert pytest.approx(calc.check().unity_check, 0.005) == 1.01
 
     def test_check_compression_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for ok compression load."""
@@ -46,7 +48,8 @@ class TestSteelIProfileStrengthClass3NormalForce:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=-355 * 14908 / 1.0 / 1e3 * 0.99
         )  # 99% of capacity
         calc = NormalForceClass123(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
-        assert calc.check() is True
+        assert calc.check().is_ok is True
+        assert pytest.approx(calc.check().unity_check, 0.005) == 0.99
 
     def test_check_compression_not_ok(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test check() for not ok compression load."""
@@ -55,7 +58,8 @@ class TestSteelIProfileStrengthClass3NormalForce:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=-355 * 14908 / 1.0 / 1e3 * 1.01
         )  # 101% of capacity
         calc = NormalForceClass123(heb_profile, heb_properties, load_compression, gamma_m0=1.0)
-        assert calc.check() is False
+        assert calc.check().is_ok is False
+        assert pytest.approx(calc.check().unity_check, 0.005) == 1.01
 
     def test_latex_compression_summary(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
         """Test summary latex output."""
