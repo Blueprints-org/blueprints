@@ -25,9 +25,9 @@ class Form5Dot11nShearSlendernessCorrectionFactor(Formula):
         ----------
         lambda_factor : DIMENSIONLESS
             [$λ$] ratio of the distance between point of zero and maximum moment after redistribution and
-        effective depth, d [$-$]
+            effective depth, d [$-$]
 
-        Use your own implementation for this value or use :class:`Form5Dot12nRatioDistancePointZeroAndMaxMoment`.
+            Use your own implementation for this value or use :class:`Form5Dot12nRatioDistancePointZeroAndMaxMoment`.
         """
         super().__init__()
         self.lambda_factor = lambda_factor
