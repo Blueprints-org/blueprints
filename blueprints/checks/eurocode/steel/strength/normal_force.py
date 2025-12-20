@@ -1,6 +1,6 @@
 """Steel I-Profile strength check according to Eurocode 3.
 
-This module provides strength checks for steel I-profiles of class 3 cross-sections according to Eurocode 3.
+This module provides strength checks for steel I-profiles of class 1, 2 and 3 cross-sections according to Eurocode 3.
 """
 
 from sectionproperties.post.post import SectionProperties
