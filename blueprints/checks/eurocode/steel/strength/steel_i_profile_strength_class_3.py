@@ -5,6 +5,7 @@ This module provides strength checks for steel I-profiles of class 3 cross-secti
 
 from sectionproperties.post.post import SectionProperties
 
+from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.steel.strength.normal_force import NormalForceClass123
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
@@ -37,7 +38,7 @@ class SteelIProfileStrengthClass3:
         self.gamma_m0 = gamma_m0
         self.normal_force = NormalForceClass123(self.profile, self.properties, self.result_internal_force_1d, self.gamma_m0)
 
-    def check(self) -> bool:
+    def check(self) -> CheckResult:
         """Returns True if all strength criteria for the steel I-profile pass, False otherwise.
 
         Warning: Currently only normal force and single axis bending moment checks are implemented.

@@ -18,7 +18,8 @@ class TestSteelIProfileStrengthClass3:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=0, vy=0, vz=0, mx=0, my=0, mz=0
         )
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
-        assert calc.check() is True
+        check = calc.check()
+        assert check.is_ok is True
         assert len(calc.latex()) > 0
 
     def test_latex_all(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
@@ -28,8 +29,9 @@ class TestSteelIProfileStrengthClass3:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=1, vy=1, vz=1, mx=1, my=1, mz=1
         )
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+        check = calc.check()
         latex_output = calc.latex()
-        assert calc.check() is True
+        assert check.is_ok is True
         assert len(latex_output) > 0
 
     @pytest.mark.parametrize(
@@ -68,8 +70,9 @@ class TestSteelIProfileStrengthClass3:
             mz=forces_kwargs["mz"],
         )
         calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+        check = calc.check()
         latex_output = calc.latex()
-        assert calc.check() is True
+        assert check.is_ok is True
         assert len(latex_output) > 0
 
     def test_removal_slashes_at_start(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
