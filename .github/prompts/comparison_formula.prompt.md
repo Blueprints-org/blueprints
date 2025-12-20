@@ -96,9 +96,11 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
             },
             False,
         )
+        _intermediate_result: str = rf"\left( {self.unity_check:.{n}f} \leq 0.1 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if bool(self) else r"\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
             comparison_operator_label=r"\to",
