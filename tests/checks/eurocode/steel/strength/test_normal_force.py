@@ -66,7 +66,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
         expected = (
             r"\text{Checking normal force (compression) using chapter 6.2.4.}\newline "
             r"CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( "
-            r"\frac{100000.0}{5293746.7} \leq 1 \right) \to OK "
+            r"\frac{100000.0}{5293746.7} \leq 1 \right) \to \left( 0.0 \leq 1 \right) \to OK "
         )
         assert expected == latex_output
 
@@ -81,7 +81,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
             r"\text{With formula 6.10:} \newline N_{c,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
             r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N \newline \text{With formula 6.9:} \newline CHECK "
             r"\to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
-            r"\leq 1 \right) \to OK "
+            r"\leq 1 \right) \to \left( 0.0 \leq 1 \right) \to OK "
         )
         assert expected == latex_output
 
@@ -96,7 +96,7 @@ class TestSteelIProfileStrengthClass3NormalForce:
             r"\text{With formula 6.6:} \newline N_{pl,Rd} = \frac{A \cdot f_y}{\gamma_{M0}} = "
             r"\frac{14912.0 \cdot 355.0}{1.0} = 5293746.7 \ N \newline \text{With formula 6.5:} \newline CHECK "
             r"\to \left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right) \to \left( \frac{100000.0}{5293746.7} "
-            r"\leq 1 \right) \to OK "
+            r"\leq 1 \right) \to \left( 0.0 \leq 1 \right) \to OK "
         )
         assert expected == latex_output
 
