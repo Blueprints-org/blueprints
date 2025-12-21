@@ -9,6 +9,7 @@ from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.steel.strength.normal_force import NormalForceClass123
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
 from blueprints.type_alias import DIMENSIONLESS
@@ -32,10 +33,33 @@ class SteelIProfileStrengthClass3:
         Partial safety factor for resistance of cross-sections, default is 1.0.
     """
 
-    profile: ISteelProfile
-    properties: SectionProperties
-    result_internal_force_1d: ResultInternalForce1D
-    gamma_m0: DIMENSIONLESS = 1.0
+    source_document = EN_1993_1_1_2005
+
+    def __init__(
+        self,
+        profile: ISteelProfile,
+        properties: SectionProperties,
+        result_internal_force_1d: ResultInternalForce1D,
+        gamma_m0: DIMENSIONLESS = 1.0,
+    ) -> None:
+        """Checks normal force resistance for steel I-profiles according to Eurocode 3, chapter 6.2.3 (tension) and 6.2.4 (compression).
+
+        Parameters
+        ----------
+        profile : ISteelProfile
+            The steel I-profile to check.
+        properties : SectionProperties
+            The section properties of the profile.
+        result_internal_force_1d : ResultInternalForce1D
+            The load combination to apply to the profile.
+        gamma_m0 : DIMENSIONLESS, optional
+            Partial safety factor for resistance of cross-sections, default is 1.0.
+        """
+        super().__init__()
+        self.profile = profile
+        self.properties = properties
+        self.result_internal_force_1d = result_internal_force_1d
+        self.gamma_m0 = gamma_m0
 
     def calculation_steps(self) -> dict:
         """Perform calculation steps for all strength checks."""

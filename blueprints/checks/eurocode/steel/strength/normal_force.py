@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
     formula_6_5,
     formula_6_6,
@@ -23,26 +24,35 @@ from blueprints.unit_conversion import KN_TO_N
 
 @dataclass(frozen=True)
 class NormalForceClass123:
-    """Class to perform normal force resistance check.
+    """Class to perform normal force resistance check."""
 
-    Checks normal force resistance for steel I-profiles according to Eurocode 3, chapter 6.2.3 (tension) and 6.2.4 (compression).
+    source_document = EN_1993_1_1_2005
 
-    Parameters
-    ----------
-    profile : ISteelProfile
-        The steel I-profile to check.
-    properties : SectionProperties
-        The section properties of the profile.
-    result_internal_force_1d : ResultInternalForce1D
-        The load combination to apply to the profile.
-    gamma_m0 : DIMENSIONLESS, optional
-        Partial safety factor for resistance of cross-sections, default is 1.0.
-    """
+    def __init__(
+        self,
+        profile: ISteelProfile,
+        properties: SectionProperties,
+        result_internal_force_1d: ResultInternalForce1D,
+        gamma_m0: DIMENSIONLESS = 1.0,
+    ) -> None:
+        """Checks normal force resistance for steel I-profiles according to Eurocode 3, chapter 6.2.3 (tension) and 6.2.4 (compression).
 
-    profile: ISteelProfile
-    properties: SectionProperties
-    result_internal_force_1d: ResultInternalForce1D
-    gamma_m0: DIMENSIONLESS = 1.0
+        Parameters
+        ----------
+        profile : ISteelProfile
+            The steel I-profile to check.
+        properties : SectionProperties
+            The section properties of the profile.
+        result_internal_force_1d : ResultInternalForce1D
+            The load combination to apply to the profile.
+        gamma_m0 : DIMENSIONLESS, optional
+            Partial safety factor for resistance of cross-sections, default is 1.0.
+        """
+        super().__init__()
+        self.profile = profile
+        self.properties = properties
+        self.result_internal_force_1d = result_internal_force_1d
+        self.gamma_m0 = gamma_m0
 
     def calculation_steps(self) -> dict[str, Formula]:
         """Perform calculation steps for normal force resistance check.
