@@ -58,7 +58,7 @@ class NormalForceClass123:
             a = self.properties.area if self.properties.area is not None else 0
             f_y = min(element.yield_strength for element in self.profile.elements)
             n_ed = self.result_internal_force_1d.n * KN_TO_N
-            n_t_rd = formula_6_6.Form6Dot6DesignPlasticRestistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
+            n_t_rd = formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
             check_tension = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
             return {
                 "6.6": n_t_rd,

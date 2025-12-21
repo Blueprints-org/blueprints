@@ -127,7 +127,7 @@ class SteelIProfileStrengthClass3:
         if all_latex == "":
             all_latex += r"\text{No internal forces applied.} \newline CHECK \to OK"
 
-        # If the LaTeX string starts with return (\newline), remove it for cleaner output
+        # If the LaTeX string starts with a leading return (\newline), remove it for cleaner output
         if all_latex.startswith(r"\newline"):
             all_latex = all_latex[8:]
 
