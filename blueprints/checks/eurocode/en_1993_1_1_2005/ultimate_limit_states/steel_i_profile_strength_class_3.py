@@ -31,6 +31,30 @@ class SteelIProfileStrengthClass3:
         The load combination to apply to the profile.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
+
+    Example
+    -------
+    from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.normal_force import NormalForceClass123
+    from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
+    from blueprints.materials.steel import SteelMaterial
+    from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
+    from blueprints.structural_sections.steel.steel_cross_sections.standard_profiles.heb import HEB
+    from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
+    from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_profile = ISteelProfile.from_standard_profile(
+        profile=HEB.HEB300,
+        steel_material=steel_material,
+        corrosion=0,
+    )
+    heb_properties = heb_profile.section_properties(geometric=True, plastic=False, warping=False)
+    result_internal_force_1d = ResultInternalForce1D(
+                result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1",
+                n=100, vy=90, vz=80, mx=70, my=60, mz=50
+            )
+    calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+    check = calc.check()
     """
 
     profile: ISteelProfile
