@@ -20,8 +20,8 @@ class TestSteelIProfileStrengthClass3NormalForce:
         calc = NormalForceClass123(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
         check = calc.check()
         assert check.is_ok is True
-        assert check.unity_check is None
-        assert check.factor_of_safety is None
+        assert check.unity_check == 0
+        assert check.factor_of_safety == float("inf")
         assert check.provided is None
         assert check.required is None
         assert len(calc.latex()) > 0

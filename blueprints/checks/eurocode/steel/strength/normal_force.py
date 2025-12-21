@@ -84,15 +84,16 @@ class NormalForceClass123:
         CheckResult
             True if the normal force check passes, False otherwise.
         """
+        steps = self.calculation_steps()
         if self.result_internal_force_1d.n == 0:
             return CheckResult.from_unity_check(0)
         if self.result_internal_force_1d.n > 0:
             provided = self.result_internal_force_1d.n * KN_TO_N
-            required = self.calculation_steps()["6.6"]
+            required = steps["6.6"]
             return CheckResult.from_comparison(provided=provided, required=required)
         # compression
         provided = -self.result_internal_force_1d.n * KN_TO_N
-        required = self.calculation_steps()["6.10"]
+        required = steps["6.10"]
         return CheckResult.from_comparison(provided=provided, required=required)
 
     def latex(self, n: int = 1, latex_format: str = "long") -> str:
