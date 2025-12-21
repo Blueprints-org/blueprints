@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel.strength.normal_force import NormalForceClass123
+from blueprints.checks.eurocode.en_1993_1_1_2005.strength.normal_force import NormalForceClass123
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
