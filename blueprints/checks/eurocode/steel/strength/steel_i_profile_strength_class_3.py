@@ -3,6 +3,8 @@
 This module provides strength checks for steel I-profiles of class 3 cross-sections according to Eurocode 3.
 """
 
+from dataclasses import dataclass
+
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
@@ -12,6 +14,7 @@ from blueprints.structural_sections.steel.steel_cross_sections.i_profile import 
 from blueprints.type_alias import DIMENSIONLESS
 
 
+@dataclass(frozen=True)
 class SteelIProfileStrengthClass3:
     """Steel I-Profile strength check for class 3.
 
@@ -29,22 +32,29 @@ class SteelIProfileStrengthClass3:
         Partial safety factor for resistance of cross-sections, default is 1.0.
     """
 
-    def __init__(
-        self, profile: ISteelProfile, properties: SectionProperties, result_internal_force_1d: ResultInternalForce1D, gamma_m0: DIMENSIONLESS = 1.0
-    ) -> None:
-        self.profile = profile
-        self.properties = properties
-        self.result_internal_force_1d = result_internal_force_1d
-        self.gamma_m0 = gamma_m0
-        self.normal_force = NormalForceClass123(self.profile, self.properties, self.result_internal_force_1d, self.gamma_m0)
+    profile: ISteelProfile
+    properties: SectionProperties
+    result_internal_force_1d: ResultInternalForce1D
+    gamma_m0: DIMENSIONLESS = 1.0
+
+    def calculation_steps(self) -> dict:
+        """Perform calculation steps for all strength checks."""
+        return {
+            "normal_force": NormalForceClass123(self.profile, self.properties, self.result_internal_force_1d, self.gamma_m0),
+            "bending_moment_my": None,  # To be implemented
+            "bending_moment_mz": None,  # To be implemented
+            "shear_force_vz": None,  # To be implemented
+            "shear_force_vy": None,  # To be implemented
+            "torsion": None,  # To be implemented
+            "bending_shear_interaction": None,  # To be implemented
+            "bending_axial_interaction": None,  # To be implemented
+            "bending_shear_axial_interaction": None,  # To be implemented
+        }
 
     def check(self) -> CheckResult:
-        """Returns True if all strength criteria for the steel I-profile pass, False otherwise.
-
-        Warning: Currently only normal force and single axis bending moment checks are implemented.
-        """
-        # check normal force
-        return self.normal_force.check()
+        """Perform all strength checks and return the overall result."""
+        results = (r for r in self.calculation_steps().values() if r is not None)
+        return CheckResult.from_unity_check(max(r.check().unity_check for r in results))
 
     def latex(self, n: int = 1, latex_format: str = "long") -> str:  # noqa: C901
         """
@@ -71,7 +81,7 @@ class SteelIProfileStrengthClass3:
 
         # Check normal force
         if self.result_internal_force_1d.n != 0:
-            all_latex += self.normal_force.latex(n=n, latex_format=latex_format)
+            all_latex += self.calculation_steps()["normal_force"].latex(n=n, latex_format=latex_format)
 
         # Check My axis bending moment (not yet implemented)
         if self.result_internal_force_1d.my != 0 and self.result_internal_force_1d.mz == 0:
