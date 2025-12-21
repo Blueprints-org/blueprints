@@ -3,7 +3,7 @@
 import pytest
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.eurocode.steel.strength.steel_i_profile_strength_class_3 import SteelIProfileStrengthClass3
+from blueprints.checks.eurocode.steel.en_1993_1_1_2005.strength.steel_i_profile_strength_class_3 import SteelIProfileStrengthClass3
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
 
