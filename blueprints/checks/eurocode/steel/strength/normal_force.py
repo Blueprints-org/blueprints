@@ -26,7 +26,7 @@ from blueprints.unit_conversion import KN_TO_N
 class NormalForceClass123:
     """Class to perform normal force resistance check.
 
-    Performs strength checks on steel I-profiles according to Eurocode 3, for class 3 cross-sections.
+    Performs strength checks on steel I-profiles according to Eurocode 3, for class 1, 2 and 3 cross-sections.
 
     Parameters
     ----------
@@ -52,7 +52,7 @@ class NormalForceClass123:
 
         Returns
         -------
-        dict: Formula
+        dict[str, Formula]
             Calculation results keyed by formula number. Returns an empty dict if no normal force is applied.
         """
         if self.result_internal_force_1d.n == 0:
