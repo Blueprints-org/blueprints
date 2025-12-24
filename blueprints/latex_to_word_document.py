@@ -8,6 +8,7 @@ from docx import Document
 from docx.document import Document as DocumentObject
 from docx.oxml import parse_xml
 from docx.oxml.xmlchemy import BaseOxmlElement
+from docx.shared import Pt, RGBColor
 
 
 class LatexToWordConverter:
@@ -22,6 +23,44 @@ class LatexToWordConverter:
 
     def __init__(self) -> None:
         """Initialize the converter and optionally convert LaTeX to a Document."""
+        self.template_docx: str | None = None
+
+    @staticmethod
+    def _apply_default_styles(doc: DocumentObject) -> None:
+        """Apply default style settings to a new document.
+
+        Args:
+            doc: The Word Document object to apply styles to.
+        """
+        # Set default font for Normal style
+        style = doc.styles["Normal"]
+        font = style.font
+        font.name = "Calibri"
+        font.size = Pt(11)
+        font.color.rgb = RGBColor(0, 0, 0)
+
+        # Set paragraph spacing
+        paragraph_format = style.paragraph_format
+        paragraph_format.space_before = Pt(0)
+        paragraph_format.space_after = Pt(8)
+        paragraph_format.line_spacing = 1.15
+
+        # Configure heading styles
+        heading_configs = [
+            ("Heading 1", 16, True, RGBColor(0, 40, 85)),
+            ("Heading 2", 13, True, RGBColor(0, 40, 85)),
+            ("Heading 3", 11, True, RGBColor(0, 40, 85)),
+        ]
+
+        for style_name, font_size, bold, color in heading_configs:
+            if style_name in doc.styles:
+                heading_style = doc.styles[style_name]
+                heading_style.font.name = "Bebas Neue"
+                heading_style.font.size = Pt(font_size)
+                heading_style.font.bold = bold
+                heading_style.font.color.rgb = color
+                heading_style.paragraph_format.space_before = Pt(12)
+                heading_style.paragraph_format.space_after = Pt(6)
 
     @staticmethod
     def _formula(latex_string: str) -> BaseOxmlElement:
@@ -35,17 +74,25 @@ class LatexToWordConverter:
         xml_output = f'<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">{omml_output}</m:oMathPara>'
         return parse_xml(xml_output)[0]
 
-    def convert_to_word(self, content: str) -> DocumentObject:
+    def convert_to_word(self, content: str, template_docx: str | None = None) -> DocumentObject:
         r"""
         Convert a LaTeX string (with text, equations, titles, sections, subsections, tables) to a Word Document object.
         Args:
             content: The LaTeX string, with lines separated by \newline, text in \text{...}, equations otherwise.
+            template_docx: Optional path to an existing .docx file to use as a template. If provided, the content
+                          will be added to this document. If None, a new document will be created.
 
         Returns
         -------
             The python-docx Document object (not saved).
         """
-        doc = Document()
+        self.template_docx = template_docx
+        doc = Document(template_docx) if template_docx else Document()
+
+        # Apply default styles if no template provided
+        if template_docx is None:
+            self._apply_default_styles(doc)
+
         matches = self._extract_structural_elements(content)
         parsed = self._build_parsed_content(content, matches)
         self._add_content_to_document(doc, parsed)
@@ -137,7 +184,12 @@ class LatexToWordConverter:
                 self._add_table_to_doc(doc, str(item["content"]))
 
     def _add_equation(self, doc: DocumentObject, content: str) -> None:
-        """Add an equation to the document."""
+        """Add an equation to the document.
+
+        Args:
+            doc: The Word Document object.
+            content: The LaTeX equation content.
+        """
         p = doc.add_paragraph()
         p._p.append(self._formula(content))  # noqa: SLF001
 
@@ -153,11 +205,62 @@ class LatexToWordConverter:
     def _add_heading(self, doc: DocumentObject, heading_type: str, content: str) -> None:
         """Add a heading to the document."""
         levels = {"title": 0, "section": 1, "subsection": 2, "subsubsection": 3}
-        doc.add_heading(content, level=levels[heading_type])
+        heading = doc.add_heading(content, level=levels[heading_type])
+
+        # Apply Bebas Neue font if no template is used
+        if self.template_docx is None:
+            for run in heading.runs:
+                run.font.name = "Bebas Neue"
 
     @staticmethod
     def _parse_text_and_equations(text: str) -> list[dict[str, str | bool]]:
         # Split by \newline for paragraph separation
+        result: list[dict[str, str | bool]] = []
+
+        # First, handle equation environments
+        equation_pattern = r"\\begin\{equation\}(.*?)\\end\{equation\}"
+        equation_matches = list(re.finditer(equation_pattern, text, re.DOTALL))
+
+        if equation_matches:
+            last_idx = 0
+            for eq_match in equation_matches:
+                # Process text before equation
+                before_text = text[last_idx : eq_match.start()]
+                if before_text.strip():
+                    result.extend(LatexToWordConverter._parse_inline_content(before_text))
+
+                # Process equation
+                eq_content = eq_match.group(1).strip()
+
+                # Extract tag if present
+                tag_match = re.search(r"\\tag\{(.*?)\}", eq_content)
+
+                # Remove \tag{...} from equation content
+                if tag_match:
+                    tag = tag_match.group(1)
+                    eq_content = eq_content[: tag_match.start()] + eq_content[tag_match.end() :]
+                    eq_content = eq_content.strip()
+                    # Append tag as text to the right of the equation
+                    eq_content += r"\text{   (" + tag + r")}"
+
+                eq_item: dict[str, str | bool] = {"type": "equation", "content": eq_content}
+                result.append(eq_item)
+
+                last_idx = eq_match.end()
+
+            # Process remaining text after last equation
+            remaining = text[last_idx:]
+            if remaining.strip():
+                result.extend(LatexToWordConverter._parse_inline_content(remaining))
+        else:
+            # No equation environments, process as inline content
+            result.extend(LatexToWordConverter._parse_inline_content(text))
+
+        return result
+
+    @staticmethod
+    def _parse_inline_content(text: str) -> list[dict[str, str | bool]]:
+        """Parse inline text and equations (not in equation environments)."""
         result: list[dict[str, str | bool]] = []
         for part in text.split(r"\newline"):
             # Pattern matches \textbf{...}, \textit{...}, \text{...}, or equation
@@ -230,7 +333,8 @@ class LatexToWordConverter:
         num_cols = max(len(row) for row in rows_data) if rows_data else 0
 
         table = doc.add_table(rows=num_rows, cols=num_cols)
-        table.style = "Light Grid Accent 1"
+        if self.template_docx is None:
+            table.style = "Medium Shading 1 Accent 5"
 
         # Fill table cells
         for i, row_data in enumerate(rows_data):
