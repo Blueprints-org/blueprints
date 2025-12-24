@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from functools import wraps
-from typing import Concatenate
+from typing import Concatenate, Protocol
 
 from blueprints.structural_sections._profile import Profile
 
@@ -47,10 +47,17 @@ def wrap_as_instance_method[S, R, **P](
     return decorator
 
 
+class StandardProfile(Protocol):
+    """Protocol for standard profile classes."""
+
+    _database: dict[str, dict]
+    _factory: Callable[..., Profile]
+
+
 class StandardProfileMeta(type):
     """Metaclass for standard profile classes to enable dynamic attribute access."""
 
-    def __getattr__(cls, name: str) -> Profile:
+    def __getattr__(cls: StandardProfile, name: str) -> Profile:
         """Get a profile by its name from the class database.
 
         Parameters
@@ -70,6 +77,6 @@ class StandardProfileMeta(type):
         """
         try:
             profile = cls._database[name]
-        except KeyError:
-            raise AttributeError(f"{cls.__name__!s} no no no {name!r}") from None
+        except KeyError as e:
+            raise AttributeError(f"Profile '{name}' does not exist in database.") from e
         return cls._factory(**profile)

@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from math import pi
-from typing import Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -67,7 +66,7 @@ class CHSProfile(Profile):
         self,
         corrosion_outside: MM = 0,
         corrosion_inside: MM = 0,
-    ) -> Self:
+    ) -> CHSProfile:
         """Create a new CHS profile adjusted for corrosion effects.
 
         Parameters

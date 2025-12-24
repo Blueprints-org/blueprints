@@ -125,7 +125,7 @@ def _get_factory_return_type(factory_full_path: str) -> str:
     return factory_full_path
 
 
-def generate_stub_for_file(
+def generate_stub_for_file(  # noqa: C901
     source_file: Path,
     stub_file: Path | None = None,
 ) -> bool:
@@ -170,7 +170,7 @@ def generate_stub_for_file(
     stub_lines = []
 
     # Generate imports for each factory class
-    factory_imports = {}
+    factory_imports: dict[str, list[str]] = {}
     for class_name, (factory, database, factory_full_path) in class_info.items():
         parts = factory_full_path.rsplit(".", 1)
         if len(parts) == 2:
