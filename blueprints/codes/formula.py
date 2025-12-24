@@ -93,7 +93,7 @@ class Formula(float, ABC):
 
     @abstractmethod
     def latex(self, n: int = 3) -> LatexFormula:
-        """Abstract method for the latex representation of the formula.
+        """Abstract method for the latex representation of the formula, given in math mode.
 
         Parameters
         ----------
@@ -103,9 +103,25 @@ class Formula(float, ABC):
         Returns
         -------
         LatexFormula
-            The latex representation of the formula.
+            The latex representation of the formula in math mode.
             This is an abstract method and must be implemented in all subclasses.
         """
+
+    def report(self, n: int = 3) -> str:
+        """Abstract method for the report representation of the formula.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of decimal places to round the result to.
+
+        Returns
+        -------
+        str
+            The report representation of the formula.
+            This is an abstract method and must be implemented in all subclasses.
+        """
+        return "$" + str(self.latex(n)) + "$"
 
 
 class ComparisonFormula(Formula):
