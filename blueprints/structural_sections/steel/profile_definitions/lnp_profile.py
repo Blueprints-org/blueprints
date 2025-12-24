@@ -11,6 +11,7 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections._profile import Profile
+from blueprints.structural_sections.steel.profile_definitions.corrosion_utils import FULL_CORROSION_TOLERANCE, update_name_with_corrosion
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
@@ -167,6 +168,68 @@ class LNPProfile(Profile):
             name += f" (corrosion: {corrosion} mm)"
 
         return cls(
+            total_width=total_width,
+            total_height=total_height,
+            web_thickness=web_thickness,
+            base_thickness=base_thickness,
+            root_radius=root_radius,
+            back_radius=back_radius,
+            web_toe_radius=web_toe_radius,
+            base_toe_radius=base_toe_radius,
+            name=name,
+        )
+
+    def with_corrosion(
+        self,
+        corrosion: MM = 0,
+    ) -> LNPProfile:
+        """Return a new LNP profile with corrosion applied.
+
+        The name attribute of the new instance will be updated to reflect the total corrosion applied
+        including any previous corrosion indicated in the original name.
+
+        Parameters
+        ----------
+        corrosion : MM, optional
+            Corrosion per side (default is 0).
+
+        Returns
+        -------
+        LNPProfile
+            A new LNPProfile instance with the specified corrosion applied.
+
+        Raises
+        ------
+        ValueError
+            If the resulting profile is fully corroded.
+        """
+        raise_if_negative(corrosion=corrosion)
+
+        if corrosion == 0:
+            return self
+
+        total_width = self.total_width - 2 * corrosion
+        total_height = self.total_height - 2 * corrosion
+
+        web_thickness = self.web_thickness - 2 * corrosion
+        base_thickness = self.base_thickness - 2 * corrosion
+        root_radius = self.root_radius + corrosion
+        back_radius = max(self.back_radius - corrosion, 0)
+        base_toe_radius = max(self.base_toe_radius - corrosion, 0)
+        web_toe_radius = max(self.web_toe_radius - corrosion, 0)
+
+        if any(
+            thickness < FULL_CORROSION_TOLERANCE
+            for thickness in (
+                web_thickness,
+                base_thickness,
+            )
+        ):
+            raise ValueError("The profile has fully corroded.")
+
+        name = update_name_with_corrosion(self.name, corrosion=corrosion)
+
+        return LNPProfile(
             total_width=total_width,
             total_height=total_height,
             web_thickness=web_thickness,

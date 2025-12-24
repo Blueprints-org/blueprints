@@ -265,9 +265,9 @@ class RHSProfile(Profile):
         Parameters
         ----------
         corrosion_outside : MM, optional
-            Corrosion thickness to be subtracted from the outer diameter [mm] (default: 0).
+            Corrosion to be subtracted from the outer diameter [mm] (default: 0).
         corrosion_inside : MM, optional
-            Corrosion thickness to be added to the inner diameter [mm] (default: 0).
+            Corrosion to be added to the inner diameter [mm] (default: 0).
 
         Returns
         -------

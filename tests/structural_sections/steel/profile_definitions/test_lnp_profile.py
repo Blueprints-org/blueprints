@@ -148,3 +148,45 @@ class TestLNPProfile:
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == lnp_profile.centroid.x + 1000
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == lnp_profile.centroid.y + 500
         assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == lnp_profile.profile_width
+
+    def test_with_corrosion_negative_value_raises_error(self, lnp_profile: LNPProfile) -> None:
+        """Test that negative corrosion value raises NegativeValueError."""
+        with pytest.raises(NegativeValueError, match=r"corrosion"):
+            lnp_profile.with_corrosion(corrosion=-1.0)
+
+    def test_with_corrosion_zero_value(self, lnp_profile: LNPProfile) -> None:
+        """Test that zero corrosion value returns the same profile."""
+        result = lnp_profile.with_corrosion(corrosion=0)
+        assert result is lnp_profile
+
+    def test_with_corrosion_valid_positive_value(self, lnp_profile: LNPProfile) -> None:
+        """Test with valid positive corrosion value."""
+        # LNP 100x50x6: total_width=100, total_height=50, web_thickness=6, base_thickness=6
+        corroded_profile = lnp_profile.with_corrosion(corrosion=0.5)
+
+        assert isinstance(corroded_profile, LNPProfile)
+        # Outer dimensions reduced by 2*corrosion
+        assert pytest.approx(corroded_profile.total_width, rel=1e-6) == lnp_profile.total_width - 2 * 0.5
+        assert pytest.approx(corroded_profile.total_height, rel=1e-6) == lnp_profile.total_height - 2 * 0.5
+        # Thicknesses reduced by 2*corrosion
+        assert pytest.approx(corroded_profile.web_thickness, rel=1e-6) == lnp_profile.web_thickness - 2 * 0.5
+        assert pytest.approx(corroded_profile.base_thickness, rel=1e-6) == lnp_profile.base_thickness - 2 * 0.5
+        # Name should include corrosion
+        assert corroded_profile.name == "LNP 100x50x6 (corrosion: 0.5 mm)"
+
+    def test_with_corrosion_fully_corroded(self, lnp_profile: LNPProfile) -> None:
+        """Test that fully corroded profile raises ValueError."""
+        # LNP 100x50x6: web_thickness=6, base_thickness=6, so corrosion=3 will fully corrode
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
+            lnp_profile.with_corrosion(corrosion=3.0)
+
+    def test_with_corrosion_name_shows_total_corrosion(self, lnp_profile: LNPProfile) -> None:
+        """Test that applying corrosion twice shows the total corrosion in the name."""
+        # First apply corrosion
+        corroded_once = lnp_profile.with_corrosion(corrosion=0.3)
+        assert corroded_once.name == "LNP 100x50x6 (corrosion: 0.3 mm)"
+
+        # Apply additional corrosion
+        corroded_twice = corroded_once.with_corrosion(corrosion=0.2)
+        # Total should be 0.5 mm
+        assert corroded_twice.name == "LNP 100x50x6 (corrosion: 0.5 mm)"
