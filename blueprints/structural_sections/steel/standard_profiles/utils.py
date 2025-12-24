@@ -6,6 +6,8 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Concatenate
 
+from blueprints.structural_sections._profile import Profile
+
 
 def wrap_as_instance_method[S, R, **P](
     func: Callable[Concatenate[S, P], R],
@@ -43,3 +45,31 @@ def wrap_as_instance_method[S, R, **P](
         return wrapper
 
     return decorator
+
+
+class StandardProfileMeta(type):
+    """Metaclass for standard profile classes to enable dynamic attribute access."""
+
+    def __getattr__(cls, name: str) -> Profile:
+        """Get a profile by its name from the class database.
+
+        Parameters
+        ----------
+        name : str
+            The name of the profile to retrieve.
+
+        Returns
+        -------
+        Profile
+            An instance of the profile corresponding to the given name.
+
+        Raises
+        ------
+        AttributeError
+            If the profile name does not exist in the database.
+        """
+        try:
+            profile = cls._database[name]
+        except KeyError:
+            raise AttributeError(f"{cls.__name__!s} no no no {name!r}") from None
+        return cls._factory(**profile)

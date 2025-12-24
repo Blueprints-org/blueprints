@@ -48,16 +48,14 @@ class TestCHSSteelProfile:
         """Test the CHS profile with 16 mm corrosion applied."""
         # Ensure the profile raises an error if fully corroded
         with pytest.raises(ValueError, match=r"The profile has fully corroded."):
-            CHSProfile.from_standard_profile(
-                profile=CHS.CHS508x16,
+            CHS.CHS508x16.with_corrosion(
                 corrosion_outside=5,  # mm
                 corrosion_inside=11,  # mm
             )
 
     def test_corrosion_in_name(self) -> None:
         """Test that the name includes corrosion information."""
-        chs_profile_with_corrosion = CHSProfile.from_standard_profile(
-            profile=CHS.CHS508x16,
+        chs_profile_with_corrosion = CHS.CHS508x16.with_corrosion(
             corrosion_outside=1,  # mm
             corrosion_inside=2,  # mm
         )
