@@ -47,18 +47,21 @@ def wrap_as_instance_method[S, R, **P](
     return decorator
 
 
-class StandardProfile(Protocol):
+class StandardProfileProtocol(Protocol):
     """Protocol for standard profile classes."""
 
     _factory: Callable[..., Profile]
+    """Factory class for creating standard profiles."""
     _database: dict[str, tuple[str | int | float, ...]]
+    """Database of standard profiles."""
     _parameters: tuple[str, ...]
+    """Parameter names matching the database values required to create a standard profile."""
 
 
 class StandardProfileMeta(type):
     """Metaclass for standard profile classes to enable dynamic attribute access."""
 
-    def __getattr__(cls: StandardProfile, name: str) -> Profile:
+    def __getattr__(cls: StandardProfileProtocol, name: str) -> Profile:
         """Get a profile by its name from the class database.
 
         Parameters

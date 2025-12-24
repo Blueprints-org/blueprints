@@ -101,11 +101,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["blueprints"]
 
-[tool.coverage.run]
-omit = [
-    "*/blueprints/structural_sections/steel/standard_profiles/_stub_generator.py",
-]
-
 [tool.pytest.ini_options]
 markers = [
     "slow: marks as slow (deselect with '-m \"not slow\"')",
