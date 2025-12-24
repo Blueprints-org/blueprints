@@ -179,10 +179,7 @@ class LNPProfile(Profile):
             name=name,
         )
 
-    def with_corrosion(
-        self,
-        corrosion: MM = 0,
-    ) -> LNPProfile:
+    def with_corrosion(self, corrosion: MM = 0) -> LNPProfile:
         """Return a new LNP profile with corrosion applied.
 
         The name attribute of the new instance will be updated to reflect the total corrosion applied
