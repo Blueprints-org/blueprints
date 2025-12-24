@@ -1307,3 +1307,4 @@ class CHS(metaclass=StandardProfileMeta):
 
     _factory = CHSProfile
     _database = CHS_PROFILES
+    _parameters = ("name", "outer_diameter", "wall_thickness")

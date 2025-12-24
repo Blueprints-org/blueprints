@@ -50,8 +50,9 @@ def wrap_as_instance_method[S, R, **P](
 class StandardProfile(Protocol):
     """Protocol for standard profile classes."""
 
-    _database: dict[str, dict]
     _factory: Callable[..., Profile]
+    _database: dict[str, tuple[str | int | float, ...]]
+    _parameters: tuple[str, ...]
 
 
 class StandardProfileMeta(type):
@@ -79,4 +80,4 @@ class StandardProfileMeta(type):
             profile = cls._database[name]
         except KeyError as e:
             raise AttributeError(f"Profile '{name}' does not exist in database.") from e
-        return cls._factory(**profile)
+        return cls._factory(**dict(zip(cls._parameters, profile)))
