@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from functools import wraps
-from typing import Concatenate
+from typing import Concatenate, Protocol
+
+from blueprints.structural_sections._profile import Profile
 
 
 def wrap_as_instance_method[S, R, **P](
@@ -43,3 +45,42 @@ def wrap_as_instance_method[S, R, **P](
         return wrapper
 
     return decorator
+
+
+class StandardProfileProtocol(Protocol):
+    """Protocol for standard profile classes."""
+
+    _factory: Callable[..., Profile]
+    """Factory class for creating standard profiles."""
+    _database: dict[str, tuple[str | int | float, ...]]
+    """Database of standard profiles."""
+    _parameters: tuple[str, ...]
+    """Parameter names matching the database values required to create a standard profile."""
+
+
+class StandardProfileMeta(type):
+    """Metaclass for standard profile classes to enable dynamic attribute access."""
+
+    def __getattr__(cls: StandardProfileProtocol, name: str) -> Profile:
+        """Get a profile by its name from the class database.
+
+        Parameters
+        ----------
+        name : str
+            The name of the profile to retrieve.
+
+        Returns
+        -------
+        Profile
+            An instance of the profile corresponding to the given name.
+
+        Raises
+        ------
+        AttributeError
+            If the profile name does not exist in the database.
+        """
+        try:
+            profile = cls._database[name]
+        except KeyError as e:
+            raise AttributeError(f"Profile '{name}' does not exist in database.") from e
+        return cls._factory(**dict(zip(cls._parameters, profile)))
