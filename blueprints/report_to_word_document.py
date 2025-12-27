@@ -6,10 +6,13 @@ import latex2mathml.converter
 import mathml2omml
 from docx import Document
 from docx.document import Document as DocumentObject
+from docx.enum.style import WD_STYLE_TYPE
 from docx.oxml import parse_xml
 from docx.oxml.xmlchemy import BaseOxmlElement
-from docx.shared import Pt, RGBColor
+from docx.shared import Inches, Pt, RGBColor
 from docx.text.paragraph import Paragraph
+
+from blueprints.codes.report import ReportCheck, ReportFormula
 
 
 class ReportToWordConverter:
@@ -22,38 +25,101 @@ class ReportToWordConverter:
         - Equations in \begin{equation}...\end{equation} environments (with optional \tag{...}).
         - Titles, sections, subsections, and subsubsections using \title{...}, \section{...}, \subsection{...}, \subsubsection{...}.
         - Tables in \begin{table}...\end{table} environments with tabular content
+        - Figures in \begin{figure}...\end{figure} environments with \includegraphics.
+        - Bullet lists in \begin{itemize}...\end{itemize} environments with \item for each bullet.
+        - Numbered lists in \begin{enumerate}...\end{enumerate} environments with \item for each item.
         - Inline equations (not in equation environments) between $...$.
         - New lines indicated by \newline.
-        - Default styling for Normal text and Headings if no template is provided,
-          or uses styles from a provided template (must be an empty .docx file featuring template styles for
-          Normal, Title, Heading 1, Heading 2, and Heading 3).
-    - The converter does NOT currently support:
-        - Figures, images, or graphics.
+        - Uses styles from the template: BP title, BP section, BP subsection, BP subsubsection, BP text, and BP list.
     """
 
     def __init__(self) -> None:
         """Initialize the converter and optionally convert LaTeX to a Document."""
         self.template_docx: str | None = None
 
-    def convert_to_word(self, content: str, template_docx: str | None = None) -> DocumentObject:
+    @staticmethod
+    def _set_style(para: Paragraph, style_name: str) -> None:
+        """Set the style for a paragraph, creating it if it doesn't exist.
+
+        Args:
+            para: The paragraph object to apply the style to.
+            style_name: The name of the style to apply (e.g., 'BP title', 'BP text', 'BP list').
+        """
+        doc = para._parent._parent if hasattr(para, "_parent") else para._element.getparent().getparent()  # noqa: SLF001
+
+        # Try to apply the style
+        try:
+            para.style = style_name
+        except KeyError:
+            # Style doesn't exist, create it
+            styles = doc.styles
+
+            # Create the new style based on 'No Spacing' as a base
+            try:
+                new_style = styles.add_style(style_name, WD_STYLE_TYPE.PARAGRAPH)
+                new_style.base_style = styles["No Spacing"]
+
+                # Configure style based on its name
+                if style_name == "title":
+                    new_style.font.name = "Bebas Neue"
+                    new_style.font.size = Pt(36)
+                    new_style.font.bold = True
+                    new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
+                    new_style.paragraph_format.space_before = Pt(8)
+                    new_style.paragraph_format.space_after = Pt(4)
+                elif style_name == "section":
+                    new_style.font.name = "Bebas Neue"
+                    new_style.font.size = Pt(24)
+                    new_style.font.bold = True
+                    new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
+                    new_style.paragraph_format.space_before = Pt(8)
+                    new_style.paragraph_format.space_after = Pt(4)
+                elif style_name == "subsection":
+                    new_style.font.name = "Bebas Neue"
+                    new_style.font.size = Pt(18)
+                    new_style.font.bold = True
+                    new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
+                    new_style.paragraph_format.space_before = Pt(8)
+                    new_style.paragraph_format.space_after = Pt(4)
+                elif style_name == "subsubsection":
+                    new_style.font.name = "Bebas Neue"
+                    new_style.font.size = Pt(14)
+                    new_style.font.bold = True
+                    new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
+                    new_style.paragraph_format.space_before = Pt(4)
+                    new_style.paragraph_format.space_after = Pt(0)
+                elif style_name in {"enumerate", "itemize", "text"}:
+                    new_style.font.name = "Calibri"
+                    new_style.font.size = Pt(11)
+                    new_style.paragraph_format.space_before = Pt(0)
+                    new_style.paragraph_format.space_after = Pt(0)
+                # Now apply the newly created style
+                para.style = style_name
+            except Exception:
+                # If creation fails, fall back to Normal
+                para.style = "Normal"
+
+    def convert_to_word(self, content: ReportCheck | ReportFormula) -> DocumentObject:
         r"""
         Convert a LaTeX string (with text, equations, titles, sections, subsections, tables) to a Word Document object.
         Args:
-            content: The report string to convert.
-            template_docx: Optional path to a .docx template file to use for styling.
+            content: The report to convert.
 
         Returns
         -------
             The python-docx Document object (not saved).
         """
-        self.template_docx = template_docx
-        doc = Document(template_docx) if template_docx else Document()
+        # Create a new Document
+        doc = Document()
+
+        # Convert content to string
+        content_str = content.content if hasattr(content, "content") else str(content)
 
         # Preprocess to remove LaTeX preamble commands
-        content = self._preprocess_content(content)
+        content_str = self._preprocess_content(content_str)
 
-        matches = self._extract_structural_elements(content)
-        parsed = self._build_parsed_content(content, matches)
+        matches = self._extract_structural_elements(content_str)
+        parsed = self._build_parsed_content(content_str, matches)
         self._add_content_to_document(doc, parsed)
         return doc
 
@@ -79,8 +145,6 @@ class ReportToWordConverter:
             r"\\end\{document\}",
             r"\\date\{.*?\}",
             r"\\maketitle",
-            r"\\begin{figure}.*?\\end{figure}",
-            r"\\includegraphics(\[.*?\])?\{.*?\}",
         ]
 
         cleaned = content
@@ -107,6 +171,9 @@ class ReportToWordConverter:
             ("subsection", r"\\subsection\{(.*?)\}", 0),
             ("subsubsection", r"\\subsubsection\{(.*?)\}", 0),
             ("table", r"\\begin\{table\}.*?\\end\{table\}", re.DOTALL),
+            ("figure", r"\\begin\{figure\}.*?\\end\{figure\}", re.DOTALL),
+            ("itemize", r"\\begin\{itemize\}.*?\\end\{itemize\}", re.DOTALL),
+            ("enumerate", r"\\begin\{enumerate\}.*?\\end\{enumerate\}", re.DOTALL),
         ]
 
         # Find all elements and their positions
@@ -115,7 +182,7 @@ class ReportToWordConverter:
             matches.extend(
                 {
                     "type": element_type,
-                    "content": match.group(1) if element_type != "table" else match.group(0),
+                    "content": match.group(1) if element_type not in ("table", "figure", "itemize", "enumerate") else match.group(0),
                     "start": match.start(),
                     "end": match.end(),
                 }
@@ -173,6 +240,12 @@ class ReportToWordConverter:
                 self._add_heading(doc, item_type, str(item["content"]))
             elif item_type == "table":
                 self._add_table_to_doc(doc, str(item["content"]))
+            elif item_type == "figure":
+                self._add_figure_to_doc(doc, str(item["content"]))
+            elif item_type == "itemize":
+                self._add_itemize_to_doc(doc, str(item["content"]))
+            elif item_type == "enumerate":
+                self._add_enumerate_to_doc(doc, str(item["content"]))
 
     def _add_heading(self, doc: DocumentObject, heading_type: str, content: str) -> None:
         """Add a heading to the document.
@@ -182,25 +255,8 @@ class ReportToWordConverter:
             heading_type: Type of heading ('title', 'section', 'subsection', or 'subsubsection').
             content: The text content of the heading.
         """
-        levels = {"title": 0, "section": 1, "subsection": 2, "subsubsection": 3}
-        heading = doc.add_heading(content, level=levels[heading_type])
-
-        # Apply default formatting if no template is provided
-        if self.template_docx is None:
-            heading_formats = {
-                "title": (24, True, RGBColor(0, 40, 85)),
-                "section": (18, True, RGBColor(0, 40, 85)),
-                "subsection": (14, True, RGBColor(0, 40, 85)),
-                "subsubsection": (14, False, RGBColor(0, 40, 85)),
-            }
-            font_size, bold, color = heading_formats[heading_type]
-            for run in heading.runs:
-                run.font.name = "Bebas Neue"
-                run.font.size = Pt(font_size)
-                run.font.bold = bold
-                run.font.color.rgb = color
-            heading.paragraph_format.space_before = Pt(12)
-            heading.paragraph_format.space_after = Pt(6)
+        para = doc.add_paragraph(content)
+        self._set_style(para, heading_type)
 
     def _add_text(self, doc: DocumentObject, item: dict[str, str | bool]) -> None:
         """Add formatted text (with possible inline equations) to the document.
@@ -210,15 +266,10 @@ class ReportToWordConverter:
             item: Dictionary containing 'content' (text), and optional 'bold' and 'italic' flags.
         """
         para = doc.add_paragraph()
+        self._set_style(para, "text")
         content = str(item["content"])
         bold = bool(item.get("bold", False))
         italic = bool(item.get("italic", False))
-
-        # Apply default formatting if no template is provided
-        if self.template_docx is None:
-            para.paragraph_format.space_before = Pt(0)
-            para.paragraph_format.space_after = Pt(8)
-            para.paragraph_format.line_spacing = 1.15
 
         self._add_text_with_inline_math(para, content, bold=bold, italic=italic)
 
@@ -242,25 +293,20 @@ class ReportToWordConverter:
                 run = para.add_run(part.replace(r"\%", "%"))
                 run.bold = bold
                 run.italic = italic
-                # Apply default formatting if no template is provided
-                if self.template_docx is None:
-                    run.font.name = "Calibri"
-                    run.font.size = Pt(11)
-                    run.font.color.rgb = RGBColor(0, 0, 0)
 
     def _add_equation(self, doc: DocumentObject, content: str) -> None:
         r"""Add an equation to the document.
 
         If the equation is longer than 150 characters, split it on every '=' (except the first),
-        or on every '\leq' or '\geq' (except the first), whichever comes first.
+        or on every '\to' (except the first), whichever comes first.
 
         Args:
             doc: The Word Document object.
             content: The LaTeX equation content.
         """
         if len(content) > 150:
-            # Find all split points: '=', '\leq', '\geq'
-            split_pattern = r"(=|\\leq|\\geq)"
+            # Find all split points: '=', '\to'
+            split_pattern = r"(=|\\to)"
             parts = re.split(split_pattern, content)
             # Find the first split point (if any)
             if len(parts) > 3:
@@ -290,19 +336,11 @@ class ReportToWordConverter:
         """
         rows_data = self._parse_table_content(table_latex)
 
-        if not rows_data:
-            doc.add_paragraph("[Empty table]")
-            return
-
         # Create Word table
         num_rows = len(rows_data)
         num_cols = max(len(row) for row in rows_data) if rows_data else 0
 
         table = doc.add_table(rows=num_rows, cols=num_cols)
-
-        # Apply default table style if no template is provided
-        if self.template_docx is None:
-            table.style = "Medium Shading 1 Accent 5" if "Medium Shading 1 Accent 5" in doc.styles else "Light Grid Accent 1"
 
         # Fill table cells (supporting inline math)
         for i, row_data in enumerate(rows_data):
@@ -312,7 +350,75 @@ class ReportToWordConverter:
                     # Clear default paragraph and add content with inline math support
                     cell.text = ""
                     para = cell.paragraphs[0]
-                    self._add_text_with_inline_math(para, cell_content)
+                    self._set_style(para, "text")
+                    # Make top row bold
+                    is_bold = i == 0
+                    self._add_text_with_inline_math(para, cell_content, bold=is_bold)
+
+    def _add_figure_to_doc(self, doc: DocumentObject, figure_latex: str) -> None:
+        """Parse LaTeX figure and add it to the Word document.
+
+        Args:
+            doc: The Word Document object.
+            figure_latex: LaTeX string containing a figure environment.
+        """
+        figure_info = self._parse_figure_content(figure_latex)
+
+        if not figure_info or not figure_info.get("image_path"):
+            # If no valid figure info, add a placeholder paragraph
+            para = doc.add_paragraph()
+            run = para.add_run("[Figure placeholder - image not found]")
+            run.italic = True
+            return
+
+        # Add the image to the document
+        para = doc.add_paragraph()
+        run = para.add_run()
+
+        # Get width from figure info (default to 3 inches if not specified)
+        width = figure_info.get("width_inches", 3.0)
+
+        # Add picture to the run
+        run.add_picture(figure_info["image_path"], width=Inches(width))
+
+        # Center the paragraph
+        para.alignment = 1  # 1 = center alignment
+
+    def _add_itemize_to_doc(self, doc: DocumentObject, itemize_latex: str) -> None:
+        """Parse LaTeX itemize list and add it to the Word document.
+
+        Args:
+            doc: The Word Document object.
+            itemize_latex: LaTeX string containing an itemize environment.
+        """
+        items = self._parse_itemize_content(itemize_latex)
+
+        for item_content in items:
+            para = doc.add_paragraph()
+            self._set_style(para, "itemize")
+            # Clear default text and add content with inline math support
+            para.text = ""
+            # Add the bullet prefix
+            para.add_run("•     ")
+            self._add_text_with_inline_math(para, item_content)
+
+    def _add_enumerate_to_doc(self, doc: DocumentObject, enumerate_latex: str) -> None:
+        """Parse LaTeX enumerate list and add it to the Word document.
+
+        Args:
+            doc: The Word Document object.
+            enumerate_latex: LaTeX string containing an enumerate environment.
+        """
+        items = self._parse_enumerate_content(enumerate_latex)
+
+        for idx, item_content in enumerate(items, start=1):
+            para = doc.add_paragraph()
+            self._set_style(para, "enumerate")
+            # Clear default text and add content with inline math support
+            para.text = ""
+            # Add the number prefix
+            para.add_run(f"{idx}.    ")
+            self._add_text_with_inline_math(para, item_content)
 
     @staticmethod
     def _formula(latex_string: str) -> BaseOxmlElement:
@@ -408,9 +514,21 @@ class ReportToWordConverter:
                 italic_content = match.group(2)
                 text_content = match.group(3)
                 if bold_content is not None:
-                    result.append({"type": "text", "content": bold_content, "bold": True, "italic": False})
+                    content = bold_content
+                    bold, italic = True, r"\textit{" in content
+                    if italic:
+                        nested = re.search(r"\\textit\{((?:[^{}]|\{[^{}]*\})*)\}", content)
+                        if nested:
+                            content = nested.group(1)
+                    result.append({"type": "text", "content": content, "bold": bold, "italic": italic})
                 elif italic_content is not None:
-                    result.append({"type": "text", "content": italic_content, "bold": False, "italic": True})
+                    content = italic_content
+                    bold, italic = r"\textbf{" in content, True
+                    if bold:
+                        nested = re.search(r"\\textbf\{((?:[^{}]|\{[^{}]*\})*)\}", content)
+                        if nested:
+                            content = nested.group(1)
+                    result.append({"type": "text", "content": content, "bold": bold, "italic": italic})
                 elif text_content is not None:
                     result.append({"type": "text", "content": text_content, "bold": False, "italic": False})
         return result
@@ -430,7 +548,6 @@ class ReportToWordConverter:
         tabular_match = re.search(r"\\begin\{tabular\}\{.*?\}(.*?)\\end\{tabular\}", table_latex, re.DOTALL)
         if not tabular_match:
             return []
-
         tabular_content = tabular_match.group(1)
 
         # Remove LaTeX table commands
@@ -457,3 +574,117 @@ class ReportToWordConverter:
                 parsed_rows.append(parsed_cells)
 
         return parsed_rows
+
+    @staticmethod
+    def _parse_figure_content(figure_latex: str) -> dict[str, str | float] | None:
+        """Parse LaTeX figure content to extract image path and properties.
+
+        Args:
+            figure_latex: LaTeX string containing a figure environment.
+
+        Returns
+        -------
+            Dictionary with image_path and optional width_inches, or None if no valid image found.
+        """
+        # Extract includegraphics command
+        # Pattern: \includegraphics[options]{filename}
+        includegraphics_pattern = r"\\includegraphics(?:\[(.*?)\])?\{(.*?)\}"
+        match = re.search(includegraphics_pattern, figure_latex)
+
+        if not match:
+            return None
+
+        options_str = match.group(1) if match.group(1) else ""
+        image_path = match.group(2).strip()
+
+        result: dict[str, str | float] = {"image_path": image_path}
+
+        # Parse options for width
+        if options_str:
+            # Look for width specification (e.g., width=0.5\textwidth)
+            width_match = re.search(r"width\s*=\s*([0-9.]+)\\textwidth", options_str)
+            if width_match:
+                width_factor = float(width_match.group(1))
+                # Convert to inches (assume textwidth is ~6.5 inches for standard document)
+                result["width_inches"] = width_factor * 6.5
+            else:
+                # Look for explicit width in other units
+                width_explicit = re.search(r"width\s*=\s*([0-9.]+)\s*(in|cm|mm|pt)", options_str)
+                if width_explicit:
+                    value = float(width_explicit.group(1))
+                    unit = width_explicit.group(2)
+                    # Convert to inches
+                    if unit == "in":
+                        result["width_inches"] = value
+                    elif unit == "cm":
+                        result["width_inches"] = value / 2.54
+                    elif unit == "mm":
+                        result["width_inches"] = value / 25.4
+                    elif unit == "pt":
+                        result["width_inches"] = value / 72.0
+
+        return result
+
+    @staticmethod
+    def _parse_itemize_content(itemize_latex: str) -> list[str]:
+        """Parse LaTeX itemize content into individual items.
+
+        Args:
+            itemize_latex: LaTeX string containing an itemize environment.
+
+        Returns
+        -------
+            List of item contents as strings.
+        """
+        # Extract content between \begin{itemize} and \end{itemize}
+        content_match = re.search(r"\\begin\{itemize\}(.*?)\\end\{itemize\}", itemize_latex, re.DOTALL)
+        if not content_match:
+            return []
+
+        content = content_match.group(1).strip()
+
+        # Split by \item and extract each item's content
+        items = re.split(r"\\item", content)
+
+        # Filter out empty items and strip whitespace
+        parsed_items = []
+        for item in items:
+            item_stripped = item.strip()
+            if item_stripped:
+                # Extract text from \text{...} blocks while preserving inline math
+                item_content = re.sub(r"\\text\{((?:[^{}]|\{[^{}]*\})*)\}", r"\1", item_stripped)
+                parsed_items.append(item_content)
+
+        return parsed_items
+
+    @staticmethod
+    def _parse_enumerate_content(enumerate_latex: str) -> list[str]:
+        """Parse LaTeX enumerate content into individual items.
+
+        Args:
+            enumerate_latex: LaTeX string containing an enumerate environment.
+
+        Returns
+        -------
+            List of item contents as strings.
+        """
+        # Extract content between \begin{enumerate} and \end{enumerate}
+        content_match = re.search(r"\\begin\{enumerate\}(.*?)\\end\{enumerate\}", enumerate_latex, re.DOTALL)
+        if not content_match:
+            return []
+
+        content = content_match.group(1).strip()
+
+        # Split by \item and extract each item's content
+        items = re.split(r"\\item", content)
+
+        # Filter out empty items and strip whitespace
+        parsed_items = []
+        for item in items:
+            item_stripped = item.strip()
+            if item_stripped:
+                # Extract text from \text{...} blocks while preserving inline math
+                item_content = re.sub(r"\\text\{((?:[^{}]|\{[^{}]*\})*)\}", r"\1", item_stripped)
+                parsed_items.append(item_content)
+
+        return parsed_items
