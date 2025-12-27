@@ -16,13 +16,13 @@ class ReportCheck:
     >>> report.add_section("Introduction")
     >>> report.add_subsection("Background")
     >>> report.add_subsubsection("Details")
-    >>> report.add_text("This normal text.")
+    >>> report.add_text("This is normal text.")
     >>> report.add_text("This is bold text with newline after.", bold=True).add_newline()
     >>> report.add_text("This is italic text with 4 newlines after.", italic=True).add_newline(n=4)
     >>> report.add_text("This is bold and italic text.", bold=True, italic=True)
     >>> report.add_newline()
     >>> report.add_equation("E=mc^2", tag="3.14")
-    >>> report.add_text("Before an inline equation:").add_inline_equation(r"\\frac{a}{b}").add_text("after the inline equation.").add_newline()
+    >>> report.add_text("Before an inline equation:").add_inline_equation(r"\\frac{a}{b}").add_text("After the inline equation.").add_newline()
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
     ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\\text{Length}", "10", r"\\text{m}"], [r"\\text{Density}", "500", r"\\text{kg/m$^3$}"]]
