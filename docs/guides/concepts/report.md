@@ -43,7 +43,7 @@ The `.report()` method returns a complete LaTeX document fragment in text mode. 
 10. New lines (enter / return) with `\newline`
     - ``` \text{line 1} \newline \text{line 2} ```
 
-To ensure exact formatting, it is recommended to use the `Report` adder functions. 
+To ensure exact formatting, it is recommended to use the `ReportCheck` adder functions. 
 
 Output can be directly converted to Word documents using `ReportToWordConverter`
 
