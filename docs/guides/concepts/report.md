@@ -47,9 +47,6 @@ To ensure exact formatting, it is recommended to use the `Report` adder function
 
 Output can be directly converted to Word documents using `ReportToWordConverter`
 
-
-
-
 ## Comprehensive Example when making a report from a Formula
 
 The `blueprints` project supports a wide range of report features. Here's a complete demonstration using actual Eurocode formulas,
