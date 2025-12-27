@@ -3,8 +3,8 @@
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.utils.math_helpers import cot
 from blueprints.type_alias import DEG
+from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_greater_than_90, raise_if_negative
 
 
