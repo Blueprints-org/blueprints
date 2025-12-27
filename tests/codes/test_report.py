@@ -288,7 +288,7 @@ class TestReportCheck:
         report.add_section("Introduction")
         report.add_subsection("Background")
         report.add_subsubsection("Details")
-        report.add_text("This normal text.")
+        report.add_text("This is normal text.")
         report.add_text("This is bold text with newline after.", bold=True).add_newline()
         report.add_text("This is italic text with 4 newlines after.", italic=True).add_newline(n=4)
         report.add_text("This is bold and italic text.", bold=True, italic=True)
