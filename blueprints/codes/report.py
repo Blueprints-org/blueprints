@@ -27,7 +27,7 @@ class ReportCheck:
     >>> report.add_table(
     ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\\text{Length}", "10", r"\\text{m}"], [r"\\text{Density}", "500", r"\\text{kg/m$^3$}"]]
     ... )
-    >>> report.add_figure(r"tomato.png", width="0.2")  # needs the tomato.png file in working directory
+    >>> report.add_figure(r"tomato.png", width=0.2)  # needs the tomato.png file in working directory
     >>> report.add_enumerate(["First item", "Second item"])
     >>> report.add_itemize(["Bullet one", "Bullet two"])
     >>> latex_document = report.to_document()
@@ -298,7 +298,7 @@ class ReportCheck:
         --------
         >>> report = ReportCheck()
         >>> report.add_figure("path_to_image")
-        >>> report.add_figure("path_to_image", width="0.5")
+        >>> report.add_figure("path_to_image", width=0.5)
         """
         figure = (
             rf"\begin{{figure}}[{position}] \centering "
