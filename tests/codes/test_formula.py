@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 
 from blueprints.codes.formula import ComparisonFormula, DoubleComparisonFormula, Formula
+from blueprints.codes.latex_formula import LatexFormula
 
 
 class FormulaTest(Formula):
@@ -33,6 +34,15 @@ class FormulaTest(Formula):
         """Dummy formula for testing purposes."""
         return first + second
 
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return latex representation for testing."""
+        return LatexFormula(
+            return_symbol="result",
+            result=str(round(float(self), n)),
+            equation=r"first + second",
+            numeric_equation=f"{self.first} + {self.second}",
+        )
+
 
 def test_raise_error_when_changing_value_after_initialization() -> None:
     """Test that an error is raised when changing a value after initialization."""
@@ -50,6 +60,20 @@ def test_raise_not_implemented_error_detailed_result() -> None:
     dummy_testing_formula = FormulaTest(first=first, second=second)
     with pytest.raises(NotImplementedError):
         _ = dummy_testing_formula.detailed_result
+
+
+def test_report_method() -> None:
+    """Test that the report method returns a ReportFormula object."""
+    first = 1
+    second = 2
+    dummy_testing_formula = FormulaTest(first=first, second=second)
+    report = dummy_testing_formula.report(n=3)
+
+    # Verify that report method returns a ReportFormula with correct attributes
+    assert report.return_symbol == "result"
+    assert report.result == "3.0"
+    assert report.equation == r"first + second"
+    assert report.numeric_equation == "1 + 2"
 
 
 class ComparisonFormulaTestLessOrEqual(ComparisonFormula):
@@ -84,6 +108,15 @@ class ComparisonFormulaTestLessOrEqual(ComparisonFormula):
     def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
         """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
         return operator.le
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return latex representation for testing."""
+        return LatexFormula(
+            return_symbol="result",
+            result=str(round(float(self), n)),
+            equation="a + b <= c / 2",
+            numeric_equation=f"{self.a} + {self.b} <= {self.c} / 2",
+        )
 
 
 def test_comparison_formula_evaluation() -> None:
@@ -184,6 +217,15 @@ class ComparisonFormulaTestGreaterOrEqual(ComparisonFormula):
         """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
         return operator.ge
 
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return latex representation for testing."""
+        return LatexFormula(
+            return_symbol="result",
+            result=str(round(float(self), n)),
+            equation="a + b >= c / 2",
+            numeric_equation=f"{self.a} + {self.b} >= {self.c} / 2",
+        )
+
 
 def test_comparison_formula_greater_or_equal_evaluation() -> None:
     """Test that the >= comparison formula returns the correct result."""
@@ -270,6 +312,15 @@ class ComparisonFormulaTestEqual(ComparisonFormula):
         """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
         return operator.eq
 
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return latex representation for testing."""
+        return LatexFormula(
+            return_symbol="result",
+            result=str(round(float(self), n)),
+            equation="a + b == c / 2",
+            numeric_equation=f"{self.a} + {self.b} == {self.c} / 2",
+        )
+
 
 def test_comparison_formula_equal_evaluation() -> None:
     """Test that the == comparison formula returns the correct result."""
@@ -326,7 +377,7 @@ def test_comparison_formula_equal_unity_check_property() -> None:
 # Helper function to create dynamic test classes for DoubleComparisonFormula
 def _create_double_comparison_formula_test_class(
     comp_op_lhs: Callable[[float, float], bool], comp_op_rhs: Callable[[float, float], bool], comp_op_ids: str = ""
-) -> DoubleComparisonFormula:
+) -> type[DoubleComparisonFormula]:
     """Factory function to create DoubleComparisonFormula test classes dynamically.
 
     Parameters
@@ -340,7 +391,7 @@ def _create_double_comparison_formula_test_class(
 
     Returns
     -------
-    DoubleComparisonFormula
+    type[DoubleComparisonFormula]
         A dynamically created test class.
     """
 
@@ -381,6 +432,15 @@ def _create_double_comparison_formula_test_class(
         def _evaluate_rhs(c: float, **_) -> float:
             """Return the right-hand side value."""
             return c
+
+        def latex(self, n: int = 3) -> LatexFormula:
+            """Return latex representation for testing."""
+            return LatexFormula(
+                return_symbol="result",
+                result=str(round(float(self), n)),
+                equation=f"a {comp_op_ids} c",
+                numeric_equation=f"{self.a} {comp_op_ids} {self.b} {comp_op_ids} {self.c}",
+            )
 
     return DynamicDoubleComparisonFormula
 

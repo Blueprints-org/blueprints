@@ -343,8 +343,8 @@ class TestReportFormula:
             equation="mc^2",
             numeric_equation="5*10^2",
         )
-        with pytest.raises(Exception):  # FrozenInstanceError in Python 3.11+
-            formula.result = "600"  # type: ignore[misc]
+        with pytest.raises(Exception):
+            formula.return_symbol = "F"  # type: ignore[misc]
 
     def test_complete_wraps_in_equation_environment(self, fixture_report_formula: ReportFormula) -> None:
         """Test that complete property wraps output in equation environment."""
