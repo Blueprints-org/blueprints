@@ -160,7 +160,7 @@ except AttributeError:
 
 ## LaTeX Documentation Generation
 
-A major benefit of the Formula design is automatic LaTeX generation for technical documentation. Every formula can generate its mathematical representation, eliminating the need for manual equation formatting in reports and documentation.
+A major benefit of the Formula design is automatic LaTeX generation for technical documentation. Every formula (and check) can generate its mathematical representation, eliminating the need for manual equation formatting in reports and documentation. The formula.latex() will result the latex representation in math mode. Formula.report() will presetn the latex in text mode. More information on its structure can be found in the report.md guide.
 
 ```python exec="on" source="material-block" session="formulas" result="ansi"
 # Generate LaTeX representations for our Eurocode formulas
