@@ -267,7 +267,16 @@ CHS_PROFILES = {
 
 
 class CHS(metaclass=StandardProfileMeta):
-    """Geometrical representation of standard CHS profiles."""
+    """Geometrical representation of standard CHS profiles.
+
+    This class provides access to standard Circular Hollow Section (CHS) profiles
+    from a predefined database. Profiles can be accessed as class attributes using
+    their standardized names. Each accessed profile returns a CHSProfile instance.
+
+    Usage example
+    -------------
+        >>> profile = CHS.CHS21_3x2_3
+    """
 
     _factory = CHSProfile
     """Factory class for creating standard CHS profiles."""
