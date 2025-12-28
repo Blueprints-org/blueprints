@@ -109,17 +109,6 @@ class LatexReport:
         >>> report.add_equation("a^2+b^2=c^2", tag="6.83")
         >>> report.add_equation(r"\\frac{a}{b}", inline=True)
 
-        When dealing with a singular equation (or better: use add_formula method):
-        >>> from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
-        >>> formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
-        >>> report = LatexReport()
-        >>> report.add_equation(formula.latex().short)  # Minimal representation
-        >>> report.add_equation(formula.latex().complete)  # Complete representation
-        >>> print(report)
-        # report can be converted to formatted LaTeX document with report.to_document()
-        >>> print(report.to_document())
-
-
         """
         if inline:
             self.content += rf"${equation}$"
