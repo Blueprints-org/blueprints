@@ -56,21 +56,16 @@ with two options:
 
 ```python exec="on" source="material-block" session="report-demo" result="ansi"
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
-from blueprints.report_to_word_document import ReportToWordConverter
 
 # Example: Unity Check for Tensile Strength
-f = formula_6_5.Form6Dot5UnityCheckTensileStrength(
+formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(
     n_ed=150000,  # 150 kN tensile force
     n_t_rd=200000,  # 200 kN resistance
 )
 
 # Generate report output, this LaTeX string can be copy-pasted to a LaTeX-handler, e.g. Overleaf
-print(f"Complete formula: {f.report().complete}")
-
-# Or convert the LaTeX to a .docx file
-converter = ReportToWordConverter()
-complete_doc = converter.convert_to_word(f.report().complete)
-complete_doc.save("complete_formula.docx")
+report = LatexReport().add_formula(formula.latex().complete)
+print(report)
 ```
 
 ## Comprehensive Example when making a report from a Check

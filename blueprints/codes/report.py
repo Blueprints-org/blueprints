@@ -19,8 +19,8 @@ class LatexReport:
     >>> report.add_text("This is italic text with 4 newlines after.", italic=True).add_newline(n=4)
     >>> report.add_text("This is bold and italic text.", bold=True, italic=True)
     >>> report.add_newline()
-    >>> report.add_equation("E=mc^2", tag="3.14")
-    >>> report.add_text("Before an inline equation:").add_equation(r"\\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
+    >>> report.add_formula("E=mc^2", tag="3.14")
+    >>> report.add_text("Before an inline equation:").add_formula(r"\\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
     ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\\text{Length}", "10", r"\\text{m}"], [r"\\text{Density}", "500", r"\\text{kg/m$^3$}"]]
@@ -82,7 +82,7 @@ class LatexReport:
 
         return self
 
-    def add_equation(self, equation: str, tag: str | None = None, inline: bool = False) -> Self:
+    def add_formula(self, equation: str, tag: str | None = None, inline: bool = False) -> Self:
         r"""Add an equation in a LaTeX equation environment or inline.
 
         Parameters
@@ -101,10 +101,35 @@ class LatexReport:
 
         Examples
         --------
+        When creating a report, you can add equations in different ways:
         >>> report = LatexReport()
-        >>> report.add_equation("a^2+b^2=c^2")
-        >>> report.add_equation("a^2+b^2=c^2", tag="6.83")
-        >>> report.add_equation(r"\\frac{a}{b}", inline=True)
+        >>> report.add_formula("a^2+b^2=c^2")
+        >>> report.add_formula("a^2+b^2=c^2", tag="6.83")
+        >>> report.add_formula(r"\\frac{a}{b}", inline=True)
+
+
+
+        # Example: Unity Check for Tensile Strength
+        formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(
+            n_ed=150000,  # 150 kN tensile force
+            n_t_rd=200000,  # 200 kN resistance
+        )
+
+        # Generate report output, this LaTeX string can be copy-pasted to a LaTeX-handler, e.g. Overleaf
+        report = LatexReport().add_equation(formula.latex().complete)
+        print(report)
+
+        When dealing with a singular equation:
+        >>> from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
+        >>> formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
+        >>> report = LatexReport()
+        >>> report.add_formula(formula.latex().short)  # Minimal representation
+        >>> report.add_formula(formula.latex().complete)  # Complete representation
+        >>> print(report)
+        # report can be converted to formatted LaTeX document with report.to_document()
+        >>> print(report.to_document())
+
+
         """
         if inline:
             self.content += rf"${equation}$"
@@ -395,7 +420,7 @@ class LatexReport:
         >>> latex_doc = report.to_document()
         """
         # Use provided title or fall back to instance title
-        doc_title = title if title is not None else self.title if self.title is not None else "Untitled"
+        doc_title = title if title is not None else self.title if self.title is not None else ""
 
         # Build the preamble with styling to match Word document converter (pdflatex compatible)
         preamble = (
