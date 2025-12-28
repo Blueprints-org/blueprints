@@ -116,7 +116,7 @@ class LatexReport:
         )
 
         # Generate report output, this LaTeX string can be copy-pasted to a LaTeX-handler, e.g. Overleaf
-        report = LatexReport().add_equation(formula.latex().complete)
+        report = LatexReport().add_formula(formula.latex().complete)
         print(report)
 
         When dealing with a singular equation:
