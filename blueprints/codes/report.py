@@ -107,18 +107,6 @@ class LatexReport:
         >>> report.add_formula("a^2+b^2=c^2", tag="6.83")
         >>> report.add_formula(r"\\frac{a}{b}", inline=True)
 
-
-
-        # Example: Unity Check for Tensile Strength
-        formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(
-            n_ed=150000,  # 150 kN tensile force
-            n_t_rd=200000,  # 200 kN resistance
-        )
-
-        # Generate report output, this LaTeX string can be copy-pasted to a LaTeX-handler, e.g. Overleaf
-        report = LatexReport().add_equation(formula.latex().complete)
-        print(report)
-
         When dealing with a singular equation:
         >>> from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
         >>> formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
