@@ -56,6 +56,7 @@ with two options:
 
 ```python exec="on" source="material-block" session="report-demo" result="ansi"
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
+from blueprints.codes.report import LatexReport
 
 # Example: Unity Check for Tensile Strength
 formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(
