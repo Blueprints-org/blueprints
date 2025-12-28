@@ -22,7 +22,7 @@ class ReportCheck:
     >>> report.add_text("This is bold and italic text.", bold=True, italic=True)
     >>> report.add_newline()
     >>> report.add_equation("E=mc^2", tag="3.14")
-    >>> report.add_text("Before an inline equation:").add_inline_equation(r"\\frac{a}{b}").add_text("After the inline equation.").add_newline()
+    >>> report.add_text("Before an inline equation:").add_equation(r"\\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
     ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\\text{Length}", "10", r"\\text{m}"], [r"\\text{Density}", "500", r"\\text{kg/m$^3$}"]]
@@ -84,15 +84,17 @@ class ReportCheck:
 
         return self
 
-    def add_equation(self, equation: str, tag: str | None = None) -> Self:
-        """Add an equation in a LaTeX equation environment.
+    def add_equation(self, equation: str, tag: str | None = None, inline: bool = False) -> Self:
+        r"""Add an equation in a LaTeX equation environment or inline.
 
         Parameters
         ----------
         equation : str
             The LaTeX equation content.
         tag : str or None, optional
-            Optional tag to label the equation (e.g., "6.83"). Default is None.
+            Optional tag to label the equation (e.g., "6.83"). Only used when inline=False. Default is None.
+        inline : bool, optional
+            If True, wraps equation in $...$. If False, uses equation environment. Default is False.
 
         Returns
         -------
@@ -104,36 +106,14 @@ class ReportCheck:
         >>> report = ReportCheck()
         >>> report.add_equation("a^2+b^2=c^2")
         >>> report.add_equation("a^2+b^2=c^2", tag="6.83")
+        >>> report.add_equation(r"\\frac{a}{b}", inline=True)
         """
-        if tag:
+        if inline:
+            self.content += rf"${equation}$"
+        elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
             self.content += rf"\begin{{equation}} {equation} \end{{equation}}"
-
-        # Add a newline for visual separation
-        self.content += "\n"
-
-        return self
-
-    def add_inline_equation(self, equation: str) -> Self:
-        r"""Add a small equation segment wrapped in $...$.
-
-        Parameters
-        ----------
-        equation : str
-            The LaTeX equation content to display inline.
-
-        Returns
-        -------
-        ReportCheck
-            Returns self for method chaining.
-
-        Examples
-        --------
-        >>> report = ReportCheck()
-        >>> report.add_inline_equation(r"\\frac{a}{b}")
-        """
-        self.content += rf"${equation}$"
 
         # Add a newline for visual separation
         self.content += "\n"

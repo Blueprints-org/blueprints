@@ -87,15 +87,15 @@ class TestReportCheck:
         result = fixture_report.add_equation("E=mc^2")
         assert result is fixture_report
 
-    def test_add_inline_equation(self, fixture_report: ReportCheck) -> None:
+    def test_add_equation_inline(self, fixture_report: ReportCheck) -> None:
         """Test adding inline equation."""
-        fixture_report.add_inline_equation(r"\frac{a}{b}")
+        fixture_report.add_equation(r"\frac{a}{b}", inline=True)
         expected = r"$\frac{a}{b}$" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_inline_equation_method_chaining(self, fixture_report: ReportCheck) -> None:
-        """Test that add_inline_equation returns self for method chaining."""
-        result = fixture_report.add_inline_equation(r"\alpha")
+    def test_add_equation_inline_method_chaining(self, fixture_report: ReportCheck) -> None:
+        """Test that add_equation with inline=True returns self for method chaining."""
+        result = fixture_report.add_equation(r"\alpha", inline=True)
         assert result is fixture_report
 
     def test_add_section(self, fixture_report: ReportCheck) -> None:
@@ -294,7 +294,7 @@ class TestReportCheck:
         report.add_text("This is bold and italic text.", bold=True, italic=True)
         report.add_newline()
         report.add_equation("E=mc^2", tag="3.14")
-        report.add_text("Before an inline equation:").add_inline_equation(r"\frac{a}{b}").add_text("after the inline equation.").add_newline()
+        report.add_text("Before an inline equation:").add_equation(r"\frac{a}{b}", inline=True).add_text("after the inline equation.").add_newline()
         report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
         report.add_table(
             headers=["Parameter", "Value", "Unit"], rows=[[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/m$^3$}"]]
@@ -308,7 +308,7 @@ class TestReportCheck:
         assert r"\section{Introduction}" in latex_document
         assert r"\subsection{Background}" in latex_document
         assert r"\subsubsection{Details}" in latex_document
-        assert r"\text{This normal text.}" in latex_document
+        assert r"\text{This is normal text.}" in latex_document
         assert r"\textbf{This is bold text with newline after.}" in latex_document
         assert r"\textit{This is italic text with 4 newlines after.}" in latex_document
         assert r"\textbf{\textit{This is bold and italic text.}}" in latex_document
