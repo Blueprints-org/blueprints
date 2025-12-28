@@ -47,7 +47,7 @@ To ensure exact formatting, it is recommended to use the `LatexReport` adder fun
 
 Output can be directly converted to Word documents using `ReportToWordConverter`
 
-## Comprehensive Example when making a report from a Formula
+## Comprehensive Example when making a report from a Blueprints Formula
 
 The `blueprints` project supports a wide range of report features. Here's a complete demonstration using actual Eurocode formulas,
 with two options:
@@ -64,7 +64,7 @@ formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(
 )
 
 # Generate report output, this LaTeX string can be copy-pasted to a LaTeX-handler, e.g. Overleaf
-report = LatexReport().add_formula(formula.latex())
+report = LatexReport().add_formula(formula, "complete")
 print(report)
 ```
 

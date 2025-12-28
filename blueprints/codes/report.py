@@ -1,7 +1,9 @@
 """Report formula representation."""
 
 from dataclasses import dataclass, field
-from typing import Self
+from typing import Literal, Self
+
+from blueprints.codes.formula import Formula
 
 
 @dataclass
@@ -19,8 +21,8 @@ class LatexReport:
     >>> report.add_text("This is italic text with 4 newlines after.", italic=True).add_newline(n=4)
     >>> report.add_text("This is bold and italic text.", bold=True, italic=True)
     >>> report.add_newline()
-    >>> report.add_formula("E=mc^2", tag="3.14")
-    >>> report.add_text("Before an inline equation:").add_formula(r"\\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
+    >>> report.add_equation("E=mc^2", tag="3.14")
+    >>> report.add_text("Before an inline equation:").add_equation(r"\\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
     ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\\text{Length}", "10", r"\\text{m}"], [r"\\text{Density}", "500", r"\\text{kg/m$^3$}"]]
@@ -82,7 +84,7 @@ class LatexReport:
 
         return self
 
-    def add_formula(self, equation: str, tag: str | None = None, inline: bool = False) -> Self:
+    def add_equation(self, equation: str, tag: str | None = None, inline: bool = False) -> Self:
         r"""Add an equation in a LaTeX equation environment or inline.
 
         Parameters
@@ -103,16 +105,16 @@ class LatexReport:
         --------
         When creating a report, you can add equations in different ways:
         >>> report = LatexReport()
-        >>> report.add_formula("a^2+b^2=c^2")
-        >>> report.add_formula("a^2+b^2=c^2", tag="6.83")
-        >>> report.add_formula(r"\\frac{a}{b}", inline=True)
+        >>> report.add_equation("a^2+b^2=c^2")
+        >>> report.add_equation("a^2+b^2=c^2", tag="6.83")
+        >>> report.add_equation(r"\\frac{a}{b}", inline=True)
 
-        When dealing with a singular equation:
+        When dealing with a singular equation (or better: use add_formula method):
         >>> from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
         >>> formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
         >>> report = LatexReport()
-        >>> report.add_formula(formula.latex().short)  # Minimal representation
-        >>> report.add_formula(formula.latex().complete)  # Complete representation
+        >>> report.add_equation(formula.latex().short)  # Minimal representation
+        >>> report.add_equation(formula.latex().complete)  # Complete representation
         >>> print(report)
         # report can be converted to formatted LaTeX document with report.to_document()
         >>> print(report.to_document())
@@ -129,6 +131,48 @@ class LatexReport:
         # Add a newline for visual separation
         self.content += "\n"
 
+        return self
+
+    def add_formula(self, formula: Formula, options: Literal["short", "complete", "complete_with_units"], inline: bool = False) -> Self:
+        r"""Add a Blueprints formula to the report, for generic equations, use add_equation.
+
+        Parameters
+        ----------
+        formula : Formula
+            The Blueprints formula object to add.
+        options : Literal["short", "complete", "complete_with_units"]
+            The representation of the formula to add.
+            short - Minimal representation (symbol = result [unit])
+            complete - Complete representation (symbol = equation = numeric_equation = result [unit])
+            complete_with_units - Complete representation with units (symbol = equation = numeric_equation_with_units [unit] = result [unit])
+        inline : bool, optional
+            If True, adds the formula inline. Default is False.
+
+        Returns
+        -------
+        LatexReport
+            Returns self for method chaining.
+
+        Examples
+        --------
+        >>> from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
+        >>> formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
+        >>> report = LatexReport()
+        >>> report.add_formula(formula, options="short")  # Minimal representation
+        >>> print(report)
+        # report can be converted to formatted LaTeX document with report.to_document()
+        >>> print(report.to_document())
+        """
+        if options == "short":
+            equation_str = formula.latex().short
+        elif options == "complete":
+            equation_str = formula.latex().complete
+        else:  # complete_with_units
+            equation_str = formula.latex().complete_with_units
+
+        self.add_equation(equation=equation_str, inline=inline)
+
+        # New line for visual separation already added in add_equation
         return self
 
     def add_section(self, title: str) -> Self:

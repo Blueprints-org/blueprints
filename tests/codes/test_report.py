@@ -2,6 +2,7 @@
 
 import pytest
 
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
 from blueprints.codes.report import LatexReport
 
 
@@ -57,33 +58,51 @@ class TestLatexReport:
         assert r"\text{First}" in fixture_report.content
         assert r"\text{Second}" in fixture_report.content
 
-    def test_add_formula_without_tag(self, fixture_report: LatexReport) -> None:
+    def test_add_equation_without_tag(self, fixture_report: LatexReport) -> None:
         """Test adding equation without tag."""
-        fixture_report.add_formula("a^2+b^2=c^2")
+        fixture_report.add_equation("a^2+b^2=c^2")
         expected = r"\begin{equation} a^2+b^2=c^2 \end{equation}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_formula_with_tag(self, fixture_report: LatexReport) -> None:
+    def test_add_equation_with_tag(self, fixture_report: LatexReport) -> None:
         """Test adding equation with tag."""
-        fixture_report.add_formula("a^2+b^2=c^2", tag="6.83")
+        fixture_report.add_equation("a^2+b^2=c^2", tag="6.83")
         expected = r"\begin{equation} a^2+b^2=c^2 \tag{6.83} \end{equation}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_formula_method_chaining(self, fixture_report: LatexReport) -> None:
-        """Test that add_formula returns self for method chaining."""
-        result = fixture_report.add_formula("E=mc^2")
+    def test_add_equation_method_chaining(self, fixture_report: LatexReport) -> None:
+        """Test that add_equation returns self for method chaining."""
+        result = fixture_report.add_equation("E=mc^2")
         assert result is fixture_report
 
-    def test_add_formula_inline(self, fixture_report: LatexReport) -> None:
+    def test_add_equation_inline(self, fixture_report: LatexReport) -> None:
         """Test adding inline equation."""
-        fixture_report.add_formula(r"\frac{a}{b}", inline=True)
+        fixture_report.add_equation(r"\frac{a}{b}", inline=True)
         expected = r"$\frac{a}{b}$" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_formula_inline_method_chaining(self, fixture_report: LatexReport) -> None:
-        """Test that add_formula with inline=True returns self for method chaining."""
-        result = fixture_report.add_formula(r"\alpha", inline=True)
+    def test_add_equation_inline_method_chaining(self, fixture_report: LatexReport) -> None:
+        """Test that add_equation with inline=True returns self for method chaining."""
+        result = fixture_report.add_equation(r"\alpha", inline=True)
         assert result is fixture_report
+
+    def test_add_formula(self, fixture_report: LatexReport) -> None:
+        """Test adding formula."""
+        fixture_report.add_formula(formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000), options="complete")
+        expected = r"\begin{equation} CHECK"
+        assert expected in fixture_report.content
+
+    def test_add_formula_inline(self, fixture_report: LatexReport) -> None:
+        """Test adding inline formula."""
+        fixture_report.add_formula(formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000), options="short", inline=True)
+        expected = r"$CHECK"
+        assert expected in fixture_report.content
+
+    def test_add_formula_complete_with_units(self, fixture_report: LatexReport) -> None:
+        """Test adding formula with complete_with_units option."""
+        fixture_report.add_formula(formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000), options="complete_with_units")
+        expected = r"\begin{equation} CHECK"
+        assert expected in fixture_report.content
 
     def test_add_section(self, fixture_report: LatexReport) -> None:
         """Test adding section."""
@@ -253,7 +272,7 @@ class TestLatexReport:
         """Test generating document without any title."""
         report = LatexReport()
         document = report.to_document()
-        assert r"\title{Untitled}" in document
+        assert r"\title{}" in document
 
     def test_to_document_includes_preamble(self, fixture_report: LatexReport) -> None:
         """Test that document includes all necessary preamble packages."""
@@ -280,8 +299,9 @@ class TestLatexReport:
         report.add_text("This is italic text with 4 newlines after.", italic=True).add_newline(n=4)
         report.add_text("This is bold and italic text.", bold=True, italic=True)
         report.add_newline()
-        report.add_formula("E=mc^2", tag="3.14")
-        report.add_text("Before an inline equation:").add_formula(r"\frac{a}{b}", inline=True).add_text("after the inline equation.").add_newline()
+        report.add_equation("E=mc^2", tag="3.14")
+        report.add_formula(formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000), options="complete")
+        report.add_text("Before an inline equation:").add_equation(r"\frac{a}{b}", inline=True).add_text("after the inline equation.").add_newline()
         report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
         report.add_table(
             headers=["Parameter", "Value", "Unit"], rows=[[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/m$^3$}"]]
@@ -300,6 +320,7 @@ class TestLatexReport:
         assert r"\textit{This is italic text with 4 newlines after.}" in latex_document
         assert r"\textbf{\textit{This is bold and italic text.}}" in latex_document
         assert r"\begin{equation} E=mc^2 \tag{3.14} \end{equation}" in latex_document
+        assert r"\begin{equation} CHECK" in latex_document
         assert r"$\frac{a}{b}$" in latex_document
         assert r"Parameter & Value & Unit" in latex_document
         assert r"\text{Length} & 10 & \text{m}" in latex_document
