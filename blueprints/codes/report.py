@@ -3,16 +3,14 @@
 from dataclasses import dataclass, field
 from typing import Self
 
-from blueprints.codes.latex_formula import LatexFormula
-
 
 @dataclass
-class ReportCheck:
+class LatexReport:
     r"""Report check representation.
 
     Examples
     --------
-    >>> report = ReportCheck(title="Sample Report")
+    >>> report = LatexReport(title="Sample Report")
     >>> report.add_section("Introduction")
     >>> report.add_subsection("Background")
     >>> report.add_subsubsection("Details")
@@ -60,12 +58,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_text("This is regular text")
         >>> report.add_text("This is bold text", bold=True)
         >>> report.add_text("This is bold and italic", bold=True, italic=True)
@@ -98,12 +96,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_equation("a^2+b^2=c^2")
         >>> report.add_equation("a^2+b^2=c^2", tag="6.83")
         >>> report.add_equation(r"\\frac{a}{b}", inline=True)
@@ -130,12 +128,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_section("This is a section")
         """
         self.content += rf"\section{{{title}}}"
@@ -155,12 +153,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_subsection("This is a subsection")
         """
         self.content += rf"\subsection{{{title}}}"
@@ -180,12 +178,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_subsubsection("This is a subsubsection")
         """
         self.content += rf"\subsubsection{{{title}}}"
@@ -217,12 +215,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> headers = ["Check", "Utilization", "Status"]
         >>> rows = [[r"\\text{Concrete strut capacity}", "0.588", r"\\text{PASS}"], [r"\\text{Torsion moment capacity}", "4.825", r"\\text{FAIL}"]]
         >>> report.add_table(headers, rows)
@@ -271,12 +269,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_figure("path_to_image")
         >>> report.add_figure("path_to_image", width=0.5)
         """
@@ -302,12 +300,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_itemize(["Bullet 1", "Bullet 2", "Bullet 3"])
         """
         itemize = r"\begin{itemize} "
@@ -331,12 +329,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_enumerate(["Number 1", "Number 2", "Number 3"])
         """
         enumerate_content = r"\begin{enumerate} "
@@ -360,12 +358,12 @@ class ReportCheck:
 
         Returns
         -------
-        ReportCheck
+        LatexReport
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = ReportCheck()
+        >>> report = LatexReport()
         >>> report.add_newline()
         """
         self.content += r"\newline" * n
@@ -391,7 +389,7 @@ class ReportCheck:
 
         Examples
         --------
-        >>> report = ReportCheck(title="My Report")
+        >>> report = LatexReport(title="My Report")
         >>> report.add_section("Introduction")
         >>> report.add_text("Some text")
         >>> latex_doc = report.to_document()
@@ -456,48 +454,3 @@ class ReportCheck:
 
         # Combine preamble, content, and closing
         return preamble + self.content + r"\end{document}"
-
-
-@dataclass(frozen=True)
-class ReportFormula(LatexFormula):
-    """Report formula representation.
-
-    Similar to LatexFormula but wraps output in text mode ($ ... $) for report generation.
-    Provides .short, .complete, and .complete_with_units properties.
-    """
-
-    @property
-    def complete(self) -> str:
-        """Complete representation of the formula in text mode.
-
-        Returns
-        -------
-        str
-            $Return symbol = equation = numeric_equation = result$
-
-        """
-        return r"\begin{equation}" + super().complete + r"\end{equation}"
-
-    @property
-    def complete_with_units(self) -> str:
-        """Complete representation of the formula with units in text mode.
-
-        Returns
-        -------
-        str
-            $Return symbol = equation = numeric_equation_with_units = result$
-
-        """
-        return r"\begin{equation}" + super().complete_with_units + r"\end{equation}"
-
-    @property
-    def short(self) -> str:
-        """Minimal representation of the formula in text mode.
-
-        Returns
-        -------
-        str
-            $Return symbol = result$
-
-        """
-        return r"\begin{equation}" + super().short + r"\end{equation}"

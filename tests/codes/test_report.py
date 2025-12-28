@@ -1,137 +1,124 @@
-"""Tests for the ReportCheck and ReportFormula classes."""
+"""Tests for the LatexReport and ReportFormula classes."""
 
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula
-from blueprints.codes.report import ReportCheck, ReportFormula
+from blueprints.codes.report import LatexReport
 
 
 @pytest.fixture
-def fixture_report() -> ReportCheck:
-    """Fixture for testing ReportCheck."""
-    return ReportCheck(title="Test Report")
+def fixture_report() -> LatexReport:
+    """Fixture for testing LatexReport."""
+    return LatexReport(title="Test Report")
 
 
-@pytest.fixture
-def fixture_report_formula() -> ReportFormula:
-    """Fixture for testing ReportFormula."""
-    return ReportFormula(
-        return_symbol="E",
-        result="500",
-        equation="mc^2",
-        numeric_equation="5*10^2",
-        comparison_operator_label="=",
-    )
-
-
-class TestReportCheck:
-    """Tests for ReportCheck class."""
+class TestLatexReport:
+    """Tests for LatexReport class."""
 
     def test_initialization_without_title(self) -> None:
-        """Test that ReportCheck initializes with empty content."""
-        report = ReportCheck()
+        """Test that LatexReport initializes with empty content."""
+        report = LatexReport()
         assert report.content == ""
         assert report.title is None
 
     def test_initialization_with_title(self) -> None:
-        """Test that ReportCheck initializes with title."""
-        report = ReportCheck(title="Test Title")
+        """Test that LatexReport initializes with title."""
+        report = LatexReport(title="Test Title")
         assert report.content == ""
         assert report.title == "Test Title"
 
-    def test_add_text_regular(self, fixture_report: ReportCheck) -> None:
+    def test_add_text_regular(self, fixture_report: LatexReport) -> None:
         """Test adding regular text."""
         fixture_report.add_text("This is regular text")
         expected = r"\text{This is regular text}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_text_bold(self, fixture_report: ReportCheck) -> None:
+    def test_add_text_bold(self, fixture_report: LatexReport) -> None:
         """Test adding bold text."""
         fixture_report.add_text("This is bold text", bold=True)
         expected = r"\textbf{This is bold text}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_text_italic(self, fixture_report: ReportCheck) -> None:
+    def test_add_text_italic(self, fixture_report: LatexReport) -> None:
         """Test adding italic text."""
         fixture_report.add_text("This is italic text", italic=True)
         expected = r"\textit{This is italic text}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_text_bold_and_italic(self, fixture_report: ReportCheck) -> None:
+    def test_add_text_bold_and_italic(self, fixture_report: LatexReport) -> None:
         """Test adding bold and italic text."""
         fixture_report.add_text("This is bold and italic", bold=True, italic=True)
         expected = r"\textbf{\textit{This is bold and italic}}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_text_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_text_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_text returns self for method chaining."""
         result = fixture_report.add_text("First").add_text("Second")
         assert result is fixture_report
         assert r"\text{First}" in fixture_report.content
         assert r"\text{Second}" in fixture_report.content
 
-    def test_add_equation_without_tag(self, fixture_report: ReportCheck) -> None:
+    def test_add_equation_without_tag(self, fixture_report: LatexReport) -> None:
         """Test adding equation without tag."""
         fixture_report.add_equation("a^2+b^2=c^2")
         expected = r"\begin{equation} a^2+b^2=c^2 \end{equation}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_equation_with_tag(self, fixture_report: ReportCheck) -> None:
+    def test_add_equation_with_tag(self, fixture_report: LatexReport) -> None:
         """Test adding equation with tag."""
         fixture_report.add_equation("a^2+b^2=c^2", tag="6.83")
         expected = r"\begin{equation} a^2+b^2=c^2 \tag{6.83} \end{equation}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_equation_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_equation_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_equation returns self for method chaining."""
         result = fixture_report.add_equation("E=mc^2")
         assert result is fixture_report
 
-    def test_add_equation_inline(self, fixture_report: ReportCheck) -> None:
+    def test_add_equation_inline(self, fixture_report: LatexReport) -> None:
         """Test adding inline equation."""
         fixture_report.add_equation(r"\frac{a}{b}", inline=True)
         expected = r"$\frac{a}{b}$" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_equation_inline_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_equation_inline_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_equation with inline=True returns self for method chaining."""
         result = fixture_report.add_equation(r"\alpha", inline=True)
         assert result is fixture_report
 
-    def test_add_section(self, fixture_report: ReportCheck) -> None:
+    def test_add_section(self, fixture_report: LatexReport) -> None:
         """Test adding section."""
         fixture_report.add_section("Introduction")
         expected = r"\section{Introduction}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_section_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_section_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_section returns self for method chaining."""
         result = fixture_report.add_section("Test Section")
         assert result is fixture_report
 
-    def test_add_subsection(self, fixture_report: ReportCheck) -> None:
+    def test_add_subsection(self, fixture_report: LatexReport) -> None:
         """Test adding subsection."""
         fixture_report.add_subsection("Background")
         expected = r"\subsection{Background}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_subsection_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_subsection_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_subsection returns self for method chaining."""
         result = fixture_report.add_subsection("Test Subsection")
         assert result is fixture_report
 
-    def test_add_subsubsection(self, fixture_report: ReportCheck) -> None:
+    def test_add_subsubsection(self, fixture_report: LatexReport) -> None:
         """Test adding subsubsection."""
         fixture_report.add_subsubsection("Details")
         expected = r"\subsubsection{Details}" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_subsubsection_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_subsubsection_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_subsubsection returns self for method chaining."""
         result = fixture_report.add_subsubsection("Test Subsubsection")
         assert result is fixture_report
 
-    def test_add_table(self, fixture_report: ReportCheck) -> None:
+    def test_add_table(self, fixture_report: LatexReport) -> None:
         """Test adding table."""
         headers = ["Parameter", "Value", "Unit"]
         rows = [[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/m$^3$}"]]
@@ -147,26 +134,26 @@ class TestReportCheck:
         assert r"Parameter & Value & Unit \\" in fixture_report.content
         assert r"\text{Length} & 10 & \text{m} \\" in fixture_report.content
 
-    def test_add_table_custom_position(self, fixture_report: ReportCheck) -> None:
+    def test_add_table_custom_position(self, fixture_report: LatexReport) -> None:
         """Test adding table with custom position."""
         headers = ["A", "B"]
         rows = [["1", "2"]]
         fixture_report.add_table(headers, rows, position="t")
         assert r"\begin{table}[t]" in fixture_report.content
 
-    def test_add_table_no_centering(self, fixture_report: ReportCheck) -> None:
+    def test_add_table_no_centering(self, fixture_report: LatexReport) -> None:
         """Test adding table without centering."""
         headers = ["A", "B"]
         rows = [["1", "2"]]
         fixture_report.add_table(headers, rows, centering=False)
         assert r"\centering" not in fixture_report.content
 
-    def test_add_table_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_table_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_table returns self for method chaining."""
         result = fixture_report.add_table(["A"], [["1"]])
         assert result is fixture_report
 
-    def test_add_figure(self, fixture_report: ReportCheck) -> None:
+    def test_add_figure(self, fixture_report: LatexReport) -> None:
         """Test adding figure."""
         fixture_report.add_figure("path/to/image.png")
 
@@ -176,22 +163,22 @@ class TestReportCheck:
         assert r"\includegraphics[width=0.9\textwidth]{path/to/image.png}" in fixture_report.content
         assert r"\end{figure}" in fixture_report.content
 
-    def test_add_figure_custom_width(self, fixture_report: ReportCheck) -> None:
+    def test_add_figure_custom_width(self, fixture_report: LatexReport) -> None:
         """Test adding figure with custom width."""
         fixture_report.add_figure("image.png", width=0.5)
         assert r"\includegraphics[width=0.5\textwidth]{image.png}" in fixture_report.content
 
-    def test_add_figure_custom_position(self, fixture_report: ReportCheck) -> None:
+    def test_add_figure_custom_position(self, fixture_report: LatexReport) -> None:
         """Test adding figure with custom position."""
         fixture_report.add_figure("image.png", position="t")
         assert r"\begin{figure}[t]" in fixture_report.content
 
-    def test_add_figure_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_figure_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_figure returns self for method chaining."""
         result = fixture_report.add_figure("test.png")
         assert result is fixture_report
 
-    def test_add_itemize(self, fixture_report: ReportCheck) -> None:
+    def test_add_itemize(self, fixture_report: LatexReport) -> None:
         """Test adding itemized list."""
         items = ["First item", "Second item", "Third item"]
         fixture_report.add_itemize(items)
@@ -202,12 +189,12 @@ class TestReportCheck:
         assert r"\item Third item" in fixture_report.content
         assert r"\end{itemize}" in fixture_report.content
 
-    def test_add_itemize_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_itemize_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_itemize returns self for method chaining."""
         result = fixture_report.add_itemize(["Item"])
         assert result is fixture_report
 
-    def test_add_enumerate(self, fixture_report: ReportCheck) -> None:
+    def test_add_enumerate(self, fixture_report: LatexReport) -> None:
         """Test adding enumerated list."""
         items = ["First number", "Second number", "Third number"]
         fixture_report.add_enumerate(items)
@@ -218,29 +205,29 @@ class TestReportCheck:
         assert r"\item Third number" in fixture_report.content
         assert r"\end{enumerate}" in fixture_report.content
 
-    def test_add_enumerate_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_enumerate_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_enumerate returns self for method chaining."""
         result = fixture_report.add_enumerate(["Item"])
         assert result is fixture_report
 
-    def test_add_newline_single(self, fixture_report: ReportCheck) -> None:
+    def test_add_newline_single(self, fixture_report: LatexReport) -> None:
         """Test adding single newline."""
         fixture_report.add_newline()
         expected = r"\newline" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_newline_multiple(self, fixture_report: ReportCheck) -> None:
+    def test_add_newline_multiple(self, fixture_report: LatexReport) -> None:
         """Test adding multiple newlines."""
         fixture_report.add_newline(n=4)
         expected = r"\newline\newline\newline\newline" + "\n"
         assert fixture_report.content == expected
 
-    def test_add_newline_method_chaining(self, fixture_report: ReportCheck) -> None:
+    def test_add_newline_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_newline returns self for method chaining."""
         result = fixture_report.add_newline()
         assert result is fixture_report
 
-    def test_to_document_with_instance_title(self, fixture_report: ReportCheck) -> None:
+    def test_to_document_with_instance_title(self, fixture_report: LatexReport) -> None:
         """Test generating document with instance title."""
         fixture_report.add_section("Test Section")
         document = fixture_report.to_document()
@@ -257,18 +244,18 @@ class TestReportCheck:
         assert r"\section{Test Section}" in document
         assert r"\end{document}" in document
 
-    def test_to_document_with_parameter_title(self, fixture_report: ReportCheck) -> None:
+    def test_to_document_with_parameter_title(self, fixture_report: LatexReport) -> None:
         """Test generating document with parameter title overriding instance title."""
         document = fixture_report.to_document(title="Override Title")
         assert r"\title{Override Title}" in document
 
     def test_to_document_without_title(self) -> None:
         """Test generating document without any title."""
-        report = ReportCheck()
+        report = LatexReport()
         document = report.to_document()
         assert r"\title{Untitled}" in document
 
-    def test_to_document_includes_preamble(self, fixture_report: ReportCheck) -> None:
+    def test_to_document_includes_preamble(self, fixture_report: LatexReport) -> None:
         """Test that document includes all necessary preamble packages."""
         document = fixture_report.to_document()
 
@@ -279,12 +266,12 @@ class TestReportCheck:
         assert r"\geometry{a4paper, margin=1in}" in document
 
     def test_comprehensive_example_from_docstring(self) -> None:
-        """Test the comprehensive example from the ReportCheck docstring.
+        """Test the comprehensive example from the LatexReport docstring.
 
         This test reproduces the exact example shown in the class docstring to ensure
         all functionality works together as documented.
         """
-        report = ReportCheck(title="Sample Report")
+        report = LatexReport(title="Sample Report")
         report.add_section("Introduction")
         report.add_subsection("Background")
         report.add_subsubsection("Details")
@@ -326,54 +313,3 @@ class TestReportCheck:
         assert r"\title{Sample Report}" in latex_document
         assert r"\begin{document}" in latex_document
         assert r"\end{document}" in latex_document
-
-
-class TestReportFormula:
-    """Tests for ReportFormula class."""
-
-    def test_inheritance_from_latex_formula(self, fixture_report_formula: ReportFormula) -> None:
-        """Test that ReportFormula inherits from LatexFormula."""
-        assert isinstance(fixture_report_formula, LatexFormula)
-
-    def test_frozen_dataclass(self) -> None:
-        """Test that ReportFormula is frozen and cannot be modified after creation."""
-        formula = ReportFormula(
-            return_symbol="E",
-            result="500",
-            equation="mc^2",
-            numeric_equation="5*10^2",
-        )
-        with pytest.raises(Exception):
-            formula.return_symbol = "F"  # type: ignore[misc]
-
-    def test_complete_wraps_in_equation_environment(self, fixture_report_formula: ReportFormula) -> None:
-        """Test that complete property wraps output in equation environment."""
-        result = fixture_report_formula.complete
-        assert result.startswith(r"\begin{equation}")
-        assert result.endswith(r"\end{equation}")
-        assert "E = mc^2 = 5*10^2 = 500" in result
-
-    def test_complete_with_units_wraps_in_equation_environment(self) -> None:
-        """Test that complete_with_units property wraps output in equation environment."""
-        formula = ReportFormula(
-            return_symbol="L",
-            result="10",
-            equation="a + b",
-            numeric_equation="5 + 5",
-            numeric_equation_with_units="5 \\text{ m} + 5 \\text{ m}",
-        )
-        result = formula.complete_with_units
-        assert result.startswith(r"\begin{equation}")
-        assert result.endswith(r"\end{equation}")
-
-    def test_short_wraps_in_equation_environment(self, fixture_report_formula: ReportFormula) -> None:
-        """Test that short property wraps output in equation environment."""
-        result = fixture_report_formula.short
-        assert result.startswith(r"\begin{equation}")
-        assert result.endswith(r"\end{equation}")
-        assert "E = 500" in result
-
-    def test_report_formula_can_be_used_in_report(self, fixture_report: ReportCheck, fixture_report_formula: ReportFormula) -> None:
-        """Test that ReportFormula output can be added to ReportCheck content."""
-        fixture_report.content += fixture_report_formula.complete
-        assert r"\begin{equation}E = mc^2 = 5*10^2 = 500\end{equation}" in fixture_report.content
