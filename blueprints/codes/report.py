@@ -32,11 +32,13 @@ class LatexReport:
     >>> report.add_itemize(["Bullet one", "Bullet two"])
     >>> latex_document = report.to_document()
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
+
+    Attributes
     ----------
     title : str, optional
         The title of the report. If provided, will be prepended to content.
-    content: str
-        The content of the report
+    content : str
+        The content of the report.
     """
 
     title: str | None = None
