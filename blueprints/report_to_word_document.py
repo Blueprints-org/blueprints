@@ -40,6 +40,9 @@ class ReportToWordConverter:
     def __init__(self) -> None:
         """Initialize the converter and optionally convert LaTeX to a Document."""
         self.template_docx: str | None = None
+        self.section_counter: int = 0
+        self.subsection_counter: int = 0
+        self.subsubsection_counter: int = 0
 
     @staticmethod
     def _set_style(para: Paragraph, style_name: str) -> None:
@@ -64,39 +67,41 @@ class ReportToWordConverter:
                 new_style.base_style = styles["No Spacing"]
 
                 # Configure style based on its name
+                # Fonts match LaTeX document: Arial/Helvetica for headings (matching helvet package), Calibri for body text
                 if style_name == "title":
-                    new_style.font.name = "Bebas Neue"
+                    new_style.font.name = "Arial"
                     new_style.font.size = Pt(36)
                     new_style.font.bold = True
                     new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
-                    new_style.paragraph_format.space_before = Pt(8)
-                    new_style.paragraph_format.space_after = Pt(4)
+                    new_style.paragraph_format.space_before = Pt(0)
+                    new_style.paragraph_format.space_after = Pt(20)
+                    new_style.paragraph_format.alignment = 1  # Center alignment
                 elif style_name == "section":
-                    new_style.font.name = "Bebas Neue"
+                    new_style.font.name = "Arial"
                     new_style.font.size = Pt(24)
                     new_style.font.bold = True
                     new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
-                    new_style.paragraph_format.space_before = Pt(8)
-                    new_style.paragraph_format.space_after = Pt(4)
+                    new_style.paragraph_format.space_before = Pt(15)
+                    new_style.paragraph_format.space_after = Pt(12)
                 elif style_name == "subsection":
-                    new_style.font.name = "Bebas Neue"
+                    new_style.font.name = "Arial"
                     new_style.font.size = Pt(18)
                     new_style.font.bold = True
                     new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
-                    new_style.paragraph_format.space_before = Pt(8)
-                    new_style.paragraph_format.space_after = Pt(4)
+                    new_style.paragraph_format.space_before = Pt(12)
+                    new_style.paragraph_format.space_after = Pt(8)
                 elif style_name == "subsubsection":
-                    new_style.font.name = "Bebas Neue"
+                    new_style.font.name = "Arial"
                     new_style.font.size = Pt(14)
                     new_style.font.bold = True
                     new_style.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
-                    new_style.paragraph_format.space_before = Pt(4)
+                    new_style.paragraph_format.space_before = Pt(8)
                     new_style.paragraph_format.space_after = Pt(0)
                 elif style_name in {"enumerate", "itemize", "text"}:
                     new_style.font.name = "Calibri"
                     new_style.font.size = Pt(11)
-                    new_style.paragraph_format.space_before = Pt(0)
-                    new_style.paragraph_format.space_after = Pt(0)
+                    new_style.paragraph_format.space_before = Pt(2)
+                    new_style.paragraph_format.space_after = Pt(2)
                 # Now apply the newly created style
                 para.style = style_name
             except Exception:
@@ -121,7 +126,6 @@ class ReportToWordConverter:
 
         # Preprocess to remove LaTeX preamble commands
         content_str = self._preprocess_content(content_str)
-
         matches = self._extract_structural_elements(content_str)
         parsed = self._build_parsed_content(content_str, matches)
         self._add_content_to_document(doc, parsed)
@@ -302,8 +306,29 @@ class ReportToWordConverter:
             heading_type: Type of heading ('title', 'section', 'subsection', or 'subsubsection').
             content: The text content of the heading.
         """
-        para = doc.add_paragraph(content)
+        # Add numbering to sections
+        if heading_type == "section":
+            self.section_counter += 1
+            self.subsection_counter = 0
+            self.subsubsection_counter = 0
+            numbered_content = f"{self.section_counter}. {content}"
+        elif heading_type == "subsection":
+            self.subsection_counter += 1
+            self.subsubsection_counter = 0
+            numbered_content = f"{self.section_counter}.{self.subsection_counter}. {content}"
+        elif heading_type == "subsubsection":
+            self.subsubsection_counter += 1
+            numbered_content = f"{self.section_counter}.{self.subsection_counter}.{self.subsubsection_counter}. {content}"
+        else:
+            # Title doesn't get numbered
+            numbered_content = content
+
+        para = doc.add_paragraph(numbered_content)
         self._set_style(para, heading_type)
+
+        # Center align titles
+        if heading_type == "title":
+            para.alignment = 1  # 1 = center alignment
 
     def _add_newline(self, doc: DocumentObject) -> None:
         """Add a paragraph break (empty paragraph) to the document.
