@@ -29,6 +29,7 @@ nav:
       - guides/concepts/index.md
       - Library Organization: guides/concepts/library_organization.md
       - Formulas: guides/concepts/formulas.md
+      - Making Latex reports: guides/concepts/report.md
       - Code Standards:
         - guides/concepts/codes/index.md
         - Eurocode Standards:

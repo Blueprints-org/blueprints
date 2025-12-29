@@ -1,4 +1,4 @@
-"""Report formula representation."""
+"""Report builder for LaTeX documents."""
 
 from dataclasses import dataclass, field
 from typing import Literal, Self
@@ -8,7 +8,14 @@ from blueprints.codes.formula import Formula
 
 @dataclass
 class LatexReport:
-    r"""Report check representation.
+    r"""LaTeX report builder for creating structured documents with standardized formatting.
+
+    Check our docs for examples of usage.
+
+    Parameters
+    ----------
+    title : str, optional
+        The title of the report.
 
     Examples
     --------
@@ -36,33 +43,22 @@ class LatexReport:
     >>> report.add_itemize(["Bullet one", "Bullet two"])
     >>> latex_document = report.to_document()
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
-
-    Parameters
-    ----------
-    title : str, optional
-        The title of the report. If provided, will be prepended to content.
-    content : str
-        The content of the report.
     """
 
     title: str | None = None
     content: str = field(default="", init=False)
 
-    def __post_init__(self) -> None:
-        """Initialize content to an empty string."""
-        self.content = ""
-
     def add_text(self, text: str, bold: bool = False, italic: bool = False) -> Self:
-        r"""Add descriptive text using LaTeX text commands.
+        r"""Add text with optional bold and italic formatting.
 
         Parameters
         ----------
         text : str
             The text content to display.
         bold : bool, optional
-            If True, wraps text in \\textbf{...}. Default is False.
+            Whether to format the text in bold.
         italic : bool, optional
-            If True, wraps text in \\textit{...}. Default is False.
+            Whether to format the text in italics.
 
         Returns
         -------
@@ -90,17 +86,22 @@ class LatexReport:
 
         return self
 
-    def add_equation(self, equation: str, tag: str | None = None, inline: bool = False) -> Self:
-        r"""Add an equation in a LaTeX equation environment or inline.
+    def add_equation(
+        self,
+        equation: str,
+        tag: str | None = None,
+        inline: bool = False,
+    ) -> Self:
+        r"""Add an equation to the report. For adding Blueprints formulas, use add_formula instead.
 
         Parameters
         ----------
         equation : str
-            The LaTeX equation content.
+            The LaTeX equation.
         tag : str or None, optional
-            Optional tag to label the equation (e.g., "6.83"). Only used when inline=False. Default is None.
+            Tag to label the equation (e.g., "6.83", "EN 1992-1-1:2004 6.6n", etc.).
         inline : bool, optional
-            If True, wraps equation in $...$. If False, uses equation environment. Default is False.
+            Whether to add the equation inline (meaning within text) or as a separate equation block. Default is False.
 
         Returns
         -------
@@ -117,7 +118,7 @@ class LatexReport:
 
         """
         if inline:
-            self.content += r"\text{" + rf"${equation}$" + r"}"
+            self.content += r"\text{" + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r"}"
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
@@ -128,20 +129,33 @@ class LatexReport:
 
         return self
 
-    def add_formula(self, formula: Formula, options: Literal["short", "complete", "complete_with_units"], inline: bool = False) -> Self:
+    def add_formula(
+        self,
+        formula: Formula,
+        options: Literal["short", "complete", "complete_with_units"] = "complete",
+        include_source: bool = True,
+        include_formula_number: bool = True,
+        inline: bool = False,
+    ) -> Self:
         r"""Add a Blueprints formula to the report, for generic equations, use add_equation.
 
         Parameters
         ----------
         formula : Formula
-            The Blueprints formula object to add.
+            Use any Blueprints Formula object.
         options : Literal["short", "complete", "complete_with_units"]
             The representation of the formula to add.
             short - Minimal representation (symbol = result [unit])
             complete - Complete representation (symbol = equation = numeric_equation = result [unit])
             complete_with_units - Complete representation with units (symbol = equation = numeric_equation_with_units [unit] = result [unit])
+        include_source: bool, optional
+            If True, includes the source document in the equation tag. Default is True.
+            For example: "EN 1993-1-1:2005" or "EN 1992-1-1:2004".
+        include_formula_number: bool, optional
+            If True, includes the formula number in the equation tag. Default is True.
+            For example: "6.5" or "6.6n".
         inline : bool, optional
-            If True, adds the formula inline. Default is False.
+            Whether to add the formula inline (meaning within text) or as a separate equation block (default).
 
         Returns
         -------
@@ -158,20 +172,36 @@ class LatexReport:
         # report can be converted to formatted LaTeX document with report.to_document()
         >>> print(report.to_document())
         """
-        if options == "short":
-            equation_str = formula.latex().short
-        elif options == "complete":
-            equation_str = formula.latex().complete
-        else:  # complete_with_units
-            equation_str = formula.latex().complete_with_units
+        # Get the desired LaTeX representation from the formula
+        latex = formula.latex()
 
-        self.add_equation(equation=equation_str, inline=inline)
+        # define the equation string based on options
+        equation_str: str = ""
+        match options.lower():
+            case "short":
+                equation_str = latex.short
+            case "complete":
+                equation_str = latex.complete
+            case "complete_with_units":
+                equation_str = latex.complete_with_units
+            case _:
+                raise ValueError(f"Invalid option '{options}'. Choose from 'short', 'complete', or 'complete_with_units'.")
 
-        # New line for visual separation already added in add_equation
-        return self
+        # Build tag from include_source and include_formula_number flags
+        tag_parts = []
+        if include_source or include_formula_number:
+            if include_source:
+                tag_parts.append(formula.source_document)
+            if include_formula_number:
+                tag_parts.append(formula.label)
+        tag_str = " ".join(tag_parts).strip()
+
+        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None)
 
     def add_section(self, title: str) -> Self:
-        """Add a section.
+        """Add a report section.
+
+        For more info on sections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
 
         Parameters
         ----------
@@ -198,6 +228,8 @@ class LatexReport:
     def add_subsection(self, title: str) -> Self:
         """Add a subsection.
 
+        For more info on subsections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
+
         Parameters
         ----------
         title : str
@@ -222,6 +254,8 @@ class LatexReport:
 
     def add_subsubsection(self, title: str) -> Self:
         """Add a subsubsection.
+
+        For more info on subsubsections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
 
         Parameters
         ----------
@@ -254,6 +288,8 @@ class LatexReport:
     ) -> Self:
         r"""Add a table using LaTeX table environment.
 
+        For more info on tables, see: https://www.overleaf.com/learn/latex/Tables
+
         Parameters
         ----------
         headers : list[str]
@@ -262,6 +298,13 @@ class LatexReport:
             List of rows, where each row is a list of cell values.
         position : str, optional
             LaTeX positioning parameter (e.g., 'h', 't', 'b'). Default is 'h'.
+
+            h: Will place the table here approximately.
+            t: Position the table at the top of the page.
+            b: Position the table at the bottom of the page.
+            p: Put the table in a special page, for tables only.
+            !: Override internal LaTeX parameters.
+            H: Place the table at this precise location, pretty much like h!.
         centering : bool, optional
             If True, centers the table. Default is True.
 
@@ -277,7 +320,20 @@ class LatexReport:
         >>> rows = [[r"\\text{Concrete strut capacity}", "0.588", r"\\text{PASS}"], [r"\\text{Torsion moment capacity}", "4.825", r"\\text{FAIL}"]]
         >>> report.add_table(headers, rows)
         """
+        # Validate headers and rows match
         num_cols = len(headers)
+
+        if not headers:
+            raise ValueError("At least one header is required.")
+        if not rows:
+            raise ValueError("At least one row is required.")
+
+        for i, row in enumerate(rows):
+            if len(row) != num_cols:
+                raise ValueError(
+                    f"Row {i} has {len(row)} columns but {num_cols} headers were provided. All rows must have the same number of columns as headers."
+                )
+
         col_spec = "l" * num_cols
 
         # Build header row
@@ -306,8 +362,9 @@ class LatexReport:
         image_path: str,
         width: float = 0.9,
         position: str = "h",
+        caption: str | None = None,
     ) -> Self:
-        """Add a figure with an image.
+        r"""Add a figure with an image.
 
         Parameters
         ----------
@@ -316,8 +373,19 @@ class LatexReport:
         width : float, optional
             Width specification for the image as ratio of the text width. Default is 0.9.
         position : str, optional
-            LaTeX positioning parameter (e.g., 'h', 't', 'b'). Default is 'h'.
+            LaTeX positioning parameter. Default is 'h'.
 
+            =========  ==================================================================================
+            Parameter  Description
+            =========  ==================================================================================
+            h          Place the float here, approximately at the same point it occurs in the source text
+            t          Position at the top of the page
+            b          Position at the bottom of the page
+            p          Put on a special page for floats only
+            =========  ==================================================================================
+
+        caption : str, optional
+            Caption text for the figure. Will be displayed below the image. Default is None.
 
         Returns
         -------
@@ -329,12 +397,18 @@ class LatexReport:
         >>> report = LatexReport()
         >>> report.add_figure("path_to_image")
         >>> report.add_figure("path_to_image", width=0.5)
+        >>> report.add_figure("plot.png", caption="Results of the analysis", label="fig:results")
         """
-        figure = (
-            rf"\begin{{figure}}[{position}] \centering "
-            rf"\includegraphics[width={width}\textwidth]{{{image_path}}} "
-            rf"\end{{figure}}"
-        )
+        # Build the figure environment
+        figure_parts = [rf"\begin{{figure}}[{position}] \centering ", rf"\includegraphics[width={width}\textwidth]{{{image_path}}} "]
+
+        # Add optional caption
+        if caption:
+            figure_parts.append(rf"\caption{{{caption}}} ")
+
+        figure_parts.append(r"\end{figure}")
+
+        figure = "".join(figure_parts)
         self.content += figure
 
         # Add a newline for visual separation
@@ -344,6 +418,8 @@ class LatexReport:
 
     def add_itemize(self, items: list[str]) -> Self:
         """Add a bulleted list using LaTeX itemize environment.
+
+        For more info on itemize, see: https://www.overleaf.com/learn/latex/Lists#The_itemize_environment_for_bulleted_(unordered)_lists
 
         Parameters
         ----------
@@ -374,6 +450,8 @@ class LatexReport:
     def add_enumerate(self, items: list[str]) -> Self:
         """Add a numbered list using LaTeX enumerate environment.
 
+        For more info on enumerate, see: https://www.overleaf.com/learn/latex/Lists#The_enumerate_environment_for_numbered_(ordered)_lists
+
         Parameters
         ----------
         items : list[str]
@@ -403,6 +481,8 @@ class LatexReport:
     def add_newline(self, n: int = 1) -> Self:
         """Add a newline command.
 
+        For more info on newlines, see: https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes#Basic_formatting:_abstract,_paragraphs_and_newlines
+
         Parameters
         ----------
         n : int, optional
@@ -425,19 +505,61 @@ class LatexReport:
 
         return self
 
-    def to_document(self, title: str | None = None) -> str:
+    def __repr__(self) -> str:
+        """Return a concise representation showing report structure and content summary."""
+        sections = self.content.count(r"\section{")
+        subsections = self.content.count(r"\subsection{")
+        equations = self.content.count(r"\begin{equation}")
+        tables = self.content.count(r"\begin{table}")
+        figures = self.content.count(r"\begin{figure}")
+        lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
+
+        title_str = f'title="{self.title}"' if self.title else "title=None"
+        stats = (
+            f"sections={sections}, subsections={subsections}, "
+            f"equations={equations}, tables={tables}, figures={figures}, "
+            f"lists={lists}, chars={len(self.content)}"
+        )
+
+        return f"LatexReport({title_str}, {stats})"
+
+    def __str__(self) -> str:
+        """Return a human-readable representation of the report structure and content."""
+        sections = self.content.count(r"\section{")
+        subsections = self.content.count(r"\subsection{")
+        equations = self.content.count(r"\begin{equation}")
+        tables = self.content.count(r"\begin{table}")
+        figures = self.content.count(r"\begin{figure}")
+        lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
+
+        lines = [
+            "=" * 60,
+            f"LaTeX Report: {self.title or '(untitled)'}",
+            "=" * 60,
+            f"Sections:      {sections}",
+            f"Subsections:   {subsections}",
+            f"Equations:     {equations}",
+            f"Tables:        {tables}",
+            f"Figures:       {figures}",
+            f"Lists:         {lists}",
+            f"Content size:  {len(self.content)} characters",
+            "=" * 60,
+            "Use .to_document() to generate the full LaTeX document.",
+            "=" * 60,
+        ]
+
+        return "\n".join(lines)
+
+    def to_document(self) -> str:
         """Generate a complete LaTeX document with proper preamble and structure.
 
-        Parameters
-        ----------
-        title : str, optional
-            The document title. If not provided, uses the instance title.
+        You could compile the output with pdflatex in for example Overleaf.
 
         Returns
         -------
         str
             Complete LaTeX document string including preamble, begin/end document,
-            and all content.
+            and all content, ready for copy-pasting into a .tex file for example.
 
         Examples
         --------
@@ -447,7 +569,7 @@ class LatexReport:
         >>> latex_doc = report.to_document()
         """
         # Use provided title or fall back to instance title
-        doc_title = title if title is not None else self.title if self.title is not None else ""
+        doc_title = self.title or ""
 
         # Build the preamble with styling to match Word document converter (pdflatex compatible)
         preamble = (
@@ -472,11 +594,11 @@ class LatexReport:
             r"% Define the dark blue color" + "\n"
             r"\definecolor{blueprintblue}{RGB}{0,40,85}" + "\n"
             "\n"
-            r"% Configure title style (36pt, sans-serif, bold, blue)" + "\n"
+            r"% Configure title style (18pt, sans-serif, bold, blue)" + "\n"
             r"\makeatletter" + "\n"
             r"\renewcommand{\maketitle}{%" + "\n"
             r"    \begin{center}%" + "\n"
-            r"        {\sffamily\fontsize{36}{43}\selectfont\bfseries\color{blueprintblue}\@title}%" + "\n"
+            r"        {\sffamily\fontsize{18}{19}\selectfont\bfseries\color{blueprintblue}\@title}%" + "\n"
             r"        \vspace{4pt}%" + "\n"
             r"    \end{center}%" + "\n"
             r"}" + "\n"
@@ -484,17 +606,17 @@ class LatexReport:
             "\n"
             r"% Configure section styles" + "\n"
             r"\titleformat{\section}" + "\n"
-            r"    {\sffamily\fontsize{24}{29}\selectfont\bfseries\color{blueprintblue}}" + "\n"
+            r"    {\sffamily\fontsize{14}{15}\selectfont\bfseries\color{blueprintblue}}" + "\n"
             r"    {\thesection}{1em}{}" + "\n"
             r"\titlespacing*{\section}{0pt}{8pt}{4pt}" + "\n"
             "\n"
             r"\titleformat{\subsection}" + "\n"
-            r"    {\sffamily\fontsize{18}{22}\selectfont\bfseries\color{blueprintblue}}" + "\n"
+            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"
             r"    {\thesubsection}{1em}{}" + "\n"
             r"\titlespacing*{\subsection}{0pt}{8pt}{4pt}" + "\n"
             "\n"
             r"\titleformat{\subsubsection}" + "\n"
-            r"    {\sffamily\fontsize{14}{17}\selectfont\bfseries\color{blueprintblue}}" + "\n"
+            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"
             r"    {\thesubsubsection}{1em}{}" + "\n"
             r"\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}" + "\n"
             "\n"

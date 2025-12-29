@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
-from blueprints.codes.report import LatexReport
+from blueprints.utils.report import LatexReport
 
 
 @pytest.fixture
@@ -262,11 +262,6 @@ class TestLatexReport:
         assert r"\maketitle" in document
         assert r"\section{Test Section}" in document
         assert r"\end{document}" in document
-
-    def test_to_document_with_parameter_title(self, fixture_report: LatexReport) -> None:
-        """Test generating document with parameter title overriding instance title."""
-        document = fixture_report.to_document(title="Override Title")
-        assert r"\title{Override Title}" in document
 
     def test_to_document_without_title(self) -> None:
         """Test generating document without any title."""

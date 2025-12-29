@@ -1,74 +1,230 @@
-# Reports: Design and Architecture
+# Creating Reports with Blueprints
 
-## LaTeX vs Report Generation
+The `LatexReport` class helps you build professional engineering reports with text, equations, tables, and figures. The output is LaTeX-formatted and ready to use in Overleaf, compile locally, or convert to Word documents.
 
-The Formula object provides two distinct methods for generating documentation output, each serving different purposes:
+??? info "Complete Example"
 
-### `.latex()` Method: Math Mode Output
+    Use the following code to create a simple (mock) engineering report:
+    
+    ```python exec="on"
+    from blueprints.utils.report import LatexReport
+    from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
+    
+    # Create report
+    report = LatexReport(title="Design Verification")
+    
+    # Add content
+    report.add_section("Introduction")
+    report.add_text("This report verifies the tensile capacity of the steel member.")
+    
+    report.add_section("Design Checks")
+    report.add_text("Unity check for tensile strength:", bold=True).add_newline()
+    
+    formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
+    report.add_formula(formula, options="complete")
+    
+    report.add_text("Result: Check PASSED", bold=True)
+    
+    report.add_section("Summary")
+    report.add_itemize([
+        "Applied force: 150 kN",
+        "Resistance: 200 kN",
+        "Utilization: 75%",
+    ])
+    
+    # Get LaTeX document
+    latex = report.to_document()
+    print(latex)
+    ```
 
-The `.latex()` method returns a `LatexFormula` object containing mathematical expressions in LaTeX math mode. This is designed for inline equations or equation environments:
+??? info "Tips"
 
-- Returns symbolic and numeric equations without text formatting
-- Output is pure mathematical notation (e.g., `c_{nom} = c_{min} + \Delta c_{dev}`)
-- Intended for use within `\begin{equation}...\end{equation}` or `$...$` blocks
-- Provides granular access to equation components (return_symbol, equation, numeric_equation, result)
+    - Use **method chaining** for cleaner code: `report.add_section(...).add_text(...).add_newline()`
+    - Use raw strings (`r"..."`) for LaTeX commands to avoid escape issues
+    - Call `.to_document()` only when you need the final output
+    - Call `.add_formula()` on formulas from Blueprints to automatically include source and formula numbers in the tag
 
-### `.report()` Method: Text Mode Output
+## Quick Start
 
-The `.report()` method returns a complete LaTeX document fragment in text mode. It can include the following, with literal LaTeX text-mode examples which can be included into a LaTeX-handler, e.g. Overleaf:
+Create a report and add content using [method chaining](https://www.geeksforgeeks.org/python/method-chaining-in-python/):
 
-1. Descriptive text using `\text{...}` commands, also handles `\textbf{...}` and `\textit{...}`
-    - ``` \text{This is regular text} ```
-    - ``` \textbf{This is bold text} ```
-    - ``` \textit{This is italic text} ```
-2. Equations in proper LaTeX environments `\begin{equation}...\end{equation}`, optionally with a `\tag{...}`
-    - ``` \begin{equation} a^2+b^2=c^2 \tag{6.83} \end{equation} ```
-3. Small equation segments within a text environment, wrapped in a `$...$`
-    - ``` \text{This text shows an equation $\frac{a}{b}$ halfway the text segment} ```
-4. Small text segments within an equation environment, wrapped in a `\text{...}`
-    - ``` \begin{equation} 10^3 - 317 = 683 \ \text{mm} \end{equation} ```
-5. Formatted sections with titles and (sub)(sub)sections
-    - ``` \title{This is a title} ```
-    - ``` \section{This is a section} ```
-    - ``` \subsection{This is a subsection} ```
-    - ``` \subsubsection{This is a subsubsection} ```
-6. Tables using `\begin{table}...\end{table}` with support for `\toprule`, `\midrule`, and `\bottomrule`
-    - ``` \begin{table}[h] \centering \begin{tabular}{lll} \toprule Check & Utilization & Status \\ \midrule \text{Concrete strut capacity} & 0.588 & \text{PASS} \\ \text{Torsion moment capacity} & 4.825 & \text{FAIL} \\ \bottomrule \end{tabular} \end{table} ```
-7. Figures with `\begin{figure}...\end{figure}` and `\includegraphics`
-    - ``` \begin{figure}[h] \centering \includegraphics[width=0.9\textwidth]{path_to_image} \end{figure} ```
-8. Itemized lists with `\begin{itemize}...\end{itemize}`. Use `\item` for each bullet.
-    - ``` \begin{itemize} \item Bullet 1 \item Bullet 2 \end{itemize} ```
-9. Numbered lists with `\begin{enumerate}...\end{enumerate}`. Use `\item` for each bullet.
-    - ``` \begin{enumerate} \item Number 1 \item Number 2 \end{enumerate} ```
-10. New lines (enter / return) with `\newline`
-    - ``` \text{line 1} \newline \text{line 2} ```
-
-To ensure exact formatting, it is recommended to use the `LatexReport` adder functions. 
-
-Output can be directly converted to Word documents using `ReportToWordConverter`
-
-## Comprehensive Example when making a report from a Blueprints Formula
-
-The `blueprints` project supports a wide range of report features. Here's a complete demonstration using actual Eurocode formulas,
-with two options:
-- Get the report as LaTeX string, which can be copy-pasted to a LaTeX-handler, e.g. Overleaf;
-- Convert the report to a .docx, which can be saved locally.
-
-```python exec="on" source="material-block" session="report-demo" result="ansi"
+```python exec="on" session="report_quick_start"
+from blueprints.utils.report import LatexReport
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
-from blueprints.codes.report import LatexReport
 
-# Example: Unity Check for Tensile Strength
+# Create a report
+report = LatexReport(title="Steel Connection Analysis")
+
+# Add sections and content
+report.add_section("Design Checks")
+report.add_text("We verify the tensile strength capacity:")
+
+# Add a formula
 formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(
-    n_ed=150000,  # 150 kN tensile force
-    n_t_rd=200000,  # 200 kN resistance
+    n_ed=150000,  # Applied force (kN)
+    n_t_rd=200000,  # Resistance (kN)
 )
+report.add_formula(formula, options="complete")
 
-# Generate report output, this LaTeX string can be copy-pasted to a LaTeX-handler, e.g. Overleaf
-report = LatexReport().add_formula(formula, "complete")
+# Generate the complete LaTeX document
+latex_code = report.to_document()
+```
+
+## Getting Your Report
+
+### View Report Summary
+
+```python exec="on" session="report_quick_start"
+# Quick overview of what's in your report
 print(report)
 ```
 
-## Comprehensive Example when making a report from a Check
-To be filled in when steel check is converted to this format
+### Export to LaTeX
 
+```python exec="on" session="report_quick_start"
+# Get the complete LaTeX document (ready for Overleaf or pdflatex)
+latex_document = report.to_document()
+
+# Save to file
+# with open("report.tex", "w") as f:
+#     f.write(latex_document)
+```
+
+### Export to Word (Optional)
+
+The LaTeX output can be converted to .docx format using external tools. We will cover this in future documentation.
+
+## Common Tasks
+
+### Add Text
+
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+report.add_text("This is regular text.")
+report.add_text("This is bold text.", bold=True)
+report.add_text("This is italic text.", italic=True)
+report.add_text("This is bold and italic.", bold=True, italic=True)
+```
+
+### Add Sections
+
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+report.add_section("Introduction")
+report.add_subsection("Background")
+report.add_subsubsection("Technical Details")
+```
+
+### Add Equations
+
+**Standalone equation:**
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+report.add_equation("a^2 + b^2 = c^2", tag="Pythagoras")
+```
+
+**Inline equation (within text):**
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+report.add_text("The resistance is ").add_equation(r"\frac{F_y \cdot A}{1.0}", inline=True).add_text(" kN")
+```
+
+### Add Blueprints Formulas
+
+```python exec="on"
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state import formula_6_6n
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+formula = formula_6_6n.Form6Dot6nStrengthReductionFactor(35)
+
+# Add with different detail levels
+report.add_formula(formula, options="short")  # Just result
+report.add_formula(formula, options="complete")  # Full derivation
+report.add_formula(formula, options="complete_with_units")  # With unit labels
+
+# Control what's shown in the tag
+report.add_formula(
+    formula,
+    options="complete",
+    include_source=True,  # Show "EN 1992-1-1:2004"
+    include_formula_number=True,  # Show "6.6n"
+)
+```
+
+### Add Tables
+
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+report.add_table(
+    headers=["Check", "Utilization", "Status"],
+    rows=[
+        [r"\text{Shear capacity}", "0.588", r"\text{PASS}"],
+        [r"\text{Torsion capacity}", "0.925", r"\text{PASS}"],
+    ]
+)
+```
+
+### Add Figures
+
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+# Simple figure
+report.add_figure("diagram.png", width=0.6)
+
+# Figure with caption
+report.add_figure("stress_plot.png", width=0.7, caption="Stress distribution under load")
+```
+
+### Add Lists
+
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+# Bullet list
+report.add_itemize(["Check 1 passed", "Check 2 passed", "Check 3 failed"])
+
+# Numbered list
+report.add_enumerate(["First step: verify inputs", "Second step: run calculations", "Third step: review results"])
+```
+
+### Add Spacing
+
+```python exec="on"
+from blueprints.utils.report import LatexReport
+
+# Create a report
+report = LatexReport(title="My report")
+
+report.add_newline()  # Single new line
+report.add_newline(n=3)  # Three new lines
+```
