@@ -6,7 +6,7 @@ The `LatexReport` class helps you build professional engineering reports with te
 
     Use the following code to create a simple (mock) engineering report:
     
-    ```python exec="on"
+    ```python exec="on" source="tabbed-left"
     from blueprints.utils.report import LatexReport
     from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
     
@@ -48,7 +48,7 @@ The `LatexReport` class helps you build professional engineering reports with te
 
 Create a report and add content using [method chaining](https://www.geeksforgeeks.org/python/method-chaining-in-python/):
 
-```python exec="on" session="report_quick_start"
+```python exec="on" session="report_quick_start" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
 
@@ -74,14 +74,14 @@ latex_code = report.to_document()
 
 ### View Report Summary
 
-```python exec="on" session="report_quick_start"
+```python exec="on" session="report_quick_start" source="tabbed-left"
 # Quick overview of what's in your report
 print(report)
 ```
 
 ### Export to LaTeX
 
-```python exec="on" session="report_quick_start"
+```python exec="on" session="report_quick_start" source="tabbed-left"
 # Get the complete LaTeX document (ready for Overleaf or pdflatex)
 latex_document = report.to_document()
 
@@ -98,7 +98,7 @@ The LaTeX output can be converted to .docx format using external tools. We will 
 
 ### Add Text
 
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report
@@ -112,7 +112,7 @@ report.add_text("This is bold and italic.", bold=True, italic=True)
 
 ### Add Sections
 
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report
@@ -126,7 +126,7 @@ report.add_subsubsection("Technical Details")
 ### Add Equations
 
 **Standalone equation:**
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report
@@ -136,7 +136,7 @@ report.add_equation("a^2 + b^2 = c^2", tag="Pythagoras")
 ```
 
 **Inline equation (within text):**
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report
@@ -147,7 +147,7 @@ report.add_text("The resistance is ").add_equation(r"\frac{F_y \cdot A}{1.0}", i
 
 ### Add Blueprints Formulas
 
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state import formula_6_6n
 from blueprints.utils.report import LatexReport
 
@@ -172,7 +172,7 @@ report.add_formula(
 
 ### Add Tables
 
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report
@@ -189,7 +189,7 @@ report.add_table(
 
 ### Add Figures
 
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report
@@ -204,7 +204,7 @@ report.add_figure("stress_plot.png", width=0.7, caption="Stress distribution und
 
 ### Add Lists
 
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report
@@ -219,7 +219,7 @@ report.add_enumerate(["First step: verify inputs", "Second step: run calculation
 
 ### Add Spacing
 
-```python exec="on"
+```python exec="on" source="tabbed-left"
 from blueprints.utils.report import LatexReport
 
 # Create a report

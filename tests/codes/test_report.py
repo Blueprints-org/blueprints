@@ -329,3 +329,70 @@ class TestLatexReport:
         assert r"\title{Sample Report}" in latex_document
         assert r"\begin{document}" in latex_document
         assert r"\end{document}" in latex_document
+
+    def test_add_formula_invalid_option(self, fixture_report: LatexReport) -> None:
+        """Test that add_formula raises ValueError for invalid option."""
+        formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
+        with pytest.raises(ValueError, match="Invalid option"):
+            fixture_report.add_formula(formula, options="invalid_option")  # type: ignore[arg-type]
+
+    def test_add_table_empty_headers(self, fixture_report: LatexReport) -> None:
+        """Test that add_table raises ValueError for empty headers."""
+        with pytest.raises(ValueError, match="At least one header is required"):
+            fixture_report.add_table(headers=[], rows=[["1", "2"]])
+
+    def test_add_table_empty_rows(self, fixture_report: LatexReport) -> None:
+        """Test that add_table raises ValueError for empty rows."""
+        with pytest.raises(ValueError, match="At least one row is required"):
+            fixture_report.add_table(headers=["A", "B"], rows=[])
+
+    def test_add_table_column_mismatch(self, fixture_report: LatexReport) -> None:
+        """Test that add_table raises ValueError for column mismatch."""
+        with pytest.raises(ValueError, match="Row 0 has 2 columns but 3 headers were provided"):
+            fixture_report.add_table(
+                headers=["A", "B", "C"],
+                rows=[["1", "2"]],
+            )
+
+    def test_add_figure_with_caption(self, fixture_report: LatexReport) -> None:
+        """Test adding figure with caption."""
+        fixture_report.add_figure("image.png", caption="Test caption")
+        assert r"\caption{Test caption}" in fixture_report.content
+        assert r"\begin{figure}" in fixture_report.content
+
+    def test_repr_empty_report(self) -> None:
+        """Test repr of empty report."""
+        report = LatexReport(title="Test")
+        repr_str = repr(report)
+        assert "LatexReport" in repr_str
+        assert 'title="Test"' in repr_str
+        assert "sections=0" in repr_str
+
+    def test_repr_with_content(self) -> None:
+        """Test repr of report with content."""
+        report = LatexReport(title="Report")
+        report.add_section("Intro")
+        report.add_equation("a=b")
+        report.add_table(headers=["X"], rows=[["1"]])
+        repr_str = repr(report)
+        assert "sections=1" in repr_str
+        assert "equations=1" in repr_str
+        assert "tables=1" in repr_str
+
+    def test_str_representation(self, fixture_report: LatexReport) -> None:
+        """Test string representation of report."""
+        fixture_report.add_section("Section 1")
+        fixture_report.add_subsection("Subsection 1")
+        fixture_report.add_equation("x = y")
+        str_repr = str(fixture_report)
+        assert "LaTeX Report: Test Report" in str_repr
+        assert "Sections:      1" in str_repr
+        assert "Subsections:   1" in str_repr
+        assert "Equations:     1" in str_repr
+        assert "to_document()" in str_repr
+
+    def test_str_representation_untitled(self) -> None:
+        """Test string representation of untitled report."""
+        report = LatexReport()
+        str_repr = str(report)
+        assert "LaTeX Report: (untitled)" in str_repr

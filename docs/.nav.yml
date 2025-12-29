@@ -29,7 +29,6 @@ nav:
       - guides/concepts/index.md
       - Library Organization: guides/concepts/library_organization.md
       - Formulas: guides/concepts/formulas.md
-      - Making Latex reports: guides/concepts/report.md
       - Code Standards:
         - guides/concepts/codes/index.md
         - Eurocode Standards:
@@ -66,6 +65,8 @@ nav:
         - CUR Standards:
           - guides/concepts/codes/cur/index.md
           - CUR 228: guides/concepts/codes/cur/cur_228/formulas.md
+    - Utils:
+      - Making Latex reports: guides/utils/report.md
     - Contribute:
       - guides/contribute/index.md
       - guides/contribute/cli.md
