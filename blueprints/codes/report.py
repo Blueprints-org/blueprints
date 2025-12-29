@@ -117,7 +117,7 @@ class LatexReport:
 
         """
         if inline:
-            self.content += r"\text{" + rf"${equation}$" + r"}"
+            self.content += r"\text{ " + rf"${equation}$" + r" }"
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
