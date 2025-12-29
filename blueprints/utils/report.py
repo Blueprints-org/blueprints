@@ -32,7 +32,7 @@ class LatexReport:
     >>> report.add_text("Before an inline equation:", italic=True).add_equation(r"\frac{a}{b}", inline=True).add_text(
     ...     " and after the inline equation.", bold=True
     ... ).add_newline()
-    >>> report.add_equation(r"e^{i \pi} + 1 = 0", inline=True).add_text("inline can be at start at of text.", bold=True, italic=True).add_newline()
+    >>> report.add_equation(r"e^{i \pi} + 1 = 0", inline=True).add_text("inline can be at start of text.", bold=True, italic=True).add_newline()
     >>> report.add_text("or at the end of text", bold=True).add_equation(r"\int_a^b f(x) dx", inline=True).add_newline(n=2)
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
@@ -397,7 +397,7 @@ class LatexReport:
         >>> report = LatexReport()
         >>> report.add_figure("path_to_image")
         >>> report.add_figure("path_to_image", width=0.5)
-        >>> report.add_figure("plot.png", caption="Results of the analysis", label="fig:results")
+        >>> report.add_figure("plot.png", caption="Results of the analysis")
         """
         # Build the figure environment
         figure_parts = [rf"\begin{{figure}}[{position}] \centering ", rf"\includegraphics[width={width}\textwidth]{{{image_path}}} "]

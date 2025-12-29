@@ -1,4 +1,4 @@
-"""Tests for the LatexReport and ReportFormula classes."""
+"""Tests for the LatexReport class."""
 
 import pytest
 
