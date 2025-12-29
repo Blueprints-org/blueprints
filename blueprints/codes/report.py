@@ -45,7 +45,7 @@ class LatexReport:
     content: str = field(default="", init=False)
 
     def __post_init__(self) -> None:
-        """Initialize content with title if provided."""
+        """Initialize content to empty string."""
         self.content = ""
 
     def add_text(self, text: str, bold: bool = False, italic: bool = False) -> Self:

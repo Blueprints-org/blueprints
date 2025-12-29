@@ -36,9 +36,9 @@ The `.report()` method returns a complete LaTeX document fragment in text mode. 
     - ``` \begin{table}[h] \centering \begin{tabular}{lll} \toprule Check & Utilization & Status \\ \midrule \text{Concrete strut capacity} & 0.588 & \text{PASS} \\ \text{Torsion moment capacity} & 4.825 & \text{FAIL} \\ \bottomrule \end{tabular} \end{table} ```
 7. Figures with `\begin{figure}...\end{figure}` and `\includegraphics`
     - ``` \begin{figure}[h] \centering \includegraphics[width=0.9\textwidth]{path_to_image} \end{figure} ```
-8. Itemized lists with `\begin{itemize}...\end{itemize}`. use `\item` for each bullet.
+8. Itemized lists with `\begin{itemize}...\end{itemize}`. Use `\item` for each bullet.
     - ``` \begin{itemize} \item Bullet 1 \item Bullet 2 \end{itemize} ```
-9. Numbered lists with `\begin{enumerate}...\end{enumerate}`. use `\item` for each bullet.
+9. Numbered lists with `\begin{enumerate}...\end{enumerate}`. Use `\item` for each bullet.
     - ``` \begin{enumerate} \item Number 1 \item Number 2 \end{enumerate} ```
 10. New lines (enter / return) with `\newline`
     - ``` \text{line 1} \newline \text{line 2} ```

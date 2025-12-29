@@ -301,7 +301,7 @@ class TestLatexReport:
         report.add_newline()
         report.add_equation("E=mc^2", tag="3.14")
         report.add_formula(formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000), options="complete")
-        report.add_text("Before an inline equation:").add_equation(r"\frac{a}{b}", inline=True).add_text("after the inline equation.").add_newline()
+        report.add_text("Before an inline equation:").add_equation(r"\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
         report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
         report.add_table(
             headers=["Parameter", "Value", "Unit"], rows=[[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/m$^3$}"]]
