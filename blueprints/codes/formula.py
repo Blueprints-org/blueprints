@@ -6,7 +6,6 @@ from collections.abc import Callable
 from typing import Self
 
 from blueprints.codes.latex_formula import LatexFormula
-from blueprints.codes.report import ReportFormula
 
 
 class Formula(float, ABC):
@@ -104,37 +103,9 @@ class Formula(float, ABC):
         Returns
         -------
         LatexFormula
-            The latex representation of the formula in math mode.
+            The latex representation of the formula, given in math mode.
             This is an abstract method and must be implemented in all subclasses.
         """
-
-    def report(self, n: int = 3) -> ReportFormula:
-        """Method for the report representation of the formula, given in text mode.
-
-        This method wraps the latex output in text mode ($ ... $) to be used in reports.
-        It creates a ReportFormula object with the same structure as LatexFormula,
-        providing .short, .complete, and .complete_with_units properties.
-
-        Parameters
-        ----------
-        n : int, optional
-            The number of decimal places to round the result to.
-
-        Returns
-        -------
-        ReportFormula
-            The report representation of the formula with .short, .complete, and .complete_with_units properties.
-        """
-        latex_repr = self.latex(n)
-        return ReportFormula(
-            return_symbol=latex_repr.return_symbol,
-            result=latex_repr.result,
-            equation=latex_repr.equation,
-            numeric_equation=latex_repr.numeric_equation,
-            numeric_equation_with_units=latex_repr.numeric_equation_with_units,
-            comparison_operator_label=latex_repr.comparison_operator_label,
-            unit=latex_repr.unit,
-        )
 
 
 class ComparisonFormula(Formula):

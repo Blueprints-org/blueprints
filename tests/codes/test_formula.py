@@ -6,7 +6,8 @@ from typing import Any
 
 import pytest
 
-from blueprints.codes.formula import ComparisonFormula, DoubleComparisonFormula, Formula, LatexFormula
+from blueprints.codes.formula import ComparisonFormula, DoubleComparisonFormula, Formula
+from blueprints.codes.latex_formula import LatexFormula
 
 
 class FormulaTest(Formula):
@@ -33,15 +34,9 @@ class FormulaTest(Formula):
         """Dummy formula for testing purposes."""
         return first + second
 
-    @staticmethod
-    def latex(n: int = 3) -> LatexFormula:
-        """LaTeX representation of the formula."""
-        return LatexFormula(
-            return_symbol="r_{esult}",
-            equation="f_{irst} + s_{econd}",
-            numeric_equation=f"{1:.{n}f} + {2:.{n}f}",
-            result=f"{3:.{n}f}",
-        )
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(return_symbol=r"result", result=str(round(float(self), n)), equation=r"first + second")
 
 
 def test_raise_error_when_changing_value_after_initialization() -> None:
@@ -60,14 +55,6 @@ def test_raise_not_implemented_error_detailed_result() -> None:
     dummy_testing_formula = FormulaTest(first=first, second=second)
     with pytest.raises(NotImplementedError):
         _ = dummy_testing_formula.detailed_result
-
-
-def test_report_representation() -> None:
-    """Test that the report representation is correct."""
-    first = 1
-    second = 2
-    dummy_testing_formula = FormulaTest(first=first, second=second)
-    assert dummy_testing_formula.report(n=3) == r"$r_{esult} = f_{irst} + s_{econd} = 1.000 + 2.000 = 3.000$"
 
 
 class ComparisonFormulaTestLessOrEqual(ComparisonFormula):
@@ -104,13 +91,8 @@ class ComparisonFormulaTestLessOrEqual(ComparisonFormula):
         return operator.le
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """LaTeX representation of the formula."""
-        return LatexFormula(
-            return_symbol=r"result",
-            equation=r"a + b \leq c / 2",
-            numeric_equation=f"{self.a:.{n}f} + {self.b:.{n}f} \\leq {self.c:.{n}f} / 2",
-            result=f"{float(self):.{n}f}",
-        )
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(return_symbol=r"check", result=str(round(float(self), n)), equation=r"a + b \leq c / 2")
 
 
 def test_comparison_formula_evaluation() -> None:
@@ -212,13 +194,8 @@ class ComparisonFormulaTestGreaterOrEqual(ComparisonFormula):
         return operator.ge
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """LaTeX representation of the formula."""
-        return LatexFormula(
-            return_symbol=r"result",
-            equation=r"a + b \geq c / 2",
-            numeric_equation=f"{self.a:.{n}f} + {self.b:.{n}f} \\geq {self.c:.{n}f} / 2",
-            result=f"{float(self):.{n}f}",
-        )
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(return_symbol=r"check", result=str(round(float(self), n)), equation=r"a + b \geq c / 2")
 
 
 def test_comparison_formula_greater_or_equal_evaluation() -> None:
@@ -307,13 +284,8 @@ class ComparisonFormulaTestEqual(ComparisonFormula):
         return operator.eq
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """LaTeX representation of the formula."""
-        return LatexFormula(
-            return_symbol=r"result",
-            equation=r"a + b = c / 2",
-            numeric_equation=f"{self.a:.{n}f} + {self.b:.{n}f} = {self.c:.{n}f} / 2",
-            result=f"{float(self):.{n}f}",
-        )
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(return_symbol=r"check", result=str(round(float(self), n)), equation=r"a + b = c / 2")
 
 
 def test_comparison_formula_equal_evaluation() -> None:
@@ -428,13 +400,8 @@ def _create_double_comparison_formula_test_class(
             return c
 
         def latex(self, n: int = 3) -> LatexFormula:
-            """LaTeX representation of the formula."""
-            return LatexFormula(
-                return_symbol=r"result",
-                equation=f"a {comp_op_ids.split('-')[0]} b {comp_op_ids.split('-')[1]} c",
-                numeric_equation=f"{self.a:.{n}f} {comp_op_ids.split('-')[0]} {self.b:.{n}f} {comp_op_ids.split('-')[1]} {self.c:.{n}f}",
-                result=f"{float(self):.{n}f}",
-            )
+            """Dummy latex implementation for testing purposes."""
+            return LatexFormula(return_symbol=r"check", result=str(round(float(self), n)), equation=r"a < b < c")
 
     return DynamicDoubleComparisonFormula
 
