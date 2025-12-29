@@ -25,7 +25,7 @@ class LatexReport:
     >>> report.add_text("Before an inline equation:").add_equation(r"\\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
-    ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\\text{Length}", "10", r"\\text{m}"], [r"\\text{Density}", "500", r"\\text{kg/m$^3$}"]]
+    ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/$m^3$}"]]
     ... )
     >>> report.add_figure(r"tomato.png", width=0.2)  # needs the tomato.png file in working directory
     >>> report.add_enumerate(["First item", "Second item"])
