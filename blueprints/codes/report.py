@@ -22,10 +22,14 @@ class LatexReport:
     >>> report.add_text("This is bold and italic text.", bold=True, italic=True)
     >>> report.add_newline()
     >>> report.add_equation("E=mc^2", tag="3.14")
-    >>> report.add_text("Before an inline equation:").add_equation(r"\\frac{a}{b}", inline=True).add_text("After the inline equation.").add_newline()
+    >>> report.add_text("Before an inline equation:", italic=True).add_equation(r"\frac{a}{b}", inline=True).add_text(
+    ...     " and after the inline equation.", bold=True
+    ... ).add_newline()
+    >>> report.add_equation(r"e^{i \pi} + 1 = 0", inline=True).add_text("inline can be at start at of text.", bold=True, italic=True).add_newline()
+    >>> report.add_text("or at the end of text", bold=True).add_equation(r"\int_a^b f(x) dx", inline=True).add_newline(n=2)
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
-    ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\\text{Length}", "10", r"\\text{m}"], [r"\\text{Density}", "500", r"\\text{kg/m$^3$}"]]
+    ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/$m^3$}"]]
     ... )
     >>> report.add_figure(r"tomato.png", width=0.2)  # needs the tomato.png file in working directory
     >>> report.add_enumerate(["First item", "Second item"])
@@ -33,7 +37,7 @@ class LatexReport:
     >>> latex_document = report.to_document()
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
 
-    Attributes
+    Parameters
     ----------
     title : str, optional
         The title of the report. If provided, will be prepended to content.
@@ -45,7 +49,7 @@ class LatexReport:
     content: str = field(default="", init=False)
 
     def __post_init__(self) -> None:
-        """Initialize content to empty string."""
+        """Initialize content to an empty string."""
         self.content = ""
 
     def add_text(self, text: str, bold: bool = False, italic: bool = False) -> Self:
@@ -113,7 +117,7 @@ class LatexReport:
 
         """
         if inline:
-            self.content += rf"${equation}$"
+            self.content += r"\text{" + rf"${equation}$" + r"}"
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
