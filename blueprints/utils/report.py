@@ -29,11 +29,11 @@ class LatexReport:
     >>> report.add_text("This is bold and italic text.", bold=True, italic=True)
     >>> report.add_newline()
     >>> report.add_equation("E=mc^2", tag="3.14")
-    >>> report.add_text("Before an inline equation:", italic=True).add_equation(r"\frac{a}{b}", inline=True).add_text(
-    ...     " and after the inline equation.", bold=True
+    >>> report.add_text("Before inline equation:", italic=True).add_equation(r"\frac{a}{b}", inline=True).add_text(
+    ...     " and after inline equation.", bold=True
     ... ).add_newline()
-    >>> report.add_equation(r"e^{i \pi} + 1 = 0", inline=True).add_text("inline can be at start of text.", bold=True, italic=True).add_newline()
-    >>> report.add_text("or at the end of text", bold=True).add_equation(r"\int_a^b f(x) dx", inline=True).add_newline(n=2)
+    >>> report.add_equation(r"e^{i \pi} + 1 = 0", inline=True).add_text("inline can be at start of text.").add_newline()
+    >>> report.add_text("Or at the end of text", bold=True).add_equation(r"\int_a^b f(x) dx", inline=True).add_newline(n=2)
     >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
     ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/$m^3$}"]]
@@ -202,6 +202,7 @@ class LatexReport:
         """Add a report section.
 
         For more info on sections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
+        Blueprints uses Section > Subsection > Subsubsection > content (from add_text etc.) hierarchy.
 
         Parameters
         ----------
@@ -229,6 +230,7 @@ class LatexReport:
         """Add a subsection.
 
         For more info on subsections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
+        Blueprints uses Section > Subsection > Subsubsection > content (from add_text etc.) hierarchy.
 
         Parameters
         ----------
@@ -256,6 +258,7 @@ class LatexReport:
         """Add a subsubsection.
 
         For more info on subsubsections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
+        Blueprints uses Section > Subsection > Subsubsection > content (from add_text etc.) hierarchy.
 
         Parameters
         ----------
@@ -366,6 +369,8 @@ class LatexReport:
     ) -> Self:
         r"""Add a figure with an image.
 
+        For more info on figures, see: https://www.overleaf.com/learn/latex/Inserting_Images
+
         Parameters
         ----------
         image_path : str
@@ -373,17 +378,14 @@ class LatexReport:
         width : float, optional
             Width specification for the image as ratio of the text width. Default is 0.9.
         position : str, optional
-            LaTeX positioning parameter. Default is 'h'.
+            LaTeX positioning parameter (e.g., 'h', 't', 'b'). Default is 'h'.
 
-            =========  ==================================================================================
-            Parameter  Description
-            =========  ==================================================================================
-            h          Place the float here, approximately at the same point it occurs in the source text
-            t          Position at the top of the page
-            b          Position at the bottom of the page
-            p          Put on a special page for floats only
-            =========  ==================================================================================
-
+            h: Will place the figure here approximately.
+            t: Position the figure at the top of the page.
+            b: Position the figure at the bottom of the page.
+            p: Put the figure in a special page, for floats only.
+            !: Override internal LaTeX parameters.
+            H: Place the figure at this precise location, pretty much like h!.
         caption : str, optional
             Caption text for the figure. Will be displayed below the image. Default is None.
 
@@ -416,15 +418,15 @@ class LatexReport:
 
         return self
 
-    def add_itemize(self, items: list[str]) -> Self:
+    def add_itemize(self, items: list[str | list]) -> Self:
         """Add a bulleted list using LaTeX itemize environment.
 
         For more info on itemize, see: https://www.overleaf.com/learn/latex/Lists#The_itemize_environment_for_bulleted_(unordered)_lists
 
         Parameters
         ----------
-        items : list[str]
-            List of items to display as bullets.
+        items : list[str | list]
+            List of items to display as bullets. Can include nested lists for sub-items.
 
         Returns
         -------
@@ -435,27 +437,36 @@ class LatexReport:
         --------
         >>> report = LatexReport()
         >>> report.add_itemize(["Bullet 1", "Bullet 2", "Bullet 3"])
+        >>> report.add_itemize(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", "III"]]])
+
         """
-        itemize = r"\begin{itemize} "
-        for item in items:
-            itemize += rf"\item {item} "
-        itemize += r"\end{itemize}"
-        self.content += itemize
+
+        def build_itemize(item_list: list, depth: int = 0) -> str:
+            result = r"\begin{itemize} "
+            for item in item_list:
+                if isinstance(item, list):
+                    result += build_itemize(item, depth + 1)
+                else:
+                    result += rf"\item {item} "
+            result += r"\end{itemize} "
+            return result
+
+        self.content += build_itemize(items)
 
         # Add a newline for visual separation
         self.content += "\n"
 
         return self
 
-    def add_enumerate(self, items: list[str]) -> Self:
+    def add_enumerate(self, items: list[str | list]) -> Self:
         """Add a numbered list using LaTeX enumerate environment.
 
         For more info on enumerate, see: https://www.overleaf.com/learn/latex/Lists#The_enumerate_environment_for_numbered_(ordered)_lists
 
         Parameters
         ----------
-        items : list[str]
-            List of items to display as numbered entries.
+        items : list[str | list]
+            List of items to display as numbered entries. Can include nested lists for sub-items.
 
         Returns
         -------
@@ -466,12 +477,20 @@ class LatexReport:
         --------
         >>> report = LatexReport()
         >>> report.add_enumerate(["Number 1", "Number 2", "Number 3"])
+        >>> report.add_enumerate(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", "III"]]])
         """
-        enumerate_content = r"\begin{enumerate} "
-        for item in items:
-            enumerate_content += rf"\item {item} "
-        enumerate_content += r"\end{enumerate}"
-        self.content += enumerate_content
+
+        def build_enumerate(item_list: list, depth: int = 0) -> str:
+            result = r"\begin{enumerate} "
+            for item in item_list:
+                if isinstance(item, list):
+                    result += build_enumerate(item, depth + 1)
+                else:
+                    result += rf"\item {item} "
+            result += r"\end{enumerate} "
+            return result
+
+        self.content += build_enumerate(items)
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -620,6 +639,7 @@ class LatexReport:
             r"    {\thesubsubsection}{1em}{}" + "\n"
             r"\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}" + "\n"
             "\n"
+            r"\parindent 0in" + "\n"
             r"\begin{document}" + "\n"
             rf"\title{{{doc_title}}}" + "\n"
             r"\date{}" + "\n"

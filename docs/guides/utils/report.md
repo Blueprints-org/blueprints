@@ -226,6 +226,10 @@ report.add_itemize(["Check 1 passed", "Check 2 passed", "Check 3 failed"])
 # Numbered list
 report.add_enumerate(["First step: verify inputs", "Second step: run calculations", "Third step: review results"])
 
+# Numbered list, nested
+report.add_enumerate(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", "III"]]])
+
+
 print(report.to_document())
 ```
 
