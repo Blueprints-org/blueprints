@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Literal, Self
+from typing import Any, Literal, Self
 
 from blueprints.codes.formula import Formula
 
@@ -419,14 +419,14 @@ class LatexReport:
 
         return self
 
-    def add_itemize(self, items: Sequence[str | list]) -> Self:
+    def add_itemize(self, items: Sequence[Any]) -> Self:
         """Add a bulleted list using LaTeX itemize environment.
 
         For more info on itemize, see: https://www.overleaf.com/learn/latex/Lists#The_itemize_environment_for_bulleted_(unordered)_lists
 
         Parameters
         ----------
-        items : Sequence[str | list]
+        items : Sequence[Any]
             List of items to display as bullets. Can include nested lists for sub-items.
 
         Returns
@@ -460,14 +460,14 @@ class LatexReport:
 
         return self
 
-    def add_enumerate(self, items: Sequence[str | list]) -> Self:
+    def add_enumerate(self, items: Sequence[Any]) -> Self:
         """Add a numbered list using LaTeX enumerate environment.
 
         For more info on enumerate, see: https://www.overleaf.com/learn/latex/Lists#The_enumerate_environment_for_numbered_(ordered)_lists
 
         Parameters
         ----------
-        items : Sequence[str | list]
+        items : Sequence[Any]
             List of items to display as numbered entries. Can include nested lists for sub-items.
 
         Returns

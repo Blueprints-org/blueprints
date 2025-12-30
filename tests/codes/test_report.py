@@ -208,6 +208,18 @@ class TestLatexReport:
         assert r"\item Third item" in fixture_report.content
         assert r"\end{itemize}" in fixture_report.content
 
+    def test_add_itemize_nested(self, fixture_report: LatexReport) -> None:
+        """Test adding nested itemized list."""
+        items = ["Item 1", ["Subitem 1.1", "Subitem 1.2"], "Item 2"]
+        fixture_report.add_itemize(items)
+
+        assert fixture_report.content.count(r"\begin{itemize}") == 2
+        assert r"\item Item 1" in fixture_report.content
+        assert r"\item Subitem 1.1" in fixture_report.content
+        assert r"\item Subitem 1.2" in fixture_report.content
+        assert r"\item Item 2" in fixture_report.content
+        assert fixture_report.content.count(r"\end{itemize}") == 2
+
     def test_add_itemize_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_itemize returns self for method chaining."""
         result = fixture_report.add_itemize(["Item"])
@@ -223,6 +235,18 @@ class TestLatexReport:
         assert r"\item Second number" in fixture_report.content
         assert r"\item Third number" in fixture_report.content
         assert r"\end{enumerate}" in fixture_report.content
+
+    def test_add_enumerate_nested(self, fixture_report: LatexReport) -> None:
+        """Test adding nested enumerated list."""
+        items = ["Number 1", ["Subnumber 1.1", "Subnumber 1.2"], "Number 2"]
+        fixture_report.add_enumerate(items)
+
+        assert fixture_report.content.count(r"\begin{enumerate}") == 2
+        assert r"\item Number 1" in fixture_report.content
+        assert r"\item Subnumber 1.1" in fixture_report.content
+        assert r"\item Subnumber 1.2" in fixture_report.content
+        assert r"\item Number 2" in fixture_report.content
+        assert fixture_report.content.count(r"\end{enumerate}") == 2
 
     def test_add_enumerate_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_enumerate returns self for method chaining."""
