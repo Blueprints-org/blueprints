@@ -178,7 +178,8 @@ class TranslateLatex:
 
     def _replace_text_commands(self, replacements: list) -> str:
         r"""
-        Replace all \text{...} in the string with the corresponding replacements.
+        Replace all \text{...}, \textbf{...}, and \textit{...} in the string with the corresponding replacements.
+        Only captures the innermost text content when commands are nested.
 
         Parameters
         ----------
@@ -188,18 +189,33 @@ class TranslateLatex:
         Returns
         -------
         str
-            The string with \text{...} replaced by the corresponding replacements.
+            The string with \text{...}, \textbf{...}, and \textit{...} replaced by the corresponding replacements.
         """
         replacements_iter = iter(replacements)
 
-        def repl(_: re.Match) -> str:
-            return r"\text{" + next(replacements_iter) + "}"
+        def repl(match: re.Match) -> str:
+            command = match.group(1)  # Captures 'text', 'textbf', or 'textit'
+            content = match.group(2)
 
-        return re.sub(r"\\text\{(.*?)\}", repl, self.original)
+            # Check if content contains nested text commands
+            if re.search(r"\\(text|textbf|textit)\{", content):
+                # Return as-is, let outer loop handle inner content
+                return match.group(0)
+            # This is innermost text, replace it
+            return f"\\{command}{{{next(replacements_iter)}}}"
+
+        # Keep applying replacements until no more nested commands remain
+        prev = None
+        result = self.original
+        while prev != result:
+            prev = result
+            result = re.sub(r"\\(text|textbf|textit)\{([^{}]*)\}", repl, result)
+
+        return result
 
     def _check_decimal_separator(self, s: str) -> str:
         r"""
-        Replace all periods with commas outside of \text{...} blocks.
+        Replace all periods with commas outside of \txt{...} blocks.
 
         Parameters
         ----------
