@@ -442,17 +442,18 @@ class LatexReport:
 
         """
 
-        def build_itemize(item_list: list, depth: int = 0) -> str:
+        def _build_itemize(item_list: list, depth: int = 0) -> str:
+            """Recursively build itemize environment for nested lists."""
             result = r"\begin{itemize} "
             for item in item_list:
                 if isinstance(item, list):
-                    result += build_itemize(item, depth + 1)
+                    result += _build_itemize(item, depth + 1)
                 else:
                     result += rf"\item {item} "
             result += r"\end{itemize} "
             return result
 
-        self.content += build_itemize(list(items))
+        self.content += _build_itemize(list(items))
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -481,17 +482,18 @@ class LatexReport:
         >>> report.add_enumerate(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", "III"]]])
         """
 
-        def build_enumerate(item_list: list, depth: int = 0) -> str:
+        def _build_enumerate(item_list: list, depth: int = 0) -> str:
+            """Recursively build enumerate environment for nested lists."""
             result = r"\begin{enumerate} "
             for item in item_list:
                 if isinstance(item, list):
-                    result += build_enumerate(item, depth + 1)
+                    result += _build_enumerate(item, depth + 1)
                 else:
                     result += rf"\item {item} "
             result += r"\end{enumerate} "
             return result
 
-        self.content += build_enumerate(list(items))
+        self.content += _build_enumerate(list(items))
 
         # Add a newline for visual separation
         self.content += "\n"
