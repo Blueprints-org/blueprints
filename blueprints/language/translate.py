@@ -119,6 +119,7 @@ class TranslateLatex:
         r"""
         Translate a list of strings to the destination language.
         First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
+        Preserves leading and trailing spaces in the translated text.
 
         Parameters
         ----------
@@ -134,6 +135,7 @@ class TranslateLatex:
         results: list[str | None] = []
         missing: list[str] = []
         missing_indices: list[int] = []
+        missing_spaces: list[tuple[str, str]] = []  # Store (leading_space, trailing_space) for each missing text
 
         for i, t in enumerate(texts):
             if hasattr(self, "translation_dict") and t in self.translation_dict:
@@ -144,8 +146,13 @@ class TranslateLatex:
                     results.append(wildcard_result)
                 else:
                     results.append(None)
-                    missing.append(t)
+                    # Extract leading and trailing spaces
+                    leading_space = t[: len(t) - len(t.lstrip())]
+                    trailing_space = t[len(t.rstrip()) :]
+                    stripped_text = t.strip()
+                    missing.append(stripped_text)
                     missing_indices.append(i)
+                    missing_spaces.append((leading_space, trailing_space))
 
         # for missing texts, use Google Translate
         if missing:
@@ -168,12 +175,13 @@ class TranslateLatex:
                 translated_texts = [tr.text for tr in translations]  # pragma: no cover, could fail if google is offline
             except Exception:
                 self.translation_failed = True
-                # Failsafe: if translation fails, keep original English text
+                # Failsafe: if translation fails, keep original English text (with spaces)
                 translated_texts = missing
                 logging.exception("Google translation failed, using original English text.")
 
-            for idx, val in zip(missing_indices, translated_texts):
-                results[idx] = val
+            # Restore leading and trailing spaces
+            for idx, val, (leading, trailing) in zip(missing_indices, translated_texts, missing_spaces):
+                results[idx] = leading + val + trailing
         return results
 
     def _replace_text_commands(self, replacements: list) -> str:
@@ -248,6 +256,23 @@ class TranslateLatex:
         new_segments = [seg if is_text_block(seg) else seg.replace(".", ",") for seg in parts]
         return "".join(new_segments)
 
+    def _extract_balanced_content(self, text: str, start_pos: int) -> tuple[str, int]:
+        r"""
+        Extract content from balanced braces starting at start_pos.
+        Returns (content, end_position).
+        """
+        depth = 0
+        i = start_pos
+        while i < len(text):
+            if text[i] == "{":
+                depth += 1
+            elif text[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    return text[start_pos + 1 : i], i
+            i += 1
+        return text[start_pos + 1 :], len(text)
+
     def _translate_latex(self) -> str:
         r"""
         Extract, translate, and reconstruct LaTeX string with translated text commands.
@@ -258,7 +283,16 @@ class TranslateLatex:
         str
             The LaTeX string with translated text commands.
         """
-        texts = re.findall(r"\\(?:text|txt|textbf|textit)\{(.*?)\}", self.original)
+        # Extract only innermost text content (without nested commands)
+        texts = []
+        pattern = r"\\(?:text|txt|textbf|textit)\{"
+        for match in re.finditer(pattern, self.original):
+            start = match.end() - 1  # Position of '{'
+            content, _ = self._extract_balanced_content(self.original, start)
+            # Only include if content doesn't contain nested text commands
+            if not re.search(r"\\(?:text|txt|textbf|textit)\{", content):
+                texts.append(content)
+
         if not texts:
             # If no text blocks, still apply period-to-comma if needed
             return self._check_decimal_separator(self.original)

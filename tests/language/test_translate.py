@@ -101,3 +101,10 @@ class TestTranslateLatex:
         if not TranslateLatex(example_latex, "nl").translation_failed:
             result_nl = TranslateLatex(example_latex, "nl")
             assert str(result_nl) == r"\txt{Nummer één} \newline \txt{Nummer twee}"
+
+    def test_nested_commands(self) -> None:
+        """Test TranslateLatex with nested LaTeX commands."""
+        example_latex = r"\txt{Normal text with }\textbf{bold text, }\textit{italic text}\textbf{\textit{ and both.}}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\txt{Normale tekst met }\textbf{vetgedrukte tekst, }\textit{cursieve tekst}\textbf{\textit{ en beide.}}"
