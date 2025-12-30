@@ -596,60 +596,67 @@ class LatexReport:
         # Build the preamble with styling to match Word document converter (pdflatex compatible)
         preamble = (
             r"\documentclass[11pt]{article}" + "\n"
-            r"\usepackage{amsmath}" + "\n"
-            r"\usepackage{booktabs}" + "\n"
-            r"\usepackage{geometry}" + "\n"
-            r"\usepackage{graphicx}" + "\n"
-            r"\usepackage{setspace}" + "\n"
-            r"\usepackage{xcolor}" + "\n"
-            r"\usepackage{titlesec}" + "\n"
-            r"\usepackage{helvet}" + "\n"
-            r"\usepackage[T1]{fontenc}" + "\n"
-            r"\usepackage{enumitem}" + "\n"
-            r"\geometry{a4paper, margin=1in}" + "\n"
-            r"\setstretch{1.3}" + "\n"
+            # Required packages
+            r"\usepackage{amsmath}" + "\n"  # Advanced math environments and symbols
+            r"\usepackage{booktabs}" + "\n"  # Professional-looking tables with \toprule, \midrule, \bottomrule
+            r"\usepackage{geometry}" + "\n"  # Page layout and margins
+            r"\usepackage{graphicx}" + "\n"  # Include images and graphics
+            r"\usepackage{setspace}" + "\n"  # Line spacing control
+            r"\usepackage{xcolor}" + "\n"  # Color definitions and usage
+            r"\usepackage{titlesec}" + "\n"  # Customize section titles
+            r"\usepackage{helvet}" + "\n"  # Helvetica font family (sans-serif)
+            r"\usepackage[T1]{fontenc}" + "\n"  # Better font encoding for special characters
+            r"\usepackage{enumitem}" + "\n"  # Enhanced list customization
+            # Page setup
+            r"\geometry{a4paper, margin=1in}" + "\n"  # A4 paper with 1-inch margins
+            r"\setstretch{1.3}" + "\n"  # Line spacing factor
             "\n"
-            r"% Custom text command that allows line breaks" + "\n"
-            r"\newcommand{\txt}[1]{#1}" + "\n"
-            r"\setlength{\parskip}{0pt}" + "\n"
-            r"\setlength{\abovedisplayskip}{12pt}" + "\n"
-            r"\setlength{\belowdisplayskip}{12pt}" + "\n"
-            r"\setlist{nosep}" + "\n"
+            # Custom commands
+            r"\newcommand{\txt}[1]{#1}" + "\n"  # Simple text wrapper command
+            # Spacing configuration
+            r"\setlength{\parskip}{0pt}" + "\n"  # No extra space between paragraphs
+            r"\setlength{\abovedisplayskip}{12pt}" + "\n"  # Space above equations
+            r"\setlength{\belowdisplayskip}{12pt}" + "\n"  # Space below equations
+            r"\setlist{nosep}" + "\n"  # Remove extra spacing in lists
             "\n"
-            r"% Define the dark blue color" + "\n"
-            r"\definecolor{blueprintblue}{RGB}{0,40,85}" + "\n"
+            # Color definitions
+            r"\definecolor{blueprintblue}{RGB}{0,40,85}" + "\n"  # Custom blue color (0, 40, 85)
             "\n"
-            r"% Configure title style (18pt, sans-serif, bold, blue)" + "\n"
-            r"\makeatletter" + "\n"
-            r"\renewcommand{\maketitle}{%" + "\n"
-            r"    \begin{center}%" + "\n"
-            r"        {\sffamily\fontsize{18}{19}\selectfont\bfseries\color{blueprintblue}\@title}%" + "\n"
-            r"        \vspace{4pt}%" + "\n"
+            # Title formatting
+            r"\makeatletter" + "\n"  # Access internal LaTeX commands
+            r"\renewcommand{\maketitle}{%" + "\n"  # Redefine \maketitle command
+            r"    \begin{center}%" + "\n"  # Center the title
+            r"        {\sffamily\fontsize{18}{19}\selectfont\bfseries\color{blueprintblue}\@title}%" + "\n"  # 18pt, bold, blue, sans-serif title
+            r"        \vspace{4pt}%" + "\n"  # 4pt vertical space after title
             r"    \end{center}%" + "\n"
             r"}" + "\n"
-            r"\makeatother" + "\n"
+            r"\makeatother" + "\n"  # Restore @ character behavior
             "\n"
-            r"% Configure section styles" + "\n"
-            r"\titleformat{\section}" + "\n"
-            r"    {\sffamily\fontsize{14}{15}\selectfont\bfseries\color{blueprintblue}}" + "\n"
-            r"    {\thesection}{1em}{}" + "\n"
-            r"\titlespacing*{\section}{0pt}{8pt}{4pt}" + "\n"
+            # Section formatting
+            r"\titleformat{\section}" + "\n"  # Section heading format
+            r"    {\sffamily\fontsize{14}{15}\selectfont\bfseries\color{blueprintblue}}" + "\n"  # 14pt, bold, blue, sans-serif
+            r"    {\thesection}{1em}{}" + "\n"  # Section number with 1em space
+            r"\titlespacing*{\section}{0pt}{8pt}{4pt}" + "\n"  # Spacing: left, before, after
             "\n"
-            r"\titleformat{\subsection}" + "\n"
-            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"
-            r"    {\thesubsection}{1em}{}" + "\n"
-            r"\titlespacing*{\subsection}{0pt}{8pt}{4pt}" + "\n"
+            # Subsection formatting
+            r"\titleformat{\subsection}" + "\n"  # Subsection heading format
+            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"  # 12pt, bold, blue, sans-serif
+            r"    {\thesubsection}{1em}{}" + "\n"  # Subsection number with 1em space
+            r"\titlespacing*{\subsection}{0pt}{8pt}{4pt}" + "\n"  # Spacing: left, before, after
             "\n"
-            r"\titleformat{\subsubsection}" + "\n"
-            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"
-            r"    {\thesubsubsection}{1em}{}" + "\n"
-            r"\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}" + "\n"
+            # Subsubsection formatting
+            r"\titleformat{\subsubsection}" + "\n"  # Subsubsection heading format
+            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"  # 12pt, bold, blue, sans-serif
+            r"    {\thesubsubsection}{1em}{}" + "\n"  # Subsubsection number with 1em space
+            r"\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}" + "\n"  # Spacing: left, before, after
             "\n"
-            r"\parindent 0in" + "\n"
+            # Paragraph formatting
+            r"\parindent 0in" + "\n"  # No paragraph indentation
+            # Begin document
             r"\begin{document}" + "\n"
-            rf"\title{{{doc_title}}}" + "\n"
-            r"\date{}" + "\n"
-            r"\maketitle" + "\n"
+            rf"\title{{{doc_title}}}" + "\n"  # Set document title
+            r"\date{}" + "\n"  # No date displayed
+            r"\maketitle" + "\n"  # Generate the title
         )
 
         # Combine preamble, content, and closing
