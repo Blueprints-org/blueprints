@@ -204,27 +204,12 @@ class TranslateLatex:
         def _repl(match: re.Match) -> str:
             nonlocal replacement_index
             command = match.group(1)  # Captures 'text', 'txt', 'textbf', or 'textit'
-            content = match.group(2)
+            replacement = replacements[replacement_index]
+            replacement_index += 1
+            return f"\\{command}{{{replacement}}}"
 
-            # Check if content contains nested text commands
-            if re.search(r"\\(text|txt|textbf|textit)\{", content):
-                # Return as-is, let outer loop handle inner content
-                return match.group(0)
-            # This is innermost text, replace it
-            if replacement_index < len(replacements):
-                replacement = replacements[replacement_index]
-                replacement_index += 1
-                return f"\\{command}{{{replacement}}}"
-            return match.group(0)  # No more replacements available
-
-        # Keep applying replacements until no more nested commands remain
-        prev = None
-        result = self.original
-        while prev != result:
-            prev = result
-            result = re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, result)
-
-        return result
+        # Apply all replacements in one pass (since we only extract innermost text)
+        return re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, self.original)
 
     def _check_decimal_separator(self, s: str) -> str:
         r"""
@@ -269,9 +254,9 @@ class TranslateLatex:
             elif text[i] == "}":
                 depth -= 1
                 if depth == 0:
-                    return text[start_pos + 1 : i], i
+                    break
             i += 1
-        return text[start_pos + 1 :], len(text)
+        return text[start_pos + 1 : i], i
 
     def _translate_latex(self) -> str:
         r"""
