@@ -201,7 +201,7 @@ class TranslateLatex:
         """
         replacement_index = 0
 
-        def repl(match: re.Match) -> str:
+        def _repl(match: re.Match) -> str:
             nonlocal replacement_index
             command = match.group(1)  # Captures 'text', 'txt', 'textbf', or 'textit'
             content = match.group(2)
@@ -222,7 +222,7 @@ class TranslateLatex:
         result = self.original
         while prev != result:
             prev = result
-            result = re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", repl, result)
+            result = re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, result)
 
         return result
 
