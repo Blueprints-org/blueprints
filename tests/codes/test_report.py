@@ -30,7 +30,7 @@ class TestLatexReport:
     def test_add_text_regular(self, fixture_report: LatexReport) -> None:
         """Test adding regular text."""
         fixture_report.add_text("This is regular text")
-        expected = r"\text{This is regular text}" + "\n"
+        expected = r"\txt{This is regular text}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_text_bold(self, fixture_report: LatexReport) -> None:
@@ -55,8 +55,8 @@ class TestLatexReport:
         """Test that add_text returns self for method chaining."""
         result = fixture_report.add_text("First").add_text("Second")
         assert result is fixture_report
-        assert r"\text{First}" in fixture_report.content
-        assert r"\text{Second}" in fixture_report.content
+        assert r"\txt{First}" in fixture_report.content
+        assert r"\txt{Second}" in fixture_report.content
 
     def test_add_equation_without_tag(self, fixture_report: LatexReport) -> None:
         """Test adding equation without tag."""
@@ -78,7 +78,7 @@ class TestLatexReport:
     def test_add_equation_inline(self, fixture_report: LatexReport) -> None:
         """Test adding inline equation."""
         fixture_report.add_equation(r"\frac{a}{b}", inline=True)
-        expected = r"\text{$\frac{a}{b}$}" + "\n"
+        expected = r"\txt{$\frac{a}{b}$}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_equation_inline_method_chaining(self, fixture_report: LatexReport) -> None:
@@ -310,7 +310,7 @@ class TestLatexReport:
         assert r"\section{Introduction}" in latex_document
         assert r"\subsection{Background}" in latex_document
         assert r"\subsubsection{Details}" in latex_document
-        assert r"\text{This is normal text.}" in latex_document
+        assert r"\txt{This is normal text.}" in latex_document
         assert r"\textbf{This is bold text with newline after.}" in latex_document
         assert r"\textit{This is italic text with 4 newlines after.}" in latex_document
         assert r"\textbf{\textit{This is bold and italic text.}}" in latex_document

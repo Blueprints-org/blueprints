@@ -1,5 +1,6 @@
 """Report builder for LaTeX documents."""
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import Literal, Self
 
@@ -118,7 +119,7 @@ class LatexReport:
 
         """
         if inline:
-            self.content += r"\text{" + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r"}"
+            self.content += r"\txt{" + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r"}"
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
@@ -418,14 +419,14 @@ class LatexReport:
 
         return self
 
-    def add_itemize(self, items: list[str | list]) -> Self:
+    def add_itemize(self, items: Sequence[str | list]) -> Self:
         """Add a bulleted list using LaTeX itemize environment.
 
         For more info on itemize, see: https://www.overleaf.com/learn/latex/Lists#The_itemize_environment_for_bulleted_(unordered)_lists
 
         Parameters
         ----------
-        items : list[str | list]
+        items : Sequence[str | list]
             List of items to display as bullets. Can include nested lists for sub-items.
 
         Returns
@@ -451,21 +452,21 @@ class LatexReport:
             result += r"\end{itemize} "
             return result
 
-        self.content += build_itemize(items)
+        self.content += build_itemize(list(items))
 
         # Add a newline for visual separation
         self.content += "\n"
 
         return self
 
-    def add_enumerate(self, items: list[str | list]) -> Self:
+    def add_enumerate(self, items: Sequence[str | list]) -> Self:
         """Add a numbered list using LaTeX enumerate environment.
 
         For more info on enumerate, see: https://www.overleaf.com/learn/latex/Lists#The_enumerate_environment_for_numbered_(ordered)_lists
 
         Parameters
         ----------
-        items : list[str | list]
+        items : Sequence[str | list]
             List of items to display as numbered entries. Can include nested lists for sub-items.
 
         Returns
@@ -490,7 +491,7 @@ class LatexReport:
             result += r"\end{enumerate} "
             return result
 
-        self.content += build_enumerate(items)
+        self.content += build_enumerate(list(items))
 
         # Add a newline for visual separation
         self.content += "\n"
