@@ -79,7 +79,7 @@ class LatexReport:
         elif italic:
             self.content += rf"\textit{{{text}}}"
         else:
-            self.content += rf"\text{{{text}}}"
+            self.content += rf"\txt{{{text}}}"
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -605,6 +605,9 @@ class LatexReport:
             r"\usepackage{enumitem}" + "\n"
             r"\geometry{a4paper, margin=1in}" + "\n"
             r"\setstretch{1.3}" + "\n"
+            "\n"
+            r"% Custom text command that allows line breaks" + "\n"
+            r"\newcommand{\txt}[1]{#1}" + "\n"
             r"\setlength{\parskip}{0pt}" + "\n"
             r"\setlength{\abovedisplayskip}{12pt}" + "\n"
             r"\setlength{\belowdisplayskip}{12pt}" + "\n"
