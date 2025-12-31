@@ -21,3 +21,8 @@ Perfect for developers who want to understand *why* Blueprints works the way it 
 Join the Blueprints community! Whether you're fixing bugs, adding features, or improving documentation.
 
 Your contributions help advance civil engineering for engineers worldwide.
+
+
+### [Utils](utils/report.md)
+
+We plan to add common utilities here that can be useful across different Blueprints modules. Stay tuned for more!

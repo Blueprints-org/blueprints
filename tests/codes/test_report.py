@@ -1,9 +1,9 @@
-"""Tests for the LatexReport and ReportFormula classes."""
+"""Tests for the LatexReport class."""
 
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
-from blueprints.codes.report import LatexReport
+from blueprints.utils.report import LatexReport
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ class TestLatexReport:
     def test_add_text_regular(self, fixture_report: LatexReport) -> None:
         """Test adding regular text."""
         fixture_report.add_text("This is regular text")
-        expected = r"\text{This is regular text}" + "\n"
+        expected = r"\txt{This is regular text}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_text_bold(self, fixture_report: LatexReport) -> None:
@@ -55,8 +55,8 @@ class TestLatexReport:
         """Test that add_text returns self for method chaining."""
         result = fixture_report.add_text("First").add_text("Second")
         assert result is fixture_report
-        assert r"\text{First}" in fixture_report.content
-        assert r"\text{Second}" in fixture_report.content
+        assert r"\txt{First}" in fixture_report.content
+        assert r"\txt{Second}" in fixture_report.content
 
     def test_add_equation_without_tag(self, fixture_report: LatexReport) -> None:
         """Test adding equation without tag."""
@@ -78,7 +78,7 @@ class TestLatexReport:
     def test_add_equation_inline(self, fixture_report: LatexReport) -> None:
         """Test adding inline equation."""
         fixture_report.add_equation(r"\frac{a}{b}", inline=True)
-        expected = r"\text{$\frac{a}{b}$}" + "\n"
+        expected = r"\txt{$\frac{a}{b}$}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_equation_inline_method_chaining(self, fixture_report: LatexReport) -> None:
@@ -208,6 +208,18 @@ class TestLatexReport:
         assert r"\item Third item" in fixture_report.content
         assert r"\end{itemize}" in fixture_report.content
 
+    def test_add_itemize_nested(self, fixture_report: LatexReport) -> None:
+        """Test adding nested itemized list."""
+        items = ["Item 1", ["Subitem 1.1", "Subitem 1.2"], "Item 2"]
+        fixture_report.add_itemize(items)
+
+        assert fixture_report.content.count(r"\begin{itemize}") == 2
+        assert r"\item Item 1" in fixture_report.content
+        assert r"\item Subitem 1.1" in fixture_report.content
+        assert r"\item Subitem 1.2" in fixture_report.content
+        assert r"\item Item 2" in fixture_report.content
+        assert fixture_report.content.count(r"\end{itemize}") == 2
+
     def test_add_itemize_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_itemize returns self for method chaining."""
         result = fixture_report.add_itemize(["Item"])
@@ -223,6 +235,18 @@ class TestLatexReport:
         assert r"\item Second number" in fixture_report.content
         assert r"\item Third number" in fixture_report.content
         assert r"\end{enumerate}" in fixture_report.content
+
+    def test_add_enumerate_nested(self, fixture_report: LatexReport) -> None:
+        """Test adding nested enumerated list."""
+        items = ["Number 1", ["Subnumber 1.1", "Subnumber 1.2"], "Number 2"]
+        fixture_report.add_enumerate(items)
+
+        assert fixture_report.content.count(r"\begin{enumerate}") == 2
+        assert r"\item Number 1" in fixture_report.content
+        assert r"\item Subnumber 1.1" in fixture_report.content
+        assert r"\item Subnumber 1.2" in fixture_report.content
+        assert r"\item Number 2" in fixture_report.content
+        assert fixture_report.content.count(r"\end{enumerate}") == 2
 
     def test_add_enumerate_method_chaining(self, fixture_report: LatexReport) -> None:
         """Test that add_enumerate returns self for method chaining."""
@@ -262,11 +286,6 @@ class TestLatexReport:
         assert r"\maketitle" in document
         assert r"\section{Test Section}" in document
         assert r"\end{document}" in document
-
-    def test_to_document_with_parameter_title(self, fixture_report: LatexReport) -> None:
-        """Test generating document with parameter title overriding instance title."""
-        document = fixture_report.to_document(title="Override Title")
-        assert r"\title{Override Title}" in document
 
     def test_to_document_without_title(self) -> None:
         """Test generating document without any title."""
@@ -315,7 +334,7 @@ class TestLatexReport:
         assert r"\section{Introduction}" in latex_document
         assert r"\subsection{Background}" in latex_document
         assert r"\subsubsection{Details}" in latex_document
-        assert r"\text{This is normal text.}" in latex_document
+        assert r"\txt{This is normal text.}" in latex_document
         assert r"\textbf{This is bold text with newline after.}" in latex_document
         assert r"\textit{This is italic text with 4 newlines after.}" in latex_document
         assert r"\textbf{\textit{This is bold and italic text.}}" in latex_document
@@ -334,3 +353,70 @@ class TestLatexReport:
         assert r"\title{Sample Report}" in latex_document
         assert r"\begin{document}" in latex_document
         assert r"\end{document}" in latex_document
+
+    def test_add_formula_invalid_option(self, fixture_report: LatexReport) -> None:
+        """Test that add_formula raises ValueError for invalid option."""
+        formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
+        with pytest.raises(ValueError, match="Invalid option"):
+            fixture_report.add_formula(formula, options="invalid_option")  # type: ignore[arg-type]
+
+    def test_add_table_empty_headers(self, fixture_report: LatexReport) -> None:
+        """Test that add_table raises ValueError for empty headers."""
+        with pytest.raises(ValueError, match="At least one header is required"):
+            fixture_report.add_table(headers=[], rows=[["1", "2"]])
+
+    def test_add_table_empty_rows(self, fixture_report: LatexReport) -> None:
+        """Test that add_table raises ValueError for empty rows."""
+        with pytest.raises(ValueError, match="At least one row is required"):
+            fixture_report.add_table(headers=["A", "B"], rows=[])
+
+    def test_add_table_column_mismatch(self, fixture_report: LatexReport) -> None:
+        """Test that add_table raises ValueError for column mismatch."""
+        with pytest.raises(ValueError, match="Row 0 has 2 columns but 3 headers were provided"):
+            fixture_report.add_table(
+                headers=["A", "B", "C"],
+                rows=[["1", "2"]],
+            )
+
+    def test_add_figure_with_caption(self, fixture_report: LatexReport) -> None:
+        """Test adding figure with caption."""
+        fixture_report.add_figure("image.png", caption="Test caption")
+        assert r"\caption{Test caption}" in fixture_report.content
+        assert r"\begin{figure}" in fixture_report.content
+
+    def test_repr_empty_report(self) -> None:
+        """Test repr of empty report."""
+        report = LatexReport(title="Test")
+        repr_str = repr(report)
+        assert "LatexReport" in repr_str
+        assert 'title="Test"' in repr_str
+        assert "sections=0" in repr_str
+
+    def test_repr_with_content(self) -> None:
+        """Test repr of report with content."""
+        report = LatexReport(title="Report")
+        report.add_section("Intro")
+        report.add_equation("a=b")
+        report.add_table(headers=["X"], rows=[["1"]])
+        repr_str = repr(report)
+        assert "sections=1" in repr_str
+        assert "equations=1" in repr_str
+        assert "tables=1" in repr_str
+
+    def test_str_representation(self, fixture_report: LatexReport) -> None:
+        """Test string representation of report."""
+        fixture_report.add_section("Section 1")
+        fixture_report.add_subsection("Subsection 1")
+        fixture_report.add_equation("x = y")
+        str_repr = str(fixture_report)
+        assert "LaTeX Report: Test Report" in str_repr
+        assert "Sections:      1" in str_repr
+        assert "Subsections:   1" in str_repr
+        assert "Equations:     1" in str_repr
+        assert "to_document()" in str_repr
+
+    def test_str_representation_untitled(self) -> None:
+        """Test string representation of untitled report."""
+        report = LatexReport()
+        str_repr = str(report)
+        assert "LaTeX Report: (untitled)" in str_repr
