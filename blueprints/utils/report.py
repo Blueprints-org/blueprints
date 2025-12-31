@@ -1,4 +1,10 @@
-"""Report builder for LaTeX documents."""
+"""Report builder for LaTeX documents.
+
+Developer notes: The features in this class are designed to create LaTeX reports that can be compiled with pdflatex.
+The LaTeX styling is made to match with the Word document report styling as closely as possible. Changes here
+should ideally be reflected in the Word document converter in report_to_word_document.py.
+
+"""
 
 from collections.abc import Sequence
 from dataclasses import dataclass, field
@@ -119,7 +125,7 @@ class LatexReport:
 
         """
         if inline:
-            self.content += r"\txt{" + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r"}"
+            self.content += r"\txt{ " + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r" }"
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
