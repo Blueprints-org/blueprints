@@ -119,6 +119,7 @@ class TranslateLatex:
         r"""
         Translate a list of strings to the destination language.
         First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
+        Preserves leading and trailing spaces in the translated text.
 
         Parameters
         ----------
@@ -134,6 +135,7 @@ class TranslateLatex:
         results: list[str | None] = []
         missing: list[str] = []
         missing_indices: list[int] = []
+        missing_spaces: list[tuple[str, str]] = []  # Store (leading_space, trailing_space) for each missing text
 
         for i, t in enumerate(texts):
             if hasattr(self, "translation_dict") and t in self.translation_dict:
@@ -144,8 +146,13 @@ class TranslateLatex:
                     results.append(wildcard_result)
                 else:
                     results.append(None)
-                    missing.append(t)
+                    # Extract leading and trailing spaces
+                    leading_space = t[: len(t) - len(t.lstrip())]
+                    trailing_space = t[len(t.rstrip()) :]
+                    stripped_text = t.strip()
+                    missing.append(stripped_text)
                     missing_indices.append(i)
+                    missing_spaces.append((leading_space, trailing_space))
 
         # for missing texts, use Google Translate
         if missing:
@@ -168,17 +175,19 @@ class TranslateLatex:
                 translated_texts = [tr.text for tr in translations]  # pragma: no cover, could fail if google is offline
             except Exception:
                 self.translation_failed = True
-                # Failsafe: if translation fails, keep original English text
+                # Failsafe: if translation fails, keep original English text (with spaces)
                 translated_texts = missing
                 logging.exception("Google translation failed, using original English text.")
 
-            for idx, val in zip(missing_indices, translated_texts):
-                results[idx] = val
+            # Restore leading and trailing spaces
+            for idx, val, (leading, trailing) in zip(missing_indices, translated_texts, missing_spaces):
+                results[idx] = leading + val + trailing
         return results
 
     def _replace_text_commands(self, replacements: list) -> str:
         r"""
-        Replace all \text{...} in the string with the corresponding replacements.
+        Replace all \text{...}, \txt{...}, \textbf{...}, and \textit{...} in the string with the corresponding replacements.
+        Only captures the innermost text content when commands are nested.
 
         Parameters
         ----------
@@ -188,18 +197,23 @@ class TranslateLatex:
         Returns
         -------
         str
-            The string with \text{...} replaced by the corresponding replacements.
+            The string with \text{...}, \txt{...}, \textbf{...}, and \textit{...} replaced by the corresponding replacements.
         """
-        replacements_iter = iter(replacements)
+        replacement_index = 0
 
-        def repl(_: re.Match) -> str:
-            return r"\text{" + next(replacements_iter) + "}"
+        def _repl(match: re.Match) -> str:
+            nonlocal replacement_index
+            command = match.group(1)  # Captures 'text', 'txt', 'textbf', or 'textit'
+            replacement = replacements[replacement_index]
+            replacement_index += 1
+            return f"\\{command}{{{replacement}}}"
 
-        return re.sub(r"\\text\{(.*?)\}", repl, self.original)
+        # Apply all replacements in one pass (since we only extract innermost text)
+        return re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, self.original)
 
     def _check_decimal_separator(self, s: str) -> str:
         r"""
-        Replace all periods with commas outside of \text{...} blocks.
+        Replace all periods with commas outside of \text{...}, \txt{...}, etc. blocks.
 
         Parameters
         ----------
@@ -209,7 +223,7 @@ class TranslateLatex:
         Returns
         -------
         str
-            The processed LaTeX string with periods replaced by commas outside of \text{...} blocks if in a relevant language.
+            The processed LaTeX string with periods replaced by commas outside of text blocks if in a relevant language.
         """
         # Languages that use comma as decimal separator
         comma_decimal_languages_1 = ["bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "hr", "hu", "is", "it", "lt", "lv"]
@@ -218,14 +232,31 @@ class TranslateLatex:
             return s
 
         # Use regex to split into text blocks and non-text blocks
-        pattern = re.compile(r"(\\text\{.*?\})")
+        pattern = re.compile(r"(\\(?:text|txt|textbf|textit)\{.*?\})")
         parts = pattern.split(s)
 
         def is_text_block(seg: str) -> bool:
-            return seg.startswith(r"\text{") and seg.endswith("}")
+            return seg.startswith((r"\text{", r"\txt{", r"\textbf{", r"\textit{")) and seg.endswith("}")
 
         new_segments = [seg if is_text_block(seg) else seg.replace(".", ",") for seg in parts]
         return "".join(new_segments)
+
+    def _extract_balanced_content(self, text: str, start_pos: int) -> tuple[str, int]:
+        r"""
+        Extract content from balanced braces starting at start_pos.
+        Returns (content, end_position).
+        """
+        depth = 0
+        i = start_pos
+        while i < len(text):
+            if text[i] == "{":
+                depth += 1
+            elif text[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            i += 1
+        return text[start_pos + 1 : i], i
 
     def _translate_latex(self) -> str:
         r"""
@@ -235,9 +266,18 @@ class TranslateLatex:
         Returns
         -------
         str
-            The LaTeX string with translated \text{...} commands.
+            The LaTeX string with translated text commands.
         """
-        texts = re.findall(r"\\text\{(.*?)\}", self.original)
+        # Extract only innermost text content (without nested commands)
+        texts = []
+        pattern = r"\\(?:text|txt|textbf|textit)\{"
+        for match in re.finditer(pattern, self.original):
+            start = match.end() - 1  # Position of '{'
+            content, _ = self._extract_balanced_content(self.original, start)
+            # Only include if content doesn't contain nested text commands
+            if not re.search(r"\\(?:text|txt|textbf|textit)\{", content):
+                texts.append(content)
+
         if not texts:
             # If no text blocks, still apply period-to-comma if needed
             return self._check_decimal_separator(self.original)
