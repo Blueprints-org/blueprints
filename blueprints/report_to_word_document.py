@@ -12,7 +12,7 @@ from docx.oxml.xmlchemy import BaseOxmlElement
 from docx.shared import Inches, Pt, RGBColor
 from docx.text.paragraph import Paragraph
 
-from blueprints.codes.report import LatexReport
+from blueprints.utils.report import LatexReport
 
 
 class ReportToWordConverter:
