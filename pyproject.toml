@@ -88,7 +88,6 @@ cli = [
     {include-group = "dev"},
     {include-group = "test"},
     {include-group = "docs"},
-
 ]
 
 [project.urls]
