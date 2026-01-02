@@ -222,7 +222,7 @@ cli = [
     { name = "mkdocs-gen-files", specifier = "~=0.5.0" },
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.4.7,<1.6.0" },
     { name = "mkdocs-jupyter", specifier = "~=0.25.1" },
-    { name = "mkdocs-material", specifier = "~=9.6.14" },
+    { name = "mkdocs-material", specifier = ">=9.6.14,<9.8.0" },
     { name = "mkdocs-open-in-new-tab", specifier = "~=1.0.8" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.29.1,<1.1.0" },
     { name = "mypy", specifier = "==1.19.1" },
@@ -256,7 +256,7 @@ docs = [
     { name = "mkdocs-gen-files", specifier = "~=0.5.0" },
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.4.7,<1.6.0" },
     { name = "mkdocs-jupyter", specifier = "~=0.25.1" },
-    { name = "mkdocs-material", specifier = "~=9.6.14" },
+    { name = "mkdocs-material", specifier = ">=9.6.14,<9.8.0" },
     { name = "mkdocs-open-in-new-tab", specifier = "~=1.0.8" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.29.1,<1.1.0" },
     { name = "natsort", specifier = "~=8.4.0" },
@@ -1512,7 +1512,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-material"
-version = "9.6.23"
+version = "9.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "babel" },
@@ -1527,9 +1527,9 @@ dependencies = [
     { name = "pymdown-extensions" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/57/de/cc1d5139c2782b1a49e1ed1845b3298ed6076b9ba1c740ad7c952d8ffcf9/mkdocs_material-9.6.23.tar.gz", hash = "sha256:62ebc9cdbe90e1ae4f4e9b16a6aa5c69b93474c7b9e79ebc0b11b87f9f055e00", size = 4048130, upload-time = "2025-11-01T16:33:11.782Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/27/e2/2ffc356cd72f1473d07c7719d82a8f2cbd261666828614ecb95b12169f41/mkdocs_material-9.7.1.tar.gz", hash = "sha256:89601b8f2c3e6c6ee0a918cc3566cb201d40bf37c3cd3c2067e26fadb8cce2b8", size = 4094392, upload-time = "2025-12-18T09:49:00.308Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f5/df/bc583e857174b0dc6df67d555123533f09e7e1ac0f3fae7693fb6840c0a3/mkdocs_material-9.6.23-py3-none-any.whl", hash = "sha256:3bf3f1d82d269f3a14ed6897bfc3a844cc05e1dc38045386691b91d7e6945332", size = 9210689, upload-time = "2025-11-01T16:33:08.196Z" },
+    { url = "https://files.pythonhosted.org/packages/3e/32/ed071cb721aca8c227718cffcf7bd539620e9799bbf2619e90c757bfd030/mkdocs_material-9.7.1-py3-none-any.whl", hash = "sha256:3f6100937d7d731f87f1e3e3b021c97f7239666b9ba1151ab476cabb96c60d5c", size = 9297166, upload-time = "2025-12-18T09:48:56.664Z" },
 ]
 
 [[package]]
