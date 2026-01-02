@@ -218,7 +218,7 @@ cli = [
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
     { name = "mathml2omml", specifier = ">=0.0.2" },
     { name = "mkdocs", specifier = "~=1.6.1" },
-    { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.3.0" },
+    { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.4.0" },
     { name = "mkdocs-gen-files", specifier = "~=0.5.0" },
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.4.7,<1.6.0" },
     { name = "mkdocs-jupyter", specifier = "~=0.25.1" },
@@ -252,7 +252,7 @@ dev = [
 docs = [
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
     { name = "mkdocs", specifier = "~=1.6.1" },
-    { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.3.0" },
+    { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.4.0" },
     { name = "mkdocs-gen-files", specifier = "~=0.5.0" },
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.4.7,<1.6.0" },
     { name = "mkdocs-jupyter", specifier = "~=0.25.1" },
@@ -1439,7 +1439,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-awesome-nav"
-version = "3.2.0"
+version = "3.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mkdocs" },
@@ -1447,9 +1447,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "wcmatch" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fc/59/d39d2ab15f667a07d978110efd67da14f77d3316ec69b29d69ebe8babdbd/mkdocs_awesome_nav-3.2.0.tar.gz", hash = "sha256:ec0eab7bbe94532d9b3f18ae9a54599b670069856b93df9f6ced1b4a62dfe510", size = 8947, upload-time = "2025-09-10T21:39:21.129Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1f/96/d581c9ceae7d8c08c7456d1d2befbf3e9c7a52a6b03aebbe6dc1d46ffdac/mkdocs_awesome_nav-3.3.0.tar.gz", hash = "sha256:330edf4129995a7be8a9751edd8739d312fddf591c6cbd95ec80f12f4bfe8578", size = 9112, upload-time = "2025-12-02T20:10:46.11Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/2a/dab5925d2d66a1620400e9b64127e576859a0d5dc0cb5ebda1c4f64601ef/mkdocs_awesome_nav-3.2.0-py3-none-any.whl", hash = "sha256:1acf17aaa0f13a5506d3bdb39965bae3136df18a9a2e1106190ebaae2c14d1b6", size = 12662, upload-time = "2025-09-10T21:39:20.302Z" },
+    { url = "https://files.pythonhosted.org/packages/de/98/dc154a7f0bb25827d988dc31992917606d1ca9f5349077db045bb5cd9dbc/mkdocs_awesome_nav-3.3.0-py3-none-any.whl", hash = "sha256:bf80f14bff9571df79129bbdf103b4198589ee7616f8a29720ae2e7ac2455930", size = 12891, upload-time = "2025-12-02T20:10:45.054Z" },
 ]
 
 [[package]]
