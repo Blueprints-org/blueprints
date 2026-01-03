@@ -10,6 +10,7 @@ try:
     import mathml2omml
     from docx import Document
     from docx.document import Document as DocumentObject
+    from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
     from docx.oxml import OxmlElement, parse_xml
     from docx.oxml.ns import qn
     from docx.oxml.xmlchemy import BaseOxmlElement
@@ -249,10 +250,10 @@ class ReportToWordConverter:
 
         # Define style configurations for each heading type
         style_config = {
-            "title": {"size": 18, "space_before": 0, "space_after": 20, "alignment": 1},
-            "section": {"size": 14, "space_before": 8, "space_after": 4, "alignment": 0},
-            "subsection": {"size": 12, "space_before": 4, "space_after": 4, "alignment": 0},
-            "subsubsection": {"size": 12, "space_before": 4, "space_after": 0, "alignment": 0},
+            "title": {"size": 18, "space_before": 0, "space_after": 20, "alignment": WD_PARAGRAPH_ALIGNMENT.CENTER},
+            "section": {"size": 14, "space_before": 8, "space_after": 4, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
+            "subsection": {"size": 12, "space_before": 4, "space_after": 4, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
+            "subsubsection": {"size": 12, "space_before": 4, "space_after": 0, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
         }
 
         config = style_config[heading_type]
@@ -368,7 +369,7 @@ class ReportToWordConverter:
         p.style = "No Spacing"
         p.paragraph_format.space_before = Pt(6)
         p.paragraph_format.space_after = Pt(6)
-        p.alignment = 1  # Center alignment
+        p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         p._p.append(self._formula(equation_content))  # noqa: SLF001
         if tag:
             p.add_run(f" ({tag})")
@@ -473,7 +474,7 @@ class ReportToWordConverter:
         para.style = "No Spacing"
         para.paragraph_format.space_before = Pt(6)
         para.paragraph_format.space_after = Pt(6)
-        para.alignment = 1  # Center alignment
+        para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
         # Get width from figure info (default to 3 inches if not specified)
         width = float(figure_info.get("width_inches", 3.0))
@@ -488,7 +489,7 @@ class ReportToWordConverter:
             caption_para.style = "No Spacing"
             caption_para.paragraph_format.space_before = Pt(6)
             caption_para.paragraph_format.space_after = Pt(6)
-            caption_para.alignment = 1  # Center alignment
+            caption_para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
             run = caption_para.add_run(caption)
             run.italic = True
 
