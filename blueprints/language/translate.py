@@ -183,13 +183,15 @@ class TranslateLatex:
                 results[idx] = leading + val + trailing
         return results
 
-    def _replace_text_commands(self, replacements: list) -> str:
+    def _replace_text_commands(self, text: str, replacements: list) -> str:
         r"""
         Replace all \text{...}, \txt{...}, \textbf{...}, and \textit{...} in the string with the corresponding replacements.
         Only captures the innermost text content when commands are nested.
 
         Parameters
         ----------
+        text : str
+            The LaTeX string to process.
         replacements : list[str]
             The list of replacement strings.
 
@@ -208,7 +210,7 @@ class TranslateLatex:
             return f"\\{command}{{{replacement}}}"
 
         # Apply all replacements in one pass (since we only extract innermost text)
-        return re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, self.original)
+        return re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, text)
 
     def _replace_section_commands(self, text: str, replacements: list) -> str:
         r"""
@@ -534,7 +536,7 @@ class TranslateLatex:
             replaced = self._replace_table_cells(replaced, table_translations)
 
         if texts:
-            replaced = self._replace_text_commands(text_translations)
+            replaced = self._replace_text_commands(replaced, text_translations)
 
         if section_texts:
             replaced = self._replace_section_commands(replaced, section_translations)
