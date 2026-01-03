@@ -328,7 +328,7 @@ class TranslateLatex:
                 # Check if this cell contains translatable plain text (not just LaTeX commands)
                 cell_stripped = cell.strip()
                 # Skip if cell is empty, only has \text{} commands, or has other LaTeX commands
-                if cell_stripped and not re.match(r"^\s*$", cell_stripped) and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
+                if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
                     # Check if there's actual text content outside of \text{} commands
                     temp_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
                     if temp_text.strip() and replacement_index < len(replacements):
