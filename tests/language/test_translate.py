@@ -179,3 +179,17 @@ class TestTranslateLatex:
                 r"\midrule \\ \bottomrule \end{tabular} \end{table}"
             )
             assert str(result_nl) == expected
+
+    def test_itemize_translation(self) -> None:
+        """Test TranslateLatex with itemize translation."""
+        example_latex = r"\begin{itemize} \item First \item Second thing \item Third \end{itemize}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\begin{itemize} \item Eerst\item Tweede ding\item Derde\end{itemize}"
+
+    def test_enumerate_translation(self) -> None:
+        """Test TranslateLatex with enumerate translation."""
+        example_latex = r"\begin{enumerate} \item One \item Two \end{enumerate}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\begin{enumerate} \item Een\item Twee\end{enumerate}"
