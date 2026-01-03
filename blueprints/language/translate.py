@@ -350,15 +350,9 @@ class TranslateLatex:
 
             # Skip header lines (before \midrule)
             parts = re.split(r"(\\midrule)", tabular_content, maxsplit=1)
-            if len(parts) >= 3:
-                header_part = parts[0]
-                midrule = parts[1]
-                content_part = parts[2]
-            else:
-                # No midrule found, process all content
-                header_part = ""
-                midrule = ""
-                content_part = tabular_content
+            header_part = parts[0]
+            midrule = parts[1]
+            content_part = parts[2]
 
             # Process rows in content part
             processed_content = re.sub(r"([^\\].*?)(?=\\\\|\\bottomrule|\\end)", _repl_row, content_part, flags=re.DOTALL)
