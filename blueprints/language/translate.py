@@ -526,8 +526,15 @@ class TranslateLatex:
         idx += len(item_texts)
         table_translations = all_translations[idx : idx + len(table_texts)]
 
-        # Apply replacements
-        replaced = self._replace_text_commands(text_translations) if texts else self.original
+        # Apply replacements - table cells must be replaced before text commands
+        # to prevent mismatch when cells contain \text{} commands
+        replaced = self.original
+
+        if table_texts:
+            replaced = self._replace_table_cells(replaced, table_translations)
+
+        if texts:
+            replaced = self._replace_text_commands(text_translations)
 
         if section_texts:
             replaced = self._replace_section_commands(replaced, section_translations)
@@ -537,9 +544,6 @@ class TranslateLatex:
 
         if item_texts:
             replaced = self._replace_item_commands(replaced, item_translations)
-
-        if table_texts:
-            replaced = self._replace_table_cells(replaced, table_translations)
 
         # Only replace periods with commas outside text blocks for certain languages
         return self._check_decimal_separator(replaced)
