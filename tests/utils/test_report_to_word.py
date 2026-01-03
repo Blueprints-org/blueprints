@@ -1,5 +1,7 @@
 """Tests for the ReportToWordConverter class."""
 
+from pathlib import Path
+
 from blueprints.utils.report import LatexReport
 from blueprints.utils.report_to_word import ReportToWordConverter
 
@@ -37,7 +39,9 @@ class TestReportToWordConverter:
         report.add_subsubsection("Yet another Subsubsection")
         report.add_subsubsection("Yet another Subsubsection v2")
 
-        report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Description of the image.")
+        # Use cross-platform path that works on both Windows and Linux/Mac
+        logo_path = Path("docs") / "_overrides" / "assets" / "images" / "logo-light-mode.png"
+        report.add_figure(str(logo_path), width=0.4, caption="Description of the image.")
         latex_content = report.to_document(language="nl")
         converter = ReportToWordConverter()
         assert converter.to_word(latex_content)
