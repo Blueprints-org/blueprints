@@ -9,7 +9,7 @@ class TestReportToWordConverter:
 
     def test_empty_input_returns_empty_document(self) -> None:
         """Test that an empty LaTeX string returns an empty Document."""
-        assert ReportToWordConverter().convert_to_word("")
+        assert ReportToWordConverter().to_word("")
 
     def test_complex_document_conversion(self) -> None:
         """Test conversion of a complex LaTeX document."""
@@ -42,4 +42,4 @@ class TestReportToWordConverter:
         latex = str(report.to_document())
         converter = ReportToWordConverter()
 
-        assert converter.convert_to_word(latex)
+        assert converter.to_word(latex)
