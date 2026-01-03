@@ -108,3 +108,74 @@ class TestTranslateLatex:
         if not TranslateLatex(example_latex, "nl").translation_failed:
             result_nl = TranslateLatex(example_latex, "nl")
             assert str(result_nl) == r"\txt{Normale tekst met }\textbf{vetgedrukte tekst, }\textit{cursieve tekst}\textbf{\textit{ en beide.}}"
+
+    def test_figure_caption(self) -> None:
+        """Test TranslateLatex with figure caption translation."""
+        example_latex = (
+            r"\begin{figure}[h] \centering \includegraphics[width=0.4\textwidth]{path.png} \caption{This is the figure caption.} \end{figure}"
+        )
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            expected = (
+                r"\begin{figure}[h] \centering \includegraphics[width=0.4\textwidth]{path.png} "
+                r"\caption{Dit is het onderschrift van de figuur.} \end{figure}"
+            )
+            assert str(result_nl) == expected
+
+    def test_title_translation(self) -> None:
+        """Test TranslateLatex with title translation."""
+        example_latex = r"\title{This is the document title}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\title{Dit is de documenttitel}"
+
+    def test_section_translation(self) -> None:
+        """Test TranslateLatex with section translation."""
+        example_latex = r"\section{Introduction of the subject}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\section{Introductie van het onderwerp}"
+
+    def test_subsection_translation(self) -> None:
+        """Test TranslateLatex with subsection translation."""
+        example_latex = r"\subsection{Background}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\subsection{Achtergrond}"
+
+    def test_subsubsection_translation(self) -> None:
+        """Test TranslateLatex with subsubsection translation."""
+        example_latex = r"\subsubsection{Part 1}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\subsubsection{Deel 1}"
+
+    def test_table_translation(self) -> None:
+        """Test TranslateLatex with table translation."""
+        example_latex = (
+            r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 with math $E=mc^2$ \\ "
+            r"\midrule Row 1 Col 1 & Row 1 Col 2 with inline math $a^2 + b^2 = c^2$ & Row 1 Col 3 \\ "
+            r"Row 2 Col 1 & Row 2 Col 2 & Row 2 Col 3 \\ \bottomrule \end{tabular} \end{table}"
+        )
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            expected = (
+                r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 with math $E=mc^2$ \\ "
+                r"\midrule Rij 1 Kol 1 & Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = c^2$ & Rij 1 Kol 3 \\ "
+                r"Rij 2 Kol 1 & Rij 2 Kol 2 & Rij 2 Kol 3 \\ \bottomrule \end{tabular} \end{table}"
+            )
+            assert str(result_nl) == expected
+
+    def test_empty_table(self) -> None:
+        """Test TranslateLatex with empty table translation."""
+        example_latex = (
+            r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 \\ "
+            r"\midrule \\ \bottomrule \end{tabular} \end{table}"
+        )
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            expected = (
+                r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 \\ "
+                r"\midrule \\ \bottomrule \end{tabular} \end{table}"
+            )
+            assert str(result_nl) == expected
