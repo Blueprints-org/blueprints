@@ -5,8 +5,6 @@ from typing import Any
 
 import numpy as np
 
-from blueprints.utils.report import LatexReport
-
 try:
     import latex2mathml.converter
     import mathml2omml
@@ -54,7 +52,7 @@ class ReportToWordConverter:
         self.subsection_counter: int = 0
         self.subsubsection_counter: int = 0
 
-    def to_word(self, content: LatexReport | str) -> DocumentObject:
+    def to_word(self, content: str) -> DocumentObject:
         r"""
         Convert a LaTeX string (with text, equations, titles, sections, subsections, tables) to a Word Document object.
         Args:

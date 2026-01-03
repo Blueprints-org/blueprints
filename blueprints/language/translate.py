@@ -210,9 +210,38 @@ class TranslateLatex:
         # Apply all replacements in one pass (since we only extract innermost text)
         return re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, self.original)
 
+    def _replace_section_commands(self, text: str, replacements: list) -> str:
+        r"""
+        Replace all \section{...}, \subsection{...}, \subsubsection{...}, and \title{...} in the string with the corresponding replacements.
+        Only captures the innermost text content when commands are nested.
+
+        Parameters
+        ----------
+        text : str
+            The LaTeX string to process.
+        replacements : list[str]
+            The list of replacement strings.
+
+        Returns
+        -------
+        str
+            The string with \section{...}, \subsection{...}, \subsubsection{...}, and \title{...} replaced by the corresponding replacements.
+        """
+        replacement_index = 0
+
+        def _repl(match: re.Match) -> str:
+            nonlocal replacement_index
+            command = match.group(1)  # Captures 'section', 'subsection', 'subsubsection', or 'title'
+            replacement = replacements[replacement_index]
+            replacement_index += 1
+            return f"\\{command}{{{replacement}}}"
+
+        # Apply all replacements in one pass (since we only extract innermost text)
+        return re.sub(r"\\(section|subsection|subsubsection|title)\{([^{}]*)\}", _repl, text)
+
     def _check_decimal_separator(self, s: str) -> str:
         r"""
-        Replace all periods with commas outside of \text{...}, \txt{...}, etc. blocks.
+        Replace all periods with commas outside of \text{...}, \txt{...}, etc. blocks and \begin{figure}...\end{figure} blocks.
 
         Parameters
         ----------
@@ -222,7 +251,7 @@ class TranslateLatex:
         Returns
         -------
         str
-            The processed LaTeX string with periods replaced by commas outside of text blocks if in a relevant language.
+            The processed LaTeX string with periods replaced by commas outside of text blocks and figure blocks if in a relevant language.
         """
         # Languages that use comma as decimal separator
         comma_decimal_languages_1 = ["bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "hr", "hu", "is", "it", "lt", "lv"]
@@ -230,14 +259,17 @@ class TranslateLatex:
         if self.dest_language not in comma_decimal_languages_1 + comma_decimal_languages_2:
             return s
 
-        # Use regex to split into text blocks and non-text blocks
-        pattern = re.compile(r"(\\(?:text|txt|textbf|textit)\{.*?\})")
+        # Use regex to split into text blocks, figure blocks, and non-protected blocks
+        # Match text commands and figure environments
+        pattern = re.compile(r"(\\(?:text|txt|textbf|textit)\{.*?\}|\\begin\{figure\}.*?\\end\{figure\})", re.DOTALL)
         parts = pattern.split(s)
 
-        def is_text_block(seg: str) -> bool:
-            return seg.startswith((r"\text{", r"\txt{", r"\textbf{", r"\textit{")) and seg.endswith("}")
+        def is_protected_block(seg: str) -> bool:
+            return (seg.startswith((r"\text{", r"\txt{", r"\textbf{", r"\textit{")) and seg.endswith("}")) or (
+                seg.startswith(r"\begin{figure}") and seg.endswith(r"\end{figure}")
+            )
 
-        new_segments = [seg if is_text_block(seg) else seg.replace(".", ",") for seg in parts]
+        new_segments = [seg if is_protected_block(seg) else seg.replace(".", ",") for seg in parts]
         return "".join(new_segments)
 
     def _extract_balanced_content(self, text: str, start_pos: int) -> tuple[str, int]:
@@ -260,6 +292,7 @@ class TranslateLatex:
     def _translate_latex(self) -> str:
         r"""
         Extract, translate, and reconstruct LaTeX string with translated text commands.
+        Also translates content in \section{}, \subsection{}, \subsubsection{}, and \title{}.
         For certain languages, also replace periods with commas outside of text blocks.
 
         Returns
@@ -277,11 +310,32 @@ class TranslateLatex:
             if not re.search(r"\\(?:text|txt|textbf|textit)\{", content):
                 texts.append(content)
 
-        if not texts:
+        # Extract content from \section{}, \subsection{}, \subsubsection{}, and \title{}
+        section_texts = []
+        section_pattern = r"\\(?:section|subsection|subsubsection|title)\{"
+        for match in re.finditer(section_pattern, self.original):
+            start = match.end() - 1  # Position of '{'
+            content, _ = self._extract_balanced_content(self.original, start)
+            section_texts.append(content)
+
+        if not texts and not section_texts:
             # If no text blocks, still apply period-to-comma if needed
             return self._check_decimal_separator(self.original)
-        translations = self._translate_bulk(texts)
-        replaced = self._replace_text_commands(translations)
+
+        # Translate all texts in one bulk operation
+        all_texts = texts + section_texts
+        all_translations = self._translate_bulk(all_texts)
+
+        # Split translations back into text and section parts
+        text_translations = all_translations[: len(texts)]
+        section_translations = all_translations[len(texts) :]
+
+        # Apply replacements
+        replaced = self._replace_text_commands(text_translations) if texts else self.original
+
+        if section_texts:
+            replaced = self._replace_section_commands(replaced, section_translations)
+
         # Only replace periods with commas outside text blocks for certain languages
         return self._check_decimal_separator(replaced)
 
