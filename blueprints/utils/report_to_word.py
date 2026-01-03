@@ -720,7 +720,7 @@ class ReportToWordConverter:
             level = begins_before - ends_before - 1
             items_with_levels.append({"content": str(item_info["content"]), "level": level})
 
-        # Find maximum nesting level and creater counters
+        # Find maximum nesting level and create counters
         max_level = max((int(item["level"]) for item in items_with_levels), default=0)
         level_counters = np.zeros(max_level + 1, dtype=int)
 
@@ -732,7 +732,7 @@ class ReportToWordConverter:
             level_counters[level + 1 :] = 0
             item["index"] = ReportToWordConverter._get_number_format(int(level_counters[level]), level)
 
-        # allign length of indexes
+        # align length of indexes
         max_index_length = max((len(str(item["index"])) for item in items_with_levels), default=0)
         for item in items_with_levels:
             item["index"] = str(item["index"]).ljust(max_index_length)
