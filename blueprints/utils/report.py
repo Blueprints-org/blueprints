@@ -733,5 +733,5 @@ report.add_subsection("Yet another Subsection")
 report.add_subsubsection("Yet another Subsubsection")
 report.add_subsubsection("Title of a part")
 
-report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Blueprints Logo")
+report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Description of the figure goes here.")
 report.to_word("whatdoesthisdo.docx", language="fy")

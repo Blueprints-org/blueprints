@@ -37,7 +37,7 @@ class TestReportToWordConverter:
         report.add_subsubsection("Yet another Subsubsection")
         report.add_subsubsection("Yet another Subsubsection v2")
 
-        report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Blueprints Logo")
+        report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Description of the image.")
         latex_content = report.to_document(language="nl")
         converter = ReportToWordConverter()
         assert converter.to_word(latex_content)
