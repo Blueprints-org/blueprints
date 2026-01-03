@@ -78,7 +78,7 @@ class TestLatexReport:
     def test_add_equation_inline(self, fixture_report: LatexReport) -> None:
         """Test adding inline equation."""
         fixture_report.add_equation(r"\frac{a}{b}", inline=True)
-        expected = r"\txt{$\frac{a}{b}$}" + "\n"
+        expected = r"\txt{ $\frac{a}{b}$ }" + "\n"
         assert fixture_report.content == expected
 
     def test_add_equation_inline_method_chaining(self, fixture_report: LatexReport) -> None:
