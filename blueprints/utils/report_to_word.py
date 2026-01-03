@@ -1,7 +1,7 @@
 """Module to convert Report to a Word document."""
 
 import re
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 
@@ -265,7 +265,7 @@ class ReportToWordConverter:
         run.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
         para.paragraph_format.space_before = Pt(int(config["space_before"]))
         para.paragraph_format.space_after = Pt(int(config["space_after"]))
-        para.alignment = WD_PARAGRAPH_ALIGNMENT(config["alignment"])  # type: ignore[arg-type]
+        para.alignment = cast(WD_PARAGRAPH_ALIGNMENT, config["alignment"])
 
     def _add_grouped_text(self, doc: DocumentObject, parsed: list[dict[str, str | int]], start_index: int) -> int:
         """Group consecutive text items into a single paragraph.
