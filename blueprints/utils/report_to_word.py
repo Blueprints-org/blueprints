@@ -249,7 +249,7 @@ class ReportToWordConverter:
         para = doc.add_paragraph(numbered_content)
 
         # Define style configurations for each heading type
-        style_config = {
+        style_config: dict[str, dict[str, int | WD_PARAGRAPH_ALIGNMENT]] = {
             "title": {"size": 18, "space_before": 0, "space_after": 20, "alignment": WD_PARAGRAPH_ALIGNMENT.CENTER},
             "section": {"size": 14, "space_before": 8, "space_after": 4, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
             "subsection": {"size": 12, "space_before": 4, "space_after": 4, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
@@ -260,12 +260,12 @@ class ReportToWordConverter:
         para.style = "No Spacing"
         run = para.runs[0]
         run.font.name = "Arial"
-        run.font.size = Pt(config["size"])
+        run.font.size = Pt(int(config["size"]))
         run.font.bold = True
         run.font.color.rgb = RGBColor(0x00, 0x28, 0x55)
-        para.paragraph_format.space_before = Pt(config["space_before"])
-        para.paragraph_format.space_after = Pt(config["space_after"])
-        para.alignment = config["alignment"]
+        para.paragraph_format.space_before = Pt(int(config["space_before"]))
+        para.paragraph_format.space_after = Pt(int(config["space_after"]))
+        para.alignment = WD_PARAGRAPH_ALIGNMENT(config["alignment"])  # type: ignore[arg-type]
 
     def _add_grouped_text(self, doc: DocumentObject, parsed: list[dict[str, str | int]], start_index: int) -> int:
         """Group consecutive text items into a single paragraph.
@@ -490,7 +490,7 @@ class ReportToWordConverter:
             caption_para.paragraph_format.space_before = Pt(6)
             caption_para.paragraph_format.space_after = Pt(6)
             caption_para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-            run = caption_para.add_run(caption)
+            run = caption_para.add_run(str(caption))
             run.italic = True
 
     def _add_itemize_to_doc(self, doc: DocumentObject, itemize_latex: str) -> None:
