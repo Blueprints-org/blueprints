@@ -734,4 +734,4 @@ report.add_subsubsection("Yet another Subsubsection")
 report.add_subsubsection("Title of a part")
 
 report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Blueprints Logo")
-report.to_word("whatdoesthisdo.docx", language="nl")
+report.to_word("whatdoesthisdo.docx", language="fy")

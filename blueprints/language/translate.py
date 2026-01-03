@@ -239,6 +239,135 @@ class TranslateLatex:
         # Apply all replacements in one pass (since we only extract innermost text)
         return re.sub(r"\\(section|subsection|subsubsection|title)\{([^{}]*)\}", _repl, text)
 
+    def _replace_caption_commands(self, text: str, replacements: list) -> str:
+        r"""
+        Replace all \caption{...} in the string with the corresponding replacements.
+        Only captures the innermost text content when commands are nested.
+
+        Parameters
+        ----------
+        text : str
+            The LaTeX string to process.
+        replacements : list[str]
+            The list of replacement strings.
+
+        Returns
+        -------
+        str
+            The string with \caption{...} replaced by the corresponding replacements.
+        """
+        replacement_index = 0
+
+        def _repl(_match: re.Match) -> str:
+            nonlocal replacement_index
+            replacement = replacements[replacement_index]
+            replacement_index += 1
+            return f"\\caption{{{replacement}}}"
+
+        # Apply all replacements in one pass (since we only extract innermost text)
+        return re.sub(r"\\caption\{([^{}]*)\}", _repl, text)
+
+    def _replace_item_commands(self, text: str, replacements: list) -> str:
+        r"""
+        Replace all \item content in the string with the corresponding replacements.
+        Only processes \item commands without nested braces.
+
+        Parameters
+        ----------
+        text : str
+            The LaTeX string to process.
+        replacements : list[str]
+            The list of replacement strings.
+
+        Returns
+        -------
+        str
+            The string with \item content replaced by the corresponding replacements.
+        """
+        replacement_index = 0
+
+        def _repl(match: re.Match) -> str:
+            nonlocal replacement_index
+            # Get the whitespace after \item
+            whitespace = match.group(1)
+            replacement = replacements[replacement_index]
+            replacement_index += 1
+            return f"\\item{whitespace}{replacement}"
+
+        # Match \item followed by whitespace and text up to newline or next command
+        # This captures plain text items without nested structure
+        return re.sub(r"\\item(\s+)([^\\]+?)(?=\\|$)", _repl, text, flags=re.DOTALL)
+
+    def _replace_table_cells(self, text: str, replacements: list) -> str:
+        r"""
+        Replace text content in table cells with the corresponding replacements.
+        Only processes cells that don't contain LaTeX commands (except \text{...}).
+
+        Parameters
+        ----------
+        text : str
+            The LaTeX string to process.
+        replacements : list[str]
+            The list of replacement strings.
+
+        Returns
+        -------
+        str
+            The string with table cell content replaced by the corresponding replacements.
+        """
+        replacement_index = 0
+
+        def _repl_row(match: re.Match) -> str:
+            nonlocal replacement_index
+            row_content = match.group(0)
+            # Split by & to get cells
+            cells = row_content.split("&")
+            new_cells = []
+
+            for cell in cells:
+                # Check if this cell contains translatable plain text (not just LaTeX commands)
+                cell_stripped = cell.strip()
+                # Skip if cell is empty, only has \text{} commands, or has other LaTeX commands
+                if cell_stripped and not re.match(r"^\s*$", cell_stripped) and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
+                    # Check if there's actual text content outside of \text{} commands
+                    temp_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
+                    if temp_text.strip() and replacement_index < len(replacements):
+                        # This cell has translatable text
+                        new_cells.append(cell.replace(cell_stripped, replacements[replacement_index]))
+                        replacement_index += 1
+                        continue
+                new_cells.append(cell)
+
+            return "&".join(new_cells)
+
+        # Match table rows (content between \\ or at end of tabular)
+        # Process content within tabular environments
+        def _process_tabular(match: re.Match) -> str:
+            nonlocal replacement_index
+            tabular_start = match.group(1)  # \begin{tabular}{...}
+            tabular_content = match.group(2)
+            tabular_end = match.group(3)  # \end{tabular}
+
+            # Skip header lines (before \midrule)
+            parts = re.split(r"(\\midrule)", tabular_content, maxsplit=1)
+            if len(parts) >= 3:
+                header_part = parts[0]
+                midrule = parts[1]
+                content_part = parts[2]
+            else:
+                # No midrule found, process all content
+                header_part = ""
+                midrule = ""
+                content_part = tabular_content
+
+            # Process rows in content part
+            processed_content = re.sub(r"([^\\].*?)(?=\\\\|\\bottomrule|\\end)", _repl_row, content_part, flags=re.DOTALL)
+
+            return tabular_start + header_part + midrule + processed_content + tabular_end
+
+        # Match tabular environments
+        return re.sub(r"(\\begin\{tabular\}\{[^}]+\})(.*?)(\\end\{tabular\})", _process_tabular, text, flags=re.DOTALL)
+
     def _check_decimal_separator(self, s: str) -> str:
         r"""
         Replace all periods with commas outside of \text{...}, \txt{...}, etc. blocks and \begin{figure}...\end{figure} blocks.
@@ -289,18 +418,8 @@ class TranslateLatex:
             i += 1
         return text[start_pos + 1 : i], i
 
-    def _translate_latex(self) -> str:
-        r"""
-        Extract, translate, and reconstruct LaTeX string with translated text commands.
-        Also translates content in \section{}, \subsection{}, \subsubsection{}, and \title{}.
-        For certain languages, also replace periods with commas outside of text blocks.
-
-        Returns
-        -------
-        str
-            The LaTeX string with translated text commands.
-        """
-        # Extract only innermost text content (without nested commands)
+    def _extract_text_commands(self) -> list[str]:
+        r"""Extract innermost text content from \text{}, \txt{}, \textbf{}, and \textit{} commands."""
         texts = []
         pattern = r"\\(?:text|txt|textbf|textit)\{"
         for match in re.finditer(pattern, self.original):
@@ -309,32 +428,123 @@ class TranslateLatex:
             # Only include if content doesn't contain nested text commands
             if not re.search(r"\\(?:text|txt|textbf|textit)\{", content):
                 texts.append(content)
+        return texts
 
-        # Extract content from \section{}, \subsection{}, \subsubsection{}, and \title{}
+    def _extract_section_commands(self) -> list[str]:
+        r"""Extract content from \section{}, \subsection{}, \subsubsection{}, and \title{} commands."""
         section_texts = []
         section_pattern = r"\\(?:section|subsection|subsubsection|title)\{"
         for match in re.finditer(section_pattern, self.original):
             start = match.end() - 1  # Position of '{'
             content, _ = self._extract_balanced_content(self.original, start)
             section_texts.append(content)
+        return section_texts
 
-        if not texts and not section_texts:
+    def _extract_caption_commands(self) -> list[str]:
+        r"""Extract content from \caption{} commands."""
+        caption_texts = []
+        caption_pattern = r"\\caption\{"
+        for match in re.finditer(caption_pattern, self.original):
+            start = match.end() - 1  # Position of '{'
+            content, _ = self._extract_balanced_content(self.original, start)
+            caption_texts.append(content)
+        return caption_texts
+
+    def _extract_item_commands(self) -> list[str]:
+        r"""Extract content from \item commands."""
+        item_texts = []
+        item_pattern = r"\\item\s+([^\\]+?)(?=\\|$)"
+        for match in re.finditer(item_pattern, self.original, re.DOTALL):
+            content = match.group(1).strip()
+            # Only extract if it's plain text (not nested lists or commands except \text{})
+            if content and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", content):
+                # Remove any \text{} commands temporarily to check for actual text
+                temp_content = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", content)
+                if temp_content.strip():
+                    item_texts.append(content)
+        return item_texts
+
+    def _extract_table_cells(self) -> list[str]:
+        """Extract content from table cells."""
+        table_texts = []
+        # Find all tabular environments
+        tabular_pattern = r"\\begin\{tabular\}\{[^}]+\}(.*?)\\end\{tabular\}"
+        for tabular_match in re.finditer(tabular_pattern, self.original, re.DOTALL):
+            tabular_content = tabular_match.group(1)
+            # Skip header part (before \midrule)
+            parts = re.split(r"\\midrule", tabular_content, maxsplit=1)
+            content_part = parts[1] if len(parts) >= 2 else tabular_content
+
+            # Extract cells from rows
+            row_pattern = r"([^\\]+?)(?=\\\\|\\bottomrule|\\end)"
+            for row_match in re.finditer(row_pattern, content_part, re.DOTALL):
+                row_content = row_match.group(1)
+                # Split by & to get cells
+                cells = row_content.split("&")
+                for cell in cells:
+                    cell_stripped = cell.strip()
+                    # Only extract if it's simple text (not complex LaTeX)
+                    if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
+                        # Check if there's actual text content outside of \text{} commands
+                        temp_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
+                        if temp_text.strip():
+                            table_texts.append(cell_stripped)
+        return table_texts
+
+    def _translate_latex(self) -> str:
+        r"""
+        Extract, translate, and reconstruct LaTeX string with translated text commands.
+        Also translates content in \section{}, \subsection{}, \subsubsection{}, and \title{}.
+        Also translates content in \caption{} (figure/table captions).
+        Also translates content in \item commands (itemize/enumerate lists) and table cells.
+        For certain languages, also replace periods with commas outside of text blocks.
+
+        Returns
+        -------
+        str
+            The LaTeX string with translated text commands.
+        """
+        # Extract text from various LaTeX commands
+        texts = self._extract_text_commands()
+        section_texts = self._extract_section_commands()
+        caption_texts = self._extract_caption_commands()
+        item_texts = self._extract_item_commands()
+        table_texts = self._extract_table_cells()
+
+        if not texts and not section_texts and not caption_texts and not item_texts and not table_texts:
             # If no text blocks, still apply period-to-comma if needed
             return self._check_decimal_separator(self.original)
 
         # Translate all texts in one bulk operation
-        all_texts = texts + section_texts
+        all_texts = texts + section_texts + caption_texts + item_texts + table_texts
         all_translations = self._translate_bulk(all_texts)
 
-        # Split translations back into text and section parts
-        text_translations = all_translations[: len(texts)]
-        section_translations = all_translations[len(texts) :]
+        # Split translations back into different parts
+        idx = 0
+        text_translations = all_translations[idx : idx + len(texts)]
+        idx += len(texts)
+        section_translations = all_translations[idx : idx + len(section_texts)]
+        idx += len(section_texts)
+        caption_translations = all_translations[idx : idx + len(caption_texts)]
+        idx += len(caption_texts)
+        item_translations = all_translations[idx : idx + len(item_texts)]
+        idx += len(item_texts)
+        table_translations = all_translations[idx : idx + len(table_texts)]
 
         # Apply replacements
         replaced = self._replace_text_commands(text_translations) if texts else self.original
 
         if section_texts:
             replaced = self._replace_section_commands(replaced, section_translations)
+
+        if caption_texts:
+            replaced = self._replace_caption_commands(replaced, caption_translations)
+
+        if item_texts:
+            replaced = self._replace_item_commands(replaced, item_translations)
+
+        if table_texts:
+            replaced = self._replace_table_cells(replaced, table_translations)
 
         # Only replace periods with commas outside text blocks for certain languages
         return self._check_decimal_separator(replaced)
