@@ -79,9 +79,9 @@ class TestTranslateLatex:
 
     def test_conversion_of_decimal_comma(self) -> None:
         """Test TranslateLatex with conversion of decimal comma."""
-        example_latex = r"3.14"
+        example_latex = r"\txt{$3.14$}"
         result = TranslateLatex(example_latex, "nl")
-        assert str(result) == r"3,14"
+        assert str(result) == r"\txt{$3,14$}"
 
     def test_non_conversion_of_decimal_comma_in_text(self) -> None:
         """Test TranslateLatex with non-conversion of decimal comma in text."""
@@ -91,9 +91,9 @@ class TestTranslateLatex:
 
     def test_combination_of_equation_and_text(self) -> None:
         """Test TranslateLatex with combination of equation and text."""
-        example_latex = r"\txt{With formula 6.83:} \newline E = mc^2 = 5.3 \cdot 10^{2} J"
+        example_latex = r"\txt{With formula 6.83:} \newline \txt{$E = mc^2 = 5.3 \cdot 10^{2} J$}"
         result_nl = TranslateLatex(example_latex, "nl")
-        assert str(result_nl) == r"\txt{Met formule 6.83:} \newline E = mc^2 = 5,3 \cdot 10^{2} J"
+        assert str(result_nl) == r"\txt{Met formule 6.83:} \newline \txt{$E = mc^2 = 5,3 \cdot 10^{2} J$}"
 
     def test_latex_with_multiple_text_blocks(self) -> None:
         """Test TranslateLatex with LaTeX containing multiple text blocks."""
@@ -154,14 +154,14 @@ class TestTranslateLatex:
         """Test TranslateLatex with table translation."""
         example_latex = (
             r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 with math $E=mc^2$ \\ "
-            r"\midrule Row 1 Col 1 & Row 1 Col 2 with inline math $a^2 + b^2 = c^2$ & Row 1 Col 3 \\ "
+            r"\midrule Row 1 Col 1 & Row 1 Col 2 with inline math $a^2 + b^2 = 25.0$ & Row 1 Col 3 \\ "
             r"Row 2 Col 1 & Row 2 Col 2 & Row 2 Col 3 \\ \bottomrule \end{tabular} \end{table}"
         )
         if not TranslateLatex(example_latex, "nl").translation_failed:
             result_nl = TranslateLatex(example_latex, "nl")
             expected = (
                 r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 with math $E=mc^2$ \\ "
-                r"\midrule Rij 1 Kol 1 & Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = c^2$ & Rij 1 Kol 3 \\ "
+                r"\midrule Rij 1 Kol 1 & Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = 25,0$ & Rij 1 Kol 3 \\ "
                 r"Rij 2 Kol 1 & Rij 2 Kol 2 & Rij 2 Kol 3 \\ \bottomrule \end{tabular} \end{table}"
             )
             assert str(result_nl) == expected
@@ -193,3 +193,10 @@ class TestTranslateLatex:
         if not TranslateLatex(example_latex, "nl").translation_failed:
             result_nl = TranslateLatex(example_latex, "nl")
             assert str(result_nl) == r"\begin{enumerate} \item Een \item Twee \end{enumerate}"
+
+    def test_equation_translation(self) -> None:
+        """Test TranslateLatex with equation translation."""
+        example_latex = r"\begin{equation} E = mc^2 = 20.0 \tag{3.14} \end{equation}"
+        if not TranslateLatex(example_latex, "nl").translation_failed:
+            result_nl = TranslateLatex(example_latex, "nl")
+            assert str(result_nl) == r"\begin{equation} E = mc^2 = 20,0 \tag{3.14} \end{equation}"

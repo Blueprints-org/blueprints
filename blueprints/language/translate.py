@@ -364,7 +364,8 @@ class TranslateLatex:
 
     def _check_decimal_separator(self, s: str) -> str:
         r"""
-        Replace all periods with commas outside of \text{...}, \txt{...}, etc. blocks and \begin{figure}...\end{figure} blocks.
+        Replace all periods with commas in equation environments and inline math ($ ... $).
+        Does NOT replace periods inside \tag{} commands.
 
         Parameters
         ----------
@@ -374,7 +375,7 @@ class TranslateLatex:
         Returns
         -------
         str
-            The processed LaTeX string with periods replaced by commas outside of text blocks and figure blocks if in a relevant language.
+            The processed LaTeX string with periods replaced by commas in equations if in a relevant language.
         """
         # Languages that use comma as decimal separator
         comma_decimal_languages_1 = ["bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "hr", "hu", "is", "it", "lt", "lv"]
@@ -382,18 +383,16 @@ class TranslateLatex:
         if self.dest_language not in comma_decimal_languages_1 + comma_decimal_languages_2:
             return s
 
-        # Use regex to split into text blocks, figure blocks, and non-protected blocks
-        # Match text commands and figure environments
-        pattern = re.compile(r"(\\(?:text|txt|textbf|textit)\{.*?\}|\\begin\{figure\}.*?\\end\{figure\})", re.DOTALL)
-        parts = pattern.split(s)
+        def _replace_excluding_tag(content: str) -> str:
+            r"""Replace periods with commas, excluding \tag{} content."""
+            tag_match = re.search(r"\\tag\{[^}]*\}", content)
+            if tag_match:
+                return content[: tag_match.start()].replace(".", ",") + tag_match.group(0) + content[tag_match.end() :].replace(".", ",")
+            return content.replace(".", ",")
 
-        def is_protected_block(seg: str) -> bool:
-            return (seg.startswith((r"\text{", r"\txt{", r"\textbf{", r"\textit{")) and seg.endswith("}")) or (
-                seg.startswith(r"\begin{figure}") and seg.endswith(r"\end{figure}")
-            )
-
-        new_segments = [seg if is_protected_block(seg) else seg.replace(".", ",") for seg in parts]
-        return "".join(new_segments)
+        # Replace in inline math and equation environments
+        s = re.sub(r"(?<!\\)\$([^$]+?)\$", lambda m: "$" + _replace_excluding_tag(m.group(1)) + "$", s)
+        return re.sub(r"\\begin\{equation\}.*?\\end\{equation\}", lambda m: _replace_excluding_tag(m.group(0)), s, flags=re.DOTALL)
 
     def _extract_balanced_content(self, text: str, start_pos: int) -> tuple[str, int]:
         r"""
