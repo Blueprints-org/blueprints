@@ -302,8 +302,8 @@ class TranslateLatex:
 
     def _replace_table_cells(self, text: str, replacements: list) -> str:
         r"""
-        Replace text content in table cells with the corresponding replacements.
-        Only processes cells that don't contain LaTeX commands (except \text{...}).
+        Replace plain text content in table cells with translations, preserving \text{} commands.
+        Only replaces the plain text portions that were extracted (excluding \text{} content).
 
         Parameters
         ----------
@@ -332,10 +332,13 @@ class TranslateLatex:
                 # Skip if cell is empty, only has \text{} commands, or has other LaTeX commands
                 if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
                     # Check if there's actual text content outside of \text{} commands
-                    temp_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
-                    if temp_text.strip() and replacement_index < len(replacements):
-                        # This cell has translatable text
-                        new_cells.append(cell.replace(cell_stripped, replacements[replacement_index]))
+                    plain_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
+                    if plain_text.strip() and replacement_index < len(replacements):
+                        # Replace only the plain text portions, preserving \text{} commands
+                        new_cell_content = cell_stripped
+                        # Replace the plain text portion with the translation
+                        new_cell_content = new_cell_content.replace(plain_text.strip(), replacements[replacement_index])
+                        new_cells.append(cell.replace(cell_stripped, new_cell_content))
                         replacement_index += 1
                         continue
                 new_cells.append(cell)
@@ -462,7 +465,7 @@ class TranslateLatex:
         return item_texts
 
     def _extract_table_cells(self) -> list[str]:
-        """Extract content from table cells."""
+        r"""Extract plain text content from table cells, excluding \\text{} commands."""
         table_texts = []
         # Find all tabular environments
         tabular_pattern = r"\\begin\{tabular\}\{[^}]+\}(.*?)\\end\{tabular\}"
@@ -482,10 +485,10 @@ class TranslateLatex:
                     cell_stripped = cell.strip()
                     # Only extract if it's simple text (not complex LaTeX)
                     if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
-                        # Check if there's actual text content outside of \text{} commands
-                        temp_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
-                        if temp_text.strip():
-                            table_texts.append(cell_stripped)
+                        # Extract only plain text portions, excluding \text{} commands to avoid double-extraction
+                        plain_text_only = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
+                        if plain_text_only.strip():
+                            table_texts.append(plain_text_only.strip())
         return table_texts
 
     def _translate_latex(self) -> str:
