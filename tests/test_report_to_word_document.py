@@ -1,6 +1,7 @@
 """Tests for the ReportToWordConverter class."""
 
 from blueprints.report_to_word_document import ReportToWordConverter
+from blueprints.utils.report import LatexReport
 
 
 class TestReportToWordConverter:
@@ -12,71 +13,33 @@ class TestReportToWordConverter:
 
     def test_complex_document_conversion(self) -> None:
         """Test conversion of a complex LaTeX document."""
-        complex_latex = r"""
-            \documentclass{article}
-            \usepackage{amsmath}
-            \usepackage{booktabs}
-            \usepackage{geometry}
-            \geometry{a4paper, margin=1in}
+        report = LatexReport("Testing Title")
+        report.add_section("Testing Section")
+        report.add_subsection("Testing Subsection")
+        report.add_subsubsection("Testing Subsubsection")
+        report.add_text("Bold and", bold=True).add_text(" normal text.").add_newline(n=2)
+        report.add_text("And Italic text.", italic=True).add_text(" And also bold and italic.", bold=True, italic=True).add_newline()
+        report.add_text("Here is an inline equation: $E=mc^2$ within the text.").add_newline()
+        report.add_text("test").add_equation("E=mc^2", tag="1", inline=True).add_text("more text.").add_newline()
+        report.add_text("test").add_equation("E=mc^2", inline=True).add_text("more text.").add_newline()
+        report.add_equation("E=mc^2", tag="4")
+        report.add_equation(r"\int_a^b f(x)dx = F(b) - F(a)")
+        report.add_enumerate(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", ["A", "B"], "III"]]])
+        report.add_itemize(["First", "Second", ["Subfirst", "Subsecond"], "Third"])
+        report.add_text("Here is a table:")
+        report.add_table(
+            headers=["Header 1", "Header 2", "Header 3 with math $E=mc^2$"],
+            rows=[["Row 1 Col 1", "Row 1 Col 2 with inline math $a^2 + b^2 = c^2$", "Row 1 Col 3"], ["Row 2 Col 1", "Row 2 Col 2", "Row 2 Col 3"]],
+        )
+        report.add_section("Another Section")
+        report.add_subsection("Another Subsection")
+        report.add_subsection("Yet another Subsection")
+        report.add_subsubsection("Yet another Subsubsection")
+        report.add_subsubsection("Yet another Subsubsection v2")
 
-            % Increase spacing throughout document
-            \usepackage{setspace}
-            \setstretch{1.3}  % Increase line spacing by 30%
+        report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Blueprints Logo")
 
-            % Add space between paragraphs
-            \setlength{\parskip}{0.5em}
+        latex = str(report.to_document())
+        converter = ReportToWordConverter()
 
-            % Add space around equations
-            \setlength{\abovedisplayskip}{12pt}
-            \setlength{\belowdisplayskip}{12pt}
-
-            \begin{document}
-
-            \title{Torsion Check Results}
-            \date{}
-            \maketitle
-
-            \section{Utilization Summary}
-
-            \begin{table}[h]
-            \centering
-            \begin{tabular}{lcc}
-            \toprule
-            Check & Utilization & Status \\
-            \midrule
-            \text{Concrete strut capacity} & 0.588 & \text{PASS} \\
-            \text{Torsion moment capacity} & 4.825 & \text{FAIL} \\
-            \text{Max longitudinal reinforcement} & 0.107 & \text{PASS} \\
-            \text{Also $\frac{a}{b}$ inline equations in tables} & 0.250 & \text{PASS} \\
-            \bottomrule
-            \end{tabular}
-            \end{table}
-
-            \textbf{Overall Result: FAIL}
-            \section{Individual Checks}
-            \subsection{Concrete Strut Capacity}
-            \text{Concrete strut capacity check EN 1992-1-1:2004 art. 6.3.2(4)} \newline \newline
-            \textbf{Maximum shear resistance}
-            \begin{equation} V_{Rd,max} = \alpha_{cw} \cdot b_{w} \cdot z \cdot \nu_{1} \cdot \frac{f_{cd}}{\cot(\theta) + \tan(\theta)} =
-            1.00 \cdot 400.00 \cdot 486.00 \cdot 0.52 \cdot \frac{23.33}{\cot(45.00) + \tan(45.00)} = 1170288.00 \ \text{N} \tag{6.9} \end{equation}
-            \textbf{Design torsional resistance moment}
-            \begin{equation} T_{Rd,max} = 2 \cdot \nu \cdot \alpha_{cw} \cdot f_{cd} \cdot A_{k} \cdot t_{ef,i} \cdot \sin(\theta) \cdot \cos(\theta)=
-            2 \cdot 0.52 \cdot 1.00 \cdot 23.33 \cdot 134400.00 \cdot 120.00 \cdot \sin(45.00) \cdot \cos(45.00) =
-            194181120.00 \ \text{Nmm} \tag{6.30} \end{equation}
-            \textbf{Combined interaction check}
-            \begin{equation} \frac{T_{Ed}}{T_{Rd,max}} + \frac{V_{Ed}}{V_{Rd,max}} = 0.309 + 0.279 = 0.588 \leq 1.0 \tag{6.29} \end{equation}
-            \textbf{Result: PASS (Utilization: 58.8\%)}
-
-            \section{Conclusions}
-
-            \textbf{Warning:} One or more checks have failed.
-
-            \textbf{Note:} Torsion moment capacity is insufficient with minimum reinforcement.
-            Additional torsion-specific reinforcement is required as specified above.
-
-            \textit{This is text in italics which $a = b ^ c$ can also feature inline equation} \newline
-
-            \end{document}
-        """
-
-        assert ReportToWordConverter().convert_to_word(complex_latex)
+        assert converter.convert_to_word(latex)
