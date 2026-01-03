@@ -667,3 +667,54 @@ class LatexReport:
 
         # Combine preamble, content, and closing
         return preamble + self.content + r"\end{document}"
+
+    def translate(self, dest_language: str) -> Any:  # noqa: ANN401 LatexReport type requires googletrans module
+        """Translate the LaTeX report content to a different language.
+
+        Parameters
+        ----------
+        dest_language : str
+            The destination language code (e.g., 'nl' for Dutch, full list on https://docs.cloud.google.com/translate/docs/languages).
+
+        Returns
+        -------
+        LatexReport
+            Returns self for method chaining.
+
+        Examples
+        --------
+        >>> report = LatexReport(title="Rapport")
+        >>> report.add_section("Introduction")
+        >>> report.add_text("")
+        >>> report.translate("nl")  # Translates content to Dutch
+        """
+        from blueprints.language.translate import TranslateLatex  # noqa: PLC0415 imported here as core does not have googletrans installed by default
+
+        return TranslateLatex(latex=str(self), dest_language=dest_language)
+
+    def to_word(self) -> Any:  # noqa: ANN401 DocumentObject type requires docx module
+        """Convert the LaTeX report to a Word document.
+
+        This method uses the ReportToWordConverter to convert the LaTeX content
+        of the report into a Word document format.
+
+        Returns
+        -------
+        DocumentObject
+            The converted Word document object.
+
+        Examples
+        --------
+        >>> report = LatexReport(title="My Report")
+        >>> report.add_section("Introduction")
+        >>> report.add_text("Some text")
+        >>> word_doc = report.to_word()
+        >>> word_doc.save("report.docx")  # Save the Word document
+        """
+        from blueprints.utils.report_to_word import (  # noqa: PLC0415
+            ReportToWordConverter,
+        )  # imported here as core does not have word module installed by default
+
+        latex_content = self.to_document()
+        converter = ReportToWordConverter()
+        return converter.to_word(latex_content)

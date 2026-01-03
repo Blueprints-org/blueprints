@@ -77,7 +77,6 @@ class TranslateLatex:
                     try:
                         dest_col_index = header.index(dest_language)
                     except ValueError:
-                        logging.warning(f"Language '{dest_language}' not found in CSV header: {header}")
                         return translation_dict
 
                     # Load translations from the appropriate column

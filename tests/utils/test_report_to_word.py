@@ -1,7 +1,7 @@
 """Tests for the ReportToWordConverter class."""
 
-from blueprints.report_to_word_document import ReportToWordConverter
 from blueprints.utils.report import LatexReport
+from blueprints.utils.report_to_word import ReportToWordConverter
 
 
 class TestReportToWordConverter:
@@ -38,8 +38,5 @@ class TestReportToWordConverter:
         report.add_subsubsection("Yet another Subsubsection v2")
 
         report.add_figure(r"docs\_overrides\assets\images\logo-light-mode.png", width=0.4, caption="Blueprints Logo")
-
-        latex = str(report.to_document())
-        converter = ReportToWordConverter()
-
-        assert converter.to_word(latex)
+        report.translate("nl")
+        assert report.to_word().save("test_report.docx")
