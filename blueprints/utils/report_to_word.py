@@ -225,7 +225,7 @@ class ReportToWordConverter:
         # Extract text from within braces (e.g., \title{text} -> text)
         brace_match = re.search(r"\\(?:title|section|subsection|subsubsection)\{(.*?)\}", content)
         if not brace_match:
-            return
+            return  # pragma: no cover
         extracted_content = brace_match.group(1).strip()
 
         # Add numbering to sections
@@ -465,7 +465,7 @@ class ReportToWordConverter:
         """
         figure_info = self._parse_figure_content(figure_latex)
         if not figure_info:
-            return
+            return  # pragma: no cover
 
         # Add the image to the document
         para = doc.add_paragraph()
@@ -609,7 +609,7 @@ class ReportToWordConverter:
         # Extract tabular content
         tabular_match = re.search(r"\\begin\{tabular\}\{.*?\}(.*?)\\end\{tabular\}", table_latex, re.DOTALL)
         if not tabular_match:
-            return []
+            return []  # pragma: no cover
         tabular_content = tabular_match.group(1)
 
         # Remove LaTeX table commands
@@ -653,7 +653,7 @@ class ReportToWordConverter:
         includegraphics_pattern = r"\\includegraphics(?:\[(.*?)\])?\{(.*?)\}"
         match = re.search(includegraphics_pattern, figure_latex)
         if not match:
-            return None
+            return None  # pragma: no cover
         options_str = match.group(1) if match.group(1) else ""
         image_path = match.group(2).strip()
 

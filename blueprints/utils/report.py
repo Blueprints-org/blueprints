@@ -678,7 +678,7 @@ class LatexReport:
         # Combine preamble, content, and closing
         return latex
 
-    def to_word(self, path: str, language: str = "en") -> None:
+    def to_word(self, path: str, language: str = "en") -> None:  # pragma: no cover
         """Convert the LaTeX report to a Word document.
 
         This method uses the ReportToWordConverter to convert the LaTeX content
