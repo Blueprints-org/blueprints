@@ -449,7 +449,9 @@ class TranslateLatex:
         item_texts = []
         item_pattern = r"\\item\s+([^\\]+?)(?=\\|$)"
         for match in re.finditer(item_pattern, self.original, re.DOTALL):
-            content = match.group(1).strip()
+            content = match.group(1)
+            # Only strip leading whitespace, preserve trailing spaces
+            content = content.lstrip()
             # Only extract if it's plain text (not nested lists or commands except \text{})
             if content and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", content):
                 # Remove any \text{} commands temporarily to check for actual text
