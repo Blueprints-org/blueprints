@@ -55,6 +55,8 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
     def _evaluate_lhs(
         n_ed: KN,
         n_pl_rd: KN,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the left-hand side of the comparison. see __init__ for details."""
         raise_if_less_or_equal_to_zero(n_pl_rd=n_pl_rd)
@@ -95,12 +97,20 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
                 r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ kN",
+                r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ kN",
+            },
+            False,
         )
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if bool(self) else r"\text{Not OK}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label=r"\to",
             unit="",
         )
