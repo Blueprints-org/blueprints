@@ -80,7 +80,7 @@ class Form4Dot2MinimumConcreteCover(Formula):
             equation=latex_max_curly_brackets(
                 r"c_{min,b}",
                 r"c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}",
-                r"10 \text{mm}",
+                r"10 \ mm",
             ),
             numeric_equation=latex_max_curly_brackets(
                 self.c_min_b,
