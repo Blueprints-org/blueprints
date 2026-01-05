@@ -54,8 +54,8 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
     @staticmethod
     def _evaluate_lhs(
         sigma_x_ed: MPA,
-        f_y: MPA,  # noqa: ARG004
-        gamma_m0: DIMENSIONLESS,  # noqa: ARG004
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the left-hand side of the comparison. see __init__ for details."""
         raise_if_negative(sigma_x_ed=sigma_x_ed)
@@ -63,9 +63,10 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
 
     @staticmethod
     def _evaluate_rhs(
-        sigma_x_ed: MPA,  # noqa: ARG004
         f_y: MPA,
         gamma_m0: DIMENSIONLESS,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the right-hand side of the comparison. see __init__ for details."""
         raise_if_less_or_equal_to_zero(gamma_m0=gamma_m0)
