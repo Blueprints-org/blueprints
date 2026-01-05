@@ -86,8 +86,8 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
     ) -> bool:
         """Evaluates the comparison; see __init__ for details."""
         return Form6Dot42LongitudinalStressClass3CrossSections._evaluate_lhs(
-            sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0
-        ) <= Form6Dot42LongitudinalStressClass3CrossSections._evaluate_rhs(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0)
+            sigma_x_ed=sigma_x_ed
+        ) <= Form6Dot42LongitudinalStressClass3CrossSections._evaluate_rhs(f_y=f_y, gamma_m0=gamma_m0)
 
     def __bool__(self) -> bool:
         """Allow truth-checking of the check object itself."""
