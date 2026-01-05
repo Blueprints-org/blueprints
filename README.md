@@ -32,7 +32,7 @@ tools for materials, geometry, and section checks, as well as a foundation of es
 
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
-See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/roadmap) for detailed feature status and upcoming developments.
+See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/getting_started/roadmap/) for detailed feature status and upcoming developments.
 
 ## Installation
 
