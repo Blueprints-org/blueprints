@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from functools import wraps
-from typing import Concatenate, Protocol
+from typing import Concatenate, NamedTuple, Protocol
 
 from blueprints.structural_sections._profile import Profile
 
@@ -52,10 +52,8 @@ class StandardProfileProtocol(Protocol):
 
     _factory: Callable[..., Profile]
     """Factory class for creating standard profiles."""
-    _database: dict[str, tuple[str | int | float, ...]]
+    _database: dict[str, NamedTuple]
     """Database of standard profiles."""
-    _parameters: tuple[str, ...]
-    """Parameter names matching the database values required to create a standard profile."""
 
 
 class StandardProfileMeta(type):
@@ -83,4 +81,4 @@ class StandardProfileMeta(type):
             profile = cls._database[name]
         except KeyError as e:
             raise AttributeError(f"Profile '{name}' does not exist in database.") from e
-        return cls._factory(**dict(zip(cls._parameters, profile)))
+        return cls._factory(**profile._asdict())
