@@ -11,6 +11,7 @@ import pytest
 
 from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.standard_profiles.chs import CHS
+from blueprints.validations import NegativeValueError
 
 
 class TestCHSSteelProfile:
@@ -59,7 +60,7 @@ class TestCHSSteelProfile:
             corrosion_outside=1,  # mm
             corrosion_inside=2,  # mm
         )
-        expected_name_with_corrosion = "CHS 508x16 (corrosion in: 2 mm, out: 1 mm)"
+        expected_name_with_corrosion = "CHS 508x16 (corrosion inside: 2 mm, outside: 1 mm)"
         assert chs_profile_with_corrosion.name == expected_name_with_corrosion
 
     def test_immutability(self, chs_profile: CHSProfile) -> None:
@@ -74,3 +75,75 @@ class TestCHSSteelProfile:
         assert isinstance(transformed_profile, CHSProfile)
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == chs_profile.centroid.x + 1000
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == chs_profile.centroid.y + 500
+
+    def test_with_corrosion_negative_value(self, chs_profile: CHSProfile) -> None:
+        """Test that negative corrosion value raises NegativeValueError."""
+        with pytest.raises(NegativeValueError, match=r"corrosion"):
+            chs_profile.with_corrosion(corrosion_outside=-1)
+
+    def test_with_corrosion_zero_value(self, chs_profile: CHSProfile) -> None:
+        """Test that zero corrosion returns the same profile instance."""
+        corroded_profile = chs_profile.with_corrosion(corrosion_outside=0, corrosion_inside=0)
+        # Zero corrosion should return the same instance
+        assert corroded_profile is chs_profile
+        assert corroded_profile.name == chs_profile.name
+
+    def test_with_corrosion_valid_positive_value(self, chs_profile: CHSProfile) -> None:
+        """Test applying a valid positive corrosion value."""
+        corrosion_outside = 2.0  # mm
+        corrosion_inside = 1.5  # mm
+        corroded_profile = chs_profile.with_corrosion(corrosion_outside=corrosion_outside, corrosion_inside=corrosion_inside)
+
+        # Check that a new instance is returned
+        assert corroded_profile is not chs_profile
+
+        # Check dimensions are reduced correctly
+        # Outer diameter is reduced by 2 * corrosion_outside (both sides)
+        assert pytest.approx(corroded_profile.outer_diameter, rel=1e-6) == chs_profile.outer_diameter - corrosion_outside * 2
+        # Wall thickness is reduced by corrosion_outside + corrosion_inside
+        assert pytest.approx(corroded_profile.wall_thickness, rel=1e-6) == chs_profile.wall_thickness - corrosion_outside - corrosion_inside
+
+        # Check name is updated with corrosion info
+        expected_name = "CHS 508x16 (corrosion inside: 1.5 mm, outside: 2.0 mm)"
+        assert corroded_profile.name == expected_name
+
+    def test_with_corrosion_fully_corroded_profile(self, chs_profile: CHSProfile) -> None:
+        """Test that applying corrosion that fully corrodes the profile raises ValueError."""
+        # CHS 508x16 has wall_thickness = 16 mm
+        # Apply a corrosion large enough to fully corrode the wall
+        corrosion_outside = 10.0  # mm
+        corrosion_inside = 10.0  # mm - this will cause wall_thickness to be 16 - 10 - 10 = -4 mm
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
+            chs_profile.with_corrosion(corrosion_outside=corrosion_outside, corrosion_inside=corrosion_inside)
+
+    def test_with_corrosion_existing_corrosion_total_in_name(self, chs_profile: CHSProfile) -> None:
+        """Test that applying corrosion to a profile with existing corrosion shows total corrosion in name."""
+        # First apply 1 mm outside and 0.5 mm inside corrosion
+        first_corrosion_outside = 1.0  # mm
+        first_corrosion_inside = 0.5  # mm
+        first_corroded_profile = chs_profile.with_corrosion(
+            corrosion_outside=first_corrosion_outside,
+            corrosion_inside=first_corrosion_inside,
+        )
+        assert first_corroded_profile.name == "CHS 508x16 (corrosion inside: 0.5 mm, outside: 1.0 mm)"
+
+        # Then apply another 1.5 mm outside and 1.0 mm inside corrosion
+        second_corrosion_outside = 1.5  # mm
+        second_corrosion_inside = 1.0  # mm
+        second_corroded_profile = first_corroded_profile.with_corrosion(
+            corrosion_outside=second_corrosion_outside,
+            corrosion_inside=second_corrosion_inside,
+        )
+
+        # Check that the name shows total corrosion
+        expected_name = "CHS 508x16 (corrosion inside: 1.5 mm, outside: 2.5 mm)"
+        assert second_corroded_profile.name == expected_name
+
+        # Check dimensions reflect total corrosion
+        total_corrosion_outside = first_corrosion_outside + second_corrosion_outside
+        total_corrosion_inside = first_corrosion_inside + second_corrosion_inside
+        assert pytest.approx(second_corroded_profile.outer_diameter, rel=1e-6) == chs_profile.outer_diameter - total_corrosion_outside * 2
+        assert (
+            pytest.approx(second_corroded_profile.wall_thickness, rel=1e-6)
+            == chs_profile.wall_thickness - total_corrosion_outside - total_corrosion_inside
+        )
