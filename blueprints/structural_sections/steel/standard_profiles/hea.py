@@ -1,71 +1,76 @@
 """HEA Steel Profiles."""
 
-from enum import Enum
+from typing import NamedTuple
 
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
-from blueprints.structural_sections.steel.standard_profiles.utils import wrap_as_instance_method
+from blueprints.structural_sections.steel.standard_profiles.utils import StandardProfileMeta
 from blueprints.type_alias import MM
 
 
-class HEA(Enum):
-    """Geometrical representation of HEA steel profiles."""
+class __HEAProfileParameters(NamedTuple):
+    """Parameters for defining a HEA profile."""
 
-    HEA100 = ("HEA100", 96, 100, 5, 8, 12)
-    HEA120 = ("HEA120", 114, 120, 5, 8, 12)
-    HEA140 = ("HEA140", 133, 140, 5.5, 8.5, 12)
-    HEA160 = ("HEA160", 152, 160, 6, 9, 15)
-    HEA180 = ("HEA180", 171, 180, 6, 9.5, 15)
-    HEA200 = ("HEA200", 190, 200, 6.5, 10, 18)
-    HEA220 = ("HEA220", 210, 220, 7, 11, 18)
-    HEA240 = ("HEA240", 230, 240, 7.5, 12, 21)
-    HEA260 = ("HEA260", 250, 260, 7.5, 12.5, 24)
-    HEA280 = ("HEA280", 270, 280, 8, 13, 24)
-    HEA300 = ("HEA300", 290, 300, 8.5, 14, 27)
-    HEA320 = ("HEA320", 310, 300, 9, 15.5, 27)
-    HEA340 = ("HEA340", 330, 300, 9.5, 16.5, 27)
-    HEA360 = ("HEA360", 350, 300, 10, 17.5, 27)
-    HEA400 = ("HEA400", 390, 300, 11, 19, 27)
-    HEA450 = ("HEA450", 440, 300, 11.5, 21, 27)
-    HEA500 = ("HEA500", 490, 300, 12, 23, 27)
-    HEA550 = ("HEA550", 540, 300, 12.5, 24, 27)
-    HEA600 = ("HEA600", 590, 300, 13, 25, 27)
-    HEA650 = ("HEA650", 640, 300, 13.5, 26, 27)
-    HEA700 = ("HEA700", 690, 300, 14.5, 27, 27)
-    HEA800 = ("HEA800", 790, 300, 15, 28, 30)
-    HEA900 = ("HEA900", 890, 300, 16, 30, 30)
-    HEA1000 = ("HEA1000", 990, 300, 16.5, 31, 30)
+    name: str
+    """Name of the HEA profile."""
+    top_flange_width: MM
+    """Top flange width of the HEA profile."""
+    top_flange_thickness: MM
+    """Top flange thickness of the HEA profile."""
+    bottom_flange_width: MM
+    """Bottom flange width of the HEA profile."""
+    bottom_flange_thickness: MM
+    """Bottom flange thickness of the HEA profile."""
+    total_height: MM
+    """Total height of the HEA profile."""
+    web_thickness: MM
+    """Web thickness of the HEA profile."""
+    top_radius: MM
+    """Top radius of the HEA profile."""
+    bottom_radius: MM
+    """Bottom radius of the HEA profile."""
 
-    def __init__(self, alias: str, h: MM, b: MM, t_w: MM, t_f: MM, radius: MM) -> None:
-        """Initialize HEA profile.
 
-        This method sets the profile's alias, dimensions, and radii.
+HEA_PROFILES_DATABASE = {
+    "HEA100": __HEAProfileParameters("HEA100", 96, 8, 96, 8, 100, 5, 12, 12),
+    "HEA120": __HEAProfileParameters("HEA120", 114, 8, 114, 8, 120, 5, 12, 12),
+    "HEA140": __HEAProfileParameters("HEA140", 133, 8.5, 133, 8.5, 140, 5.5, 12, 12),
+    "HEA160": __HEAProfileParameters("HEA160", 152, 9, 152, 9, 160, 6, 15, 15),
+    "HEA180": __HEAProfileParameters("HEA180", 171, 9.5, 171, 9.5, 180, 6, 15, 15),
+    "HEA200": __HEAProfileParameters("HEA200", 190, 10, 190, 10, 200, 6.5, 18, 18),
+    "HEA220": __HEAProfileParameters("HEA220", 210, 11, 210, 11, 220, 7, 18, 18),
+    "HEA240": __HEAProfileParameters("HEA240", 230, 12, 230, 12, 240, 7.5, 21, 21),
+    "HEA260": __HEAProfileParameters("HEA260", 250, 12.5, 250, 12.5, 260, 7.5, 24, 24),
+    "HEA280": __HEAProfileParameters("HEA280", 270, 13, 270, 13, 280, 8, 24, 24),
+    "HEA300": __HEAProfileParameters("HEA300", 290, 14, 290, 14, 300, 8.5, 27, 27),
+    "HEA320": __HEAProfileParameters("HEA320", 310, 15.5, 310, 15.5, 320, 9, 27, 27),
+    "HEA340": __HEAProfileParameters("HEA340", 330, 16.5, 330, 16.5, 340, 9.5, 27, 27),
+    "HEA360": __HEAProfileParameters("HEA360", 350, 17.5, 350, 17.5, 360, 10, 27, 27),
+    "HEA400": __HEAProfileParameters("HEA400", 390, 19, 390, 19, 400, 11, 27, 27),
+    "HEA450": __HEAProfileParameters("HEA450", 440, 21, 440, 21, 450, 11.5, 27, 27),
+    "HEA500": __HEAProfileParameters("HEA500", 490, 23, 490, 23, 500, 12, 27, 27),
+    "HEA550": __HEAProfileParameters("HEA550", 540, 24, 540, 24, 550, 12.5, 27, 27),
+    "HEA600": __HEAProfileParameters("HEA600", 590, 25, 590, 25, 600, 13, 27, 27),
+    "HEA650": __HEAProfileParameters("HEA650", 640, 26, 640, 26, 650, 13.5, 27, 27),
+    "HEA700": __HEAProfileParameters("HEA700", 690, 27, 690, 27, 700, 14.5, 27, 27),
+    "HEA800": __HEAProfileParameters("HEA800", 790, 28, 790, 28, 800, 15, 30, 30),
+    "HEA900": __HEAProfileParameters("HEA900", 890, 30, 890, 30, 900, 16, 30, 30),
+    "HEA1000": __HEAProfileParameters("HEA1000", 990, 31, 990, 31, 1000, 16.5, 30, 30),
+}
 
-        Parameters
-        ----------
-        alias: str
-            Profile alias.
-        h: MM
-            Total height of the profile.
-        b: MM
-            Total width of the profile.
-        t_w: MM
-            Web thickness of the profile.
-        t_f: MM
-            Flange thickness of the profile.
-        radius: MM
-            Radius of the profile.
-        """
-        self.alias = alias
-        self.top_flange_width = b
-        self.top_flange_thickness = t_f
-        self.bottom_flange_width = b
-        self.bottom_flange_thickness = t_f
-        self.total_height = h
-        self.web_thickness = t_w
-        self.web_height = h - 2 * t_f - 2 * radius
-        self.top_radius = radius
-        self.bottom_radius = radius
 
-    @wrap_as_instance_method(IProfile.from_standard_profile)
-    def as_cross_section(self) -> None:
-        """Get an instance of the HEA cross section."""
+class HEA(metaclass=StandardProfileMeta):
+    """Geometrical representation of HEA steel profiles.
+
+    This class provides access to standard HEA profiles from a predefined database.
+    Profiles can be accessed as class attributes using their standardized names.
+    Each accessed profile returns a IProfile instance.
+
+    Usage example
+    -------------
+        >>> profile = HEA.HEA200
+    """
+
+    _factory = IProfile
+    """Factory class for creating standard HEA profiles."""
+    _database = HEA_PROFILES_DATABASE
+    """Database of standard HEA profile parameters."""

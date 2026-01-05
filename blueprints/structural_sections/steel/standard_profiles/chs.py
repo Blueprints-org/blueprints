@@ -4,6 +4,7 @@ from typing import NamedTuple
 
 from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.standard_profiles.utils import StandardProfileMeta
+from blueprints.type_alias import MM
 
 
 class __CHSProfileParameters(NamedTuple):
@@ -11,9 +12,9 @@ class __CHSProfileParameters(NamedTuple):
 
     name: str
     """Name of the CHS profile."""
-    outer_diameter: float
+    outer_diameter: MM
     """Outer diameter of the CHS profile."""
-    wall_thickness: float
+    wall_thickness: MM
     """Wall thickness of the CHS profile."""
 
 

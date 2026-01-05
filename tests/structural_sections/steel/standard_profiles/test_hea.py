@@ -1,63 +1,40 @@
 """Test for the HEA enum."""
 
+import pytest
+
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
-from blueprints.structural_sections.steel.standard_profiles.hea import HEA
+from blueprints.structural_sections.steel.standard_profiles.hea import HEA, HEA_PROFILES_DATABASE
+from blueprints.structural_sections.steel.standard_profiles.hea import __HEAProfileParameters as HEAProfileParameters
 
 
 class TestHEA:
-    """Tests for the HEA enum."""
+    """Tests for the HEA class."""
 
-    def test_enum_values(self) -> None:
-        """Test that enum values are correctly defined."""
-        assert HEA.HEA100.value == ("HEA100", 96, 100, 5, 8, 12)
-        assert HEA.HEA1000.value == ("HEA1000", 990, 300, 16.5, 31, 30)
+    @pytest.mark.parametrize(("profile_name", "expected_data"), HEA_PROFILES_DATABASE.items())
+    def test_as_hea_profile(self, profile_name: str, expected_data: HEAProfileParameters) -> None:
+        """Test that the HEA instance is converted to a HEAProfile correctly."""
+        profile = getattr(HEA, profile_name)
+        expected_profile_data = expected_data
 
-    def test_enum_membership(self) -> None:
-        """Test that specific values are members of the enum."""
-        assert "HEA100" in [e.value[0] for e in HEA]
-        assert "HEA1000" in [e.value[0] for e in HEA]
+        assert isinstance(profile, IProfile)
+        assert profile.name == expected_profile_data.name
+        assert profile.total_height == expected_profile_data.total_height
+        assert profile.web_thickness == expected_profile_data.web_thickness
+        assert profile.bottom_flange_width == expected_profile_data.bottom_flange_width
+        assert profile.bottom_flange_thickness == expected_profile_data.bottom_flange_thickness
+        assert profile.top_flange_width == expected_profile_data.top_flange_width
+        assert profile.top_flange_thickness == expected_profile_data.top_flange_thickness
+        assert profile.top_radius == expected_profile_data.top_radius
+        assert profile.bottom_radius == expected_profile_data.bottom_radius
 
-    def test_enum_uniqueness(self) -> None:
-        """Test that all enum values are unique."""
-        values = [e.value for e in HEA]
-        assert len(values) == len(set(values))
+    def test_equality_and_identity(self) -> None:
+        """Test the equality and identity of HEA profiles."""
+        profile1 = HEA.HEA200
+        profile2 = HEA.HEA200
 
-    def test_enum_attributes(self) -> None:
-        """Test that enum attributes are correctly assigned."""
-        profile = HEA.HEA100
-        assert profile.alias == "HEA100"
-        assert profile.top_flange_width == 100
-        assert profile.top_flange_thickness == 8
-        assert profile.bottom_flange_width == 100
-        assert profile.bottom_flange_thickness == 8
-        assert profile.total_height == 96
-        assert profile.web_thickness == 5
-        assert profile.top_radius == 12
-        assert profile.bottom_radius == 12
+        # Check that two profiles with the same name are equal but not the same object
+        assert profile1 == profile2
+        assert profile1 is not profile2
 
-    def test_as_cross_section(self) -> None:
-        """Test that the as_cross_section method returns an IProfile instance."""
-        profile = HEA.HEA100
-        cross_section = profile.as_cross_section()
-
-        assert isinstance(cross_section, IProfile)
-        assert cross_section.top_flange_width == profile.top_flange_width
-        assert cross_section.bottom_flange_width == profile.bottom_flange_width
-        assert cross_section.total_height == profile.total_height
-        assert cross_section.web_thickness == profile.web_thickness
-        assert cross_section.top_radius == profile.top_radius
-        assert cross_section.bottom_radius == profile.bottom_radius
-
-    def test_as_cross_section_with_corrosion(self) -> None:
-        """Test that the as_cross_section method accounts for corrosion."""
-        profile = HEA.HEA100
-        corrosion = 0.8
-        cross_section = profile.as_cross_section(corrosion=corrosion)
-
-        assert isinstance(cross_section, IProfile)
-        assert cross_section.top_flange_width == profile.top_flange_width - 2 * corrosion
-        assert cross_section.bottom_flange_width == profile.bottom_flange_width - 2 * corrosion
-        assert cross_section.total_height == profile.total_height - 2 * corrosion
-        assert cross_section.web_thickness == profile.web_thickness - 2 * corrosion
-        assert cross_section.top_radius == profile.top_radius
-        assert cross_section.bottom_radius == profile.bottom_radius
+        profile3 = HEA.HEA300
+        assert profile1 != profile3
