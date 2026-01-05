@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from functools import partial
 from typing import Any, ClassVar, Self
 
@@ -94,11 +94,12 @@ class Profile(ABC):
         Self
             New profile with the applied transformations.
         """
-        self_dict = {key: value for key, value in self.__dict__.items() if self.__dataclass_fields__[key].init}
-        self_dict["horizontal_offset"] += horizontal_offset
-        self_dict["vertical_offset"] += vertical_offset
-        self_dict["rotation"] += rotation
-        return type(self)(**self_dict)
+        return replace(
+            self,
+            horizontal_offset=self.horizontal_offset + horizontal_offset,
+            vertical_offset=self.vertical_offset + vertical_offset,
+            rotation=self.rotation + rotation,
+        )
 
     @property
     def area(self) -> MM2:

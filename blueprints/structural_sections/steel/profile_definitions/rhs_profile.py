@@ -11,8 +11,10 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections._profile import Profile
+from blueprints.structural_sections.steel.profile_definitions.corrosion_utils import FULL_CORROSION_TOLERANCE, update_name_with_corrosion
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
+from blueprints.validations import raise_if_negative
 
 if TYPE_CHECKING:
     from blueprints.structural_sections.steel.standard_profiles.rhs import RHS  # pragma: no cover
@@ -234,13 +236,86 @@ class RHSProfile(Profile):
 
         name = profile.alias
         if corrosion_inside or corrosion_outside:
-            name += (
-                f" (corrosion {'' if not corrosion_inside else f'in: {corrosion_inside} mm'}"
-                f"{', ' if corrosion_inside and corrosion_outside else ''}"
-                f"{'' if not corrosion_outside else f'out: {corrosion_outside} mm'})"
-            )
+            name = update_name_with_corrosion(name, corrosion_inside=corrosion_inside, corrosion_outside=corrosion_outside)
 
         return cls(
+            total_width=total_width,
+            total_height=total_height,
+            left_wall_thickness=left_wall_thickness,
+            right_wall_thickness=right_wall_thickness,
+            top_wall_thickness=top_wall_thickness,
+            bottom_wall_thickness=bottom_wall_thickness,
+            top_right_inner_radius=top_right_inner_radius,
+            top_left_inner_radius=top_left_inner_radius,
+            bottom_right_inner_radius=bottom_right_inner_radius,
+            bottom_left_inner_radius=bottom_left_inner_radius,
+            top_right_outer_radius=top_right_outer_radius,
+            top_left_outer_radius=top_left_outer_radius,
+            bottom_right_outer_radius=bottom_right_outer_radius,
+            bottom_left_outer_radius=bottom_left_outer_radius,
+            name=name,
+        )
+
+    def with_corrosion(self, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> RHSProfile:
+        """Apply corrosion to the RHS- or SHS-profile and return a new RHS- or SHS-profile instance.
+
+        The name attribute of the new instance will be updated to reflect the total corrosion applied
+        including any previous corrosion indicated in the original name.
+
+        Parameters
+        ----------
+        corrosion_outside : MM, optional
+            Corrosion to be subtracted from the outer diameter [mm] (default: 0).
+        corrosion_inside : MM, optional
+            Corrosion to be added to the inner diameter [mm] (default: 0).
+
+        Returns
+        -------
+        RHSProfile
+            A new RHS- or SHS-profile instance with the applied corrosion.
+
+        Raises
+        ------
+        ValueError
+            If the profile has fully corroded.
+        """
+        raise_if_negative(corrosion_outside=corrosion_outside)
+        raise_if_negative(corrosion_inside=corrosion_inside)
+
+        if corrosion_inside == 0 and corrosion_outside == 0:
+            return self
+
+        total_width = self.total_width - 2 * corrosion_outside
+        total_height = self.total_height - 2 * corrosion_outside
+
+        top_wall_thickness = self.top_wall_thickness - corrosion_outside - corrosion_inside
+        bottom_wall_thickness = self.bottom_wall_thickness - corrosion_outside - corrosion_inside
+        left_wall_thickness = self.left_wall_thickness - corrosion_outside - corrosion_inside
+        right_wall_thickness = self.right_wall_thickness - corrosion_outside - corrosion_inside
+
+        top_right_inner_radius = self.top_right_inner_radius + corrosion_inside
+        top_left_inner_radius = self.top_left_inner_radius + corrosion_inside
+        bottom_right_inner_radius = self.bottom_right_inner_radius + corrosion_inside
+        bottom_left_inner_radius = self.bottom_left_inner_radius + corrosion_inside
+        top_right_outer_radius = max(self.top_right_outer_radius - corrosion_outside, 0)
+        top_left_outer_radius = max(self.top_left_outer_radius - corrosion_outside, 0)
+        bottom_right_outer_radius = max(self.bottom_right_outer_radius - corrosion_outside, 0)
+        bottom_left_outer_radius = max(self.bottom_left_outer_radius - corrosion_outside, 0)
+
+        if any(
+            thickness < FULL_CORROSION_TOLERANCE
+            for thickness in (
+                top_wall_thickness,
+                bottom_wall_thickness,
+                left_wall_thickness,
+                right_wall_thickness,
+            )
+        ):
+            raise ValueError("The profile has fully corroded.")
+
+        name = update_name_with_corrosion(self.name, corrosion_inside=corrosion_inside, corrosion_outside=corrosion_outside)
+
+        return RHSProfile(
             total_width=total_width,
             total_height=total_height,
             left_wall_thickness=left_wall_thickness,

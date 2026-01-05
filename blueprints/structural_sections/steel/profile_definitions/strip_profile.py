@@ -11,8 +11,10 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections._profile import Profile
+from blueprints.structural_sections.steel.profile_definitions.corrosion_utils import FULL_CORROSION_TOLERANCE, update_name_with_corrosion
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
+from blueprints.validations import raise_if_negative
 
 if TYPE_CHECKING:
     from blueprints.structural_sections.steel.standard_profiles.strip import Strip  # pragma: no cover
@@ -89,6 +91,36 @@ class StripProfile(Profile):
             name += f" (corrosion: {corrosion} mm)"
 
         return cls(
+            width=width,
+            height=height,
+            name=name,
+        )
+
+    def with_corrosion(self, corrosion: MM = 0) -> StripProfile:
+        """Create a strip profile from a set of standard profiles already defined in Blueprints.
+
+        The name attribute of the new instance will be updated to reflect the total corrosion applied
+        including any previous corrosion indicated in the original name.
+
+        Parameters
+        ----------
+        corrosion : MM, optional
+            Corrosion per side (default is 0).
+        """
+        raise_if_negative(corrosion=corrosion)
+
+        if corrosion == 0:
+            return self
+
+        width = self.width - corrosion * 2
+        height = self.height - corrosion * 2
+
+        if any(dimension <= FULL_CORROSION_TOLERANCE for dimension in (width, height)):
+            raise ValueError("The profile has fully corroded.")
+
+        name = update_name_with_corrosion(self.name, corrosion=corrosion)
+
+        return StripProfile(
             width=width,
             height=height,
             name=name,

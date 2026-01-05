@@ -11,8 +11,10 @@ from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections._profile import Profile
+from blueprints.structural_sections.steel.profile_definitions.corrosion_utils import FULL_CORROSION_TOLERANCE, update_name_with_corrosion
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
+from blueprints.validations import raise_if_negative
 
 if TYPE_CHECKING:
     from blueprints.structural_sections.steel.standard_profiles.hea import HEA  # pragma: no cover
@@ -172,7 +174,7 @@ class IProfile(Profile):
 
         name = profile.alias
         if corrosion:
-            name += f" (corrosion: {corrosion} mm)"
+            name = update_name_with_corrosion(name, corrosion=corrosion)
 
         return cls(
             top_flange_width=top_flange_width,
@@ -183,5 +185,62 @@ class IProfile(Profile):
             web_thickness=web_thickness,
             top_radius=profile.top_radius,
             bottom_radius=profile.bottom_radius,
+            name=name,
+        )
+
+    def with_corrosion(self, corrosion: MM = 0) -> IProfile:
+        """Apply corrosion to the I-profile and return a new I-profile instance.
+
+        The name attribute of the new instance will be updated to reflect the total corrosion applied
+        including any previous corrosion indicated in the original name.
+
+        Parameters
+        ----------
+        corrosion : MM, optional
+            Corrosion per side (default is 0).
+
+        Returns
+        -------
+        IProfile
+            A new I-profile instance with the applied corrosion.
+
+        Raises
+        ------
+        ValueError
+            If the profile has fully corroded.
+        """
+        raise_if_negative(corrosion=corrosion)
+
+        if corrosion == 0:
+            return self
+
+        top_flange_width = self.top_flange_width - corrosion * 2
+        top_flange_thickness = self.top_flange_thickness - corrosion * 2
+        bottom_flange_width = self.bottom_flange_width - corrosion * 2
+        bottom_flange_thickness = self.bottom_flange_thickness - corrosion * 2
+        total_height = self.total_height - corrosion * 2
+        web_thickness = self.web_thickness - corrosion * 2
+
+        if any(
+            thickness < FULL_CORROSION_TOLERANCE
+            for thickness in (
+                top_flange_thickness,
+                bottom_flange_thickness,
+                web_thickness,
+            )
+        ):
+            raise ValueError("The profile has fully corroded.")
+
+        name = update_name_with_corrosion(self.name, corrosion=corrosion)
+
+        return IProfile(
+            top_flange_width=top_flange_width,
+            top_flange_thickness=top_flange_thickness,
+            bottom_flange_width=bottom_flange_width,
+            bottom_flange_thickness=bottom_flange_thickness,
+            total_height=total_height,
+            web_thickness=web_thickness,
+            top_radius=self.top_radius,
+            bottom_radius=self.bottom_radius,
             name=name,
         )
