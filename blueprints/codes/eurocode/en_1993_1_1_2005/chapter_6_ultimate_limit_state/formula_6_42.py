@@ -73,21 +73,6 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
         raise_if_negative(f_y=f_y)
         return f_y / gamma_m0
 
-    @staticmethod
-    def _evaluate(
-        sigma_x_ed: MPA,
-        f_y: MPA,
-        gamma_m0: DIMENSIONLESS,
-    ) -> bool:
-        """Evaluates the comparison; see __init__ for details."""
-        return Form6Dot42LongitudinalStressClass3CrossSections._evaluate_lhs(
-            sigma_x_ed=sigma_x_ed
-        ) <= Form6Dot42LongitudinalStressClass3CrossSections._evaluate_rhs(f_y=f_y, gamma_m0=gamma_m0)
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(self.sigma_x_ed, self.f_y, self.gamma_m0)
-
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.42."""
         _equation: str = r"\sigma_{x,Ed} \leq \frac{f_y}{\gamma_{M0}}"
