@@ -73,11 +73,6 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
         raise_if_negative(f_y=f_y)
         return f_y / gamma_m0
 
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.lhs / self.rhs
-
     @staticmethod
     def _evaluate(
         sigma_x_ed: MPA,

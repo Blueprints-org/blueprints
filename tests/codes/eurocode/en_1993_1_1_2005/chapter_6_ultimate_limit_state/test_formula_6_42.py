@@ -1,7 +1,5 @@
 """Testing formula 6.42 of EN 1993-1-1:2005."""
 
-import operator
-
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_42 import Form6Dot42LongitudinalStressClass3CrossSections
@@ -72,8 +70,3 @@ class TestForm6Dot42LongitudinalStressClass3CrossSections:
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
-
-    def test_comparison_operator(self) -> None:
-        """Test the comparison operator."""
-        # Test that the comparison operator is 'less than or equal to'
-        assert Form6Dot42LongitudinalStressClass3CrossSections._comparison_operator() == operator.le  # noqa: SLF001
