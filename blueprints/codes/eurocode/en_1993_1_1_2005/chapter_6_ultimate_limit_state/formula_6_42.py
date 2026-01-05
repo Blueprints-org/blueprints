@@ -1,5 +1,9 @@
 """Formula 6.42 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
@@ -40,9 +44,18 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
         self.f_y = f_y
         self.gamma_m0 = gamma_m0
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Returns the comparison operator for this formula.
+        LHS should be less than or equal to RHS.
+        """
+        return operator.le
+
     @staticmethod
     def _evaluate_lhs(
         sigma_x_ed: MPA,
+        f_y: MPA,  # noqa: ARG004
+        gamma_m0: DIMENSIONLESS,  # noqa: ARG004
     ) -> float:
         """Evaluates the left-hand side of the comparison. see __init__ for details."""
         raise_if_negative(sigma_x_ed=sigma_x_ed)
@@ -50,6 +63,7 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
 
     @staticmethod
     def _evaluate_rhs(
+        sigma_x_ed: MPA,  # noqa: ARG004
         f_y: MPA,
         gamma_m0: DIMENSIONLESS,
     ) -> float:
@@ -71,8 +85,8 @@ class Form6Dot42LongitudinalStressClass3CrossSections(ComparisonFormula):
     ) -> bool:
         """Evaluates the comparison; see __init__ for details."""
         return Form6Dot42LongitudinalStressClass3CrossSections._evaluate_lhs(
-            sigma_x_ed=sigma_x_ed
-        ) <= Form6Dot42LongitudinalStressClass3CrossSections._evaluate_rhs(f_y=f_y, gamma_m0=gamma_m0)
+            sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0
+        ) <= Form6Dot42LongitudinalStressClass3CrossSections._evaluate_rhs(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0)
 
     def __bool__(self) -> bool:
         """Allow truth-checking of the check object itself."""
