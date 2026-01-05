@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from blueprints.math_helpers import angle_to_slope, cot, csc, sec, slope_to_angle
+from blueprints.utils.math_helpers import angle_to_slope, cot, csc, sec, slope_to_angle
 from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
 
 

@@ -65,6 +65,8 @@ nav:
         - CUR Standards:
           - guides/concepts/codes/cur/index.md
           - CUR 228: guides/concepts/codes/cur/cur_228/formulas.md
+    - Utils:
+      - Making Latex reports: guides/utils/report.md
     - Contribute:
       - guides/contribute/index.md
       - guides/contribute/cli.md
