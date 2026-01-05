@@ -1,4 +1,4 @@
-"""Test for the HEA enum."""
+"""Test for the HEA standard profiles."""
 
 import pytest
 
@@ -12,7 +12,7 @@ class TestHEA:
 
     @pytest.mark.parametrize(("profile_name", "expected_data"), HEA_PROFILES_DATABASE.items())
     def test_as_hea_profile(self, profile_name: str, expected_data: HEAProfileParameters) -> None:
-        """Test that the HEA instance is converted to a HEAProfile correctly."""
+        """Test that the HEA instance is converted to an IProfile correctly."""
         profile = getattr(HEA, profile_name)
         expected_profile_data = expected_data
 

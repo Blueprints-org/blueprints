@@ -50,8 +50,7 @@ def ipe_profile() -> IProfile:
 @pytest.fixture
 def h_profile() -> IProfile:
     """Fixture to set up an H-shaped profile for testing."""
-    profile = HEB.HEB360
-    return IProfile.from_standard_profile(profile=profile)
+    return HEB.HEB360
 
 
 @pytest.fixture

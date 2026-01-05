@@ -17,7 +17,6 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB  # pragma: no cover
     from blueprints.structural_sections.steel.standard_profiles.hem import HEM  # pragma: no cover
     from blueprints.structural_sections.steel.standard_profiles.ipe import IPE  # pragma: no cover
 
@@ -124,10 +123,6 @@ class IProfile(Profile):
 
     @overload
     @classmethod
-    def from_standard_profile(cls, profile: HEB, corrosion: MM = 0) -> Self: ...
-
-    @overload
-    @classmethod
     def from_standard_profile(cls, profile: HEM, corrosion: MM = 0) -> Self: ...
 
     @overload
@@ -137,7 +132,7 @@ class IProfile(Profile):
     @classmethod
     def from_standard_profile(
         cls,
-        profile: HEB | HEM | IPE,
+        profile: HEM | IPE,
         corrosion: MM = 0,
     ) -> Self:
         """Create an I-profile from a set of standard profiles already defined in Blueprints.
