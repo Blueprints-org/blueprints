@@ -5,18 +5,16 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from math import pi
-from typing import TYPE_CHECKING, Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 
 from blueprints.structural_sections._polygon_builder import PolygonBuilder
 from blueprints.structural_sections._profile import Profile
+from blueprints.structural_sections.steel.profile_definitions.corrosion_utils import FULL_CORROSION_TOLERANCE, update_name_with_corrosion
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
-
-if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.standard_profiles.chs import CHS  # pragma: no cover
+from blueprints.validations import raise_if_negative
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -66,44 +64,44 @@ class CHSProfile(Profile):
         )
         return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
 
-    @classmethod
-    def from_standard_profile(
-        cls,
-        profile: CHS,
-        corrosion_outside: MM = 0,
-        corrosion_inside: MM = 0,
-    ) -> Self:
-        """Create a CHS profile from a set of standard profiles already defined in Blueprints.
+    def with_corrosion(self, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> CHSProfile:
+        """Apply corrosion to the CHS-profile and return a new CHS-profile instance.
+
+        The name attribute of the new instance will be updated to reflect the total corrosion applied
+        including any previous corrosion indicated in the original name.
 
         Parameters
         ----------
-        profile : CHS
-            Any of the standard CHS profiles defined in Blueprints.
         corrosion_outside : MM, optional
-            Corrosion thickness to be subtracted from the outer diameter [mm] (default: 0).
+            Corrosion to be subtracted from the outer diameter [mm] (default: 0).
         corrosion_inside : MM, optional
-            Corrosion thickness to be added to the inner diameter [mm] (default: 0).
+            Corrosion to be added to the inner diameter [mm] (default: 0).
 
         Returns
         -------
-        CHSSteelProfile
+        CHSProfile
             The adjusted CHS profile considering corrosion effects.
-        """
-        adjusted_outer_diameter = profile.diameter - 2 * corrosion_outside
-        adjusted_thickness = profile.thickness - corrosion_outside - corrosion_inside
 
-        if adjusted_thickness <= 0:
+        Raises
+        ------
+        ValueError
+            If the profile has fully corroded.
+        """
+        raise_if_negative(corrosion_outside=corrosion_outside)
+        raise_if_negative(corrosion_inside=corrosion_inside)
+
+        if corrosion_inside == 0 and corrosion_outside == 0:
+            return self
+
+        adjusted_outer_diameter = self.outer_diameter - 2 * corrosion_outside
+        adjusted_thickness = self.wall_thickness - corrosion_outside - corrosion_inside
+
+        if adjusted_thickness <= FULL_CORROSION_TOLERANCE:
             raise ValueError("The profile has fully corroded.")
 
-        name = profile.alias
-        if corrosion_inside or corrosion_outside:
-            name += (
-                f" (corrosion {'' if not corrosion_inside else f'in: {corrosion_inside} mm'}"
-                f"{', ' if corrosion_inside and corrosion_outside else ''}"
-                f"{'' if not corrosion_outside else f'out: {corrosion_outside} mm'})"
-            )
+        name = update_name_with_corrosion(self.name, corrosion_inside=corrosion_inside, corrosion_outside=corrosion_outside)
 
-        return cls(
+        return CHSProfile(
             outer_diameter=adjusted_outer_diameter,
             wall_thickness=adjusted_thickness,
             name=name,

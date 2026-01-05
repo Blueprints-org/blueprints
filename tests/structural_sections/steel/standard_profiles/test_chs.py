@@ -1,53 +1,33 @@
-"""Tests for the CHS enum."""
+"""Tests for the CHS class."""
+
+import pytest
 
 from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
-from blueprints.structural_sections.steel.standard_profiles.chs import CHS
+from blueprints.structural_sections.steel.standard_profiles.chs import CHS, CHS_PROFILES_DATABASE
 
 
 class TestCHS:
-    """Tests for the CHS enum."""
+    """Tests for the CHS class."""
 
-    def test_enum_values(self) -> None:
-        """Test that enum values are correctly defined."""
-        assert CHS.CHS21_3x2_3.value == ("CHS 21.3x2.3", 21.3, 2.3)
-        assert CHS.CHS2220x40.value == ("CHS 2220x40", 2220, 40)
+    @pytest.mark.parametrize(("profile_name", "expected_data"), CHS_PROFILES_DATABASE.items())
+    def test_as_chs_profile(self, profile_name: str, expected_data: tuple) -> None:
+        """Test that the CHS instance is converted to a CHSProfile correctly."""
+        profile = getattr(CHS, profile_name)
+        expected_profile_data = expected_data
 
-    def test_enum_membership(self) -> None:
-        """Test that specific values are members of the enum."""
-        assert "CHS 21.3x2.3" in [e.value[0] for e in CHS]
-        assert "CHS 2220x40" in [e.value[0] for e in CHS]
+        assert isinstance(profile, CHSProfile)
+        assert profile.name == expected_profile_data[0]
+        assert profile.outer_diameter == expected_profile_data[1]
+        assert profile.wall_thickness == expected_profile_data[2]
 
-    def test_enum_uniqueness(self) -> None:
-        """Test that all enum values are unique."""
-        values = [e.value for e in CHS]
-        assert len(values) == len(set(values))
+    def test_equality_and_identity(self) -> None:
+        """Test the equality and identity of CHS profiles."""
+        profile1 = CHS.CHS21_3x2_3
+        profile2 = CHS.CHS21_3x2_3
 
-    def test_enum_attributes(self) -> None:
-        """Test that enum attributes are correctly assigned."""
-        profile = CHS.CHS21_3x2_3
-        assert profile.alias == "CHS 21.3x2.3"
-        assert profile.diameter == 21.3
-        assert profile.thickness == 2.3
+        # Check that two profiles with the same name are equal but not the same object
+        assert profile1 == profile2
+        assert profile1 is not profile2
 
-    def test_as_cross_section(self) -> None:
-        """Test that the as_cross_section method returns a CHSProfile instance."""
-        profile = CHS.CHS21_3x2_3
-        cross_section = profile.as_cross_section()
-
-        assert isinstance(cross_section, CHSProfile)
-        assert cross_section.outer_diameter == profile.diameter
-        assert cross_section.wall_thickness == profile.thickness
-
-    def test_as_cross_section_with_corrosion(self) -> None:
-        """Test that the as_cross_section method accounts for corrosion."""
-        profile = CHS.CHS21_3x2_3
-        corrosion_outside = 0.5
-        corrosion_inside = 0.3
-        cross_section = profile.as_cross_section(
-            corrosion_outside=corrosion_outside,
-            corrosion_inside=corrosion_inside,
-        )
-
-        assert isinstance(cross_section, CHSProfile)
-        assert cross_section.outer_diameter == profile.diameter - 2 * corrosion_outside
-        assert cross_section.wall_thickness == profile.thickness - corrosion_outside - corrosion_inside
+        profile3 = CHS.CHS1016x20
+        assert profile1 != profile3
