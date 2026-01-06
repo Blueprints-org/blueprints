@@ -5,66 +5,101 @@ import csv
 import logging
 import os
 import re
+from pathlib import Path
 
 try:
     from googletrans import Translator
 except ImportError:  # pragma: no cover
     raise ImportError(
         "\n\nThe translate features require the translate module of blueprints. Install it through:\n"
-        "- pip install blueprints[translate]\n"
-        "- uv add blueprints[translate]\n"
+        "`pip install blueprints[translate]`\n"
+        "or using uv:\n"
+        "`uv add blueprints[translate]`\n"
     )  # pragma: no cover
 
 
-class TranslateLatex:
+class LatexTranslator:
     """
     Utility class for extracting and translating LaTeX text.
+
+    Supports translation between any language pair when using a CSV translation file.
+    Falls back to Google Translate for text not found in the CSV.
+
+    If Google Translate fails (network error, API limit, etc.), the original text
+    is preserved and the error is logged. Translation continues gracefully.
+
     WARNING: uses Google Translate service when translations haven't been manually entered.
-    When the services are not available, (sections of) text will be left in English.
+    When the service is unavailable, text will remain in the original language.
     """
 
     def __init__(
         self,
-        latex: str,
-        dest_language: str,
-        service_urls: list[str] | None = None,
-        custom_csv_path: str | None = None,
+        original_text: str,
+        destination_language: str,
+        source_language: str = "en",
+        custom_csv: Path | str | None = None,
     ) -> None:
         r"""
         Initialize the Translate class with text and destination language.
+
         WARNING: uses Google Translate service when translations haven't been manually entered.
-        When the services are not available, (sections of) text will be left in English.
+        When the services are not available, (sections of) text will be left in the original language.
 
         Parameters
         ----------
-        latex : str
+        original_text : str
             The LaTeX string to be translated.
-        dest_language : str
+        destination_language : str
             The target language code (e.g., 'nl' for Dutch, full list on https://docs.cloud.google.com/translate/docs/languages).
-        service_urls : list[str], optional
-            Optional list of service URLs for the translator.
-        """
-        if service_urls is None:
-            service_urls = ["translate.googleapis.com"]
-        self.translator = Translator(service_urls=service_urls)
-        self.original = latex
-        self.dest_language = dest_language
-        self.csv_path = os.path.join(os.path.dirname(__file__), "translations.csv")
-        if custom_csv_path:
-            self.csv_path = custom_csv_path
-        self.translation_dict = self._load_translation_dict(
-            dest_language.replace("-", "_")
-        )  # Normalize for CSV filename and Google: use underscores, not hyphens
-        self.translation_failed = False
-        self.translated = self._translate_latex()
+        source_language : str, optional
+            The source language code of the LaTeX document (default: 'en' for English).
+        custom_csv : Path | str, optional
+            Optional custom path to the CSV file containing manual translations. Will use default 'translations.csv' declared in Blueprints.
 
-    def _load_translation_dict(self, dest_language: str) -> dict[str, str]:
+            Warning:
+            When no custom CSV is provided, the default 'translations.csv' file in Blueprints is used.
+            This file may probably not contain translations for your specific use case and language pair.
+            We will use Google Translate for missing translations, but results may vary.
+
+            Therefore, it is recommended to provide a custom CSV file with manual translations for your specific use case and language pair:
+            - column headers are language codes (e.g., 'en,nl,de,fr').
+            - each row contains translations for the same concept across different languages.
+            - use '-' as a translation value to keep the source text unchanged for that language.
+            - supports wildcard patterns using '**' to match and preserve variable content.
+
+            When a custom CSV is provided, it should follow the example format described below:
+            ```
+            en, nl, de, fr
+            "Hello", "Hallo", "Hallo", "Bonjour"
+            "With formula **:", "Met formule **:", "Mit Formel **:", "-"
+            ```
+            With this CSV, you can translate en→nl, nl→fr, de→en, etc. using the same file.
+
+        """
+        self.original_text = original_text
+        self.source_language = source_language
+        self.destination_language = destination_language
+        self.csv_path = str(custom_csv) if custom_csv else os.path.join(os.path.dirname(__file__), "translations.csv")
+        self._translation = ""
+
+    def _load_translation_dict(self, source_language: str, dest_language: str) -> dict[str, str]:
         r"""
         Load translation dictionary from a CSV file if it exists.
-        The CSV should be named '<dest_language>.csv' and be in the same directory as this script.
-        The CSV format has language codes as headers (e.g., en,nl,de,fr) with the first column as source.
-        Returns a dict mapping source text to translated text.
+        The CSV format has language codes as headers (e.g., en,nl,de,fr).
+        Returns a dict mapping source text (from source_language column) to translated text (from dest_language column).
         If a translation is "-", the source text is used instead.
+
+        Parameters
+        ----------
+        source_language : str
+            The source language code (determines which column to use as lookup key).
+        dest_language : str
+            The destination language code (determines which column to use as translation value).
+
+        Returns
+        -------
+        dict[str, str]
+            Dictionary mapping source language text to destination language text.
         """
         translation_dict: dict[str, str] = {}
         if os.path.isfile(self.csv_path):
@@ -73,16 +108,18 @@ class TranslateLatex:
                 header = next(reader, None)
 
                 if header:
-                    # Find the column index for the destination language
+                    # Find the column indices for both source and destination languages
                     try:
+                        source_col_index = header.index(source_language)
                         dest_col_index = header.index(dest_language)
                     except ValueError:
+                        # If either language is not found in the CSV, return empty dict
                         return translation_dict
 
-                    # Load translations from the appropriate column
+                    # Load translations from the appropriate columns
                     for row in reader:
-                        if len(row) > dest_col_index:
-                            source_text = row[0]
+                        if len(row) > max(source_col_index, dest_col_index):
+                            source_text = row[source_col_index]
                             translation = row[dest_col_index]
                             # If translation is "-", use the source text
                             if translation == "-":
@@ -91,12 +128,12 @@ class TranslateLatex:
                                 translation_dict[source_text] = translation
         return translation_dict
 
-    def _wildcard_match(self, text: str) -> str | None:
+    def _wildcard_match(self, text: str, translation_dict: dict[str, str]) -> str | None:
         r"""
         If a manual translation contains '**', treat each as a wildcard and match/replace the corresponding substrings in the input text.
         Supports multiple wildcards. Returns the translated string if a wildcard match is found, else None.
         """
-        for src, tgt in getattr(self, "translation_dict", {}).items():
+        for src, tgt in translation_dict.items():
             if "**" in src:
                 if src.count("**") != tgt.count("**"):
                     logging.warning(f"Mismatched wildcard counts in translation: '{src}' -> '{tgt}'")
@@ -136,11 +173,17 @@ class TranslateLatex:
         missing_indices: list[int] = []
         missing_spaces: list[tuple[str, str]] = []  # Store (leading_space, trailing_space) for each missing text
 
+        # Normalize for CSV filename and Google: use underscores, not hyphens
+        translation_dict = self._load_translation_dict(
+            source_language=self.source_language.replace("-", "_"),
+            dest_language=self.destination_language.replace("-", "_"),
+        )
+
         for i, t in enumerate(texts):
-            if hasattr(self, "translation_dict") and t in self.translation_dict:
-                results.append(self.translation_dict[t])
+            if t in translation_dict:
+                results.append(translation_dict[t])
             else:
-                wildcard_result = self._wildcard_match(t)
+                wildcard_result = self._wildcard_match(t, translation_dict)
                 if wildcard_result is not None:
                     results.append(wildcard_result)
                 else:
@@ -158,7 +201,8 @@ class TranslateLatex:
             # In case of network issues or other exceptions, handle gracefully
             try:
                 # Use Google Translate for all missing texts in bulk
-                translations = self.translator.translate(missing, dest=self.dest_language)
+                translator = Translator()
+                translations = translator.translate(missing, dest=self.destination_language)
 
                 # Check if the result is a coroutine (async), and handle accordingly
                 if asyncio.iscoroutine(translations):
@@ -172,18 +216,18 @@ class TranslateLatex:
                         # If an event loop is running, run the coroutine until complete
                         translations = loop.run_until_complete(translations)  # pragma: no cover, requires async context
                 translated_texts = [tr.text for tr in translations]  # pragma: no cover, could fail if google is offline
-            except Exception:
-                self.translation_failed = True
-                # Failsafe: if translation fails, keep original English text (with spaces)
+            except Exception as e:
+                # Graceful fallback: if translation fails, keep original text (with spaces)
                 translated_texts = missing
-                logging.exception("Google translation failed, using original English text.")
+                logging.exception(f"Translation failed ({type(e).__name__}), using original text.")
 
             # Restore leading and trailing spaces
             for idx, val, (leading, trailing) in zip(missing_indices, translated_texts, missing_spaces):
                 results[idx] = leading + val + trailing
         return results
 
-    def _replace_text_commands(self, text: str, replacements: list) -> str:
+    @staticmethod
+    def _replace_text_commands(text: str, replacements: list) -> str:
         r"""
         Replace all \text{...}, \txt{...}, \textbf{...}, and \textit{...} in the string with the corresponding replacements.
         Only captures the innermost text content when commands are nested.
@@ -212,7 +256,8 @@ class TranslateLatex:
         # Apply all replacements in one pass (since we only extract innermost text)
         return re.sub(r"\\(text|txt|textbf|textit)\{([^{}]*)\}", _repl, text)
 
-    def _replace_section_commands(self, text: str, replacements: list) -> str:
+    @staticmethod
+    def _replace_section_commands(text: str, replacements: list) -> str:
         r"""
         Replace all \section{...}, \subsection{...}, \subsubsection{...}, and \title{...} in the string with the corresponding replacements.
         Only captures the innermost text content when commands are nested.
@@ -241,7 +286,8 @@ class TranslateLatex:
         # Apply all replacements in one pass (since we only extract innermost text)
         return re.sub(r"\\(section|subsection|subsubsection|title)\{([^{}]*)\}", _repl, text)
 
-    def _replace_caption_commands(self, text: str, replacements: list) -> str:
+    @staticmethod
+    def _replace_caption_commands(text: str, replacements: list) -> str:
         r"""
         Replace all \caption{...} in the string with the corresponding replacements.
         Only captures the innermost text content when commands are nested.
@@ -269,7 +315,8 @@ class TranslateLatex:
         # Apply all replacements in one pass (since we only extract innermost text)
         return re.sub(r"\\caption\{([^{}]*)\}", _repl, text)
 
-    def _replace_item_commands(self, text: str, replacements: list) -> str:
+    @staticmethod
+    def _replace_item_commands(text: str, replacements: list) -> str:
         r"""
         Replace all \item content in the string with the corresponding replacements.
         Only processes \item commands without nested braces.
@@ -300,7 +347,8 @@ class TranslateLatex:
         # This captures plain text items without nested structure
         return re.sub(r"\\item(\s+)([^\\]+?)(?=\\|$)", _repl, text, flags=re.DOTALL)
 
-    def _replace_table_cells(self, text: str, replacements: list) -> str:
+    @staticmethod
+    def _replace_table_cells(text: str, replacements: list) -> str:
         r"""
         Replace plain text content in table cells with translations, preserving \text{} commands.
         Only replaces the plain text portions that were extracted (excluding \text{} content).
@@ -385,7 +433,7 @@ class TranslateLatex:
         # Languages that use comma as decimal separator
         comma_decimal_languages_1 = ["bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "hr", "hu", "is", "it", "lt", "lv"]
         comma_decimal_languages_2 = ["nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sr", "sv", "tr", "uk"]
-        if self.dest_language not in comma_decimal_languages_1 + comma_decimal_languages_2:
+        if self.destination_language not in comma_decimal_languages_1 + comma_decimal_languages_2:
             return s
 
         def _replace_excluding_tag(content: str) -> str:
@@ -399,7 +447,8 @@ class TranslateLatex:
         s = re.sub(r"(?<!\\)\$([^$]+?)\$", lambda m: "$" + _replace_excluding_tag(m.group(1)) + "$", s)
         return re.sub(r"\\begin\{equation\}.*?\\end\{equation\}", lambda m: _replace_excluding_tag(m.group(0)), s, flags=re.DOTALL)
 
-    def _extract_balanced_content(self, text: str, start_pos: int) -> tuple[str, int]:
+    @staticmethod
+    def _extract_balanced_content(text: str, start_pos: int) -> tuple[str, int]:
         r"""
         Extract content from balanced braces starting at start_pos.
         Returns (content, end_position).
@@ -420,9 +469,9 @@ class TranslateLatex:
         r"""Extract innermost text content from \text{}, \txt{}, \textbf{}, and \textit{} commands."""
         texts = []
         pattern = r"\\(?:text|txt|textbf|textit)\{"
-        for match in re.finditer(pattern, self.original):
+        for match in re.finditer(pattern, self.original_text):
             start = match.end() - 1  # Position of '{'
-            content, _ = self._extract_balanced_content(self.original, start)
+            content, _ = self._extract_balanced_content(self.original_text, start)
             # Only include if content doesn't contain nested text commands
             if not re.search(r"\\(?:text|txt|textbf|textit)\{", content):
                 texts.append(content)
@@ -432,9 +481,9 @@ class TranslateLatex:
         r"""Extract content from \section{}, \subsection{}, \subsubsection{}, and \title{} commands."""
         section_texts = []
         section_pattern = r"\\(?:section|subsection|subsubsection|title)\{"
-        for match in re.finditer(section_pattern, self.original):
+        for match in re.finditer(section_pattern, self.original_text):
             start = match.end() - 1  # Position of '{'
-            content, _ = self._extract_balanced_content(self.original, start)
+            content, _ = self._extract_balanced_content(self.original_text, start)
             section_texts.append(content)
         return section_texts
 
@@ -442,9 +491,9 @@ class TranslateLatex:
         r"""Extract content from \caption{} commands."""
         caption_texts = []
         caption_pattern = r"\\caption\{"
-        for match in re.finditer(caption_pattern, self.original):
+        for match in re.finditer(caption_pattern, self.original_text):
             start = match.end() - 1  # Position of '{'
-            content, _ = self._extract_balanced_content(self.original, start)
+            content, _ = self._extract_balanced_content(self.original_text, start)
             caption_texts.append(content)
         return caption_texts
 
@@ -452,7 +501,7 @@ class TranslateLatex:
         r"""Extract content from \item commands."""
         item_texts = []
         item_pattern = r"\\item\s+([^\\]+?)(?=\\|$)"
-        for match in re.finditer(item_pattern, self.original, re.DOTALL):
+        for match in re.finditer(item_pattern, self.original_text, re.DOTALL):
             content = match.group(1)
             # Only strip leading whitespace, preserve trailing spaces
             content = content.lstrip()
@@ -469,7 +518,7 @@ class TranslateLatex:
         table_texts = []
         # Find all tabular environments
         tabular_pattern = r"\\begin\{tabular\}\{[^}]+\}(.*?)\\end\{tabular\}"
-        for tabular_match in re.finditer(tabular_pattern, self.original, re.DOTALL):
+        for tabular_match in re.finditer(tabular_pattern, self.original_text, re.DOTALL):
             tabular_content = tabular_match.group(1)
             # Skip header part (before \midrule)
             parts = re.split(r"\\midrule", tabular_content, maxsplit=1)
@@ -513,7 +562,7 @@ class TranslateLatex:
 
         if not texts and not section_texts and not caption_texts and not item_texts and not table_texts:
             # If no text blocks, still apply period-to-comma if needed
-            return self._check_decimal_separator(self.original)
+            return self._check_decimal_separator(self.original_text)
 
         # Translate all texts in one bulk operation
         all_texts = texts + section_texts + caption_texts + item_texts + table_texts
@@ -533,7 +582,7 @@ class TranslateLatex:
 
         # Apply replacements - table cells must be replaced before text commands
         # to prevent mismatch when cells contain \text{} commands
-        replaced = self.original
+        replaced = self.original_text
 
         if table_texts:
             replaced = self._replace_table_cells(replaced, table_translations)
@@ -553,6 +602,20 @@ class TranslateLatex:
         # Only replace periods with commas outside text blocks for certain languages
         return self._check_decimal_separator(replaced)
 
+    @property
+    def text(self) -> str:
+        """
+        Return the translated LaTeX string.
+
+        Returns
+        -------
+        str
+            The translated LaTeX string.
+        """
+        if not self._translation:
+            self._translation = self._translate_latex()
+        return self._translation
+
     def __str__(self) -> str:
         """
         Return the translated LaTeX string.
@@ -562,4 +625,4 @@ class TranslateLatex:
         str
             The translated LaTeX string.
         """
-        return self.translated
+        return self.text
