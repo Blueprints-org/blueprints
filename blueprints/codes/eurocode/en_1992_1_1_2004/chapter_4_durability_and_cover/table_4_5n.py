@@ -34,8 +34,8 @@ class Table4Dot5nMinimumCoverDurabilityPrestressingSteel(Formula):
             The structural class of the concrete. Use the [$Table4Dot3ConcreteStructuralClass$] class. [$-$]
         """
         super().__init__()
-        self.exposure_classes = exposure_classes
-        self.structural_class = structural_class
+        self.exposure_classes: Table4Dot1ExposureClasses = exposure_classes
+        self.structural_class: ConcreteStructuralClassBase = structural_class
 
     @staticmethod
     def _evaluate(

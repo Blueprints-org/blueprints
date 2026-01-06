@@ -69,7 +69,7 @@ def test_cli_import_error_handling() -> None:
                 raise ModuleNotFoundError(f"No module named '{name}'")
             return original_import(name, *args, **kwargs)
 
-        builtins.__import__ = raise_import_error
+        builtins.__import__ = raise_import_error  # type: ignore[invalid-assignment]
 
         # Try to import the cli module - should raise SystemExit
         with pytest.raises(SystemExit) as exc_info:

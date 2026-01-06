@@ -91,7 +91,7 @@ class Form8Dot4DesignAnchorageLength(Formula):
         self.alpha_5 = alpha_5
         self.l_b_rqd = l_b_rqd
         self.l_b_min = l_b_min
-        self.min_product_alpha_2_3_5 = min_product_alpha_2_3_5
+        self.min_product_alpha_2_3_5: RATIO | None = min_product_alpha_2_3_5
 
     @staticmethod
     def _evaluate(

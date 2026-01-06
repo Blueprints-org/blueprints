@@ -1,6 +1,6 @@
-# mypy: disable-error-code="operator"
 """Tests for the Exposure classes."""
 
+from dataclasses import dataclass
 from functools import total_ordering
 
 import pytest
@@ -115,23 +115,15 @@ class DummyChemical(Exposure):
         return "Dummy environment"
 
 
+@dataclass(frozen=True)
 class DummyExposureClasses(ExposureClassesBase):
     """Dummy ExposureClassesBase subclass for testing purposes."""
 
-    def __init__(
-        self,
-        dummy_carbonation: DummyCarbonation,
-        dummy_chloride: DummyChloride,
-        dummy_chloride_seawater: DummyChlorideSeawater,
-        dummy_freeze_thaw: DummyFreezeThaw,
-        dummy_chemical: DummyChemical,
-    ) -> None:
-        """Initialize the DummyExposureClassesBase with dummy exposure classes."""
-        self.dummy_carbonation = dummy_carbonation
-        self.dummy_chloride = dummy_chloride
-        self.dummy_chloride_seawater = dummy_chloride_seawater
-        self.dummy_freeze_thaw = dummy_freeze_thaw
-        self.dummy_chemical = dummy_chemical
+    dummy_carbonation: DummyCarbonation
+    dummy_chloride: DummyChloride
+    dummy_chloride_seawater: DummyChlorideSeawater
+    dummy_freeze_thaw: DummyFreezeThaw
+    dummy_chemical: DummyChemical
 
 
 class TestExposure:
@@ -156,35 +148,35 @@ class TestExposure:
 
     def test_greather_than_operator(self) -> None:
         """Check if the > operator is working correctly."""
-        assert DummyExposureSubclass.DUMMY3 > DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 > DummyExposureSubclass.DUMMY1
-        assert DummyExposureSubclass.DUMMY1 > DummyExposureSubclass.NA
+        assert DummyExposureSubclass.DUMMY3 > DummyExposureSubclass.DUMMY2  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY2 > DummyExposureSubclass.DUMMY1  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY1 > DummyExposureSubclass.NA  # type: ignore[unsupported-operator]
 
     def test_greather_than_equal_to_operator(self) -> None:
         """Check if the >= operator is working correctly."""
         # Testing greater than
-        assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 >= DummyExposureSubclass.DUMMY1
-        assert DummyExposureSubclass.DUMMY1 >= DummyExposureSubclass.NA
+        assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY2  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY2 >= DummyExposureSubclass.DUMMY1  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY1 >= DummyExposureSubclass.NA  # type: ignore[unsupported-operator]
         # Testing equal to
-        assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY3
-        assert DummyExposureSubclass.DUMMY1 >= DummyExposureSubclass.DUMMY1
+        assert DummyExposureSubclass.DUMMY3 >= DummyExposureSubclass.DUMMY3  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY1 >= DummyExposureSubclass.DUMMY1  # type: ignore[unsupported-operator]
 
     def test_lesser_than_operator(self) -> None:
         """Check if the < operator is working correctly."""
-        assert DummyExposureSubclass.DUMMY1 < DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 < DummyExposureSubclass.DUMMY3
-        assert DummyExposureSubclass.NA < DummyExposureSubclass.DUMMY1
+        assert DummyExposureSubclass.DUMMY1 < DummyExposureSubclass.DUMMY2  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY2 < DummyExposureSubclass.DUMMY3  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.NA < DummyExposureSubclass.DUMMY1  # type: ignore[unsupported-operator]
 
     def test_lesser_than_equal_to_operator(self) -> None:
         """Check if the <= operator is working correctly."""
         # Testing lesser than
-        assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY2
-        assert DummyExposureSubclass.DUMMY2 <= DummyExposureSubclass.DUMMY3
-        assert DummyExposureSubclass.NA <= DummyExposureSubclass.DUMMY1
+        assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY2  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY2 <= DummyExposureSubclass.DUMMY3  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.NA <= DummyExposureSubclass.DUMMY1  # type: ignore[unsupported-operator]
         # Testing equal to
-        assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY1
-        assert DummyExposureSubclass.DUMMY3 <= DummyExposureSubclass.DUMMY3
+        assert DummyExposureSubclass.DUMMY1 <= DummyExposureSubclass.DUMMY1  # type: ignore[unsupported-operator]
+        assert DummyExposureSubclass.DUMMY3 <= DummyExposureSubclass.DUMMY3  # type: ignore[unsupported-operator]
 
     def test_options(self) -> None:
         """Check if the options method returns all the possible options within an exposure class."""
@@ -454,14 +446,14 @@ class TestExposureClasses:
 def test_comparing_different_types_raises_error() -> None:
     """Check if comparing different exposure class types, raises TypeError."""
     with pytest.raises(TypeError):
-        DummyCarbonation.XC1 > DummyChloride.NA
+        DummyCarbonation.XC1 > DummyChloride.NA  # type: ignore[unsupported-operator]
     with pytest.raises(TypeError):
-        DummyChloride.NA == DummyChemical.NA
+        DummyChloride.NA == DummyChemical.NA  # type: ignore[unsupported-operator]
     with pytest.raises(TypeError):
-        DummyFreezeThaw.XF1 <= DummyChlorideSeawater.XS1
+        DummyFreezeThaw.XF1 <= DummyChlorideSeawater.XS1  # type: ignore[unsupported-operator]
     with pytest.raises(TypeError):
-        DummyChlorideSeawater.XS1 >= DummyChloride.XD1
+        DummyChlorideSeawater.XS1 >= DummyChloride.XD1  # type: ignore[unsupported-operator]
     with pytest.raises(TypeError):
-        DummyChemical.XA1 < DummyCarbonation.XC1
+        DummyChemical.XA1 < DummyCarbonation.XC1  # type: ignore[unsupported-operator]
     with pytest.raises(TypeError):
-        DummyChemical.NA != DummyFreezeThaw.XF1
+        DummyChemical.NA != DummyFreezeThaw.XF1  # type: ignore[unsupported-operator]

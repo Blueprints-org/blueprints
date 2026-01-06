@@ -2,6 +2,7 @@
 according to Table 4.1 from EN 1992-1-1:2004: Chapter 4 - Durability and cover to reinforcement.
 """
 
+from dataclasses import dataclass, field
 from functools import total_ordering
 
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.exposure_classes import (
@@ -211,36 +212,29 @@ class Chemical(Exposure):
                 return "Not applicable"
 
 
+@dataclass(frozen=True)
 class Table4Dot1ExposureClasses(ExposureClassesBase):
-    """Class representing table 4.1 from EN 1992-1-1:2004."""
+    """Class representing table 4.1 from EN 1992-1-1:2004.
 
-    def __init__(
-        self,
-        carbonation: Carbonation = Carbonation.NA,
-        chloride: Chloride = Chloride.NA,
-        chloride_seawater: ChlorideSeawater = ChlorideSeawater.NA,
-        freeze_thaw: FreezeThaw = FreezeThaw.NA,
-        chemical: Chemical = Chemical.NA,
-    ) -> None:
-        """Implementation of table 4.1 from EN 1992-1-1:2004 par. 4.2.
+    Exposure classes related to environmental conditions in accordance with EN 206-1
 
-        Exposure classes related to environmental conditions in accordance with EN 206-1
+    Arguments
+    ---------
+    carbonation : Carbonation
+        The carbonation exposure class. Defaults to Carbonation.NA.
+    chloride : Chloride
+        The chloride exposure class. Defaults to Chloride.NA.
+    chloride_seawater : ChlorideSeawater
+        The chloride seawater exposure class. Defaults to ChlorideSeawater.NA.
+    freeze_thaw : FreezeThaw
+        The freeze/thaw exposure class. Defaults to FreezeThaw.NA.
+    chemical : Chemical
+        The chemical exposure class. Defaults to Chemical.NA.
 
-        Parameters
-        ----------
-        carbonation : Carbonation
-            The carbonation exposure class. Defaults to Carbonation.NA.
-        chloride : Chloride
-            The chloride exposure class. Defaults to Chloride.NA.
-        chloride_seawater : ChlorideSeawater
-            The chloride seawater exposure class. Defaults to ChlorideSeawater.NA.
-        freeze_thaw : FreezeThaw
-            The freeze/thaw exposure class. Defaults to FreezeThaw.NA.
-        chemical : Chemical
-            The chemical exposure class. Defaults to Chemical.NA.
-        """
-        self.carbonation = carbonation
-        self.chloride = chloride
-        self.chloride_seawater = chloride_seawater
-        self.freeze_thaw = freeze_thaw
-        self.chemical = chemical
+    """
+
+    carbonation: Carbonation = field(default=Carbonation.NA)
+    chloride: Chloride = field(default=Chloride.NA)
+    chloride_seawater: ChlorideSeawater = field(default=ChlorideSeawater.NA)
+    freeze_thaw: FreezeThaw = field(default=FreezeThaw.NA)
+    chemical: Chemical = field(default=Chemical.NA)

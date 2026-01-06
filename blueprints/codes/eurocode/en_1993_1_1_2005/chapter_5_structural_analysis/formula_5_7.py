@@ -50,7 +50,7 @@ class Form5Dot7DisregardFrameSwayImperfections(ComparisonFormula):
         return self.lhs / self.rhs
 
     @staticmethod
-    def _evaluate(h_ed: N, v_ed: N) -> bool:
+    def _evaluate(h_ed: N, v_ed: N) -> bool:  # ty: ignore[invalid-method-override]
         """Evaluates the formula, for more information see the __init__ method."""
         lhs = Form5Dot7DisregardFrameSwayImperfections._evaluate_lhs(h_ed=h_ed)
         rhs = Form5Dot7DisregardFrameSwayImperfections._evaluate_rhs(v_ed=v_ed)

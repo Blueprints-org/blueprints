@@ -58,7 +58,7 @@ class ReinforcedCrossSection(ABC):
                 # this has been done to be able to add any shape of line to the cross-section (e.g. a circle or any other in the future).
                 rebars.extend(configuration.to_rebars(line=line()))
             else:
-                rebars.extend(configuration.to_rebars(line=line))
+                rebars.extend(configuration.to_rebars(line=line))  # ty: ignore[invalid-argument-type]
 
         # check if all rebars are inside the cross-section.
         # needed for the case where custom configurations are added to the RCS

@@ -40,7 +40,7 @@ jobs:
       - name: Run formatting checks with ruff
         run: make format
 
-      - name: Run type checks with mypy
+      - name: Run type checks with ty
         run: make typecheck
 
       - name: Build package
