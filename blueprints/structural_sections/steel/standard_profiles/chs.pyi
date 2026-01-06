@@ -1,4 +1,5 @@
 from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
+from blueprints.type_alias import MM
 
 class CHS:
     CHS21_3x2_3: CHSProfile
@@ -260,3 +261,10 @@ class CHS:
     CHS2220x32: CHSProfile
     CHS2220x36: CHSProfile
     CHS2220x40: CHSProfile
+
+class __CHSProfileParameters:
+    name: str
+    outer_diameter: MM
+    wall_thickness: MM
+
+CHS_PROFILES_DATABASE: dict[str, __CHSProfileParameters]

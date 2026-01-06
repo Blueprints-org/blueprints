@@ -27,6 +27,14 @@ class TestHEA:
         assert profile.top_radius == expected_profile_data.top_radius
         assert profile.bottom_radius == expected_profile_data.bottom_radius
 
+    @pytest.mark.parametrize("profile_name", HEA_PROFILES_DATABASE.keys())
+    def test_validity(self, profile_name: str) -> None:
+        """Test that the created profile instance is valid."""
+        profile = getattr(HEA, profile_name)
+
+        assert profile.polygon.is_valid, f"Profile {profile.name} is invalid."
+        assert profile.area > 0
+
     def test_equality_and_identity(self) -> None:
         """Test the equality and identity of HEA profiles."""
         profile1 = HEA.HEA200

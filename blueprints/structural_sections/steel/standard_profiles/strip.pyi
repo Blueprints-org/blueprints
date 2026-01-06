@@ -1,4 +1,5 @@
 from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
+from blueprints.type_alias import MM
 
 class Strip:
     STRIP160x5: StripProfile
@@ -63,3 +64,10 @@ class Strip:
     STRIP230x15: StripProfile
     STRIP230x20: StripProfile
     STRIP230x25: StripProfile
+
+class __StripProfileParameters:
+    name: str
+    width: MM
+    height: MM
+
+STRIP_PROFILES_DATABASE: dict[str, __StripProfileParameters]

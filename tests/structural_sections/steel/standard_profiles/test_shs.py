@@ -33,6 +33,14 @@ class TestSHS:
         assert profile.bottom_right_inner_radius == expected_profile_data.bottom_right_inner_radius
         assert profile.bottom_left_inner_radius == expected_profile_data.bottom_left_inner_radius
 
+    @pytest.mark.parametrize("profile_name", SHS_PROFILES_DATABASE.keys())
+    def test_validity(self, profile_name: str) -> None:
+        """Test that the created profile instance is valid."""
+        profile = getattr(SHS, profile_name)
+
+        assert profile.polygon.is_valid, f"Profile {profile.name} is invalid."
+        assert profile.area > 0
+
     def test_equality_and_identity(self) -> None:
         """Test the equality and identity of SHS profiles."""
         profile1 = SHS.SHS100x5

@@ -1,4 +1,5 @@
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
+from blueprints.type_alias import MM
 
 class HEM:
     HEM100: IProfile
@@ -25,3 +26,16 @@ class HEM:
     HEM800: IProfile
     HEM900: IProfile
     HEM1000: IProfile
+
+class __HEMProfileParameters:
+    name: str
+    top_flange_width: MM
+    top_flange_thickness: MM
+    bottom_flange_width: MM
+    bottom_flange_thickness: MM
+    total_height: MM
+    web_thickness: MM
+    top_radius: MM
+    bottom_radius: MM
+
+HEM_PROFILES_DATABASE: dict[str, __HEMProfileParameters]

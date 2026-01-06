@@ -1,4 +1,5 @@
 from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
+from blueprints.type_alias import MM
 
 class SHS:
     SHS40x2_6: RHSProfile
@@ -107,3 +108,22 @@ class SHS:
     SHS400x14_2: RHSProfile
     SHS400x16: RHSProfile
     SHS400x20: RHSProfile
+
+class __SHSProfileParameters:
+    name: str
+    total_height: MM
+    total_width: MM
+    left_wall_thickness: MM
+    right_wall_thickness: MM
+    top_wall_thickness: MM
+    bottom_wall_thickness: MM
+    top_right_outer_radius: MM
+    top_left_outer_radius: MM
+    bottom_right_outer_radius: MM
+    bottom_left_outer_radius: MM
+    top_right_inner_radius: MM
+    top_left_inner_radius: MM
+    bottom_right_inner_radius: MM
+    bottom_left_inner_radius: MM
+
+SHS_PROFILES_DATABASE: dict[str, __SHSProfileParameters]
