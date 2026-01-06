@@ -72,21 +72,6 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         """Returns the unity check value."""
         return self.lhs
 
-    @staticmethod
-    def _evaluate(
-        n_ed: KN,
-        n_pl_rd: KN,
-    ) -> bool:
-        """Evaluates the comparison; see __init__ for details."""
-        return (
-            Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_lhs(n_ed=n_ed, n_pl_rd=n_pl_rd)
-            <= Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_rhs()
-        )
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(self.n_ed, self.n_pl_rd)
-
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1"
