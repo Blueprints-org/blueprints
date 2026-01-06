@@ -6,6 +6,7 @@ import logging
 import os
 import re
 from pathlib import Path
+from typing import Any, cast
 
 try:
     from googletrans import Translator
@@ -19,7 +20,7 @@ except ImportError:  # pragma: no cover
 
 
 class LatexTranslator:
-    """
+    r"""
     Utility class for extracting and translating LaTeX text.
 
     Supports translation between any language pair when using a CSV translation file.
@@ -30,6 +31,41 @@ class LatexTranslator:
 
     WARNING: uses Google Translate service when translations haven't been manually entered.
     When the service is unavailable, text will remain in the original language.
+
+    Examples
+    --------
+    Basic usage with default CSV:
+
+    >>> latex = r"\\text{Hello world} with formula $x = 5.2$"
+    >>> translator = LatexTranslator(latex, destination_language="nl")
+    >>> print(translator.text)
+    \\text{Hallo wereld} with formula $x = 5,2$
+
+    Using a custom CSV file:
+
+    >>> from pathlib import Path
+    >>> custom_csv = Path("my_translations.csv")
+    >>> # CSV contains: en,nl
+    >>> #                "Concrete strength","Betonsterkte"
+    >>> latex = r"\\section{Concrete strength}"
+    >>> translator = LatexTranslator(latex, "nl", custom_csv=custom_csv)
+    >>> str(translator)
+    '\\\\section{Betonsterkte}'
+
+    Translating from non-English source:
+
+    >>> latex_de = r"\\text{Hallo Welt}"
+    >>> translator = LatexTranslator(latex_de, destination_language="en", source_language="de")
+    >>> print(translator.text)
+    \\text{Hello World}
+
+    The translator handles various LaTeX commands:
+    - Text commands: \\text{}, \\txt{}, \\textbf{}, \\textit{}
+    - Sections: \\section{}, \\subsection{}, \\subsubsection{}, \\title{}
+    - Captions: \\caption{}
+    - Lists: \\item content
+    - Tables: content within tabular environments
+    - Equations: decimal separator conversion for certain languages (e.g., . → , for Dutch)
     """
 
     def __init__(
@@ -206,15 +242,16 @@ class LatexTranslator:
 
                 # Check if the result is a coroutine (async), and handle accordingly
                 if asyncio.iscoroutine(translations):
+                    # Type narrow: translations is a coroutine at this point
+                    coro = cast(Any, translations)
                     try:
                         # Try to get the current running event loop
                         loop = asyncio.get_running_loop()
+                        # If a loop is running, schedule the coroutine on it
+                        translations = asyncio.run_coroutine_threadsafe(coro, loop).result()  # pragma: no cover, requires async context
                     except RuntimeError:
                         # If no event loop is running, run the coroutine synchronously
-                        translations = asyncio.run(translations)
-                    else:
-                        # If an event loop is running, run the coroutine until complete
-                        translations = loop.run_until_complete(translations)  # pragma: no cover, requires async context
+                        translations = asyncio.run(coro)
                 translated_texts = [tr.text for tr in translations]  # pragma: no cover, could fail if google is offline
             except Exception as e:
                 # Graceful fallback: if translation fails, keep original text (with spaces)
