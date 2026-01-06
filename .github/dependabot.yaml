@@ -13,7 +13,7 @@ updates:
     groups:
       dev-dependencies: # name of group
         patterns:
-          - "mypy"
+          - "ty"
           - "ruff"
           - "pre-commit"
           - "pytest"

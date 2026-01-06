@@ -32,8 +32,8 @@ class FormADot1DamageDuringDesignLife(Formula):
         None
         """
         super().__init__()
-        self.n_e = n_e
-        self.n_r = n_r
+        self.n_e: list[DIMENSIONLESS] = n_e
+        self.n_r: list[DIMENSIONLESS] = n_r
 
     @staticmethod
     def _evaluate(
