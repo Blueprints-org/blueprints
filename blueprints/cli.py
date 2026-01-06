@@ -235,9 +235,9 @@ def typecheck(ctx: typer.Context) -> None:
     Notes
     -----
     Additional arguments are passed directly to ty. Common examples:
-    - `--strict` : Enable strict mode
-    - `--ignore-missing-imports` : Ignore missing imports
-    - `--show-error-codes` : Show error codes
+    - `--verbose` : Increase verbosity of type checking output
+    - `--quiet` : Reduce output to essential information
+    - See `ty --help` for the full list of supported options
     """
     console.print("[bold blue]Running ty type checker...[/bold blue]")
     run_command(["uv", "run", "ty", "check", "blueprints", *ctx.args])
