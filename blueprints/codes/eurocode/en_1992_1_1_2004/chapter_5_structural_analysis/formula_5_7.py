@@ -39,7 +39,7 @@ class Form5Dot7EffectiveFlangeWidth(Formula):
         where [$b_{eff,i}$] is the effective flange width of the i-th flange
         """
         super().__init__()
-        self.b_eff_i = b_eff_i
+        self.b_eff_i: M = b_eff_i
         self.b_w = b_w
         self.b = b
 
@@ -63,6 +63,6 @@ class Form5Dot7EffectiveFlangeWidth(Formula):
             return_symbol=r"b_{eff}",
             result=f"{self:.{n}f}",
             equation=r"\sum b_{eff,i}+b_w\le b",
-            numeric_equation=rf"\sum ({'+'.join(str(b_eff) for b_eff in self.b_eff_i)})+{self.b_w}\le {self.b}",
+            numeric_equation=rf"\sum ({'+'.join(str(b_eff) for b_eff in self.b_eff_i)})+{self.b_w}\le {self.b}",  # ty: ignore[not-iterable]
             comparison_operator_label="=",
         )

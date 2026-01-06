@@ -24,14 +24,6 @@ def mock_cross_section(mocker: Mock) -> CrossSection:
     cross_section.area = 683  # mm²
     cross_section.perimeter = 400  # mm
     cross_section.centroid = Point(50, 50)
-    cross_section.moment_of_inertia_about_y = 2000  # mm⁴
-    cross_section.moment_of_inertia_about_z = 3000  # mm⁴
-    cross_section.elastic_section_modulus_about_y_positive = 100  # mm³
-    cross_section.elastic_section_modulus_about_y_negative = 90  # mm³
-    cross_section.elastic_section_modulus_about_z_positive = 80  # mm³
-    cross_section.elastic_section_modulus_about_z_negative = 70  # mm³
-    cross_section.plastic_section_modulus_about_y = 60  # mm³
-    cross_section.plastic_section_modulus_about_z = 50  # mm³
     cross_section.geometry = {"type": "rectangle", "width": 100, "height": 50}
     return cross_section
 

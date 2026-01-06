@@ -222,25 +222,25 @@ def formatting(ctx: typer.Context) -> None:
 
 @app.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def typecheck(ctx: typer.Context) -> None:
-    """Run static type checks with mypy.
+    """Run static type checks with ty from astral.
 
-    Performs static type checking on the blueprints package using mypy.
+    Performs static type checking on the blueprints package using ty.
     Equivalent to: make typecheck
 
     Parameters
     ----------
     ctx : typer.Context
-        Typer context containing additional arguments to pass to mypy.
+        Typer context containing additional arguments to pass to ty.
 
     Notes
     -----
-    Additional arguments are passed directly to mypy. Common examples:
+    Additional arguments are passed directly to ty. Common examples:
     - `--strict` : Enable strict mode
     - `--ignore-missing-imports` : Ignore missing imports
     - `--show-error-codes` : Show error codes
     """
-    console.print("[bold blue]Running mypy type checker...[/bold blue]")
-    run_command(["uv", "run", "mypy", "-p", "blueprints", *ctx.args])
+    console.print("[bold blue]Running ty type checker...[/bold blue]")
+    run_command(["uv", "run", "ty", "check", "blueprints", *ctx.args])
 
 
 # Testing Commands
@@ -405,7 +405,7 @@ def check() -> None:  # noqa: PLR0915
     Runs the following checks in order:
     1. Lint with Ruff
     2. Format check with Ruff
-    3. Type checking with mypy
+    3. Type checking with ty
     4. Coverage validation with pytest
 
     Raises
@@ -455,9 +455,9 @@ def check() -> None:  # noqa: PLR0915
         console.print("[bold red]Format: FAILED (Use `blueprints formatting` to auto-format files)[/bold red]")
 
     # 3. Type check
-    console.print("\n[bold blue]3. Running type checks with mypy...[/bold blue]")
+    console.print("\n[bold blue]3. Running type checks with ty...[/bold blue]")
     result = subprocess.run(
-        args=["uv", "run", "mypy", "-p", "blueprints"],
+        args=["uv", "run", "ty", "check", "blueprints"],
         capture_output=False,
         text=True,
         check=False,

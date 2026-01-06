@@ -34,10 +34,10 @@ class FormEDot4DistanceToCentroidA2(Formula):
         None
         """
         super().__init__()
-        self.e_i = e_i
-        self.gamma_i = gamma_i
-        self.a_i = a_i
-        self.h_i = h_i
+        self.e_i = e_i  # type: ignore[unresolved-attribute]
+        self.gamma_i = gamma_i  # type: ignore[unresolved-attribute]
+        self.a_i = a_i  # type: ignore[unresolved-attribute]
+        self.h_i = h_i  # type: ignore[unresolved-attribute]
 
     @staticmethod
     def _evaluate(e_i: list[MPA], a_i: list[MM4], gamma_i: list[DIMENSIONLESS], h_i: list[MM]) -> NMM2:

@@ -18,7 +18,7 @@ RUN     		:= $(UV) run
 BUILD 			:= $(UV) build
 PYTEST  		:= $(RUN) $(NO_DEV) pytest
 COVERAGE		:= $(PYTEST) --cov=./blueprints
-MYPY    		:= $(RUN) mypy
+TY    		    := $(RUN) ty
 RUFF    		:= $(RUN) ruff
 
 #─────────────────────────────────────────────────────────────────────────────
@@ -55,8 +55,8 @@ format:                        ## Check the formatting with Ruff
 	$(RUFF) format . --check
 
 .PHONY: typecheck
-typecheck:                     ## Run static type checks with mypy
-	$(MYPY) -p blueprints
+typecheck:                     ## Run static type checks with ty
+	$(TY) check blueprints
 
 #─────────────────────────────────────────────────────────────────────────────
 # Testing targets
@@ -97,5 +97,5 @@ build:                         ## Build the project
 #─────────────────────────────────────────────────────────────────────────────
 .PHONY: clean
 clean:                         ## Remove venv and all build/test artifacts
-	@rm -rf .venv htmlcov .pytest_cache .mypy_cache .ruff_cache .coverage;\
+	@rm -rf .venv htmlcov .pytest_cache .ruff_cache .coverage;\
 	echo "Cleaned up all build/test artifacts and virtual environment"

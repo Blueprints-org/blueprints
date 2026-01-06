@@ -93,10 +93,16 @@ class TestCheckResult:
         ],
     )
     def test_from_comparison_parametrized(
-        self, provided: float, operator: str, required: float, expected_is_ok: bool, unity_check: float, factor_of_safety: float
+        self,
+        provided: float,
+        operator: str,
+        required: float,
+        expected_is_ok: bool,
+        unity_check: float,
+        factor_of_safety: float,
     ) -> None:
         """Test CheckResult.from_comparison for all operator cases and value relations, including zeros."""
-        result = CheckResult.from_comparison(provided=provided, required=required, operator=operator)
+        result = CheckResult.from_comparison(provided=provided, required=required, operator=operator)  # type: ignore[arg-type]
         assert result.is_ok == expected_is_ok
         assert result.provided == provided
         assert result.required == required
