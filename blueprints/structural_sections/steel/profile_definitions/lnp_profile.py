@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -16,9 +15,6 @@ from blueprints.structural_sections.steel.profile_definitions.plotters.general_s
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
-if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.standard_profiles.lnp import LNP  # pragma: no cover
-
 
 @dataclass(frozen=True, kw_only=True)
 class LNPProfile(Profile):
@@ -28,10 +24,10 @@ class LNPProfile(Profile):
 
     Attributes
     ----------
-    total_width : MM
-        The total width of the profile [mm].
     total_height : MM
         The total height of the profile [mm].
+    total_width : MM
+        The total width of the profile [mm].
     web_thickness : MM
         The thickness of the web [mm].
     base_thickness : MM
@@ -50,10 +46,10 @@ class LNPProfile(Profile):
         The plotter function to visualize the profile (default: `plot_shapes`).
     """
 
-    total_width: MM
-    """ The total width of the profile [mm]. """
     total_height: MM
     """ The total height of the profile [mm]. """
+    total_width: MM
+    """ The total width of the profile [mm]. """
     web_thickness: MM
     """ The thickness of the web [mm]. """
     base_thickness: MM
@@ -125,58 +121,6 @@ class LNPProfile(Profile):
             # Web
             .append_line(length=self.web_outer_height, angle=90)
             .generate_polygon()
-        )
-
-    @classmethod
-    def from_standard_profile(
-        cls,
-        profile: LNP,
-        corrosion: MM = 0,
-    ) -> Self:
-        """Create an LNP-profile from a set of standard profiles already defined in Blueprints.
-
-        Blueprints offers standard profiles for LNP. This method allows you to create an LNP-profile.
-
-        Parameters
-        ----------
-        profile : LNP
-            Any of the standard profiles defined in Blueprints.
-        corrosion : MM, optional
-            Corrosion thickness per side (default is 0).
-        """
-        total_width = profile.width - 2 * corrosion
-        total_height = profile.height - 2 * corrosion
-
-        web_thickness = profile.web_thickness - 2 * corrosion
-        base_thickness = profile.base_thickness - 2 * corrosion
-
-        root_radius = profile.root_radius + corrosion
-        back_radius = max(profile.back_radius - corrosion, 0)
-        base_toe_radius = max(profile.toe_radius - corrosion, 0)
-        web_toe_radius = max(profile.toe_radius - corrosion, 0)
-
-        if any(
-            [
-                web_thickness < 1e-3,
-                base_thickness < 1e-3,
-            ]
-        ):
-            raise ValueError("The profile has fully corroded.")
-
-        name = profile.alias
-        if corrosion:
-            name += f" (corrosion: {corrosion} mm)"
-
-        return cls(
-            total_width=total_width,
-            total_height=total_height,
-            web_thickness=web_thickness,
-            base_thickness=base_thickness,
-            root_radius=root_radius,
-            back_radius=back_radius,
-            web_toe_radius=web_toe_radius,
-            base_toe_radius=base_toe_radius,
-            name=name,
         )
 
     def with_corrosion(self, corrosion: MM = 0) -> LNPProfile:

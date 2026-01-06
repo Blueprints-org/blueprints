@@ -11,7 +11,6 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
 from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
-from blueprints.structural_sections.steel.standard_profiles.rhs import RHS
 from blueprints.validations import NegativeValueError
 
 
@@ -53,26 +52,6 @@ class TestRHSSteelProfile:
         """Test the geometry of the RHS profile."""
         expected_geometry = rhs_profile._geometry  # noqa: SLF001
         assert expected_geometry is not None
-
-    def test_get_profile_with_corrosion(self) -> None:
-        """Test the RHS profile with corrosion applied."""
-        # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
-            RHSProfile.from_standard_profile(
-                profile=RHS.RHS400x200_16,
-                corrosion_outside=16,  # mm
-                corrosion_inside=0,  # mm
-            )
-
-    def test_corrosion_in_name(self) -> None:
-        """Test that the name includes corrosion information."""
-        rhs_profile_with_corrosion = RHSProfile.from_standard_profile(
-            profile=RHS.RHS400x200_16,
-            corrosion_outside=2,  # mm
-            corrosion_inside=1,  # mm
-        )
-        expected_name_with_corrosion = "RHS400x200x16 (corrosion inside: 1 mm, outside: 2 mm)"
-        assert rhs_profile_with_corrosion.name == expected_name_with_corrosion
 
     def test_immutability(self, rhs_profile: RHSProfile) -> None:
         """Test that the RHSProfile dataclass is immutable."""

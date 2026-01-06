@@ -11,7 +11,6 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
-from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 from blueprints.validations import NegativeValueError
 
 
@@ -54,24 +53,6 @@ class TestISteelProfile:
         """Test the geometry of the I profile."""
         expected_geometry = h_profile._geometry  # noqa: SLF001
         assert expected_geometry is not None
-
-    def test_get_profile_with_corrosion(self) -> None:
-        """Test the HEB profile with 20 mm corrosion applied."""
-        # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
-            IProfile.from_standard_profile(
-                profile=HEB.HEB360,
-                corrosion=20,  # mm
-            )
-
-    def test_corrosion_in_name(self) -> None:
-        """Test that the name includes corrosion information."""
-        i_profile_with_corrosion = IProfile.from_standard_profile(
-            profile=HEB.HEB360,
-            corrosion=2,  # mm
-        )
-        expected_name_with_corrosion = "HEB360 (corrosion: 2 mm)"
-        assert i_profile_with_corrosion.name == expected_name_with_corrosion
 
     def test_immutability(self, h_profile: IProfile) -> None:
         """Test that the IProfile dataclass is immutable."""

@@ -30,8 +30,7 @@ def mock_section_properties() -> Generator[MagicMock, None, None]:
 @pytest.fixture
 def strip_profile() -> StripProfile:
     """Fixture to set up a Strip profile for testing."""
-    profile = Strip.STRIP160x5
-    return StripProfile.from_standard_profile(profile=profile)
+    return Strip.STRIP160x5
 
 
 @pytest.fixture
@@ -43,29 +42,22 @@ def chs_profile() -> CHSProfile:
 @pytest.fixture
 def ipe_profile() -> IProfile:
     """Fixture to set up an I-shaped profile for testing."""
-    profile = IPE.IPE100
-    return IProfile.from_standard_profile(profile=profile)
+    return IPE.IPE100
 
 
 @pytest.fixture
 def h_profile() -> IProfile:
     """Fixture to set up an H-shaped profile for testing."""
-    profile = HEB.HEB360
-    return IProfile.from_standard_profile(profile=profile)
+    return HEB.HEB360
 
 
 @pytest.fixture
 def rhs_profile() -> RHSProfile:
     """Fixture to set up an RHS profile for testing."""
-    profile = RHS.RHS400x200_16
-    return RHSProfile.from_standard_profile(profile=profile)
+    return RHS.RHS400x200x16
 
 
 @pytest.fixture
 def lnp_profile() -> LNPProfile:
     """Fixture to set up an LNP profile for testing."""
-    profile = LNP.LNP_100x50x6
-    return LNPProfile.from_standard_profile(
-        profile=profile,
-        corrosion=0,
-    )
+    return LNP.LNP100x50x6

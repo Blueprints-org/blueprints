@@ -1,49 +1,34 @@
-"""Tests for the StripClass enum."""
+"""Test for the Strip standard profiles."""
+
+import pytest
 
 from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
-from blueprints.structural_sections.steel.standard_profiles.strip import Strip
+from blueprints.structural_sections.steel.standard_profiles.strip import STRIP_PROFILES_DATABASE, Strip
+from blueprints.structural_sections.steel.standard_profiles.strip import __StripProfileParameters as StripProfileParameters
 
 
-class TestStripClass:
-    """Tests for the StripClass enum."""
+class TestStrip:
+    """Tests for the Strip class."""
 
-    def test_enum_values(self) -> None:
-        """Test that enum values are correctly defined."""
-        assert Strip.STRIP160x5.value == ("160x5", 160, 5)
-        assert Strip.STRIP230x25.value == ("230x25", 230, 25)
+    @pytest.mark.parametrize(("profile_name", "expected_data"), STRIP_PROFILES_DATABASE.items())
+    def test_as_strip_profile(self, profile_name: str, expected_data: StripProfileParameters) -> None:
+        """Test that the Strip instance is converted to a StripProfile correctly."""
+        profile = getattr(Strip, profile_name)
+        expected_profile_data = expected_data
 
-    def test_enum_membership(self) -> None:
-        """Test that specific values are members of the enum."""
-        assert "160x5" in [e.value[0] for e in Strip]
-        assert "230x25" in [e.value[0] for e in Strip]
+        assert isinstance(profile, StripProfile)
+        assert profile.name == expected_profile_data.name
+        assert profile.width == expected_profile_data.width
+        assert profile.height == expected_profile_data.height
 
-    def test_enum_uniqueness(self) -> None:
-        """Test that all enum values are unique."""
-        values = [e.value for e in Strip]
-        assert len(values) == len(set(values))
+    def test_equality_and_identity(self) -> None:
+        """Test the equality and identity of Strip profiles."""
+        profile1 = Strip.STRIP200x10
+        profile2 = Strip.STRIP200x10
 
-    def test_enum_attributes(self) -> None:
-        """Test that enum attributes are correctly assigned."""
-        profile = Strip.STRIP160x5
-        assert profile.alias == "160x5"
-        assert profile.width == 160
-        assert profile.height == 5
+        # Check that two profiles with the same name are equal but not the same object
+        assert profile1 == profile2
+        assert profile1 is not profile2
 
-    def test_as_cross_section(self) -> None:
-        """Test that the as_cross_section method returns a StripProfile instance."""
-        profile = Strip.STRIP160x5
-        cross_section = profile.as_cross_section()
-
-        assert isinstance(cross_section, StripProfile)
-        assert cross_section.width == profile.width
-        assert cross_section.height == profile.height
-
-    def test_as_cross_section_with_corrosion(self) -> None:
-        """Test that the as_cross_section method accounts for corrosion."""
-        profile = Strip.STRIP160x5
-        corrosion = 0.7
-        cross_section = profile.as_cross_section(corrosion=corrosion)
-
-        assert isinstance(cross_section, StripProfile)
-        assert cross_section.width == profile.width - 2 * corrosion
-        assert cross_section.height == profile.height - 2 * corrosion
+        profile3 = Strip.STRIP180x5
+        assert profile1 != profile3
