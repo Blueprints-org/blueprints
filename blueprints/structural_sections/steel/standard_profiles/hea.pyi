@@ -24,4 +24,4 @@ class HEA:
     HEA700: IProfile
     HEA800: IProfile
     HEA900: IProfile
-    HEA100: IProfile
+    HEA1000: IProfile
