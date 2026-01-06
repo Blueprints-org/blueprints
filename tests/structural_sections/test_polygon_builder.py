@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from shapely.geometry import Polygon
 
-from blueprints.structural_sections._polygon_builder import PolygonBuilder, merge_polygons
+from blueprints.structural_sections._polygon_builder import POLYGON_ENDPOINTS_CLOSE_ATOL, PolygonBuilder, merge_polygons
 from blueprints.structural_sections.geometric_profiles import RectangularProfile
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
@@ -615,3 +615,123 @@ class TestPolygonBuilder:
         assert polygon.area == pytest.approx(4.0, rel=0.0, abs=1e-12)
         assert polygon.length == pytest.approx(8.0, rel=0.0, abs=1e-12)
         np.testing.assert_allclose(polygon.centroid.coords[0], (2.0, 2.0), atol=1e-12)
+
+    def test_generate_polygon_corrects_endpoints_within_tolerance(self) -> None:
+        """When first and last points are within tolerance, they are set equal to fix self-intersection."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder.append_line(1.0, 0.0)
+        builder.append_line(1.0, 90.0)
+        builder.append_line(1.0, 180.0)
+        builder.append_line(1.0, -90.0)
+
+        # Add a small error to the last point (just within tolerance)
+        builder._points[-1] = builder._points[0] + np.array([POLYGON_ENDPOINTS_CLOSE_ATOL * 0.5, 0.0])  # noqa: SLF001
+
+        # This should succeed by correcting the endpoints
+        polygon = builder.generate_polygon()
+
+        assert isinstance(polygon, Polygon)
+        assert polygon.is_valid
+        # After correction, first and last points should be exactly equal
+        np.testing.assert_array_equal(builder._points[0], builder._points[-1])  # noqa: SLF001
+
+    def test_generate_polygon_corrects_endpoints_at_tolerance_boundary(self) -> None:
+        """Endpoints exactly at the tolerance boundary are corrected."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder.append_line(2.0, 0.0)
+        builder.append_line(2.0, 90.0)
+        builder.append_line(2.0, 180.0)
+        builder.append_line(2.0, -90.0)
+
+        # Set last point exactly at tolerance (should be within atol using allclose)
+        builder._points[-1] = builder._points[0] + np.array([POLYGON_ENDPOINTS_CLOSE_ATOL, 0.0])  # noqa: SLF001
+
+        # This should succeed by correcting the endpoints
+        polygon = builder.generate_polygon()
+
+        assert isinstance(polygon, Polygon)
+        assert polygon.is_valid
+        # After correction, first and last points should be exactly equal
+        np.testing.assert_array_equal(builder._points[0], builder._points[-1])  # noqa: SLF001
+
+    def test_generate_polygon_raises_for_invalid_polygon_beyond_tolerance(self) -> None:
+        """Self-intersecting polygons where endpoints are beyond tolerance raise ValueError."""
+        builder = PolygonBuilder((0.0, 0.0))
+        # Create a bowtie/figure-eight shape that self-intersects
+        builder._points = np.array(  # noqa: SLF001
+            [
+                (0.0, 0.0),
+                (1.0, 1.0),
+                (0.0, 1.0),
+                (1.0, 0.0),
+                # Last point is beyond tolerance from first
+                (0.0 + POLYGON_ENDPOINTS_CLOSE_ATOL * 10, 0.0),
+            ],
+            dtype=float,
+        )
+
+        with pytest.raises(ValueError, match="The constructed polygon is not valid"):
+            builder.generate_polygon()
+
+    def test_generate_polygon_raises_with_validity_explanation(self) -> None:
+        """Invalid polygons include shapely's validity explanation in the error message."""
+        builder = PolygonBuilder((0.0, 0.0))
+        # Create a bowtie/figure-eight shape that self-intersects
+        builder._points = np.array(  # noqa: SLF001
+            [
+                (0.0, 0.0),
+                (2.0, 2.0),
+                (0.0, 2.0),
+                (2.0, 0.0),
+            ],
+            dtype=float,
+        )
+
+        with pytest.raises(ValueError) as exc_info:
+            builder.generate_polygon()
+
+        # Check that the error message contains validity information
+        error_message = str(exc_info.value)
+        assert "The constructed polygon is not valid" in error_message
+        # The explain_validity function should provide details about what's wrong
+        assert "Self-intersection" in error_message or "Ring Self-intersection" in error_message
+
+    def test_generate_polygon_validates_before_endpoint_correction(self) -> None:
+        """Validation occurs before attempting endpoint correction for already valid polygons."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder.append_line(1.0, 0.0)
+        builder.append_line(1.0, 90.0)
+        builder.append_line(1.0, 180.0)
+        # Don't close the polygon - Shapely will close it automatically and it will be valid
+
+        polygon = builder.generate_polygon()
+
+        # Should succeed without needing endpoint correction
+        assert isinstance(polygon, Polygon)
+        assert polygon.is_valid
+
+    def test_generate_polygon_endpoints_correction_only_on_invalid(self) -> None:
+        """Endpoint correction is attempted only when the initial polygon is invalid."""
+        builder = PolygonBuilder((0.0, 0.0))
+        builder.append_line(1.0, 0.0)
+        builder.append_line(1.0, 90.0)
+        builder.append_line(1.0, 180.0)
+
+        # Manually add a point that creates near-duplicate endpoints within tolerance
+        # This simulates numerical precision issues
+        builder._points = np.append(  # noqa: SLF001
+            builder._points,  # noqa: SLF001
+            [builder._points[0] + np.array([POLYGON_ENDPOINTS_CLOSE_ATOL * 0.1, 0.0])],  # noqa: SLF001
+            axis=0,
+        )
+
+        original_last_point = builder._points[-1].copy()  # noqa: SLF001
+
+        # Generate polygon - should correct the endpoints
+        polygon = builder.generate_polygon()
+
+        assert polygon.is_valid
+        # Verify that the correction was applied (last point equals first)
+        np.testing.assert_array_equal(builder._points[0], builder._points[-1])  # noqa: SLF001
+        # Verify the last point was modified from its original value
+        assert not np.array_equal(original_last_point, builder._points[-1])  # noqa: SLF001
