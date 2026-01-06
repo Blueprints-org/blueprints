@@ -11,7 +11,6 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
 from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
-from blueprints.structural_sections.steel.standard_profiles.lnp import LNP
 from blueprints.validations import NegativeValueError
 
 
@@ -49,24 +48,6 @@ class TestLNPProfile:
         """Test the geometry of the LNP profile."""
         expected_geometry = lnp_profile._geometry  # noqa: SLF001
         assert expected_geometry is not None
-
-    def test_get_profile_with_corrosion(self) -> None:
-        """Test the LNP profile with corrosion applied."""
-        # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
-            LNPProfile.from_standard_profile(
-                profile=LNP.LNP_100x50x6,
-                corrosion=3,  # mm, fully corroded
-            )
-
-    def test_corrosion_in_name(self) -> None:
-        """Test that the name includes corrosion information."""
-        lnp_profile_with_corrosion = LNPProfile.from_standard_profile(
-            profile=LNP.LNP_100x50x6,
-            corrosion=2,  # mm
-        )
-        expected_name_with_corrosion = "LNP 100x50x6 (corrosion: 2 mm)"
-        assert lnp_profile_with_corrosion.name == expected_name_with_corrosion
 
     def test_custom_profile(self) -> None:
         """Test creating an LNPProfile with custom dimensions."""

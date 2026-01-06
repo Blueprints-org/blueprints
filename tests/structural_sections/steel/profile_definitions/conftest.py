@@ -62,8 +62,4 @@ def rhs_profile() -> RHSProfile:
 @pytest.fixture
 def lnp_profile() -> LNPProfile:
     """Fixture to set up an LNP profile for testing."""
-    profile = LNP.LNP_100x50x6
-    return LNPProfile.from_standard_profile(
-        profile=profile,
-        corrosion=0,
-    )
+    return LNP.LNP100x50x6
