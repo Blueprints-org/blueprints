@@ -1,4 +1,5 @@
 from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
+from blueprints.type_alias import MM
 
 class SHSCF:
     SHSCF20x2: RHSProfile
@@ -149,3 +150,22 @@ class SHSCF:
     SHSCF600x12_5: RHSProfile
     SHSCF600x16: RHSProfile
     SHSCF600x20: RHSProfile
+
+class __SHSCFProfileParameters:
+    name: str
+    total_height: MM
+    total_width: MM
+    left_wall_thickness: MM
+    right_wall_thickness: MM
+    top_wall_thickness: MM
+    bottom_wall_thickness: MM
+    top_right_outer_radius: MM
+    top_left_outer_radius: MM
+    bottom_right_outer_radius: MM
+    bottom_left_outer_radius: MM
+    top_right_inner_radius: MM
+    top_left_inner_radius: MM
+    bottom_right_inner_radius: MM
+    bottom_left_inner_radius: MM
+
+SHSCF_PROFILES_DATABASE: dict[str, __SHSCFProfileParameters]

@@ -21,6 +21,14 @@ class TestStrip:
         assert profile.width == expected_profile_data.width
         assert profile.height == expected_profile_data.height
 
+    @pytest.mark.parametrize("profile_name", STRIP_PROFILES_DATABASE.keys())
+    def test_validity(self, profile_name: str) -> None:
+        """Test that the created profile instance is valid."""
+        profile = getattr(Strip, profile_name)
+
+        assert profile.polygon.is_valid, f"Profile {profile.name} is invalid."
+        assert profile.area > 0
+
     def test_equality_and_identity(self) -> None:
         """Test the equality and identity of Strip profiles."""
         profile1 = Strip.STRIP200x10

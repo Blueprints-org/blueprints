@@ -1,4 +1,5 @@
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
+from blueprints.type_alias import MM
 
 class HEB:
     HEB100: IProfile
@@ -25,3 +26,16 @@ class HEB:
     HEB800: IProfile
     HEB900: IProfile
     HEB1000: IProfile
+
+class __HEBProfileParameters:
+    name: str
+    top_flange_width: MM
+    top_flange_thickness: MM
+    bottom_flange_width: MM
+    bottom_flange_thickness: MM
+    total_height: MM
+    web_thickness: MM
+    top_radius: MM
+    bottom_radius: MM
+
+HEB_PROFILES_DATABASE: dict[str, __HEBProfileParameters]

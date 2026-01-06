@@ -11,6 +11,7 @@ from shapely import transform
 from shapely.geometry import Polygon
 from shapely.geometry.base import BaseGeometry
 from shapely.geometry.polygon import orient
+from shapely.validation import explain_validity
 
 from blueprints.type_alias import CM, DEG, MM, M
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
@@ -24,12 +25,14 @@ Length = TypeVar("Length", M, CM, MM)
 # Rationale: these are several orders above floating noise (~1e-16) yet far
 # below any meaningful geometric dimension or angle in typical structural
 # section modeling contexts.
-RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters --> 1 nm)
+RADIUS_ZERO_ATOL: float = 1e-9  # length units (assumed meters --> 1 nano meter)
 """Absolute tolerance for radius values."""
 SWEEP_ZERO_ATOL_DEG: DEG = 1e-10  # degrees
 """Absolute tolerance for sweep angles in degrees."""
 DIRECTION_VECTOR_ROUND_DECIMALS: int = 15  # Because np.float64 has ~15-17 decimal digits of precision
 """Decimal places to round direction vectors to remove floating point noise."""
+POLYGON_ENDPOINTS_CLOSE_ATOL: float = 1e-12  # length units (assumed meters --> 1 pico meter)
+"""Absolute tolerance to consider polygon first and last points as equal."""
 
 
 def merge_polygons(polygons: Sequence[Polygon]) -> Polygon:
@@ -324,9 +327,16 @@ class PolygonBuilder:
         if len(self._points) < 3:
             raise ValueError("A polygon requires at least 3 points.")
 
+        # If the first and last points are are within tolerance, we set them equal to ensure properly closed polygon.
+        # This has to be done in all cases, because even if this polygon is valid now, further operations (like union)
+        # may fail if the endpoints are not exactly equal.
+        if np.allclose(self._points[0], self._points[-1], atol=POLYGON_ENDPOINTS_CLOSE_ATOL, rtol=0.0):
+            self._points[-1] = self._points[0]
+
         polygon = Polygon(self._points)
         if not polygon.is_valid:
-            raise ValueError("The constructed polygon is not valid.")
+            validity_issues = explain_validity(polygon)
+            raise ValueError(f"The constructed polygon is not valid: {validity_issues}")
 
         if transform_centroid:
             polygon = transform(polygon, lambda point: point - polygon.centroid.coords.__array__())

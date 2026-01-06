@@ -27,6 +27,14 @@ class TestLNP:
         assert profile.web_toe_radius == expected_profile_data.web_toe_radius
         assert profile.base_toe_radius == expected_profile_data.base_toe_radius
 
+    @pytest.mark.parametrize("profile_name", LNP_PROFILES_DATABASE.keys())
+    def test_validity(self, profile_name: str) -> None:
+        """Test that the created profile instance is valid."""
+        profile = getattr(LNP, profile_name)
+
+        assert profile.polygon.is_valid, f"Profile {profile.name} is invalid."
+        assert profile.area > 0
+
     def test_equality_and_identity(self) -> None:
         """Test the equality and identity of LNP profiles."""
         profile1 = LNP.LNP40x40x4

@@ -1,4 +1,5 @@
 from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
+from blueprints.type_alias import MM
 
 class LNP:
     LNP40x40x4: LNPProfile
@@ -82,3 +83,16 @@ class LNP:
     LNP200x100x12: LNPProfile
     LNP200x100x14: LNPProfile
     LNP200x100x16: LNPProfile
+
+class __LNPProfileParameters:
+    name: str
+    total_height: MM
+    total_width: MM
+    web_thickness: MM
+    base_thickness: MM
+    root_radius: MM
+    back_radius: MM
+    web_toe_radius: MM
+    base_toe_radius: MM
+
+LNP_PROFILES_DATABASE: dict[str, __LNPProfileParameters]
