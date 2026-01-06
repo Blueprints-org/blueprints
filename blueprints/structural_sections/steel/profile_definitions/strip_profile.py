@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -15,9 +14,6 @@ from blueprints.structural_sections.steel.profile_definitions.corrosion_utils im
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
-
-if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.standard_profiles.strip import Strip  # pragma: no cover
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -63,37 +59,6 @@ class StripProfile(Profile):
             .append_line(length=self.width, angle=180)
             .append_line(length=self.height, angle=90)
             .generate_polygon()
-        )
-
-    @classmethod
-    def from_standard_profile(
-        cls,
-        profile: Strip,
-        corrosion: MM = 0,
-    ) -> Self:
-        """Create a strip profile from a set of standard profiles already defined in Blueprints.
-
-        Parameters
-        ----------
-        profile : Strip
-            Any of the standard strip profiles defined in Blueprints.
-        corrosion : MM, optional
-            Corrosion thickness per side (default is 0).
-        """
-        width = profile.width - corrosion * 2
-        height = profile.height - corrosion * 2
-
-        if width <= 0 or height <= 0:
-            raise ValueError("The profile has fully corroded.")
-
-        name = profile.alias
-        if corrosion:
-            name += f" (corrosion: {corrosion} mm)"
-
-        return cls(
-            width=width,
-            height=height,
-            name=name,
         )
 
     def with_corrosion(self, corrosion: MM = 0) -> StripProfile:

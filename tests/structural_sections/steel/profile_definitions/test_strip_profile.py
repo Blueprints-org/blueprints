@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import pytest
 
 from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
-from blueprints.structural_sections.steel.standard_profiles.strip import Strip
 from blueprints.validations import NegativeValueError
 
 
@@ -43,24 +42,6 @@ class TestStripSteelProfile:
         """Test the geometry of the Strip profile."""
         expected_geometry = strip_profile._geometry  # noqa: SLF001
         assert expected_geometry is not None
-
-    def test_get_profile_with_corrosion(self) -> None:
-        """Test the Strip profile with 2 mm corrosion applied."""
-        # Ensure the profile raises an error if fully corroded
-        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
-            StripProfile.from_standard_profile(
-                profile=Strip.STRIP160x5,
-                corrosion=2.5,
-            )
-
-    def test_corrosion_in_name(self, strip_profile: StripProfile) -> None:
-        """Test that the corrosion is included in the profile name."""
-        profile_with_corrosion = StripProfile.from_standard_profile(
-            profile=Strip.STRIP160x5,
-            corrosion=1,
-        )
-        expected_name = f"{strip_profile.name} (corrosion: 1 mm)"
-        assert profile_with_corrosion.name == expected_name
 
     def test_immutability(self, strip_profile: StripProfile) -> None:
         """Test that the StripProfile dataclass is immutable."""

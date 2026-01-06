@@ -30,8 +30,7 @@ def mock_section_properties() -> Generator[MagicMock, None, None]:
 @pytest.fixture
 def strip_profile() -> StripProfile:
     """Fixture to set up a Strip profile for testing."""
-    profile = Strip.STRIP160x5
-    return StripProfile.from_standard_profile(profile=profile)
+    return Strip.STRIP160x5
 
 
 @pytest.fixture
