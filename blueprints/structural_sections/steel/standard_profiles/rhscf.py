@@ -2,8 +2,6 @@
 
 from enum import Enum
 
-from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
-from blueprints.structural_sections.steel.standard_profiles.utils import wrap_as_instance_method
 from blueprints.type_alias import MM
 
 
@@ -201,7 +199,3 @@ class RHSCF(Enum):
         self.outer_radius = r0
         self.inner_radius = ri
         self.center_radius = (r0 + ri) / 2
-
-    @wrap_as_instance_method(RHSProfile.from_standard_profile)
-    def as_cross_section(self) -> None:
-        """Get an instance of the RHSCF cross section."""

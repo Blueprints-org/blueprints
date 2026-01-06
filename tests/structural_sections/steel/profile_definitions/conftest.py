@@ -54,8 +54,7 @@ def h_profile() -> IProfile:
 @pytest.fixture
 def rhs_profile() -> RHSProfile:
     """Fixture to set up an RHS profile for testing."""
-    profile = RHS.RHS400x200_16
-    return RHSProfile.from_standard_profile(profile=profile)
+    return RHS.RHS400x200x16
 
 
 @pytest.fixture

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Self, overload
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -15,12 +14,6 @@ from blueprints.structural_sections.steel.profile_definitions.corrosion_utils im
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
-
-if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.standard_profiles.rhs import RHS  # pragma: no cover
-    from blueprints.structural_sections.steel.standard_profiles.rhscf import RHSCF  # pragma: no cover
-    from blueprints.structural_sections.steel.standard_profiles.shs import SHS  # pragma: no cover
-    from blueprints.structural_sections.steel.standard_profiles.shscf import SHSCF  # pragma: no cover
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -170,91 +163,6 @@ class RHSProfile(Profile):
             .generate_polygon()
         )
         return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
-
-    @overload
-    @classmethod
-    def from_standard_profile(cls, profile: RHS, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
-
-    @overload
-    @classmethod
-    def from_standard_profile(cls, profile: SHS, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
-
-    @overload
-    @classmethod
-    def from_standard_profile(cls, profile: RHSCF, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
-
-    @overload
-    @classmethod
-    def from_standard_profile(cls, profile: SHSCF, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> Self: ...
-
-    @classmethod
-    def from_standard_profile(
-        cls,
-        profile: RHS | SHS | RHSCF | SHSCF,
-        corrosion_outside: MM = 0,
-        corrosion_inside: MM = 0,
-    ) -> Self:
-        """Create an RHS- or SHS-profile from a set of standard profiles already defined in Blueprints.
-
-        Blueprints offers standard profiles for RHS, SHS, RHSCF, and SHSCF. This method allows you to create an RHS/SHS-profile.
-
-        Parameters
-        ----------
-        profile : RHS | SHS | RHSCF | SHSCF
-            Any of the standard profiles defined in Blueprints.
-        corrosion_outside : MM, optional
-            Corrosion thickness to be subtracted from the outer diameter [mm] (default: 0).
-        corrosion_inside : MM, optional
-            Corrosion thickness to be added to the inner diameter [mm] (default: 0).
-        """
-        total_width = profile.total_width - 2 * corrosion_outside
-        total_height = profile.total_height - 2 * corrosion_outside
-
-        top_wall_thickness = profile.thickness - corrosion_outside - corrosion_inside
-        bottom_wall_thickness = profile.thickness - corrosion_outside - corrosion_inside
-        left_wall_thickness = profile.thickness - corrosion_outside - corrosion_inside
-        right_wall_thickness = profile.thickness - corrosion_outside - corrosion_inside
-
-        top_right_inner_radius = profile.inner_radius + corrosion_inside
-        top_left_inner_radius = profile.inner_radius + corrosion_inside
-        bottom_right_inner_radius = profile.inner_radius + corrosion_inside
-        bottom_left_inner_radius = profile.inner_radius + corrosion_inside
-        top_right_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
-        top_left_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
-        bottom_right_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
-        bottom_left_outer_radius = max(profile.outer_radius - corrosion_outside, 0)
-
-        if any(
-            [
-                top_wall_thickness < 1e-3,
-                bottom_wall_thickness < 1e-3,
-                left_wall_thickness < 1e-3,
-                right_wall_thickness < 1e-3,
-            ]
-        ):
-            raise ValueError("The profile has fully corroded.")
-
-        name = profile.alias
-        if corrosion_inside or corrosion_outside:
-            name = update_name_with_corrosion(name, corrosion_inside=corrosion_inside, corrosion_outside=corrosion_outside)
-
-        return cls(
-            total_width=total_width,
-            total_height=total_height,
-            left_wall_thickness=left_wall_thickness,
-            right_wall_thickness=right_wall_thickness,
-            top_wall_thickness=top_wall_thickness,
-            bottom_wall_thickness=bottom_wall_thickness,
-            top_right_inner_radius=top_right_inner_radius,
-            top_left_inner_radius=top_left_inner_radius,
-            bottom_right_inner_radius=bottom_right_inner_radius,
-            bottom_left_inner_radius=bottom_left_inner_radius,
-            top_right_outer_radius=top_right_outer_radius,
-            top_left_outer_radius=top_left_outer_radius,
-            bottom_right_outer_radius=bottom_right_outer_radius,
-            bottom_left_outer_radius=bottom_left_outer_radius,
-            name=name,
-        )
 
     def with_corrosion(self, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> RHSProfile:
         """Apply corrosion to the RHS- or SHS-profile and return a new RHS- or SHS-profile instance.
