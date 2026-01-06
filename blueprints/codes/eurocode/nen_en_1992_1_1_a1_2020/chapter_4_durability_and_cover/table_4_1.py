@@ -2,7 +2,7 @@
 according to Table 4.1 from NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020: Chapter 4 - Durability and cover to reinforcement.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import total_ordering
 
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.exposure_classes import (
@@ -232,8 +232,8 @@ class Table4Dot1ExposureClasses(ExposureClassesBase):
         The chemical exposure class. Defaults to Chemical.NA.
     """
 
-    carbonation: Carbonation = Carbonation.NA
-    chloride: Chloride = Chloride.NA
-    chloride_seawater: ChlorideSeawater = ChlorideSeawater.NA
-    freeze_thaw: FreezeThaw = FreezeThaw.NA
-    chemical: Chemical = Chemical.NA
+    carbonation: Carbonation = field(default=Carbonation.NA)
+    chloride: Chloride = field(default=Chloride.NA)
+    chloride_seawater: ChlorideSeawater = field(default=ChlorideSeawater.NA)
+    freeze_thaw: FreezeThaw = field(default=FreezeThaw.NA)
+    chemical: Chemical = field(default=Chemical.NA)
