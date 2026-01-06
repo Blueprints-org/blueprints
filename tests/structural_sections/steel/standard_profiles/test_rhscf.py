@@ -1,32 +1,46 @@
-"""Test the RHSCF enum."""
+"""Test for the RHSCF standard profiles."""
 
-from blueprints.structural_sections.steel.standard_profiles.rhscf import RHSCF
+import pytest
+
+from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
+from blueprints.structural_sections.steel.standard_profiles.rhscf import RHSCF, RHSCF_PROFILES_DATABASE
+from blueprints.structural_sections.steel.standard_profiles.rhscf import __RHSCFProfileParameters as RHSCFProfileParameters
 
 
 class TestRHSCF:
-    """Tests for the RHSCF enum."""
+    """Tests for the RHSCF class."""
 
-    def test_enum_values(self) -> None:
-        """Test that enum values are correctly defined."""
-        assert RHSCF.RHSCF40x20_2.value == ("RHSCF40x20x2", 40, 20, 2, 4, 2)
-        assert RHSCF.RHSCF400x300_16.value == ("RHSCF400x300x16", 400, 300, 16, 48, 32)
+    @pytest.mark.parametrize(("profile_name", "expected_data"), RHSCF_PROFILES_DATABASE.items())
+    def test_as_rhs_profile(self, profile_name: str, expected_data: RHSCFProfileParameters) -> None:
+        """Test that the RHSCF instance is converted to an RHSProfile correctly."""
+        profile = getattr(RHSCF, profile_name)
+        expected_profile_data = expected_data
 
-    def test_enum_membership(self) -> None:
-        """Test that specific values are members of the enum."""
-        assert "RHSCF40x20x2" in [e.value[0] for e in RHSCF]
-        assert "RHSCF400x300x16" in [e.value[0] for e in RHSCF]
+        assert isinstance(profile, RHSProfile)
+        assert profile.name == expected_profile_data.name
+        assert profile.total_height == expected_profile_data.total_height
+        assert profile.total_width == expected_profile_data.total_width
+        assert profile.left_wall_thickness == expected_profile_data.left_wall_thickness
+        assert profile.right_wall_thickness == expected_profile_data.right_wall_thickness
+        assert profile.top_wall_thickness == expected_profile_data.top_wall_thickness
+        assert profile.bottom_wall_thickness == expected_profile_data.bottom_wall_thickness
+        assert profile.top_right_outer_radius == expected_profile_data.top_right_outer_radius
+        assert profile.top_left_outer_radius == expected_profile_data.top_left_outer_radius
+        assert profile.bottom_right_outer_radius == expected_profile_data.bottom_right_outer_radius
+        assert profile.bottom_left_outer_radius == expected_profile_data.bottom_left_outer_radius
+        assert profile.top_right_inner_radius == expected_profile_data.top_right_inner_radius
+        assert profile.top_left_inner_radius == expected_profile_data.top_left_inner_radius
+        assert profile.bottom_right_inner_radius == expected_profile_data.bottom_right_inner_radius
+        assert profile.bottom_left_inner_radius == expected_profile_data.bottom_left_inner_radius
 
-    def test_enum_uniqueness(self) -> None:
-        """Test that all enum values are unique."""
-        values = [e.value for e in RHSCF]
-        assert len(values) == len(set(values))
+    def test_equality_and_identity(self) -> None:
+        """Test the equality and identity of RHSCF profiles."""
+        profile1 = RHSCF.RHSCF100x50x4
+        profile2 = RHSCF.RHSCF100x50x4
 
-    def test_enum_attributes(self) -> None:
-        """Test that enum attributes are correctly assigned."""
-        profile = RHSCF.RHSCF40x20_2
-        assert profile.alias == "RHSCF40x20x2"
-        assert profile.total_height == 40
-        assert profile.total_width == 20
-        assert profile.thickness == 2
-        assert profile.outer_radius == 4
-        assert profile.inner_radius == 2
+        # Check that two profiles with the same name are equal but not the same object
+        assert profile1 == profile2
+        assert profile1 is not profile2
+
+        profile3 = RHSCF.RHSCF200x100x8
+        assert profile1 != profile3
