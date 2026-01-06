@@ -78,7 +78,7 @@ Total of 108 formulas present.
 | 6.40           | :heavy_check_mark: |         | Form6Dot40ReducedBendingMomentResistance                                          |        :x:         |
 | 6.40 a_f       | :heavy_check_mark: |         | Form6Dot40afHollowSections and Form6Dot40afWeldedBoxSections                      |        :x:         |
 | 6.41           | :heavy_check_mark: |         | Form6Dot41BiaxialBendingCheck                                                     |        :x:         |
-| 6.42           |        :x:         |         |                                                                                   |        :x:         |
+| 6.42           | :heavy_check_mark: |         | Form6Dot42LongitudinalStressClass3CrossSections                                   |        :x:         |
 | 6.43           |        :x:         |         |                                                                                   |        :x:         |
 | 6.44           |        :x:         |         |                                                                                   |        :x:         |
 | 6.45           |        :x:         |         |                                                                                   |        :x:         |
