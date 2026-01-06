@@ -43,8 +43,7 @@ def chs_profile() -> CHSProfile:
 @pytest.fixture
 def ipe_profile() -> IProfile:
     """Fixture to set up an I-shaped profile for testing."""
-    profile = IPE.IPE100
-    return IProfile.from_standard_profile(profile=profile)
+    return IPE.IPE100
 
 
 @pytest.fixture

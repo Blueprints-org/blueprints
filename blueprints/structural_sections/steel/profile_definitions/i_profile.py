@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -15,9 +14,6 @@ from blueprints.structural_sections.steel.profile_definitions.corrosion_utils im
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import plot_shapes
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
-
-if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.standard_profiles.ipe import IPE  # pragma: no cover
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -118,55 +114,6 @@ class IProfile(Profile):
             .append_line(length=self.width_outstand_top_flange, angle=180)
             .append_line(length=self.top_flange_thickness, angle=90)
             .generate_polygon()
-        )
-
-    @classmethod
-    def from_standard_profile(
-        cls,
-        profile: IPE,
-        corrosion: MM = 0,
-    ) -> Self:
-        """Create an I-profile from a set of standard profiles already defined in Blueprints.
-
-        Blueprints offers standard profiles for HEA, HEB, HEM, and IPE. This method allows you to create an I-profile.
-
-        Parameters
-        ----------
-        profile : HEA | HEB | HEM | IPE
-            Any of the standard profiles defined in Blueprints.
-        corrosion : MM, optional
-            Corrosion thickness per side (default is 0).
-        """
-        top_flange_width = profile.top_flange_width - corrosion * 2
-        top_flange_thickness = profile.top_flange_thickness - corrosion * 2
-        bottom_flange_width = profile.bottom_flange_width - corrosion * 2
-        bottom_flange_thickness = profile.bottom_flange_thickness - corrosion * 2
-        total_height = profile.total_height - corrosion * 2
-        web_thickness = profile.web_thickness - corrosion * 2
-
-        if any(
-            [
-                top_flange_thickness < 1e-3,
-                bottom_flange_thickness < 1e-3,
-                web_thickness < 1e-3,
-            ]
-        ):
-            raise ValueError("The profile has fully corroded.")
-
-        name = profile.alias
-        if corrosion:
-            name = update_name_with_corrosion(name, corrosion=corrosion)
-
-        return cls(
-            top_flange_width=top_flange_width,
-            top_flange_thickness=top_flange_thickness,
-            bottom_flange_width=bottom_flange_width,
-            bottom_flange_thickness=bottom_flange_thickness,
-            total_height=total_height,
-            web_thickness=web_thickness,
-            top_radius=profile.top_radius,
-            bottom_radius=profile.bottom_radius,
-            name=name,
         )
 
     def with_corrosion(self, corrosion: MM = 0) -> IProfile:
