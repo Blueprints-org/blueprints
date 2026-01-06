@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Self, overload
+from typing import TYPE_CHECKING, Self
 
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
@@ -17,7 +17,6 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
 if TYPE_CHECKING:
-    from blueprints.structural_sections.steel.standard_profiles.hem import HEM  # pragma: no cover
     from blueprints.structural_sections.steel.standard_profiles.ipe import IPE  # pragma: no cover
 
 
@@ -121,18 +120,10 @@ class IProfile(Profile):
             .generate_polygon()
         )
 
-    @overload
-    @classmethod
-    def from_standard_profile(cls, profile: HEM, corrosion: MM = 0) -> Self: ...
-
-    @overload
-    @classmethod
-    def from_standard_profile(cls, profile: IPE, corrosion: MM = 0) -> Self: ...
-
     @classmethod
     def from_standard_profile(
         cls,
-        profile: HEM | IPE,
+        profile: IPE,
         corrosion: MM = 0,
     ) -> Self:
         """Create an I-profile from a set of standard profiles already defined in Blueprints.
