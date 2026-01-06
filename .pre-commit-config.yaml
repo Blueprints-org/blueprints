@@ -25,8 +25,5 @@ repos:
       # Run the formatter.
       - id: ruff-format
 
-  -   repo: https://github.com/pre-commit/mirrors-mypy
-      rev: v1.17.0
-      hooks:
-      - id: mypy
-        language_version: python3.12
+    # As of january 2026, ty does not have an official pre-commit hook.
+    # We will add it here once it is available.

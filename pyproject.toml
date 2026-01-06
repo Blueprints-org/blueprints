@@ -50,7 +50,7 @@ bp = "blueprints.cli:app"
 
 [dependency-groups]
 dev = [
-    "mypy==1.19.1",
+    "ty==0.0.9",
     "ruff==0.14.10",
     "pre-commit==4.5.1",
     "types-shapely==2.1.0.20250917",
@@ -99,18 +99,6 @@ changelog = "https://github.com/Blueprints-org/blueprints/releases"
 
 [tool.uv]
 default-groups = ["dev", "test"]
-
-[tool.mypy]
-packages = "blueprints"
-python_version = "3.12"
-
-[[tool.mypy.overrides]]
-module = ["matplotlib.*", "mathml2omml.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["googletrans.*"]
-ignore_missing_imports = true
 
 [build-system]
 requires = ["hatchling"]
