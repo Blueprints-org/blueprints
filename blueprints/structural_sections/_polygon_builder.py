@@ -327,16 +327,16 @@ class PolygonBuilder:
         if len(self._points) < 3:
             raise ValueError("A polygon requires at least 3 points.")
 
+        # If the first and last points are are within tolerance, we set them equal to ensure properly closed polygon.
+        # This has to be done in all cases, because even if this polygon is valid now, further operations (like union)
+        # may fail if the endpoints are not exactly equal.
+        if np.allclose(self._points[0], self._points[-1], atol=POLYGON_ENDPOINTS_CLOSE_ATOL, rtol=0.0):
+            self._points[-1] = self._points[0]
+
         polygon = Polygon(self._points)
         if not polygon.is_valid:
-            # If the first and last points are causing self-intersection and they are within tolerance,
-            # try setting them equal and reconstructing the polygon.
-            if np.allclose(self._points[0], self._points[-1], atol=POLYGON_ENDPOINTS_CLOSE_ATOL, rtol=0.0):
-                self._points[-1] = self._points[0]
-                polygon = Polygon(self._points)
-            if not polygon.is_valid:
-                validity_issues = explain_validity(polygon)
-                raise ValueError(f"The constructed polygon is not valid: {validity_issues}")
+            validity_issues = explain_validity(polygon)
+            raise ValueError(f"The constructed polygon is not valid: {validity_issues}")
 
         if transform_centroid:
             polygon = transform(polygon, lambda point: point - polygon.centroid.coords.__array__())
