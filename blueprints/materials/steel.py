@@ -1,4 +1,4 @@
-"""Module for concrete material properties."""
+"""Module for steel material properties."""
 
 from dataclasses import dataclass, field
 from enum import Enum
