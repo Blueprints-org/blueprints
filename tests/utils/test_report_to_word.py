@@ -44,3 +44,12 @@ class TestReportToWordConverter:
         report.add_figure(str(logo_path), width=0.4, caption="Description of the image.")
         latex_content = report.to_document(language="zh")
         assert ReportToWordConverter(latex_content).document
+
+    def test_indented_enumerate_above_26(self) -> None:
+        """Test that enumerate items above 26 are handled correctly."""
+        report = LatexReport("Testing Title")
+        report.add_enumerate(["One", [f"Item {i + 1}" for i in range(30)], "Two"])
+        latex_content = report.to_document()
+        converter = ReportToWordConverter(latex_content)
+        document = converter.document
+        assert document
