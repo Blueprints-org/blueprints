@@ -583,14 +583,17 @@ class LatexReport:
 
         You could compile the output with pdflatex in for example Overleaf.
 
+        Parameters
+        ----------
+        language : str, optional
+            Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
+            Warning: only English is officially supported in Blueprints (default is "en" for English).
+
         Returns
         -------
         str
             Complete LaTeX document string including preamble, begin/end document,
             and all content, ready for copy-pasting into a .tex file for example.
-        language : str, optional
-            Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
-            Warning: only English is officially supported in Blueprints (default is "en" for English).
 
         Examples
         --------
