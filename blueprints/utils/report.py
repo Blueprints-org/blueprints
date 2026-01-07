@@ -704,6 +704,5 @@ class LatexReport:
         )  # imported here as core does not have word module installed by default
 
         latex_content = self.to_document(language=language)
-        converter = ReportToWordConverter()
-        doc = converter.to_word(latex_content)
+        doc = ReportToWordConverter(latex_content)
         doc.save(path)

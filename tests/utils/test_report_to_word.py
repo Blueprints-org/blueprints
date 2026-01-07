@@ -43,5 +43,4 @@ class TestReportToWordConverter:
         logo_path = Path("docs") / "_overrides" / "assets" / "images" / "logo-light-mode.png"
         report.add_figure(str(logo_path), width=0.4, caption="Description of the image.")
         latex_content = report.to_document(language="nl")
-        converter = ReportToWordConverter()
-        assert converter.to_word(latex_content)
+        assert ReportToWordConverter(latex_content)
