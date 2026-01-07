@@ -47,11 +47,14 @@ class CHSProfile(Profile):
     def __post_init__(self) -> None:
         """Post-process the CHS profile after initialization."""
         object.__setattr__(self, "inner_diameter", self.outer_diameter - 2 * self.wall_thickness)
+        raise_if_negative(inner_diameter=self.inner_diameter, outer_diameter=self.outer_diameter, wall_thickness=self.wall_thickness)
 
     @property
     def _polygon(self) -> Polygon:
         """Return the polygon of the CHS profile without the offset and rotation applied."""
-        max_segment_angle = min(5, 360 / (pi * self.outer_diameter))  # min 1 mm per segment and not less than 5 degrees which is the default
+        max_segment_angle = min(
+            5, 360 / (pi * self.outer_diameter)
+        )  # limit to 1 mm arc length per segment and not more than 5 degrees which is the default
         outer_polygon = (
             PolygonBuilder(starting_point=(0, 0))
             .append_arc(sweep=360, angle=0, radius=self.outer_diameter / 2, max_segment_angle=max_segment_angle)
@@ -62,7 +65,7 @@ class CHSProfile(Profile):
             .append_arc(sweep=360, angle=0, radius=self.inner_diameter / 2, max_segment_angle=max_segment_angle)
             .generate_polygon()
         )
-        return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
+        return Polygon(shell=outer_polygon.exterior.coords, holes=(inner_polygon.exterior.coords,))
 
     def with_corrosion(self, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> CHSProfile:
         """Apply corrosion to the CHS-profile and return a new CHS-profile instance.

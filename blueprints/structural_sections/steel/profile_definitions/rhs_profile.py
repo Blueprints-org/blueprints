@@ -162,7 +162,7 @@ class RHSProfile(Profile):
             .append_arc(sweep=-90, angle=90, radius=self.top_left_inner_radius)
             .generate_polygon()
         )
-        return Polygon(shell=outer_polygon.exterior.coords, holes={inner_polygon.exterior.coords})
+        return Polygon(shell=outer_polygon.exterior.coords, holes=(inner_polygon.exterior.coords,))
 
     def with_corrosion(self, corrosion_outside: MM = 0, corrosion_inside: MM = 0) -> RHSProfile:
         """Apply corrosion to the RHS- or SHS-profile and return a new RHS- or SHS-profile instance.

@@ -57,6 +57,12 @@ class TestCHSSteelProfile:
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == chs_profile.centroid.x + 1000
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == chs_profile.centroid.y + 500
 
+    def test_negative_inner_diameter(self) -> None:
+        """Test that NegativeValueError is raised when inner_diameter becomes negative."""
+        # When wall_thickness > outer_diameter / 2, inner_diameter will be negative
+        with pytest.raises(NegativeValueError, match=r"inner_diameter"):
+            CHSProfile(outer_diameter=100, wall_thickness=60)
+
     def test_with_corrosion_negative_value(self, chs_profile: CHSProfile) -> None:
         """Test that negative corrosion value raises NegativeValueError."""
         with pytest.raises(NegativeValueError, match=r"corrosion"):
