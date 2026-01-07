@@ -11,7 +11,7 @@ class TestReportToWordConverter:
 
     def test_empty_input_returns_empty_document(self) -> None:
         """Test that an empty LaTeX string returns an empty Document."""
-        assert ReportToWordConverter().to_word("")
+        assert ReportToWordConverter("")
 
     def test_complex_document_conversion(self) -> None:
         """Test conversion of a complex LaTeX document."""
