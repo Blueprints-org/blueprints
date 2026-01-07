@@ -213,7 +213,11 @@ class TestLatexTranslator:
         # Mock Google Translate for deterministic test
         with patch("blueprints.utils.language.translate.Translator") as mock_translator:
             mock_instance = MagicMock()
+            # Now includes header translations (Header 1, Header 2, Header 3 with math)
             mock_instance.translate.return_value = [
+                MagicMock(text="Kop 1"),
+                MagicMock(text="Kop 2"),
+                MagicMock(text="Kop 3 met wiskunde $E=mc^2$"),
                 MagicMock(text="Rij 1 Kol 1"),
                 MagicMock(text="Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = 25,0$"),
                 MagicMock(text="Rij 1 Kol 3"),
@@ -241,7 +245,12 @@ class TestLatexTranslator:
         # Mock Google Translate for deterministic test
         with patch("blueprints.utils.language.translate.Translator") as mock_translator:
             mock_instance = MagicMock()
-            mock_instance.translate.return_value = []
+            # Now includes header translations
+            mock_instance.translate.return_value = [
+                MagicMock(text="Kop 1"),
+                MagicMock(text="Kop 2"),
+                MagicMock(text="Kop 3"),
+            ]
             mock_translator.return_value = mock_instance
 
             result_nl = LatexTranslator(example_latex, "nl")
