@@ -673,7 +673,7 @@ class LatexReport:
             # Translate content to the specified language
             from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
 
-            latex = LatexTranslator(original_text=latex, destination_language=language)
+            latex = str(LatexTranslator(original_text=latex, destination_language=language))
 
         # Combine preamble, content, and closing
         return latex
@@ -704,5 +704,6 @@ class LatexReport:
         )  # imported here as core does not have word module installed by default
 
         latex_content = self.to_document(language=language)
-        doc = ReportToWordConverter(latex_content)
-        doc.save(path)
+        converter = ReportToWordConverter(latex_content)
+        if converter.document:
+            converter.document.save(path)

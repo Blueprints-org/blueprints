@@ -76,7 +76,7 @@ class ReportToWordConverter:
         doc = Document()
 
         # Convert content to string
-        content_str = content.content if hasattr(content, "content") else str(content)
+        content_str = str(content.content if hasattr(content, "content") else content)
 
         # Preprocess to remove LaTeX preamble commands
         content_str = self._preprocess_content(content_str)
