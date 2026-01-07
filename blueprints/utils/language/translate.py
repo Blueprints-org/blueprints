@@ -438,16 +438,22 @@ class LatexTranslator:
             tabular_content = match.group(2)
             tabular_end = match.group(3)  # \end{tabular}
 
-            # Skip header lines (before \midrule)
+            # Split by \midrule to separate header and content
             parts = re.split(r"(\\midrule)", tabular_content, maxsplit=1)
-            header_part = parts[0]
-            midrule = parts[1]
-            content_part = parts[2]
+            if len(parts) >= 3:
+                # Table has \midrule: process both header and content
+                header_part = parts[0]
+                midrule = parts[1]
+                content_part = parts[2]
 
-            # Process rows in content part
-            processed_content = re.sub(r"([^\\].*?)(?=\\\\|\\bottomrule|\\end)", _repl_row, content_part, flags=re.DOTALL)
+                # Process rows in both header and content parts
+                processed_header = re.sub(r"([^\\].*?)(?=\\\\|\\midrule|\\end)", _repl_row, header_part, flags=re.DOTALL)
+                processed_content = re.sub(r"([^\\].*?)(?=\\\\|\\bottomrule|\\end)", _repl_row, content_part, flags=re.DOTALL)
 
-            return tabular_start + header_part + midrule + processed_content + tabular_end
+                return tabular_start + processed_header + midrule + processed_content + tabular_end
+            # Table has no \midrule: process all content
+            processed_content = re.sub(r"([^\\].*?)(?=\\\\|\\bottomrule|\\end)", _repl_row, tabular_content, flags=re.DOTALL)
+            return tabular_start + processed_content + tabular_end
 
         # Match tabular environments
         return re.sub(r"(\\begin\{tabular\}\{[^}]+\})(.*?)(\\end\{tabular\})", _process_tabular, text, flags=re.DOTALL)
@@ -557,13 +563,10 @@ class LatexTranslator:
         tabular_pattern = r"\\begin\{tabular\}\{[^}]+\}(.*?)\\end\{tabular\}"
         for tabular_match in re.finditer(tabular_pattern, self.original_text, re.DOTALL):
             tabular_content = tabular_match.group(1)
-            # Skip header part (before \midrule)
-            parts = re.split(r"\\midrule", tabular_content, maxsplit=1)
-            content_part = parts[1] if len(parts) >= 2 else tabular_content
-
+            # Process all content including header (before \midrule) and body (after \midrule)
             # Extract cells from rows
-            row_pattern = r"([^\\]+?)(?=\\\\|\\bottomrule|\\end)"
-            for row_match in re.finditer(row_pattern, content_part, re.DOTALL):
+            row_pattern = r"([^\\]+?)(?=\\\\|\\midrule|\\bottomrule|\\end)"
+            for row_match in re.finditer(row_pattern, tabular_content, re.DOTALL):
                 row_content = row_match.group(1)
                 # Split by & to get cells
                 cells = row_content.split("&")
