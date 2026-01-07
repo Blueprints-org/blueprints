@@ -62,7 +62,7 @@ class StripProfile(Profile):
         )
 
     def with_corrosion(self, corrosion: MM = 0) -> StripProfile:
-        """Create a strip profile from a set of standard profiles already defined in Blueprints.
+        """Apply corrosion to the strip profile and return a new strip profile instance.
 
         The name attribute of the new instance will be updated to reflect the total corrosion applied
         including any previous corrosion indicated in the original name.

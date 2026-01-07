@@ -40,7 +40,7 @@ class TestStripSteelProfile:
 
     def test_geometry(self, strip_profile: StripProfile) -> None:
         """Test the geometry of the Strip profile."""
-        expected_geometry = strip_profile._geometry  # noqa: SLF001
+        expected_geometry = strip_profile._geometry()  # noqa: SLF001
         assert expected_geometry is not None
 
     def test_immutability(self, strip_profile: StripProfile) -> None:

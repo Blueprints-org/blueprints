@@ -28,8 +28,6 @@ class RectangularProfile(Profile):
         The y-coordinate of the centroid of the rectangle. Default is 0.
     name : str
         The name of the rectangular profile, default is "Rectangle".
-    mesh_size : MM | None
-        The maximum mesh size for the geometry. Default is 2.5 mm.
     """
 
     width: MM

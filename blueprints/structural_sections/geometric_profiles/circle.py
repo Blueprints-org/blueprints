@@ -24,7 +24,7 @@ class CircularProfile(Profile):
     y : MM
         The y-coordinate of the circle's center.
     name : str
-        The name of the rectangular profile, default is "Circle".
+        The name of the circular profile, default is "Circle".
     """
 
     diameter: MM

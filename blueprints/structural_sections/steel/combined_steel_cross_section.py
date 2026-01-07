@@ -32,8 +32,8 @@ class CombinedSteelCrossSection:
     >>> # Alternatively, you can add sections one by one.
     >>> # This is useful for dynamically building complex cross-sections.
     >>> complex_combined_section = CombinedSteelCrossSection()
-    >>> complex_combined_section = complex_combined_section.add_steel_cross_section(steel_cross_section=main_steel_cross_section)
-    >>> complex_combined_section = complex_combined_section.add_steel_cross_section(steel_cross_section=stiffener)
+    >>> complex_combined_section = complex_combined_section.add_steel_cross_sections(steel_cross_section=main_steel_cross_section)
+    >>> complex_combined_section = complex_combined_section.add_steel_cross_sections(steel_cross_section=stiffener)
     """
 
     steel_cross_sections: tuple[SteelCrossSection, ...] = field(default_factory=tuple)

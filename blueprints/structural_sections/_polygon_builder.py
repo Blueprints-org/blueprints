@@ -75,16 +75,6 @@ class PolygonBuilder:
         ----------
         starting_point : PointLike
             Starting point of the polygon (x, y).
-        max_segment_angle : DEG, optional
-            Maximum central angle (degrees) per arc chord segment when tessellating arcs.
-            This is used to determine the number of segments when creating circular arcs.
-            Smaller values lead to finer tessellation and more points in the resulting polygon.
-            Default is 5.0 degrees.
-
-        Raises
-        ------
-        ValueError
-            If `max_segment_angle` is not positive.
         """
         self._points: NDArray[np.float64] = np.array([starting_point], dtype=float)
 

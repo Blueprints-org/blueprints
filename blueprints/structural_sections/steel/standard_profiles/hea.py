@@ -63,7 +63,7 @@ class HEA(metaclass=StandardProfileMeta):
 
     This class provides access to standard HEA profiles from a predefined database.
     Profiles can be accessed as class attributes using their standardized names.
-    Each accessed profile returns a IProfile instance.
+    Each accessed profile returns an IProfile instance.
 
     Usage example
     -------------

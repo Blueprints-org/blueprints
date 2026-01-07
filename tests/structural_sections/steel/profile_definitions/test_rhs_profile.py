@@ -50,7 +50,7 @@ class TestRHSSteelProfile:
 
     def test_geometry(self, rhs_profile: RHSProfile) -> None:
         """Test the geometry of the RHS profile."""
-        expected_geometry = rhs_profile._geometry  # noqa: SLF001
+        expected_geometry = rhs_profile._geometry()  # noqa: SLF001
         assert expected_geometry is not None
 
     def test_immutability(self, rhs_profile: RHSProfile) -> None:

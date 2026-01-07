@@ -31,7 +31,7 @@ class RightAngledTriangularProfile(Profile):
     mirrored_vertically : bool
         Whether the triangle is mirrored vertically. Default is False.
     name : str
-        The name of the rectangular profile, default is "Triangle".
+        The name of the triangle profile, default is "Triangle".
     """
 
     base: MM

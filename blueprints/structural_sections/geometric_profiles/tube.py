@@ -26,7 +26,7 @@ class TubeProfile(Profile):
     y : MM
         The y-coordinate of the tube's center.
     name : str
-        The name of the rectangular profile, default is "Tube".
+        The name of the tube profile, default is "Tube".
     """
 
     outer_diameter: MM

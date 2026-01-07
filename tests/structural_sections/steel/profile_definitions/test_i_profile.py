@@ -1,4 +1,4 @@
-"""Test suite for ISteelProfile."""
+"""Test suite for IProfile."""
 
 import matplotlib as mpl
 
@@ -14,8 +14,8 @@ from blueprints.structural_sections.steel.profile_definitions.i_profile import I
 from blueprints.validations import NegativeValueError
 
 
-class TestISteelProfile:
-    """Test suite for ISteelProfile."""
+class TestIProfile:
+    """Test suite for IProfile."""
 
     def test_alias(self, h_profile: IProfile) -> None:
         """Test the alias of the I-profile."""
@@ -51,7 +51,7 @@ class TestISteelProfile:
 
     def test_geometry(self, h_profile: IProfile) -> None:
         """Test the geometry of the I profile."""
-        expected_geometry = h_profile._geometry  # noqa: SLF001
+        expected_geometry = h_profile._geometry()  # noqa: SLF001
         assert expected_geometry is not None
 
     def test_immutability(self, h_profile: IProfile) -> None:

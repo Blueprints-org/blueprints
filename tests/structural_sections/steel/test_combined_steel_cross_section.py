@@ -47,10 +47,8 @@ class TestCombinedSteelCrossSection:
 
     def test_initialize_with_no_sections(self) -> None:
         """Test that CombinedSteelCrossSection raises when no sections are provided."""
-        try:
-            _ = CombinedSteelCrossSection()
-        except Exception as e:
-            pytest.fail(f"Initialization with no sections raised an exception: {e}")
+        combined = CombinedSteelCrossSection()
+        assert len(combined.steel_cross_sections) == 0
 
     def test_rejects_non_steel_sections(self) -> None:
         """Test that CombinedSteelCrossSection validates the input types."""

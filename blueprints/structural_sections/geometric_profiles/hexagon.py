@@ -26,7 +26,7 @@ class HexagonalProfile(Profile):
     y : MM
         The y-coordinate of the hexagon's center. Default is 0.
     name : str
-        The name of the rectangular profile, default is "Hexagon".
+        The name of the hexagon profile, default is "Hexagon".
     """
 
     side_length: MM

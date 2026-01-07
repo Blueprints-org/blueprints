@@ -46,7 +46,7 @@ class TestLNPProfile:
 
     def test_geometry(self, lnp_profile: LNPProfile) -> None:
         """Test the geometry of the LNP profile."""
-        expected_geometry = lnp_profile._geometry  # noqa: SLF001
+        expected_geometry = lnp_profile._geometry()  # noqa: SLF001
         assert expected_geometry is not None
 
     def test_custom_profile(self) -> None:
