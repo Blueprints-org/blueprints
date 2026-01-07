@@ -101,7 +101,7 @@ class LatexTranslator:
             - column headers are language codes (e.g., 'en,nl,de,fr').
             - each row contains translations for the same concept across different languages.
             - use '-' as a translation value to keep the source text unchanged for that language.
-            - supports wildcard patterns using '**' to match and preserve variable content.
+            - supports (multiple) wildcard patterns using '**' to match and preserve variable content.
 
             When a custom CSV is provided, it should follow the example format described below:
             ```
