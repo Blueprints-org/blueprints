@@ -1,4 +1,4 @@
-"""Tests for cross-section shapes."""
+"""Tests for triangular profile shapes."""
 
 import pytest
 from shapely.geometry import Polygon
@@ -6,30 +6,30 @@ from shapely.geometry import Polygon
 from blueprints.structural_sections.geometric_profiles.triangle import RightAngledTriangularProfile
 
 
-class TestRightAngledTriangularCrossSection:
-    """Tests for the RightAngledTriangularCrossSection class."""
+class TestRightAngledTriangularProfile:
+    """Tests for the RightAngledTriangularProfile class."""
 
-    def test_area(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
-        """Test the area property of the RightAngledTriangularCrossSection class."""
-        assert triangular_cross_section.area == pytest.approx(expected=10000.0, rel=1e-6)
+    def test_area(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test the area property of the RightAngledTriangularProfile class."""
+        assert triangular_profile.area == pytest.approx(expected=10000.0, rel=1e-6)
 
-    def test_polygon(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
-        """Test the polygon property of the RightAngledTriangularCrossSection class."""
-        assert isinstance(triangular_cross_section.polygon, Polygon)
+    def test_polygon(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test the polygon property of the RightAngledTriangularProfile class."""
+        assert isinstance(triangular_profile.polygon, Polygon)
 
-    def test_section(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
-        """Test the section object of the RightAngledTriangularCrossSection class."""
-        section = triangular_cross_section._section()  # noqa: SLF001
+    def test_section(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test the section object of the RightAngledTriangularProfile class."""
+        section = triangular_profile._section()  # noqa: SLF001
         assert section is not None
 
-    def test_geometry(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
-        """Test the geometry property of the RightAngledTriangularCrossSection class."""
-        geometry = triangular_cross_section._geometry()  # noqa: SLF001
+    def test_geometry(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test the geometry property of the RightAngledTriangularProfile class."""
+        geometry = triangular_profile._geometry()  # noqa: SLF001
         assert geometry is not None
 
-    def test_mesh_settings(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
-        """Test the mesh_settings property of the RightAngledTriangularCrossSection class."""
-        mesh_settings = triangular_cross_section.mesh_settings
+    def test_mesh_settings(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test the mesh_settings property of the RightAngledTriangularProfile class."""
+        mesh_settings = triangular_profile.mesh_settings
         assert isinstance(mesh_settings, dict)
         assert "mesh_sizes" in mesh_settings
 
@@ -54,20 +54,20 @@ class TestRightAngledTriangularCrossSection:
         assert (polygon.exterior.coords[1][0], polygon.exterior.coords[1][1]) == (-100.0, 0)
         assert (polygon.exterior.coords[2][0], polygon.exterior.coords[2][1]) == (0, -200.0)
 
-    def test_no_plotter_defined(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
+    def test_no_plotter_defined(self, triangular_profile: RightAngledTriangularProfile) -> None:
         """Test that accessing the plotter property raises an AttributeError if no plotter is defined."""
         with pytest.raises(AttributeError, match=r"No plotter is defined."):
-            _ = triangular_cross_section.plotter
+            _ = triangular_profile.plotter
 
-    def test_immutability(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
-        """Test that the RightAngledTriangularCrossSection dataclass is immutable."""
+    def test_immutability(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test that the RightAngledTriangularProfile dataclass is immutable."""
         with pytest.raises(AttributeError):
-            triangular_cross_section.name = "New Name"  # type: ignore[misc]
+            triangular_profile.name = "New Name"  # type: ignore[misc]
 
-    def test_transform(self, triangular_cross_section: RightAngledTriangularProfile) -> None:
-        """Test the transform method of the RightAngledTriangularCrossSection class."""
-        transformed_section = triangular_cross_section.transform(horizontal_offset=10.0, vertical_offset=20.0, rotation=90.0)
-        assert isinstance(transformed_section, RightAngledTriangularProfile)
-        assert pytest.approx(transformed_section.centroid.x, rel=1e-6) == triangular_cross_section.centroid.x + 10.0
-        assert pytest.approx(transformed_section.centroid.y, rel=1e-6) == triangular_cross_section.centroid.y + 20.0
-        assert pytest.approx(transformed_section.profile_height, rel=1e-6) == triangular_cross_section.profile_width
+    def test_transform(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test the transform method of the RightAngledTriangularProfile class."""
+        transformed_profile = triangular_profile.transform(horizontal_offset=10.0, vertical_offset=20.0, rotation=90.0)
+        assert isinstance(transformed_profile, RightAngledTriangularProfile)
+        assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == triangular_profile.centroid.x + 10.0
+        assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == triangular_profile.centroid.y + 20.0
+        assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == triangular_profile.profile_width

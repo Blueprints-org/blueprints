@@ -45,7 +45,7 @@ class CircularProfile(Profile):
         # a maximum of 0.1% deviation of the calculated profile properties compared to
         # the analytical solution for various circular geometries.
         mesh_length = max(self.diameter / 20, 2.0)
-        return partial(Geometry.create_mesh, mesh_sizes=mesh_length)
+        return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
 
     @property
     def radius(self) -> MM:

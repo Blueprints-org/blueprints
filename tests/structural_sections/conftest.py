@@ -15,51 +15,51 @@ from blueprints.structural_sections.geometric_profiles import (
 
 
 @pytest.fixture
-def rectangular_cross_section() -> RectangularProfile:
+def rectangular_profile() -> RectangularProfile:
     """Return a RectangularCrossSection instance."""
     return RectangularProfile(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def rectangular_cross_section_section_properties() -> SectionProperties:
-    """Return a RectangularCrossSection instance."""
+def rectangular_profile_section_properties() -> SectionProperties:
+    """Return a RectangularProfile instance."""
     rect = RectangularProfile(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
     # Calculate properties
     return rect.section_properties(geometric=True, plastic=True, warping=True)
 
 
 @pytest.fixture
-def circular_cross_section() -> CircularProfile:
+def circular_profile() -> CircularProfile:
     """Return a CircularCrossSection instance."""
     return CircularProfile(name="Circle", diameter=200.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def tube_cross_section() -> TubeProfile:
+def tube_profile() -> TubeProfile:
     """Return a TubeCrossSection instance."""
     return TubeProfile(name="Tube", outer_diameter=100.0, inner_diameter=50.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def triangular_cross_section() -> RightAngledTriangularProfile:
+def triangular_profile() -> RightAngledTriangularProfile:
     """Return a RightAngledTriangularCrossSection instance."""
     return RightAngledTriangularProfile(name="Triangle", base=100.0, height=200.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def qcs_cross_section() -> CircularCorneredProfile:
+def qcs_profile() -> CircularCorneredProfile:
     """Return a CircularCorneredCrossSection instance."""
     return CircularCorneredProfile(inner_radius=50.0, outer_radius=0, x=100.0, y=250.0, thickness_vertical=0.0, thickness_horizontal=0.0)
 
 
 @pytest.fixture
-def hexagonal_cross_section() -> HexagonalProfile:
+def hexagonal_profile() -> HexagonalProfile:
     """Return a HexagonalCrossSection instance."""
     return HexagonalProfile(name="Hexagon", side_length=50.0, x=100.0, y=250.0)
 
 
 @pytest.fixture
-def annular_sector_cross_section() -> AnnularSectorProfile:
+def annular_sector_profile() -> AnnularSectorProfile:
     """Return an AnnularSectorCrossSection instance."""
     return AnnularSectorProfile(
         inner_radius=90.0,
@@ -73,8 +73,8 @@ def annular_sector_cross_section() -> AnnularSectorProfile:
 
 
 @pytest.fixture
-def annular_sector_cross_section_359_degrees() -> AnnularSectorProfile:
-    """Return an AnnularSectorCrossSection instance."""
+def annular_sector_profile_359_degrees() -> AnnularSectorProfile:
+    """Return an AnnularSectorProfile instance."""
     return AnnularSectorProfile(
         inner_radius=90.0,
         thickness=20.0,
