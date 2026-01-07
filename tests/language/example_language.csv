@@ -1,8 +1,0 @@
-en,example_language
-"This is a test","This is a translation"
-"This ** wildcard","Different text ** here"
-"Wildcards ** used ** here ** want","Completely ** different ** text ** here"
-"This quote contains, a comma","Which is handled, correctly"
-"Special characters: %$#& (╯°□°) ╯︵ ┻━┻","Works perfectly"
-"Mismatched wildcard amount ** here","Mismatched wildcard amount ** ** not allowed"
-"This is true in all languages","-"
