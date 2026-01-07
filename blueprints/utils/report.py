@@ -676,7 +676,7 @@ class LatexReport:
             # Translate content to the specified language
             from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
 
-            latex = str(LatexTranslator(original_text=latex, destination_language=language))
+            latex = LatexTranslator(original_text=latex, destination_language=language)
 
         # Combine preamble, content, and closing
         return latex
