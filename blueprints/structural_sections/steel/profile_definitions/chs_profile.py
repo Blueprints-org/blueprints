@@ -108,4 +108,5 @@ class CHSProfile(Profile):
             outer_diameter=adjusted_outer_diameter,
             wall_thickness=adjusted_thickness,
             name=name,
+            plotter=self.plotter,
         )

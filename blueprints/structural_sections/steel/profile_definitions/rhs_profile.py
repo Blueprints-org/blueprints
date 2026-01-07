@@ -239,4 +239,5 @@ class RHSProfile(Profile):
             bottom_right_outer_radius=bottom_right_outer_radius,
             bottom_left_outer_radius=bottom_left_outer_radius,
             name=name,
+            plotter=self.plotter,
         )

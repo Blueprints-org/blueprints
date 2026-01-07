@@ -171,4 +171,5 @@ class IProfile(Profile):
             top_radius=self.top_radius,
             bottom_radius=self.bottom_radius,
             name=name,
+            plotter=self.plotter,
         )

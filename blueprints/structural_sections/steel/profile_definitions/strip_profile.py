@@ -89,4 +89,5 @@ class StripProfile(Profile):
             width=width,
             height=height,
             name=name,
+            plotter=self.plotter,
         )

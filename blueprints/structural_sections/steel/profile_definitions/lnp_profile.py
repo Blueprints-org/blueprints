@@ -180,4 +180,5 @@ class LNPProfile(Profile):
             web_toe_radius=web_toe_radius,
             base_toe_radius=base_toe_radius,
             name=name,
+            plotter=self.plotter,
         )
