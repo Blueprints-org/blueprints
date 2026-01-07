@@ -90,8 +90,8 @@ class AnnularSectorProfile(Profile):
         MM
             The height of the annular sector.
         """
-        min_y = min(y for _, y in self._polygon.exterior.coords)
-        max_y = max(y for _, y in self._polygon.exterior.coords)
+        min_y = min(y for _, y in self.polygon.exterior.coords)
+        max_y = max(y for _, y in self.polygon.exterior.coords)
         return max_y - min_y
 
     @property
@@ -104,8 +104,8 @@ class AnnularSectorProfile(Profile):
         MM
             The width of the annular sector.
         """
-        min_x = min(x for x, _ in self._polygon.exterior.coords)
-        max_x = max(x for x, _ in self._polygon.exterior.coords)
+        min_x = min(x for x, _ in self.polygon.exterior.coords)
+        max_x = max(x for x, _ in self.polygon.exterior.coords)
         return max_x - min_x
 
     @property
