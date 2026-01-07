@@ -671,9 +671,9 @@ class LatexReport:
         latex = preamble + self.content + r"\end{document}"
         if language != "en":
             # Translate content to the specified language
-            from blueprints.language.translate import TranslateLatex  # noqa: PLC0415
+            from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
 
-            latex = str(TranslateLatex(latex=latex, dest_language=language))
+            latex = LatexTranslator(original_text=latex, destination_language=language)
 
         # Combine preamble, content, and closing
         return latex
