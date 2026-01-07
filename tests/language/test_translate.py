@@ -215,7 +215,7 @@ class TestLatexTranslator:
             mock_instance = MagicMock()
             mock_instance.translate.return_value = [
                 MagicMock(text="Rij 1 Kol 1"),
-                MagicMock(text="Rij 1 Kol 2 met inline wiskunde"),
+                MagicMock(text="Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = 25,0$"),
                 MagicMock(text="Rij 1 Kol 3"),
                 MagicMock(text="Rij 2 Kol 1"),
                 MagicMock(text="Rij 2 Kol 2"),
@@ -227,7 +227,7 @@ class TestLatexTranslator:
             # Note: Math expressions are preserved inline, decimal commas converted
             expected = (
                 r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 with math $E=mc^2$ \\ "
-                r"\midrule Rij 1 Kol 1 & Rij 1 Kol 2 met inline wiskunde & Rij 1 Kol 3 \\ "
+                r"\midrule Rij 1 Kol 1 & Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = 25,0$ & Rij 1 Kol 3 \\ "
                 r"Rij 2 Kol 1 & Rij 2 Kol 2 & Rij 2 Kol 3 \\ \bottomrule \end{tabular} \end{table}"
             )
             assert str(result_nl) == expected

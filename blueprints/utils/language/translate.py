@@ -65,7 +65,7 @@ class LatexTranslator:
     - Captions: \\caption{}
     - Lists: \\item content
     - Tables: content within tabular environments
-    - Equations: decimal separator conversion for certain languages (e.g., . → , for Dutch)
+    - Equations: decimal separator conversion for certain languages (e.g.: '.' → ',' for Dutch)
     """
 
     def __init__(
@@ -109,7 +109,7 @@ class LatexTranslator:
             "Hello", "Hallo", "Hallo", "Bonjour"
             "With formula **:", "Met formule **:", "Mit Formel **:", "-"
             ```
-            With this CSV, you can translate en→nl, nl→fr, de→en, etc. using the same file.
+            With this CSV, you can translate en→nl, nl→fr, de→en, etc. Using the same file.
 
         """
         self.original_text = original_text
