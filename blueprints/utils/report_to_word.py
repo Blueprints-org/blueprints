@@ -826,6 +826,9 @@ class ReportToWordConverter:
             level: The nesting level (1-based).
         """
         # Define numbering formats for levels
+        if level > 0 and number > 26:
+            return f"{number}."
+
         formats = {
             0: f"{number}.",  # Level 1: 1., 2., 3., ...
             1: f"({chr(96 + number)})",  # Level 2: (a), (b), (c), ...
