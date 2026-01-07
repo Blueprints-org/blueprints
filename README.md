@@ -131,7 +131,7 @@ We welcome contributions from developers and engineers of all skill levels! Here
 - Run Tests: Use pytest to ensure all tests pass.
 - Submit a Pull Request: Push your branch and open a pull request against main.
 
-To learn more, see our full [Contributor Guide](https://blueprints.readthedocs.io/en/latest/contribute).
+To learn more, see our full [Contributor Guide](https://blueprints.readthedocs.io/en/latest/guides/contribute/).
 
 ## License
 
