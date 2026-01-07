@@ -132,6 +132,12 @@ class RHSProfile(Profile):
             "bottom_wall_inner_width",
             self.total_width - self.left_wall_thickness - self.right_wall_thickness - self.bottom_right_inner_radius - self.bottom_left_inner_radius,
         )
+        raise_if_negative(
+            right_wall_inner_height=self.right_wall_inner_height,
+            left_wall_inner_height=self.left_wall_inner_height,
+            top_wall_inner_width=self.top_wall_inner_width,
+            bottom_wall_inner_width=self.bottom_wall_inner_width,
+        )
 
     @property
     def _polygon(self) -> Polygon:

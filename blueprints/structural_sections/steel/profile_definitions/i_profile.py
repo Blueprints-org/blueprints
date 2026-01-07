@@ -18,13 +18,12 @@ from blueprints.validations import raise_if_negative
 
 @dataclass(frozen=True, kw_only=True)
 class IProfile(Profile):
-    """Representation of I-Profile.
-    This can be used to create a custom I-profile or to create an I-profile from a standard profile.
+    """Representation of I shaped profiles.
 
-    For standard profiles, use the `from_standard_profile` class method.
+    For standard profiles, use the specific standard profile class like `HEA`, `HEB`, `HEM` or `IPE`.
     For example,
     ```python
-    i_profile = IProfile.from_standard_profile(profile=HEA.HEA200)
+    hea_profile = HEA.HEA200
     ```
 
     Attributes

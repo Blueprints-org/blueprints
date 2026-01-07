@@ -51,7 +51,7 @@ class RightAngledTriangularProfile(Profile):
 
     @property
     def mesh_creator(self) -> partial:
-        """Mesh settings for the the geometrical calculations of the triangular profile."""
+        """Mesh settings for the geometrical calculations of the triangular profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
         # a maximum of 0.1% deviation of the calculated profile properties compared to
         # the analytical solution for various triangular geometries.

@@ -25,8 +25,8 @@ class CombinedSteelCrossSection:
     >>> from blueprints.structural_sections.steel.combined_steel_cross_section import CombinedSteelCrossSection
     >>> from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
     >>>
-    >>> main_steel_cross_section = SteelCrossSection(cross_section=..., material=...)
-    >>> stiffener = SteelCrossSection(cross_section=..., material=...)
+    >>> main_steel_cross_section = SteelCrossSection(profile=..., material=...)
+    >>> stiffener = SteelCrossSection(profile=..., material=...)
     >>> # Create a combined steel cross-section with the main section and a stiffener.
     >>> combined_section = CombinedSteelCrossSection(steel_cross_sections=(main_steel_cross_section, stiffener))
     >>> # Alternatively, you can add sections one by one.

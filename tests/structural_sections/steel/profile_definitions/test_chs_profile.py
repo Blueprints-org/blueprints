@@ -21,11 +21,6 @@ class TestCHSSteelProfile:
         expected_name: str = "CHS 508x16"
         assert chs_profile.name == expected_name
 
-    def test_code(self, chs_profile: CHSProfile) -> None:
-        """Test the code of the CHS profile."""
-        expected_alias: str = "CHS 508x16"
-        assert chs_profile.name == expected_alias
-
     def test_steel_volume_per_meter(self, chs_profile: CHSProfile) -> None:
         """Test the steel volume per meter."""
         expected_volume: float = 2.47e-2  # m³/m

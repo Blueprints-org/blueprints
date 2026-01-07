@@ -46,7 +46,7 @@ class TestHexagonalProfile:
         expected_apothem = hexagonal_profile.side_length * np.sqrt(3) / 2
         assert hexagonal_profile.apothem == pytest.approx(expected=expected_apothem, rel=1e-6)
 
-    def test_perimter(self, hexagonal_profile: HexagonalProfile) -> None:
+    def test_perimeter(self, hexagonal_profile: HexagonalProfile) -> None:
         """Test the perimeter property of the HexagonalProfile class."""
         expected_perimeter = 6 * hexagonal_profile.side_length
         assert hexagonal_profile.perimeter == pytest.approx(expected=expected_perimeter, rel=1e-6)

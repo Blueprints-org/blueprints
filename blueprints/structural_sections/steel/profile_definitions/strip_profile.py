@@ -20,11 +20,10 @@ from blueprints.validations import raise_if_negative
 class StripProfile(Profile):
     """Representation of a Strip profile.
 
-    This class is used to create a custom strip profile or to create a strip profile from a standard profile.
-    For standard profiles, use the `from_standard_profile` class method.
+    For standard profiles, use the specific standard profile class `Strip`.
     For example,
     ```python
-    strip_profile = StripProfile.from_standard_profile(profile=Strip.STRIP160x5)
+    strip_profile = Strip.STRIP160x5
     ```
 
     Attributes
