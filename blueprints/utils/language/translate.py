@@ -416,7 +416,7 @@ class LatexTranslator:
             parts = re.split(r"(\s*\\(?:toprule|midrule|bottomrule)\s*)", tabular_content)
 
             result = tabular_start
-            for i, part in enumerate(parts):
+            for part in parts:
                 if re.match(r"\s*\\(?:toprule|midrule|bottomrule)\s*", part):
                     result += part
                 elif part:  # Process any non-empty part
@@ -427,7 +427,7 @@ class LatexTranslator:
 
                     # Split by \\ to get rows
                     rows = part.split("\\\\")
-                    for j, row in enumerate(rows):
+                    for row in rows:
                         row_stripped = row.strip()
                         if not row_stripped:
                             continue
