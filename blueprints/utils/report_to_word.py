@@ -174,7 +174,7 @@ class ReportToWordConverter:
 
         return matches
 
-    def _add_content_to_document(self, doc: DocumentObject, parsed: list[dict[str, str | int]]) -> None:  # noqa: C901
+    def _add_content_to_document(self, doc: DocumentObject, parsed: list[dict[str, str | int]]) -> None:
         """Add parsed content items to the Word document.
 
         Args:
@@ -193,21 +193,7 @@ class ReportToWordConverter:
                 self._add_equation(doc, content)
                 i += 1
             elif item_type == "newline":
-                # Count consecutive newlines and add empty paragraphs
-                newline_count = 1
-                j = i + 1
-                while j < len(parsed) and str(parsed[j]["type"]) == "newline":
-                    newline_count += 1
-                    j += 1
-
-                # Add empty paragraphs for each newline after the first
-                # (the first newline just ends the current paragraph)
-                for _ in range(newline_count - 1):
-                    empty_para = doc.add_paragraph()
-                    empty_para.style = "No Spacing"
-                    empty_para.paragraph_format.space_before = Pt(2)
-                    empty_para.paragraph_format.space_after = Pt(2)
-                i = j
+                i = self._add_newline(doc, parsed, i)
             elif item_type in ("title", "section", "subsection", "subsubsection"):
                 self._add_heading(doc, item_type, content)
                 i += 1
@@ -223,6 +209,34 @@ class ReportToWordConverter:
             else:  # enumerate
                 self._add_enumerate_to_doc(doc, content)
                 i += 1
+
+    def _add_newline(self, doc: DocumentObject, parsed: list[dict[str, str | int]], start_index: int) -> int:
+        """Add newline(s) to the document by adding empty paragraphs.
+
+        Args:
+            doc: The Word Document object.
+            parsed: List of parsed content items.
+            start_index: Starting index in parsed list.
+
+        Returns
+        -------
+            Updated index after processing newlines.
+        """
+        # Count consecutive newlines and add empty paragraphs
+        newline_count = 1
+        j = start_index + 1
+        while j < len(parsed) and str(parsed[j]["type"]) == "newline":
+            newline_count += 1
+            j += 1
+
+        # Add empty paragraphs for each newline after the first
+        # (the first newline just ends the current paragraph)
+        for _ in range(newline_count - 1):
+            empty_para = doc.add_paragraph()
+            empty_para.style = "No Spacing"
+            empty_para.paragraph_format.space_before = Pt(2)
+            empty_para.paragraph_format.space_after = Pt(2)
+        return j
 
     def _add_heading(self, doc: DocumentObject, heading_type: str, content: str) -> None:
         r"""Add a heading to the document.
@@ -353,9 +367,13 @@ class ReportToWordConverter:
                     run.italic = italic
             else:
                 # Equation content
-                para.add_run(" ")
+                # Only add leading space if there was text before this equation
+                if i > 0 and parts[i - 1].strip():
+                    para.add_run(" ")
                 para._p.append(self._formula(part.replace(r"\%", "%")))  # noqa: SLF001
-                para.add_run(" ")
+                # Only add trailing space if there is text after this equation
+                if i < len(parts) - 1 and parts[i + 1].strip():
+                    para.add_run(" ")
 
     def _add_equation(self, doc: DocumentObject, content: str) -> None:
         r"""Add an equation to the document.
