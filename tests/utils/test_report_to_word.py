@@ -42,5 +42,5 @@ class TestReportToWordConverter:
         # Use cross-platform path that works on both Windows and Linux/Mac
         logo_path = Path("docs") / "_overrides" / "assets" / "images" / "logo-light-mode.png"
         report.add_figure(str(logo_path), width=0.4, caption="Description of the image.")
-        latex_content = report.to_document(language="nl")
-        assert ReportToWordConverter(latex_content)
+        latex_content = report.to_document(language="zh")
+        assert ReportToWordConverter(latex_content).document
