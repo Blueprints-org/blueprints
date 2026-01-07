@@ -27,7 +27,7 @@ class Form6Dot43LongitudinalStressClass4CrossSections(ComparisonFormula):
         The maximum longitudinal stress [$\sigma_{x,Ed}$] should not exceed the yield strength
         divided by the partial safety factor [$\frac{f_y}{\gamma_{M0}}$].
 
-        EN 1993-1-1:2005 art. 6.2.9.2 (1) - Formula (6.43)
+        EN 1993-1-1:2005 art. 6.2.9.3 (1) - Formula (6.43)
 
         Parameters
         ----------

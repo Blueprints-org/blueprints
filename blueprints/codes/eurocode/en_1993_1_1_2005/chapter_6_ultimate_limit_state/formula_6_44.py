@@ -106,10 +106,6 @@ class Form6Dot44CombinedCompressionBendingClass4CrossSections(ComparisonFormula)
         """Evaluates the right-hand side of the comparison. see __init__ for details."""
         return 1.0
 
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.lhs
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.44."""
