@@ -489,7 +489,7 @@ class ReportToWordConverter:
             table: The Word table object to style.
         """
 
-        def set_cell_border(cell: Any, **kwargs: dict[str, str]) -> None:  # noqa: ANN401
+        def set_cell_border(cell: Any, **kwargs: Any) -> None:  # noqa: ANN401
             """Set border for a cell.
 
             Args:
