@@ -68,7 +68,7 @@ class AnnularSectorProfile(Profile):
         # a maximum of 0.1% deviation of the calculated profile properties compared to
         # the analytical solution for various annular sector geometries.
         mesh_length = max(self.thickness / 5, 1.0)
-        return partial(Geometry.create_mesh, mesh_sizes=mesh_length)
+        return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
 
     @property
     def radius_centerline(self) -> MM:
