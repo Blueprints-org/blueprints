@@ -76,7 +76,7 @@ class LatexTranslator:
         custom_csv: Path | str | None = None,
     ) -> None:
         r"""
-        Initialize the Translate class with text and destination language.
+        Initialize the LatexTranslator class with text and destination language.
 
         WARNING: uses Google Translate service when translations haven't been manually entered.
         When the services are not available, (sections of) text will be left in the original language.
