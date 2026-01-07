@@ -404,32 +404,6 @@ class LatexTranslator:
         """
         replacement_index = 0
 
-        def _repl_row(match: re.Match) -> str:
-            nonlocal replacement_index
-            row_content = match.group(0)
-            # Split by & to get cells
-            cells = row_content.split("&")
-            new_cells = []
-
-            for cell in cells:
-                # Check if this cell contains translatable plain text (not just LaTeX commands)
-                cell_stripped = cell.strip()
-                # Skip if cell is empty, only has \text{} commands, or has other LaTeX commands
-                if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
-                    # Check if there's actual text content outside of \text{} commands
-                    plain_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
-                    if plain_text.strip() and replacement_index < len(replacements):
-                        # Replace only the plain text portions, preserving \text{} commands
-                        new_cell_content = cell_stripped
-                        # Replace the plain text portion with the translation
-                        new_cell_content = new_cell_content.replace(plain_text.strip(), replacements[replacement_index])
-                        new_cells.append(cell.replace(cell_stripped, new_cell_content))
-                        replacement_index += 1
-                        continue
-                new_cells.append(cell)
-
-            return "&".join(new_cells)
-
         # Match table rows (content between \\ or at end of tabular)
         # Process content within tabular environments
         def _process_tabular(match: re.Match) -> str:
