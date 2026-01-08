@@ -406,7 +406,7 @@ class LatexTranslator:
 
         # Match table rows (content between \\ or at end of tabular)
         # Process content within tabular environments
-        def _process_tabular(match: re.Match) -> str:
+        def _process_tabular(match: re.Match) -> str:  # noqa: C901
             nonlocal replacement_index
             tabular_start = match.group(1)  # \begin{tabular}{...}
             tabular_content = match.group(2)
@@ -442,9 +442,11 @@ class LatexTranslator:
                                 plain_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
                                 if plain_text.strip() and replacement_index < len(replacements):
                                     new_cell_content = cell_stripped.replace(plain_text.strip(), replacements[replacement_index])
-                                    # Replace in the modified_row, preserving original cell spacing
-                                    modified_row = modified_row.replace(cell, cell.replace(cell_stripped, new_cell_content), 1)
-                                    replacement_index += 1
+                                    # Only update and increment if the replacement actually changed the cell
+                                    if new_cell_content != cell_stripped:
+                                        # Replace in the modified_row, preserving original cell spacing
+                                        modified_row = modified_row.replace(cell, cell.replace(cell_stripped, new_cell_content), 1)
+                                        replacement_index += 1
 
                         result += modified_row.rstrip() + " \\\\"
 
