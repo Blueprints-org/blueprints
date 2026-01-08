@@ -187,7 +187,7 @@ class LatexTranslator:
                     return result
         return None
 
-    def _translate_bulk(self, texts: list) -> list[str | None]:
+    def _translate_bulk(self, texts: list) -> list[str]:
         r"""
         Translate a list of strings to the destination language.
         First checks the translation dictionary loaded from CSV. If not found, uses Google Translate.
@@ -204,7 +204,7 @@ class LatexTranslator:
             The list of translated strings.
         """
         # Try to use CSV dictionary for all, fallback to Google Translate for missing
-        results: list[str | None] = []
+        results: list[str] = []
         missing: list[str] = []
         missing_indices: list[int] = []
         missing_spaces: list[tuple[str, str]] = []  # Store (leading_space, trailing_space) for each missing text
@@ -385,10 +385,11 @@ class LatexTranslator:
         return re.sub(r"\\item(\s+)([^\\]+?)(?=\\|$)", _repl, text, flags=re.DOTALL)
 
     @staticmethod
-    def _replace_table_cells(text: str, replacements: list) -> str:  # noqa: C901
+    def _replace_table_cells(text: str, replacements: list) -> str:
         r"""
         Replace plain text content in table cells with translations, preserving \text{} commands.
         Only replaces the plain text portions that were extracted (excluding \text{} content).
+        Assumes tables contain \toprule, \midrule, and \bottomrule.
 
         Parameters
         ----------
@@ -404,52 +405,40 @@ class LatexTranslator:
         """
         replacement_index = 0
 
-        # Match table rows (content between \\ or at end of tabular)
-        # Process content within tabular environments
         def _process_tabular(match: re.Match) -> str:
             nonlocal replacement_index
             tabular_start = match.group(1)  # \begin{tabular}{...}
             tabular_content = match.group(2)
             tabular_end = match.group(3)  # \end{tabular}
 
-            # Split by table rules to get header and body sections, preserving the rules with their spacing
+            # Split by table rules, preserving them with their spacing
             parts = re.split(r"(\s*\\(?:toprule|midrule|bottomrule)\s*)", tabular_content)
 
             result = tabular_start
             for part in parts:
+                # If it's a rule, append it directly
                 if re.match(r"\s*\\(?:toprule|midrule|bottomrule)\s*", part):
                     result += part
-                elif part:  # Process any non-empty part
-                    # Check if this part is just an empty row (e.g., " \\ ")
-                    if part.strip() in ("", "\\\\"):
-                        result += part
-                        continue
-
-                    # Split by \\ to get rows
+                elif part.strip():
+                    # Process rows in this section
                     rows = part.split("\\\\")
                     for row in rows:
-                        row_stripped = row.strip()
-                        if not row_stripped:
+                        if not row.strip():
                             continue
 
-                        # Process cells but preserve original row spacing
                         modified_row = row
-                        cells = row.split("&")
-
-                        for cell in cells:
+                        for cell in row.split("&"):
                             cell_stripped = cell.strip()
                             if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
                                 plain_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
                                 if plain_text.strip() and replacement_index < len(replacements):
                                     new_cell_content = cell_stripped.replace(plain_text.strip(), replacements[replacement_index])
-                                    # Replace in the modified_row, preserving original cell spacing
                                     modified_row = modified_row.replace(cell, cell.replace(cell_stripped, new_cell_content), 1)
                                     replacement_index += 1
 
                         result += modified_row.rstrip() + " \\\\"
 
-            result += tabular_end
-            return result
+            return result + tabular_end
 
         # Match tabular environments
         return re.sub(r"(\\begin\{tabular\}\{[^}]+\})(.*?)(\\end\{tabular\})", _process_tabular, text, flags=re.DOTALL)
