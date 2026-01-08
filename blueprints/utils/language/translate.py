@@ -385,7 +385,7 @@ class LatexTranslator:
         return re.sub(r"\\item(\s+)([^\\]+?)(?=\\|$)", _repl, text, flags=re.DOTALL)
 
     @staticmethod
-    def _replace_table_cells(text: str, replacements: list) -> str:
+    def _replace_table_cells(text: str, replacements: list) -> str:  # noqa: C901
         r"""
         Replace plain text content in table cells with translations, preserving \text{} commands.
         Only replaces the plain text portions that were extracted (excluding \text{} content).
@@ -404,32 +404,6 @@ class LatexTranslator:
         """
         replacement_index = 0
 
-        def _repl_row(match: re.Match) -> str:
-            nonlocal replacement_index
-            row_content = match.group(0)
-            # Split by & to get cells
-            cells = row_content.split("&")
-            new_cells = []
-
-            for cell in cells:
-                # Check if this cell contains translatable plain text (not just LaTeX commands)
-                cell_stripped = cell.strip()
-                # Skip if cell is empty, only has \text{} commands, or has other LaTeX commands
-                if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
-                    # Check if there's actual text content outside of \text{} commands
-                    plain_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
-                    if plain_text.strip() and replacement_index < len(replacements):
-                        # Replace only the plain text portions, preserving \text{} commands
-                        new_cell_content = cell_stripped
-                        # Replace the plain text portion with the translation
-                        new_cell_content = new_cell_content.replace(plain_text.strip(), replacements[replacement_index])
-                        new_cells.append(cell.replace(cell_stripped, new_cell_content))
-                        replacement_index += 1
-                        continue
-                new_cells.append(cell)
-
-            return "&".join(new_cells)
-
         # Match table rows (content between \\ or at end of tabular)
         # Process content within tabular environments
         def _process_tabular(match: re.Match) -> str:
@@ -438,16 +412,44 @@ class LatexTranslator:
             tabular_content = match.group(2)
             tabular_end = match.group(3)  # \end{tabular}
 
-            # Skip header lines (before \midrule)
-            parts = re.split(r"(\\midrule)", tabular_content, maxsplit=1)
-            header_part = parts[0]
-            midrule = parts[1]
-            content_part = parts[2]
+            # Split by table rules to get header and body sections, preserving the rules with their spacing
+            parts = re.split(r"(\s*\\(?:toprule|midrule|bottomrule)\s*)", tabular_content)
 
-            # Process rows in content part
-            processed_content = re.sub(r"([^\\].*?)(?=\\\\|\\bottomrule|\\end)", _repl_row, content_part, flags=re.DOTALL)
+            result = tabular_start
+            for part in parts:
+                if re.match(r"\s*\\(?:toprule|midrule|bottomrule)\s*", part):
+                    result += part
+                elif part:  # Process any non-empty part
+                    # Check if this part is just an empty row (e.g., " \\ ")
+                    if part.strip() in ("", "\\\\"):
+                        result += part
+                        continue
 
-            return tabular_start + header_part + midrule + processed_content + tabular_end
+                    # Split by \\ to get rows
+                    rows = part.split("\\\\")
+                    for row in rows:
+                        row_stripped = row.strip()
+                        if not row_stripped:
+                            continue
+
+                        # Process cells but preserve original row spacing
+                        modified_row = row
+                        cells = row.split("&")
+
+                        for cell in cells:
+                            cell_stripped = cell.strip()
+                            if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
+                                plain_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
+                                if plain_text.strip() and replacement_index < len(replacements):
+                                    new_cell_content = cell_stripped.replace(plain_text.strip(), replacements[replacement_index])
+                                    # Replace in the modified_row, preserving original cell spacing
+                                    modified_row = modified_row.replace(cell, cell.replace(cell_stripped, new_cell_content), 1)
+                                    replacement_index += 1
+
+                        result += modified_row.rstrip() + " \\\\"
+
+            result += tabular_end
+            return result
 
         # Match tabular environments
         return re.sub(r"(\\begin\{tabular\}\{[^}]+\})(.*?)(\\end\{tabular\})", _process_tabular, text, flags=re.DOTALL)
@@ -557,24 +559,25 @@ class LatexTranslator:
         tabular_pattern = r"\\begin\{tabular\}\{[^}]+\}(.*?)\\end\{tabular\}"
         for tabular_match in re.finditer(tabular_pattern, self.original_text, re.DOTALL):
             tabular_content = tabular_match.group(1)
-            # Skip header part (before \midrule)
-            parts = re.split(r"\\midrule", tabular_content, maxsplit=1)
-            content_part = parts[1] if len(parts) >= 2 else tabular_content
-
-            # Extract cells from rows
-            row_pattern = r"([^\\]+?)(?=\\\\|\\bottomrule|\\end)"
-            for row_match in re.finditer(row_pattern, content_part, re.DOTALL):
-                row_content = row_match.group(1)
-                # Split by & to get cells
-                cells = row_content.split("&")
-                for cell in cells:
-                    cell_stripped = cell.strip()
-                    # Only extract if it's simple text (not complex LaTeX)
-                    if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
-                        # Extract only plain text portions, excluding \text{} commands to avoid double-extraction
-                        plain_text_only = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
-                        if plain_text_only.strip():
-                            table_texts.append(plain_text_only.strip())
+            # Split by table rules to get header and body sections
+            parts = re.split(r"\\(?:toprule|midrule|bottomrule)", tabular_content)
+            # parts[0] is before toprule (usually empty), parts[1] is header, parts[2] is body
+            for section in parts[1:3]:  # Process header and body sections
+                rows = section.split("\\\\")
+                for row in rows:
+                    row_stripped = row.strip()
+                    if not row_stripped:
+                        continue
+                    # Split by & to get cells
+                    cells = row_stripped.split("&")
+                    for cell in cells:
+                        cell_stripped = cell.strip()
+                        # Only extract if it's simple text (not complex LaTeX)
+                        if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
+                            # Extract only plain text portions, excluding \text{} commands to avoid double-extraction
+                            plain_text_only = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
+                            if plain_text_only.strip():
+                                table_texts.append(plain_text_only.strip())
         return table_texts
 
     def _translate_latex(self) -> str:
