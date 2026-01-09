@@ -818,12 +818,20 @@ class ReportToWordConverter:
     def _get_number_format(number: int, level: int) -> str:
         """Set the numbering format for a paragraph based on its nesting level.
 
-        Note: will only work for up to 4 levels of nesting (maximum of LaTeX enumerate) and
-        will not handle more than 26 items per level (except for level 1).
+        This method supports up to 4 nesting levels (levels 0-3). For non-top levels
+        (level > 0), when number > 26, it gracefully falls back to a numeric format
+        (e.g., "27.") rather than failing. Level 0 (top level) uses numeric formatting
+        without the 26-item limitation.
+
+        Formats used for each level:
+        - level 0: "1." (numeric)
+        - level 1: "(a)" (lowercase letters in parentheses)
+        - level 2: "i." (lowercase Roman numerals)
+        - level 3: "A." (uppercase letters)
 
         Args:
             number: The number of the item in the list.
-            level: The nesting level (1-based).
+            level: The nesting level (0-based).
         """
         # Define numbering formats for levels
         if level > 0 and number > 26:
