@@ -188,7 +188,8 @@ class ReportToWordConverter:
         }
 
         # Extract matches for each pattern
-        for line in content.splitlines():
+        current_pos = 0
+        for line in content.splitlines(keepends=True):
             # Special handling for newlines - find all occurrences in the line
             newline_matches = list(re.finditer(r"\\newline", line))
             if newline_matches:
@@ -196,11 +197,12 @@ class ReportToWordConverter:
                     {
                         "type": "newline",
                         "content": "",
-                        "start": content.index(line) + match.start(),
-                        "end": content.index(line) + match.end(),
+                        "start": current_pos + match.start(),
+                        "end": current_pos + match.end(),
                     }
                     for match in newline_matches
                 )
+                current_pos += len(line)
                 continue
 
             # Check other patterns
@@ -210,14 +212,16 @@ class ReportToWordConverter:
                         {
                             "type": category,
                             "content": line,
-                            "start": content.index(line),
-                            "end": content.index(line) + len(line),
+                            "start": current_pos,
+                            "end": current_pos + len(line),
                         }
                     )
                     break
             else:
                 if len(line.strip()) > 0:
-                    matches.append({"type": "text", "content": line, "start": content.index(line), "end": content.index(line) + len(line)})
+                    matches.append({"type": "text", "content": line, "start": current_pos, "end": current_pos + len(line)})
+
+            current_pos += len(line)
 
         return matches
 
