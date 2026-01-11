@@ -469,29 +469,44 @@ class Report:
 
         return "\n".join(lines)
 
-    def to_latex(self, language: str = "en") -> str:
+    def to_latex(self, path: str | Path | None = None, language: str = "en") -> str | None:
         """Generate a complete LaTeX document with proper preamble and structure.
 
         You could compile the output with pdflatex in for example Overleaf.
 
         Parameters
         ----------
+        path : str | Path | None, optional
+            The destination for the LaTeX document:
+            - str or Path: File path where the .tex file will be saved
+            - None: Return the document as a string (default)
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
             Warning: only English is officially supported in Blueprints (default is "en" for English).
 
         Returns
         -------
-        str
-            Complete LaTeX document string including preamble, begin/end document,
-            and all content, ready for copy-pasting into a .tex file for example.
+        str | None
+            If path is None, returns the LaTeX document as a string.
+            If path is provided (str or Path), returns None after saving to file.
 
         Examples
         --------
+        Get LaTeX as a string:
+
         >>> report = Report(title="My Report")
         >>> report.add_heading("Introduction")
         >>> report.add_paragraph("Some text")
         >>> latex_doc = report.to_latex()
+
+        Save directly to a file:
+
+        >>> report.to_latex("report.tex")
+
+        Save using pathlib.Path:
+
+        >>> from pathlib import Path
+        >>> report.to_latex(Path("report.tex"))
         """
         # Use provided title or fall back to instance title
         doc_title = self.title or ""
@@ -569,7 +584,14 @@ class Report:
 
             latex = LatexTranslator(original_text=latex, destination_language=language).text
 
-        # Combine preamble, content, and closing
+        # If path is provided, save to file and return None
+        if path is not None:
+            # Convert Path to str if needed
+            file_path = str(path) if isinstance(path, Path) else path
+            Path(file_path).write_text(latex, encoding="utf-8")
+            return None
+
+        # Return LaTeX string
         return latex
 
     def to_word(self, path: str | Path | BytesIO | None = None, language: str = "en") -> bytes | None:  # pragma: no cover
