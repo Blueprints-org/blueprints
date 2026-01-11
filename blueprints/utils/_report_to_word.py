@@ -56,7 +56,7 @@ class _ReportToWordConverter:
     >>> converter = _ReportToWordConverter(latex_content)
     >>> converter.document.save("my_report.docx")
 
-    Using the convenience method from LatexReport:
+    Using the convenience method from Report:
 
     >>> report = Report("My Report Title")
     >>> report.add_heading("Introduction")
