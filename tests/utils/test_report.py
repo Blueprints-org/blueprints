@@ -1,4 +1,4 @@
-"""Tests for the LatexReport class."""
+"""Tests for the Report class."""
 
 import tempfile
 from pathlib import Path
