@@ -1,15 +1,37 @@
-"""Report builder for LaTeX documents."""
+"""Report builder for LaTeX documents.
+
+This module provides functionality for creating structured LaTeX reports programmatically.
+The Report class offers a fluent API for building documents with headings, paragraphs,
+equations, tables, figures, and lists. Reports can be exported to LaTeX format for
+compilation with pdflatex or converted directly to Word documents.
+
+Key Features:
+    - Fluent API with method chaining for easy document construction
+    - Support for mathematical equations using LaTeX syntax
+    - Integration with Blueprints Formula objects
+    - Table and figure insertion with customizable formatting
+    - Nested bulleted and numbered lists
+    - Export to both LaTeX (.tex) and Word (.docx) formats
+    - Multi-language support through translation
+
+Developer notes:
+    The LaTeX styling is designed to match Word document styling as closely as possible.
+    Changes to LaTeX output should be reflected in _report_to_word.py converter.
+
+"""
 
 from collections.abc import Sequence
 from dataclasses import dataclass, field
+from io import BytesIO
+from pathlib import Path
 from typing import Any, Literal, Self
 
 from blueprints.codes.formula import Formula
 
 
 @dataclass
-class LatexReport:
-    r"""LaTeX report builder for creating structured documents with standardized formatting.
+class Report:
+    r"""Report builder for creating structured documents with standardized formatting.
 
     Check our docs for examples of usage.
 
@@ -20,42 +42,43 @@ class LatexReport:
 
     Examples
     --------
-    >>> report = LatexReport(title="Sample Report")
-    >>> report.add_section("Introduction")
-    >>> report.add_subsection("Background")
-    >>> report.add_subsubsection("Details")
-    >>> report.add_text("This is normal text.")
-    >>> report.add_text("This is bold text with newline after.", bold=True).add_newline()
-    >>> report.add_text("This is italic text with 4 newlines after.", italic=True).add_newline(n=4)
-    >>> report.add_text("This is bold and italic text.", bold=True, italic=True)
+    >>> report = Report(title="Sample Report")
+    >>> report.add_heading("Introduction")
+    >>> report.add_heading("Background", level=2)
+    >>> report.add_heading("Details", level=3)
+    >>> report.add_paragraph("This is normal text.")
+    >>> report.add_paragraph("This is bold text with newline after.", bold=True).add_newline()
+    >>> report.add_paragraph("This is italic text with 4 newlines after.", italic=True).add_newline(n=4)
+    >>> report.add_paragraph("This is bold and italic text.", bold=True, italic=True)
     >>> report.add_newline()
     >>> report.add_equation("E=mc^2", tag="3.14")
-    >>> report.add_text("Before inline equation:", italic=True).add_equation(r"\frac{a}{b}", inline=True).add_text(
+    >>> report.add_paragraph("Before inline equation:", italic=True).add_equation(r"\frac{a}{b}", inline=True).add_paragraph(
     ...     " and after inline equation.", bold=True
     ... ).add_newline()
-    >>> report.add_equation(r"e^{i \pi} + 1 = 0", inline=True).add_text("inline can be at start of text.").add_newline()
-    >>> report.add_text("Or at the end of text", bold=True).add_equation(r"\int_a^b f(x) dx", inline=True).add_newline(n=2)
-    >>> report.add_text("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
+    >>> report.add_equation(r"e^{i \pi} + 1 = 0", inline=True).add_paragraph("inline can be at start of text.").add_newline()
+    >>> report.add_paragraph("Or at the end of text", bold=True).add_equation(r"\int_a^b f(x) dx", inline=True).add_newline(n=2)
+    >>> report.add_paragraph("Equations can also be $a^2 + b^2 = c^2$ inline in the add text method.").add_newline()
     >>> report.add_table(
     ...     headers=["Parameter", "Value", "Unit"], rows=[[r"\text{Length}", "10", r"\text{m}"], [r"\text{Density}", "500", r"\text{kg/$m^3$}"]]
     ... )
     >>> report.add_figure(r"tomato.png", width=0.2)  # needs the tomato.png file in working directory
-    >>> report.add_enumerate(["First item", "Second item"])
-    >>> report.add_itemize(["Bullet one", "Bullet two"])
-    >>> latex_document = report.to_document()
+    >>> report.add_list(["First item", "Second item"], style="numbered")
+    >>> report.add_list(["Layer one", ["Layer two", ["Layer three", ["Layer four"]]]], style="numbered")
+    >>> report.add_list(["Bullet one", "Bullet two"], style="bulleted")
+    >>> latex_document = report.to_latex()
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
     """
 
     title: str | None = None
     content: str = field(default="", init=False)
 
-    def add_text(self, text: str, bold: bool = False, italic: bool = False) -> Self:
+    def add_paragraph(self, text: str, bold: bool = False, italic: bool = False) -> Self:
         r"""Add text with optional bold and italic formatting.
 
         Parameters
         ----------
         text : str
-            The text content to display.
+            The text content of the paragraph.
         bold : bool, optional
             Whether to format the text in bold.
         italic : bool, optional
@@ -63,15 +86,15 @@ class LatexReport:
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = LatexReport()
-        >>> report.add_text("This is regular text")
-        >>> report.add_text("This is bold text", bold=True)
-        >>> report.add_text("This is bold and italic", bold=True, italic=True)
+        >>> report = Report()
+        >>> report.add_paragraph("This is regular text")
+        >>> report.add_paragraph("This is bold text", bold=True)
+        >>> report.add_paragraph("This is bold and italic", bold=True, italic=True)
         """
         if bold and italic:
             self.content += rf"\textbf{{\textit{{{text}}}}}"
@@ -98,7 +121,7 @@ class LatexReport:
         Parameters
         ----------
         equation : str
-            The LaTeX equation.
+            An equation in LaTeX format.
         tag : str or None, optional
             Tag to label the equation (e.g., "6.83", "EN 1992-1-1:2004 6.6n", etc.).
         inline : bool, optional
@@ -106,20 +129,20 @@ class LatexReport:
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
         When creating a report, you can add equations in different ways:
-        >>> report = LatexReport()
+        >>> report = Report()
         >>> report.add_equation("a^2+b^2=c^2")
         >>> report.add_equation("a^2+b^2=c^2", tag="6.83")
         >>> report.add_equation(r"\\frac{a}{b}", inline=True)
 
         """
         if inline:
-            self.content += r"\txt{" + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r"}"
+            self.content += r"\txt{ " + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r" }"
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
@@ -160,18 +183,18 @@ class LatexReport:
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
         >>> from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
         >>> formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
-        >>> report = LatexReport()
+        >>> report = Report()
         >>> report.add_formula(formula, options="short")  # Minimal representation
         >>> print(report)
         # report can be converted to formatted LaTeX document with report.to_document()
-        >>> print(report.to_document())
+        >>> print(report.to_latex())
         """
         # Get the desired LaTeX representation from the formula
         latex = formula.latex()
@@ -199,84 +222,37 @@ class LatexReport:
 
         return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None)
 
-    def add_section(self, title: str) -> Self:
-        """Add a report section.
+    def add_heading(self, text: str, level: int = 1) -> Self:
+        """Add a heading to the report.
 
-        For more info on sections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
-        Blueprints uses Section > Subsection > Subsubsection > content (from add_text etc.) hierarchy.
+        Currently, supports levels 1 (section), 2 (subsection), and 3 (subsubsection).
 
         Parameters
         ----------
-        title : str
-            The section title.
+        text : str
+            The heading text.
+        level : int
+            The heading level (1 for section, 2 for subsection, 3 for subsubsection). Default is 1.
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = LatexReport()
-        >>> report.add_section("This is a section")
+        >>> report = Report()
+        >>> report.add_heading("This is a section")
         """
-        self.content += rf"\section{{{title}}}"
-
-        # Add a newline for visual separation
-        self.content += "\n"
-
-        return self
-
-    def add_subsection(self, title: str) -> Self:
-        """Add a subsection.
-
-        For more info on subsections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
-        Blueprints uses Section > Subsection > Subsubsection > content (from add_text etc.) hierarchy.
-
-        Parameters
-        ----------
-        title : str
-            The subsection title.
-
-        Returns
-        -------
-        LatexReport
-            Returns self for method chaining.
-
-        Examples
-        --------
-        >>> report = LatexReport()
-        >>> report.add_subsection("This is a subsection")
-        """
-        self.content += rf"\subsection{{{title}}}"
-
-        # Add a newline for visual separation
-        self.content += "\n"
-
-        return self
-
-    def add_subsubsection(self, title: str) -> Self:
-        """Add a subsubsection.
-
-        For more info on subsubsections, see: https://www.overleaf.com/learn/latex/Sections_and_chapters
-        Blueprints uses Section > Subsection > Subsubsection > content (from add_text etc.) hierarchy.
-
-        Parameters
-        ----------
-        title : str
-            The subsubsection title.
-
-        Returns
-        -------
-        LatexReport
-            Returns self for method chaining.
-
-        Examples
-        --------
-        >>> report = LatexReport()
-        >>> report.add_subsubsection("This is a subsubsection")
-        """
-        self.content += rf"\subsubsection{{{title}}}"
+        match level:
+            case 1:
+                self.content += rf"\section{{{text}}}"
+            case 2:
+                self.content += rf"\subsection{{{text}}}"
+            case 3:
+                self.content += rf"\subsubsection{{{text}}}"
+            case _:
+                raise ValueError(f"Invalid heading level '{level}'. Choose from 1 (section), 2 (subsection), or 3 (subsubsection).")
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -287,12 +263,9 @@ class LatexReport:
         self,
         headers: list[str],
         rows: list[list[str]],
-        position: str = "h",
         centering: bool = True,
     ) -> Self:
-        r"""Add a table using LaTeX table environment.
-
-        For more info on tables, see: https://www.overleaf.com/learn/latex/Tables
+        r"""Add a table to the report.
 
         Parameters
         ----------
@@ -300,26 +273,17 @@ class LatexReport:
             List of column headers.
         rows : list[list[str]]
             List of rows, where each row is a list of cell values.
-        position : str, optional
-            LaTeX positioning parameter (e.g., 'h', 't', 'b'). Default is 'h'.
-
-            h: Will place the table here approximately.
-            t: Position the table at the top of the page.
-            b: Position the table at the bottom of the page.
-            p: Put the table in a special page, for tables only.
-            !: Override internal LaTeX parameters.
-            H: Place the table at this precise location, pretty much like h!.
         centering : bool, optional
             If True, centers the table. Default is True.
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = LatexReport()
+        >>> report = Report()
         >>> headers = ["Check", "Utilization", "Status"]
         >>> rows = [[r"\\text{Concrete strut capacity}", "0.588", r"\\text{PASS}"], [r"\\text{Torsion moment capacity}", "4.825", r"\\text{FAIL}"]]
         >>> report.add_table(headers, rows)
@@ -349,7 +313,7 @@ class LatexReport:
         # Build table
         centering_cmd = r"\centering " if centering else ""
         table = (
-            rf"\begin{{table}}[{position}] {centering_cmd}"
+            rf"\begin{{table}}[h] {centering_cmd}"
             rf"\begin{{tabular}}{{{col_spec}}} "
             rf"\toprule {header_row} \midrule {data_rows} "
             rf"\bottomrule \end{{tabular}} \end{{table}}"
@@ -365,12 +329,9 @@ class LatexReport:
         self,
         image_path: str,
         width: float = 0.9,
-        position: str = "h",
         caption: str | None = None,
     ) -> Self:
-        r"""Add a figure with an image.
-
-        For more info on figures, see: https://www.overleaf.com/learn/latex/Inserting_Images
+        r"""Adds a figure to the report.
 
         Parameters
         ----------
@@ -378,32 +339,23 @@ class LatexReport:
             Path to the image file.
         width : float, optional
             Width specification for the image as ratio of the text width. Default is 0.9.
-        position : str, optional
-            LaTeX positioning parameter (e.g., 'h', 't', 'b'). Default is 'h'.
-
-            h: Will place the figure here approximately.
-            t: Position the figure at the top of the page.
-            b: Position the figure at the bottom of the page.
-            p: Put the figure in a special page, for floats only.
-            !: Override internal LaTeX parameters.
-            H: Place the figure at this precise location, pretty much like h!.
         caption : str, optional
             Caption text for the figure. Will be displayed below the image. Default is None.
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = LatexReport()
+        >>> report = Report()
         >>> report.add_figure("path_to_image")
         >>> report.add_figure("path_to_image", width=0.5)
         >>> report.add_figure("plot.png", caption="Results of the analysis")
         """
         # Build the figure environment
-        figure_parts = [rf"\begin{{figure}}[{position}] \centering ", rf"\includegraphics[width={width}\textwidth]{{{image_path}}} "]
+        figure_parts = [r"\begin{figure}[h] \centering ", rf"\includegraphics[width={width}\textwidth]{{{image_path}}} "]
 
         # Add optional caption
         if caption:
@@ -419,81 +371,55 @@ class LatexReport:
 
         return self
 
-    def add_itemize(self, items: Sequence[Any]) -> Self:
-        """Add a bulleted list using LaTeX itemize environment.
-
-        For more info on itemize, see: https://www.overleaf.com/learn/latex/Lists#The_itemize_environment_for_bulleted_(unordered)_lists
+    def add_list(self, items: Sequence[Any], style: Literal["bulleted", "numbered"] = "bulleted") -> Self:
+        """Add a list to the report, either bulleted or numbered.
 
         Parameters
         ----------
         items : Sequence[Any]
-            List of items to display as bullets. Can include nested lists for sub-items.
+            List of items to display.
+        style : Literal["bulleted", "numbered"], optional
+            Style of the list, either 'bulleted' for itemize or 'numbered' for enumerate. Default is 'bulleted'.
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = LatexReport()
-        >>> report.add_itemize(["Bullet 1", "Bullet 2", "Bullet 3"])
-        >>> report.add_itemize(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", "III"]]])
-
+        >>> report = Report()
+        >>> report.add_list(["Item 1", "Item 2", "Item 3"], style="bulleted")
+        >>> report.add_list(["First", "Second", "Third"], style="numbered")
         """
+        if style.lower() not in ["bulleted", "numbered"]:
+            raise ValueError(f"Invalid style '{style}'. Choose 'bulleted' or 'numbered'.")
 
-        def _build_itemize(item_list: list, depth: int = 0) -> str:
-            """Recursively build itemize environment for nested lists."""
-            result = r"\begin{itemize} "
+        def _build_list(item_list: list, depth: int = 0) -> str:
+            r"""Recursively build LaTeX environment for nested lists.
+
+            Parameters
+            ----------
+            item_list : list
+                List of items to convert to LaTeX. Items can be strings or nested lists.
+            depth : int, optional
+                Current nesting depth (used for recursion tracking). Default is 0.
+
+            Returns
+            -------
+            str
+                LaTeX string with \\begin{itemize}/\\begin{enumerate} environment.
+            """
+            result = r"\begin{itemize} " if style.lower() == "bulleted" else r"\begin{enumerate} "
             for item in item_list:
                 if isinstance(item, list):
-                    result += _build_itemize(item, depth + 1)
+                    result += _build_list(item, depth + 1)
                 else:
                     result += rf"\item {item} "
-            result += r"\end{itemize} "
+            result += r"\end{itemize} " if style.lower() == "bulleted" else r"\end{enumerate} "
             return result
 
-        self.content += _build_itemize(list(items))
-
-        # Add a newline for visual separation
-        self.content += "\n"
-
-        return self
-
-    def add_enumerate(self, items: Sequence[Any]) -> Self:
-        """Add a numbered list using LaTeX enumerate environment.
-
-        For more info on enumerate, see: https://www.overleaf.com/learn/latex/Lists#The_enumerate_environment_for_numbered_(ordered)_lists
-
-        Parameters
-        ----------
-        items : Sequence[Any]
-            List of items to display as numbered entries. Can include nested lists for sub-items.
-
-        Returns
-        -------
-        LatexReport
-            Returns self for method chaining.
-
-        Examples
-        --------
-        >>> report = LatexReport()
-        >>> report.add_enumerate(["Number 1", "Number 2", "Number 3"])
-        >>> report.add_enumerate(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", "III"]]])
-        """
-
-        def _build_enumerate(item_list: list, depth: int = 0) -> str:
-            """Recursively build enumerate environment for nested lists."""
-            result = r"\begin{enumerate} "
-            for item in item_list:
-                if isinstance(item, list):
-                    result += _build_enumerate(item, depth + 1)
-                else:
-                    result += rf"\item {item} "
-            result += r"\end{enumerate} "
-            return result
-
-        self.content += _build_enumerate(list(items))
+        self.content += _build_list(list(items))
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -501,9 +427,9 @@ class LatexReport:
         return self
 
     def add_newline(self, n: int = 1) -> Self:
-        """Add a newline command.
+        """Add one or more newlines to separate content.
 
-        For more info on newlines, see: https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes#Basic_formatting:_abstract,_paragraphs_and_newlines
+        Useful for adding vertical spacing between paragraphs, equations, or other elements.
 
         Parameters
         ----------
@@ -512,12 +438,12 @@ class LatexReport:
 
         Returns
         -------
-        LatexReport
+        Report
             Returns self for method chaining.
 
         Examples
         --------
-        >>> report = LatexReport()
+        >>> report = Report()
         >>> report.add_newline()
         """
         self.content += r"\newline" * n
@@ -566,29 +492,51 @@ class LatexReport:
             f"Lists:         {lists}",
             f"Content size:  {len(self.content)} characters",
             "=" * 60,
-            "Use .to_document() to generate the full LaTeX document.",
+            "Use .to_latex() to generate the full LaTeX document.",
+            "or use .to_word() to convert to a Word document.",
             "=" * 60,
         ]
 
         return "\n".join(lines)
 
-    def to_document(self) -> str:
+    def to_latex(self, path: str | Path | None = None, language: str = "en") -> str | None:
         """Generate a complete LaTeX document with proper preamble and structure.
 
         You could compile the output with pdflatex in for example Overleaf.
 
+        Parameters
+        ----------
+        path : str | Path | None, optional
+            The destination for the LaTeX document:
+            - str or Path: File path where the .tex file will be saved
+            - None: Return the document as a string (default)
+        language : str, optional
+            Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
+            Warning: only English is officially supported in Blueprints (default is "en" for English).
+
         Returns
         -------
-        str
-            Complete LaTeX document string including preamble, begin/end document,
-            and all content, ready for copy-pasting into a .tex file for example.
+        str | None
+            If path is None, returns the LaTeX document as a string.
+            If path is provided (str or Path), returns None after saving to file.
 
         Examples
         --------
-        >>> report = LatexReport(title="My Report")
-        >>> report.add_section("Introduction")
-        >>> report.add_text("Some text")
-        >>> latex_doc = report.to_document()
+        Get LaTeX as a string:
+
+        >>> report = Report(title="My Report")
+        >>> report.add_heading("Introduction")
+        >>> report.add_paragraph("Some text")
+        >>> latex_doc = report.to_latex()
+
+        Save directly to a file:
+
+        >>> report.to_latex("report.tex")
+
+        Save using pathlib.Path:
+
+        >>> from pathlib import Path
+        >>> report.to_latex(Path("report.tex"))
         """
         # Use provided title or fall back to instance title
         doc_title = self.title or ""
@@ -659,5 +607,91 @@ class LatexReport:
             r"\maketitle" + "\n"  # Generate the title
         )
 
-        # Combine preamble, content, and closing
-        return preamble + self.content + r"\end{document}"
+        latex = preamble + self.content + r"\end{document}"
+        if language != "en":
+            # Translate content to the specified language
+            from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
+
+            latex = LatexTranslator(original_text=latex, destination_language=language).text
+
+        # If path is provided, save to file and return None
+        if path is not None:
+            # Convert Path to str if needed
+            file_path = str(path) if isinstance(path, Path) else path
+            Path(file_path).write_text(latex, encoding="utf-8")
+            return None
+
+        # Return LaTeX string
+        return latex
+
+    def to_word(self, path: str | Path | BytesIO | None = None, language: str = "en") -> bytes | None:  # pragma: no cover
+        """Convert the LaTeX report to a Word document.
+
+        This method uses the ReportToWordConverter to convert the LaTeX content
+        of the report into a Word document format. The output can be saved to a file,
+        written to a BytesIO object, or returned as bytes.
+
+        Parameters
+        ----------
+        path : str | Path | BytesIO | None, optional
+            The destination for the Word document:
+            - str or Path: File path where the document will be saved
+            - BytesIO: Buffer to write the document to (in-memory)
+            - None: Return the document as bytes (default)
+        language : str, optional
+            Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
+            Warning: only English is officially supported in Blueprints (default is "en" for English).
+
+        Returns
+        -------
+        bytes | None
+            If path is None, returns the Word document as bytes.
+            If path is provided (str, Path, or BytesIO), returns None.
+
+        Examples
+        --------
+        Save to a file path:
+
+        >>> report = Report(title="My Report")
+        >>> report.add_heading("Introduction")
+        >>> report.add_paragraph("Some text")
+        >>> report.to_word("report.docx")  # Save to file
+
+        Save to a pathlib.Path:
+
+        >>> from pathlib import Path
+        >>> report.to_word(Path("report.docx"))
+
+        Write to a BytesIO object for in-memory processing:
+
+        >>> from io import BytesIO
+        >>> buffer = BytesIO()
+        >>> report.to_word(buffer)
+        >>> docx_bytes = buffer.getvalue()
+
+        Get bytes directly (useful for streaming, email attachments, etc.):
+
+        >>> docx_bytes = report.to_word()
+        >>> # Can now send as email attachment or stream over HTTP
+        """
+        from blueprints.utils._report_to_word import (  # noqa: PLC0415
+            _ReportToWordConverter,
+        )  # imported here as core does not have word module installed by default
+
+        latex_content = self.to_latex(language=language)
+        converter = _ReportToWordConverter(latex_content)
+        if converter.document:
+            if path is None:
+                # Return bytes directly
+                buffer = BytesIO()
+                converter.document.save(buffer)
+                buffer.seek(0)
+                return buffer.getvalue()
+            # Save to file path or BytesIO object
+            # Convert Path to str for compatibility with python-docx
+            if isinstance(path, Path):
+                converter.document.save(str(path))
+            else:
+                converter.document.save(path)
+            return None
+        return None
