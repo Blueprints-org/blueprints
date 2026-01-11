@@ -356,8 +356,11 @@ class Report:
         >>> report.add_figure("path_to_image", width=0.5)
         >>> report.add_figure("plot.png", caption="Results of the analysis")
         """
+        # Convert Windows backslashes to forward slashes for LaTeX compatibility
+        latex_image_path = image_path.replace("\\", "/")
+
         # Build the figure environment
-        figure_parts = [r"\begin{figure}[h] \centering ", rf"\includegraphics[width={width}\textwidth]{{{image_path}}} "]
+        figure_parts = [r"\begin{figure}[h] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
 
         # Add optional caption
         if caption:
