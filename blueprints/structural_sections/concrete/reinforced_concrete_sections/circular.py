@@ -12,7 +12,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.base i
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.circular import CircularCrossSectionPlotter
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import ReinforcementByQuantity
 from blueprints.structural_sections.concrete.stirrups import StirrupConfiguration
-from blueprints.structural_sections.cross_section_circle import CircularCrossSection
+from blueprints.structural_sections.geometric_profiles import CircularProfile
 from blueprints.type_alias import DEG, DIMENSIONLESS, MM, RATIO
 
 
@@ -32,7 +32,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
     def __init__(self, diameter: MM, concrete_material: ConcreteMaterial, cover: MM = DEFAULT_COVER) -> None:
         """Initialize the circular reinforced concrete section."""
         super().__init__(
-            cross_section=CircularCrossSection(
+            profile=CircularProfile(
                 diameter=diameter,
                 x=0,  # x=0 and y=0 to place the cross-section at the origin
                 y=0,
@@ -145,7 +145,7 @@ class CircularReinforcedCrossSection(ReinforcedCrossSection):
         radius = self.diameter / 2 - cover - max_stirrups_diameter - (diameter / 2)
 
         # create the circle using shapely's Point and buffer
-        circle = self.cross_section.centroid.buffer(radius, quad_segs=360, join_style="round")
+        circle = self.profile.centroid.buffer(radius, quad_segs=360, join_style="round")
 
         return rotate_linearring(linearring=circle.exterior, angle_degrees=start_angle)
 
