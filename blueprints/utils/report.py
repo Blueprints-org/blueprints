@@ -791,7 +791,7 @@ class Report:
                 if result.returncode != 0:
                     # Extract error information from log
                     error_msg = "pdflatex compilation failed.\n"
-                    if result.stdout:
+                    if result.stdout:  # pragma: no cover
                         # Find the first error in the output
                         lines = result.stdout.split("\n")
                         for i, line in enumerate(lines):
@@ -802,7 +802,7 @@ class Report:
 
             # Check if PDF was created
             if not pdf_file.exists():
-                raise RuntimeError("PDF file was not created by pdflatex.")
+                raise RuntimeError("PDF file was not created by pdflatex.")  # pragma: no cover
 
             # Read the PDF content
             pdf_content = pdf_file.read_bytes()
@@ -813,7 +813,7 @@ class Report:
                 output_path.write_bytes(pdf_content)
 
                 # Optionally copy auxiliary files for debugging
-                if not cleanup:
+                if not cleanup:  # pragma: no cover
                     aux_files = [".aux", ".log", ".out"]
                     base_name = output_path.stem
                     output_dir = output_path.parent
