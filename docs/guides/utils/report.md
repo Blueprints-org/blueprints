@@ -15,19 +15,19 @@ The `Report` class helps you build professional engineering reports with text, e
     report = Report(title="Design Verification")
     
     # Add content
-    report.add_section("Introduction")
-    report.add_text("This report verifies the tensile capacity of the steel member.")
+    report.add_heading("Introduction")
+    report.add_paragraph("This report verifies the tensile capacity of the steel member.")
     
-    report.add_section("Design Checks")
-    report.add_text("Unity check for tensile strength:", bold=True).add_newline()
+    report.add_heading("Design Checks")
+    report.add_paragraph("Unity check for tensile strength:", bold=True).add_newline()
     
     formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
     report.add_formula(formula, options="complete")
     
-    report.add_text("Result: Check PASSED", bold=True)
+    report.add_paragraph("Result: Check PASSED", bold=True)
     
-    report.add_section("Summary")
-    report.list([
+    report.add_heading("Summary")
+    report.add_list([
         "Applied force: 150 kN",
         "Resistance: 200 kN",
         "Utilization: 75%",
@@ -40,7 +40,7 @@ The `Report` class helps you build professional engineering reports with text, e
 
 ??? info "Tips"
 
-    - Use **method chaining** for cleaner code: `report.add_section(...).add_text(...).add_newline()`
+    - Use **method chaining** for cleaner code: `report.add_heading(...).add_paragraph(...).add_newline()`
     - Use raw strings (`r"..."`) for LaTeX commands to avoid escape issues
     - Call `.to_latex()` for a final Latex-formatted output
     - Call `.to_word()` to export directly to a Word document
