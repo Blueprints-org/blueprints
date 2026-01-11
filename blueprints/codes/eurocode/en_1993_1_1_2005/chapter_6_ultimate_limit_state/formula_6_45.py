@@ -58,8 +58,8 @@ class Form6Dot45ReducedYieldStrength(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"\rho": f"{self.rho:.3f}",
-                r"f_y": rf"{self.f_y:.3f} \ MPa",
+                r"\rho": f"{self.rho:.{n}f}",
+                r"f_y": rf"{self.f_y:.{n}f} \ MPa",
             },
             True,
         )
