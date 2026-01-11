@@ -79,7 +79,7 @@ print(latex_code)
 
 ```python exec="on" session="report_quick_start" source="tabbed-left" result="console"
 # Save the complete LaTeX document to your local disk (ready for Overleaf or pdflatex)
-latex_document = report.to_latex('report.tex')
+report.to_latex('report.tex')
 ```
 
 ### Export to Word
