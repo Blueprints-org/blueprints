@@ -1,8 +1,22 @@
 """Report builder for LaTeX documents.
 
-Developer notes: The features in this class are designed to create LaTeX reports that can be compiled with pdflatex.
-The LaTeX styling is made to match with the Word document report styling as closely as possible. Changes here
-should ideally be reflected in the Word document converter in report_to_word.py.
+This module provides functionality for creating structured LaTeX reports programmatically.
+The Report class offers a fluent API for building documents with headings, paragraphs,
+equations, tables, figures, and lists. Reports can be exported to LaTeX format for
+compilation with pdflatex or converted directly to Word documents.
+
+Key Features:
+    - Fluent API with method chaining for easy document construction
+    - Support for mathematical equations using LaTeX syntax
+    - Integration with Blueprints Formula objects
+    - Table and figure insertion with customizable formatting
+    - Nested bulleted and numbered lists
+    - Export to both LaTeX (.tex) and Word (.docx) formats
+    - Multi-language support through translation
+
+Developer notes:
+    The LaTeX styling is designed to match Word document styling as closely as possible.
+    Changes to LaTeX output should be reflected in _report_to_word.py converter.
 
 """
 
@@ -49,6 +63,7 @@ class Report:
     ... )
     >>> report.add_figure(r"tomato.png", width=0.2)  # needs the tomato.png file in working directory
     >>> report.add_list(["First item", "Second item"], style="numbered")
+    >>> report.add_list(["Layer one", ["Layer two", ["Layer three", ["Layer four"]]]], style="numbered")
     >>> report.add_list(["Bullet one", "Bullet two"], style="bulleted")
     >>> latex_document = report.to_latex()
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
@@ -381,7 +396,20 @@ class Report:
             raise ValueError(f"Invalid style '{style}'. Choose 'bulleted' or 'numbered'.")
 
         def _build_list(item_list: list, depth: int = 0) -> str:
-            """Recursively build environment for nested lists."""
+            r"""Recursively build LaTeX environment for nested lists.
+
+            Parameters
+            ----------
+            item_list : list
+                List of items to convert to LaTeX. Items can be strings or nested lists.
+            depth : int, optional
+                Current nesting depth (used for recursion tracking). Default is 0.
+
+            Returns
+            -------
+            str
+                LaTeX string with \\begin{itemize}/\\begin{enumerate} environment.
+            """
             result = r"\begin{itemize} " if style.lower() == "bulleted" else r"\begin{enumerate} "
             for item in item_list:
                 if isinstance(item, list):
@@ -399,7 +427,9 @@ class Report:
         return self
 
     def add_newline(self, n: int = 1) -> Self:
-        """Add a newline, to separate content. Useful after paragraphs or equations. n specifies how many newlines to add.
+        """Add one or more newlines to separate content.
+
+        Useful for adding vertical spacing between paragraphs, equations, or other elements.
 
         Parameters
         ----------

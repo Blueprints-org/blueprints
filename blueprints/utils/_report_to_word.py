@@ -762,7 +762,7 @@ class _ReportToWordConverter:
 
         Returns
         -------
-            A list of dictionaries with 'item', 'level', and 'number' keys.
+            A list of dictionaries with 'content', 'level', and 'index' keys.
         """
         items_with_levels: list[dict[str, str | int]] = []
 
@@ -837,6 +837,10 @@ class _ReportToWordConverter:
         Args:
             number: The number of the item in the list.
             level: The nesting level (0-based).
+
+        Returns
+        -------
+            Formatted string for the list item number (e.g., "1.", "(a)", "i.", "A.").
         """
         # Define numbering formats for levels
         if level > 0 and number > 26:
