@@ -11,21 +11,21 @@ from blueprints.utils.report import Report
 
 @pytest.fixture
 def fixture_report() -> Report:
-    """Fixture for testing LatexReport."""
+    """Fixture for testing Report."""
     return Report(title="Test Report")
 
 
-class TestLatexReport:
-    """Tests for LatexReport class."""
+class TestReport:
+    """Tests for Report class."""
 
     def test_initialization_without_title(self) -> None:
-        """Test that LatexReport initializes with empty content."""
+        """Test that Report initializes with empty content."""
         report = Report()
         assert report.content == ""
         assert report.title is None
 
     def test_initialization_with_title(self) -> None:
-        """Test that LatexReport initializes with title."""
+        """Test that Report initializes with title."""
         report = Report(title="Test Title")
         assert report.content == ""
         assert report.title == "Test Title"
