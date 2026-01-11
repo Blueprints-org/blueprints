@@ -120,6 +120,12 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+all = [
+    { name = "googletrans" },
+    { name = "latex2mathml" },
+    { name = "mathml2omml" },
+    { name = "python-docx" },
+]
 translate = [
     { name = "googletrans" },
 ]
@@ -199,16 +205,20 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "googletrans", marker = "extra == 'all'", specifier = ">=4.0.2" },
     { name = "googletrans", marker = "extra == 'translate'", specifier = ">=4.0.2" },
+    { name = "latex2mathml", marker = "extra == 'all'", specifier = ">=3.78.1" },
     { name = "latex2mathml", marker = "extra == 'word'", specifier = ">=3.78.1" },
+    { name = "mathml2omml", marker = "extra == 'all'", specifier = ">=0.0.2" },
     { name = "mathml2omml", marker = "extra == 'word'", specifier = ">=0.0.2" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "numpy", specifier = ">=2.3.5" },
+    { name = "python-docx", marker = "extra == 'all'", specifier = ">=1.2.0" },
     { name = "python-docx", marker = "extra == 'word'", specifier = ">=1.2.0" },
     { name = "sectionproperties", specifier = ">=3.10.0" },
     { name = "shapely", specifier = ">=2.1.2" },
 ]
-provides-extras = ["translate", "word"]
+provides-extras = ["translate", "word", "all"]
 
 [package.metadata.requires-dev]
 cli = [
