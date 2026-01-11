@@ -761,7 +761,8 @@ class Report:
             )
         except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as e:
             raise RuntimeError(
-                "pdflatex is not installed or not found in PATH. Please install a LaTeX distribution (e.g., TeX Live, MiKTeX) that includes pdflatex."
+                "pdflatex is not installed or not found in PATH. Please install a LaTeX distribution (e.g., MiKTeX, TeX Live) that includes pdflatex."
+                "Go to https://miktex.org/download or https://www.tug.org/texlive/ for more information."
             ) from e
 
         # Generate LaTeX content
