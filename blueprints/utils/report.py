@@ -766,6 +766,7 @@ class Report:
 
         # Generate LaTeX content
         latex_content = self.to_latex(language=language)
+        assert latex_content is not None  # to_latex returns str when path is None
 
         # Create temporary directory for compilation
         with tempfile.TemporaryDirectory() as tmpdir:
