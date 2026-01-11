@@ -502,3 +502,15 @@ class TestLatexReport:
             content = Path(file_path).read_text(encoding="utf-8")
             assert r"\documentclass" in content
             assert r"\begin{document}" in content
+
+    def test_add_heading_invalid_level(self) -> None:
+        """Test that add_heading raises ValueError for invalid level."""
+        report = Report(title="Test Report")
+        with pytest.raises(ValueError, match="Invalid heading level"):
+            report.add_heading("Invalid", level=4)
+
+    def test_add_list_invalid_style(self) -> None:
+        """Test that add_list raises ValueError for invalid style."""
+        report = Report(title="Test Report")
+        with pytest.raises(ValueError, match="Invalid style"):
+            report.add_list(["Item 1", "Item 2"], style="invalid")
