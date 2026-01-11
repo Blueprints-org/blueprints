@@ -12,7 +12,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form6Dot44CombinedCompressionBendingClass4CrossSections(ComparisonFormula):
-    r"""Class representing formula 6.44 for Class 4 cross-sections."""
+    r"""Class representing formula 6.44 for cross-sections of class 4."""
 
     label = "6.44"
     source_document = EN_1993_1_1_2005
@@ -105,7 +105,6 @@ class Form6Dot44CombinedCompressionBendingClass4CrossSections(ComparisonFormula)
     def _evaluate_rhs(*_args, **_kwargs) -> float:
         """Evaluates the right-hand side of the comparison. see __init__ for details."""
         return 1.0
-
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.44."""
