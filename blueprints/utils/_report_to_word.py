@@ -68,8 +68,8 @@ class _ReportToWordConverter:
     >>> from blueprints.utils.report import Report
     >>> report = Report("Testing Title")
     >>> report.add_heading("Testing Section")
-    >>> report.add_heading("Testing Subsection", level=1)
-    >>> report.add_heading("Testing Subsubsection", level=2)
+    >>> report.add_heading("Testing Subsection", level=2)
+    >>> report.add_heading("Testing Subsubsection", level=3)
     >>> report.add_paragraph("Bold and", bold=True).add_paragraph(" normal text.").add_newline(n=6)
     >>> report.add_paragraph("And Italic text.", italic=True).add_paragraph(" And also bold and italic.", bold=True, italic=True).add_newline()
     >>> report.add_paragraph("Here is an inline equation: $E=mc^2$ within the text.").add_newline()
@@ -85,7 +85,7 @@ class _ReportToWordConverter:
     ...     rows=[["Row 1 Col 1", "Row 1 Col 2 with inline math $a^2 + b^2 = c^2$", "Row 1 Col 3"], ["Row 2 Col 1", "Row 2 Col 2", "Row 2 Col 3"]],
     ... )
     >>> report.add_heading("Another Section")
-    >>> report.add_heading("Another Subsection")
+    >>> report.add_heading("Another Subsection", level=2)
     >>> report.add_heading("Yet another Subsection", level=2)
     >>> report.add_heading("Yet another Subsubsection", level=3)
     >>> report.add_heading("Yet another Subsubsection v2", level=3)
