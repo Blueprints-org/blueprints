@@ -58,6 +58,7 @@ class TestForm5Dot17CompressionCheckZProfilesClass1And2:
                 r"CHECK \to \frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1 \to \frac{12.000}{200.000} \leq 0.1 \to OK",
             ),
             ("short", r"CHECK \to OK"),
+            ("complete_with_units", r"CHECK \to \frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1 \to \frac{12.000 \ kN}{200.000 \ kN} \leq 0.1 \to OK"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

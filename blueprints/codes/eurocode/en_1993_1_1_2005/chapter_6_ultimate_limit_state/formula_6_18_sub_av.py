@@ -338,8 +338,8 @@ class Form6Dot18SubDWeldedIHandBoxSection(Formula):
             [$\eta$] See EN 1993-1-5. Note, $eta$ may be conservatively taken equal to 1.0.
         """
         super().__init__()
-        self.hw_list = hw_list
-        self.tw_list = tw_list
+        self.hw_list: list[MM] = hw_list
+        self.tw_list: list[MM] = tw_list
         self.eta = eta
 
     @staticmethod
@@ -402,8 +402,8 @@ class Form6Dot18SubEWeldedIHandBoxSection(Formula):
         """
         super().__init__()
         self.a = a
-        self.hw_list = hw_list
-        self.tw_list = tw_list
+        self.hw_list: list[MM] = hw_list
+        self.tw_list: list[MM] = tw_list
 
     @staticmethod
     def _evaluate(

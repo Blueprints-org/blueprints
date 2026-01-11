@@ -93,7 +93,7 @@ class Formula(float, ABC):
 
     @abstractmethod
     def latex(self, n: int = 3) -> LatexFormula:
-        """Abstract method for the latex representation of the formula.
+        """Abstract method for the latex representation of the formula, given in math mode.
 
         Parameters
         ----------
@@ -103,7 +103,7 @@ class Formula(float, ABC):
         Returns
         -------
         LatexFormula
-            The latex representation of the formula.
+            The latex representation of the formula, given in math mode.
             This is an abstract method and must be implemented in all subclasses.
         """
 

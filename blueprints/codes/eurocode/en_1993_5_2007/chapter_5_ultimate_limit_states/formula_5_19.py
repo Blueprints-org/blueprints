@@ -48,7 +48,7 @@ class Form5Dot19CompressionCheckClass3Profiles(ComparisonFormula):
         return 0.1
 
     @staticmethod
-    def _evaluate(
+    def _evaluate(  # ty: ignore[invalid-method-override]
         n_ed: KN,
         n_pl_rd: KN,
     ) -> bool:

@@ -33,7 +33,7 @@ class Form6Dot17NominalWebWidth(Formula):
         """
         super().__init__()
         self.b_w = b_w
-        self.diameters = diameters
+        self.diameters: list[MM] = diameters
 
     @staticmethod
     def _evaluate(

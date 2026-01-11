@@ -39,11 +39,11 @@ class Form5Dot44PrestressLoss(Formula):
             [$E_{cm}(t)$] 0.1% proof stress of prestressing steel [$list[MPa]$].
         """
         super().__init__()
-        self.a_p = a_p
-        self.e_p = e_p
-        self.j = j
-        self.delta_sigma_c_t = delta_sigma_c_t
-        self.e_cm_t = e_cm_t
+        self.a_p: MM2 = a_p
+        self.e_p: MPA = e_p
+        self.j: list[AMOUNT] = j
+        self.delta_sigma_c_t: list[MPA] = delta_sigma_c_t
+        self.e_cm_t: list[MPA] = e_cm_t
 
     @staticmethod
     def _evaluate(

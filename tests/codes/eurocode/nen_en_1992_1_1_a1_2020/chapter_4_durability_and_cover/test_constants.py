@@ -30,8 +30,8 @@ class TestNominalConcreteCoverConstants2020A1:
     def test_instantiation_with_custom_cover_increase_uneven_surfaces(self) -> None:
         """Test that the class cannot be instantiated with custom value for the cover increase for uneven surfaces."""
         with pytest.raises(TypeError, match=r".* got an unexpected keyword argument .*"):
-            _ = NominalConcreteCoverConstants(  # type: ignore[call-arg]
-                COVER_INCREASE_FOR_UNEVEN_SURFACE=10,
+            _ = NominalConcreteCoverConstants(
+                COVER_INCREASE_FOR_UNEVEN_SURFACE=10,  # type: ignore[unknown-argument]
             )
 
     def test_instantiation_with_custom_cover_increase_abraison_class(self) -> None:
