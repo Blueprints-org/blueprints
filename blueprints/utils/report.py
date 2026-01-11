@@ -704,7 +704,7 @@ class Report:
 
         This method generates LaTeX content using to_latex(), compiles it with pdflatex,
         and returns or saves the resulting PDF. Requires pdflatex to be installed and
-        available in the system PATH.
+        available in the system PATH. Can be downloaded from a LaTeX distribution such as TeX Live or MiKTeX.
 
         Parameters
         ----------
