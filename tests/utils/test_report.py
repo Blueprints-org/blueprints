@@ -564,14 +564,14 @@ class TestReport:
         with pytest.raises(ValueError, match="Invalid style"):
             report.add_list(["Item 1", "Item 2"], style="invalid")
 
-    def test_to_pdf_pdflatex_not_available(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_pdflatex_not_available(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf raises RuntimeError when pdflatex is not available."""
         mock_run("not_available")
 
         with pytest.raises(RuntimeError, match="pdflatex is not installed"):
             fixture_report.to_pdf()
 
-    def test_to_pdf_returns_bytes_when_path_is_none(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_returns_bytes_when_path_is_none(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf() returns bytes when path is None."""
         mock_run("success")
 
@@ -583,7 +583,7 @@ class TestReport:
         assert len(result) > 0
         assert result.startswith(b"%PDF")
 
-    def test_to_pdf_saves_to_file_with_string_path(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_saves_to_file_with_string_path(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf() saves to file when given a string path."""
         mock_run("success")
 
@@ -597,7 +597,7 @@ class TestReport:
             assert result is None
             assert Path(output_path).exists()
 
-    def test_to_pdf_saves_to_file_with_pathlib_path(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_saves_to_file_with_pathlib_path(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf() saves to file when given a Path object."""
         mock_run("success")
 
@@ -611,7 +611,7 @@ class TestReport:
             assert result is None
             assert output_path.exists()
 
-    def test_to_pdf_compilation_fails(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_compilation_fails(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf raises RuntimeError when pdflatex compilation fails."""
         mock_run("fail_compilation")
 
@@ -620,7 +620,7 @@ class TestReport:
         with pytest.raises(RuntimeError, match="pdflatex compilation failed"):
             fixture_report.to_pdf()
 
-    def test_to_pdf_with_language_parameter(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_with_language_parameter(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf() accepts language parameter."""
         mock_run("success")
 
@@ -630,7 +630,7 @@ class TestReport:
 
         assert isinstance(result, bytes)
 
-    def test_to_pdf_cleanup_true_removes_temp_files(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_cleanup_true_removes_temp_files(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf() with cleanup=True removes temporary files."""
         mock_run("success")
 
@@ -640,7 +640,7 @@ class TestReport:
         result = fixture_report.to_pdf(cleanup=True)
         assert isinstance(result, bytes)
 
-    def test_to_pdf_cleanup_false_preserves_temp_files(self, fixture_report: Report, mock_run: pytest.FixtureRequest) -> None:
+    def test_to_pdf_cleanup_false_preserves_temp_files(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
         """Test that to_pdf() with cleanup=False preserves temporary files."""
         mock_run("success")
 
