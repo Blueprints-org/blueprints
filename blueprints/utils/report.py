@@ -3,7 +3,7 @@
 This module provides functionality for creating structured LaTeX reports programmatically.
 The Report class offers a fluent API for building documents with headings, paragraphs,
 equations, tables, figures, and lists. Reports can be exported to LaTeX format for
-compilation with pdflatex or converted directly to Word documents.
+compilation with pdflatex, compiled directly to PDF, or converted to Word documents.
 
 Key Features:
     - Fluent API with method chaining for easy document construction
@@ -11,7 +11,7 @@ Key Features:
     - Integration with Blueprints Formula objects
     - Table and figure insertion with customizable formatting
     - Nested bulleted and numbered lists
-    - Export to both LaTeX (.tex) and Word (.docx) formats
+    - Export to LaTeX (.tex), PDF (.pdf), and Word (.docx) formats
     - Multi-language support through translation
 
 Developer notes:
@@ -20,6 +20,8 @@ Developer notes:
 
 """
 
+import subprocess
+import tempfile
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from io import BytesIO
@@ -492,8 +494,9 @@ class Report:
             f"Lists:         {lists}",
             f"Content size:  {len(self.content)} characters",
             "=" * 60,
-            "Use .to_latex() to generate the full LaTeX document.",
-            "or use .to_word() to convert to a Word document.",
+            "Use .to_latex() to generate the full LaTeX document,",
+            ".to_pdf() to compile to PDF (requires pdflatex),",
+            "or .to_word() to convert to a Word document.",
             "=" * 60,
         ]
 
@@ -695,3 +698,130 @@ class Report:
                 converter.document.save(path)
             return None
         return None
+
+    def to_pdf(self, path: str | Path | None = None, language: str = "en", cleanup: bool = True) -> bytes | None:  # noqa: C901
+        """Generate a PDF document by compiling LaTeX with pdflatex.
+
+        This method generates LaTeX content using to_latex(), compiles it with pdflatex,
+        and returns or saves the resulting PDF. Requires pdflatex to be installed and
+        available in the system PATH.
+
+        Parameters
+        ----------
+        path : str | Path | None, optional
+            The destination for the PDF document:
+            - str or Path: File path where the .pdf file will be saved
+            - None: Return the PDF as bytes (default)
+        language : str, optional
+            Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
+            Warning: only English is officially supported in Blueprints (default is "en" for English).
+        cleanup : bool, optional
+            Whether to remove temporary LaTeX files after compilation. Default is True.
+
+        Returns
+        -------
+        bytes | None
+            If path is None, returns the PDF document as bytes.
+            If path is provided (str or Path), returns None after saving to file.
+
+        Raises
+        ------
+        RuntimeError
+            If pdflatex is not found or compilation fails.
+
+        Examples
+        --------
+        Get PDF as bytes:
+
+        >>> report = Report(title="My Report")
+        >>> report.add_heading("Introduction")
+        >>> report.add_paragraph("Some text")
+        >>> pdf_bytes = report.to_pdf()
+
+        Save directly to a file:
+
+        >>> report.to_pdf("report.pdf")
+
+        Save using pathlib.Path:
+
+        >>> from pathlib import Path
+        >>> report.to_pdf(Path("report.pdf"))
+
+        Keep temporary LaTeX files for debugging:
+
+        >>> report.to_pdf("report.pdf", cleanup=False)
+        """
+        # Check if pdflatex is available
+        try:
+            subprocess.run(
+                ["pdflatex", "--version"],
+                capture_output=True,
+                check=True,
+                timeout=10,
+            )
+        except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as e:
+            raise RuntimeError(
+                "pdflatex is not installed or not found in PATH. Please install a LaTeX distribution (e.g., TeX Live, MiKTeX) that includes pdflatex."
+            ) from e
+
+        # Generate LaTeX content
+        latex_content = self.to_latex(language=language)
+
+        # Create temporary directory for compilation
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            tex_file = tmpdir_path / "report.tex"
+            pdf_file = tmpdir_path / "report.pdf"
+
+            # Write LaTeX content to temporary file
+            tex_file.write_text(latex_content, encoding="utf-8")
+
+            # Run pdflatex twice for proper references and table of contents
+            for _ in range(2):
+                result = subprocess.run(
+                    ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", str(tex_file)],
+                    check=False,
+                    cwd=tmpdir,
+                    capture_output=True,
+                    text=True,
+                    timeout=60,
+                )
+
+                if result.returncode != 0:
+                    # Extract error information from log
+                    error_msg = "pdflatex compilation failed.\n"
+                    if result.stdout:
+                        # Find the first error in the output
+                        lines = result.stdout.split("\n")
+                        for i, line in enumerate(lines):
+                            if line.startswith("!"):
+                                error_msg += "\n".join(lines[i : i + 5])
+                                break
+                    raise RuntimeError(error_msg)
+
+            # Check if PDF was created
+            if not pdf_file.exists():
+                raise RuntimeError("PDF file was not created by pdflatex.")
+
+            # Read the PDF content
+            pdf_content = pdf_file.read_bytes()
+
+            # If path is provided, save to file
+            if path is not None:
+                output_path = Path(path) if isinstance(path, str) else path
+                output_path.write_bytes(pdf_content)
+
+                # Optionally copy auxiliary files for debugging
+                if not cleanup:
+                    aux_files = [".aux", ".log", ".out"]
+                    base_name = output_path.stem
+                    output_dir = output_path.parent
+                    for ext in aux_files:
+                        aux_file = tmpdir_path / f"report{ext}"
+                        if aux_file.exists():
+                            (output_dir / f"{base_name}{ext}").write_bytes(aux_file.read_bytes())
+
+                return None
+
+            # Return PDF as bytes
+            return pdf_content
