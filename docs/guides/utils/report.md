@@ -161,8 +161,8 @@ from blueprints.utils.report import Report
 report = Report(title="My report")
 
 report.add_heading("Introduction")
-report.add_subsection("Background")
-report.add_subsubsection("Technical Details")
+report.add_heading("Background", level=2)
+report.add_heading("Technical Details", level=3)
 
 print(report.to_latex())
 ```
