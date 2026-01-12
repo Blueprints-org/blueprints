@@ -151,7 +151,7 @@ class Profile(ABC):
         self,
         geometric: bool = True,
         plastic: bool = True,
-        warping: bool = True,
+        warping: bool = False,
     ) -> SectionProperties:
         """Calculate and return the section properties of the profile.
 
