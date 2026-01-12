@@ -9,8 +9,8 @@ VENV    		:= $(UV) venv --python $(PYTHON_VERSION)
 ALL    			:= --all-groups
 TESTS 			:= --group test
 NO_TESTS 		:= --no-group test
-DEV 		    := --check
-NO_DEV		  	:= --no-check
+DEV 		    := --dev
+NO_DEV		  	:= --no-dev
 DOCS 			:= --group docs
 NO_DOCS  		:= --no-group docs
 SYNC			:= $(UV) sync --locked
@@ -41,7 +41,7 @@ install:                       ## Create venv and sync all dependencies
 .PHONY: ci-install
 ci-install:                    ## Sync dependencies for CI/CD tests
 
-	$(SYNC) $(NO_DEV)
+	$(SYNC)
 
 #─────────────────────────────────────────────────────────────────────────────
 # Code quality targets

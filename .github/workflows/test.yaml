@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install CI/CD dependencies (excluding dev dependencies)
+      - name: Install CI/CD dependencies
         run: make ci-install
 
       # Run the tests before the linting and formatting checks to ensure that dev dependencies are not required for the tests.
