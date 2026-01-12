@@ -88,7 +88,7 @@ pre-commit run --all-files
 
 ## Building Documentation
 
-`blueprints` uses MkDocs with Material theme for documentation. The documentation is automatically built and deployed to [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/), but you can build it locally for development and testing.
+`blueprints` uses MkDocs with Material theme for documentation. The documentation is automatically built and deployed to [blueprints.readthedocs.io](https://blueprints.readthedocs.io), but you can build it locally for development and testing.
 
 ### Install Documentation Dependencies
 
