@@ -75,7 +75,7 @@ In one single command! Simple as that. All checks passed? then you are good to g
 
 ### Documentation
 
-For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/latest/contribute/cli/).
+For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/latest/guides/contribute/cli/).
 
 ## Quick Start
 

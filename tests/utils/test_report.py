@@ -1,12 +1,61 @@
 """Tests for the Report class."""
 
+import subprocess
 import tempfile
+from collections.abc import Callable
 from pathlib import Path
 
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
 from blueprints.utils.report import Report
+
+
+@pytest.fixture
+def mock_run(monkeypatch: pytest.MonkeyPatch) -> Callable[[str], None]:  # noqa: C901
+    """Fixture for mocking subprocess.run with different behaviors."""
+
+    def _mock_run(behavior: str = "success") -> None:  # noqa: C901
+        """
+        Create a mock_run function based on the specified behavior.
+
+        Args:
+            behavior: Type of mock behavior. Options are:
+                - "not_available": Raise FileNotFoundError
+                - "success": Return successful completion and create mock PDF
+                - "fail_compilation": Succeed on version check, fail on compilation
+        """
+        if behavior == "not_available":
+
+            def mock_func(*_args: object, **_kwargs: object) -> subprocess.CompletedProcess:  # type: ignore[type-arg]
+                raise FileNotFoundError("pdflatex not found")
+        elif behavior == "success":
+
+            def mock_func(*_args: object, **kwargs: object) -> subprocess.CompletedProcess:  # type: ignore[type-arg]
+                if kwargs.get("capture_output") and kwargs.get("check"):
+                    # This is the version check call
+                    return subprocess.CompletedProcess(args=[], returncode=0, stdout=b"pdfTeX 3.14159265-2.6-1.40.21")
+                # This is the pdflatex compilation call - create the mock PDF
+                if "cwd" in kwargs:
+                    pdf_path = Path(kwargs["cwd"]) / "report.pdf"  # type: ignore[arg-type]
+                    pdf_path.write_bytes(b"%PDF-1.4 mock content")
+                return subprocess.CompletedProcess(args=[], returncode=0)
+        elif behavior == "fail_compilation":
+            call_count = [0]
+
+            def mock_func(*_args: object, **kwargs: object) -> subprocess.CompletedProcess:  # type: ignore[type-arg]
+                call_count[0] += 1
+                if call_count[0] == 1 and kwargs.get("capture_output") and kwargs.get("check"):
+                    return subprocess.CompletedProcess(args=[], returncode=0, stdout=b"pdfTeX 3.14159265")
+                return subprocess.CompletedProcess(args=[], returncode=1, stderr=b"LaTeX error")
+        else:
+
+            def mock_func(*_args: object, **_kwargs: object) -> subprocess.CompletedProcess:  # type: ignore[type-arg]
+                return subprocess.CompletedProcess(args=[], returncode=0)
+
+        monkeypatch.setattr(subprocess, "run", mock_func)
+
+    return _mock_run
 
 
 @pytest.fixture
@@ -514,3 +563,88 @@ class TestReport:
         report = Report(title="Test Report")
         with pytest.raises(ValueError, match="Invalid style"):
             report.add_list(["Item 1", "Item 2"], style="invalid")
+
+    def test_to_pdf_pdflatex_not_available(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf raises RuntimeError when pdflatex is not available."""
+        mock_run("not_available")
+
+        with pytest.raises(RuntimeError, match="pdflatex is not installed"):
+            fixture_report.to_pdf()
+
+    def test_to_pdf_returns_bytes_when_path_is_none(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf() returns bytes when path is None."""
+        mock_run("success")
+
+        fixture_report.add_heading("Test")
+
+        result = fixture_report.to_pdf()
+
+        assert isinstance(result, bytes)
+        assert len(result) > 0
+        assert result.startswith(b"%PDF")
+
+    def test_to_pdf_saves_to_file_with_string_path(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf() saves to file when given a string path."""
+        mock_run("success")
+
+        fixture_report.add_heading("Test")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = str(Path(tmpdir) / "output.pdf")
+
+            result = fixture_report.to_pdf(output_path)
+
+            assert result is None
+            assert Path(output_path).exists()
+
+    def test_to_pdf_saves_to_file_with_pathlib_path(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf() saves to file when given a Path object."""
+        mock_run("success")
+
+        fixture_report.add_heading("Test")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "output.pdf"
+
+            result = fixture_report.to_pdf(output_path)
+
+            assert result is None
+            assert output_path.exists()
+
+    def test_to_pdf_compilation_fails(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf raises RuntimeError when pdflatex compilation fails."""
+        mock_run("fail_compilation")
+
+        fixture_report.add_heading("Test")
+
+        with pytest.raises(RuntimeError, match="pdflatex compilation failed"):
+            fixture_report.to_pdf()
+
+    def test_to_pdf_with_language_parameter(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf() accepts language parameter."""
+        mock_run("success")
+
+        fixture_report.add_heading("Test")
+
+        result = fixture_report.to_pdf(language="zh")
+
+        assert isinstance(result, bytes)
+
+    def test_to_pdf_cleanup_true_removes_temp_files(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf() with cleanup=True removes temporary files."""
+        mock_run("success")
+
+        fixture_report.add_heading("Test")
+
+        # With cleanup=True (default), temp directory is removed automatically by context manager
+        result = fixture_report.to_pdf(cleanup=True)
+        assert isinstance(result, bytes)
+
+    def test_to_pdf_cleanup_false_preserves_temp_files(self, fixture_report: Report, mock_run: Callable[[str], None]) -> None:
+        """Test that to_pdf() with cleanup=False preserves temporary files."""
+        mock_run("success")
+
+        fixture_report.add_heading("Test")
+
+        result = fixture_report.to_pdf(cleanup=False)
+        assert isinstance(result, bytes)
