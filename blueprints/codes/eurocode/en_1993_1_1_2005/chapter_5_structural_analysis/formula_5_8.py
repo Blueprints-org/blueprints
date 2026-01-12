@@ -63,7 +63,7 @@ class Form5Dot8CheckSlenderness(ComparisonFormula):
         return self.lhs / self.rhs
 
     @staticmethod
-    def _evaluate(
+    def _evaluate(  # ty: ignore[invalid-method-override]
         lambda_bar: DIMENSIONLESS,
         a: MM2,
         f_y: MPA,
