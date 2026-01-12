@@ -1,0 +1,41 @@
+"""Module containing the class definition for a steel cross-section."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections._profile import Profile
+from blueprints.type_alias import KG_M
+from blueprints.unit_conversion import MM2_TO_M2
+
+
+@dataclass(frozen=True, kw_only=True)
+class SteelCrossSection:
+    """
+    Representation of a steel cross-section for any given profile and material.
+
+    Parameters
+    ----------
+    profile : Profile
+        The profile. This can be a predefined profile or a generic profile.
+    material : SteelMaterial
+        The material type of the steel.
+    """
+
+    profile: Profile
+    """The profile. This can be a predefined profile or a generic profile."""
+    material: SteelMaterial
+    """The material type of the steel."""
+
+    @property
+    def weight_per_meter(self) -> KG_M:
+        """
+        Calculate the weight per meter of the steel cross-section.
+
+        Returns
+        -------
+        KG_M
+            The weight per meter of the steel cross-section.
+        """
+        return self.material.density * (self.profile.area * MM2_TO_M2)
