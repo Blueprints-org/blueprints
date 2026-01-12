@@ -1,9 +1,9 @@
 """Formula 6.19 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 

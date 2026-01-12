@@ -1,9 +1,9 @@
 """Formula 7.4 from EN 1995-1-1:2004."""
 
 from blueprints.codes.eurocode.en_1995_1_1_2004 import EN_1995_1_1_2004
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, HZ, M_NS2
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 

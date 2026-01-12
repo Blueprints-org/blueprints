@@ -25,8 +25,8 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.t
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_4n import (
     Table4Dot4nMinimumCoverDurabilityReinforcementSteel,
 )
-from blueprints.codes.latex_formula import latex_max_curly_brackets
 from blueprints.type_alias import MM
+from blueprints.utils.latex_formula import latex_max_curly_brackets
 
 
 @dataclass(frozen=True)

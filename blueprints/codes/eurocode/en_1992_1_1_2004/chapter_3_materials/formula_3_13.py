@@ -3,9 +3,9 @@
 import numpy as np
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DAYS, DIMENSIONLESS
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula
 
 
 class Form3Dot13CoefficientTimeAutogeneShrinkage(Formula):

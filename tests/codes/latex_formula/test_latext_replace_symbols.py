@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.latex_formula import latex_replace_symbols
+from blueprints.utils.latex_formula import latex_replace_symbols
 
 
 # Success tests using pytest

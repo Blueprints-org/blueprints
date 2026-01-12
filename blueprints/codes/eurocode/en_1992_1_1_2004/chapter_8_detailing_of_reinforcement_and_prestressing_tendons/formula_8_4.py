@@ -4,9 +4,9 @@ from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_5 import (
     Form8Dot5ProductAlphas235,
 )
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
 from blueprints.type_alias import MM, RATIO
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_max_curly_brackets
 from blueprints.validations import raise_if_negative
 
 

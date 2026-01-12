@@ -6,8 +6,8 @@ from typing import Any
 
 import pytest
 
-from blueprints.codes.formula import ComparisonFormula, DoubleComparisonFormula, Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.utils.formula import ComparisonFormula, DoubleComparisonFormula, Formula
+from blueprints.utils.latex_formula import LatexFormula
 
 
 class FormulaTest(Formula):

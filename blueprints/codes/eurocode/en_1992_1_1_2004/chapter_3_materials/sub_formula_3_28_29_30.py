@@ -1,9 +1,9 @@
 """Sub-formula 3.28, 3.29 and 3.30 from EN 1992-1-1:2004: Chapter 3 - Materials."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula
 
 
 class SubForm3Dot28And29And30Mu(Formula):

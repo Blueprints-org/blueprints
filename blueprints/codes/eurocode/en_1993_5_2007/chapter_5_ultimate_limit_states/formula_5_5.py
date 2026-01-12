@@ -3,10 +3,10 @@
 import numpy as np
 
 from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction
 from blueprints.type_alias import DIMENSIONLESS, KN, MM2, MPA
 from blueprints.unit_conversion import N_TO_KN
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_fraction
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 

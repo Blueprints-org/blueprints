@@ -1,9 +1,9 @@
 """Formula 5.18 from EN 1992-1-1:2004: Chapter 5 - Structural Analysis."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, KN, MM4, MPA, M
 from blueprints.unit_conversion import M_TO_MM, N_TO_KN
+from blueprints.utils.latex_formula import LatexFormula
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 

@@ -18,8 +18,8 @@
 """Formula 6.10a/bN from EN 1992-1-1:2004: Chapter 6 - Ultimate limit state."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, DEG, KG, N, NMM, MM, MM2, MM3, MM4, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 

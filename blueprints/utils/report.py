@@ -28,7 +28,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any, Literal, Self
 
-from blueprints.codes.formula import Formula
+from blueprints.utils.formula import Formula
 
 
 @dataclass

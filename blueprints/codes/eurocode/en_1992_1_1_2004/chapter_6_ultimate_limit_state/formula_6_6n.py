@@ -1,9 +1,9 @@
 """Formula 6.6n from EN 1992-1-1:2004: Chapter 6 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula
 from blueprints.validations import raise_if_negative
 
 

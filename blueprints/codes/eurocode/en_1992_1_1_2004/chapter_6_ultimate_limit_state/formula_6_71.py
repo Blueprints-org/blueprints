@@ -5,9 +5,9 @@ from collections.abc import Callable
 from typing import Any
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import ComparisonFormula, Formula
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.utils.formula import ComparisonFormula, Formula
+from blueprints.utils.latex_formula import LatexFormula
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 

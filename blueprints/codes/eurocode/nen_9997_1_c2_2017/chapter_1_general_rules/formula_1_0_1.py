@@ -3,9 +3,9 @@
 import numpy as np
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction
 from blueprints.type_alias import M
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_fraction
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 

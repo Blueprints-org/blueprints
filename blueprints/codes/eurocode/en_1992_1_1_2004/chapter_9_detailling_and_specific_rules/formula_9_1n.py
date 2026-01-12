@@ -1,9 +1,9 @@
 """Formula 9.1N from EN 1992-1-1:2004: Chapter 9 - Detailing of members and particular rules."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets
 from blueprints.type_alias import MM, MM2, MPA
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets
 from blueprints.validations import raise_if_negative
 
 

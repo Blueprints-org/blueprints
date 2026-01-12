@@ -1,9 +1,9 @@
 """Formula 2.2 from EN 1993-1-1:2005: Chapter 2: Basis of design."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula
 from blueprints.validations import raise_if_negative
 
 

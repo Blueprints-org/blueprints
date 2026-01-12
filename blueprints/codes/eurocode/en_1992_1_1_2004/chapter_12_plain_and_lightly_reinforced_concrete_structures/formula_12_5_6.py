@@ -9,9 +9,9 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_12_plain_and_lightly_rei
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_12_plain_and_lightly_reinforced_concrete_structures.formula_12_4 import (
     Form12Dot4PlainConcreteShearStressComparison,
 )
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MPA
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 

@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable
 from typing import Self
 
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.utils.latex_formula import LatexFormula
 
 
 class Formula(float, ABC):

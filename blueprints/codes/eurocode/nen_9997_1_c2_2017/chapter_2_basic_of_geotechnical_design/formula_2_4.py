@@ -3,8 +3,8 @@
 import math
 
 from blueprints.codes.eurocode.nen_9997_1_c2_2017 import NEN_9997_1_C2_2017
-from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import KN
+from blueprints.utils.latex_formula import LatexFormula
 from blueprints.validations import raise_if_negative
 
 

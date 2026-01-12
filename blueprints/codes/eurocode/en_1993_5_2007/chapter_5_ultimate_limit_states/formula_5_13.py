@@ -1,10 +1,10 @@
 """Formula 5.13 from EN 1993-5:2007 Chapter 5 - Ultimate limit state."""
 
 from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
-from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, KN, KNM, MM2, MPA
 from blueprints.unit_conversion import N_TO_KN
+from blueprints.utils.formula import Formula
+from blueprints.utils.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
