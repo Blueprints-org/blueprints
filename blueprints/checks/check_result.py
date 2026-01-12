@@ -76,7 +76,12 @@ class CheckResult:
     is_ok: bool | None = None
 
     @classmethod
-    def from_comparison(cls, provided: float, required: float, operator: Literal["<", "<=", "==", ">=", ">", "!="] = "<=") -> Self:
+    def from_comparison(
+        cls,
+        provided: float,
+        required: float,
+        operator: Literal["<", "<=", "==", ">=", ">", "!="] = "<=",  # ty: ignore[invalid-argument-type]
+    ) -> Self:
         """
         Create a CheckResult from a direct comparison of provided and required values.
         Will automatically calculate unity_check, factor_of_safety, and is_ok.

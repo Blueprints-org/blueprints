@@ -46,7 +46,7 @@ uv sync --group cli
     │ install      Sync all dependencies and create venv if needed.                                                                                                                    │
     │ lint         Lint with Ruff.                                                                                                                                                     │
     │ formatting   Enforce formatting compliance using Ruff's formatter.                                                                                                               │
-    │ typecheck    Run static type checks with mypy.                                                                                                                                   │
+    │ typecheck    Run static type checks with ty.                                                                                                                                   │
     │ test         Run tests with pytest.                                                                                                                                              │
     │ coverage     Run tests and generate coverage reports.                                                                                                                            │
     │ check        Run all quality checks before making a PR.                                                                                                                          │
@@ -86,7 +86,7 @@ uv sync --group cli
     
     1. **Linting** - Code style and quality checks with Ruff
     2. **Formatting** - Code formatting compliance with Ruff
-    3. **Type Checking** - Static type validation with mypy
+    3. **Type Checking** - Static type validation with ty
     4. **Coverage** - Code coverage validation and HTML report generation
     
     **Success Output:**
@@ -102,7 +102,7 @@ uv sync --group cli
     2. Checking formatting with Ruff...
     Format: PASSED
     
-    3. Running type checks with mypy...
+    3. Running type checks with ty...
     Type Check: PASSED
     
     4. Checking code coverage...
@@ -141,7 +141,7 @@ uv sync --group cli
     
 **`blueprints typecheck`**
 
-- Run mypy static type checker on blueprints package
+- Run ty static type checker on blueprints package
 
 ### Testing
 
@@ -204,12 +204,11 @@ blueprints lint --show-fixes            # Show suggested fixes
 blueprints formatting --line-length 100     # Use specific line length
 ```
 
-### Type Checking with mypy Flags
+### Type Checking with ty Flags
 
 ```bash
-blueprints typecheck --strict           # Enable strict mode
-blueprints typecheck --show-error-codes # Show error codes
-blueprints typecheck --ignore-missing-imports  # Ignore missing imports
+blueprints typecheck --verbose           # Enable verbose mode
+blueprints typecheck --quiet             # Suppress output
 ```
 
 ### Coverage with Options and pytest Flags

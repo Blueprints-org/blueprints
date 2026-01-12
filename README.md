@@ -32,7 +32,7 @@ tools for materials, geometry, and section checks, as well as a foundation of es
 
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
-See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/roadmap) for detailed feature status and upcoming developments.
+See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/getting_started/roadmap/) for detailed feature status and upcoming developments.
 
 ## Installation
 
@@ -75,7 +75,7 @@ In one single command! Simple as that. All checks passed? then you are good to g
 
 ### Documentation
 
-For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/latest/contribute/cli/).
+For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/latest/guides/contribute/cli/).
 
 ## Quick Start
 
@@ -131,7 +131,7 @@ We welcome contributions from developers and engineers of all skill levels! Here
 - Run Tests: Use pytest to ensure all tests pass.
 - Submit a Pull Request: Push your branch and open a pull request against main.
 
-To learn more, see our full [Contributor Guide](https://blueprints.readthedocs.io/en/latest/contribute).
+To learn more, see our full [Contributor Guide](https://blueprints.readthedocs.io/en/latest/guides/contribute/).
 
 ## License
 

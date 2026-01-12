@@ -46,8 +46,8 @@ class Form6Dot3MinDeductionAreaStaggeredFastenerHoles(Formula):
         self.t = t
         self.n = n
         self.d_0 = d_0
-        self.s = s
-        self.p = p
+        self.s: Sequence[MM] = s
+        self.p: Sequence[MM] = p
 
     @staticmethod
     def _evaluate(

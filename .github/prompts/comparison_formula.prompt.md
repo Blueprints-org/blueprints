@@ -55,6 +55,8 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
     def _evaluate_lhs(
         n_ed: KN,
         n_pl_rd: KN,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the left-hand side of the comparison. see __init__ for details."""
         raise_if_less_or_equal_to_zero(n_pl_rd=n_pl_rd)
@@ -70,21 +72,6 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         """Returns the unity check value."""
         return self.lhs
 
-    @staticmethod
-    def _evaluate(
-        n_ed: KN,
-        n_pl_rd: KN,
-    ) -> bool:
-        """Evaluates the comparison; see __init__ for details."""
-        return (
-            Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_lhs(n_ed=n_ed, n_pl_rd=n_pl_rd)
-            <= Form5Dot17CompressionCheckZProfilesClass1And2._evaluate_rhs()
-        )
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(self.n_ed, self.n_pl_rd)
-
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1"
@@ -95,6 +82,13 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
                 r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ kN",
+                r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ kN",
+            },
+            False,
         )
         _intermediate_result: str = rf"\left( {self.unity_check:.{n}f} \leq 0.1 \right)"
         return LatexFormula(
@@ -103,6 +97,7 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
             intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label=r"\to",
             unit="",
         )
