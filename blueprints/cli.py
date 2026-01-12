@@ -22,9 +22,9 @@ try:
     import typer
     from rich.console import Console
 except ImportError:
-    print("CLI dependencies not installed.")  # noqa: T201
-    print("Install with: uv sync --group cli")  # noqa: T201
-    print("Or: pip install blue-prints[cli]")  # noqa: T201
+    print("Development dependencies not installed.")  # noqa: T201
+    print("Install with: uv sync --group dev")  # noqa: T201
+    print("Or: pip install blue-prints[dev]")  # noqa: T201
     sys.exit(1)
 
 

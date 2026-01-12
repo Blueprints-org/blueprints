@@ -43,7 +43,7 @@ blueprints = "blueprints.cli:app"
 bp = "blueprints.cli:app"
 
 [dependency-groups]
-dev = [
+check = [
     "ty==0.0.9",
     "ruff==0.14.10",
     "pre-commit==4.5.1",
@@ -73,13 +73,9 @@ test = [
     "pytest-xdist==3.8.0",
     "typer>=0.9.0",
     "rich>=13.7.0",
-    "googletrans>=4.0.2", # optional-dependency: translate
-    "python-docx>=1.2.0", # optional-dependency: word
-    "latex2mathml>=3.78.1", # optional-dependency: word
-    "mathml2omml>=0.0.2", # optional-dependency: word
 ]
-cli = [
-    {include-group = "dev"},
+dev = [
+    {include-group = "check"},
     {include-group = "test"},
     {include-group = "docs"},
 ]

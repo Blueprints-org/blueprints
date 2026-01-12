@@ -58,10 +58,10 @@ We got you covered!
 
 ### Quick Start
 
-Install with CLI dependencies:
+Install with Development dependencies:
 
 ```bash
-uv sync --group cli
+uv sync --group dev
 ```
 
 Pre-PR validation (recommended):
