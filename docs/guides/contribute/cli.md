@@ -17,7 +17,7 @@ pip install uv
 Install the CLI with its dependencies:
 
 ```bash
-uv sync --group dev
+uv sync --group cli
 ```
 
 ??? tip "Help"
@@ -244,13 +244,13 @@ blueprints -v
 
 === "CLI dependencies not found"
 
-    Install with Development group:
+    Install with CLI group:
     ```bash
     # With pip
-    pip install blue-prints[dev]
+    pip install blue-prints[cli]
     
     # With uv
-    uv sync --group dev
+    uv sync --group cli
     ```
 
 === "Tests fail with 'No module named pytest'"
