@@ -16,7 +16,7 @@ class Form8Dot37Rho(Formula):
     def __init__(
         self,
         v_ed: N,
-        v_pl_rd: N,
+        v_c_rd: N,
     ) -> None:
         r"""[$\rho$] Calculation of the reduction factor, where no torsion is present [$\text{dimensionless}$].
 
@@ -26,26 +26,26 @@ class Form8Dot37Rho(Formula):
         ----------
         v_ed : N
             [$V_{Ed}$] Design shear force [$N$].
-        v_pl_rd : N
+        v_c,rd : N
             [$V_{pl,Rd}$] Plastic shear resistance, obtained from 8.2.6(2) [$N$].
             Note, see also 8.2.8(4)
         """
         super().__init__()
         self.v_ed = v_ed
-        self.v_pl_rd = v_pl_rd
+        self.v_c_rd = v_c_rd
 
     @staticmethod
     def _evaluate(
         v_ed: N,
-        v_pl_rd: N,
+        v_c_rd: N,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(v_pl_rd=v_pl_rd)
+        raise_if_less_or_equal_to_zero(v_c_rd=v_c_rd)
         raise_if_negative(v_ed=v_ed)
 
-        if v_ed <= 0.5 * v_pl_rd:
+        if v_ed <= 0.5 * v_c_rd:
             return 0
-        return ((2 * v_ed / v_pl_rd) - 1) ** 2
+        return ((2 * v_ed / v_c_rd) - 1) ** 2
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.37."""
@@ -59,7 +59,7 @@ class Form8Dot37Rho(Formula):
             _equation,
             {
                 r"V_{Ed}": f"{self.v_ed:.{n}f}",
-                r"V_{pl,Rd}": f"{self.v_pl_rd:.{n}f}",
+                r"V_{pl,Rd}": f"{self.v_c_rd:.{n}f}",
             },
             False,
         )
@@ -67,7 +67,7 @@ class Form8Dot37Rho(Formula):
             _equation,
             {
                 r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
-                r"V_{pl,Rd}": rf"{self.v_pl_rd:.{n}f} \ N",
+                r"V_{pl,Rd}": rf"{self.v_c_rd:.{n}f} \ N",
             },
             False,
         )
