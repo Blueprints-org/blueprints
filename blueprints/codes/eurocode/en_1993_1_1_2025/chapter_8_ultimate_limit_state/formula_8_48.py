@@ -28,9 +28,9 @@ class Form8Dot48MomentReduction(Formula):
         mpl_y_rd : NMM
             [$M_{pl,y,Rd}$] Plastic bending moment about the y-axis [$Nmm$].
         a : DIMENSIONLESS
-            Reduction factor for cross-sectional area [-].
+            Reduction factor for cross-sectional area, see formula 8.38a (`Form6Dot38A`) [-].
         n : DIMENSIONLESS
-            Axial force ratio [-].
+            Axial force ratio, see formula 8.38n (`Form6Dot38N`) [-].
         """
         super().__init__()
         self.mpl_y_rd = mpl_y_rd
