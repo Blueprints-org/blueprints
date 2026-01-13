@@ -1,4 +1,4 @@
-"""Formula 8.2 from EN 1993-1-1:2025: Chapter 8 - Ultimate limit state."""
+"""Formula 8.3 from EN 1993-1-1:2025: Chapter 8 - Ultimate limit state."""
 
 # pylint: disable=arguments-differ
 from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
