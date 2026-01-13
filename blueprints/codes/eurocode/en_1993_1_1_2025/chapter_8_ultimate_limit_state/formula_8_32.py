@@ -38,7 +38,7 @@ class Form8Dot32VplTRdChannelSection(Formula):
         tau_w_ed : MPA
             [$\tau_{w,Ed}$] Design shear stress due to warping [$MPa$].
         v_pl_rd : N
-            [$V_{pl,Rd}$] Plastic shear resistance given in 6.2.6 [$N$].
+            [$V_{pl,Rd}$] Plastic shear resistance [$N$].
         """
         super().__init__()
         self.tau_t_ed = tau_t_ed

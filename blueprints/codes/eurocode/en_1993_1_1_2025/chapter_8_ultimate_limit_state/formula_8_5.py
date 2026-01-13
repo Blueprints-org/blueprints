@@ -33,7 +33,7 @@ class Form8Dot5MinDeductionAreaStaggeredFastenerHoles(Formula):
         t : MM
             [$t$] Thickness [$mm$].
         n_1 : MM
-            [$n_1$] Number of holes extending in any diagonal or zig-zag line progressively across the member, see Figure 6.1 [$mm$].
+            [$n_1$] Number of holes extending in any diagonal or zig-zag line progressively across the member, see Figure 8.1 [$mm$].
         d_0 : MM
             [$d_0$] Diameter of hole [$mm$].
         s : Sequence[MM]

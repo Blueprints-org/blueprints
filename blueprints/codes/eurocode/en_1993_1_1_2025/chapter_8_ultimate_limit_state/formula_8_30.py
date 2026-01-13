@@ -27,7 +27,7 @@ class Form8Dot30CheckCombinedShearForceAndTorsionalMoment(Formula):
         v_ed : N
             [$V_{Ed}$] Design shear force [$N$].
         v_pl_t_rd : N
-            [$V_{pl,T,Rd}$] Plastic shear resistance accounting for torsional effects, derived from equation 6.26, 6.27 or 6.28 [$N$].
+            [$V_{pl,T,Rd}$] Plastic shear resistance accounting for torsional effects, derived from equation 8.31, 8.32 or 8.33 [$N$].
         """
         super().__init__()
         self.v_ed = v_ed

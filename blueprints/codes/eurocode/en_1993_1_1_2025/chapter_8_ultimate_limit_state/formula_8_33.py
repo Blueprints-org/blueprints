@@ -35,7 +35,7 @@ class Form8Dot33VplTRdHollowSection(Formula):
         gamma_m0 : DIMENSIONLESS
             [$\gamma_{M0}$] Partial safety factor for resistance of cross-sections.
         v_pl_rd : N
-            [$V_{pl,Rd}$] Plastic shear resistance given in 6.2.6 [$N$].
+            [$V_{pl,Rd}$] Plastic shear resistance [$N$].
         """
         super().__init__()
         self.tau_t_ed = tau_t_ed

@@ -25,7 +25,7 @@ class Form8Dot7AdditionalMoment(Formula):
         determine the possible shift [$e_{N}$] of the centroid of the effective area [$A_{eff}$] relative to the centre of gravity
         of the gross cross section and the resulting additional moment according to this formula.
 
-        Note: The sign of the additional moment depends on the effect in the combination of internal forces and moments, see 6.2.9.3(2).
+        Note: The sign of the additional moment depends on the effect in the combination of internal forces and moments, see 8.2.9.3(2).
 
         Parameters
         ----------
