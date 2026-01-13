@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot8NetDesignTensionResistance(Formula):
+class Form8Dot16NetDesignTensionResistance(Formula):
     r"""Class representing formula 8.16 for the calculation of [$N_{net,Rd}$]."""
 
     label = "8.16"

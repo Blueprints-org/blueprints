@@ -7,7 +7,7 @@ from blueprints.type_alias import MM, NMM, N
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot4AdditionalMoment(Formula):
+class Form8Dot7AdditionalMoment(Formula):
     r"""Class representing formula 8.7 for the calculation of additional moment [$\Delta M_{Ed}$]."""
 
     label = "8.7"

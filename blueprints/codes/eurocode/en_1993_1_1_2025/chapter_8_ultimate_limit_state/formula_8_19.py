@@ -7,7 +7,7 @@ from blueprints.type_alias import NMM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot12CheckBendingMoment(Formula):
+class Form8Dot19CheckBendingMoment(Formula):
     r"""Class representing formula 8.19 for the test of the bending moment."""
 
     label = "8.19"

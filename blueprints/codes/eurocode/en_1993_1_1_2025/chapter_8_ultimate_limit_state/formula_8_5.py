@@ -9,7 +9,7 @@ from blueprints.type_alias import MM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
 
 
-class Form6Dot3MinDeductionAreaStaggeredFastenerHoles(Formula):
+class Form8Dot5MinDeductionAreaStaggeredFastenerHoles(Formula):
     r"""Class representing formula 8.5 for the calculation of the minimum area deduction for staggered fastener holes [$\Delta A_{net,1}$]."""
 
     label = "8.5"

@@ -7,7 +7,7 @@ from blueprints.type_alias import N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot17CheckShearForce(Formula):
+class Form8Dot22CheckShearForce(Formula):
     r"""Class representing formula 8.22 for checking the design value of the shear force."""
 
     label = "8.22"

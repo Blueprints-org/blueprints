@@ -10,7 +10,7 @@ from blueprints.type_alias import N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot9CheckCompressionForce(ComparisonFormula):
+class Form8Dot17CheckCompressionForce(ComparisonFormula):
     r"""Class representing formula 8.17 for the test of the compression force."""
 
     label = "8.17"
