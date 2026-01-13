@@ -23,7 +23,7 @@ class Form8Dot46CheckAxialForceY(Formula):
     ) -> None:
         r"""For doubly symmetrical I- and H-sections or other flanges sections,
         allowance need not be made for the effect of the axial force on the
-        plastic resistance moment about the y-y axis when 6.45 and 6.46 are satisfied.
+        plastic resistance moment about the y-y axis when 8.45 and 8.46 are satisfied.
 
         EN 1993-1-1:2025 art.8.2.9.1(4) - Formula (8.46)
 
