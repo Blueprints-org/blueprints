@@ -15,10 +15,10 @@ class TestForm8Dot37Rho:
         """Tests the evaluation of the result."""
         # Example values
         v_ed = 300.0
-        v_pl_rd = 500.0
+        v_c_rd = 500.0
 
         # Object to test
-        formula = Form8Dot37Rho(v_ed=v_ed, v_pl_rd=v_pl_rd)
+        formula = Form8Dot37Rho(v_ed=v_ed, v_c_rd=v_c_rd)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.04  # dimensionless
@@ -29,10 +29,10 @@ class TestForm8Dot37Rho:
         """Tests the evaluation of the result."""
         # Example values
         v_ed = 100.0
-        v_pl_rd = 500.0
+        v_c_rd = 500.0
 
         # Object to test
-        formula = Form8Dot37Rho(v_ed=v_ed, v_pl_rd=v_pl_rd)
+        formula = Form8Dot37Rho(v_ed=v_ed, v_c_rd=v_c_rd)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.0  # dimensionless
@@ -40,27 +40,27 @@ class TestForm8Dot37Rho:
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("v_ed", "v_pl_rd"),
+        ("v_ed", "v_c_rd"),
         [
             (-300.0, 500.0),  # v_ed is negative
         ],
     )
-    def test_raise_error_when_negative_values_are_given(self, v_ed: float, v_pl_rd: float) -> None:
+    def test_raise_error_when_negative_values_are_given(self, v_ed: float, v_c_rd: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form8Dot37Rho(v_ed=v_ed, v_pl_rd=v_pl_rd)
+            Form8Dot37Rho(v_ed=v_ed, v_c_rd=v_c_rd)
 
     @pytest.mark.parametrize(
-        ("v_ed", "v_pl_rd"),
+        ("v_ed", "v_c_rd"),
         [
-            (300.0, 0.0),  # v_pl_rd is zero
-            (300.0, -500.0),  # v_pl_rd is negative
+            (300.0, 0.0),  # v_c_rd is zero
+            (300.0, -500.0),  # v_c_rd is negative
         ],
     )
-    def test_raise_error_when_less_or_equal_to_zero_values_are_given(self, v_ed: float, v_pl_rd: float) -> None:
+    def test_raise_error_when_less_or_equal_to_zero_values_are_given(self, v_ed: float, v_c_rd: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form8Dot37Rho(v_ed=v_ed, v_pl_rd=v_pl_rd)
+            Form8Dot37Rho(v_ed=v_ed, v_c_rd=v_c_rd)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -68,8 +68,8 @@ class TestForm8Dot37Rho:
             (
                 "complete",
                 r"\rho = \begin{cases} "
-                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,Rd} \\ "
-                r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,Rd} "
+                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{c,Rd} \\ "
+                r"\left( \frac{2 \cdot V_{Ed}}{V_{c,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{c,Rd} "
                 r"\end{cases} = \begin{cases} "
                 r"0 & \text{if } 300.000 \leq 0.5 \cdot 500.000 \\ "
                 r"\left( \frac{2 \cdot 300.000}{500.000} - 1 \right)^2 & \text{if } 300.000 > 0.5 \cdot 500.000 "
@@ -78,8 +78,8 @@ class TestForm8Dot37Rho:
             (
                 "complete_with_units",
                 r"\rho = \begin{cases} "
-                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,Rd} \\ "
-                r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,Rd} "
+                r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{c,Rd} \\ "
+                r"\left( \frac{2 \cdot V_{Ed}}{V_{c,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{c,Rd} "
                 r"\end{cases} = \begin{cases} "
                 r"0 & \text{if } 300.000 \ N \leq 0.5 \cdot 500.000 \ N \\ "
                 r"\left( \frac{2 \cdot 300.000 \ N}{500.000 \ N} - 1 \right)^2 & \text{if } 300.000 \ N > 0.5 \cdot 500.000 \ N "
@@ -92,10 +92,10 @@ class TestForm8Dot37Rho:
         """Test the latex representation of the formula."""
         # Example values
         v_ed = 300.0
-        v_pl_rd = 500.0
+        v_c_rd = 500.0
 
         # Object to test
-        latex = Form8Dot37Rho(v_ed=v_ed, v_pl_rd=v_pl_rd).latex()
+        latex = Form8Dot37Rho(v_ed=v_ed, v_c_rd=v_c_rd).latex()
 
         actual = {
             "complete": latex.complete,
