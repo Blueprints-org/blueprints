@@ -2,9 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_37 import (
-    Form8Dot37Rho,
-)
+from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_37 import Form8Dot37Rho
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
