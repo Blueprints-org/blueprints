@@ -1,4 +1,4 @@
-"""Formula 8.52aw from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.52 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
 from blueprints.codes.formula import Formula
@@ -7,10 +7,10 @@ from blueprints.type_alias import DIMENSIONLESS, NMM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot52awReducedBendingMomentResistance(Formula):
-    r"""Class representing formula 8.52aw for the calculation of [$M_{N,z,Rd}$]."""
+class Form8Dot52ReducedBendingMomentResistance(Formula):
+    r"""Class representing formula 8.52 for the calculation of [$M_{N,z,Rd}$]."""
 
-    label = "8.52aw"
+    label = "8.52"
     source_document = EN_1993_1_1_2025
 
     def __init__(
@@ -21,7 +21,7 @@ class Form8Dot52awReducedBendingMomentResistance(Formula):
     ) -> None:
         r"""[$M_{N,z,Rd}$] Calculation of the reduced bending moment [$Nmm$].
 
-        EN 1993-1-1:2025 art.8.2.9.1(6) - Formula (8.52aw)
+        EN 1993-1-1:2025 art.8.2.9.1(6) - Formula (8.52)
 
         Parameters
         ----------
@@ -50,7 +50,7 @@ class Form8Dot52awReducedBendingMomentResistance(Formula):
         return min(mpl_z_rd * (1 - n) / (1 - 0.5 * a_f), mpl_z_rd)
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 8.52aw."""
+        """Returns LatexFormula object for formula 8.52."""
         _equation: str = r"\min \left( M_{pl,z,Rd} \cdot \frac{1 - n}{1 - 0.5 \cdot a_f}, M_{pl,z,Rd} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
