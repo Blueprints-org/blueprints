@@ -51,15 +51,15 @@ class Form8Dot37Rho(Formula):
         """Returns LatexFormula object for formula 8.37."""
         _equation: str = (
             r"\begin{cases} "
-            r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{pl,Rd} \\ "
-            r"\left( \frac{2 \cdot V_{Ed}}{V_{pl,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{pl,Rd} "
+            r"0 & \text{if } V_{Ed} \leq 0.5 \cdot V_{c,Rd} \\ "
+            r"\left( \frac{2 \cdot V_{Ed}}{V_{c,Rd}} - 1 \right)^2 & \text{if } V_{Ed} > 0.5 \cdot V_{c,Rd} "
             r"\end{cases}"
         )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 r"V_{Ed}": f"{self.v_ed:.{n}f}",
-                r"V_{pl,Rd}": f"{self.v_c_rd:.{n}f}",
+                r"V_{c,Rd}": f"{self.v_c_rd:.{n}f}",
             },
             False,
         )
@@ -67,7 +67,7 @@ class Form8Dot37Rho(Formula):
             _equation,
             {
                 r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
-                r"V_{pl,Rd}": rf"{self.v_c_rd:.{n}f} \ N",
+                r"V_{c,Rd}": rf"{self.v_c_rd:.{n}f} \ N",
             },
             False,
         )
