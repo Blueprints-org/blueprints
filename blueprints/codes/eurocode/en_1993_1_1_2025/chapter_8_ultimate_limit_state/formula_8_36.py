@@ -1,4 +1,4 @@
-"""Formula 8.29 from NEN-EN 1993-1-1+A1:2016: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.36 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
 from blueprints.codes.formula import Formula
@@ -7,10 +7,10 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 
 
-class Form6Dot29ReducedYieldStrength(Formula):
-    r"""Class representing formula 8.29 for the calculation of reduced yield strength."""
+class Form8Dot36ReducedYieldStrength(Formula):
+    r"""Class representing formula 8.36 for the calculation of reduced yield strength."""
 
-    label = "8.29"
+    label = "8.36"
     source_document = EN_1993_1_1_2025
 
     def __init__(
@@ -20,12 +20,12 @@ class Form6Dot29ReducedYieldStrength(Formula):
     ) -> None:
         r"""[$f_{y,red}$] Calculation of reduced yield strength [$MPa$].
 
-        NEN-EN 1993-1-1+A1:2016 art.6.2.8(3) - Formula (8.29)
+        EN 1993-1-1:2025 art.8.2.8(4) - Formula (8.36)
 
         Parameters
         ----------
         rho : DIMENSIONLESS
-            [$\rho$] Reduction factor for shear force, see equation 6.29rho (dimensionless).
+            [$\rho$] Reduction factor for shear force (dimensionless).
         f_y : MPA
             [$f_y$] Yield strength of the material [$MPa$].
         """
@@ -45,7 +45,7 @@ class Form6Dot29ReducedYieldStrength(Formula):
         return (1 - rho) * f_y
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 8.29."""
+        """Returns LatexFormula object for formula 8.36."""
         _equation: str = r"(1 - \rho) \cdot f_y"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
