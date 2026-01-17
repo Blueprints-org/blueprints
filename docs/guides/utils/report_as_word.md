@@ -1,6 +1,6 @@
 # Creating Reports and Converting to Word
 
-This notebook demonstrates how to use the `Report` class to build engineering reports and convert them to Word documents with language localization.
+This notebook demonstrates how to use the `Report` class to build engineering reports and convert them to Word documents with language localization. For more notes on how to build a report, see the `Report.md` file.
 
 ```python
 from blueprints.utils.report import Report
