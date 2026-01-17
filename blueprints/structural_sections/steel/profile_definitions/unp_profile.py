@@ -98,7 +98,6 @@ class UNPProfile(Profile):
 
     def __post_init__(self) -> None:
         """Post-initialization: calculate corner and slope parameters for the UNP profile."""
-        # calculate corner parameters
         object.__setattr__(self, "top_root_fillet_height", np.cos(np.deg2rad(slope_to_angle(self.top_slope))) * self.top_root_fillet_radius)
         object.__setattr__(self, "top_root_fillet_width", (1 - np.sin(np.deg2rad(slope_to_angle(self.top_slope)))) * self.top_root_fillet_radius)
 
