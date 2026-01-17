@@ -1,6 +1,6 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/blueprints-org)
 [![Run Tests](https://github.com/Blueprints-org/blueprints/actions/workflows/test.yaml/badge.svg)](https://github.com/Blueprints-org/blueprints/actions/workflows/test.yaml)
-[![Read the Docs](https://img.shields.io/readthedocs/blueprints?logo=readthedocs&label=Read%20the%20docs&link=https%3A%2F%2Fblueprints.readthedocs.io%2Fen%2Flatest%2F)](https://blueprints.readthedocs.io/en/latest/)
+[![Read the Docs](https://img.shields.io/readthedocs/blueprints?logo=readthedocs&label=Read%20the%20docs&link=https%3A%2F%2Fblueprints.readthedocs.ioF)](https://blueprints.readthedocs.io)
 [![codecov](https://codecov.io/gh/Blueprints-org/blueprints/branch/main/graph/badge.svg?token=vwYQBShr9q)](https://codecov.io/gh/Blueprints-org/blueprints)
 [![PyPI](https://img.shields.io/pypi/v/blue-prints?color=green)](https://pypi.org/project/blue-prints/)
 [![GitHub](https://img.shields.io/github/license/Blueprints-org/blueprints?color=green)](https://github.com/Blueprints-org/blueprints/blob/main/LICENSE)
@@ -32,7 +32,7 @@ tools for materials, geometry, and section checks, as well as a foundation of es
 
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
-See our [ROADMAP](https://blueprints.readthedocs.io/en/latest/getting_started/roadmap/) for detailed feature status and upcoming developments.
+See our [ROADMAP](https://blueprints.readthedocs.io/en/stable/getting_started/roadmap/) for detailed feature status and upcoming developments.
 
 ## Installation
 
@@ -75,7 +75,7 @@ In one single command! Simple as that. All checks passed? then you are good to g
 
 ### Documentation
 
-For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/latest/contribute/cli/).
+For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/stable/guides/contribute/cli/).
 
 ## Quick Start
 
@@ -119,7 +119,7 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 
 ## Documentation
 
-Full documentation is available at [blueprints.readthedocs.io](https://blueprints.readthedocs.io/en/latest/).
+Full documentation is available at [blueprints.readthedocs.io](https://blueprints.readthedocs.io).
 
 ## How to Contribute
 
@@ -131,7 +131,7 @@ We welcome contributions from developers and engineers of all skill levels! Here
 - Run Tests: Use pytest to ensure all tests pass.
 - Submit a Pull Request: Push your branch and open a pull request against main.
 
-To learn more, see our full [Contributor Guide](https://blueprints.readthedocs.io/en/latest/guides/contribute/).
+To learn more, see our full [Contributor Guide](https://blueprints.readthedocs.io/en/stable/guides/contribute/).
 
 ## License
 

@@ -3,25 +3,17 @@
 import re
 from typing import Any, cast
 
+import latex2mathml.converter
+import mathml2omml
 import numpy as np
-
-try:
-    import latex2mathml.converter
-    import mathml2omml
-    from docx import Document
-    from docx.document import Document as DocumentObject
-    from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-    from docx.oxml import OxmlElement, parse_xml
-    from docx.oxml.ns import qn
-    from docx.oxml.xmlchemy import BaseOxmlElement
-    from docx.shared import Inches, Pt, RGBColor
-    from docx.text.paragraph import Paragraph
-except ImportError:  # pragma: no cover
-    raise ImportError(
-        "\n\nThe Word features require the word module of blueprints. Install it through:\n"
-        "- pip install blueprints[word]\n"
-        "- uv add blueprints[word]\n"
-    )  # pragma: no cover
+from docx import Document
+from docx.document import Document as DocumentObject
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.oxml import OxmlElement, parse_xml
+from docx.oxml.ns import qn
+from docx.oxml.xmlchemy import BaseOxmlElement
+from docx.shared import Inches, Pt, RGBColor
+from docx.text.paragraph import Paragraph
 
 
 class _ReportToWordConverter:
