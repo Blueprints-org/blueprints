@@ -34,8 +34,8 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
             The structural class of the concrete. Use the [$Table4Dot3ConcreteStructuralClass$] class. [$-$]
         """
         super().__init__()
-        self.exposure_classes = exposure_classes
-        self.structural_class = structural_class
+        self.exposure_classes: Table4Dot1ExposureClasses = exposure_classes
+        self.structural_class: ConcreteStructuralClassBase = structural_class
 
     @staticmethod
     def _evaluate(
@@ -72,6 +72,6 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
         return LatexFormula(
             return_symbol=r"c_{min,dur}",
             result=f"{self:.{n}f}",
-            equation=rf"structural class {self.structural_class} \& exposure classes ({self.exposure_classes})",
+            equation=rf"structural class {self.structural_class} & exposure classes ({self.exposure_classes})",
             comparison_operator_label="=",
         )

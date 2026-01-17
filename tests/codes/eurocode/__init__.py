@@ -1,1 +1,0 @@
-"""Eurocode tests."""

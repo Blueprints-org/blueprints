@@ -30,8 +30,8 @@ class Form6Dot70FatigueDamageFactor(Formula):
         None
         """
         super().__init__()
-        self.n_delta_sigma_i = n_delta_sigma_i
-        self.capital_n_delta_sigma_i = capital_n_delta_sigma_i
+        self.n_delta_sigma_i: list[MPA] = n_delta_sigma_i
+        self.capital_n_delta_sigma_i: list[MPA] = capital_n_delta_sigma_i
 
     @staticmethod
     def _evaluate(

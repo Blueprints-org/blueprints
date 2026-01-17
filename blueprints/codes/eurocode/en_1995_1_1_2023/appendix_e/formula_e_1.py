@@ -36,11 +36,11 @@ class FormEDot1EffBendingStiffness(Formula):
         None
         """
         super().__init__()
-        self.e_i = e_i
-        self.i_i = i_i
-        self.gamma_i = gamma_i
-        self.a_i = a_i
-        self.alpha_i = alpha_i
+        self.e_i: list[MPA] = e_i
+        self.i_i: list[MM4] = i_i
+        self.gamma_i: list[DIMENSIONLESS] = gamma_i
+        self.a_i: list[MM2] = a_i
+        self.alpha_i: list[MM] = alpha_i
         self.ei_i: list[NMM2] = []
 
     @staticmethod
