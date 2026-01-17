@@ -147,6 +147,8 @@ class IProfile(Profile):
         bottom_flange_thickness = self.bottom_flange_thickness - corrosion * 2
         total_height = self.total_height - corrosion * 2
         web_thickness = self.web_thickness - corrosion * 2
+        top_radius = self.top_radius + corrosion
+        bottom_radius = self.bottom_radius + corrosion
 
         if any(
             thickness < FULL_CORROSION_TOLERANCE
@@ -167,8 +169,8 @@ class IProfile(Profile):
             bottom_flange_thickness=bottom_flange_thickness,
             total_height=total_height,
             web_thickness=web_thickness,
-            top_radius=self.top_radius,
-            bottom_radius=self.bottom_radius,
+            top_radius=top_radius,
+            bottom_radius=bottom_radius,
             name=name,
             plotter=self.plotter,
         )
