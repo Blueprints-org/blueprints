@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -95,6 +95,28 @@ class UNPProfile(Profile):
     """The name of the profile. Default is "UNP-Profile". If corrosion is applied, the name will include the corrosion value."""
     plotter: Callable[[Profile], plt.Figure] = plot_shapes
     """The plotter function to visualize the profile (default: `plot_shapes`)."""
+
+    # Attributes set in __post_init__ (for type checkers)
+    top_root_fillet_height: float = field(init=False, repr=False)
+    top_root_fillet_width: float = field(init=False, repr=False)
+    bottom_root_fillet_height: float = field(init=False, repr=False)
+    bottom_root_fillet_width: float = field(init=False, repr=False)
+    top_toe_radius_height: float = field(init=False, repr=False)
+    top_toe_radius_width: float = field(init=False, repr=False)
+    bottom_toe_radius_height: float = field(init=False, repr=False)
+    bottom_toe_radius_width: float = field(init=False, repr=False)
+    top_slope_width: float = field(init=False, repr=False)
+    top_slope_height: float = field(init=False, repr=False)
+    top_slope_length: float = field(init=False, repr=False)
+    bottom_slope_width: float = field(init=False, repr=False)
+    bottom_slope_height: float = field(init=False, repr=False)
+    bottom_slope_length: float = field(init=False, repr=False)
+    top_toe_total_height: float = field(init=False, repr=False)
+    top_toe_flat_height: float = field(init=False, repr=False)
+    bottom_toe_total_height: float = field(init=False, repr=False)
+    bottom_toe_flat_height: float = field(init=False, repr=False)
+    web_inner_height_top: float = field(init=False, repr=False)
+    web_inner_height_bottom: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         """Post-initialization: calculate corner and slope parameters for the UNP profile."""
