@@ -11,7 +11,6 @@ from blueprints.structural_sections.geometric_profiles import (
     RectangularProfile,
     RightAngledTriangularProfile,
     TubeProfile,
-    UNPSteelProfile,
 )
 
 
@@ -85,9 +84,3 @@ def annular_sector_profile_359_degrees() -> AnnularSectorProfile:
         y=0.0,
         name="AnnularSector",
     )
-
-
-@pytest.fixture
-def unp_profile() -> UNPSteelProfile:
-    """Fixture to set up a UNP profile for testing."""
-    return UNPSteelProfile()
