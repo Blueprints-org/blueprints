@@ -30,6 +30,9 @@ class TestUNP:
         assert profile.bottom_flange_thickness == 8
         assert profile.total_height == 80
         assert profile.web_thickness == 6
-        assert profile.root_fillet_radius == 8
-        assert profile.toe_radius == 4
-        assert profile.slope == 8
+        assert profile.top_root_fillet_radius == 8
+        assert profile.bottom_root_fillet_radius == 8
+        assert profile.top_toe_radius == 4
+        assert profile.bottom_toe_radius == 4
+        assert profile.top_slope == 8
+        assert profile.bottom_slope == 8
