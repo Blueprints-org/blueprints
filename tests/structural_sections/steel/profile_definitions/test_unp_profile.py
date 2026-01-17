@@ -91,12 +91,12 @@ class TestUNPProfile:
         assert pytest.approx(corroded_profile.web_thickness, rel=1e-6) == unp_profile.web_thickness - corrosion * 2
 
         # Check radius values are changed by 1 * corrosion, but not less than zero
-        assert corroded_profile.top_outer_corner_radius == min(0, unp_profile.top_outer_corner_radius - corrosion)
-        assert corroded_profile.bottom_outer_corner_radius == min(0, unp_profile.bottom_outer_corner_radius - corrosion)
+        assert corroded_profile.top_outer_corner_radius == max(0, unp_profile.top_outer_corner_radius - corrosion)
+        assert corroded_profile.bottom_outer_corner_radius == max(0, unp_profile.bottom_outer_corner_radius - corrosion)
         assert corroded_profile.top_root_fillet_radius == unp_profile.top_root_fillet_radius + corrosion
         assert corroded_profile.bottom_root_fillet_radius == unp_profile.bottom_root_fillet_radius + corrosion
-        assert corroded_profile.top_toe_radius == min(0, unp_profile.top_toe_radius - corrosion)
-        assert corroded_profile.bottom_toe_radius == min(0, unp_profile.bottom_toe_radius - corrosion)
+        assert corroded_profile.top_toe_radius == max(0, unp_profile.top_toe_radius - corrosion)
+        assert corroded_profile.bottom_toe_radius == max(0, unp_profile.bottom_toe_radius - corrosion)
 
         # Check name is updated with corrosion info
         expected_name = "UNP200 (corrosion: 2.0 mm)"

@@ -213,11 +213,11 @@ class UNPProfile(Profile):
         total_height = self.total_height - 2 * corrosion
         web_thickness = self.web_thickness - 2 * corrosion
         top_root_fillet_radius = self.top_root_fillet_radius + corrosion
-        top_toe_radius = min(0, self.top_toe_radius - corrosion)
-        top_outer_corner_radius = min(0, self.top_outer_corner_radius - corrosion)
+        top_toe_radius = max(0, self.top_toe_radius - corrosion)
+        top_outer_corner_radius = max(0, self.top_outer_corner_radius - corrosion)
         bottom_root_fillet_radius = self.bottom_root_fillet_radius + corrosion
-        bottom_toe_radius = min(0, self.bottom_toe_radius - corrosion)
-        bottom_outer_corner_radius = min(0, self.bottom_outer_corner_radius - corrosion)
+        bottom_toe_radius = max(0, self.bottom_toe_radius - corrosion)
+        bottom_outer_corner_radius = max(0, self.bottom_outer_corner_radius - corrosion)
 
         if any(
             thickness < FULL_CORROSION_TOLERANCE
