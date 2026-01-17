@@ -46,11 +46,11 @@ UNP_PROFILES_DATABASE = {
 
 
 class UNP(metaclass=StandardProfileMeta):
-    """Geometrical representation of UNP steel profiles.
+    """Geometrical representation of UNP profiles.
 
     This class provides access to standard UNP profiles from a predefined database.
     Profiles can be accessed as class attributes using their standardized names.
-    Each accessed profile returns a UNPSteelProfile instance.
+    Each accessed profile returns a UNPProfile instance.
 
     Usage example
     -------------
