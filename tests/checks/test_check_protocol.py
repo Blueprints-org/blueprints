@@ -19,7 +19,7 @@ class ValidCheck:
 
     def result(self) -> CheckResult:
         """Return a valid result."""
-        return CheckResult(passed=True)
+        return CheckResult(is_ok=True)
 
     def calculation_steps(self) -> dict[str, CheckProtocol]:
         """Return empty calculation steps."""
@@ -37,7 +37,7 @@ class MissingNameCheck:
 
     def result(self) -> CheckResult:
         """Return a valid result."""
-        return CheckResult(passed=True)
+        return CheckResult(is_ok=True)
 
     def calculation_steps(self) -> dict[str, CheckProtocol]:
         """Return empty calculation steps."""
@@ -55,7 +55,7 @@ class MissingDocsCheck:
 
     def result(self) -> CheckResult:
         """Return a valid result."""
-        return CheckResult(passed=True)
+        return CheckResult(is_ok=True)
 
     def calculation_steps(self) -> dict[str, CheckProtocol]:
         """Return empty calculation steps."""
@@ -89,7 +89,7 @@ class MissingStepsCheck:
 
     def result(self) -> CheckResult:
         """Return a valid result."""
-        return CheckResult(passed=True)
+        return CheckResult(is_ok=True)
 
     def report(self) -> Report:
         """Return a valid report."""
@@ -104,7 +104,7 @@ class MissingReportCheck:
 
     def result(self) -> CheckResult:
         """Return a valid result."""
-        return CheckResult(passed=True)
+        return CheckResult(is_ok=True)
 
     def calculation_steps(self) -> dict[str, CheckProtocol]:
         """Return empty calculation steps."""
