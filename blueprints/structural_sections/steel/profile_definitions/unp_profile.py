@@ -22,8 +22,7 @@ from blueprints.validations import raise_if_negative
 class UNPProfile(Profile):
     """Representation of U/C shaped profiles.
 
-    For standard profiles, use the specific standard profile class like `UNP`
-    For example,
+    For standard profiles, use the specific standard profile class like `UNP`. For example,
     ```python
     unp_profile = UNP.UNP200
     ```

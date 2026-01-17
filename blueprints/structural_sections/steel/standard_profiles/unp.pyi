@@ -27,8 +27,11 @@ class __UNPProfileParameters:
     bottom_flange_thickness: MM
     total_height: MM
     web_thickness: MM
-    root_fillet_radius: MM
-    toe_radius: MM
-    slope: PERCENTAGE
+    top_root_fillet_radius: MM
+    bottom_root_fillet_radius: MM
+    top_toe_radius: MM
+    bottom_toe_radius: MM
+    top_slope: PERCENTAGE
+    bottom_slope: PERCENTAGE
 
 UNP_PROFILES_DATABASE: dict[str, __UNPProfileParameters]
