@@ -62,7 +62,7 @@ class NormalForceClass123(CheckProtocol):
     result_internal_force_1d: ResultInternalForce1D
     gamma_m0: DIMENSIONLESS = 1.0
 
-    name: str = "Normal Force Check for Steel I-Profile Class 1, 2 and 3"
+    name: str = "Normal force check for steel profiles of Class 1, 2 and 3"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
@@ -124,13 +124,8 @@ class NormalForceClass123(CheckProtocol):
         required = steps["en_1993_1_1_2005 f6.10"]
         return CheckResult.from_comparison(provided=provided, required=required)
 
-    def report(self, n: int = 1) -> Report:
+    def report(self) -> Report:
         """Returns the report for the normal force check.
-
-        Parameters
-        ----------
-        n : int, optional
-            Formula numbering for Report output (default is 1).
 
         Returns
         -------
@@ -154,22 +149,21 @@ class NormalForceClass123(CheckProtocol):
         if self.result_internal_force_1d.n == 0:
             report.add_paragraph("Checking normal force not needed as no normal force applied.").add_newline()
         elif self.result_internal_force_1d.n > 0:
-            report.add_paragraph(r"Checking normal force (tension) using chapter 6.2.3.").add_newline(n=2)
+            report.add_paragraph(r"Checking normal force (tension) using chapter 6.2.3.").add_newline()
         elif self.result_internal_force_1d.n < 0:
-            report.add_paragraph(r"Checking normal force (compression) using chapter 6.2.4.").add_newline(n=2)
+            report.add_paragraph(r"Checking normal force (compression) using chapter 6.2.4.").add_newline()
 
         # add calculation steps to report
         if self.result_internal_force_1d.n != 0:
             for step in self.calculation_steps().values():
-                report.add_paragraph(rf"With formula {step.label}:").add_newline()
-                report.add_equation(step.latex(n=n), tag=step.label)
+                report.add_formula(step)
 
         report.add_heading("Result")
         if self.result().is_ok:
-            report.add_paragraph("The check for normal force has been passed.").add_newline()
+            report.add_paragraph("The check for normal force has been passed.")
             report.add_equation(r"Check \to OK", tag=None)
         else:
-            report.add_paragraph("The check for normal force has ").add_paragraph("NOT", bold=True).add_paragraph(" been passed.").add_newline()
+            report.add_paragraph("The check for normal force has ").add_paragraph("NOT", bold=True).add_paragraph(" been passed.")
             report.add_equation(r"Check \to NOT \ OK", tag=None)
 
         return report
