@@ -89,8 +89,8 @@ class NormalForceClass123(CheckProtocol):
             n_t_rd = formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
             check_tension = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
             return {
-                "6.6": n_t_rd,
-                "6.5": check_tension,
+                "en_1993_1_1_2005 f6.6": n_t_rd,
+                "en_1993_1_1_2005 f6.5": check_tension,
             }
 
         # compression, based on chapter 6.2.4
@@ -100,8 +100,8 @@ class NormalForceClass123(CheckProtocol):
         n_c_rd = formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
         check_compression = formula_6_9.Form6Dot9CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd)
         return {
-            "6.10": n_c_rd,
-            "6.9": check_compression,
+            "en_1993_1_1_2005 f6.10": n_c_rd,
+            "en_1993_1_1_2005 f6.9": check_compression,
         }
 
     def result(self) -> CheckResult:
@@ -117,11 +117,11 @@ class NormalForceClass123(CheckProtocol):
             return CheckResult.from_unity_check(0)
         if self.result_internal_force_1d.n > 0:
             provided = self.result_internal_force_1d.n * KN_TO_N
-            required = steps["6.6"]
+            required = steps["en_1993_1_1_2005 f6.6"]
             return CheckResult.from_comparison(provided=provided, required=required)
         # compression
         provided = -self.result_internal_force_1d.n * KN_TO_N
-        required = steps["6.10"]
+        required = steps["en_1993_1_1_2005 f6.10"]
         return CheckResult.from_comparison(provided=provided, required=required)
 
     def report(self, n: int = 1) -> str:
