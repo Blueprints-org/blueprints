@@ -8,15 +8,7 @@ import re
 from pathlib import Path
 from typing import Any, cast
 
-try:
-    from googletrans import Translator
-except ImportError:  # pragma: no cover
-    raise ImportError(
-        "\n\nThe translate features require the translate module of blueprints. Install it through:\n"
-        "`pip install blueprints[translate]`\n"
-        "or using uv:\n"
-        "`uv add blueprints[translate]`\n"
-    )  # pragma: no cover
+from googletrans import Translator
 
 
 class LatexTranslator:
