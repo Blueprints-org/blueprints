@@ -124,8 +124,13 @@ class NormalForceClass123(CheckProtocol):
         required = steps["en_1993_1_1_2005 f6.10"]
         return CheckResult.from_comparison(provided=provided, required=required)
 
-    def report(self) -> Report:
+    def report(self, n: int = 2) -> Report:
         """Returns the report for the normal force check.
+
+        Parameters
+        ----------
+        n : int, optional
+            Number of decimal places for numerical values in the report (default is 2).
 
         Returns
         -------
@@ -138,11 +143,27 @@ class NormalForceClass123(CheckProtocol):
         report.add_list(self.source_docs)
 
         report.add_heading("Applied forces")
-        report.add_table(headers=["Type", "Value"], rows=[["Normal force", str(self.result_internal_force_1d.n) + " kN"]])
+        report.add_paragraph("The following internal forces were applied in this check:")
+        report.add_table(headers=["Type", "Value"], rows=[["Normal force", f"{self.result_internal_force_1d.n:.{n}f} kN"]])
 
         report.add_heading("Applied profile and material")
+        report.add_paragraph("The following profile and material properties were used in this check:")
         report.add_table(
-            headers=["Profile", "Material"], rows=[[str(self.steel_cross_section.profile.name), str(self.steel_cross_section.material.name)]]
+            headers=["Property", "Value"],
+            rows=[
+                ["Material", str(self.steel_cross_section.material.name)],
+                ["Yield Strength", f"{self.steel_cross_section.yield_strength:.{n}f} MPa"],
+                ["Ultimate Strength", f"{self.steel_cross_section.ultimate_strength:.{n}f} MPa"],
+                ["Elastic Modulus", f"{self.steel_cross_section.material.e_modulus:.{n}f} MPa"],
+            ],
+        )
+        report.add_paragraph("The following section properties were used in this check:")
+        report.add_table(
+            headers=["Property", "Value"],
+            rows=[
+                ["Profile", str(self.steel_cross_section.profile.name)],
+                ["Area", f"{self.properties.area:.{n}f} $mm^2$"],
+            ],
         )
 
         report.add_heading("Calculation steps")
