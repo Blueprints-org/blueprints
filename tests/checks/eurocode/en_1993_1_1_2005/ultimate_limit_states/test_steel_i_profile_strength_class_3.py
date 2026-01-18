@@ -1,34 +1,31 @@
 """Tests for SteelIProfileStrengthClass3.NormalForceCheck according to Eurocode 3."""
 
 import pytest
-from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.steel_i_profile_strength_class_3 import SteelIProfileStrengthClass3
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
-from blueprints.structural_sections.steel.steel_cross_sections.i_profile import ISteelProfile
+from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
 class TestSteelIProfileStrengthClass3:
     """Tests for SteelIProfileStrengthClass3."""
 
-    def test_check(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+    def test_check(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test check() returns True for no normal force."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=0, vy=0, vz=0, mx=0, my=0, mz=0
         )
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+        calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         check = calc.check()
         assert check.is_ok is True
         assert len(calc.latex()) > 0
 
-    def test_latex_all(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+    def test_latex_all(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test latex output for SteelIProfileStrengthClass3."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=1, vy=1, vz=1, mx=1, my=1, mz=1
         )
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+        calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         check = calc.check()
         latex_output = calc.latex()
         assert check.is_ok is True
@@ -51,12 +48,8 @@ class TestSteelIProfileStrengthClass3:
             {"n": 1, "vy": 0, "vz": 0, "mx": 0, "my": 0, "mz": 1},  # n and mz
         ],
     )
-    def test_latex_only_single_force_permutations(
-        self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties], forces_kwargs: dict[str, float]
-    ) -> None:
+    def test_latex_only_single_force_permutations(self, heb_steel_cross_section: SteelCrossSection, forces_kwargs: dict[str, float]) -> None:
         """Test latex output for SteelIProfileStrengthClass3 with 0 and 1 for all n, vy, vz, mx, my, mz."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
-
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM,
             member="M1",
@@ -69,29 +62,27 @@ class TestSteelIProfileStrengthClass3:
             my=forces_kwargs["my"],
             mz=forces_kwargs["mz"],
         )
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+        calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         check = calc.check()
         latex_output = calc.latex()
         assert check.is_ok is True
         assert len(latex_output) > 0
 
-    def test_removal_slashes_at_start(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+    def test_removal_slashes_at_start(self, heb_steel_cross_section: SteelCrossSection) -> None:
         r"""Test that latex output does not start with '\newline'."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=1
         )
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+        calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         latex_output = calc.latex()
         assert latex_output[:8] != r"\newline"
 
-    def test_latex_wrong_format(self, heb_profile_and_properties: tuple[ISteelProfile, SectionProperties]) -> None:
+    def test_latex_wrong_format(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test that wrong format raises ValueError."""
-        (heb_profile, heb_properties) = heb_profile_and_properties
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=1
         )
-        calc = SteelIProfileStrengthClass3(heb_profile, heb_properties, result_internal_force_1d, gamma_m0=1.0)
+        calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
 
         with pytest.raises(ValueError):
             calc.latex(latex_format="table")
