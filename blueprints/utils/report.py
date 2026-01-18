@@ -29,6 +29,8 @@ from pathlib import Path
 from typing import Any, Literal, Self
 
 from blueprints.codes.formula import Formula
+from blueprints.utils._report_to_word import _ReportToWordConverter
+from blueprints.utils.language.translate import LatexTranslator
 
 
 @dataclass
@@ -616,8 +618,6 @@ class Report:
         latex = preamble + self.content + r"\end{document}"
         if language != "en":
             # Translate content to the specified language
-            from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
-
             latex = LatexTranslator(original_text=latex, destination_language=language).text
 
         # If path is provided, save to file and return None
@@ -680,10 +680,6 @@ class Report:
         >>> docx_bytes = report.to_word()
         >>> # Can now send as email attachment or stream over HTTP
         """
-        from blueprints.utils._report_to_word import (  # noqa: PLC0415
-            _ReportToWordConverter,
-        )  # imported here as core does not have word module installed by default
-
         latex_content = self.to_latex(language=language)
         converter = _ReportToWordConverter(latex_content)
         if converter.document:
