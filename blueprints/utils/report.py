@@ -148,7 +148,7 @@ class Report:
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
-            self.content += rf"\begin{{equation}} {equation} \end{{equation}}"
+            self.content += rf"\begin{{equation}} {equation} \notag \end{{equation}}"
 
         # Add a newline for visual separation
         self.content += "\n"
