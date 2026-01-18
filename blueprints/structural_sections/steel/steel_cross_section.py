@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections._profile import Profile
-from blueprints.type_alias import KG_M, MM
+from blueprints.type_alias import KG_M, MPA
 from blueprints.unit_conversion import MM2_TO_M2
 
 
@@ -29,25 +29,25 @@ class SteelCrossSection:
     """The material type of the steel."""
 
     @property
-    def yield_strength(self) -> MM:
+    def yield_strength(self) -> MPA:
         """
         Get the yield strength of the steel material.
 
         Returns
         -------
-        MM
+        MPA
             The yield strength of the steel material.
         """
         return self.material.yield_strength(thickness=self.profile.max_element_thickness)
 
     @property
-    def ultimate_strength(self) -> MM:
+    def ultimate_strength(self) -> MPA:
         """
         Get the ultimate strength of the steel material.
 
         Returns
         -------
-        MM
+        MPA
             The ultimate strength of the steel material.
         """
         return self.material.ultimate_strength(thickness=self.profile.max_element_thickness)
