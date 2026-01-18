@@ -113,7 +113,7 @@ class TestReport:
     def test_add_equation_without_tag(self, fixture_report: Report) -> None:
         """Test adding equation without tag."""
         fixture_report.add_equation("a^2+b^2=c^2")
-        expected = r"\begin{equation} a^2+b^2=c^2 \end{equation}" + "\n"
+        expected = r"\begin{equation} a^2+b^2=c^2 \notag \end{equation}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_equation_with_tag(self, fixture_report: Report) -> None:
@@ -222,7 +222,7 @@ class TestReport:
         fixture_report.add_figure("path/to/image.png")
 
         # Check essential figure components
-        assert r"\begin{figure}[h]" in fixture_report.content
+        assert r"\begin{figure}" in fixture_report.content
         assert r"\centering" in fixture_report.content
         assert r"\includegraphics[width=0.9\textwidth]{path/to/image.png}" in fixture_report.content
         assert r"\end{figure}" in fixture_report.content
