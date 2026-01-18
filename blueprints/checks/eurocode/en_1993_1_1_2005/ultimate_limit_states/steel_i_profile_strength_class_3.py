@@ -3,8 +3,8 @@
 This module provides strength checks for steel I-profiles of class 3 cross-sections according to Eurocode 3.
 """
 
-from dataclasses import dataclass
-from typing import ClassVar
+from dataclasses import dataclass, field
+from typing import Any, ClassVar
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
@@ -54,6 +54,9 @@ class SteelIProfileStrengthClass3(CheckProtocol):
     steel_cross_section: SteelCrossSection
     result_internal_force_1d: ResultInternalForce1D
     gamma_m0: DIMENSIONLESS = 1.0
+    profile: Any = field(init=False, repr=False)
+    properties: Any = field(init=False, repr=False)
+    material: Any = field(init=False, repr=False)
 
     name: str = "Check for steel I-profiles of Class 3"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]

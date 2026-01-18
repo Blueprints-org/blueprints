@@ -3,8 +3,8 @@
 This module provides strength checks for steel cross-sections of class 1, 2 and 3 according to Eurocode 3.
 """
 
-from dataclasses import dataclass
-from typing import ClassVar
+from dataclasses import dataclass, field
+from typing import Any, ClassVar
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
@@ -61,6 +61,9 @@ class NormalForceClass123(CheckProtocol):
     steel_cross_section: SteelCrossSection
     result_internal_force_1d: ResultInternalForce1D
     gamma_m0: DIMENSIONLESS = 1.0
+    profile: Any = field(init=False, repr=False)
+    properties: Any = field(init=False, repr=False)
+    material: Any = field(init=False, repr=False)
 
     name: str = "Normal force check for steel profiles of Class 1, 2 and 3"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
