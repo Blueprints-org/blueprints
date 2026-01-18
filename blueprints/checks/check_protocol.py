@@ -43,19 +43,6 @@ class CheckProtocol(Protocol):
     name: str
     source_docs: list[str]
 
-    def result(self) -> CheckResult:
-        """Execute check and return standardized result.
-
-        This is the primary public API method. Call this to execute your
-        structural check and get a pass/fail result in a standardized format.
-
-        Returns
-        -------
-        CheckResult
-            Standardized Blueprints result object.
-        """
-        ...
-
     def calculation_steps(self) -> dict[str, "CheckProtocol"]:
         """Get sub-check instances for composite checks.
 
@@ -71,6 +58,19 @@ class CheckProtocol(Protocol):
             Dictionary mapping descriptive names to Check instances.
             Empty dict for simple checks with no sub-checks.
 
+        """
+        ...
+
+    def result(self) -> CheckResult:
+        """Execute check and return standardized result.
+
+        This is the primary public API method. Call this to execute your
+        structural check and get a pass/fail result in a standardized format.
+
+        Returns
+        -------
+        CheckResult
+            Standardized Blueprints result object.
         """
         ...
 
