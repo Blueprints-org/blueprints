@@ -124,6 +124,28 @@ class NormalForceClass123(CheckProtocol):
         required = steps["en_1993_1_1_2005 f6.10"]
         return CheckResult.from_comparison(provided=provided, required=required)
 
+    def report_calculation_steps(self, report: Report, n: int = 2) -> None:
+        """Report calculation steps for all strength checks.
+
+        Parameters
+        ----------
+        report : Report
+            The report object to which the calculation steps will be added.
+        n : int, optional
+            Formula numbering for LaTeX output (default is 2).
+        """
+        if self.result_internal_force_1d.n == 0:
+            report.add_paragraph("Checking normal force not needed as no normal force applied.").add_newline()
+        elif self.result_internal_force_1d.n > 0:
+            report.add_paragraph(r"Checking normal force (tension) using chapter 6.2.3.").add_newline()
+        elif self.result_internal_force_1d.n < 0:
+            report.add_paragraph(r"Checking normal force (compression) using chapter 6.2.4.").add_newline()
+
+        # add calculation steps to report
+        if self.result_internal_force_1d.n != 0:
+            for step in self.calculation_steps().values():
+                report.add_formula(step, n=n)
+
     def report(self, n: int = 2) -> Report:
         """Returns the report for the normal force check.
 
@@ -137,49 +159,49 @@ class NormalForceClass123(CheckProtocol):
         Report
             Report of the normal force check.
         """
+        # Create report
         report = Report("Normal force - Check report")
+        report.add_heading("Utilization summary")
+        report.add_paragraph(f"The utilization for the normal force check is {self.result().unity_check:.{n}f}.").add_newline(n=2)
+        report.add_paragraph(f"Overall result: {'OK' if self.result().is_ok else 'NOT OK'}", bold=True)
+
+        # Applied documents
         report.add_heading("Applied code documents")
         report.add_paragraph("The following documents were applied in this check:")
         report.add_list(self.source_docs)
 
+        # Applied forces
         report.add_heading("Applied forces")
         report.add_paragraph("The following internal forces were applied in this check:")
         report.add_table(headers=["Type", "Value"], rows=[["Normal force", f"{self.result_internal_force_1d.n:.{n}f} kN"]])
 
-        report.add_heading("Applied profile and material")
-        report.add_paragraph("The following profile and material properties were used in this check:")
+        # Applied material and profile
+        report.add_heading("Applied material and profile")
+        report.add_paragraph("The following material properties were used in this check:")
         report.add_table(
             headers=["Property", "Value"],
             rows=[
                 ["Material", str(self.steel_cross_section.material.name)],
-                ["Yield Strength", f"{self.steel_cross_section.yield_strength:.{n}f} MPa"],
-                ["Ultimate Strength", f"{self.steel_cross_section.ultimate_strength:.{n}f} MPa"],
-                ["Elastic Modulus", f"{self.steel_cross_section.material.e_modulus:.{n}f} MPa"],
+                ["Yield Strength $f_y$", f"{self.steel_cross_section.yield_strength:.{n}f} MPa"],
+                ["Ultimate Strength $f_u$", f"{self.steel_cross_section.ultimate_strength:.{n}f} MPa"],
+                ["Elastic Modulus $E$", f"{self.steel_cross_section.material.e_modulus:.{n}f} MPa"],
             ],
-        )
+        ).add_newline()
         report.add_paragraph("The following section properties were used in this check:")
         report.add_table(
             headers=["Property", "Value"],
             rows=[
                 ["Profile", str(self.steel_cross_section.profile.name)],
-                ["Area", f"{self.properties.area:.{n}f} $mm^2$"],
+                ["Area $A$", f"{self.properties.area:.{n}f} $mm^2$"],
             ],
         )
 
-        report.add_heading("Calculation steps")
-        if self.result_internal_force_1d.n == 0:
-            report.add_paragraph("Checking normal force not needed as no normal force applied.").add_newline()
-        elif self.result_internal_force_1d.n > 0:
-            report.add_paragraph(r"Checking normal force (tension) using chapter 6.2.3.").add_newline()
-        elif self.result_internal_force_1d.n < 0:
-            report.add_paragraph(r"Checking normal force (compression) using chapter 6.2.4.").add_newline()
+        # Calculation steps
+        report.add_heading("Individual checks")
+        self.report_calculation_steps(report, n=n)
 
-        # add calculation steps to report
-        if self.result_internal_force_1d.n != 0:
-            for step in self.calculation_steps().values():
-                report.add_formula(step)
-
-        report.add_heading("Result")
+        # Conclusion
+        report.add_heading("Conclusion")
         if self.result().is_ok:
             report.add_paragraph("The check for normal force has been passed.")
             report.add_equation(r"Check \to OK", tag=None)
@@ -188,3 +210,18 @@ class NormalForceClass123(CheckProtocol):
             report.add_equation(r"Check \to NOT \ OK", tag=None)
 
         return report
+
+
+if __name__ == "__main__":
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300
+
+    result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=100)
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = NormalForceClass123(heb_300_s355, result_internal_force_1d, gamma_m0=1.0)
+    calc.report().to_word("normal_force_check_report.docx")
