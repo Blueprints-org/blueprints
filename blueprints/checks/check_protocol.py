@@ -3,6 +3,7 @@
 from typing import Protocol, runtime_checkable
 
 from blueprints.checks.check_result import CheckResult
+from blueprints.codes.formula import Formula
 from blueprints.utils.report import Report
 
 
@@ -56,7 +57,7 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def calculation_steps(self) -> dict[str, "CheckProtocol" | None]:
+    def calculation_steps(self) -> dict[str, "CheckProtocol" | Formula | None]:
         """Get sub-check instances for composite checks.
 
         Access this method to get all Check instances that are part of an

@@ -10,6 +10,7 @@ from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.normal_force import NormalForceClass123
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
+from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
@@ -71,7 +72,7 @@ class SteelIProfileStrengthClass3(CheckProtocol):
         object.__setattr__(self, "properties", properties)
         object.__setattr__(self, "material", self.steel_cross_section.material)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol | None]:
+    def calculation_steps(self) -> dict[str, CheckProtocol | Formula | None]:
         """Perform calculation steps for all strength checks."""
         return {
             "normal force": NormalForceClass123(self.steel_cross_section, self.result_internal_force_1d, self.gamma_m0),
@@ -88,10 +89,16 @@ class SteelIProfileStrengthClass3(CheckProtocol):
     def result(self) -> CheckResult:
         """Perform all strength checks and return the overall result."""
         checks = list(self.calculation_steps().values())
-        # If any check is None, treat as failed (unity_check = 9.99)
-        if any(c is None for c in checks):
-            return CheckResult.from_unity_check(9.99)
-        return CheckResult.from_unity_check(max(c.result().unity_check for c in checks))
+        # Only consider CheckProtocol objects for result aggregation
+        unity_checks = []
+        for c in checks:
+            if c is None:
+                return CheckResult.from_unity_check(999)
+            if isinstance(c, CheckProtocol):
+                unity_checks.append(c.result().unity_check)
+        if not unity_checks:
+            return CheckResult.from_unity_check(999)
+        return CheckResult.from_unity_check(max(unity_checks))
 
     def report_calculation_steps(self, report: Report, n: int = 2, level: int = 2) -> None:
         """Report calculation steps for all strength checks.
@@ -107,10 +114,11 @@ class SteelIProfileStrengthClass3(CheckProtocol):
         """
         for check_name, check in self.calculation_steps().items():
             report.add_heading(f"Checking: {check_name}", level=level)
-            if check is None:
-                report.add_paragraph("This check is not yet implemented.")
+            method = getattr(check, "report_calculation_steps", None)
+            if callable(method):
+                method(report, n=n)
             else:
-                check.report_calculation_steps(report, n=n)
+                report.add_paragraph("This check does not support detailed calculation steps.")
 
     def report(self, n: int = 2) -> Report:
         """
@@ -129,16 +137,27 @@ class SteelIProfileStrengthClass3(CheckProtocol):
         # Create report
         report = Report("Steel I-Profile Strength Check (Class 3) Report")
         report.add_heading("Utilization summary")
-        report.add_table(
-            headers=["Check", "Utilization", "Status"],
-            rows=[
+        rows = []
+        for check_name, check in self.calculation_steps().items():
+            if isinstance(check, CheckProtocol):
+                utilization = f"{check.result().unity_check:.{n}f}"
+                status = "OK" if check.result().is_ok else "NOT OK"
+            elif check is None:
+                utilization = "Not implemented"
+                status = "NOT OK"
+            else:  # Formula or other
+                utilization = "N/A"
+                status = "N/A"
+            rows.append(
                 [
                     check_name.capitalize(),
-                    f"{check.result().unity_check:.{n}f}" if check is not None else "Not implemented",
-                    "OK" if (check is not None and check.result().is_ok) else "NOT OK",
+                    utilization,
+                    status,
                 ]
-                for check_name, check in self.calculation_steps().items()
-            ],
+            )
+        report.add_table(
+            headers=["Check", "Utilization", "Status"],
+            rows=rows,
         )
         report.add_paragraph(f"Overall result: {'OK' if self.result().is_ok else 'NOT OK'}", bold=True)
 
