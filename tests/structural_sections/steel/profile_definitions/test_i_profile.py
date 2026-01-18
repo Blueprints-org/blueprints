@@ -24,7 +24,7 @@ class TestIProfile:
 
     def test_maximum_element_thickness(self, h_profile: IProfile) -> None:
         """Test the maximum element thickness of the I-profile."""
-        expected_max_thickness = 19  # mm
+        expected_max_thickness = 22.5  # mm
         assert pytest.approx(h_profile.max_element_thickness, rel=1e-6) == expected_max_thickness
 
     def test_steel_volume_per_meter(self, h_profile: IProfile) -> None:

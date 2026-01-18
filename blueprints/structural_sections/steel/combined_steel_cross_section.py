@@ -80,9 +80,7 @@ class CombinedSteelCrossSection:
         MPA
             The total yield strength of the combined steel cross-section.
         """
-        strengths = [section.yield_strength for section in self.steel_cross_sections if section.yield_strength is not None]
-        if not strengths:
-            raise ValueError("No valid yield_strength values in steel_cross_sections.")
+        strengths = [section.yield_strength for section in self.steel_cross_sections if section.yield_strength]
         return min(strengths)
 
     @property
@@ -95,9 +93,7 @@ class CombinedSteelCrossSection:
         MPA
             The total ultimate strength of the combined steel cross-section.
         """
-        strengths = [section.ultimate_strength for section in self.steel_cross_sections if section.ultimate_strength is not None]
-        if not strengths:
-            raise ValueError("No valid ultimate_strength values in steel_cross_sections.")
+        strengths = [section.ultimate_strength for section in self.steel_cross_sections if section.ultimate_strength]
         return min(strengths)
 
     @property
