@@ -12,13 +12,13 @@ class CheckProtocol(Protocol):
 
     Any class implementing this protocol can be used as a structural check,
     regardless of inheritance. Provides maximum flexibility for simple checks
-    that don't need to inherit from BaseCheck.
+    that don't need to inherit from a common base class.
 
     Notes
     -----
     - Use for duck typing and structural subtyping
     - No inheritance required
-    - Simple checks can implement this without BaseCheck inheritance
+    - Simple checks can implement this without inheriting from a shared base class
     - Enables both explicit (ABC) and implicit (Protocol) patterns
 
     Examples
