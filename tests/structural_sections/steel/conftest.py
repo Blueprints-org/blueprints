@@ -33,3 +33,21 @@ def thick_41_mm_flange_i_profile() -> SteelCrossSection:
         ),
         material=SteelMaterial(steel_class=SteelStrengthClass.S275),
     )
+
+
+@pytest.fixture
+def thick_40_mm_flange_i_profile() -> SteelCrossSection:
+    """Fixture to set up a SteelCrossSection for testing with thick flanges."""
+    return SteelCrossSection(
+        profile=IProfile(
+            top_flange_width=200,  # mm, wide flange
+            top_flange_thickness=40,  # mm, thick flange
+            bottom_flange_width=200,  # mm, wide flange
+            bottom_flange_thickness=40,  # mm, thick flange
+            total_height=300,  # mm, example height
+            web_thickness=20,  # mm, thick web
+            top_radius=18,  # mm, typical radius
+            bottom_radius=18,  # mm, typical radius
+        ),
+        material=SteelMaterial(steel_class=SteelStrengthClass.S275),
+    )
