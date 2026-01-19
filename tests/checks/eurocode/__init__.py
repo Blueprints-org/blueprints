@@ -1,0 +1,1 @@
+"""Test Eurocode checks."""
