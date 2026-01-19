@@ -50,6 +50,11 @@ class RightAngledTriangularProfile(Profile):
             raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
+    def max_profile_thickness(self) -> MM:
+        """Maximum element thickness of the triangular profile [mm]."""
+        return min(self.base, self.height)
+
+    @property
     def mesh_creator(self) -> partial:
         """Mesh settings for the geometrical calculations of the triangular profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure

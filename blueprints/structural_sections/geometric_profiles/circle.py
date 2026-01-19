@@ -39,6 +39,11 @@ class CircularProfile(Profile):
             raise ValueError(msg)
 
     @property
+    def max_profile_thickness(self) -> MM:
+        """Maximum element thickness of the circular profile [mm]."""
+        return self.diameter
+
+    @property
     def mesh_creator(self) -> partial:
         """Mesh settings for the geometrical calculations of the circular profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure

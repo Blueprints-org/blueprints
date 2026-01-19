@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
-from blueprints.type_alias import KG_M
+from blueprints.type_alias import KG_M, MPA
 
 
 @dataclass(frozen=True)
@@ -69,6 +69,32 @@ class CombinedSteelCrossSection:
             A new instance of CombinedSteelCrossSection with the added steel cross-sections.
         """
         return CombinedSteelCrossSection(steel_cross_sections=(*self.steel_cross_sections, *steel_cross_sections))
+
+    @property
+    def yield_strength(self) -> MPA:
+        """
+        Calculate the total yield strength of the combined steel cross-section.
+
+        Returns
+        -------
+        MPA
+            The total yield strength of the combined steel cross-section.
+        """
+        strengths = [section.yield_strength for section in self.steel_cross_sections if section.yield_strength]
+        return min(strengths)
+
+    @property
+    def ultimate_strength(self) -> MPA:
+        """
+        Calculate the total ultimate strength of the combined steel cross-section.
+
+        Returns
+        -------
+        MPA
+            The total ultimate strength of the combined steel cross-section.
+        """
+        strengths = [section.ultimate_strength for section in self.steel_cross_sections if section.ultimate_strength]
+        return min(strengths)
 
     @property
     def weight_per_meter(self) -> KG_M:
