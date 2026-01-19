@@ -6,6 +6,8 @@ This module provides strength checks for steel cross-sections of class 1, 2 and 
 from dataclasses import dataclass, field
 from typing import Any, ClassVar
 
+from sectionproperties.post.post import SectionProperties
+
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -37,6 +39,8 @@ class NormalForceClass123(CheckProtocol):
         The load combination to apply to the profile.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
+    section_properties : SectionProperties | None, optional
+        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -61,8 +65,8 @@ class NormalForceClass123(CheckProtocol):
     steel_cross_section: SteelCrossSection
     result_internal_force_1d: ResultInternalForce1D
     gamma_m0: DIMENSIONLESS = 1.0
+    section_properties: SectionProperties | None = None
     profile: Any = field(init=False, repr=False)
-    properties: Any = field(init=False, repr=False)
     material: Any = field(init=False, repr=False)
 
     name: str = "Normal force check for steel profiles of Class 1, 2 and 3"
@@ -71,8 +75,9 @@ class NormalForceClass123(CheckProtocol):
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""
         object.__setattr__(self, "profile", self.steel_cross_section.profile)
-        properties = self.steel_cross_section.profile.section_properties()
-        object.__setattr__(self, "properties", properties)
+        if self.section_properties is None:
+            section_properties = self.steel_cross_section.profile.section_properties()
+            object.__setattr__(self, "section_properties", section_properties)
         object.__setattr__(self, "material", self.steel_cross_section.material)
 
     def calculation_steps(self) -> dict[str, CheckProtocol | Formula | None]:
@@ -86,7 +91,7 @@ class NormalForceClass123(CheckProtocol):
         if self.result_internal_force_1d.n == 0:
             return {}
         if self.result_internal_force_1d.n > 0:  # tension, based on chapter 6.2.3
-            a = self.properties.area if self.properties.area is not None else 0
+            a = self.section_properties.area if self.section_properties.area is not None else 0
             f_y = self.steel_cross_section.yield_strength
             if f_y is None:
                 raise ValueError("Yield strength (f_y) is required for tension check but is None.")
@@ -99,7 +104,7 @@ class NormalForceClass123(CheckProtocol):
             }
 
         # compression, based on chapter 6.2.4
-        a = self.properties.area if self.properties.area is not None else 0
+        a = self.section_properties.area if self.section_properties.area is not None else 0
         f_y = self.steel_cross_section.yield_strength
         if f_y is None:
             raise ValueError("Yield strength (f_y) is required for compression check but is None.")
@@ -204,7 +209,7 @@ class NormalForceClass123(CheckProtocol):
             headers=["Property", "Value"],
             rows=[
                 ["Profile", str(self.steel_cross_section.profile.name)],
-                ["Area $A$", f"{self.properties.area:.{n}f} $mm^2$"],
+                ["Area $A$", f"{self.section_properties.area:.{n}f} $mm^2$"],
             ],
         )
 

@@ -6,6 +6,8 @@ This module provides strength checks for steel I-profiles of class 3 cross-secti
 from dataclasses import dataclass, field
 from typing import Any, ClassVar
 
+from sectionproperties.post.post import SectionProperties
+
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.normal_force import NormalForceClass123
@@ -32,6 +34,8 @@ class SteelIProfileStrengthClass3(CheckProtocol):
         The load combination to apply to the profile.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
+    section_properties : SectionProperties | None, optional
+        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -55,8 +59,8 @@ class SteelIProfileStrengthClass3(CheckProtocol):
     steel_cross_section: SteelCrossSection
     result_internal_force_1d: ResultInternalForce1D
     gamma_m0: DIMENSIONLESS = 1.0
+    section_properties: SectionProperties | None = None
     profile: Any = field(init=False, repr=False)
-    properties: Any = field(init=False, repr=False)
     material: Any = field(init=False, repr=False)
 
     name: str = "Check for steel I-profiles of Class 3"
@@ -68,14 +72,15 @@ class SteelIProfileStrengthClass3(CheckProtocol):
             raise TypeError("The provided profile is not an I-profile.")
 
         object.__setattr__(self, "profile", self.steel_cross_section.profile)
-        properties = self.steel_cross_section.profile.section_properties()
-        object.__setattr__(self, "properties", properties)
+        if self.section_properties is None:
+            section_properties = self.steel_cross_section.profile.section_properties()
+            object.__setattr__(self, "section_properties", section_properties)
         object.__setattr__(self, "material", self.steel_cross_section.material)
 
     def calculation_steps(self) -> dict[str, CheckProtocol | Formula | None]:
         """Perform calculation steps for all strength checks."""
         return {
-            "normal force": NormalForceClass123(self.steel_cross_section, self.result_internal_force_1d, self.gamma_m0),
+            "normal force": NormalForceClass123(self.steel_cross_section, self.result_internal_force_1d, self.gamma_m0, self.section_properties),
             "bending moment z-axis": None,  # To be implemented
             "bending moment y-axis": None,  # To be implemented
             "shear force z-axis": None,  # To be implemented
@@ -198,9 +203,9 @@ class SteelIProfileStrengthClass3(CheckProtocol):
             headers=["Property", "Value"],
             rows=[
                 ["Profile", str(self.steel_cross_section.profile.name)],
-                ["Area $A$", f"{self.properties.area:.{n}f} $mm^2$"],
-                ["Moment of Inertia $I_y$", f"{min(self.properties.zxx_plus, self.properties.zxx_minus):.{n}f} $mm^4$"],
-                ["Moment of Inertia $I_z$", f"{min(self.properties.zyy_plus, self.properties.zyy_minus):.{n}f} $mm^4$"],
+                ["Area $A$", f"{self.section_properties.area:.{n}f} $mm^2$"],
+                ["Moment of Inertia $I_y$", f"{min(self.section_properties.zxx_plus, self.section_properties.zxx_minus):.{n}f} $mm^4$"],
+                ["Moment of Inertia $I_z$", f"{min(self.section_properties.zyy_plus, self.section_properties.zyy_minus):.{n}f} $mm^4$"],
             ],
         )
 

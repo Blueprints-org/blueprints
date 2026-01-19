@@ -57,7 +57,7 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def calculation_steps(self) -> dict[str, "CheckProtocol" | Formula | None]:
+    def calculation_steps(self) -> dict[str, "CheckProtocol | Formula | None"]:
         """Get sub-check instances for composite checks.
 
         Access this method to get all Check instances that are part of an
