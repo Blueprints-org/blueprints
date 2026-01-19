@@ -203,7 +203,7 @@ class NormalForceClass123(CheckProtocol):
                 ["Ultimate Strength $f_u$", f"{self.steel_cross_section.ultimate_strength:.{n}f} MPa"],
                 ["Elastic Modulus $E$", f"{self.steel_cross_section.material.e_modulus:.{n}f} MPa"],
             ],
-        ).add_newline()
+        )
         report.add_paragraph("The following section properties were used in this check:")
         report.add_table(
             headers=["Property", "Value"],
@@ -227,18 +227,3 @@ class NormalForceClass123(CheckProtocol):
             report.add_equation(r"Check \to NOT \ OK", tag=None)
 
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300
-
-    result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=100)
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = NormalForceClass123(heb_300_s355, result_internal_force_1d, gamma_m0=1.0)
-    calc.report().to_word("normal_force_check_report.docx")
