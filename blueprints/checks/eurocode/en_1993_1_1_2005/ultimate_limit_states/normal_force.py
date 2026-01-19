@@ -93,8 +93,6 @@ class NormalForceClass123(CheckProtocol):
         if self.result_internal_force_1d.n > 0:  # tension, based on chapter 6.2.3
             a = self.section_properties.area if self.section_properties.area is not None else 0
             f_y = self.steel_cross_section.yield_strength
-            if f_y is None:
-                raise ValueError("Yield strength (f_y) is required for tension check but is None.")
             n_ed = self.result_internal_force_1d.n * KN_TO_N
             n_t_rd = formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
             check_tension = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
@@ -106,8 +104,6 @@ class NormalForceClass123(CheckProtocol):
         # compression, based on chapter 6.2.4
         a = self.section_properties.area if self.section_properties.area is not None else 0
         f_y = self.steel_cross_section.yield_strength
-        if f_y is None:
-            raise ValueError("Yield strength (f_y) is required for compression check but is None.")
         n_ed = -self.result_internal_force_1d.n * KN_TO_N
         n_c_rd = formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
         check_compression = formula_6_9.Form6Dot9CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd)
@@ -130,15 +126,11 @@ class NormalForceClass123(CheckProtocol):
         if self.result_internal_force_1d.n > 0:
             provided = self.result_internal_force_1d.n * KN_TO_N
             required = steps["en_1993_1_1_2005 f6.6"]
-            if isinstance(required, Formula):
-                return CheckResult.from_comparison(provided=provided, required=float(required))
-            raise TypeError("Expected a Formula for 'required' in tension check.")
+            return CheckResult.from_comparison(provided=provided, required=float(required))
         # compression
         provided = -self.result_internal_force_1d.n * KN_TO_N
         required = steps["en_1993_1_1_2005 f6.10"]
-        if isinstance(required, Formula):
-            return CheckResult.from_comparison(provided=provided, required=float(required))
-        raise TypeError("Expected a Formula for 'required' in compression check.")
+        return CheckResult.from_comparison(provided=provided, required=float(required))
 
     def report_calculation_steps(self, report: Report, n: int = 2) -> None:
         """Report calculation steps for all strength checks.

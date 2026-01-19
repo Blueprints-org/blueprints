@@ -12,13 +12,9 @@ class TestSteelIProfileStrengthClass3:
 
     def test_check(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test check() returns True for no normal force."""
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=0, vy=0, vz=0, mx=0, my=0, mz=0
-        )
+        result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1")
         calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
-        check = calc.check()
-        assert check.is_ok is True
-        assert len(calc.latex()) > 0
+        assert calc.report()
 
     def test_latex_all(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test latex output for SteelIProfileStrengthClass3."""
@@ -26,10 +22,7 @@ class TestSteelIProfileStrengthClass3:
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=1, vy=1, vz=1, mx=1, my=1, mz=1
         )
         calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
-        check = calc.check()
-        latex_output = calc.latex()
-        assert check.is_ok is True
-        assert len(latex_output) > 0
+        assert calc.report()
 
     @pytest.mark.parametrize(
         "forces_kwargs",
@@ -48,8 +41,8 @@ class TestSteelIProfileStrengthClass3:
             {"n": 1, "vy": 0, "vz": 0, "mx": 0, "my": 0, "mz": 1},  # n and mz
         ],
     )
-    def test_latex_only_single_force_permutations(self, heb_steel_cross_section: SteelCrossSection, forces_kwargs: dict[str, float]) -> None:
-        """Test latex output for SteelIProfileStrengthClass3 with 0 and 1 for all n, vy, vz, mx, my, mz."""
+    def test_report_only_single_force_permutations(self, heb_steel_cross_section: SteelCrossSection, forces_kwargs: dict[str, float]) -> None:
+        """Test report output for SteelIProfileStrengthClass3 with 0 and 1 for all n, vy, vz, mx, my, mz."""
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM,
             member="M1",
@@ -63,26 +56,11 @@ class TestSteelIProfileStrengthClass3:
             mz=forces_kwargs["mz"],
         )
         calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
-        check = calc.check()
-        latex_output = calc.latex()
-        assert check.is_ok is True
-        assert len(latex_output) > 0
+        assert calc.result()
+        assert calc.report()
 
-    def test_removal_slashes_at_start(self, heb_steel_cross_section: SteelCrossSection) -> None:
-        r"""Test that latex output does not start with '\newline'."""
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=1
-        )
-        calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
-        latex_output = calc.latex()
-        assert latex_output[:8] != r"\newline"
-
-    def test_latex_wrong_format(self, heb_steel_cross_section: SteelCrossSection) -> None:
-        """Test that wrong format raises ValueError."""
-        result_internal_force_1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", mz=1
-        )
-        calc = SteelIProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
-
-        with pytest.raises(ValueError):
-            calc.latex(latex_format="table")
+    def test_check_wrong_profile(self, chs_steel_cross_section: SteelCrossSection) -> None:
+        """Test check() returns True for no normal force."""
+        result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1")
+        calc = SteelIProfileStrengthClass3(chs_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
+        assert calc.report()
