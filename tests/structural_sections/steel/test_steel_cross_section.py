@@ -35,6 +35,16 @@ class TestSteelCrossSection:
         expected_ultimate_strength: float = 430.0  # MPa for S275 steel
         assert steel_cross_section.ultimate_strength == pytest.approx(expected_ultimate_strength, 1e-3)
 
+    def test_reduced_yield_strength(self, thick_41_mm_flange_i_profile: SteelCrossSection) -> None:
+        """Test that the SteelCrossSection yield strength is calculated correctly."""
+        expected_yield_strength: float = 255.0  # MPa for S275 steel
+        assert thick_41_mm_flange_i_profile.yield_strength == pytest.approx(expected_yield_strength, 1e-3)
+
+    def test_reduced_ultimate_strength(self, thick_41_mm_flange_i_profile: SteelCrossSection) -> None:
+        """Test that the SteelCrossSection ultimate strength is calculated correctly."""
+        expected_ultimate_strength: float = 410.0  # MPa for S275 steel
+        assert thick_41_mm_flange_i_profile.ultimate_strength == pytest.approx(expected_ultimate_strength, 1e-3)
+
     def test_weight_per_meter(self, steel_cross_section: SteelCrossSection) -> None:
         """Test that the SteelCrossSection weight per meter is calculated correctly."""
         expected_weight: float = steel_cross_section.profile.area * steel_cross_section.material.density * 1e-6

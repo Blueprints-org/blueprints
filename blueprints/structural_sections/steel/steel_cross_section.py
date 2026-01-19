@@ -38,7 +38,7 @@ class SteelCrossSection:
         MPA | None
             The yield strength of the steel material, or None if not available.
         """
-        return self.material.yield_strength(thickness=self.profile.max_element_thickness)
+        return self.material.yield_strength(thickness=self.profile.max_profile_thickness)
 
     @property
     def ultimate_strength(self) -> MPA | None:
@@ -50,7 +50,7 @@ class SteelCrossSection:
         MPA | None
             The ultimate strength of the steel material, or None if not available.
         """
-        return self.material.ultimate_strength(thickness=self.profile.max_element_thickness)
+        return self.material.ultimate_strength(thickness=self.profile.max_profile_thickness)
 
     @property
     def weight_per_meter(self) -> KG_M:
