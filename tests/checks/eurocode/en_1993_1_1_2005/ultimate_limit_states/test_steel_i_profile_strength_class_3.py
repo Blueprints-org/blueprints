@@ -60,7 +60,7 @@ class TestSteelIProfileStrengthClass3:
         assert calc.report()
 
     def test_check_wrong_profile(self, chs_steel_cross_section: SteelCrossSection) -> None:
-        """Test check() returns True for no normal force."""
+        """Test check() raises TypeError for non-I-profile."""
         result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1")
-        calc = SteelIProfileStrengthClass3(chs_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
-        assert calc.report()
+        with pytest.raises(TypeError, match="The provided profile is not an I-profile"):
+            SteelIProfileStrengthClass3(chs_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
