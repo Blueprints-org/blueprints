@@ -64,7 +64,9 @@ class CheckProtocol(Protocol):
         orchestrated check. Each returned check object has its own result(),
         calculation_steps(), and report() methods for detailed inspection.
 
-        For simple (leaf) checks with no sub-checks, return an empty dict.
+        When the check consists of formula direct from the code, return Formula.
+
+        When a calculation sub check is not code yet, return None.
 
         Returns
         -------
