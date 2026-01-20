@@ -23,6 +23,8 @@
 
 **LinkedIn**: <a href="https://www.linkedin.com/company/blueprints-org" target="_blank">https://www.linkedin.com/company/blueprints-org</a>
 
+**YouTube**: <a href="https://www.youtube.com/@BlueprintsOrg" target="_blank">https://www.youtube.com/@BlueprintsOrg</a>
+
 ---
 
 Welcome to `Blueprints`, the go-to repository for civil engineering professionals and enthusiasts!
