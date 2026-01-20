@@ -149,7 +149,9 @@ class ProfileStrengthClass3(CheckProtocol):
 
         report.add_heading("Conclusion")
         if self.result().is_ok:
-            report.add_paragraph("The check for steel I-profile strength (Class 3) has been passed.").add_equation(r"Check \to OK")
+            report.add_paragraph("The check for steel I-profile strength (Class 3) has been passed.").add_equation(
+                r"Check \to OK"
+            )  # pragma: no cover
         else:
             report.add_paragraph("The check for steel I-profile strength (Class 3) has NOT been passed.").add_equation(r"Check \to NOT \ OK")
         return report

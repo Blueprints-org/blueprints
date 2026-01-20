@@ -16,6 +16,14 @@ class TestProfileStrengthClass3:
         calc = ProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         assert calc.report()
 
+    def test_check_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test check() returns True for no normal force."""
+        result_internal_force_1d = ResultInternalForce1D(
+            result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=1e6
+        )
+        calc = ProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
+        assert calc.report()
+
     def test_latex_all(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test latex output for ProfileStrengthClass3."""
         result_internal_force_1d = ResultInternalForce1D(

@@ -65,7 +65,7 @@ class ReportHelpers:
         rows = []
         for force_attr in ["n", "vy", "vz", "mx", "my", "mz"]:
             value = getattr(forces, force_attr, None)
-            if value is not None and value != 0:
+            if value is not None:
                 label = FORCE_LABELS[force_attr] if FORCE_LABELS and force_attr in FORCE_LABELS else force_attr.upper()
                 rows.append([label, f"{value:.{n}f}"])
         report.add_table(headers=["Internal Force", "Value"], rows=rows)
