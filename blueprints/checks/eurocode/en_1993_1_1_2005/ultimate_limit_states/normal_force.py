@@ -23,6 +23,7 @@ from blueprints.structural_sections.steel.steel_cross_section import SteelCrossS
 from blueprints.type_alias import DIMENSIONLESS
 from blueprints.unit_conversion import KN_TO_N
 from blueprints.utils.report import Report
+from blueprints.utils.report_helpers import ReportHelpers
 
 
 @dataclass(frozen=True)
@@ -175,34 +176,19 @@ class NormalForceClass123(CheckProtocol):
         report.add_paragraph(f"Overall result: {'OK' if self.result().is_ok else 'NOT OK'}", bold=True)
 
         # Applied documents
-        report.add_heading("Applied code documents")
-        report.add_paragraph("The following documents were applied in this check:")
-        report.add_list(self.source_docs)
+        ReportHelpers.add_applied_documents(report, self.source_docs)
 
         # Applied forces
-        report.add_heading("Applied forces")
-        report.add_paragraph("The following internal forces were applied in this check:")
-        report.add_table(headers=["Type", "Value"], rows=[["Normal force", f"{self.result_internal_force_1d.n:.{n}f} kN"]])
+        ReportHelpers.add_applied_forces(report, self.result_internal_force_1d, n=n)
 
         # Applied material and profile
-        report.add_heading("Applied material and profile")
-        report.add_paragraph("The following material properties were used in this check:")
-        report.add_table(
-            headers=["Property", "Value"],
-            rows=[
-                ["Material", str(self.steel_cross_section.material.name)],
-                ["Yield Strength $f_y$", f"{self.steel_cross_section.yield_strength:.{n}f} MPa"],
-                ["Ultimate Strength $f_u$", f"{self.steel_cross_section.ultimate_strength:.{n}f} MPa"],
-                ["Elastic Modulus $E$", f"{self.steel_cross_section.material.e_modulus:.{n}f} MPa"],
-            ],
-        )
-        report.add_paragraph("The following section properties were used in this check:")
-        report.add_table(
-            headers=["Property", "Value"],
-            rows=[
-                ["Profile", str(self.steel_cross_section.profile.name)],
-                ["Area $A$", f"{self.section_properties.area:.{n}f} $mm^2$"],
-            ],
+        ReportHelpers.add_material_steel_info(report, self.steel_cross_section, n=n)
+        ReportHelpers.add_section_properties(
+            report,
+            self.section_properties,
+            profile=self.steel_cross_section.profile,
+            n=n,
+            properties=("area"),
         )
 
         # Calculation steps
@@ -212,10 +198,23 @@ class NormalForceClass123(CheckProtocol):
         # Conclusion
         report.add_heading("Conclusion")
         if self.result().is_ok:
-            report.add_paragraph("The check for normal force has been passed.")
-            report.add_equation(r"Check \to OK", tag=None)
+            report.add_paragraph("The check for normal force has been passed.").add_equation(r"Check \to OK")
         else:
-            report.add_paragraph("The check for normal force has ").add_paragraph("NOT", bold=True).add_paragraph(" been passed.")
-            report.add_equation(r"Check \to NOT \ OK", tag=None)
+            report.add_paragraph("The check for normal force has NOT been passed.").add_equation(r"Check \to NOT \ OK")
 
         return report
+
+
+if __name__ == "__main__":
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300
+
+    result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=100)
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = NormalForceClass123(heb_300_s355, result_internal_force_1d, gamma_m0=1.0)
+    calc.report().to_pdf("NORMAL.pdf")
