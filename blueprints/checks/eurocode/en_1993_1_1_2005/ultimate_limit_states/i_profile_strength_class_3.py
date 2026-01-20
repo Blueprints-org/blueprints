@@ -18,6 +18,7 @@ from blueprints.structural_sections.steel.profile_definitions.i_profile import I
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS
 from blueprints.utils.report import Report
+from blueprints.utils.report_helpers import ReportHelpers
 
 
 @dataclass(frozen=True)
@@ -123,102 +124,31 @@ class ProfileStrengthClass3(CheckProtocol):
                 report.add_paragraph("This check does not support detailed calculation steps.")
 
     def report(self, n: int = 2) -> Report:
-        """
-        Returns the combined report of all strength checks.
-
-        Parameters
-        ----------
-        n : int, optional
-            Formula numbering for LaTeX output (default is 2).
-
-        Returns
-        -------
-        Report
-            Combined report of all strength checks.
-        """
-        # Create report
+        """Returns the combined report of all strength checks."""
         report = Report("Steel I-Profile Strength Check (Class 3) Report")
-        report.add_heading("Utilization summary")
-        rows = []
-        for check_name, check in self.calculation_steps().items():
-            if isinstance(check, CheckProtocol):
-                utilization = f"{check.result().unity_check:.{n}f}"
-                status = "OK" if check.result().is_ok else "NOT OK"
-            else:
-                utilization = "Not implemented"
-                status = "NOT OK"
-            rows.append(
-                [
-                    check_name.capitalize(),
-                    utilization,
-                    status,
-                ]
-            )
-        report.add_table(
-            headers=["Check", "Utilization", "Status"],
-            rows=rows,
-        )
-        report.add_paragraph(f"Overall result: {'OK' if self.result().is_ok else 'NOT OK'}", bold=True)
 
-        # Add applied documents
-        report.add_heading("Applied code documents")
-        report.add_paragraph("The following documents were applied in this check:")
-        report.add_list(self.source_docs)
+        ReportHelpers.add_unity_check_summary(report, self.calculation_steps().items(), n=n)
 
-        # Add applied forces
-        report.add_heading("Applied forces")
-        report.add_paragraph("The following internal forces were applied in this check:")
-        report.add_table(
-            headers=["Type", "Value"],
-            rows=[
-                ["Normal force $N$", f"{self.result_internal_force_1d.n:.{n}f} kN"],
-                ["Shear force $V_z$", f"{self.result_internal_force_1d.vz:.{n}f} kN"],
-                ["Shear force $V_y$", f"{self.result_internal_force_1d.vy:.{n}f} kN"],
-                ["Bending moment $M_y$", f"{self.result_internal_force_1d.my:.{n}f} kNm"],
-                ["Bending moment $M_z$", f"{self.result_internal_force_1d.mz:.{n}f} kNm"],
-                ["Torsion $T$", f"{self.result_internal_force_1d.mx:.{n}f} kNm"],
-            ],
+        ReportHelpers.add_applied_documents(report, self.source_docs)
+
+        ReportHelpers.add_applied_forces(report, self.result_internal_force_1d, n=n)
+
+        ReportHelpers.add_material_steel_info(report, self.steel_cross_section, n=n)
+
+        ReportHelpers.add_section_properties(
+            report,
+            self.section_properties,
+            profile=self.steel_cross_section.profile,
+            n=n,
+            properties=["area", "a_sx", "a_sy", "zxx", "zxx", "J"],
         )
 
-        # Add material and profile properties
-        report.add_heading("Applied material and profile")
-        report.add_paragraph("The following material properties were used in this check:")
-        report.add_table(
-            headers=["Property", "Value"],
-            rows=[
-                ["Material", str(self.steel_cross_section.material.name)],
-                ["Yield Strength $f_y$", f"{self.steel_cross_section.yield_strength:.{n}f} MPa"],
-                ["Ultimate Strength $f_u$", f"{self.steel_cross_section.ultimate_strength:.{n}f} MPa"],
-                ["Elastic Modulus $E$", f"{self.steel_cross_section.material.e_modulus:.{n}f} MPa"],
-            ],
-        )
-        report.add_paragraph("The following section properties were used in this check:")
-        report.add_table(
-            headers=["Property", "Value"],
-            rows=[
-                ["Profile", str(self.steel_cross_section.profile.name)],
-                ["Area $A$", f"{self.section_properties.area:.{n}f} $mm^2$"],
-                ["Moment of Inertia $I_y$", f"{min(self.section_properties.zxx_plus, self.section_properties.zxx_minus):.{n}f} $mm^4$"],
-                ["Moment of Inertia $I_z$", f"{min(self.section_properties.zyy_plus, self.section_properties.zyy_minus):.{n}f} $mm^4$"],
-            ],
-        )
-
-        # Add calculation steps
         report.add_heading("Individual checks")
         self.report_calculation_steps(report, n=n)
 
-        # Add conclusion
         report.add_heading("Conclusion")
-        check_result = self.result()
-        if check_result.is_ok:
-            report.add_paragraph(
-                "The check for steel I-profile strength (Class 3) has been passed."
-            )  # pragma: no cover  # can only be reached when all checks are added
-            report.add_equation(r"Check \to OK", tag=None)  # pragma: no cover  # can only be reached when all checks are added
+        if self.result().is_ok:
+            report.add_paragraph("The check for steel I-profile strength (Class 3) has been passed.").add_equation(r"Check \to OK")
         else:
-            report.add_paragraph("The check for steel I-profile strength (Class 3) has ").add_paragraph("NOT", bold=True).add_paragraph(
-                " been passed."
-            )
-            report.add_equation(r"Check \to NOT \ OK", tag=None)
-
+            report.add_paragraph("The check for steel I-profile strength (Class 3) has NOT been passed.").add_equation(r"Check \to NOT \ OK")
         return report
