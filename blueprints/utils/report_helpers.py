@@ -110,7 +110,7 @@ class ReportHelpers:
             label = PROPERTY_LABELS[prop] if PROPERTY_LABELS and prop in PROPERTY_LABELS else prop.capitalize()
             value = getattr(section_properties, prop, None)
             if value is None:
-                rows.append([label, "N/A"])
+                rows.append([label, "Not calculated"])
             else:
                 value_str = f"{value:.{n}f}" if isinstance(value, float) else str(value)
                 rows.append([label, value_str])

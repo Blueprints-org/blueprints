@@ -188,7 +188,7 @@ class NormalForceClass123(CheckProtocol):
             self.section_properties,
             profile=self.steel_cross_section.profile,
             n=n,
-            properties=("area"),
+            properties=["area"],
         )
 
         # Calculation steps
