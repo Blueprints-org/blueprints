@@ -6,6 +6,7 @@ from typing import Any
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
+from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.utils.report import Report
 
 # Mini dictionary of common property labels used in section reports
@@ -71,7 +72,7 @@ class ReportHelpers:
         report.add_table(headers=["Internal Force", "Value"], rows=rows)
 
     @staticmethod
-    def add_material_steel_info(report: Report, steel_cross_section: object, n: int = 2) -> None:
+    def add_material_steel_info(report: Report, steel_cross_section: SteelCrossSection, n: int = 2) -> None:
         """Add material and steel info to the report."""
         report.add_heading("Applied material and profile")
         report.add_paragraph("The following material properties were used in this check:")
@@ -131,7 +132,7 @@ class ReportHelpers:
         overall_ok = True
         for check_name, check in check_results:
             if hasattr(check, "result"):
-                res = check.result()
+                res = check.result if not callable(check.result) else check.result()
                 uc = getattr(res, "unity_check", None)
                 utilization = f"{uc:.{n}f}" if uc is not None else "Not calculated"
                 status = "OK" if getattr(res, "is_ok", False) else "NOT OK"
