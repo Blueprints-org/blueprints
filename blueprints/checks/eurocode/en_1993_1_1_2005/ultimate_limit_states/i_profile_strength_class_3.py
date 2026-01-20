@@ -21,7 +21,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class SteelIProfileStrengthClass3(CheckProtocol):
+class ProfileStrengthClass3(CheckProtocol):
     """Steel I-Profile strength check for class 3.
 
     Performs strength checks on steel I-profiles according to Eurocode 3, for class 3 cross-sections.
@@ -39,7 +39,7 @@ class SteelIProfileStrengthClass3(CheckProtocol):
 
     Example
     -------
-    from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.steel_i_profile_strength_class_3 import SteelIProfileStrengthClass3
+    from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.steel_i_profile_strength_class_3 import ProfileStrengthClass3
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
     from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
@@ -52,7 +52,7 @@ class SteelIProfileStrengthClass3(CheckProtocol):
             )
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = SteelIProfileStrengthClass3(heb_300_s355, result_internal_force_1d, gamma_m0=1.0)
+    calc = ProfileStrengthClass3(heb_300_s355, result_internal_force_1d, gamma_m0=1.0)
     calc.report().to_word("steel_i_profile_strength_class_3_report.docx")
     """
 

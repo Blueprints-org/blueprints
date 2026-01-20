@@ -7,7 +7,7 @@ from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInt
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-class TestSteelIProfileStrengthClass3NormalForce:
+class TestNormalForceClass123:
     """Tests for NormalForceClass123."""
 
     def test_result_none(self, heb_steel_cross_section: SteelCrossSection) -> None:
