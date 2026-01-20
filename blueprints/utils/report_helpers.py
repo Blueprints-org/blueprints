@@ -133,7 +133,7 @@ class ReportHelpers:
             if hasattr(check, "result"):
                 res = check.result()
                 uc = getattr(res, "unity_check", None)
-                utilization = f"{uc:.{n}f}" if uc is not None else "N/A"
+                utilization = f"{uc:.{n}f}" if uc is not None else "Not calculated"
                 status = "OK" if getattr(res, "is_ok", False) else "NOT OK"
                 if not getattr(res, "is_ok", False):
                     overall_ok = False
