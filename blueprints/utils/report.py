@@ -28,6 +28,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any, Literal, Self
 
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
 from blueprints.codes.formula import Formula
 from blueprints.utils._report_to_word import _ReportToWordConverter
 from blueprints.utils.language.translate import LatexTranslator
@@ -463,6 +464,40 @@ class Report:
 
         return self
 
+    def __add__(self, other: Self) -> Self:
+        """Combine two reports into a new report.
+
+        The resulting report will have the title of the first (left) report
+        and the combined content of both reports.
+
+        Parameters
+        ----------
+        other : Report
+            The report to add to this one.
+
+        Returns
+        -------
+        Report
+            A new Report with combined content.
+
+        Examples
+        --------
+        >>> report1 = Report(title="Part 1")
+        >>> report1.add_heading("Introduction")
+        Report(title="Part 1", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=26)
+        >>> report2 = Report(title="Part 2")
+        >>> report2.add_heading("Conclusion")
+        Report(title="Part 2", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=23)
+        >>> combined = report1 + report2
+        >>> combined.title
+        'Part 1'
+        """
+        if not isinstance(other, Report):
+            return NotImplemented
+        result = Report(title=self.title)
+        result.content = self.content + other.content
+        return result
+
     def __repr__(self) -> str:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
@@ -830,3 +865,30 @@ class Report:
 
             # Return PDF as bytes
             return pdf_content
+
+
+if __name__ == "__main__":
+    report_1 = Report(title="Sample Report")
+    report_1.add_heading("Introduction")
+    report_1.add_paragraph("This is a sample paragraph in the introduction section.")
+    report_1.add_equation("E=mc^2", tag="1.1")
+    report_1.add_formula(
+        formula=formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000),
+        options="complete",
+    )
+
+    report_2 = Report(title="Second Part")
+    report_2.add_heading("Conclusion")
+    report_2.add_paragraph("This is the conclusion of the report.")
+    report_2.add_table(
+        headers=["Check", "Utilization", "Status"],
+        rows=[
+            [r"\text{Concrete strut capacity}", "0.588", r"\text{PASS}"],
+            [r"\text{Torsion moment capacity}", "4.825", r"\text{FAIL}"],
+        ],
+    )
+
+    report_final = report_1 + report_2
+    print(report_final)
+    latex_doc = report_final.to_word("final.docx")
+    print(latex_doc)
