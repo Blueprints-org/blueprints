@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.normal_force import NormalForceClass123
+from blueprints.checks.steel.normal_force import NormalForceClass123
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 

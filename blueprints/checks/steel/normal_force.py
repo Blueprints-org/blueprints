@@ -8,7 +8,7 @@ from typing import Any, ClassVar
 
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks._check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
@@ -71,7 +71,7 @@ class NormalForceClass123(CheckProtocol):
     material: Any = field(init=False, repr=False)
 
     name: str = "Normal force check for steel profiles of Class 1, 2 and 3"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
+    source_documents: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""

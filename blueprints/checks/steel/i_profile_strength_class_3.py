@@ -8,9 +8,9 @@ from typing import Any, ClassVar
 
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks._check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.normal_force import NormalForceClass123
+from blueprints.checks.steel.normal_force import NormalForceClass123
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
@@ -66,7 +66,7 @@ class ProfileStrengthClass3(CheckProtocol):
     material: Any = field(init=False, repr=False)
 
     name: str = "Check for steel I-profiles of Class 3"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
+    source_documents: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization checks."""

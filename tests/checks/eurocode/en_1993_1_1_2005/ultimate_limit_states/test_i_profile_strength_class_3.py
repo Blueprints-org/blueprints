@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.i_profile_strength_class_3 import ProfileStrengthClass3
+from blueprints.checks.steel.i_profile_strength_class_3 import ProfileStrengthClass3
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 

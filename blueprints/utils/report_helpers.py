@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 from typing import Any
 
-from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks._check_protocol import CheckProtocol
 from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection

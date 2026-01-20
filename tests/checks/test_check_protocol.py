@@ -5,7 +5,7 @@ from typing import Any, ClassVar
 
 import pytest
 
-from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks._check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
 from blueprints.utils.report import Report
 

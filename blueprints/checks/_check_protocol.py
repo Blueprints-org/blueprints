@@ -1,9 +1,8 @@
 """Universal protocol class for structural engineering checks."""
 
-from typing import Protocol, runtime_checkable
+from typing import Protocol, runtime_checkable, Self
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.codes.formula import Formula
 from blueprints.utils.report import Report
 
 
@@ -42,7 +41,7 @@ class CheckProtocol(Protocol):
     """
 
     name: str
-    source_docs: list[str]
+    source_documents: list[str]
 
     def result(self) -> CheckResult:
         """Execute check and return standardized result.
@@ -57,22 +56,18 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def calculation_steps(self) -> dict[str, "CheckProtocol | Formula | None"]:
+    def calculation_steps(self) -> dict[str, Self]:
         """Get sub-check instances for composite checks.
 
         Access this method to get all Check instances that are part of an
         orchestrated check. Each returned check object has its own result(),
         calculation_steps(), and report() methods for detailed inspection.
 
-        When the check consists of formula direct from the code, return Formula.
-
-        When a calculation sub check is not code yet, return None.
-
         Returns
         -------
-        dict[str, "CheckProtocol" | None]
+        dict[str, Self]
             Dictionary mapping descriptive names to Check instances.
-            Empty dict for simple checks with no sub-checks.
+            If this step is final and has no sub-checks, return an empty dict.
 
         """
         ...
