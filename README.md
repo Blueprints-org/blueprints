@@ -34,80 +34,19 @@ tools for materials, geometry, and section checks, as well as a foundation of es
 
 Stop coding civil engineering logic from scratch, ditch Excel, and start collaborating to shape the future of civil engineering! 🚀
 
-See our [ROADMAP](https://blueprints.readthedocs.io/en/stable/getting_started/roadmap/) for detailed feature status and upcoming developments.
+Want to get started quickly? Check out our [Quick Start Guide](https://blueprints.readthedocs.io/en/latest/getting_started/quick_start/) or our [full documentation](https://blueprints.readthedocs.io).
+
+Blueprints is free and open source software. Distributed under the terms of the [MIT license](LICENSE).
 
 ## Installation
 
 Python >=3.12 is required.
 
-For the last release:
+For the last stable release:
 
 ```shell
 pip install blue-prints
 ```
-
-For the actively developed version:
-
-```shell
-pip install git+https://github.com/Blueprints-org/blueprints.git
-```
-
-## Developer CLI
-
-Blueprints includes a command-line interface for development automation, designed to simplify developing and contributing to the project.
-Maybe you want to check locally if your code passes all quality checks before making a PR? Or serve the documentation locally with live reload?
-We got you covered!
-
-### Quick Start
-
-Install with CLI dependencies:
-
-```bash
-uv sync --group cli
-```
-
-Pre-PR validation (recommended):
-
-```bash
-blueprints check
-```
-
-This runs all quality checks: lint, format, typecheck, and coverage.
-In one single command! Simple as that. All checks passed? then you are good to go with your PR.
-
-### Documentation
-
-For complete CLI documentation, including all available commands, advanced usage, and pass-through arguments, see the [Developer CLI Guide](https://blueprints.readthedocs.io/en/stable/guides/contribute/cli/).
-
-## Quick Start
-
-```python
-from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
-from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
-
-# Calculate concrete properties
-concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C30_37)  # C30/37 concrete
-print(f"Design strength: {concrete.f_cd} MPa")
-
-# Check reinforcement
-rebar = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B)  # B500B rebar
-print(f"Design yield strength: {rebar.f_yd} MPa")
-```
-
-Output:
-```
-Design strength: 20.0 MPa
-Design yield strength: 434.7826086956522 MPa
-```
-
-## Key Features
-
-- **Eurocode Implementations**: EN 1992 (Concrete), EN 1993 (Steel), EN 1997 (Geotechnical), etc.
-- **Material Definitions**: Concrete, steel, rebar, and soil properties
-- **Steel Profile Database**: HEA, HEB, IPE, CHS, RHS, UNP profiles, etc.
-- **Shape Building Blocks**: Rectangle, circle, tube, triangle, hexagon, etc.
-- **Engineering Checks**: Shear, torsion, punching, anchorage, concrete cover, etc.
-- **100% Test Coverage**: Reliable, well-tested implementations
 
 ## Mission
 
@@ -119,30 +58,21 @@ Our mission is to reduce the cost and time associated with civil engineering cal
 - Fostering a community where sharing knowledge and best practices is the norm
 - Ensuring 100% code coverage and high-quality documentation
 
-## Documentation
+## Key Features
 
-Full documentation is available at [blueprints.readthedocs.io](https://blueprints.readthedocs.io).
+- **Eurocode Implementations**: EN 1992 (Concrete), EN 1993 (Steel), EN 1997 (Geotechnical), etc.
+- **Material Definitions**: Concrete, steel, rebar, and soil properties
+- **Steel Profile Database**: HEA, HEB, IPE, CHS, RHS, UNP profiles, etc.
+- **Shape Building Blocks**: Rectangle, circle, tube, triangle, hexagon, etc.
+- **Engineering Checks**: Shear, torsion, punching, anchorage, concrete cover, etc.
+- **100% Test Coverage**: Reliable, well-tested implementations
 
 ## How to Contribute
 
-We welcome contributions from developers and engineers of all skill levels! Here's how you can contribute:
+We welcome contributions from developers and engineers of all skill levels! Check our [Contributor Guide](https://blueprints.readthedocs.io/en/latest/guides/contribute/) to get started.
 
-- Fork the Repository: Create your own fork of the project.
-- Create a Branch: Make a feature branch (git checkout -b feature/new-feature).
-- Make Your Changes: Write clear, concise code and ensure it's fully covered with tests.
-- Run Tests: Use pytest to ensure all tests pass.
-- Submit a Pull Request: Push your branch and open a pull request against main.
+If you have found a bug 🐛, or have a feature request ✨, raise an issue on the GitHub [issue tracker](https://github.com/Blueprints-org/blueprints/issues).
 
-To learn more, see our full [Contributor Guide](https://blueprints.readthedocs.io/en/stable/guides/contribute/).
-
-## License
-
-Blueprints is free and open source software. Distributed under the terms of the [MIT license](LICENSE).
-
-## Support
-
-If you have found a bug 🐛, or have a feature request ✨, raise an issue on the
-GitHub [issue tracker](https://github.com/Blueprints-org/blueprints/issues).
 Alternatively you can get support on the [discussions](https://github.com/orgs/Blueprints-org/discussions) page.
 
 ## Disclaimer
