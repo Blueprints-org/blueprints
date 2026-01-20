@@ -20,10 +20,8 @@ PROPERTY_LABELS = {
     # kg/m
     "mass": "Mass $W$ in $kg/m$",
     # mm^3
-    "zxx": "Section modulus $W_{y,el}$ (minimum of + and -) in $mm^{3}$",
     "zxx_plus": "Section modulus $W_{y,el+}$ in $mm^{3}$",
     "zxx_minus": "Section modulus $W_{y,el-}$ in $mm^{3}$",
-    "zyy": "Section modulus $W_{z,el}$ (minimum of + and -) in $mm^{3}$",
     "zyy_plus": "Section modulus $W_{z,el+}$ in $mm^{3}$",
     "zyy_minus": "Section modulus $W_{z,el-}$ in $mm^{3}$",
     "sxx": "Plastic section modulus $W_{y,pl}$ in $mm^{3}$",
@@ -95,32 +93,28 @@ class ReportHelpers:
         profile: object = None,
         n: int = 2,
         properties: Sequence[str] = ("area",),
-        property_labels: dict[str, str] | None = None,
     ) -> None:
         """Add section properties to the report.
         Args:
             report: Report object
             section_properties: SectionProperties object
             profile: Optional profile object for name
-            n: Number of decimals.
-            properties: List of property names to include (e.g., ["area", "zxx_plus"])
-            property_labels: Optional mapping of property names to display labels.
+            n: Number of decimals
+            properties: List of property names to include (e.g., ["area", "zxx_plus"]).
         """
         report.add_paragraph("The following section properties were used in this check:")
         rows = []
         if profile is not None:
             rows.append(["Profile", str(getattr(profile, "name", profile))])
         for prop in properties:
-            label = property_labels[prop] if property_labels and prop in property_labels else prop.capitalize()
+            label = PROPERTY_LABELS[prop] if PROPERTY_LABELS and prop in PROPERTY_LABELS else prop.capitalize()
             value = getattr(section_properties, prop, None)
-            if value is not None:
+            if value is None:
+                rows.append([label, "N/A"])
+            else:
                 value_str = f"{value:.{n}f}" if isinstance(value, float) else str(value)
-                # Add units for common properties
-                if prop == "area":
-                    value_str += " $mm^2$"
-                elif prop.startswith(("zxx", "zyy", "ixx", "iyy")):
-                    value_str += " $mm^4$"
                 rows.append([label, value_str])
+
         report.add_table(headers=["Property", "Value"], rows=rows)
 
     @staticmethod
@@ -134,7 +128,6 @@ class ReportHelpers:
         check_results = list(calculation_steps.items()) if isinstance(calculation_steps, dict) else list(calculation_steps)
         report.add_heading("Utilization summary")
         rows = []
-        max_uc = None
         overall_ok = True
         for check_name, check in check_results:
             if hasattr(check, "result"):
@@ -142,8 +135,6 @@ class ReportHelpers:
                 uc = getattr(res, "unity_check", None)
                 utilization = f"{uc:.{n}f}" if uc is not None else "N/A"
                 status = "OK" if getattr(res, "is_ok", False) else "NOT OK"
-                if uc is not None:
-                    max_uc = uc if max_uc is None else max(max_uc, uc)
                 if not getattr(res, "is_ok", False):
                     overall_ok = False
             else:
@@ -152,6 +143,4 @@ class ReportHelpers:
                 overall_ok = False
             rows.append([check_name.capitalize(), utilization, status])
         report.add_table(headers=["Check", "Utilization", "Status"], rows=rows)
-        if max_uc is not None:
-            report.add_paragraph(f"Maximum utilization: {max_uc:.{n}f}", bold=True)
         report.add_paragraph(f"Overall result: {'OK' if overall_ok else 'NOT OK'}", bold=True)
