@@ -188,7 +188,7 @@ class ReportHelpers:
                 report.add_formula(step, n=n)
 
     @staticmethod
-    def add_calculation_subchecks(report: Report, calculation_subchecks: dict, n: int = 2, level: int = 2) -> None:
+    def add_calculation_subchecks(report: Report, calculation_subchecks: dict, level: int = 2) -> None:
         """
         Add calculation steps for sub-checks to the report.
 
@@ -205,4 +205,4 @@ class ReportHelpers:
             report.add_heading(f"Checking: {check_name}", level=level)
             method = getattr(check_instance, "report_calculation", None)
             if callable(method):
-                method(report, n=n)
+                method(report)
