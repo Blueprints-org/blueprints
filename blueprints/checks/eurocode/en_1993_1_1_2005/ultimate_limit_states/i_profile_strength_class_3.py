@@ -118,7 +118,7 @@ class IProfileStrengthClass3(CheckProtocol):
         """Returns the combined report of all strength checks."""
         report = Report("Steel I-Profile Strength Check (Class 3) Report")
 
-        ReportHelpers.add_unity_check_summary(report, self.calculation_subchecks().items(), n=n)
+        ReportHelpers.add_unity_check_summary(report, self.calculation_subchecks(), n=n)
 
         ReportHelpers.add_applied_documents(report, self.source_docs)
 

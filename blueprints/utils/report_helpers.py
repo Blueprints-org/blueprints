@@ -3,6 +3,7 @@
 from collections.abc import Sequence
 from typing import Any
 
+from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
@@ -144,13 +145,13 @@ class ReportHelpers:
         report.add_table(headers=["Property", "Value"], rows=rows)
 
     @staticmethod
-    def add_unity_check_summary(report: Report, calculations: list, n: int = 2) -> None:
+    def add_unity_check_summary(report: Report, calculations: dict[str, CheckProtocol], n: int = 2) -> None:
         """
         Add a summary table of unity checks to the report.
 
         report : Report
             The report object to which the calculation steps will be added.
-        calculations : iterable
+        calculations : dict[str, CheckProtocol]
             Iterable of (check_name, check_instance) pairs (e.g., dict.items() or list of tuples).
         n : int, optional
             Number of decimals (default is 2).
