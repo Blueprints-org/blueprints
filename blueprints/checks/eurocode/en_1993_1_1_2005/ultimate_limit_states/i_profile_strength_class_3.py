@@ -116,13 +116,7 @@ class ProfileStrengthClass3(CheckProtocol):
         level : int, optional
             Heading level for the report sections (default is 2).
         """
-        for check_name, check in self.calculation_steps().items():
-            report.add_heading(f"Checking: {check_name}", level=level)
-            method = getattr(check, "report_calculation_steps", None)
-            if callable(method):
-                method(report, n=n)
-            else:
-                report.add_paragraph("This check does not support detailed calculation steps.")
+        ReportHelpers.add_calculation_steps_subchecks(report, self.calculation_steps(), n=n, level=level)
 
     def report(self, n: int = 2) -> Report:
         """Returns the combined report of all strength checks."""

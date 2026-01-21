@@ -152,9 +152,7 @@ class NormalForceClass123(CheckProtocol):
 
         # add calculation steps to report
         if self.result_internal_force_1d.n != 0:
-            for step in self.calculation_steps().values():
-                if isinstance(step, Formula):
-                    report.add_formula(step, n=n)
+            ReportHelpers.add_calculation_steps(report, self.calculation_steps(), n=n)
 
     def report(self, n: int = 2) -> Report:
         """Returns the report for the normal force check.
