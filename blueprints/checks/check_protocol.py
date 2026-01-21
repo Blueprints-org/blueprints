@@ -57,14 +57,12 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def calculation_subchecks(self) -> dict[str, "CheckProtocol | None"]:
+    def calculation_subchecks(self) -> dict[str, "CheckProtocol"]:
         """Get sub-check instances for composite checks.
 
         Access this method to get all Check instances that are part of an
         orchestrated check. Each returned check object has its own result(),
         calculation_subchecks(), and report() methods for detailed inspection.
-
-        When a calculation sub check is not coded yet, return None.
 
         Returns
         -------
@@ -101,3 +99,30 @@ class CheckProtocol(Protocol):
             Formatted report object summarizing check results.
         """
         ...
+
+
+class NotImplementedCheck(CheckProtocol):
+    """A smart placeholder for not-yet-implemented checks.
+    Always fails the check and provides a clear message for reporting systems.
+    """
+
+    def result(self) -> CheckResult:
+        """Always return a failed check result."""
+        return CheckResult.from_unity_check(999)
+
+    def report_calculation(self, report: Report) -> None:
+        """Report that this check is not implemented.
+
+        Parameters
+        ----------
+        report : Report
+            The report object to which the calculation steps will be added.
+        """
+        if hasattr(report, "add_paragraph"):
+            report.add_paragraph("This check is not yet implemented.")
+
+    def report(self) -> Report:
+        """Generate a report indicating the check is not implemented."""
+        report = Report()
+        self.report_calculation(report)
+        return report

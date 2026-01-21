@@ -8,11 +8,10 @@ from typing import Any, ClassVar
 
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks.check_protocol import CheckProtocol, NotImplementedCheck
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.normal_force import NormalForceClass123
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
-from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
@@ -79,30 +78,27 @@ class IProfileStrengthClass3(CheckProtocol):
             object.__setattr__(self, "section_properties", section_properties)
         object.__setattr__(self, "material", self.steel_cross_section.material)
 
-    def calculation_subchecks(self) -> dict[str, CheckProtocol | Formula | None]:
+    def calculation_subchecks(self) -> dict[str, CheckProtocol]:
         """Perform calculation steps for all strength checks."""
+        not_impl = NotImplementedCheck()
         return {
             "normal force": NormalForceClass123(self.steel_cross_section, self.result_internal_force_1d, self.gamma_m0, self.section_properties),
-            "bending moment about z-axis": None,  # To be implemented
-            "bending moment about y-axis": None,  # To be implemented
-            "shear force in z-axis": None,  # To be implemented
-            "shear force in y-axis": None,  # To be implemented
-            "torsion": None,  # To be implemented
-            "bending and shear interaction": None,  # To be implemented
-            "bending and axial interaction": None,  # To be implemented
-            "bending, shear and axial interaction": None,  # To be implemented
+            "bending moment about z-axis": not_impl,
+            "bending moment about y-axis": not_impl,
+            "shear force in z-axis": not_impl,
+            "shear force in y-axis": not_impl,
+            "torsion": not_impl,
+            "bending and shear interaction": not_impl,
+            "bending and axial interaction": not_impl,
+            "bending, shear and axial interaction": not_impl,
         }
 
     def result(self) -> CheckResult:
         """Perform all strength checks and return the overall result."""
         checks = list(self.calculation_subchecks().values())
-        # Only consider CheckProtocol objects for result aggregation
-        unity_checks = []
-        for c in checks:
-            if c is None:
-                return CheckResult.from_unity_check(999)
-            unity_checks.append(c.result().unity_check)
-        return CheckResult.from_unity_check(max(unity_checks))  # pragma: no cover  # can only be reached when all checks are added
+        unity_checks = [c.result().unity_check for c in checks]
+        filtered_unity_checks = [0] + [uc for uc in unity_checks if isinstance(uc, int | float)]
+        return CheckResult.from_unity_check(max(filtered_unity_checks))  # pragma: no cover
 
     def report_calculation(self, report: Report, n: int = 2, level: int = 2) -> None:
         """Report calculation steps for all strength checks.

@@ -91,8 +91,12 @@ class NormalForceClass123(CheckProtocol):
         """
         if self.result_internal_force_1d.n == 0:
             return {}
+
+        if not hasattr(self.section_properties, "area") or self.section_properties.area is None:
+            raise AttributeError("Section properties must have a valid 'area' attribute for normal force check.")
+
         if self.result_internal_force_1d.n > 0:  # tension, based on chapter 6.2.3
-            a = self.section_properties.area if self.section_properties.area is not None else 0
+            a = self.section_properties.area
             f_y = self.steel_cross_section.yield_strength
             n_ed = self.result_internal_force_1d.n * KN_TO_N
             n_t_rd = formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
@@ -103,7 +107,7 @@ class NormalForceClass123(CheckProtocol):
             }
 
         # compression, based on chapter 6.2.4
-        a = self.section_properties.area if self.section_properties.area is not None else 0
+        a = self.section_properties.area
         f_y = self.steel_cross_section.yield_strength
         n_ed = -self.result_internal_force_1d.n * KN_TO_N
         n_c_rd = formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)

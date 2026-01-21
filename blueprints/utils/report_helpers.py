@@ -3,7 +3,6 @@
 from collections.abc import Sequence
 from typing import Any
 
-from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
@@ -145,18 +144,18 @@ class ReportHelpers:
         report.add_table(headers=["Property", "Value"], rows=rows)
 
     @staticmethod
-    def add_unity_check_summary(report: Report, calculation_subchecks: dict[str, CheckProtocol | Formula | None], n: int = 2) -> None:
+    def add_unity_check_summary(report: Report, calculations: list, n: int = 2) -> None:
         """
         Add a summary table of unity checks to the report.
 
         report : Report
             The report object to which the calculation steps will be added.
-        calculation_subchecks : dict[str, CheckProtocol | Formula | None]
-            Iterable of (check_name, check_instance) tuples.
+        calculations : iterable
+            Iterable of (check_name, check_instance) pairs (e.g., dict.items() or list of tuples).
         n : int, optional
             Number of decimals (default is 2).
         """
-        check_results = list(calculation_subchecks.items()) if isinstance(calculation_subchecks, dict) else list(calculation_subchecks)
+        check_results = list(calculations)
         report.add_heading("Utilization summary")
         rows = []
         overall_ok = True
@@ -194,23 +193,21 @@ class ReportHelpers:
                 report.add_formula(step, n=n)
 
     @staticmethod
-    def add_calculation_subchecks(report: Report, calculation_subchecks: dict[str, CheckProtocol | None], n: int = 2, level: int = 2) -> None:
+    def add_calculation_subchecks(report: Report, calculation_subchecks: dict, n: int = 2, level: int = 2) -> None:
         """
         Add calculation steps for sub-checks to the report.
 
         report : Report
             The report object to which the calculation steps will be added.
-        calculation_subchecks : dict[str, CheckProtocol | None]
-            Iterable of (check_name, check_instance) tuples.
+        calculation_subchecks : iterable
+            Iterable of (check_name, check_instance) pairs (e.g., dict.items() or list of tuples).
         n : int, optional
             Formula numbering for LaTeX output (default is 2).
         level : int, optional
             Heading level for the report sections (default is 2).
         """
-        for check_name, check in calculation_subchecks.items():
+        for check_name, check_instance in calculation_subchecks.items():
             report.add_heading(f"Checking: {check_name}", level=level)
-            method = getattr(check, "report_calculation", None)
+            method = getattr(check_instance, "report_calculation", None)
             if callable(method):
                 method(report, n=n)
-            else:
-                report.add_paragraph("This check does not support detailed calculation steps.")
