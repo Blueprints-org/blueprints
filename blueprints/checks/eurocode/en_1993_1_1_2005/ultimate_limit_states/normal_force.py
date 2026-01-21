@@ -81,8 +81,8 @@ class NormalForceClass123(CheckProtocol):
             object.__setattr__(self, "section_properties", section_properties)
         object.__setattr__(self, "material", self.steel_cross_section.material)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol | Formula | None]:
-        """Perform calculation steps for normal force resistance check.
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Use the calculation formula to check the normal force resistance check.
 
         Returns
         -------
@@ -121,7 +121,7 @@ class NormalForceClass123(CheckProtocol):
         CheckResult
             True if the normal force check passes, False otherwise.
         """
-        steps = self.calculation_steps()
+        steps = self.calculation_formula()
         if self.result_internal_force_1d.n == 0:
             return CheckResult.from_unity_check(0)
         if self.result_internal_force_1d.n > 0:
@@ -133,7 +133,7 @@ class NormalForceClass123(CheckProtocol):
         required = steps["en_1993_1_1_2005 f6.10"]
         return CheckResult.from_comparison(provided=provided, required=float(required))
 
-    def report_calculation_steps(self, report: Report, n: int = 2) -> None:
+    def report_calculation(self, report: Report, n: int = 2) -> None:
         """Report calculation steps for all strength checks.
 
         Parameters
@@ -152,7 +152,7 @@ class NormalForceClass123(CheckProtocol):
 
         # add calculation steps to report
         if self.result_internal_force_1d.n != 0:
-            ReportHelpers.add_calculation_steps(report, self.calculation_steps(), n=n)
+            ReportHelpers.add_calculation_formula(report, self.calculation_formula(), n=n)
 
     def report(self, n: int = 2) -> Report:
         """Returns the report for the normal force check.
@@ -190,8 +190,8 @@ class NormalForceClass123(CheckProtocol):
         )
 
         # Calculation steps
-        report.add_heading("Individual checks")
-        self.report_calculation_steps(report, n=n)
+        report.add_heading("Calculation")
+        self.report_calculation(report, n=n)
 
         # Conclusion
         report.add_heading("Conclusion")

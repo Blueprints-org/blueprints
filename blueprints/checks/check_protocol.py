@@ -33,7 +33,7 @@ class CheckProtocol(Protocol):
     ...
     ...     def result(self) -> CheckResult: ...
     ...
-    ...     def calculation_steps(self) -> dict[str, CheckProtocol]: ...
+    ...     def calculation_subchecks(self) -> dict[str, CheckProtocol]: ...
     ...
     ...     def report(self) -> Report: ...
     >>>
@@ -57,16 +57,14 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def calculation_steps(self) -> dict[str, "CheckProtocol | Formula | None"]:
+    def calculation_subchecks(self) -> dict[str, "CheckProtocol | None"]:
         """Get sub-check instances for composite checks.
 
         Access this method to get all Check instances that are part of an
         orchestrated check. Each returned check object has its own result(),
-        calculation_steps(), and report() methods for detailed inspection.
+        calculation_subchecks(), and report() methods for detailed inspection.
 
-        When the check consists of formula direct from the code, return Formula.
-
-        When a calculation sub check is not code yet, return None.
+        When a calculation sub check is not coded yet, return None.
 
         Returns
         -------
@@ -74,6 +72,21 @@ class CheckProtocol(Protocol):
             Dictionary mapping descriptive names to Check instances.
             Empty dict for simple checks with no sub-checks.
 
+        """
+        ...
+
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Get sub-check instances for composite checks.
+
+        Access this method to get all formula instances that are part of an
+        orchestrated check. Each returned check object has its own result(),
+        calculation_formula(), and report() methods for detailed inspection.
+
+        Returns
+        -------
+        dict[str, Formula]
+            Dictionary mapping descriptive names to Formula instances.
+            Empty dict for simple checks with no formulas.
         """
         ...
 

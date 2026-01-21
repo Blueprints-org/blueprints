@@ -22,7 +22,7 @@ from blueprints.utils.report_helpers import ReportHelpers
 
 
 @dataclass(frozen=True)
-class ProfileStrengthClass3(CheckProtocol):
+class IProfileStrengthClass3(CheckProtocol):
     """Steel I-Profile strength check for class 3.
 
     Performs strength checks on steel I-profiles according to Eurocode 3, for class 3 cross-sections.
@@ -75,18 +75,18 @@ class ProfileStrengthClass3(CheckProtocol):
 
         object.__setattr__(self, "profile", self.steel_cross_section.profile)
         if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
+            section_properties = self.steel_cross_section.profile.section_properties(warping=True)
             object.__setattr__(self, "section_properties", section_properties)
         object.__setattr__(self, "material", self.steel_cross_section.material)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol | Formula | None]:
+    def calculation_subchecks(self) -> dict[str, CheckProtocol | Formula | None]:
         """Perform calculation steps for all strength checks."""
         return {
             "normal force": NormalForceClass123(self.steel_cross_section, self.result_internal_force_1d, self.gamma_m0, self.section_properties),
-            "bending moment z-axis": None,  # To be implemented
-            "bending moment y-axis": None,  # To be implemented
-            "shear force z-axis": None,  # To be implemented
-            "shear force y-axis": None,  # To be implemented
+            "bending moment about z-axis": None,  # To be implemented
+            "bending moment about y-axis": None,  # To be implemented
+            "shear force in z-axis": None,  # To be implemented
+            "shear force in y-axis": None,  # To be implemented
             "torsion": None,  # To be implemented
             "bending and shear interaction": None,  # To be implemented
             "bending and axial interaction": None,  # To be implemented
@@ -95,7 +95,7 @@ class ProfileStrengthClass3(CheckProtocol):
 
     def result(self) -> CheckResult:
         """Perform all strength checks and return the overall result."""
-        checks = list(self.calculation_steps().values())
+        checks = list(self.calculation_subchecks().values())
         # Only consider CheckProtocol objects for result aggregation
         unity_checks = []
         for c in checks:
@@ -104,7 +104,7 @@ class ProfileStrengthClass3(CheckProtocol):
             unity_checks.append(c.result().unity_check)
         return CheckResult.from_unity_check(max(unity_checks))  # pragma: no cover  # can only be reached when all checks are added
 
-    def report_calculation_steps(self, report: Report, n: int = 2, level: int = 2) -> None:
+    def report_calculation(self, report: Report, n: int = 2, level: int = 2) -> None:
         """Report calculation steps for all strength checks.
 
         Parameters
@@ -116,13 +116,13 @@ class ProfileStrengthClass3(CheckProtocol):
         level : int, optional
             Heading level for the report sections (default is 2).
         """
-        ReportHelpers.add_calculation_steps_subchecks(report, self.calculation_steps(), n=n, level=level)
+        ReportHelpers.add_calculation_subchecks(report, self.calculation_subchecks(), n=n, level=level)
 
     def report(self, n: int = 2) -> Report:
         """Returns the combined report of all strength checks."""
         report = Report("Steel I-Profile Strength Check (Class 3) Report")
 
-        ReportHelpers.add_unity_check_summary(report, self.calculation_steps().items(), n=n)
+        ReportHelpers.add_unity_check_summary(report, self.calculation_subchecks().items(), n=n)
 
         ReportHelpers.add_applied_documents(report, self.source_docs)
 
@@ -135,11 +135,11 @@ class ProfileStrengthClass3(CheckProtocol):
             self.section_properties,
             profile=self.steel_cross_section.profile,
             n=n,
-            properties=["area", "a_sx", "a_sy", "zxx_plus", "zxx_minus", "zyy_plus", "zyy_minus", "J"],
+            properties=["area", "a_sx", "a_sy", "zxx_plus", "zxx_minus", "zyy_plus", "zyy_minus", "j"],
         )
 
-        report.add_heading("Individual checks")
-        self.report_calculation_steps(report, n=n)
+        report.add_heading("Calculation")
+        self.report_calculation(report, n=n)
 
         report.add_heading("Conclusion")
         if self.result().is_ok:

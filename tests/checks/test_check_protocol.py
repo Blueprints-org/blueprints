@@ -7,6 +7,7 @@ import pytest
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
+from blueprints.codes.formula import Formula
 from blueprints.utils.report import Report
 
 
@@ -21,8 +22,12 @@ class ValidCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
+    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
+        return {}
+
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Return empty calculation formulas."""
         return {}
 
     def report(self) -> Report:
@@ -39,8 +44,12 @@ class MissingNameCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
+    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
+        return {}
+
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Return empty calculation formulas."""
         return {}
 
     def report(self) -> Report:
@@ -57,8 +66,12 @@ class MissingDocsCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
+    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
+        return {}
+
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Return empty calculation formulas."""
         return {}
 
     def report(self) -> Report:
@@ -72,8 +85,12 @@ class MissingResultCheck:
     name: str = "Missing Result"
     source_docs: ClassVar[list[str]] = ["Doc 1"]
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
+    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
+        return {}
+
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Return empty calculation formulas."""
         return {}
 
     def report(self) -> Report:
@@ -81,8 +98,8 @@ class MissingResultCheck:
         return Report(title=self.name)
 
 
-class MissingStepsCheck:
-    """Missing the 'calculation_steps' method."""
+class MissingCalculationSubChecks:
+    """Missing the 'calculation_subchecks' method."""
 
     name: str = "Missing Steps"
     source_docs: ClassVar[list[str]] = ["Doc 1"]
@@ -90,6 +107,29 @@ class MissingStepsCheck:
     def result(self) -> CheckResult:
         """Return a valid result."""
         return CheckResult(is_ok=True)
+
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Return empty calculation formulas."""
+        return {}
+
+    def report(self) -> Report:
+        """Return a valid report."""
+        return Report(title=self.name)
+
+
+class MissingCalculationFormula:
+    """Missing the 'calculation_formula' method."""
+
+    name: str = "Missing Steps"
+    source_docs: ClassVar[list[str]] = ["Doc 1"]
+
+    def result(self) -> CheckResult:
+        """Return a valid result."""
+        return CheckResult(is_ok=True)
+
+    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
+        """Return empty calculation steps."""
+        return {}
 
     def report(self) -> Report:
         """Return a valid report."""
@@ -106,7 +146,7 @@ class MissingReportCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
+    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
         return {}
 
@@ -123,7 +163,8 @@ def test_valid_check_implementation() -> None:
         MissingNameCheck,
         MissingDocsCheck,
         MissingResultCheck,
-        MissingStepsCheck,
+        MissingCalculationSubChecks,
+        MissingCalculationFormula,
         MissingReportCheck,
     ],
 )

@@ -1,19 +1,19 @@
-"""Tests for ProfileStrengthClass3.NormalForceCheck according to Eurocode 3."""
+"""Tests for IProfileStrengthClass3.NormalForceCheck according to Eurocode 3."""
 
 import pytest
 
-from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.i_profile_strength_class_3 import ProfileStrengthClass3
+from blueprints.checks.eurocode.en_1993_1_1_2005.ultimate_limit_states.i_profile_strength_class_3 import IProfileStrengthClass3
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-class TestProfileStrengthClass3:
-    """Tests for ProfileStrengthClass3."""
+class TestIProfileStrengthClass3:
+    """Tests for IProfileStrengthClass3."""
 
     def test_check(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test check() returns True for no normal force."""
         result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1")
-        calc = ProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
+        calc = IProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         assert calc.report()
 
     def test_check_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
@@ -21,15 +21,15 @@ class TestProfileStrengthClass3:
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=1e6
         )
-        calc = ProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
+        calc = IProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         assert calc.report()
 
     def test_latex_all(self, heb_steel_cross_section: SteelCrossSection) -> None:
-        """Test latex output for ProfileStrengthClass3."""
+        """Test latex output for IProfileStrengthClass3."""
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1", n=1, vy=1, vz=1, mx=1, my=1, mz=1
         )
-        calc = ProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
+        calc = IProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         assert calc.report()
 
     @pytest.mark.parametrize(
@@ -50,7 +50,7 @@ class TestProfileStrengthClass3:
         ],
     )
     def test_report_only_single_force_permutations(self, heb_steel_cross_section: SteelCrossSection, forces_kwargs: dict[str, float]) -> None:
-        """Test report output for ProfileStrengthClass3 with 0 and 1 for all n, vy, vz, mx, my, mz."""
+        """Test report output for IProfileStrengthClass3 with 0 and 1 for all n, vy, vz, mx, my, mz."""
         result_internal_force_1d = ResultInternalForce1D(
             result_on=ResultOn.ON_BEAM,
             member="M1",
@@ -63,7 +63,7 @@ class TestProfileStrengthClass3:
             my=forces_kwargs["my"],
             mz=forces_kwargs["mz"],
         )
-        calc = ProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
+        calc = IProfileStrengthClass3(heb_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
         assert calc.result()
         assert calc.report()
 
@@ -71,4 +71,4 @@ class TestProfileStrengthClass3:
         """Test check() raises TypeError for non-I-profile."""
         result_internal_force_1d = ResultInternalForce1D(result_on=ResultOn.ON_BEAM, member="M1", result_for=ResultFor.LOAD_CASE, load_case="LC1")
         with pytest.raises(TypeError, match="The provided profile is not an I-profile"):
-            ProfileStrengthClass3(chs_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
+            IProfileStrengthClass3(chs_steel_cross_section, result_internal_force_1d, gamma_m0=1.0)
