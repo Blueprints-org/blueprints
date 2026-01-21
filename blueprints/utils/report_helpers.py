@@ -161,16 +161,11 @@ class ReportHelpers:
         rows = []
         overall_ok = True
         for check_name, check in check_results:
-            if hasattr(check, "result"):
-                res = check.result if not callable(check.result) else check.result()
-                uc = getattr(res, "unity_check", None)
-                utilization = f"{uc:.{n}f}" if uc is not None else "Not calculated"
-                status = "OK" if getattr(res, "is_ok", False) else "NOT OK"
-                if not getattr(res, "is_ok", False):
-                    overall_ok = False
-            else:
-                utilization = "Not implemented"
-                status = "NOT OK"
+            res = check.result()
+            uc = getattr(res, "unity_check", None)
+            utilization = f"{uc:.{n}f}" if uc is not None else "Not calculated"
+            status = "OK" if getattr(res, "is_ok", False) else "NOT OK"
+            if not getattr(res, "is_ok", False):
                 overall_ok = False
             rows.append([check_name.capitalize(), utilization, status])
         report.add_table(headers=["Check", "Utilization", "Status"], rows=rows)
