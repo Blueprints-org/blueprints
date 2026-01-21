@@ -196,8 +196,6 @@ class ReportHelpers:
             The report object to which the calculation steps will be added.
         calculation_subchecks : iterable
             Iterable of (check_name, check_instance) pairs (e.g., dict.items() or list of tuples).
-        n : int, optional
-            Formula numbering for LaTeX output (default is 2).
         level : int, optional
             Heading level for the report sections (default is 2).
         """
