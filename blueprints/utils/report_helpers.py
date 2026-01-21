@@ -156,11 +156,10 @@ class ReportHelpers:
         n : int, optional
             Number of decimals (default is 2).
         """
-        check_results = list(calculations)
         report.add_heading("Utilization summary")
         rows = []
         overall_ok = True
-        for check_name, check in check_results:
+        for check_name, check in calculations.items():
             res = check.result()
             uc = getattr(res, "unity_check", None)
             utilization = f"{uc:.{n}f}" if uc is not None else "Not calculated"
