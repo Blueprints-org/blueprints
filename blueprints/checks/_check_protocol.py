@@ -1,6 +1,6 @@
 """Universal protocol class for structural engineering checks."""
 
-from typing import Protocol, runtime_checkable, Self
+from typing import Protocol, Self, runtime_checkable
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.utils.report import Report
@@ -40,8 +40,21 @@ class CheckProtocol(Protocol):
     >>> isinstance(check, CheckProtocol)  # True
     """
 
-    name: str
-    source_documents: list[str]
+    @property
+    def name(self) -> str:
+        """Human-readable name of the check."""
+        ...
+
+    @property
+    def source_documents(self) -> list[str]:
+        """Get list of source documents used for this calculation.
+
+        Returns
+        -------
+        list[str]
+            List of document references (e.g., standards, codes).
+        """
+        ...
 
     def result(self) -> CheckResult:
         """Execute check and return standardized result.
@@ -66,9 +79,8 @@ class CheckProtocol(Protocol):
         Returns
         -------
         dict[str, Self]
-            Dictionary mapping descriptive names to Check instances.
+            Mapping of sub-check instances that were executed as part of this check.
             If this step is final and has no sub-checks, return an empty dict.
-
         """
         ...
 
