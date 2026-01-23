@@ -458,7 +458,7 @@ class Report:
 
         return self
 
-    def __add__(self, other: Self) -> Self:
+    def __add__(self, other: "Report") -> "Report":
         """Combine two reports into a new report.
 
         The resulting report will have the title of the first (left) report
@@ -487,7 +487,7 @@ class Report:
         'Part 1'
         """
         if not isinstance(other, Report):
-            return NotImplemented
+            raise NotImplementedError("Can only add Report to another Report.")
         result = Report(title=self.title)
         result.content = self.content + other.content
         return result
