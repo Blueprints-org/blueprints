@@ -104,10 +104,9 @@ contribute most effectively.
 
 ### Good First Issues
 
-The best place to start is the [issues page](https://github.com/Blueprints-org/blueprints/issues). Look for issues
-labeled:
+![good-first-issue.png](../../_overrides/assets/images/sprint-guide/good-first-issue.png)
 
-![img.png](../../_overrides/assets/images/sprint-guide/img.png){ align="left" width="400" loading="lazy" }
+The best place to start is the [issues page](https://github.com/Blueprints-org/blueprints/issues). Look for issues labeled:
 
 - `good first issue` Suitable for newcomers
 - `documentation` Writing or improving docs
