@@ -676,5 +676,63 @@ class TestReport:
         report = Report(title="Main Report")
         report.add_heading("Main Section")
 
-        with pytest.raises(NotImplementedError, match=r"Can only add Report to another Report."):
+        with pytest.raises(TypeError, match=r"unsupported operand type\(s\) for \+: 'Report' and 'str'"):
             _ = report + "Not a Report"
+
+    def test_adding_reports_first_has_no_title(self) -> None:
+        """Test adding reports where the first report has no title (None)."""
+        report1 = Report()  # No title
+        report1.add_heading("Chapter 1")
+
+        report2 = Report(title="Should Be Ignored")
+        report2.add_heading("Chapter 2")
+
+        combined = report1 + report2
+
+        assert combined.title is None
+        assert "Chapter 1" in combined.content
+        assert "Chapter 2" in combined.content
+
+    def test_adding_empty_reports(self) -> None:
+        """Test adding completely empty reports (no content)."""
+        report1 = Report(title="Empty Report")
+        report2 = Report()
+
+        combined = report1 + report2
+
+        assert combined.title == "Empty Report"
+        assert combined.content == ""
+
+    def test_adding_report_with_title_to_report_without_title(self) -> None:
+        """Test that title=None is preserved when left operand has no title."""
+        report_no_title = Report()
+        report_no_title.add_paragraph("No title content")
+
+        report_with_title = Report(title="Has Title")
+        report_with_title.add_paragraph("Titled content")
+
+        combined = report_no_title + report_with_title
+
+        assert combined.title is None
+        assert "No title content" in combined.content
+        assert "Titled content" in combined.content
+
+    def test_adding_reports_does_not_mutate_originals(self) -> None:
+        """Test that original reports are not mutated after addition."""
+        report1 = Report(title="Original 1")
+        report1.add_heading("Section 1")
+        original_content1 = report1.content
+        original_title1 = report1.title
+
+        report2 = Report(title="Original 2")
+        report2.add_heading("Section 2")
+        original_content2 = report2.content
+        original_title2 = report2.title
+
+        _ = report1 + report2
+
+        # Verify originals are unchanged
+        assert report1.content == original_content1
+        assert report1.title == original_title1
+        assert report2.content == original_content2
+        assert report2.title == original_title2
