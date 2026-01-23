@@ -487,9 +487,7 @@ class Report:
         'Part 1'
         """
         if not isinstance(other, Report):
-            raise TypeError(
-                "unsupported operand type(s) for +: 'Report' and '{}'".format(type(other).__name__)
-            )
+            raise TypeError(f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'")
         result = Report(title=self.title)
         result.content = self.content + other.content
         return result
