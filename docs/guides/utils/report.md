@@ -290,8 +290,8 @@ Export your report in different languages using the `language` parameter. This w
     
     Currently only English (`"en"`) is officially supported as the default. Other languages use automatic translation and may require manual review for technical accuracy.
 
-**Export to German:**
-![translate_to_german.png](../../_overrides/assets/images/report/translate_to_german.png)
+**Export to Dutch:**
+![translate_to_dutch.png](../../_overrides/assets/images/report/translate_to_dutch.png)
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
 
@@ -300,8 +300,8 @@ report.add_heading("Introduction")
 report.add_paragraph("This steel beam has been verified for bending.")
 
 # Export in German
-latex_german = report.to_latex(language="de")
-print(latex_german)
+latex_dutch = report.to_latex(language="nl")
+print(latex_dutch)
 ```
 
 **Export to multiple languages:**
@@ -315,13 +315,13 @@ report.add_paragraph("All checks passed successfully.")
 
 # Save in different languages
 report.to_latex("report_en.tex", language="en")  # English (default)
-report.to_latex("report_de.tex", language="de")  # German
 report.to_latex("report_nl.tex", language="nl")  # Dutch
 report.to_latex("report_es.tex", language="es")  # Spanish
+report.to_latex("report_de.tex", language="de")  # German
 report.to_latex("report_fr.tex", language="fr")  # French
 
 # Also works with Word and PDF
-report.to_word("report_de.docx", language="de")
+report.to_word("report_nl.docx", language="nl")
 ```
 
 **Supported languages:**
