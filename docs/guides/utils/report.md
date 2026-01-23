@@ -222,6 +222,62 @@ print(f"Document size: {len(docx_bytes)} bytes")
 # Now you can stream it, send as email attachment, store in database, etc.
 ```
 
+### Export to PDF
+
+Compile your report directly to PDF using `to_pdf()`. This requires a LaTeX distribution with `pdflatex` installed on your system.
+
+!!! info "Prerequisite: LaTeX Installation"
+
+    You need a LaTeX distribution that includes `pdflatex`. Download from:
+
+    - [MiKTeX](https://miktex.org/download) (Windows, macOS, Linux)
+    - [TeX Live](https://www.tug.org/texlive/) (Windows, macOS, Linux)
+
+**Save to a file path:**
+
+```python
+from blueprints.utils.report import Report
+
+# Create a report
+report = Report(title="My report")
+report.add_heading("Introduction")
+report.add_paragraph("Some content here.")
+
+# Save to PDF file
+report.to_pdf("report.pdf")
+```
+
+**Get PDF as bytes (for in-memory processing):**
+
+```python
+from blueprints.utils.report import Report
+
+# Create a report
+report = Report(title="My report")
+report.add_heading("Introduction")
+report.add_paragraph("Some content here.")
+
+# Get PDF bytes directly
+pdf_bytes = report.to_pdf()
+print(f"PDF size: {len(pdf_bytes)} bytes")
+
+# Now you can stream it, send as email attachment, store in database, etc.
+```
+
+**Keep auxiliary files for debugging:**
+
+```python
+from blueprints.utils.report import Report
+
+# Create a report
+report = Report(title="My report")
+report.add_heading("Introduction")
+report.add_paragraph("Some content here.")
+
+# Keep .aux, .log, .out files alongside the PDF for debugging LaTeX issues
+report.to_pdf("report.pdf", cleanup=False)
+```
+
 ## Translate Your Report
 
 Export your report in different languages using the `language` parameter. This works with `to_latex()`, `to_word()`, and `to_pdf()`.
