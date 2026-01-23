@@ -659,12 +659,17 @@ class TestReport:
         report2.add_heading("Overview")
         report2.add_paragraph("Content for report 2.")
 
-        final_report = report1 + report2
+        report3 = Report(title="Report 3")
+        report3.add_heading("Summary")
+        report3.add_paragraph("Content for report 3.")
+
+        final_report = report1 + report2 + report3
 
         assert isinstance(final_report, Report)
         assert final_report.title == "Report 1"
         assert "Content for report 1." in final_report.content
         assert "Content for report 2." in final_report.content
+        assert "Content for report 3." in final_report.content
 
     def test_adding_report_with_non_report_raises_type_error(self) -> None:
         """Test that adding a Report with a non-Report raises TypeError."""
