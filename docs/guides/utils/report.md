@@ -390,7 +390,7 @@ annex_a.add_paragraph("Step-by-step calculation sheets.")
 
 annex_b = Report()
 annex_b.add_heading("Annex B: Drawings")
-annex_b.add_figure("connection_detail.png", caption="Typical connection detail")
+annex_b.add_paragraph("Some drawings.")
 
 # Assemble the complete report
 complete_report = chapter_1 + chapter_2 + chapter_3 + annex_a + annex_b

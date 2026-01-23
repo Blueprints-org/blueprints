@@ -55,14 +55,13 @@ theme:
     - navigation.indexes
     - toc.follow
     - navigation.top
-    - navigation.path
-    - navigation.top
+
     - navigation.footer
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/
     - search.highlight
     - search.share
     - search.suggest
-    - # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-header/
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-header/
     - announce.dismiss
   language: en
 

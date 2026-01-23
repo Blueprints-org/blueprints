@@ -487,7 +487,9 @@ class Report:
         'Part 1'
         """
         if not isinstance(other, Report):
-            raise NotImplementedError("Can only add Report to another Report.")
+            raise TypeError(
+                "unsupported operand type(s) for +: 'Report' and '{}'".format(type(other).__name__)
+            )
         result = Report(title=self.title)
         result.content = self.content + other.content
         return result
