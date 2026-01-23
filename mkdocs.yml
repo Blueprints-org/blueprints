@@ -39,8 +39,15 @@ theme:
   font: 
     text: "DM Sans"
   features:
-    - toc.follow
-    - navigation.indexes
+    # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/?h=code+blocks
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.footnote.tooltips
+    - content.tabs.link
+    - content.tooltips
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
+    - navigation.tracking
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
