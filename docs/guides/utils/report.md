@@ -222,6 +222,65 @@ print(f"Document size: {len(docx_bytes)} bytes")
 # Now you can stream it, send as email attachment, store in database, etc.
 ```
 
+## Translate Your Report
+
+Export your report in different languages using the `language` parameter. This works with `to_latex()`, `to_word()`, and `to_pdf()`.
+
+!!! warning "Translation Support"
+
+    We use currently online (and free) translation services for this feature. We assume no liability for translation accuracy.
+    
+    Currently only English (`"en"`) is officially supported as the default. Other languages use automatic translation and may require manual review for technical accuracy.
+
+**Export to German:**
+![translate_to_german.png](../../_overrides/assets/images/report/translate_to_german.png)
+```python exec="on" source="tabbed-left" result="console"
+from blueprints.utils.report import Report
+
+report = Report(title="Design Report")
+report.add_heading("Introduction")
+report.add_paragraph("This steel beam has been verified for bending.")
+
+# Export in German
+latex_german = report.to_latex(language="de")
+print(latex_german)
+```
+
+**Export to multiple languages:**
+
+```python exec="on" source="tabbed-left" result="console"
+from blueprints.utils.report import Report
+
+report = Report(title="Analysis Results")
+report.add_heading("Summary")
+report.add_paragraph("All checks passed successfully.")
+
+# Save in different languages
+report.to_latex("report_en.tex", language="en")  # English (default)
+report.to_latex("report_de.tex", language="de")  # German
+report.to_latex("report_nl.tex", language="nl")  # Dutch
+report.to_latex("report_es.tex", language="es")  # Spanish
+report.to_latex("report_fr.tex", language="fr")  # French
+
+# Also works with Word and PDF
+report.to_word("report_de.docx", language="de")
+```
+
+**Supported languages:**
+
+Use any language code from [Google Cloud Translate](https://cloud.google.com/translate/docs/languages). Common codes:
+
+| Code | Language |
+|------|----------|
+| `en` | English (default) |
+| `nl` | Dutch |
+| `es` | Spanish |
+| `de` | German |
+| `fr` | French |
+| `it` | Italian |
+| `pt` | Portuguese |
+| `pl` | Polish |
+
 ## Common Tasks
 
 ### Add Text
