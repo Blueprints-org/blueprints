@@ -5,34 +5,116 @@ The `Report` class helps you build professional engineering reports with text, e
 
 ??? info "Complete Example"
 
-    Use the following code to create a simple (mock) engineering report:
-    
+    Use the following code to create an engineering report showcasing all available elements:
+
+    ![complete example](../../_overrides/assets/images/report/complete_example.png)
+
     ```python exec="on" source="tabbed-left" result="console"
     from blueprints.utils.report import Report
     from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_5
-    
-    # Create report
-    report = Report(title="Design Verification")
-    
-    # Add content
+    from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state import formula_6_6n
+
+    # Create report with title
+    report = Report(title="Steel Member Design Verification")
+
+    # --- HEADINGS (3 levels) ---
     report.add_heading("Introduction")
-    report.add_paragraph("This report verifies the tensile capacity of the steel member.")
-    
-    report.add_heading("Design Checks")
-    report.add_paragraph("Unity check for tensile strength:", bold=True).add_newline()
-    
-    formula = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
-    report.add_formula(formula, options="complete")
-    
-    report.add_paragraph("Result: Check PASSED", bold=True)
-    
-    report.add_heading("Summary")
+    report.add_heading("Project Background", level=2)
+    report.add_heading("Design Standards", level=3)
+
+    # --- PARAGRAPHS (text formatting) ---
+    report.add_paragraph("This report verifies the tensile capacity of a steel member.")
+    report.add_paragraph("All calculations follow Eurocode standards.", bold=True)
+    report.add_paragraph("Values shown are for demonstration purposes.", italic=True)
+    report.add_paragraph("Critical results are highlighted.", bold=True, italic=True)
+    report.add_newline()
+
+    # --- EQUATIONS (standalone and inline) ---
+    report.add_heading("Theoretical Background", level=2)
+    report.add_paragraph("The fundamental relationship for stress is:")
+    report.add_equation(equation=r"\sigma = \frac{F}{A}", tag="Stress Formula")
+
+    report.add_paragraph("Where ").add_equation(r"\sigma", inline=True).add_paragraph(" is stress, ")
+    report.add_equation(r"F", inline=True).add_paragraph(" is force, and ")
+    report.add_equation(r"A", inline=True).add_paragraph(" is area.")
+    report.add_newline(n=2)
+
+    # --- BLUEPRINTS FORMULAS (all options) ---
+    report.add_heading("Design Calculations")
+    report.add_heading("Tensile Strength Check", level=2)
+
+    unity_check = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000)
+
+    # Short form (result only)
+    report.add_paragraph("Quick result:", bold=True)
+    report.add_formula(unity_check, options="short")
+
+    # Complete form (full derivation)
+    report.add_paragraph("Full calculation:", bold=True)
+    report.add_formula(unity_check, options="complete")
+
+    # Without source document in tag
+    report.add_paragraph("Formula number only:", bold=True)
+    report.add_formula(unity_check, options="complete", include_source=False)
+
+    # Inline formula
+    report.add_paragraph("The unity check ").add_formula(unity_check, options="short", inline=True)
+    report.add_paragraph(" confirms the member is adequate.")
+    report.add_newline()
+
+    # Another formula with units
+    report.add_heading("Strength Reduction Factor", level=2)
+    strength_factor = formula_6_6n.Form6Dot6nStrengthReductionFactor(f_ck=35)
+    report.add_formula(strength_factor, options="complete_with_units")
+
+    # --- TABLES ---
+    report.add_heading("Results Summary")
+    report.add_table(
+        headers=[r"\text{Check}", r"\text{Utilization}", r"\text{Status}"],
+        rows=[
+            [r"\text{Tensile strength}", "0.750", r"\text{PASS}"],
+            [r"\text{Buckling}", "0.823", r"\text{PASS}"],
+            [r"\text{Combined}", "0.891", r"\text{PASS}"],
+        ]
+    )
+
+    # --- FIGURES ---
+    report.add_heading("Diagrams", level=2)
+    report.add_figure("cross_section.png", width=0.5)
+    report.add_figure("stress_diagram.png", width=0.7, caption="Stress distribution along member length")
+
+    # --- LISTS (bulleted, numbered, nested) ---
+    report.add_heading("Conclusions")
+
+    # Bulleted list
+    report.add_paragraph("Key findings:", bold=True)
     report.add_list([
-        "Applied force: 150 kN",
-        "Resistance: 200 kN",
-        "Utilization: 75%",
+        "All unity checks passed",
+        "Maximum utilization: 89.1%",
+        "Safety margin: adequate",
     ], style="bulleted")
-    
+
+    # Numbered list
+    report.add_paragraph("Recommended actions:", bold=True)
+    report.add_list([
+        "Verify connection details",
+        "Check fabrication tolerances",
+        "Confirm material certificates",
+    ], style="numbered")
+
+    # Nested list
+    report.add_paragraph("Design verification steps:", bold=True)
+    report.add_list([
+        "Material properties",
+        ["Yield strength", "Ultimate strength", "Elastic modulus"],
+        "Cross-section checks",
+        ["Classification", "Local buckling", ["Web", "Flange"]]
+    ], style="numbered")
+
+    # --- SPACING ---
+    report.add_newline(n=2)
+    report.add_paragraph("End of report.", italic=True)
+
     # Get LaTeX document
     latex = report.to_latex()
     print(latex)
@@ -49,6 +131,8 @@ The `Report` class helps you build professional engineering reports with text, e
 ## Quick Start
 
 Create a report and add content using [method chaining](https://www.geeksforgeeks.org/python/method-chaining-in-python/):
+
+![quick_start.png](../../_overrides/assets/images/report/quick_start.png)
 
 ```python exec="on" session="report_quick_start" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
@@ -77,7 +161,9 @@ print(latex_code)
 
 ### Export to LaTeX
 
-```python exec="on" session="report_quick_start" source="tabbed-left" result="console"
+A very useful way to work with the report is to export it as a LaTeX document. You can then compile it with your favorite LaTeX editor (Overleaf, TeXShop, etc.) or command-line tool (pdflatex, xelatex, etc.).
+
+```python exec="on" session="report_quick_start" source="above"
 # Save the complete LaTeX document to your local disk (ready for Overleaf or pdflatex)
 report.to_latex('report.tex')
 ```
@@ -85,6 +171,8 @@ report.to_latex('report.tex')
 ### Export to Word
 
 You can convert your report to a Word document directly in three ways:
+
+![to_word.png](../../_overrides/assets/images/report/to_word.png)
 
 **Save to a file path:**
 
@@ -138,21 +226,25 @@ print(f"Document size: {len(docx_bytes)} bytes")
 
 ### Add Text
 
+![add_text.png](../../_overrides/assets/images/report/add_text.png)
+
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
 
 # Create a report
 report = Report(title="My report")
 
-report.add_paragraph("This is regular text.")
-report.add_paragraph("This is bold text.", bold=True)
-report.add_paragraph("This is italic text.", italic=True)
+report.add_paragraph("This is regular text.").add_newline()
+report.add_paragraph("This is bold text.", bold=True).add_newline(n=2)
+report.add_paragraph("This is italic text....", italic=True)
 report.add_paragraph("This is bold and italic.", bold=True, italic=True)
 
 print(report.to_latex())
 ```
 
 ### Add Sections
+
+![add_heading.png](../../_overrides/assets/images/report/add_heading.png)
 
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
@@ -170,6 +262,7 @@ print(report.to_latex())
 ### Add Equations
 
 **Standalone equation:**
+![add_equations.png](../../_overrides/assets/images/report/add_equations.png)
 
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
@@ -177,12 +270,14 @@ from blueprints.utils.report import Report
 # Create a report
 report = Report(title="My report")
 
-report.add_equation("a^2 + b^2 = c^2", tag="Pythagoras")
+report.add_equation(equation="a^2 + b^2 = c^2", tag="Pythagoras")
 
 print(report.to_latex())
 ```
 
 **Inline equation (within text):**
+
+![add_equation_inline.png](../../_overrides/assets/images/report/add_equation_inline.png)
 
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
@@ -196,6 +291,10 @@ print(report.to_latex())
 ```
 
 ### Add Blueprints Formulas
+
+Integrate Blueprints formulas with different levels of detail:
+
+![add_blueprints_formula.png](../../_overrides/assets/images/report/add_blueprints_formulas.png)
 
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_6_ultimate_limit_state import formula_6_6n
@@ -215,13 +314,15 @@ report.add_formula(formula, options="complete_with_units")  # With unit labels
 report.add_formula(
     formula,
     options="complete",
-    include_source=True,  # Show "EN 1992-1-1:2004"
+    include_source=False,  # Hide "EN 1992-1-1:2004"
     include_formula_number=True,  # Show "6.6n"
 )
 print(report.to_latex())
 ```
 
 ### Add Tables
+
+![add_table.png](../../_overrides/assets/images/report/add_table.png)
 
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
@@ -241,6 +342,8 @@ print(report.to_latex())
 
 ### Add Figures
 
+![add_figures.png](../../_overrides/assets/images/report/add_figures.png)
+
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report
 
@@ -248,15 +351,16 @@ from blueprints.utils.report import Report
 report = Report(title="My report")
 
 # Simple figure
-report.add_figure("diagram.png", width=0.6)
+report.add_figure("blueprints.png")
 
 # Figure with caption
-report.add_figure("stress_plot.png", width=0.7, caption="Stress distribution under load")
+report.add_figure(image_path="beam.png", width=0.7, caption="You can add a caption to a figure.")
 
 print(report.to_latex())
 ```
 
 ### Add Lists
+![add_lists.png](../../_overrides/assets/images/report/add_lists.png)
 
 ```python exec="on" source="tabbed-left" result="console"
 from blueprints.utils.report import Report

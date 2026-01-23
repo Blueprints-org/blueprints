@@ -641,8 +641,15 @@ class Report:
         ----------
         path : str | Path | BytesIO | None, optional
             The destination for the Word document:
-            - str or Path: File path where the document will be saved
+            - str or Path: File path where the document will be saved, for example 'report.docx'. Remember to use .docx extension.
             - BytesIO: Buffer to write the document to (in-memory)
+                ```python
+                from io import BytesIO
+
+                buffer = BytesIO()
+                report.to_word(buffer)
+                docx_bytes = buffer.getvalue()
+                ```
             - None: Return the document as bytes (default)
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
