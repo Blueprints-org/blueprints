@@ -474,6 +474,11 @@ class Report:
         Report
             A new Report with combined content.
 
+        Raises
+        ------
+        TypeError
+            If the other object is not a Report instance.
+
         Examples
         --------
         >>> report1 = Report(title="Part 1")
