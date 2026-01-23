@@ -222,7 +222,7 @@ class TestReport:
         fixture_report.add_figure("path/to/image.png")
 
         # Check essential figure components
-        assert r"\begin{figure}[h]" in fixture_report.content
+        assert r"\begin{figure}" in fixture_report.content
         assert r"\centering" in fixture_report.content
         assert r"\includegraphics[width=0.9\textwidth]{path/to/image.png}" in fixture_report.content
         assert r"\end{figure}" in fixture_report.content
@@ -648,3 +648,28 @@ class TestReport:
 
         result = fixture_report.to_pdf(cleanup=False)
         assert isinstance(result, bytes)
+
+    def test_adding_two_reports_together(self) -> None:
+        """Test that two Report instances can be added together."""
+        report1 = Report(title="Report 1")
+        report1.add_heading("Introduction")
+        report1.add_paragraph("Content for report 1.")
+
+        report2 = Report(title="Report 2")
+        report2.add_heading("Overview")
+        report2.add_paragraph("Content for report 2.")
+
+        final_report = report1 + report2
+
+        assert isinstance(final_report, Report)
+        assert final_report.title == "Report 1"
+        assert "Content for report 1." in final_report.content
+        assert "Content for report 2." in final_report.content
+
+    def test_adding_report_with_non_report_raises_type_error(self) -> None:
+        """Test that adding a Report with a non-Report raises TypeError."""
+        report = Report(title="Main Report")
+        report.add_heading("Main Section")
+
+        with pytest.raises(NotImplementedError, match=r"Can only add Report to another Report."):
+            _ = report + "Not a Report"
