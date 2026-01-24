@@ -32,7 +32,7 @@ class CheckProtocol(Protocol):
     ...
     ...     def result(self) -> CheckResult: ...
     ...
-    ...     def calculation_steps(self) -> dict[str, CheckProtocol]: ...
+    ...     def subchecks(self) -> dict[str, CheckProtocol]: ...
     ...
     ...     def report(self) -> Report: ...
     >>>
@@ -43,8 +43,15 @@ class CheckProtocol(Protocol):
     name: str
     source_docs: list[str]
 
-    def calculation_steps(self) -> dict[str, "CheckProtocol"]:
+    def subchecks(self) -> dict[str, "CheckProtocol"]:
         """Get sub-check instances for composite checks.
+
+        For example, Check A may comprise sub-checks A1, A2, and A3.
+        In that case, calling subchecks() on Check A would return a dict:
+        {"A1": <Check A1 instance>,
+         "A2": <Check A2 instance>,
+         "A3": <Check A3 instance>}.
+        }
 
         Access this method to get all Check instances that are part of an
         orchestrated check. Each returned check object has its own result(),
