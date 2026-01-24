@@ -21,8 +21,8 @@ class ValidCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
-        """Return empty calculation steps."""
+    def subchecks(self) -> dict[str, CheckProtocol]:
+        """Return empty subchecks."""
         return {}
 
     def report(self) -> Report:
@@ -39,8 +39,8 @@ class MissingNameCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
-        """Return empty calculation steps."""
+    def subchecks(self) -> dict[str, CheckProtocol]:
+        """Return empty subchecks."""
         return {}
 
     def report(self) -> Report:
@@ -57,8 +57,8 @@ class MissingDocsCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
-        """Return empty calculation steps."""
+    def subchecks(self) -> dict[str, CheckProtocol]:
+        """Return empty subchecks."""
         return {}
 
     def report(self) -> Report:
@@ -72,8 +72,8 @@ class MissingResultCheck:
     name: str = "Missing Result"
     source_docs: ClassVar[list[str]] = ["Doc 1"]
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
-        """Return empty calculation steps."""
+    def subchecks(self) -> dict[str, CheckProtocol]:
+        """Return empty subchecks."""
         return {}
 
     def report(self) -> Report:
@@ -106,8 +106,8 @@ class MissingReportCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_steps(self) -> dict[str, CheckProtocol]:
-        """Return empty calculation steps."""
+    def subchecks(self) -> dict[str, CheckProtocol]:
+        """Return empty subchecks."""
         return {}
 
 
