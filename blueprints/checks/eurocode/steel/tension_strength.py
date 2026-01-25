@@ -86,7 +86,7 @@ class TensionStrengthCheck:
         if self.n < 0:
             raise ValueError("Input force N (F_x) must be positive for tension check.")
 
-        a = self.section_properties.area
+        a = self.section_properties.area  # type: ignore[attr-defined]
         f_y = self.steel_cross_section.yield_strength
         n_ed = self.n * KN_TO_N
         n_t_rd = formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)

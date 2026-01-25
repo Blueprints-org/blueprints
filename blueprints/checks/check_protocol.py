@@ -3,7 +3,6 @@
 from typing import Protocol, runtime_checkable
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.codes.formula import Formula
 from blueprints.utils.report import Report
 
 
@@ -68,23 +67,6 @@ class CheckProtocol(Protocol):
             Dictionary mapping descriptive names to Check instances.
             Empty dict for simple checks with no sub-checks.
 
-        """
-        ...
-
-    def calculation_formula(self) -> dict[str, "Formula"]:
-        """Get calculation formula instances for this check or its sub-checks.
-
-        Access this method to get all formula instances that are part of an
-        orchestrated check. Each returned check object has its own result(),
-        calculation_formula(), and report() methods for detailed inspection.
-
-        For simple (leaf) checks with no formulas, return an empty dict.
-
-        Returns
-        -------
-        dict[str, Formula]
-            Dictionary mapping descriptive names to Formula instances.
-            Empty dict for simple checks with no formulas.
         """
         ...
 

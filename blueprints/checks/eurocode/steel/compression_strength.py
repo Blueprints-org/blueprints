@@ -87,7 +87,7 @@ class CompressionStrengthClass123Check:
         if self.n > 0:
             raise ValueError("Input force N (F_x) must be negative for compression check.")
 
-        a = self.section_properties.area
+        a = self.section_properties.area  # type: ignore[attr-defined]
         f_y = self.steel_cross_section.yield_strength
         n_ed = -self.n * KN_TO_N
         n_c_rd = formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
