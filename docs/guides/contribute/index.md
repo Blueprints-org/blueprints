@@ -1,80 +1,125 @@
 # Contributing to Blueprints
 
-Firstly, thank you for considering contributing to Blueprints! Your help is very valuable and it's what makes the open-source community such a
+Firstly, thank you for considering contributing to Blueprints! Your help is very valuable, and it's what makes the open-source community such a
 fantastic place to learn, inspire, and create. By contributing to this project, you are helping to advance the field of civil engineering. Engineers
 around the world will be thankful for your contribution.
 
-## How to Contribute
+## Can I Contribute?
 
-### Reporting Bugs
+Yes! We have oportunities for contributors of all skill levels. Whether you're a seasoned developer, a civil engineer with coding skills.
 
-1. **Check existing issues:** Before creating a new issue, please check the existing open and closed issues to see if someone else has had the same
-   issue.
-2. **File a new issue:** If you're sure your issue is new, open a new issue, providing as much detail as you
-   can. [Submit an issue here](https://github.com/Blueprints-org/blueprints/issues).
+**Whether you're new to open source or an experienced contributor, there's a place for you here.**
 
-### Feature Requests
+When you are new to open source, it can be daunting to know where to start. We are here to help!
+We have some [advice for first-time contributors](first-time-contributors.md) to help you get past any initial doubts and fears you may have.
 
-1. **Check existing feature requests:** Before submitting a new feature request, check to see if it has already been discussed.
-2. **File a new feature request:** If your idea is new, submit it as a new issue.
+## What can I do?
 
-### Pull Requests
+There are many ways to contribute to Blueprints. Here are some common ways you can help out:
 
-1. **Fork the Repository:** Fork the project repository and clone your fork to your machine.
-2. **Create a new branch:** Create a new branch with a meaningful name.
-3. **Make Changes:** Make your code changes, ensuring you adhere to the coding standards and guidelines below.
-4. **Run Tests:** Please run tests to make sure your changes don't break existing functionality.
-5. **Submit a Pull Request:** Submit your changes as a pull request, providing detailed information in the PR description.
+<div class="grid cards" markdown>
+
+- **Fix an issue**
+
+    ---
+    
+    The most direct way to contribute is to write code to fix an existing issue.
+    
+    [➡ Browse issues](https://github.com/Blueprints-org/blueprints/issues)
+
+- **Implement a new Feature**
+
+    ---
+    
+    Would like that Blueprints does something new, and you have the skills to implement it? Go for it!
+    
+
+- **Report a Bug**
+
+    ---
+    
+    Found something that doesn't work? Help us fix it.
+    
+    [➡ Report an issue](https://github.com/Blueprints-org/blueprints/issues/new?template=bug_report.yml)
+
+- **Request a Feature**
+
+    ---
+    
+    Have an idea for a new formula or feature?
+    
+    [➡ Submit a request](https://github.com/Blueprints-org/blueprints/issues/new?template=feature_request.yml)
+
+- **Improve Documentation**
+
+    ---
+    
+    Fix typos, clarify explanations, add examples.
+    
+    [➡ Find documentation issues](https://github.com/Blueprints-org/blueprints/issues?q=is%3Aopen+label%3Adocumentation)
+
+- **Fix a Bug or Add a Feature**
+
+    ---
+    
+    Ready to write some code? Start here.
+    
+    [➡ Find good first issues](https://github.com/Blueprints-org/blueprints/issues?q=is%3Aopen+label%3A%22good+first+issue%22)
+
+</div>
+
+Once you've chosen what to work on, you are ready to set up your development environment.
 
 ## How to set up your development environment
-If you plan to contribute to `blueprints`, you should begin by cloning the repository:
 
-```shell
+If you plan to contribute to Blueprints, you should begin by cloning the repository:
+
+```terminal
 git clone https://github.com/Blueprints-org/blueprints.git
 cd blueprints
 ```
 
-`blueprints` uses `uv` for python project management. `uv` can be installed with pip:
+Blueprints uses `uv` for python project management. 
 
-```shell
+It can be installed via pip:
+
+```terminal
 pip install uv
 ```
 For other methods check [this](https://docs.astral.sh/uv/getting-started/installation/).
 
 `uv` can then be used to install the latest compatible version of python:
 
-```shell
+```terminal
 uv python install 3.13
 ```
 
-`blueprints` and its development dependencies can be installed with:
+Blueprints and its development dependencies can be installed with:
 
-```shell
-uv sync
-```
-
-or if you want to install all optional dependency groups, you can run:
-```shell
+```terminal
 uv sync --all-groups
 ```
+
 Refer to the `uv` [documentation](https://docs.astral.sh/uv/) for more information relating to using `uv` for project management.
 
 ## How to test the project
 
 ### Running Tests
-`blueprints` has a comprehensive test suite, and all PR's must introduce and pass appropriate tests. 
-Coverage of 100% is also enforced. To run the tests, use pytest:
 
-```shell
-uv run pytest
+Blueprints has a comprehensive test suite, and all PR's must introduce and pass appropriate tests. 
+Coverage of 100% is also enforced. To run the tests, use our own [Blueprints CLI tool](cli.md):
+
+```terminal
+bp coverage
 ```
 
 ### Pre-commit
-`blueprints` uses pre-commit hooks to manage code quality, including formatting, linting, and type-safety. 
+
+Blueprints uses pre-commit hooks to manage code quality, including formatting, linting, and type-safety. 
 All PRs must pass the pre-commit hooks, which are run as part of the CI process. 
 To install the pre-commit hooks, run:
 
-```shell
+```terminal
 uv run pre-commit install
 ```
 This will run `pre-commit` against all changed files when attempting to `git commit`. 
@@ -82,53 +127,20 @@ You will need to fix the offending files prior to being able to commit a change 
 
 Alternatively, you can run the pre-commit hooks manually against all files:
 
-```shell
+```terminal
 pre-commit run --all-files
 ```
 
 ## Building Documentation
 
-`blueprints` uses MkDocs with Material theme for documentation. The documentation is automatically built and deployed to [blueprints.readthedocs.io](https://blueprints.readthedocs.io), but you can build it locally for development and testing.
+Blueprints uses MkDocs with Material theme for documentation. The documentation is automatically built and deployed to [blueprints.readthedocs.io](https://blueprints.readthedocs.io), but you can build it locally for development and testing using:
 
-### Install Documentation Dependencies
-
-To install the documentation dependencies:
-
-```shell
-uv sync --group docs
+```terminal
+bp docs
 ```
 
-### Serve Documentation Locally
-
-To serve the documentation locally with live reload (recommended for development):
-
-```shell
-uv run mkdocs serve
-```
-
-This will start a local server, typically at `http://127.0.0.1:8000`, where you can view the documentation. The server will automatically reload when you make changes to the documentation files.
+This will start a local server, typically at `http://localhost:8000`, where you can view the documentation. The server will automatically reload when you make changes to the documentation files.
 The first time you run this command, it will take a few minutes to build the documentation, but subsequent runs will be faster.
-
-### Build Static Documentation
-
-To build the static documentation files:
-
-```shell
-uv run mkdocs build
-```
-
-This creates a `site/` directory with the built HTML files.
-
-### Documentation Structure
-
-- Documentation source files are located in the `docs/` directory
-- Configuration is in `mkdocs.yml`
-- The documentation includes auto-generated API reference pages
-- Examples are provided as Jupyter notebooks in `docs/examples/`
-
-## Branching Strategy
-
-We use Git flow for our branching strategy. Only create branches from issues/feature requests.
 
 ## Checklist for Code Submission
 
@@ -139,11 +151,6 @@ We use Git flow for our branching strategy. Only create branches from issues/fea
 - Add unit tests. (100% coverage is enforced)
 - Update the user documentation on the site, if applicable
 - Include examples for new features
-
-## Issues
-
-Any contributor can create an issue. No contribution is too small. If you think something is missing or could be improved, please don't hesitate to
-submit an issue or a pull request. This is intended to be a central open library for civil engineering, and your input is invaluable.
 
 ## Code of Conduct
 
