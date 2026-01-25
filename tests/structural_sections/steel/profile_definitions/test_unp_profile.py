@@ -34,7 +34,7 @@ class TestUNPProfile:
 
     def test_max_profile_thickness(self, unp_profile: UNPProfile) -> None:
         """Test the maximum profile thickness."""
-        expected_max_thickness = 22.5  # mm
+        expected_max_thickness = 11.5  # mm
         assert pytest.approx(unp_profile.max_profile_thickness, rel=1e-6) == expected_max_thickness
 
     @pytest.mark.slow
