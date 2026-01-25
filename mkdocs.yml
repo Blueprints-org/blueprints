@@ -105,6 +105,7 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - abbr
+  - md_in_html
   - attr_list
   - pymdownx.snippets:
       check_paths: true
