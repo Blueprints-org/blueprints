@@ -100,6 +100,10 @@ class Report:
         >>> report.add_paragraph("This is bold text", bold=True)
         >>> report.add_paragraph("This is bold and italic", bold=True, italic=True)
         """
+        # Merge multiline string if needed
+        if isinstance(text, list | tuple):
+            text = " ".join(str(t) for t in text)
+
         if bold and italic:
             self.content += rf"\textbf{{\textit{{{text}}}}}"
         elif bold:
@@ -463,6 +467,59 @@ class Report:
 
         return self
 
+    def __add__(self, other: "Report", downgrade_levels: int = 0) -> "Report":
+        r"""Combine two reports into a new report.
+
+        The resulting report will have the title of the first (left) report
+        and the combined content of both reports.
+
+        Parameters
+        ----------
+        other : Report
+            The report to add to this one.
+        downgrade_levels : int, optional
+            Number of heading levels to downgrade in the other report (default is 0).
+            downgrade_levels=1 will convert \section to \subsection, \subsection to \subsubsection, etc.
+
+        Returns
+        -------
+        Report
+            A new Report with combined content.
+
+        Raises
+        ------
+        TypeError
+            If the other object is not a Report instance.
+
+        Examples
+        --------
+        >>> report1 = Report(title="Part 1")
+        >>> report1.add_heading("Introduction")
+        Report(title="Part 1", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=26)
+        >>> report2 = Report(title="Part 2")
+        >>> report2.add_heading("Conclusion")
+        Report(title="Part 2", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=23)
+        >>> combined = report1 + report2
+        >>> combined.title
+        'Part 1'
+        """
+        if not isinstance(other, Report):
+            raise TypeError(f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'")
+        result = Report(title=self.title)
+
+        heading_map = {
+            r"\section{": r"\subsection{",
+            r"\subsection{": r"\subsubsection{",
+            r"\subsubsection{": r"\textbf{",
+        }
+
+        for _ in range(downgrade_levels):
+            for old, new in heading_map.items():
+                other.content = other.content.replace(old, new)
+
+        result.content = self.content + other.content
+        return result
+
     def __repr__(self) -> str:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
@@ -561,6 +618,7 @@ class Report:
             r"\usepackage{float}" + "\n"  # Improved float handling
             r"\usepackage{geometry}" + "\n"  # Page layout and margins
             r"\usepackage{graphicx}" + "\n"  # Include images and graphics
+            r"\usepackage{icomma}" + "\n"  # Proper comma handling in numbers
             r"\usepackage{setspace}" + "\n"  # Line spacing control
             r"\usepackage{xcolor}" + "\n"  # Color definitions and usage
             r"\usepackage{titlesec}" + "\n"  # Customize section titles
