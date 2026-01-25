@@ -4,7 +4,7 @@ This module provides strength checks for steel I-profiles of class 3 cross-secti
 """
 
 from dataclasses import dataclass, field
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Optional
 
 from sectionproperties.post.post import SectionProperties
 
@@ -88,6 +88,7 @@ class IProfileStrengthClass3:
 
     profile: Any = field(init=False, repr=False)
     material: Any = field(init=False, repr=False)
+    result_internal_force_1d: ResultInternalForce1D = field(init=False, repr=False)
 
     name: str = "Check for steel I-profiles of Class 3"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
@@ -119,7 +120,7 @@ class IProfileStrengthClass3:
             ),
         )
 
-    def subchecks(self) -> dict[str, "CheckProtocol"]:
+    def subchecks(self) -> dict[str, Optional["CheckProtocol"]]:
         """Perform calculation steps for all strength checks, optionally ignoring specified checks."""
         all_checks = {
             "compression": None,
@@ -174,7 +175,7 @@ class IProfileStrengthClass3:
         for subcheck in self.subchecks().values():
             if subcheck is not None:
                 sub_report = subcheck.report(n=n)
-                report.add_heading(sub_report.title, level=2)
+                report.add_heading(str(sub_report.title), level=2)
                 report += sub_report
 
         report.add_heading("Conclusion")

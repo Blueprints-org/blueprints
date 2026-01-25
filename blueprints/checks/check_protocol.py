@@ -83,7 +83,7 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def report(self) -> Report:
+    def report(self, n: int) -> Report:
         """Generate formatted report of check results.
 
         Produces human-readable reports in various formats for documentation.
@@ -92,5 +92,7 @@ class CheckProtocol(Protocol):
         -------
         Report
             Formatted report object summarizing check results.
+        n : int
+            Number of decimal places for numerical values in the report.
         """
         ...

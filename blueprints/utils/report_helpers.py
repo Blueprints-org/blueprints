@@ -1,7 +1,7 @@
 """Helper methods for building standardized report sections."""
 
 from collections.abc import Sequence
-from typing import Any
+from typing import Any, Optional
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
@@ -140,7 +140,7 @@ def add_section_properties(
     report.add_table(headers=["Property", "Value"], rows=rows)
 
 
-def add_unity_check_summary(report: Report, calculations: dict[str, "CheckProtocol"], n: int = 2) -> None:
+def add_unity_check_summary(report: Report, calculations: dict[str, Optional["CheckProtocol"]], n: int = 2) -> None:
     """
     Add a summary table of unity checks to the report.
 
