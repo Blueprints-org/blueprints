@@ -208,7 +208,11 @@ class TestLatexTranslator:
         example_latex = (
             r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Header 1 & Header 2 & Header 3 with math $E=mc^2$ \\ "
             r"\midrule Row 1 Col 1 & Row 1 Col 2 with inline math $a^2 + b^2 = 25.0$ & Row 1 Col 3 \\ "
-            r"Row 2 Col 1 & Row 2 Col 2 & Row 2 Col 3 \\ \bottomrule \end{tabular} \end{table}"
+            r"Row 2 Col 1 & Row 2 Col 2 & Row 2 Col 3 \\ "
+            r"Apple & Banana & Cherry \\ "
+            r"Dog & Elephant & Frog \\ "
+            r"Random text & More words & $x = y + z$ \\ "
+            r"\bottomrule \end{tabular} \end{table}"
         )
         # Mock Google Translate for deterministic test
         with patch("blueprints.utils.language.translate.Translator") as mock_translator:
@@ -224,15 +228,28 @@ class TestLatexTranslator:
                 MagicMock(text="Rij 2 Kol 1"),
                 MagicMock(text="Rij 2 Kol 2"),
                 MagicMock(text="Rij 2 Kol 3"),
+                MagicMock(text="Appel"),
+                MagicMock(text="Banaan"),
+                MagicMock(text="Kers"),
+                MagicMock(text="Hond"),
+                MagicMock(text="Olifant"),
+                MagicMock(text="Kikker"),
+                MagicMock(text="Random tekst"),
+                MagicMock(text="Meer woorden"),
+                MagicMock(text="$x = y + z$"),
             ]
             mock_translator.return_value = mock_instance
 
             result_nl = LatexTranslator(example_latex, "nl")
             # Note: Math expressions are preserved inline, decimal commas converted
             expected = (
-                r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Kop 1 & Kop 2 & Kop 3 met wiskunde $E=mc^2$ \\ "
-                r"\midrule Rij 1 Kol 1 & Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = 25,0$ & Rij 1 Kol 3 \\ "
-                r"Rij 2 Kol 1 & Rij 2 Kol 2 & Rij 2 Kol 3 \\ \bottomrule \end{tabular} \end{table}"
+                r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Kop 1  &  Kop 2  &  Kop 3 met wiskunde $E=mc^2$ \\ "
+                r"\midrule Rij 1 Kol 1  &  Rij 1 Kol 2 met inline wiskunde $a^2 + b^2 = 25,0$  &  Rij 1 Kol 3 \\ "
+                r"Rij 2 Kol 1  &  Rij 2 Kol 2  &  Rij 2 Kol 3 \\ "
+                r"Appel  &  Banaan  &  Kers \\ "
+                r"Hond  &  Olifant  &  Kikker \\ "
+                r"Random tekst  &  Meer woorden  &  $x = y + z$ \\ "
+                r"\bottomrule \end{tabular} \end{table}"
             )
             assert str(result_nl) == expected
 
@@ -252,10 +269,9 @@ class TestLatexTranslator:
                 MagicMock(text="Kop 3"),
             ]
             mock_translator.return_value = mock_instance
-
             result_nl = LatexTranslator(example_latex, "nl")
             expected = (
-                r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Kop 1 & Kop 2 & Kop 3 \\ "
+                r"\begin{table}[h] \centering \begin{tabular}{lll} \toprule Kop 1  &  Kop 2  &  Kop 3 \\ "
                 r"\midrule \\ \bottomrule \end{tabular} \end{table}"
             )
             assert str(result_nl) == expected
