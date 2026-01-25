@@ -171,6 +171,31 @@ class UNPProfile(Profile):
             self.total_height / 2 - self.bottom_toe_total_height - self.bottom_slope_height - self.bottom_root_fillet_height,
         )
 
+        raise_if_negative(
+            top_slope=self.top_slope,
+            bottom_slope=self.bottom_slope,
+            top_root_fillet_height=self.top_root_fillet_height,
+            top_root_fillet_width=self.top_root_fillet_width,
+            bottom_root_fillet_height=self.bottom_root_fillet_height,
+            bottom_root_fillet_width=self.bottom_root_fillet_width,
+            top_toe_radius_height=self.top_toe_radius_height,
+            top_toe_radius_width=self.top_toe_radius_width,
+            bottom_toe_radius_height=self.bottom_toe_radius_height,
+            bottom_toe_radius_width=self.bottom_toe_radius_width,
+            top_slope_width=self.top_slope_width,
+            top_slope_height=self.top_slope_height,
+            top_slope_length=self.top_slope_length,
+            bottom_slope_width=self.bottom_slope_width,
+            bottom_slope_height=self.bottom_slope_height,
+            bottom_slope_length=self.bottom_slope_length,
+            top_toe_total_height=self.top_toe_total_height,
+            top_toe_flat_height=self.top_toe_flat_height,
+            bottom_toe_total_height=self.bottom_toe_total_height,
+            bottom_toe_flat_height=self.bottom_toe_flat_height,
+            web_inner_height_top=self.web_inner_height_top,
+            web_inner_height_bottom=self.web_inner_height_bottom,
+        )
+
     @property
     def _polygon(self) -> Polygon:
         """Return the polygon of the UNP profile without the offset and rotation applied."""
@@ -226,25 +251,28 @@ class UNPProfile(Profile):
         if corrosion == 0:
             return self
 
-        top_flange_total_width = self.top_flange_total_width - 2 * corrosion
-        top_flange_thickness = self.top_flange_thickness - 2 * corrosion
-        bottom_flange_total_width = self.bottom_flange_total_width - 2 * corrosion
-        bottom_flange_thickness = self.bottom_flange_thickness - 2 * corrosion
-        total_height = self.total_height - 2 * corrosion
-        web_thickness = self.web_thickness - 2 * corrosion
-        top_root_fillet_radius = self.top_root_fillet_radius + corrosion
-        top_toe_radius = max(0, self.top_toe_radius - corrosion)
-        top_outer_corner_radius = max(0, self.top_outer_corner_radius - corrosion)
-        bottom_root_fillet_radius = self.bottom_root_fillet_radius + corrosion
-        bottom_toe_radius = max(0, self.bottom_toe_radius - corrosion)
-        bottom_outer_corner_radius = max(0, self.bottom_outer_corner_radius - corrosion)
+        # Use a buffer dict to store updated dimensions
+        buffer = {
+            "top_flange_total_width": self.top_flange_total_width - 2 * corrosion,
+            "top_flange_thickness": self.top_flange_thickness - 2 * corrosion,
+            "bottom_flange_total_width": self.bottom_flange_total_width - 2 * corrosion,
+            "bottom_flange_thickness": self.bottom_flange_thickness - 2 * corrosion,
+            "total_height": self.total_height - 2 * corrosion,
+            "web_thickness": self.web_thickness - 2 * corrosion,
+            "top_root_fillet_radius": self.top_root_fillet_radius + corrosion,
+            "top_toe_radius": max(0, self.top_toe_radius - corrosion),
+            "top_outer_corner_radius": max(0, self.top_outer_corner_radius - corrosion),
+            "bottom_root_fillet_radius": self.bottom_root_fillet_radius + corrosion,
+            "bottom_toe_radius": max(0, self.bottom_toe_radius - corrosion),
+            "bottom_outer_corner_radius": max(0, self.bottom_outer_corner_radius - corrosion),
+        }
 
         if any(
-            thickness < FULL_CORROSION_TOLERANCE
+            buffer[thickness] < FULL_CORROSION_TOLERANCE
             for thickness in (
-                top_flange_thickness,
-                bottom_flange_thickness,
-                web_thickness,
+                "top_flange_thickness",
+                "bottom_flange_thickness",
+                "web_thickness",
             )
         ):
             raise ValueError("The profile has fully corroded.")
@@ -252,18 +280,18 @@ class UNPProfile(Profile):
         name = update_name_with_corrosion(self.name, corrosion=corrosion)
 
         return UNPProfile(
-            top_flange_total_width=top_flange_total_width,
-            top_flange_thickness=top_flange_thickness,
-            bottom_flange_total_width=bottom_flange_total_width,
-            bottom_flange_thickness=bottom_flange_thickness,
-            total_height=total_height,
-            web_thickness=web_thickness,
-            top_root_fillet_radius=top_root_fillet_radius,
-            top_toe_radius=top_toe_radius,
-            top_outer_corner_radius=top_outer_corner_radius,
-            bottom_root_fillet_radius=bottom_root_fillet_radius,
-            bottom_toe_radius=bottom_toe_radius,
-            bottom_outer_corner_radius=bottom_outer_corner_radius,
+            top_flange_total_width=buffer["top_flange_total_width"],
+            top_flange_thickness=buffer["top_flange_thickness"],
+            bottom_flange_total_width=buffer["bottom_flange_total_width"],
+            bottom_flange_thickness=buffer["bottom_flange_thickness"],
+            total_height=buffer["total_height"],
+            web_thickness=buffer["web_thickness"],
+            top_root_fillet_radius=buffer["top_root_fillet_radius"],
+            top_toe_radius=buffer["top_toe_radius"],
+            top_outer_corner_radius=buffer["top_outer_corner_radius"],
+            bottom_root_fillet_radius=buffer["bottom_root_fillet_radius"],
+            bottom_toe_radius=buffer["bottom_toe_radius"],
+            bottom_outer_corner_radius=buffer["bottom_outer_corner_radius"],
             top_slope=self.top_slope,
             bottom_slope=self.bottom_slope,
             name=name,
