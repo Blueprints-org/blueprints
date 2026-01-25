@@ -22,6 +22,9 @@ class TestCompressionStrengthClass123Check:
         assert result.provided == 0.0
         assert calc.report()
 
+        calc_without_section_props = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0)
+        assert calc == calc_without_section_props
+
     def test_result_compression_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok compression load."""
         cross_section, section_properties = heb_steel_cross_section
@@ -41,6 +44,7 @@ class TestCompressionStrengthClass123Check:
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
+        assert calc.report()
 
     def test_positive_compression(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for for positive compression load (tension)."""

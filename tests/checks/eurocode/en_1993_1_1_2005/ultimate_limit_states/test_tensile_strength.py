@@ -22,6 +22,9 @@ class TestTensionStrengthCheck:
         assert result.provided == 0.0
         assert calc.report()
 
+        calc_without_section_props = TensionStrengthCheck(cross_section, n, gamma_m0=1.0)
+        assert calc == calc_without_section_props
+
     def test_result_tension_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok tension load."""
         n = 355 * 14908 / 1.0 / 1e3 * 0.99

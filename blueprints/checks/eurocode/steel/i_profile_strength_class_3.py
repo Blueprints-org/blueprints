@@ -55,6 +55,22 @@ class IProfileStrengthClass3:
 
     Example
     -------
+    from blueprints.checks.eurocode.steel.i_profile_strength_class_3 import IProfileStrengthClass3
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
+    n = -100  # Applied compressive force in kN
+    v_y = 100  # Applied shear force in y-direction in kN
+    v_z = 20    # Applied shear force in z-direction in kN
+    m_x = 3    # Applied torsional moment in kNm
+    m_y = 50   # Applied bending moment about y-axis in kNm
+    m_z = 80   # Applied bending moment about z-axis in kNm
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = IProfileStrengthClass3(heb_300_s355, n, v_y, v_z, m_x, m_y, m_z, gamma_m0=1.0)
+    calc.report().to_word("compression_strength.docx", language="nl")
 
     """
 
@@ -80,15 +96,6 @@ class IProfileStrengthClass3:
         """Post-initialization checks and type enforcement for forces/moments."""
         if not isinstance(self.steel_cross_section.profile, IProfile):
             raise TypeError("The provided profile is not an I-profile.")
-
-        # Ensure all force/moment attributes are numeric (float)
-        for attr in ["n", "v_y", "v_z", "m_x", "m_y", "m_z"]:
-            value = getattr(self, attr)
-            try:
-                value = float(value)
-            except (TypeError, ValueError):
-                value = 0.0
-            object.__setattr__(self, attr, value)
 
         object.__setattr__(self, "profile", self.steel_cross_section.profile)
         if self.section_properties is None:
@@ -143,7 +150,7 @@ class IProfileStrengthClass3:
         checks = list(self.subchecks().values())
         unity_checks = [c.result().unity_check for c in checks if c is not None]
         filtered_unity_checks = [0] + [uc for uc in unity_checks if isinstance(uc, int | float)]
-        return CheckResult.from_unity_check(max(filtered_unity_checks))  # pragma: no cover
+        return CheckResult.from_unity_check(max(filtered_unity_checks))
 
     def report(self, n: int = 2) -> Report:
         """Returns the combined report of all strength checks."""
@@ -172,27 +179,8 @@ class IProfileStrengthClass3:
 
         report.add_heading("Conclusion")
         if self.result().is_ok:
-            report.add_paragraph("The check for steel I-profile strength (Class 3) has been passed.").add_equation(
-                r"Check \to OK"
-            )  # pragma: no cover
+            report.add_paragraph("The check for steel I-profile strength (Class 3) has been passed.").add_equation(r"Check \to OK")
         else:
             report.add_paragraph("The check for steel I-profile strength (Class 3) has NOT been passed.").add_equation(r"Check \to NOT \ OK")
 
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
-    n = 1  # Applied tensile force in kN
-    v_z = 10
-    v_y = 4
-    m_x = 200
-    m_y = 150
-    m_z = 100
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = IProfileStrengthClass3(heb_300_s355, n=n, v_y=v_y, v_z=v_z, m_x=m_x, m_y=m_y, m_z=m_z, gamma_m0=1.0)

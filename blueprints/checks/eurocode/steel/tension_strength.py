@@ -48,7 +48,7 @@ class TensionStrengthCheck:
 
     Example
     -------
-    from blueprints.checks.eurocode.en_1993_1_1_2005.tension_force import TensionStrengthCheck
+    from blueprints.checks.eurocode.steel.tension_strength import TensionStrengthCheck
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -85,9 +85,6 @@ class TensionStrengthCheck:
         """
         if self.n < 0:
             raise ValueError("Input force N (F_x) must be positive for tension check.")
-
-        if not hasattr(self.section_properties, "area") or self.section_properties.area is None:
-            raise AttributeError("Section properties must have a valid 'area' attribute for tension force check.")
 
         a = self.section_properties.area
         f_y = self.steel_cross_section.yield_strength
@@ -142,19 +139,3 @@ class TensionStrengthCheck:
         else:
             report.add_paragraph("The check for tensile force does NOT satisfy the requirements.")
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
-    n = 10000  # Applied tensile force in kN
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = TensionStrengthCheck(heb_300_s355, n, gamma_m0=1.0)
-    calc.report().to_pdf("tension_strength.pdf", language="nl")
-    import os
-
-    os.startfile("tension_strength.pdf")

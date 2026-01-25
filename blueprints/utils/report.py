@@ -100,10 +100,6 @@ class Report:
         >>> report.add_paragraph("This is bold text", bold=True)
         >>> report.add_paragraph("This is bold and italic", bold=True, italic=True)
         """
-        # Merge multiline string if needed
-        if isinstance(text, list | tuple):
-            text = " ".join(str(t) for t in text)
-
         if bold and italic:
             self.content += rf"\textbf{{\textit{{{text}}}}}"
         elif bold:
@@ -467,7 +463,7 @@ class Report:
 
         return self
 
-    def __add__(self, other: "Report", downgrade_levels: int = 0) -> "Report":
+    def __add__(self, other: "Report") -> "Report":
         r"""Combine two reports into a new report.
 
         The resulting report will have the title of the first (left) report
@@ -477,9 +473,6 @@ class Report:
         ----------
         other : Report
             The report to add to this one.
-        downgrade_levels : int, optional
-            Number of heading levels to downgrade in the other report (default is 0).
-            downgrade_levels=1 will convert \section to \subsection, \subsection to \subsubsection, etc.
 
         Returns
         -------
@@ -506,16 +499,6 @@ class Report:
         if not isinstance(other, Report):
             raise TypeError(f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'")
         result = Report(title=self.title)
-
-        heading_map = {
-            r"\section{": r"\subsection{",
-            r"\subsection{": r"\subsubsection{",
-            r"\subsubsection{": r"\textbf{",
-        }
-
-        for _ in range(downgrade_levels):
-            for old, new in heading_map.items():
-                other.content = other.content.replace(old, new)
 
         result.content = self.content + other.content
         return result

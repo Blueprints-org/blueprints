@@ -22,7 +22,7 @@ class ValidCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
+    def subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
         return {}
 
@@ -44,7 +44,7 @@ class MissingNameCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
+    def subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
         return {}
 
@@ -66,7 +66,7 @@ class MissingDocsCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
+    def subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
         return {}
 
@@ -85,7 +85,7 @@ class MissingResultCheck:
     name: str = "Missing Result"
     source_docs: ClassVar[list[str]] = ["Doc 1"]
 
-    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
+    def subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
         return {}
 
@@ -99,7 +99,7 @@ class MissingResultCheck:
 
 
 class MissingCalculationSubChecks:
-    """Missing the 'calculation_subchecks' method."""
+    """Missing the 'subchecks' method."""
 
     name: str = "Missing Steps"
     source_docs: ClassVar[list[str]] = ["Doc 1"]
@@ -127,7 +127,7 @@ class MissingCalculationFormula:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
+    def subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
         return {}
 
@@ -146,7 +146,7 @@ class MissingReportCheck:
         """Return a valid result."""
         return CheckResult(is_ok=True)
 
-    def calculation_subchecks(self) -> dict[str, CheckProtocol | None]:
+    def subchecks(self) -> dict[str, CheckProtocol | None]:
         """Return empty calculation steps."""
         return {}
 

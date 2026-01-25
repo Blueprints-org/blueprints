@@ -103,6 +103,12 @@ class TestReport:
         expected = r"\textbf{\textit{This is bold and italic}}" + "\n"
         assert fixture_report.content == expected
 
+    def test_multiline_add_text_calls(self, fixture_report: Report) -> None:
+        """Test multline add_text calls."""
+        fixture_report.add_paragraph("First line.Second line.")
+        expected = r"\txt{First line.Second line.}" + "\n"
+        assert fixture_report.content == expected
+
     def test_add_text_method_chaining(self, fixture_report: Report) -> None:
         """Test that add_text returns self for method chaining."""
         result = fixture_report.add_paragraph("First").add_paragraph("Second")

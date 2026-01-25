@@ -38,28 +38,28 @@ class CompressionStrengthClass123Check:
 
     Parameters
     ----------
-        steel_cross_section : SteelCrossSection
+    steel_cross_section : SteelCrossSection
         The steel cross-section to check.
-        n : KN, optional
+    n : KN, optional
         The applied compressive force (negative value), default is 0 kN.
-        gamma_m0 : DIMENSIONLESS, optional
+    gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-        section_properties : SectionProperties | None, optional
+    section_properties : SectionProperties | None, optional
         Pre-calculated section properties. If None, they will be calculated internally.
 
-        Example
+    Example
     -------
-    from blueprints.checks.eurocode.en_1993_1_1_2005.tension_force import CompressionForceCheck
+    from blueprints.checks.eurocode.steel.compression_strength import CompressionForceCheck
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-        from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
-        steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-        heb_300_profile = HEB.HEB300.with_corrosion(1.5)
-        n = -10000  # Applied compressive force in kN
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
+    n = -10000  # Applied compressive force in kN
 
-        heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-        calc = CompressionStrengthClass123Check(heb_300_s355, n, gamma_m0=1.0)
-        calc.report().to_pdf("compression_strength.pdf", language="nl")
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = CompressionStrengthClass123Check(heb_300_s355, n, gamma_m0=1.0)
+    calc.report().to_word("compression_strength.docx", language="nl")
 
     """
 
@@ -86,9 +86,6 @@ class CompressionStrengthClass123Check:
         """
         if self.n > 0:
             raise ValueError("Input force N (F_x) must be negative for compression check.")
-
-        if not hasattr(self.section_properties, "area") or self.section_properties.area is None:
-            raise AttributeError("Section properties must have a valid 'area' attribute for compression force check.")
 
         a = self.section_properties.area
         f_y = self.steel_cross_section.yield_strength
@@ -143,20 +140,3 @@ class CompressionStrengthClass123Check:
         else:
             report.add_paragraph("The check for compression force does NOT satisfy the requirements.")
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
-    n = -10000  # Applied compressive force in kN
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CompressionStrengthClass123Check(heb_300_s355, n, gamma_m0=1.0)
-    calc.report().to_pdf("compression_strength.pdf", language="nl")
-
-    import os
-
-    os.startfile("compression_strength.pdf")

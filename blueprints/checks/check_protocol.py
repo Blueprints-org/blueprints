@@ -13,13 +13,13 @@ class CheckProtocol(Protocol):
 
     Any class implementing this protocol can be used as a structural check,
     regardless of inheritance. Provides maximum flexibility for simple checks
-    that don't need to inherit from BaseCheck.
+    that don't need to inherit from a common base class.
 
     Notes
     -----
     - Use for duck typing and structural subtyping
     - No inheritance required
-    - Simple checks can implement this without BaseCheck inheritance
+    - Simple checks can implement this without inheriting from a shared base class
     - Enables both explicit (ABC) and implicit (Protocol) patterns
 
     Examples
@@ -33,7 +33,9 @@ class CheckProtocol(Protocol):
     ...
     ...     def result(self) -> CheckResult: ...
     ...
-    ...     def calculation_subchecks(self) -> dict[str, CheckProtocol]: ...
+    ...     def subchecks(self) -> dict[str, CheckProtocol]: ...
+    ...
+    ...     def calculation_formula(self) -> dict[str, Formula]: ...
     ...
     ...     def report(self) -> Report: ...
     >>>
@@ -43,6 +45,48 @@ class CheckProtocol(Protocol):
 
     name: str
     source_docs: list[str]
+
+    def subchecks(self) -> dict[str, "CheckProtocol"]:
+        """Get sub-check instances for composite checks.
+
+        For example, Check A may comprise sub-checks A1, A2, and A3.
+        In that case, calling subchecks() on Check A would return a dict:
+        {"A1": <Check A1 instance>,
+         "A2": <Check A2 instance>,
+         "A3": <Check A3 instance>}.
+        }
+
+        Access this method to get all Check instances that are part of an
+        orchestrated check. Each returned check object has its own result(),
+        calculation_steps(), and report() methods for detailed inspection.
+
+        For simple (leaf) checks with no sub-checks, return an empty dict.
+
+        Returns
+        -------
+        dict[str, CheckProtocol]
+            Dictionary mapping descriptive names to Check instances.
+            Empty dict for simple checks with no sub-checks.
+
+        """
+        ...
+
+    def calculation_formula(self) -> dict[str, "Formula"]:
+        """Get calculation formula instances for this check or its sub-checks.
+
+        Access this method to get all formula instances that are part of an
+        orchestrated check. Each returned check object has its own result(),
+        calculation_formula(), and report() methods for detailed inspection.
+
+        For simple (leaf) checks with no formulas, return an empty dict.
+
+        Returns
+        -------
+        dict[str, Formula]
+            Dictionary mapping descriptive names to Formula instances.
+            Empty dict for simple checks with no formulas.
+        """
+        ...
 
     def result(self) -> CheckResult:
         """Execute check and return standardized result.
@@ -57,37 +101,6 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def calculation_subchecks(self) -> dict[str, "CheckProtocol"]:
-        """Get sub-check instances for composite checks.
-
-        Access this method to get all Check instances that are part of an
-        orchestrated check. Each returned check object has its own result(),
-        calculation_subchecks(), and report() methods for detailed inspection.
-
-        Returns
-        -------
-        dict[str, "CheckProtocol" | None]
-            Dictionary mapping descriptive names to Check instances.
-            Empty dict for simple checks with no sub-checks.
-
-        """
-        ...
-
-    def calculation_formula(self) -> dict[str, Formula]:
-        """Get sub-check instances for composite checks.
-
-        Access this method to get all formula instances that are part of an
-        orchestrated check. Each returned check object has its own result(),
-        calculation_formula(), and report() methods for detailed inspection.
-
-        Returns
-        -------
-        dict[str, Formula]
-            Dictionary mapping descriptive names to Formula instances.
-            Empty dict for simple checks with no formulas.
-        """
-        ...
-
     def report(self) -> Report:
         """Generate formatted report of check results.
 
@@ -99,30 +112,3 @@ class CheckProtocol(Protocol):
             Formatted report object summarizing check results.
         """
         ...
-
-
-class NotImplementedCheck(CheckProtocol):
-    """A smart placeholder for not-yet-implemented checks.
-    Always fails the check and provides a clear message for reporting systems.
-    """
-
-    def result(self) -> CheckResult:
-        """Always return a failed check result."""
-        return CheckResult.from_unity_check(999)
-
-    def report_calculation(self, report: Report) -> None:
-        """Report that this check is not implemented.
-
-        Parameters
-        ----------
-        report : Report
-            The report object to which the calculation steps will be added.
-        """
-        if hasattr(report, "add_paragraph"):
-            report.add_paragraph("This check is not yet implemented.")
-
-    def report(self) -> Report:
-        """Generate a report indicating the check is not implemented."""
-        report = Report()
-        self.report_calculation(report)
-        return report
