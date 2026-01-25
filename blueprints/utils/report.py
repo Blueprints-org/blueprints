@@ -463,6 +463,45 @@ class Report:
 
         return self
 
+    def __add__(self, other: "Report") -> "Report":
+        """Combine two reports into a new report.
+
+        The resulting report will have the title of the first (left) report
+        and the combined content of both reports.
+
+        Parameters
+        ----------
+        other : Report
+            The report to add to this one.
+
+        Returns
+        -------
+        Report
+            A new Report with combined content.
+
+        Raises
+        ------
+        TypeError
+            If the other object is not a Report instance.
+
+        Examples
+        --------
+        >>> report1 = Report(title="Part 1")
+        >>> report1.add_heading("Introduction")
+        Report(title="Part 1", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=26)
+        >>> report2 = Report(title="Part 2")
+        >>> report2.add_heading("Conclusion")
+        Report(title="Part 2", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=23)
+        >>> combined = report1 + report2
+        >>> combined.title
+        'Part 1'
+        """
+        if not isinstance(other, Report):
+            raise TypeError(f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'")
+        result = Report(title=self.title)
+        result.content = self.content + other.content
+        return result
+
     def __repr__(self) -> str:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
