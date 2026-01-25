@@ -45,7 +45,7 @@ class ResultInternalForce1D:
             |  /
             | /
             |/
-      ←---------O
+      ←-----O
        y (horizontal/side, usually weak axis)
 
     Sign Conventions:
