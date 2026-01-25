@@ -339,6 +339,70 @@ Use any language code from [Google Cloud Translate](https://cloud.google.com/tra
 | `pt` | Portuguese |
 | `pl` | Polish |
 
+## Combine Reports
+
+Combine multiple reports into one using the `+` operator. This is useful for building modular reports where each chapter or section is created separately.
+
+**Basic combination:**
+
+```python exec="on" source="tabbed-left" result="console"
+from blueprints.utils.report import Report
+
+# Create separate report sections
+intro = Report(title="Design Report")
+intro.add_heading("Introduction")
+intro.add_paragraph("This report covers the structural design.")
+
+calcs = Report()
+calcs.add_heading("Calculations")
+calcs.add_equation("M = F \\cdot d", tag="1")
+
+conclusion = Report()
+conclusion.add_heading("Conclusion")
+conclusion.add_paragraph("All checks passed.")
+
+# Combine into final report (title comes from the first report)
+final_report = intro + calcs + conclusion
+print(final_report)
+```
+
+**Modular report structure:**
+
+```python exec="on" source="tabbed-left" result="console"
+from blueprints.utils.report import Report
+
+# Build chapters independently
+chapter_1 = Report(title="Steel Connection Design")
+chapter_1.add_heading("Chapter 1: Material Properties")
+chapter_1.add_paragraph("Steel grade S355 is used throughout.")
+
+chapter_2 = Report()
+chapter_2.add_heading("Chapter 2: Load Cases")
+chapter_2.add_paragraph("Three load combinations are considered.")
+
+chapter_3 = Report()
+chapter_3.add_heading("Chapter 3: Design Checks")
+chapter_3.add_paragraph("Unity checks for all connections.")
+
+annex_a = Report()
+annex_a.add_heading("Annex A: Detailed Calculations")
+annex_a.add_paragraph("Step-by-step calculation sheets.")
+
+annex_b = Report()
+annex_b.add_heading("Annex B: Drawings")
+annex_b.add_paragraph("Some drawings.")
+
+# Assemble the complete report
+complete_report = chapter_1 + chapter_2 + chapter_3 + annex_a + annex_b
+
+# Export the combined report
+complete_report.to_latex("full_design_report.tex")
+print(complete_report)
+```
+
+!!! tip "Title Handling"
+    The combined report inherits the title from the **first** (leftmost) report. Reports without titles can be used for chapters and annexes.
+
 ## Common Tasks
 
 ### Add Text
