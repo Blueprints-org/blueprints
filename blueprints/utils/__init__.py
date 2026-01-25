@@ -1,1 +1,1 @@
-"""Utils blueprint."""
+"""Bunch of utility functions for Blueprints."""

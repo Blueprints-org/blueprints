@@ -464,7 +464,7 @@ class Report:
         return self
 
     def __add__(self, other: "Report") -> "Report":
-        r"""Combine two reports into a new report.
+        """Combine two reports into a new report.
 
         The resulting report will have the title of the first (left) report
         and the combined content of both reports.
@@ -499,7 +499,6 @@ class Report:
         if not isinstance(other, Report):
             raise TypeError(f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'")
         result = Report(title=self.title)
-
         result.content = self.content + other.content
         return result
 
@@ -686,8 +685,15 @@ class Report:
         ----------
         path : str | Path | BytesIO | None, optional
             The destination for the Word document:
-            - str or Path: File path where the document will be saved
+            - str or Path: File path where the document will be saved, for example 'report.docx'. Remember to use .docx extension.
             - BytesIO: Buffer to write the document to (in-memory)
+                ```python
+                from io import BytesIO
+
+                buffer = BytesIO()
+                report.to_word(buffer)
+                docx_bytes = buffer.getvalue()
+                ```
             - None: Return the document as bytes (default)
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages

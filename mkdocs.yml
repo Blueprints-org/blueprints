@@ -39,16 +39,30 @@ theme:
   font: 
     text: "DM Sans"
   features:
-    - toc.follow
-    - navigation.indexes
+    # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/?h=code+blocks
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.footnote.tooltips
+    - content.tabs.link
+    - content.tooltips
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
+    - navigation.tracking
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.top
-    - content.code.copy
+    - navigation.sections
     - navigation.path
+    - navigation.indexes
+    - toc.follow
     - navigation.top
-    - navigation.footer
 
+    - navigation.footer
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/
+    - search.highlight
+    - search.share
+    - search.suggest
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-header/
+    - announce.dismiss
   language: en
 
 plugins:
@@ -105,6 +119,7 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - abbr
+  - md_in_html
   - attr_list
   - pymdownx.snippets:
       check_paths: true

@@ -654,3 +654,91 @@ class TestReport:
 
         result = fixture_report.to_pdf(cleanup=False)
         assert isinstance(result, bytes)
+
+    def test_adding_two_reports_together(self) -> None:
+        """Test that two Report instances can be added together."""
+        report1 = Report(title="Report 1")
+        report1.add_heading("Introduction")
+        report1.add_paragraph("Content for report 1.")
+
+        report2 = Report(title="Report 2")
+        report2.add_heading("Overview")
+        report2.add_paragraph("Content for report 2.")
+
+        report3 = Report(title="Report 3")
+        report3.add_heading("Summary")
+        report3.add_paragraph("Content for report 3.")
+
+        final_report = report1 + report2 + report3
+
+        assert isinstance(final_report, Report)
+        assert final_report.title == "Report 1"
+        assert "Content for report 1." in final_report.content
+        assert "Content for report 2." in final_report.content
+        assert "Content for report 3." in final_report.content
+
+    def test_adding_report_with_non_report_raises_type_error(self) -> None:
+        """Test that adding a Report with a non-Report raises TypeError."""
+        report = Report(title="Main Report")
+        report.add_heading("Main Section")
+
+        with pytest.raises(TypeError, match=r"unsupported operand type\(s\) for \+: 'Report' and 'str'"):
+            _ = report + "Not a Report"
+
+    def test_adding_reports_first_has_no_title(self) -> None:
+        """Test adding reports where the first report has no title (None)."""
+        report1 = Report()  # No title
+        report1.add_heading("Chapter 1")
+
+        report2 = Report(title="Should Be Ignored")
+        report2.add_heading("Chapter 2")
+
+        combined = report1 + report2
+
+        assert combined.title is None
+        assert "Chapter 1" in combined.content
+        assert "Chapter 2" in combined.content
+
+    def test_adding_empty_reports(self) -> None:
+        """Test adding completely empty reports (no content)."""
+        report1 = Report(title="Empty Report")
+        report2 = Report()
+
+        combined = report1 + report2
+
+        assert combined.title == "Empty Report"
+        assert combined.content == ""
+
+    def test_adding_report_with_title_to_report_without_title(self) -> None:
+        """Test that title=None is preserved when left operand has no title."""
+        report_no_title = Report()
+        report_no_title.add_paragraph("No title content")
+
+        report_with_title = Report(title="Has Title")
+        report_with_title.add_paragraph("Titled content")
+
+        combined = report_no_title + report_with_title
+
+        assert combined.title is None
+        assert "No title content" in combined.content
+        assert "Titled content" in combined.content
+
+    def test_adding_reports_does_not_mutate_originals(self) -> None:
+        """Test that original reports are not mutated after addition."""
+        report1 = Report(title="Original 1")
+        report1.add_heading("Section 1")
+        original_content1 = report1.content
+        original_title1 = report1.title
+
+        report2 = Report(title="Original 2")
+        report2.add_heading("Section 2")
+        original_content2 = report2.content
+        original_title2 = report2.title
+
+        _ = report1 + report2
+
+        # Verify originals are unchanged
+        assert report1.content == original_content1
+        assert report1.title == original_title1
+        assert report2.content == original_content2
+        assert report2.title == original_title2
