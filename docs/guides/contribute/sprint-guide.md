@@ -53,19 +53,16 @@ contribute most effectively.
 
     Blueprints works on all major operating systems (Windows, macOS, Linux). To contribute, you'll need:
     
-    - Python 3.12 or higher
+    - Python >=3.12, < 3.14
     - Git
-    - A code editor (VS Code, PyCharm, or similar)
+    - A code editor (PyCharm, Visual Studio Code, or similar)
     - A GitHub account
 
 ??? question "3. How comfortable are you with Python?"
 
-    Blueprints is a Python library. You don't need to be an expert, but familiarity with:
-    
-    - Classes and functions
-    - Type hints
-    
-    ...will help you contribute to the codebase. If you're newer to Python, documentation improvements and test writing are excellent places to start.
+    Blueprints is written in Python. You don’t need to be a Python expert to get started. Basic familiarity with things like Classes/functions and type hints will help making a contribution more easy.
+
+    In practice, a lot of work is very hands-on: for example, when adding a new formula, you can often copy an existing one and tweak it where needed. If you’re newer to Python, improving documentation or writing tests is a great and very welcome way to start contributing.
 
 ??? question "4. Are you familiar with GitHub and Git?"
 
@@ -130,12 +127,13 @@ Not all contributions involve code! Here are some ways to help:
 
 | Type          | Description                          | Skill Level              |
 |---------------|--------------------------------------|--------------------------|
-| Bug fixes     | Fix reported issues                  | Intermediate             |
+| Triage        | Help categorize and reproduce issues | Beginner                 |
+| Use our library | Test features and report bugs       | Beginner                 |
 | New formulas  | Implement Eurocode calculations      | Beginner - Intermediate  |
 | Documentation | Improve guides, add examples         | Beginner-Intermediate    |
 | Tests         | Write unit tests for existing code   | Beginner-Intermediate    |
+| Bug fixes     | Fix reported issues                  | Intermediate             |
 | Reviews       | Review pull requests from others     | Intermediate -  Advanced |
-| Triage        | Help categorize and reproduce issues | Beginner                 |
 
 ## During the Sprint
 
@@ -145,17 +143,21 @@ Not all contributions involve code! Here are some ways to help:
 
 If you are participating online or in person, help is available:
 
-=== "In Person 🙋"
+<div class="grid cards" markdown>
+
+- **In Person 🙋**
 
     - **Find a mentor**: Look for someone of the Blueprints team
     - **Ask questions**: Don't hesitate to ask for clarification or guidance
     - **Pair programming**: Work together with another contributor
 
-=== "Online 🕸"
+- **Online 🕸**
 
     - **Ask in Discord**: Join our [Discord server](https://discord.gg/hBZBqegEzA) and post in the sprint channel
     - **Tag a maintainer**: During sprint events, maintainers are available to help
     - **Comment on your issue**: Ask clarifying questions directly on GitHub
+
+</div>
 
 There are no silly questions. **We want you to succeed!**
 
@@ -231,3 +233,5 @@ Is something in this guide unclear? Did you encounter problems? Let us know! Imp
 contribution.
 
 Open an issue or PR, or reach out on Discord. We appreciate your help making Blueprints more accessible to everyone.
+
+*[Triage]: The process of reviewing, categorizing, and prioritizing issues in a project's issue tracker.
