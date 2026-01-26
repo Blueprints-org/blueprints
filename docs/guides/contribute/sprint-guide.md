@@ -53,7 +53,7 @@ contribute most effectively.
 
     Blueprints works on all major operating systems (Windows, macOS, Linux). To contribute, you'll need:
     
-    - Python >=3.12, < 3.14
+    - Python >=3.12
     - Git
     - A code editor (PyCharm, Visual Studio Code, or similar)
     - A GitHub account

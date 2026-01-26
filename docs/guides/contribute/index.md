@@ -136,7 +136,7 @@ The first time you run this command, it will take a few minutes to build the doc
 
 ## Checklist for Code Submission
 
-- Python >= 3.12 but < 3.14
+- Python >= 3.12
 - All code must be in English
 - Max ~400 lines per PR
 - Use Typehints and Docstrings (numpy style)
