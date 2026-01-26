@@ -71,7 +71,7 @@ class Report:
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
     """
 
-    title: str = "Untitled Report"
+    title: str = ""
     content: str = field(default="", init=False)
 
     def add_paragraph(self, text: str, bold: bool = False, italic: bool = False) -> Self:
