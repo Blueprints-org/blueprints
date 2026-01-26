@@ -60,7 +60,7 @@ contribute most effectively.
 
 ??? question "3. How comfortable are you with Python?"
 
-    Blueprints is written in Python. You don’t need to be a Python expert to get started. Basic familiarity with things like Classes/functions and type hints will help making a contribution more easy.
+    Blueprints is written in Python. You don’t need to be a Python expert to get started. Basic familiarity with concepts like classes, functions, and type hints will help make contributing easier.
 
     In practice, a lot of work is very hands-on: for example, when adding a new formula, you can often copy an existing one and tweak it where needed. If you’re newer to Python, improving documentation or writing tests is a great and very welcome way to start contributing.
 
