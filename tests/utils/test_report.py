@@ -71,7 +71,7 @@ class TestReport:
         """Test that Report initializes with empty content."""
         report = Report()
         assert report.content == ""
-        assert report.title is None
+        assert report.title == ""
 
     def test_initialization_with_title(self) -> None:
         """Test that Report initializes with title."""
@@ -462,7 +462,7 @@ class TestReport:
         """Test string representation of untitled report."""
         report = Report()
         str_repr = str(report)
-        assert "LaTeX Report: (untitled)" in str_repr
+        assert "LaTeX Report: " in str_repr
 
     def test_to_latex_returns_string_when_path_is_none(self) -> None:
         """Test that to_latex() returns string when path is None."""
@@ -689,7 +689,7 @@ class TestReport:
 
         combined = report1 + report2
 
-        assert combined.title is None
+        assert combined.title == ""
         assert "Chapter 1" in combined.content
         assert "Chapter 2" in combined.content
 
@@ -713,7 +713,7 @@ class TestReport:
 
         combined = report_no_title + report_with_title
 
-        assert combined.title is None
+        assert combined.title == ""
         assert "No title content" in combined.content
         assert "Titled content" in combined.content
 

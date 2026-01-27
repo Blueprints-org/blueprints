@@ -296,6 +296,10 @@ class _ReportToWordConverter:
             return  # pragma: no cover
         extracted_content = brace_match.group(1).strip()
 
+        # Skip adding if \title{} is empty
+        if heading_type == "title" and not extracted_content:
+            return
+
         # Add numbering to sections
         if heading_type == "section":
             self.section_counter += 1
