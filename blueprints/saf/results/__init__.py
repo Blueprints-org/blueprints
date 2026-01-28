@@ -1,1 +1,0 @@
-"""SAF Results objects package."""
