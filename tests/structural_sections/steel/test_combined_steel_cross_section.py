@@ -95,6 +95,26 @@ class TestCombinedSteelCrossSection:
         for original, added in zip((first, second, third, forth), combined.steel_cross_sections):
             assert original is added
 
+    def test_yield_strength_min_of_all_sections(self) -> None:
+        """Test that yield_strength equals the minimum of the individual sections."""
+        first = _steel_section(width=30.0, height=5.0)
+        second = _steel_section(width=15.0, height=4.0)
+
+        combined = CombinedSteelCrossSection((first, second))
+
+        expected_yield_strength = min(first.yield_strength, second.yield_strength)
+        assert combined.yield_strength == pytest.approx(expected_yield_strength)
+
+    def test_ultimate_strength_min_of_all_sections(self) -> None:
+        """Test that ultimate_strength equals the minimum of the individual sections."""
+        first = _steel_section(width=30.0, height=5.0)
+        second = _steel_section(width=15.0, height=4.0)
+
+        combined = CombinedSteelCrossSection((first, second))
+
+        expected_ultimate_strength = min(first.ultimate_strength, second.ultimate_strength)
+        assert combined.ultimate_strength == pytest.approx(expected_ultimate_strength)
+
     def test_weight_per_meter_sums_all_sections(self) -> None:
         """Test that weight_per_meter equals the sum of the individual sections."""
         first = _steel_section(width=30.0, height=5.0)

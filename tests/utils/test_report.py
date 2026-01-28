@@ -113,7 +113,7 @@ class TestReport:
     def test_add_equation_without_tag(self, fixture_report: Report) -> None:
         """Test adding equation without tag."""
         fixture_report.add_equation("a^2+b^2=c^2")
-        expected = r"\begin{equation} a^2+b^2=c^2 \end{equation}" + "\n"
+        expected = r"\begin{equation} a^2+b^2=c^2 \notag \end{equation}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_equation_with_tag(self, fixture_report: Report) -> None:

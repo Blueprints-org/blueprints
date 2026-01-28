@@ -41,6 +41,11 @@ class HexagonalProfile(Profile):
             raise ValueError(msg)
 
     @property
+    def max_profile_thickness(self) -> MM:
+        """Maximum element thickness of the hexagonal profile [mm]."""
+        return self.side_length * np.sqrt(3)
+
+    @property
     def mesh_creator(self) -> partial:
         """Mesh settings for the geometrical calculations of the hexagonal profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure

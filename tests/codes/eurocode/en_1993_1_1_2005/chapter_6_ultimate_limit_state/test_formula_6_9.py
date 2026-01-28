@@ -42,7 +42,7 @@ class TestForm6Dot9CheckCompressionForce:
             (
                 "complete",
                 r"CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to "
-                r"\left( \frac{100.000}{150.000} \leq 1 \right) \to OK",
+                r"\left( \frac{100.000}{150.000} \leq 1 \right) \to \left( 0.667 \leq 1 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),
         ],
