@@ -29,28 +29,30 @@ class SteelCrossSection:
     """The material type of the steel."""
 
     @property
-    def yield_strength(self) -> MPA | None:
+    def yield_strength(self) -> MPA:
         """
         Get the yield strength of the steel material.
 
         Returns
         -------
-        MPA | None
-            The yield strength of the steel material, or None if not available.
+        MPA
+            The yield strength of the steel material.
         """
-        return self.material.yield_strength(thickness=self.profile.max_profile_thickness)
+        fy = self.material.yield_strength(thickness=self.profile.max_profile_thickness)
+        return fy if fy is not None else 0
 
     @property
-    def ultimate_strength(self) -> MPA | None:
+    def ultimate_strength(self) -> MPA:
         """
         Get the ultimate strength of the steel material.
 
         Returns
         -------
-        MPA | None
-            The ultimate strength of the steel material, or None if not available.
+        MPA
+            The ultimate strength of the steel material.
         """
-        return self.material.ultimate_strength(thickness=self.profile.max_profile_thickness)
+        fu = self.material.ultimate_strength(thickness=self.profile.max_profile_thickness)
+        return fu if fu is not None else 0
 
     @property
     def weight_per_meter(self) -> KG_M:

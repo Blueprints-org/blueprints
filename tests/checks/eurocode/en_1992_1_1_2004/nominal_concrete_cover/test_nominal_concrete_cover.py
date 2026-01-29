@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.checks.concrete.nominal_concrete_cover.nominal_concrete_cover import NominalConcreteCover
+from blueprints.checks.eurocode.concrete.nominal_concrete_cover import NominalConcreteCover
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
     AbrasionClass,
     CastingSurface,

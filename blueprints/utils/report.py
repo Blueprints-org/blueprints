@@ -600,6 +600,7 @@ class Report:
             r"\usepackage{float}" + "\n"  # Improved float handling
             r"\usepackage{geometry}" + "\n"  # Page layout and margins
             r"\usepackage{graphicx}" + "\n"  # Include images and graphics
+            r"\usepackage{icomma}" + "\n"  # Proper comma handling in numbers
             r"\usepackage{setspace}" + "\n"  # Line spacing control
             r"\usepackage{xcolor}" + "\n"  # Color definitions and usage
             r"\usepackage{titlesec}" + "\n"  # Customize section titles
