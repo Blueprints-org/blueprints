@@ -179,6 +179,10 @@ class LatexTranslator:
                     return result
         return None
 
+    def _remove_zero_width_spaces(self, s: str) -> str:
+        """Remove all zero-width space (U+200B) characters from a string."""
+        return s.replace("\u200b", "")
+
     def _translate_bulk(self, texts: list) -> list[str | None]:
         r"""
         Translate a list of strings to the destination language.
@@ -209,11 +213,13 @@ class LatexTranslator:
 
         for i, t in enumerate(texts):
             if t in translation_dict:
-                results.append(translation_dict[t])
+                clean_translation = self._remove_zero_width_spaces(translation_dict[t])
+                results.append(clean_translation)
             else:
                 wildcard_result = self._wildcard_match(t, translation_dict)
                 if wildcard_result is not None:
-                    results.append(wildcard_result)
+                    clean_wildcard = self._remove_zero_width_spaces(wildcard_result)
+                    results.append(clean_wildcard)
                 else:
                     results.append(None)
                     # Extract leading and trailing spaces
@@ -252,7 +258,8 @@ class LatexTranslator:
 
             # Restore leading and trailing spaces
             for idx, val, (leading, trailing) in zip(missing_indices, translated_texts, missing_spaces):
-                results[idx] = leading + val + trailing
+                clean_val = self._remove_zero_width_spaces(val)
+                results[idx] = leading + clean_val + trailing
         return results
 
     @staticmethod
