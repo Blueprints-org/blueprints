@@ -10,7 +10,7 @@ from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel import compression_strength, tension_strength
+from blueprints.checks.eurocode.steel import bending_moment_strength, compression_strength, tension_strength
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
@@ -123,10 +123,16 @@ class IProfileStrengthClass3:
     def subchecks(self) -> dict[str, Optional["CheckProtocol"]]:
         """Perform calculation steps for all strength checks, optionally ignoring specified checks."""
         all_checks = {
-            "compression": None,
-            "tension": None,
-            "bending about z": None,
-            "bending about y": None,
+            "compression": compression_strength.CompressionStrengthClass123Check(
+                self.steel_cross_section, self.n, self.gamma_m0, self.section_properties
+            ),
+            "tension": tension_strength.TensionStrengthCheck(self.steel_cross_section, self.n, self.gamma_m0, self.section_properties),
+            "bending about z": bending_moment_strength.BendingMomentStrengthClass3Check(
+                self.steel_cross_section, self.m_z, axis="Mz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
+            ),
+            "bending about y": bending_moment_strength.BendingMomentStrengthClass3Check(
+                self.steel_cross_section, self.m_y, axis="My", gamma_m0=self.gamma_m0, section_properties=self.section_properties
+            ),
             "shear z": None,
             "shear y": None,
             "torsion": None,
@@ -135,12 +141,10 @@ class IProfileStrengthClass3:
             "bending, shear and axial": None,
         }
         # Only perform compression check if n < 0, tension if n > 0
-        if self.n < 0:
-            all_checks["compression"] = compression_strength.CompressionStrengthClass123Check(
-                self.steel_cross_section, self.n, self.gamma_m0, self.section_properties
-            )
-        elif self.n > 0:
-            all_checks["tension"] = tension_strength.TensionStrengthCheck(self.steel_cross_section, self.n, self.gamma_m0, self.section_properties)
+        if self.n > 0:
+            all_checks["compression"] = None
+        elif self.n < 0:
+            all_checks["tension"] = None
 
         if self.ignore_checks:
             return {k: v for k, v in all_checks.items() if k not in self.ignore_checks}
