@@ -4,7 +4,7 @@ This module provides strength checks for steel I-profiles of class 3 cross-secti
 """
 
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar, cast
 
 from sectionproperties.post.post import SectionProperties
 
@@ -85,12 +85,12 @@ class IProfileStrengthClass3:
     section_properties: SectionProperties | None = None
     ignore_checks: list[str] | None = None
 
-    profile: Any = field(init=False, repr=False)
+    profile: IProfile = field(init=False, repr=False)
     material: Any = field(init=False, repr=False)
     result_internal_force_1d: ResultInternalForce1D = field(init=False, repr=False)
 
     name: str = "Check for steel I-profiles of Class 3"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
+    source_docs: ClassVar[list[Any]] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization checks and type enforcement for forces/moments."""
@@ -119,18 +119,27 @@ class IProfileStrengthClass3:
             ),
         )
 
-    def subchecks(self) -> dict[str, Optional["CheckProtocol"]]:
+    def subchecks(self) -> dict[str, CheckProtocol | None]:
         """Perform calculation steps for all strength checks, optionally ignoring specified checks."""
-        all_checks = {
-            "compression": compression_strength.CompressionStrengthClass123Check(
-                self.steel_cross_section, self.n, self.gamma_m0, self.section_properties
+        all_checks: dict[str, CheckProtocol | None] = {
+            "compression": cast(
+                CheckProtocol,
+                compression_strength.CompressionStrengthClass123Check(self.steel_cross_section, self.n, self.gamma_m0, self.section_properties),
             ),
-            "tension": tension_strength.TensionStrengthCheck(self.steel_cross_section, self.n, self.gamma_m0, self.section_properties),
-            "bending about z": bending_moment_strength.BendingMomentStrengthClass3Check(
-                self.steel_cross_section, self.m_z, axis="Mz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
+            "tension": cast(
+                CheckProtocol, tension_strength.TensionStrengthCheck(self.steel_cross_section, self.n, self.gamma_m0, self.section_properties)
             ),
-            "bending about y": bending_moment_strength.BendingMomentStrengthClass3Check(
-                self.steel_cross_section, self.m_y, axis="My", gamma_m0=self.gamma_m0, section_properties=self.section_properties
+            "bending about z": cast(
+                CheckProtocol,
+                bending_moment_strength.BendingMomentStrengthClass3Check(
+                    self.steel_cross_section, self.m_z, axis="Mz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
+                ),
+            ),
+            "bending about y": cast(
+                CheckProtocol,
+                bending_moment_strength.BendingMomentStrengthClass3Check(
+                    self.steel_cross_section, self.m_y, axis="My", gamma_m0=self.gamma_m0, section_properties=self.section_properties
+                ),
             ),
             "shear z": None,
             "shear y": None,
@@ -153,7 +162,7 @@ class IProfileStrengthClass3:
         """Perform all strength checks and return the overall result."""
         checks = list(self.subchecks().values())
         unity_checks = [c.result().unity_check for c in checks if c is not None]
-        filtered_unity_checks = [0] + [uc for uc in unity_checks if isinstance(uc, int | float)]
+        filtered_unity_checks: list[float] = [0.0] + [float(uc) for uc in unity_checks if isinstance(uc, int | float)]
         return CheckResult.from_unity_check(max(filtered_unity_checks))
 
     def report(self, n: int = 2) -> Report:
