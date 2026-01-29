@@ -71,7 +71,6 @@ class IProfileStrengthClass3:
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = IProfileStrengthClass3(heb_300_s355, n, v_y, v_z, m_x, m_y, m_z, gamma_m0=1.0)
     calc.report().to_word("compression_strength.docx", language="nl")
-
     """
 
     steel_cross_section: SteelCrossSection
