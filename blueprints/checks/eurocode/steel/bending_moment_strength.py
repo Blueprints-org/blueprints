@@ -66,7 +66,7 @@ class BendingMomentStrengthClass1And2Check:
     """
 
     steel_cross_section: SteelCrossSection
-    m: KNM = 0  # in kNm
+    m: KNM = 0
     axis: Literal["My", "Mz"] = "My"
     gamma_m0: DIMENSIONLESS = 1.0
     section_properties: SectionProperties | None = None
@@ -194,7 +194,7 @@ class BendingMomentStrengthClass3Check:
     """
 
     steel_cross_section: SteelCrossSection
-    m: KNM = 0  # in kNm
+    m: KNM = 0
     axis: Literal["My", "Mz"] = "My"
     gamma_m0: DIMENSIONLESS = 1.0
     section_properties: SectionProperties | None = None
