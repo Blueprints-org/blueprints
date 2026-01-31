@@ -119,7 +119,7 @@ class Report:
         equation: str,
         tag: str | None = None,
         inline: bool = False,
-        split_on: list[tuple[int, str]] | None = None,
+        split_after: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add an equation to the report. For adding Blueprints formulas, use add_formula instead.
 
@@ -131,9 +131,9 @@ class Report:
             Tag to label the equation (e.g., "6.83", "EN 1992-1-1:2004 6.6n", etc.).
         inline : bool, optional
             Whether to add the equation inline (meaning within text) or as a separate equation block. Default is False.
-        split_on: list[tuple[int, str]], optional
+        split_after: list[tuple[int, str]], optional
             List of characters to split the equation line on for better readability.
-            e.g. a = b + c = 2 + 3 = 5 with split_on=[(2, "="), (2, "+")] will split after second "=" and second "+"
+            e.g. a = b + c = 2 + 3 = 5 with split_after=[(2, "="), (2, "+")] will split after second "=" and second "+"
             to give: a = b + c = \\ 2 + \\ 3 = 5. Default is None.
 
         Returns
@@ -151,12 +151,12 @@ class Report:
 
         """
 
-        def _split_equation(eq: str, split_on: list[tuple[int, str]] | None) -> str:
-            if not split_on:
+        def _split_equation(eq: str, split_after: list[tuple[int, str]] | None) -> str:
+            if not split_after:
                 return eq
             eq_mod = eq
             # Sort by decreasing index so insertion doesn't affect later positions
-            for n, char in sorted(split_on, reverse=True):
+            for n, char in sorted(split_after, reverse=True):
                 # Find nth occurrence of char
                 idx = -1
                 count = 0
@@ -170,7 +170,7 @@ class Report:
                     eq_mod = eq_mod[: idx + 1] + r" \\" + eq_mod[idx + 1 :]
             return eq_mod
 
-        eq_to_use = _split_equation(equation, split_on)
+        eq_to_use = _split_equation(equation, split_after)
 
         if inline:
             self.content += r"\txt{ " + rf"${eq_to_use}$" + f"{f' ({tag})' if tag else ''}" + r" }"
@@ -192,7 +192,7 @@ class Report:
         include_source: bool = True,
         include_formula_number: bool = True,
         inline: bool = False,
-        split_on: list[tuple[int, str]] | None = None,
+        split_after: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add a Blueprints formula to the report, for generic equations, use add_equation.
 
@@ -215,6 +215,10 @@ class Report:
             For example: "6.5" or "6.6n".
         inline : bool, optional
             Whether to add the formula inline (meaning within text) or as a separate equation block (default).
+        split_after: list[tuple[int, str]], optional
+            List of characters to split the equation line on for better readability.
+            e.g. a = b + c = 2 + 3 = 5 with split_after=[(2, "="), (2, "+")] will split after second "=" and second "+"
+            to give: a = b + c = \\ 2 + \\ 3 = 5. Default is None.
 
         Returns
         -------
@@ -255,7 +259,7 @@ class Report:
                 tag_parts.append(formula.label)
         tag_str = " ".join(tag_parts).strip()
 
-        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None, split_on=split_on)
+        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None, split_after=split_after)
 
     def add_heading(self, text: str, level: int = 1) -> Self:
         """Add a heading to the report.

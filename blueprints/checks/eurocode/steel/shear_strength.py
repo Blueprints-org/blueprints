@@ -161,7 +161,7 @@ class PlasticShearStrengthIProfileCheck:
             rf"The shear area $A_v$ is calculated as follows:"
         )
         formulas = self.calculation_formula()
-        report.add_formula(formulas["shear_area"], n=n, split_on=[[2, "="], [3, "="]])
+        report.add_formula(formulas["shear_area"], n=n, split_after=[[2, "="], [3, "="]])
         report.add_paragraph("The shear resistance is calculated as follows:")
         report.add_formula(formulas["shear_resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = PlasticShearStrengthIProfileCheck(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
-    calc.report().to_pdf("shear_strength.pdf", language="en")
+    calc.report().to_word("shear_strength.docx", language="en")
     import os
 
-    os.startfile("shear_strength.pdf")
+    os.startfile("shear_strength.docx")

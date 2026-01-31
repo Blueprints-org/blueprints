@@ -26,7 +26,7 @@ class _ReportToWordConverter:
 
     Limitations and Usage Notes:
     - Text blocks using \text{...} (can also be \textbf{...} and/or \textit{...} for bold/italic).
-    - Equations in \begin{equation}...\end{equation} environments (with optional \tag{...}).
+    - Equations in \begin{multline}...\end{multline} environments (with optional \tag{...}).
     - Titles, sections, subsections, and subsubsections using \title{...}, \section{...}, \subsection{...}, \subsubsection{...}.
     - Tables in \begin{table}...\end{table} environments with tabular content
     - Figures in \begin{figure}...\end{figure} environments with \includegraphics.
@@ -175,7 +175,7 @@ class _ReportToWordConverter:
             "figure": r"\\begin\{figure\}",
             "itemize": r"\\begin\{itemize\}",
             "enumerate": r"\\begin\{enumerate\}",
-            "equation": r"\\begin\{equation\}",
+            "equation": r"\\begin\{multline\}",
             "newline": r"\\newline",
         }
 
@@ -437,14 +437,18 @@ class _ReportToWordConverter:
         equation_content = re.sub(r"\s*\\tag\{[^}]+\}", "", content)
         equation_content = re.sub(r"\\notag", "", equation_content)
 
-        p = doc.add_paragraph()
-        p.style = "No Spacing"
-        p.paragraph_format.space_before = Pt(6)
-        p.paragraph_format.space_after = Pt(6)
-        p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-        p._p.append(self._formula(equation_content))  # noqa: SLF001
-        if tag:
-            p.add_run(f" ({tag})")
+        # Split equation content on line breaks (\\)
+        lines = equation_content.replace("\\begin{multline}", "").replace("\\end{multline}", "").split(r"\\")
+        for idx, line in enumerate(lines):
+            p = doc.add_paragraph()
+            p.style = "No Spacing"
+            p.paragraph_format.space_before = Pt(6)
+            p.paragraph_format.space_after = Pt(6)
+            p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+            p._p.append(self._formula(line))  # noqa: SLF001
+            # Only add tag to the last line
+            if tag and idx == len(lines) - 1:
+                p.add_run(f" ({tag})")
 
     def _add_table_to_doc(self, doc: DocumentObject, table_latex: str) -> None:
         """Parse LaTeX table and add it to the Word document.
