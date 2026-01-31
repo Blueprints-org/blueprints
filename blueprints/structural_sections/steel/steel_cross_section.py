@@ -22,14 +22,16 @@ class SteelCrossSection:
         The profile. This can be a predefined profile or a generic profile.
     material : SteelMaterial
         The material type of the steel.
+    fabrication_method : Literal["rolled", "welded"], optional
+        The fabrication method of the steel cross-section, either "rolled" or "welded. Default is "rolled".
     """
 
     profile: Profile
     """The profile. This can be a predefined profile or a generic profile."""
     material: SteelMaterial
     """The material type of the steel."""
-    section_type: Literal["rolled", "welded"] = "rolled"
-    """The fabrication method of the steel section: 'rolled' or 'welded'."""
+    fabrication_method: Literal["rolled", "welded"] = "rolled"
+
 
     @property
     def yield_strength(self) -> MPA:
