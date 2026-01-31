@@ -150,7 +150,7 @@ class PlasticShearStrengthIProfileCheck:
         Report
             Report of the plastic shear force check.
         """
-        report = Report("Check: plastic shear force steel I-profile")
+        report = Report("Check: shear force steel I-beam")
         if self.v == 0:
             report.add_paragraph("No shear force was applied; therefore, no shear force check is necessary.")
             return report
@@ -171,20 +171,3 @@ class PlasticShearStrengthIProfileCheck:
         else:
             report.add_paragraph("The check for plastic shear force does NOT satisfy the requirements.")
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.checks.eurocode.steel.shear_strength import PlasticShearStrengthIProfileCheck
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
-    v = 100  # Applied shear force in kN
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = PlasticShearStrengthIProfileCheck(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
-    calc.report().to_word("shear_strength.docx", language="en")
-    import os
-
-    os.startfile("shear_strength.docx")
