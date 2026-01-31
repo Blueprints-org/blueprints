@@ -119,6 +119,7 @@ class Report:
         equation: str,
         tag: str | None = None,
         inline: bool = False,
+        split_on: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add an equation to the report. For adding Blueprints formulas, use add_formula instead.
 
@@ -130,6 +131,10 @@ class Report:
             Tag to label the equation (e.g., "6.83", "EN 1992-1-1:2004 6.6n", etc.).
         inline : bool, optional
             Whether to add the equation inline (meaning within text) or as a separate equation block. Default is False.
+        split_on: list[tuple[int, str]], optional
+            List of characters to split the equation line on for better readability.
+            e.g. a = b + c = 2 + 3 = 5 with split_on=[(2, "="), (2, "+")] will split after second "=" and second "+"
+            to give: a = b + c = \\ 2 + \\ 3 = 5. Default is None.
 
         Returns
         -------
@@ -145,12 +150,34 @@ class Report:
         >>> report.add_equation(r"\\frac{a}{b}", inline=True)
 
         """
+
+        def _split_equation(eq: str, split_on: list[tuple[int, str]] | None) -> str:
+            if not split_on:
+                return eq
+            eq_mod = eq
+            # Sort by decreasing index so insertion doesn't affect later positions
+            for n, char in sorted(split_on, reverse=True):
+                # Find nth occurrence of char
+                idx = -1
+                count = 0
+                for i, c in enumerate(eq_mod):
+                    if c == char:
+                        count += 1
+                        if count == n:
+                            idx = i
+                            break
+                if idx != -1:
+                    eq_mod = eq_mod[: idx + 1] + r" \\" + eq_mod[idx + 1 :]
+            return eq_mod
+
+        eq_to_use = _split_equation(equation, split_on)
+
         if inline:
-            self.content += r"\txt{ " + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r" }"
+            self.content += r"\txt{ " + rf"${eq_to_use}$" + f"{f' ({tag})' if tag else ''}" + r" }"
         elif tag:
-            self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
+            self.content += rf"\begin{{multline}} {eq_to_use} \tag{{{tag}}} \end{{multline}}"
         else:
-            self.content += rf"\begin{{equation}} {equation} \notag \end{{equation}}"
+            self.content += rf"\begin{{multline}} {eq_to_use} \notag \end{{multline}}"
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -165,6 +192,7 @@ class Report:
         include_source: bool = True,
         include_formula_number: bool = True,
         inline: bool = False,
+        split_on: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add a Blueprints formula to the report, for generic equations, use add_equation.
 
@@ -227,7 +255,7 @@ class Report:
                 tag_parts.append(formula.label)
         tag_str = " ".join(tag_parts).strip()
 
-        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None)
+        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None, split_on=split_on)
 
     def add_heading(self, text: str, level: int = 1) -> Self:
         """Add a heading to the report.
