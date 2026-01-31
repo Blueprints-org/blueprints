@@ -1,4 +1,4 @@
-"""Module for checking bending moment resistance of steel cross-sections (Eurocode 3, Class 3 only)."""
+"""Module for checking bending moment resistance of steel cross-sections (Eurocode 3)."""
 
 from dataclasses import dataclass
 from typing import ClassVar, Literal
@@ -52,13 +52,13 @@ class BendingMomentStrengthClass1And2Check:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass123Check
+    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass1And2Check
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEM.HEM300.with_corrosion(0)
-    m = 355 * 1.677  # Applied bending moment in kNm
+    heb_300_profile = HEB.HEB300.with_corrosion(0)
+    m = 355 * 1.868  # Applied bending moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = BendingMomentStrengthClass1And2Check(heb_300_s355, m, axis='My', gamma_m0=1.0)

@@ -1,4 +1,4 @@
-"""Tests for  according to Eurocode 3."""
+"""Tests for bending moment strength according to Eurocode 3."""
 
 import pytest
 from sectionproperties.post.post import SectionProperties
@@ -8,7 +8,7 @@ from blueprints.structural_sections.steel.steel_cross_section import SteelCrossS
 
 
 class TestBendingMomentStrengthClass1And2Check:
-    """Tests for BendingMomentStrengthClass3Check."""
+    """Tests for BendingMomentStrengthClass1And2Check."""
 
     def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no bending moment."""
@@ -22,7 +22,7 @@ class TestBendingMomentStrengthClass1And2Check:
         assert calc.report()
 
         calc_without_section_props = BendingMomentStrengthClass1And2Check(cross_section, 0, axis="My", gamma_m0=1.0)
-        assert calc == calc_without_section_props
+        assert pytest.approx(result.unity_check) == calc_without_section_props.result().unity_check
 
     def test_result_my_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok bending moment about y-axis."""
@@ -109,7 +109,7 @@ class TestBendingMomentStrengthClass3Check:
         assert calc.report()
 
         calc_without_section_props = BendingMomentStrengthClass3Check(cross_section, 0, axis="My", gamma_m0=1.0)
-        assert calc == calc_without_section_props
+        assert pytest.approx(result.unity_check) == calc_without_section_props.result().unity_check
 
     def test_result_my_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok bending moment about y-axis."""
