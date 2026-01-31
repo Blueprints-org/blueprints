@@ -538,7 +538,7 @@ class Report:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
@@ -556,7 +556,7 @@ class Report:
         """Return a human-readable representation of the report structure and content."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
