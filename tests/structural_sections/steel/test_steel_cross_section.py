@@ -62,4 +62,4 @@ class TestSteelCrossSection:
 
     def test_fabrication_method(self, steel_cross_section: SteelCrossSection) -> None:
         """Test that the SteelCrossSection fabrication method is set correctly."""
-        assert steel_cross_section.section_type == "rolled"
+        assert steel_cross_section.fabrication_method == "rolled"
