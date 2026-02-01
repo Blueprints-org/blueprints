@@ -160,7 +160,7 @@ class PlasticShearStrengthIProfileCheck:
             rf"The shear area $A_v$ is calculated as follows:"
         )
         formulas = self.calculation_formula()
-        report.add_formula(formulas["shear_area"], n=n, split_after=[(2, "="), (3, "=")])
+        report.add_formula(formulas["shear_area"], n=n, split_after=[(2, "="), (7, "+"), (4, "=")])
         report.add_paragraph("The shear resistance is calculated as follows:")
         report.add_formula(formulas["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
@@ -170,3 +170,19 @@ class PlasticShearStrengthIProfileCheck:
         else:
             report.add_paragraph("The check for plastic shear force does NOT satisfy the requirements.")
         return report
+
+if __name__ == "__main__":
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300
+    v = 100  # Applied shear force in kN
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = PlasticShearStrengthIProfileCheck(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
+    calc.report().to_pdf("shear_strength.pdf", language="nl")
+    calc.report().to_word("shear_strength.docx", language="nl")
+    import os
+    os.startfile("shear_strength.pdf")
+    os.startfile("shear_strength.docx")
