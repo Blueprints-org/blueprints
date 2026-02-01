@@ -97,16 +97,21 @@ class PlasticShearStrengthIProfileCheck:
 
         # Get parameters from profile, average top and bottom flange properties
         a = self.section_properties.area
-        b = (self.steel_cross_section.profile.top_flange_width + self.steel_cross_section.profile.bottom_flange_width) / 2
-        tf = (self.steel_cross_section.profile.top_flange_thickness + self.steel_cross_section.profile.bottom_flange_thickness) / 2
+        b_1 = self.steel_cross_section.profile.top_flange_width
+        b_2 = self.steel_cross_section.profile.bottom_flange_width
+        tf_1 = self.steel_cross_section.profile.top_flange_thickness
+        tf_2 = self.steel_cross_section.profile.bottom_flange_thickness
         tw = self.steel_cross_section.profile.web_thickness
         hw = self.steel_cross_section.profile.total_height - (
             self.steel_cross_section.profile.top_flange_thickness + self.steel_cross_section.profile.bottom_flange_thickness
         )
-        r = (self.steel_cross_section.profile.top_radius + self.steel_cross_section.profile.bottom_radius) / 2
+        r_1 = self.steel_cross_section.profile.top_radius
+        r_2 = self.steel_cross_section.profile.bottom_radius
 
         if self.axis == "Vz" and self.steel_cross_section.fabrication_method == "rolled":
-            av = formula_6_18_sub_av.Form6Dot18SubARolledIandHSection(a=a, b=b, hw=hw, r=r, tf=tf, tw=tw, eta=1.0)
+            av = formula_6_18_sub_av.Form6Dot18SubARolledIandHSection(
+                a=a, b_1=b_1, b_2=b_2, hw=hw, r_1=r_1, r_2=r_2, tf_1=tf_1, tf_2=tf_2, tw=tw, eta=1.0
+            )
         elif self.axis == "Vz" and self.steel_cross_section.fabrication_method == "welded":
             av = formula_6_18_sub_av.Form6Dot18SubDWeldedIHandBoxSection(hw_list=[hw], tw_list=[tw], eta=1.0)
         else:  # axis == "Vy"
