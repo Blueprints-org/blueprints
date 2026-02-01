@@ -23,7 +23,7 @@ class SteelCrossSection:
     material : SteelMaterial
         The material type of the steel.
     fabrication_method : Literal["rolled", "welded"], optional
-        The fabrication method of the steel cross-section, either "rolled" or "welded. Default is "rolled".
+        The fabrication method of the steel cross-section, either "rolled" or "welded". Default is "rolled".
     """
 
     profile: Profile
