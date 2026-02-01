@@ -32,7 +32,6 @@ class SteelCrossSection:
     """The material type of the steel."""
     fabrication_method: Literal["rolled", "welded"] = "rolled"
 
-
     @property
     def yield_strength(self) -> MPA:
         """
