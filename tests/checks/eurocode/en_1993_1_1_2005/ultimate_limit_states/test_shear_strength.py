@@ -92,3 +92,10 @@ class TestPlasticShearStrengthIProfileCheck:
         v = 1
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, gamma_m0=1.0, section_properties=section_properties)
         assert calc.report()
+
+    def test_check_wrong_profile(self, chs_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
+        """Test check() raises TypeError for non-I-profile."""
+        cross_section, section_properties = chs_steel_cross_section
+        v = 1
+        with pytest.raises(TypeError, match="The provided profile is not an I-profile"):
+            PlasticShearStrengthIProfileCheck(cross_section, v, gamma_m0=1.0, section_properties=section_properties)
