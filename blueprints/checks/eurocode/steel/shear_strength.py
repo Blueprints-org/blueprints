@@ -170,3 +170,18 @@ class PlasticShearStrengthIProfileCheck:
         else:
             report.add_paragraph("The check for plastic shear force does NOT satisfy the requirements.")
         return report
+
+if __name__ == "__main__":
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300
+    v = 100  # Applied shear force in kN
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    object.__setattr__(heb_300_s355, "fabrication_method", "welded")
+    calc = PlasticShearStrengthIProfileCheck(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
+    print(calc._profile.area)
+    print(calc._profile.area - 11 * 260)
+    print(calc.calculation_formula())

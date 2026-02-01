@@ -43,14 +43,14 @@ class TestPlasticShearStrengthIProfileCheck:
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
-        v = 355 * 11.4 / 1.732 * 0.99
+        v = 355 * 12.03 / 1.732 * 0.99
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
-        v = 355 * 2.89 / 1.732 * 0.99
+        v = 355 * 2.882 / 1.732 * 0.99
         object.__setattr__(cross_section, "fabrication_method", "welded")
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
@@ -71,7 +71,7 @@ class TestPlasticShearStrengthIProfileCheck:
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
         assert calc.report()
 
-        v = 355 * 11.4 / 1.732 * 1.01
+        v = 355 * 12.03 / 1.732 * 1.01
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
@@ -79,7 +79,7 @@ class TestPlasticShearStrengthIProfileCheck:
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
         assert calc.report()
 
-        v = 355 * 1.89 / 1.732 * 1.01
+        v = 355 * 2.882 / 1.732 * 1.01
         object.__setattr__(cross_section, "fabrication_method", "welded")
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
