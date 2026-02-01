@@ -1,6 +1,7 @@
 """Tests for PlasticShearStrengthIProfileCheck according to Eurocode 3."""
 
 import pytest
+import numpy as np
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.eurocode.steel.shear_strength import PlasticShearStrengthIProfileCheck
@@ -28,7 +29,7 @@ class TestPlasticShearStrengthIProfileCheck:
     def test_result_shear_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok shear force."""
         cross_section, section_properties = heb_steel_cross_section
-        v = 355 * 2.73 * 0.99
+        v = 355 * 4.74 / 1.732 * 0.99
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
@@ -42,14 +43,14 @@ class TestPlasticShearStrengthIProfileCheck:
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
-        v = 355 * 6.95 * 0.99
+        v = 355 * 11.4 / 1.732 * 0.99
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
-        v = 355 * 1.67 * 0.99
+        v = 355 * 2.89 / 1.732 * 0.99
         object.__setattr__(cross_section, "fabrication_method", "welded")
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
@@ -62,7 +63,7 @@ class TestPlasticShearStrengthIProfileCheck:
         """Test result() for not ok shear force."""
         cross_section, section_properties = heb_steel_cross_section
         object.__setattr__(cross_section, "fabrication_method", "rolled")
-        v = 355 * 2.73 * 1.01
+        v = 355 * 4.74 / 1.732 * 1.01
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
@@ -70,7 +71,7 @@ class TestPlasticShearStrengthIProfileCheck:
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
         assert calc.report()
 
-        v = 355 * 6.95 * 1.01
+        v = 355 * 11.4 / 1.732 * 1.01
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
@@ -78,7 +79,7 @@ class TestPlasticShearStrengthIProfileCheck:
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
         assert calc.report()
 
-        v = 355 * 1.67 * 1.01
+        v = 355 * 1.89 / 1.732 * 1.01
         object.__setattr__(cross_section, "fabrication_method", "welded")
         calc = PlasticShearStrengthIProfileCheck(cross_section, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
