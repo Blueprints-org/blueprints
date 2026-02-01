@@ -37,6 +37,24 @@ class TestForm6Dot18SubARolledIandHSection:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation_non_symmetric(self) -> None:
+        """Tests the evaluation of the result for a non-symmetric profile."""
+        a = 10000.0
+        b1 = 180.0
+        b2 = 200.0
+        hw = 250.0
+        r1 = 10.0
+        r2 = 10.0
+        tf1 = 15.0
+        tf2 = 15.0
+        tw = 8.0
+        eta = 1.0
+
+        formula = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta)
+        manually_calculated_result = 4720.0  # mm^2
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("a", "b1", "b2", "hw", "r1", "r2", "tf1", "tf2", "tw", "eta"),
         [
