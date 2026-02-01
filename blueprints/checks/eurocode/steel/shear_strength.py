@@ -92,7 +92,6 @@ class PlasticShearStrengthIProfileCheck:
         dict[str, Formula]
             Calculation results keyed by formula number. Returns an empty dict if no shear force is applied.
         """
-        
         # Get parameters from profile, average top and bottom flange properties
         a = float(self.section_properties.area)  # type: ignore[attr-defined]
         b1 = self.steel_cross_section.profile.top_flange_width  # type: ignore[attr-defined]
