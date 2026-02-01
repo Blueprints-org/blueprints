@@ -94,7 +94,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18suba."""
         _equation: str = (
-            r"max(A - b_1 \cdot t_{f1} - b_2 \cdot t_{f2} + (t_w + 2 \cdot r_1) \cdot \frac{t_{f1}}{2} + "
+            r"\max(A - b_1 \cdot t_{f1} - b_2 \cdot t_{f2} + (t_w + 2 \cdot r_1) \cdot \frac{t_{f1}}{2} + "
             r"(t_w + 2 \cdot r_2) \cdot \frac{t_{f2}}{2}; \eta \cdot h_w \cdot t_w)"
         )
         _numeric_equation: str = latex_replace_symbols(
