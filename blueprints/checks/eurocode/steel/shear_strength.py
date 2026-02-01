@@ -92,9 +92,7 @@ class PlasticShearStrengthIProfileCheck:
         dict[str, Formula]
             Calculation results keyed by formula number. Returns an empty dict if no shear force is applied.
         """
-        if self.v == 0:
-            return {}
-
+        
         # Get parameters from profile, average top and bottom flange properties
         a = float(self.section_properties.area)  # type: ignore[attr-defined]
         b1 = self.steel_cross_section.profile.top_flange_width  # type: ignore[attr-defined]
@@ -121,7 +119,7 @@ class PlasticShearStrengthIProfileCheck:
         check_shear = formula_6_17.Form6Dot17CheckShearForce(v_ed=v_ed, v_c_rd=v_pl_rd)
         return {
             "shear_area": av,
-            "shear_resistance": v_pl_rd,
+            "resistance": v_pl_rd,
             "check": check_shear,
         }
 
@@ -134,10 +132,8 @@ class PlasticShearStrengthIProfileCheck:
             True if the shear force check passes, False otherwise.
         """
         steps = self.calculation_formula()
-        if not steps:
-            return CheckResult(is_ok=True, unity_check=0.0)
         provided = abs(self.v) * KN_TO_N
-        required = float(steps["shear_resistance"])
+        required = steps["resistance"]
         return CheckResult.from_comparison(provided=provided, required=required)
 
     def report(self, n: int = 2) -> Report:
@@ -166,7 +162,7 @@ class PlasticShearStrengthIProfileCheck:
         formulas = self.calculation_formula()
         report.add_formula(formulas["shear_area"], n=n, split_after=[(2, "="), (3, "=")])
         report.add_paragraph("The shear resistance is calculated as follows:")
-        report.add_formula(formulas["shear_resistance"], n=n)
+        report.add_formula(formulas["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
         report.add_formula(formulas["check"], n=n)
         if self.result().is_ok:
