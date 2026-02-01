@@ -10,7 +10,10 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_list
 
 
 class Form6Dot18SubARolledIandHSection(Formula):
-    r"""Class representing formula 6.18suba for the calculation of shear area for a rolled I and H section."""
+    r"""Class representing formula 6.18suba for the calculation of shear area for a rolled I and H section.
+
+    The equations has been slightly modified to split effects of top and bottom flange.
+    """
 
     label = "6.18suba"
     source_document = EN_1993_1_1_2005
@@ -18,10 +21,13 @@ class Form6Dot18SubARolledIandHSection(Formula):
     def __init__(
         self,
         a: MM2,
-        b: MM,
+        b1: MM,
+        b2: MM,
         hw: MM,
-        r: MM,
-        tf: MM,
+        r1: MM,
+        r2: MM,
+        tf1: MM,
+        tf2: MM,
         tw: MM,
         eta: DIMENSIONLESS,
     ) -> None:
@@ -33,14 +39,20 @@ class Form6Dot18SubARolledIandHSection(Formula):
         ----------
         a : MM2
             [$A$] Cross-sectional area [$mm^2$].
-        b : MM
-            [$b$] Overall breadth [$mm$].
+        b1 : MM
+            [$b$] Overall breadth of flange 1 [$mm$].
+        b2 : MM
+            [$b$] Overall breadth of flange 2 [$mm$].
         hw : MM
             [$h_w$] Depth of the web [$mm$].
-        r : MM
-            [$r$] Root radius [$mm$].
-        tf : MM
-            [$t_f$] Flange thickness [$mm$].
+        r1 : MM
+            [$r$] Root radius at flange 1 [$mm$].
+        r2 : MM
+            [$r$] Root radius at flange 2 [$mm$].
+        tf1 : MM
+            [$t_f$] Flange thickness 1 [$mm$].
+        tf2 : MM
+            [$t_f$] Flange thickness 2 [$mm$].
         tw : MM
             [$t_w$] Web thickness [$mm$]. If the web thickness is not constant, tw should be taken as the minimum thickness.
         eta : DIMENSIONLESS, optional
@@ -48,42 +60,54 @@ class Form6Dot18SubARolledIandHSection(Formula):
         """
         super().__init__()
         self.a = a
-        self.b = b
+        self.b1 = b1
+        self.b2 = b2
         self.hw = hw
-        self.r = r
-        self.tf = tf
+        self.r1 = r1
+        self.r2 = r2
+        self.tf1 = tf1
+        self.tf2 = tf2
         self.tw = tw
         self.eta = eta
 
     @staticmethod
     def _evaluate(
         a: MM2,
-        b: MM,
+        b1: MM,
+        b2: MM,
         hw: MM,
-        r: MM,
-        tf: MM,
+        r1: MM,
+        r2: MM,
+        tf1: MM,
+        tf2: MM,
         tw: MM,
         eta: DIMENSIONLESS,
     ) -> MM2:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(a=a, b=b, hw=hw, r=r, tf=tf, tw=tw, eta=eta)
+        raise_if_negative(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta)
 
-        av = a - 2 * b * tf + (tw + 2 * r) * tf
+        av = a - b1 * tf1 - b2 * tf2 + (tw + 2 * r1) * tf1 / 2 + (tw + 2 * r2) * tf2 / 2
         av_min = eta * hw * tw
 
         return max(0, av, av_min)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18suba."""
-        _equation: str = r"max(A - 2 \cdot b \cdot t_f + (t_w + 2 \cdot r) \cdot t_f; \eta \cdot h_w \cdot t_w)"
+        _equation: str = (
+            r"max(A - b_1 \cdot t_{f1} - b_2 \cdot t_{f2} + (t_w + 2 \cdot r_1) \cdot \frac{t_{f1}}{2} + "
+            r"(t_w + 2 \cdot r_2) \cdot \frac{t_{f2}}{2}; \eta \cdot h_w \cdot t_w)"
+        )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 r"A": f"{self.a:.{n}f}",
-                r"b": f"{self.b:.{n}f}",
+                r"b_1": f"{self.b_1:.{n}f}",
+                r"b_2": f"{self.b_2:.{n}f}",
                 r"h_w": f"{self.hw:.{n}f}",
-                r"r": f"{self.r:.{n}f}",
-                r"t_f": f"{self.tf:.{n}f}",
+                r"r_1": f"{self.r_1:.{n}f}",
+                r"r_2": f"{self.r_2:.{n}f}",
+                r"t_{f1}": f"{self.tf_1:.{n}f}",
+                r"t_{f2}": f"{self.tf_2:.{n}f}",
                 r"t_w": f"{self.tw:.{n}f}",
                 r"\eta": f"{self.eta:.{n}f}",
             },
