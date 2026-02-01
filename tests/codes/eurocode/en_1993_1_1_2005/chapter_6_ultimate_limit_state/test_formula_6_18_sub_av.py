@@ -75,17 +75,17 @@ class TestForm6Dot18SubARolledIandHSection:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         a = 10000.0
-        b_1 = 200.0
-        b_2 = 200.0
+        b1 = 200.0
+        b2 = 200.0
         hw = 250.0
-        r_1 = 10.0
-        r_2 = 10.0
-        tf_1 = 15.0
-        tf_2 = 15.0
+        r1 = 10.0
+        r2 = 10.0
+        tf1 = 15.0
+        tf2 = 15.0
         tw = 8.0
         eta = 1.0
 
-        latex = Form6Dot18SubARolledIandHSection(a=a, b_1=b_1, b_2=b_2, hw=hw, r_1=r_1, r_2=r_2, tf_1=tf_1, tf_2=tf_2, tw=tw, eta=eta).latex()
+        latex = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta).latex()
 
         actual = {
             "complete": latex.complete,
