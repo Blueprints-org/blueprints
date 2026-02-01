@@ -160,7 +160,7 @@ class PlasticShearStrengthIProfileCheck:
             rf"The shear area $A_v$ is calculated as follows:"
         )
         formulas = self.calculation_formula()
-        report.add_formula(formulas["shear_area"], n=n, split_after=[(2, "="), (7, "+"), (4, "=")])
+        report.add_formula(formulas["shear_area"], n=n, split_after=[(2, "="), (7, "+"), (3, "=")])
         report.add_paragraph("The shear resistance is calculated as follows:")
         report.add_formula(formulas["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
