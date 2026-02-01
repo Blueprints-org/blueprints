@@ -57,7 +57,6 @@ class TestPlasticShearStrengthIProfileCheck:
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
-
     def test_result_shear_not_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for not ok shear force."""
         cross_section, section_properties = heb_steel_cross_section
