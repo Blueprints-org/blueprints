@@ -73,9 +73,9 @@ class SteelCrossSection:
         if single:
             return single.group(1).strip().replace(".", "_"), float(single.group(2)), None, None
         # Double corrosion: (corrosion inside: X mm, outside: Y mm)
-        double = re.match(r"^(.*?)\s*\(corrosion\s+inside:\s*([0-9.]+)\s*mm,\s*out(side)?:\s*([0-9.]+)\s*mm\)\s*$", full_name)
+        double = re.match(r"^(.*?)\s*\(corrosion\s+inside:\s*([0-9.]+)\s*mm,\s*outside:\s*([0-9.]+)\s*mm\)\s*$", full_name)
         if double:
-            return double.group(1).strip().replace(".", "_"), None, float(double.group(2)), float(double.group(4))
+            return double.group(1).strip().replace(".", "_"), None, float(double.group(2)), float(double.group(3))
         return full_name.strip().replace(".", "_"), None, None, None
 
     def _set_fabrication_if_in_db(
