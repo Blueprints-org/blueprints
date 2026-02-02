@@ -54,6 +54,10 @@ class SteelCrossSection:
         """
         Determines and sets the fabrication method based on the profile name and geometry.
         IPE, RHS, SHS, HEB, HEA, HEM are hot-rolled. RHSCF, SHSCF are cold-formed.
+
+        Returns
+        -------
+        None
         """
         profile_name, corrosion, corrosion_inside, corrosion_outside = self._get_profile_name_and_corrosion_amount(self.profile.name)
         hot_rolled_profiles = [(cls, "_database") for cls in (IPE, RHS, SHS, HEB, HEA, HEM)]
@@ -68,6 +72,20 @@ class SteelCrossSection:
 
     @staticmethod
     def _get_profile_name_and_corrosion_amount(full_name: str) -> tuple[str, float | None, float | None, float | None]:
+        """Extracts the profile name and corrosion amounts from the full profile name.
+        Single corrosion format: "ProfileName (corrosion: X mm)".
+        Double corrosion format: "ProfileName (corrosion inside: X mm, outside: Y mm)".
+
+        Parameters
+        ----------
+        full_name : str
+            The full profile name possibly containing corrosion information.
+
+        Returns
+        -------
+        tuple[str, float | None, float | None, float | None]
+            A tuple containing the profile name, single corrosion amount, inside corrosion amount, and outside corrosion amount.
+        """
         # Single corrosion: (corrosion: X mm)
         single = re.match(r"^(.*?)\s*\(corrosion:\s*([0-9.]+)\s*mm\)\s*$", full_name)
         if single:
