@@ -87,3 +87,7 @@ class TestSteelCrossSection:
     def test_default_fabrication_method_not_set(self, steel_cross_section_fabrication_not_set: SteelCrossSection) -> None:
         """Test that the SteelCrossSection fabrication method is set correctly when not set."""
         assert steel_cross_section_fabrication_not_set.fabrication_method is None
+
+    def test_default_fabrication_method_different_name(self, steel_cross_section_fabrication_different_name: SteelCrossSection) -> None:
+        """Test that the SteelCrossSection fabrication method is set correctly when profile name is different."""
+        assert steel_cross_section_fabrication_different_name.fabrication_method is None

@@ -77,6 +77,17 @@ def steel_cross_section_fabrication_not_set() -> SteelCrossSection:
 
 
 @pytest.fixture
+def steel_cross_section_fabrication_different_name() -> SteelCrossSection:
+    """Fixture to set up a SteelCrossSection for testing."""
+    profile = CHS.CHS1016x12_5.with_corrosion(corrosion_inside=1.0, corrosion_outside=1.5)
+    object.__setattr__(profile, "name", "Custom_CHS_Profile")
+    return SteelCrossSection(
+        profile=profile,
+        material=SteelMaterial(steel_class=SteelStrengthClass.S275),
+    )
+
+
+@pytest.fixture
 def thick_41_mm_flange_i_profile() -> SteelCrossSection:
     """Fixture to set up a SteelCrossSection for testing with thick flanges."""
     return SteelCrossSection(
