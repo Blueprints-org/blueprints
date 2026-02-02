@@ -50,7 +50,6 @@ class SteelCrossSection:
         Set fabrication method if not provided based on standard profiles.
         IPE, RHS, SHS, HEB, HEA, HEM are hot-rolled.
         RHSCF, SHSCF are cold-formed.
-        Filters database names: strips whitespace and removes anything in parentheses before matching.
         """
 
         def clean_name(name: str) -> str:
