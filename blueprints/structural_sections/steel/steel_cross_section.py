@@ -107,18 +107,8 @@ class SteelCrossSection:
 
         if self.fabrication_method is None and hasattr(self.profile, "name"):
             profile_name = clean_name(self.profile.name)
-            hot_rolled_profiles = [
-                (IPE, "_database"),
-                (RHS, "_database"),
-                (SHS, "_database"),
-                (HEB, "_database"),
-                (HEA, "_database"),
-                (HEM, "_database"),
-            ]
-            cold_formed_profiles = [
-                (RHSCF, "_database"),
-                (SHSCF, "_database"),
-            ]
+            hot_rolled_profiles = [(cls, "_database") for cls in (IPE, RHS, SHS, HEB, HEA, HEM)]
+            cold_formed_profiles = [(cls, "_database") for cls in (RHSCF, SHSCF)]
             if set_fabrication_if_in_db(profile_name, hot_rolled_profiles, FabricationMethod.HOT_ROLLED):
                 return
             set_fabrication_if_in_db(profile_name, cold_formed_profiles, FabricationMethod.COLD_FORMED)
