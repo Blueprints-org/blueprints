@@ -144,6 +144,7 @@ class IProfileStrengthClass3:
             "shear z": None,
             "shear y": None,
             "torsion": None,
+            "torsion and shear": None,
             "bending and shear": None,
             "bending and axial": None,
             "bending, shear and axial": None,
