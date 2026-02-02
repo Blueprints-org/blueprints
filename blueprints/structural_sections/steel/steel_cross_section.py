@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections._profile import Profile
@@ -13,7 +13,7 @@ from blueprints.type_alias import KG_M, MPA
 from blueprints.unit_conversion import MM2_TO_M2
 
 
-class FabricationMethod(Enum):
+class FabricationMethod(StrEnum):
     """Enumeration of steel cross-section fabrication methods."""
 
     COLD_FORMED = "cold-formed"
