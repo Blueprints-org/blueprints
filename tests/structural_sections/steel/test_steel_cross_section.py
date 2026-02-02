@@ -3,7 +3,7 @@
 import pytest
 from shapely.geometry import Point
 
-from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
+from blueprints.structural_sections.steel.steel_cross_section import FabricationMethod, SteelCrossSection
 
 
 class TestSteelCrossSection:
@@ -62,4 +62,4 @@ class TestSteelCrossSection:
 
     def test_fabrication_method(self, steel_cross_section: SteelCrossSection) -> None:
         """Test that the SteelCrossSection fabrication method is set correctly."""
-        assert steel_cross_section.fabrication_method == "rolled"
+        assert steel_cross_section.fabrication_method == FabricationMethod.HOT_ROLLED
