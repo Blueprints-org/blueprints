@@ -98,7 +98,7 @@ class SteelCrossSection:
                     if corrosion is not None and hasattr(db_profile, "with_corrosion"):
                         db_profile = db_profile.with_corrosion(corrosion=corrosion)
                     elif (corrosion_inside is not None or corrosion_outside is not None) and hasattr(db_profile, "with_corrosion"):
-                        db_profile = db_profile.with_corrosion(corrosion_inside=corrosion_inside or 0, corrosion_outside=corrosion_outside or 0)
+                        db_profile = db_profile.with_corrosion(corrosion_inside=corrosion_inside, corrosion_outside=corrosion_outside)
                     if hasattr(self.profile, "polygon") and hasattr(db_profile, "polygon") and self.profile.polygon.equals(db_profile.polygon):
                         object.__setattr__(self, "fabrication_method", fabrication_method)
                         return True
