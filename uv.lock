@@ -2391,7 +2391,7 @@ wheels = [
 
 [[package]]
 name = "sectionproperties"
-version = "3.10.0"
+version = "3.10.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cytriangle" },
@@ -2402,9 +2402,9 @@ dependencies = [
     { name = "scipy" },
     { name = "shapely" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c0/9d/4315e9c27e8a7b4407751ef1db697f31ef45e6edbd6b29a9be329f817ee2/sectionproperties-3.10.0.tar.gz", hash = "sha256:0d7d9629d7fe427feb9a78eecea9c0313512fb8f07ade83a22afc7d4f6a844fc", size = 2727731, upload-time = "2025-12-11T05:31:25.829Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/e4/fb84349dce9641c24d3c56e0a0a44130e504aa0ce8232f1d30ddd4231bfb/sectionproperties-3.10.2.tar.gz", hash = "sha256:10b538662802b880ef275007f0500ebc5083ea8051fb75e6526b57fa28a6f26a", size = 2730576, upload-time = "2026-01-24T11:11:22.635Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f9/b6/c196ce24d50a9bee0212b8348807662a89594fb9c4cdbb119ec16e09627e/sectionproperties-3.10.0-py3-none-any.whl", hash = "sha256:72027aaa31035ab1aa69bd681dd9312a9ffe73c0dc8b4fb6ccd99878628808f0", size = 113722, upload-time = "2025-12-11T05:31:24.14Z" },
+    { url = "https://files.pythonhosted.org/packages/08/94/bc1ecee178a09d48a16e5cc1f5bf4755811659c9e6384e40057eaf9ba286/sectionproperties-3.10.2-py3-none-any.whl", hash = "sha256:e8a4d15127630b6fc5344b69283c3782e9aeee2da86ec78862ae722ea11687d7", size = 113723, upload-time = "2026-01-24T11:11:21.05Z" },
 ]
 
 [[package]]
