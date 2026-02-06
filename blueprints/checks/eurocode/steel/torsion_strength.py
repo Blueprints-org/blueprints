@@ -13,7 +13,6 @@ from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KNM
-from blueprints.unit_conversion import KNM_TO_NMM, NMM_TO_KNM
 from blueprints.utils.report import Report
 
 
@@ -95,13 +94,14 @@ class TorsionStrengthCheck:
         sig_zy_mzz = stress.get_stress()[0]["sig_zy_mzz"]
         max_mzz_zxy = max((sig_zx_mzz**2 + sig_zy_mzz**2) ** 0.5)
 
-        t_rd = self.steel_cross_section.yield_strength / self.gamma_m0 / np.sqrt(3) / max_mzz_zxy * KNM_TO_NMM
+        t_rd = self.steel_cross_section.yield_strength / self.gamma_m0 / np.sqrt(3) / max_mzz_zxy
+        t_ed = abs(self.mx)
 
-        check_torsion = Form6Dot23CheckTorsionalMoment(t_ed=self.mx, t_rd=t_rd * NMM_TO_KNM)
+        check_torsion = Form6Dot23CheckTorsionalMoment(t_ed=t_ed, t_rd=t_rd)
 
         return {
             "kNm_unit_stress": max_mzz_zxy,
-            "resistance": t_rd * NMM_TO_KNM,
+            "resistance": t_rd,
             "check": check_torsion,
         }
 
@@ -114,7 +114,7 @@ class TorsionStrengthCheck:
             True if the torsion force check passes, False otherwise.
         """
         steps = self.calculation_formula()
-        provided = self.mx
+        provided = abs(self.mx)
         required = steps["resistance"]
         return CheckResult.from_comparison(provided=provided, required=float(required))
 
@@ -162,21 +162,3 @@ class TorsionStrengthCheck:
         else:
             report.add_paragraph("The check for torsion force does NOT satisfy the requirements.")
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(0)
-    mx = 10  # Applied torsional moment in kNm
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = TorsionStrengthCheck(heb_300_s355, mx, gamma_m0=1.0)
-    calc.report().to_pdf("torsion_strength.pdf")
-    calc.report().to_word("torsion_strength.docx", language="nl")
-    import os
-
-    os.startfile("torsion_strength.pdf")
-    os.startfile("torsion_strength.docx")
