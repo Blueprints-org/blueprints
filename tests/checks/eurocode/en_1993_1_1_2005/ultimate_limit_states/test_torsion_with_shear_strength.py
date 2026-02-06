@@ -8,7 +8,7 @@ from blueprints.structural_sections.steel.steel_cross_section import SteelCrossS
 
 
 class TestTorsionWithShearStrengthIProfileCheck:
-    """Tests for TorsionWithShearStrengthIProfileCheck."""
+    """Tests for TorsionWithShearStrengthIProfileCheck, using St. Venant torsion."""
 
     def test_result_none_v(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no shear force."""

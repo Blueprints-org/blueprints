@@ -18,7 +18,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class TorsionStrengthCheck:
+class StVenantTorsionStrengthCheck:
     """Class to perform torsion resistance check (Eurocode 3).
 
     Coordinate System:

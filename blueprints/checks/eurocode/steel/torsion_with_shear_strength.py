@@ -21,7 +21,7 @@ from blueprints.utils.report import Report
 
 @dataclass(frozen=True)
 class TorsionWithShearStrengthIProfileCheck:
-    """Class to perform torsion resistance check with extra shear force for I profiles (Eurocode 3).
+    """Class to perform torsion resistance check with extra shear force for I profiles (Eurocode 3), using St. Venant torsion.
 
     Coordinate System:
 
