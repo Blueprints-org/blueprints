@@ -1,4 +1,4 @@
-"""Tests for TensionStrengthCheckCheck according to Eurocode 3."""
+"""Tests for TensionStrengthCheck according to Eurocode 3."""
 
 import pytest
 from sectionproperties.post.post import SectionProperties
