@@ -180,14 +180,14 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis_m}). "
         )
 
-        if self.v > 0 or self.mx > 0:
+        if abs(self.v) > 0 or abs(self.mx) > 0:
             report.add_paragraph(
                 rf"Additionally a shear force of {abs(self.v):.{n}f} kN (axis {self.axis_v})"
-                + (rf" and a torsional moment of {abs(self.mx):.{n}f} kNm. " if self.mx > 0 else ". ")
+                + (rf" and a torsional moment of {abs(self.mx):.{n}f} kNm. " if abs(self.mx) > 0 else ". ")
             )
         report.add_paragraph("The resistance is calculated as follows, using cross-section class 3:").add_newline(2)
 
-        if self.v > 0 or self.mx > 0:
+        if abs(self.v) > 0 or abs(self.mx) > 0:
             report.add_paragraph("First, the shear area is determined:")
             report.add_formula(formulas["a_v"], n=n, split_after=[(2, "="), (7, "+"), (3, "=")])
 

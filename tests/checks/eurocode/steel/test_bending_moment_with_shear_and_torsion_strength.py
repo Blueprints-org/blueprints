@@ -48,7 +48,7 @@ class TestBendingMomentStrengthClass1And2Check:
     def test_result_not_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for not ok bending moment about y-axis."""
         cross_section, section_properties = heb_steel_cross_section
-        m = -613.3 * 1.1  # Applied bending moment in kNm
+        m = -613.3 * 1.01  # Applied bending moment in kNm
         mx = 1  # Applied torsional moment in kNm
         v = 600  # Applied shear force in kN
         calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
@@ -64,10 +64,12 @@ class TestBendingMomentStrengthClass1And2Check:
         """Test result() for ok bending moment about z-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 627.3 * 0.99
-        mx = 0  # Applied torsional moment in kNm
+        mx = 0  # no torsional moment
         v = -600  # Applied shear force in kN
+        calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(cross_section, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
+        calc.report().to_word("bending_moment_strength.docx")
         calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, m, mx, v, axis_m="Mz", axis_v="Vy", section_properties=section_properties
+            cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties
         )
         result = calc.result()
         assert result.is_ok is True
@@ -79,10 +81,10 @@ class TestBendingMomentStrengthClass1And2Check:
         """Test result() for not ok bending moment about z-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = -627.3 * 1.01
-        mx = 0  # Applied torsional moment in kNm
+        mx = 0  # no torsional moment
         v = -600  # Applied shear force in kN
         calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, m, mx, v, axis_m="Mz", axis_v="Vy", section_properties=section_properties
+            cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties
         )
         result = calc.result()
         assert result.is_ok is False
