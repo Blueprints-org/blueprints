@@ -1,6 +1,6 @@
 """Module for checking torsional shear stress resistance with shear force present (Eurocode 2, formula 6.23)."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import ClassVar, Literal
 
 import numpy as np
@@ -78,13 +78,11 @@ class TorsionWithShearStrengthIProfileCheck:
     section_properties: SectionProperties | None = None
     name: str = "Torsion strength check for steel I-profiles"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
-    _profile: IProfile = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties and check profile type."""
         if not isinstance(self.steel_cross_section.profile, IProfile):
             raise TypeError("The provided profile is not an I-profile.")
-        object.__setattr__(self, "_profile", self.steel_cross_section.profile)
         if self.section_properties is None:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
