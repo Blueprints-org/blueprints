@@ -61,11 +61,11 @@ class BendingShearAxialStrengthClass3IProfileCheck:
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     heb_300_profile = HEB.HEB300
     n = 1000  # Applied axial force in kN
-    v_y = 100  # Applied shear force in y-direction in kN
+    v_y = 1111  # Applied shear force in y-direction in kN
     v_z = 50  # Applied shear force in z-direction in kN
     m_x = 10  # Applied torsional moment in kNm
     m_y = 100  # Applied bending moment around y-axis in kNm
-    m_z = 130.37  # Applied bending moment around z-axis in kNm
+    m_z = 80  # Applied bending moment around z-axis in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = BendingShearAxialStrengthClass3IProfileCheck(heb_300_s355, m_y=m_y, m_z=m_z, n=n, v_y=v_y, v_z=v_z, m_x=m_x, gamma_m0=1.0)
