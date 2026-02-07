@@ -121,6 +121,8 @@ class BendingShearAxialStrengthClass3IProfileCheck:
                 self.steel_cross_section, v=self.v_z, axis="Vz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho_z = formula_6_29rho.Form6Dot29Rho(v_ed=v_z, v_pl_rd=shear_resistance_calculation_z["resistance"])
+
+            # Save the governing shear direction (the one with the highest rho) and its corresponding shear resistance calculation for reporting
             rho = rho_y if rho_y > rho_z else rho_z
             shear_resistance_calculation = shear_resistance_calculation_y if rho_y > rho_z else shear_resistance_calculation_z
 
@@ -129,15 +131,17 @@ class BendingShearAxialStrengthClass3IProfileCheck:
                 self.steel_cross_section, mx=self.m_x, v=self.v_y, axis="Vy", gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho_y = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_y, v_pl_t_rd=shear_resistance_calculation_y["resistance"])
+
             shear_resistance_calculation_z = TorsionWithShearStrengthIProfileCheck(
                 self.steel_cross_section, mx=self.m_x, v=self.v_z, axis="Vz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho_z = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_z, v_pl_t_rd=shear_resistance_calculation_z["resistance"])
+
+            # Save the governing shear direction (the one with the highest rho) and its corresponding shear resistance calculation for reporting
             rho = rho_y if rho_y > rho_z else rho_z
             shear_resistance_calculation = shear_resistance_calculation_y if rho_y > rho_z else shear_resistance_calculation_z
 
         f_y_reduced = formula_6_45.Form6Dot45ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
-
         check_stress = formula_6_42.Form6Dot42LongitudinalStressClass3CrossSections(sigma_x_ed=max_sig_zz, f_y=f_y_reduced, gamma_m0=self.gamma_m0)
 
         return {
