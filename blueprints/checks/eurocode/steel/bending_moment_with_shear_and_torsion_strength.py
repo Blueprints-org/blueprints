@@ -69,14 +69,14 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(0)
-    m = 355 * 1.868  # Applied bending moment in kNm
-    mx = 10  # Applied torsional moment in kNm
-    v = 100  # Applied shear force in kN
+    heb_300_profile = HEB.HEB300
+    m = 600  # Applied bending moment in kNm
+    mx = 0  # Applied torsional moment in kNm
+    v = 600  # Applied shear force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(heb_300_s355, m, mx, v, axis_m='My', axis_v='Vz', gamma_m0=1.0)
-    calc.report().to_word("bending_moment_strength.docx", language="nl")
+    calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(heb_300_s355, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
+    calc.report().to_word("bending_moment_strength.docx")
     """
 
     steel_cross_section: SteelCrossSection
@@ -185,7 +185,7 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
                 rf"Additionally a shear force of {abs(self.v):.{n}f} kN (axis {self.axis_v})"
                 + (rf" and a torsional moment of {abs(self.mx):.{n}f} kNm. " if self.mx > 0 else ". ")
             )
-        report.add_paragraph("The resistance is calculated as follows, using cross-section class 3:")
+        report.add_paragraph("The resistance is calculated as follows, using cross-section class 3:").add_newline(2)
 
         if self.v > 0 or self.mx > 0:
             report.add_paragraph("First, the shear area is determined:")
@@ -215,21 +215,3 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
             report.add_paragraph("The check for bending moment does NOT satisfy the requirements.")
 
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300
-    m = 100  # Applied bending moment in kNm
-    mx = 10  # Applied torsional moment in kNm
-    v = 100  # Applied shear force in kN
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(heb_300_s355, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
-    calc.report().to_word("bending_moment_strength.docx")
-    import os
-
-    os.startfile("bending_moment_strength.docx")
