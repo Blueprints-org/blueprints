@@ -78,6 +78,8 @@ class BendingMomentStrengthClass1And2Check:
         if self.section_properties is None:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
+        if self.axis not in ("My", "Mz"):
+            raise ValueError("Axis must be 'My' or 'Mz'.")
 
     def calculation_formula(self) -> dict[str, Formula]:
         """Calculate bending moment resistance check (Class 1 and 2 only, units: kNm).
@@ -87,8 +89,6 @@ class BendingMomentStrengthClass1And2Check:
         dict[str, Formula]
             Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
         """
-        if self.axis not in ("My", "Mz"):
-            raise ValueError("Axis must be 'My' or 'Mz'.")
 
         f_y = self.steel_cross_section.yield_strength
         w = float(self.section_properties.sxx) if self.axis == "My" else float(self.section_properties.syy)  # type: ignore[attr-defined]
@@ -206,6 +206,8 @@ class BendingMomentStrengthClass3Check:
         if self.section_properties is None:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
+        if self.axis not in ("My", "Mz"):
+            raise ValueError("Axis must be 'My' or 'Mz'.")
 
     def calculation_formula(self) -> dict[str, Formula]:
         """Calculate bending moment resistance check (Class 3 only, units: kNm).
@@ -215,8 +217,6 @@ class BendingMomentStrengthClass3Check:
         dict[str, Formula]
             Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
         """
-        if self.axis not in ("My", "Mz"):
-            raise ValueError("Axis must be 'My' or 'Mz'.")
 
         f_y = self.steel_cross_section.yield_strength
         if self.axis == "My":
