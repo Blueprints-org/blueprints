@@ -39,7 +39,7 @@ class StVenantTorsionStrengthCheck:
     steel_cross_section : SteelCrossSection
         The steel cross-section, of type I-profile, to check.
     mx : KNM
-        The applied shear force (positive value, in kN).
+        The applied shear force (in kN).
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
     section_properties : SectionProperties | None, optional
