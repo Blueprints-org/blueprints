@@ -42,7 +42,7 @@ class PlasticShearStrengthIProfileCheck:
     steel_cross_section : SteelCrossSection
         The steel cross-section, of type I-profile, to check.
     v : KN
-        The applied shear force (positive value, in kN).
+        The applied shear force (in kN).
     axis : Literal["Vz", "Vy"]
         Axis along which the shear force is applied. "Vz" (default) for z (vertical), "Vy" for y (horizontal).
     gamma_m0 : DIMENSIONLESS, optional
