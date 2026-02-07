@@ -127,12 +127,12 @@ class BendingMomentStrengthClass1And2Check:
         Report
             Report of the bending moment check.
         """
-        calculation = self.calculation_formula()
-
         report = Report(f"Check: bending moment steel beam (axis {self.axis})")
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
             return report
+
+        calculation = self.calculation_formula()
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
