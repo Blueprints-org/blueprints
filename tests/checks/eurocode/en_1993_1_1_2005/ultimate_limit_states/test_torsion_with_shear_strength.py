@@ -49,6 +49,7 @@ class TestTorsionWithShearStrengthIProfileCheck:
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
+        assert calc.report()
 
         v = -v
         calc = TorsionWithShearStrengthIProfileCheck(cross_section, mx, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
@@ -91,7 +92,6 @@ class TestTorsionWithShearStrengthIProfileCheck:
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
-        assert calc.report()
 
         v = 355.277 * 1.01
         object.__setattr__(cross_section, "fabrication_method", "welded")
