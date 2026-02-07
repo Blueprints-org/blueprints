@@ -1,4 +1,4 @@
-"""Tests for bending moment strength according to Eurocode 3."""
+"""Tests for bending moment strength together with shear and torsion according to Eurocode 3."""
 
 import pytest
 from sectionproperties.post.post import SectionProperties
@@ -9,8 +9,8 @@ from blueprints.checks.eurocode.steel.bending_moment_with_shear_and_torsion_stre
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-class TestBendingMomentStrengthClass1And2Check:
-    """Tests for BendingMomentStrengthClass1And2Check."""
+class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
+    """Tests for BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck."""
 
     def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no bending moment."""
