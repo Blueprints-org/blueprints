@@ -164,7 +164,7 @@ class IProfileStrengthClass3:
         """Perform all strength checks and return the overall result."""
         checks = list(self.subchecks().values())
         unity_checks = [c.result().unity_check for c in checks if c is not None]
-        filtered_unity_checks: list[float] = [0.0] + [float(uc) for uc in unity_checks if isinstance(uc, int | float)]
+        filtered_unity_checks: list[float] = [0.0] + [float(uc) for uc in unity_checks if isinstance(uc, (int, float))]
         return CheckResult.from_unity_check(max(filtered_unity_checks))
 
     def report(self, n: int = 2) -> Report:
