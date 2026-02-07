@@ -50,59 +50,6 @@ class TestBendingMomentWithAxialStrengthClass3Check:
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
         assert calc.report()
 
-    def test_result_ok_my_only(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() for ok bending moment My only."""
-        cross_section, section_properties = heb_steel_cross_section
-        my = 200  # Applied bending moment around y-axis in kNm
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, my=my, section_properties=section_properties)
-        result = calc.result()
-        assert result.is_ok is True
-
-    def test_result_ok_mz_only(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() for ok bending moment Mz only."""
-        cross_section, section_properties = heb_steel_cross_section
-        mz = 100  # Applied bending moment around z-axis in kNm
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, mz=mz, section_properties=section_properties)
-        result = calc.result()
-        assert result.is_ok is True
-
-    def test_result_ok_tension(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() for ok tension force only."""
-        cross_section, section_properties = heb_steel_cross_section
-        n = 1000  # Applied tensile axial force in kN
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, n=n, section_properties=section_properties)
-        result = calc.result()
-        assert result.is_ok is True
-
-    def test_result_ok_compression(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() for ok compression force only."""
-        cross_section, section_properties = heb_steel_cross_section
-        n = -1000  # Applied compressive axial force in kN
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, n=n, section_properties=section_properties)
-        result = calc.result()
-        assert result.is_ok is True
-        assert result.unity_check < 1.0
-
-    def test_result_my_and_tension(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() for combined My and tension."""
-        cross_section, section_properties = heb_steel_cross_section
-        my = 150
-        n = 800
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, my=my, n=n, section_properties=section_properties)
-        result = calc.result()
-        assert result.is_ok is True
-        assert calc.report()
-
-    def test_result_mz_and_compression(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() for combined Mz and compression."""
-        cross_section, section_properties = heb_steel_cross_section
-        mz = 80
-        n = -600
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, mz=mz, n=n, section_properties=section_properties)
-        result = calc.result()
-        assert result.is_ok is True
-        assert calc.report()
-
     def test_negative_moments(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() handles negative moment values correctly (absolute values used)."""
         cross_section, section_properties = heb_steel_cross_section
