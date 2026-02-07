@@ -93,7 +93,7 @@ class StVenantTorsionStrengthCheck:
         unit_stress = self.steel_cross_section.profile.calculate_stress(rif1d)
         unit_sig_zx_mzz = unit_stress.get_stress()[0]["sig_zx_mzz"]
         unit_sig_zy_mzz = unit_stress.get_stress()[0]["sig_zy_mzz"]
-        unit_max_mzz_zxy = max((unit_sig_zx_mzz**2 + unit_sig_zy_mzz**2) ** 0.5)
+        unit_max_mzz_zxy = np.max(np.sqrt(np.array(unit_sig_zx_mzz) ** 2 + np.array(unit_sig_zy_mzz) ** 2))
 
         t_rd = self.steel_cross_section.yield_strength / self.gamma_m0 / np.sqrt(3) / unit_max_mzz_zxy
         t_ed = abs(self.mx)

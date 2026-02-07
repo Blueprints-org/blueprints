@@ -9,6 +9,7 @@ from typing import Any, ClassVar, Self
 import matplotlib.pyplot as plt
 from sectionproperties.analysis import Section
 from sectionproperties.post.post import SectionProperties
+from sectionproperties.post.stress_post import StressPost
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 from shapely.affinity import rotate, translate
@@ -186,7 +187,7 @@ class Profile(ABC):
         """Default plotter function for the profile."""
         raise AttributeError("No plotter is defined.")
 
-    def calculate_stress(self, result_internal_force_1d: ResultInternalForce1D) -> Callable[..., SectionProperties]:
+    def calculate_stress(self, result_internal_force_1d: ResultInternalForce1D) -> StressPost:
         """Calculate the stress distribution for the profile given internal forces.
 
         Parameters
@@ -196,7 +197,7 @@ class Profile(ABC):
 
         Returns
         -------
-        Callable[..., SectionProperties]
+        Callable[..., StressPost]
             A function that calculates the stress distribution when called.
         """
         section = self._section()

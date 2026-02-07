@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from typing import ClassVar, Literal
 
+import numpy as np
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
@@ -119,7 +120,7 @@ class TorsionWithShearStrengthIProfileCheck:
         unit_stress = self.steel_cross_section.profile.calculate_stress(rif1d)
         unit_sig_zx_mzz = unit_stress.get_stress()[0]["sig_zx_mzz"]
         unit_sig_zy_mzz = unit_stress.get_stress()[0]["sig_zy_mzz"]
-        unit_max_mzz_zxy = max((unit_sig_zx_mzz**2 + unit_sig_zy_mzz**2) ** 0.5)
+        unit_max_mzz_zxy = np.max(np.sqrt(np.array(unit_sig_zx_mzz) ** 2 + np.array(unit_sig_zy_mzz) ** 2))
 
         tau_t_ed = abs(self.mx) * unit_max_mzz_zxy
         v_ed = abs(self.v) * KN_TO_N
