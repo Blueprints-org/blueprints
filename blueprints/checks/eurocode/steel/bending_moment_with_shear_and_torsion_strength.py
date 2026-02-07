@@ -46,11 +46,11 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
     steel_cross_section : SteelCrossSection
         The steel cross-section to check.
     m : KNM, optional
-        The applied bending moment (positive value), in kNm (default is 0 kNm).
+        The applied bending moment, in kNm (default is 0 kNm).
     mx : KNM, optional
-        The applied torsional moment (positive value), in kNm (default is 0 kNm).
+        The applied torsional moment, in kNm (default is 0 kNm).
     v : KN, optional
-        The applied shear force (positive value), in kN (default is 0 kN).
+        The applied shear force, in kN (default is 0 kN).
     axis_m : str, optional
         Axis of bending: 'My' (bending around y) or 'Mz' (bending around z). Default is 'My'.
         Note: 'My' should be used together with 'Vz' for shear force. 'Mz' with 'Vy' for shear force.
