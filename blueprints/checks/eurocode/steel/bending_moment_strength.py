@@ -181,7 +181,7 @@ class BendingMomentStrengthClass3Check:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass123Check
+    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass3Check
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
