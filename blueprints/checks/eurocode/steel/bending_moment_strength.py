@@ -87,9 +87,8 @@ class BendingMomentStrengthClass1And2Check:
         Returns
         -------
         dict[str, Formula]
-            Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
+            Calculation results keyed by formula number.
         """
-
         f_y = self.steel_cross_section.yield_strength
         w = float(self.section_properties.sxx) if self.axis == "My" else float(self.section_properties.syy)  # type: ignore[attr-defined]
 
@@ -128,6 +127,8 @@ class BendingMomentStrengthClass1And2Check:
         Report
             Report of the bending moment check.
         """
+        calculation = self.calculation_formula()
+
         report = Report(f"Check: bending moment steel beam (axis {self.axis})")
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
@@ -137,9 +138,9 @@ class BendingMomentStrengthClass1And2Check:
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
             rf"The resistance is calculated as follows, using cross-section class 1 or 2:"
         )
-        report.add_formula(self.calculation_formula()["resistance"], n=n)
+        report.add_formula(calculation["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n)
+        report.add_formula(calculation["check"], n=n)
         if self.result().is_ok:
             report.add_paragraph("The check for bending moment satisfies the requirements.")
         else:
@@ -215,9 +216,8 @@ class BendingMomentStrengthClass3Check:
         Returns
         -------
         dict[str, Formula]
-            Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
+            Calculation results keyed by formula number.
         """
-
         f_y = self.steel_cross_section.yield_strength
         if self.axis == "My":
             w = min(float(self.section_properties.zxx_plus), float(self.section_properties.zxx_minus))  # type: ignore[attr-defined]
@@ -259,6 +259,8 @@ class BendingMomentStrengthClass3Check:
         Report
             Report of the bending moment check.
         """
+        calculation = self.calculation_formula()
+
         report = Report(f"Check: bending moment steel beam (axis {self.axis})")
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
@@ -268,9 +270,9 @@ class BendingMomentStrengthClass3Check:
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
             rf"The resistance is calculated as follows, using cross-section class 3:"
         )
-        report.add_formula(self.calculation_formula()["resistance"], n=n)
+        report.add_formula(calculation["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n)
+        report.add_formula(calculation["check"], n=n)
         if self.result().is_ok:
             report.add_paragraph("The check for bending moment satisfies the requirements.")
         else:
