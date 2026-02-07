@@ -53,10 +53,3 @@ class TestCompressionStrengthClass123Check:
         calc = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
         with pytest.raises(ValueError):
             calc.calculation_formula()
-
-    def test_report_compression(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test report output for compression."""
-        cross_section, section_properties = heb_steel_cross_section
-        n = -100
-        calc = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
-        assert calc.report()

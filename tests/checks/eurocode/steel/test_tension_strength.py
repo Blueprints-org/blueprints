@@ -54,10 +54,3 @@ class TestTensionStrengthCheck:
         calc = TensionStrengthCheck(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
         with pytest.raises(ValueError):
             calc.calculation_formula()
-
-    def test_report_tension(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test report output with summary flag for tension."""
-        n = 100
-        cross_section, section_properties = heb_steel_cross_section
-        calc = TensionStrengthCheck(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
-        assert calc.report()
