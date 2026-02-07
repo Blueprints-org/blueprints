@@ -23,7 +23,7 @@ class CompressionStrengthClass123Check:
     """Class to perform compression force resistance check for steel cross-sections,
         for cross-section class 1, 2, and 3 (Eurocode 3).
 
-        Coordinate System:
+    Coordinate System:
 
         z (vertical, usually strong axis)
             ↑
