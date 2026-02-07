@@ -107,3 +107,11 @@ class TestBendingMomentStrengthClass1And2Check:
             BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
                 cross_section, 100, 0, 0, axis_m="Mz", axis_v="Vz", section_properties=section_properties
             ).calculation_formula()
+
+    def test_check_wrong_profile(self, chs_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
+        """Test check() raises TypeError for non-I-profile."""
+        cross_section, section_properties = chs_steel_cross_section
+        with pytest.raises(TypeError, match="The provided profile is not an I-profile"):
+            BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
+                cross_section, m=100, mx=0, v=1, axis_m="My", axis_v="Vz", section_properties=section_properties
+            ).calculation_formula()

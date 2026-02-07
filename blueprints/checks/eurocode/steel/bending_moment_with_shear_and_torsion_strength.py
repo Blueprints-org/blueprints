@@ -187,22 +187,19 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
             )
         report.add_paragraph("The resistance is calculated as follows, using cross-section class 3:").add_newline(2)
 
-        if abs(self.v) > 0 or abs(self.mx) > 0:
-            report.add_paragraph("First, the shear area is determined:")
-            report.add_formula(formulas["a_v"], n=n, split_after=[(2, "="), (7, "+"), (3, "=")])
+        report.add_paragraph("First, the shear area is determined:")
+        report.add_formula(formulas["a_v"], n=n, split_after=[(2, "="), (7, "+"), (3, "=")])
 
-            report.add_paragraph("The shear resistance is calculated as:")
-            report.add_formula(formulas["v_pl(_t)_rd"], n=n)
+        report.add_paragraph("The shear resistance is calculated as:")
+        report.add_formula(formulas["v_pl(_t)_rd"], n=n)
 
-            report.add_paragraph("The reduction factor for bending moment resistance is defined as:")
-            report.add_formula(formulas["rho"], n=n, options="short")
+        report.add_paragraph("The reduction factor for bending moment resistance is defined as:")
+        report.add_formula(formulas["rho"], n=n, options="short")
 
-            report.add_paragraph("This gives a reduced yield strength of:")
-            report.add_formula(formulas["f_y_reduced"], n=n)
+        report.add_paragraph("This gives a reduced yield strength of:")
+        report.add_formula(formulas["f_y_reduced"], n=n)
 
-            report.add_paragraph("The bending moment resistance with reduced yield strength is:")
-        else:
-            report.add_paragraph("The bending moment resistance is:")
+        report.add_paragraph("The bending moment resistance with reduced yield strength is:")
 
         report.add_formula(formulas["resistance"], n=n)
 
