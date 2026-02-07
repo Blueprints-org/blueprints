@@ -27,10 +27,10 @@ class TestBendingMomentWithAxialStrengthClass3Check:
     def test_result_ok_combined_loading(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok combined loading (My, Mz, N)."""
         cross_section, section_properties = heb_steel_cross_section
-        my = 100 * 0.99  # Applied bending moment around y-axis in kNm
-        mz = 130.37 * 0.99  # Applied bending moment around z-axis in kNm
+        m_y = 100 * 0.99  # Applied bending moment around y-axis in kNm
+        m_z = 130.37 * 0.99  # Applied bending moment around z-axis in kNm
         n = 1000 * 0.99  # Applied axial force (tension) in kN
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, my=my, mz=mz, n=n, section_properties=section_properties)
+        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, m_y=m_y, m_z=m_z, n=n, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -40,10 +40,10 @@ class TestBendingMomentWithAxialStrengthClass3Check:
     def test_result_not_ok_combined_loading(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for not ok combined loading (excessive moments and axial force)."""
         cross_section, section_properties = heb_steel_cross_section
-        my = 100 * 1.01  # Applied bending moment around y-axis in kNm
-        mz = 130.37 * 1.01  # Applied bending moment around z-axis in kNm
+        m_y = 100 * 1.01  # Applied bending moment around y-axis in kNm
+        m_z = 130.37 * 1.01  # Applied bending moment around z-axis in kNm
         n = 1000 * 1.01  # Applied axial force (tension) in kN
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, my=my, mz=mz, n=n, section_properties=section_properties)
+        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, m_y=m_y, m_z=m_z, n=n, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -53,10 +53,10 @@ class TestBendingMomentWithAxialStrengthClass3Check:
     def test_negative_moments(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() handles negative moment values correctly (absolute values used)."""
         cross_section, section_properties = heb_steel_cross_section
-        my = -100
-        mz = -50
+        m_y = -100
+        m_z = -50
         n = -500
-        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, my=my, mz=mz, n=n, section_properties=section_properties)
+        calc = BendingMomentWithAxialStrengthClass3Check(cross_section, m_y=m_y, m_z=m_z, n=n, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert calc.report()

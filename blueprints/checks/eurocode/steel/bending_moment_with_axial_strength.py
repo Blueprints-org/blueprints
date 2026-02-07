@@ -38,9 +38,9 @@ class BendingMomentWithAxialStrengthClass3Check:
     ----------
     steel_cross_section : SteelCrossSection
         The steel cross-section to check.
-    my : KNM, optional
+    m_y : KNM, optional
         The applied bending moment around the y-axis (positive value, in kNm), default is 0 kNm.
-    mz : KNM, optional
+    m_z : KNM, optional
         The applied bending moment around the z-axis (positive value, in kNm), default is 0 kNm.
     n : KN, optional
         The applied axial force (positive value for tension, negative for compression), in kN (default is 0 kN).
@@ -57,19 +57,19 @@ class BendingMomentWithAxialStrengthClass3Check:
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     heb_300_profile = HEB.HEB300
-    my = 100  # Applied bending moment around y-axis in kNm
-    mz = 130.37  # Applied bending moment around z-axis in kNm
+    m_y = 100  # Applied bending moment around y-axis in kNm
+    m_z = 130.37  # Applied bending moment around z-axis in kNm
     n = 1000  # Applied axial force in kN
 
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentWithAxialStrengthClass3Check(heb_300_s355, my=my, mz=mz, n=n, gamma_m0=1.0)
+    calc = BendingMomentWithAxialStrengthClass3Check(heb_300_s355, m_y=m_y, m_z=m_z, n=n, gamma_m0=1.0)
     calc.report().to_word("bending_moment_strength.docx")
     """
 
     steel_cross_section: SteelCrossSection
-    my: KNM = 0
-    mz: KNM = 0
+    m_y: KNM = 0
+    m_z: KNM = 0
     n: KN = 0
     gamma_m0: DIMENSIONLESS = 1.0
     section_properties: SectionProperties | None = None
@@ -91,7 +91,7 @@ class BendingMomentWithAxialStrengthClass3Check:
             Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
         """
         rif1d = ResultInternalForce1D(
-            result_for=ResultFor.LOAD_CASE, load_case="N/A", result_on=ResultOn.ON_BEAM, member="N/A", n=self.n, my=self.my, mz=self.mz
+            result_for=ResultFor.LOAD_CASE, load_case="N/A", result_on=ResultOn.ON_BEAM, member="N/A", n=self.n, my=self.m_y, mz=self.m_z
         )
 
         stress = self.steel_cross_section.profile.calculate_stress(rif1d)
@@ -136,7 +136,7 @@ class BendingMomentWithAxialStrengthClass3Check:
             Report of the bending moment with axial force check.
         """
         report = Report("Check: bending moment with axial force for steel beam")
-        if self.my == 0 and self.mz == 0 and self.n == 0:
+        if self.m_y == 0 and self.m_z == 0 and self.n == 0:
             report.add_paragraph("No bending moment or axial force was applied; therefore, no check is necessary.")
             return report
 
@@ -148,10 +148,10 @@ class BendingMomentWithAxialStrengthClass3Check:
         )
 
         loads = []
-        if abs(self.my) > 0:
-            loads.append(rf"bending moment My = {abs(self.my):.{n}f} kNm")
-        if abs(self.mz) > 0:
-            loads.append(rf"bending moment Mz = {abs(self.mz):.{n}f} kNm")
+        if abs(self.m_y) > 0:
+            loads.append(rf"bending moment My = {abs(self.m_y):.{n}f} kNm")
+        if abs(self.m_z) > 0:
+            loads.append(rf"bending moment Mz = {abs(self.m_z):.{n}f} kNm")
         if abs(self.n) > 0:
             force_type = "tension" if self.n > 0 else "compression"
             loads.append(rf"axial force N = {abs(self.n):.{n}f} kN ({force_type})")
