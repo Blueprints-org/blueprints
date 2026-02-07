@@ -176,22 +176,3 @@ class BendingMomentWithAxialStrengthClass3Check:
             report.add_paragraph("The check for bending moment with axial force does NOT satisfy the requirements.")
 
         return report
-
-
-if __name__ == "__main__":
-    # Example usage
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300
-    my = 100  # Applied bending moment around y-axis in kNm
-    mz = 130.37  # Applied bending moment around z-axis in kNm
-    n = 1000  # Applied axial force in kN
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentWithAxialStrengthClass3Check(heb_300_s355, my=my, mz=mz, n=n, gamma_m0=1.0)
-    calc.report().to_pdf("bending_moment_with_axial_strength_report.pdf")
-    import os
-
-    os.startfile("bending_moment_with_axial_strength_report.pdf")
