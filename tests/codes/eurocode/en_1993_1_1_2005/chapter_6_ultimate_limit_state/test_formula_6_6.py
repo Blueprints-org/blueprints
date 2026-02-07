@@ -3,12 +3,12 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_6 import (
-    Form6Dot6DesignPlasticRestistanceGrossCrossSection,
+    Form6Dot6DesignPlasticResistanceGrossCrossSection,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm6Dot6DesignPlasticRestistanceGrossCrossSection:
+class TestForm6Dot6DesignPlasticResistanceGrossCrossSection:
     """Validation for formula 6.6 from NEN-EN 1993-1-1+C2+A1:2005."""
 
     def test_evaluation(self) -> None:
@@ -19,7 +19,7 @@ class TestForm6Dot6DesignPlasticRestistanceGrossCrossSection:
         gamma_m0 = 1.0
 
         # Object to test
-        formula = Form6Dot6DesignPlasticRestistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0)
+        formula = Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0)
 
         # Expected result, manually calculated
         manually_calculated_result = 1775000.0  # N
@@ -36,7 +36,7 @@ class TestForm6Dot6DesignPlasticRestistanceGrossCrossSection:
     def test_raise_error_when_negative_values_are_given(self, a: float, f_y: float, gamma_m0: float) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot6DesignPlasticRestistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0)
+            Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0)
 
     @pytest.mark.parametrize(
         ("a", "f_y", "gamma_m0"),
@@ -48,7 +48,7 @@ class TestForm6Dot6DesignPlasticRestistanceGrossCrossSection:
     def test_raise_error_when_less_or_equal_to_zero_values_are_given(self, a: float, f_y: float, gamma_m0: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form6Dot6DesignPlasticRestistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0)
+            Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -68,7 +68,7 @@ class TestForm6Dot6DesignPlasticRestistanceGrossCrossSection:
         gamma_m0 = 1.0
 
         # Object to test
-        latex = Form6Dot6DesignPlasticRestistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0).latex()
+        latex = Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=gamma_m0).latex()
 
         actual = {
             "complete": latex.complete,

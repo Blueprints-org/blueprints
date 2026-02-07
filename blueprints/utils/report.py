@@ -29,6 +29,8 @@ from pathlib import Path
 from typing import Any, Literal, Self
 
 from blueprints.codes.formula import Formula
+from blueprints.utils._report_to_word import _ReportToWordConverter
+from blueprints.utils.language.translate import LatexTranslator
 
 
 @dataclass
@@ -117,6 +119,7 @@ class Report:
         equation: str,
         tag: str | None = None,
         inline: bool = False,
+        split_after: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add an equation to the report. For adding Blueprints formulas, use add_formula instead.
 
@@ -128,6 +131,10 @@ class Report:
             Tag to label the equation (e.g., "6.83", "EN 1992-1-1:2004 6.6n", etc.).
         inline : bool, optional
             Whether to add the equation inline (meaning within text) or as a separate equation block. Default is False.
+        split_after: list[tuple[int, str]], optional
+            List of characters to split the equation line on for better readability.
+            e.g. a = b + c = 2 + 3 = 5 with split_after=[(2, "="), (2, "+")] will split after second "=" and second "+"
+            to give: a = b + c = \\ 2 + \\ 3 = 5. Default is None.
 
         Returns
         -------
@@ -143,12 +150,34 @@ class Report:
         >>> report.add_equation(r"\\frac{a}{b}", inline=True)
 
         """
+
+        def _split_equation(eq: str, split_after: list[tuple[int, str]] | None) -> str:
+            if not split_after:
+                return eq
+            eq_mod = eq
+            # Sort by decreasing index so insertion doesn't affect later positions
+            for n, char in sorted(split_after, reverse=True):
+                # Find nth occurrence of char
+                idx = -1
+                count = 0
+                for i, c in enumerate(eq_mod):
+                    if c == char:
+                        count += 1
+                        if count == n:
+                            idx = i
+                            break
+                if idx != -1:
+                    eq_mod = eq_mod[: idx + 1] + r" \\" + eq_mod[idx + 1 :]
+            return eq_mod
+
+        eq_to_use = _split_equation(equation, split_after)
+
         if inline:
-            self.content += r"\txt{ " + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r" }"
+            self.content += r"\txt{ " + rf"${eq_to_use}$" + f"{f' ({tag})' if tag else ''}" + r" }"
         elif tag:
-            self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
+            self.content += rf"\begin{{multline}} {eq_to_use} \tag{{{tag}}} \end{{multline}}"
         else:
-            self.content += rf"\begin{{equation}} {equation} \end{{equation}}"
+            self.content += rf"\begin{{multline}} {eq_to_use} \notag \end{{multline}}"
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -159,9 +188,11 @@ class Report:
         self,
         formula: Formula,
         options: Literal["short", "complete", "complete_with_units"] = "complete",
+        n: int = 2,
         include_source: bool = True,
         include_formula_number: bool = True,
         inline: bool = False,
+        split_after: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add a Blueprints formula to the report, for generic equations, use add_equation.
 
@@ -174,6 +205,8 @@ class Report:
             short - Minimal representation (symbol = result [unit])
             complete - Complete representation (symbol = equation = numeric_equation = result [unit])
             complete_with_units - Complete representation with units (symbol = equation = numeric_equation_with_units [unit] = result [unit])
+        n : int, optional
+            Number of decimal places for numerical values in the formula (default is 2).
         include_source: bool, optional
             If True, includes the source document in the equation tag. Default is True.
             For example: "EN 1993-1-1:2005" or "EN 1992-1-1:2004".
@@ -182,6 +215,10 @@ class Report:
             For example: "6.5" or "6.6n".
         inline : bool, optional
             Whether to add the formula inline (meaning within text) or as a separate equation block (default).
+        split_after: list[tuple[int, str]], optional
+            List of characters to split the equation line on for better readability.
+            e.g. a = b + c = 2 + 3 = 5 with split_after=[(2, "="), (2, "+")] will split after second "=" and second "+"
+            to give: a = b + c = \\ 2 + \\ 3 = 5. Default is None.
 
         Returns
         -------
@@ -199,7 +236,7 @@ class Report:
         >>> print(report.to_latex())
         """
         # Get the desired LaTeX representation from the formula
-        latex = formula.latex()
+        latex = formula.latex(n=n)
 
         # define the equation string based on options
         equation_str: str = ""
@@ -222,7 +259,7 @@ class Report:
                 tag_parts.append(formula.label)
         tag_str = " ".join(tag_parts).strip()
 
-        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None)
+        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None, split_after=split_after)
 
     def add_heading(self, text: str, level: int = 1) -> Self:
         """Add a heading to the report.
@@ -315,7 +352,7 @@ class Report:
         # Build table
         centering_cmd = r"\centering " if centering else ""
         table = (
-            rf"\begin{{table}}[h] {centering_cmd}"
+            rf"\begin{{table}}[H] {centering_cmd}"
             rf"\begin{{tabular}}{{{col_spec}}} "
             rf"\toprule {header_row} \midrule {data_rows} "
             rf"\bottomrule \end{{tabular}} \end{{table}}"
@@ -360,7 +397,7 @@ class Report:
         latex_image_path = image_path.replace("\\", "/")
 
         # Build the figure environment
-        figure_parts = [r"\begin{figure}[h] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
+        figure_parts = [r"\begin{figure}[H] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
 
         # Add optional caption
         if caption:
@@ -501,7 +538,7 @@ class Report:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
@@ -519,7 +556,7 @@ class Report:
         """Return a human-readable representation of the report structure and content."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
@@ -589,8 +626,10 @@ class Report:
             # Required packages
             r"\usepackage{amsmath}" + "\n"  # Advanced math environments and symbols
             r"\usepackage{booktabs}" + "\n"  # Professional-looking tables with \toprule, \midrule, \bottomrule
+            r"\usepackage{float}" + "\n"  # Improved float handling
             r"\usepackage{geometry}" + "\n"  # Page layout and margins
             r"\usepackage{graphicx}" + "\n"  # Include images and graphics
+            r"\usepackage{icomma}" + "\n"  # Proper comma handling in numbers
             r"\usepackage{setspace}" + "\n"  # Line spacing control
             r"\usepackage{xcolor}" + "\n"  # Color definitions and usage
             r"\usepackage{titlesec}" + "\n"  # Customize section titles
@@ -652,8 +691,6 @@ class Report:
         latex = preamble + self.content + r"\end{document}"
         if language != "en":
             # Translate content to the specified language
-            from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
-
             latex = LatexTranslator(original_text=latex, destination_language=language).text
 
         # If path is provided, save to file and return None
@@ -723,10 +760,6 @@ class Report:
         >>> docx_bytes = report.to_word()
         >>> # Can now send as email attachment or stream over HTTP
         """
-        from blueprints.utils._report_to_word import (  # noqa: PLC0415
-            _ReportToWordConverter,
-        )  # imported here as core does not have word module installed by default
-
         latex_content = self.to_latex(language=language)
         converter = _ReportToWordConverter(latex_content)
         if converter.document:

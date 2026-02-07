@@ -32,6 +32,11 @@ class TestUNPProfile:
         expected_area = 3.22e3  # mm²
         assert pytest.approx(unp_profile.area, rel=1e-2) == expected_area
 
+    def test_max_profile_thickness(self, unp_profile: UNPProfile) -> None:
+        """Test the maximum profile thickness."""
+        expected_max_thickness = 11.5  # mm
+        assert pytest.approx(unp_profile.max_profile_thickness, rel=1e-6) == expected_max_thickness
+
     @pytest.mark.slow
     def test_plot_unp_profile(self, unp_profile: UNPProfile) -> None:
         """Test the plot method for a UNP profile (ensure it runs without errors)."""

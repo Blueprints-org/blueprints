@@ -73,3 +73,8 @@ class TestHexagonalProfile:
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == hexagonal_profile.centroid.x + 10.0
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == hexagonal_profile.centroid.y + 20.0
         assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == hexagonal_profile.profile_width
+
+    def test_max_thickness(self, hexagonal_profile: HexagonalProfile) -> None:
+        """Test the max_profile_thickness property of the HexagonalProfile class."""
+        expected_max_thickness = hexagonal_profile.side_length * np.sqrt(3)
+        assert hexagonal_profile.max_profile_thickness == pytest.approx(expected=expected_max_thickness, rel=1e-6)
