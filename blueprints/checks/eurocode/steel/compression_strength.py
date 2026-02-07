@@ -23,7 +23,7 @@ class CompressionStrengthClass123Check:
     """Class to perform compression force resistance check for steel cross-sections,
         for cross-section class 1, 2, and 3 (Eurocode 3).
 
-        Coordinate System:
+    Coordinate System:
 
         z (vertical, usually strong axis)
             ↑
@@ -127,14 +127,18 @@ class CompressionStrengthClass123Check:
         if self.n == 0:
             report.add_paragraph("No compressive force was applied; therefore, no compression force check is necessary.")
             return report
+
+        # Cache calculation formulas to avoid redundant recalculations
+        formulas = self.calculation_formula()
+
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
             rf"is loaded with a compressive force of {abs(self.n):.{n}f} kN. "
             rf"The resistance is calculated as follows:"
         )
-        report.add_formula(self.calculation_formula()["resistance"], n=n)
+        report.add_formula(formulas["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n)
+        report.add_formula(formulas["check"], n=n)
         if self.result().is_ok:
             report.add_paragraph("The check for compression force satisfies the requirements.")
         else:

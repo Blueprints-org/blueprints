@@ -59,3 +59,7 @@ class TestSteelCrossSection:
         """Test that the SteelCrossSection weight per meter is calculated correctly."""
         expected_weight: float = steel_cross_section.profile.area * steel_cross_section.material.density * 1e-6
         assert steel_cross_section.weight_per_meter == pytest.approx(expected_weight, 1e-3)
+
+    def test_fabrication_method(self, steel_cross_section: SteelCrossSection) -> None:
+        """Test that the SteelCrossSection fabrication method is set correctly."""
+        assert steel_cross_section.fabrication_method == "rolled"
