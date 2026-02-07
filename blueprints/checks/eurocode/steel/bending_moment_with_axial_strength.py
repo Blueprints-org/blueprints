@@ -1,8 +1,9 @@
 """Module for checking bending moment resistance combined with axial force, of steel cross-sections (Eurocode 3)."""
 
 from dataclasses import dataclass
-from typing import ClassVar
+from typing import ClassVar, cast
 
+import numpy as np
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
@@ -81,12 +82,12 @@ class BendingMomentWithAxialStrengthClass3Check:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
 
-    def calculation_formula(self) -> dict[str, Formula]:
+    def calculation_formula(self) -> dict[str, Formula | float]:
         """Calculate bending moment resistance check (Class 3 only, units: kNm).
 
         Returns
         -------
-        dict[str, Formula]
+        dict[str, Formula | float]
             Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
         """
         rif1d = ResultInternalForce1D(
@@ -94,7 +95,9 @@ class BendingMomentWithAxialStrengthClass3Check:
         )
 
         stress = self.steel_cross_section.profile.calculate_stress(rif1d)
-        max_sig_zz = float(max(abs(stress.get_stress()[0]["sig_zz"])))
+        stress_values = stress.get_stress()[0]["sig_zz"]
+
+        max_sig_zz = float(np.max(np.abs(stress_values)))
 
         check_stress = formula_6_42.Form6Dot42LongitudinalStressClass3CrossSections(
             sigma_x_ed=max_sig_zz, f_y=self.steel_cross_section.yield_strength, gamma_m0=self.gamma_m0
@@ -168,7 +171,7 @@ class BendingMomentWithAxialStrengthClass3Check:
         report.add_equation(rf"f_y / \gamma_{{M0}} = {formulas['resistance']:.{n}f} \ MPa")
 
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(formulas["check"], n=n)
+        report.add_formula(cast(Formula, formulas["check"]), n=n)
 
         if self.result().is_ok:
             report.add_paragraph("The check for bending moment with axial force satisfies the requirements.")
