@@ -65,7 +65,7 @@ class StVenantTorsionStrengthCheck:
     mx: KNM = 0
     gamma_m0: DIMENSIONLESS = 1.0
     section_properties: SectionProperties | None = None
-    name: str = "Torsion strength check for steel I-profiles"
+    name: str = "Torsion strength check"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
