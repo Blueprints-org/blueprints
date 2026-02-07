@@ -13,6 +13,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_29rho, formula_6_42, formula_6_45
 from blueprints.codes.formula import Formula
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
+from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN, KNM
 from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM
@@ -86,6 +87,8 @@ class BendingShearAxialStrengthClass3IProfileCheck:
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""
+        if not isinstance(self.steel_cross_section.profile, IProfile):
+            raise TypeError("The provided profile is not an I-profile.")
         if self.section_properties is None:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)

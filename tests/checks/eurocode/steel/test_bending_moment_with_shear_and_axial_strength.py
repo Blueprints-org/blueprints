@@ -28,9 +28,9 @@ class TestBendingShearAxialStrengthClass3IProfileCheck:
         """Test result() for ok combined loading (My, Mz, N)."""
         cross_section, section_properties = heb_steel_cross_section
         n = 1000 * 0.99  # Applied axial force in kN
-        v_y = 1111 * 0.99  # Applied shear force in y-direction in kN
-        v_z = 50 * 0.99  # Applied shear force in z-direction in kN
-        m_x = 10 * 0.99  # Applied torsional moment in kNm
+        v_y = 1111  # Applied shear force in y-direction in kN
+        v_z = 50  # Applied shear force in z-direction in kN
+        m_x = 10  # Applied torsional moment in kNm
         m_y = 100 * 0.99  # Applied bending moment around y-axis in kNm
         m_z = 80 * 0.99  # Applied bending moment around z-axis in kNm
         calc = BendingShearAxialStrengthClass3IProfileCheck(
@@ -46,9 +46,9 @@ class TestBendingShearAxialStrengthClass3IProfileCheck:
         """Test result() for not ok combined loading (excessive moments and axial force)."""
         cross_section, section_properties = heb_steel_cross_section
         n = 1000 * 1.01  # Applied axial force in kN
-        v_y = 1111 * 1.01  # Applied shear force in y-direction in kN
-        v_z = 50 * 1.01  # Applied shear force in z-direction in kN
-        m_x = 10 * 1.01  # Applied torsional moment in kNm
+        v_y = 1111  # Applied shear force in y-direction in kN
+        v_z = 50  # Applied shear force in z-direction in kN
+        m_x = 10  # Applied torsional moment in kNm
         m_y = 100 * 1.01  # Applied bending moment around y-axis in kNm
         m_z = 80 * 1.01  # Applied bending moment around z-axis in kNm
         calc = BendingShearAxialStrengthClass3IProfileCheck(
