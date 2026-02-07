@@ -119,13 +119,13 @@ class TestReport:
     def test_add_equation_without_tag(self, fixture_report: Report) -> None:
         """Test adding equation without tag."""
         fixture_report.add_equation("a^2+b^2=c^2")
-        expected = r"\begin{multline} a^2+b^2=c^2 \notag \end{multline}" + "\n"
+        expected = r"\begin{equation} a^2+b^2=c^2 \notag \end{equation}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_equation_with_tag(self, fixture_report: Report) -> None:
         """Test adding equation with tag."""
         fixture_report.add_equation("a^2+b^2=c^2", tag="6.83")
-        expected = r"\begin{multline} a^2+b^2=c^2 \tag{6.83} \end{multline}" + "\n"
+        expected = r"\begin{equation} a^2+b^2=c^2 \tag{6.83} \end{equation}" + "\n"
         assert fixture_report.content == expected
 
     def test_very_long_equation_splitting(self, fixture_report: Report) -> None:
@@ -160,7 +160,7 @@ class TestReport:
     def test_add_formula(self, fixture_report: Report) -> None:
         """Test adding formula."""
         fixture_report.add_formula(formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000), options="complete")
-        expected = r"\begin{multline} CHECK"
+        expected = r"\begin{equation} CHECK"
         assert expected in fixture_report.content
 
     def test_add_formula_inline(self, fixture_report: Report) -> None:
@@ -172,7 +172,7 @@ class TestReport:
     def test_add_formula_complete_with_units(self, fixture_report: Report) -> None:
         """Test adding formula with complete_with_units option."""
         fixture_report.add_formula(formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=150000, n_t_rd=200000), options="complete_with_units")
-        expected = r"\begin{multline} CHECK"
+        expected = r"\begin{equation} CHECK"
         assert expected in fixture_report.content
 
     def test_add_section(self, fixture_report: Report) -> None:
@@ -399,8 +399,8 @@ class TestReport:
         assert r"\textbf{This is bold text with newline after.}" in latex_document
         assert r"\textit{This is italic text with 4 newlines after.}" in latex_document
         assert r"\textbf{\textit{This is bold and italic text.}}" in latex_document
-        assert r"\begin{multline} E=mc^2 \tag{3.14} \end{multline}" in latex_document
-        assert r"\begin{multline} CHECK" in latex_document
+        assert r"\begin{equation} E=mc^2 \tag{3.14} \end{equation}" in latex_document
+        assert r"\begin{equation} CHECK" in latex_document
         assert r"$\frac{a}{b}$" in latex_document
         assert r"Parameter & Value & Unit" in latex_document
         assert r"\text{Length} & 10 & \text{m}" in latex_document
