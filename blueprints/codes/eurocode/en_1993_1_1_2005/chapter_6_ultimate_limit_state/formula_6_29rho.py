@@ -85,7 +85,7 @@ class Form6Dot29Rho(Formula):
 class Form6Dot29RhoWithTorsion(Formula):
     r"""Class representing formula 6.29rho with torsion for the calculation of [$\rho$]."""
 
-    label = "6.29rho_with_torsion"
+    label = "6.29rho"
     source_document = EN_1993_1_1_2005
 
     def __init__(

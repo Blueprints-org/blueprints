@@ -9,12 +9,14 @@ from typing import Any, ClassVar, Self
 import matplotlib.pyplot as plt
 from sectionproperties.analysis import Section
 from sectionproperties.post.post import SectionProperties
+from sectionproperties.post.stress_post import StressPost
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 from shapely.affinity import rotate, translate
 
+from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.type_alias import DEG, M3_M, MM, MM2
-from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
+from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, M_TO_MM, MM3_TO_M3
 
 
 @dataclass(frozen=True)
@@ -184,6 +186,34 @@ class Profile(ABC):
     def plotter(self) -> Callable[[Any], plt.Figure]:
         """Default plotter function for the profile."""
         raise AttributeError("No plotter is defined.")
+
+    def calculate_stress(self, result_internal_force_1d: ResultInternalForce1D) -> StressPost:
+        """Calculate the stress distribution for the profile given internal forces.
+
+        Parameters
+        ----------
+        result_internal_force_1d : ResultInternalForce1D
+            The internal forces and moments to calculate the stress for.
+
+        Returns
+        -------
+        Callable[..., StressPost]
+            A function that calculates the stress distribution when called.
+        """
+        section = self._section()
+        section.calculate_geometric_properties()
+        section.calculate_warping_properties()
+        # Note: The mapping of internal forces to sectionproperties parameters
+        # Blueprints uses x for longitudinal axis, y for horizontal, z for vertical
+        # sectionproperties uses x for horizontal, y for vertical, z for longitudinal
+        return section.calculate_stress(
+            n=float(result_internal_force_1d.n) * KN_TO_N,
+            vx=-float(result_internal_force_1d.vy) * KN_TO_N,
+            vy=float(result_internal_force_1d.vz) * KN_TO_N,
+            mxx=-float(result_internal_force_1d.my) * KNM_TO_NMM,
+            myy=float(result_internal_force_1d.mz) * KNM_TO_NMM,
+            mzz=float(result_internal_force_1d.mx) * KNM_TO_NMM,
+        )
 
     def plot(self, plotter: Callable[[Any], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
         """Plot the profile. Making use of the standard plotter.

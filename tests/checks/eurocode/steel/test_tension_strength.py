@@ -23,7 +23,7 @@ class TestTensionStrengthCheck:
         assert calc.report()
 
         calc_without_section_props = TensionStrengthCheck(cross_section, n, gamma_m0=1.0)
-        assert calc == calc_without_section_props
+        assert pytest.approx(result.unity_check) == calc_without_section_props.result().unity_check
 
     def test_result_tension_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok tension load."""

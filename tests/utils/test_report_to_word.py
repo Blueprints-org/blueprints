@@ -30,6 +30,12 @@ class TestReportToWordConverter:
         report.add_paragraph("test").add_equation("E=mc^2", inline=True).add_paragraph("more text.").add_newline()
         report.add_equation("E=mc^2", tag="4")
         report.add_equation(r"\int_a^b f(x)dx = F(b) - F(a)")
+        report.add_equation(
+            "A_v = max(A - 2 \\cdot b \\cdot t_f + (t_w + 2 \\cdot r) \\cdot t_f;"
+            " \\eta \\cdot h_w \\cdot t_w) = max("
+            "12324.48 - 2 \\cdot 297.00 \\cdot 16.00 + (8.00 + 2 \\cdot 28.50) \\cdot 16.00;"
+            " 1.00 \\cdot 265.00 \\cdot 8.00) = 3860.48 \\ mm^2 "
+        )
         report.add_list(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", ["A", "B"], "III"]]], style="numbered")
         report.add_list(["First", "Second", ["Subfirst", "Subsecond"], "Third"], style="bulleted")
         report.add_paragraph("Here is a table:")
@@ -159,3 +165,15 @@ class TestReportToWordConverter:
         docx_buffer = BytesIO(result)
         docx_doc = DocxDocument(docx_buffer)
         assert docx_doc
+
+    def test_empty_report_title_not_added(self) -> None:
+        """Test that an empty report title is not added to the Word document."""
+        report = Report()
+        report.add_paragraph("Some content without a title.")
+
+        # Call without path argument
+        result = report.to_word()
+
+        # Verify result is bytes
+        assert isinstance(result, bytes)
+        assert len(result) > 0

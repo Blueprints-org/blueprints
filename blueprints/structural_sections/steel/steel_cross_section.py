@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Literal
 
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections._profile import Profile
@@ -21,12 +22,15 @@ class SteelCrossSection:
         The profile. This can be a predefined profile or a generic profile.
     material : SteelMaterial
         The material type of the steel.
+    fabrication_method : Literal["rolled", "welded"], optional
+        The fabrication method of the steel cross-section, either "rolled" or "welded. Default is "rolled".
     """
 
     profile: Profile
     """The profile. This can be a predefined profile or a generic profile."""
     material: SteelMaterial
     """The material type of the steel."""
+    fabrication_method: Literal["rolled", "welded"] = "rolled"
 
     @property
     def yield_strength(self) -> MPA:
