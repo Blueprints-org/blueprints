@@ -118,12 +118,12 @@ class BendingShearAxialStrengthClass3IProfileCheck:
             shear_resistance_calculation_y = PlasticShearStrengthIProfileCheck(
                 self.steel_cross_section, v=self.v_y, axis="Vy", gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
-            rho_y = formula_6_29rho.Form6Dot29Rho(v_ed=v_y, v_pl_rd=shear_resistance_calculation_y["resistance"])
+            rho_y = formula_6_29rho.Form6Dot29Rho(v_ed=abs(v_y), v_pl_rd=shear_resistance_calculation_y["resistance"])
 
             shear_resistance_calculation_z = PlasticShearStrengthIProfileCheck(
                 self.steel_cross_section, v=self.v_z, axis="Vz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
-            rho_z = formula_6_29rho.Form6Dot29Rho(v_ed=v_z, v_pl_rd=shear_resistance_calculation_z["resistance"])
+            rho_z = formula_6_29rho.Form6Dot29Rho(v_ed=abs(v_z), v_pl_rd=shear_resistance_calculation_z["resistance"])
 
             # Save the governing shear direction (the one with the highest rho) and its corresponding shear resistance calculation for reporting
             rho = rho_y if rho_y > rho_z else rho_z
@@ -133,12 +133,12 @@ class BendingShearAxialStrengthClass3IProfileCheck:
             shear_resistance_calculation_y = TorsionWithShearStrengthIProfileCheck(
                 self.steel_cross_section, mx=self.m_x, v=self.v_y, axis="Vy", gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
-            rho_y = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_y, v_pl_t_rd=shear_resistance_calculation_y["resistance"])
+            rho_y = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=abs(v_y), v_pl_t_rd=shear_resistance_calculation_y["resistance"])
 
             shear_resistance_calculation_z = TorsionWithShearStrengthIProfileCheck(
                 self.steel_cross_section, mx=self.m_x, v=self.v_z, axis="Vz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
-            rho_z = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_z, v_pl_t_rd=shear_resistance_calculation_z["resistance"])
+            rho_z = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=abs(v_z), v_pl_t_rd=shear_resistance_calculation_z["resistance"])
 
             # Save the governing shear direction (the one with the highest rho) and its corresponding shear resistance calculation for reporting
             rho = rho_y if rho_y > rho_z else rho_z
