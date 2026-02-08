@@ -48,7 +48,7 @@ class CheckStrengthTensionClass1234:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.tension_strength import CheckStrengthTensionClass1234
+    from blueprints.checks.eurocode.steel.strength_tension import CheckStrengthTensionClass1234
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 

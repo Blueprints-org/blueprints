@@ -55,7 +55,7 @@ class CheckStrengthIProfileClass3:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.i_profile_strength_class_3 import CheckStrengthIProfileClass3
+    from blueprints.checks.eurocode.steel.strength_i_profile import CheckStrengthIProfileClass3
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
