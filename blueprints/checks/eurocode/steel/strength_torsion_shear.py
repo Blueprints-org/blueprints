@@ -21,7 +21,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class CheckStrengthTorsionShearClass1234IProfile:
+class CheckStrengthTorsionShearClass12IProfile:
     """Class to perform torsion resistance check with extra shear force for I profiles (Eurocode 3), using St. Venant torsion.
 
     Coordinate System:
@@ -54,7 +54,7 @@ class CheckStrengthTorsionShearClass1234IProfile:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass1234IProfile
+    from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12IProfile
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -65,7 +65,7 @@ class CheckStrengthTorsionShearClass1234IProfile:
     axis = "Vz"  # Shear force applied in z-direction
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthTorsionShearClass1234IProfile(heb_300_s355, mx, v=v, axis=axis, gamma_m0=1.0)
+    calc = CheckStrengthTorsionShearClass12IProfile(heb_300_s355, mx, v=v, axis=axis, gamma_m0=1.0)
     calc.report().to_word("torsion_and_shear_strength.docx", language="nl")
 
     """

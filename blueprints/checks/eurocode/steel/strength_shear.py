@@ -240,14 +240,13 @@ class CheckStrengthShearClass34:
             member="N/A",
             result_for=ResultFor.LOAD_CASE,
             load_case="N/A",
-            vy=self.v if self.axis == "Vy" else 0,
-            vz=self.v if self.axis == "Vz" else 0,
+            vy=1 if self.axis == "Vy" else 0,
+            vz=1 if self.axis == "Vz" else 0,
         )
 
-        stress = self.steel_cross_section.profile.calculate_stress(rif1d)
-        sig_zxy_data = stress.get_stress()[0]["sig_zxy"]
-        sig_zxy = float(np.max(np.abs(sig_zxy_data)))
-
+        unit_stress = self.steel_cross_section.profile.calculate_stress(rif1d)
+        sig_zxy_data = unit_stress.get_stress()[0]["sig_zxy"]
+        sig_zxy = float(np.max(np.abs(sig_zxy_data))) * abs(self.v)
         resistance = float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / sig_zxy * self.v * KN_TO_N)
 
         check_shear = formula_6_19.Form6Dot19CheckDesignElasticShearResistance(
