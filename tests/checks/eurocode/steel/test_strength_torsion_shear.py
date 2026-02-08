@@ -144,7 +144,7 @@ class TestCheckStrengthTorsionShearClass34:
         """Test result() for ok shear force in Vz direction."""
         cross_section, section_properties = heb_steel_cross_section
         v = 690 * 0.99
-        m_x = 7.81 * 0.99
+        m_x = 7.66 * 0.99
         calc = CheckStrengthTorsionShearClass34(cross_section, m_x, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
@@ -156,7 +156,7 @@ class TestCheckStrengthTorsionShearClass34:
         """Test result() for not ok shear force."""
         cross_section, section_properties = heb_steel_cross_section
         v = 690 * 1.01
-        m_x = 7.81 * 1.01
+        m_x = 7.66 * 1.01
         calc = CheckStrengthTorsionShearClass34(cross_section, m_x, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
