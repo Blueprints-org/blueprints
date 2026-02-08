@@ -3,21 +3,19 @@
 import pytest
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.eurocode.steel.bending_moment_with_shear_and_torsion_strength import (
-    BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck,
+from blueprints.checks.eurocode.steel.strength_bending_shear import (
+    CheckStrenghtBendingShearClass3IProfile,
 )
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
-    """Tests for BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck."""
+class TestCheckStrenghtBendingShearClass3IProfile:
+    """Tests for CheckStrenghtBendingShearClass3IProfile."""
 
     def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no bending moment."""
         cross_section, section_properties = heb_steel_cross_section
-        calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, axis_m="My", axis_v="Vz", section_properties=section_properties
-        )
+        calc = CheckStrenghtBendingShearClass3IProfile(cross_section, axis_m="My", axis_v="Vz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -25,9 +23,7 @@ class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         assert result.provided == 0.0
         assert calc.report()
 
-        calc_without_section_props = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, axis_m="My", axis_v="Vz", gamma_m0=1.0
-        )
+        calc_without_section_props = CheckStrenghtBendingShearClass3IProfile(cross_section, axis_m="My", axis_v="Vz", gamma_m0=1.0)
         assert pytest.approx(result.unity_check) == calc_without_section_props.result().unity_check
 
     def test_result_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
@@ -36,9 +32,7 @@ class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         m = 613.3 * 0.99  # Applied bending moment in kNm
         mx = 1  # Applied torsional moment in kNm
         v = 600  # Applied shear force in kN
-        calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties
-        )
+        calc = CheckStrenghtBendingShearClass3IProfile(cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -51,9 +45,7 @@ class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         m = -613.3 * 1.01  # Applied bending moment in kNm
         mx = 1  # Applied torsional moment in kNm
         v = 600  # Applied shear force in kN
-        calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties
-        )
+        calc = CheckStrenghtBendingShearClass3IProfile(cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -66,11 +58,9 @@ class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         m = 627.3 * 0.99
         mx = 0  # no torsional moment
         v = -600  # Applied shear force in kN
-        calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(cross_section, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
+        calc = CheckStrenghtBendingShearClass3IProfile(cross_section, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
         calc.report().to_word("bending_moment_strength.docx")
-        calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties
-        )
+        calc = CheckStrenghtBendingShearClass3IProfile(cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -83,9 +73,7 @@ class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         m = -627.3 * 1.01
         mx = 0  # no torsional moment
         v = -600  # Applied shear force in kN
-        calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
-            cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties
-        )
+        calc = CheckStrenghtBendingShearClass3IProfile(cross_section, m, mx, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -96,15 +84,15 @@ class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         """Test ValueError is raised for invalid axis input."""
         cross_section, section_properties = heb_steel_cross_section
         with pytest.raises(ValueError):
-            BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
+            CheckStrenghtBendingShearClass3IProfile(
                 cross_section, 100, 0, 0, axis_m="Ma", axis_v="Vz", section_properties=section_properties
             ).calculation_formula()
         with pytest.raises(ValueError):
-            BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
+            CheckStrenghtBendingShearClass3IProfile(
                 cross_section, 100, 0, 0, axis_m="My", axis_v="Va", section_properties=section_properties
             ).calculation_formula()
         with pytest.raises(ValueError):
-            BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
+            CheckStrenghtBendingShearClass3IProfile(
                 cross_section, 100, 0, 0, axis_m="Mz", axis_v="Vz", section_properties=section_properties
             ).calculation_formula()
 
@@ -112,6 +100,6 @@ class TestBendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         """Test check() raises TypeError for non-I-profile."""
         cross_section, section_properties = chs_steel_cross_section
         with pytest.raises(TypeError, match="The provided profile is not an I-profile"):
-            BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(
+            CheckStrenghtBendingShearClass3IProfile(
                 cross_section, m=100, mx=0, v=1, axis_m="My", axis_v="Vz", section_properties=section_properties
             ).calculation_formula()

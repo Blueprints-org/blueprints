@@ -19,7 +19,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class CompressionStrengthClass123Check:
+class CheckStrengthCompressionClass123:
     """Class to perform compression force resistance check for steel cross-sections,
         for cross-section class 1, 2, and 3 (Eurocode 3).
 
@@ -49,7 +49,7 @@ class CompressionStrengthClass123Check:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.compression_strength import CompressionForceCheck
+    from blueprints.checks.eurocode.steel.strength_compression import CompressionForceCheck
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -58,7 +58,7 @@ class CompressionStrengthClass123Check:
     n = -10000  # Applied compressive force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CompressionStrengthClass123Check(heb_300_s355, n, gamma_m0=1.0)
+    calc = CheckStrengthCompressionClass123(heb_300_s355, n, gamma_m0=1.0)
     calc.report().to_word("compression_strength.docx", language="nl")
 
     """

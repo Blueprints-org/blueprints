@@ -3,17 +3,17 @@
 import pytest
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass1And2Check, BendingMomentStrengthClass3Check
+from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass3, CheckStrengthBendingClass12
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-class TestBendingMomentStrengthClass1And2Check:
-    """Tests for BendingMomentStrengthClass1And2Check."""
+class TestCheckStrengthBendingClass12:
+    """Tests for CheckStrengthBendingClass12."""
 
     def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no bending moment."""
         cross_section, section_properties = heb_steel_cross_section
-        calc = BendingMomentStrengthClass1And2Check(cross_section, 0, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, 0, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -21,14 +21,14 @@ class TestBendingMomentStrengthClass1And2Check:
         assert result.provided == 0.0
         assert calc.report()
 
-        calc_without_section_props = BendingMomentStrengthClass1And2Check(cross_section, 0, axis="My", gamma_m0=1.0)
+        calc_without_section_props = CheckStrengthBendingClass12(cross_section, 0, axis="My", gamma_m0=1.0)
         assert pytest.approx(result.unity_check) == calc_without_section_props.result().unity_check
 
     def test_result_my_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok bending moment about y-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 1.869 * 0.99
-        calc = BendingMomentStrengthClass1And2Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, m, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -38,7 +38,7 @@ class TestBendingMomentStrengthClass1And2Check:
         """Test result() for not ok bending moment about y-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 1.869 * 1.01
-        calc = BendingMomentStrengthClass1And2Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, m, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -49,7 +49,7 @@ class TestBendingMomentStrengthClass1And2Check:
         """Test result() for ok bending moment about z-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 0.870 * 0.99
-        calc = BendingMomentStrengthClass1And2Check(cross_section, m, axis="Mz", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, m, axis="Mz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -59,7 +59,7 @@ class TestBendingMomentStrengthClass1And2Check:
         """Test result() for not ok bending moment about z-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 0.870 * 1.01
-        calc = BendingMomentStrengthClass1And2Check(cross_section, m, axis="Mz", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, m, axis="Mz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -70,12 +70,12 @@ class TestBendingMomentStrengthClass1And2Check:
         """Test result() for negative bending moments (should be treated as positive)."""
         cross_section, section_properties = heb_steel_cross_section
         m = -355 * 1.869 * 0.99
-        calc = BendingMomentStrengthClass1And2Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, m, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         m = -355 * 0.870 * 0.99
-        calc = BendingMomentStrengthClass1And2Check(cross_section, m, axis="Mz", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, m, axis="Mz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -84,23 +84,23 @@ class TestBendingMomentStrengthClass1And2Check:
         """Test ValueError is raised for invalid axis input."""
         cross_section, section_properties = heb_steel_cross_section
         with pytest.raises(ValueError):
-            BendingMomentStrengthClass1And2Check(cross_section, 100, axis="Mx", section_properties=section_properties).calculation_formula()
+            CheckStrengthBendingClass12(cross_section, 100, axis="Mx", section_properties=section_properties).calculation_formula()
 
     def test_report(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test report output for bending moment check."""
         cross_section, section_properties = heb_steel_cross_section
         m = 100
-        calc = BendingMomentStrengthClass1And2Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass12(cross_section, m, axis="My", section_properties=section_properties)
         assert calc.report()
 
 
-class TestBendingMomentStrengthClass3Check:
-    """Tests for BendingMomentStrengthClass3Check."""
+class TestCheckStrengthBendingClass3:
+    """Tests for CheckStrengthBendingClass3."""
 
     def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no bending moment."""
         cross_section, section_properties = heb_steel_cross_section
-        calc = BendingMomentStrengthClass3Check(cross_section, 0, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, 0, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -108,14 +108,14 @@ class TestBendingMomentStrengthClass3Check:
         assert result.provided == 0.0
         assert calc.report()
 
-        calc_without_section_props = BendingMomentStrengthClass3Check(cross_section, 0, axis="My", gamma_m0=1.0)
+        calc_without_section_props = CheckStrengthBendingClass3(cross_section, 0, axis="My", gamma_m0=1.0)
         assert pytest.approx(result.unity_check) == calc_without_section_props.result().unity_check
 
     def test_result_my_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok bending moment about y-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 1.678 * 0.99
-        calc = BendingMomentStrengthClass3Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, m, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -125,7 +125,7 @@ class TestBendingMomentStrengthClass3Check:
         """Test result() for not ok bending moment about y-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 1.678 * 1.01
-        calc = BendingMomentStrengthClass3Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, m, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -136,7 +136,7 @@ class TestBendingMomentStrengthClass3Check:
         """Test result() for ok bending moment about z-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 0.571 * 0.99
-        calc = BendingMomentStrengthClass3Check(cross_section, m, axis="Mz", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, m, axis="Mz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -146,7 +146,7 @@ class TestBendingMomentStrengthClass3Check:
         """Test result() for not ok bending moment about z-axis."""
         cross_section, section_properties = heb_steel_cross_section
         m = 355 * 0.571 * 1.01
-        calc = BendingMomentStrengthClass3Check(cross_section, m, axis="Mz", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, m, axis="Mz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -157,12 +157,12 @@ class TestBendingMomentStrengthClass3Check:
         """Test result() for negative bending moments (should be treated as positive)."""
         cross_section, section_properties = heb_steel_cross_section
         m = -355 * 1.678 * 0.99
-        calc = BendingMomentStrengthClass3Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, m, axis="My", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         m = -355 * 0.571 * 0.99
-        calc = BendingMomentStrengthClass3Check(cross_section, m, axis="Mz", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, m, axis="Mz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -171,11 +171,11 @@ class TestBendingMomentStrengthClass3Check:
         """Test ValueError is raised for invalid axis input."""
         cross_section, section_properties = heb_steel_cross_section
         with pytest.raises(ValueError):
-            BendingMomentStrengthClass3Check(cross_section, 100, axis="Mx", section_properties=section_properties).calculation_formula()
+            CheckStrengthBendingClass3(cross_section, 100, axis="Mx", section_properties=section_properties).calculation_formula()
 
     def test_report(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test report output for bending moment check."""
         cross_section, section_properties = heb_steel_cross_section
         m = 100
-        calc = BendingMomentStrengthClass3Check(cross_section, m, axis="My", section_properties=section_properties)
+        calc = CheckStrengthBendingClass3(cross_section, m, axis="My", section_properties=section_properties)
         assert calc.report()

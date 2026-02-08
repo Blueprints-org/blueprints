@@ -20,7 +20,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class BendingMomentStrengthClass1And2Check:
+class CheckStrengthBendingClass12:
     """Class to perform bending moment resistance check for steel cross-sections,
     for cross-section class 1 and 2 only (Eurocode 3).
 
@@ -52,7 +52,7 @@ class BendingMomentStrengthClass1And2Check:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass1And2Check
+    from blueprints.checks.eurocode.steel.bending_moment_strength import CheckStrengthBendingClass12
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -61,7 +61,7 @@ class BendingMomentStrengthClass1And2Check:
     m = 355 * 1.868  # Applied bending moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentStrengthClass1And2Check(heb_300_s355, m, axis='My', gamma_m0=1.0)
+    calc = CheckStrengthBendingClass12(heb_300_s355, m, axis='My', gamma_m0=1.0)
     calc.report().to_word("bending_moment_strength.docx", language="fy")
     """
 
@@ -78,19 +78,20 @@ class BendingMomentStrengthClass1And2Check:
         if self.section_properties is None:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
+        if self.axis not in ("My", "Mz"):
+            raise ValueError("Axis must be 'My' or 'Mz'.")
 
     def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate bending moment resistance check (Class 1 and 2 only, units: kNm).
+        """Calculate bending moment resistance check (Class 1 and 2 only).
 
         Returns
         -------
         dict[str, Formula]
-            Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
+            Calculation results keyed by formula number.
         """
-        if self.axis not in ("My", "Mz"):
-            raise ValueError("Axis must be 'My' or 'Mz'.")
-
         f_y = self.steel_cross_section.yield_strength
+        # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
+        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         w = float(self.section_properties.sxx) if self.axis == "My" else float(self.section_properties.syy)  # type: ignore[attr-defined]
 
         m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
@@ -132,14 +133,16 @@ class BendingMomentStrengthClass1And2Check:
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
             return report
+
+        calculation = self.calculation_formula()
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
             rf"The resistance is calculated as follows, using cross-section class 1 or 2:"
         )
-        report.add_formula(self.calculation_formula()["resistance"], n=n)
+        report.add_formula(calculation["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n)
+        report.add_formula(calculation["check"], n=n)
         if self.result().is_ok:
             report.add_paragraph("The check for bending moment satisfies the requirements.")
         else:
@@ -148,7 +151,7 @@ class BendingMomentStrengthClass1And2Check:
 
 
 @dataclass(frozen=True)
-class BendingMomentStrengthClass3Check:
+class CheckStrengthBendingClass3:
     """Class to perform bending moment resistance check for steel cross-sections,
     for cross-section class 3 only (Eurocode 3).
 
@@ -180,7 +183,7 @@ class BendingMomentStrengthClass3Check:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass123Check
+    from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass3
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -189,7 +192,7 @@ class BendingMomentStrengthClass3Check:
     m = 355 * 1.677  # Applied bending moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentStrengthClass3Check(heb_300_s355, m, axis='My', gamma_m0=1.0)
+    calc = CheckStrengthBendingClass3(heb_300_s355, m, axis='My', gamma_m0=1.0)
     calc.report().to_word("bending_moment_strength.docx", language="de")
     """
 
@@ -206,19 +209,20 @@ class BendingMomentStrengthClass3Check:
         if self.section_properties is None:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
+        if self.axis not in ("My", "Mz"):
+            raise ValueError("Axis must be 'My' or 'Mz'.")
 
     def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate bending moment resistance check (Class 3 only, units: kNm).
+        """Calculate bending moment resistance check (Class 3 only).
 
         Returns
         -------
         dict[str, Formula]
-            Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
+            Calculation results keyed by formula number.
         """
-        if self.axis not in ("My", "Mz"):
-            raise ValueError("Axis must be 'My' or 'Mz'.")
-
         f_y = self.steel_cross_section.yield_strength
+        # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
+        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         if self.axis == "My":
             w = min(float(self.section_properties.zxx_plus), float(self.section_properties.zxx_minus))  # type: ignore[attr-defined]
         else:
@@ -259,6 +263,8 @@ class BendingMomentStrengthClass3Check:
         Report
             Report of the bending moment check.
         """
+        calculation = self.calculation_formula()
+
         report = Report(f"Check: bending moment steel beam (axis {self.axis})")
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
@@ -268,9 +274,9 @@ class BendingMomentStrengthClass3Check:
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
             rf"The resistance is calculated as follows, using cross-section class 3:"
         )
-        report.add_formula(self.calculation_formula()["resistance"], n=n)
+        report.add_formula(calculation["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n)
+        report.add_formula(calculation["check"], n=n)
         if self.result().is_ok:
             report.add_paragraph("The check for bending moment satisfies the requirements.")
         else:

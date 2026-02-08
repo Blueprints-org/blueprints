@@ -16,7 +16,7 @@ from shapely.affinity import rotate, translate
 
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.type_alias import DEG, M3_M, MM, MM2
-from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
+from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, M_TO_MM, MM3_TO_M3
 
 
 @dataclass(frozen=True)
@@ -206,13 +206,26 @@ class Profile(ABC):
         # Note: The mapping of internal forces to sectionproperties parameters
         # Blueprints uses x for longitudinal axis, y for horizontal, z for vertical
         # sectionproperties uses x for horizontal, y for vertical, z for longitudinal
+
+        # Coordinate System Blueprints:                              Coordinate System SectionProperties:
+        #     z (vertical, usually strong axis)                          y (vertical, usually strong axis)
+        #         ↑                                                        ↑
+        #         |     x (longitudinal beam direction, into screen)       |      z (longitudinal beam direction, into screen)
+        #         |    ↗                                                   |    ↗
+        #         |   /                                                    |   /
+        #         |  /                                                     |  /
+        #         | /                                                      | /
+        #         |/                                                       |/
+        #   ←-----O                                                        O------>
+        #    y (horizontal/side, usually weak axis)                      x (horizontal/side, usually weak axis)
+
         return section.calculate_stress(
-            n=-float(result_internal_force_1d.n) * 1e3,
-            vx=-float(result_internal_force_1d.vy) * 1e3,
-            vy=float(result_internal_force_1d.vz) * 1e3,
-            mxx=-float(result_internal_force_1d.my) * 1e6,
-            myy=float(result_internal_force_1d.mz) * 1e6,
-            mzz=-float(result_internal_force_1d.mx) * 1e6,
+            n=float(result_internal_force_1d.n) * KN_TO_N,
+            vx=-float(result_internal_force_1d.vy) * KN_TO_N,
+            vy=float(result_internal_force_1d.vz) * KN_TO_N,
+            mxx=-float(result_internal_force_1d.my) * KNM_TO_NMM,
+            myy=float(result_internal_force_1d.mz) * KNM_TO_NMM,
+            mzz=float(result_internal_force_1d.mx) * KNM_TO_NMM,
         )
 
     def plot(self, plotter: Callable[[Any], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:

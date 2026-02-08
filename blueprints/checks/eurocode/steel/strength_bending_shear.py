@@ -6,8 +6,8 @@ from typing import ClassVar, Literal
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel.shear_strength import PlasticShearStrengthIProfileCheck
-from blueprints.checks.eurocode.steel.torsion_with_shear_strength import TorsionWithShearStrengthIProfileCheck
+from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass34
+from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass34
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
     formula_6_12,
@@ -24,7 +24,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
+class CheckStrenghtBendingShearClass3IProfile:
     """Class to perform bending moment resistance check for steel cross-sections,
     for cross-section class 3 I-profiles only (Eurocode 3).
 
@@ -64,7 +64,7 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck
+    from blueprints.checks.eurocode.steel.strength_bending_shear import CheckStrenghtBendingShearClass3IProfile
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -75,7 +75,9 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
     v = 600  # Applied shear force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck(heb_300_s355, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
+    calc = CheckStrenghtBendingShearClass3IProfile(
+        heb_300_s355, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0
+    )
     calc.report().to_word("bending_moment_strength.docx")
     """
 
@@ -117,12 +119,12 @@ class BendingMomentWithShearAndTorsionStrengthClass3IProfileCheck:
         m_ed = abs(self.m * KNM_TO_NMM)
 
         if m_x == 0:
-            shear_resistance_calculation = PlasticShearStrengthIProfileCheck(
+            shear_resistance_calculation = CheckStrengthShearClass34(
                 self.steel_cross_section, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
-            shear_resistance_calculation = TorsionWithShearStrengthIProfileCheck(
+            shear_resistance_calculation = CheckStrengthTorsionShearClass34(
                 self.steel_cross_section, mx=self.mx, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])

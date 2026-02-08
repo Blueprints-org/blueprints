@@ -26,7 +26,7 @@ class _ReportToWordConverter:
 
     Limitations and Usage Notes:
     - Text blocks using \text{...} (can also be \textbf{...} and/or \textit{...} for bold/italic).
-    - Equations in \begin{multline}...\end{multline} environments (with optional \tag{...}).
+    - Equations in \begin{multline}...\end{multline} or \begin{equation}...\end{equation} environments (with optional \tag{...}).
     - Titles, sections, subsections, and subsubsections using \title{...}, \section{...}, \subsection{...}, \subsubsection{...}.
     - Tables in \begin{table}...\end{table} environments with tabular content
     - Figures in \begin{figure}...\end{figure} environments with \includegraphics.
@@ -175,7 +175,7 @@ class _ReportToWordConverter:
             "figure": r"\\begin\{figure\}",
             "itemize": r"\\begin\{itemize\}",
             "enumerate": r"\\begin\{enumerate\}",
-            "equation": r"\\begin\{multline\}",
+            "equation": r"\\begin\{(multline|equation)\}",
             "newline": r"\\newline",
         }
 
@@ -442,7 +442,13 @@ class _ReportToWordConverter:
         equation_content = re.sub(r"\\notag", "", equation_content)
 
         # Split equation content on line breaks (\\)
-        lines = equation_content.replace("\\begin{multline}", "").replace("\\end{multline}", "").split(r"\\")
+        lines = (
+            equation_content.replace("\\begin{multline}", "")
+            .replace("\\end{multline}", "")
+            .replace("\\begin{equation}", "")
+            .replace("\\end{equation}", "")
+            .split(r"\\")
+        )
         for idx, line in enumerate(lines):
             p = doc.add_paragraph()
             p.style = "No Spacing"
