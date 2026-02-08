@@ -51,6 +51,11 @@ class Profile(ABC):
 
     @property
     @abstractmethod
+    def max_profile_thickness(self) -> MM:
+        """Maximum element thickness of the profile [mm]."""
+
+    @property
+    @abstractmethod
     def _polygon(self) -> Polygon:
         """Shapely Polygon representing the profile not including offsets and rotation.
 

@@ -71,3 +71,8 @@ class TestRightAngledTriangularProfile:
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == triangular_profile.centroid.x + 10.0
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == triangular_profile.centroid.y + 20.0
         assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == triangular_profile.profile_width
+
+    def test_max_thickness(self, triangular_profile: RightAngledTriangularProfile) -> None:
+        """Test the max_profile_thickness property of the RightAngledTriangularProfile class."""
+        expected_max_thickness = min(triangular_profile.base, triangular_profile.height)
+        assert triangular_profile.max_profile_thickness == pytest.approx(expected=expected_max_thickness, rel=1e-6)

@@ -1,2 +1,9 @@
 en,nl,de,fr
+"Area $A$","Oppervlakte $A$","-","-"
+"Check","Controle","-","-"
+"NOT OK","NIET OK","-","-"
+"OK","OK","-","-"
+"Property","Eigenschap","-","-"
+"Ultimate Strength $f_u$","Treksterkte $f_u$","-","-"
 "With formula **:","Met formule **:","Mit Formel **:", "-"
+"Yield Strength $f_y$","Vloeigrens $f_y$","-","-"
