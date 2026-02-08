@@ -227,7 +227,7 @@ class CheckStrengthShearClass34:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
 
-    def calculation_formula(self) -> dict[str, Formula]:
+    def calculation_formula(self) -> dict[str, Formula | float | int]:
         """Calculate plastic shear force resistance check.
 
         Returns
@@ -245,7 +245,8 @@ class CheckStrengthShearClass34:
         )
 
         stress = self.steel_cross_section.profile.calculate_stress(rif1d)
-        sig_zxy = float(max(abs(stress.get_stress()[0]["sig_zxy"])))
+        sig_zxy_data = stress.get_stress()[0]["sig_zxy"]
+        sig_zxy = float(np.max(np.abs(sig_zxy_data)))
 
         resistance = float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / sig_zxy * self.v * KN_TO_N)
 
@@ -303,7 +304,9 @@ class CheckStrengthShearClass34:
         report.add_paragraph(rf"$f_y / (\sqrt{{3}} \cdot \gamma_{{M0}})$ = {tau_max} N/mm². ")
 
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(formulas["check"], n=n)
+        check_formula = formulas["check"]
+        assert isinstance(check_formula, Formula), "Expected Formula for check"
+        report.add_formula(check_formula, n=n)
         if self.result().is_ok:
             report.add_paragraph("The check for elastic shear force satisfies the requirements.")
         else:
