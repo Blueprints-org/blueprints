@@ -20,7 +20,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class BendingMomentStrengthClass1And2Check:
+class CheckStrengthBendingClass12:
     """Class to perform bending moment resistance check for steel cross-sections,
     for cross-section class 1 and 2 only (Eurocode 3).
 
@@ -52,7 +52,7 @@ class BendingMomentStrengthClass1And2Check:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass1And2Check
+    from blueprints.checks.eurocode.steel.bending_moment_strength import CheckStrengthBendingClass12
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -61,7 +61,7 @@ class BendingMomentStrengthClass1And2Check:
     m = 355 * 1.868  # Applied bending moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentStrengthClass1And2Check(heb_300_s355, m, axis='My', gamma_m0=1.0)
+    calc = CheckStrengthBendingClass12(heb_300_s355, m, axis='My', gamma_m0=1.0)
     calc.report().to_word("bending_moment_strength.docx", language="fy")
     """
 
@@ -149,7 +149,7 @@ class BendingMomentStrengthClass1And2Check:
 
 
 @dataclass(frozen=True)
-class BendingMomentStrengthClass3Check:
+class CheckStrengthBendingClass3:
     """Class to perform bending moment resistance check for steel cross-sections,
     for cross-section class 3 only (Eurocode 3).
 
@@ -181,7 +181,7 @@ class BendingMomentStrengthClass3Check:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import BendingMomentStrengthClass3Check
+    from blueprints.checks.eurocode.steel.bending_moment_strength import CheckStrengthBendingClass3
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -190,7 +190,7 @@ class BendingMomentStrengthClass3Check:
     m = 355 * 1.677  # Applied bending moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = BendingMomentStrengthClass3Check(heb_300_s355, m, axis='My', gamma_m0=1.0)
+    calc = CheckStrengthBendingClass3(heb_300_s355, m, axis='My', gamma_m0=1.0)
     calc.report().to_word("bending_moment_strength.docx", language="de")
     """
 
