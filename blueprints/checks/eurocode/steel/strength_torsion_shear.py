@@ -7,7 +7,7 @@ import numpy as np
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel.shear_strength import PlasticShearStrengthIProfileCheck
+from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12IProfile
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_25 import Form6Dot25CheckCombinedShearForceAndTorsionalMoment
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_26 import Form6Dot26VplTRdIOrHSection
@@ -21,7 +21,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class TorsionWithShearStrengthIProfileCheck:
+class CheckStrengthTorsionShearClass1234IProfile:
     """Class to perform torsion resistance check with extra shear force for I profiles (Eurocode 3), using St. Venant torsion.
 
     Coordinate System:
@@ -42,7 +42,7 @@ class TorsionWithShearStrengthIProfileCheck:
     steel_cross_section : SteelCrossSection
         The steel cross-section, of type I-profile, to check.
     mx : KNM
-        The applied shear force (positive value, in kN).
+        The applied torsional moment (positive value, in kNm).
     v : KN
         The applied shear force (positive value, in kN).
     axis : Literal["Vz", "Vy"]
@@ -54,7 +54,7 @@ class TorsionWithShearStrengthIProfileCheck:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.torsion_with_shear_strength import TorsionWithShearStrengthIProfileCheck
+    from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass1234IProfile
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -65,7 +65,7 @@ class TorsionWithShearStrengthIProfileCheck:
     axis = "Vz"  # Shear force applied in z-direction
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = TorsionWithShearStrengthIProfileCheck(heb_300_s355, mx, v=v, axis=axis, gamma_m0=1.0)
+    calc = CheckStrengthTorsionShearClass1234IProfile(heb_300_s355, mx, v=v, axis=axis, gamma_m0=1.0)
     calc.report().to_word("torsion_and_shear_strength.docx", language="nl")
 
     """
@@ -95,7 +95,7 @@ class TorsionWithShearStrengthIProfileCheck:
         dict[str, Formula]
             Calculation results keyed by formula number. Returns an empty dict if no torsion is applied.
         """
-        shear_calculation = PlasticShearStrengthIProfileCheck(
+        shear_calculation = CheckStrengthShearClass12IProfile(
             steel_cross_section=self.steel_cross_section,
             v=self.v,
             axis=self.axis,

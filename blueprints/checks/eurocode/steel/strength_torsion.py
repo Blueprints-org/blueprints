@@ -18,8 +18,8 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class StVenantTorsionStrengthCheck:
-    """Class to perform torsion resistance check (Eurocode 3).
+class CheckStrengthStVenantTorsionClass1234:
+    """Class to perform torsion resistance check using St. Venant torsion (Eurocode 3).
 
     Coordinate System:
 
@@ -39,7 +39,7 @@ class StVenantTorsionStrengthCheck:
     steel_cross_section : SteelCrossSection
         The steel cross-section, of type I-profile, to check.
     mx : KNM
-        The applied shear force (in kN).
+        The applied torsional moment (in kNm).
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
     section_properties : SectionProperties | None, optional

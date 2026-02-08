@@ -171,13 +171,14 @@ class Report:
             return eq_mod
 
         eq_to_use = _split_equation(equation, split_after)
+        multline_vs_equation = "multline" if split_after else "equation"
 
         if inline:
             self.content += r"\txt{ " + rf"${eq_to_use}$" + f"{f' ({tag})' if tag else ''}" + r" }"
         elif tag:
-            self.content += rf"\begin{{multline}} {eq_to_use} \tag{{{tag}}} \end{{multline}}"
+            self.content += rf"\begin{{{multline_vs_equation}}} {eq_to_use} \tag{{{tag}}} \end{{{multline_vs_equation}}}"
         else:
-            self.content += rf"\begin{{multline}} {eq_to_use} \notag \end{{multline}}"
+            self.content += rf"\begin{{{multline_vs_equation}}} {eq_to_use} \notag \end{{{multline_vs_equation}}}"
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -538,7 +539,7 @@ class Report:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{multline}")
+        equations = self.content.count(r"\begin{multline}") + self.content.count(r"\begin{equation}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
@@ -556,7 +557,7 @@ class Report:
         """Return a human-readable representation of the report structure and content."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{multline}")
+        equations = self.content.count(r"\begin{multline}") + self.content.count(r"\begin{equation}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")

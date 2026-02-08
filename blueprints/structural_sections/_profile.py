@@ -206,6 +206,19 @@ class Profile(ABC):
         # Note: The mapping of internal forces to sectionproperties parameters
         # Blueprints uses x for longitudinal axis, y for horizontal, z for vertical
         # sectionproperties uses x for horizontal, y for vertical, z for longitudinal
+
+        # Coordinate System Blueprints:                              Coordinate System SectionProperties:
+        #     z (vertical, usually strong axis)                          y (vertical, usually strong axis)
+        #         ↑                                                        ↑
+        #         |     x (longitudinal beam direction, into screen)       |      z (longitudinal beam direction, into screen)
+        #         |    ↗                                                   |    ↗
+        #         |   /                                                    |   /
+        #         |  /                                                     |  /
+        #         | /                                                      | /
+        #         |/                                                       |/
+        #   ←-----O                                                        O------>
+        #    y (horizontal/side, usually weak axis)                      x (horizontal/side, usually weak axis)
+
         return section.calculate_stress(
             n=float(result_internal_force_1d.n) * KN_TO_N,
             vx=-float(result_internal_force_1d.vy) * KN_TO_N,
