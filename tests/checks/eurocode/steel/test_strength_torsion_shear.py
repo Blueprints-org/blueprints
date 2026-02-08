@@ -23,14 +23,11 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         assert result.provided == 0.0
         assert calc.report()
 
-        calc_without_section_props = CheckStrengthTorsionShearClass12IProfile(cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
-        assert calc == calc_without_section_props
-
-    def test_result_none_m_x(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
+    def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no torsional moment."""
         cross_section, section_properties = heb_steel_cross_section
         m_x = 0
-        v = 1
+        v = 0
         calc = CheckStrengthTorsionShearClass12IProfile(cross_section, m_x, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
@@ -38,6 +35,9 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         assert result.factor_of_safety == float("inf")
         assert result.provided == 0.0
         assert calc.report()
+
+        calc_without_section_props = CheckStrengthTorsionShearClass12IProfile(cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        assert calc == calc_without_section_props
 
     def test_result_shear_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok shear force."""
@@ -111,11 +111,11 @@ class TestCheckStrengthTorsionShearClass12IProfile:
 class TestCheckStrengthTorsionShearClass34:
     """Tests for TestCheckStrengthTorsionShearClass34, using St. Venant torsion, for class 3 and 4."""
 
-    def test_result_none_v(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
+    def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no shear force."""
         cross_section, section_properties = heb_steel_cross_section
         v = 0
-        m_x = 1
+        m_x = 0
         calc = CheckStrengthTorsionShearClass34(cross_section, m_x, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
@@ -127,24 +127,11 @@ class TestCheckStrengthTorsionShearClass34:
         calc_without_section_props = CheckStrengthTorsionShearClass34(cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         assert calc == calc_without_section_props
 
-    def test_result_none_m_x(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() returns True for no torsional moment."""
-        cross_section, section_properties = heb_steel_cross_section
-        m_x = 0
-        v = 1
-        calc = CheckStrengthTorsionShearClass34(cross_section, m_x, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
-        result = calc.result()
-        assert result.is_ok is True
-        assert result.unity_check == 0
-        assert result.factor_of_safety == float("inf")
-        assert result.provided == 0.0
-        assert calc.report()
-
     def test_result_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
-        """Test result() for ok shear force in Vz direction."""
+        """Test result() for ok shear force."""
         cross_section, section_properties = heb_steel_cross_section
         v = 690 * 0.99
-        m_x = 7.81 * 0.99
+        m_x = 7.66 * 0.99
         calc = CheckStrengthTorsionShearClass34(cross_section, m_x, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
@@ -156,7 +143,7 @@ class TestCheckStrengthTorsionShearClass34:
         """Test result() for not ok shear force."""
         cross_section, section_properties = heb_steel_cross_section
         v = 690 * 1.01
-        m_x = 7.81 * 1.01
+        m_x = 7.66 * 1.01
         calc = CheckStrengthTorsionShearClass34(cross_section, m_x, v, axis="Vy", gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False

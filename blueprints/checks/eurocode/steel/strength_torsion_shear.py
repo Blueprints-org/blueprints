@@ -146,7 +146,7 @@ class CheckStrengthTorsionShearClass12IProfile:
             True if the torsion check passes, False otherwise.
         """
         steps = self.calculation_formula()
-        provided = 0 if self.m_x == 0 else abs(self.v) * KN_TO_N
+        provided = abs(self.v) * KN_TO_N
         required = steps["resistance"]
         return CheckResult.from_comparison(provided=provided, required=float(required))
 
@@ -321,6 +321,7 @@ class CheckStrengthTorsionShearClass34:
             True if the torsion check passes, False otherwise.
         """
         steps = self.calculation_formula()
+        provided = 0 if self.m_x == 0 else abs(self.v) * KN_TO_N
         provided = steps["shear_stress"]
         required = steps["resistance"]
         return CheckResult.from_comparison(provided=provided, required=float(required))
