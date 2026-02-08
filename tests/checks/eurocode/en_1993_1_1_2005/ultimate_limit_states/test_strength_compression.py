@@ -1,20 +1,20 @@
-"""Tests for CompressionStrengthClass123Check according to Eurocode 3."""
+"""Tests for CheckStrengthCompressionClass123 according to Eurocode 3."""
 
 import pytest
 from sectionproperties.post.post import SectionProperties
 
-from blueprints.checks.eurocode.steel.compression_strength import CompressionStrengthClass123Check
+from blueprints.checks.eurocode.steel.strength_compression import CheckStrengthCompressionClass123
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-class TestCompressionStrengthClass123Check:
-    """Tests for CompressionStrengthClass123Check."""
+class TestCheckStrengthCompressionClass123:
+    """Tests for CheckStrengthCompressionClass123."""
 
     def test_result_none(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no normal force."""
         cross_section, section_properties = heb_steel_cross_section
         n = 0
-        calc = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
+        calc = CheckStrengthCompressionClass123(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -22,14 +22,14 @@ class TestCompressionStrengthClass123Check:
         assert result.provided == 0.0
         assert calc.report()
 
-        calc_without_section_props = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0)
+        calc_without_section_props = CheckStrengthCompressionClass123(cross_section, n, gamma_m0=1.0)
         assert calc == calc_without_section_props
 
     def test_result_compression_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() for ok compression load."""
         cross_section, section_properties = heb_steel_cross_section
         n = -355 * 14908 / 1.0 / 1e3 * 0.99
-        calc = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
+        calc = CheckStrengthCompressionClass123(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -39,7 +39,7 @@ class TestCompressionStrengthClass123Check:
         """Test result() for not ok compression load."""
         cross_section, section_properties = heb_steel_cross_section
         n = -355 * 14908 / 1.0 / 1e3 * 1.01
-        calc = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
+        calc = CheckStrengthCompressionClass123(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -50,7 +50,7 @@ class TestCompressionStrengthClass123Check:
         """Test result() for for positive compression load (tension)."""
         cross_section, section_properties = heb_steel_cross_section
         n = 100
-        calc = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
+        calc = CheckStrengthCompressionClass123(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
         with pytest.raises(ValueError):
             calc.calculation_formula()
 
@@ -58,5 +58,5 @@ class TestCompressionStrengthClass123Check:
         """Test report output for compression."""
         cross_section, section_properties = heb_steel_cross_section
         n = -100
-        calc = CompressionStrengthClass123Check(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
+        calc = CheckStrengthCompressionClass123(cross_section, n, gamma_m0=1.0, section_properties=section_properties)
         assert calc.report()
