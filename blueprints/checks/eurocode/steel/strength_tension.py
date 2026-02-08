@@ -19,7 +19,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class TensionStrengthCheck:
+class CheckStrengthTensionClass1234:
     """Class to perform tension force resistance check for steel cross-sections (Eurocode 3).
 
     Coordinate System:
@@ -48,7 +48,7 @@ class TensionStrengthCheck:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.tension_strength import TensionStrengthCheck
+    from blueprints.checks.eurocode.steel.tension_strength import CheckStrengthTensionClass1234
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -57,7 +57,7 @@ class TensionStrengthCheck:
     n = 10000  # Applied tensile force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = TensionStrengthCheck(heb_300_s355, n, gamma_m0=1.0)
+    calc = CheckStrengthTensionClass1234(heb_300_s355, n, gamma_m0=1.0)
     calc.report().to_word("tension_strength.docx", language="nl")
 
     """
