@@ -23,7 +23,7 @@ class CheckStrengthCompressionClass123:
     """Class to perform compression force resistance check for steel cross-sections,
         for cross-section class 1, 2, and 3 (Eurocode 3).
 
-        Coordinate System:
+    Coordinate System:
 
         z (vertical, usually strong axis)
             ↑
@@ -49,7 +49,7 @@ class CheckStrengthCompressionClass123:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.compression_strength import CompressionForceCheck
+    from blueprints.checks.eurocode.steel.strength_compression import CompressionForceCheck
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 

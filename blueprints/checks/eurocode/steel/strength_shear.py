@@ -21,7 +21,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class PlasticShearStrengthIProfileCheck:
+class CheckStrengthShearClass12IProfile:
     """Class to perform plastic shear force resistance check for steel I-profiles (Eurocode 3).
 
     Coordinate System:
@@ -52,7 +52,7 @@ class PlasticShearStrengthIProfileCheck:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.shear_strength import PlasticShearStrengthIProfileCheck
+    from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12IProfile
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -61,7 +61,7 @@ class PlasticShearStrengthIProfileCheck:
     v = 100  # Applied shear force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = PlasticShearStrengthIProfileCheck(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
+    calc = CheckStrengthShearClass12IProfile(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
     calc.report().to_word("shear_strength.docx", language="nl")
 
     """
@@ -103,7 +103,7 @@ class PlasticShearStrengthIProfileCheck:
         r1 = self.steel_cross_section.profile.top_radius  # type: ignore[attr-defined]
         r2 = self.steel_cross_section.profile.bottom_radius  # type: ignore[attr-defined]
 
-        if self.axis == "Vz" and self.steel_cross_section.fabrication_method == "rolled":
+        if self.axis == "Vz" and self.steel_cross_section.fabrication_method in ["hot-rolled", "cold-formed"]:
             av = formula_6_18_sub_av.Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=1.0)
         elif self.axis == "Vz" and self.steel_cross_section.fabrication_method == "welded":
             av = formula_6_18_sub_av.Form6Dot18SubDWeldedIHandBoxSection(hw_list=[hw], tw_list=[tw], eta=1.0)
