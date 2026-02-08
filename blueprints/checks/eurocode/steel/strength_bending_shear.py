@@ -6,8 +6,8 @@ from typing import ClassVar, Literal
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass34
-from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass34
+from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12IProfile
+from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12IProfile
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
     formula_6_12,
@@ -47,7 +47,7 @@ class CheckStrenghtBendingShearClass3IProfile:
         The steel cross-section to check.
     m : KNM, optional
         The applied bending moment, in kNm (default is 0 kNm).
-    mx : KNM, optional
+    m_x : KNM, optional
         The applied torsional moment, in kNm (default is 0 kNm).
     v : KN, optional
         The applied shear force, in kN (default is 0 kN).
@@ -71,19 +71,19 @@ class CheckStrenghtBendingShearClass3IProfile:
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     heb_300_profile = HEB.HEB300
     m = 600  # Applied bending moment in kNm
-    mx = 0  # Applied torsional moment in kNm
+    m_x = 0  # Applied torsional moment in kNm
     v = 600  # Applied shear force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = CheckStrenghtBendingShearClass3IProfile(
-        heb_300_s355, m, mx, v, axis_m="My", axis_v="Vz", gamma_m0=1.0
+        heb_300_s355, m, m_x, v, axis_m="My", axis_v="Vz", gamma_m0=1.0
     )
     calc.report().to_word("bending_moment_strength.docx")
     """
 
     steel_cross_section: SteelCrossSection
     m: KNM = 0
-    mx: KNM = 0
+    m_x: KNM = 0
     v: KN = 0
     axis_m: Literal["My", "Mz"] = "My"
     axis_v: Literal["Vz", "Vy"] = "Vz"
@@ -115,17 +115,17 @@ class CheckStrenghtBendingShearClass3IProfile:
             Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
         """
         v_ed = abs(self.v * KN_TO_N)
-        m_x = abs(self.mx * KNM_TO_NMM)
+        m_x = abs(self.m_x * KNM_TO_NMM)
         m_ed = abs(self.m * KNM_TO_NMM)
 
         if m_x == 0:
-            shear_resistance_calculation = CheckStrengthShearClass34(
+            shear_resistance_calculation = CheckStrengthShearClass12IProfile(
                 self.steel_cross_section, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
-            shear_resistance_calculation = CheckStrengthTorsionShearClass34(
-                self.steel_cross_section, mx=self.mx, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
+            shear_resistance_calculation = CheckStrengthTorsionShearClass12IProfile(
+                self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
 
@@ -182,10 +182,10 @@ class CheckStrenghtBendingShearClass3IProfile:
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis_m}). "
         )
 
-        if abs(self.v) > 0 or abs(self.mx) > 0:
+        if abs(self.v) > 0 or abs(self.m_x) > 0:
             report.add_paragraph(
                 rf"Additionally a shear force of {abs(self.v):.{n}f} kN (axis {self.axis_v})"
-                + (rf" and a torsional moment of {abs(self.mx):.{n}f} kNm. " if abs(self.mx) > 0 else ". ")
+                + (rf" and a torsional moment of {abs(self.m_x):.{n}f} kNm. " if abs(self.m_x) > 0 else ". ")
             )
         report.add_paragraph("The resistance is calculated as follows, using cross-section class 3:").add_newline(2)
 
