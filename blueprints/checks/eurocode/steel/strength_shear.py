@@ -298,7 +298,7 @@ class CheckStrengthShearClass34:
         formulas = self.calculation_formula()
         report.add_paragraph(f"The maximum shear stress is: {formulas['shear_stress']:.{n}f} N/mm². ")
 
-        tau_max = self.steel_cross_section.yield_strength / (np.sqrt(3) * self.gamma_m0)
+        tau_max = round(self.steel_cross_section.yield_strength / (np.sqrt(3) * self.gamma_m0), n)
         report.add_paragraph("The maximum allowed shear stress is calculated as follows:")
         report.add_paragraph(rf"$f_y / (\sqrt{{3}} \cdot \gamma_{{M0}})$ = {tau_max} N/mm². ")
 
