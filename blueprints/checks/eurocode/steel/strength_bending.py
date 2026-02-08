@@ -82,7 +82,7 @@ class CheckStrengthBendingClass12:
             raise ValueError("Axis must be 'My' or 'Mz'.")
 
     def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate bending moment resistance check (Class 1 and 2 only, units: kNm).
+        """Calculate bending moment resistance check (Class 1 and 2 only).
 
         Returns
         -------
@@ -90,6 +90,8 @@ class CheckStrengthBendingClass12:
             Calculation results keyed by formula number.
         """
         f_y = self.steel_cross_section.yield_strength
+        # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
+        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         w = float(self.section_properties.sxx) if self.axis == "My" else float(self.section_properties.syy)  # type: ignore[attr-defined]
 
         m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
@@ -211,7 +213,7 @@ class CheckStrengthBendingClass3:
             raise ValueError("Axis must be 'My' or 'Mz'.")
 
     def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate bending moment resistance check (Class 3 only, units: kNm).
+        """Calculate bending moment resistance check (Class 3 only).
 
         Returns
         -------
@@ -219,6 +221,8 @@ class CheckStrengthBendingClass3:
             Calculation results keyed by formula number.
         """
         f_y = self.steel_cross_section.yield_strength
+        # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
+        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         if self.axis == "My":
             w = min(float(self.section_properties.zxx_plus), float(self.section_properties.zxx_minus))  # type: ignore[attr-defined]
         else:
