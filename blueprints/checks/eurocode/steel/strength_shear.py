@@ -187,7 +187,7 @@ class CheckStrengthShearClass34:
     Parameters
     ----------
     steel_cross_section : SteelCrossSection
-        The steel cross-section, of type I-profile, to check.
+        The steel cross-section to check.
     v : KN
         The applied shear force (in kN).
     axis : Literal["Vz", "Vy"]
