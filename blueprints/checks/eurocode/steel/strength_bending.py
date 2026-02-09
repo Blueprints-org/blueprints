@@ -48,7 +48,7 @@ class CheckStrengthBendingClass12:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.bending_moment_strength import CheckStrengthBendingClass12
+    from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass12
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -84,11 +84,8 @@ class CheckStrengthBendingClass12:
         f_y = self.steel_cross_section.yield_strength
         # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
-        w = (
-            float(self.steel_cross_section.profile.section_properties().sxx)
-            if self.axis == "My"
-            else float(self.steel_cross_section.profile.section_properties().syy)
-        )  # type: ignore[attr-defined]
+        props = self.steel_cross_section.profile.section_properties()
+        w = float(props.sxx) if self.axis == "My" else float(props.syy)
 
         m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
         m_c_rd = formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)

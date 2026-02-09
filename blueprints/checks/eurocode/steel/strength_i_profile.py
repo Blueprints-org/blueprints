@@ -186,7 +186,7 @@ class CheckStrengthIProfileClass3:
 
         report.add_heading("Calculation")
         for subcheck in self.subchecks().values():
-            if isinstance(subcheck, CheckProtocol):
+            if type(subcheck) not in [CheckResult, type(None)]:
                 sub_report = subcheck.report(n=n)
                 report.add_heading(str(sub_report.title), level=2)
                 report += sub_report

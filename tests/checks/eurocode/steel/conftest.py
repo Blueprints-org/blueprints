@@ -13,7 +13,6 @@ def heb_steel_cross_section() -> SteelCrossSection:
     """Create a SteelCrossSection fixture with HEB300 profile and S355 steel material."""
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     profile = HEB.HEB300
-    profile.section_properties()
     return SteelCrossSection(profile=profile, material=steel_material)
 
 
@@ -22,5 +21,4 @@ def chs_steel_cross_section() -> SteelCrossSection:
     """Create a SteelCrossSection fixture with CHS profile and S355 steel material."""
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     profile = CHS.CHS1016x12_5
-    profile.section_properties()
     return SteelCrossSection(profile=profile, material=steel_material)
