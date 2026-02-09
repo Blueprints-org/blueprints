@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from typing import Any, Optional
 
 from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks.check_result import CheckResult
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.utils.report import Report
@@ -156,6 +157,8 @@ def add_unity_check_summary(report: Report, calculations: dict[str, Optional["Ch
     overall_ok = True
     for check_name, check in calculations.items():
         if check is None:
+            continue
+        if isinstance(check, CheckResult):
             continue
         res = check.result()
         uc = getattr(res, "unity_check", None)
