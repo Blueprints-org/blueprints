@@ -186,10 +186,11 @@ class CheckStrengthIProfileClass3:
 
         report.add_heading("Calculation")
         for subcheck in self.subchecks().values():
-            if isinstance(subcheck, CheckProtocol):
-                sub_report = subcheck.report(n=n)
-                report.add_heading(str(sub_report.title), level=2)
-                report += sub_report
+            if subcheck is None or isinstance(subcheck, CheckResult):
+                continue
+            sub_report = subcheck.report(n=n)
+            report.add_heading(str(sub_report.title), level=2)
+            report += sub_report
 
         report.add_heading("Conclusion")
         if self.result().is_ok:
@@ -198,3 +199,21 @@ class CheckStrengthIProfileClass3:
             report.add_paragraph("The check for steel I-profile strength (Class 3) has NOT been passed.").add_equation(r"Check \to NOT \ OK")
 
         return report
+
+
+if __name__ == "__main__":
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
+    n = -100  # Applied compressive force in kN
+    v_y = 100  # Applied shear force in y-direction in kN
+    v_z = 20  # Applied shear force in z-direction in kN
+    m_x = 3  # Applied torsional moment in kNm
+    m_y = 50  # Applied bending moment about y-axis in kNm
+    m_z = 80  # Applied bending moment about z-axis in kNm
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = CheckStrengthIProfileClass3(heb_300_s355, n, v_y, v_z, m_x, m_y, m_z, gamma_m0=1.0)
+    calc.report().to_word("compression_strength.docx", language="nl")
