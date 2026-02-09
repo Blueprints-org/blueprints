@@ -47,7 +47,7 @@ class CheckStrengthIProfileClass3:
     ignore_checks : list[str] | None, optional
         List of check names to ignore during calculation. Options:
         "compression", "tension", "bending about z", "bending about y", "shear z", "shear y", "torsion",
-        "bending and shear", "bending and axial", "bending, shear and axial"
+        "torsion and shear z", "torsion and shear y", "bending and shear", "bending and axial", "bending, shear and axial"
 
     Example
     -------

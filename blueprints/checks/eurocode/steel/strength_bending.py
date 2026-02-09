@@ -128,6 +128,11 @@ class CheckStrengthBendingClass12:
             return report
 
         calculation = self.calculation_formula()
+        # Compute result from existing calculation to avoid recalculating formulas
+        provided = abs(self.m) * KNM_TO_NMM
+        required = calculation["resistance"]
+        result = CheckResult.from_comparison(provided=provided, required=float(required))
+
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
@@ -136,7 +141,7 @@ class CheckStrengthBendingClass12:
         report.add_formula(calculation["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
         report.add_formula(calculation["check"], n=n)
-        if self.result().is_ok:
+        if result.is_ok:
             report.add_paragraph("The check for bending moment satisfies the requirements.")
         else:
             report.add_paragraph("The check for bending moment does NOT satisfy the requirements.")
@@ -248,12 +253,17 @@ class CheckStrengthBendingClass3:
         Report
             Report of the bending moment check.
         """
-        calculation = self.calculation_formula()
-
         report = Report(f"Check: bending moment steel beam (axis {self.axis})")
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
             return report
+
+        calculation = self.calculation_formula()
+        # Compute result from existing calculation to avoid recalculating formulas
+        provided = abs(self.m) * KNM_TO_NMM
+        required = calculation["resistance"]
+        result = CheckResult.from_comparison(provided=provided, required=float(required))
+
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
             rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
@@ -262,7 +272,7 @@ class CheckStrengthBendingClass3:
         report.add_formula(calculation["resistance"], n=n)
         report.add_paragraph("The unity check is calculated as follows:")
         report.add_formula(calculation["check"], n=n)
-        if self.result().is_ok:
+        if result.is_ok:
             report.add_paragraph("The check for bending moment satisfies the requirements.")
         else:
             report.add_paragraph("The check for bending moment does NOT satisfy the requirements.")
