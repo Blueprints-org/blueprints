@@ -181,7 +181,7 @@ class CheckStrengthShearClass34:
     Parameters
     ----------
     steel_cross_section : SteelCrossSection
-        The steel cross-section, of type I-profile, to check.
+        The steel cross-section to check.
     v : KN
         The applied shear force (in kN).
     axis : Literal["Vz", "Vy"]
@@ -224,9 +224,8 @@ class CheckStrengthShearClass34:
         """
         unit_stress = self.steel_cross_section.profile.unit_stress
         unit_sig_zxy = unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"]
-        sig_zxy = float(np.max(np.abs(unit_sig_zxy))) * self.v
-
-        resistance = float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / sig_zxy * self.v * KN_TO_N)
+        sig_zxy = float(np.max(np.abs(unit_sig_zxy))) * abs(self.v)
+        resistance = float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / sig_zxy * abs(self.v) * KN_TO_N)
 
         check_shear = formula_6_19.Form6Dot19CheckDesignElasticShearResistance(
             tau_ed=sig_zxy, f_y=self.steel_cross_section.yield_strength, gamma_m0=self.gamma_m0
