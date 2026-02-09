@@ -1,4 +1,4 @@
-"""Tests for CheckStrengthIProfileClass3.NormalForceCheck according to Eurocode 3."""
+"""Tests for CheckStrengthIProfileClass3 according to Eurocode 3."""
 
 import pytest
 

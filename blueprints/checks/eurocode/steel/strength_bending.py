@@ -210,16 +210,8 @@ class CheckStrengthBendingClass3:
         f_y = self.steel_cross_section.yield_strength
         # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
-        if self.axis == "My":
-            w = min(
-                float(self.steel_cross_section.profile.section_properties().zxx_plus),
-                float(self.steel_cross_section.profile.section_properties().zxx_minus),
-            )  # type: ignore[attr-defined]
-        else:
-            w = min(
-                float(self.steel_cross_section.profile.section_properties().zyy_plus),
-                float(self.steel_cross_section.profile.section_properties().zyy_minus),
-            )  # type: ignore[attr-defined]
+        props = self.steel_cross_section.profile.section_properties()
+        w = min(float(props.zxx_plus), float(props.zxx_minus)) if self.axis == "My" else min(float(props.zyy_plus), float(props.zyy_minus))  # type: ignore[attr-defined]
 
         m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
         m_c_rd = formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)
