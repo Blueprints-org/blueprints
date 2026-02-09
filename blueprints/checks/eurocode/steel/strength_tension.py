@@ -3,8 +3,6 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
-from sectionproperties.post.post import SectionProperties
-
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
@@ -43,8 +41,6 @@ class CheckStrengthTensionClass1234:
         The applied tensile force (positive value), default is 0 kN.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -65,15 +61,8 @@ class CheckStrengthTensionClass1234:
     steel_cross_section: SteelCrossSection
     n: KN = 0
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Tension strength check for steel profiles"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
-
-    def __post_init__(self) -> None:
-        """Post-initialization to extract section properties."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
 
     def calculation_formula(self) -> dict[str, Formula]:
         """Calculate tension force resistance check.
@@ -86,7 +75,7 @@ class CheckStrengthTensionClass1234:
         if self.n < 0:
             raise ValueError("Input force N (F_x) must be positive for tension check.")
 
-        a = float(self.section_properties.area)  # type: ignore[attr-defined]
+        a = float(self.steel_cross_section.profile.section_properties().area)  # type: ignore[attr-defined]
         f_y = self.steel_cross_section.yield_strength
         n_ed = self.n * KN_TO_N
         n_t_rd = formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)

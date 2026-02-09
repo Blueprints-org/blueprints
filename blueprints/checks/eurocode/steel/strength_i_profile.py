@@ -6,8 +6,6 @@ This module provides strength checks for steel I-profiles of class 3 cross-secti
 from dataclasses import dataclass, field
 from typing import Any, ClassVar, cast
 
-from sectionproperties.post.post import SectionProperties
-
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.steel import strength_bending, strength_compression, strength_tension
@@ -46,8 +44,6 @@ class CheckStrengthIProfileClass3:
 
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
     ignore_checks : list[str] | None, optional
         List of check names to ignore during calculation. Options:
         "compression", "tension", "bending about z", "bending about y", "shear z", "shear y", "torsion",
@@ -82,10 +78,8 @@ class CheckStrengthIProfileClass3:
     m_z: KNM = 0
 
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     ignore_checks: list[str] | None = None
 
-    profile: IProfile = field(init=False, repr=False)
     material: Any = field(init=False, repr=False)
     result_internal_force_1d: ResultInternalForce1D = field(init=False, repr=False)
 
@@ -96,11 +90,6 @@ class CheckStrengthIProfileClass3:
         """Post-initialization checks and type enforcement for forces/moments."""
         if not isinstance(self.steel_cross_section.profile, IProfile):
             raise TypeError("The provided profile is not an I-profile.")
-
-        object.__setattr__(self, "profile", self.steel_cross_section.profile)
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties(warping=True)
-            object.__setattr__(self, "section_properties", section_properties)
 
         object.__setattr__(
             self,
@@ -124,23 +113,19 @@ class CheckStrengthIProfileClass3:
         all_checks: dict[str, CheckProtocol | None] = {
             "compression": cast(
                 CheckProtocol,
-                strength_compression.CheckStrengthCompressionClass123(self.steel_cross_section, self.n, self.gamma_m0, self.section_properties),
+                strength_compression.CheckStrengthCompressionClass123(self.steel_cross_section, self.n, self.gamma_m0),
             ),
             "tension": cast(
                 CheckProtocol,
-                strength_tension.CheckStrengthTensionClass1234(self.steel_cross_section, self.n, self.gamma_m0, self.section_properties),
+                strength_tension.CheckStrengthTensionClass1234(self.steel_cross_section, self.n, self.gamma_m0),
             ),
             "bending about z": cast(
                 CheckProtocol,
-                strength_bending.CheckStrengthBendingClass3(
-                    self.steel_cross_section, self.m_z, axis="Mz", gamma_m0=self.gamma_m0, section_properties=self.section_properties
-                ),
+                strength_bending.CheckStrengthBendingClass3(self.steel_cross_section, self.m_z, axis="Mz", gamma_m0=self.gamma_m0),
             ),
             "bending about y": cast(
                 CheckProtocol,
-                strength_bending.CheckStrengthBendingClass3(
-                    self.steel_cross_section, self.m_y, axis="My", gamma_m0=self.gamma_m0, section_properties=self.section_properties
-                ),
+                strength_bending.CheckStrengthBendingClass3(self.steel_cross_section, self.m_y, axis="My", gamma_m0=self.gamma_m0),
             ),
             "shear z": None,
             "shear y": None,
@@ -180,7 +165,7 @@ class CheckStrengthIProfileClass3:
 
         report_helpers.add_section_properties(
             report,
-            self.section_properties,
+            self.steel_cross_section.profile.section_properties(),
             profile=self.steel_cross_section.profile,
             n=n,
             properties=["area", "a_sx", "a_sy", "zxx_plus", "zxx_minus", "zyy_plus", "zyy_minus", "j"],

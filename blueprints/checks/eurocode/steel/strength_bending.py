@@ -3,8 +3,6 @@
 from dataclasses import dataclass
 from typing import ClassVar, Literal
 
-from sectionproperties.post.post import SectionProperties
-
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
@@ -47,8 +45,6 @@ class CheckStrengthBendingClass12:
         Axis of bending: 'My' (bending around y) or 'Mz' (bending around z). Default is 'My'.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -69,15 +65,11 @@ class CheckStrengthBendingClass12:
     m: KNM = 0
     axis: Literal["My", "Mz"] = "My"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Bending moment strength check for steel profiles (Class 1 and 2 only)"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
         if self.axis not in ("My", "Mz"):
             raise ValueError("Axis must be 'My' or 'Mz'.")
 
@@ -92,7 +84,11 @@ class CheckStrengthBendingClass12:
         f_y = self.steel_cross_section.yield_strength
         # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
-        w = float(self.section_properties.sxx) if self.axis == "My" else float(self.section_properties.syy)  # type: ignore[attr-defined]
+        w = (
+            float(self.steel_cross_section.profile.section_properties().sxx)
+            if self.axis == "My"
+            else float(self.steel_cross_section.profile.section_properties().syy)
+        )  # type: ignore[attr-defined]
 
         m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
         m_c_rd = formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)
@@ -178,8 +174,6 @@ class CheckStrengthBendingClass3:
         Axis of bending: 'My' (bending around y) or 'Mz' (bending around z). Default is 'My'.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -200,15 +194,11 @@ class CheckStrengthBendingClass3:
     m: KNM = 0
     axis: Literal["My", "Mz"] = "My"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Bending moment strength check for steel profiles (Class 3 only)"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
         if self.axis not in ("My", "Mz"):
             raise ValueError("Axis must be 'My' or 'Mz'.")
 
@@ -224,9 +214,15 @@ class CheckStrengthBendingClass3:
         # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         if self.axis == "My":
-            w = min(float(self.section_properties.zxx_plus), float(self.section_properties.zxx_minus))  # type: ignore[attr-defined]
+            w = min(
+                float(self.steel_cross_section.profile.section_properties().zxx_plus),
+                float(self.steel_cross_section.profile.section_properties().zxx_minus),
+            )  # type: ignore[attr-defined]
         else:
-            w = min(float(self.section_properties.zyy_plus), float(self.section_properties.zyy_minus))  # type: ignore[attr-defined]
+            w = min(
+                float(self.steel_cross_section.profile.section_properties().zyy_plus),
+                float(self.steel_cross_section.profile.section_properties().zyy_minus),
+            )  # type: ignore[attr-defined]
 
         m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
         m_c_rd = formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)
