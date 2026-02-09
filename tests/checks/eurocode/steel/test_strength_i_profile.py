@@ -15,7 +15,7 @@ class TestCheckStrengthIProfileClass3:
         assert calc.result().is_ok
 
     def test_check_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
-        """Test check() returns True for no normal force."""
+        """Test check() returns False for large force."""
         n = 1e6
 
         calc = CheckStrengthIProfileClass3(heb_steel_cross_section, n=n, gamma_m0=1.0)

@@ -108,7 +108,7 @@ class CheckStrengthIProfileClass3:
             ),
         )
 
-    def subchecks(self) -> dict[str, CheckProtocol | None]:
+    def subchecks(self) -> dict[str, CheckProtocol | CheckResult | None]:
         """Perform calculation steps for all strength checks, optionally ignoring specified checks."""
         all_checks: dict[str, CheckProtocol | None] = {
             "compression": cast(
@@ -138,9 +138,9 @@ class CheckStrengthIProfileClass3:
         }
         # Only perform compression check if n < 0, tension if n > 0
         if self.n > 0:
-            all_checks["compression"] = CheckResult.from_bool(is_ok=True)
+            all_checks["compression"] = CheckResult.from_unity_check(unity_check=0.0)
         elif self.n < 0:
-            all_checks["tension"] = CheckResult.from_bool(is_ok=True)
+            all_checks["tension"] = CheckResult.from_unity_check(unity_check=0.0)
 
         if self.ignore_checks:
             return {k: v for k, v in all_checks.items() if k not in self.ignore_checks}
@@ -148,8 +148,8 @@ class CheckStrengthIProfileClass3:
 
     def result(self) -> CheckResult:
         """Perform all strength checks and return the overall result."""
-        checks = list(self.subchecks().values())
-        unity_checks = [c.result().unity_check for c in checks if c == isinstance(c, CheckProtocol)]
+        checks = self.subchecks().values()
+        unity_checks = [c.result().unity_check for c in checks if type(c) not in [CheckResult, type(None)]]
         filtered_unity_checks: list[float] = [0.0] + [float(uc) for uc in unity_checks if isinstance(uc, int | float)]
         return CheckResult.from_unity_check(max(filtered_unity_checks))
 
@@ -186,7 +186,7 @@ class CheckStrengthIProfileClass3:
 
         report.add_heading("Calculation")
         for subcheck in self.subchecks().values():
-            if subcheck is isinstance(subcheck, CheckProtocol):
+            if isinstance(subcheck, CheckProtocol):
                 sub_report = subcheck.report(n=n)
                 report.add_heading(str(sub_report.title), level=2)
                 report += sub_report
@@ -198,24 +198,3 @@ class CheckStrengthIProfileClass3:
             report.add_paragraph("The check for steel I-profile strength (Class 3) has NOT been passed.").add_equation(r"Check \to NOT \ OK")
 
         return report
-
-
-if __name__ == "__main__":
-    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
-    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-
-    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
-    n = -100  # Applied compressive force in kN
-    v_y = 100  # Applied shear force in y-direction in kN
-    v_z = 20  # Applied shear force in z-direction in kN
-    m_x = 3  # Applied torsional moment in kNm
-    m_y = 50  # Applied bending moment about y-axis in kNm
-    m_z = 80  # Applied bending moment about z-axis in kNm
-
-    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthIProfileClass3(heb_300_s355, n, v_y, v_z, m_x, m_y, m_z, gamma_m0=1.0)
-    calc.report().to_pdf("compression_strength.pdf")
-    import os
-
-    os.startfile("compression_strength.pdf")
