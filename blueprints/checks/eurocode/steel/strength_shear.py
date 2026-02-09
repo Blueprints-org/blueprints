@@ -4,13 +4,11 @@ from dataclasses import dataclass
 from typing import ClassVar, Literal
 
 import numpy as np
-from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_17, formula_6_18, formula_6_18_sub_av, formula_6_19
 from blueprints.codes.formula import Formula
-from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN
@@ -68,7 +66,6 @@ class CheckStrengthShearClass12IProfile:
     v: KN = 0
     axis: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Plastic shear strength check for steel I-profiles"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
@@ -76,9 +73,6 @@ class CheckStrengthShearClass12IProfile:
         """Post-initialization to extract section properties and check profile type."""
         if not isinstance(self.steel_cross_section.profile, IProfile):
             raise TypeError("The provided profile is not an I-profile.")
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
 
     def calculation_formula(self) -> dict[str, Formula]:
         """Calculate plastic shear force resistance check.
@@ -89,7 +83,7 @@ class CheckStrengthShearClass12IProfile:
             Calculation results keyed by formula number. Returns an empty dict if no shear force is applied.
         """
         # Get parameters from profile, average top and bottom flange properties
-        a = float(self.section_properties.area)  # type: ignore[attr-defined]
+        a = float(self.steel_cross_section.profile.area)  # type: ignore[attr-defined]
         b1 = self.steel_cross_section.profile.top_flange_width  # type: ignore[attr-defined]
         b2 = self.steel_cross_section.profile.bottom_flange_width  # type: ignore[attr-defined]
         tf1 = self.steel_cross_section.profile.top_flange_thickness  # type: ignore[attr-defined]
@@ -199,7 +193,7 @@ class CheckStrengthShearClass34:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass34IProfile
+    from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass34
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -208,7 +202,7 @@ class CheckStrengthShearClass34:
     v = 100  # Applied shear force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthShearClass34IProfile(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
+    calc = CheckStrengthShearClass34(heb_300_s355, v, axis="Vz", gamma_m0=1.0)
     calc.report().to_word("shear_strength.docx", language="nl")
 
     """
@@ -217,15 +211,8 @@ class CheckStrengthShearClass34:
     v: KN = 0
     axis: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Elastic shear strength check"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
-
-    def __post_init__(self) -> None:
-        """Post-initialization to extract section properties and check profile type."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
 
     def calculation_formula(self) -> dict[str, Formula | float | int]:
         """Calculate plastic shear force resistance check.
@@ -235,18 +222,9 @@ class CheckStrengthShearClass34:
         dict[str, Formula]
             Calculation results keyed by formula number. Returns an empty dict if no shear force is applied.
         """
-        rif1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM,
-            member="N/A",
-            result_for=ResultFor.LOAD_CASE,
-            load_case="N/A",
-            vy=self.v if self.axis == "Vy" else 0,
-            vz=self.v if self.axis == "Vz" else 0,
-        )
-
-        stress = self.steel_cross_section.profile.calculate_stress(rif1d)
-        sig_zxy_data = stress.get_stress()[0]["sig_zxy"]
-        sig_zxy = float(np.max(np.abs(sig_zxy_data)))
+        unit_stress = self.steel_cross_section.profile.unit_stress
+        unit_sig_zxy = unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"]
+        sig_zxy = float(np.max(np.abs(unit_sig_zxy))) * self.v
 
         resistance = float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / sig_zxy * self.v * KN_TO_N)
 
