@@ -85,7 +85,7 @@ class CheckStrengthBendingClass12:
         # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
-        w = float(props.sxx) if self.axis == "My" else float(props.syy)
+        w = float(props.sxx or 0) if self.axis == "My" else float(props.syy or 0)
 
         m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
         m_c_rd = formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)

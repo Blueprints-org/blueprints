@@ -110,7 +110,7 @@ class CheckStrengthIProfileClass3:
 
     def subchecks(self) -> dict[str, CheckProtocol | CheckResult | None]:
         """Perform calculation steps for all strength checks, optionally ignoring specified checks."""
-        all_checks: dict[str, CheckProtocol | None] = {
+        all_checks: dict[str, CheckProtocol | CheckResult | None] = {
             "compression": cast(
                 CheckProtocol,
                 strength_compression.CheckStrengthCompressionClass123(self.steel_cross_section, self.n, self.gamma_m0),
@@ -149,7 +149,7 @@ class CheckStrengthIProfileClass3:
     def result(self) -> CheckResult:
         """Perform all strength checks and return the overall result."""
         checks = self.subchecks().values()
-        unity_checks = [c.result().unity_check for c in checks if type(c) not in [CheckResult, type(None)]]
+        unity_checks = [c.result().unity_check if isinstance(c, CheckProtocol) else c.unity_check for c in checks if c is not None]
         filtered_unity_checks: list[float] = [0.0] + [float(uc) for uc in unity_checks if isinstance(uc, int | float)]
         return CheckResult.from_unity_check(max(filtered_unity_checks))
 
@@ -186,7 +186,7 @@ class CheckStrengthIProfileClass3:
 
         report.add_heading("Calculation")
         for subcheck in self.subchecks().values():
-            if type(subcheck) not in [CheckResult, type(None)]:
+            if isinstance(subcheck, CheckProtocol):
                 sub_report = subcheck.report(n=n)
                 report.add_heading(str(sub_report.title), level=2)
                 report += sub_report
