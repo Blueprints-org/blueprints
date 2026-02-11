@@ -1,7 +1,6 @@
 """Module for checking tension force resistance of steel cross-sections."""
 
 from dataclasses import dataclass
-from typing import ClassVar
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -14,15 +13,16 @@ from blueprints.structural_sections.steel.steel_cross_section import SteelCrossS
 from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.unit_conversion import KN_TO_N
 from blueprints.utils.report import Report
+from blueprints.validations import NegativeValueError
 
 
 @dataclass(frozen=True)
 class CheckStrengthTensionClass1234:
-    """Class to perform tension force resistance check for steel cross-sections (Eurocode 3).
+    """Tension force resistance check for steel cross-sections (class 1,2,3 and 4) based on EN 1993-1-1:2005 art. 6.2.3.
 
     Coordinate System:
-
-        z (vertical, usually strong axis)
+    ```
+        z (vertical)
             ↑
             |     x (longitudinal beam direction, into screen)
             |    ↗
@@ -31,7 +31,8 @@ class CheckStrengthTensionClass1234:
             | /
             |/
       ←-----O
-       y (horizontal/side, usually weak axis)
+       y (horizontal/side)
+    ```
 
     Parameters
     ----------
@@ -39,22 +40,31 @@ class CheckStrengthTensionClass1234:
         The steel cross-section to check.
     n : KN, optional
         The applied tensile force (positive value), default is 0 kN.
+        Will raise an error if a negative value is provided, as this check is only for tension.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.strength_tension import CheckStrengthTensionClass1234
+    ```python
+    from blueprints.checks import CheckStrengthTensionClass1234
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel import SteelCrossSection
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
-    heb_300_profile = HEB.HEB300.with_corrosion(1.5)
+    heb_300_profile = HEB.HEB300.with_corrosion(corrosion=1.5)
     n = 10000  # Applied tensile force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthTensionClass1234(heb_300_s355, n, gamma_m0=1.0)
-    calc.report().to_word("tension_strength.docx", language="nl")
+    calc = CheckStrengthTensionClass1234(steel_cross_section=heb_300_s355, n=n, gamma_m0=1.0)
+    calc.report().to_word(path="tension_strength.docx")
+    ```
+
+    Raises
+    ------
+    NegativeValueError
+        If the applied force is not tension (i.e., if n < 0).
 
     """
 
@@ -62,28 +72,47 @@ class CheckStrengthTensionClass1234:
     n: KN = 0
     gamma_m0: DIMENSIONLESS = 1.0
     name: str = "Tension strength check for steel profiles"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
-    def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate tension force resistance check.
+    def __post_init__(self) -> None:
+        """Post-initialization to validate input parameters."""
+        if self.n < 0:
+            raise NegativeValueError(value_name="n (tensile force)", value=self.n)
+
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
 
         Returns
         -------
-        dict[str, Formula]
-            Calculation results keyed by formula number. Returns an empty dict if no tension force is applied.
+        list[str]
         """
-        if self.n < 0:
-            raise ValueError("Input force N (F_x) must be positive for tension check.")
+        return [EN_1993_1_1_2005]
 
-        a = float(self.steel_cross_section.profile.section_properties().area)  # type: ignore[attr-defined]
+    def plastic_resistance(self) -> Formula:
+        """Calculate the tension force plastic resistance of the steel cross-section based on the gross
+        cross-sectional area and yield strength (EN 1993-1-1:2005 art. 6.2.3(2a) - Formula (6.6)).
+
+        Returns
+        -------
+        Formula
+            The calculated tension force resistance.
+        """
+        a = self.steel_cross_section.profile.section_properties().area
         f_y = self.steel_cross_section.yield_strength
+        return formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
+
+    def tensile_strength_unity_check(self) -> Formula:
+        """Calculate the unity check for tensile strength of the steel cross-section based on the applied tensile
+        force and the calculated resistance (EN 1993-1-1:2005 art. 6.2.3(1) - Formula (6.5)).
+
+        Returns
+        -------
+        Formula
+            The calculated unity check for tensile strength.
+        """
         n_ed = self.n * KN_TO_N
-        n_t_rd = formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
-        check_tension = formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
-        return {
-            "resistance": n_t_rd,
-            "check": check_tension,
-        }
+        n_t_rd = self.plastic_resistance()
+        return formula_6_5.Form6Dot5UnityCheckTensileStrength(n_ed=n_ed, n_t_rd=n_t_rd)
 
     def result(self) -> CheckResult:
         """Calculate result of tension force resistance.
@@ -91,12 +120,11 @@ class CheckStrengthTensionClass1234:
         Returns
         -------
         CheckResult
-            True if the tension force check passes, False otherwise.
+            This is the result of the tension force resistance check, which compares the provided tensile force
+            with the calculated resistance. The check is satisfied if the provided tensile force does not exceed
+            the resistance.
         """
-        steps = self.calculation_formula()
-        provided = self.n * KN_TO_N
-        required = steps["resistance"]
-        return CheckResult.from_comparison(provided=provided, required=float(required))
+        return CheckResult.from_comparison(provided=self.n * KN_TO_N, required=self.plastic_resistance())
 
     def report(self, n: int = 2) -> Report:
         """Returns the report for the tension force check.
@@ -109,20 +137,34 @@ class CheckStrengthTensionClass1234:
         Returns
         -------
         Report
-            Report of the tension force check.
+            Full report on the tension force check, including the applied force, calculated resistance,
+            unity check, and overall result.
         """
-        report = Report("Check: tensile force steel beam")
+        report = Report("Tension check of steel cross-sections")
+
+        # will not generate a report if no tensile force is applied, as the check is not necessary in that case
         if self.n == 0:
             report.add_paragraph("No tensile force was applied; therefore, no tensile force check is necessary.")
             return report
+
+        # generate report if tensile force is applied
         report.add_paragraph(
-            rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
-            rf"is loaded with a tensile force of {self.n:.{n}f} kN. "
-            rf"The resistance is calculated as follows:"
+            f"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
+            f"is loaded with a tensile force of {self.n:.{n}f} kN."
         )
-        report.add_formula(self.calculation_formula()["resistance"], n=n)
+        report.add_newline(n=2)
+
+        # resistance
+        report.add_paragraph("The resistance is calculated as follows:")
+        report.add_formula(self.plastic_resistance(), n=n)
+        report.add_newline(n=2)
+
+        # unity check
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n)
+        report.add_formula(self.tensile_strength_unity_check(), n=n)
+        report.add_newline(n=2)
+
+        # add overall result based on the unity check
         if self.result().is_ok:
             report.add_paragraph("The check for tensile force satisfies the requirements.")
         else:
