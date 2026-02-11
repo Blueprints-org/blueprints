@@ -3,6 +3,8 @@ r"""Calculation of nominal concrete cover from EN 1992-1-1: Chapter 4 - Durabili
 from dataclasses import dataclass, field
 from typing import Literal
 
+from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
     AbrasionClass,
     CastingSurface,
@@ -27,10 +29,11 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.t
 )
 from blueprints.codes.latex_formula import latex_max_curly_brackets
 from blueprints.type_alias import MM
+from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class NominalConcreteCover:
+class NominalConcreteCover(CheckProtocol):
     r"""Class responsible for the calculation of the nominal concrete cover [$c_{nom}$] [$mm$].
     It takes considerations of art.4.4.1.2 and 4.4.1.3 into account.
 
@@ -74,8 +77,7 @@ class NominalConcreteCover:
         The default value is "Not applicable".
     """
 
-    label = "Nominal concrete cover according to art. 4.4.1"
-    source_document = "EN 1992-1-1"
+    name = "Nominal concrete cover according to art. 4.4.1"
 
     reinforcement_diameter: MM
     nominal_max_aggregate_size: MM
@@ -201,3 +203,47 @@ class NominalConcreteCover:
     def __str__(self) -> str:
         """Return the string representation of the nominal concrete cover."""
         return rf"{self.label} = {self.value()} \ mm"
+
+    @staticmethod
+    def source_docs() -> list[str]:
+        """The source documents for this check.
+
+        Returns
+        -------
+        list[str]
+            List of source document identifiers
+        """
+        return ["EN 1992-1-1"]
+
+    def result(self) -> CheckResult:
+        """Execute check and return standardized result.
+
+        This is the primary public API method. Call this to execute your
+        structural check and get a pass/fail result in a standardized format.
+
+        Returns
+        -------
+        CheckResult
+            Standardized Blueprints result object.
+        """
+        raise NotImplementedError(
+            "The result method is not implemented for the NominalConcreteCover check. "
+            "This check is intended to be used as a sub-check in a larger durability check according to art. 4.4.1 from EN 1992-1-1."
+        )
+
+    def report(self, n: int) -> Report:
+        """Generate formatted report of check results.
+
+        Produces human-readable reports in various formats for documentation.
+
+        Returns
+        -------
+        Report
+            Formatted report object summarizing check results.
+        n : int
+            Number of decimal places for numerical values in the report.
+        """
+        raise NotImplementedError(
+            "The report method is not implemented for the NominalConcreteCover check. "
+            "This check is intended to be used as a sub-check in a larger durability check according to art. 4.4.1 from EN 1992-1-1."
+        )
