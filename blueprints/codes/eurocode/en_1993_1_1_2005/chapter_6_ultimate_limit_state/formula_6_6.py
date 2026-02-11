@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form6Dot6DesignPlasticRestistanceGrossCrossSection(Formula):
+class Form6Dot6DesignPlasticResistanceGrossCrossSection(Formula):
     r"""Class representing formula 6.6 for the calculation of [$N_{pl,Rd}$]."""
 
     label = "6.6"

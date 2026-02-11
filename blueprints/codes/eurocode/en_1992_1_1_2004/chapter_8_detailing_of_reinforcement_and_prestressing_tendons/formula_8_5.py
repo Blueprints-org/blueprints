@@ -83,7 +83,7 @@ class Form8Dot5ProductAlphas235(Formula):
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
         return LatexFormula(
-            return_symbol="",
+            return_symbol=r"\alpha_2 \alpha_3 \alpha_5",
             result=f"{self:.{n}f}",
             equation=r"\alpha_2 \cdot \alpha_3 \cdot \alpha_5 \ge 0.7",
             numeric_equation=rf"{self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_5} \ge 0.7",

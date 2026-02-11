@@ -1,4 +1,4 @@
-"""Universal protocol class for structural engineering checks."""
+"""Universal protocol class for structural engineering checks. This defines the minimal interface of all checks inside Blueprints."""
 
 from typing import Protocol, runtime_checkable
 
@@ -34,6 +34,8 @@ class CheckProtocol(Protocol):
     ...
     ...     def subchecks(self) -> dict[str, CheckProtocol]: ...
     ...
+    ...     def calculation_formula(self) -> dict[str, Formula]: ...
+    ...
     ...     def report(self) -> Report: ...
     >>>
     >>> check = MyCheck(name="My Check", source_docs=["EN 1992"])
@@ -41,7 +43,18 @@ class CheckProtocol(Protocol):
     """
 
     name: str
-    source_docs: list[str]
+
+    @staticmethod
+    def source_docs() -> list[str]:
+        """Return the source documents for this check.
+
+        Returns
+        -------
+        list[str]
+            List of source document identifiers (e.g., standards, codes).
+            For example: ["EN 1993-1-1:2005", "AISC 360-16"]
+        """
+        ...
 
     def subchecks(self) -> dict[str, "CheckProtocol"]:
         """Get sub-check instances for composite checks.
@@ -81,7 +94,7 @@ class CheckProtocol(Protocol):
         """
         ...
 
-    def report(self) -> Report:
+    def report(self, n: int) -> Report:
         """Generate formatted report of check results.
 
         Produces human-readable reports in various formats for documentation.
@@ -90,5 +103,7 @@ class CheckProtocol(Protocol):
         -------
         Report
             Formatted report object summarizing check results.
+        n : int
+            Number of decimal places for numerical values in the report.
         """
         ...

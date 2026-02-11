@@ -197,6 +197,11 @@ class UNPProfile(Profile):
         )
 
     @property
+    def max_thickness(self) -> MM:
+        """Maximum element thickness of the profile [mm]."""
+        return max(self.top_flange_thickness, self.bottom_flange_thickness, self.web_thickness)
+
+    @property
     def _polygon(self) -> Polygon:
         """Return the polygon of the UNP profile without the offset and rotation applied."""
         return (

@@ -36,7 +36,7 @@ Total of 108 formulas present.
 | 6.3            | :heavy_check_mark: |         | Form6Dot3MinDeductionAreaStaggeredFastenerHoles                                   |        :x:         |
 | 6.4            | :heavy_check_mark: |         | Form6Dot4AdditionalMoment                                                         |        :x:         |
 | 6.5            | :heavy_check_mark: |         | Form6Dot5UnityCheckTensileStrength                                                |        :x:         |
-| 6.6            | :heavy_check_mark: |         | Form6Dot6DesignPlasticRestistanceGrossCrossSection                                |        :x:         |
+| 6.6            | :heavy_check_mark: |         | Form6Dot6DesignPlasticResistanceGrossCrossSection                                |        :x:         |
 | 6.7            | :heavy_check_mark: |         | Form6Dot7DesignUltimateResistanceNetCrossSection                                  |        :x:         |
 | 6.8            | :heavy_check_mark: |         | Form6Dot8NetDesignTensionResistance                                               |        :x:         |
 | 6.9            | :heavy_check_mark: |         | Form6Dot9CheckCompressionForce                                                    |        :x:         |

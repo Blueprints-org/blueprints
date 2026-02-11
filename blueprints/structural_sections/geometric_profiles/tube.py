@@ -48,6 +48,11 @@ class TubeProfile(Profile):
             raise ValueError(msg)
 
     @property
+    def max_thickness(self) -> MM:
+        """Maximum element thickness of the tube profile [mm]."""
+        return self.wall_thickness
+
+    @property
     def mesh_creator(self) -> partial:
         """Mesh settings for the geometrical calculations of the tube profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure

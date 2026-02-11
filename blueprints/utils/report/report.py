@@ -29,6 +29,8 @@ from pathlib import Path
 from typing import Any, Literal, Self
 
 from blueprints.codes.formula import Formula
+from blueprints.utils.language.translate import LatexTranslator
+from blueprints.utils.report._report_to_word import _ReportToWordConverter
 
 
 @dataclass
@@ -148,7 +150,7 @@ class Report:
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
-            self.content += rf"\begin{{equation}} {equation} \end{{equation}}"
+            self.content += rf"\begin{{equation}} {equation} \notag \end{{equation}}"
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -159,6 +161,7 @@ class Report:
         self,
         formula: Formula,
         options: Literal["short", "complete", "complete_with_units"] = "complete",
+        n: int = 2,
         include_source: bool = True,
         include_formula_number: bool = True,
         inline: bool = False,
@@ -174,6 +177,8 @@ class Report:
             short - Minimal representation (symbol = result [unit])
             complete - Complete representation (symbol = equation = numeric_equation = result [unit])
             complete_with_units - Complete representation with units (symbol = equation = numeric_equation_with_units [unit] = result [unit])
+        n : int, optional
+            Number of decimal places for numerical values in the formula (default is 2).
         include_source: bool, optional
             If True, includes the source document in the equation tag. Default is True.
             For example: "EN 1993-1-1:2005" or "EN 1992-1-1:2004".
@@ -199,7 +204,7 @@ class Report:
         >>> print(report.to_latex())
         """
         # Get the desired LaTeX representation from the formula
-        latex = formula.latex()
+        latex = formula.latex(n=n)
 
         # define the equation string based on options
         equation_str: str = ""
@@ -315,7 +320,7 @@ class Report:
         # Build table
         centering_cmd = r"\centering " if centering else ""
         table = (
-            rf"\begin{{table}}[h] {centering_cmd}"
+            rf"\begin{{table}}[H] {centering_cmd}"
             rf"\begin{{tabular}}{{{col_spec}}} "
             rf"\toprule {header_row} \midrule {data_rows} "
             rf"\bottomrule \end{{tabular}} \end{{table}}"
@@ -360,7 +365,7 @@ class Report:
         latex_image_path = image_path.replace("\\", "/")
 
         # Build the figure environment
-        figure_parts = [r"\begin{figure}[h] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
+        figure_parts = [r"\begin{figure}[H] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
 
         # Add optional caption
         if caption:
@@ -589,8 +594,10 @@ class Report:
             # Required packages
             r"\usepackage{amsmath}" + "\n"  # Advanced math environments and symbols
             r"\usepackage{booktabs}" + "\n"  # Professional-looking tables with \toprule, \midrule, \bottomrule
+            r"\usepackage{float}" + "\n"  # Improved float handling
             r"\usepackage{geometry}" + "\n"  # Page layout and margins
             r"\usepackage{graphicx}" + "\n"  # Include images and graphics
+            r"\usepackage{icomma}" + "\n"  # Proper comma handling in numbers
             r"\usepackage{setspace}" + "\n"  # Line spacing control
             r"\usepackage{xcolor}" + "\n"  # Color definitions and usage
             r"\usepackage{titlesec}" + "\n"  # Customize section titles
@@ -652,8 +659,6 @@ class Report:
         latex = preamble + self.content + r"\end{document}"
         if language != "en":
             # Translate content to the specified language
-            from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
-
             latex = LatexTranslator(original_text=latex, destination_language=language).text
 
         # If path is provided, save to file and return None
@@ -723,10 +728,6 @@ class Report:
         >>> docx_bytes = report.to_word()
         >>> # Can now send as email attachment or stream over HTTP
         """
-        from blueprints.utils._report_to_word import (  # noqa: PLC0415
-            _ReportToWordConverter,
-        )  # imported here as core does not have word module installed by default
-
         latex_content = self.to_latex(language=language)
         converter = _ReportToWordConverter(latex_content)
         if converter.document:
