@@ -29,8 +29,8 @@ from pathlib import Path
 from typing import Any, Literal, Self
 
 from blueprints.codes.formula import Formula
-from blueprints.utils._report_to_word import _ReportToWordConverter
 from blueprints.utils.language.translate import LatexTranslator
+from blueprints.utils.report._report_to_word import _ReportToWordConverter
 
 
 @dataclass
