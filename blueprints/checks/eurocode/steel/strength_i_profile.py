@@ -1,14 +1,14 @@
-"""Steel I-Profile strength check according to Eurocode 3.
+"""Steel I-Profile strength check according to EN 1993-1-1:2005.
 
 This module provides strength checks for steel I-profiles of class 3 cross-sections.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, cast
+from typing import Any, cast
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel import strength_bending, strength_compression, strength_tension
+from blueprints.checks.eurocode.steel import strength_tension
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
@@ -20,10 +20,13 @@ from blueprints.utils.report import Report
 
 @dataclass(frozen=True)
 class CheckStrengthIProfileClass3:
-    """Steel I-Profile strength check for class 3.
+    """Steel I-Profile strength check for class 3 based on EN 1993-1-1:2005 art. 6.2 (Resistance of cross-sections).
+
+    This check performs various sub-checks for steel I-profiles of class 3 cross-sections including:
+    -
 
     Coordinate System:
-
+    ```
         z (vertical, usually strong axis)
             ↑
             |     x (longitudinal beam direction, into screen)
@@ -34,8 +37,9 @@ class CheckStrengthIProfileClass3:
             |/
       ←-----O
        y (horizontal/side, usually weak axis)
+    ```
 
-    Performs strength checks on steel I-profiles according to Eurocode 3, for class 3 cross-sections.
+    Performs strength checks on steel I-profiles according to EN 1993-1-1:2005 art.6.2.3, for class 3 cross-sections.
 
     Parameters
     ----------
@@ -51,22 +55,25 @@ class CheckStrengthIProfileClass3:
 
     Example
     -------
+    ```python
     from blueprints.checks.eurocode.steel.strength_i_profile import CheckStrengthIProfileClass3
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel import SteelCrossSection
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     heb_300_profile = HEB.HEB300.with_corrosion(1.5)
     n = -100  # Applied compressive force in kN
     v_y = 100  # Applied shear force in y-direction in kN
-    v_z = 20    # Applied shear force in z-direction in kN
-    m_x = 3    # Applied torsional moment in kNm
-    m_y = 50   # Applied bending moment about y-axis in kNm
-    m_z = 80   # Applied bending moment about z-axis in kNm
+    v_z = 20  # Applied shear force in z-direction in kN
+    m_x = 3  # Applied torsional moment in kNm
+    m_y = 50  # Applied bending moment about y-axis in kNm
+    m_z = 80  # Applied bending moment about z-axis in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = CheckStrengthIProfileClass3(heb_300_s355, n, v_y, v_z, m_x, m_y, m_z, gamma_m0=1.0)
     calc.report().to_word("compression_strength.docx", language="nl")
+    ```
     """
 
     steel_cross_section: SteelCrossSection
@@ -83,8 +90,12 @@ class CheckStrengthIProfileClass3:
     material: Any = field(init=False, repr=False)
     result_internal_force_1d: ResultInternalForce1D = field(init=False, repr=False)
 
-    name: str = "Check for steel I-profiles of Class 3"
-    source_docs: ClassVar[list[Any]] = [EN_1993_1_1_2005]
+    name: str = "Check for steel I-profiles of Class 3 according to EN 1993-1-1:2005 art.6.2.3"
+
+    @staticmethod
+    def source_docs() -> list[str]:
+        """Return the source documents for this check."""
+        return [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization checks and type enforcement for forces/moments."""
@@ -111,22 +122,13 @@ class CheckStrengthIProfileClass3:
     def subchecks(self) -> dict[str, CheckProtocol | CheckResult | None]:
         """Perform calculation steps for all strength checks, optionally ignoring specified checks."""
         all_checks: dict[str, CheckProtocol | CheckResult | None] = {
-            "compression": cast(
-                CheckProtocol,
-                strength_compression.CheckStrengthCompressionClass123(self.steel_cross_section, self.n, self.gamma_m0),
-            ),
+            "compression": None,
             "tension": cast(
                 CheckProtocol,
                 strength_tension.CheckStrengthTensionClass1234(self.steel_cross_section, self.n, self.gamma_m0),
             ),
-            "bending about z": cast(
-                CheckProtocol,
-                strength_bending.CheckStrengthBendingClass3(self.steel_cross_section, self.m_z, axis="Mz", gamma_m0=self.gamma_m0),
-            ),
-            "bending about y": cast(
-                CheckProtocol,
-                strength_bending.CheckStrengthBendingClass3(self.steel_cross_section, self.m_y, axis="My", gamma_m0=self.gamma_m0),
-            ),
+            "bending about z": None,
+            "bending about y": None,
             "shear z": None,
             "shear y": None,
             "torsion": None,
