@@ -1,4 +1,4 @@
-"""Universal protocol class for structural engineering checks."""
+"""Universal protocol class for structural engineering checks. This defines the minimal interface of all checks inside Blueprints."""
 
 from typing import Protocol, runtime_checkable
 
