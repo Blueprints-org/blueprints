@@ -73,7 +73,7 @@ class Report:
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
     """
 
-    title: str | None = None
+    title: str = ""
     content: str = field(default="", init=False)
 
     def add_paragraph(self, text: str, bold: bool = False, italic: bool = False) -> Self:
@@ -511,7 +511,7 @@ class Report:
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
 
-        title_str = f'title="{self.title}"' if self.title else "title=None"
+        title_str = f'title="{self.title}"'
         stats = (
             f"sections={sections}, subsections={subsections}, "
             f"equations={equations}, tables={tables}, figures={figures}, "
@@ -531,7 +531,7 @@ class Report:
 
         lines = [
             "=" * 60,
-            f"LaTeX Report: {self.title or '(untitled)'}",
+            f"LaTeX Report: {self.title}",
             "=" * 60,
             f"Sections:      {sections}",
             f"Subsections:   {subsections}",
@@ -588,9 +588,6 @@ class Report:
         >>> from pathlib import Path
         >>> report.to_latex(Path("report.tex"))
         """
-        # Use provided title or fall back to instance title
-        doc_title = self.title or ""
-
         # Build the preamble with styling to match Word document converter (pdflatex compatible)
         preamble = (
             r"\documentclass[11pt]{article}" + "\n"
@@ -654,7 +651,7 @@ class Report:
             r"\parindent 0in" + "\n"  # No paragraph indentation
             # Begin document
             r"\begin{document}" + "\n"
-            rf"\title{{{doc_title}}}" + "\n"  # Set document title
+            rf"\title{{{self.title}}}" + "\n"  # Set document title
             r"\date{}" + "\n"  # No date displayed
             r"\maketitle" + "\n"  # Generate the title
         )

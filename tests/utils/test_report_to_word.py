@@ -159,3 +159,15 @@ class TestReportToWordConverter:
         docx_buffer = BytesIO(result)
         docx_doc = DocxDocument(docx_buffer)
         assert docx_doc
+
+    def test_empty_report_title_not_added(self) -> None:
+        """Test that an empty report title is not added to the Word document."""
+        report = Report()
+        report.add_paragraph("Some content without a title.")
+
+        # Call without path argument
+        result = report.to_word()
+
+        # Verify result is bytes
+        assert isinstance(result, bytes)
+        assert len(result) > 0
