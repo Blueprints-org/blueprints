@@ -268,3 +268,73 @@ class TestNominalConcreteCover:
         )
 
         assert str(nominal_concrete_cover) == r"Nominal concrete cover according to art. 4.4.1 = 110.0 \ mm"
+
+    def test_source_docs(self) -> None:
+        """Test the source_docs method returns the expected list."""
+        nominal_concrete_cover = NominalConcreteCover(
+            reinforcement_diameter=25,
+            nominal_max_aggregate_size=32,
+            constants=NominalConcreteCoverConstants(),
+            structural_class=structural_class,
+            carbonation=Carbonation.XC1,
+            chloride=Chloride.XD1,
+            chloride_seawater=ChlorideSeawater.XS1,
+            delta_c_dur_gamma=0,
+            delta_c_dur_st=0,
+            delta_c_dur_add=0,
+            casting_surface=CastingSurface.PERMANENTLY_EXPOSED,
+            uneven_surface=False,
+            abrasion_class=AbrasionClass.XM1,
+        )
+
+        assert nominal_concrete_cover.source_docs() == ["EN 1992-1-1"]
+
+    def test_result_not_implemented(self) -> None:
+        """Test the result method raises NotImplementedError."""
+        nominal_concrete_cover = NominalConcreteCover(
+            reinforcement_diameter=25,
+            nominal_max_aggregate_size=32,
+            constants=NominalConcreteCoverConstants(),
+            structural_class=structural_class,
+            carbonation=Carbonation.XC1,
+            chloride=Chloride.XD1,
+            chloride_seawater=ChlorideSeawater.XS1,
+            delta_c_dur_gamma=0,
+            delta_c_dur_st=0,
+            delta_c_dur_add=0,
+            casting_surface=CastingSurface.PERMANENTLY_EXPOSED,
+            uneven_surface=False,
+            abrasion_class=AbrasionClass.XM1,
+        )
+
+        with pytest.raises(
+            NotImplementedError,
+            match=r"The result method is not implemented for the NominalConcreteCover check\. "
+            r"This check is intended to be used as a sub-check in a larger durability check according to art\. 4\.4\.1 from EN 1992-1-1\.",
+        ):
+            nominal_concrete_cover.result()
+
+    def test_report_not_implemented(self) -> None:
+        """Test the report method raises NotImplementedError."""
+        nominal_concrete_cover = NominalConcreteCover(
+            reinforcement_diameter=25,
+            nominal_max_aggregate_size=32,
+            constants=NominalConcreteCoverConstants(),
+            structural_class=structural_class,
+            carbonation=Carbonation.XC1,
+            chloride=Chloride.XD1,
+            chloride_seawater=ChlorideSeawater.XS1,
+            delta_c_dur_gamma=0,
+            delta_c_dur_st=0,
+            delta_c_dur_add=0,
+            casting_surface=CastingSurface.PERMANENTLY_EXPOSED,
+            uneven_surface=False,
+            abrasion_class=AbrasionClass.XM1,
+        )
+
+        with pytest.raises(
+            NotImplementedError,
+            match=r"The report method is not implemented for the NominalConcreteCover check\. "
+            r"This check is intended to be used as a sub-check in a larger durability check according to art\. 4\.4\.1 from EN 1992-1-1\.",
+        ):
+            nominal_concrete_cover.report(n=2)

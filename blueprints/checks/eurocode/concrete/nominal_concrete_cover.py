@@ -202,7 +202,7 @@ class NominalConcreteCover(CheckProtocol):
 
     def __str__(self) -> str:
         """Return the string representation of the nominal concrete cover."""
-        return rf"{self.label} = {self.value()} \ mm"
+        return rf"{self.name} = {self.value()} \ mm"
 
     @staticmethod
     def source_docs() -> list[str]:
