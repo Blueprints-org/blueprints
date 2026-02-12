@@ -5,6 +5,8 @@ from typing import Literal
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
+from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes import structural_class
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.nominal_cover_constants import (
     AbrasionClass,
     CastingSurface,
@@ -13,6 +15,7 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._
     NominalConcreteCoverConstantsBase as ConstantsBase,
 )
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._base_classes.structural_class import ConcreteStructuralClassBase
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.constants import NominalConcreteCoverConstants
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_2 import Form4Dot2MinimumConcreteCover
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_1 import (
@@ -24,10 +27,12 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.t
     Table4Dot1ExposureClasses,
 )
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_4n import (
     Table4Dot4nMinimumCoverDurabilityReinforcementSteel,
 )
 from blueprints.codes.latex_formula import latex_max_curly_brackets
+from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.type_alias import MM
 from blueprints.utils.report import Report
 
@@ -213,7 +218,18 @@ class NominalConcreteCover(CheckProtocol):
         list[str]
             List of source document identifiers
         """
-        return ["EN 1992-1-1"]
+        return [EN_1992_1_1_2004]
+
+    def subchecks(self) -> dict[str, CheckProtocol]:
+        """There are no sub-checks for the NominalConcreteCover check as it is intended to be used as a
+        sub-check in a larger durability check according to art. 4.4.1 from EN 1992-1-1.
+
+        Returns
+        -------
+        dict[str, CheckProtocol]
+            Empty dictionary as there are no sub-checks for this check.
+        """
+        return {}
 
     def result(self) -> CheckResult:
         """Execute check and return standardized result.
@@ -231,19 +247,92 @@ class NominalConcreteCover(CheckProtocol):
             "This check is intended to be used as a sub-check in a larger durability check according to art. 4.4.1 from EN 1992-1-1."
         )
 
-    def report(self, n: int) -> Report:
+    def report(self, n: int = 2) -> Report:
         """Generate formatted report of check results.
 
         Produces human-readable reports in various formats for documentation.
 
+        Parameters
+        ----------
+        n : int, optional
+            Number of decimal places for numerical values in the report (default is 2).
+
         Returns
         -------
         Report
-            Formatted report object summarizing check results.
-        n : int
-            Number of decimal places for numerical values in the report.
+            Formatted report on the nominal concrete cover calculation, including
+            minimum cover requirements, durability considerations, and the governing value.
         """
-        raise NotImplementedError(
-            "The report method is not implemented for the NominalConcreteCover check. "
-            "This check is intended to be used as a sub-check in a larger durability check according to art. 4.4.1 from EN 1992-1-1."
+        report = Report(f"Nominal concrete cover according to art. 4.4.1 from {self.constants.CODE_PREFIX}EN 1992-1-1{self.constants.CODE_SUFFIX}")
+
+        # Minimum cover with regard to bond
+        report.add_paragraph("Minimum concrete cover with regard to bond according to table 4.2:")
+        report.add_formula(self.c_min_b(), n=n)
+        report.add_newline(n=2)
+
+        # Minimum cover with regard to durability
+        report.add_paragraph("Minimum concrete cover with regard to durability according to table 4.4N:")
+        report.add_formula(self.c_min_dur(), n=n)
+        report.add_newline(n=2)
+
+        # Minimum concrete cover
+        report.add_paragraph("Minimum concrete cover according to formula 4.2:")
+        report.add_formula(self.c_min(), n=n)
+        report.add_newline(n=2)
+
+        # Total minimum concrete cover with additional requirements
+        report.add_paragraph("Total minimum concrete cover including adjustments for uneven surface and abrasion class (art. 4.4.1.2 (11) and (13)):")
+        report.add_equation(
+            r"c_{min,total} = c_{min} + \Delta c_{uneven\ surface} + \Delta c_{abrasion\ class} = "
+            rf"{float(self.c_min()):.{n}f} + {self.cover_increase_for_uneven_surface():.{n}f} + "
+            rf"{self.cover_increase_for_abrasion_class():.{n}f} = {self.c_min_total():.{n}f} \ mm"
         )
+        report.add_newline(n=2)
+
+        # Nominal concrete cover
+        report.add_paragraph("Nominal concrete cover according to formula 4.1:")
+        report.add_formula(self.c_nom(), n=n)
+        report.add_newline(n=2)
+
+        # Minimum cover with regard to casting surface
+        report.add_paragraph(
+            f"Minimum cover with regard to casting surface according to art. 4.4.1.3 (4): "
+            f"{self.minimum_cover_with_regard_to_casting_surface():.{n}f} mm"
+        )
+        report.add_newline(n=2)
+
+        # Governing value
+        report.add_paragraph("Governing nominal concrete cover:", bold=True)
+        report.add_equation(
+            rf"c_{{nom}} = {latex_max_curly_brackets(f'{float(self.c_nom()):.{n}f}', f'{self.minimum_cover_with_regard_to_casting_surface():.{n}f}')}"
+            rf" = {self.value():.{n}f} \ mm"
+        )
+
+        return report
+
+
+if __name__ == "__main__":
+    # Example usage
+    exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC1, Chloride.XD1, ChlorideSeawater.XS1, FreezeThaw.NA, Chemical.NA)
+    structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, ConcreteMaterial(), False, False)
+
+    nominal_concrete_cover = NominalConcreteCover(
+        reinforcement_diameter=25,
+        nominal_max_aggregate_size=40,
+        constants=NominalConcreteCoverConstants(),
+        structural_class=structural_class,
+        carbonation=Carbonation.XC1,
+        chloride=Chloride.XD1,
+        chloride_seawater=ChlorideSeawater.XS1,
+        delta_c_dur_gamma=0,
+        delta_c_dur_st=0,
+        delta_c_dur_add=0,
+        casting_surface=CastingSurface.DIRECTLY_AGAINST_SOIL,
+        uneven_surface=True,
+        abrasion_class=AbrasionClass.XM1,
+    )
+
+    print(nominal_concrete_cover)
+    print(nominal_concrete_cover.latex(n=2))
+    report = nominal_concrete_cover.report(n=2)
+    print(report.to_word("nominal_concrete_cover_report.docx"))
