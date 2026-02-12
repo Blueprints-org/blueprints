@@ -94,14 +94,8 @@ issues = "https://github.com/Blueprints-org/blueprints/issues"
 changelog = "https://github.com/Blueprints-org/blueprints/releases"
 youtube = "https://www.youtube.com/@blueprintsorg"
 
-[[tool.uv.index]]
-url = "https://pkgs.dev.azure.com/bamict/Engines%20-%20BAM%20Digital%20Design/_packaging/engines/pypi/simple/"
-
 [tool.uv]
 default-groups = ["dev", "test"]
-
-[[tool.uv.index]]
-url = "https://pkgs.dev.azure.com/bamict/Engines%20-%20BAM%20Digital%20Design/_packaging/dd-cli/pypi/simple/"
 
 [build-system]
 requires = ["hatchling"]
