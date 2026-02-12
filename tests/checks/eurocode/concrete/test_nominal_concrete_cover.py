@@ -21,6 +21,7 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.t
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.table_4_3 import Table4Dot3ConcreteStructuralClass
 from blueprints.materials.concrete import ConcreteMaterial
 from blueprints.type_alias import MM
+from blueprints.utils.report import Report
 
 exposure_classes = Table4Dot1ExposureClasses(Carbonation.XC1, Chloride.XD1, ChlorideSeawater.XS1, FreezeThaw.NA, Chemical.NA)
 structural_class = Table4Dot3ConcreteStructuralClass(exposure_classes, 50, ConcreteMaterial(), False, False)
@@ -246,25 +247,80 @@ class TestNominalConcreteCover:
         )
 
         assert (
-            nominal_concrete_cover.latex() == r"\text{Nominal concrete cover according to art. 4.4.1 from EN 1992-1-1:2004:}\newline "
-            r"\text{max(Nominal concrete cover according to art. 4.4.1 } (c_{nom}) "
-            r"\text{, Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) ) } \newline"
-            r"= \max \left\{55.0; 110.0\right\} = 110.0 mm\newline \newline "
-            r"\text{Where:}\newline "
-            r"c_{nom} = c_{min,total}+\Delta c_{dev} = 45.0+10 = 55.0 mm\newline "
-            r"\Delta c_{dev} \text{ is determined according to art. 4.4.1.3 (1)}\newline "
-            r"c_{min,total} = c_{min} + \Delta c_{uneven surface}  + \Delta c_{abrasion class} = 35.0 + 5 + 5 = 45.0 mm\newline "
-            r"\Delta c_{uneven surface} \text{ and } \Delta c_{abrasion class} "
-            r"\text{ are determined according to art. 4.4.1.2 (11) and (13)}\newline "
-            r"c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 \ mm\right\} \newline "
-            r"= \max \left\{30.0; 35.0+0-0-0; 10\right\} = 35.0 mm\newline "
-            r"\Delta c_{dur,\gamma} , \Delta c_{dur,st} \text{ and } \Delta c_{dur,add} "
-            r"\text{ are determined according to art. 4.4.1.2 (6), (7) and (8)}\newline "
-            r"c_{min,b} \text{ is determined according to table 4.2 based on (equivalent) rebar diameter + 5} = 25 + 5 = 30 mm\newline "
-            r"c_{min,dur} \text{ is determined according to table 4.4 based on structural class S4 & "
-            r"exposure classes (XC1, XD1, XS1)} = 35 mm\newline "
-            r"\text{Minimum cover with regard to casting surface according to art. 4.4.1.3 (4) = }k2 \ge c_{min,dur} "
-            r"+ 75 mm for Directly against soil\newline "
+            nominal_concrete_cover.latex()
+            == r"""\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{icomma}
+\usepackage{setspace}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{helvet}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\geometry{a4paper, margin=1in}
+\setstretch{1.3}
+
+\newcommand{\txt}[1]{#1}
+\setlength{\parskip}{0pt}
+\setlength{\abovedisplayskip}{12pt}
+\setlength{\belowdisplayskip}{12pt}
+\setlist{nosep}
+
+\definecolor{blueprintblue}{RGB}{0,40,85}
+
+\makeatletter
+\renewcommand{\maketitle}{%
+    \begin{center}%
+        {\sffamily\fontsize{18}{19}\selectfont\bfseries\color{blueprintblue}\@title}%
+        \vspace{4pt}%
+    \end{center}%
+}
+\makeatother
+
+\titleformat{\section}
+    {\sffamily\fontsize{14}{15}\selectfont\bfseries\color{blueprintblue}}
+    {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+
+\titleformat{\subsection}
+    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}
+    {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
+
+\titleformat{\subsubsection}
+    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}
+    {\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}
+
+\parindent 0in
+\begin{document}
+\title{Nominal concrete cover according to art. 4.4.1 from EN 1992-1-1:2004}
+\date{}
+\maketitle
+\txt{Minimum concrete cover with regard to bond according to table 4.2:}
+\begin{equation} c_{min,b} = \text{(equivalent) rebar diameter} + 5 = 25 + 5 = 30.0 \tag{EN 1992-1-1:2004 4.2} \end{equation}
+\newline\newline
+\txt{Minimum concrete cover with regard to durability according to table 4.4N:}
+\begin{equation} c_{min,dur} = \text{structural class S4 and exposure classes (XC1, XD1, XS1)} = 35.0 \tag{EN 1992-1-1:2004 4.4N} \end{equation}
+\newline\newline
+\txt{Minimum concrete cover according to formula 4.2:}
+\begin{equation} c_{min} = \max \left\{c_{min,b}; c_{min,dur}+\Delta c_{dur,\gamma}-\Delta c_{dur,st}-\Delta c_{dur,add}; 10 \ mm\right\} = \max \left\{30.0; 35.0+0-0-0; 10\right\} = 35.0 \tag{EN 1992-1-1:2004 4.2} \end{equation}
+\newline\newline
+\txt{Total minimum concrete cover including adjustments for uneven surface and abrasion class (art. 4.4.1.2 (11) and (13)):}
+\begin{equation} c_{min,total} = c_{min} + \Delta c_{uneven\ surface} + \Delta c_{abrasion\ class} = 35.0 + 5.0 + 5.0 = 45.0 \ mm \notag \end{equation}
+\newline\newline
+\txt{Nominal concrete cover according to formula 4.1:}
+\begin{equation} c_{nom} = c_{min}+\Delta c_{dev} = 45.0+10 = 55.0 \tag{EN 1992-1-1:2004 4.1} \end{equation}
+\newline\newline
+\txt{Minimum cover with regard to casting surface according to art. 4.4.1.3 (4): 110.0 mm}
+\newline\newline
+\textbf{Governing nominal concrete cover:}
+\begin{equation} c_{nom} = \max \left\{55.0; 110.0\right\} = 110.0 \ mm \notag \end{equation}
+\end{document}"""  # noqa: E501
         )
 
         assert str(nominal_concrete_cover) == r"Nominal concrete cover according to art. 4.4.1 = 110.0 \ mm"
@@ -287,7 +343,7 @@ class TestNominalConcreteCover:
             abrasion_class=AbrasionClass.XM1,
         )
 
-        assert nominal_concrete_cover.source_docs() == ["EN 1992-1-1"]
+        assert nominal_concrete_cover.source_docs() == ["EN 1992-1-1:2004"]
 
     def test_result_not_implemented(self) -> None:
         """Test the result method raises NotImplementedError."""
@@ -314,8 +370,8 @@ class TestNominalConcreteCover:
         ):
             nominal_concrete_cover.result()
 
-    def test_report_not_implemented(self) -> None:
-        """Test the report method raises NotImplementedError."""
+    def test_subchecks_are_empty(self) -> None:
+        """Test the subchecks method returns an empty list."""
         nominal_concrete_cover = NominalConcreteCover(
             reinforcement_diameter=25,
             nominal_max_aggregate_size=32,
@@ -332,9 +388,42 @@ class TestNominalConcreteCover:
             abrasion_class=AbrasionClass.XM1,
         )
 
-        with pytest.raises(
-            NotImplementedError,
-            match=r"The report method is not implemented for the NominalConcreteCover check\. "
-            r"This check is intended to be used as a sub-check in a larger durability check according to art\. 4\.4\.1 from EN 1992-1-1\.",
-        ):
-            nominal_concrete_cover.report(n=2)
+        assert nominal_concrete_cover.subchecks() == {}
+
+    def test_report(self) -> None:
+        """Test the report method returns a valid Report."""
+        nominal_concrete_cover = NominalConcreteCover(
+            reinforcement_diameter=25,
+            nominal_max_aggregate_size=32,
+            constants=NominalConcreteCoverConstants(),
+            structural_class=structural_class,
+            carbonation=Carbonation.XC1,
+            chloride=Chloride.XD1,
+            chloride_seawater=ChlorideSeawater.XS1,
+            delta_c_dur_gamma=0,
+            delta_c_dur_st=0,
+            delta_c_dur_add=0,
+            casting_surface=CastingSurface.PERMANENTLY_EXPOSED,
+            uneven_surface=False,
+            abrasion_class=AbrasionClass.XM1,
+        )
+
+        report = nominal_concrete_cover.report(n=2)
+
+        assert isinstance(report, Report)
+        assert report.title == "Nominal concrete cover according to art. 4.4.1 from EN 1992-1-1:2004"
+        # Governing max comparison
+        assert r"\max \left\{50.00; 0.00\right\}" in report.content
+        # c_nom equation with c_min,total
+        assert "c_{min,total}" in report.content
+        # c_min_total breakdown
+        assert r"c_{uneven\ surface}" in report.content
+        assert r"c_{abrasion\ class}" in report.content
+        # c_min formula
+        assert r"c_{min,b}" in report.content
+        assert r"c_{min,dur}" in report.content
+        # Table references
+        assert "table 4.2" in report.content
+        assert "table 4.4" in report.content
+        # Casting surface
+        assert "art. 4.4.1.3 (4)" in report.content
