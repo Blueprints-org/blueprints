@@ -145,11 +145,8 @@ dependencies = [
 
 [package.dev-dependencies]
 cli = [
-    { name = "googletrans" },
     { name = "icecream" },
-    { name = "latex2mathml" },
     { name = "markdown-exec", extra = ["ansi"] },
-    { name = "mathml2omml" },
     { name = "mkdocs" },
     { name = "mkdocs-awesome-nav" },
     { name = "mkdocs-gen-files" },
@@ -168,7 +165,6 @@ cli = [
     { name = "pytest-raises" },
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
-    { name = "python-docx" },
     { name = "rich" },
     { name = "ruff" },
     { name = "ty" },
@@ -178,8 +174,10 @@ cli = [
 dev = [
     { name = "icecream" },
     { name = "pre-commit" },
+    { name = "rich" },
     { name = "ruff" },
     { name = "ty" },
+    { name = "typer" },
     { name = "types-shapely" },
 ]
 docs = [
@@ -196,9 +194,6 @@ docs = [
     { name = "pygments" },
 ]
 test = [
-    { name = "googletrans" },
-    { name = "latex2mathml" },
-    { name = "mathml2omml" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-describe" },
@@ -206,9 +201,6 @@ test = [
     { name = "pytest-raises" },
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
-    { name = "python-docx" },
-    { name = "rich" },
-    { name = "typer" },
 ]
 
 [package.metadata]
@@ -229,11 +221,8 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 cli = [
-    { name = "googletrans", specifier = ">=4.0.2" },
     { name = "icecream", specifier = "==2.1.10" },
-    { name = "latex2mathml", specifier = ">=3.78.1" },
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
-    { name = "mathml2omml", specifier = ">=0.0.2" },
     { name = "mkdocs", specifier = "~=1.6.1" },
     { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.4.0" },
     { name = "mkdocs-gen-files", specifier = ">=0.5,<0.7" },
@@ -252,7 +241,6 @@ cli = [
     { name = "pytest-raises", specifier = "==0.11" },
     { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
-    { name = "python-docx", specifier = ">=1.2.0" },
     { name = "rich", specifier = ">=13.7.0" },
     { name = "ruff", specifier = "==0.14.10" },
     { name = "ty", specifier = "==0.0.9" },
@@ -262,8 +250,10 @@ cli = [
 dev = [
     { name = "icecream", specifier = "==2.1.10" },
     { name = "pre-commit", specifier = "==4.5.1" },
+    { name = "rich", specifier = ">=13.7.0" },
     { name = "ruff", specifier = "==0.14.10" },
     { name = "ty", specifier = "==0.0.9" },
+    { name = "typer", specifier = ">=0.9.0" },
     { name = "types-shapely", specifier = "==2.1.0.20250917" },
 ]
 docs = [
@@ -280,9 +270,6 @@ docs = [
     { name = "pygments", specifier = "~=2.19.1" },
 ]
 test = [
-    { name = "googletrans", specifier = ">=4.0.2" },
-    { name = "latex2mathml", specifier = ">=3.78.1" },
-    { name = "mathml2omml", specifier = ">=0.0.2" },
     { name = "pytest", specifier = "==9.0.2" },
     { name = "pytest-cov", specifier = "==7.0.0" },
     { name = "pytest-describe", specifier = "==3.1.0" },
@@ -290,9 +277,6 @@ test = [
     { name = "pytest-raises", specifier = "==0.11" },
     { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
-    { name = "python-docx", specifier = ">=1.2.0" },
-    { name = "rich", specifier = ">=13.7.0" },
-    { name = "typer", specifier = ">=0.9.0" },
 ]
 
 [[package]]
