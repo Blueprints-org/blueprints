@@ -22,6 +22,11 @@ class TestLNPProfile:
         expected_name: str = "LNP 100x50x6"
         assert lnp_profile.name == expected_name
 
+    def test_maximum_element_thickness(self, lnp_profile: LNPProfile) -> None:
+        """Test the maximum element thickness of the LNP profile."""
+        expected_max_thickness: float = 6.0  # mm
+        assert pytest.approx(lnp_profile.max_thickness, rel=1e-6) == expected_max_thickness
+
     def test_steel_volume_per_meter(self, lnp_profile: LNPProfile) -> None:
         """Test the steel volume per meter."""
         # Expected volume per meter calculated analytically for LNP 100x50x6: (area 871 mm² = 0.000871 m²) × 1 m = 0.000871 m³/m

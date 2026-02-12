@@ -427,7 +427,7 @@ class _ReportToWordConverter:
         r"""Add an equation to the document.
 
         If the equation is longer than 150 characters, split it on every '=' (except the first),
-        or on every '\to' (except the first), whichever comes first.
+        or on every '\\to' (except the first), whichever comes first.
 
         Args:
             doc: The Word Document object.
@@ -437,8 +437,9 @@ class _ReportToWordConverter:
         tag_match = re.search(r"\\tag\{([^}]+)\}", content)
         tag = tag_match.group(1) if tag_match else None
 
-        # Remove tag from equation content
+        # Remove tag and \notag from equation content
         equation_content = re.sub(r"\s*\\tag\{[^}]+\}", "", content)
+        equation_content = re.sub(r"\\notag", "", equation_content)
 
         p = doc.add_paragraph()
         p.style = "No Spacing"

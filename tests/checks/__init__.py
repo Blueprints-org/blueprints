@@ -1,1 +1,1 @@
-"""Test Checks."""
+"""Test checks."""

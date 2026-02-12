@@ -38,8 +38,8 @@ class TestForm2Dot4DesignValueGeotechnicalParameter:
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
-            ("complete", r"E_{dst;d} \leq E_{stb;d} + T_d \to 2.01 \leq 1.00 + 1.00 \to 2.01 \leq 2.00 \to \text{Not OK}"),
-            ("short", r" \to \text{Not OK}"),
+            ("complete", r"CHECK \to E_{dst;d} \leq E_{stb;d} + T_d \to 2.01 \leq 1.00 + 1.00 \to 2.01 \leq 2.00 \to \text{Not OK}"),
+            ("short", r"CHECK \to \text{Not OK}"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:

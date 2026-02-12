@@ -22,6 +22,11 @@ class TestRHSSteelProfile:
         expected_name: str = "RHS400x200x16"
         assert rhs_profile.name == expected_name
 
+    def test_maximum_element_thickness(self, rhs_profile: RHSProfile) -> None:
+        """Test the maximum element thickness of the RHS profile."""
+        expected_max_thickness: float = 16.0  # mm
+        assert pytest.approx(rhs_profile.max_thickness, rel=1e-6) == expected_max_thickness
+
     def test_code(self, rhs_profile: RHSProfile) -> None:
         """Test the code of the RHS profile."""
         expected_alias: str = "RHS400x200x16"

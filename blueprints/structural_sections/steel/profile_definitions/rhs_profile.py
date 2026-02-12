@@ -140,6 +140,11 @@ class RHSProfile(Profile):
         )
 
     @property
+    def max_thickness(self) -> MM:
+        """Maximum element thickness of the profile [mm]."""
+        return max(self.left_wall_thickness, self.right_wall_thickness, self.top_wall_thickness, self.bottom_wall_thickness)
+
+    @property
     def _polygon(self) -> Polygon:
         """Return the polygon of the RHS profile without the offset and rotation applied."""
         outer_polygon = (

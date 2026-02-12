@@ -103,6 +103,12 @@ class TestReport:
         expected = r"\textbf{\textit{This is bold and italic}}" + "\n"
         assert fixture_report.content == expected
 
+    def test_multiline_add_text_calls(self, fixture_report: Report) -> None:
+        """Test multline add_text calls."""
+        fixture_report.add_paragraph("First line.Second line.")
+        expected = r"\txt{First line.Second line.}" + "\n"
+        assert fixture_report.content == expected
+
     def test_add_text_method_chaining(self, fixture_report: Report) -> None:
         """Test that add_text returns self for method chaining."""
         result = fixture_report.add_paragraph("First").add_paragraph("Second")
@@ -113,7 +119,7 @@ class TestReport:
     def test_add_equation_without_tag(self, fixture_report: Report) -> None:
         """Test adding equation without tag."""
         fixture_report.add_equation("a^2+b^2=c^2")
-        expected = r"\begin{equation} a^2+b^2=c^2 \end{equation}" + "\n"
+        expected = r"\begin{equation} a^2+b^2=c^2 \notag \end{equation}" + "\n"
         assert fixture_report.content == expected
 
     def test_add_equation_with_tag(self, fixture_report: Report) -> None:
