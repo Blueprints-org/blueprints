@@ -3757,13 +3757,13 @@ class TestTextLabel:
         # The default text_label style should NOT have background/border
         assert "background:" not in html.split("Test")[0].split("margin-top:15px")[-1]
 
-    def test_text_label_with_min_zoom_tracks_both(self) -> None:
+    def test_text_label_with_min_zoom_single_marker(self) -> None:
         """
-        Scenario: min_zoom tracks both the shape marker and the text label.
+        Scenario: min_zoom tracks the combined marker (icon + text_label in one DivIcon).
 
-        Given: A shape marker with text_label and min_zoom=10
+        Given: A triangle shape marker with text_label and min_zoom=10
         When: add_point is called
-        Then: Two entries are added to _zoom_controlled_markers
+        Then: One entry is added to _zoom_controlled_markers (icon and label are combined)
         """
         m = Map()
         m.add_point(
@@ -3772,8 +3772,8 @@ class TestTextLabel:
             text_label="CPT-01",
             min_zoom=10,
         )
-        assert len(m._zoom_controlled_markers) == 2, "Both marker and label should be tracked"
-        assert all(entry["min_zoom"] == 10 for entry in m._zoom_controlled_markers)
+        assert len(m._zoom_controlled_markers) == 1, "Combined marker should be a single entry"
+        assert m._zoom_controlled_markers[0]["min_zoom"] == 10
 
 
 # ===================================================================

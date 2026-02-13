@@ -277,6 +277,14 @@ class LabelStyle:
         CSS border string.
     padding : str
         CSS padding.
+    min_width : int | None
+        Minimum label width in pixels. Useful for short labels to prevent excessive wrapping.
+    max_width : int | None
+        Maximum label width in pixels. Text will wrap if exceeded.
+    min_height : int | None
+        Minimum label height in pixels. Useful for short labels to prevent excessive wrapping.
+    max_height : int | None
+        Maximum label height in pixels. Text will be truncated if exceeded.
     """
 
     font_size: int = 12
@@ -286,6 +294,10 @@ class LabelStyle:
     background_color: str | None = "rgba(255,255,255,0.8)"
     border: str | None = "1px solid #cccccc"
     padding: str = "2px 6px"
+    min_width: int | None = None
+    max_width: int | None = None
+    min_height: int | None = None
+    max_height: int | None = None
 
 
 @dataclass
@@ -581,6 +593,28 @@ def _capture_screenshot(
             driver.quit()
 
 
+def _text_label_html(text: str, ls: LabelStyle) -> str:
+    """Build an HTML snippet for a text label below a marker icon.
+
+    Parameters
+    ----------
+    text : str
+        Label text.
+    ls : LabelStyle
+        Label appearance.
+
+    Returns
+    -------
+    str
+        HTML ``<div>`` string.
+    """
+    return (
+        f'<div style="font-size:{ls.font_size}px;font-family:{ls.font_family};'
+        f"color:{ls.font_color};font-weight:{ls.font_weight};"
+        f'white-space:nowrap;text-align:center;">{text}</div>'
+    )
+
+
 # ---------------------------------------------------------------------------
 # Main Map class
 # ---------------------------------------------------------------------------
@@ -871,15 +905,17 @@ class Map:
         lat, lon = point.y, point.x
 
         emoji = label or ms.emoji
+        ls = _resolve_style(label_style, LabelStyle) or LabelStyle(background_color=None, border=None)
+        label_suffix = _text_label_html(text_label, ls) if text_label else ""
+
         if ms.shape and not emoji:
             # Shape marker path
             shape = ms.shape
             if shape == "triangle":
-                icon = folium.DivIcon(
-                    html=f'<div style="font-size:20px;color:{ms.shape_color};text-align:center;">▼</div>',
-                    icon_size=(40, 40),
-                    icon_anchor=(20, 10),
-                )
+                inner = f'<div style="font-size:20px;color:{ms.shape_color};text-align:center;">\u25bc</div>'
+                html = f'<div style="text-align:center;">{inner}{label_suffix}</div>'
+                h = 40 + (20 if text_label else 0)
+                icon = folium.DivIcon(html=html, icon_size=(100, h), icon_anchor=(50, 10))
                 marker = folium.Marker(
                     location=[lat, lon],
                     icon=icon,
@@ -900,13 +936,21 @@ class Map:
                     popup=self._make_popup(popup, popup_style),
                     rotation=cfg["rotation"],
                 )
+                # RegularPolygonMarker can't embed HTML; add separate label
+                if text_label:
+                    label_icon = folium.DivIcon(
+                        html=f'<div style="text-align:center;margin-top:10px;">{label_suffix}</div>',
+                        icon_size=(100, 30),
+                        icon_anchor=(50, 0),
+                    )
+                    folium.Marker(location=[lat, lon], icon=label_icon).add_to(self._target())
             marker.add_to(self._target())
         elif emoji:
-            icon = folium.DivIcon(
-                html=f'<div style="font-size:{ms.emoji_size}px;text-align:center;">{emoji}</div>',
-                icon_size=(ms.emoji_size + 10, ms.emoji_size + 10),
-                icon_anchor=((ms.emoji_size + 10) // 2, (ms.emoji_size + 10) // 2),
-            )
+            inner = f'<div style="font-size:{ms.emoji_size}px;text-align:center;">{emoji}</div>'
+            html = f'<div style="text-align:center;">{inner}{label_suffix}</div>'
+            w = max(ms.emoji_size + 10, 100 if text_label else 0)
+            h = ms.emoji_size + 10 + (20 if text_label else 0)
+            icon = folium.DivIcon(html=html, icon_size=(w, h), icon_anchor=(w // 2, (ms.emoji_size + 10) // 2))
             marker = folium.Marker(
                 location=[lat, lon],
                 icon=icon,
@@ -928,6 +972,14 @@ class Map:
                 popup=self._make_popup(popup, popup_style),
             )
             marker.add_to(self._target())
+            # folium.Icon can't embed HTML; add separate label
+            if text_label:
+                label_icon = folium.DivIcon(
+                    html=f'<div style="text-align:center;margin-top:10px;">{label_suffix}</div>',
+                    icon_size=(100, 30),
+                    icon_anchor=(50, 0),
+                )
+                folium.Marker(location=[lat, lon], icon=label_icon).add_to(self._target())
 
         if min_zoom is not None and min_zoom > 0:
             self._zoom_controlled_markers.append(
@@ -936,30 +988,6 @@ class Map:
                     "min_zoom": min_zoom,
                 }
             )
-
-        # Optional text label below the marker
-        if text_label:
-            ls = _resolve_style(label_style, LabelStyle) or LabelStyle(background_color=None, border=None)
-            label_html = (
-                f'<div style="text-align:center;margin-top:10px;">'
-                f'<div style="font-size:{ls.font_size}px;font-family:{ls.font_family};'
-                f"color:{ls.font_color};font-weight:{ls.font_weight};"
-                f'white-space:nowrap;">{text_label}</div></div>'
-            )
-            label_icon = folium.DivIcon(
-                html=label_html,
-                icon_size=(100, 30),
-                icon_anchor=(50, 0),
-            )
-            label_marker = folium.Marker(location=[lat, lon], icon=label_icon)
-            label_marker.add_to(self._target())
-            if min_zoom is not None and min_zoom > 0:
-                self._zoom_controlled_markers.append(
-                    {
-                        "var_name": label_marker.get_name(),
-                        "min_zoom": min_zoom,
-                    }
-                )
 
         return self
 
@@ -1489,6 +1517,8 @@ class Map:
         name: str | None = None,
         min_zoom: int | None = None,
         popup_style: PopupStyle | dict[str, Any] | None = None,
+        text_labels: list[str] | None = None,
+        label_style: LabelStyle | dict[str, Any] | None = None,
     ) -> Self:
         """Add clustered markers that group at low zoom.
 
@@ -1512,6 +1542,13 @@ class Map:
             ``None`` or ``0`` means always visible.
         popup_style : PopupStyle | dict[str, Any] | None
             Popup dimensions. Defaults to ``PopupStyle()``.
+        text_labels : list[str] | None
+            Per-point text annotations placed below each marker.
+            Styled via ``label_style``.
+        label_style : LabelStyle | dict[str, Any] | None
+            Style for ``text_labels``.  Defaults to a borderless,
+            transparent-background ``LabelStyle``.  Pass a ``dict``
+            as shortcut for ``LabelStyle(**dict)``.
 
         Returns
         -------
@@ -1523,27 +1560,41 @@ class Map:
         for i, point in enumerate(points):
             point_transformed = self._transform(point)
             self._extend_bounds(point_transformed)
+            lat, lon = point_transformed.y, point_transformed.x
 
             lbl = labels[i] if labels and i < len(labels) else None
             hvr = hovers[i] if hovers and i < len(hovers) else None
             pup = popups[i] if popups and i < len(popups) else None
 
             emoji = lbl or ms.emoji
+            ls = _resolve_style(label_style, LabelStyle) or LabelStyle(background_color=None, border=None)
+            txt = text_labels[i] if text_labels and i < len(text_labels) else None
+            label_suffix = _text_label_html(txt, ls) if txt else ""
+
             if emoji:
-                icon = folium.DivIcon(
-                    html=f'<div style="font-size:{ms.emoji_size}px;text-align:center;">{emoji}</div>',
-                    icon_size=(ms.emoji_size + 10, ms.emoji_size + 10),
-                    icon_anchor=((ms.emoji_size + 10) // 2, (ms.emoji_size + 10) // 2),
-                )
+                inner = f'<div style="font-size:{ms.emoji_size}px;text-align:center;">{emoji}</div>'
+                html = f'<div style="text-align:center;">{inner}{label_suffix}</div>'
+                w = max(ms.emoji_size + 10, 100 if txt else 0)
+                h = ms.emoji_size + 10 + (20 if txt else 0)
+                icon = folium.DivIcon(html=html, icon_size=(w, h), icon_anchor=(w // 2, (ms.emoji_size + 10) // 2))
             else:
                 icon = folium.Icon(icon=ms.icon, color=ms.marker_color, icon_color=ms.icon_color, prefix=ms.prefix)
 
             folium.Marker(
-                location=[point_transformed.y, point_transformed.x],
+                location=[lat, lon],
                 icon=icon,
                 tooltip=self._make_tooltip(hvr),
                 popup=self._make_popup(pup, popup_style),
             ).add_to(cluster)
+
+            # folium.Icon can't embed HTML; add separate label to cluster
+            if txt and not emoji:
+                label_icon = folium.DivIcon(
+                    html=f'<div style="text-align:center;margin-top:10px;">{label_suffix}</div>',
+                    icon_size=(100, 30),
+                    icon_anchor=(50, 0),
+                )
+                folium.Marker(location=[lat, lon], icon=label_icon).add_to(cluster)
 
         cluster.add_to(self._target())
         if min_zoom is not None and min_zoom > 0:
@@ -1605,10 +1656,17 @@ class Map:
 
         bg = f"background:{ls.background_color};" if ls.background_color else ""
         border = f"border:{ls.border};" if ls.border else ""
+        min_height = f"min-height:{ls.min_height}px;" if ls.min_height else ""
+        max_height = f"max-height:{ls.max_height}px;" if ls.max_height else ""
+        min_width = f"min-width:{ls.min_width}px;" if ls.min_width else ""
+        max_width = f"max-width:{ls.max_width}px;" if ls.max_width else ""
         css = (
             f"font-size:{ls.font_size}px;font-family:{ls.font_family};"
             f"color:{ls.font_color};font-weight:{ls.font_weight};"
-            f"padding:{ls.padding};border-radius:3px;white-space:nowrap;{bg}{border}"
+            f"padding:{ls.padding};"
+            f"border-radius:3px;"
+            "overflow-wrap:break-word;"
+            f"{bg}{border}{max_height}{min_height}{max_width}{min_width}"
         )
         # Estimate icon size from text length and font size so the anchor
         # centers the label on the coordinate and Leaflet doesn't render a
@@ -1617,7 +1675,7 @@ class Map:
         est_h = ls.font_size + 12
         icon = folium.DivIcon(
             html=f'<div style="{css}">{text}</div>',
-            icon_size=(int(est_w), int(est_h)),
+            icon_size="100%",  # Let CSS control sizing
             icon_anchor=(int(est_w // 2), int(est_h // 2)),
             class_name="",
         )
