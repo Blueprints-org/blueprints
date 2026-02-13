@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from typing import NamedTuple, Protocol
 
 from blueprints.structural_sections._profile import Profile
@@ -43,3 +43,7 @@ class StandardProfileMeta(type):
         except KeyError as e:
             raise AttributeError(f"Profile '{name}' does not exist in database.") from e
         return cls._factory(**profile._asdict())
+
+    def __iter__(cls: StandardProfileProtocol) -> Iterator[Profile]:
+        """Iterate over the profiles in the class database."""
+        return (cls.__getattr__(profile_key) for profile_key in cls._database)

@@ -46,3 +46,10 @@ class TestLNP:
 
         profile3 = LNP.LNP60x40x7
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the LNP class yields valid profiles."""
+        for profile in LNP:
+            assert isinstance(profile, LNPProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0
