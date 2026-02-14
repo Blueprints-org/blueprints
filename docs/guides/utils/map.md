@@ -1,24 +1,26 @@
-# Map
+# Make beautiful maps with Blueprints
 
-**Interactive maps from Shapely geometries.** One import, a few method calls, and you've got a full OpenStreetMap
-visualization — with hover tooltips, choropleths, heatmaps, and export to HTML, PNG, or SVG.
+One import, a few method calls, and you've got a full OpenStreetMap visualization with hover tooltips, 
+choropleths, heatmaps, and export to HTML, PNG, or SVG.
 
----
+Perfect for geotechnical site plans, infrastructure overviews, or any spatial data visualization where you want more 
+control than static images but don't need the full power of a GIS.
 
 **Key features:**
 
-- 🗺️ **Shapely-native** — pass `Point`, `Polygon`, `LineString` directly, including multi-geometries
-- 📝 **Markdown hover text** — bold, italic, links, lists, and code in tooltips
-- 🎨 **Choropleth & heatmaps** — color-coded maps from numeric data
-- 📊 **GeoPandas integration** — `Map.from_geodataframe()` one-liner
-- 🌐 **Auto CRS detection** — RD New (EPSG:28992) coordinates transform automatically
-- 📤 **Export anywhere** — HTML, PNG, SVG, async variants, and `BytesIO` buffers
-- 🧩 **Feature groups** — toggleable layers with a built-in layer control
-- 🔌 **10 tile providers** — OpenStreetMap, CartoDB, Esri, Stamen, and Kadaster
+- 🗺️ **Shapely-native**  pass `Point`, `Polygon`, `LineString` directly, including multi-geometries
+- 📝 **Markdown/HTML hover and popup text** bold, italic, links, lists, and code in tooltips
+- 📌 **Emoji & icon markers** any text or Font Awesome icons as markers
+- 🎨 **Choropleth & heatmaps** color-coded maps from numeric data
+- 📊 **GeoPandas integration** `Map.from_geodataframe()` one-liner
+- 🌐 **Auto CRS detection** RD New (EPSG:28992) coordinates transform automatically
+- 📤 **Export anywhere** HTML, PNG, SVG, async variants, and `BytesIO` buffers
+- 🧩 **Feature groups** toggleable layers with a built-in layer control
+- 🔌 **10 tile providers** OpenStreetMap, CartoDB, Esri, Stamen, and Kadaster
 
-??? example "TL;DR — full example for power users"
+??? example "📝 TL;DR full example for power users"
 
-    Points, lines, polygons, popups, feature groups, layer control, style dicts, and HTML export in one block.
+    Are you in a hurry? Here's a complete map example with points, lines, polygons, popups, feature groups, layer control, style dicts, and HTML export in one block.
     Everything below this fold explains each piece step by step.
 
     ```python exec="true" html="true" source="tabbed-right"
@@ -36,7 +38,7 @@ visualization — with hover tooltips, choropleths, heatmaps, and export to HTML
         ),
     )
 
-    # — Feature group: landmarks (emoji markers with hover + popups) —
+    # Feature group: landmarks (emoji markers with hover + popups) 
     m.create_feature_group("Landmarks")
     m.add_point(
         Point(4.9041, 52.3676),
@@ -59,7 +61,7 @@ visualization — with hover tooltips, choropleths, heatmaps, and export to HTML
         marker_style={"icon": "home", "marker_color": "green", "prefix": "fa"},
     )
 
-    # — Feature group: areas (polygon + line, styled with dicts) —
+    # Feature group: areas (polygon + line, styled with dicts)
     m.create_feature_group("Areas")
     m.add_polygon(
         Polygon([(4.876, 52.372), (4.889, 52.372), (4.889, 52.380), (4.876, 52.380)]),
@@ -75,7 +77,7 @@ visualization — with hover tooltips, choropleths, heatmaps, and export to HTML
         stroke={"color": "#e74c3c", "weight": 4, "dash_array": "10 6"},
     )
 
-    # — Circle marker with nested style dict —
+    # Circle marker with nested style dict
     m.reset_target()
     m.add_circle(
         Point(4.8812, 52.3584),
@@ -84,12 +86,123 @@ visualization — with hover tooltips, choropleths, heatmaps, and export to HTML
         style={"radius": 12, "stroke": {"color": "#8e44ad", "weight": 2}, "fill": {"color": "#8e44ad", "opacity": 0.5}},
     )
 
-    # — Text annotation —
+    # Text annotation
     m.add_text(Point(4.89, 52.37), "Centrum", style={"font_size": 14, "font_color": "#2c3e50"})
 
     m.add_layer_control(collapsed=False)
     m.set_bounds(padding=0.005)
     m.to_html("amsterdam_overview.html")
+
+    print(m.to_html())  # markdown-exec: hide
+    ```
+
+??? example "📝 TL;DR geotechnical site investigation with marker clusters"
+
+    For all those geotechnical engineers out there, here's a quick example of a site investigation map with 
+    GeoPandas data, marker clusters with text labels, RawHTML table popups, feature groups, and layer control.
+
+    Just imagine connecting this to your database of CPTs and boreholes, and you've got a dynamic site plan that 
+    updates with new data, no GIS software needed, **just some Blueprints magic.**
+
+    ```python exec="true" html="true" source="tabbed-right"
+    import geopandas as gpd
+    from shapely.geometry import Point
+    from blueprints.utils.map import Map, MapConfig, RawHTML
+
+    # CPT locations (Utrecht area)
+    cpts = gpd.GeoDataFrame(
+        {
+            "id": ["CPT-01", "CPT-02", "CPT-03", "CPT-04", "CPT-05", "CPT-06"],
+            "depth_m": [25, 30, 20, 28, 22, 35],
+            "date": ["2024-03-15", "2024-03-16", "2024-03-18", "2024-03-20", "2024-03-21", "2024-03-22"],
+            "qc_max_mpa": [18.2, 22.5, 15.0, 20.1, 16.8, 25.3],
+        },
+        geometry=[
+            Point(5.1180, 52.0900), Point(5.1050, 52.0950), Point(5.1250, 52.0870),
+            Point(5.0980, 52.1010), Point(5.1120, 52.0830), Point(5.1350, 52.0960),
+        ],
+        crs="EPSG:4326",
+    )
+
+    # Borehole locations
+    boreholes = gpd.GeoDataFrame(
+        {
+            "id": ["BH-01", "BH-02", "BH-03", "BH-04", "BH-05"],
+            "depth_m": [15, 20, 12, 18, 25],
+            "date": ["2024-04-01", "2024-04-02", "2024-04-03", "2024-04-05", "2024-04-06"],
+            "soil_type": ["Clay", "Peat / Clay", "Sand", "Clay / Sand", "Peat"],
+        },
+        geometry=[
+            Point(5.1100, 52.0920), Point(5.1200, 52.0980), Point(5.1020, 52.0860),
+            Point(5.1300, 52.0910), Point(5.0950, 52.0970),
+        ],
+        crs="EPSG:4326",
+    )
+
+    # RawHTML popup builders
+    def cpt_popup(row: gpd.GeoDataFrame) -> RawHTML:
+        """Build an HTML table popup for a CPT row."""
+        return RawHTML(
+            '<table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px;">'
+            f'<tr><th colspan="2" style="background:#2c3e50;color:white;padding:6px;text-align:center;">{row.id}</th></tr>'
+            f'<tr><td style="padding:4px;border:1px solid #ddd;">Depth</td><td style="padding:4px;border:1px solid #ddd;">{row.depth_m} m</td></tr>'
+            f'<tr><td style="padding:4px;border:1px solid #ddd;">Date</td><td style="padding:4px;border:1px solid #ddd;">{row.date}</td></tr>'
+            f'<tr><td style="padding:4px;border:1px solid #ddd;">q<sub>c</sub> max</td>'
+            f'<td style="padding:4px;border:1px solid #ddd;">{row.qc_max_mpa} MPa</td></tr>'
+            "</table><br><p>This popup is built with <code>RawHTML</code> to allow for custom styling and layout. You can include any HTML content here, such as tables, images, or links.</p>"
+        )
+
+    def bh_popup(row: gpd.GeoDataFrame) -> RawHTML:
+        """Build an HTML table popup for a borehole row."""
+        return RawHTML(
+            '<table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px;">'
+            f'<tr><th colspan="2" style="background:#2c3e50;color:white;padding:6px;text-align:center;">{row.id}</th></tr>'
+            f'<tr><td style="padding:4px;border:1px solid #ddd;">Depth</td><td style="padding:4px;border:1px solid #ddd;">{row.depth_m} m</td></tr>'
+            f'<tr><td style="padding:4px;border:1px solid #ddd;">Date</td><td style="padding:4px;border:1px solid #ddd;">{row.date}</td></tr>'
+            f'<tr><td style="padding:4px;border:1px solid #ddd;">Soil type</td>'
+            f'<td style="padding:4px;border:1px solid #ddd;">{row.soil_type}</td></tr>'
+            "</table><br><p>This popup is built with <code>RawHTML</code> to allow for custom styling and layout. You can include any HTML content here, such as tables, images, or links.</p>"
+        )
+
+    # Build the map
+    m = Map(
+        title="Site Investigation — Utrecht",
+        config=MapConfig(
+            tile_layer="esri_satellite",
+            zoom_start=14,
+            mouse_position=True,
+            fullscreen=True,
+            measure_control=True,
+        ),
+    )
+
+    # CPT cluster layer (🔺 emoji markers with text labels)
+    m.create_feature_group("🔺 CPTs")
+    m.add_marker_cluster(
+        points=list(cpts.geometry),
+        labels=["🔺"] * len(cpts),
+        hovers=[f"**{r.id}**\nDepth: {r.depth_m} m\nDate: {r.date}" for _, r in cpts.iterrows()],
+        popups=[cpt_popup(r) for _, r in cpts.iterrows()],
+        text_labels=list(cpts["id"]),
+        name="🔺 CPTs",
+        popup_style={"width": 280, "height": 160},
+    )
+
+    # Borehole cluster layer (🔵 emoji markers with text labels)
+    m.create_feature_group("🔵 Boreholes")
+    m.add_marker_cluster(
+        points=list(boreholes.geometry),
+        labels=["🔵"] * len(boreholes),
+        hovers=[f"**{r.id}**\nDepth: {r.depth_m} m\nDate: {r.date}" for _, r in boreholes.iterrows()],
+        popups=[bh_popup(r) for _, r in boreholes.iterrows()],
+        text_labels=list(boreholes["id"]),
+        name="🔵 Boreholes",
+        popup_style={"width": 280, "height": 160},
+    )
+
+    m.add_layer_control(collapsed=False)
+    m.set_bounds(padding=0.003)
+    m.to_html("geotechnical_site_map.html")
 
     print(m.to_html())  # markdown-exec: hide
     ```
@@ -107,7 +220,7 @@ m = Map(title="Hello Amsterdam")
 m.add_point(Point(4.9041, 52.3676), label="📍", hover="**Amsterdam**")
 
 # Save to an HTML file you can open in any browser
-m.to_html("hello.html")
+m.to_html("hello.html") # or just m.to_html() to get the HTML string that you can use in a web app or Marimo notebook
 print(m.to_html())  # markdown-exec: hide
 
 ```
@@ -118,14 +231,14 @@ it, and you get a bold "Amsterdam" tooltip.
 Let's walk through what happened:
 
 **`Map(title="Hello Amsterdam")`** creates a new map. The `title` shows as a floating label at the top. You didn't
-pass a `center` — that's fine. Map auto-fits the viewport to whatever geometries you add.
+pass a `center` that's fine. Map auto-fits the viewport to whatever geometries you add.
 
 **`add_point()`** takes a Shapely `Point(longitude, latitude)`. The `label` parameter turns the marker into an emoji (or
-any short text). The `hover` parameter accepts Markdown — `**Amsterdam**` renders as bold in the tooltip.
+any short text). The `hover` parameter accepts Markdown or `**Amsterdam**` renders as bold in the tooltip.
 
-**`to_html()`** writes a standalone HTML file. No server needed — just open it in a browser.
+**`to_html()`** writes a standalone HTML file. No server needed, just open it in a browser.
 
-!!! tip
+!!! tip "Chain calls for fluent API"
 
     Every `add_*` method returns `self`, so you can chain calls:
     
@@ -135,12 +248,10 @@ any short text). The `hover` parameter accepts Markdown — `**Amsterdam**` rend
 
     m = Map(title="Chained Calls")
 
-    m.add_point(Point(4.9, 52.37), label="📍").add_point(Point(5.1, 52.09), label="🏠").to_html("chained.html")
+    m.add_point(Point(5.1218, 52.09334), label="📍").add_point(Point(5.1, 52.09), label="🏠").to_html("chained.html")
 
     print(m.to_html()) # markdown-exec: hide
     ```
-
----
 
 ## Add lines and polygons
 
@@ -160,7 +271,7 @@ route = LineString([
     (4.8840, 52.3569),  # Leidseplein
 ])
 m.add_linestring(
-    route,
+    line=route,
     hover="**Walking route**\n*Centraal → Leidseplein*",
     stroke=StrokeStyle(color="#e74c3c", weight=4, dash_array="10 6"),
 )
@@ -171,7 +282,7 @@ jordaan = Polygon([
     (4.8890, 52.3800), (4.8760, 52.3800),
 ])
 m.add_polygon(
-    jordaan,
+    polygon=jordaan,
     hover="**De Jordaan**\nHistoric neighbourhood",
     stroke=StrokeStyle(color="#2ecc71", weight=2),
     fill=FillStyle(color="#2ecc71", opacity=0.15),
@@ -184,7 +295,7 @@ print(m.to_html())  # markdown-exec: hide
 
 A few things to notice here:
 
-**Coordinates are always `(longitude, latitude)`** — that's the Shapely convention (x, y). Map handles the flip to
+**Coordinates are always `(longitude, latitude)`** that's the Shapely convention (x, y). Map handles the flip to
 Leaflet's `(lat, lon)` internally.
 
 **`StrokeStyle`** controls borders and lines. You've got `color`, `weight` (pixels), `opacity`, and `dash_array` (an SVG
@@ -202,46 +313,56 @@ Line breaks with `\n` work too.
     `MultiPolygon`, and `LinearRing`. You can use the specific `add_point()`, `add_linestring()`, etc. — or just use *
     *`add_geometry()`** which auto-dispatches by type:
     
-        ```python
-        m.add_geometry(some_shapely_object, hover="Works for any type")
-        ```
+    ```python
+    m.add_geometry(some_shapely_object, hover="Works for any type")
+    ```
 
----
+!!! info "Style with dicts or objects" 
 
-## Style with dicts or objects
-
-Every `add_*` method that accepts a style object (`StrokeStyle`, `FillStyle`, `MarkerStyle`, etc.) also accepts a
-plain `dict` with the same keyword arguments. This means you can skip the extra imports for quick one-off styling:
-
-```python
-from shapely.geometry import Polygon
-from blueprints.utils import Map  # one import
-
-m = Map(title="Quick styling")
-poly = Polygon([(4.9, 52.3), (5.0, 52.3), (5.0, 52.4), (4.9, 52.4)])
-
-# Quick — pass dicts (no extra imports needed)
-m.add_polygon(
-    poly,
-    stroke={"color": "red", "weight": 4},
-    fill={"color": "red", "opacity": 0.15},
-)
-```
-
-When you need **reusable** style configs or want IDE autocomplete, use the style dataclass objects instead:
-
-```python
-from blueprints.utils import Map, StrokeStyle, FillStyle
-
-my_stroke = StrokeStyle(color="red", weight=4)
-m.add_polygon(poly1, stroke=my_stroke)
-m.add_polygon(poly2, stroke=my_stroke)  # reuse the same style
-```
-
-Both approaches work on all style parameters across the API: `stroke`, `fill`, `style`, `marker_style`,
-`label_style`, and `popup_style`.
-
----
+    Every `add_*` method that accepts a style object (`StrokeStyle`, `FillStyle`, `MarkerStyle`, etc.) also accepts a
+    plain `dict` with the same keyword arguments. This means you can skip the extra imports for quick one-off styling:
+    
+    ```python exec="true" html="true" source="tabbed-left"
+    from shapely.geometry import Polygon
+    from blueprints.utils import Map  # one import
+    
+    m = Map(title="Quick styling")
+    poly = Polygon([(4.9, 52.3), (5.0, 52.3), (5.0, 52.4), (4.9, 52.4)])
+    
+    # Quick,  pass dicts (no extra imports needed)
+    m.add_polygon(
+        poly,
+        stroke={"color": "red", "weight": 4},
+        fill={"color": "red", "opacity": 0.15},
+    )
+    
+    m.to_html("quick_style.html")
+    
+    print(m.to_html())  # markdown-exec: hide
+    ```
+    
+    When you need **reusable** style configs or want IDE autocomplete, use the style dataclass objects instead:
+    
+    ```python exec="true" html="true" source="tabbed-left"
+    from shapely.geometry import Polygon
+    from blueprints.utils import Map, StrokeStyle, FillStyle
+    
+    m = Map(title="Reusable styles")
+    
+    poly1 = Polygon([(4.9, 52.3), (5.0, 52.3), (5.0, 52.4), (4.9, 52.4)])
+    poly2 = Polygon([(4.85, 52.35), (4.95, 52.35), (4.95, 52.45), (4.85, 52.45)])
+    
+    my_stroke = StrokeStyle(color="red", weight=4)
+    m.add_polygon(poly1, stroke=my_stroke)
+    m.add_polygon(poly2, stroke=my_stroke)  # reuse the same style
+    
+    m.to_html("reusable_style.html")
+    
+    print(m.to_html())  # markdown-exec: hide
+    ```
+    
+    Both approaches work on all style parameters across the API: `stroke`, `fill`, `style`, `marker_style`,
+    `label_style`, and `popup_style`.
 
 ## Style your markers
 
@@ -255,21 +376,21 @@ m = Map(title="Marker Styles")
 
 # Emoji marker (any text works as label)
 m.add_point(
-    Point(4.9041, 52.3676),
+    point=Point(4.9041, 52.3676),
     label="🏛️",
     hover="**Royal Palace**",
 )
 
 # Icon marker (Folium/Font Awesome icons)
 m.add_point(
-    Point(4.8834, 52.3667),
+    point=Point(4.8834, 52.3667),
     hover="**Anne Frank House**",
     marker_style=MarkerStyle(icon="home", marker_color="green", prefix="fa"),
 )
 
 # Circle marker (fixed pixel size, doesn't scale with zoom)
 m.add_circle(
-    Point(4.8795, 52.3600),
+    point=Point(4.8795, 52.3600),
     hover="**Rijksmuseum**",
     style=CircleStyle(
         radius=12,
@@ -283,21 +404,21 @@ m.to_html("markers.html")
 print(m.to_html())  # markdown-exec: hide
 ```
 
-**`label`** on `add_point()` renders the marker as a `DivIcon` — essentially any HTML/emoji text. The `emoji_size` field
+**`label`** on `add_point()` renders the marker as a `DivIcon`, essentially any HTML/emoji text. The `emoji_size` field
 on `MarkerStyle` controls the font size (default 24px).
 
 **`MarkerStyle`** gives you Folium's built-in icon system. Set `prefix="fa"`
-for [Font Awesome](https://fontawesome.com/v4/icons/) icons or keep the default `"glyphicon"` for Bootstrap icons.
+for [Font Awesome](https://fontawesome.com/icons) icons or keep the default `"glyphicon"` for Bootstrap icons.
 
-**`add_circle()`** draws a `CircleMarker` — a circle that stays the same pixel size at every zoom level. Great for data
+**`add_circle()`** draws a `CircleMarker` a circle that stays the same pixel size at every zoom level. Great for data
 visualization where you don't want markers overlapping at low zoom.
 
----
 
 ## Feature groups and layer control
 
 When your map has multiple categories of data, you want the user to toggle them on and off. That's what "feature groups"
-are for — think of them as named folders. Everything you add while a group is active goes into that folder.
+are for, think of them as named folders. Everything you add while a group is active goes into that folder. 
+Easy for turn on/off control with the layer control widget.
 
 ```python exec="true" html="true" source="tabbed-right"
 from shapely.geometry import Point
@@ -307,13 +428,13 @@ m = Map(title="Amsterdam POI")
 
 # Group 1: Museums
 m.create_feature_group("🏛️ Museums")
-m.add_point(Point(4.8795, 52.3600), label="🖼️", hover="**Rijksmuseum**")
-m.add_point(Point(4.8812, 52.3584), label="🌻", hover="**Van Gogh Museum**")
+m.add_point(point=Point(4.8795, 52.3600), label="🖼️", hover="**Rijksmuseum**")
+m.add_point(point=Point(4.8812, 52.3584), label="🌻", hover="**Van Gogh Museum**")
 
 # Group 2: Parks
 m.create_feature_group("🌳 Parks")
-m.add_point(Point(4.8765, 52.3579), label="🌳", hover="**Vondelpark**")
-m.add_point(Point(4.9125, 52.3597), label="🌿", hover="**Oosterpark**")
+m.add_point(point=Point(4.8765, 52.3579), label="🌳", hover="**Vondelpark**")
+m.add_point(point=Point(4.9125, 52.3597), label="🌿", hover="**Oosterpark**")
 
 # Add layer control so the user can toggle groups
 m.add_layer_control(collapsed=False)
@@ -329,11 +450,10 @@ go back to the base map.
 
 **`add_layer_control()`** adds the checkbox widget in the corner. Set `collapsed=False` to show it expanded by default.
 
----
 
 ## Choropleth maps
 
-A "choropleth" is a map where areas are shaded by a numeric value — think population density, election results, or
+A "choropleth" is a map where areas are shaded by a numeric value, think population density, election results, or
 temperature. Map builds one from a GeoJSON FeatureCollection and a value column.
 
 ```python exec="true" html="true" source="tabbed-right"
@@ -389,16 +509,14 @@ print(m.to_html())  # markdown-exec: hide
 **`value_column`** tells Map which property holds the numeric value. **`key_on`** is the dot-path to the join key
 inside each feature (Folium convention).
 
-If you don't pass `values` explicitly, Map reads them straight from the GeoJSON properties — which is usually what
+If you don't pass `values` explicitly, Map reads them straight from the GeoJSON properties, which is usually what
 you want.
 
 **`hover_fields`** turns property keys into a tooltip table on mouse-over.
 
-!!! tip
+!!! tip "Multiple ways to pass GeoJSON"
 
-    You can pass `geojson_data` as a dict, a JSON string, or a `Path` to a `.geojson` file — Map handles all three.
-
----
+    You can pass `geojson_data` as a dict, a JSON string, or a `Path` to a `.geojson` file, Map handles all three.
 
 ## Heatmaps
 
@@ -419,7 +537,7 @@ points = [
 
 m = Map(title="Activity Heatmap")
 m.add_heatmap(
-    points,
+    points=points,
     style=HeatmapStyle(radius=20, blur=15, min_opacity=0.4),
 )
 
@@ -433,8 +551,6 @@ tuples to weight certain points more heavily.
 
 **`HeatmapStyle`** gives you control over `radius` (spread per point), `blur` (smoothing), `min_opacity`, and
 `gradient` (a dict mapping `{0.4: "blue", 0.6: "lime", 1.0: "red"}`).
-
----
 
 ## Marker clusters
 
@@ -452,7 +568,7 @@ labels = ["☕"] * 50
 hovers = [f"**Café #{i + 1}**" for i in range(50)]
 
 m = Map(title="Amsterdam Cafés")
-m.add_marker_cluster(cafes, labels=labels, hovers=hovers, name="Cafés")
+m.add_marker_cluster(points=cafes, labels=labels, hovers=hovers, name="Cafés")
 
 m.to_html("clusters.html")
 
@@ -461,12 +577,10 @@ print(m.to_html())  # markdown-exec: hide
 
 At low zoom you'll see cluster bubbles with counts. Zoom in and they split into individual ☕ markers.
 
----
-
 ## GeoPandas integration
 
 If you're working with a `GeoDataFrame`, you don't need to loop through rows yourself. The `from_geodataframe()`
-classmethod handles everything — CRS reprojection, per-row coloring, tooltips, and labels.
+classmethod handles everything. CRS reprojection, per-row coloring, tooltips, and labels.
 
 ```python exec="true" html="true" source="tabbed-right"
 import geopandas as gpd
@@ -484,7 +598,7 @@ gdf = gpd.GeoDataFrame(
 )
 
 m = Map.from_geodataframe(
-    gdf,
+    gdf=gdf,
     hover_columns=["name", "population"],
     color_column="population",
     legend_name="Population",
@@ -496,17 +610,10 @@ m.to_html("cities.html")
 print(m.to_html())  # markdown-exec: hide
 ```
 
-**`color_column`** activates choropleth coloring — each geometry gets a color from a linear colormap based on its
+**`color_column`** activates choropleth coloring, each geometry gets a color from a linear colormap based on its
 numeric value. A legend is added automatically.
 
 **`hover_columns`** builds a Markdown tooltip from the specified columns. Each column shows as `**column**: value`.
-
-!!! warning
-
-    If your GeoDataFrame uses a CRS other than WGS84 (EPSG:4326), Map reprojects it automatically using `gdf.to_crs()`.
-    This requires `pyproj`.
-
----
 
 ## Coordinate auto-detection
 
@@ -519,7 +626,7 @@ from blueprints.utils import Map
 
 # These are RD New coordinates (x: 0-300k, y: 300k-625k)
 m = Map(title="RD New Auto-Detection")
-m.add_point(Point(121_000, 487_000), label="📍", hover="**Amsterdam** (from RD)")
+m.add_point(point=Point(121_000, 487_000), label="📍", hover="**Amsterdam** (from RD)")
 
 m.to_html("rd_new.html")
 
@@ -527,7 +634,7 @@ print(m.to_html())  # markdown-exec: hide
 ```
 
 Map checks whether the x-coordinate is between 0–300,000 and y is between 300,000–625,000. If so, it assumes RD New
-and transforms via pyproj.
+and transforms via `pyproj`.
 
 You can also set the CRS explicitly on the constructor if auto-detection doesn't fit your case:
 
@@ -538,11 +645,10 @@ m = Map(title="Explicit CRS", source_crs="EPSG:28992")
 !!! info "How auto-detection works"
 
     The detection runs on the first coordinate of each geometry you add. If it falls within the RD New bounding box,
-    transformation kicks in. For coordinates outside that range, nothing happens — they're assumed to be WGS84 already.
+    transformation kicks in. For coordinates outside that range, nothing happens, they're assumed to be WGS84 already.
     
     This means you can't mix RD New and WGS84 geometries on the same map without setting `source_crs` explicitly on the constructor.
 
----
 
 ## Map configuration
 
@@ -570,29 +676,43 @@ m.to_html("dark_mode.html")
 print(m.to_html())  # markdown-exec: hide
 ```
 
-### Available tile providers
+!!! info "Available tile providers" 
+    
+    | Key                  | Description                     |
+    |----------------------|---------------------------------|
+    | `openstreetmap`      | Default OpenStreetMap           |
+    | `cartodb_positron`   | Light, minimal CartoDB          |
+    | `cartodb_dark`       | Dark CartoDB                    |
+    | `esri_satellite`     | Esri satellite imagery          |
+    | `esri_topo`          | Esri topographic                |
+    | `stamen_terrain`     | Stamen terrain with hillshading |
+    | `stamen_toner`       | Stamen high-contrast B&W        |
+    | `kadaster_brt`       | Dutch Kadaster topographic      |
+    | `kadaster_luchtfoto` | Dutch Kadaster aerial photos    |
+    | `kadaster_grijs`     | Dutch Kadaster greyscale        |
+    
+    You can also add extra tile layers after construction with `add_tile_layer()`, and combine them with
+    `add_layer_control()` to let users switch between base maps.
 
-| Key                  | Description                     |
-|----------------------|---------------------------------|
-| `openstreetmap`      | Default OpenStreetMap           |
-| `cartodb_positron`   | Light, minimal CartoDB          |
-| `cartodb_dark`       | Dark CartoDB                    |
-| `esri_satellite`     | Esri satellite imagery          |
-| `esri_topo`          | Esri topographic                |
-| `stamen_terrain`     | Stamen terrain with hillshading |
-| `stamen_toner`       | Stamen high-contrast B&W        |
-| `kadaster_brt`       | Dutch Kadaster topographic      |
-| `kadaster_luchtfoto` | Dutch Kadaster aerial photos    |
-| `kadaster_grijs`     | Dutch Kadaster greyscale        |
+    ```python exec="true" html="true" source="tabbed-left"
+    from blueprints.utils import Map
+    
+    m = Map(title="Multiple Tile Layers")
+    
+    # Add extra tile layers
+    m.add_tile_layer(name="esri_satellite")
+    m.add_tile_layer(name="cartodb_dark")
+    
+    m.add_layer_control(collapsed=False)
+    
+    m.to_html("multiple_tiles.html")
 
-You can also add extra tile layers after construction with `add_tile_layer()`, and combine them with
-`add_layer_control()` to let users switch between base maps.
-
----
+    print(m.to_html())  # markdown-exec: hide
+    ```
 
 ## Text annotations
 
-Sometimes you need a floating label on the map — not tied to a marker, just text at a location.
+Sometimes you need a floating label on the map, not tied to a marker, just text at a location.
 
 ```python exec="true" html="true" source="tabbed-right"
 from shapely.geometry import Point
@@ -601,8 +721,8 @@ from blueprints.utils.map import Map, LabelStyle
 m = Map(title="Annotations")
 
 m.add_text(
-    Point(4.9041, 52.3676),
-    "Amsterdam Centrum",
+    location=Point(4.9041, 52.3676),
+    text="Amsterdam Centrum",
     style=LabelStyle(font_size=16, font_color="#2c3e50", background_color="rgba(255,255,255,0.85)"),
 )
 
@@ -614,19 +734,16 @@ print(m.to_html())  # markdown-exec: hide
 **`add_text()`** accepts either a Shapely `Point(lon, lat)` or a plain `(lat, lon)` tuple. The `LabelStyle` dataclass
 controls font size, family, color, weight, background, border, and padding.
 
----
-
 ## Site plans with shape markers
 
 For geotechnical or infrastructure projects you often need a site plan with survey markers, borehole locations, or
-measurement points. Shape markers (triangle, circle, square) combined with text labels and restricted bounds produce
-clean site overview maps.
+measurement points. 
 
 ```python exec="true" html="true" source="tabbed-right"
 from shapely.geometry import Point
 from blueprints.utils.map import Map, MapConfig, MarkerStyle
 
-# Survey data — CPT and borehole locations near Hoofddorp
+# Example Survey data, CPT and borehole locations near Hoofddorp
 surveys = [
     {"lon": 4.6820, "lat": 52.3680, "label": "1123-25N-S13", "x_rd": 107650, "y_rd": 411350},
     {"lon": 4.6835, "lat": 52.3655, "label": "1123-25N-S12", "x_rd": 107680, "y_rd": 411280},
@@ -657,9 +774,6 @@ for s in surveys:
         text_label=s["label"],
     )
 
-# Fit bounds with padding and lock the view
-m.set_bounds(padding=0.002, restrict=True)
-
 m.to_html("site_plan.html")
 
 print(m.to_html())  # markdown-exec: hide
@@ -672,14 +786,11 @@ A few things to highlight:
 `"triangle"`, `"circle"`, and `"square"`. Set `shape_color` and `shape_size` to customize them. Circles and squares
 use Folium's `RegularPolygonMarker` (36-sided and 4-sided polygons respectively).
 
-**`text_label`** places a text annotation just below the marker. It works with any marker type — shapes, emojis, and
+**`text_label`** places a text annotation just below the marker. It works with any marker type, shapes, emojis, and
 icons. By default the label has no background and no border; pass a custom `label_style=LabelStyle(...)` to change
 the font size, color, or add a background.
 
-**`set_bounds(padding=0.002, restrict=True)`** fits the map to the data with a small margin, then locks the
-viewport so the user can't accidentally pan away from the survey area.
-
-!!! tip
+!!! tip "Mix and match marker types"
 
     When `label` or `emoji` is set, it takes precedence over `shape`. This means you can mix shape markers
     (for data points) and emoji markers (for landmarks) on the same map without conflict:
@@ -688,41 +799,58 @@ viewport so the user can't accidentally pan away from the survey area.
     # Shape marker with a text label below
     m.add_point(pt, marker_style=MarkerStyle(shape="circle", shape_color="red"), text_label="CPT-01")
 
-    # Emoji marker — shape is ignored because label is set
+    # Emoji marker, shape is ignored because label is set
     m.add_point(pt, label="🏗️", text_label="Site office")
     ```
-
----
 
 ## Export
 
 ### HTML (always works)
 
 ```python
-m.to_html("map.html")
+m.to_html("map.html", open=True)
 ```
 
-Writes a standalone HTML file. No dependencies needed to view it — just open in any browser.
+Writes a standalone HTML file. No dependencies needed to view it, just open in any browser.
+
+Get the raw HTML string:
+
+```python
+html_string = m.to_html()
+```
+
+Open the file immediately after saving:
+
+```python
+m.to_html("map.html", open=True)
+```
 
 ### PNG image
 
 ```python
 # Save to file
-m.to_image("map.png", width=1600, height=1000, delay=3.0)
+m.to_image("map.png", width=1600, height=1000, delay=3.0) # delay is seconds to wait for tiles to load before capture
 
 # Or get raw bytes
 png_bytes = m.to_image()
 
-# Or get a BytesIO buffer (useful for Django/Flask responses)
+# Or get a BytesIO buffer (useful for Django/Flask/FastAPI responses)
 buf = m.to_bytesio(width=1200, height=800)
 ```
 
-!!! warning
+!!! warning "External dependencies for image export"
 
     PNG/SVG export requires **Selenium** and **Chrome/Chromium** with **chromedriver**. The `delay` parameter (seconds)
     controls how long Map waits for tiles to load before taking the screenshot. Increase it on slow connections.
 
+    If the delay isn't long enough, you might get a blank or partially rendered image. 
+    If it's too long, it adds unnecessary wait time. Adjust based on your needs.
+
 ### SVG
+
+Get a vector image of the map. Note that Leaflet's SVG export is actually a raster capture embedded in an SVG wrapper, 
+so the output is a PNG image inside an SVG container. This means it won't scale infinitely like a true vector graphic, 
+but it can be useful for certain applications.
 
 ```python
 # Raster-wrapped SVG (PNG embedded in SVG container)
@@ -740,7 +868,6 @@ svg_string = await m.to_svg_async()
 
 These run the Selenium capture in a thread executor so they don't block the event loop.
 
----
 
 ## Merge maps
 
@@ -752,25 +879,25 @@ from shapely.geometry import Point, Polygon
 from blueprints.utils import Map
 
 museums = Map(title="Combined")
-museums.add_point(Point(4.8795, 52.3600), label="🖼️", hover="**Rijksmuseum**")
+museums.add_point(point=Point(4.8795, 52.3600), label="🖼️", hover="**Rijksmuseum**")
 
 parks = Map()
 parks.add_polygon(
-    Polygon([(4.8580, 52.3530), (4.8830, 52.3530), (4.8830, 52.3620), (4.8580, 52.3620)]),
+    polygon=Polygon([(4.8580, 52.3530), (4.8830, 52.3530), (4.8830, 52.3620), (4.8580, 52.3620)]),
     hover="**Vondelpark**",
 )
 
+# The `+` operator merges the two maps into a new one
+# you can add as many maps together as you like, and the geometries/layers will all combine.
 combined = museums + parks
 combined.to_html("merged.html")
 
 print(combined.to_html())  # markdown-exec: hide
 ```
 
----
-
 ## GeoJSON layers
 
-You can add raw GeoJSON as a styled layer with hover tooltips — useful when you already have GeoJSON files and don't
+You can add raw GeoJSON as a styled layer with hover tooltips, useful when you already have GeoJSON files and don't
 need choropleth coloring.
 
 ```python exec="true" html="true" source="tabbed-right"
@@ -806,11 +933,10 @@ print(m.to_html())  # markdown-exec: hide
 **`hover_fields`** picks properties to show on mouse-over. **`highlight`** defines the style change on hover. You can
 pass `data` as a dict, a JSON string, or a file `Path`.
 
----
 
 ## Rich popup content
 
-By default, popups use fixed dimensions (300×150 px). For content-heavy popups — tables, images, or long text — use
+By default, popups use fixed dimensions (300×150 px). For content-heavy popups like tables, images, or long text, use
 `PopupStyle` to control the popup size.
 
 ```python exec="true" html="true" source="tabbed-right"
@@ -820,7 +946,7 @@ from blueprints.utils.map import Map, PopupStyle
 m = Map(title="Custom Popups")
 
 m.add_point(
-    Point(4.9041, 52.3676),
+    point=Point(4.9041, 52.3676),
     label="📋",
     popup="**Amsterdam**\n\nPopulation: 872,680\nProvince: North Holland\nFounded: 1275",
     popup_style=PopupStyle(width=400, height=250),
@@ -835,11 +961,9 @@ print(m.to_html())  # markdown-exec: hide
 (maximum popup width). All default to values matching the previous hardcoded behavior (300, 150, 300), so existing
 code is unaffected.
 
----
-
 ## Raw HTML in popups
 
-Markdown tooltips and popups are convenient, but sometimes you need full control — a styled table, an embedded image,
+Markdown tooltips and popups are convenient, but sometimes you need full control, a styled table, an embedded image,
 or colored text. Wrap your HTML string in `RawHTML` to bypass markdown conversion entirely.
 
 ```python exec="true" html="true" source="tabbed-right"
@@ -865,7 +989,7 @@ m.add_point(
     label="📊",
     hover=RawHTML("<b>Amsterdam</b> — click for details"),
     popup=table_html,
-    popup_style=PopupStyle(width=350, height=200),
+    popup_style=PopupStyle(width=400, height=200),
 )
 
 m.to_html("custom.html")
@@ -880,11 +1004,10 @@ markdown-to-HTML conversion step, so your `<table>`, `<img>`, and `<style>` tags
 
     `RawHTML` works on both `hover` (tooltip) and `popup` (click) parameters across all `add_*` methods.
 
----
 
 ## Escape hatch
 
-Need something Map doesn't wrap? The underlying Folium `Map` object is always accessible:
+Need something our Map doesn't wrap? The underlying Folium `Map` object is always accessible:
 
 ```python exec="true" html="true" source="tabbed-right"
 from blueprints.utils import Map
@@ -904,7 +1027,6 @@ m.to_html("custom.html")
 print(m.to_html())  # markdown-exec: hide
 ```
 
----
 
 ## Quick reference
 
@@ -920,7 +1042,7 @@ print(m.to_html())  # markdown-exec: hide
 | GeoJSON layer        | `add_geojson(data, hover_fields=)`                   |
 | Choropleth           | `add_choropleth(geojson, value_column=, key_on=)`    |
 | Heatmap              | `add_heatmap(points, style=HeatmapStyle)`            |
-| Marker cluster       | `add_marker_cluster(points, labels=, hovers=)`       |
+| Marker cluster       | `add_marker_cluster(points, labels=, text_labels=)`  |
 | Text label           | `add_text(location, text, style=LabelStyle)`         |
 | Custom popup size    | `add_point(..., popup_style=PopupStyle(width=400))`  |
 | Raw HTML content     | `add_point(..., hover=RawHTML("<b>html</b>"))`       |
