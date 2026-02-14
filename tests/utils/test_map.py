@@ -2604,31 +2604,31 @@ class TestExport:
         Scenario: Export HTML and open in browser.
 
         Given: A map with one point
-        When: to_html is called with open=True
+        When: to_html is called with open_in_browser=True
         Then: The file is created and webbrowser.open is called with the file URI
         """
         m = Map()
         m.add_point(Point(4.9, 52.37))
 
         with patch("webbrowser.open") as mock_open:
-            out = m.to_html(tmp_path / "open_test.html", open=True)
+            out = m.to_html(tmp_path / "open_test.html", open_in_browser=True)
 
         assert out.exists()
         mock_open.assert_called_once_with(out.resolve().as_uri())
 
     def test_export_to_html_open_ignored_without_path(self) -> None:
         """
-        Scenario: open=True is ignored when path is None.
+        Scenario: open_in_browser=True is ignored when path is None.
 
         Given: A map with one point
-        When: to_html is called with path=None and open=True
+        When: to_html is called with path=None and open_in_browser=True
         Then: An HTML string is returned; webbrowser is never called
         """
         m = Map()
         m.add_point(Point(4.9, 52.37))
 
         with patch("webbrowser.open") as mock_open:
-            result = m.to_html(path=None, open=True)
+            result = m.to_html(path=None, open_in_browser=True)
 
         assert isinstance(result, str)
         mock_open.assert_not_called()

@@ -808,7 +808,7 @@ the font size, color, or add a background.
 ### HTML (always works)
 
 ```python
-m.to_html("map.html", open=True)
+m.to_html("map.html", open_in_browser=True)
 ```
 
 Writes a standalone HTML file. No dependencies needed to view it, just open in any browser.
@@ -822,7 +822,7 @@ html_string = m.to_html()
 Open the file immediately after saving:
 
 ```python
-m.to_html("map.html", open=True)
+m.to_html("map.html", open_in_browser=True)
 ```
 
 ### PNG image

@@ -1959,7 +1959,7 @@ class Map:
             self._zoom_js_injected = True
         return self._map._repr_html_()
 
-    def to_html(self, path: str | Path | None = None, open: bool = False) -> str | Path:  # noqa: A002
+    def to_html(self, path: str | Path | None = None, open_in_browser: bool = False) -> str | Path:
         """Export as standalone HTML.
 
         Parameters
@@ -1967,7 +1967,7 @@ class Map:
         path : str | Path | None
             Output file path.  When ``None``, the full HTML document is
             returned as a string instead of being written to disk.
-        open : bool
+        open_in_browser : bool
             If ``True`` and *path* is given, open the file in the default
             browser after saving.  Ignored when *path* is ``None``.
 
@@ -1983,7 +1983,7 @@ class Map:
             return self._get_html()
         out = Path(path)
         self._map.save(str(out))
-        if open:
+        if open_in_browser:
             webbrowser.open(out.resolve().as_uri())
         return out
 
