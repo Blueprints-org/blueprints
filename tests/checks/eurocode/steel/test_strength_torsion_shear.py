@@ -2,12 +2,12 @@
 
 import pytest
 
-from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12IProfile, CheckStrengthTorsionShearClass34
+from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12, CheckStrengthTorsionShearClass34
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
-class TestCheckStrengthTorsionShearClass12IProfile:
-    """Tests for CheckStrengthTorsionShearClass12IProfile, using St. Venant torsion, for class 1 and 2 I-profiles."""
+class TestCheckStrengthTorsionShearClass12:
+    """Tests for CheckStrengthTorsionShearClass12, using St. Venant torsion, for class 1 and 2 I-profiles."""
 
     def test_result_none_v(
         self,
@@ -16,7 +16,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         """Test result() returns True for no shear force."""
         v = 0
         m_x = 1
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -24,7 +24,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         assert result.provided == 0.0
         assert calc.report()
 
-        calc_without_section_props = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc_without_section_props = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         assert calc == calc_without_section_props
 
     def test_result_none_m_x(
@@ -34,7 +34,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         """Test result() returns True for no torsional moment."""
         m_x = 0
         v = 1
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -49,7 +49,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         """Test result() for ok shear force."""
         v = 585.023 * 0.99
         m_x = 10
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -57,14 +57,14 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         assert calc.report()
 
         v = -v
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
         v = 1482.833 * 0.99
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vy", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vy", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -72,7 +72,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
 
         v = 355.277 * 0.99
         object.__setattr__(heb_steel_cross_section, "fabrication_method", "welded")
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
@@ -83,7 +83,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         object.__setattr__(heb_steel_cross_section, "fabrication_method", "hot-rolled")
         v = 585.023 * 1.01
         m_x = 10
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -91,7 +91,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         assert calc.report()
 
         v = 1482.833 * 1.01
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vy", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vy", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -99,7 +99,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
 
         v = 355.277 * 1.01
         object.__setattr__(heb_steel_cross_section, "fabrication_method", "welded")
-        calc = CheckStrengthTorsionShearClass12IProfile(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
@@ -108,7 +108,15 @@ class TestCheckStrengthTorsionShearClass12IProfile:
     def test_check_wrong_profile(self, chs_steel_cross_section: SteelCrossSection) -> None:
         """Test check() raises NotImplementedError for non-I-profile."""
         with pytest.raises(NotImplementedError):
-            CheckStrengthTorsionShearClass12IProfile(chs_steel_cross_section, m_x=10, v=1, gamma_m0=1.0)
+            CheckStrengthTorsionShearClass12(chs_steel_cross_section, m_x=10, v=1, gamma_m0=1.0)
+
+    def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test source_docs() method."""
+        n = 100
+        calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x=10, v=1, gamma_m0=1.0)
+        docs = calc.source_docs()
+        assert isinstance(docs, list)
+        assert len(docs) == 1
 
 
 class TestCheckStrengthTorsionShearClass34:
@@ -174,3 +182,11 @@ class TestCheckStrengthTorsionShearClass34:
         assert pytest.approx(result.unity_check, 0.005) == 1.01
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
         assert calc.report()
+
+    def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test source_docs() method."""
+        n = 100
+        calc = CheckStrengthTorsionShearClass34(heb_steel_cross_section, m_x=10, v=1, gamma_m0=1.0)
+        docs = calc.source_docs()
+        assert isinstance(docs, list)
+        assert len(docs) == 1

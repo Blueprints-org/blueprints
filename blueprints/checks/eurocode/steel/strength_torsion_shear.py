@@ -13,7 +13,6 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.f
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_25 import Form6Dot25CheckCombinedShearForceAndTorsionalMoment
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_26 import Form6Dot26VplTRdIOrHSection
 from blueprints.codes.formula import Formula
-from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN, KNM
@@ -22,7 +21,7 @@ from blueprints.utils.report import Report
 
 
 @dataclass(frozen=True)
-class CheckStrengthTorsionShearClass12IProfile:
+class CheckStrengthTorsionShearClass12:
     """Class to perform torsion resistance check with extra shear force for I profiles cross section 1 and 2 (Eurocode 3), using St. Venant torsion.
 
     Coordinate System:
@@ -55,7 +54,7 @@ class CheckStrengthTorsionShearClass12IProfile:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12IProfile
+    from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -66,7 +65,7 @@ class CheckStrengthTorsionShearClass12IProfile:
     axis = "Vz"  # Shear force applied in z-direction
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthTorsionShearClass12IProfile(heb_300_s355, mx, v=v, axis=axis, gamma_m0=1.0)
+    calc = CheckStrengthTorsionShearClass12(heb_300_s355, mx, v=v, axis=axis, gamma_m0=1.0)
     calc.report().to_word("torsion_and_shear_strength.docx", language="nl")
 
     """
