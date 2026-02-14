@@ -1568,11 +1568,11 @@ class Map:
             self._extend_bounds(pt)
             lat, lon = pt.y, pt.x
 
-            lbl = labels[i] if labels and i < len(labels) else None
-            hvr = hovers[i] if hovers and i < len(hovers) else None
-            pup = popups[i] if popups and i < len(popups) else None
+            label = labels[i] if labels and i < len(labels) else None
+            hover = hovers[i] if hovers and i < len(hovers) else None
+            popup = popups[i] if popups and i < len(popups) else None
 
-            emoji = lbl or ms.emoji
+            emoji = label or ms.emoji
             ls = _resolve_style(label_style, LabelStyle) or LabelStyle(background_color=None, border=None)
             txt = text_labels[i] if text_labels and i < len(text_labels) else None
             label_suffix = _text_label_html(txt, ls) if txt else ""
@@ -1580,17 +1580,26 @@ class Map:
             if emoji:
                 inner = f'<div style="font-size:{ms.emoji_size}px;text-align:center;">{emoji}</div>'
                 html = f'<div style="text-align:center;">{inner}{label_suffix}</div>'
-                w = max(ms.emoji_size + 10, 100 if txt else 0)
-                h = ms.emoji_size + 10 + (20 if txt else 0)
-                icon = folium.DivIcon(html=html, icon_size=(w, h), icon_anchor=(w // 2, (ms.emoji_size + 10) // 2))
+                width = max(ms.emoji_size + 10, 100 if txt else 0)
+                height = ms.emoji_size + 10 + (20 if txt else 0)
+                icon = folium.DivIcon(
+                    html=html,
+                    icon_size=(width, height),
+                    icon_anchor=(width // 2, (ms.emoji_size + 10) // 2),
+                )
             else:
-                icon = folium.Icon(icon=ms.icon or "info-sign", color=ms.marker_color, icon_color=ms.icon_color, prefix=ms.prefix)
+                icon = folium.Icon(
+                    icon=ms.icon or "info-sign",
+                    color=ms.marker_color,
+                    icon_color=ms.icon_color,
+                    prefix=ms.prefix,
+                )
 
             folium.Marker(
                 location=[lat, lon],
                 icon=icon,
-                tooltip=self._make_tooltip(hvr),
-                popup=self._make_popup(pup, popup_style),
+                tooltip=self._make_tooltip(hover),
+                popup=self._make_popup(popup, popup_style),
             ).add_to(cluster)
 
             # folium.Icon can't embed HTML; add separate label to cluster
