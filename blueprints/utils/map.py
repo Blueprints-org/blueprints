@@ -26,7 +26,7 @@ import time
 import webbrowser
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Self
+from typing import Any, Self, cast
 
 import branca.colormap as cm
 import folium
@@ -159,11 +159,11 @@ def _transform_geometry(geom: BaseGeometry, source_crs: str | None = None) -> Ba
         holes = [_detect_and_transform_coords(list(r.coords), source_crs) for r in geom.interiors]
         return Polygon(ext, holes)
     if isinstance(geom, MultiPoint):
-        return MultiPoint([_transform_geometry(g, source_crs) for g in geom.geoms])
+        return MultiPoint([cast(Point, _transform_geometry(g, source_crs)) for g in geom.geoms])
     if isinstance(geom, MultiPolygon):
-        return MultiPolygon([_transform_geometry(g, source_crs) for g in geom.geoms])
+        return MultiPolygon([cast(Polygon, _transform_geometry(g, source_crs)) for g in geom.geoms])
     if isinstance(geom, MultiLineString):
-        return MultiLineString([_transform_geometry(g, source_crs) for g in geom.geoms])
+        return MultiLineString([cast(LineString, _transform_geometry(g, source_crs)) for g in geom.geoms])
     return geom
 
 
@@ -713,7 +713,7 @@ class Map:
                 f'font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.3);pointer-events:none;">'
                 f"{self._title}</div>"
             )
-            fmap.get_root().html.add_child(folium.Element(title_html))
+            fmap.get_root().html.add_child(folium.Element(title_html))  # type: ignore[union-attr]
 
         # Optional plugins
         if cfg.fullscreen:
@@ -750,7 +750,7 @@ class Map:
             return None
         ps = _resolve_style(popup_style, PopupStyle) or PopupStyle()
         html = popup if isinstance(popup, RawHTML) else _markdown_to_html(popup)
-        iframe = folium.IFrame(html, width=ps.width, height=ps.height)
+        iframe = folium.IFrame(html, width=ps.width, height=ps.height)  # type: ignore[arg-type]
         return folium.Popup(iframe, max_width=ps.max_width)
 
     def _target(self) -> folium.FeatureGroup | folium.Map:
@@ -905,7 +905,7 @@ class Map:
         -------
         Map
         """
-        point = self._transform(point)
+        point = cast(Point, self._transform(point))
         self._extend_bounds(point)
         ms = _resolve_style(marker_style, MarkerStyle) or MarkerStyle()
         lat, lon = point.y, point.x
@@ -966,7 +966,7 @@ class Map:
             marker.add_to(self._target())
         else:
             icon = folium.Icon(
-                icon=ms.icon,
+                icon=ms.icon or "info-sign",
                 color=ms.marker_color,
                 icon_color=ms.icon_color,
                 prefix=ms.prefix,
@@ -1030,7 +1030,7 @@ class Map:
         -------
         Map
         """
-        point = self._transform(point)
+        point = cast(Point, self._transform(point))
         self._extend_bounds(point)
         cs = _resolve_style(style, CircleStyle) or CircleStyle()
         marker = folium.CircleMarker(
@@ -1084,7 +1084,7 @@ class Map:
         -------
         Map
         """
-        line = self._transform(line)
+        line = cast(LineString, self._transform(line))
         self._extend_bounds(line)
         s = _resolve_style(stroke, StrokeStyle) or StrokeStyle()
         locations = [(c[1], c[0]) for c in line.coords]
@@ -1131,7 +1131,7 @@ class Map:
         -------
         Map
         """
-        polygon = self._transform(polygon)
+        polygon = cast(Polygon, self._transform(polygon))
         self._extend_bounds(polygon)
         s = _resolve_style(stroke, StrokeStyle) or StrokeStyle()
         f = _resolve_style(fill, FillStyle) or FillStyle()
@@ -1330,9 +1330,9 @@ class Map:
         )
         layer.add_to(self._target())
         try:
-            bounds = layer.get_bounds()
-            if bounds:
-                self._bounds.extend(bounds)
+            layer_bounds = layer.get_bounds()
+            if layer_bounds:
+                self._bounds.extend(cast(list[tuple[float, float]], layer_bounds))
         except Exception:
             pass
         return self
@@ -1420,8 +1420,8 @@ class Map:
         # Build colormap
         colormap = cm.LinearColormap(
             colors=["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"],
-            vmin=vmin,
-            vmax=vmax,
+            vmin=vmin or 0,
+            vmax=vmax or 1,
             caption=legend_name or value_column,
         )
 
@@ -1450,9 +1450,9 @@ class Map:
         self._colormaps.append(colormap)
 
         try:
-            bounds = layer.get_bounds()
-            if bounds:
-                self._bounds.extend(bounds)
+            layer_bounds = layer.get_bounds()
+            if layer_bounds:
+                self._bounds.extend(cast(list[tuple[float, float]], layer_bounds))
         except Exception:
             pass
         return self
@@ -1487,14 +1487,14 @@ class Map:
         heat_data: list[list[float]] = []
         for p in points:
             if isinstance(p, Point):
-                p_transformd = self._transform(p)
-                heat_data.append([p_transformd.y, p_transformd.x])
-                self._extend_bounds(p_transformd)
+                pt = cast(Point, self._transform(p))
+                heat_data.append([pt.y, pt.x])
+                self._extend_bounds(pt)
             elif len(p) == 2:
                 heat_data.append([p[0], p[1]])
                 self._bounds.append((p[0], p[1]))
             else:
-                heat_data.append([p[0], p[1], p[2]])
+                heat_data.append(list(p[:3]))
                 self._bounds.append((p[0], p[1]))
 
         kwargs: dict[str, Any] = {
@@ -1564,9 +1564,9 @@ class Map:
         cluster = folium.plugins.MarkerCluster(name=name)
 
         for i, point in enumerate(points):
-            point_transformed = self._transform(point)
-            self._extend_bounds(point_transformed)
-            lat, lon = point_transformed.y, point_transformed.x
+            pt = cast(Point, self._transform(point))
+            self._extend_bounds(pt)
+            lat, lon = pt.y, pt.x
 
             lbl = labels[i] if labels and i < len(labels) else None
             hvr = hovers[i] if hovers and i < len(hovers) else None
@@ -1584,7 +1584,7 @@ class Map:
                 h = ms.emoji_size + 10 + (20 if txt else 0)
                 icon = folium.DivIcon(html=html, icon_size=(w, h), icon_anchor=(w // 2, (ms.emoji_size + 10) // 2))
             else:
-                icon = folium.Icon(icon=ms.icon, color=ms.marker_color, icon_color=ms.icon_color, prefix=ms.prefix)
+                icon = folium.Icon(icon=ms.icon or "info-sign", color=ms.marker_color, icon_color=ms.icon_color, prefix=ms.prefix)
 
             folium.Marker(
                 location=[lat, lon],
@@ -1653,9 +1653,9 @@ class Map:
         """
         ls = _resolve_style(style, LabelStyle) or LabelStyle()
         if isinstance(location, Point):
-            location = self._transform(location)
-            lat, lon = location.y, location.x
-            self._extend_bounds(location)
+            loc = cast(Point, self._transform(location))
+            lat, lon = loc.y, loc.x
+            self._extend_bounds(loc)
         else:
             lat, lon = location
             self._bounds.append((lat, lon))
@@ -1681,7 +1681,7 @@ class Map:
         est_h = ls.font_size + 12
         icon = folium.DivIcon(
             html=f'<div style="{css}">{text}</div>',
-            icon_size="100%",  # Let CSS control sizing
+            icon_size="100%",  # type: ignore[arg-type]  # Let CSS control sizing
             icon_anchor=(int(est_w // 2), int(est_h // 2)),
             class_name="",
         )
@@ -1955,7 +1955,7 @@ class Map:
         if not self._center:
             self._fit_bounds()
         if self._zoom_controlled_markers and not self._zoom_js_injected:
-            self._map.get_root().html.add_child(folium.Element(self._generate_zoom_javascript()))
+            self._map.get_root().html.add_child(folium.Element(self._generate_zoom_javascript()))  # type: ignore[union-attr]
             self._zoom_js_injected = True
         return self._map._repr_html_()
 
@@ -2071,7 +2071,8 @@ class Map:
         io.BytesIO
             Buffer at position 0.
         """
-        buf = io.BytesIO(self.to_image(path=None, width=width, height=height, delay=delay, hide_controls=hide_controls))
+        png = cast(bytes, self.to_image(path=None, width=width, height=height, delay=delay, hide_controls=hide_controls))
+        buf = io.BytesIO(png)
         buf.seek(0)
         return buf
 
@@ -2102,7 +2103,7 @@ class Map:
         -------
         str | Path
         """
-        png_bytes = self.to_image(path=None, width=width, height=height, delay=delay, hide_controls=hide_controls)
+        png_bytes = cast(bytes, self.to_image(path=None, width=width, height=height, delay=delay, hide_controls=hide_controls))
         b64 = base64.b64encode(png_bytes).decode("ascii")
         svg = (
             f'<?xml version="1.0" encoding="UTF-8"?>\n'
