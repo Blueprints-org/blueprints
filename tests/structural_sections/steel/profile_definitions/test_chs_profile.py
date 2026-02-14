@@ -24,7 +24,7 @@ class TestCHSSteelProfile:
     def test_maximum_element_thickness(self, chs_profile: CHSProfile) -> None:
         """Test the maximum element thickness of the CHS profile."""
         expected_max_thickness: float = 16.0  # mm
-        assert pytest.approx(chs_profile.max_profile_thickness, rel=1e-6) == expected_max_thickness
+        assert pytest.approx(chs_profile.max_thickness, rel=1e-6) == expected_max_thickness
 
     def test_steel_volume_per_meter(self, chs_profile: CHSProfile) -> None:
         """Test the steel volume per meter."""

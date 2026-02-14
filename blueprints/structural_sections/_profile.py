@@ -35,6 +35,11 @@ class Profile(ABC):
     rotation: DEG = field(default=0.0, kw_only=True)
     """Rotation of the profile [degrees]. Positive values rotate the profile counter-clockwise around its centroid."""
 
+    _section_props_cache: dict[tuple[bool, bool, bool], SectionProperties] = field(
+        default_factory=dict, init=False, repr=False, compare=False, hash=False
+    )
+    """Cache for section properties to avoid recalculation."""
+
     @property
     def mesh_creator(self) -> partial:
         """Get the mesh creator for the profile."""
@@ -52,7 +57,7 @@ class Profile(ABC):
 
     @property
     @abstractmethod
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the profile [mm]."""
 
     @property
@@ -170,6 +175,13 @@ class Profile(ABC):
         warping: bool
             Whether to calculate warping properties.
         """
+        cache_key = (geometric, plastic, warping)
+
+        # Check if we already have cached properties for this configuration
+        if cache_key in self._section_props_cache:
+            return self._section_props_cache[cache_key]
+
+        # Calculate section properties
         section = self._section()
 
         if any([geometric, plastic, warping]):
@@ -178,6 +190,9 @@ class Profile(ABC):
             section.calculate_warping_properties()
         if plastic:
             section.calculate_plastic_properties()
+
+        # Cache the result
+        self._section_props_cache[cache_key] = section.section_props
 
         return section.section_props
 

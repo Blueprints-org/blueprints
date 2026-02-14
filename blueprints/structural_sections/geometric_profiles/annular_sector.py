@@ -62,7 +62,7 @@ class AnnularSectorProfile(Profile):
             )
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the annular profile [mm]."""
         return self.thickness
 

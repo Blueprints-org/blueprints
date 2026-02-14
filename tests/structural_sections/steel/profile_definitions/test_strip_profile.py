@@ -20,7 +20,7 @@ class TestStripSteelProfile:
     def test_maximum_element_thickness(self, strip_profile: StripProfile) -> None:
         """Test the maximum element thickness of the Strip profile."""
         expected_max_thickness = 5.0  # mm
-        assert pytest.approx(strip_profile.max_profile_thickness, rel=1e-6) == expected_max_thickness
+        assert pytest.approx(strip_profile.max_thickness, rel=1e-6) == expected_max_thickness
 
     def test_steel_volume_per_meter(self, strip_profile: StripProfile) -> None:
         """Test the steel volume per meter."""
