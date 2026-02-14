@@ -48,7 +48,7 @@ class StripProfile(Profile):
     """The plotter function to visualize the profile."""
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the profile [mm]."""
         return min(self.width, self.height)
 

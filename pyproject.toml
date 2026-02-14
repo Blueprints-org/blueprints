@@ -1,6 +1,6 @@
 [project]
 name = "blue-prints"
-version = "0.6.0"
+version = "0.6.1"
 description = "Blueprints, open source python package for civil engineering calculations."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -48,7 +48,7 @@ dev = [
     "ruff==0.14.10",
     "pre-commit==4.5.1",
     "types-shapely==2.1.0.20250917",
-    "icecream==2.1.8",
+    "icecream==2.1.10",
 ]
 docs = [
     "mkdocs ~= 1.6.1",

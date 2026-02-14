@@ -132,7 +132,7 @@ class SteelCrossSection:
         MPA
             The yield strength of the steel material.
         """
-        fy = self.material.yield_strength(thickness=self.profile.max_profile_thickness)
+        fy = self.material.yield_strength(thickness=self.profile.max_thickness)
         return fy if fy is not None else 0
 
     @property
@@ -145,7 +145,7 @@ class SteelCrossSection:
         MPA
             The ultimate strength of the steel material.
         """
-        fu = self.material.ultimate_strength(thickness=self.profile.max_profile_thickness)
+        fu = self.material.ultimate_strength(thickness=self.profile.max_thickness)
         return fu if fu is not None else 0
 
     @property

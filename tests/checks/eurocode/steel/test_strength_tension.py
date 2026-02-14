@@ -4,6 +4,7 @@ import pytest
 
 from blueprints.checks.eurocode.steel.strength_tension import CheckStrengthTensionClass1234
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
+from blueprints.validations import NegativeValueError
 
 
 class TestCheckStrengthTensionClass1234:
@@ -49,10 +50,8 @@ class TestCheckStrengthTensionClass1234:
     def test_negative_tension(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for negative tension load (compression)."""
         n = -100
-
-        calc = CheckStrengthTensionClass1234(heb_steel_cross_section, n, gamma_m0=1.0)
-        with pytest.raises(ValueError):
-            calc.calculation_formula()
+        with pytest.raises(NegativeValueError):
+            _ = CheckStrengthTensionClass1234(heb_steel_cross_section, n, gamma_m0=1.0)
 
     def test_report_tension(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test report output with summary flag for tension."""
@@ -60,3 +59,11 @@ class TestCheckStrengthTensionClass1234:
 
         calc = CheckStrengthTensionClass1234(heb_steel_cross_section, n, gamma_m0=1.0)
         assert calc.report()
+
+    def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test source_docs() method."""
+        n = 100
+        calc = CheckStrengthTensionClass1234(heb_steel_cross_section, n, gamma_m0=1.0)
+        docs = calc.source_docs()
+        assert isinstance(docs, list)
+        assert len(docs) == 1
