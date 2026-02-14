@@ -39,6 +39,8 @@ class Profile(ABC):
         default_factory=dict, init=False, repr=False, compare=False, hash=False
     )
     """Cache for section properties to avoid recalculation."""
+    _unit_stress_cache: dict[str, Any] | None = field(default=None, init=False, repr=False, compare=False, hash=False)
+    """Cache for unit stress to avoid recalculation."""
 
     @property
     def mesh_creator(self) -> partial:
@@ -264,7 +266,6 @@ class Profile(ABC):
             mzz=float(m_x) * KNM_TO_NMM,
         )
 
-    @cached_property
     def unit_stress(self) -> dict[str, Any]:
         """Calculate the unit stress distribution for the profile.
 
@@ -275,7 +276,17 @@ class Profile(ABC):
         StressPost
             The unit stress distribution for the profile.
         """
-        return self.calculate_stress(1, 1, 1, 1, 1, 1).get_stress()[0]
+        # Check if we already have cached unit stress
+        if self._unit_stress_cache is not None:
+            return self._unit_stress_cache
+
+        # Calculate unit stress
+        result = self.calculate_stress(1, 1, 1, 1, 1, 1).get_stress()[0]
+
+        # Cache the result
+        object.__setattr__(self, "_unit_stress_cache", result)
+
+        return result
 
     def plot(self, plotter: Callable[[Any], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
         """Plot the profile. Making use of the standard plotter.
