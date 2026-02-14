@@ -121,7 +121,6 @@ class CheckStrengthTorsionShearClass12IProfile:
             v=self.v,
             axis=self.axis,
             gamma_m0=self.gamma_m0,
-            
         )
         return shear_calculation.shear_area()
 
@@ -138,7 +137,6 @@ class CheckStrengthTorsionShearClass12IProfile:
             v=self.v,
             axis=self.axis,
             gamma_m0=self.gamma_m0,
-            
         )
         return shear_calculation.plastic_resistance()
 
@@ -177,6 +175,7 @@ class CheckStrengthTorsionShearClass12IProfile:
         CheckResult
             True if the torsion check passes, False otherwise.
         """
+
         provided = 0 if self.m_x == 0 else abs(self.v) * KN_TO_N
         required = float(self.combined_resistance())
         return CheckResult.from_comparison(provided=provided, required=required)
@@ -358,7 +357,7 @@ class CheckStrengthTorsionShearClass34:
         CheckResult
             True if the torsion check passes, False otherwise.
         """
-        provided = self.combined_shear_stress()
+        provided = 0 if self.m_x == 0 or self.v == 0 else self.combined_shear_stress()
         required = self.elastic_resistance()
         return CheckResult.from_comparison(provided=provided, required=float(required))
 
