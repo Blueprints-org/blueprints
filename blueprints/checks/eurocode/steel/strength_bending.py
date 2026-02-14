@@ -149,9 +149,7 @@ class CheckStrengthBendingClass12:
         ).add_newline(n=2)
 
         # resistance
-        report.add_paragraph(
-            "The resistance is calculated as follows, using cross-section class 1 or 2:"
-        )
+        report.add_paragraph("The resistance is calculated as follows, using cross-section class 1 or 2:")
         report.add_formula(self.plastic_resistance(), n=n).add_newline(n=2)
 
         # unity check
@@ -298,9 +296,7 @@ class CheckStrengthBendingClass3:
         ).add_newline(n=2)
 
         # resistance
-        report.add_paragraph(
-            r"The resistance is calculated as follows, using cross-section class 3:"
-        )
+        report.add_paragraph(r"The resistance is calculated as follows, using cross-section class 3:")
         report.add_formula(self.elastic_resistance(), n=n).add_newline(n=2)
 
         # unity check
