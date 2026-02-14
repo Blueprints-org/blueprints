@@ -531,17 +531,26 @@ def _check_selenium() -> None:
         shutil.which("google-chrome-stable"),
         shutil.which("chromium"),
         shutil.which("chromium-browser"),
+        shutil.which("chrome"),
+        shutil.which("googlechrome"),
+        shutil.which("chromium.exe"),
+        shutil.which("chrome_proxy.exe"),
+        shutil.which("chromedriver"),
     ]
     if not any(chrome_paths):
+        try:
+            import chromedriver_autoinstaller  # noqa: PLC0415
+
+            chromedriver_autoinstaller.install()
+        except (ImportError, ModuleNotFoundError):
+            pass  # Will be caught by the chromedriver check below
+
+    if not shutil.which("chromedriver"):
         raise RuntimeError(
             "Chrome or Chromium not found. Image export requires Chrome.\n"
             "  Ubuntu/Debian: sudo apt install chromium-browser\n"
             "  macOS:         brew install --cask google-chrome\n"
-            "  Windows:       Download from https://www.google.com/chrome/"
-        )
-
-    if not shutil.which("chromedriver"):
-        raise RuntimeError(
+            "  Windows:       Download from https://www.google.com/chrome/\n"
             "chromedriver not found on PATH.\n"
             "  pip install chromedriver-autoinstaller\n"
             "  Or download: https://googlechromelabs.github.io/chrome-for-testing/"
@@ -1986,7 +1995,7 @@ class Map:
         path: str | Path | None = None,
         width: int = 1200,
         height: int = 800,
-        delay: float = 1.0,
+        delay: float = 0.50,
         hide_controls: bool = True,
     ) -> bytes | Path:
         """Save the map as a PNG image.
@@ -2025,7 +2034,12 @@ class Map:
                 hide_css = "<style>.leaflet-control{display:none !important;}</style>"
                 content = content.replace("</head>", f"{hide_css}\n</head>", 1)
                 Path(tmp_path).write_text(content, encoding="utf-8")
-            png_bytes = _capture_screenshot(tmp_path, width, height, delay)
+            png_bytes = _capture_screenshot(
+                html_path=tmp_path,
+                width=width,
+                height=height,
+                delay=delay,
+            )
         finally:
             Path(tmp_path).unlink(missing_ok=True)
 
