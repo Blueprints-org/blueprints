@@ -53,7 +53,7 @@ class RectangularProfile(Profile):
         return partial(Geometry.create_mesh, mesh_sizes=mesh_length**2)
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the rectangular profile [mm]."""
         return min(self.width, self.height)
 

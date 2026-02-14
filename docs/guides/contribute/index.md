@@ -58,14 +58,6 @@ There are many ways to contribute to Blueprints. Here are some common ways you c
     
     [➡ Find documentation issues](https://github.com/Blueprints-org/blueprints/issues?q=is%3Aopen+label%3Adocumentation)
 
-- **Fix a Bug or Add a Feature**
-
-    ---
-    
-    Ready to write some code? Start here.
-    
-    [➡ Find good first issues](https://github.com/Blueprints-org/blueprints/issues?q=is%3Aopen+label%3A%22good+first+issue%22)
-
 </div>
 
 Once you've chosen what to work on, you are ready to set up your development environment.

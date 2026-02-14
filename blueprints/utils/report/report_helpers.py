@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from typing import Any, Optional
 
 from blueprints.checks.check_protocol import CheckProtocol
+from blueprints.checks.check_result import CheckResult
 from blueprints.saf.results.result_internal_force_1d import ResultInternalForce1D
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.utils.report import Report
@@ -140,14 +141,15 @@ def add_section_properties(
     report.add_table(headers=["Property", "Value"], rows=rows)
 
 
-def add_unity_check_summary(report: Report, calculations: dict[str, Optional["CheckProtocol"]], n: int = 2) -> None:
+def add_unity_check_summary(report: Report, calculations: dict[str, Optional["CheckProtocol"] | CheckResult], n: int = 2) -> None:
     """
     Add a summary table of unity checks to the report.
 
     report : Report
         The report object to which the calculation steps will be added.
-    calculations : dict[str, "CheckProtocol"]
-        Iterable of (check_name, check_instance) pairs (e.g., dict.items() or list of tuples).
+    calculations : dict[str, "CheckProtocol" | CheckResult]
+        Iterable of (check_name, check_instance) pairs where check_instance can be either
+        a CheckProtocol object or a CheckResult object (e.g., dict.items() or list of tuples).
     n : int, optional
         Number of decimals (default is 2).
     """
@@ -157,6 +159,9 @@ def add_unity_check_summary(report: Report, calculations: dict[str, Optional["Ch
     for check_name, check in calculations.items():
         if check is None:
             continue
+        if isinstance(check, CheckResult):
+            continue
+
         res = check.result()
         uc = getattr(res, "unity_check", None)
         utilization = f"{uc:.{n}f}" if uc is not None else "Not calculated"

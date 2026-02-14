@@ -48,7 +48,7 @@ class TubeProfile(Profile):
             raise ValueError(msg)
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the tube profile [mm]."""
         return self.wall_thickness
 
