@@ -46,4 +46,4 @@ class StandardProfileMeta(type):
 
     def __iter__(cls: StandardProfileProtocol) -> Iterator[Profile]:
         """Iterate over the profiles in the class database."""
-        return (cls.__getattr__(profile_key) for profile_key in cls._database)
+        return (getattr(cls, profile_key) for profile_key in cls._database)
