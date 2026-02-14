@@ -89,6 +89,14 @@ class TestCheckStrengthShearClass12:
         with pytest.raises(NotImplementedError):
             CheckStrengthShearClass12(chs_steel_cross_section, v, gamma_m0=1.0)
 
+    def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test source_docs() method."""
+        n = 100
+        calc = CheckStrengthShearClass12(heb_steel_cross_section, n, gamma_m0=1.0)
+        docs = calc.source_docs()
+        assert isinstance(docs, list)
+        assert len(docs) == 1
+
 
 class TestCheckStrengthShearClass34:
     """Tests for CheckStrengthShearClass34."""
@@ -140,3 +148,11 @@ class TestCheckStrengthShearClass34:
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.005) == 1.01
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
+
+    def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test source_docs() method."""
+        n = 100
+        calc = CheckStrengthShearClass34(heb_steel_cross_section, n, gamma_m0=1.0)
+        docs = calc.source_docs()
+        assert isinstance(docs, list)
+        assert len(docs) == 1
