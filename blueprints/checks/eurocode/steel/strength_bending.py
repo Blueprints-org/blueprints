@@ -1,4 +1,4 @@
-"""Module for checking bending moment resistance of steel cross-sections (Eurocode 3)."""
+"""Module for checking bending moment resistance of steel cross-sections."""
 
 from dataclasses import dataclass
 from typing import ClassVar, Literal
