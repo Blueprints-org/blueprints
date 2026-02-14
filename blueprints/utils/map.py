@@ -123,11 +123,8 @@ def _detect_and_transform_coords(
             return [(c[0], c[1]) for c in coords]
 
     if source_crs and source_crs != "EPSG:4326":
-        try:
-            transformer = Transformer.from_crs(source_crs, "EPSG:4326", always_xy=True)
-            return [transformer.transform(c[0], c[1]) for c in coords]
-        except ImportError:
-            raise ImportError("pyproj is required for coordinate transformation. Install with: pip install pyproj")
+        transformer = Transformer.from_crs(source_crs, "EPSG:4326", always_xy=True)
+        return [transformer.transform(c[0], c[1]) for c in coords]
 
     return [(c[0], c[1]) for c in coords]
 
