@@ -1,7 +1,6 @@
 """Tests for torsion with shear strength according to Eurocode 3."""
 
 import pytest
-from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12IProfile, CheckStrengthTorsionShearClass34
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
@@ -12,7 +11,6 @@ class TestCheckStrengthTorsionShearClass12IProfile:
 
     def test_result_none_v(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
         """Test result() returns True for no shear force."""
-        cross_section, section_properties = heb_steel_cross_section
         v = 0
         m_x = 1
         calc = CheckStrengthTorsionShearClass12IProfile(cross_section, m_x, v, axis="Vz", gamma_m0=1.0, section_properties=section_properties)
@@ -73,7 +71,7 @@ class TestCheckStrengthTorsionShearClass12IProfile:
         assert pytest.approx(result.unity_check, 0.005) == 0.99
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
-    def test_result_shear_not_ok(self, heb_steel_cross_section: tuple[SteelCrossSection, SectionProperties]) -> None:
+    def test_result_shear_not_ok(self, heb_steel_cross_section: SteelCrossSection, heb_welded_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for not ok shear force."""
         cross_section, section_properties = heb_steel_cross_section
         object.__setattr__(cross_section, "fabrication_method", "hot-rolled")
@@ -163,3 +161,4 @@ class TestCheckStrengthTorsionShearClass34:
         assert pytest.approx(result.unity_check, 0.005) == 1.01
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 1.01
         assert calc.report()
+
