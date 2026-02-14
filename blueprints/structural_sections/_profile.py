@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
-from functools import cached_property, partial
+from functools import partial
 from typing import Any, ClassVar, Self
 
 import matplotlib.pyplot as plt
