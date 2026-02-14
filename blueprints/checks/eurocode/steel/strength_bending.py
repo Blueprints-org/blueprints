@@ -20,7 +20,7 @@ from blueprints.utils.report import Report
 @dataclass(frozen=True)
 class CheckStrengthBendingClass12:
     """Class to perform bending moment resistance check for steel cross-sections,
-    for cross-section class 1 and 2 only (Eurocode 3).
+    for cross-section class 1 and 2 only, based on 1993-1-1:2005 chapter 6.2.5.
 
     Coordinate System:
 
