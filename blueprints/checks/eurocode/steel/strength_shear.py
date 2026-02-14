@@ -112,7 +112,7 @@ class CheckStrengthShearClass12:
                 return formula_6_18_sub_av.Form6Dot18SubDWeldedIHandBoxSection(hw_list=[hw], tw_list=[tw], eta=1.0)
             # when axis == "Vy"
             return formula_6_18_sub_av.Form6Dot18SubEWeldedIHandBoxSection(a=a, hw_list=[hw], tw_list=[tw])
-        return None  # pragma no cover - this should be caught by the __post_init__ check on profile type
+        raise NotImplementedError("Profile type is not supported")  # pragma: no cover
 
     def plastic_resistance(self) -> Formula:
         """Calculate the shear force plastic resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.6(2) - Formula (6.18)).
