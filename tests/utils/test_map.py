@@ -1595,6 +1595,27 @@ class TestMarkerCluster:
         # Assert - Then
         assert len(m._bounds) == 2
 
+    def test_cluster_with_text_labels_and_default_icons(self) -> None:
+        """
+        Scenario: Marker cluster with text_labels but no emoji labels.
+
+        Given: An empty map and points with text_labels only (no labels/emoji)
+        When: add_marker_cluster is called with text_labels but without labels
+        Then: Default icons are used and separate label markers are added to the cluster
+        """
+        # Arrange - Given
+        m = Map()
+        points = [Point(4.9, 52.37), Point(4.95, 52.38)]
+
+        # Act - When
+        result = m.add_marker_cluster(points, text_labels=["S-01", "S-02"])
+
+        # Assert - Then
+        assert result is m
+        html = m.to_html()
+        assert "S-01" in html, "Text label should appear in the HTML output"
+        assert "S-02" in html, "Text label should appear in the HTML output"
+
 
 # ===================================================================
 # Scenarios for placing text labels on the map.
