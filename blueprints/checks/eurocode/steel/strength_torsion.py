@@ -88,7 +88,7 @@ class CheckStrengthStVenantTorsionClass1234:
         float
             The unit torsional shear stress in MPa.
         """
-        unit_stress = self.steel_cross_section.profile.unit_stress
+        unit_stress = self.steel_cross_section.profile.unit_stress()
         unit_sig_zxy = unit_stress["sig_zxy_mzz"]
         return float(np.max(np.abs(unit_sig_zxy)))
 

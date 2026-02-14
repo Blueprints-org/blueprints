@@ -67,4 +67,3 @@ class TestCheckStrengthTensionClass1234:
         docs = calc.source_docs()
         assert isinstance(docs, list)
         assert len(docs) == 1
-        

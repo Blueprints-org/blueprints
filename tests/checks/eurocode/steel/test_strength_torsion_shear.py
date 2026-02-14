@@ -112,7 +112,6 @@ class TestCheckStrengthTorsionShearClass12:
 
     def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test source_docs() method."""
-        n = 100
         calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x=10, v=1, gamma_m0=1.0)
         docs = calc.source_docs()
         assert isinstance(docs, list)
@@ -185,7 +184,6 @@ class TestCheckStrengthTorsionShearClass34:
 
     def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test source_docs() method."""
-        n = 100
         calc = CheckStrengthTorsionShearClass34(heb_steel_cross_section, m_x=10, v=1, gamma_m0=1.0)
         docs = calc.source_docs()
         assert isinstance(docs, list)

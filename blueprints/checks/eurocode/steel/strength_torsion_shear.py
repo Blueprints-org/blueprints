@@ -22,7 +22,7 @@ from blueprints.utils.report import Report
 
 @dataclass(frozen=True)
 class CheckStrengthTorsionShearClass12:
-    """Class to perform torsion resistance check with extra shear force for I profiles cross section 1 and 2 (Eurocode 3), using St. Venant torsion.
+    """Class to perform torsion resistance check with extra shear force for cross section 1 and 2 (Eurocode 3), using St. Venant torsion.
 
     Coordinate System:
 
@@ -40,7 +40,7 @@ class CheckStrengthTorsionShearClass12:
     Parameters
     ----------
     steel_cross_section : SteelCrossSection
-        The steel cross-section, of type I-profile, to check.
+        The steel cross-section to check.
     mx : KNM
         The applied torsional moment (positive value, in kNm).
     v : KN
@@ -103,12 +103,12 @@ class CheckStrengthTorsionShearClass12:
             The unit torsional shear stress in MPa.
         """
 
-        unit_stress = self.steel_cross_section.profile.unit_stress
+        unit_stress = self.steel_cross_section.profile.unit_stress()
         unit_sig_zxy = unit_stress["sig_zxy_mzz"]
         return float(np.max(np.abs(unit_sig_zxy)))
 
     def shear_area(self) -> Formula:
-        """Calculate the shear area of the I-profile cross-section.
+        """Calculate the shear area of cross-section.
 
         Returns
         -------
@@ -319,12 +319,10 @@ class CheckStrengthTorsionShearClass34:
             The maximum combined shear stress in MPa.
         """
 
-        stress = self.steel_cross_section.profile.calculate_stress(
-            v_y=self.v if self.axis == "Vy" else 0,
-            v_z=self.v if self.axis == "Vz" else 0,
-            m_x=self.m_x,
-        )
-        sig_zxy = stress.get_stress()[0]["sig_zxy"]
+        unit_stress = self.steel_cross_section.profile.unit_stress()
+        unit_sig_zxy_shear = unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"]
+        unit_sig_zxy_torsion = unit_stress["sig_zxy_mzz"]
+        sig_zxy = self.v * unit_sig_zxy_shear + self.m_x * unit_sig_zxy_torsion
         return float(np.max(np.abs(sig_zxy)))
 
     def elastic_resistance(self) -> float:

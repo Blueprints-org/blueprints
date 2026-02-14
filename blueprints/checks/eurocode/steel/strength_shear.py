@@ -271,7 +271,7 @@ class CheckStrengthShearClass34:
         float
             The maximum shear stress in N/mm².
         """
-        unit_stress = self.steel_cross_section.profile.unit_stress
+        unit_stress = self.steel_cross_section.profile.unit_stress()
         unit_sig_zxy = unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"]
         return float(np.max(np.abs(unit_sig_zxy))) * abs(self.v)
 
