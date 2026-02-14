@@ -199,7 +199,6 @@ class TestMapCreation:
         When: A Map is created
         Then: The custom tile URL is passed to Folium
 
-        Covers: lines 559-560
         """
         # Arrange - Given
         config = MapConfig(
@@ -638,7 +637,6 @@ class TestGeometryDispatch:
         When: add_geometry is called with the LinearRing
         Then: It is rendered as a LineString on the map
 
-        Covers: line 948
         """
         # Arrange - Given
         m = Map()
@@ -985,7 +983,6 @@ class TestGeoJSON:
         When: add_geojson is called
         Then: It falls through the path check and parses as JSON
 
-        Covers: line 987
         """
         # Arrange - Given
         m = Map()
@@ -1006,7 +1003,6 @@ class TestGeoJSON:
         When: add_geojson is called
         Then: It skips the path check and parses directly as JSON
 
-        Covers: lines 988-989 (the else branch for long strings)
         """
         # Arrange - Given
         m = Map()
@@ -1048,7 +1044,6 @@ class TestGeoJSON:
         When: add_geojson is called
         Then: The exception is silently caught and the method returns self
 
-        Covers: lines 1009-1010
         """
         # Arrange - Given
         m = Map()
@@ -1078,7 +1073,6 @@ class TestGeoJSON:
         When: add_choropleth is called and get_bounds fails
         Then: The exception is silently caught
 
-        Covers: lines 1124-1125
         """
         # Arrange - Given
         m = Map()
@@ -1266,7 +1260,6 @@ class TestChoropleth:
         When: add_choropleth is called with the string path
         Then: The file is detected and loaded
 
-        Covers: lines 1062-1064
         """
         # Arrange - Given
         geojson = {
@@ -1304,7 +1297,6 @@ class TestChoropleth:
         When: add_choropleth is called
         Then: json.loads fails with JSONDecodeError
 
-        Covers: lines 1065-1066
         """
         # Arrange - Given
         m = Map()
@@ -1325,7 +1317,6 @@ class TestChoropleth:
         When: add_choropleth is called
         Then: It parses directly as JSON, skipping the path check
 
-        Covers: lines 1067-1068 (else branch for long strings)
         """
         # Arrange - Given
         m = Map()
@@ -1370,7 +1361,6 @@ class TestChoropleth:
         When: add_choropleth is called and Folium renders both features
         Then: The missing feature uses nan_fill_color
 
-        Covers: line 1107
         """
         # Arrange - Given
         m = Map()
@@ -1986,21 +1976,6 @@ class TestCoordinateTransformation:
         # Assert - Then
         assert result is gc, "Unsupported type should be returned unchanged"
 
-    def test_missing_pyproj_raises_import_error(self) -> None:
-        """
-        Scenario: Attempting CRS transform without pyproj installed.
-
-        Given: Coordinates that need transformation and pyproj is unavailable
-        When: _detect_and_transform_coords is called with a non-WGS84 CRS
-        Then: An ImportError is raised with install instructions
-        """
-        # Arrange - Given
-        coords = [(155_000, 463_000)]
-
-        # Act & Assert - When/Then
-        with patch.dict("sys.modules", {"pyproj": None}), pytest.raises(ImportError, match="pyproj"):
-            _detect_and_transform_coords(coords, source_crs="EPSG:28992")
-
     def test_transform_multipoint_with_rd_coords(self) -> None:
         """
         Scenario: Transform a MultiPoint from RD New to WGS84.
@@ -2009,7 +1984,6 @@ class TestCoordinateTransformation:
         When: _transform_geometry is called with EPSG:28992
         Then: Each constituent point is individually transformed
 
-        Covers: line 173
         """
         # Arrange - Given
         mp = MultiPoint([(121_000, 487_000), (155_000, 463_000)])
@@ -2033,7 +2007,6 @@ class TestCoordinateTransformation:
         When: _transform_geometry is called with EPSG:28992
         Then: The result is a LinearRing with WGS84 coordinates
 
-        Covers: lines 165-167 (LinearRing branch, now before LineString)
         """
         # Arrange - Given
         ring = LinearRing(
@@ -2802,23 +2775,20 @@ class TestExport:
         # Assert - Then
         assert m._bounds == [], "Bounds should still be empty"
 
-    def test_check_selenium_missing_package(self) -> None:
+    def test_check_selenium_missing_chrome_and_chromedriver(self) -> None:
         """
-        Scenario: Selenium package is not installed.
+        Scenario: Neither Chrome nor chromedriver is found on PATH.
 
-        Given: selenium is not importable
+        Given: shutil.which returns None for all browser/driver lookups
         When: _check_selenium is called
-        Then: An ImportError is raised with install instructions
+        Then: A RuntimeError is raised with install instructions
         """
-        with patch.dict("sys.modules", {"selenium": None, "selenium.webdriver": None}):
-            # The import inside _check_selenium will fail
-            # We need to actually test the function's behavior
-            with pytest.raises(ImportError, match="selenium"):
-                _check_selenium()
-
-            with pytest.raises(RuntimeError):
-                # Chrome not found is also acceptable
-                _check_selenium()
+        with (
+            patch(target="shutil.which", return_value=None),
+            patch.dict("sys.modules", {"chromedriver_autoinstaller": None}),
+            pytest.raises(RuntimeError, match="Chrome"),
+        ):
+            _check_selenium()
 
     def test_missing_chromedriver_raises_runtime_error(self) -> None:
         """
@@ -2828,7 +2798,6 @@ class TestExport:
         When: _check_selenium is called but chromedriver is missing
         Then: A RuntimeError is raised mentioning chromedriver
 
-        Covers: lines 446-447
         """
         # Arrange - Given
         original_which = shutil.which
@@ -2853,7 +2822,6 @@ class TestExport:
         When: _check_selenium is called
         Then: A RuntimeError is raised mentioning Chrome
 
-        Covers: lines 440-444 (already covered but good to be explicit)
         """
         # Act & Assert - When/Then
         with patch(target="shutil.which", return_value=None), pytest.raises(RuntimeError, match="Chrome"):
@@ -2866,8 +2834,6 @@ class TestExport:
         Given: A valid HTML file and a mocked Chrome WebDriver
         When: _capture_screenshot is called
         Then: PNG bytes are returned and the driver is quit
-
-        Covers: lines 476-495
         """
         # Arrange - Given
         html_file = tmp_path / "test.html"
@@ -2875,43 +2841,20 @@ class TestExport:
 
         fake_png = b"\x89PNG_fake_image_bytes"
 
-        # Build the mock driver
         mock_driver = MagicMock()
         mock_driver.get_screenshot_as_png.return_value = fake_png
 
-        # Build Options mock
         mock_options_instance = MagicMock()
         mock_options_class = MagicMock(return_value=mock_options_instance)
 
-        # Build webdriver mock: webdriver.Chrome(options=...) -> mock_driver
         mock_webdriver = MagicMock()
         mock_webdriver.Chrome.return_value = mock_driver
 
-        # Build the selenium module hierarchy so that:
-        #   `from selenium import webdriver`       -> mock_webdriver
-        #   `from selenium.webdriver.chrome.options import Options` -> mock_options_class
-        mock_selenium = MagicMock()
-        mock_selenium.webdriver = mock_webdriver
-
-        mock_chrome_mod = MagicMock()
-        mock_options_mod = MagicMock()
-        mock_options_mod.Options = mock_options_class
-
-        mock_webdriver.chrome = mock_chrome_mod
-        mock_chrome_mod.options = mock_options_mod
-
-        # Act - When
+        # Act - When: patch the already-imported module-level references
         with (
             patch("blueprints.utils.map._check_selenium"),
-            patch.dict(
-                "sys.modules",
-                {
-                    "selenium": mock_selenium,
-                    "selenium.webdriver": mock_webdriver,
-                    "selenium.webdriver.chrome": mock_chrome_mod,
-                    "selenium.webdriver.chrome.options": mock_options_mod,
-                },
-            ),
+            patch("blueprints.utils.map.webdriver", mock_webdriver),
+            patch("blueprints.utils.map.Options", mock_options_class),
         ):
             result = _capture_screenshot(str(html_file), 800, 600, 0.1)
 
@@ -2945,7 +2888,6 @@ class TestExport:
         When: to_image is called with path=None
         Then: PNG bytes are returned
 
-        Covers: lines 1546-1547
         """
         # Arrange - Given
         fake_png = b"\x89PNG_fake"
@@ -2965,7 +2907,6 @@ class TestExport:
         When: to_image is called with a file path
         Then: The file is written and the Path is returned
 
-        Covers: lines 1548-1550
         """
         # Arrange - Given
         fake_png = b"\x89PNG_fake_data"
@@ -2988,7 +2929,6 @@ class TestExport:
         When: to_bytesio is called
         Then: A BytesIO buffer at position 0 is returned
 
-        Covers: lines 1571-1573
         """
         # Act - When
         result = map_with_point.to_bytesio(width=800, height=600, delay=0.1)
@@ -3007,7 +2947,6 @@ class TestExport:
         When: to_svg is called without a path
         Then: An SVG string containing the base64-encoded PNG is returned
 
-        Covers: lines 1596-1609
         """
         # Act - When
         result = map_with_point.to_svg(path=None, width=800, height=600, delay=0.1)
@@ -3025,8 +2964,6 @@ class TestExport:
         Given: A map and an output path
         When: to_svg is called with a file path
         Then: The SVG file is written
-
-        Covers: lines 1610-1612
         """
         # Arrange - Given
         out_path = tmp_path / "map.svg"
@@ -3048,7 +2985,6 @@ class TestExport:
         When: to_image_async is awaited
         Then: PNG bytes are returned
 
-        Covers: lines 1629-1630
         """
         # Act - When
         result = asyncio.run(map_with_point.to_image_async(path=None, width=800, height=600, delay=0.1))
@@ -3064,7 +3000,6 @@ class TestExport:
         When: to_svg_async is awaited
         Then: An SVG string is returned
 
-        Covers: lines 1649-1650
         """
         # Arrange — mock to_image so to_svg can work
         fake_png = b"\x89PNG_fake"
