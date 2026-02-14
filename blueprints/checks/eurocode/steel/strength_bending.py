@@ -112,29 +112,6 @@ class CheckStrengthBendingClass12:
         m_c_rd = self.plastic_resistance()
         return formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
 
-    def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate bending moment resistance check (Class 1 and 2 only).
-
-        Returns
-        -------
-        dict[str, Formula]
-            Calculation results keyed by formula number.
-        """
-        f_y = self.steel_cross_section.yield_strength
-        # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
-        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
-        props = self.steel_cross_section.profile.section_properties()
-        w = float(props.sxx or 0) if self.axis == "My" else float(props.syy or 0)
-
-        m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
-        m_c_rd = formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)
-        check_moment = formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
-
-        return {
-            "resistance": m_c_rd,
-            "check": check_moment,
-        }
-
     def result(self) -> CheckResult:
         """Calculate result of bending moment resistance (Class 1 and 2).
 
@@ -179,7 +156,7 @@ class CheckStrengthBendingClass12:
 
         # unity check
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n).add_newline(n=2)
+        report.add_formula(self.bending_strength_unity_check(), n=n).add_newline(n=2)
 
         # conclusion
         if self.result().is_ok:
@@ -284,30 +261,6 @@ class CheckStrengthBendingClass3:
         m_c_rd = self.elastic_resistance()
         return formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
 
-    def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate bending moment resistance check (Class 3 only).
-
-        Returns
-        -------
-        dict[str, Formula]
-            Calculation results keyed by formula number.
-        """
-        f_y = self.steel_cross_section.yield_strength
-        # For bending about y, the relevant section modulus is zxx; for bending about z, it is zyy.
-        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
-        props = self.steel_cross_section.profile.section_properties()
-        w = min(float(props.zxx_plus), float(props.zxx_minus)) if self.axis == "My" else min(float(props.zyy_plus), float(props.zyy_minus))  # type: ignore[attr-defined]
-        assert w is not None, "Cross-sectional elastic section modulus must be defined for the steel profile."
-
-        m_ed = abs(self.m) * KNM_TO_NMM  # convert kNm to Nmm
-        m_c_rd = formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)
-        check_moment = formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
-
-        return {
-            "resistance": m_c_rd,
-            "check": check_moment,
-        }
-
     def result(self) -> CheckResult:
         """Calculate result of bending moment resistance (Class 3).
 
@@ -352,7 +305,7 @@ class CheckStrengthBendingClass3:
 
         # unity check
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(self.calculation_formula()["check"], n=n).add_newline(n=2)
+        report.add_formula(self.bending_strength_unity_check(), n=n).add_newline(n=2)
 
         # conclusion
         if self.result().is_ok:
