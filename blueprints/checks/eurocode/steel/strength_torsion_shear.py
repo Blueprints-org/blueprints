@@ -1,13 +1,13 @@
 """Module for checking torsional shear stress resistance with shear force present (Eurocode 2, formula 6.23)."""
 
 from dataclasses import dataclass
-from typing import ClassVar, Literal
+from typing import Literal
 
 import numpy as np
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12IProfile
+from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_19 import Form6Dot19CheckDesignElasticShearResistance
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_25 import Form6Dot25CheckCombinedShearForceAndTorsionalMoment
@@ -77,65 +77,97 @@ class CheckStrengthTorsionShearClass12IProfile:
     axis: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
     section_properties: SectionProperties | None = None
-    name: str = "Torsion strength check for steel I-profiles class 1 and 2"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
+    name: str = "Torsion strength check for steel class 1 and 2"
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties and check profile type."""
-        if not isinstance(self.steel_cross_section.profile, IProfile):
-            raise TypeError("The provided profile is not an I-profile.")
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
+        implemented_shapes = (IProfile,)
+        if type(self.steel_cross_section.profile) not in implemented_shapes:
+            raise NotImplementedError(f"The provided profile shape {type(self.steel_cross_section.profile).__name__} has not been implemented yet.")
 
-    def calculation_formula(self) -> dict[str, Formula | float]:
-        """Calculate torsion resistance check.
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
 
         Returns
         -------
-        dict[str, Formula | float]
-            Calculation results keyed by formula number. Returns an empty dict if no torsion is applied.
+        list[str]
         """
-        shear_calculation = CheckStrengthShearClass12IProfile(
+        return [EN_1993_1_1_2005]
+
+    def unit_torsional_shear_stress(self) -> float:
+        """Calculate the unit torsional shear stress (at 1 kNm torsion).
+
+        Returns
+        -------
+        float
+            The unit torsional shear stress in MPa.
+        """
+
+        unit_stress = self.steel_cross_section.profile.unit_stress
+        unit_sig_zxy = unit_stress["sig_zxy_mzz"]
+        return float(np.max(np.abs(unit_sig_zxy)))
+
+    def shear_area(self) -> Formula:
+        """Calculate the shear area of the I-profile cross-section.
+
+        Returns
+        -------
+        Formula
+            The calculated shear area formula.
+        """
+        shear_calculation = CheckStrengthShearClass12(
             steel_cross_section=self.steel_cross_section,
             v=self.v,
             axis=self.axis,
             gamma_m0=self.gamma_m0,
-            section_properties=self.section_properties,
+            
         )
+        return shear_calculation.shear_area()
 
-        shear_formulas = shear_calculation.calculation_formula()
-        a_v = shear_formulas["shear_area"]
-        v_pl_rd = shear_formulas["resistance"]
+    def raw_shear_resistance(self) -> Formula:
+        """Calculate the plastic shear resistance without torsion.
 
-        rif1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM,
-            member="N/A",
-            result_for=ResultFor.LOAD_CASE,
-            load_case="N/A",
-            mx=1,  # 1 kNm
+        Returns
+        -------
+        Formula
+            The calculated plastic shear resistance formula.
+        """
+        shear_calculation = CheckStrengthShearClass12(
+            steel_cross_section=self.steel_cross_section,
+            v=self.v,
+            axis=self.axis,
+            gamma_m0=self.gamma_m0,
+            
         )
+        return shear_calculation.plastic_resistance()
 
-        unit_stress = self.steel_cross_section.profile.calculate_stress(rif1d)
-        unit_sig_zxy = unit_stress.get_stress()[0]["sig_zxy"]
-        unit_max_sig_zxy = float(np.max(np.abs(unit_sig_zxy)))
+    def combined_resistance(self) -> Formula:
+        """Calculate the combined torsion and shear resistance (EN 1993-1-1:2005 art. 6.2.7 - Formula (6.26)).
 
+        Returns
+        -------
+        Formula
+            The calculated combined resistance formula.
+        """
+        v_pl_rd = self.raw_shear_resistance()
+        unit_max_sig_zxy = self.unit_torsional_shear_stress()
         tau_t_ed = abs(self.m_x) * unit_max_sig_zxy
+
+        return Form6Dot26VplTRdIOrHSection(tau_t_ed=tau_t_ed, f_y=self.steel_cross_section.yield_strength, gamma_m0=self.gamma_m0, v_pl_rd=v_pl_rd)
+
+    def combined_unity_check(self) -> Formula:
+        """Calculate the unity check for combined shear force and torsional moment (EN 1993-1-1:2005 art. 6.2.7 - Formula (6.25)).
+
+        Returns
+        -------
+        Formula
+            The calculated unity check formula.
+        """
         v_ed = abs(self.v) * KN_TO_N
+        v_pl_t_rd = self.combined_resistance()
 
-        v_pl_t_rd = Form6Dot26VplTRdIOrHSection(
-            tau_t_ed=tau_t_ed, f_y=self.steel_cross_section.yield_strength, gamma_m0=self.gamma_m0, v_pl_rd=v_pl_rd
-        )
-
-        check_torsion_with_shear = Form6Dot25CheckCombinedShearForceAndTorsionalMoment(v_ed=v_ed, v_pl_t_rd=v_pl_t_rd)
-
-        return {
-            "unit_shear_stress": unit_max_sig_zxy,
-            "shear_area": a_v,
-            "raw_shear_resistance": v_pl_rd,
-            "resistance": v_pl_t_rd,
-            "check": check_torsion_with_shear,
-        }
+        return Form6Dot25CheckCombinedShearForceAndTorsionalMoment(v_ed=v_ed, v_pl_t_rd=v_pl_t_rd)
 
     def result(self) -> CheckResult:
         """Calculate result of torsion resistance.
@@ -145,10 +177,9 @@ class CheckStrengthTorsionShearClass12IProfile:
         CheckResult
             True if the torsion check passes, False otherwise.
         """
-        steps = self.calculation_formula()
         provided = 0 if self.m_x == 0 else abs(self.v) * KN_TO_N
-        required = steps["resistance"]
-        return CheckResult.from_comparison(provided=provided, required=float(required))
+        required = float(self.combined_resistance())
+        return CheckResult.from_comparison(provided=provided, required=required)
 
     def report(self, n: int = 2) -> Report:
         """Returns the report for the torsion check.
@@ -164,6 +195,8 @@ class CheckStrengthTorsionShearClass12IProfile:
             Report of the torsion check.
         """
         report = Report("Check: torsion with shear force on steel beam")
+
+        # will not generate a report if no torsion or shear is applied
         if self.m_x == 0:
             report.add_paragraph("No torsion was applied; therefore, no combined torsion with shear force check is necessary.")
             return report
@@ -171,41 +204,42 @@ class CheckStrengthTorsionShearClass12IProfile:
             report.add_paragraph("No shear force was applied; therefore, no combined torsion with shear force check is necessary.")
             return report
 
-        # Cache calculation formulas to avoid redundant recalculations
-        formulas = self.calculation_formula()
-
-        # Get information for the introduction of the report
+        # introduction
         profile_name = self.steel_cross_section.profile.name
         steel_quality = self.steel_cross_section.material.steel_class.name
-        m_x_val = f"{self.m_x:.{n}f}"
-        unit_stress_val = f"{formulas['unit_shear_stress']:.{n}f}"
         axis_label = "(vertical) z" if self.axis == "Vz" else "(horizontal) y"
-        total_stress_val = f"{formulas['unit_shear_stress'] * self.m_x:.{n}f}"
-
         report.add_paragraph(
-            rf"Profile {profile_name} with steel quality {steel_quality} "
-            rf"is loaded with a torsion of {m_x_val} kNm a shear force of {abs(self.v):.{n}f} kN in the {axis_label}-direction. "
-            rf"First, the unit torsional stress (at 1 kNm) is defined as {unit_stress_val} MPa. "
-            rf"With the applied torsion, this results in a torsional stress of {total_stress_val} MPa. "
-            rf"The shear area and resistance (without torsion) are calculated as follows:"
+            f"Profile {profile_name} with steel quality {steel_quality} "
+            f"is loaded with a torsion of {self.m_x:.{n}f} kNm and a shear force of {abs(self.v):.{n}f} kN in the {axis_label}-direction."
         )
+        report.add_newline(n=2)
 
-        shear_area_formula = formulas["shear_area"]
-        raw_shear_resistance_formula = formulas["raw_shear_resistance"]
-        resistance_formula = formulas["resistance"]
-        check_formula = formulas["check"]
+        # unit torsional shear stress
+        unit_stress_val = self.unit_torsional_shear_stress()
+        total_stress_val = unit_stress_val * self.m_x
+        report.add_paragraph(
+            f"The unit torsional stress (at 1 kNm) is: {unit_stress_val:.{n}f} MPa. "
+            f"With the applied torsion, this results in a torsional stress of {total_stress_val:.{n}f} MPa."
+        )
+        report.add_newline(n=2)
 
-        assert isinstance(shear_area_formula, Formula), "Expected Formula for shear_area"
-        assert isinstance(raw_shear_resistance_formula, Formula), "Expected Formula for raw_shear_resistance"
-        assert isinstance(resistance_formula, Formula), "Expected Formula for resistance"
-        assert isinstance(check_formula, Formula), "Expected Formula for check"
+        # shear area and resistance (without torsion)
+        report.add_paragraph("The shear area and resistance (without torsion) are calculated as follows:")
+        report.add_formula(self.shear_area(), n=n, split_after=[(2, "="), (7, "+"), (3, "=")])
+        report.add_formula(self.raw_shear_resistance(), n=n)
+        report.add_newline(n=2)
 
-        report.add_formula(shear_area_formula, n=n, split_after=[(2, "="), (7, "+"), (3, "=")])
-        report.add_formula(raw_shear_resistance_formula, n=n)
-        report.add_paragraph("Next, the combined torsion and shear resistance is calculated as follows:")
-        report.add_formula(resistance_formula, n=n)
+        # combined torsion and shear resistance
+        report.add_paragraph("The combined torsion and shear resistance is calculated as follows:")
+        report.add_formula(self.combined_resistance(), n=n)
+        report.add_newline(n=2)
+
+        # unity check
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(check_formula, n=n)
+        report.add_formula(self.combined_unity_check(), n=n)
+        report.add_newline(n=2)
+
+        # add overall result
         if self.result().is_ok:
             report.add_paragraph("The check for torsion satisfies the requirements.")
         else:
@@ -242,8 +276,6 @@ class CheckStrengthTorsionShearClass34:
         Axis along which the shear force is applied. "Vz" (default) for z (vertical), "Vy" for y (horizontal).
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -268,49 +300,55 @@ class CheckStrengthTorsionShearClass34:
     v: KN = 0
     axis: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Torsion strength check for steel class 3 and 4"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
-    def __post_init__(self) -> None:
-        """Post-initialization to extract section properties and check profile type."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
-
-    def calculation_formula(self) -> dict[str, Formula | float]:
-        """Calculate torsion resistance check.
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
 
         Returns
         -------
-        dict[str, Formula | float]
-            Calculation results keyed by formula number. Returns an empty dict if no torsion is applied.
+        list[str]
         """
-        rif1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM,
-            member="N/A",
-            result_for=ResultFor.LOAD_CASE,
-            load_case="N/A",
-            vy=self.v if self.axis == "Vy" else 0,
-            vz=self.v if self.axis == "Vz" else 0,
-            mx=self.m_x,
-        )
+        return [EN_1993_1_1_2005]
 
-        stress = self.steel_cross_section.profile.calculate_stress(rif1d)
+    def combined_shear_stress(self) -> float:
+        """Calculate the combined shear stress from torsion and shear using elastic theory.
+
+        Returns
+        -------
+        float
+            The maximum combined shear stress in MPa.
+        """
+
+        stress = self.steel_cross_section.profile.calculate_stress(
+            v_y=self.v if self.axis == "Vy" else 0,
+            v_z=self.v if self.axis == "Vz" else 0,
+            m_x=self.m_x,
+        )
         sig_zxy = stress.get_stress()[0]["sig_zxy"]
-        max_sig_zxy = float(np.max(np.abs(sig_zxy)))
+        return float(np.max(np.abs(sig_zxy)))
 
-        shear_resistance = self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0
+    def elastic_resistance(self) -> float:
+        """Calculate the elastic shear resistance.
 
-        check_torsion_with_shear = Form6Dot19CheckDesignElasticShearResistance(
-            tau_ed=max_sig_zxy, f_y=self.steel_cross_section.yield_strength, gamma_m0=self.gamma_m0
-        )
+        Returns
+        -------
+        float
+            The calculated elastic shear resistance in MPa.
+        """
+        return float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0)
 
-        return {
-            "shear_stress": max_sig_zxy,
-            "resistance": shear_resistance,
-            "check": check_torsion_with_shear,
-        }
+    def combined_unity_check(self) -> Formula:
+        """Calculate the unity check for combined elastic shear and torsion (EN 1993-1-1:2005 art. 6.2.6 - Formula (6.19)).
+
+        Returns
+        -------
+        Formula
+            The calculated unity check formula.
+        """
+        tau_ed = self.combined_shear_stress()
+        return Form6Dot19CheckDesignElasticShearResistance(tau_ed=tau_ed, f_y=self.steel_cross_section.yield_strength, gamma_m0=self.gamma_m0)
 
     def result(self) -> CheckResult:
         """Calculate result of torsion resistance.
@@ -320,9 +358,8 @@ class CheckStrengthTorsionShearClass34:
         CheckResult
             True if the torsion check passes, False otherwise.
         """
-        steps = self.calculation_formula()
-        provided = steps["shear_stress"]
-        required = steps["resistance"]
+        provided = self.combined_shear_stress()
+        required = self.elastic_resistance()
         return CheckResult.from_comparison(provided=provided, required=float(required))
 
     def report(self, n: int = 2) -> Report:
@@ -339,6 +376,8 @@ class CheckStrengthTorsionShearClass34:
             Report of the elastic torsion check.
         """
         report = Report("Check: elastic torsion with shear force on steel beam (Class 3/4)")
+
+        # will not generate a report if no torsion or shear is applied
         if self.m_x == 0:
             report.add_paragraph("No torsion was applied; therefore, no combined torsion with shear force check is necessary.")
             return report
@@ -346,31 +385,34 @@ class CheckStrengthTorsionShearClass34:
             report.add_paragraph("No shear force was applied; therefore, no combined torsion with shear force check is necessary.")
             return report
 
-        # Cache calculation formulas to avoid redundant recalculations
-        formulas = self.calculation_formula()
-
-        # Get information for the introduction of the report
+        # introduction
         profile_name = self.steel_cross_section.profile.name
         steel_quality = self.steel_cross_section.material.steel_class.name
-        m_x_val = f"{self.m_x:.{n}f}"
         axis_label = "(vertical) z" if self.axis == "Vz" else "(horizontal) y"
-        shear_stress_val = f"{formulas['shear_stress']:.{n}f}"
-
         report.add_paragraph(
-            rf"Profile {profile_name} with steel quality {steel_quality} "
-            rf"is loaded with a torsion of {m_x_val} kNm and a shear force of {abs(self.v):.{n}f} kN in the {axis_label}-direction. "
-            rf"For class 3/4 sections, the combined shear stress from torsion and shear is calculated using elastic theory. "
-            rf"The maximum combined shear stress is: {shear_stress_val} N/mm²."
+            f"Profile {profile_name} with steel quality {steel_quality} "
+            f"is loaded with a torsion of {self.m_x:.{n}f} kNm and a shear force of {abs(self.v):.{n}f} kN in the {axis_label}-direction. "
+            f"For class 3/4 sections, the combined shear stress from torsion and shear is calculated using elastic theory."
         )
+        report.add_newline(n=2)
 
-        tau_max = round(self.steel_cross_section.yield_strength / (np.sqrt(3) * self.gamma_m0), n)
+        # combined shear stress
+        shear_stress_val = self.combined_shear_stress()
+        report.add_paragraph(f"The maximum combined shear stress is: {shear_stress_val:.{n}f} N/mm².")
+        report.add_newline(n=2)
+
+        # elastic resistance
+        tau_max = self.elastic_resistance()
         report.add_paragraph("The maximum allowed elastic shear stress is calculated as follows:")
-        report.add_paragraph(rf"$f_y / (\sqrt{{3}} \cdot \gamma_{{M0}})$ = {tau_max} N/mm².")
+        report.add_paragraph(rf"$f_y / (\sqrt{{3}} \cdot \gamma_{{M0}})$ = {tau_max:.{n}f} N/mm².")
+        report.add_newline(n=2)
 
+        # unity check
         report.add_paragraph("The unity check is calculated as follows:")
-        check_formula = formulas["check"]
-        assert isinstance(check_formula, Formula), "Expected Formula for check"
-        report.add_formula(check_formula, n=n)
+        report.add_formula(self.combined_unity_check(), n=n)
+        report.add_newline(n=2)
+
+        # add overall result
         if self.result().is_ok:
             report.add_paragraph("The check for elastic torsion with shear satisfies the requirements.")
         else:

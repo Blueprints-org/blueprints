@@ -32,6 +32,7 @@ def chs_steel_cross_section() -> SteelCrossSection:
     profile = CHS.CHS1016x12_5
     return SteelCrossSection(profile=profile, material=steel_material)
 
+
 @pytest.fixture(scope="class")
 def unp_steel_cross_section() -> SteelCrossSection:
     """Create a SteelCrossSection fixture with UNP80 profile and S355 steel material."""

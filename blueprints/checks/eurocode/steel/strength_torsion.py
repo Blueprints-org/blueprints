@@ -1,7 +1,6 @@
 """Module for checking torsional shear stress resistance (Eurocode 2, formula 6.23)."""
 
 from dataclasses import dataclass
-from typing import ClassVar
 
 import numpy as np
 from sectionproperties.post.post import SectionProperties
@@ -10,10 +9,8 @@ from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_23 import Form6Dot23CheckTorsionalMoment
 from blueprints.codes.formula import Formula
-from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KNM
-from blueprints.unit_conversion import KNM_TO_NMM
 from blueprints.utils.report import Report
 
 
@@ -66,7 +63,6 @@ class CheckStrengthStVenantTorsionClass1234:
     gamma_m0: DIMENSIONLESS = 1.0
     section_properties: SectionProperties | None = None
     name: str = "Torsion strength check"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""
@@ -74,36 +70,50 @@ class CheckStrengthStVenantTorsionClass1234:
             section_properties = self.steel_cross_section.profile.section_properties()
             object.__setattr__(self, "section_properties", section_properties)
 
-    def calculation_formula(self) -> dict[str, Formula | float]:
-        """Calculate torsion resistance check.
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
 
         Returns
         -------
-        dict[str, Formula | float]
-            Calculation results keyed by formula number. Returns an empty dict if no torsion is applied.
+        list[str]
         """
-        rif1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM,
-            member="N/A",
-            result_for=ResultFor.LOAD_CASE,
-            load_case="N/A",
-            mx=1,  # 1 kNm
-        )
+        return [EN_1993_1_1_2005]
 
-        unit_stress = self.steel_cross_section.profile.calculate_stress(rif1d)
-        unit_sig_zxy = unit_stress.get_stress()[0]["sig_zxy"]
-        unit_max_sig_zxy = float(np.max(np.abs(unit_sig_zxy)))
+    def unit_torsional_shear_stress(self) -> float:
+        """Calculate the unit torsional shear stress (at 1 kNm torsion).
 
-        t_rd = self.steel_cross_section.yield_strength / self.gamma_m0 / np.sqrt(3) / unit_max_sig_zxy
+        Returns
+        -------
+        float
+            The unit torsional shear stress in MPa.
+        """
+        unit_stress = self.steel_cross_section.profile.unit_stress
+        unit_sig_zxy = unit_stress["sig_zxy_mzz"]
+        return float(np.max(np.abs(unit_sig_zxy)))
+
+    def torsional_resistance(self) -> float:
+        """Calculate the torsional resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.7).
+
+        Returns
+        -------
+        float
+            The calculated torsional resistance in kNm.
+        """
+        unit_max_sig_zxy = self.unit_torsional_shear_stress()
+        return float(self.steel_cross_section.yield_strength / self.gamma_m0 / np.sqrt(3) / unit_max_sig_zxy)
+
+    def torsional_strength_unity_check(self) -> Formula:
+        """Calculate the unity check for torsional strength of the steel cross-section (EN 1993-1-1:2005 art. 6.2.7 - Formula (6.23)).
+
+        Returns
+        -------
+        Formula
+            The calculated unity check for torsional strength.
+        """
         t_ed = abs(self.m_x)
-
-        check_torsion = Form6Dot23CheckTorsionalMoment(t_ed=t_ed, t_rd=t_rd)
-
-        return {
-            "unit_shear_stress": unit_max_sig_zxy,
-            "resistance": t_rd,
-            "check": check_torsion,
-        }
+        t_rd = self.torsional_resistance()
+        return Form6Dot23CheckTorsionalMoment(t_ed=t_ed, t_rd=t_rd)
 
     def result(self) -> CheckResult:
         """Calculate result of torsion resistance.
@@ -113,9 +123,8 @@ class CheckStrengthStVenantTorsionClass1234:
         CheckResult
             True if the torsion check passes, False otherwise.
         """
-        steps = self.calculation_formula()
-        provided = abs(self.m_x) * KNM_TO_NMM
-        required = steps["resistance"] * KNM_TO_NMM
+        provided = abs(self.m_x)
+        required = self.torsional_resistance()
         return CheckResult.from_comparison(provided=provided, required=float(required))
 
     def report(self, n: int = 2) -> Report:
@@ -132,41 +141,42 @@ class CheckStrengthStVenantTorsionClass1234:
             Report of the torsion check.
         """
         report = Report("Check: torsion steel beam")
+
+        # will not generate a report if no torsion is applied, as the check is not necessary in that case
         if self.m_x == 0:
             report.add_paragraph("No torsion was applied; therefore, no torsion check is necessary.")
             return report
 
-        # Cache calculation formulas to avoid redundant recalculations
-        formulas = self.calculation_formula()
-
-        # Get information for the introduction of the report
-        profile_name = self.steel_cross_section.profile.name
-        steel_quality = self.steel_cross_section.material.steel_class.name
-        m_x_val = f"{self.m_x:.{n}f}"
-        unit_stress_val = f"{formulas['unit_shear_stress']:.{n}f}"
-
+        # generate report if torsion is applied
         report.add_paragraph(
-            rf"Profile {profile_name} with steel quality {steel_quality} "
-            rf"is loaded with a torsion of {m_x_val} kNm. "
-            rf"First, the unit torsional stress (at 1 kNm) is defined as {unit_stress_val} MPa. "
-            rf"The torsional resistance is calculated as follows:"
+            f"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
+            f"is loaded with a torsional moment of {abs(self.m_x):.{n}f} kNm."
         )
+        report.add_newline(n=2)
 
-        # Get values for the formula of torsion resistance
+        # unit torsional shear stress
+        unit_stress_val = self.unit_torsional_shear_stress()
+        report.add_paragraph(f"The unit torsional stress (at 1 kNm) is: {unit_stress_val:.{n}f} MPa.")
+        report.add_newline(n=2)
+
+        # torsional resistance
+        report.add_paragraph("The torsional resistance is calculated as follows:")
         fy = self.steel_cross_section.yield_strength
         gamma_m0 = self.gamma_m0
-        unit_stress = formulas["unit_shear_stress"]
-        result = formulas["resistance"]
-
+        t_rd = self.torsional_resistance()
         eqn_1 = (
             rf"T_{{Rd}} = \frac{{f_y}}{{\gamma_{{M0}} \cdot \sqrt{{3}} \cdot \text{{unit-stress}}}} = "
-            rf"\frac{{{fy:.{n}f}}}{{{gamma_m0:.{n}f} \cdot \sqrt{{3}} \cdot {unit_stress:.{n}f}}} = {result:.{n}f} \ kNm"
+            rf"\frac{{{fy:.{n}f}}}{{{gamma_m0:.{n}f} \cdot \sqrt{{3}} \cdot {unit_stress_val:.{n}f}}} = {t_rd:.{n}f} \ kNm"
         )
         report.add_equation(eqn_1)
+        report.add_newline(n=2)
+
+        # unity check
         report.add_paragraph("The unity check is calculated as follows:")
-        check_formula = formulas["check"]
-        assert isinstance(check_formula, Formula), "Expected Formula for check"
-        report.add_formula(check_formula, n=n)
+        report.add_formula(self.torsional_strength_unity_check(), n=n)
+        report.add_newline(n=2)
+
+        # add overall result based on the unity check
         if self.result().is_ok:
             report.add_paragraph("The check for torsion satisfies the requirements.")
         else:
