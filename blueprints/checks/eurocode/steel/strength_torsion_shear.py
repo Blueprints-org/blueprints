@@ -102,7 +102,6 @@ class CheckStrengthTorsionShearClass12:
         float
             The unit torsional shear stress in MPa.
         """
-
         unit_stress = self.steel_cross_section.profile.unit_stress()
         unit_sig_zxy = unit_stress["sig_zxy_mzz"]
         return float(np.max(np.abs(unit_sig_zxy)))
@@ -174,7 +173,6 @@ class CheckStrengthTorsionShearClass12:
         CheckResult
             True if the torsion check passes, False otherwise.
         """
-
         provided = 0 if self.m_x == 0 else abs(self.v) * KN_TO_N
         required = float(self.combined_resistance())
         return CheckResult.from_comparison(provided=provided, required=required)
@@ -318,7 +316,6 @@ class CheckStrengthTorsionShearClass34:
         float
             The maximum combined shear stress in MPa.
         """
-
         unit_stress = self.steel_cross_section.profile.unit_stress()
         unit_sig_zxy_shear = unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"]
         unit_sig_zxy_torsion = unit_stress["sig_zxy_mzz"]

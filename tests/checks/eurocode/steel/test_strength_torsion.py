@@ -45,7 +45,6 @@ class TestCheckStrengthStVenantTorsionClass1234:
 
     def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test source_docs() method."""
-        m_x = 1
         calc = CheckStrengthStVenantTorsionClass1234(heb_steel_cross_section, m_x=1, gamma_m0=1.0)
         docs = calc.source_docs()
         assert isinstance(docs, list)
