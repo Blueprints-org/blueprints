@@ -15,12 +15,14 @@ def heb_steel_cross_section() -> SteelCrossSection:
     profile = HEB.HEB300
     return SteelCrossSection(profile=profile, material=steel_material)
 
+
 @pytest.fixture(scope="class")
 def heb_welded_steel_cross_section() -> SteelCrossSection:
     """Create a SteelCrossSection fixture with welded HEB300 profile and S355 steel material."""
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     profile = HEB.HEB300
     return SteelCrossSection(profile=profile, material=steel_material, fabrication_method="welded")
+
 
 @pytest.fixture(scope="class")
 def chs_steel_cross_section() -> SteelCrossSection:
