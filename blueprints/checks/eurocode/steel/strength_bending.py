@@ -71,7 +71,7 @@ class CheckStrengthBendingClass12:
         """Post-initialization to extract section properties."""
         if self.axis not in ("My", "Mz"):
             raise ValueError("Axis must be 'My' or 'Mz'.")
-        
+
     @staticmethod
     def source_docs() -> list[str]:
         """List of source document identifiers used for this check.
@@ -81,7 +81,7 @@ class CheckStrengthBendingClass12:
         list[str]
         """
         return [EN_1993_1_1_2005]
-    
+
     def plastic_resistance(self) -> Formula:
         """Calculate the plastic bending resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.5(2) - Formula (6.13)).
 
@@ -141,7 +141,7 @@ class CheckStrengthBendingClass12:
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
             return report
-        
+
         # generate report if bending moment is applied
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
@@ -220,7 +220,7 @@ class CheckStrengthBendingClass3:
         """Post-initialization to extract section properties."""
         if self.axis not in ("My", "Mz"):
             raise ValueError("Axis must be 'My' or 'Mz'.")
-        
+
     @staticmethod
     def source_docs() -> list[str]:
         """List of source document identifiers used for this check.
@@ -230,7 +230,7 @@ class CheckStrengthBendingClass3:
         list[str]
         """
         return [EN_1993_1_1_2005]
-    
+
     def elastic_resistance(self) -> Formula:
         """Calculate the elastic bending resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.5(3) - Formula (6.14)).
 
@@ -290,7 +290,7 @@ class CheckStrengthBendingClass3:
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
             return report
-        
+
         # generate report if bending moment is applied
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
@@ -299,7 +299,7 @@ class CheckStrengthBendingClass3:
 
         # resistance
         report.add_paragraph(
-            rf"The resistance is calculated as follows, using cross-section class 3:"
+            r"The resistance is calculated as follows, using cross-section class 3:"
         )
         report.add_formula(self.elastic_resistance(), n=n).add_newline(n=2)
 

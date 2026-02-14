@@ -149,7 +149,7 @@ class TestCheckStrengthBendingClass3:
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.005) == 0.99
-        
+
         m = -355 * 0.571 * 0.99
         calc = CheckStrengthBendingClass3(heb_steel_cross_section, m, axis="Mz")
         result = calc.result()
