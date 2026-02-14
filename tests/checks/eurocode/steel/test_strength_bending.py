@@ -3,7 +3,6 @@
 import pytest
 
 from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass3, CheckStrengthBendingClass12
-from blueprints.checks.eurocode.steel.strength_tension import CheckStrengthTensionClass1234
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
@@ -85,8 +84,8 @@ class TestCheckStrengthBendingClass12:
 
     def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test source_docs() method."""
-        n = 100
-        calc = CheckStrengthBendingClass12(heb_steel_cross_section, n, gamma_m0=1.0)
+        m = 100
+        calc = CheckStrengthBendingClass12(heb_steel_cross_section, m, gamma_m0=1.0)
         docs = calc.source_docs()
         assert isinstance(docs, list)
         assert len(docs) == 1
@@ -170,8 +169,8 @@ class TestCheckStrengthBendingClass3:
 
     def test_source_docs(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test source_docs() method."""
-        n = 100
-        calc = CheckStrengthBendingClass3(heb_steel_cross_section, n, gamma_m0=1.0)
+        m = 100
+        calc = CheckStrengthBendingClass3(heb_steel_cross_section, m, gamma_m0=1.0)
         docs = calc.source_docs()
         assert isinstance(docs, list)
         assert len(docs) == 1

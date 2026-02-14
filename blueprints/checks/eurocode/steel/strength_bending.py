@@ -1,7 +1,7 @@
 """Module for checking bending moment resistance of steel cross-sections."""
 
 from dataclasses import dataclass
-from typing import ClassVar, Literal
+from typing import Literal
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -9,12 +9,11 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state i
     formula_6_12,
     formula_6_13,
     formula_6_14,
-    formula_6_5,
 )
 from blueprints.codes.formula import Formula
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KNM
-from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM
+from blueprints.unit_conversion import KNM_TO_NMM
 from blueprints.utils.report import Report
 
 
@@ -96,7 +95,6 @@ class CheckStrengthBendingClass12:
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
         w = float(props.sxx or 0) if self.axis == "My" else float(props.syy or 0)
-        assert w is not None, "Cross-sectional sectional moment must be defined for the steel profile."
 
         f_y = self.steel_cross_section.yield_strength
         return formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)
@@ -110,7 +108,7 @@ class CheckStrengthBendingClass12:
         Formula
             The calculated unity check for bending strength.
         """
-        m_ed = self.m * KNM_TO_NMM
+        m_ed = abs(self.m) * KNM_TO_NMM
         m_c_rd = self.plastic_resistance()
         return formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
 
@@ -175,7 +173,7 @@ class CheckStrengthBendingClass12:
 
         # resistance
         report.add_paragraph(
-            rf"The resistance is calculated as follows, using cross-section class 1 or 2:"
+            "The resistance is calculated as follows, using cross-section class 1 or 2:"
         )
         report.add_formula(self.plastic_resistance(), n=n).add_newline(n=2)
 
@@ -269,7 +267,6 @@ class CheckStrengthBendingClass3:
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
         w = min(float(props.zxx_plus), float(props.zxx_minus)) if self.axis == "My" else min(float(props.zyy_plus), float(props.zyy_minus))  # type: ignore[attr-defined]
-        assert w is not None, "Cross-sectional elastic section modulus must be defined for the steel profile."
 
         f_y = self.steel_cross_section.yield_strength
         return formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)
@@ -283,7 +280,7 @@ class CheckStrengthBendingClass3:
         Formula
             The calculated unity check for bending strength.
         """
-        m_ed = self.m * KNM_TO_NMM
+        m_ed = abs(self.m) * KNM_TO_NMM
         m_c_rd = self.elastic_resistance()
         return formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
 
