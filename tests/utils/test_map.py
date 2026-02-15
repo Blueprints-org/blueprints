@@ -30,20 +30,23 @@ from shapely.geometry import (
 )
 
 from blueprints.utils.map import (
-    _SHAPE_CONFIG,
+    _DEFAULT_CAPTION_CSS,
+    _DEFAULT_ICON_CSS,
+    _DEFAULT_MARKER_CAPTION_CSS,
+    _DEFAULT_TEXT_CSS,
     TILE_PROVIDERS,
     CircleStyle,
     FillStyle,
     HeatmapStyle,
-    LabelStyle,
     Map,
     MapConfig,
-    MarkerStyle,
     PopupStyle,
     RawHTML,
     StrokeStyle,
     _capture_screenshot,
     _check_selenium,
+    _classify_marker,
+    _css_to_style,
     _detect_and_transform_coords,
     _markdown_to_html,
     _resolve_style,
@@ -176,7 +179,7 @@ class TestMapCreation:
         """
         Scenario: Inspect a map's string representation.
 
-        Given: A Map with a title and one point added
+        Given: A Map with a title and one location added
         When: repr() is called on the map
         Then: The output includes the title and geometry count
         """
@@ -215,19 +218,19 @@ class TestMapCreation:
 
 
 # ===================================================================
-# Scenarios for adding point markers and circles.
+# Scenarios for adding location markers and circles.
 # ===================================================================
 
 
 class TestAddPoints:
-    """Scenarios for adding point markers and circles."""
+    """Scenarios for adding location markers and circles."""
 
     def test_add_point_with_emoji_label(self) -> None:
         """
         Scenario: Add a construction site marker with an emoji.
 
         Given: An empty map and a Point at Amsterdam Centraal
-        When: A point is added with a 🏗️ emoji label and hover text
+        When: A location is added with a 🏗️ emoji marker and tooltip text
         Then: The bounds are tracked and the method returns self
         """
         # Arrange - Given
@@ -235,37 +238,36 @@ class TestAddPoints:
         point = Point(4.8952, 52.3702)
 
         # Act - When
-        result = m.add_point(point, label="🏗️", hover="**Amsterdam Centraal**")
+        result = m.add_point(point, marker="🏗️", tooltip="**Amsterdam Centraal**")
 
         # Assert - Then
         assert result is m, "add_point should return self for chaining"
-        assert len(m._bounds) == 2, "One point should create 2 bound entries (min/max)"
+        assert len(m._bounds) == 2, "One location should create 2 bound entries (min/max)"
 
     def test_add_point_with_icon_marker(self) -> None:
         """
-        Scenario: Add a point with a Font Awesome icon.
+        Scenario: Add a location with a Font Awesome icon.
 
-        Given: An empty map and a MarkerStyle with a home icon
-        When: A point is added with that style
-        Then: The point is added without errors
+        Given: An empty map and a CSS dict for the marker
+        When: A location is added with that style
+        Then: The location is added without errors
         """
         # Arrange - Given
         m = Map()
         point = Point(4.8834, 52.3667)
-        style = MarkerStyle(icon="home", marker_color="green", prefix="fa")
 
         # Act - When
-        m.add_point(point, hover="**Anne Frank House**", marker_style=style)
+        m.add_point(point, marker="home", tooltip="**Anne Frank House**", marker_style={"color": "green"})
 
         # Assert - Then
         assert len(m._bounds) == 2, "Point should be tracked in bounds"
 
     def test_add_point_with_popup(self) -> None:
         """
-        Scenario: Add a point that shows a popup on click.
+        Scenario: Add a location that shows a popup on click.
 
         Given: An empty map and a Point
-        When: A point is added with both hover and popup text
+        When: A location is added with both tooltip and popup text
         Then: Both interactions are configured
         """
         # Arrange - Given
@@ -275,7 +277,7 @@ class TestAddPoints:
         # Act - When
         m.add_point(
             point,
-            hover="**Hover** text",
+            tooltip="**Hover** text",
             popup="# Popup\nWith *markdown* support",
         )
 
@@ -300,7 +302,7 @@ class TestAddPoints:
         )
 
         # Act - When
-        result = m.add_circle(point, hover="**Rijksmuseum**", style=style)
+        result = m.add_circle(point, tooltip="**Rijksmuseum**", style=style)
 
         # Assert - Then
         assert result is m, "add_circle should return self"
@@ -308,10 +310,10 @@ class TestAddPoints:
 
     def test_add_point_default_marker(self) -> None:
         """
-        Scenario: Add a point with no label, no emoji, default marker.
+        Scenario: Add a location with no marker, no emoji, default marker.
 
         Given: An empty map and a Point
-        When: add_point is called with only the point (no label or style)
+        When: add_point is called with only the location (no marker or style)
         Then: A default blue pin marker is placed
         """
         # Arrange - Given
@@ -343,20 +345,180 @@ class TestAddPoints:
 
     def test_add_point_with_only_hover(self) -> None:
         """
-        Scenario: Add a point with hover but no label (icon marker).
+        Scenario: Add a location with tooltip but no marker (icon marker).
 
         Given: An empty map
-        When: add_point is called with hover text but no label
-        Then: A default icon marker with hover tooltip is placed
+        When: add_point is called with tooltip text but no marker
+        Then: A default icon marker with tooltip tooltip is placed
         """
         # Arrange - Given
         m = Map()
 
         # Act - When
-        m.add_point(Point(4.9, 52.37), hover="**Info only**")
+        m.add_point(Point(4.9, 52.37), tooltip="**Info only**")
 
         # Assert - Then
         assert len(m._bounds) == 2
+
+
+# ===================================================================
+# Scenarios for marker classification and full icon class strings.
+# ===================================================================
+
+
+class TestClassifyMarker:
+    """Scenarios for the _classify_marker helper function."""
+
+    def test_classify_bare_icon_name(self) -> None:
+        """
+        Scenario: A bare icon name is classified as "icon_name".
+
+        Given: A single-word ASCII string like "home"
+        When: _classify_marker is called
+        Then: It returns "icon_name"
+        """
+        assert _classify_marker("home") == "icon_name"
+        assert _classify_marker("arrow-down") == "icon_name"
+        assert _classify_marker("info-sign") == "icon_name"
+        assert _classify_marker("fa-arrow-right") == "icon_name"
+        assert _classify_marker("fa-house") == "icon_name"
+
+    def test_classify_emoji(self) -> None:
+        """
+        Scenario: Emoji / unicode strings are classified as "emoji".
+
+        Given: A string containing non-ASCII characters
+        When: _classify_marker is called
+        Then: It returns "emoji"
+        """
+        assert _classify_marker("\U0001f4cd") == "emoji"
+        assert _classify_marker("\U0001f3d7\ufe0f") == "emoji"
+        assert _classify_marker("\u2600") == "emoji"
+
+    def test_classify_full_icon_class(self) -> None:
+        """
+        Scenario: A full CSS class string is classified as "icon_class".
+
+        Given: An ASCII string with spaces (e.g. "fa fa-home")
+        When: _classify_marker is called
+        Then: It returns "icon_class"
+        """
+        assert _classify_marker("fa fa-home") == "icon_class"
+        assert _classify_marker("fa-solid fa-house") == "icon_class"
+        assert _classify_marker("fa-regular fa-arrow-right") == "icon_class"
+        assert _classify_marker("glyphicon glyphicon-home") == "icon_class"
+
+    def test_classify_empty_string(self) -> None:
+        """
+        Scenario: An empty string is classified as "emoji" (falsy).
+
+        Given: An empty string
+        When: _classify_marker is called
+        Then: It returns "emoji"
+        """
+        assert _classify_marker("") == "emoji"
+
+
+class TestFullIconClass:
+    """Scenarios for passing full CSS icon class strings as marker."""
+
+    def test_add_point_with_full_icon_class(self, tmp_path: Path) -> None:
+        """
+        Scenario: A full CSS class string is used as-is in the icon markup.
+
+        Given: An empty map
+        When: add_point is called with marker="fa-solid fa-house"
+        Then: The HTML contains "fa-solid fa-house" verbatim (no prefix prepended)
+        """
+        m = Map()
+        m.add_point(Point(5.0, 52.38), marker="fa-solid fa-house")
+        out = tmp_path / "full_class.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "fa-solid fa-house" in html
+
+    def test_add_point_bare_name_prepends_prefix(self, tmp_path: Path) -> None:
+        """
+        Scenario: A bare icon name gets prefix prepended as before.
+
+        Given: An empty map
+        When: add_point is called with marker="home" (bare name)
+        Then: The HTML contains "glyphicon glyphicon-home" (default prefix)
+        """
+        m = Map()
+        m.add_point(Point(4.9, 52.37), marker="home")
+        out = tmp_path / "bare_name.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "glyphicon glyphicon-home" in html
+
+    def test_add_point_bare_fa_name_gets_fa_solid_prefix(self, tmp_path: Path) -> None:
+        """
+        Scenario: A bare FontAwesome icon name gets "fa-solid" prefix.
+
+        Given: An empty map
+        When: add_point is called with marker="fa-arrow-right" (bare FA name)
+        Then: The HTML contains "fa-solid fa-arrow-right"
+        """
+        m = Map()
+        m.add_point(Point(4.9, 52.37), marker="fa-arrow-right", caption="AMS")
+        out = tmp_path / "bare_fa.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "fa-solid fa-arrow-right" in html
+        assert "AMS" in html
+
+    def test_add_point_emoji_still_renders_as_text(self, tmp_path: Path) -> None:
+        """
+        Scenario: Emoji markers still render as text DivIcons.
+
+        Given: An empty map
+        When: add_point is called with an emoji marker
+        Then: The HTML contains font-size styling (_DEFAULT_TEXT_CSS default)
+        """
+        m = Map()
+        m.add_point(Point(5.1, 52.39), marker="\U0001f4cd")
+        out = tmp_path / "emoji.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "font-size:16px" in html
+
+    def test_marker_cluster_with_full_icon_class(self, tmp_path: Path) -> None:
+        """
+        Scenario: Full icon class strings work in marker clusters.
+
+        Given: An empty map and points with full CSS class labels
+        When: add_marker_cluster is called with full class labels
+        Then: The HTML contains the full class strings verbatim
+        """
+        m = Map()
+        points = [Point(4.9, 52.37), Point(5.0, 52.38)]
+        labels = ["fa-solid fa-house", "fa-regular fa-star"]
+        m.add_marker_cluster(points, labels=labels)
+        out = tmp_path / "cluster_full_class.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "fa-solid fa-house" in html
+        assert "fa-regular fa-star" in html
+
+    def test_marker_cluster_with_mixed_labels(self, tmp_path: Path) -> None:
+        """
+        Scenario: Cluster with a mix of bare icon names and full class strings.
+
+        Given: An empty map and points with mixed label types
+        When: add_marker_cluster is called
+        Then: Bare names get prefix prepended, full class strings are used as-is
+        """
+        m = Map()
+        points = [Point(4.9, 52.37), Point(5.0, 52.38), Point(5.1, 52.39)]
+        labels = ["home", "fa-solid fa-house", "\U0001f4cd"]
+        m.add_marker_cluster(points, labels=labels)
+        out = tmp_path / "cluster_mixed.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "glyphicon glyphicon-home" in html
+        assert "fa-solid fa-house" in html
+        assert "font-size:16px" in html
 
 
 # ===================================================================
@@ -388,7 +550,7 @@ class TestAddShapes:
         stroke = StrokeStyle(color="#e74c3c", weight=4, dash_array="10 6")
 
         # Act - When
-        result = m.add_linestring(route, hover="**Walking route**", stroke=stroke)
+        result = m.add_linestring(route, tooltip="**Walking route**", stroke=stroke)
 
         # Assert - Then
         assert result is m, "add_linestring should return self"
@@ -416,7 +578,7 @@ class TestAddShapes:
         fill = FillStyle(color="#2ecc71", opacity=0.15)
 
         # Act - When
-        result = m.add_polygon(jordaan, hover="**De Jordaan**", stroke=stroke, fill=fill)
+        result = m.add_polygon(jordaan, tooltip="**De Jordaan**", stroke=stroke, fill=fill)
 
         # Assert - Then
         assert result is m, "add_polygon should return self"
@@ -487,7 +649,7 @@ class TestAddShapes:
 
         # Assert - Then
         assert result is m, "add_multipoint should return self"
-        assert len(m._bounds) == 4, "Each point should add 2 bound entries"
+        assert len(m._bounds) == 4, "Each location should add 2 bound entries"
 
     def test_add_linear_ring(self) -> None:
         """
@@ -682,15 +844,15 @@ class TestFeatureGroups:
         Scenario: Points are added to the currently active group.
 
         Given: A map with an active feature group "Parks"
-        When: A point is added
-        Then: The point exists inside the feature group, not the base map
+        When: A location is added
+        Then: The location exists inside the feature group, not the base map
         """
         # Arrange - Given
         m = Map()
         m.create_feature_group("Parks")
 
         # Act - When
-        m.add_point(Point(4.8765, 52.3579), label="🌳", hover="**Vondelpark**")
+        m.add_point(Point(4.8765, 52.3579), marker="🌳", tooltip="**Vondelpark**")
 
         # Assert - Then
         fg = m._feature_groups["Parks"]
@@ -947,7 +1109,7 @@ class TestGeoJSON:
 
     def test_add_geojson_no_hover_fields(self) -> None:
         """
-        Scenario: Add GeoJSON without hover fields (no tooltip).
+        Scenario: Add GeoJSON without tooltip fields (no tooltip).
 
         Given: A GeoJSON dict
         When: add_geojson is called without hover_fields
@@ -1430,7 +1592,7 @@ class TestHeatmap:
 
         # Assert - Then
         assert result is m, "add_heatmap should return self"
-        assert len(m._bounds) == 20, "Each point should add 2 bound entries"
+        assert len(m._bounds) == 20, "Each location should add 2 bound entries"
 
     def test_heatmap_from_tuples(self) -> None:
         """
@@ -1489,7 +1651,7 @@ class TestHeatmap:
         m.add_heatmap(points, style=style)
 
         # Assert - Then
-        assert len(m._bounds) == 2, "Heatmap point should be tracked"
+        assert len(m._bounds) == 2, "Heatmap location should be tracked"
 
     def test_heatmap_with_layer_name(self) -> None:
         """
@@ -1595,26 +1757,28 @@ class TestMarkerCluster:
         # Assert - Then
         assert len(m._bounds) == 2
 
-    def test_cluster_with_text_labels_and_default_icons(self) -> None:
+    def test_cluster_with_captions_and_default_icons(self) -> None:
         """
-        Scenario: Marker cluster with text_labels but no emoji labels.
+        Scenario: Marker cluster with captions but no emoji labels.
 
-        Given: An empty map and points with text_labels only (no labels/emoji)
-        When: add_marker_cluster is called with text_labels but without labels
-        Then: Default icons are used and separate label markers are added to the cluster
+        Given: An empty map and points with captions only (no labels/emoji)
+        When: add_marker_cluster is called with captions but without labels
+        Then: A single DivIcon marker per location combines the icon glyph and marker
         """
         # Arrange - Given
         m = Map()
         points = [Point(4.9, 52.37), Point(4.95, 52.38)]
 
         # Act - When
-        result = m.add_marker_cluster(points, text_labels=["S-01", "S-02"])
+        result = m.add_marker_cluster(points, captions=["S-01", "S-02"])
 
         # Assert - Then
         assert result is m
         html = m.to_html()
-        assert "S-01" in html, "Text label should appear in the HTML output"
-        assert "S-02" in html, "Text label should appear in the HTML output"
+        assert "S-01" in html, "Text marker should appear in the HTML output"
+        assert "S-02" in html, "Text marker should appear in the HTML output"
+        # Verify the icon glyph is rendered inline (single DivIcon, not folium.Icon)
+        assert "glyphicon glyphicon-arrow-down" in html, "Icon glyph should be rendered as HTML"
 
 
 # ===================================================================
@@ -1627,16 +1791,16 @@ class TestTextAnnotation:
 
     def test_add_text_from_shapely_point(self) -> None:
         """
-        Scenario: Place a neighbourhood label using a Shapely Point.
+        Scenario: Place a neighbourhood marker using a Shapely Point.
 
-        Given: An empty map and a Point for the label location
-        When: add_text is called with a styled label
+        Given: An empty map and a Point for the marker location
+        When: add_text is called with a CSS style dict
         Then: The text appears at the coordinate and bounds are tracked
         """
         # Arrange - Given
         m = Map()
         location = Point(4.9041, 52.3676)
-        style = LabelStyle(font_size=16, font_color="#2c3e50")
+        style = {"font-size": "16px", "color": "#2c3e50"}
 
         # Act - When
         result = m.add_text(location, "Amsterdam Centrum", style=style)
@@ -1647,11 +1811,11 @@ class TestTextAnnotation:
 
     def test_add_text_from_tuple(self) -> None:
         """
-        Scenario: Place a text label using a (lat, lon) tuple.
+        Scenario: Place a text marker using a (lat, lon) tuple.
 
         Given: An empty map and a (lat, lon) tuple
         When: add_text is called with the tuple
-        Then: The label is placed at the correct location
+        Then: The marker is placed at the correct location
         """
         # Arrange - Given
         m = Map()
@@ -1666,18 +1830,18 @@ class TestTextAnnotation:
         """
         Scenario: Place floating text without a background box.
 
-        Given: An empty map and a LabelStyle with no background or border
+        Given: An empty map and a CSS dict with no background or border
         When: add_text is called with that style
         Then: The text appears without visual chrome
         """
         # Arrange - Given
         m = Map()
-        style = LabelStyle(
-            font_size=14,
-            font_color="red",
-            background_color=None,
-            border=None,
-        )
+        style = {
+            "font-size": "14px",
+            "color": "red",
+            "background-color": "transparent",
+            "border": "none",
+        }
 
         # Act - When
         m.add_text((52.37, 4.9), "Floating", style=style)
@@ -1687,11 +1851,11 @@ class TestTextAnnotation:
 
     def test_add_text_with_hover(self) -> None:
         """
-        Scenario: A text label with an additional hover tooltip.
+        Scenario: A text marker with an additional tooltip tooltip.
 
         Given: An empty map
-        When: add_text is called with both text and hover
-        Then: The label has text visible and hover on mouse-over
+        When: add_text is called with both text and tooltip
+        Then: The marker has text visible and tooltip on mouse-over
         """
         # Arrange - Given
         m = Map()
@@ -1829,10 +1993,10 @@ class TestCoordinateTransformation:
 
     def test_rd_point_on_geomap_lands_in_netherlands(self) -> None:
         """
-        Scenario: Add an RD New point to a map and verify placement.
+        Scenario: Add an RD New location to a map and verify placement.
 
         Given: A Map and a Point in RD New coordinates (Amsterdam)
-        When: The point is added to the map
+        When: The location is added to the map
         Then: The tracked bounds are in the WGS84 Netherlands range
         """
         # Arrange - Given
@@ -1840,7 +2004,7 @@ class TestCoordinateTransformation:
         rd_point = Point(121_000, 487_000)
 
         # Act - When
-        m.add_point(rd_point, label="📍")
+        m.add_point(rd_point, marker="📍")
 
         # Assert - Then
         lat, lon = m._bounds[0]
@@ -1938,7 +2102,7 @@ class TestCoordinateTransformation:
         Given: A LinearRing in RD New coordinates
         When: _transform_geometry is called
         Then: The result has WGS84 coordinates (may degrade to LineString
-              due to floating-point rounding in the transform)
+              due to floating-location rounding in the transform)
         """
         # Arrange - Given
         ring = LinearRing(
@@ -2003,7 +2167,7 @@ class TestCoordinateTransformation:
 
         Given: A MultiPoint with coordinates in the RD New range
         When: _transform_geometry is called with EPSG:28992
-        Then: Each constituent point is individually transformed
+        Then: Each constituent location is individually transformed
 
         """
         # Arrange - Given
@@ -2016,7 +2180,7 @@ class TestCoordinateTransformation:
         assert isinstance(result, MultiPoint)
         points = list(result.geoms)
         assert len(points) == 2
-        # First point near Amsterdam
+        # First location near Amsterdam
         assert 4.0 < points[0].x < 6.0
         assert 52.0 < points[0].y < 53.0
 
@@ -2024,7 +2188,7 @@ class TestCoordinateTransformation:
         """
         Scenario: Transform a LinearRing from RD New where the ring stays closed.
 
-        Given: A LinearRing with 5 points (closing point matches first)
+        Given: A LinearRing with 5 points (closing location matches first)
         When: _transform_geometry is called with EPSG:28992
         Then: The result is a LinearRing with WGS84 coordinates
 
@@ -2221,16 +2385,16 @@ class TestMarkdownToHtml:
         """
         Scenario: Plain text with no markdown formatting passes through.
 
-        Given: "Just a simple label"
+        Given: "Just a simple marker"
         When: _markdown_to_html is called
         Then: The text is returned unchanged (no tags added)
         """
-        result = _markdown_to_html("Just a simple label")
-        assert result == "Just a simple label"
+        result = _markdown_to_html("Just a simple marker")
+        assert result == "Just a simple marker"
 
     def test_make_tooltip_returns_none_for_none(self) -> None:
         """
-        Scenario: No hover text means no tooltip.
+        Scenario: No tooltip text means no tooltip.
 
         Given: A Map instance
         When: _make_tooltip is called with None
@@ -2247,7 +2411,7 @@ class TestMarkdownToHtml:
 
     def test_make_tooltip_returns_none_for_empty_string(self) -> None:
         """
-        Scenario: Empty hover text means no tooltip.
+        Scenario: Empty tooltip text means no tooltip.
 
         Given: A Map instance
         When: _make_tooltip is called with ""
@@ -2259,7 +2423,7 @@ class TestMarkdownToHtml:
 
     def test_make_tooltip_returns_folium_tooltip(self) -> None:
         """
-        Scenario: Valid markdown hover text produces a Folium Tooltip.
+        Scenario: Valid markdown tooltip text produces a Folium Tooltip.
 
         Given: A Map instance and markdown text
         When: _make_tooltip is called
@@ -2332,18 +2496,38 @@ class TestStyleDataclasses:
         f = FillStyle()
         assert f.opacity == 0.2
 
-    def test_marker_style_defaults(self) -> None:
+    def test_default_icon_css(self) -> None:
         """
-        Scenario: MarkerStyle defaults to blue pin with no emoji.
+        Scenario: _DEFAULT_ICON_CSS has sensible defaults.
 
-        Given: No arguments
-        When: A MarkerStyle is created
-        Then: emoji is None and marker_color is blue
+        Given: The module-level constant
+        When: Inspected
+        Then: font-size is 20px, color is #002855
         """
-        ms = MarkerStyle()
-        assert ms.emoji is None
-        assert ms.marker_color == "blue"
-        assert ms.icon == "info-sign"
+        assert _DEFAULT_ICON_CSS["font-size"] == "20px"
+        assert _DEFAULT_ICON_CSS["color"] == "#002855"
+
+    def test_default_text_css(self) -> None:
+        """
+        Scenario: _DEFAULT_TEXT_CSS has sensible defaults.
+
+        Given: The module-level constant
+        When: Inspected
+        Then: font-size is 16px, color is black
+        """
+        assert _DEFAULT_TEXT_CSS["font-size"] == "16px"
+        assert _DEFAULT_TEXT_CSS["color"] == "black"
+
+    def test_default_marker_caption_css(self) -> None:
+        """
+        Scenario: _DEFAULT_MARKER_CAPTION_CSS has transparent background and no border.
+
+        Given: The module-level constant
+        When: Inspected
+        Then: background-color is transparent, border is none
+        """
+        assert _DEFAULT_MARKER_CAPTION_CSS["background-color"] == "transparent"
+        assert _DEFAULT_MARKER_CAPTION_CSS["border"] == "none"
 
     def test_heatmap_style_defaults(self) -> None:
         """
@@ -2412,22 +2596,33 @@ class TestStyleDataclasses:
         assert cs.stroke.color == "#3388ff"
         assert cs.fill.opacity == 0.2
 
-    def test_label_style_all_defaults(self) -> None:
+    def test_default_caption_css(self) -> None:
         """
-        Scenario: LabelStyle has all default values set.
+        Scenario: _DEFAULT_CAPTION_CSS has all expected defaults.
 
-        Given: No arguments
-        When: A LabelStyle is created
-        Then: All fields have their defaults
+        Given: The module-level constant
+        When: Inspected
+        Then: All expected CSS properties are present
         """
-        ls = LabelStyle()
-        assert ls.font_size == 12
-        assert ls.font_family == "Arial, sans-serif"
-        assert ls.font_color == "#333333"
-        assert ls.font_weight == "bold"
-        assert ls.background_color == "rgba(255,255,255,0.8)"
-        assert ls.border == "1px solid #cccccc"
-        assert ls.padding == "2px 6px"
+        assert _DEFAULT_CAPTION_CSS["font-size"] == "12px"
+        assert _DEFAULT_CAPTION_CSS["font-family"] == "Arial, sans-serif"
+        assert _DEFAULT_CAPTION_CSS["color"] == "#333333"
+        assert _DEFAULT_CAPTION_CSS["font-weight"] == "bold"
+        assert _DEFAULT_CAPTION_CSS["background-color"] == "rgba(255,255,255,0.8)"
+        assert _DEFAULT_CAPTION_CSS["border"] == "1px solid #cccccc"
+        assert _DEFAULT_CAPTION_CSS["padding"] == "2px 6px"
+
+    def test_css_to_style_helper(self) -> None:
+        """
+        Scenario: _css_to_style converts a dict to inline CSS string.
+
+        Given: A CSS property dict
+        When: _css_to_style is called
+        Then: A semicolon-separated string is returned
+        """
+        result = _css_to_style({"font-size": "14px", "color": "red"})
+        assert "font-size:14px" in result
+        assert "color:red" in result
 
     def test_fill_style_custom_values(self) -> None:
         """
@@ -2441,17 +2636,17 @@ class TestStyleDataclasses:
         assert f.color == "#00ff00"
         assert f.opacity == 1.0
 
-    def test_marker_style_with_emoji(self) -> None:
+    def test_css_dict_overrides_defaults(self) -> None:
         """
-        Scenario: Create a MarkerStyle configured for emoji display.
+        Scenario: User CSS dict overrides default values.
 
-        Given: emoji="🏗️" and emoji_size=32
-        When: A MarkerStyle is created
-        Then: The emoji fields override the icon
+        Given: A default CSS dict and user overrides
+        When: Merged together
+        Then: User values override defaults
         """
-        ms = MarkerStyle(emoji="🏗️", emoji_size=32)
-        assert ms.emoji == "🏗️"
-        assert ms.emoji_size == 32
+        merged = {**_DEFAULT_ICON_CSS, "font-size": "30px", "color": "red"}
+        assert merged["font-size"] == "30px"
+        assert merged["color"] == "red"
 
     def test_heatmap_style_with_gradient(self) -> None:
         """
@@ -2570,6 +2765,80 @@ class TestTileProviders:
         # Assert - Then
         assert result is m
 
+    def test_tile_layer_list_adds_multiple_layers(self) -> None:
+        """
+        Scenario: Pass a list of tile providers to MapConfig.
+
+        Given: A MapConfig with tile_layer as a list of known providers
+        When: A Map is created
+        Then: The folium map contains TileLayer children with display names
+        """
+        m = Map(config=MapConfig(tile_layer=["cartodb_positron", "openstreetmap", "cartodb_dark"]))
+        tile_names = [c.tile_name for c in m._map._children.values() if isinstance(c, folium.TileLayer)]
+        assert "CartoDB Positron" in tile_names
+        assert "OpenStreetMap" in tile_names
+        assert "CartoDB Dark" in tile_names
+
+    def test_tile_layer_list_with_custom_url(self) -> None:
+        """
+        Scenario: Pass a list mixing known providers and a custom tile URL.
+
+        Given: A MapConfig with a known provider and a custom URL with attribution
+        When: A Map is created
+        Then: Both the known provider and custom URL tile layers are present
+        """
+        custom_url = "https://example.com/tiles/{z}/{x}/{y}.png"
+        m = Map(
+            config=MapConfig(
+                tile_layer=["cartodb_positron", custom_url],
+                attribution="Custom Tiles",
+            )
+        )
+        tile_names = [c.tile_name for c in m._map._children.values() if isinstance(c, folium.TileLayer)]
+        assert "CartoDB Positron" in tile_names
+        assert custom_url in tile_names
+
+    def test_tile_layer_list_with_center(self) -> None:
+        """
+        Scenario: Multiple tile layers with an explicit center.
+
+        Given: A MapConfig with multiple tile layers and a center coordinate
+        When: A Map is created
+        Then: The map contains all tile layers
+        """
+        m = Map(
+            center=(52.37, 4.90),
+            config=MapConfig(tile_layer=["cartodb_positron", "esri_satellite"]),
+        )
+        tile_names = [c.tile_name for c in m._map._children.values() if isinstance(c, folium.TileLayer)]
+        assert "CartoDB Positron" in tile_names
+        assert "Esri Satellite" in tile_names
+
+    def test_tile_layer_list_first_shown_by_default(self) -> None:
+        """
+        Scenario: The first tile layer in a list is shown by default.
+
+        Given: A MapConfig with two tile layers
+        When: A Map is created
+        Then: Only the first TileLayer has show=True
+        """
+        m = Map(config=MapConfig(tile_layer=["cartodb_dark", "openstreetmap"]))
+        tiles = [c for c in m._map._children.values() if isinstance(c, folium.TileLayer)]
+        assert tiles[0].tile_name == "CartoDB Dark"
+        assert tiles[0].show is True
+        assert tiles[1].show is False
+
+    def test_all_providers_have_display_name(self) -> None:
+        """
+        Scenario: Every registered tile provider has a display name.
+
+        Given: The TILE_PROVIDERS registry
+        When: All entries are inspected
+        Then: Each has a "name" key
+        """
+        for key, provider in TILE_PROVIDERS.items():
+            assert "name" in provider, f"{key} missing 'name' key"
+
 
 # ===================================================================
 # Scenarios for export methods: HTML, PNG, SVG, BytesIO, and async variants.
@@ -2583,13 +2852,13 @@ class TestExport:
         """
         Scenario: Export a map as a standalone HTML file.
 
-        Given: A map with one point
+        Given: A map with one location
         When: to_html is called with a file path
         Then: The file exists and contains Leaflet references
         """
         # Arrange - Given
         m = Map(title="Export Test")
-        m.add_point(Point(4.9, 52.37), label="📍")
+        m.add_point(Point(4.9, 52.37), marker="📍")
 
         # Act - When
         out = m.to_html(tmp_path / "test.html")
@@ -2603,7 +2872,7 @@ class TestExport:
         """
         Scenario: Export HTML and open in browser.
 
-        Given: A map with one point
+        Given: A map with one location
         When: to_html is called with open_in_browser=True
         Then: The file is created and webbrowser.open is called with the file URI
         """
@@ -2620,7 +2889,7 @@ class TestExport:
         """
         Scenario: open_in_browser=True is ignored when path is None.
 
-        Given: A map with one point
+        Given: A map with one location
         When: to_html is called with path=None and open_in_browser=True
         Then: An HTML string is returned; webbrowser is never called
         """
@@ -2656,7 +2925,7 @@ class TestExport:
         """
         Scenario: Map renders inline in a Jupyter notebook.
 
-        Given: A map with a point
+        Given: A map with a location
         When: _repr_html_ is called
         Then: A non-empty HTML string is returned
         """
@@ -2675,7 +2944,7 @@ class TestExport:
         """
         Scenario: PNG export without Selenium gives a clear error.
 
-        Given: A map with a point (Selenium may not be installed)
+        Given: A map with a location (Selenium may not be installed)
         When: to_image is called
         Then: An ImportError or RuntimeError is raised (not a crash)
         """
@@ -2709,13 +2978,13 @@ class TestExport:
         """
         Scenario: Get the full HTML document as a string without writing to disk.
 
-        Given: A map with a point
+        Given: A map with a location
         When: to_html is called with path=None
         Then: A string containing the full HTML document is returned
         """
         # Arrange - Given
         m = Map(title="String Export")
-        m.add_point(Point(4.9, 52.37), label="📍")
+        m.add_point(Point(4.9, 52.37), marker="📍")
 
         # Act - When
         result = m.to_html()
@@ -2764,7 +3033,7 @@ class TestExport:
         """
         Scenario: _get_html renders the map to an HTML string.
 
-        Given: A map with a point
+        Given: A map with a location
         When: _get_html is called
         Then: An HTML string is returned
         """
@@ -2888,9 +3157,9 @@ class TestExport:
 
     @pytest.fixture
     def map_with_point(self) -> Map:
-        """A map with one point for export tests."""
+        """A map with one location for export tests."""
         m = Map(title="Export")
-        m.add_point(Point(4.9, 52.37), label="📍")
+        m.add_point(Point(4.9, 52.37), marker="📍")
         return m
 
     @pytest.fixture
@@ -2905,7 +3174,7 @@ class TestExport:
         """
         Scenario: to_image with path=None returns raw PNG bytes.
 
-        Given: A map with a point
+        Given: A map with a location
         When: to_image is called with path=None
         Then: PNG bytes are returned
 
@@ -2924,7 +3193,7 @@ class TestExport:
         """
         Scenario: to_image with a path saves PNG to disk.
 
-        Given: A map with a point and an output path
+        Given: A map with a location and an output path
         When: to_image is called with a file path
         Then: The file is written and the Path is returned
 
@@ -2946,7 +3215,7 @@ class TestExport:
         """
         Scenario: to_bytesio returns an in-memory PNG buffer.
 
-        Given: A map with a point
+        Given: A map with a location
         When: to_bytesio is called
         Then: A BytesIO buffer at position 0 is returned
 
@@ -2964,7 +3233,7 @@ class TestExport:
         """
         Scenario: to_svg with path=None returns an SVG string.
 
-        Given: A map with a point
+        Given: A map with a location
         When: to_svg is called without a path
         Then: An SVG string containing the base64-encoded PNG is returned
 
@@ -3002,7 +3271,7 @@ class TestExport:
         """
         Scenario: Async PNG export delegates to to_image in an executor.
 
-        Given: A map with a point
+        Given: A map with a location
         When: to_image_async is awaited
         Then: PNG bytes are returned
 
@@ -3017,7 +3286,7 @@ class TestExport:
         """
         Scenario: Async SVG export delegates to to_svg in an executor.
 
-        Given: A map with a point
+        Given: A map with a location
         When: to_svg_async is awaited
         Then: An SVG string is returned
 
@@ -3045,13 +3314,13 @@ class TestMapMerge:
         """
         Scenario: Merge two maps using the + operator.
 
-        Given: Map A titled "Sites" with one point, and map B with one polygon
+        Given: Map A titled "Sites" with one location, and map B with one polygon
         When: A + B is computed
         Then: The result has A's title and contains both geometries
         """
         # Arrange - Given
         a = Map(title="Sites")
-        a.add_point(Point(4.9, 52.37), label="📍")
+        a.add_point(Point(4.9, 52.37), marker="📍")
 
         b = Map()
         b.add_polygon(Polygon([(4.85, 52.35), (4.95, 52.35), (4.95, 52.40), (4.85, 52.40)]))
@@ -3133,7 +3402,7 @@ class TestMapMerge:
         """
         Scenario: Merging maps combines their bounds for auto-fit.
 
-        Given: Map A with a point in Amsterdam, map B with a point in Rotterdam
+        Given: Map A with a location in Amsterdam, map B with a location in Rotterdam
         When: A + B is computed
         Then: The bounds cover both cities
         """
@@ -3170,13 +3439,13 @@ class TestMethodChaining:
         # Act - When
         out = (
             Map(title="Chained")
-            .add_point(Point(4.9, 52.37), label="📍")
-            .add_circle(Point(5.1, 52.09), hover="Circle")
+            .add_point(Point(4.9, 52.37), marker="📍")
+            .add_circle(Point(5.1, 52.09), tooltip="Circle")
             .add_linestring(LineString([(4.9, 52.37), (5.1, 52.09)]))
             .add_polygon(Polygon([(4.85, 52.35), (4.95, 52.35), (4.95, 52.40), (4.85, 52.40)]))
             .add_text((52.3, 4.9), "Label")
             .create_feature_group("Layer 1")
-            .add_point(Point(4.3, 52.07), label="🔴")
+            .add_point(Point(4.3, 52.07), marker="🔴")
             .reset_target()
             .add_layer_control()
             .to_html(tmp_path / "chained.html")
@@ -3220,7 +3489,7 @@ class TestGeoDataFrame:
 
     def test_create_map_from_geodataframe(self, cities_gdf: GeoDataFrame) -> None:
         """
-        Scenario: Create a map from a GeoDataFrame with hover columns.
+        Scenario: Create a map from a GeoDataFrame with tooltip columns.
 
         Given: A GeoDataFrame with 3 cities and their populations
         When: from_geodataframe is called with hover_columns
@@ -3324,8 +3593,8 @@ class TestGeoDataFrame:
         m = Map.from_geodataframe(gdf, hover_columns=["name"])
 
         # Assert - Then
-        # Only the first valid point should contribute bounds
-        assert len(m._bounds) >= 2, "At least one valid point should be on the map"
+        # Only the first valid location should contribute bounds
+        assert len(m._bounds) >= 2, "At least one valid location should be on the map"
 
     def test_geodataframe_with_popup_columns(self) -> None:
         """
@@ -3454,222 +3723,58 @@ class TestGeoDataFrame:
 
 
 # ===================================================================
-# Scenarios for shape markers (RegularPolygonMarker).
+# Scenarios for caption on add_point.
 # ===================================================================
 
 
-class TestShapeMarkers:
-    """Scenarios for shape-based point markers."""
+class TestCaption:
+    """Scenarios for the caption parameter on add_point."""
 
-    def test_circle_shape_creates_polygon_marker(self) -> None:
+    def test_caption_with_emoji_marker(self, tmp_path: Path) -> None:
         """
-        Scenario: Add a point with shape="circle".
+        Scenario: Emoji marker with a caption below.
 
-        Given: A MarkerStyle with shape="circle"
+        Given: A location with marker="📍" and caption="Amsterdam"
         When: add_point is called
-        Then: The HTML contains a RegularPolygonMarker element
+        Then: The HTML contains the caption text
         """
         m = Map()
-        m.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="circle"))
-        html = m._get_html()
-        assert "regular_polygon_marker" in html.lower() or "RegularPolygonMarker" in html or "L.regularPolygonMarker" in html
-
-    def test_square_shape_creates_polygon_marker(self) -> None:
-        """
-        Scenario: Add a point with shape="square".
-
-        Given: A MarkerStyle with shape="square"
-        When: add_point is called
-        Then: The HTML contains a marker with 4 sides and rotation 45
-        """
-        m = Map()
-        m.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="square", shape_color="red"))
-        html = m._get_html()
-        assert "numberOfSides" in html or "number_of_sides" in html or "regularPolygonMarker" in html.lower()
-
-    def test_triangle_shape_creates_div_icon(self, tmp_path: Path) -> None:
-        """
-        Scenario: Add a point with shape="triangle".
-
-        Given: A MarkerStyle with shape="triangle"
-        When: add_point is called
-        Then: The HTML contains the triangle unicode character
-        """
-        m = Map()
-        m.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="triangle", shape_color="green"))
-        out = tmp_path / "triangle.html"
-        m.to_html(out)
-        html = out.read_text(encoding="utf-8")
-        # Triangle unicode is JSON-escaped in saved HTML
-        assert "\\u25bc" in html
-        assert "green" in html
-
-    def test_shape_with_hover_and_popup(self) -> None:
-        """
-        Scenario: Shape marker with tooltip and popup.
-
-        Given: A circle shape with hover and popup
-        When: add_point is called
-        Then: The map has bounds and generates HTML without error
-        """
-        m = Map()
-        m.add_point(
-            Point(4.9, 52.37),
-            hover="**Info**",
-            popup="Details",
-            marker_style=MarkerStyle(shape="circle"),
-        )
-        m._get_html()
-        assert len(m._bounds) == 2
-
-    def test_shape_ignored_when_label_set(self, tmp_path: Path) -> None:
-        """
-        Scenario: Label takes precedence over shape.
-
-        Given: A MarkerStyle with shape="circle" and a label
-        When: add_point is called with label="A"
-        Then: The emoji/label path is used (DivIcon with label text)
-        """
-        m = Map()
-        m.add_point(Point(4.9, 52.37), label="A", marker_style=MarkerStyle(shape="circle"))
-        out = tmp_path / "label.html"
-        m.to_html(out)
-        html = out.read_text(encoding="utf-8")
-        # Label should appear via emoji path (DivIcon with font-size:24px)
-        # Shape path (RegularPolygonMarker) should NOT be used
-        assert "regularPolygonMarker" not in html
-        assert "font-size:24px" in html
-
-    def test_shape_ignored_when_emoji_set(self, tmp_path: Path) -> None:
-        """
-        Scenario: Emoji takes precedence over shape.
-
-        Given: A MarkerStyle with shape="square" and emoji="📍"
-        When: add_point is called
-        Then: The emoji path is used
-        """
-        m = Map()
-        m.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="square", emoji="\U0001f4cd"))
-        out = tmp_path / "emoji.html"
-        m.to_html(out)
-        html = out.read_text(encoding="utf-8")
-        # Emoji is JSON-escaped but the emoji path (DivIcon) should be used
-        assert "regularPolygonMarker" not in html
-        assert "font-size:24px" in html
-
-    def test_unknown_shape_defaults_to_circle(self) -> None:
-        """
-        Scenario: Unknown shape falls back to circle config.
-
-        Given: A MarkerStyle with shape="hexagon" (not in _SHAPE_CONFIG)
-        When: add_point is called
-        Then: The default circle config (36 sides, rotation 0) is used
-        """
-        m = Map()
-        m.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="hexagon"))
-        html = m._get_html()
-        # Should not crash; uses circle defaults
-        assert html
-
-    def test_marker_style_defaults(self) -> None:
-        """
-        Scenario: MarkerStyle new fields have correct defaults.
-
-        Given: A default MarkerStyle
-        When: The object is inspected
-        Then: shape is None, shape_color is "blue", shape_size is 10
-        """
-        ms = MarkerStyle()
-        assert ms.shape is None
-        assert ms.shape_color == "blue"
-        assert ms.shape_size == 10
-
-    def test_shape_config_constant(self) -> None:
-        """
-        Scenario: _SHAPE_CONFIG contains expected entries.
-
-        Given: The _SHAPE_CONFIG constant
-        When: Inspected
-        Then: "circle" has 36 sides and "square" has 4 sides with rotation 45
-        """
-        assert _SHAPE_CONFIG["circle"]["sides"] == 36
-        assert _SHAPE_CONFIG["circle"]["rotation"] == 0
-        assert _SHAPE_CONFIG["square"]["sides"] == 4
-        assert _SHAPE_CONFIG["square"]["rotation"] == 45
-
-
-# ===================================================================
-# Scenarios for text_label on add_point.
-# ===================================================================
-
-
-class TestTextLabel:
-    """Scenarios for the text_label parameter on add_point."""
-
-    def test_text_label_with_shape_marker(self, tmp_path: Path) -> None:
-        """
-        Scenario: Shape marker with a text label below.
-
-        Given: A triangle shape marker and text_label="CPT-01"
-        When: add_point is called
-        Then: The HTML contains both the triangle and the label text
-        """
-        m = Map()
-        m.add_point(
-            Point(4.9, 52.37),
-            marker_style=MarkerStyle(shape="triangle", shape_color="black"),
-            text_label="CPT-01",
-        )
-        out = tmp_path / "text_label.html"
-        m.to_html(out)
-        html = out.read_text(encoding="utf-8")
-        assert "CPT-01" in html
-        assert "\\u25bc" in html  # triangle character (JSON-escaped)
-
-    def test_text_label_with_emoji_marker(self, tmp_path: Path) -> None:
-        """
-        Scenario: Emoji marker with a text label below.
-
-        Given: A point with label="📍" and text_label="Amsterdam"
-        When: add_point is called
-        Then: The HTML contains the label text
-        """
-        m = Map()
-        m.add_point(Point(4.9, 52.37), label="\U0001f4cd", text_label="Amsterdam")
+        m.add_point(Point(4.9, 52.37), marker="\U0001f4cd", caption="Amsterdam")
         out = tmp_path / "emoji_label.html"
         m.to_html(out)
         html = out.read_text(encoding="utf-8")
         assert "Amsterdam" in html
 
-    def test_text_label_with_icon_marker(self, tmp_path: Path) -> None:
+    def test_caption_with_icon_marker(self, tmp_path: Path) -> None:
         """
-        Scenario: Default icon marker with a text label below.
+        Scenario: Default icon marker with a caption below.
 
-        Given: A point with no shape/emoji and text_label="Station"
+        Given: A location with no marker and caption="Station"
         When: add_point is called
-        Then: The HTML contains the label text
+        Then: The HTML contains the caption text and the default icon glyph
         """
         m = Map()
-        m.add_point(Point(4.9, 52.37), text_label="Station")
+        m.add_point(Point(4.9, 52.37), caption="Station")
         out = tmp_path / "icon_label.html"
         m.to_html(out)
         html = out.read_text(encoding="utf-8")
         assert "Station" in html
+        assert "glyphicon glyphicon-arrow-down" in html
 
-    def test_text_label_with_custom_label_style(self, tmp_path: Path) -> None:
+    def test_caption_with_custom_caption_style(self, tmp_path: Path) -> None:
         """
-        Scenario: Text label with custom styling.
+        Scenario: Caption with custom CSS styling.
 
-        Given: A shape marker with text_label and a custom LabelStyle
+        Given: A marker with caption and a custom CSS dict
         When: add_point is called
         Then: The HTML contains the custom style properties
         """
         m = Map()
         m.add_point(
             Point(4.9, 52.37),
-            marker_style=MarkerStyle(shape="circle"),
-            text_label="S-001",
-            label_style=LabelStyle(font_size=14, font_color="red"),
+            marker="home",
+            caption="S-001",
+            caption_style={"font-size": "14px", "color": "red"},
         )
         out = tmp_path / "styled_label.html"
         m.to_html(out)
@@ -3678,54 +3783,53 @@ class TestTextLabel:
         assert "font-size:14px" in html
         assert "color:red" in html
 
-    def test_text_label_none_adds_no_extra_marker(self) -> None:
+    def test_caption_none_adds_no_extra_marker(self) -> None:
         """
-        Scenario: No text_label means no extra marker.
+        Scenario: No caption means no extra marker.
 
-        Given: A shape marker without text_label
+        Given: An icon marker without caption
         When: add_point is called
-        Then: Only the shape marker children are on the map (no label marker)
+        Then: Same number of children as with caption (both use DivIcon)
         """
         m = Map()
-        m.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="circle"))
-        # Count markers on the map (excluding tile layer)
-        children_before = len(m._map._children)
+        m.add_point(Point(4.9, 52.37))
+        children_without = len(m._map._children)
 
         m2 = Map()
-        m2.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="circle"), text_label="X")
-        children_after = len(m2._map._children)
+        m2.add_point(Point(4.9, 52.37), caption="X")
+        children_with = len(m2._map._children)
 
-        assert children_after > children_before, "text_label should add an extra marker"
+        assert children_with == children_without, "caption should not add an extra marker"
 
-    def test_text_label_default_style_has_no_background(self, tmp_path: Path) -> None:
+    def test_caption_default_style_has_no_background(self, tmp_path: Path) -> None:
         """
-        Scenario: Default label_style for text_label has no background/border.
+        Scenario: Default caption_style for caption has no background/border.
 
-        Given: A text_label without explicit label_style
+        Given: A caption without explicit caption_style
         When: add_point is called
-        Then: The label does not have a background or border CSS
+        Then: The caption uses _DEFAULT_MARKER_CAPTION_CSS (transparent bg, no border)
         """
         m = Map()
-        m.add_point(Point(4.9, 52.37), marker_style=MarkerStyle(shape="triangle"), text_label="Test")
+        m.add_point(Point(4.9, 52.37), marker="home", caption="Test")
         out = tmp_path / "default_style.html"
         m.to_html(out)
         html = out.read_text(encoding="utf-8")
-        # The default text_label style should NOT have background/border
-        assert "background:" not in html.split("Test")[0].split("margin-top:15px")[-1]
+        assert "Test" in html
+        assert "background-color:transparent" in html
 
-    def test_text_label_with_min_zoom_single_marker(self) -> None:
+    def test_caption_with_min_zoom_single_marker(self) -> None:
         """
-        Scenario: min_zoom tracks the combined marker (icon + text_label in one DivIcon).
+        Scenario: min_zoom tracks the combined marker (icon + caption in one DivIcon).
 
-        Given: A triangle shape marker with text_label and min_zoom=10
+        Given: An icon marker with caption and min_zoom=10
         When: add_point is called
-        Then: One entry is added to _zoom_controlled_markers (icon and label are combined)
+        Then: One entry is added to _zoom_controlled_markers
         """
         m = Map()
         m.add_point(
             Point(4.9, 52.37),
-            marker_style=MarkerStyle(shape="triangle"),
-            text_label="CPT-01",
+            marker="home",
+            caption="CPT-01",
             min_zoom=10,
         )
         assert len(m._zoom_controlled_markers) == 1, "Combined marker should be a single entry"
@@ -3926,7 +4030,7 @@ class TestSetBounds:
         """
         Scenario: set_bounds adds padding to bounds.
 
-        Given: A Map with one point
+        Given: A Map with one location
         When: set_bounds is called with padding=0.01
         Then: The map is still valid (no errors)
         """
@@ -3976,7 +4080,7 @@ class TestHideControls:
         """
         Scenario: hide_controls=True injects CSS to hide controls.
 
-        Given: A Map with a point
+        Given: A Map with a location
         When: to_image is called with hide_controls=True
         Then: The screenshot function is called (CSS was injected)
         """
@@ -3992,7 +4096,7 @@ class TestHideControls:
         """
         Scenario: hide_controls=False does not inject CSS.
 
-        Given: A Map with a point
+        Given: A Map with a location
         When: to_image is called with hide_controls=False
         Then: The temporary HTML does not contain hide CSS
         """
@@ -4014,7 +4118,7 @@ class TestHideControls:
         """
         Scenario: Verify CSS injection content.
 
-        Given: A Map with a point
+        Given: A Map with a location
         When: to_image is called with hide_controls=True
         Then: The HTML sent to screenshot contains leaflet-control hide CSS
         """
@@ -4036,7 +4140,7 @@ class TestHideControls:
         """
         Scenario: to_bytesio passes hide_controls to to_image.
 
-        Given: A Map with a point
+        Given: A Map with a location
         When: to_bytesio is called with hide_controls=False
         Then: to_image receives hide_controls=False
         """
@@ -4052,7 +4156,7 @@ class TestHideControls:
         """
         Scenario: to_svg passes hide_controls to to_image.
 
-        Given: A Map with a point
+        Given: A Map with a location
         When: to_svg is called with hide_controls=False
         Then: to_image receives hide_controls=False
         """
@@ -4086,7 +4190,7 @@ class TestRawHTML:
 
     def test_raw_html_tooltip_bypasses_markdown(self) -> None:
         """
-        Scenario: RawHTML in hover bypasses markdown-to-HTML conversion.
+        Scenario: RawHTML in tooltip bypasses markdown-to-HTML conversion.
 
         Given: A Map and a RawHTML string with raw HTML tags
         When: _make_tooltip is called with RawHTML
@@ -4168,14 +4272,14 @@ class TestRawHTML:
         """
         Scenario: RawHTML works end-to-end on add_point.
 
-        Given: A Map and RawHTML for both hover and popup
+        Given: A Map and RawHTML for both tooltip and popup
         When: add_point is called
-        Then: The point is added without error
+        Then: The location is added without error
         """
         m = Map()
         result = m.add_point(
             Point(4.9, 52.37),
-            hover=RawHTML("<b>Hover</b>"),
+            tooltip=RawHTML("<b>Hover</b>"),
             popup=RawHTML("<i>Popup</i>"),
         )
         assert result is m
@@ -4236,7 +4340,7 @@ class TestPopupStyle:
 
         Given: A Map and a custom PopupStyle
         When: add_point is called with popup and popup_style
-        Then: The point is added without error
+        Then: The location is added without error
         """
         m = Map()
         ps = PopupStyle(width=400, height=250)
@@ -4339,7 +4443,7 @@ class TestPopupStyle:
 
         Given: A Map and a MultiPoint with popup_style
         When: add_multipoint is called
-        Then: The multi point is added without error
+        Then: The multi location is added without error
         """
         m = Map()
         mp = MultiPoint([Point(4.9, 52.37), Point(5.0, 52.38)])
@@ -4405,11 +4509,11 @@ class TestTextPopup:
 
     def test_add_text_with_popup(self) -> None:
         """
-        Scenario: add_text with popup creates a clickable text label.
+        Scenario: add_text with popup creates a clickable text marker.
 
         Given: A Map
         When: add_text is called with popup text
-        Then: The text label is added and returns self
+        Then: The text marker is added and returns self
         """
         m = Map()
         result = m.add_text(
@@ -4421,11 +4525,11 @@ class TestTextPopup:
 
     def test_add_text_with_popup_and_hover(self) -> None:
         """
-        Scenario: add_text with both popup and hover.
+        Scenario: add_text with both popup and tooltip.
 
         Given: A Map
-        When: add_text is called with both hover and popup
-        Then: The text label has both tooltip and popup
+        When: add_text is called with both tooltip and popup
+        Then: The text marker has both tooltip and popup
         """
         m = Map()
         result = m.add_text(
@@ -4442,7 +4546,7 @@ class TestTextPopup:
 
         Given: A Map and a custom PopupStyle
         When: add_text is called with popup and popup_style
-        Then: The text label is added without error
+        Then: The text marker is added without error
         """
         m = Map()
         result = m.add_text(
@@ -4495,7 +4599,7 @@ class TestDictStyleShortcuts:
 
     def test_add_point_with_marker_style_dict(self) -> None:
         """
-        Scenario: Pass marker_style as a dict to add_point.
+        Scenario: Pass marker_style as a CSS dict to add_point.
 
         Given: A Map and a Point
         When: add_point is called with marker_style=dict
@@ -4504,7 +4608,8 @@ class TestDictStyleShortcuts:
         m = Map()
         result = m.add_point(
             Point(4.9, 52.37),
-            marker_style={"icon": "home", "marker_color": "green", "prefix": "fa"},
+            marker="home",
+            marker_style={"font-size": "24px", "color": "green"},
         )
         assert result is m
 
@@ -4541,7 +4646,7 @@ class TestDictStyleShortcuts:
 
     def test_add_text_with_label_style_dict(self) -> None:
         """
-        Scenario: Pass a LabelStyle dict to add_text.
+        Scenario: Pass a CSS dict to add_text.
 
         Given: A Map and a location
         When: add_text is called with style=dict
@@ -4551,7 +4656,7 @@ class TestDictStyleShortcuts:
         result = m.add_text(
             Point(4.9, 52.37),
             "Test Label",
-            style={"font_size": 18, "font_color": "#ff0000"},
+            style={"font-size": "18px", "color": "#ff0000"},
         )
         assert result is m
 
@@ -4582,7 +4687,7 @@ class TestDictStyleShortcuts:
 
     def test_add_marker_cluster_with_marker_style_dict(self) -> None:
         """
-        Scenario: Pass marker_style as a dict to add_marker_cluster.
+        Scenario: Pass marker_style as a CSS dict to add_marker_cluster.
 
         Given: A Map and a list of Points
         When: add_marker_cluster is called with marker_style=dict
@@ -4590,7 +4695,7 @@ class TestDictStyleShortcuts:
         """
         m = Map()
         points = [Point(4.9 + i * 0.01, 52.37) for i in range(3)]
-        result = m.add_marker_cluster(points, marker_style={"emoji": "📍", "emoji_size": 20})
+        result = m.add_marker_cluster(points, marker_style={"font-size": "20px", "color": "red"})
         assert result is m
 
     def test_resolve_style_none_returns_none(self) -> None:
@@ -4650,20 +4755,20 @@ class TestDictStyleShortcuts:
         result = m.add_polygon(poly, stroke=style)
         assert result is m
 
-    def test_add_point_with_label_style_dict_for_text_label(self) -> None:
+    def test_add_point_with_caption_style_dict_for_caption(self) -> None:
         """
-        Scenario: Pass label_style as a dict to add_point for text_label styling.
+        Scenario: Pass caption_style as a CSS dict to add_point for caption styling.
 
-        Given: A Map and a Point with a text_label
-        When: add_point is called with label_style=dict
-        Then: The text label is rendered with the dict-based style
+        Given: A Map and a Point with a caption
+        When: add_point is called with caption_style=dict
+        Then: The caption is rendered with the dict-based style
         """
         m = Map()
         result = m.add_point(
             Point(4.9, 52.37),
-            label="📍",
-            text_label="Test",
-            label_style={"font_size": 16, "font_color": "#000000"},
+            marker="📍",
+            caption="Test",
+            caption_style={"font-size": "16px", "color": "#000000"},
         )
         assert result is m
 
@@ -4679,3 +4784,74 @@ class TestDictStyleShortcuts:
         poly = Polygon([(4.9, 52.3), (5.0, 52.3), (5.0, 52.4), (4.9, 52.4)])
         result = m.add_polygon(poly, popup="**Info**", popup_style={"width": 500, "height": 300})
         assert result is m
+
+
+# ===================================================================
+# Scenarios for CSS dict marker style resolution.
+# ===================================================================
+
+
+class TestCSSMarkerStyle:
+    """Scenarios for CSS dict marker style parameters."""
+
+    def test_marker_style_none_uses_defaults(self, tmp_path: Path) -> None:
+        """
+        Scenario: None marker_style uses default CSS.
+
+        Given: An empty map
+        When: add_point is called with marker_style=None
+        Then: The HTML contains default icon CSS values
+        """
+        m = Map()
+        m.add_point(Point(4.9, 52.37), marker="home")
+        out = tmp_path / "default.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "font-size:20px" in html
+        assert "color:#002855" in html
+
+    def test_marker_style_dict_overrides_defaults(self, tmp_path: Path) -> None:
+        """
+        Scenario: CSS dict overrides default values.
+
+        Given: An empty map and a marker_style dict
+        When: add_point is called with custom CSS
+        Then: The HTML contains the overridden values
+        """
+        m = Map()
+        m.add_point(Point(4.9, 52.37), marker="home", marker_style={"font-size": "30px", "color": "red"})
+        out = tmp_path / "override.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "font-size:30px" in html
+        assert "color:red" in html
+
+    def test_marker_style_adds_custom_css(self, tmp_path: Path) -> None:
+        """
+        Scenario: CSS dict can add properties not in defaults.
+
+        Given: An empty map and a marker_style with text-shadow
+        When: add_point is called
+        Then: The HTML contains the extra CSS property
+        """
+        m = Map()
+        m.add_point(Point(4.9, 52.37), marker="home", marker_style={"text-shadow": "1px 1px 2px black"})
+        out = tmp_path / "extra_css.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "text-shadow:1px 1px 2px black" in html
+
+    def test_empty_dict_uses_defaults(self, tmp_path: Path) -> None:
+        """
+        Scenario: Empty dict uses default CSS (same as None).
+
+        Given: An empty map
+        When: add_point is called with marker_style={}
+        Then: The HTML contains default CSS values
+        """
+        m = Map()
+        m.add_point(Point(4.9, 52.37), marker="home", marker_style={})
+        out = tmp_path / "empty.html"
+        m.to_html(out)
+        html = out.read_text(encoding="utf-8")
+        assert "font-size:20px" in html
