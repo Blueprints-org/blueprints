@@ -804,7 +804,7 @@ class Map:
                 tiles = layers[0]
                 attr = cfg.attribution
 
-            kwargs = {
+            kwargs: dict[str, Any] = {
                 "tiles": tiles,
                 "zoom_start": cfg.zoom_start,
                 "min_zoom": cfg.min_zoom,
@@ -1045,6 +1045,7 @@ class Map:
 
         kind = _classify_marker(marker) if marker else "icon_name"
         if kind == "emoji":
+            assert marker is not None  # guarded by _classify_marker above
             icon = _build_text_marker(marker, css, caption, cap_css)
         else:
             icon_name = marker or "arrow-down"
@@ -1647,6 +1648,7 @@ class Map:
 
             kind = _classify_marker(label) if label else "icon_name"
             if kind == "emoji":
+                assert label is not None  # guarded by _classify_marker above
                 icon = _build_text_marker(label, css, txt, cap_css)
             else:
                 icon_name = label or "arrow-down"
