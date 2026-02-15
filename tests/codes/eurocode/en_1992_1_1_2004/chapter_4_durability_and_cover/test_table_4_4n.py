@@ -106,7 +106,7 @@ class TestTable4Dot4nMinimumCoverDurabilityReinforcementSteel:
     @pytest.mark.parametrize(
         ("representation", "expected_result"),
         [
-            ("complete", r"c_{min,dur} = structural class S3 & exposure classes (XC2, XF4, XA1) = 20"),
+            ("complete", r"c_{min,dur} = \text{structural class S3 and exposure classes (XC2, XF4, XA1)} = 20"),
             ("short", "c_{min,dur} = 20"),
         ],
     )
