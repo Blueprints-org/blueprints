@@ -2,7 +2,7 @@
 
 Provides a high-level API for creating interactive OpenStreetMap visualizations
 with support for Shapely geometries, GeoPandas DataFrames, emoji/icon markers,
-text annotations, markdown hover text, choropleth coloring, heatmaps,
+text annotations, markdown tooltip text, choropleth coloring, heatmaps,
 and export to HTML, PNG, and SVG formats.
 
 Examples
@@ -10,7 +10,7 @@ Examples
 >>> from shapely.geometry import Point, Polygon
 >>> from blueprints.utils import Map
 >>> m = Map(title="My Map")
->>> m.add_point(Point(4.9, 52.37), label="\U0001f4cd", hover="**Amsterdam**")
+>>> m.add_point(Point(4.9, 52.37), marker="\U0001f4cd", tooltip="**Amsterdam**")
 >>> m.add_polygon(Polygon([(4.9, 52.3), (5.0, 52.3), (5.0, 52.4), (4.9, 52.4)]))
 >>> m.to_html("map.html")
 """
@@ -26,7 +26,7 @@ import time
 import webbrowser
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Self, cast
+from typing import Any, Literal, Self, cast
 
 import branca.colormap as cm
 import folium
@@ -51,36 +51,43 @@ from shapely.geometry.base import BaseGeometry
 # ---------------------------------------------------------------------------
 
 TILE_PROVIDERS: dict[str, dict[str, str]] = {
-    "openstreetmap": {"tiles": "OpenStreetMap", "attr": "OpenStreetMap"},
-    "cartodb_positron": {"tiles": "CartoDB positron", "attr": "CartoDB"},
-    "cartodb_dark": {"tiles": "CartoDB dark_matter", "attr": "CartoDB"},
+    "openstreetmap": {"tiles": "OpenStreetMap", "attr": "OpenStreetMap", "name": "OpenStreetMap"},
+    "cartodb_positron": {"tiles": "CartoDB positron", "attr": "CartoDB", "name": "CartoDB Positron"},
+    "cartodb_dark": {"tiles": "CartoDB dark_matter", "attr": "CartoDB", "name": "CartoDB Dark"},
     "esri_satellite": {
         "tiles": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         "attr": "Esri World Imagery",
+        "name": "Esri Satellite",
     },
     "esri_topo": {
         "tiles": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
         "attr": "Esri World Topo Map",
+        "name": "Esri Topo",
     },
     "stamen_terrain": {
         "tiles": "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png",
         "attr": "Stadia/Stamen Terrain",
+        "name": "Stamen Terrain",
     },
     "stamen_toner": {
         "tiles": "https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png",
         "attr": "Stadia/Stamen Toner",
+        "name": "Stamen Toner",
     },
     "kadaster_brt": {
         "tiles": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png",
         "attr": "Kadaster BRT Achtergrondkaart",
+        "name": "Kadaster BRT",
     },
     "kadaster_luchtfoto": {
         "tiles": "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{z}/{x}/{y}.png",
         "attr": "Kadaster Luchtfoto",
+        "name": "Kadaster Luchtfoto",
     },
     "kadaster_grijs": {
         "tiles": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/grijs/EPSG:3857/{z}/{x}/{y}.png",
         "attr": "Kadaster BRT Grijs",
+        "name": "Kadaster Grijs",
     },
 }
 
@@ -210,91 +217,43 @@ class FillStyle:
     opacity: float = 0.2
 
 
-@dataclass
-class MarkerStyle:
-    """Style for point markers.
+# ---------------------------------------------------------------------------
+# Default CSS for marker styles (replaces IconStyle / TextStyle / CaptionStyle)
+# ---------------------------------------------------------------------------
 
-    Parameters
-    ----------
-    icon : str | None
-        Folium icon name. Ignored when ``emoji`` is set.
-    icon_color : str
-        Icon glyph color.
-    marker_color : str
-        Marker background color.
-    prefix : str
-        Icon set: ``"glyphicon"`` or ``"fa"``.
-    emoji : str | None
-        Emoji/text rendered as DivIcon.
-    emoji_size : int
-        Font size in px for the DivIcon.
-    shape : str | None
-        Shape type: ``"circle"``, ``"square"``, or ``"triangle"``.
-        Ignored when ``emoji`` or ``label`` is set.
-    shape_color : str
-        Fill/stroke color for shape markers.
-    shape_size : int
-        Radius in pixels for shape markers.
-    """
+_DEFAULT_ICON_CSS: dict[str, str] = {
+    "font-size": "20px",
+    "color": "#002855",
+}
 
-    icon: str | None = "info-sign"
-    icon_color: str = "white"
-    marker_color: str = "blue"
-    prefix: str = "glyphicon"
-    emoji: str | None = None
-    emoji_size: int = 24
-    shape: str | None = None
-    shape_color: str = "blue"
-    shape_size: int = 10
+_DEFAULT_TEXT_CSS: dict[str, str] = {
+    "font-size": "16px",
+    "color": "black",
+}
 
+_DEFAULT_CAPTION_CSS: dict[str, str] = {
+    "font-size": "12px",
+    "font-family": "Arial, sans-serif",
+    "color": "#333333",
+    "font-weight": "bold",
+    "background-color": "rgba(255,255,255,0.8)",
+    "border": "1px solid #cccccc",
+    "padding": "2px 6px",
+    "white-space": "nowrap",
+    "text-align": "center",
+}
 
-_SHAPE_CONFIG: dict[str, dict[str, int]] = {
-    "circle": {"sides": 36, "rotation": 0},
-    "square": {"sides": 4, "rotation": 45},
+# Caption style when used under a marker (transparent background, no border)
+_DEFAULT_MARKER_CAPTION_CSS: dict[str, str] = {
+    **_DEFAULT_CAPTION_CSS,
+    "background-color": "transparent",
+    "border": "none",
 }
 
 
-@dataclass
-class LabelStyle:
-    """Style for text annotation labels.
-
-    Parameters
-    ----------
-    font_size : int
-        Font size in px.
-    font_family : str
-        CSS font-family.
-    font_color : str
-        Text color.
-    font_weight : str
-        CSS font-weight.
-    background_color : str | None
-        Background color. ``None`` = transparent.
-    border : str | None
-        CSS border string.
-    padding : str
-        CSS padding.
-    min_width : int | None
-        Minimum label width in pixels. Useful for short labels to prevent excessive wrapping.
-    max_width : int | None
-        Maximum label width in pixels. Text will wrap if exceeded.
-    min_height : int | None
-        Minimum label height in pixels. Useful for short labels to prevent excessive wrapping.
-    max_height : int | None
-        Maximum label height in pixels. Text will be truncated if exceeded.
-    """
-
-    font_size: int = 12
-    font_family: str = "Arial, sans-serif"
-    font_color: str = "#333333"
-    font_weight: str = "bold"
-    background_color: str | None = "rgba(255,255,255,0.8)"
-    border: str | None = "1px solid #cccccc"
-    padding: str = "2px 6px"
-    min_width: int | None = None
-    max_width: int | None = None
-    min_height: int | None = None
-    max_height: int | None = None
+def _css_to_style(css: dict[str, str]) -> str:
+    """Convert a CSS property dict to an inline style string."""
+    return ";".join(f"{k}:{v}" for k, v in css.items())
 
 
 @dataclass
@@ -314,6 +273,23 @@ class PopupStyle:
     width: int = 300
     height: int = 150
     max_width: int = 300
+
+
+@dataclass
+class TooltipStyle:
+    """Tooltip appearance configuration.
+
+    Parameters
+    ----------
+    sticky : bool
+        Whether the tooltip follows the mouse cursor.
+    style : str | None
+        Inline CSS style string for the tooltip container.
+        Example: ``"font-size:14px; background-color:#fff;"``
+    """
+
+    sticky: bool = True
+    style: str | None = None
 
 
 @dataclass
@@ -342,7 +318,7 @@ class HeatmapStyle:
     Parameters
     ----------
     radius : int
-        Radius of each point in pixels.
+        Radius of each location in pixels.
     blur : int
         Blur radius in pixels.
     min_opacity : float
@@ -366,8 +342,10 @@ class MapConfig:
 
     Parameters
     ----------
-    tile_layer : str
+    tile_layer : str | list[str]
         Key from ``TILE_PROVIDERS`` or Folium built-in name.
+        Pass a list to add multiple base layers (use
+        :meth:`Map.add_layer_control` to toggle between them).
     zoom_start : int
         Initial zoom level.
     min_zoom : int
@@ -397,7 +375,7 @@ class MapConfig:
         Show cursor coordinates.
     """
 
-    tile_layer: str = "cartodb_positron"
+    tile_layer: str | list[str] = "cartodb_positron"
     zoom_start: int = 12
     min_zoom: int = 0
     max_zoom: int = 19
@@ -412,7 +390,7 @@ class MapConfig:
 
 
 # ---------------------------------------------------------------------------
-# Markdown hover helper
+# Markdown tooltip helper
 # ---------------------------------------------------------------------------
 
 
@@ -459,14 +437,14 @@ def _markdown_to_html(md_text: str) -> str:
 class RawHTML(str):
     """String subclass that bypasses markdown-to-HTML conversion.
 
-    Use this to pass pre-formatted HTML directly to ``hover`` or ``popup``
+    Use this to pass pre-formatted HTML directly to ``tooltip`` or ``popup``
     parameters on any ``add_*`` method.
 
     Examples
     --------
     >>> from blueprints.utils.map import RawHTML
     >>> html = RawHTML("<b>Bold</b> and <em>italic</em>")
-    >>> m.add_point(Point(4.9, 52.37), hover=html)
+    >>> m.add_point(Point(4.9, 52.37), tooltip=html)
     """
 
     __slots__ = ()
@@ -599,25 +577,127 @@ def _capture_screenshot(
             driver.quit()
 
 
-def _text_label_html(text: str, ls: LabelStyle) -> str:
-    """Build an HTML snippet for a text label below a marker icon.
+def _classify_marker(s: str) -> Literal["emoji", "icon_class", "icon_name"]:
+    """Classify a marker string.
+
+    Returns
+    -------
+    "emoji"
+        Non-ASCII content (emojis, unicode symbols) → render as text.
+    "icon_class"
+        Full CSS class string containing a space (e.g. ``"fa fa-home"``) → use as-is.
+    "icon_name"
+        Bare icon name (e.g. ``"home"``, ``"fa-arrow-right"``) → auto-prefix.
+    """
+    if not s or not all(c.isascii() for c in s):
+        return "emoji"
+    if " " in s:
+        return "icon_class"
+    return "icon_name"
+
+
+def _caption_html(text: str, css: dict[str, str]) -> str:
+    """Build an HTML snippet for a caption below a marker icon.
 
     Parameters
     ----------
     text : str
-        Label text.
-    ls : LabelStyle
-        Label appearance.
+        Caption text.
+    css : dict[str, str]
+        CSS property dict merged with appropriate defaults by the caller.
 
     Returns
     -------
     str
         HTML ``<div>`` string.
     """
-    return (
-        f'<div style="font-size:{ls.font_size}px;font-family:{ls.font_family};'
-        f"color:{ls.font_color};font-weight:{ls.font_weight};"
-        f'white-space:nowrap;text-align:center;">{text}</div>'
+    merged = {**_DEFAULT_CAPTION_CSS, **css}
+    return f'<div style="{_css_to_style(merged)}">{text}</div>'
+
+
+def _build_icon_marker(
+    icon: str,
+    css: dict[str, str],
+    caption: str | None,
+    caption_css: dict[str, str],
+) -> folium.DivIcon:
+    """Build an icon-based DivIcon marker with optional caption.
+
+    Parameters
+    ----------
+    icon : str
+        Icon name or full CSS class string.  Strings containing a space
+        (e.g. ``"fa-solid fa-house"``) are used verbatim.  Bare names
+        starting with ``"fa-"`` get an ``"fa-solid"`` prefix; other bare
+        names (e.g. ``"home"``) get a ``"glyphicon"`` prefix.
+    css : dict[str, str]
+        CSS property overrides for the icon element.
+    caption : str | None
+        Optional caption text below the icon.
+    caption_css : dict[str, str]
+        CSS property overrides for the caption.
+
+    Returns
+    -------
+    folium.DivIcon
+    """
+    merged = {**_DEFAULT_ICON_CSS, **css}
+    style_str = _css_to_style(merged)
+    caption_suffix = _caption_html(caption, caption_css) if caption else ""
+    # Full CSS class string (contains a space) → use as-is
+    # Bare name starting with "fa-" → FontAwesome 6 (fa-solid prefix)
+    # Other bare name → Glyphicon
+    if " " in icon:
+        icon_class = icon
+    elif icon.startswith("fa-"):
+        icon_class = f"fa-solid {icon}"
+    else:
+        icon_class = f"glyphicon glyphicon-{icon}"
+    icon_html = f'<div style="text-align:center;"><i class="{icon_class}" style="{style_str}"></i></div>{caption_suffix}'
+    return folium.DivIcon(
+        html=icon_html,
+        icon_size=(100, 50),
+        icon_anchor=(50, 15),
+    )
+
+
+def _build_text_marker(
+    text: str,
+    css: dict[str, str],
+    caption: str | None,
+    caption_css: dict[str, str],
+) -> folium.DivIcon:
+    """Build a text/emoji DivIcon marker with optional caption.
+
+    Parameters
+    ----------
+    text : str
+        The actual text/emoji to render.
+    css : dict[str, str]
+        CSS property overrides for the text element.
+    caption : str | None
+        Optional caption text below the text.
+    caption_css : dict[str, str]
+        CSS property overrides for the caption.
+
+    Returns
+    -------
+    folium.DivIcon
+        A DivIcon rendering the text and optional caption.
+    """
+    merged = {**_DEFAULT_TEXT_CSS, **css}
+    style_str = _css_to_style(merged) + ";text-align:center"
+    caption_suffix = _caption_html(caption, caption_css) if caption else ""
+    inner = f'<div style="{style_str}">{text}</div>'
+    html = f'<div style="text-align:center;">{inner}{caption_suffix}</div>'
+    # size estimation for icon_size/anchor from font-size
+    fs = int(merged.get("font-size", "16px").replace("px", ""))
+    w = max(fs + 10, 100 if caption else 0)
+    h = fs + 10 + (20 if caption else 0)
+    return folium.DivIcon(
+        html=html,
+        icon_size=(w, h),
+        icon_anchor=(w // 2, (fs + 10) // 2),
     )
 
 
@@ -643,7 +723,7 @@ class Map:
     Examples
     --------
     >>> m = Map(title="Demo")
-    >>> m.add_point(Point(5.0, 52.0), hover="**Hello**")
+    >>> m.add_point(Point(5.0, 52.0), tooltip="**Hello**")
     >>> m.to_html("demo.html")
     """
 
@@ -670,7 +750,7 @@ class Map:
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _create_base_map(self) -> folium.Map:
+    def _create_base_map(self) -> folium.Map:  # noqa: PLR0912, C901
         """Create the base Folium Map object.
 
         Returns
@@ -679,37 +759,72 @@ class Map:
         """
         cfg = self._config
 
-        # Resolve tile provider
-        provider = TILE_PROVIDERS.get(cfg.tile_layer.lower())
-        if provider:
-            tiles = provider["tiles"]
-            attr = provider.get("attr")
+        # Normalise tile_layer to a list
+        layers = cfg.tile_layer if isinstance(cfg.tile_layer, list) else [cfg.tile_layer]
+        multiple = len(layers) > 1
+
+        if multiple:
+            # Multiple layers: create map without tiles, add all as TileLayer
+            kwargs: dict[str, Any] = {
+                "tiles": None,
+                "zoom_start": cfg.zoom_start,
+                "min_zoom": cfg.min_zoom,
+                "max_zoom": cfg.max_zoom,
+                "width": cfg.width,
+                "height": cfg.height,
+                "control_scale": cfg.control_scale,
+            }
+            if self._center:
+                kwargs["location"] = list(self._center)
+            fmap = folium.Map(**kwargs)
+
+            for i, layer_key in enumerate(layers):
+                p = TILE_PROVIDERS.get(layer_key.lower())
+                if p:
+                    folium.TileLayer(
+                        tiles=p["tiles"],
+                        name=p.get("name", layer_key),
+                        attr=p.get("attr"),
+                        show=i == 0,
+                    ).add_to(fmap)
+                else:
+                    folium.TileLayer(
+                        tiles=layer_key,
+                        name=layer_key,
+                        attr=cfg.attribution,
+                        show=i == 0,
+                    ).add_to(fmap)
         else:
-            tiles = cfg.tile_layer
-            attr = cfg.attribution
+            # Single layer: pass directly to folium.Map (original behaviour)
+            provider = TILE_PROVIDERS.get(layers[0].lower())
+            if provider:
+                tiles = provider["tiles"]
+                attr = provider.get("attr")
+            else:
+                tiles = layers[0]
+                attr = cfg.attribution
 
-        kwargs: dict[str, Any] = {
-            "tiles": tiles,
-            "zoom_start": cfg.zoom_start,
-            "min_zoom": cfg.min_zoom,
-            "max_zoom": cfg.max_zoom,
-            "width": cfg.width,
-            "height": cfg.height,
-            "control_scale": cfg.control_scale,
-        }
-        if self._center:
-            kwargs["location"] = list(self._center)
-        if attr:
-            kwargs["attr"] = attr
-
-        fmap = folium.Map(**kwargs)
+            kwargs = {
+                "tiles": tiles,
+                "zoom_start": cfg.zoom_start,
+                "min_zoom": cfg.min_zoom,
+                "max_zoom": cfg.max_zoom,
+                "width": cfg.width,
+                "height": cfg.height,
+                "control_scale": cfg.control_scale,
+            }
+            if self._center:
+                kwargs["location"] = list(self._center)
+            if attr:
+                kwargs["attr"] = attr
+            fmap = folium.Map(**kwargs)
 
         # Title overlay
         if self._title:
             title_html = (
                 '<div style="position:fixed;top:10px;left:50%;transform:translateX(-50%);'
                 "z-index:1000;background:rgba(255,255,255,0.9);padding:8px 20px;"
-                "border-radius:6px;font-family:Arial,sans-serif;font-size:18px;"
+                "border-radius:6px;font-family:Arial,sans-serif;font-size:16px;"
                 f'font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.3);pointer-events:none;">'
                 f"{self._title}</div>"
             )
@@ -724,7 +839,6 @@ class Map:
             folium.plugins.MeasureControl(primary_length_unit="meters", primary_area_unit="sqmeters").add_to(fmap)
         if cfg.mouse_position:
             folium.plugins.MousePosition(position="bottomleft", separator=" | ", num_digits=6).add_to(fmap)
-
         return fmap
 
     def _transform(self, geom: BaseGeometry) -> BaseGeometry:
@@ -737,12 +851,17 @@ class Map:
         self._bounds.append((b[1], b[0]))
         self._bounds.append((b[3], b[2]))
 
-    def _make_tooltip(self, hover: str | RawHTML | None) -> folium.Tooltip | None:
+    def _make_tooltip(
+        self,
+        hover: str | RawHTML | None,
+        tooltip_style: TooltipStyle | dict[str, Any] | None = None,
+    ) -> folium.Tooltip | None:
         """Create Tooltip from markdown or raw HTML."""
         if not hover:
             return None
+        ts = _resolve_style(tooltip_style, TooltipStyle) or TooltipStyle()
         html = hover if isinstance(hover, RawHTML) else _markdown_to_html(hover)
-        return folium.Tooltip(html)
+        return folium.Tooltip(html, sticky=ts.sticky, style=ts.style)
 
     def _make_popup(self, popup: str | RawHTML | None, popup_style: PopupStyle | dict[str, Any] | None = None) -> folium.Popup | None:
         """Create Popup from markdown or raw HTML."""
@@ -863,43 +982,55 @@ class Map:
     def add_point(
         self,
         point: Point,
-        hover: str | RawHTML | None = None,
+        marker: str | None = None,
+        caption: str | None = None,
+        tooltip: str | RawHTML | None = None,
         popup: str | RawHTML | None = None,
-        label: str | None = None,
-        marker_style: MarkerStyle | dict[str, Any] | None = None,
-        label_style: LabelStyle | dict[str, Any] | None = None,
-        min_zoom: int | None = None,
-        text_label: str | None = None,
+        marker_style: dict[str, str] | None = None,
+        caption_style: dict[str, str] | None = None,
+        tooltip_style: TooltipStyle | dict[str, Any] | None = None,
         popup_style: PopupStyle | dict[str, Any] | None = None,
+        min_zoom: int | None = None,
     ) -> Self:
-        """Add a point marker.
+        """Add a location marker.
 
         Parameters
         ----------
         point : Point
             Shapely Point ``(x, y)`` in source CRS.
-        hover : str | RawHTML | None
-            Markdown tooltip text, or ``RawHTML`` for pre-formatted HTML.
+        marker : str | None
+            Desired marker symbol.  Rendering path is auto-detected:
+
+            - Bare icon name (e.g. ``"home"``) → Glyphicon prefix.
+            - Bare FA name (e.g. ``"fa-arrow-right"``) → ``fa-solid`` prefix.
+            - Full CSS class (e.g. ``"fa-solid fa-house"``) → used as-is.
+            - Emoji / unicode text → rendered as text DivIcon.
+            - ``None`` → default ``"arrow-down"`` icon.
+        caption : str | None
+            Text annotation placed below the marker.  Works with any marker
+            type (emoji, icon).  Can be styled via ``caption_style``.
+        tooltip : str | RawHTML | None
+            Information shown on mouse tooltip.  Markdown supported for
+            strings, or use ``RawHTML`` for pre-formatted HTML.
         popup : str | RawHTML | None
-            Markdown popup text, or ``RawHTML`` for pre-formatted HTML.
-        label : str | None
-            Emoji / short text for the marker.
-        marker_style : MarkerStyle | dict[str, Any] | None
-            Marker appearance. Pass a ``dict`` as shortcut for
-            ``MarkerStyle(**dict)``.
-        label_style : LabelStyle | dict[str, Any] | None
-            Style for the ``text_label``.  Defaults to a borderless,
-            transparent-background ``LabelStyle`` when not provided.
-            Pass a ``dict`` as shortcut for ``LabelStyle(**dict)``.
+            Information shown on click.  Markdown supported for strings,
+            or use ``RawHTML`` for pre-formatted HTML.
+        marker_style : dict[str, str] | None
+            CSS property overrides for the marker element.  Merged with
+            ``_DEFAULT_ICON_CSS`` or ``_DEFAULT_TEXT_CSS`` depending on the
+            detected marker type.
+        caption_style : dict[str, str] | None
+            CSS property overrides for the caption.  Merged with
+            ``_DEFAULT_MARKER_CAPTION_CSS``.
+        tooltip_style : TooltipStyle | dict[str, Any] | None
+            Tooltip appearance.  Defaults to Folium's default tooltip style.
+            Pass a ``dict`` as shortcut for ``TooltipStyle(**dict)``.
+        popup_style : PopupStyle | dict[str, Any] | None
+            Popup dimensions.  Defaults to ``PopupStyle()``.
+            Pass a ``dict`` as shortcut for ``PopupStyle(**dict)``.
         min_zoom : int | None
             Minimum zoom level at which the marker is visible.
             ``None`` or ``0`` means always visible.
-        text_label : str | None
-            Text annotation placed below the marker.  Works with any
-            marker type (shape, emoji, icon).  Styled via ``label_style``.
-        popup_style : PopupStyle | dict[str, Any] | None
-            Popup dimensions. Defaults to ``PopupStyle()``.
-            Pass a ``dict`` as shortcut for ``PopupStyle(**dict)``.
 
         Returns
         -------
@@ -907,90 +1038,30 @@ class Map:
         """
         point = cast(Point, self._transform(point))
         self._extend_bounds(point)
-        ms = _resolve_style(marker_style, MarkerStyle) or MarkerStyle()
         lat, lon = point.y, point.x
 
-        emoji = label or ms.emoji
-        ls = _resolve_style(label_style, LabelStyle) or LabelStyle(background_color=None, border=None)
-        label_suffix = _text_label_html(text_label, ls) if text_label else ""
+        css = marker_style or {}
+        cap_css = {**_DEFAULT_MARKER_CAPTION_CSS, **(caption_style or {})}
 
-        if ms.shape and not emoji:
-            # Shape marker path
-            shape = ms.shape
-            if shape == "triangle":
-                inner = f'<div style="font-size:20px;color:{ms.shape_color};text-align:center;">\u25bc</div>'
-                html = f'<div style="text-align:center;">{inner}{label_suffix}</div>'
-                h = 40 + (20 if text_label else 0)
-                icon = folium.DivIcon(html=html, icon_size=(100, h), icon_anchor=(50, 10))
-                marker = folium.Marker(
-                    location=[lat, lon],
-                    icon=icon,
-                    tooltip=self._make_tooltip(hover),
-                    popup=self._make_popup(popup, popup_style),
-                )
-            else:
-                cfg = _SHAPE_CONFIG.get(shape, _SHAPE_CONFIG["circle"])
-                marker = folium.RegularPolygonMarker(
-                    location=[lat, lon],
-                    number_of_sides=cfg["sides"],
-                    radius=ms.shape_size,
-                    color=ms.shape_color,
-                    fill=True,
-                    fill_color=ms.shape_color,
-                    fill_opacity=0.7,
-                    tooltip=self._make_tooltip(hover),
-                    popup=self._make_popup(popup, popup_style),
-                    rotation=cfg["rotation"],
-                )
-                # RegularPolygonMarker can't embed HTML; add separate label
-                if text_label:
-                    label_icon = folium.DivIcon(
-                        html=f'<div style="text-align:center;margin-top:10px;">{label_suffix}</div>',
-                        icon_size=(100, 30),
-                        icon_anchor=(50, 0),
-                    )
-                    folium.Marker(location=[lat, lon], icon=label_icon).add_to(self._target())
-            marker.add_to(self._target())
-        elif emoji:
-            inner = f'<div style="font-size:{ms.emoji_size}px;text-align:center;">{emoji}</div>'
-            html = f'<div style="text-align:center;">{inner}{label_suffix}</div>'
-            w = max(ms.emoji_size + 10, 100 if text_label else 0)
-            h = ms.emoji_size + 10 + (20 if text_label else 0)
-            icon = folium.DivIcon(html=html, icon_size=(w, h), icon_anchor=(w // 2, (ms.emoji_size + 10) // 2))
-            marker = folium.Marker(
-                location=[lat, lon],
-                icon=icon,
-                tooltip=self._make_tooltip(hover),
-                popup=self._make_popup(popup, popup_style),
-            )
-            marker.add_to(self._target())
+        kind = _classify_marker(marker) if marker else "icon_name"
+        if kind == "emoji":
+            icon = _build_text_marker(marker, css, caption, cap_css)
         else:
-            icon = folium.Icon(
-                icon=ms.icon or "info-sign",
-                color=ms.marker_color,
-                icon_color=ms.icon_color,
-                prefix=ms.prefix,
-            )
-            marker = folium.Marker(
-                location=[lat, lon],
-                icon=icon,
-                tooltip=self._make_tooltip(hover),
-                popup=self._make_popup(popup, popup_style),
-            )
-            marker.add_to(self._target())
-            # folium.Icon can't embed HTML; add separate label
-            if text_label:
-                label_icon = folium.DivIcon(
-                    html=f'<div style="text-align:center;margin-top:10px;">{label_suffix}</div>',
-                    icon_size=(100, 30),
-                    icon_anchor=(50, 0),
-                )
-                folium.Marker(location=[lat, lon], icon=label_icon).add_to(self._target())
+            icon_name = marker or "arrow-down"
+            icon = _build_icon_marker(icon_name, css, caption, cap_css)
+
+        m = folium.Marker(
+            location=[lat, lon],
+            icon=icon,
+            tooltip=self._make_tooltip(tooltip, tooltip_style),
+            popup=self._make_popup(popup, popup_style),
+        )
+        m.add_to(self._target())
 
         if min_zoom is not None and min_zoom > 0:
             self._zoom_controlled_markers.append(
                 {
-                    "var_name": marker.get_name(),
+                    "var_name": m.get_name(),
                     "min_zoom": min_zoom,
                 }
             )
@@ -1000,7 +1071,7 @@ class Map:
     def add_circle(
         self,
         point: Point,
-        hover: str | RawHTML | None = None,
+        tooltip: str | RawHTML | None = None,
         popup: str | RawHTML | None = None,
         style: CircleStyle | dict[str, Any] | None = None,
         min_zoom: int | None = None,
@@ -1012,7 +1083,7 @@ class Map:
         ----------
         point : Point
             Shapely Point.
-        hover : str | RawHTML | None
+        tooltip : str | RawHTML | None
             Markdown tooltip, or ``RawHTML`` for pre-formatted HTML.
         popup : str | RawHTML | None
             Markdown popup, or ``RawHTML`` for pre-formatted HTML.
@@ -1042,7 +1113,7 @@ class Map:
             fill=True,
             fill_color=cs.fill.color,
             fill_opacity=cs.fill.opacity,
-            tooltip=self._make_tooltip(hover),
+            tooltip=self._make_tooltip(tooltip),
             popup=self._make_popup(popup, popup_style),
             dash_array=cs.stroke.dash_array,
         )
@@ -1059,7 +1130,7 @@ class Map:
     def add_linestring(
         self,
         line: LineString,
-        hover: str | RawHTML | None = None,
+        tooltip: str | RawHTML | None = None,
         popup: str | RawHTML | None = None,
         stroke: StrokeStyle | dict[str, Any] | None = None,
         popup_style: PopupStyle | dict[str, Any] | None = None,
@@ -1070,7 +1141,7 @@ class Map:
         ----------
         line : LineString
             Shapely LineString.
-        hover : str | RawHTML | None
+        tooltip : str | RawHTML | None
             Markdown tooltip, or ``RawHTML`` for pre-formatted HTML.
         popup : str | RawHTML | None
             Markdown popup, or ``RawHTML`` for pre-formatted HTML.
@@ -1094,7 +1165,7 @@ class Map:
             weight=s.weight,
             opacity=s.opacity,
             dash_array=s.dash_array,
-            tooltip=self._make_tooltip(hover),
+            tooltip=self._make_tooltip(tooltip),
             popup=self._make_popup(popup, popup_style),
         ).add_to(self._target())
         return self
@@ -1102,7 +1173,7 @@ class Map:
     def add_polygon(
         self,
         polygon: Polygon,
-        hover: str | RawHTML | None = None,
+        tooltip: str | RawHTML | None = None,
         popup: str | RawHTML | None = None,
         stroke: StrokeStyle | dict[str, Any] | None = None,
         fill: FillStyle | dict[str, Any] | None = None,
@@ -1114,7 +1185,7 @@ class Map:
         ----------
         polygon : Polygon
             Shapely Polygon.
-        hover : str | RawHTML | None
+        tooltip : str | RawHTML | None
             Markdown tooltip, or ``RawHTML`` for pre-formatted HTML.
         popup : str | RawHTML | None
             Markdown popup, or ``RawHTML`` for pre-formatted HTML.
@@ -1145,7 +1216,7 @@ class Map:
             fill=True,
             fill_color=f.color,
             fill_opacity=f.opacity,
-            tooltip=self._make_tooltip(hover),
+            tooltip=self._make_tooltip(tooltip),
             popup=self._make_popup(popup, popup_style),
         ).add_to(self._target())
         return self
@@ -1173,7 +1244,7 @@ class Map:
         Map
         """
         for poly in mp.geoms:
-            self.add_polygon(poly, hover=hover, popup=popup, stroke=stroke, fill=fill, popup_style=popup_style)
+            self.add_polygon(poly, tooltip=hover, popup=popup, stroke=stroke, fill=fill, popup_style=popup_style)
         return self
 
     def add_multilinestring(
@@ -1198,7 +1269,7 @@ class Map:
         Map
         """
         for line in ml.geoms:
-            self.add_linestring(line, hover=hover, popup=popup, stroke=stroke, popup_style=popup_style)
+            self.add_linestring(line, tooltip=hover, popup=popup, stroke=stroke, popup_style=popup_style)
         return self
 
     def add_multipoint(
@@ -1207,7 +1278,7 @@ class Map:
         hover: str | RawHTML | None = None,
         popup: str | RawHTML | None = None,
         label: str | None = None,
-        marker_style: MarkerStyle | dict[str, Any] | None = None,
+        marker_style: dict[str, str] | None = None,
         popup_style: PopupStyle | dict[str, Any] | None = None,
     ) -> Self:
         """Add a MultiPoint.
@@ -1224,7 +1295,7 @@ class Map:
         Map
         """
         for pt in mp.geoms:
-            self.add_point(pt, hover=hover, popup=popup, label=label, marker_style=marker_style, popup_style=popup_style)
+            self.add_point(pt, tooltip=hover, popup=popup, marker=label, marker_style=marker_style, popup_style=popup_style)
         return self
 
     def add_geometry(
@@ -1235,7 +1306,7 @@ class Map:
         label: str | None = None,
         stroke: StrokeStyle | dict[str, Any] | None = None,
         fill: FillStyle | dict[str, Any] | None = None,
-        marker_style: MarkerStyle | dict[str, Any] | None = None,
+        marker_style: dict[str, str] | None = None,
         popup_style: PopupStyle | dict[str, Any] | None = None,
     ) -> Self:
         """Add any Shapely geometry (auto-dispatches by type).
@@ -1257,14 +1328,14 @@ class Map:
             If geometry type is unsupported.
         """
         if isinstance(geom, Point):
-            self.add_point(geom, hover=hover, popup=popup, label=label, marker_style=marker_style, popup_style=popup_style)
+            self.add_point(geom, tooltip=hover, popup=popup, marker=label, marker_style=marker_style, popup_style=popup_style)
         elif isinstance(geom, LinearRing):
             # LinearRing is a subclass of LineString — check first
-            self.add_linestring(LineString(geom.coords), hover=hover, popup=popup, stroke=stroke, popup_style=popup_style)
+            self.add_linestring(LineString(geom.coords), tooltip=hover, popup=popup, stroke=stroke, popup_style=popup_style)
         elif isinstance(geom, LineString):
-            self.add_linestring(geom, hover=hover, popup=popup, stroke=stroke, popup_style=popup_style)
+            self.add_linestring(geom, tooltip=hover, popup=popup, stroke=stroke, popup_style=popup_style)
         elif isinstance(geom, Polygon):
-            self.add_polygon(geom, hover=hover, popup=popup, stroke=stroke, fill=fill, popup_style=popup_style)
+            self.add_polygon(geom, tooltip=hover, popup=popup, stroke=stroke, fill=fill, popup_style=popup_style)
         elif isinstance(geom, MultiPolygon):
             self.add_multipolygon(geom, hover=hover, popup=popup, stroke=stroke, fill=fill, popup_style=popup_style)
         elif isinstance(geom, MultiLineString):
@@ -1374,7 +1445,7 @@ class Map:
         vmin, vmax : float | None
             Color scale range. Auto-calculated if ``None``.
         legend_name : str | None
-            Legend label.
+            Legend marker.
         nan_fill_color : str
             Color for missing values.
         nan_fill_opacity : float
@@ -1519,12 +1590,12 @@ class Map:
         labels: list[str] | None = None,
         hovers: list[str] | None = None,
         popups: list[str] | None = None,
-        marker_style: MarkerStyle | dict[str, Any] | None = None,
+        marker_style: dict[str, str] | None = None,
         name: str | None = None,
         min_zoom: int | None = None,
         popup_style: PopupStyle | dict[str, Any] | None = None,
-        text_labels: list[str] | None = None,
-        label_style: LabelStyle | dict[str, Any] | None = None,
+        captions: list[str] | None = None,
+        caption_style: dict[str, str] | None = None,
     ) -> Self:
         """Add clustered markers that group at low zoom.
 
@@ -1533,34 +1604,35 @@ class Map:
         points : list[Point]
             Shapely Points.
         labels : list[str] | None
-            Per-point emoji/text labels.
+            Per-location marker content (icon names or emoji/text).
         hovers : list[str] | None
-            Per-point markdown tooltips.
+            Per-location markdown tooltips.
         popups : list[str] | None
-            Per-point markdown popups.
-        marker_style : MarkerStyle | dict[str, Any] | None
-            Default marker appearance. Pass a ``dict`` as shortcut for
-            ``MarkerStyle(**dict)``.
+            Per-location markdown popups.
+        marker_style : dict[str, str] | None
+            CSS property overrides for each marker.  Merged with
+            ``_DEFAULT_ICON_CSS`` or ``_DEFAULT_TEXT_CSS`` depending on
+            the detected marker type.
         name : str | None
             Layer name.
         min_zoom : int | None
             Minimum zoom level at which the cluster is visible.
             ``None`` or ``0`` means always visible.
         popup_style : PopupStyle | dict[str, Any] | None
-            Popup dimensions. Defaults to ``PopupStyle()``.
-        text_labels : list[str] | None
-            Per-point text annotations placed below each marker.
-            Styled via ``label_style``.
-        label_style : LabelStyle | dict[str, Any] | None
-            Style for ``text_labels``.  Defaults to a borderless,
-            transparent-background ``LabelStyle``.  Pass a ``dict``
-            as shortcut for ``LabelStyle(**dict)``.
+            Popup dimensions.  Defaults to ``PopupStyle()``.
+        captions : list[str] | None
+            Per-location text annotations placed below each marker.
+            Styled via ``caption_style``.
+        caption_style : dict[str, str] | None
+            CSS property overrides for ``captions``.  Merged with
+            ``_DEFAULT_MARKER_CAPTION_CSS``.
 
         Returns
         -------
         Map
         """
-        ms = _resolve_style(marker_style, MarkerStyle) or MarkerStyle()
+        css = marker_style or {}
+        cap_css = {**_DEFAULT_MARKER_CAPTION_CSS, **(caption_style or {})}
         cluster = folium.plugins.MarkerCluster(name=name)
 
         for i, point in enumerate(points):
@@ -1571,29 +1643,14 @@ class Map:
             label = labels[i] if labels and i < len(labels) else None
             hover = hovers[i] if hovers and i < len(hovers) else None
             popup = popups[i] if popups and i < len(popups) else None
+            txt = captions[i] if captions and i < len(captions) else None
 
-            emoji = label or ms.emoji
-            ls = _resolve_style(label_style, LabelStyle) or LabelStyle(background_color=None, border=None)
-            txt = text_labels[i] if text_labels and i < len(text_labels) else None
-            label_suffix = _text_label_html(txt, ls) if txt else ""
-
-            if emoji:
-                inner = f'<div style="font-size:{ms.emoji_size}px;text-align:center;">{emoji}</div>'
-                html = f'<div style="text-align:center;">{inner}{label_suffix}</div>'
-                width = max(ms.emoji_size + 10, 100 if txt else 0)
-                height = ms.emoji_size + 10 + (20 if txt else 0)
-                icon = folium.DivIcon(
-                    html=html,
-                    icon_size=(width, height),
-                    icon_anchor=(width // 2, (ms.emoji_size + 10) // 2),
-                )
+            kind = _classify_marker(label) if label else "icon_name"
+            if kind == "emoji":
+                icon = _build_text_marker(label, css, txt, cap_css)
             else:
-                icon = folium.Icon(
-                    icon=ms.icon or "info-sign",
-                    color=ms.marker_color,
-                    icon_color=ms.icon_color,
-                    prefix=ms.prefix,
-                )
+                icon_name = label or "arrow-down"
+                icon = _build_icon_marker(icon_name, css, txt, cap_css)
 
             folium.Marker(
                 location=[lat, lon],
@@ -1601,15 +1658,6 @@ class Map:
                 tooltip=self._make_tooltip(hover),
                 popup=self._make_popup(popup, popup_style),
             ).add_to(cluster)
-
-            # folium.Icon can't embed HTML; add separate label to cluster
-            if txt and not emoji:
-                label_icon = folium.DivIcon(
-                    html=f'<div style="text-align:center;margin-top:10px;">{label_suffix}</div>',
-                    icon_size=(100, 30),
-                    icon_anchor=(50, 0),
-                )
-                folium.Marker(location=[lat, lon], icon=label_icon).add_to(cluster)
 
         cluster.add_to(self._target())
         if min_zoom is not None and min_zoom > 0:
@@ -1627,31 +1675,30 @@ class Map:
 
     def add_text(
         self,
-        location: tuple[float, float] | Point,
+        point: tuple[float, float] | Point,
         text: str,
-        style: LabelStyle | dict[str, Any] | None = None,
+        style: dict[str, str] | None = None,
         hover: str | RawHTML | None = None,
         popup: str | RawHTML | None = None,
         popup_style: PopupStyle | dict[str, Any] | None = None,
         min_zoom: int | None = None,
     ) -> Self:
-        """Add a text label at a location.
+        """Add a text marker at a location.
 
         Parameters
         ----------
-        location : tuple[float, float] | Point
+        point : tuple[float, float] | Point
             ``(lat, lon)`` tuple or Shapely Point ``(lon, lat)``.
         text : str
             Label text.
-        style : LabelStyle | dict[str, Any] | None
-            Text appearance. Pass a ``dict`` as shortcut for
-            ``LabelStyle(**dict)``.
+        style : dict[str, str] | None
+            CSS property overrides.  Merged with ``_DEFAULT_CAPTION_CSS``.
         hover : str | RawHTML | None
             Markdown tooltip, or ``RawHTML`` for pre-formatted HTML.
         popup : str | RawHTML | None
             Markdown popup, or ``RawHTML`` for pre-formatted HTML.
         popup_style : PopupStyle | dict[str, Any] | None
-            Popup dimensions. Defaults to ``PopupStyle()``.
+            Popup dimensions.  Defaults to ``PopupStyle()``.
         min_zoom : int | None
             Minimum zoom level at which the text is visible.
             ``None`` or ``0`` means always visible.
@@ -1660,36 +1707,24 @@ class Map:
         -------
         Map
         """
-        ls = _resolve_style(style, LabelStyle) or LabelStyle()
-        if isinstance(location, Point):
-            loc = cast(Point, self._transform(location))
+        merged = {**_DEFAULT_CAPTION_CSS, "border-radius": "3px", "overflow-wrap": "break-word", **(style or {})}
+        if isinstance(point, Point):
+            loc = cast(Point, self._transform(point))
             lat, lon = loc.y, loc.x
             self._extend_bounds(loc)
         else:
-            lat, lon = location
+            lat, lon = point
             self._bounds.append((lat, lon))
 
-        bg = f"background:{ls.background_color};" if ls.background_color else ""
-        border = f"border:{ls.border};" if ls.border else ""
-        min_height = f"min-height:{ls.min_height}px;" if ls.min_height else ""
-        max_height = f"max-height:{ls.max_height}px;" if ls.max_height else ""
-        min_width = f"min-width:{ls.min_width}px;" if ls.min_width else ""
-        max_width = f"max-width:{ls.max_width}px;" if ls.max_width else ""
-        css = (
-            f"font-size:{ls.font_size}px;font-family:{ls.font_family};"
-            f"color:{ls.font_color};font-weight:{ls.font_weight};"
-            f"padding:{ls.padding};"
-            f"border-radius:3px;"
-            "overflow-wrap:break-word;"
-            f"{bg}{border}{max_height}{min_height}{max_width}{min_width}"
-        )
+        css_str = _css_to_style(merged)
         # Estimate icon size from text length and font size so the anchor
-        # centers the label on the coordinate and Leaflet doesn't render a
+        # centers the marker on the coordinate and Leaflet doesn't render a
         # phantom shadow from a zero-sized container.
-        est_w = max(len(text) * ls.font_size * 0.65 + 16, 20)
-        est_h = ls.font_size + 12
+        fs = int(merged.get("font-size", "12px").replace("px", ""))
+        est_w = max(len(text) * fs * 0.65 + 16, 20)
+        est_h = fs + 12
         icon = folium.DivIcon(
-            html=f'<div style="{css}">{text}</div>',
+            html=f'<div style="{css_str}">{text}</div>',
             icon_size="100%",  # type: ignore[arg-type]  # Let CSS control sizing
             icon_anchor=(int(est_w // 2), int(est_h // 2)),
             class_name="",
@@ -1724,7 +1759,7 @@ class Map:
         color_column: str | None = None,
         stroke: StrokeStyle | None = None,
         fill: FillStyle | None = None,
-        marker_style: MarkerStyle | None = None,
+        marker_style: dict[str, str] | None = None,
         title: str | None = None,
         config: MapConfig | None = None,
         legend_name: str | None = None,
@@ -1736,7 +1771,7 @@ class Map:
         gdf : geopandas.GeoDataFrame
             GeoDataFrame with a geometry column.
         hover_columns : list[str] | None
-            Columns for hover tooltip.
+            Columns for tooltip tooltip.
         popup_columns : list[str] | None
             Columns for click popup.
         label_column : str | None
@@ -1747,14 +1782,14 @@ class Map:
             Default border style.
         fill : FillStyle | None
             Default fill style.
-        marker_style : MarkerStyle | None
-            Default marker style.
+        marker_style : dict[str, str] | None
+            CSS property overrides for location markers.
         title : str | None
             Map title.
         config : MapConfig | None
             Map configuration.
         legend_name : str | None
-            Color scale label.
+            Color scale marker.
 
         Returns
         -------
@@ -1796,7 +1831,7 @@ class Map:
             if geom is None or geom.is_empty:
                 continue
 
-            # Build hover/popup text
+            # Build tooltip/popup text
             hover = None
             if hover_columns:
                 parts = [f"**{c}**: {row[c]}" for c in hover_columns if c in row.index]
@@ -1880,12 +1915,14 @@ class Map:
         Map
         """
         provider = TILE_PROVIDERS.get(name.lower())
+        display_name = name
         if provider and tiles is None:
             tiles = provider["tiles"]
             attribution = attribution or provider.get("attr")
+            display_name = provider.get("name", name)
         folium.TileLayer(
             tiles=tiles or name,
-            name=name,
+            name=display_name,
             attr=attribution,
             overlay=overlay,
         ).add_to(self._map)
