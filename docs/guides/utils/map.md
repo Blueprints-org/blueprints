@@ -243,7 +243,7 @@ m.to_html("hello.html")  # or just m.to_html() to get the HTML string that you c
 print(m.to_html())  # markdown-exec: hide
 ```
 
-That's it. Open `hello.html` and you'll see an interactive OpenStreetMap with in Amsterdam. Hover over
+That's it. Open `hello.html` and you'll see an interactive OpenStreetMap centered in Amsterdam. Hover over
 it, and you get a bold "Amsterdam" tooltip.
 
 Let's walk through what happened:
