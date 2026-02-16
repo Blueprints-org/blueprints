@@ -19,6 +19,7 @@ import asyncio
 import base64
 import io
 import json
+import math
 import re
 import shutil
 import tempfile
@@ -1857,7 +1858,7 @@ class Map:
             cur_fill, cur_stroke = fill, stroke
             if colormap and color_column and color_column in row.index:
                 val = row[color_column]
-                if val is not None and not isinstance(val, float):
+                if val is not None and not (isinstance(val, float) and math.isnan(val)):
                     c = colormap(float(val))
                     cur_fill = FillStyle(color=c, opacity=(fill or FillStyle()).opacity)
                     cur_stroke = StrokeStyle(
