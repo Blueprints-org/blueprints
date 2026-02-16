@@ -574,10 +574,10 @@ def _capture_screenshot(
     bytes
         PNG image bytes.
     """
+    _check_selenium()
+
     from selenium import webdriver  # noqa: PLC0415
     from selenium.webdriver.chrome.options import Options  # noqa: PLC0415
-
-    _check_selenium()
 
     options = Options()
     options.add_argument("--headless")
