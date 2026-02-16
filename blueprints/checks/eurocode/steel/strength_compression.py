@@ -1,4 +1,4 @@
-"""Module for checking compression force resistance of steel cross-sections."""
+"""Module for checking compression force resistance of steel cross-sections based on EN 1993-1-1:2005 art. 6.2.4."""
 
 from dataclasses import dataclass
 
@@ -18,20 +18,21 @@ from blueprints.utils.report import Report
 @dataclass(frozen=True)
 class CheckStrengthCompressionClass123:
     """Class to perform compression force resistance check for steel cross-sections,
-        for cross-section class 1, 2, and 3, based on EN 1993-1-1:2005 art. 6.2.4.
+    for cross-section class 1, 2, and 3, based on EN 1993-1-1:2005 art. 6.2.4.
 
-        Coordinate System:
-
-        z (vertical, usually strong axis)
-            ↑
-            |     x (longitudinal beam direction, into screen)
-            |    ↗
-            |   /
-            |  /
-            | /
-            |/
-      ←-----O
-       y (horizontal/side, usually weak axis)
+    Coordinate System:
+    ```
+    z (vertical, usually strong axis)
+        ↑
+        |     x (longitudinal beam direction, into screen)
+        |    ↗
+        |   /
+        |  /
+        | /
+        |/
+    ←-----O
+    y (horizontal/side, usually weak axis)
+    ```
 
     Parameters
     ----------
@@ -39,11 +40,13 @@ class CheckStrengthCompressionClass123:
         The steel cross-section to check.
     n : KN, optional
         The applied compressive force (negative value), default is 0 kN.
+        Will raise an error if a positive value is provided, as this check is only for compression.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
 
     Example
     -------
+    ```python
     from blueprints.checks.eurocode.steel.strength_compression import CheckStrengthCompressionClass123
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
@@ -55,7 +58,13 @@ class CheckStrengthCompressionClass123:
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = CheckStrengthCompressionClass123(heb_300_s355, n, gamma_m0=1.0)
     calc.report().to_word("compression_strength.docx", language="nl")
+    ```
 
+    Raises
+    ------
+    ValueError
+        If a positive value is provided for the applied force `n`, as this check is only for compression.
+        The applied force must be negative to indicate compression.
     """
 
     steel_cross_section: SteelCrossSection
@@ -87,10 +96,10 @@ class CheckStrengthCompressionClass123:
         Formula
             The calculated compression force resistance.
         """
-        a = self.steel_cross_section.profile.section_properties().area
-        assert a is not None, "Cross-sectional area must be defined for the steel profile."
+        area = self.steel_cross_section.profile.section_properties().area
+        assert area is not None, "Cross-sectional area must be defined for the steel profile."
         f_y = self.steel_cross_section.yield_strength
-        return formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
+        return formula_6_10.Form6Dot10NcRdClass1And2And3(a=area, f_y=f_y, gamma_m0=self.gamma_m0)
 
     def compression_strength_unity_check(self) -> Formula:
         """Calculate the unity check for compression strength of the steel cross-section based on the applied compressive
