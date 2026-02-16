@@ -72,6 +72,17 @@ control than static images but don't need the full power of a GIS.
         fill={"color": "blue", "opacity": 0.15},
         popup_style={"width": 300, "height": 180},
     )
+    # Polygon with an interior hole (the hole renders as a cutout)
+    vondelpark = Polygon(
+        [(4.858, 52.353), (4.883, 52.353), (4.883, 52.362), (4.858, 52.362)],  # outer boundary
+        [[(4.865, 52.356), (4.875, 52.356), (4.875, 52.360), (4.865, 52.360)]],  # pond cutout
+    )
+    m.add_polygon(
+        polygon=vondelpark,
+        tooltip="**Vondelpark**\nThe hole is the pond!",
+        stroke={"color": "#2ecc71", "weight": 2},
+        fill={"color": "#2ecc71", "opacity": 0.25},
+    )
     m.add_linestring(
         line=LineString([(4.8852, 52.3702), (4.8910, 52.3663), (4.8932, 52.3631), (4.884, 52.3569)]),
         tooltip="**Walking route**\n*Centraal → Leidseplein*",

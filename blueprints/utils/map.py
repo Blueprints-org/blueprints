@@ -1216,8 +1216,9 @@ class Map:
         s = _resolve_style(stroke, StrokeStyle) or StrokeStyle()
         f = _resolve_style(fill, FillStyle) or FillStyle()
         exterior = [(c[1], c[0]) for c in polygon.exterior.coords]
+        locations: list[list[tuple[float, float]]] = [exterior] + [[(c[1], c[0]) for c in interior.coords] for interior in polygon.interiors]
         folium.Polygon(
-            locations=exterior,
+            locations=locations,
             color=s.color,
             weight=s.weight,
             opacity=s.opacity,
