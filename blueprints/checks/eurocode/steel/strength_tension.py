@@ -1,4 +1,4 @@
-"""Module for checking tension force resistance of steel cross-sections."""
+"""Module for checking tension force resistance of steel cross-sections based on EN 1993-1-1:2005 art. 6.2.3."""
 
 from dataclasses import dataclass
 
