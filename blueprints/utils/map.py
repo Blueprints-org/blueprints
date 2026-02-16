@@ -1450,8 +1450,6 @@ class Map:
             Join key, e.g. ``"feature.properties.id"``.
         values : dict[str, float] | None
             Key -> value mapping. Reads from properties if ``None``.
-        colors : str
-            Colormap name (e.g. ``"YlOrRd"``, ``"Blues"``).
         vmin, vmax : float | None
             Color scale range. Auto-calculated if ``None``.
         legend_name : str | None
