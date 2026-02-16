@@ -749,7 +749,7 @@ def _load_geojson_input(data: dict | str | Path) -> dict:
     if isinstance(data, Path):
         return json.loads(data.read_text("utf-8"))
     # str: try as file path first (only short strings), otherwise parse as JSON
-    if len(data) < 500 and not data.lstrip().startswith("{"):
+    if len(data) < 500 and not data.lstrip().startswith(("{", "[")):
         path = Path(data)
         return json.loads(path.read_text("utf-8")) if path.exists() else json.loads(data)
     return json.loads(data)
