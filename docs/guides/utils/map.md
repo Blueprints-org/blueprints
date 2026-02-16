@@ -45,7 +45,7 @@ control than static images but don't need the full power of a GIS.
         marker="🏛️",
         tooltip="**Royal Palace**",
         popup="**Royal Palace**\nDam Square, Amsterdam\nBuilt: 1665",
-        popup_style={"width": 5000, "height": 120}, # TODO is 'width' working?
+        popup_style={"width": 5000, "height": 120},
     )
     m.add_point(
         point=Point(4.8834, 52.3667),
