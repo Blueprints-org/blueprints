@@ -723,6 +723,38 @@ def _build_text_marker(
 
 
 # ---------------------------------------------------------------------------
+# GeoJSON input loader
+# ---------------------------------------------------------------------------
+
+
+def _load_geojson_input(data: dict | str | Path) -> dict:
+    """Parse a GeoJSON input to a dict.
+
+    Accepts a ``dict`` (returned as-is), a ``Path``, or a ``str`` that is
+    either a file path or a raw JSON string.
+
+    Parameters
+    ----------
+    data : dict | str | Path
+        GeoJSON as dict, JSON string, or file path.
+
+    Returns
+    -------
+    dict
+        Parsed GeoJSON dict.
+    """
+    if isinstance(data, dict):
+        return data
+    if isinstance(data, Path):
+        return json.loads(data.read_text("utf-8"))
+    # str: try as file path first (only short strings), otherwise parse as JSON
+    if len(data) < 500 and not data.lstrip().startswith("{"):
+        path = Path(data)
+        return json.loads(path.read_text("utf-8")) if path.exists() else json.loads(data)
+    return json.loads(data)
+
+
+# ---------------------------------------------------------------------------
 # Main Map class
 # ---------------------------------------------------------------------------
 
@@ -1397,15 +1429,7 @@ class Map:
         -------
         Map
         """
-        if isinstance(data, Path):
-            data = json.loads(data.read_text("utf-8"))
-        elif isinstance(data, str):
-            # Try as file path first (only short strings), otherwise parse as JSON
-            if len(data) < 500 and not data.lstrip().startswith("{"):
-                path = Path(data)
-                data = json.loads(path.read_text("utf-8")) if path.exists() else json.loads(data)
-            else:
-                data = json.loads(data)
+        data = _load_geojson_input(data)
 
         ds = {"color": "#3388ff", "weight": 2, "fillOpacity": 0.2}
         if style:
@@ -1480,15 +1504,7 @@ class Map:
         -------
         Map
         """
-        # Parse data
-        if isinstance(geojson_data, Path):
-            geojson_data = json.loads(geojson_data.read_text("utf-8"))
-        elif isinstance(geojson_data, str):
-            if len(geojson_data) < 500 and not geojson_data.lstrip().startswith("{"):
-                p = Path(geojson_data)
-                geojson_data = json.loads(p.read_text("utf-8")) if p.exists() else json.loads(geojson_data)
-            else:
-                geojson_data = json.loads(geojson_data)
+        geojson_data = _load_geojson_input(geojson_data)
 
         # Extract values if not provided
         if values is None:
