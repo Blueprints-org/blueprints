@@ -394,6 +394,14 @@ class MapConfig:
 # ---------------------------------------------------------------------------
 
 
+def _sanitize_href(url: str) -> str:
+    """Allow only safe URL schemes (http, https, mailto). Returns ``#`` otherwise."""
+    stripped = url.strip()
+    if re.match(r"^https?://", stripped, re.IGNORECASE) or re.match(r"^mailto:", stripped, re.IGNORECASE):
+        return stripped
+    return "#"
+
+
 def _markdown_to_html(md_text: str) -> str:
     """Convert a subset of Markdown to HTML for popups/tooltips.
 
@@ -423,7 +431,7 @@ def _markdown_to_html(md_text: str) -> str:
     text = re.sub(r"`(.+?)`", r"<code>\1</code>", text)
 
     # Links
-    text = re.sub(r"\[(.+?)\]\((.+?)\)", r'<a href="\2" target="_blank">\1</a>', text)
+    text = re.sub(r"\[(.+?)\]\((.+?)\)", lambda m: f'<a href="{_sanitize_href(m.group(2))}" target="_blank">{m.group(1)}</a>', text)
 
     # Lists
     text = re.sub(r"^- (.+)$", r"<li>\1</li>", text, flags=re.MULTILINE)
