@@ -47,7 +47,7 @@ class CheckStrengthCompressionClass123:
     Example
     -------
     ```python
-    from blueprints.checks.eurocode.steel.strength_compression import CheckStrengthCompressionClass123
+    from blueprints.checks import CheckStrengthCompressionClass123
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
