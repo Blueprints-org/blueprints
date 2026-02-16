@@ -535,7 +535,7 @@ def _check_selenium() -> None:
             import chromedriver_autoinstaller  # noqa: PLC0415
 
             chromedriver_autoinstaller.install()
-        except (ImportError, ModuleNotFoundError):
+        except (ImportError, ModuleNotFoundError, ValueError):
             pass  # Will be caught by the chromedriver check below
 
     if not shutil.which("chromedriver"):
