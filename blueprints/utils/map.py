@@ -1499,8 +1499,8 @@ class Map:
         # Build colormap
         colormap = cm.LinearColormap(
             colors=["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"],
-            vmin=vmin or 0,
-            vmax=vmax or 1,
+            vmin=vmin if vmin is not None else 0,
+            vmax=vmax if vmax is not None else 1,
             caption=legend_name or value_column,
         )
 
