@@ -2024,14 +2024,23 @@ class Map:
             "</script>"
         )
 
-    def _get_html(self) -> str:
-        """Render map to HTML string (auto-fits bounds)."""
+    def _ensure_rendered(self) -> None:
+        """Fit bounds and inject zoom JS (idempotent)."""
         if not self._center:
             self._fit_bounds()
         if self._zoom_controlled_markers and not self._zoom_js_injected:
             self._map.get_root().html.add_child(folium.Element(self._generate_zoom_javascript()))  # type: ignore[union-attr]
             self._zoom_js_injected = True
+
+    def _get_html(self) -> str:
+        """Render map to an embeddable HTML string (Jupyter/inline)."""
+        self._ensure_rendered()
         return self._map._repr_html_()
+
+    def _get_standalone_html(self) -> str:
+        """Render map to a full standalone HTML document."""
+        self._ensure_rendered()
+        return self._map.get_root().render()
 
     def to_html(self, path: str | Path | None = None, open_in_browser: bool = False) -> str | Path:
         """Export as standalone HTML.
@@ -2051,12 +2060,10 @@ class Map:
             HTML string when *path* is ``None``, otherwise the resolved
             output :class:`~pathlib.Path`.
         """
-        if not self._center:
-            self._fit_bounds()
         if path is None:
             return self._get_html()
         out = Path(path)
-        self._map.save(str(out))
+        out.write_text(self._get_standalone_html(), encoding="utf-8")
         if open_in_browser:
             webbrowser.open(out.resolve().as_uri())
         return out
