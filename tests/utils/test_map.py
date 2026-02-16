@@ -17,7 +17,11 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import folium
 import pytest
-from geopandas import GeoDataFrame
+
+try:
+    from geopandas import GeoDataFrame
+except ImportError:
+    GeoDataFrame = None  # type: ignore[assignment,misc]
 from shapely import GeometryCollection
 from shapely.geometry import (
     LinearRing,
@@ -50,6 +54,7 @@ from blueprints.utils.map import (
     _detect_and_transform_coords,
     _markdown_to_html,
     _resolve_style,
+    _sanitize_href,
     _transform_geometry,
 )
 
@@ -2392,6 +2397,16 @@ class TestMarkdownToHtml:
         result = _markdown_to_html("Just a simple marker")
         assert result == "Just a simple marker"
 
+    def test_sanitize_href_blocks_unsafe_scheme(self) -> None:
+        """
+        Scenario: Unsafe URL schemes are replaced with '#'.
+
+        Given: A URL with a javascript: scheme
+        When: _sanitize_href is called
+        Then: '#' is returned instead of the unsafe URL
+        """
+        assert _sanitize_href("javascript:alert('xss')") == "#"
+
     def test_make_tooltip_returns_none_for_none(self) -> None:
         """
         Scenario: No tooltip text means no tooltip.
@@ -3065,6 +3080,17 @@ class TestExport:
         # Assert - Then
         assert m._bounds == [], "Bounds should still be empty"
 
+    def test_check_selenium_missing_selenium_raises_import_error(self) -> None:
+        """
+        Scenario: selenium is not installed.
+
+        Given: selenium cannot be imported
+        When: _check_selenium is called
+        Then: An ImportError is raised with install instructions
+        """
+        with patch.dict("sys.modules", {"selenium": None, "selenium.webdriver": None}), pytest.raises(ImportError, match="selenium"):
+            _check_selenium()
+
     def test_check_selenium_missing_chrome_and_chromedriver(self) -> None:
         """
         Scenario: Neither Chrome nor chromedriver is found on PATH.
@@ -3140,11 +3166,11 @@ class TestExport:
         mock_webdriver = MagicMock()
         mock_webdriver.Chrome.return_value = mock_driver
 
-        # Act - When: patch the already-imported module-level references
+        # Act - When: patch the lazy imports inside _capture_screenshot
         with (
             patch("blueprints.utils.map._check_selenium"),
-            patch("blueprints.utils.map.webdriver", mock_webdriver),
-            patch("blueprints.utils.map.Options", mock_options_class),
+            patch("selenium.webdriver.Chrome", mock_webdriver.Chrome),
+            patch("selenium.webdriver.chrome.options.Options", mock_options_class),
         ):
             result = _capture_screenshot(str(html_file), 800, 600, 0.1)
 
@@ -3460,6 +3486,7 @@ class TestMethodChaining:
 # ===================================================================
 
 
+@pytest.mark.skipif(GeoDataFrame is None, reason="geopandas not installed")
 class TestGeoDataFrame:
     """Scenarios for creating maps from GeoPandas GeoDataFrames."""
 

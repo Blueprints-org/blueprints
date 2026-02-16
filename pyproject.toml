@@ -39,9 +39,6 @@ dependencies = [
     "mathml2omml>=0.0.2",
     # Required for working with maps and geospatial data
     "folium>=0.20.0",
-    "geopandas>=1.1.2",
-    "selenium>=4.40.0",
-    "chromedriver-autoinstaller>=0.6.4",
 ]
 
 [project.scripts]
@@ -79,6 +76,10 @@ test = [
     "pytest-sugar>=1.1.1",
     "pytest-xdist==3.8.0",
     "typer>=0.9.0",
+    # Required for testing Map generation
+    "geopandas>=1.1.2",
+    "selenium>=4.40.0",
+    "chromedriver-autoinstaller>=0.6.4",
 ]
 cli = [
     {include-group = "dev"},

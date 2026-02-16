@@ -35,8 +35,6 @@ import folium
 import folium.features
 import folium.plugins
 from pyproj import Transformer
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from shapely.geometry import (
     LinearRing,
     LineString,
@@ -511,6 +509,16 @@ def _check_selenium() -> None:
     RuntimeError
         If Chrome/chromedriver is not found.
     """
+    try:
+        from selenium import webdriver  # noqa: PLC0415, F401
+    except ImportError:
+        raise ImportError(
+            "Image export requires selenium. Install it with:\n  "
+            "pip install selenium chromedriver-autoinstaller\n"
+            "or\n"
+            "uv add selenium chromedriver-autoinstaller"
+        ) from None
+
     chrome_paths = [
         shutil.which("google-chrome"),
         shutil.which("google-chrome-stable"),
@@ -566,6 +574,9 @@ def _capture_screenshot(
     bytes
         PNG image bytes.
     """
+    from selenium import webdriver  # noqa: PLC0415
+    from selenium.webdriver.chrome.options import Options  # noqa: PLC0415
+
     _check_selenium()
 
     options = Options()
@@ -1811,6 +1822,11 @@ class Map:
         ImportError
             If geopandas is not installed.
         """
+        try:
+            import geopandas  # noqa: PLC0415, F401
+        except ImportError:
+            raise ImportError("from_geodataframe() requires geopandas. Install it with:\n  pip install geopandas") from None
+
         # Reproject to WGS84 if needed
         if gdf.crs and str(gdf.crs) != "EPSG:4326":
             gdf = gdf.to_crs("EPSG:4326")

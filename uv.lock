@@ -129,9 +129,7 @@ name = "blue-prints"
 version = "0.6.1"
 source = { editable = "." }
 dependencies = [
-    { name = "chromedriver-autoinstaller" },
     { name = "folium" },
-    { name = "geopandas" },
     { name = "googletrans" },
     { name = "latex2mathml" },
     { name = "mathml2omml" },
@@ -139,12 +137,13 @@ dependencies = [
     { name = "numpy" },
     { name = "python-docx" },
     { name = "sectionproperties" },
-    { name = "selenium" },
     { name = "shapely" },
 ]
 
 [package.dev-dependencies]
 cli = [
+    { name = "chromedriver-autoinstaller" },
+    { name = "geopandas" },
     { name = "icecream" },
     { name = "markdown-exec", extra = ["ansi"] },
     { name = "mkdocs" },
@@ -167,6 +166,7 @@ cli = [
     { name = "pytest-xdist" },
     { name = "rich" },
     { name = "ruff" },
+    { name = "selenium" },
     { name = "ty" },
     { name = "typer" },
     { name = "types-shapely" },
@@ -193,6 +193,8 @@ docs = [
     { name = "pygments" },
 ]
 test = [
+    { name = "chromedriver-autoinstaller" },
+    { name = "geopandas" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-describe" },
@@ -200,14 +202,13 @@ test = [
     { name = "pytest-raises" },
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
+    { name = "selenium" },
     { name = "typer" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "chromedriver-autoinstaller", specifier = ">=0.6.4" },
     { name = "folium", specifier = ">=0.20.0" },
-    { name = "geopandas", specifier = ">=1.1.2" },
     { name = "googletrans", specifier = ">=4.0.2" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
     { name = "mathml2omml", specifier = ">=0.0.2" },
@@ -215,12 +216,13 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.3.5" },
     { name = "python-docx", specifier = ">=1.2.0" },
     { name = "sectionproperties", specifier = ">=3.10.0" },
-    { name = "selenium", specifier = ">=4.40.0" },
     { name = "shapely", specifier = ">=2.1.2" },
 ]
 
 [package.metadata.requires-dev]
 cli = [
+    { name = "chromedriver-autoinstaller", specifier = ">=0.6.4" },
+    { name = "geopandas", specifier = ">=1.1.2" },
     { name = "icecream", specifier = "==2.1.10" },
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
     { name = "mkdocs", specifier = "~=1.6.1" },
@@ -243,6 +245,7 @@ cli = [
     { name = "pytest-xdist", specifier = "==3.8.0" },
     { name = "rich", specifier = ">=13.7.0" },
     { name = "ruff", specifier = "==0.14.10" },
+    { name = "selenium", specifier = ">=4.40.0" },
     { name = "ty", specifier = "==0.0.9" },
     { name = "typer", specifier = ">=0.9.0" },
     { name = "types-shapely", specifier = "==2.1.0.20250917" },
@@ -269,6 +272,8 @@ docs = [
     { name = "pygments", specifier = "~=2.19.1" },
 ]
 test = [
+    { name = "chromedriver-autoinstaller", specifier = ">=0.6.4" },
+    { name = "geopandas", specifier = ">=1.1.2" },
     { name = "pytest", specifier = "==9.0.2" },
     { name = "pytest-cov", specifier = "==7.0.0" },
     { name = "pytest-describe", specifier = "==3.1.0" },
@@ -276,6 +281,7 @@ test = [
     { name = "pytest-raises", specifier = "==0.11" },
     { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
+    { name = "selenium", specifier = ">=4.40.0" },
     { name = "typer", specifier = ">=0.9.0" },
 ]
 
