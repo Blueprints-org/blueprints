@@ -17,6 +17,7 @@ Examples
 
 import asyncio
 import base64
+import copy
 import io
 import json
 import math
@@ -1943,7 +1944,7 @@ class Map:
     # ------------------------------------------------------------------
 
     def __add__(self, other: Self) -> Self:
-        """Merge two GeoMaps. Left map config/title is preserved.
+        """Merge two Maps into a new instance. Left map config/title is preserved.
 
         Parameters
         ----------
@@ -1953,15 +1954,16 @@ class Map:
         Returns
         -------
         Map
-            Combined map (self with other's features).
+            A new map combining both maps' features.
         """
+        result = copy.deepcopy(self)
         for child in other._map._children.values():
-            child.add_to(self._map)
-        self._bounds.extend(other._bounds)
-        self._feature_groups.update(other._feature_groups)
-        self._colormaps.extend(other._colormaps)
-        self._zoom_controlled_markers.extend(other._zoom_controlled_markers)
-        return self
+            child.add_to(result._map)
+        result._bounds.extend(other._bounds)
+        result._feature_groups.update(other._feature_groups)
+        result._colormaps.extend(other._colormaps)
+        result._zoom_controlled_markers.extend(other._zoom_controlled_markers)
+        return result
 
     # ------------------------------------------------------------------
     # Export methods
