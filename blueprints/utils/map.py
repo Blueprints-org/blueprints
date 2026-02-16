@@ -1,4 +1,5 @@
-"""Blueprints Map generator.
+"""Blueprints Map generator. We are using Folium as the underlying mapping library, which provides a Python
+interface to Leaflet.js and OpenStreetMap tiles.
 
 Provides a high-level API for creating interactive OpenStreetMap visualizations
 with support for Shapely geometries, GeoPandas DataFrames, emoji/icon markers,
@@ -2238,9 +2239,16 @@ class Map:
         -------
         bytes | Path
         """
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
-            None, lambda: self.to_image(path=path, width=width, height=height, delay=delay, hide_controls=hide_controls)
+            None,
+            lambda: self.to_image(
+                path=path,
+                width=width,
+                height=height,
+                delay=delay,
+                hide_controls=hide_controls,
+            ),
         )
 
     async def to_svg_async(
@@ -2264,8 +2272,17 @@ class Map:
         -------
         str | Path
         """
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, lambda: self.to_svg(path=path, width=width, height=height, delay=delay, hide_controls=hide_controls))
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None,
+            lambda: self.to_svg(
+                path=path,
+                width=width,
+                height=height,
+                delay=delay,
+                hide_controls=hide_controls,
+            ),
+        )
 
     # ------------------------------------------------------------------
     # Dunder
