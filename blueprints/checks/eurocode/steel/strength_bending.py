@@ -23,17 +23,18 @@ class CheckStrengthBendingClass12:
     for cross-section class 1 and 2 only, based on 1993-1-1:2005 chapter 6.2.5.
 
     Coordinate System:
-
-        z (vertical, usually strong axis)
-            ↑
-            |     x (longitudinal beam direction, into screen)
-            |    ↗
-            |   /
-            |  /
-            | /
-            |/
-      ←-----O
-       y (horizontal/side, usually weak axis)
+    ```
+    z (vertical, usually strong axis)
+        ↑
+        |     x (longitudinal beam direction, into screen)
+        |    ↗
+        |   /
+        |  /
+        | /
+        |/
+    ←-----O
+    y (horizontal/side, usually weak axis)
+    ```
 
     Parameters
     ----------
@@ -48,6 +49,7 @@ class CheckStrengthBendingClass12:
 
     Example
     -------
+    ```python
     from blueprints.checks import CheckStrengthBendingClass12
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
@@ -58,8 +60,15 @@ class CheckStrengthBendingClass12:
     m = 355 * 1.868  # Applied bending moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthBendingClass12(heb_300_s355, m, axis='My', gamma_m0=1.0)
-    calc.report().to_word("bending_moment_strength.docx", language="fy")
+    calc = CheckStrengthBendingClass12(heb_300_s355, m, axis="My", gamma_m0=1.0)
+    calc.report().to_word("bending_moment_strength.docx")
+    ```
+
+    Raises
+    ------
+    ValueError
+        If the provided axis is not 'My' or 'Mz'. The axis parameter must be either 'My' for bending around
+        the y-axis or 'Mz' for bending around the z-axis.
     """
 
     steel_cross_section: SteelCrossSection
@@ -70,8 +79,8 @@ class CheckStrengthBendingClass12:
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""
-        if self.axis not in ("My", "Mz"):
-            raise ValueError("Axis must be 'My' or 'Mz'.")
+        if self.axis.lower() not in ("my", "mz"):
+            raise ValueError(f"Axis must be 'My' or 'Mz'. You provided '{self.axis}'.")
 
     @staticmethod
     def source_docs() -> list[str]:
@@ -95,7 +104,7 @@ class CheckStrengthBendingClass12:
         # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
-        w = float(props.sxx or 0) if self.axis == "My" else float(props.syy or 0)
+        w = float(props.sxx or 0) if self.axis.lower() == "my" else float(props.syy or 0)
 
         f_y = self.steel_cross_section.yield_strength
         return formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)
@@ -121,7 +130,10 @@ class CheckStrengthBendingClass12:
         CheckResult
             True if the bending moment check passes, False otherwise.
         """
-        return CheckResult.from_comparison(provided=abs(self.m) * KNM_TO_NMM, required=float(self.plastic_resistance()))
+        return CheckResult.from_comparison(
+            provided=abs(self.m) * KNM_TO_NMM,
+            required=float(self.plastic_resistance()),
+        )
 
     def report(self, n: int = 2) -> Report:
         """Returns the report for the bending moment check (Class 1 and 2).
@@ -171,17 +183,18 @@ class CheckStrengthBendingClass3:
     for cross-section class 3 only (Eurocode 3), based on 1993-1-1:2005 chapter 6.2.5.
 
     Coordinate System:
-
-        z (vertical, usually strong axis)
-            ↑
-            |     x (longitudinal beam direction, into screen)
-            |    ↗
-            |   /
-            |  /
-            | /
-            |/
-      ←-----O
-       y (horizontal/side, usually weak axis)
+    ```
+    z (vertical, usually strong axis)
+        ↑
+        |     x (longitudinal beam direction, into screen)
+        |    ↗
+        |   /
+        |  /
+        | /
+        |/
+    ←-----O
+    y (horizontal/side, usually weak axis)
+    ```
 
     Parameters
     ----------
@@ -196,6 +209,7 @@ class CheckStrengthBendingClass3:
 
     Example
     -------
+    ```python
     from blueprints.checks import CheckStrengthBendingClass3
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
@@ -206,8 +220,15 @@ class CheckStrengthBendingClass3:
     m = 355 * 1.677  # Applied bending moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthBendingClass3(heb_300_s355, m, axis='My', gamma_m0=1.0)
-    calc.report().to_word("bending_moment_strength.docx", language="de")
+    calc = CheckStrengthBendingClass3(heb_300_s355, m, axis="My", gamma_m0=1.0)
+    calc.report().to_word("bending_moment_strength.docx")
+    ```
+
+    Raises
+    ------
+    ValueError
+        If the provided axis is not 'My' or 'Mz'. The axis parameter must be
+        either 'My' for bending around the y-axis or 'Mz' for bending around the z-axis.
     """
 
     steel_cross_section: SteelCrossSection
@@ -218,8 +239,8 @@ class CheckStrengthBendingClass3:
 
     def __post_init__(self) -> None:
         """Post-initialization to extract section properties."""
-        if self.axis not in ("My", "Mz"):
-            raise ValueError("Axis must be 'My' or 'Mz'.")
+        if self.axis.lower() not in ("my", "mz"):
+            raise ValueError(f"Axis must be 'My' or 'Mz'. You provided '{self.axis}'.")
 
     @staticmethod
     def source_docs() -> list[str]:
@@ -243,7 +264,7 @@ class CheckStrengthBendingClass3:
         # For bending about y, the relevant section modulus is zxx; for bending about z, it is zyy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
-        w = min(float(props.zxx_plus), float(props.zxx_minus)) if self.axis == "My" else min(float(props.zyy_plus), float(props.zyy_minus))  # type: ignore[attr-defined]
+        w = min(float(props.zxx_plus), float(props.zxx_minus)) if self.axis.lower() == "my" else min(float(props.zyy_plus), float(props.zyy_minus))  # type: ignore[attr-defined]
 
         f_y = self.steel_cross_section.yield_strength
         return formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)
@@ -269,7 +290,10 @@ class CheckStrengthBendingClass3:
         CheckResult
             True if the bending moment check passes, False otherwise.
         """
-        return CheckResult.from_comparison(provided=abs(self.m) * KNM_TO_NMM, required=float(self.elastic_resistance()))
+        return CheckResult.from_comparison(
+            provided=abs(self.m) * KNM_TO_NMM,
+            required=float(self.elastic_resistance()),
+        )
 
     def report(self, n: int = 2) -> Report:
         """Returns the report for the bending moment check (Class 3).
