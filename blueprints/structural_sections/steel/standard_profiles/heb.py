@@ -68,6 +68,11 @@ class HEB(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = HEB.HEB200
+        >>> print(isinstance(profile, IProfile))  # True
+        >>>
+        >>> # To iterate over all available HEB profiles:
+        >>> for profile in HEB:
+        >>>     print(isinstance(profile, IProfile))  # True
     """
 
     _factory = IProfile

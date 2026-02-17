@@ -55,6 +55,12 @@ class UNP(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = UNP.UNP200
+        >>> print(isinstance(profile, UNPProfile))  # True
+        >>>
+        >>> # To iterate over all available UNP profiles:
+        >>> for profile in UNP:
+        >>>     print(isinstance(profile, UNPProfile))  # True
+
     """
 
     _factory = UNPProfile

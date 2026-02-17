@@ -68,6 +68,11 @@ class HEA(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = HEA.HEA200
+        >>> print(isinstance(profile, IProfile))  # True
+        >>>
+        >>> # To iterate over all available HEA profiles:
+        >>> for profile in HEA:
+        >>>     print(isinstance(profile, IProfile))  # True
     """
 
     _factory = IProfile

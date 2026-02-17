@@ -172,6 +172,11 @@ class RHS(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = RHS.RHS100x50x4
+        >>> print(isinstance(profile, RHSProfile))  # True
+        >>>
+        >>> # To iterate over all available RHS profiles:
+        >>> for profile in RHS:
+        >>>     print(isinstance(profile, RHSProfile))  # True
     """
 
     _factory = RHSProfile
