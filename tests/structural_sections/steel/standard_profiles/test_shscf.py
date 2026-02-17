@@ -52,3 +52,10 @@ class TestSHSCF:
 
         profile3 = SHSCF.SHSCF200x8
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the SHSCF class yields valid profiles."""
+        for profile in SHSCF:
+            assert isinstance(profile, RHSProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0

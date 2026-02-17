@@ -208,6 +208,11 @@ class SHSCF(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = SHSCF.SHSCF100x6
+        >>> print(isinstance(profile, RHSProfile))  # True
+        >>>
+        >>> # To iterate over all available SHSCF profiles:
+        >>> for profile in SHSCF:
+        ...     print(isinstance(profile, RHSProfile))  # True
     """
 
     _factory = RHSProfile

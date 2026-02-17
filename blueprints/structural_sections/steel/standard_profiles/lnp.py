@@ -140,6 +140,11 @@ class LNP(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = LNP.LNP40x40x4
+        >>> print(isinstance(profile, LNPProfile))  # True
+        >>>
+        >>> # To iterate over all available LNP profiles:
+        >>> for profile in LNP:
+        ...     print(isinstance(profile, LNPProfile))  # True
     """
 
     _factory = LNPProfile
