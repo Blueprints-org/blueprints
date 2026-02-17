@@ -40,3 +40,10 @@ class TestCHS:
 
         profile3 = CHS.CHS1016x20
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the CHS class yields valid profiles."""
+        for profile in CHS:
+            assert isinstance(profile, CHSProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0
