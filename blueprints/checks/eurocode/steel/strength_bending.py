@@ -1,4 +1,4 @@
-"""Module for checking bending moment resistance of steel cross-sections."""
+"""Module for checking bending moment resistance of steel cross-sections according to Eurocode 3 (EN 1993-1-1:2005), chapter 6.2.5."""
 
 from dataclasses import dataclass
 from typing import Literal
@@ -48,9 +48,10 @@ class CheckStrengthBendingClass12:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass12
+    from blueprints.checks import CheckStrengthBendingClass12
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+    from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     heb_300_profile = HEB.HEB300.with_corrosion(0)
@@ -167,7 +168,7 @@ class CheckStrengthBendingClass12:
 @dataclass(frozen=True)
 class CheckStrengthBendingClass3:
     """Class to perform bending moment resistance check for steel cross-sections,
-    for cross-section class 3 only (Eurocode 3).
+    for cross-section class 3 only (Eurocode 3), based on 1993-1-1:2005 chapter 6.2.5.
 
     Coordinate System:
 
@@ -195,9 +196,10 @@ class CheckStrengthBendingClass3:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass3
+    from blueprints.checks import CheckStrengthBendingClass3
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+    from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     heb_300_profile = HEB.HEB300.with_corrosion(0)
