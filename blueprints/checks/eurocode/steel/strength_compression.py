@@ -75,7 +75,9 @@ class CheckStrengthCompressionClass123:
     def __post_init__(self) -> None:
         """Post-initialization to validate input parameters."""
         if self.n > 0:
-            raise ValueError("Input force N (F_x) must be negative for compression check.")
+            raise ValueError(
+                f"Input force N (F_x) must be negative for compression check. You provided n={self.n} kN, which is not valid for this check."
+            )
 
     @staticmethod
     def source_docs() -> list[str]:
