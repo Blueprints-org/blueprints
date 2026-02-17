@@ -1,4 +1,4 @@
-"""Module for checking tension force resistance of steel cross-sections."""
+"""Module for checking tension force resistance of steel cross-sections based on EN 1993-1-1:2005 art. 6.2.3."""
 
 from dataclasses import dataclass
 
@@ -18,7 +18,7 @@ from blueprints.validations import NegativeValueError
 
 @dataclass(frozen=True)
 class CheckStrengthTensionClass1234:
-    """Tension force resistance check for steel cross-sections (class 1,2,3 and 4) based on EN 1993-1-1:2005 art. 6.2.3.
+    """Tension force resistance check for steel cross-sections (class 1, 2, 3 and 4) based on EN 1993-1-1:2005 art. 6.2.3.
 
     Coordinate System:
     ```
