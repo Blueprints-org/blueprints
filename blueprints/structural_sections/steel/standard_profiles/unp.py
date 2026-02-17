@@ -59,7 +59,7 @@ class UNP(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available UNP profiles:
         >>> for profile in UNP:
-        >>>     print(isinstance(profile, UNPProfile))  # True
+        ...     print(isinstance(profile, UNPProfile))  # True
 
     """
 

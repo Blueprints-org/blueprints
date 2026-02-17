@@ -66,7 +66,7 @@ class IPE(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available IPE profiles:
         >>> for profile in IPE:
-        >>>     print(isinstance(profile, IProfile))  # True
+        ...     print(isinstance(profile, IProfile))  # True
     """
 
     _factory = IProfile

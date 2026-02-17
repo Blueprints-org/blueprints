@@ -98,7 +98,7 @@ class Strip(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available Strip profiles:
         >>> for profile in Strip:
-        >>>     print(isinstance(profile, StripProfile))  # True
+        ...     print(isinstance(profile, StripProfile))  # True
     """
 
     _factory = StripProfile

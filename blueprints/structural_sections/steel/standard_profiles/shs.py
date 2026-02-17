@@ -170,7 +170,7 @@ class SHS(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available SHS profiles:
         >>> for profile in SHS:
-        >>>     print(isinstance(profile, RHSProfile))  # True
+        ...     print(isinstance(profile, RHSProfile))  # True
     """
 
     _factory = RHSProfile

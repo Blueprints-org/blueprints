@@ -72,7 +72,7 @@ class HEA(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available HEA profiles:
         >>> for profile in HEA:
-        >>>     print(isinstance(profile, IProfile))  # True
+        ...     print(isinstance(profile, IProfile))  # True
     """
 
     _factory = IProfile

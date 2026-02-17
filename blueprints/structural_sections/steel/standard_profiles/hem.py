@@ -72,7 +72,7 @@ class HEM(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available HEM profiles:
         >>> for profile in HEM:
-        >>>     print(isinstance(profile, IProfile))  # True
+        ...     print(isinstance(profile, IProfile))  # True
     """
 
     _factory = IProfile

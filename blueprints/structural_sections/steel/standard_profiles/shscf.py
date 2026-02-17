@@ -212,7 +212,7 @@ class SHSCF(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available SHSCF profiles:
         >>> for profile in SHSCF:
-        >>>     print(isinstance(profile, RHSProfile))  # True
+        ...     print(isinstance(profile, RHSProfile))  # True
     """
 
     _factory = RHSProfile

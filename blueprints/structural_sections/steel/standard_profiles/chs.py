@@ -295,7 +295,7 @@ class CHS(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available CHS profiles:
         >>> for profile in CHS:
-        >>>     print(isinstance(profile, CHSProfile))  # True
+        ...     print(isinstance(profile, CHSProfile))  # True
     """
 
     _factory = CHSProfile

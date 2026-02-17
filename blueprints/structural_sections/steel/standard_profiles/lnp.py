@@ -144,7 +144,7 @@ class LNP(metaclass=StandardProfileMeta):
         >>>
         >>> # To iterate over all available LNP profiles:
         >>> for profile in LNP:
-        >>>     print(isinstance(profile, LNPProfile))  # True
+        ...     print(isinstance(profile, LNPProfile))  # True
     """
 
     _factory = LNPProfile
