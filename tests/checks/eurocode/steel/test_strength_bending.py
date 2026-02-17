@@ -74,7 +74,7 @@ class TestCheckStrengthBendingClass12:
     def test_invalid_axis(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test ValueError is raised for invalid axis input."""
         with pytest.raises(ValueError):
-            CheckStrengthBendingClass12(heb_steel_cross_section, 100, axis="Mx").calculation_formula()
+            CheckStrengthBendingClass12(heb_steel_cross_section, 100, axis="Mx")
 
     def test_report(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test report output for bending moment check."""
@@ -159,7 +159,7 @@ class TestCheckStrengthBendingClass3:
     def test_invalid_axis(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test ValueError is raised for invalid axis input."""
         with pytest.raises(ValueError):
-            CheckStrengthBendingClass3(heb_steel_cross_section, 100, axis="Mx").calculation_formula()
+            CheckStrengthBendingClass3(heb_steel_cross_section, 100, axis="Mx")
 
     def test_report(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test report output for bending moment check."""
