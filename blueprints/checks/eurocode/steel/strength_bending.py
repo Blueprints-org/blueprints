@@ -1,0 +1,337 @@
+"""Module for checking bending moment resistance of steel cross-sections according to Eurocode 3 (EN 1993-1-1:2005), chapter 6.2.5."""
+
+from dataclasses import dataclass
+from typing import Literal
+
+from blueprints.checks.check_result import CheckResult
+from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
+    formula_6_12,
+    formula_6_13,
+    formula_6_14,
+)
+from blueprints.codes.formula import Formula
+from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
+from blueprints.type_alias import DIMENSIONLESS, KNM
+from blueprints.unit_conversion import KNM_TO_NMM
+from blueprints.utils.report import Report
+
+
+@dataclass(frozen=True)
+class CheckStrengthBendingClass12:
+    """Class to perform bending moment resistance check for steel cross-sections,
+    for cross-section class 1 and 2 only, based on 1993-1-1:2005 chapter 6.2.5.
+
+    Coordinate System:
+    ```
+    z (vertical, usually strong axis)
+        ↑
+        |     x (longitudinal beam direction, into screen)
+        |    ↗
+        |   /
+        |  /
+        | /
+        |/
+    ←-----O
+    y (horizontal/side, usually weak axis)
+    ```
+
+    Parameters
+    ----------
+    steel_cross_section : SteelCrossSection
+        The steel cross-section to check.
+    m : KNM, optional
+        The applied bending moment (positive value), in kNm (default is 0 kNm).
+    axis : str, optional
+        Axis of bending: 'My' (bending around y) or 'Mz' (bending around z). Default is 'My'.
+    gamma_m0 : DIMENSIONLESS, optional
+        Partial safety factor for resistance of cross-sections, default is 1.0.
+
+    Example
+    -------
+    ```python
+    from blueprints.checks import CheckStrengthBendingClass12
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+    from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300.with_corrosion(0)
+    m = 355 * 1.868  # Applied bending moment in kNm
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = CheckStrengthBendingClass12(heb_300_s355, m, axis="My", gamma_m0=1.0)
+    calc.report().to_word("bending_moment_strength.docx")
+    ```
+
+    Raises
+    ------
+    ValueError
+        If the provided axis is not 'My' or 'Mz'. The axis parameter must be either 'My' for bending around
+        the y-axis or 'Mz' for bending around the z-axis.
+    """
+
+    steel_cross_section: SteelCrossSection
+    m: KNM = 0
+    axis: Literal["My", "Mz"] = "My"
+    gamma_m0: DIMENSIONLESS = 1.0
+    name: str = "Bending moment strength check for steel profiles"
+
+    def __post_init__(self) -> None:
+        """Post-initialization to extract section properties."""
+        if self.axis.lower() not in ("my", "mz"):
+            raise ValueError(f"Axis must be 'My' or 'Mz'. You provided '{self.axis}'.")
+
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
+
+        Returns
+        -------
+        list[str]
+        """
+        return [EN_1993_1_1_2005]
+
+    def plastic_resistance(self) -> Formula:
+        """Calculate the plastic bending resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.5(2) - Formula (6.13)).
+
+        Returns
+        -------
+        Formula
+            The calculated plastic bending resistance.
+
+        """
+        # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
+        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
+        props = self.steel_cross_section.profile.section_properties()
+        w = float(props.sxx or 0) if self.axis.lower() == "my" else float(props.syy or 0)
+
+        f_y = self.steel_cross_section.yield_strength
+        return formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)
+
+    def bending_strength_unity_check(self) -> Formula:
+        """Calculate the unity check for bending strength of the steel cross-section based on the applied bending
+        moment and the calculated resistance (EN 1993-1-1:2005 art. 6.2.5(1) - Formula (6.12)).
+
+        Returns
+        -------
+        Formula
+            The calculated unity check for bending strength.
+        """
+        m_ed = abs(self.m) * KNM_TO_NMM
+        m_c_rd = self.plastic_resistance()
+        return formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
+
+    def result(self) -> CheckResult:
+        """Calculate result of bending moment resistance (Class 1 and 2).
+
+        Returns
+        -------
+        CheckResult
+            True if the bending moment check passes, False otherwise.
+        """
+        return CheckResult.from_comparison(
+            provided=abs(self.m) * KNM_TO_NMM,
+            required=float(self.plastic_resistance()),
+        )
+
+    def report(self, n: int = 2) -> Report:
+        """Returns the report for the bending moment check (Class 1 and 2).
+
+        Parameters
+        ----------
+        n : int, optional
+            Number of decimal places for numerical values in the report (default is 2).
+
+        Returns
+        -------
+        Report
+            Report of the bending moment check.
+        """
+        report = Report(f"Check: bending moment steel beam (axis {self.axis})")
+
+        # will not generate report if no bending moment is applied, as the check is not necessary in that case
+        if self.m == 0:
+            report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
+            return report
+
+        # generate report if bending moment is applied
+        report.add_paragraph(
+            rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
+            rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
+        ).add_newline(n=2)
+
+        # resistance
+        report.add_paragraph("The resistance is calculated as follows, using cross-section class 1 or 2:")
+        report.add_formula(self.plastic_resistance(), n=n).add_newline(n=2)
+
+        # unity check
+        report.add_paragraph("The unity check is calculated as follows:")
+        report.add_formula(self.bending_strength_unity_check(), n=n).add_newline(n=2)
+
+        # conclusion
+        if self.result().is_ok:
+            report.add_paragraph("The check for bending moment satisfies the requirements.")
+        else:
+            report.add_paragraph("The check for bending moment does NOT satisfy the requirements.")
+        return report
+
+
+@dataclass(frozen=True)
+class CheckStrengthBendingClass3:
+    """Class to perform bending moment resistance check for steel cross-sections,
+    for cross-section class 3 only (Eurocode 3), based on 1993-1-1:2005 chapter 6.2.5.
+
+    Coordinate System:
+    ```
+    z (vertical, usually strong axis)
+        ↑
+        |     x (longitudinal beam direction, into screen)
+        |    ↗
+        |   /
+        |  /
+        | /
+        |/
+    ←-----O
+    y (horizontal/side, usually weak axis)
+    ```
+
+    Parameters
+    ----------
+    steel_cross_section : SteelCrossSection
+        The steel cross-section to check.
+    m : KNM, optional
+        The applied bending moment (positive value), in kNm (default is 0 kNm).
+    axis : str, optional
+        Axis of bending: 'My' (bending around y) or 'Mz' (bending around z). Default is 'My'.
+    gamma_m0 : DIMENSIONLESS, optional
+        Partial safety factor for resistance of cross-sections, default is 1.0.
+
+    Example
+    -------
+    ```python
+    from blueprints.checks import CheckStrengthBendingClass3
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel.standard_profiles.heb import HEB
+    from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = HEB.HEB300.with_corrosion(0)
+    m = 355 * 1.677  # Applied bending moment in kNm
+
+    heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
+    calc = CheckStrengthBendingClass3(heb_300_s355, m, axis="My", gamma_m0=1.0)
+    calc.report().to_word("bending_moment_strength.docx")
+    ```
+
+    Raises
+    ------
+    ValueError
+        If the provided axis is not 'My' or 'Mz'. The axis parameter must be
+        either 'My' for bending around the y-axis or 'Mz' for bending around the z-axis.
+    """
+
+    steel_cross_section: SteelCrossSection
+    m: KNM = 0
+    axis: Literal["My", "Mz"] = "My"
+    gamma_m0: DIMENSIONLESS = 1.0
+    name: str = "Bending moment strength check for steel profiles (Class 3 only)"
+
+    def __post_init__(self) -> None:
+        """Post-initialization to extract section properties."""
+        if self.axis.lower() not in ("my", "mz"):
+            raise ValueError(f"Axis must be 'My' or 'Mz'. You provided '{self.axis}'.")
+
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
+
+        Returns
+        -------
+        list[str]
+        """
+        return [EN_1993_1_1_2005]
+
+    def elastic_resistance(self) -> Formula:
+        """Calculate the elastic bending resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.5(3) - Formula (6.14)).
+
+        Returns
+        -------
+        Formula
+            The calculated elastic bending resistance.
+
+        """
+        # For bending about y, the relevant section modulus is zxx; for bending about z, it is zyy.
+        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
+        props = self.steel_cross_section.profile.section_properties()
+        w = min(float(props.zxx_plus), float(props.zxx_minus)) if self.axis.lower() == "my" else min(float(props.zyy_plus), float(props.zyy_minus))  # type: ignore[attr-defined]
+
+        f_y = self.steel_cross_section.yield_strength
+        return formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)
+
+    def bending_strength_unity_check(self) -> Formula:
+        """Calculate the unity check for bending strength of the steel cross-section based on the applied bending
+        moment and the calculated resistance (EN 1993-1-1:2005 art. 6.2.5(1) - Formula (6.12)).
+
+        Returns
+        -------
+        Formula
+            The calculated unity check for bending strength.
+        """
+        m_ed = abs(self.m) * KNM_TO_NMM
+        m_c_rd = self.elastic_resistance()
+        return formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
+
+    def result(self) -> CheckResult:
+        """Calculate result of bending moment resistance (Class 3).
+
+        Returns
+        -------
+        CheckResult
+            True if the bending moment check passes, False otherwise.
+        """
+        return CheckResult.from_comparison(
+            provided=abs(self.m) * KNM_TO_NMM,
+            required=float(self.elastic_resistance()),
+        )
+
+    def report(self, n: int = 2) -> Report:
+        """Returns the report for the bending moment check (Class 3).
+
+        Parameters
+        ----------
+        n : int, optional
+            Number of decimal places for numerical values in the report (default is 2).
+
+        Returns
+        -------
+        Report
+            Report of the bending moment check.
+        """
+        report = Report(f"Check: bending moment steel beam (axis {self.axis})")
+
+        # will not generate report if no bending moment is applied, as the check is not necessary in that case
+        if self.m == 0:
+            report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
+            return report
+
+        # generate report if bending moment is applied
+        report.add_paragraph(
+            rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
+            rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis}). "
+        ).add_newline(n=2)
+
+        # resistance
+        report.add_paragraph(r"The resistance is calculated as follows, using cross-section class 3:")
+        report.add_formula(self.elastic_resistance(), n=n).add_newline(n=2)
+
+        # unity check
+        report.add_paragraph("The unity check is calculated as follows:")
+        report.add_formula(self.bending_strength_unity_check(), n=n).add_newline(n=2)
+
+        # conclusion
+        if self.result().is_ok:
+            report.add_paragraph("The check for bending moment satisfies the requirements.")
+        else:
+            report.add_paragraph("The check for bending moment does NOT satisfy the requirements.")
+        return report

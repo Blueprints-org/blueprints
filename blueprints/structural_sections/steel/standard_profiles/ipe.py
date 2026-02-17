@@ -62,6 +62,11 @@ class IPE(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = IPE.IPE200
+        >>> print(isinstance(profile, IProfile))  # True
+        >>>
+        >>> # To iterate over all available IPE profiles:
+        >>> for profile in IPE:
+        ...     print(isinstance(profile, IProfile))  # True
     """
 
     _factory = IProfile
