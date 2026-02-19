@@ -67,6 +67,7 @@ nav:
           - CUR 228: guides/concepts/codes/cur/cur_228/formulas.md
     - Utils:
       - Create reports: guides/utils/report.md
+      - Working with maps: guides/utils/map.md
     - Contribute:
       - guides/contribute/index.md
       - guides/contribute/first-time-contributors.md

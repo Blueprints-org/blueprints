@@ -32,10 +32,13 @@ dependencies = [
     "numpy>=2.3.5",
     "sectionproperties>=3.10.0",
     "shapely>=2.1.2",
+    # Required for Report generation
     "googletrans>=4.0.2",
     "python-docx>=1.2.0",
     "latex2mathml>=3.78.1",
     "mathml2omml>=0.0.2",
+    # Required for working with maps and geospatial data
+    "folium>=0.20.0",
 ]
 
 [project.scripts]
@@ -49,6 +52,7 @@ dev = [
     "pre-commit==4.5.1",
     "types-shapely==2.1.0.20250917",
     "icecream==2.1.10",
+    "rich>=13.7.0",
 ]
 docs = [
     "mkdocs ~= 1.6.1",
@@ -72,11 +76,10 @@ test = [
     "pytest-sugar>=1.1.1",
     "pytest-xdist==3.8.0",
     "typer>=0.9.0",
-    "rich>=13.7.0",
-    "googletrans>=4.0.2", # optional-dependency: translate
-    "python-docx>=1.2.0", # optional-dependency: word
-    "latex2mathml>=3.78.1", # optional-dependency: word
-    "mathml2omml>=0.0.2", # optional-dependency: word
+    # Required for testing Map generation
+    "geopandas>=1.1.2",
+    "selenium>=4.40.0",
+    "chromedriver-autoinstaller>=0.6.4",
 ]
 cli = [
     {include-group = "dev"},
@@ -90,6 +93,7 @@ documentation = "https://blueprints.readthedocs.io"
 repository = "https://github.com/Blueprints-org/blueprints"
 issues = "https://github.com/Blueprints-org/blueprints/issues"
 changelog = "https://github.com/Blueprints-org/blueprints/releases"
+youtube = "https://www.youtube.com/@blueprintsorg"
 
 [tool.uv]
 default-groups = ["dev", "test"]
