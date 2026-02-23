@@ -9,12 +9,13 @@ from typing import Any, ClassVar, Self
 import matplotlib.pyplot as plt
 from sectionproperties.analysis import Section
 from sectionproperties.post.post import SectionProperties
+from sectionproperties.post.stress_post import StressPost
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 from shapely.affinity import rotate, translate
 
-from blueprints.type_alias import DEG, M3_M, MM, MM2
-from blueprints.unit_conversion import M_TO_MM, MM3_TO_M3
+from blueprints.type_alias import DEG, KN, KNM, M3_M, MM, MM2
+from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, M_TO_MM, MM3_TO_M3
 
 
 @dataclass(frozen=True)
@@ -38,6 +39,8 @@ class Profile(ABC):
         default_factory=dict, init=False, repr=False, compare=False, hash=False
     )
     """Cache for section properties to avoid recalculation."""
+    _unit_stress_cache: dict[str, Any] | None = field(default=None, init=False, repr=False, compare=False, hash=False)
+    """Cache for unit stress to avoid recalculation."""
 
     @property
     def mesh_creator(self) -> partial:
@@ -199,6 +202,91 @@ class Profile(ABC):
     def plotter(self) -> Callable[[Any], plt.Figure]:
         """Default plotter function for the profile."""
         raise AttributeError("No plotter is defined.")
+
+    def calculate_stress(self, n: KN = 0, v_y: KN = 0, v_z: KN = 0, m_x: KNM = 0, m_y: KNM = 0, m_z: KNM = 0) -> StressPost:
+        """Calculate the stress distribution for the profile given internal forces.
+
+        # Coordinate System Blueprints:
+        #     z (vertical, usually strong axis)
+        #         ↑
+        #         |     x (longitudinal beam direction, into screen)
+        #         |    ↗
+        #         |   /
+        #         |  /
+        #         | /
+        #         |/
+        #   ←-----O
+        #    y (horizontal/side, usually weak axis)
+
+        Parameters
+        ----------
+        n : KN
+            Axial force [kN], positive for tension, negative for compression. Default is 0 kN (no axial force).
+        v_y : KN
+            Shear force in the y-direction [kN], positive for leftward, negative for rightward shear. Default is 0 kN (no shear force).
+        v_z : KN
+            Shear force in the z-direction [kN], positive for upward, negative for downward shear. Default is 0 kN (no shear force).
+        m_x : KNM
+            Torsional moment [kNm], positive for y to z, negative for z to y. Default is 0 kNm (no torsion).
+        m_y : KNM
+            Bending moment about the y-axis [kNm], positive for z to x, negative for x to z. Default is 0 kNm (no bending moment about y-axis).
+        m_z : KNM
+            Bending moment about the z-axis [kNm], positive for x to y, negative for y to x. Default is 0 kNm (no bending moment about z-axis).
+
+        Returns
+        -------
+        Callable[..., StressPost]
+            A function that calculates the stress distribution when called.
+        """
+        section = self._section()
+        section.calculate_geometric_properties()
+        section.calculate_warping_properties()
+        # Note: The mapping of internal forces to sectionproperties parameters
+        # Blueprints uses x for longitudinal axis, y for horizontal, z for vertical
+        # sectionproperties uses x for horizontal, y for vertical, z for longitudinal
+
+        # Coordinate System Blueprints:                              Coordinate System SectionProperties:
+        #     z (vertical, usually strong axis)                          y (vertical, usually strong axis)
+        #         ↑                                                        ↑
+        #         |     x (longitudinal beam direction, into screen)       |      z (longitudinal beam direction, into screen)
+        #         |    ↗                                                   |    ↗
+        #         |   /                                                    |   /
+        #         |  /                                                     |  /
+        #         | /                                                      | /
+        #         |/                                                       |/
+        #   ←-----O                                                        O------>
+        #    y (horizontal/side, usually weak axis)                      x (horizontal/side, usually weak axis)
+
+        return section.calculate_stress(
+            n=float(n) * KN_TO_N,
+            vx=-float(v_y) * KN_TO_N,
+            vy=float(v_z) * KN_TO_N,
+            mxx=-float(m_y) * KNM_TO_NMM,
+            myy=float(m_z) * KNM_TO_NMM,
+            mzz=float(m_x) * KNM_TO_NMM,
+        )
+
+    def unit_stress(self) -> dict[str, Any]:
+        """Calculate the unit stress distribution for the profile.
+
+        This property is cached, so the calculation is performed only once per instance.
+
+        Returns
+        -------
+        StressPost
+            The unit stress distribution for the profile.
+        """
+        # Check if we already have cached unit stress
+        if self._unit_stress_cache is not None:
+            return self._unit_stress_cache
+
+        # Calculate unit stress
+        result = self.calculate_stress(1, 1, 1, 1, 1, 1).get_stress()[0]
+
+        # Cache the result
+        object.__setattr__(self, "_unit_stress_cache", result)
+
+        return result
 
     def plot(self, plotter: Callable[[Any], plt.Figure] | None = None, *args, **kwargs) -> plt.Figure:
         """Plot the profile. Making use of the standard plotter.
