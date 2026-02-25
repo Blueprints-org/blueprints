@@ -282,7 +282,7 @@ report.to_pdf("report.pdf", cleanup=False)
 
 ## Translate Your Report
 
-Export your report in different languages using the `language` parameter. This works with `to_latex()`, `to_word()`, and `to_pdf()`.
+Export your report in different languages using the `language` parameter. This works with `to_latex()`, `to_word()`, and `to_pdf()`. Note: this feature is slow in a .ipynb notebook environment.
 
 !!! warning "Translation Support"
 
