@@ -119,6 +119,7 @@ class Report:
         equation: str,
         tag: str | None = None,
         inline: bool = False,
+        split_after: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add an equation to the report. For adding Blueprints formulas, use add_formula instead.
 
@@ -130,6 +131,10 @@ class Report:
             Tag to label the equation (e.g., "6.83", "EN 1992-1-1:2004 6.6n", etc.).
         inline : bool, optional
             Whether to add the equation inline (meaning within text) or as a separate equation block. Default is False.
+        split_after: list[tuple[int, str]], optional
+            List of characters to split the equation line on for better readability.
+            e.g. a = b + c = 2 + 3 = 5 with split_after=[(2, "="), (2, "+")] will split after second "=" and second "+"
+            to give: a = b + c = \\ 2 + \\ 3 = 5. Default is None.
 
         Returns
         -------
@@ -145,12 +150,35 @@ class Report:
         >>> report.add_equation(r"\\frac{a}{b}", inline=True)
 
         """
+
+        def _split_equation(eq: str, split_after: list[tuple[int, str]] | None) -> str:
+            if not split_after:
+                return eq
+            eq_mod = eq
+            # Sort by decreasing index so insertion doesn't affect later positions
+            for n, char in sorted(split_after, reverse=True):
+                # Find nth occurrence of char
+                idx = -1
+                count = 0
+                for i, c in enumerate(eq_mod):
+                    if c == char:
+                        count += 1
+                        if count == n:
+                            idx = i
+                            break
+                if idx != -1:
+                    eq_mod = eq_mod[: idx + 1] + r" \\" + eq_mod[idx + 1 :]
+            return eq_mod
+
+        eq_to_use = _split_equation(equation, split_after)
+        multline_vs_equation = "multline" if split_after else "equation"
+
         if inline:
-            self.content += r"\txt{ " + rf"${equation}$" + f"{f' ({tag})' if tag else ''}" + r" }"
+            self.content += r"\txt{ " + rf"${eq_to_use}$" + f"{f' ({tag})' if tag else ''}" + r" }"
         elif tag:
-            self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
+            self.content += rf"\begin{{{multline_vs_equation}}} {eq_to_use} \tag{{{tag}}} \end{{{multline_vs_equation}}}"
         else:
-            self.content += rf"\begin{{equation}} {equation} \notag \end{{equation}}"
+            self.content += rf"\begin{{{multline_vs_equation}}} {eq_to_use} \notag \end{{{multline_vs_equation}}}"
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -165,6 +193,7 @@ class Report:
         include_source: bool = True,
         include_formula_number: bool = True,
         inline: bool = False,
+        split_after: list[tuple[int, str]] | None = None,
     ) -> Self:
         r"""Add a Blueprints formula to the report, for generic equations, use add_equation.
 
@@ -187,6 +216,10 @@ class Report:
             For example: "6.5" or "6.6n".
         inline : bool, optional
             Whether to add the formula inline (meaning within text) or as a separate equation block (default).
+        split_after: list[tuple[int, str]], optional
+            List of characters to split the equation line on for better readability.
+            e.g. a = b + c = 2 + 3 = 5 with split_after=[(2, "="), (2, "+")] will split after second "=" and second "+"
+            to give: a = b + c = \\ 2 + \\ 3 = 5. Default is None.
 
         Returns
         -------
@@ -227,7 +260,7 @@ class Report:
                 tag_parts.append(formula.label)
         tag_str = " ".join(tag_parts).strip()
 
-        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None)
+        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None, split_after=split_after)
 
     def add_heading(self, text: str, level: int = 1) -> Self:
         """Add a heading to the report.
@@ -506,7 +539,7 @@ class Report:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}") + self.content.count(r"\begin{equation}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
@@ -524,7 +557,7 @@ class Report:
         """Return a human-readable representation of the report structure and content."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}") + self.content.count(r"\begin{equation}")
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
