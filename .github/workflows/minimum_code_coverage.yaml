@@ -1,0 +1,34 @@
+# This workflow will make sure that incoming changes via pull requests
+# will not decrease the code coverage to less than 100%.
+
+name: Check code coverage is 100%
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  tests:
+    name: Check code coverage is 100%
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+
+      - name: Install packages
+        run: make ci-install
+
+      - name: Check code coverage is 100%
+        run: make check-coverage

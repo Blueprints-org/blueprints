@@ -1,0 +1,139 @@
+site_name: "Blueprints"
+site_url: !ENV READTHEDOCS_CANONICAL_URL
+repo_url: https://github.com/Blueprints-org/blueprints
+
+extra_css:
+  - assets/stylesheets/extra.css
+  - assets/stylesheets/readthedocs.css
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
+extra_javascript:
+  - assets/javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+  - assets/javascripts/readthedocs.js
+  - assets/javascripts/notebook_examples.js
+
+copyright: "2025 &copy; Blueprints"
+
+theme:
+  name: material
+  logo: assets/images/logo-dark-mode.png
+  favicon: assets/images/favicon.ico
+  custom_dir: docs/_overrides
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4 
+        name: Switch to system preference
+  font: 
+    text: "DM Sans"
+  features:
+    # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/?h=code+blocks
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.footnote.tooltips
+    - content.tabs.link
+    - content.tooltips
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.path
+    - navigation.indexes
+    - toc.follow
+    - navigation.top
+
+    - navigation.footer
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/
+    - search.highlight
+    - search.share
+    - search.suggest
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-header/
+    - announce.dismiss
+  language: en
+
+plugins:
+  - search
+  - open-in-new-tab
+  - markdown-exec # https://pawamoy.github.io/markdown-exec/
+  - gen-files:
+      scripts:
+        - docs/_scripts/generate_reference_pages.py
+        - docs/_scripts/generate_index.py
+        - docs/_scripts/generate_notebook_code.py
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [./blueprints]
+          options:
+            show_source: true
+            merge_init_into_class: true
+            show_signature_annotations: true
+            filters:
+              - "!^_"
+            line_length: 80
+            docstring_style: numpy
+            separate_signature: true
+            show_bases: true
+            show_root_heading: true
+            show_object_full_path: true
+            show_root_full_path: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            signature_crossrefs: true
+            summary:
+              classes: true
+              modules: true
+            unwrap_annotated: true
+            docstring_section_style: list
+            show_if_no_docstring: false
+  - awesome-nav
+  - mkdocs-jupyter:
+      include: ["*.ipynb"]
+      execute: true
+      include_source: True
+      ignore_h1_titles: True
+
+markdown_extensions: 
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.gemoji
+      alt: short
+  - pymdownx.tasklist:
+      custom_checkbox: false
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - abbr
+  - md_in_html
+  - attr_list
+  - pymdownx.snippets:
+      check_paths: true
+      base_path: 
+        - ./README.md
+        - docs
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/blueprints-org
+    - icon: fontawesome/brands/github
+      link: https://github.com/Blueprints-org/blueprints

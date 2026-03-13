@@ -1,0 +1,53 @@
+# See https://docs.astral.sh/uv/guides/package/
+
+name: Test, build and deploy after release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    name: Test and Build Python Release Package with Release Dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+
+      # Run the tests before the linting and formatting checks to ensure that dev dependencies are not required for the tests.
+      - name: Run tests with pytest
+        run: |
+          make test
+
+      - name: Run linting checks with ruff
+        run: make lint
+
+      - name: Run formatting checks with ruff
+        run: make format
+
+      - name: Run type checks with ty
+        run: make typecheck
+
+      - name: Build package
+        run: make build
+
+      - name: Publish distribution to PyPI (https://pypi.org/project/blue-prints)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.BLUEPRINTS_PYPI_API_TOKEN }}

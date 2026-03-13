@@ -1,0 +1,46 @@
+name: 📚 Documentation Issue
+title: "[📚 Documentation Issue]: "
+description: Report issues, inconsistencies, or improvements needed in the documentation
+labels: ['documentation']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: "## 📚 Blueprints Issue Template"
+
+  - type: checkboxes
+    id: preliminary-checks
+    attributes:
+      label: "Preliminary Checks"
+      options:
+        - label: "I have read the relevant section of the documentation."
+        - label: "I have searched the issue tracker for similar documentation issues."
+    validations:
+      required: true
+
+  - type: textarea
+    id: documentation-section
+    attributes:
+      label: "Documentation Section"
+      placeholder: "Please specify which section or page of the documentation this issue is related to."
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: "Issue Description"
+      placeholder: "Explain the issue or suggest improvements. For example, the documentation on setting material properties for the ConcreteMaterial class is unclear."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "I have checked that this issue does not already exist in the issue tracker."
+        - label: "I have read and understood the contribution guidelines."
+    validations:
+      required: true

@@ -1,0 +1,29 @@
+# .pre-commit-config.yaml
+# This file configures the pre-commit hooks that will be run before each commit.
+# See https://pre-commit.com for more information.
+# See https://pre-commit.com/hooks.html for more hooks.
+
+# To use these hooks:
+# 1. Install pre-commit (https://pre-commit.com/#install).
+#    In most cases, this will involve running `pip install pre-commit`.
+# 2. In your terminal, navigate to your repository and run `pre-commit install`.
+#    This will install the hooks.
+# 3. Now, the hooks will automatically run every time you try to make a commit.
+#    If any of the hooks fail, the commit will be aborted.
+# 4. If a hook fails and you see errors, fix them and try to commit again.
+#    The hooks will run again and the commit will only be made if they all pass.
+# 5. If you want to manually run all hooks on all files, run `pre-commit run --all-files`.
+# 6. To update to the latest versions of the hooks, run `pre-commit autoupdate`.
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.4
+    hooks:
+      # Run the linter.
+      - id: ruff-check
+        args: [ --fix ]
+      # Run the formatter.
+      - id: ruff-format
+
+    # As of january 2026, ty does not have an official pre-commit hook.
+    # We will add it here once it is available.

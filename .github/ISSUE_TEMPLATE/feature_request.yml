@@ -1,0 +1,46 @@
+name: '✨ Feature request'
+description: Suggest a new feature or enhancement for Blueprints
+title: "[✨ Feature request]: Add a short title to your request here."
+labels: [ enhancement ]
+
+body:
+  - type: markdown
+    attributes:
+      value: "## Blueprints Feature Request Template"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: "Describe the feature you're suggesting in detail."
+      placeholder: "Implement a ConcreteMaterial class that can store material properties like compressive strength, tensile strength, and elastic modulus. This class should facilitate various calculations and comply with EuroCode standards."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: "Acceptance Criteria"
+      description: "List the conditions that the feature must fulfill to be considered complete."
+      placeholder: "- ConcreteMaterial class should include methods for setting and retrieving properties\n- Should include validation checks for property values based on EuroCode\n- Must be compatible with existing structural analysis code"
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Dependencies"
+      description: "List any dependencies, like third-party libraries or specific hardware, needed for this feature."
+      placeholder: "Requires NumPy >= 1.21.0 for numerical calculations"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "I have checked that this feature does not already exist in the issue tracker."
+        - label: "I have read and understood the contribution guidelines."
+    validations:
+      required: true

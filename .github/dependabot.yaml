@@ -1,0 +1,28 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates
+
+version: 2
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: monthly
+    versioning-strategy: increase
+    groups:
+      dev-dependencies: # name of group
+        patterns:
+          - "ty"
+          - "ruff"
+          - "pre-commit"
+          - "pytest"
+          - "pytest-cov" 
+          - "pytest-describe"
+          - "pytest-pspec"
+          - "pytest-raises"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: monthly

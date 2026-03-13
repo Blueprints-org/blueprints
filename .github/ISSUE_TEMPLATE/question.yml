@@ -1,0 +1,53 @@
+name: '❓ Question'
+title: '[❓ Question]: Add a short title of your question.'
+description: Ask a question about Blueprints
+labels: [ question ]
+
+body:
+  - type: markdown
+    attributes:
+      value: "## Blueprints Question Template"
+
+  - type: checkboxes
+    id: preliminary-checks
+    attributes:
+      label: "Preliminary Checks"
+      options:
+        - label: "I have read the project documentation."
+        - label: "I have searched the issue tracker for similar questions."
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-tried
+    attributes:
+      label: "What Have You Tried?"
+      placeholder: "I tried setting properties using set_compressive_strength method but encountered an error."
+    validations:
+      required: true
+
+  - type: textarea
+    id: question-description
+    attributes:
+      label: "Question Description"
+      placeholder: "I'm trying to understand how to set material properties in the ConcreteMaterial class."
+    validations:
+      required: true
+
+  - type: textarea
+    id: relevant-code
+    attributes:
+      label: "Relevant Code or Steps"
+      placeholder: "Example: concrete = ConcreteMaterial()\nconcrete.set_compressive_strength(40)"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "I have checked that this question does not already exist in the issue tracker or documentation."
+        - label: "I have read and understood the contribution guidelines."
+    validations:
+      required: true
