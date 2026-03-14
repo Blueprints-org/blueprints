@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: cytriangle
+Version: 3.0.2
+Summary: Object-oriented Cython wrapper of Shewchuk's Triangle Library
+License: LGPL 3.0
+License-File: LICENSE
+Keywords: finite-element-analysis,triangular-meshing,mesh,FEA,triangle
+Author: Maryanne Wachter
+Author-email: mclare@utsv.net
+Maintainer: Maryanne Wachter
+Maintainer-email: mclare@utsv.net
+Requires-Python: >=3.11
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: License :: Other/Proprietary License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Scientific/Engineering
+Requires-Dist: numpy (>=2.3.3)
+Project-URL: Homepage, https://github.com/m-clare/cytriangle
+Project-URL: Repository, https://github.com/m-clare/cytriangle
+Description-Content-Type: text/markdown
+
+# CyTriangle
+## A Python Wrapped Triangle Library via Cython
+
+![ci-tests](https://github.com/m-clare/cytriangle/actions/workflows/ci.yaml/badge.svg)
+![code style](https://img.shields.io/badge/code%20style-black-000000.svg)
+![license](https://img.shields.io/github/license/m-clare/cytriangle)
+
+*CyTriangle* is an object-oriented python wrapper around Jonathan Richard Shewchuk's [Triangle](https://www.cs.cmu.edu/~quake/triangle.html) library. From its documentation:
+
+"Triangle generates exact Delaunay triangulations, constrained Delaunay triangulations, conforming Delaunay triangulations, Voronoi diagrams, and high-quality triangular meshes. The latter can be generated with no small or large angles, and are thus suitable for finite element analysis."
+
+*CyTriangle* utilizes Cython to provide an object-oriented interface to Triangle to enable easier inspection and modification of triangle objects.
+

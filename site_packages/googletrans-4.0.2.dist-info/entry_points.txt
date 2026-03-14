@@ -1,0 +1,2 @@
+[console_scripts]
+translate = googletrans:translate
