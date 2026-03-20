@@ -131,7 +131,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
                 },
                 False,
             )
-        
+
         return LatexFormula(
             return_symbol=r"A_v",
             result=f"{self:.{n}f}",
