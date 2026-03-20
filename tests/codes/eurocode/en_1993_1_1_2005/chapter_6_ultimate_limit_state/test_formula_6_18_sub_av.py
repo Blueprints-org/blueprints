@@ -19,8 +19,8 @@ from blueprints.validations import ListsNotSameLengthError, NegativeValueError
 class TestForm6Dot18SubARolledIandHSection:
     """Validation for formula 6.18suba from EN 1993-1-1:2005."""
 
-    def test_evaluation(self) -> None:
-        """Tests the evaluation of the result."""
+    def test_evaluation_flanges_same(self) -> None:
+        """Tests the evaluation of the result when the flanges are the same."""
         a = 10000.0
         b1 = 200.0
         b2 = 200.0
@@ -37,21 +37,21 @@ class TestForm6Dot18SubARolledIandHSection:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_evaluation_non_symmetric(self) -> None:
+    def test_evaluation_flanges_different(self) -> None:
         """Tests the evaluation of the result for a non-symmetric profile."""
         a = 10000.0
-        b1 = 180.0
-        b2 = 200.0
+        b1 = 200.0
+        b2 = 201.0
         hw = 250.0
         r1 = 10.0
-        r2 = 10.0
+        r2 = 11.0
         tf1 = 15.0
-        tf2 = 15.0
+        tf2 = 16.0
         tw = 8.0
         eta = 1.0
 
         formula = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta)
-        manually_calculated_result = 4720.0  # mm^2
+        manually_calculated_result = 4234.0  # mm^2
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
@@ -82,16 +82,15 @@ class TestForm6Dot18SubARolledIandHSection:
         [
             (
                 "complete",
-                r"A_v = \max(A - b_1 \cdot t_{f1} - b_2 \cdot t_{f2} + (t_w + 2 \cdot r_1) \cdot \frac{t_{f1}}{2} + "
-                r"(t_w + 2 \cdot r_2) \cdot \frac{t_{f2}}{2}; \eta \cdot h_w \cdot t_w) = "
-                r"\max(10000.000 - 200.000 \cdot 15.000 - 200.000 \cdot 15.000 + (8.000 + 2 \cdot 10.000) "
-                r"\cdot \frac{15.000}{2} + (8.000 + 2 \cdot 10.000) \cdot \frac{15.000}{2}; 1.000 \cdot 250.000 \cdot 8.000) = 4420.000 \ mm^2",
+                r"A_v = max(A - 2 \cdot b \cdot t_f + (t_w + 2 \cdot r) \cdot t_f; \eta \cdot h_w \cdot t_w) = "
+                r"max(10000.000 - 2 \cdot 200.000 \cdot 15.000 + (8.000 + 2 \cdot 10.000) \cdot 15.000; 1.000 \cdot 250.000 \cdot 8.000) = "
+                r"4420.000 \ mm^2",
             ),
             ("short", r"A_v = 4420.000 \ mm^2"),
         ],
     )
-    def test_latex(self, representation: str, expected: str) -> None:
-        """Test the latex representation of the formula."""
+    def test_latex_flanges_same(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula when the flanges are the same."""
         a = 10000.0
         b1 = 200.0
         b2 = 200.0
@@ -100,6 +99,41 @@ class TestForm6Dot18SubARolledIandHSection:
         r2 = 10.0
         tf1 = 15.0
         tf2 = 15.0
+        tw = 8.0
+        eta = 1.0
+
+        latex = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta).latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"A_v = \max(A - b_1 \cdot t_{f1} - b_2 \cdot t_{f2} + (t_w + 2 \cdot r_1) \cdot \frac{t_{f1}}{2} + "
+                r"(t_w + 2 \cdot r_2) \cdot \frac{t_{f2}}{2}; \eta \cdot h_w \cdot t_w) = "
+                r"\max(10000.000 - 200.000 \cdot 15.000 - 201.000 \cdot 16.000 + (8.000 + 2 \cdot 10.000) "
+                r"\cdot \frac{15.000}{2} + (8.000 + 2 \cdot 11.000) \cdot \frac{16.000}{2}; 1.000 \cdot 250.000 \cdot 8.000) = 4234.000 \ mm^2",
+            ),
+            ("short", r"A_v = 4234.000 \ mm^2"),
+        ],
+    )
+    def test_latex_flanges_different(self, representation: str, expected: str) -> None:
+        """Test the latex representation of the formula when the flanges are different."""
+        a = 10000.0
+        b1 = 200.0
+        b2 = 201.0
+        hw = 250.0
+        r1 = 10.0
+        r2 = 11.0
+        tf1 = 15.0
+        tf2 = 16.0
         tw = 8.0
         eta = 1.0
 
