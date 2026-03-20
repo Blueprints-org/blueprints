@@ -267,13 +267,13 @@ class Profile(ABC):
         )
 
     def unit_stress(self) -> dict[str, Any]:
-            """Calculate the unit stress distribution for the profile.
+        """Calculate the unit stress distribution for the profile.
 
-            Returns
-            -------
-            dict[str, Any]
-                The unit stress distribution for the profile, derived from self.calculate_stress(...).get_stress()[0].
-            """
+        Returns
+        -------
+        dict[str, Any]
+            The unit stress distribution for the profile, derived from self.calculate_stress(...).get_stress()[0].
+        """
         # Check if we already have cached unit stress
         if self._unit_stress_cache is not None:
             return self._unit_stress_cache
