@@ -1,4 +1,4 @@
-"""Module for checking plastic shear force resistance of steel(Eurocode 3)."""
+"""Module for checking shear force resistance of steel (Eurocode 3)."""
 
 from dataclasses import dataclass
 from typing import Literal
@@ -203,7 +203,7 @@ class CheckStrengthShearClass12:
 
 @dataclass(frozen=True)
 class CheckStrengthShearClass34:
-    """Class to perform plastic shear force resistance check for steel cross-section class 3 and 4 (Eurocode 3).
+    """Class to perform elastic shear force resistance check for steel cross-section class 3 and 4 (Eurocode 3).
 
     Coordinate System:
 
