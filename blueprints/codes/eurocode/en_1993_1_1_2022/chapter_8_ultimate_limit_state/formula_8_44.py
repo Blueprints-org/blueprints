@@ -54,21 +54,21 @@ class Form8Dot44MNrdRectangular(Formula):
         _equation: str = r"M_{pl,Rd} \cdot \left[ 1 - \left( \frac{N_{Ed}}{N_{pl,Rd}} \right)^2 \right]"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"M_{pl,Rd}": f"{self.m_pl_rd:.{n}f}",
                 r"N_{Ed}": f"{self.n_ed:.{n}f}",
                 r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"M_{pl,Rd}": rf"{self.m_pl_rd:.{n}f} \ Nmm",
                 r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
                 r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ N",
             },
-            True,
+            unique_symbol_check=True,
         )
         return LatexFormula(
             return_symbol=r"M_{N,Rd}",
