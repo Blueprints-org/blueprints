@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_13 import Form8Dot13UnityCheckTensileStrength
+from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_13 import Form8Dot13UnityCheckTensileStrength
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
