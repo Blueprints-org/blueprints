@@ -26,7 +26,7 @@ class Form8Dot37Rho(Formula):
         ----------
         v_ed : N
             [$V_{Ed}$] Design shear force [$N$].
-        v_c,rd : N
+        v_c_rd : N
             [$V_{pl,Rd}$] Plastic shear resistance, obtained from 8.2.6(2) [$N$].
             Note, see also 8.2.8(4)
         """
