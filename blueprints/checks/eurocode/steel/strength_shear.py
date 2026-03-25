@@ -33,6 +33,10 @@ class CheckStrengthShearClass12:
       ←-----O
        y (horizontal/side, usually weak axis)
 
+    Notes
+    -----
+    Not all profile shapes have been implemented for this check yet. Currently, only I-profiles are supported.
+
     Parameters
     ----------
     steel_cross_section : SteelCrossSection

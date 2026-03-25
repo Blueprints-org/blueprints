@@ -235,11 +235,12 @@ class Profile(ABC):
 
         Returns
         -------
-            StressPost
-                The stress distribution result object for the section under the given loads.
+        StressPost
+            The stress distribution result object for the section under the given loads.
         """
         section = self._section()
         section.calculate_geometric_properties()
+        section.calculate_plastic_properties()
         section.calculate_warping_properties()
         # Note: The mapping of internal forces to sectionproperties parameters
         # Blueprints uses x for longitudinal axis, y for horizontal, z for vertical
@@ -255,7 +256,7 @@ class Profile(ABC):
         #         | /                                                      | /
         #         |/                                                       |/
         #   ←-----O                                                        O------>
-        #    y (horizontal/side, usually weak axis)                      x (horizontal/side, usually weak axis)
+        #    y (horizontal/side, usually weak axis)                     x (horizontal/side, usually weak axis)
 
         return section.calculate_stress(
             n=float(n) * KN_TO_N,
@@ -274,7 +275,7 @@ class Profile(ABC):
         dict[str, Any]
             The unit stress distribution for the profile, derived from self.calculate_stress(...).get_stress()[0].
         """
-        # Check if we already have cached unit stress
+        # Check if unit stress is already cached
         if self._unit_stress_cache is not None:
             return self._unit_stress_cache
 
@@ -291,7 +292,7 @@ class Profile(ABC):
 
         Parameters
         ----------
-        plotter : Callable[Any, plt.Figure] | None
+        plotter : Callable[[Any], plt.Figure] | None
             The plotter function to use. If None, the default Blueprints plotter of the subclass is used.
         *args
             Additional arguments passed to the plotter.
