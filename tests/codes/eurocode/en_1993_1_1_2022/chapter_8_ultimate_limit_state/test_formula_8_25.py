@@ -49,6 +49,11 @@ class TestForm8Dot25ShearStress:
                 r"\tau_{Ed} = \frac{V_{Ed} \cdot S}{I \cdot t} = \frac{1000.000 \cdot 2000.000}{3000.000 \cdot 4.000} = 166.667 \ MPa",
             ),
             ("short", r"\tau_{Ed} = 166.667 \ MPa"),
+            (
+                "complete_with_units",
+                r"\tau_{Ed} = \frac{V_{Ed} \cdot S}{I \cdot t} = "
+                r"\frac{1000.000 \ N \cdot 2000.000 \ mm^3}{3000.000 \ mm^4 \cdot 4.000 \ mm} = 166.667 \ MPa",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -65,6 +70,7 @@ class TestForm8Dot25ShearStress:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."

@@ -68,11 +68,22 @@ class Form8Dot25ShearStress(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
+                r"S": rf"{self.s:.{n}f} \ mm^3",
+                r"I": rf"{self.i:.{n}f} \ mm^4",
+                r" t": rf" {self.t:.{n}f} \ mm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"\tau_{Ed}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="MPa",
         )
