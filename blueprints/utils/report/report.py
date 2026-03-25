@@ -29,6 +29,8 @@ from pathlib import Path
 from typing import Any, Literal, Self
 
 from blueprints.codes.formula import Formula
+from blueprints.utils.language.translate import LatexTranslator
+from blueprints.utils.report._report_to_word import _ReportToWordConverter
 
 
 @dataclass
@@ -71,7 +73,7 @@ class Report:
     >>> print(latex_document)  # prints the complete LaTeX document string, which can be compiled with pdflatex in for example Overleaf.
     """
 
-    title: str | None = None
+    title: str = ""
     content: str = field(default="", init=False)
 
     def add_paragraph(self, text: str, bold: bool = False, italic: bool = False) -> Self:
@@ -148,7 +150,7 @@ class Report:
         elif tag:
             self.content += rf"\begin{{equation}} {equation} \tag{{{tag}}} \end{{equation}}"
         else:
-            self.content += rf"\begin{{equation}} {equation} \end{{equation}}"
+            self.content += rf"\begin{{equation}} {equation} \notag \end{{equation}}"
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -159,6 +161,7 @@ class Report:
         self,
         formula: Formula,
         options: Literal["short", "complete", "complete_with_units"] = "complete",
+        n: int = 2,
         include_source: bool = True,
         include_formula_number: bool = True,
         inline: bool = False,
@@ -174,6 +177,8 @@ class Report:
             short - Minimal representation (symbol = result [unit])
             complete - Complete representation (symbol = equation = numeric_equation = result [unit])
             complete_with_units - Complete representation with units (symbol = equation = numeric_equation_with_units [unit] = result [unit])
+        n : int, optional
+            Number of decimal places for numerical values in the formula (default is 2).
         include_source: bool, optional
             If True, includes the source document in the equation tag. Default is True.
             For example: "EN 1993-1-1:2005" or "EN 1992-1-1:2004".
@@ -199,7 +204,7 @@ class Report:
         >>> print(report.to_latex())
         """
         # Get the desired LaTeX representation from the formula
-        latex = formula.latex()
+        latex = formula.latex(n=n)
 
         # define the equation string based on options
         equation_str: str = ""
@@ -315,7 +320,7 @@ class Report:
         # Build table
         centering_cmd = r"\centering " if centering else ""
         table = (
-            rf"\begin{{table}}[h] {centering_cmd}"
+            rf"\begin{{table}}[H] {centering_cmd}"
             rf"\begin{{tabular}}{{{col_spec}}} "
             rf"\toprule {header_row} \midrule {data_rows} "
             rf"\bottomrule \end{{tabular}} \end{{table}}"
@@ -360,7 +365,7 @@ class Report:
         latex_image_path = image_path.replace("\\", "/")
 
         # Build the figure environment
-        figure_parts = [r"\begin{figure}[h] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
+        figure_parts = [r"\begin{figure}[H] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
 
         # Add optional caption
         if caption:
@@ -458,6 +463,45 @@ class Report:
 
         return self
 
+    def __add__(self, other: "Report") -> "Report":
+        """Combine two reports into a new report.
+
+        The resulting report will have the title of the first (left) report
+        and the combined content of both reports.
+
+        Parameters
+        ----------
+        other : Report
+            The report to add to this one.
+
+        Returns
+        -------
+        Report
+            A new Report with combined content.
+
+        Raises
+        ------
+        TypeError
+            If the other object is not a Report instance.
+
+        Examples
+        --------
+        >>> report1 = Report(title="Part 1")
+        >>> report1.add_heading("Introduction")
+        Report(title="Part 1", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=26)
+        >>> report2 = Report(title="Part 2")
+        >>> report2.add_heading("Conclusion")
+        Report(title="Part 2", sections=1, subsections=0, equations=0, tables=0, figures=0, lists=0, chars=23)
+        >>> combined = report1 + report2
+        >>> combined.title
+        'Part 1'
+        """
+        if not isinstance(other, Report):
+            raise TypeError(f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'")
+        result = Report(title=self.title)
+        result.content = self.content + other.content
+        return result
+
     def __repr__(self) -> str:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
@@ -467,7 +511,7 @@ class Report:
         figures = self.content.count(r"\begin{figure}")
         lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
 
-        title_str = f'title="{self.title}"' if self.title else "title=None"
+        title_str = f'title="{self.title}"'
         stats = (
             f"sections={sections}, subsections={subsections}, "
             f"equations={equations}, tables={tables}, figures={figures}, "
@@ -487,7 +531,7 @@ class Report:
 
         lines = [
             "=" * 60,
-            f"LaTeX Report: {self.title or '(untitled)'}",
+            f"LaTeX Report: {self.title}",
             "=" * 60,
             f"Sections:      {sections}",
             f"Subsections:   {subsections}",
@@ -544,17 +588,16 @@ class Report:
         >>> from pathlib import Path
         >>> report.to_latex(Path("report.tex"))
         """
-        # Use provided title or fall back to instance title
-        doc_title = self.title or ""
-
         # Build the preamble with styling to match Word document converter (pdflatex compatible)
         preamble = (
             r"\documentclass[11pt]{article}" + "\n"
             # Required packages
             r"\usepackage{amsmath}" + "\n"  # Advanced math environments and symbols
             r"\usepackage{booktabs}" + "\n"  # Professional-looking tables with \toprule, \midrule, \bottomrule
+            r"\usepackage{float}" + "\n"  # Improved float handling
             r"\usepackage{geometry}" + "\n"  # Page layout and margins
             r"\usepackage{graphicx}" + "\n"  # Include images and graphics
+            r"\usepackage{icomma}" + "\n"  # Proper comma handling in numbers
             r"\usepackage{setspace}" + "\n"  # Line spacing control
             r"\usepackage{xcolor}" + "\n"  # Color definitions and usage
             r"\usepackage{titlesec}" + "\n"  # Customize section titles
@@ -608,7 +651,7 @@ class Report:
             r"\parindent 0in" + "\n"  # No paragraph indentation
             # Begin document
             r"\begin{document}" + "\n"
-            rf"\title{{{doc_title}}}" + "\n"  # Set document title
+            rf"\title{{{self.title}}}" + "\n"  # Set document title
             r"\date{}" + "\n"  # No date displayed
             r"\maketitle" + "\n"  # Generate the title
         )
@@ -616,8 +659,6 @@ class Report:
         latex = preamble + self.content + r"\end{document}"
         if language != "en":
             # Translate content to the specified language
-            from blueprints.utils.language.translate import LatexTranslator  # noqa: PLC0415
-
             latex = LatexTranslator(original_text=latex, destination_language=language).text
 
         # If path is provided, save to file and return None
@@ -641,8 +682,15 @@ class Report:
         ----------
         path : str | Path | BytesIO | None, optional
             The destination for the Word document:
-            - str or Path: File path where the document will be saved
+            - str or Path: File path where the document will be saved, for example 'report.docx'. Remember to use .docx extension.
             - BytesIO: Buffer to write the document to (in-memory)
+                ```python
+                from io import BytesIO
+
+                buffer = BytesIO()
+                report.to_word(buffer)
+                docx_bytes = buffer.getvalue()
+                ```
             - None: Return the document as bytes (default)
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
@@ -680,10 +728,6 @@ class Report:
         >>> docx_bytes = report.to_word()
         >>> # Can now send as email attachment or stream over HTTP
         """
-        from blueprints.utils._report_to_word import (  # noqa: PLC0415
-            _ReportToWordConverter,
-        )  # imported here as core does not have word module installed by default
-
         latex_content = self.to_latex(language=language)
         converter = _ReportToWordConverter(latex_content)
         if converter.document:

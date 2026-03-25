@@ -22,6 +22,11 @@ class TestIProfile:
         expected_alias = "HEB360"
         assert h_profile.name == expected_alias
 
+    def test_maximum_element_thickness(self, h_profile: IProfile) -> None:
+        """Test the maximum element thickness of the I-profile."""
+        expected_max_thickness = 22.5  # mm
+        assert pytest.approx(h_profile.max_thickness, rel=1e-6) == expected_max_thickness
+
     def test_steel_volume_per_meter(self, h_profile: IProfile) -> None:
         """Test the steel volume per meter."""
         expected_volume = 1.806e-2  # m³/m
@@ -96,9 +101,9 @@ class TestIProfile:
         assert pytest.approx(corroded_profile.total_height, rel=1e-6) == h_profile.total_height - corrosion * 2
         assert pytest.approx(corroded_profile.web_thickness, rel=1e-6) == h_profile.web_thickness - corrosion * 2
 
-        # Check radius values remain unchanged
-        assert corroded_profile.top_radius == h_profile.top_radius
-        assert corroded_profile.bottom_radius == h_profile.bottom_radius
+        # Check radius values are increased by corrosion
+        assert corroded_profile.top_radius == h_profile.top_radius + corrosion
+        assert corroded_profile.bottom_radius == h_profile.bottom_radius + corrosion
 
         # Check name is updated with corrosion info
         expected_name = "HEB360 (corrosion: 2.0 mm)"
