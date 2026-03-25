@@ -61,6 +61,11 @@ class TestForm8Dot31VplTRdIOrHSection:
                 r"\sqrt{1 - \frac{50.000}{1.25 \cdot \left( 355.000 / \sqrt{3} \right) / 1.000}} \cdot 100000.000 = 89712.839 \ N",
             ),
             ("short", r"V_{pl,T,Rd} = 89712.839 \ N"),
+            (
+                "complete_with_units",
+                r"V_{pl,T,Rd} = \sqrt{1 - \frac{\tau_{t,Ed}}{1.25 \cdot \left( f_y / \sqrt{3} \right) / \gamma_{M0}}} \cdot V_{pl,Rd} = "
+                r"\sqrt{1 - \frac{50.000 \ MPa}{1.25 \cdot \left( 355.000 \ MPa / \sqrt{3} \right) / 1.000}} \cdot 100000.000 \ N = 89712.839 \ N",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -78,6 +83,7 @@ class TestForm8Dot31VplTRdIOrHSection:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
