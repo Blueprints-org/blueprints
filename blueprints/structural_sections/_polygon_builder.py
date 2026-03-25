@@ -161,7 +161,7 @@ class PolygonBuilder:
             # A zero sweep or radius does not change the geometry; simply return the builder.
             return self
 
-        if radius < 0:  # ty:ignore[unsupported-operator]
+        if radius < 0:
             raise NegativeValueError(value_name="radius", value=radius)
 
         if max_segment_angle <= 0:
