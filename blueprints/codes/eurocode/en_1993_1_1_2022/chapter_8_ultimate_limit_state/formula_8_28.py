@@ -54,11 +54,20 @@ class Form8Dot28TotalTorsionalMoment(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"T_{t,Ed}": rf"{self.t_t_ed:.{n}f} \ Nmm",
+                r"T_{w,Ed}": rf"{self.t_w_ed:.{n}f} \ Nmm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"T_{Ed}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="Nmm",
         )

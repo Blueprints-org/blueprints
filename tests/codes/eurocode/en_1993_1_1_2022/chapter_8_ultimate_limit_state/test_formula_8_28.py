@@ -43,6 +43,10 @@ class TestForm8Dot28TotalTorsionalMoment:
                 r"T_{Ed} = T_{t,Ed} + T_{w,Ed} = 500.000 + 300.000 = 800.000 \ Nmm",
             ),
             ("short", r"T_{Ed} = 800.000 \ Nmm"),
+            (
+                "complete_with_units",
+                r"T_{Ed} = T_{t,Ed} + T_{w,Ed} = 500.000 \ Nmm + 300.000 \ Nmm = 800.000 \ Nmm",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -57,6 +61,7 @@ class TestForm8Dot28TotalTorsionalMoment:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
