@@ -48,19 +48,19 @@ class Form8Dot28TotalTorsionalMoment(Formula):
         _equation: str = r"T_{t,Ed} + T_{w,Ed}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"T_{t,Ed}": f"{self.t_t_ed:.{n}f}",
                 r"T_{w,Ed}": f"{self.t_w_ed:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"T_{t,Ed}": rf"{self.t_t_ed:.{n}f} \ Nmm",
                 r"T_{w,Ed}": rf"{self.t_w_ed:.{n}f} \ Nmm",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"T_{Ed}",
