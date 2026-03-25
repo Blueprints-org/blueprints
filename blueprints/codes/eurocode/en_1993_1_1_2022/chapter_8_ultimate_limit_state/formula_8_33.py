@@ -1,19 +1,19 @@
-"""Formula 8.31 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.33 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot31VplTRdIOrHSection(Formula):
-    r"""Class representing formula 8.31 for the calculation of [$V_{pl,T,Rd}$]."""
+class Form8Dot33VplTRdHollowSection(Formula):
+    r"""Class representing formula 8.33 for the calculation of [$V_{pl,T,Rd}$]."""
 
-    label = "8.31"
-    source_document = EN_1993_1_1_2025
+    label = "8.33"
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -22,16 +22,16 @@ class Form8Dot31VplTRdIOrHSection(Formula):
         gamma_m0: DIMENSIONLESS,
         v_pl_rd: N,
     ) -> None:
-        r"""[$V_{pl,T,Rd}$] Calculation of the design plastic shear resistance for I or H sections [$N$].
+        r"""[$V_{pl,T,Rd}$] Calculation of the design plastic shear resistance for structural hollow sections [$N$].
 
-        EN 1993-1-1:2025 art.8.2.7(9) - Formula (8.31)
+        EN 1993-1-1:2022 art.8.2.7(9) - Formula (8.33)
 
         Parameters
         ----------
         tau_t_ed : MPA
             [$\tau_{Ed}$] Design shear stress due to St. Venant torsion [$MPa$].
         f_y : MPA
-            [$f_y$] Yield strength of the material [$MPA$].
+            [$f_y$] Yield strength of the material [$MPa$].
         gamma_m0 : DIMENSIONLESS
             [$\gamma_{M0}$] Partial safety factor for resistance of cross-sections.
         v_pl_rd : N
@@ -51,15 +51,14 @@ class Form8Dot31VplTRdIOrHSection(Formula):
         v_pl_rd: N,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(tau_t_ed=tau_t_ed, v_pl_rd=v_pl_rd)
         raise_if_less_or_equal_to_zero(gamma_m0=gamma_m0, f_y=f_y)
-        under_root = 1 - (tau_t_ed / (1.25 * (f_y / np.sqrt(3)) / gamma_m0))
-        raise_if_negative(tau_t_ed=tau_t_ed, v_pl_rd=v_pl_rd, under_root=under_root)
 
-        return np.sqrt(1 - (tau_t_ed / (1.25 * (f_y / np.sqrt(3)) / gamma_m0))) * v_pl_rd
+        return (1 - tau_t_ed / ((f_y / np.sqrt(3)) / gamma_m0)) * v_pl_rd
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 8.31."""
-        _equation: str = r"\sqrt{1 - \frac{\tau_{t,Ed}}{1.25 \cdot \left( f_y / \sqrt{3} \right) / \gamma_{M0}}} \cdot V_{pl,Rd}"
+        """Returns LatexFormula object for formula 8.33."""
+        _equation: str = r"\left (1 - \frac{\tau_{t,Ed}}{\left( f_y / \sqrt{3} \right) / \gamma_{M0}} \right) \cdot V_{pl,Rd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
