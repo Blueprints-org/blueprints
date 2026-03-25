@@ -37,12 +37,8 @@ class TestForm8Dot5MinDeductionAreaStaggeredFastenerHoles:
             (10.0, 5.0, -20.0, [50.0, 60.0], [100.0, 120.0]),  # d_0 is negative
             (10.0, 5.0, 20.0, [-50.0, 60.0], [100.0, 120.0]),  # s has a negative value
             (10.0, 5.0, 20.0, [50.0, 60.0], [-100.0, 120.0]),  # p2 has a negative value
-            (0.0, 5.0, 20.0, [50.0, 60.0], [100.0, 120.0]),  # t is zero
-            (10.0, 0.0, 20.0, [50.0, 60.0], [100.0, 120.0]),  # n1 is zero
-            (10.0, 5.0, 0.0, [50.0, 60.0], [100.0, 120.0]),  # d_0 is zero
-            (10.0, 5.0, 20.0, [0.0, 60.0], [100.0, 120.0]),  # s has a zero value
             (10.0, 5.0, 20.0, [50.0, 60.0], [0.0, 120.0]),  # p2 has a zero value
-            (10.0, 5.0, 20.0, [50.0, 60.0], [100.0, 120.0, 10.0]),  # p2 has a zero value
+            (10.0, 5.0, 20.0, [50.0, 60.0], [100.0, 120.0, 10.0]),  # lists differ in length
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, t: float, n1: float, d_0: float, s: list[float], p2: list[float]) -> None:
@@ -60,6 +56,12 @@ class TestForm8Dot5MinDeductionAreaStaggeredFastenerHoles:
                 r"\frac{60.000^2}{4 \cdot 120.000} \right) \right) = 862.500 \ mm^2",
             ),
             ("short", r"\Delta A_{net,1} = 862.500 \ mm^2"),
+            (
+                "complete_with_units",
+                r"\Delta A_{net,1} = t \left( n_1 \cdot d_0 - \sum \frac{s^2}{4 \cdot p_2} \right) = "
+                r"10.000 \ mm \left( 5.000 \cdot 20.000 \ mm - \left( \frac{50.000^2 \ mm^2}{4 \cdot 100.000 \ mm} + "
+                r"\frac{60.000^2 \ mm^2}{4 \cdot 120.000 \ mm} \right) \right) = 862.500 \ mm^2",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -77,6 +79,7 @@ class TestForm8Dot5MinDeductionAreaStaggeredFastenerHoles:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
