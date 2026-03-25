@@ -291,6 +291,11 @@ class CHS(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = CHS.CHS21_3x2_3
+        >>> print(isinstance(profile, CHSProfile))  # True
+        >>>
+        >>> # To iterate over all available CHS profiles:
+        >>> for profile in CHS:
+        ...     print(isinstance(profile, CHSProfile))  # True
     """
 
     _factory = CHSProfile
