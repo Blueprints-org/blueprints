@@ -45,6 +45,8 @@ class Form8Dot17CheckCompressionForce(ComparisonFormula):
     def _evaluate_lhs(
         n_ed: N,
         n_c_rd: N,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the left-hand side of the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(n_c_rd=n_c_rd)
@@ -59,7 +61,7 @@ class Form8Dot17CheckCompressionForce(ComparisonFormula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.17."""
-        _equation: str = r"\left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right)"
+        _equation: str = r"\frac{N_{Ed}}{N_{c,Rd}} \leq 1.0"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
             replacements={
@@ -68,11 +70,22 @@ class Form8Dot17CheckCompressionForce(ComparisonFormula):
             },
             unique_symbol_check=False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            template=_equation,
+            replacements={
+                "N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                "N_{c,Rd}": rf"{self.n_c_rd:.{n}f} \ N",
+            },
+            unique_symbol_check=False,
+        )
+        _intermediate_result: str = rf"\left( {self.lhs:.{n}f} \leq 1.0 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
-            result="OK" if self.__bool__() else "\\text{Not OK}",
+            result="OK" if bool(self) else r"\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
-            comparison_operator_label="\\to",
+            numeric_equation_with_units=_numeric_equation_with_units,
+            comparison_operator_label=r"\to",
             unit="",
         )

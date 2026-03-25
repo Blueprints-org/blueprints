@@ -41,10 +41,13 @@ class TestForm8Dot17CheckCompressionForce:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{N_{Ed}}{N_{c,Rd}} \leq 1 \right) \to "
-                r"\left( \frac{100.000}{150.000} \leq 1 \right) \to OK",
+                r"CHECK \to \frac{N_{Ed}}{N_{c,Rd}} \leq 1.0 \to \frac{100.000}{150.000} \leq 1.0 \to \left( 0.667 \leq 1.0 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),
+            (
+                "complete_with_units",
+                r"CHECK \to \frac{N_{Ed}}{N_{c,Rd}} \leq 1.0 \to \frac{100.000 \ N}{150.000 \ N} \leq 1.0 \to \left( 0.667 \leq 1.0 \right) \to OK",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -59,6 +62,31 @@ class TestForm8Dot17CheckCompressionForce:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to \frac{N_{Ed}}{N_{c,Rd}} \leq 1.0 \to \frac{200.000}{150.000} "
+                r"\leq 1.0 \to \left( 1.333 \leq 1.0 \right) \to \text{Not OK}",
+            ),
+        ],
+    )
+    def test_latex_exceeds_unity(self, representation: str, expected: str) -> None:
+        """Test the latex representation when the unity check fails."""
+        # Example values — UC = 200/150 = 1.333 > 1.0
+        n_ed = 200.0
+        n_c_rd = 150.0
+
+        latex = Form8Dot17CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd).latex()
+
+        actual = {
+            "complete": latex.complete,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
