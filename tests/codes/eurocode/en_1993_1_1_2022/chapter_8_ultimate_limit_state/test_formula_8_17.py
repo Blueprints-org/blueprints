@@ -1,13 +1,13 @@
-"""Testing formula 8.17 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+"""Testing formula 8.17 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_17 import Form8Dot17CheckCompressionForce
+from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_17 import Form8Dot17CheckCompressionForce
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot17CheckCompressionForce:
-    """Validation for formula 8.17 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.17 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

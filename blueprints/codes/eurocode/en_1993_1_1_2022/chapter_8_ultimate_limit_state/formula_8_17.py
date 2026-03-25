@@ -1,9 +1,9 @@
-"""Formula 8.17 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.17 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
 import operator
 from collections.abc import Callable
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
@@ -14,7 +14,7 @@ class Form8Dot17CheckCompressionForce(ComparisonFormula):
     r"""Class representing formula 8.17 for the test of the compression force."""
 
     label = "8.17"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -23,7 +23,7 @@ class Form8Dot17CheckCompressionForce(ComparisonFormula):
     ) -> None:
         r"""Check the compression force.
 
-        EN 1993-1-1:2025 art.8.2.4(1) - Formula (8.17)
+        EN 1993-1-1:2022 art.8.2.4(1) - Formula (8.17)
 
         Parameters
         ----------

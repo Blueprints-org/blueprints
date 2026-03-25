@@ -1,6 +1,6 @@
-"""Formula 8.19 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.19 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import NMM
@@ -11,7 +11,7 @@ class Form8Dot19CheckBendingMoment(Formula):
     r"""Class representing formula 8.19 for the test of the bending moment."""
 
     label = "8.19"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -20,7 +20,7 @@ class Form8Dot19CheckBendingMoment(Formula):
     ) -> None:
         r"""Check the bending moment.
 
-        EN 1993-1-1:2025 art.8.2.5(1) - Formula (8.19)
+        EN 1993-1-1:2022 art.8.2.5(1) - Formula (8.19)
 
         Parameters
         ----------
