@@ -61,19 +61,30 @@ class Form8Dot33VplTRdHollowSection(Formula):
         _equation: str = r"\left (1 - \frac{\tau_{t,Ed}}{\left( f_y / \sqrt{3} \right) / \gamma_{M0}} \right) \cdot V_{pl,Rd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"\tau_{t,Ed}": f"{self.tau_t_ed:.{n}f}",
                 r"f_y": f"{self.f_y:.{n}f}",
                 r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
                 r"V_{pl,Rd}": f"{self.v_pl_rd:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            replacements={
+                r"\tau_{t,Ed}": rf"{self.tau_t_ed:.{n}f} \ MPa",
+                r"f_y": rf"{self.f_y:.{n}f} \ MPa",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
+                r"V_{pl,Rd}": rf"{self.v_pl_rd:.{n}f} \ N",
+            },
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"V_{pl,T,Rd}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="N",
         )
