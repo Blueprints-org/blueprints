@@ -17,6 +17,10 @@
 ```python
 """Formula 5.17 from EN 1993-5:2007: Chapter 5 - Ultimate limit state."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
@@ -50,6 +54,14 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         super().__init__()
         self.n_ed = n_ed
         self.n_pl_rd = n_pl_rd
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Returns the comparison operator for this formula.
+
+        LHS should be less than or equal to RHS.
+        """
+        return operator.le
 
     @staticmethod
     def _evaluate_lhs(
