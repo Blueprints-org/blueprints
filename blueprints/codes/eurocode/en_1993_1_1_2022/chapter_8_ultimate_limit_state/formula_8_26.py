@@ -57,18 +57,28 @@ class Form8Dot26ShearStressIOrHSection(Formula):
         _equation: str = r"\frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"V_{Ed}": f"{self.v_ed:.{n}f}",
                 r"A_w": f"{self.a_w:.{n}f}",
                 r"A_f": f"{self.a_f:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            replacements={
+                r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
+                r"A_w": rf"{self.a_w:.{n}f} \ mm^2",
+                r"A_f": rf"{self.a_f:.{n}f} \ mm^2",
+            },
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"\tau_{Ed}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="MPa",
         )

@@ -68,6 +68,12 @@ class TestForm8Dot26ShearStressIOrHSection:
                 r"\frac{1000.000}{200.000} \text{ if } 150.000 / 200.000 \ge 0.6 = 5.000 \ MPa",
             ),
             ("short", r"\tau_{Ed} = 5.000 \ MPa"),
+            (
+                "complete_with_units",
+                r"\tau_{Ed} = \frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6 = "
+                r"\frac{1000.000 \ N}{200.000 \ mm^2} \text{ if } 150.000 \ mm^2 / 200.000 \ mm^2 "
+                r"\ge 0.6 = 5.000 \ MPa",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -83,6 +89,7 @@ class TestForm8Dot26ShearStressIOrHSection:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
