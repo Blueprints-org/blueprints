@@ -61,3 +61,8 @@ class TestCircularProfile:
         assert pytest.approx(transformed_profile.centroid.x, rel=1e-6) == circular_profile.centroid.x + 10.0
         assert pytest.approx(transformed_profile.centroid.y, rel=1e-6) == circular_profile.centroid.y + 20.0
         assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == circular_profile.profile_width
+
+    def test_max_thickness(self, circular_profile: CircularProfile) -> None:
+        """Test the max_thickness property of the CircularProfile class."""
+        expected_max_thickness = 200.0
+        assert circular_profile.max_thickness == pytest.approx(expected=expected_max_thickness, rel=1e-6)

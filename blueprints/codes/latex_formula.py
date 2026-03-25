@@ -15,6 +15,8 @@ class LatexFormula:
         The symbol to return
     result: str
         The result of the formula
+    intermediate_result: str, default ""
+        An intermediate result of the formula
     equation: str, default ""
         The formula with symbols
     numeric_equation: str, default ""
@@ -30,6 +32,7 @@ class LatexFormula:
 
     return_symbol: str
     result: str
+    intermediate_result: str = ""
     equation: str = ""
     numeric_equation: str = ""
     numeric_equation_with_units: str = ""
@@ -43,10 +46,10 @@ class LatexFormula:
         Returns
         -------
         str
-            Return symbol = equation = numeric_equation = result
+            Return symbol = equation = numeric_equation = intermediate_result = result
 
         """
-        all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, f"{self.result}"]
+        all_sub_equations = [self.return_symbol, self.equation, self.numeric_equation, self.intermediate_result, self.result]
         long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
         return long_formula + rf" \ {self.unit}" if self.unit else long_formula
 
@@ -57,13 +60,13 @@ class LatexFormula:
         Returns
         -------
         str
-            Return symbol = equation = numeric_equation_with_units = result
+            Return symbol = equation = numeric_equation_with_units = intermediate_result = result
 
         """
         # If numeric_equation_with_units is not provided, use numeric_equation
         numeric_equation_with_units = self.numeric_equation_with_units or self.numeric_equation
 
-        all_sub_equations = [self.return_symbol, self.equation, numeric_equation_with_units, f"{self.result}"]
+        all_sub_equations = [self.return_symbol, self.equation, numeric_equation_with_units, self.intermediate_result, self.result]
         long_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
         return long_formula + rf" \ {self.unit}" if self.unit else long_formula
 
@@ -77,7 +80,9 @@ class LatexFormula:
             Return symbol = result
 
         """
-        short_formula = f"{self.return_symbol} {self.comparison_operator_label} {self.result}"
+        all_sub_equations = [self.return_symbol, self.result]
+        short_formula = f" {self.comparison_operator_label} ".join([eq for eq in all_sub_equations if eq != ""])
+
         return short_formula + rf" \ {self.unit}" if self.unit else short_formula
 
     def __str__(self) -> str:
