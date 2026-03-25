@@ -46,10 +46,15 @@ class TestForm8Dot27CheckShearBucklingResistance:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \right) \to "
-                r"\left( \frac{500.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \right) \to OK",
+                r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
+                r"\frac{500.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \to \left( 100.000 > 72.000 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),
+            (
+                "complete_with_units",
+                r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
+                r"\frac{500.000 \ mm}{5.000 \ mm} > 72 \cdot \frac{1.000}{1.000} \to \left( 100.000 > 72.000 \right) \to OK",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -66,6 +71,33 @@ class TestForm8Dot27CheckShearBucklingResistance:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
+                r"\frac{350.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \to \left( 70.000 > 72.000 \right) \to \text{Not OK}",
+            ),
+        ],
+    )
+    def test_latex_when_check_fails(self, representation: str, expected: str) -> None:
+        """Test the latex representation when the check fails."""
+        # Example values — h_w/t_w = 70 < 72
+        h_w = 350.0
+        t_w = 5.0
+        epsilon = 1.0
+        eta = 1.0
+
+        latex = Form8Dot27CheckShearBucklingResistance(h_w=h_w, t_w=t_w, epsilon=epsilon, eta=eta).latex()
+
+        actual = {
+            "complete": latex.complete,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
