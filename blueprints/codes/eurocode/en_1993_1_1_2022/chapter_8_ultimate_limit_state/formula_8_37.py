@@ -57,19 +57,19 @@ class Form8Dot37Rho(Formula):
         )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"V_{Ed}": f"{self.v_ed:.{n}f}",
                 r"V_{c,Rd}": f"{self.v_c_rd:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
                 r"V_{c,Rd}": rf"{self.v_c_rd:.{n}f} \ N",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"\rho",
