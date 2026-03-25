@@ -1,4 +1,4 @@
-"""Formula 8.16 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.16 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
@@ -21,7 +21,7 @@ class Form8Dot16NetDesignTensionResistance(Formula):
     ) -> None:
         r"""[$N_{net,Rd}$] Calculation of the design tension resistance [$N$].
 
-        EN 1993-1-1:2025 art.8.2.3(5) - Formula (8.16)
+        EN 1993-1-1:2022 art.8.2.3(5) - Formula (8.16)
 
         Parameters
         ----------
@@ -61,11 +61,21 @@ class Form8Dot16NetDesignTensionResistance(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            replacements={
+                r"A_{net}": rf"{self.a_net:.{n}f} \ mm^2",
+                r"f_y": rf"{self.f_y:.{n}f} \ MPa",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
+            },
+            unique_symbol_check=False,
+        )
         return LatexFormula(
             return_symbol=r"N_{net,Rd}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="N",
         )

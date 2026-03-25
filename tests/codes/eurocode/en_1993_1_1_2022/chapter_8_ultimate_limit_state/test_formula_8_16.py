@@ -1,4 +1,4 @@
-"""Testing formula 8.16 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+"""Testing formula 8.16 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot16NetDesignTensionResistance:
-    """Validation for formula 8.16 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.16 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -47,6 +47,11 @@ class TestForm8Dot16NetDesignTensionResistance:
                 r"\frac{5000.000 \cdot 355.000}{1.000} = 1775000.000 \ N",
             ),
             ("short", r"N_{net,Rd} = 1775000.000 \ N"),
+            (
+                "complete_with_units",
+                r"N_{net,Rd} = \frac{A_{net} \cdot f_y}{\gamma_{M0}} = "
+                r"\frac{5000.000 \ mm^2 \cdot 355.000 \ MPa}{1.000} = 1775000.000 \ N",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -62,6 +67,7 @@ class TestForm8Dot16NetDesignTensionResistance:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
