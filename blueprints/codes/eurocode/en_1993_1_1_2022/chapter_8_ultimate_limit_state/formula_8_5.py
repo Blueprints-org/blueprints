@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2022
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM

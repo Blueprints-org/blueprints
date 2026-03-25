@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_7 import Form8Dot7AdditionalMoment
+from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_7 import Form8Dot7AdditionalMoment
 from blueprints.validations import NegativeValueError
 
 
