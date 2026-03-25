@@ -21,7 +21,10 @@ class Form8Dot7AdditionalMoment(Formula):
         r"""[$\Delta M_{Ed}$] Calculation of the additional moment [$Nmm$].
 
         EN 1993-1-1:2022 art.8.2.2.5(3) - Formula (8.7)
-        Where a class 4 cross section is subjected to an axial compression force, the method given in EN 1993-1-5 should be used to
+
+        Notes
+        -----
+        Where a class 4 cross-section is subjected to an axial compression force, the method given in EN 1993-1-5 should be used to
         determine the possible shift [$e_{N}$] of the centroid of the effective area [$A_{eff}$] relative to the centre of gravity
         of the gross cross-section and the resulting additional moment according to this formula.
 
@@ -61,11 +64,20 @@ class Form8Dot7AdditionalMoment(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                r"e_{N}": rf"{self.e_n:.{n}f} \ mm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"\Delta M_{Ed}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="Nmm",
         )

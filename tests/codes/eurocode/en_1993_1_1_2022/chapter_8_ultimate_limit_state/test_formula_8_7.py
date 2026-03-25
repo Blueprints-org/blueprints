@@ -43,6 +43,10 @@ class TestForm8Dot7AdditionalMoment:
                 r"\Delta M_{Ed} = N_{Ed} \cdot e_{N} = 1000.000 \cdot 50.000 = 50000.000 \ Nmm",
             ),
             ("short", r"\Delta M_{Ed} = 50000.000 \ Nmm"),
+            (
+                "complete_with_units",
+                r"\Delta M_{Ed} = N_{Ed} \cdot e_{N} = 1000.000 \ N \cdot 50.000 \ mm = 50000.000 \ Nmm",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -57,6 +61,7 @@ class TestForm8Dot7AdditionalMoment:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
