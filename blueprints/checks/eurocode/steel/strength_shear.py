@@ -266,7 +266,7 @@ class CheckStrengthShearClass34:
         list[str]
         """
         return [EN_1993_1_1_2005]
-    
+
     def shear_unit_stress(self) -> float:
         """Calculate the unit shear stress in the steel cross-section.
 
