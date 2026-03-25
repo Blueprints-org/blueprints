@@ -41,10 +41,14 @@ class TestForm8Dot19CheckBendingMoment:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to "
-                r"\left( \frac{1000.000}{1500.000} \leq 1 \right) \to OK",
+                r"CHECK \to \frac{M_{Ed}}{M_{c,Rd}} \leq 1.0 \to \frac{1000.000}{1500.000} \leq 1.0 \to \left( 0.667 \leq 1.0 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),
+            (
+                "complete_with_units",
+                r"CHECK \to \frac{M_{Ed}}{M_{c,Rd}} \leq 1.0 \to \frac{1000.000 \ Nmm}{1500.000 \ Nmm} \leq 1.0 "
+                r"\to \left( 0.667 \leq 1.0 \right) \to OK",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -59,6 +63,31 @@ class TestForm8Dot19CheckBendingMoment:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to \frac{M_{Ed}}{M_{c,Rd}} \leq 1.0 \to \frac{2000.000}{1500.000} \leq 1.0 \to "
+                r"\left( 1.333 \leq 1.0 \right) \to \text{Not OK}",
+            ),
+        ],
+    )
+    def test_latex_exceeds_unity(self, representation: str, expected: str) -> None:
+        """Test the latex representation when the unity check fails."""
+        # Example values — UC = 2000/1500 = 1.333 > 1.0
+        m_ed = 2000.0
+        m_c_rd = 1500.0
+
+        latex = Form8Dot19CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd).latex()
+
+        actual = {
+            "complete": latex.complete,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
