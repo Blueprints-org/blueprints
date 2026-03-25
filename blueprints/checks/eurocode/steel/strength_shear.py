@@ -266,6 +266,17 @@ class CheckStrengthShearClass34:
         list[str]
         """
         return [EN_1993_1_1_2005]
+    
+    def shear_unit_stress(self) -> float:
+        """Calculate the unit shear stress in the steel cross-section.
+
+        Returns
+        -------
+        float
+            The unit shear stress in N/mm².
+        """
+        unit_stress = self.steel_cross_section.profile.unit_stress()
+        return float(np.max(np.abs(unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"])))
 
     def shear_stress(self) -> float:
         """Calculate the maximum shear stress in the steel cross-section using elastic theory.
@@ -275,9 +286,8 @@ class CheckStrengthShearClass34:
         float
             The maximum shear stress in N/mm².
         """
-        unit_stress = self.steel_cross_section.profile.unit_stress()
-        unit_sig_zxy = unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"]
-        return float(np.max(np.abs(unit_sig_zxy))) * abs(self.v)
+        unit_stress = self.shear_unit_stress()
+        return unit_stress * abs(self.v)
 
     def elastic_resistance(self) -> float:
         """Calculate the shear force elastic resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.6).
@@ -287,8 +297,8 @@ class CheckStrengthShearClass34:
         float
             The calculated shear force resistance in N.
         """
-        sig_zxy = self.shear_stress()
-        return float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / sig_zxy * abs(self.v) * KN_TO_N)
+        unit_stress = self.shear_unit_stress()
+        return float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / unit_stress * KN_TO_N)
 
     def shear_strength_unity_check(self) -> Formula:
         """Calculate the unity check for shear strength of the steel cross-section (EN 1993-1-1:2005 art. 6.2.6 - Formula (6.19)).
