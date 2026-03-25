@@ -1,6 +1,6 @@
-"""Formula 8.44 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.44 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import NMM, N
@@ -11,7 +11,7 @@ class Form8Dot44MNrdRectangular(Formula):
     r"""Class representing formula 8.44 for the calculation of [$M_{N,Rd}$]."""
 
     label = "8.44"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -21,7 +21,7 @@ class Form8Dot44MNrdRectangular(Formula):
     ) -> None:
         r"""[$M_{N,Rd}$] Calculation of the reduced plastic moment for rectangular solid section without fastener holes [$Nmm$].
 
-        EN 1993-1-1:2025 art.8.2.9.1(3) - Formula (8.44)
+        EN 1993-1-1:2022 art.8.2.9.1(3) - Formula (8.44)
 
         Parameters
         ----------

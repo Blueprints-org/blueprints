@@ -1,6 +1,6 @@
-"""Formula 8.36 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.36 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA
@@ -11,7 +11,7 @@ class Form8Dot36ReducedYieldStrength(Formula):
     r"""Class representing formula 8.36 for the calculation of reduced yield strength."""
 
     label = "8.36"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -20,7 +20,7 @@ class Form8Dot36ReducedYieldStrength(Formula):
     ) -> None:
         r"""[$f_{y,red}$] Calculation of reduced yield strength [$MPa$].
 
-        EN 1993-1-1:2025 art.8.2.8(4) - Formula (8.36)
+        EN 1993-1-1:2022 art.8.2.8(4) - Formula (8.36)
 
         Parameters
         ----------

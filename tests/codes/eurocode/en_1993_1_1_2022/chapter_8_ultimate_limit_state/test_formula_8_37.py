@@ -1,13 +1,13 @@
-"""Testing formula 8.37 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+"""Testing formula 8.37 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_37 import Form8Dot37Rho
+from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_37 import Form8Dot37Rho
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot37Rho:
-    """Validation for formula 8.37 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.37 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
