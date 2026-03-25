@@ -34,7 +34,7 @@ class Form8Dot7AdditionalMoment(Formula):
         e_n : MM
             [$e_{N}$] Shift of the centroid of the effective area relative to the centre of gravity of the gross cross section [$mm$].
             The method given in EN 1993-1-5 should be used to determine the possible shift [$e_{N}$] of the centroid of the effective
-            area [$A_{eff$] relative to the centre of gravity of the gross cross section.
+            area [$A_{eff}$] relative to the centre of gravity of the gross cross section.
         """
         super().__init__()
         self.n_ed = n_ed
