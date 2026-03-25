@@ -32,6 +32,8 @@ There are many ways to contribute to Blueprints. Here are some common ways you c
     ---
     
     Would like that Blueprints does something new, and you have the skills to implement it? Go for it!
+
+    [➡ Read the New feature guideline](new-feature.md)
     
 
 - **Report a Bug**
