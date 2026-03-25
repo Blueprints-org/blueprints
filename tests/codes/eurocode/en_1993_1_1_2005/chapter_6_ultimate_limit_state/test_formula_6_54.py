@@ -18,9 +18,7 @@ class TestForm6Dot54BucklingResistanceOfMembersInBending:
         m_b_rd = 100000.0  # Nmm
 
         # Object to test
-        formula = Form6Dot54BucklingResistanceOfMembersInBending(
-            m_ed=m_ed, m_b_rd=m_b_rd
-        )
+        formula = Form6Dot54BucklingResistanceOfMembersInBending(m_ed=m_ed, m_b_rd=m_b_rd)
 
         # Expected result, manually calculated
         expected_result = True
@@ -36,14 +34,10 @@ class TestForm6Dot54BucklingResistanceOfMembersInBending:
             (-50000.0, 100000.0),  # m_ed is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(
-        self, m_ed: float, m_b_rd: float
-    ) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, m_ed: float, m_b_rd: float) -> None:
         """Test invalid values."""
         with pytest.raises((LessOrEqualToZeroError, NegativeValueError)):
-            Form6Dot54BucklingResistanceOfMembersInBending(
-                m_ed=m_ed, m_b_rd=m_b_rd
-            )
+            Form6Dot54BucklingResistanceOfMembersInBending(m_ed=m_ed, m_b_rd=m_b_rd)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -70,9 +64,7 @@ class TestForm6Dot54BucklingResistanceOfMembersInBending:
         m_b_rd = 100000.0  # Nmm
 
         # Object to test
-        latex = Form6Dot54BucklingResistanceOfMembersInBending(
-            m_ed=m_ed, m_b_rd=m_b_rd
-        ).latex()
+        latex = Form6Dot54BucklingResistanceOfMembersInBending(m_ed=m_ed, m_b_rd=m_b_rd).latex()
 
         actual = {
             "complete": latex.complete,
@@ -80,6 +72,4 @@ class TestForm6Dot54BucklingResistanceOfMembersInBending:
             "complete_with_units": latex.complete_with_units,
         }
 
-        assert expected == actual[representation], (
-            f"{representation} representation failed."
-        )
+        assert expected == actual[representation], f"{representation} representation failed."

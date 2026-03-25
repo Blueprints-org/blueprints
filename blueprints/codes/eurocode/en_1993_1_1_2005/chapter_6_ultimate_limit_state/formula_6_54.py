@@ -100,9 +100,7 @@ class Form6Dot54BucklingResistanceOfMembersInBending(ComparisonFormula):
             },
             False,
         )
-        _intermediate_result: str = (
-            rf"\left( {self.unity_check:.{n}f} \leq 1.0 \right)"
-        )
+        _intermediate_result: str = rf"\left( {self.unity_check:.{n}f} \leq 1.0 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if bool(self) else r"\text{Not OK}",
