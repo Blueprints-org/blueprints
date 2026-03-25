@@ -100,6 +100,11 @@ class LNPProfile(Profile):
         )
 
     @property
+    def max_thickness(self) -> MM:
+        """Maximum element thickness of the profile [mm]."""
+        return max(self.web_thickness, self.base_thickness)
+
+    @property
     def _polygon(self) -> Polygon:
         """Return the polygon of the LNP profile without the offset and rotation applied."""
         return (

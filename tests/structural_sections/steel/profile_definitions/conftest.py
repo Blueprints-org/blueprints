@@ -11,12 +11,14 @@ from blueprints.structural_sections.steel.profile_definitions.i_profile import I
 from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
 from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
+from blueprints.structural_sections.steel.profile_definitions.unp_profile import UNPProfile
 from blueprints.structural_sections.steel.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.standard_profiles.ipe import IPE
 from blueprints.structural_sections.steel.standard_profiles.lnp import LNP
 from blueprints.structural_sections.steel.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.standard_profiles.strip import Strip
+from blueprints.structural_sections.steel.standard_profiles.unp import UNP
 
 
 @pytest.fixture
@@ -61,3 +63,9 @@ def rhs_profile() -> RHSProfile:
 def lnp_profile() -> LNPProfile:
     """Fixture to set up an LNP profile for testing."""
     return LNP.LNP100x50x6
+
+
+@pytest.fixture
+def unp_profile() -> UNPProfile:
+    """Fixture to set up a UNP profile for testing."""
+    return UNP.UNP200

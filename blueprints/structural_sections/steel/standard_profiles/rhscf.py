@@ -219,6 +219,11 @@ class RHSCF(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = RHSCF.RHSCF100x50x4
+        >>> print(isinstance(profile, RHSProfile))  # True
+        >>>
+        >>> # To iterate over all available RHSCF profiles:
+        >>> for profile in RHSCF:
+        ...     print(isinstance(profile, RHSProfile))  # True
     """
 
     _factory = RHSProfile

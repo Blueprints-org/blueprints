@@ -94,6 +94,11 @@ class Strip(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = Strip.STRIP200x10
+        >>> print(isinstance(profile, StripProfile))  # True
+        >>>
+        >>> # To iterate over all available Strip profiles:
+        >>> for profile in Strip:
+        ...     print(isinstance(profile, StripProfile))  # True
     """
 
     _factory = StripProfile
