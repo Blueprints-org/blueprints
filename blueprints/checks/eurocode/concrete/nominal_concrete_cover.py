@@ -146,9 +146,9 @@ class NominalConcreteCover(CheckProtocol):
         """Total minimum concrete cover according to art. 4.4.1.2 (11) and (13) from EN 1992-1-1."""
         c_min = self.c_min()
         # According to art. 4.4.1.2 (11) from EN 1992-1-1
-        c_min += self.cover_increase_for_uneven_surface()  # type: ignore[assignment]
+        c_min += self.cover_increase_for_uneven_surface()
         # According to art. 4.4.1.2 (13) from EN 1992-1-1
-        c_min += self.cover_increase_for_abrasion_class()  # type: ignore[assignment]
+        c_min += self.cover_increase_for_abrasion_class()
         return c_min
 
     def c_nom(self) -> Form4Dot1NominalConcreteCover:
