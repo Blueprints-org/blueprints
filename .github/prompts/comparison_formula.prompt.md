@@ -79,11 +79,6 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         """Evaluates the right-hand side of the comparison. see __init__ for details."""
         return 0.1
 
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.lhs
-
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1"
