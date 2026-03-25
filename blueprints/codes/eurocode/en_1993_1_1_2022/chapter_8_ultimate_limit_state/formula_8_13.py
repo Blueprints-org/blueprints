@@ -1,4 +1,4 @@
-"""Formula 8.13 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.13 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
 import operator
 from collections.abc import Callable
@@ -23,7 +23,7 @@ class Form8Dot13UnityCheckTensileStrength(ComparisonFormula):
     ) -> None:
         r"""Unity check for tensile strength of an element in tension.
 
-        EN 1993-1-1:2025 art.8.2.3(1) - Formula (8.13)
+        EN 1993-1-1:2022 art.8.2.3(1) - Formula (8.13)
 
         Parameters
         ----------
@@ -45,6 +45,8 @@ class Form8Dot13UnityCheckTensileStrength(ComparisonFormula):
     def _evaluate_lhs(
         n_ed: N,
         n_t_rd: N,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the left-hand side of the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(n_t_rd=n_t_rd)
@@ -58,7 +60,7 @@ class Form8Dot13UnityCheckTensileStrength(ComparisonFormula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.13."""
-        _equation: str = r"\left( \frac{N_{Ed}}{N_{t,Rd}} \leq 1 \right)"
+        _equation: str = r"\frac{N_{Ed}}{N_{t,Rd}} \leq 1.0"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
             replacements={
@@ -67,11 +69,22 @@ class Form8Dot13UnityCheckTensileStrength(ComparisonFormula):
             },
             unique_symbol_check=False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            template=_equation,
+            replacements={
+                "N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
+                "N_{t,Rd}": rf"{self.n_t_rd:.{n}f} \ N",
+            },
+            unique_symbol_check=False,
+        )
+        _intermediate_result: str = rf"\left( {self.lhs:.{n}f} \leq 1.0 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
-            result="OK" if self.__bool__() else "\\text{Not OK}",
+            result="OK" if bool(self) else r"\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
-            comparison_operator_label="\\to",
+            numeric_equation_with_units=_numeric_equation_with_units,
+            comparison_operator_label=r"\to",
             unit="",
         )

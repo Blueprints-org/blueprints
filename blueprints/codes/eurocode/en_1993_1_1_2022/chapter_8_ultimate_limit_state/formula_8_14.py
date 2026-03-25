@@ -1,4 +1,4 @@
-"""Formula 8.14 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.14 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
 from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
@@ -7,7 +7,7 @@ from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot14DesignPlasticRestistanceGrossCrossSection(Formula):
+class Form8Dot14DesignPlasticResistanceGrossCrossSection(Formula):
     r"""Class representing formula 8.14 for the calculation of [$N_{pl,Rd}$]."""
 
     label = "8.14"
@@ -21,7 +21,7 @@ class Form8Dot14DesignPlasticRestistanceGrossCrossSection(Formula):
     ) -> None:
         r"""[$N_{pl,Rd}$] Calculation of the design plastic resistance of the gross cross-section [$N$].
 
-        EN 1993-1-1:2025 art.8.2.3(2) - Formula (8.14)
+        EN 1993-1-1:2022 art.8.2.3(2) - Formula (8.14)
 
         Parameters
         ----------
@@ -61,11 +61,21 @@ class Form8Dot14DesignPlasticRestistanceGrossCrossSection(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"A": rf"{self.a:.{n}f} \ mm^2",
+                r"f_y": rf"{self.f_y:.{n}f} \ MPa",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"N_{pl,Rd}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="N",
         )
