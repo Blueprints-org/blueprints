@@ -1,6 +1,6 @@
-"""Formula 8.7 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.7 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM, NMM, N
@@ -11,7 +11,7 @@ class Form8Dot7AdditionalMoment(Formula):
     r"""Class representing formula 8.7 for the calculation of additional moment [$\Delta M_{Ed}$]."""
 
     label = "8.7"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -20,7 +20,7 @@ class Form8Dot7AdditionalMoment(Formula):
     ) -> None:
         r"""[$\Delta M_{Ed}$] Calculation of the additional moment [$Nmm$].
 
-        EN 1993-1-1:2025 art.8.2.2.5(3) - Formula (8.7)
+        EN 1993-1-1:2022 art.8.2.2.5(3) - Formula (8.7)
         Where a class 4 cross section is subjected to an axial compression force, the method given in EN 1993-1-5 should be used to
         determine the possible shift [$e_{N}$] of the centroid of the effective area [$A_{eff}$] relative to the centre of gravity
         of the gross cross section and the resulting additional moment according to this formula.

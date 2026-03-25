@@ -1,8 +1,8 @@
-"""Formula 8.5 from EN 1993-1-1:2025: Chapter 8 - Ultimate limit state."""
+"""Formula 8.5 from EN 1993-1-1:2022: Chapter 8 - Ultimate limit state."""
 
 from collections.abc import Sequence
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import MM
@@ -13,7 +13,7 @@ class Form8Dot5MinDeductionAreaStaggeredFastenerHoles(Formula):
     r"""Class representing formula 8.5 for the calculation of the minimum area deduction for staggered fastener holes [$\Delta A_{net,1}$]."""
 
     label = "8.5"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -25,7 +25,7 @@ class Form8Dot5MinDeductionAreaStaggeredFastenerHoles(Formula):
     ) -> None:
         r"""[$\Delta A_{net,1}$] Calculation of the area deduction for staggered fastener holes [$mm^2$].
 
-        EN 1993-1-1:2025 art.8.2.2.2 (4) b) - Formula (8.5)
+        EN 1993-1-1:2022 art.8.2.2.2 (4) b) - Formula (8.5)
         section (4) a) should be handled separately.
 
         Parameters

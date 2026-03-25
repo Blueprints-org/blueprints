@@ -1,4 +1,4 @@
-"""Testing formula 8.5 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+"""Testing formula 8.5 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
 import pytest
 
@@ -9,7 +9,7 @@ from blueprints.validations import LessOrEqualToZeroError, ListsNotSameLengthErr
 
 
 class TestForm8Dot5MinDeductionAreaStaggeredFastenerHoles:
-    """Validation for formula 8.5 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.5 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -1,1 +1,1 @@
-"""Package contains tests for Eurocode EN 1993-1-1:2025."""
+"""Package contains tests for Eurocode EN 1993-1-1:2022."""
