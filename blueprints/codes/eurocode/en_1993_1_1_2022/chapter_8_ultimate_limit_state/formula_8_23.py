@@ -63,11 +63,21 @@ class Form8Dot23DesignPlasticShearResistance(Formula):
             },
             False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"A_v": rf"{self.a_v:.{n}f} \ mm^2",
+                r"f_y": rf"{self.f_y:.{n}f} \ MPa",
+                r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"V_{pl,Rd}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="N",
         )
