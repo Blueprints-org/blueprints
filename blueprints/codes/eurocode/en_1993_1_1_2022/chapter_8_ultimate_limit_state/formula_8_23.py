@@ -1,8 +1,8 @@
-"""Formula 8.23 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.23 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
 import numpy as np
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM2, MPA, N
@@ -13,7 +13,7 @@ class Form8Dot23DesignPlasticShearResistance(Formula):
     r"""Class representing formula 8.23 for the calculation of [$V_{pl,Rd}$]."""
 
     label = "8.23"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -23,7 +23,7 @@ class Form8Dot23DesignPlasticShearResistance(Formula):
     ) -> None:
         r"""[$V_{pl,Rd}$] Calculation of the design plastic shear resistance [$N$].
 
-        EN 1993-1-1:2025 art.8.2.6(2) - Formula (8.23)
+        EN 1993-1-1:2022 art.8.2.6(2) - Formula (8.23)
 
         Parameters
         ----------

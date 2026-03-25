@@ -1,6 +1,6 @@
-"""Formula 8.25 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.25 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM, MM3, MM4, MPA, N
@@ -11,7 +11,7 @@ class Form8Dot25ShearStress(Formula):
     r"""Class representing formula 8.25 for the calculation of [$\tau_{Ed}$]."""
 
     label = "8.25"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -22,7 +22,7 @@ class Form8Dot25ShearStress(Formula):
     ) -> None:
         r"""[$\tau_{Ed}$] Calculation of the design elastic shear stress [$MPa$].
 
-        EN 1993-1-1:2025 art.8.2.6(4) - Formula (8.25)
+        EN 1993-1-1:2022 art.8.2.6(4) - Formula (8.25)
 
         Parameters
         ----------
