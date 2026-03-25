@@ -1,13 +1,13 @@
 ## Code notes
 
 - Write an equation such as presented in the template. Public docstring on top. Then numpy import. Then project imports. Then classes.
-- Make sure the script returns a bool. 
-- Keep all formatting and naming conventions such as they are presented in the template. 
-- If variable descriptions are given or found, copy precisely and fully from input or Eurocode. 
+- Make sure the script returns a bool.
+- Keep all formatting and naming conventions such as they are presented in the template.
+- If variable descriptions are given or found, copy precisely and fully from input or Eurocode.
 - Variablenames are always lowercase.
 - In the LaTeX formula, edit the return symbol such that it is the left hand side of the equation
 - Edit the _equation variable such that it represents the right hand side of the equation
-- LaTeX variables should be rounded to 3 decimals.  
+- LaTeX variables should be rounded to 3 decimals.
 - The LaTex _numeric_equation_with_units should include units, except when its dimensionless
 - Import the necessary typehinting with type alias units found in type_alias.py and remove the unused imported type aliases. Forces in N, (Bending) moments in Nmm, distances in mm, areas in mm^2, Stress in MPa, angles in DEG, no unit is DIMENSIONLESS. When dealing with angles, use np.deg2rad.
 - Test the value of denominators with raise_if_less_or_equal_to_zero. For all others, test with raise_if_negative.
@@ -16,6 +16,9 @@
 
 ```python
 """Formula 5.17 from EN 1993-5:2007: Chapter 5 - Ultimate limit state."""
+
+import operator
+from collections.abc import Callable
 
 from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
 from blueprints.codes.formula import ComparisonFormula
@@ -51,6 +54,11 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         self.n_ed = n_ed
         self.n_pl_rd = n_pl_rd
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[float, float], bool]:
+        """Returns the comparison operator for the formula."""
+        return operator.le
+
     @staticmethod
     def _evaluate_lhs(
         n_ed: KN,
@@ -67,11 +75,6 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
         """Evaluates the right-hand side of the comparison. see __init__ for details."""
         return 0.1
 
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.lhs
-
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.17."""
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}} \leq 0.1"
@@ -82,6 +85,7 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
                 r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
             False,
+        )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
@@ -90,7 +94,7 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
             },
             False,
         )
-        _intermediate_result: str = rf"\left( {self.unity_check:.{n}f} \leq 0.1 \right)"
+        _intermediate_result: str = rf"\left( {self.lhs:.{n}f} \leq 0.1 \right)"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if bool(self) else r"\text{Not OK}",
