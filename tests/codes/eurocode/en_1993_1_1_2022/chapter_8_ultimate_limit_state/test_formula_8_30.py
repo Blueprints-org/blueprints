@@ -43,10 +43,15 @@ class TestForm8Dot30CheckCombinedShearForceAndTorsionalMoment:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \right) \to "
-                r"\left( \frac{100.000}{150.000} \leq 1.0 \right) \to OK",
+                r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{100.000}{150.000} \leq 1.0 \to "
+                r"\left( 0.667 \leq 1.0 \right) \to OK",
             ),
             ("short", r"CHECK \to OK"),
+            (
+                "complete_with_units",
+                r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{100.000 \ N}{150.000 \ N} \leq 1.0 \to "
+                r"\left( 0.667 \leq 1.0 \right) \to OK",
+            ),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -61,6 +66,31 @@ class TestForm8Dot30CheckCombinedShearForceAndTorsionalMoment:
         actual = {
             "complete": latex.complete,
             "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{200.000}{150.000} \leq 1.0 \to "
+                r"\left( 1.333 \leq 1.0 \right) \to \text{Not OK}",
+            ),
+        ],
+    )
+    def test_latex_exceeds_unity(self, representation: str, expected: str) -> None:
+        """Test the latex representation when the unity check fails."""
+        # Example values — UC = 200/150 = 1.333 > 1.0
+        v_ed = 200.0
+        v_pl_t_rd = 150.0
+
+        latex = Form8Dot30CheckCombinedShearForceAndTorsionalMoment(v_ed=v_ed, v_pl_t_rd=v_pl_t_rd).latex()
+
+        actual = {
+            "complete": latex.complete,
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
