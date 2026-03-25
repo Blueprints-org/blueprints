@@ -29,6 +29,7 @@ class TestForm8Dot36ReducedYieldStrength:
             (-0.75, 355.0),  # rho is negative
             (0.75, -355.0),  # f_y is negative
             (1.75, 355.0),  # one_minus_rho is negative
+            (1.0, 355.0),  # one_minus_rho is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, rho: float, f_y: float) -> None:

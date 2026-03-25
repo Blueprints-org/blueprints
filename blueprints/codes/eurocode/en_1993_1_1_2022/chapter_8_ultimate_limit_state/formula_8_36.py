@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot36ReducedYieldStrength(Formula):
@@ -40,7 +40,8 @@ class Form8Dot36ReducedYieldStrength(Formula):
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         one_minus_rho = 1 - rho
-        raise_if_negative(rho=rho, f_y=f_y, one_minus_rho=one_minus_rho)
+        raise_if_negative(rho=rho, f_y=f_y)
+        raise_if_less_or_equal_to_zero(one_minus_rho=one_minus_rho)
 
         return (1 - rho) * f_y
 
