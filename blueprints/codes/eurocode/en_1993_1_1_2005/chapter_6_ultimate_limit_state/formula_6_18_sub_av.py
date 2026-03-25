@@ -34,7 +34,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
         r"""[$A_v$] Calculation of the shear area for a rolled I and H section with load parallel to web [$mm^2$].
 
         EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18suba)
-        
+
         Notes
         -----
         The original formula has been slightly modified to split effects of top and bottom flange, when they are not identical.
