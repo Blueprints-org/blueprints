@@ -62,6 +62,11 @@ class AnnularSectorProfile(Profile):
             )
 
     @property
+    def max_thickness(self) -> MM:
+        """Maximum element thickness of the annular profile [mm]."""
+        return self.thickness
+
+    @property
     def mesh_creator(self) -> partial:
         """Mesh settings for the geometrical calculations of the annular profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure

@@ -56,9 +56,9 @@ class ReinforcedCrossSection(ABC):
                 # the implementation will be made at that level and inserted here to produce the rebars needed.
                 # this keeps this ABC class clean and allows for a lot of flexibility in the implementation of the line.
                 # this has been done to be able to add any shape of line to the cross-section (e.g. a circle or any other in the future).
-                rebars.extend(configuration.to_rebars(line=line()))
+                rebars.extend(configuration.to_rebars(line=line()))  # ty: ignore[call-top-callable]
             else:
-                rebars.extend(configuration.to_rebars(line=line))  # ty: ignore[invalid-argument-type]
+                rebars.extend(configuration.to_rebars(line=line))
 
         # check if all rebars are inside the cross-section.
         # needed for the case where custom configurations are added to the RCS
@@ -197,7 +197,7 @@ class ReinforcedCrossSection(ABC):
         """
         # check if the line is a callable and wrap it with the given arguments
         if callable(line):
-            line = partial(line, *args, **kwargs)  # type: ignore[misc]
+            line = partial(line, *args, **kwargs)
 
         # add the reinforcement configuration to the list
         self._reinforcement_configurations.append((line, configuration))
