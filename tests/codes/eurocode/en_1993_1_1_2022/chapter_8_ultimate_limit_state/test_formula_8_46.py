@@ -19,9 +19,21 @@ class TestForm8Dot46CheckAxialForceY:
 
         formula = Form8Dot46CheckAxialForceY(n_ed=n_ed, h_w=h_w, t_w=t_w, f_y=f_y, gamma_m0=gamma_m0)
 
-        expected_result = True
+        assert formula == True  # noqa: E712
+        assert formula.unity_check == pytest.approx(50.0 / ((0.5 * 200.0 * 10.0 * 355.0) / 1.0), rel=1e-9)
 
-        assert formula == expected_result
+    def test_evaluation_fails(self) -> None:
+        """Tests the evaluation when the check is not satisfied."""
+        n_ed = 500000.0
+        h_w = 200.0
+        t_w = 10.0
+        f_y = 355.0
+        gamma_m0 = 1.0
+
+        formula = Form8Dot46CheckAxialForceY(n_ed=n_ed, h_w=h_w, t_w=t_w, f_y=f_y, gamma_m0=gamma_m0)
+
+        assert formula == False  # noqa: E712
+        assert formula.unity_check > 1.0
 
     @pytest.mark.parametrize(
         ("h_w", "t_w", "f_y", "gamma_m0"),
