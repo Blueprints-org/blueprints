@@ -80,7 +80,7 @@ class CheckResult:
         cls,
         provided: float,
         required: float,
-        operator: Literal["<", "<=", "==", ">=", ">", "!="] = "<=",  # ty: ignore[invalid-argument-type]
+        operator: Literal["<", "<=", "==", ">=", ">", "!="] = "<=",
     ) -> Self:
         """
         Create a CheckResult from a direct comparison of provided and required values.

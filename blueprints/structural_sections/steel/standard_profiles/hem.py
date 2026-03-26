@@ -68,6 +68,11 @@ class HEM(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = HEM.HEM200
+        >>> print(isinstance(profile, IProfile))  # True
+        >>>
+        >>> # To iterate over all available HEM profiles:
+        >>> for profile in HEM:
+        ...     print(isinstance(profile, IProfile))  # True
     """
 
     _factory = IProfile
