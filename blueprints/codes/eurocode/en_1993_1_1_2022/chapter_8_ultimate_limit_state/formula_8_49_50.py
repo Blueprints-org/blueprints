@@ -62,21 +62,21 @@ class Form8Dot49And50MomentReduction(Formula):
         )
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 "M_{pl,z,Rd}": f"{self.mpl_z_rd:.{n}f}",
                 " n": f" {self.n:.{n}f}",
                 " a": f" {self.a:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 "M_{pl,z,Rd}": rf"{self.mpl_z_rd:.{n}f} \ Nmm",
                 " n": rf" {self.n:.{n}f}",
                 " a": rf" {self.a:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"M_{N,z,Rd}",
@@ -123,19 +123,19 @@ class Form8Dot50N(Formula):
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"N_{Ed}": f"{self.n_ed:.{n}f}",
                 r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
                 r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ N",
             },
-            True,
+            unique_symbol_check=True,
         )
         return LatexFormula(
             return_symbol=r"n",
@@ -186,21 +186,21 @@ class Form8Dot50A(Formula):
         _equation: str = r"\min\left(\frac{A - 2 \cdot b \cdot t_f}{A}, 0.5\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"A": f"{self.capital_a:.{n}f}",
                 r"b": f"{self.b:.{n}f}",
                 r"t_f": f"{self.tf:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"A": rf"{self.capital_a:.{n}f} \ mm^2",
                 r"b": rf"{self.b:.{n}f} \ mm",
                 r"t_f": rf"{self.tf:.{n}f} \ mm",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"a",
