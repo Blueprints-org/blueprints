@@ -57,21 +57,21 @@ class Form8Dot48MomentReduction(Formula):
         _equation: str = r"\min\left(M_{pl,y,Rd}, M_{pl,y,Rd} \cdot (1 - n) / (1 - 0.5 \cdot a)\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 "M_{pl,y,Rd}": f"{self.mpl_y_rd:.{n}f}",
                 " n": f" {self.n:.{n}f}",
                 "a": f"{self.a:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 "M_{pl,y,Rd}": rf"{self.mpl_y_rd:.{n}f} \ Nmm",
                 " n": rf" {self.n:.{n}f}",
                 "a": rf"{self.a:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"M_{N,y,Rd}",
