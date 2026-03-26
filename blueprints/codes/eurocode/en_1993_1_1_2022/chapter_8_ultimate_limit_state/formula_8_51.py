@@ -54,21 +54,21 @@ class Form8Dot51ReducedBendingMomentResistance(Formula):
         _equation: str = r"\min \left( M_{pl,y,Rd} \cdot \frac{1 - n}{1 - 0.5 \cdot a_w}, M_{pl,y,Rd} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"M_{pl,y,Rd}": f"{self.mpl_y_rd:.{n}f}",
                 r" n": f" {self.n:.{n}f}",
                 r"a_w": f"{self.a_w:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"M_{pl,y,Rd}": rf"{self.mpl_y_rd:.{n}f} \ Nmm",
                 r" n": rf" {self.n:.{n}f}",
                 r"a_w": rf"{self.a_w:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"M_{N,y,Rd}",
