@@ -1,8 +1,8 @@
-"""Testing formulas 8.49 and 8.50 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+"""Testing formulas 8.49 and 8.50 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_49_50 import (
+from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_49_50 import (
     Form8Dot49And50MomentReduction,
     Form8Dot50A,
     Form8Dot50N,
@@ -11,7 +11,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot49And50MomentReduction:
-    """Validation for formulas 8.49 and 8.50 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formulas 8.49 and 8.50 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation_37(self) -> None:
         """Tests the evaluation of the result."""
@@ -110,7 +110,7 @@ class TestForm8Dot49And50MomentReduction:
 
 
 class TestForm8Dot50N:
-    """Validation for formula 8.50n from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.50n from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -182,7 +182,7 @@ class TestForm8Dot50N:
 
 
 class TestForm8Dot50A:
-    """Validation for formula 8.50a from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.50a from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

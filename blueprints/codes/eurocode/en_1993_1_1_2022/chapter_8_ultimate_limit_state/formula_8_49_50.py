@@ -1,6 +1,6 @@
-"""Formulas 8.49 and 8.50 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formulas 8.49 and 8.50 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, NMM, N
@@ -11,7 +11,7 @@ class Form8Dot49And50MomentReduction(Formula):
     r"""Class representing formulas 8.49 and 8.50 for the calculation of reduced bending moment."""
 
     label = "8.49/8.50"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -21,7 +21,7 @@ class Form8Dot49And50MomentReduction(Formula):
     ) -> None:
         r"""[$M_{N,z,Rd}$] Reduced bending moment [$Nmm$].
 
-        EN 1993-1-1:2025 art.8.2.9.1(6) - Formulas (8.49) and (8.50)
+        EN 1993-1-1:2022 art.8.2.9.1(6) - Formulas (8.49) and (8.50)
 
         Parameters
         ----------
@@ -93,12 +93,12 @@ class Form8Dot50N(Formula):
     r"""Class representing formula 8.50 for the calculation of [$n$]."""
 
     label = "8.50n"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(self, n_ed: N, n_pl_rd: N) -> None:
         r"""[$n$] Axial force ratio [dimensionless].
 
-        EN 1993-1-1:2025 art.8.2.9.1(6) - Formula (8.50)
+        EN 1993-1-1:2022 art.8.2.9.1(6) - Formula (8.50)
 
         Parameters
         ----------
@@ -152,12 +152,12 @@ class Form8Dot50A(Formula):
     r"""Class representing formula 8.50a for the calculation of [$a$]."""
 
     label = "8.50a"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(self, capital_a: MM2, b: MM, tf: MM) -> None:
         r"""[$a$] Reduction factor for cross-sectional area [dimensionless].
 
-        EN 1993-1-1:2025 art.8.2.9.1(6) - Formula (8.50a)
+        EN 1993-1-1:2022 art.8.2.9.1(6) - Formula (8.50a)
 
         Parameters
         ----------
