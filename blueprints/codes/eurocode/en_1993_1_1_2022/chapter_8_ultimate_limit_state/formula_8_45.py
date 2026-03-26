@@ -1,6 +1,6 @@
-"""Formula 8.45 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.45 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
@@ -11,7 +11,7 @@ class Form8Dot45CheckAxialForceY(Formula):
     r"""Class representing formula 8.45 for checking axial force about the y-y axis."""
 
     label = "8.45"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -22,7 +22,7 @@ class Form8Dot45CheckAxialForceY(Formula):
         allowance need not be made for the effect of the axial force on the
         plastic resistance moment about the y-y axis when 8.45 and 8.46 are satisfied.
 
-        EN 1993-1-1:2025 art.8.2.9.1(4) - Formula (8.45)
+        EN 1993-1-1:2022 art.8.2.9.1(4) - Formula (8.45)
 
         Parameters
         ----------

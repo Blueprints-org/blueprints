@@ -1,6 +1,6 @@
-"""Formula 8.47 from EN 1993-1-1:2025: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.47 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA, N
@@ -11,7 +11,7 @@ class Form8Dot47CheckAxialForceZ(Formula):
     r"""Class representing formula 8.47 for checking axial force about the z-z axis."""
 
     label = "8.47"
-    source_document = EN_1993_1_1_2025
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -25,7 +25,7 @@ class Form8Dot47CheckAxialForceZ(Formula):
         effect of the axial force on the plastic resistance moment about the z-z axis when
         8.47 is satisfied.
 
-        EN 1993-1-1:2025 art.8.2.9.1(4) - Formula (8.47)
+        EN 1993-1-1:2022 art.8.2.9.1(4) - Formula (8.47)
 
         Parameters
         ----------
