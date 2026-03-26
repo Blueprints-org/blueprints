@@ -1,13 +1,16 @@
 """Formula 8.47 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
+import operator
+from collections.abc import Callable
+
 from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
-from blueprints.codes.formula import Formula
+from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot47CheckAxialForceZ(Formula):
+class Form8Dot47CheckAxialForceZ(ComparisonFormula):
     r"""Class representing formula 8.47 for checking axial force about the z-z axis."""
 
     label = "8.47"
@@ -47,48 +50,62 @@ class Form8Dot47CheckAxialForceZ(Formula):
         self.f_y = f_y
         self.gamma_m0 = gamma_m0
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[float, float], bool]:
+        """Returns the comparison operator for the formula."""
+        return operator.le
+
     @staticmethod
-    def _evaluate(
+    def _evaluate_lhs(
         n_ed: N,
         h_w: MM,
         t_w: MM,
         f_y: MPA,
         gamma_m0: DIMENSIONLESS,
-    ) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
+    ) -> float:
+        """Evaluates the left-hand side of the comparison. See __init__ for details."""
         raise_if_negative(h_w=h_w, t_w=t_w, f_y=f_y, gamma_m0=gamma_m0)
         raise_if_less_or_equal_to_zero(gamma_m0=gamma_m0)
+        return n_ed
 
-        return n_ed <= (h_w * t_w * f_y) / gamma_m0
+    @staticmethod
+    def _evaluate_rhs(
+        h_w: MM,
+        t_w: MM,
+        f_y: MPA,
+        gamma_m0: DIMENSIONLESS,
+    ) -> float:
+        """Evaluates the right-hand side of the comparison. See __init__ for details."""
+        return (h_w * t_w * f_y) / gamma_m0
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.47."""
         _equation: str = r"N_{Ed} \leq \frac{h_{w} \cdot t_{w} \cdot f_{y}}{\gamma_{M0}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"N_{Ed}": f"{self.n_ed:.{n}f}",
                 r"h_{w}": f"{self.h_w:.{n}f}",
                 r"t_{w}": f"{self.t_w:.{n}f}",
                 r"f_{y}": f"{self.f_y:.{n}f}",
                 r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
                 r"h_{w}": rf"{self.h_w:.{n}f} \ mm",
                 r"t_{w}": rf"{self.t_w:.{n}f} \ mm",
                 r"f_{y}": rf"{self.f_y:.{n}f} \ MPa",
                 r"\gamma_{M0}": rf"{self.gamma_m0:.{n}f}",
             },
-            True,
+            unique_symbol_check=True,
         )
         return LatexFormula(
             return_symbol="CHECK",
-            result="OK" if self.__bool__() else "\\text{Not OK}",
+            result="OK" if bool(self) else "\\text{Not OK}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
