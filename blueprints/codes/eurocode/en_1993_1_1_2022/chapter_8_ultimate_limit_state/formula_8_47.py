@@ -62,6 +62,8 @@ class Form8Dot47CheckAxialForceZ(ComparisonFormula):
         t_w: MM,
         f_y: MPA,
         gamma_m0: DIMENSIONLESS,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
         raise_if_negative(h_w=h_w, t_w=t_w, f_y=f_y, gamma_m0=gamma_m0)
@@ -74,6 +76,8 @@ class Form8Dot47CheckAxialForceZ(ComparisonFormula):
         t_w: MM,
         f_y: MPA,
         gamma_m0: DIMENSIONLESS,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         return (h_w * t_w * f_y) / gamma_m0

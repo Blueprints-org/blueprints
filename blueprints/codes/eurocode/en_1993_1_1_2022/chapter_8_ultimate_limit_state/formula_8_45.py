@@ -47,6 +47,8 @@ class Form8Dot45CheckAxialForceY(ComparisonFormula):
     def _evaluate_lhs(
         n_ed: N,
         n_pl_rd: N,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
         raise_if_less_or_equal_to_zero(n_pl_rd=n_pl_rd)
@@ -55,6 +57,8 @@ class Form8Dot45CheckAxialForceY(ComparisonFormula):
     @staticmethod
     def _evaluate_rhs(
         n_pl_rd: N,
+        *_args,
+        **_kwargs,
     ) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         return 0.25 * n_pl_rd
