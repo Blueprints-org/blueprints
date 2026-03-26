@@ -1,13 +1,16 @@
 """Formula 8.45 from EN 1993-1-1:2022: Chapter 8 - Ultimate Limit State."""
 
+import operator
+from collections.abc import Callable
+
 from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
-from blueprints.codes.formula import Formula
+from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import N
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form8Dot45CheckAxialForceY(Formula):
+class Form8Dot45CheckAxialForceY(ComparisonFormula):
     r"""Class representing formula 8.45 for checking axial force about the y-y axis."""
 
     label = "8.45"
@@ -35,38 +38,49 @@ class Form8Dot45CheckAxialForceY(Formula):
         self.n_ed = n_ed
         self.n_pl_rd = n_pl_rd
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[float, float], bool]:
+        """Returns the comparison operator for the formula."""
+        return operator.le
+
     @staticmethod
-    def _evaluate(
+    def _evaluate_lhs(
         n_ed: N,
         n_pl_rd: N,
-    ) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(n_pl_rd=n_pl_rd)
+    ) -> float:
+        """Evaluates the left-hand side of the comparison. See __init__ for details."""
+        raise_if_less_or_equal_to_zero(n_pl_rd=n_pl_rd)
+        return n_ed
 
-        return n_ed <= 0.25 * n_pl_rd
+    @staticmethod
+    def _evaluate_rhs(
+        n_pl_rd: N,
+    ) -> float:
+        """Evaluates the right-hand side of the comparison. See __init__ for details."""
+        return 0.25 * n_pl_rd
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.45."""
         _equation: str = r"N_{Ed} \leq 0.25 \cdot N_{pl,Rd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"N_{Ed}": f"{self.n_ed:.{n}f}",
                 r"N_{pl,Rd}": f"{self.n_pl_rd:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
                 r"N_{pl,Rd}": rf"{self.n_pl_rd:.{n}f} \ N",
             },
-            True,
+            unique_symbol_check=True,
         )
         return LatexFormula(
             return_symbol="CHECK",
-            result="OK" if self.__bool__() else "\\text{Not OK}",
+            result="OK" if bool(self) else "\\text{Not OK}",
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

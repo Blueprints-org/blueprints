@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_45 import Form8Dot45CheckAxialForceY
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot45CheckAxialForceY:
@@ -16,17 +16,29 @@ class TestForm8Dot45CheckAxialForceY:
 
         formula = Form8Dot45CheckAxialForceY(n_ed=n_ed, n_pl_rd=n_pl_rd)
 
-        expected_result = True
+        assert formula == True  # noqa: E712
+        assert formula.unity_check == pytest.approx(50.0 / (0.25 * 300.0), rel=1e-9)
 
-        assert formula == expected_result
+    def test_evaluation_fails(self) -> None:
+        """Tests the evaluation when the check is not satisfied."""
+        n_ed = 100.0
+        n_pl_rd = 300.0
+
+        formula = Form8Dot45CheckAxialForceY(n_ed=n_ed, n_pl_rd=n_pl_rd)
+
+        assert formula == False  # noqa: E712
+        assert formula.unity_check > 1.0
 
     @pytest.mark.parametrize(
         "n_pl_rd",
-        [-300.0],  # n_pl_rd is negative
+        [
+            -300.0,  # n_pl_rd is negative
+            0.0,  # n_pl_rd is zero
+        ],
     )
     def test_raise_error_when_invalid_values_are_given(self, n_pl_rd: float) -> None:
         """Test invalid values."""
-        with pytest.raises(NegativeValueError):
+        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form8Dot45CheckAxialForceY(n_ed=50.0, n_pl_rd=n_pl_rd)
 
     @pytest.mark.parametrize(
