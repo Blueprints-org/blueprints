@@ -1,7 +1,8 @@
 """Testing formula 8.42 of prEN 1992-1-1:2023."""
 
-import pytest
 from typing import ClassVar
+
+import pytest
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_42 import (
     Form8Dot42ShearStressResistanceReinforcement,
@@ -13,8 +14,8 @@ class TestForm8Dot42ShearStressResistanceReinforcement:
     """Validation for formula 8.42 from prEN 1992-1-1:2023."""
 
     testdata: ClassVar[list[tuple[float, float, float, float]]] = [
-        (0.3e-2, 435., 1.0, 1.305),
-        (0.3e-2, 435., 2.5, 3.262),
+        (0.3e-2, 435.0, 1.0, 1.305),
+        (0.3e-2, 435.0, 2.5, 3.262),
     ]
 
     @pytest.mark.parametrize("rho_w,f_ywd,cot_theta,exp_result", testdata)  # noqa: PT006
@@ -26,9 +27,9 @@ class TestForm8Dot42ShearStressResistanceReinforcement:
     @pytest.mark.parametrize(
         ("rho_w", "f_ywd", "cot_theta"),
         [
-            (-0.3e-2, 435., 1.0),  # rho_w is negative
-            (0.3e-2, -435., 1.0),  # f_ywd is negative
-            (0.3e-2, 435., -1.0),  # cot_theta is negative
+            (-0.3e-2, 435.0, 1.0),  # rho_w is negative
+            (0.3e-2, -435.0, 1.0),  # f_ywd is negative
+            (0.3e-2, 435.0, -1.0),  # cot_theta is negative
         ],
     )
     def test_raise_error_when_negative_values_are_given(self, rho_w: float, f_ywd: float, cot_theta: float) -> None:
@@ -54,7 +55,7 @@ class TestForm8Dot42ShearStressResistanceReinforcement:
         """Test the latex representation of the formula."""
         # Example values
         rho_w = 0.3e-2
-        f_ywd = 435.
+        f_ywd = 435.0
         cot_theta = 2.5
 
         # Object to test
