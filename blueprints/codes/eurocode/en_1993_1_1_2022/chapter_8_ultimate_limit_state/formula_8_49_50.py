@@ -119,7 +119,7 @@ class Form8Dot50N(Formula):
         return n_ed / n_pl_rd
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 8.38n."""
+        """Returns LatexFormula object for formula 8.50n."""
         _equation: str = r"\frac{N_{Ed}}{N_{pl,Rd}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
@@ -179,6 +179,7 @@ class Form8Dot50A(Formula):
         raise_if_less_or_equal_to_zero(capital_a=capital_a)
         raise_if_negative(b=b, tf=tf)
         a = (capital_a - 2 * b * tf) / capital_a
+        raise_if_negative(a=a)
         return min(a, 0.5)
 
     def latex(self, n: int = 3) -> LatexFormula:

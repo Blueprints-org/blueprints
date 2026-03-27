@@ -221,6 +221,7 @@ class TestForm8Dot50A:
             (-2000.0, 100.0, 10.0),  # capital_a is negative
             (2000.0, -100.0, 10.0),  # b is negative
             (2000.0, 100.0, -10.0),  # tf is negative
+            (500.0, 100.0, 10.0),  # 2*b*tf=2000 > capital_a=500, giving negative a
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, capital_a: float, b: float, tf: float) -> None:
