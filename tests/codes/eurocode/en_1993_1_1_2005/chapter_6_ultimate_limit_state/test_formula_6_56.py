@@ -165,6 +165,7 @@ class TestForm6Dot56ReductionFactorLateralTorsionalBuckling:
             (0.0, 0.8),  # phi_lt is zero
             (-0.922, 0.8),  # phi_lt is negative
             (0.922, -0.8),  # lambda_bar_lt is negative
+            (0.5, 0.8),  # under_sqrt is negative (phi_lt^2 - lambda_bar_lt^2 < 0)
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, phi_lt: float, lambda_bar_lt: float) -> None:

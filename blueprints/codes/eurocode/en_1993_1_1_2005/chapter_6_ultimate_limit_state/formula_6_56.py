@@ -177,6 +177,10 @@ class Form6Dot56ReductionFactorLateralTorsionalBuckling(Formula):
         raise_if_negative(lambda_bar_lt=lambda_bar_lt)
         raise_if_less_or_equal_to_zero(phi_lt=phi_lt)
 
+        under_sqrt = phi_lt**2 - lambda_bar_lt**2
+        if under_sqrt < 0:
+            raise_if_negative(under_sqrt=under_sqrt)  # This will raise an error if the value under the square root is negative
+
         chi_lt = 1 / (phi_lt + np.sqrt(phi_lt**2 - lambda_bar_lt**2))
         return min(1.0, chi_lt)
 
