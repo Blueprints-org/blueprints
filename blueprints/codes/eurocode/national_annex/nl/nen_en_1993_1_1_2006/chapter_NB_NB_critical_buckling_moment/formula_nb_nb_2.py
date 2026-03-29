@@ -23,7 +23,7 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
             e: MPA,
             i_z: MM4,
             g: MPA,
-            i_t: MM6,
+            i_t: MM4,
     ) -> None:
         r"""[$M_{cr}$] Calculation of the critical elastic buckling moment [$Nmm$].
 
@@ -45,8 +45,8 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
             [$I_z$] Moment of inertia about the z-axis [$mm^4$].
         g : MPA
             [$G$] Shear modulus [$MPa$].
-        i_t : MM6
-            [$I_t$] Torsional moment of inertia [$mm^6$].
+        i_t : MM4
+            [$I_t$] Torsional moment of inertia [$mm^4$].
         """
         super().__init__()
         self.k_red = k_red
@@ -65,7 +65,7 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
             e: MPA,
             i_z: MM4,
             g: MPA,
-            i_t: MM6,
+            i_t: MM4,
     ) -> NMM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(l_g=l_g)
@@ -98,7 +98,7 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
                 r"E": f"{self.e:.{n}f} MPa",
                 r"I_z": f"{self.i_z:.{n}f} mm^4",
                 r"G": f"{self.g:.{n}f} MPa",
-                r"I_t": f"{self.i_t:.{n}f} mm^6",
+                r"I_t": f"{self.i_t:.{n}f} mm^4",
             },
             True,
         )
