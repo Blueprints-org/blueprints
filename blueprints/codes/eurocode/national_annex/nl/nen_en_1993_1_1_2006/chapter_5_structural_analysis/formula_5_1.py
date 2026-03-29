@@ -2,12 +2,12 @@
 
 from typing import Literal
 
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.formula_5_1 import Form5Dot1CriteriumDisregardSecondOrderEffects
 from blueprints.codes.eurocode.national_annex.nl.nen_en_1993_1_1_2006 import NEN_EN_1993_1_1_2006_A1_2014_NB_2016
-from blueprints.codes.formula import Formula
 from blueprints.type_alias import N
 
 
-class Form5Dot1NLCriteriumDisregardSecondOrderEffects(Formula):
+class Form5Dot1NLCriteriumDisregardSecondOrderEffects(Form5Dot1CriteriumDisregardSecondOrderEffects):
     r"""Class representing formula 5.1 to check whether second order effects of a structure can be disregarded
     or not.
 
