@@ -282,15 +282,15 @@ National Annex of the Netherlands.
 | NB.NA.58       | :x:  |         |             |
 | NB.NA.59       | :x:  |         |             |
 | NB.NB.1        | :x:  |         |             |
-| NB.NB.2        | ✓    |         | FormNBDotNB2CriticalElasticBucklingMoment |
+| NB.NB.2        | :heavy_check_mark:    |         | FormNBDotNB2CriticalElasticBucklingMoment |
 | NB.NB.3        | :x:  |         |             |
 | NB.NB.4        | :x:  |         |             |
 | NB.NB.5        | :x:  |         |             |
 | NB.NB.6        | :x:  |         |             |
-| NB.NB.7        | ✓    |         | FormNBDotNB7ReductionFactorKred |
-| NB.NB.8        | ✓    |         | FormNBDotNB8ReductionFactorKred |
-| NB.NB.9        | ✓    |         | FormNBDotNB9Alpha |
+| NB.NB.7        | :heavy_check_mark:    |         | FormNBDotNB7ReductionFactorKred |
+| NB.NB.8        | :heavy_check_mark:    |         | FormNBDotNB8ReductionFactorKred |
+| NB.NB.9        | :heavy_check_mark:    |         | FormNBDotNB9Alpha |
 | NB.NB.10       | :x:  |         |             |
-| NB.NB.11       | ✓    |         | FormNBDotNB11CoefficientC |
-| NB.NB.12       | ✓    |         | FormNBDotNB12ParameterS |
+| NB.NB.11       | :heavy_check_mark:    |         | FormNBDotNB11CoefficientC |
+| NB.NB.12       | :heavy_check_mark:    |         | FormNBDotNB12ParameterS |
 | NB.NB.13       | :x:  |         |             |
