@@ -38,9 +38,9 @@ class TestFormNBDotNB8ReductionFactorKred:
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("alpha",),
+        "alpha",
         [
-            (-1000.0,),  # alpha is negative
+            -1000.0,  # alpha is negative
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, alpha: float) -> None:

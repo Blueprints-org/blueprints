@@ -38,9 +38,7 @@ class TestFormNBDotNB11CoefficientC:
             (1.13, 0.45, 5000.0, -6000.0, 1000.0),  # l_kip is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(
-        self, c_1: float, c_2: float, l_g: float, l_kip: float, s: float
-    ) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, c_1: float, c_2: float, l_g: float, l_kip: float, s: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             FormNBDotNB11CoefficientC(c_1=c_1, c_2=c_2, l_g=l_g, l_kip=l_kip, s=s)
@@ -50,13 +48,18 @@ class TestFormNBDotNB11CoefficientC:
         [
             (
                 "complete",
-                r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} \cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
-                r"\frac{\pi \cdot 1.130 \cdot 5000.000}{6000.000} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot 1000.000^2}{6000.000^2} \cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000}{6000.000} \right) = 4.108 \ -",
+                r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} "
+                r"\cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
+                r"\frac{\pi \cdot 1.130 \cdot 5000.000}{6000.000} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot 1000.000^2}{6000.000^2} "
+                r"\cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000}{6000.000} \right) = 4.108 \ -",
             ),
             (
                 "complete_with_units",
-                r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} \cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
-                r"\frac{\pi \cdot 1.130 \cdot 5000.000 \ mm}{6000.000 \ mm} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot 1000.000 \ mm^2}{6000.000 \ mm^2} \cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000 \ mm}{6000.000 \ mm} \right) = 4.108 \ -",
+                r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} "
+                r"\cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
+                r"\frac{\pi \cdot 1.130 \cdot 5000.000 \ mm}{6000.000 \ mm} \cdot \left( "
+                r"\sqrt{1 + \frac{\pi^2 \cdot 1000.000 \ mm^2}{6000.000 \ mm^2} "
+                r"\cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000 \ mm}{6000.000 \ mm} \right) = 4.108 \ -",
             ),
             ("short", r"C = 4.108 \ -"),
         ],

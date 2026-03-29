@@ -14,8 +14,8 @@ class FormNBDotNB8ReductionFactorKred(Formula):
     source_document = NEN_EN_1993_1_1_2006_A1_2014_NB_2016
 
     def __init__(
-            self,
-            alpha: DIMENSIONLESS,
+        self,
+        alpha: DIMENSIONLESS,
     ) -> None:
         r"""[$k_{red}$] Reduction factor dependent on the degree of deformation of the beam cross-section with regard to beam length [-].
 
@@ -35,7 +35,7 @@ class FormNBDotNB8ReductionFactorKred(Formula):
 
     @staticmethod
     def _evaluate(
-            alpha: DIMENSIONLESS,
+        alpha: DIMENSIONLESS,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(alpha=alpha)

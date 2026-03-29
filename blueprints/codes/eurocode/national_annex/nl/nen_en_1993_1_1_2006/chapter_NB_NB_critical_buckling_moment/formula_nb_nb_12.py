@@ -16,11 +16,11 @@ class FormNBDotNB12ParameterS(Formula):
     source_document = NEN_EN_1993_1_1_2006_A1_2014_NB_2016
 
     def __init__(
-            self,
-            e: MPA,
-            i_w: MM6,
-            g: MPA,
-            i_t: MM4,
+        self,
+        e: MPA,
+        i_w: MM6,
+        g: MPA,
+        i_t: MM4,
     ) -> None:
         r"""[$S$] Calculation of parameter S [$mm$].
 
@@ -45,10 +45,10 @@ class FormNBDotNB12ParameterS(Formula):
 
     @staticmethod
     def _evaluate(
-            e: MPA,
-            i_w: MM6,
-            g: MPA,
-            i_t: MM4,
+        e: MPA,
+        i_w: MM6,
+        g: MPA,
+        i_t: MM4,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(g=g, i_t=i_t)

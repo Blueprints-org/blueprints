@@ -58,9 +58,7 @@ class TestFormNBDotNB9Alpha:
             (400.0, 15.0, 8.0, 200.0, -5000.0),  # l_g is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(
-        self, h: float, t_f: float, t_w: float, b: float, l_g: float
-    ) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, h: float, t_f: float, t_w: float, b: float, l_g: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             FormNBDotNB9Alpha(h=h, t_f=t_f, t_w=t_w, b=b, l_g=l_g)
@@ -76,7 +74,8 @@ class TestFormNBDotNB9Alpha:
             (
                 "complete_with_units",
                 r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
-                r"\max\left(575, \frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{8.000 \ mm^3 \cdot 200.000 \ mm \cdot 5000.000 \ mm^2}\right) = 2343.750 \ -",
+                r"\max\left(575, \frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{8.000 \ mm^3 \cdot 200.000 \ mm "
+                r"\cdot 5000.000 \ mm^2}\right) = 2343.750 \ -",
             ),
             ("short", r"\alpha = 2343.750 \ -"),
         ],

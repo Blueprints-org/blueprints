@@ -5,7 +5,7 @@ import numpy as np
 from blueprints.codes.eurocode.national_annex.nl.nen_en_1993_1_1_2006 import NEN_EN_1993_1_1_2006_A1_2014_NB_2016
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MM, MM4, MM6, MPA, NMM
+from blueprints.type_alias import DIMENSIONLESS, MM, MM4, MPA, NMM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -16,14 +16,14 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
     source_document = NEN_EN_1993_1_1_2006_A1_2014_NB_2016
 
     def __init__(
-            self,
-            k_red: DIMENSIONLESS,
-            c: DIMENSIONLESS,
-            l_g: MM,
-            e: MPA,
-            i_z: MM4,
-            g: MPA,
-            i_t: MM4,
+        self,
+        k_red: DIMENSIONLESS,
+        c: DIMENSIONLESS,
+        l_g: MM,
+        e: MPA,
+        i_z: MM4,
+        g: MPA,
+        i_t: MM4,
     ) -> None:
         r"""[$M_{cr}$] Calculation of the critical elastic buckling moment [$Nmm$].
 
@@ -32,10 +32,10 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
         Parameters
         ----------
         k_red : DIMENSIONLESS
-            [$k_{red}$] Reduction factor dependent on the degree of deformation of the beam cross-section with regard to beam length; 
+            [$k_{red}$] Reduction factor dependent on the degree of deformation of the beam cross-section with regard to beam length;
             for calculating [$k_{red}$] applies NB.NB.4.2 [-].
         c : DIMENSIONLESS
-            [$C$] Coefficient dependent on beam length and load point location, and support point of the load; 
+            [$C$] Coefficient dependent on beam length and load point location, and support point of the load;
             for calculating [$C$] applies NB.NB.4.3 [-].
         l_g : MM
             [$L_g$] Length of the beam between supports [$mm$].
@@ -59,13 +59,13 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
 
     @staticmethod
     def _evaluate(
-            k_red: DIMENSIONLESS,
-            c: DIMENSIONLESS,
-            l_g: MM,
-            e: MPA,
-            i_z: MM4,
-            g: MPA,
-            i_t: MM4,
+        k_red: DIMENSIONLESS,
+        c: DIMENSIONLESS,
+        l_g: MM,
+        e: MPA,
+        i_z: MM4,
+        g: MPA,
+        i_t: MM4,
     ) -> NMM:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(l_g=l_g)
@@ -94,11 +94,11 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
             {
                 r"k_{red}": f"{self.k_red:.{n}f}",
                 r"C": f"{self.c:.{n}f}",
-                r"L_g": f"{self.l_g:.{n}f} \ mm",
-                r"E": f"{self.e:.{n}f} \ MPa",
-                r"I_z": f"{self.i_z:.{n}f} \ mm^4",
-                r"G": f"{self.g:.{n}f} \ MPa",
-                r"I_t": f"{self.i_t:.{n}f} \ mm^4",
+                r"L_g": rf"{self.l_g:.{n}f} \ mm",
+                r"E": rf"{self.e:.{n}f} \ MPa",
+                r"I_z": rf"{self.i_z:.{n}f} \ mm^4",
+                r"G": rf"{self.g:.{n}f} \ MPa",
+                r"I_t": rf"{self.i_t:.{n}f} \ mm^4",
             },
             True,
         )

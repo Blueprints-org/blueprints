@@ -43,9 +43,7 @@ class TestFormNBDotNB2CriticalElasticBucklingMoment:
             (1.0, 0.99, -5000.0, 210000.0, 8000000.0, 81000.0, 200000.0),  # l_g is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(
-        self, k_red: float, c: float, l_g: float, e: float, i_z: float, g: float, i_t: float
-    ) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, k_red: float, c: float, l_g: float, e: float, i_z: float, g: float, i_t: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             FormNBDotNB2CriticalElasticBucklingMoment(k_red=k_red, c=c, l_g=l_g, e=e, i_z=i_z, g=g, i_t=i_t)
@@ -61,7 +59,8 @@ class TestFormNBDotNB2CriticalElasticBucklingMoment:
             (
                 "complete_with_units",
                 r"M_{cr} = k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t} = "
-                r"1.000 \cdot \frac{0.990}{5000.000 \ mm} \cdot \sqrt{210000.000 \ MPa \cdot 8000000.000 \ mm^4 \cdot 81000.000 \ MPa \cdot 200000.000 \ mm^4} = 32664599.554 \ Nmm",
+                r"1.000 \cdot \frac{0.990}{5000.000 \ mm} \cdot \sqrt{210000.000 \ MPa \cdot 8000000.000 \ mm^4 "
+                r"\cdot 81000.000 \ MPa \cdot 200000.000 \ mm^4} = 32664599.554 \ Nmm",
             ),
             ("short", r"M_{cr} = 32664599.554 \ Nmm"),
         ],

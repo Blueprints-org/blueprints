@@ -14,12 +14,12 @@ class FormNBDotNB9Alpha(Formula):
     source_document = NEN_EN_1993_1_1_2006_A1_2014_NB_2016
 
     def __init__(
-            self,
-            h: MM,
-            t_f: MM,
-            t_w: MM,
-            b: MM,
-            l_g: MM,
+        self,
+        h: MM,
+        t_f: MM,
+        t_w: MM,
+        b: MM,
+        l_g: MM,
     ) -> None:
         r"""[$\alpha$] Parameter dependent on beam dimensions [-].
 
@@ -47,17 +47,17 @@ class FormNBDotNB9Alpha(Formula):
 
     @staticmethod
     def _evaluate(
-            h: MM,
-            t_f: MM,
-            t_w: MM,
-            b: MM,
-            l_g: MM,
+        h: MM,
+        t_f: MM,
+        t_w: MM,
+        b: MM,
+        l_g: MM,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(t_w=t_w, b=b, l_g=l_g)
         raise_if_negative(h=h, t_f=t_f)
 
-        return max(575, (h * t_f * 1e12) / (t_w ** 3 * b * l_g ** 2))
+        return max(575, (h * t_f * 1e12) / (t_w**3 * b * l_g**2))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula NB.NB.9."""
