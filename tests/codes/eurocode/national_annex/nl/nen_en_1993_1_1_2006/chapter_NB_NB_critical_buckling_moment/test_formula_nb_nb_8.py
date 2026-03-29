@@ -48,6 +48,11 @@ class TestFormNBDotNB8ReductionFactorKred:
         with pytest.raises(NegativeValueError):
             FormNBDotNB8ReductionFactorKred(alpha=alpha)
 
+    def test_raise_error_when_alpha_exceeds_upper_bound(self) -> None:
+        """Test that alpha > 5000 raises ValueError."""
+        with pytest.raises(ValueError, match=r"alpha must be ≤ 5000"):
+            FormNBDotNB8ReductionFactorKred(alpha=5001.0)
+
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [

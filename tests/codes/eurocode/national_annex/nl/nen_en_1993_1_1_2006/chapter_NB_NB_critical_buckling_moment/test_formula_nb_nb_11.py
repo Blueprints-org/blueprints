@@ -32,6 +32,7 @@ class TestFormNBDotNB11CoefficientC:
         ("c_1", "c_2", "l_g", "l_kip", "s"),
         [
             (-1.13, 0.45, 5000.0, 6000.0, 1000.0),  # c_1 is negative
+            (1.13, -0.45, 5000.0, 6000.0, 1000.0),  # c_2 is negative
             (1.13, 0.45, -5000.0, 6000.0, 1000.0),  # l_g is negative
             (1.13, 0.45, 5000.0, 6000.0, -1000.0),  # s is negative
             (1.13, 0.45, 5000.0, 0.0, 1000.0),  # l_kip is zero

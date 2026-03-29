@@ -39,6 +39,8 @@ class FormNBDotNB8ReductionFactorKred(Formula):
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(alpha=alpha)
+        if alpha > 5000:
+            raise ValueError(f"alpha must be ≤ 5000 for this formula to be valid. Got alpha={alpha}")
 
         return min(((-5.4e-5 * alpha) + 1.03), 1.0)
 

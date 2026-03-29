@@ -61,7 +61,7 @@ class FormNBDotNB11CoefficientC(Formula):
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(l_kip=l_kip)
-        raise_if_negative(c_1=c_1, l_g=l_g, s=s)
+        raise_if_negative(c_1=c_1, l_g=l_g, s=s, c_2=c_2)
 
         term1 = (np.pi * c_1 * l_g) / l_kip
         term2 = np.sqrt(1 + (np.pi**2 * s**2) / (l_kip**2) * (c_2**2 + 1))
