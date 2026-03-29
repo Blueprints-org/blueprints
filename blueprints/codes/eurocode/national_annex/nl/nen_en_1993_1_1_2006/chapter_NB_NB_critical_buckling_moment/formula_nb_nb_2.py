@@ -94,11 +94,11 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
             {
                 r"k_{red}": f"{self.k_red:.{n}f}",
                 r"C": f"{self.c:.{n}f}",
-                r"L_g": f"{self.l_g:.{n}f} mm",
-                r"E": f"{self.e:.{n}f} MPa",
-                r"I_z": f"{self.i_z:.{n}f} mm^4",
-                r"G": f"{self.g:.{n}f} MPa",
-                r"I_t": f"{self.i_t:.{n}f} mm^4",
+                r"L_g": f"{self.l_g:.{n}f} \ mm",
+                r"E": f"{self.e:.{n}f} \ MPa",
+                r"I_z": f"{self.i_z:.{n}f} \ mm^4",
+                r"G": f"{self.g:.{n}f} \ MPa",
+                r"I_t": f"{self.i_t:.{n}f} \ mm^4",
             },
             True,
         )

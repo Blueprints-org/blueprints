@@ -92,7 +92,7 @@ class FormNBDotNB11CoefficientC(Formula):
                 r"L_{kip}": rf"{self.l_kip:.{n}f} \ mm",
                 r"S": rf"{self.s:.{n}f} \ mm",
             },
-            True,
+            False,
         )
         return LatexFormula(
             return_symbol=r"C",

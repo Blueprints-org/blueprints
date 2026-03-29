@@ -65,7 +65,7 @@ class FormNBDotNB9Alpha(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"h": f"{self.h:.{n}f}",
+                r"h ": f"{self.h:.{n}f} ",
                 r"t_f": f"{self.t_f:.{n}f}",
                 r"t_w": f"{self.t_w:.{n}f}",
                 r"b": f"{self.b:.{n}f}",
@@ -76,7 +76,7 @@ class FormNBDotNB9Alpha(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"h": rf"{self.h:.{n}f} \ mm",
+                r"h ": rf"{self.h:.{n}f} \ mm ",
                 r"t_f": rf"{self.t_f:.{n}f} \ mm",
                 r"t_w": rf"{self.t_w:.{n}f} \ mm",
                 r"b": rf"{self.b:.{n}f} \ mm",

@@ -26,7 +26,7 @@ class TestFormNBDotNB2CriticalElasticBucklingMoment:
         formula = FormNBDotNB2CriticalElasticBucklingMoment(k_red=k_red, c=c, l_g=l_g, e=e, i_z=i_z, g=g, i_t=i_t)
 
         # Expected result, manually calculated
-        manually_calculated_result = 103144738.576
+        manually_calculated_result = 32664599.554
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
@@ -56,14 +56,14 @@ class TestFormNBDotNB2CriticalElasticBucklingMoment:
             (
                 "complete",
                 r"M_{cr} = k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t} = "
-                r"1.000 \cdot \frac{0.990}{5000.000} \cdot \sqrt{210000.000 \cdot 8000000.000 \cdot 81000.000 \cdot 200000.000} = 103144738.576 \ Nmm",
+                r"1.000 \cdot \frac{0.990}{5000.000} \cdot \sqrt{210000.000 \cdot 8000000.000 \cdot 81000.000 \cdot 200000.000} = 32664599.554 \ Nmm",
             ),
             (
                 "complete_with_units",
                 r"M_{cr} = k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t} = "
-                r"1.000 \cdot \frac{0.990}{5000.000 \ mm} \cdot \sqrt{210000.000 \ MPa \cdot 8000000.000 \ mm^4 \cdot 81000.000 \ MPa \cdot 200000.000 \ mm^4} = 103144738.576 \ Nmm",
+                r"1.000 \cdot \frac{0.990}{5000.000 \ mm} \cdot \sqrt{210000.000 \ MPa \cdot 8000000.000 \ mm^4 \cdot 81000.000 \ MPa \cdot 200000.000 \ mm^4} = 32664599.554 \ Nmm",
             ),
-            ("short", r"M_{cr} = 103144738.576 \ Nmm"),
+            ("short", r"M_{cr} = 32664599.554 \ Nmm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

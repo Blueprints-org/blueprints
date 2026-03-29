@@ -24,7 +24,24 @@ class TestFormNBDotNB9Alpha:
         formula = FormNBDotNB9Alpha(h=h, t_f=t_f, t_w=t_w, b=b, l_g=l_g)
 
         # Expected result, manually calculated
-        manually_calculated_result = 1875.0
+        manually_calculated_result = 2343.75
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    def test_evaluation_result_575(self) -> None:
+        """Tests the evaluation of the result if it is limited with the 575."""
+        # Example values
+        h = 10.0
+        t_f = 15.0
+        t_w = 8.0
+        b = 200.0
+        l_g = 5000.0
+
+        # Object to test
+        formula = FormNBDotNB9Alpha(h=h, t_f=t_f, t_w=t_w, b=b, l_g=l_g)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 575.0
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
@@ -54,14 +71,14 @@ class TestFormNBDotNB9Alpha:
             (
                 "complete",
                 r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
-                r"\max\left(575, \frac{400.000 \cdot 15.000 \cdot 10^{12}}{8.000^3 \cdot 200.000 \cdot 5000.000^2}\right) = 1875.000 \ -",
+                r"\max\left(575, \frac{400.000 \cdot 15.000 \cdot 10^{12}}{8.000^3 \cdot 200.000 \cdot 5000.000^2}\right) = 2343.750 \ -",
             ),
             (
                 "complete_with_units",
                 r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
-                r"\max\left(575, \frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{8.000 \ mm^3 \cdot 200.000 \ mm \cdot 5000.000 \ mm^2}\right) = 1875.000 \ -",
+                r"\max\left(575, \frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{8.000 \ mm^3 \cdot 200.000 \ mm \cdot 5000.000 \ mm^2}\right) = 2343.750 \ -",
             ),
-            ("short", r"\alpha = 1875.000 \ -"),
+            ("short", r"\alpha = 2343.750 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

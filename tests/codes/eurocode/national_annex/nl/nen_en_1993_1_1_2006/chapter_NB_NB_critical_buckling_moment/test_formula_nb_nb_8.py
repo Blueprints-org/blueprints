@@ -24,6 +24,19 @@ class TestFormNBDotNB8ReductionFactorKred:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation_result_one(self) -> None:
+        """Tests the evaluation of the result if it is limited to 1."""
+        # Example values
+        alpha = 0.0
+
+        # Object to test
+        formula = FormNBDotNB8ReductionFactorKred(alpha=alpha)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 1.0
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("alpha",),
         [

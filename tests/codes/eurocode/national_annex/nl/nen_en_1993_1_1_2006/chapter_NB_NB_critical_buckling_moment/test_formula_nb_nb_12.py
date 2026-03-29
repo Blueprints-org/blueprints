@@ -23,7 +23,7 @@ class TestFormNBDotNB12ParameterS:
         formula = FormNBDotNB12ParameterS(e=e, i_w=i_w, g=g, i_t=i_t)
 
         # Expected result, manually calculated
-        manually_calculated_result = 1018.368
+        manually_calculated_result = 322.030594
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
@@ -49,14 +49,14 @@ class TestFormNBDotNB12ParameterS:
             (
                 "complete",
                 r"S = \sqrt{\frac{E \cdot I_w}{G \cdot I_t}} = "
-                r"\sqrt{\frac{210000.000 \cdot 8000000000.000}{81000.000 \cdot 200000.000}} = 1018.368 \ mm",
+                r"\sqrt{\frac{210000.000 \cdot 8000000000.000}{81000.000 \cdot 200000.000}} = 322.031 \ mm",
             ),
             (
                 "complete_with_units",
                 r"S = \sqrt{\frac{E \cdot I_w}{G \cdot I_t}} = "
-                r"\sqrt{\frac{210000.000 \ MPa \cdot 8000000000.000 \ mm^6}{81000.000 \ MPa \cdot 200000.000 \ mm^4}} = 1018.368 \ mm",
+                r"\sqrt{\frac{210000.000 \ MPa \cdot 8000000000.000 \ mm^6}{81000.000 \ MPa \cdot 200000.000 \ mm^4}} = 322.031 \ mm",
             ),
-            ("short", r"S = 1018.368 \ mm"),
+            ("short", r"S = 322.031 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
