@@ -282,15 +282,15 @@ National Annex of the Netherlands.
 | NB.NA.58       | :x:  |         |             |
 | NB.NA.59       | :x:  |         |             |
 | NB.NB.1        | :x:  |         |             |
-| NB.NB.2        | :x:  |         |             |
+| NB.NB.2        | ✓    |         | FormNBDotNB2CriticalElasticBucklingMoment |
 | NB.NB.3        | :x:  |         |             |
 | NB.NB.4        | :x:  |         |             |
 | NB.NB.5        | :x:  |         |             |
 | NB.NB.6        | :x:  |         |             |
-| NB.NB.7        | :x:  |         |             |
-| NB.NB.8        | :x:  |         |             |
-| NB.NB.9        | :x:  |         |             |
+| NB.NB.7        | ✓    |         | FormNBDotNB7ReductionFactorKred |
+| NB.NB.8        | ✓    |         | FormNBDotNB8ReductionFactorKred |
+| NB.NB.9        | ✓    |         | FormNBDotNB9Alpha |
 | NB.NB.10       | :x:  |         |             |
-| NB.NB.11       | :x:  |         |             |
-| NB.NB.12       | :x:  |         |             |
+| NB.NB.11       | ✓    |         | FormNBDotNB11CoefficientC |
+| NB.NB.12       | ✓    |         | FormNBDotNB12ParameterS |
 | NB.NB.13       | :x:  |         |             |
