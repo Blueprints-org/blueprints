@@ -104,7 +104,7 @@ Once approved, your implementation should adhere to the agreed interface and des
 * Significant deviations require additional discussion.
 * When submitting your PR, please reference the original proposal issue.
 
-??? question "What constitutes a complex feature?"
+??? question "When is a feature considered complex?"
     A complex feature is one that involves significant changes to the library’s architecture, design, or public API. Examples include:
 
     * Introducing a new core component or module
