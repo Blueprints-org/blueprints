@@ -44,8 +44,8 @@ bp = "blueprints.cli:app"
 
 [dependency-groups]
 dev = [
-    "ty==0.0.23",
-    "ruff==0.15.6",
+    "ty==0.0.27",
+    "ruff==0.15.8",
     "pre-commit==4.5.1",
     "types-shapely==2.1.0.20250917",
     "icecream==2.1.10",
@@ -65,7 +65,7 @@ docs = [
 ]
 test = [
     "pytest==9.0.2",
-    "pytest-cov==7.0.0",
+    "pytest-cov==7.1.0",
     "pytest-describe==3.1.0",
     "pytest-pspec==0.0.4",
     "pytest-raises==0.11",
