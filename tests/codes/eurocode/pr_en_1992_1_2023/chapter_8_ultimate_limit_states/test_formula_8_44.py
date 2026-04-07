@@ -11,10 +11,10 @@ from blueprints.validations import NegativeValueError
 class TestForm8Dot44StressCompressionField:
     """Validation for formula 8.44 from prEN 1992-1-1:2023."""
 
-    testdata: ClassVar[list[tuple[float, float, float, float, float, bool]]] = [
-        (2.0, 1.0, 1.0, 0.5, 20.0, True),  # OK
-        (5.0, 1.0, 1.0, 0.5, 20.0, True),  # OK
-        (5.0, 2.5, 0.4, 0.5, 20.0, False),  # Not OK
+    testdata: ClassVar[list[tuple[float, float, float, float, float, float]]] = [
+        (2.0, 1.0, 1.0, 0.5, 20.0, 4.0),
+        (5.0, 1.0, 1.0, 0.5, 20.0, 10.0),
+        (5.0, 2.5, 0.4, 0.5, 20.0, 10.0),
     ]
 
     @pytest.mark.parametrize("tau_ed,cot_theta,tan_theta,nu,f_cd,exp_result", testdata)  # noqa: PT006
@@ -97,13 +97,13 @@ class TestForm8Dot44StressCompressionField:
         [
             (
                 "complete",
-                r"CHECK \to \sigma_{Rd} = \tau_{Ed} \cdot (\cot \theta + \tan \theta) \leq \nu \cdot f_{cd} \to \sigma_{Rd} = 2.00 \cdot (2.50 + 0.40) \leq 0.50 \cdot 20.00 \to \left( 0.58 \leq 1.0 \right) \to OK",  # noqa: E501
+                r"\sigma_{Rd} = \tau_{Ed} \cdot (\cot \theta + \tan \theta) \leq \nu \cdot f_{cd} = 2.00 \cdot (2.50 + 0.40) \leq 0.50 \cdot 20.00 = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
             ),
             (
                 "complete_with_units",
-                r"CHECK \to \sigma_{Rd} = \tau_{Ed} \cdot (\cot \theta + \tan \theta) \leq \nu \cdot f_{cd} \to \sigma_{Rd} = 2.00 \ MPa \cdot (2.50 + 0.40) \leq 0.50 \cdot 20.00 \ MPa \to \left( 0.58 \leq 1.0 \right) \to OK",  # noqa: E501
+                r"\sigma_{Rd} = \tau_{Ed} \cdot (\cot \theta + \tan \theta) \leq \nu \cdot f_{cd} = 2.00 \ MPa \cdot (2.50 + 0.40) \leq 0.50 \cdot 20.00 \ MPa = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
             ),
-            ("short", r"CHECK \to OK"),
+            ("short", r"\sigma_{Rd} = 5.80 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

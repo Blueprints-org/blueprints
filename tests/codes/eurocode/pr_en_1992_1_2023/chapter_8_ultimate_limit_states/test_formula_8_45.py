@@ -19,10 +19,9 @@ class TestForm8Dot45StrengthReductionFactor:
         formula = Form8Dot45StrengthReductionFactor(epsilon_x=epsilon_x, theta=theta)
 
         # Expected result
-        expected_result = True
+        expected_result = 0.6452
 
-        assert formula == expected_result
-        assert formula.unity_check <= 1.0
+        assert expected_result == pytest.approx(formula, rel=1e-3)
 
     @pytest.mark.parametrize(
         ("epsilon_x", "theta"),
@@ -40,13 +39,13 @@ class TestForm8Dot45StrengthReductionFactor:
         [
             (
                 "complete",
-                r"v \to v = \frac{1}{1.0 + 110 \cdot (\varepsilon_x + (\varepsilon_x + 0.001) \cdot \cot^2 \theta)} \leq 1.0 \to v = \frac{1}{1.0 + 110 \cdot (0.002 + (0.002 + 0.001) \cdot 0.045)} \leq 1.0 \to \left( 0.645 \leq 1.0 \right) \to OK",  # noqa: E501
+                r"\nu = \frac{1}{1.0 + 110 \cdot (\varepsilon_x + (\varepsilon_x + 0.001) \cdot \cot^2 \theta)} \leq limit = \frac{1}{1.0 + 110 \cdot (0.002 + (0.002 + 0.001) \cdot 1.000)} \leq 1.000 = 0.645 \leq 1.000 = 0.645",  # noqa: E501
             ),
-            ("short", r"v \to OK"),
             (
                 "complete_with_units",
-                r"v \to v = \frac{1}{1.0 + 110 \cdot (\varepsilon_x + (\varepsilon_x + 0.001) \cdot \cot^2 \theta)} \leq 1.0 \to v = \frac{1}{1.0 + 110 \cdot (0.002 + (0.002 + 0.001) \cdot 0.045)} \leq 1.0 \to \left( 0.645 \leq 1.0 \right) \to OK",  # noqa: E501
+                r"\nu = \frac{1}{1.0 + 110 \cdot (\varepsilon_x + (\varepsilon_x + 0.001) \cdot \cot^2 \theta)} \leq limit = \frac{1}{1.0 + 110 \cdot (0.002 + (0.002 + 0.001) \cdot 1.000)} \leq 1.000 = 0.645 \leq 1.000 = 0.645",  # noqa: E501
             ),
+            ("short", r"\nu = 0.645"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -54,7 +53,6 @@ class TestForm8Dot45StrengthReductionFactor:
         # Example values
         epsilon_x = 0.002  # dimensionless
         theta = 45.0  # degrees
-        # TODO: Fix issue with double 'to' symbol
         # Object to test
         latex = Form8Dot45StrengthReductionFactor(epsilon_x=epsilon_x, theta=theta).latex()
 
