@@ -11,6 +11,7 @@ class Form8Dot47StrainTensionChord(Formula):
     r"""Class representing formula 8.47 for the calculation of [$\varepsilon_{xt}$].
 
     Strain of the tension chord where the following may be assumed unless more refined methods are used.
+    [$\epsilon_{xt} = \frac{F_{td}}{A_{st} \cdot E_{s}}$]
     """
 
     label = "8.47"
@@ -22,7 +23,7 @@ class Form8Dot47StrainTensionChord(Formula):
         a_st: MM2,
         e_s: MPA,
     ) -> None:
-        r"""[$\epsilon_{xt} = \frac{F_{td}}{A_{st} \cdot E_{s}}$] Strain of the tension chord (dimensionless).
+        r"""Strain of the tension chord (dimensionless).
 
         prEN 1992-1-1:2023 art. 8.2.3 (7) - Formula (8.47)
 

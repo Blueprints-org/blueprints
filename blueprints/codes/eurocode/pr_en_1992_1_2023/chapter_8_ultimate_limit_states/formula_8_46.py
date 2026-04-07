@@ -1,7 +1,5 @@
 """Formula 8.46 from prEN-1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
-import numpy as np
-
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols

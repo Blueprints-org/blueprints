@@ -65,4 +65,3 @@ class TestForm8Dot46AverageStrain:
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
-
