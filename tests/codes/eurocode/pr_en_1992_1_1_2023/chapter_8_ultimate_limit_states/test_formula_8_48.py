@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_48 import (
+from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_48 import (
     Form8Dot48StrainCompressionChordInCompression,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError

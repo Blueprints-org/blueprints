@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_45 import Form8Dot45StrengthReductionFactor
+from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_45 import Form8Dot45StrengthReductionFactor
 from blueprints.validations import NegativeValueError
 
 

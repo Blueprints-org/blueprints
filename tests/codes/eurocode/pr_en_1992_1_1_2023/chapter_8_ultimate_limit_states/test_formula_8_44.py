@@ -4,7 +4,7 @@ from typing import ClassVar
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_44 import Form8Dot44StressCompressionField
+from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_44 import Form8Dot44StressCompressionField
 from blueprints.validations import NegativeValueError
 
 

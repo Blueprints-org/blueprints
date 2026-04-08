@@ -2,12 +2,12 @@
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_49 import Form8Dot49StrainCompressionChordInTension
+from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_49 import Form8Dot49StrainCompressionChordInTension
 from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot49StrainCompressionChordInTension:
-    """Validation for formula 8.49 from prEN 1992-1-2:2023."""
+    """Validation for formula 8.49 from prEN 1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

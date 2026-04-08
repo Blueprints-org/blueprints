@@ -2,7 +2,7 @@
 
 import math
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
+from blueprints.codes.eurocode.pr_en_1992_1_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS

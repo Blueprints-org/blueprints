@@ -4,7 +4,7 @@ import operator
 from collections.abc import Callable
 from typing import Any
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
+from blueprints.codes.eurocode.pr_en_1992_1_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import DoubleComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS
