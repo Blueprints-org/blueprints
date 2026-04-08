@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_zero
 
 
 class Form8Dot45StrengthReductionFactor(Formula):
@@ -51,6 +51,7 @@ class Form8Dot45StrengthReductionFactor(Formula):
     ) -> float:
         """Evaluates part 1 of the formula, for more information see the __init__ method."""
         raise_if_negative(epsilon_x=epsilon_x)
+        raise_if_less_or_equal_to_zero(theta=theta)
         cot_theta = math.cos(math.radians(theta)) / math.sin(math.radians(theta))
         denominator = 1.0 + 110 * (epsilon_x + (epsilon_x + 0.001) * cot_theta**2)
         return 1 / denominator

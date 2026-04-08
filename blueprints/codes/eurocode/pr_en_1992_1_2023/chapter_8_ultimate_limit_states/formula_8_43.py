@@ -63,9 +63,9 @@ class Form8Dot43ShearReinforcementRatio(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             template=_equation,
             replacements={
-                r"A_{sw}": rf"{self.a_sw:.3f} \ mm^2",
-                r"b_w": rf"{self.b_w:.3f} \ mm",
-                r"s": rf"{self.s:.3f} \ mm",
+                r"A_{sw}": rf"{self.a_sw:.{n}f} \ mm^2",
+                r"b_w": rf"{self.b_w:.{n}f} \ mm",
+                r"s": rf"{self.s:.{n}f} \ mm",
             },
             unique_symbol_check=True,
         )

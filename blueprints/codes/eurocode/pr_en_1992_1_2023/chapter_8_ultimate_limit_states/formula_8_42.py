@@ -64,9 +64,9 @@ class Form8Dot42ShearStressResistanceReinforcement(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             template=_equation,
             replacements={
-                r"\rho_w": rf"{self.rho_w:.3f}",
-                r"f_{ywd}": rf"{self.f_ywd:.3f} \ MPa",
-                r"\cot \theta": rf"{self.cot_theta:.3f}",
+                r"\rho_w": rf"{self.rho_w:.{n}f}",
+                r"f_{ywd}": rf"{self.f_ywd:.{n}f} \ MPa",
+                r"\cot \theta": rf"{self.cot_theta:.{n}f}",
             },
             unique_symbol_check=True,
         )

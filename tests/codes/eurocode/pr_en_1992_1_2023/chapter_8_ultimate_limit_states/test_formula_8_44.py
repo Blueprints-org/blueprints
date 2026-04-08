@@ -25,7 +25,7 @@ class TestForm8Dot44StressCompressionField:
         tan_theta: float,
         nu: float,
         f_cd: float,
-        exp_result: bool,
+        exp_result: float,
     ) -> None:
         """Tests the evaluation of the result."""
         formula = Form8Dot44StressCompressionField(

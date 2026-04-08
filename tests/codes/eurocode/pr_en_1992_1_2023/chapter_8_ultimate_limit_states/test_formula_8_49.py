@@ -1,4 +1,4 @@
-"""Testing formula 8.49 of PR EN 1992-1-2:2023."""
+"""Testing formula 8.49 of prEN 1992-1-2:2023."""
 
 import pytest
 
@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot49StrainCompressionChordInTension:
-    """Validation for formula 8.49 from PR EN 1992-1-2:2023."""
+    """Validation for formula 8.49 from prEN 1992-1-2:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

@@ -1,4 +1,4 @@
-"""Formula 8.48 from PR EN 1992-1-2:2023: Chapter 8 - Ultimate Limit States."""
+"""Formula 8.48 from prEN 1992-1-2:2023: Chapter 8 - Ultimate Limit States."""
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
@@ -24,9 +24,9 @@ class Form8Dot48StrainCompressionChordInCompression(Formula):
         a_cc: MM2,
         e_c: MPA,
     ) -> None:
-        r"""[$\varepsilon_{sc}$] Strain in the compression chord if the flexural compression chord is in compression [$-$].
+        r"""[$\varepsilon_{xc}$] Strain in the compression chord if the flexural compression chord is in compression [$-$].
 
-        PR EN 1992-1-2:2023 art.8 - Formula (8.48)
+        prEN 1992-1-2:2023 art.8 - Formula (8.48)
 
         Parameters
         ----------
