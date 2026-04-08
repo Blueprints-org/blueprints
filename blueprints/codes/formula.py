@@ -11,7 +11,7 @@ from blueprints.codes.latex_formula import LatexFormula
 class Formula(float, ABC):
     """Abstract base class for formulas used in the codes."""
 
-    def __new__(cls, *args, **kwargs) -> "Formula":
+    def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
         result = cls._evaluate(*args, **kwargs)
         instance = float.__new__(cls, result)
