@@ -58,8 +58,9 @@ class Form8Dot41InclinationCompressionField(DoubleComparisonFormula):
         return 1.0
 
     @staticmethod
-    def _evaluate_val(cot_theta: DIMENSIONLESS, cot_theta_min: DIMENSIONLESS, *_args, **_kwargs) -> float:
+    def _evaluate_val(cot_theta: DIMENSIONLESS, cot_theta_min: DIMENSIONLESS, *_args, **_kwargs) -> float:  # noqa: ARG004
         """Evaluates the value part of the double comparison; see __init__ for details."""
+        # cot_theta_min is also included as argument in order to prevent usage of wrong values when used positionally.
         raise_if_less_or_equal_to_zero(value=cot_theta)
         return cot_theta
 
