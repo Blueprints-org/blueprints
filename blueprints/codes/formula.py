@@ -111,6 +111,9 @@ class Formula(float, ABC):
 class ComparisonFormula(Formula):
     """Base class for comparison formulas used in the codes."""
 
+    _lhs: float
+    _rhs: float
+
     def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
         lhs = cls._evaluate_lhs(*args, **kwargs)
@@ -158,7 +161,7 @@ class ComparisonFormula(Formula):
         float
             The left-hand side value of the comparison.
         """
-        return self._lhs  # type: ignore[attr-defined]
+        return self._lhs
 
     @property
     def rhs(self) -> float:
@@ -169,7 +172,7 @@ class ComparisonFormula(Formula):
         float
             The right-hand side value of the comparison.
         """
-        return self._rhs  # type: ignore[attr-defined]
+        return self._rhs
 
     @property
     def unity_check(self) -> float:
@@ -243,6 +246,10 @@ class DoubleComparisonFormula(Formula):
     Mixed directions (e.g., < and >) are not allowed.
     """
 
+    _lhs: float
+    _val: float
+    _rhs: float
+
     def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
         lhs = cls._evaluate_lhs(*args, **kwargs)
@@ -314,7 +321,7 @@ class DoubleComparisonFormula(Formula):
         float
             The left-hand side value of the comparison.
         """
-        return self._lhs  # type: ignore[attr-defined]
+        return self._lhs
 
     @property
     def val(self) -> float:
@@ -325,7 +332,7 @@ class DoubleComparisonFormula(Formula):
         float
             The left-hand side value of the comparison.
         """
-        return self._val  # type: ignore[attr-defined]
+        return self._val
 
     @property
     def rhs(self) -> float:
@@ -336,7 +343,7 @@ class DoubleComparisonFormula(Formula):
         float
             The right-hand side value of the comparison.
         """
-        return self._rhs  # type: ignore[attr-defined]
+        return self._rhs
 
     def __bool__(self) -> bool:
         """Return whether the double comparison condition is satisfied.
