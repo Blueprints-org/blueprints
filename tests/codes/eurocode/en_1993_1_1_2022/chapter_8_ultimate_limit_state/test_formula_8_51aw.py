@@ -29,6 +29,7 @@ class TestForm8Dot51awHollowSections:
             (-7000.0, 200.0, 10.0),  # a is negative
             (7000.0, -200.0, 10.0),  # b is negative
             (7000.0, 200.0, -10.0),  # t is negative
+            (500.0, 200.0, 10.0),  # 2*b*t=4000 > a=500, giving negative a_w
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, t: float) -> None:
@@ -90,6 +91,7 @@ class TestForm8Dot51awWeldedBoxSections:
             (-7000.0, 200.0, 10.0),  # a is negative
             (7000.0, -200.0, 10.0),  # b is negative
             (7000.0, 200.0, -10.0),  # t_f is negative
+            (500.0, 200.0, 10.0),  # 2*b*t_f=4000 > a=500, giving negative a_w
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, t_f: float) -> None:
