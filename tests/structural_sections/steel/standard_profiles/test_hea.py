@@ -46,3 +46,10 @@ class TestHEA:
 
         profile3 = HEA.HEA300
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the HEA class yields valid profiles."""
+        for profile in HEA:
+            assert isinstance(profile, IProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0

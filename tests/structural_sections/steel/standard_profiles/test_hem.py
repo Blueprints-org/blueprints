@@ -46,3 +46,10 @@ class TestHEM:
 
         profile3 = HEM.HEM300
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the HEM class yields valid profiles."""
+        for profile in HEM:
+            assert isinstance(profile, IProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0
