@@ -1,8 +1,8 @@
-"""Testing formula 8.52af from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+"""Testing formula 8.52af from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_52af import (
+from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_52af import (
     Form8Dot52afHollowSections,
     Form8Dot52afWeldedBoxSections,
 )
@@ -10,7 +10,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot52afHollowSections:
-    """Validation for formula 8.52af (hollow sections) from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.52af (hollow sections) from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -71,7 +71,7 @@ class TestForm8Dot52afHollowSections:
 
 
 class TestForm8Dot52afWeldedBoxSections:
-    """Validation for formula 8.52af (welded box sections) from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+    """Validation for formula 8.52af (welded box sections) from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
