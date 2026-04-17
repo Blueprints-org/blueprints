@@ -63,11 +63,21 @@ class SteelCrossSection:
         hot_rolled_profiles = [(cls, "_database") for cls in (IPE, RHS, SHS, HEB, HEA, HEM)]
         cold_formed_profiles = [(cls, "_database") for cls in (RHSCF, SHSCF)]
         if self._set_fabrication_if_in_db(
-            profile_name, corrosion, corrosion_inside, corrosion_outside, hot_rolled_profiles, FabricationMethod.HOT_ROLLED
+            profile_name,
+            corrosion,
+            corrosion_inside,
+            corrosion_outside,
+            hot_rolled_profiles,  # ty: ignore[invalid-argument-type]
+            FabricationMethod.HOT_ROLLED,
         ):
             return
         self._set_fabrication_if_in_db(
-            profile_name, corrosion, corrosion_inside, corrosion_outside, cold_formed_profiles, FabricationMethod.COLD_FORMED
+            profile_name,
+            corrosion,
+            corrosion_inside,
+            corrosion_outside,
+            cold_formed_profiles,  # ty: ignore[invalid-argument-type]
+            FabricationMethod.COLD_FORMED,
         )
 
     @staticmethod
