@@ -4,12 +4,12 @@ Internal forces on line, beam, member. Result in member axis (not in principal a
 """
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 from blueprints.type_alias import KN, KNM, M
 
 
-class ResultOn(str, Enum):
+class ResultOn(StrEnum):
     """Enumeration for where the internal force result is located.
 
     Following SAF standard specification for ResultInternalForce1D.
@@ -19,7 +19,7 @@ class ResultOn(str, Enum):
     ON_RIB = "On rib"
 
 
-class ResultFor(str, Enum):
+class ResultFor(StrEnum):
     """Enumeration for the source type of the internal force result.
 
     Following SAF standard specification for ResultInternalForce1D.
