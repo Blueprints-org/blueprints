@@ -8,20 +8,12 @@ import re
 from pathlib import Path
 from typing import Any, cast
 
-try:
-    from googletrans import Translator
-except ImportError:  # pragma: no cover
-    raise ImportError(
-        "\n\nThe translate features require the translate module of blueprints. Install it through:\n"
-        "`pip install blueprints[translate]`\n"
-        "or using uv:\n"
-        "`uv add blueprints[translate]`\n"
-    )  # pragma: no cover
+from googletrans import Translator
 
 
 class LatexTranslator:
     r"""
-    Utility class for extracting and translating LaTeX text.
+    Utility class for extracting and translating LaTeX text. Note: this feature is slow in a .ipynb notebook environment.
 
     Supports translation between any language pair when using a CSV translation file.
     Falls back to Google Translate for text not found in the CSV.
@@ -187,6 +179,10 @@ class LatexTranslator:
                     return result
         return None
 
+    def _remove_zero_width_spaces(self, s: str) -> str:
+        """Remove all zero-width space (U+200B) characters from a string."""
+        return s.replace("\u200b", "")
+
     def _translate_bulk(self, texts: list) -> list[str | None]:
         r"""
         Translate a list of strings to the destination language.
@@ -217,11 +213,13 @@ class LatexTranslator:
 
         for i, t in enumerate(texts):
             if t in translation_dict:
-                results.append(translation_dict[t])
+                clean_translation = self._remove_zero_width_spaces(translation_dict[t])
+                results.append(clean_translation)
             else:
                 wildcard_result = self._wildcard_match(t, translation_dict)
                 if wildcard_result is not None:
-                    results.append(wildcard_result)
+                    clean_wildcard = self._remove_zero_width_spaces(wildcard_result)
+                    results.append(clean_wildcard)
                 else:
                     results.append(None)
                     # Extract leading and trailing spaces
@@ -260,7 +258,8 @@ class LatexTranslator:
 
             # Restore leading and trailing spaces
             for idx, val, (leading, trailing) in zip(missing_indices, translated_texts, missing_spaces):
-                results[idx] = leading + val + trailing
+                clean_val = self._remove_zero_width_spaces(val)
+                results[idx] = leading + clean_val + trailing
         return results
 
     @staticmethod
@@ -343,7 +342,7 @@ class LatexTranslator:
         """
         replacement_index = 0
 
-        def _repl(_match: re.Match) -> str:
+        def _repl(_: re.Match) -> str:
             nonlocal replacement_index
             replacement = replacements[replacement_index]
             replacement_index += 1
@@ -406,7 +405,7 @@ class LatexTranslator:
 
         # Match table rows (content between \\ or at end of tabular)
         # Process content within tabular environments
-        def _process_tabular(match: re.Match) -> str:  # noqa: C901
+        def _process_tabular(match: re.Match) -> str:
             nonlocal replacement_index
             tabular_start = match.group(1)  # \begin{tabular}{...}
             tabular_content = match.group(2)
@@ -436,17 +435,19 @@ class LatexTranslator:
                         modified_row = row
                         cells = row.split("&")
 
-                        for cell in cells:
+                        for i, cell in enumerate(cells):
                             cell_stripped = cell.strip()
+                            # Only replace if cell is plain text (no LaTeX except allowed text commands)
                             if cell_stripped and not re.search(r"\\(?!text\{|txt\{|textbf\{|textit\{)", cell_stripped):
                                 plain_text = re.sub(r"\\(?:text|txt|textbf|textit)\{[^}]*\}", "", cell_stripped)
                                 if plain_text.strip() and replacement_index < len(replacements):
-                                    new_cell_content = cell_stripped.replace(plain_text.strip(), replacements[replacement_index])
-                                    # Only update and increment if the replacement actually changed the cell
-                                    if new_cell_content != cell_stripped:
-                                        # Replace in the modified_row, preserving original cell spacing
-                                        modified_row = modified_row.replace(cell, cell.replace(cell_stripped, new_cell_content), 1)
-                                        replacement_index += 1
+                                    # Replace the entire cell content (preserving original leading/trailing spaces)
+                                    leading = cell[: len(cell) - len(cell.lstrip())]
+                                    trailing = cell[len(cell.rstrip()) :]
+                                    cells[i] = f"{leading}{replacements[replacement_index]}{trailing}"
+                                    replacement_index += 1
+                        # Reconstruct the row with original ampersands and spacing
+                        modified_row = " & ".join(cells)
 
                         result += modified_row.rstrip() + " \\\\"
 

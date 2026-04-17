@@ -75,6 +75,11 @@ class CircularCorneredProfile(Profile):
             raise ValueError(f"corner_direction must be one of 0, 1, 2, or 3, got {self.corner_direction}")
 
     @property
+    def max_thickness(self) -> MM:
+        """Maximum element thickness of the corner profile [mm]."""
+        return min(self.thickness_vertical, self.thickness_horizontal)
+
+    @property
     def mesh_creator(self) -> partial:
         """Mesh settings for the geometrical calculations of the corner profile."""
         # The equation for the mesh length is the result of a fitting procedure to ensure
