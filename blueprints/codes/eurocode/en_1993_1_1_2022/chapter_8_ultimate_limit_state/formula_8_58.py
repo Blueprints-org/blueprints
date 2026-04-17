@@ -1,21 +1,21 @@
-"""Formula 8.57 from EN 1993-1-1:2025: Chapter 8 - Ultimate limit state."""
+"""Formula 8.58 from EN 1993-1-1:2022: Chapter 8 - Ultimate limit state."""
 
 import operator
 from collections.abc import Callable
 from typing import Any
 
-from blueprints.codes.eurocode.en_1993_1_1_2025 import EN_1993_1_1_2025
+from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot57LongitudinalStressClass3CrossSections(ComparisonFormula):
-    r"""Class representing formula 8.57 for Class 3 cross-sections: [$\sigma_{x,Ed} \leq \frac{f_y}{\gamma_{M0}}$]."""
+class Form8Dot58LongitudinalStressClass4CrossSections(ComparisonFormula):
+    r"""Class representing formula 8.58 for Class 4 cross-sections: [$\sigma_{x,Ed} \leq \frac{f_y}{\gamma_{M0}}$]."""
 
-    label = "8.57"
-    source_document = EN_1993_1_1_2025
+    label = "8.58"
+    source_document = EN_1993_1_1_2022
 
     def __init__(
         self,
@@ -23,11 +23,11 @@ class Form8Dot57LongitudinalStressClass3CrossSections(ComparisonFormula):
         f_y: MPA,
         gamma_m0: DIMENSIONLESS,
     ) -> None:
-        r"""Longitudinal stress check for Class 3 cross-sections in the absence of shear force.
+        r"""Longitudinal stress check for Class 4 cross-sections in the absence of shear force.
         The maximum longitudinal stress [$\sigma_{x,Ed}$] should not exceed the yield strength
         divided by the partial safety factor [$\frac{f_y}{\gamma_{M0}}$].
 
-        EN 1993-1-1:2025 art. 8.2.9.2(1) - Formula (8.57)
+        EN 1993-1-1:2022 art. 8.2.9.3(1) - Formula (8.58)
 
         Parameters
         ----------
@@ -74,7 +74,7 @@ class Form8Dot57LongitudinalStressClass3CrossSections(ComparisonFormula):
         return f_y / gamma_m0
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 8.57."""
+        """Returns LatexFormula object for formula 8.58."""
         _equation: str = r"\sigma_{x,Ed} \leq \frac{f_y}{\gamma_{M0}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,

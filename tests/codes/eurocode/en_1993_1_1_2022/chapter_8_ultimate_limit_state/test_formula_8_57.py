@@ -1,13 +1,13 @@
-"""Testing formula 8.58 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+"""Testing formula 8.57 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_1_2025.chapter_8_ultimate_limit_state.formula_8_58 import Form8Dot58LongitudinalStressClass4CrossSections
+from blueprints.codes.eurocode.en_1993_1_1_2022.chapter_8_ultimate_limit_state.formula_8_57 import Form8Dot57LongitudinalStressClass3CrossSections
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestForm8Dot58LongitudinalStressClass4CrossSections:
-    """Validation for formula 8.58 from EN 1993-1-1:2025, chapter 8, ultimate limit state."""
+class TestForm8Dot57LongitudinalStressClass3CrossSections:
+    """Validation for formula 8.57 from EN 1993-1-1:2022, chapter 8, ultimate limit state."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -17,7 +17,7 @@ class TestForm8Dot58LongitudinalStressClass4CrossSections:
         gamma_m0 = 1.0  # -
 
         # Object to test
-        formula = Form8Dot58LongitudinalStressClass4CrossSections(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0)
+        formula = Form8Dot57LongitudinalStressClass3CrossSections(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0)
 
         # Expected result, manually calculated
         expected_result = True
@@ -37,7 +37,7 @@ class TestForm8Dot58LongitudinalStressClass4CrossSections:
     def test_raise_error_when_invalid_values_are_given(self, sigma_x_ed: float, f_y: float, gamma_m0: float) -> None:
         """Test invalid values."""
         with pytest.raises((LessOrEqualToZeroError, NegativeValueError)):
-            Form8Dot58LongitudinalStressClass4CrossSections(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0)
+            Form8Dot57LongitudinalStressClass3CrossSections(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -61,7 +61,7 @@ class TestForm8Dot58LongitudinalStressClass4CrossSections:
         gamma_m0 = 1.0  # -
 
         # Object to test
-        latex = Form8Dot58LongitudinalStressClass4CrossSections(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0).latex()
+        latex = Form8Dot57LongitudinalStressClass3CrossSections(sigma_x_ed=sigma_x_ed, f_y=f_y, gamma_m0=gamma_m0).latex()
 
         actual = {
             "complete": latex.complete,
