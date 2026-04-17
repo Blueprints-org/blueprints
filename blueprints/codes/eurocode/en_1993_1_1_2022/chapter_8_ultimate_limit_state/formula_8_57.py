@@ -2,7 +2,6 @@
 
 import operator
 from collections.abc import Callable
-from typing import Any
 
 from blueprints.codes.eurocode.en_1993_1_1_2022 import EN_1993_1_1_2022
 from blueprints.codes.formula import ComparisonFormula
@@ -45,7 +44,7 @@ class Form8Dot57LongitudinalStressClass3CrossSections(ComparisonFormula):
         self.gamma_m0 = gamma_m0
 
     @classmethod
-    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+    def _comparison_operator(cls) -> Callable[[float, float], bool]:
         """Returns the comparison operator for this formula.
         LHS should be less than or equal to RHS.
         """
@@ -78,21 +77,21 @@ class Form8Dot57LongitudinalStressClass3CrossSections(ComparisonFormula):
         _equation: str = r"\sigma_{x,Ed} \leq \frac{f_y}{\gamma_{M0}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"\sigma_{x,Ed}": f"{self.sigma_x_ed:.{n}f}",
                 r"f_y": f"{self.f_y:.{n}f}",
                 r"\gamma_{M0}": f"{self.gamma_m0:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"\sigma_{x,Ed}": rf"{self.sigma_x_ed:.{n}f} \ MPa",
                 r"f_y": rf"{self.f_y:.{n}f} \ MPa",
                 r"\gamma_{M0}": rf"{self.gamma_m0:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         return LatexFormula(
             return_symbol=r"CHECK",

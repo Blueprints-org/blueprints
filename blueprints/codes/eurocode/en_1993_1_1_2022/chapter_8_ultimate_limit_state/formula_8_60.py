@@ -49,19 +49,19 @@ class Form8Dot60ReducedYieldStrength(Formula):
 
         _numeric_equation: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"\rho": f"{self.rho:.{n}f}",
                 r"f_y": f"{self.f_y:.{n}f}",
             },
-            False,
+            unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
-            {
+            replacements={
                 r"\rho": f"{self.rho:.{n}f}",
                 r"f_y": rf"{self.f_y:.{n}f} \ MPa",
             },
-            True,
+            unique_symbol_check=True,
         )
 
         return LatexFormula(
