@@ -563,6 +563,7 @@ class Report:
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
             Warning: only English is officially supported in Blueprints (default is "en" for English).
+            Note: this feature is slow in a .ipynb notebook environment.
 
         Returns
         -------
@@ -695,6 +696,7 @@ class Report:
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
             Warning: only English is officially supported in Blueprints (default is "en" for English).
+            Note: this feature is slow in a .ipynb notebook environment.
 
         Returns
         -------
@@ -762,6 +764,7 @@ class Report:
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
             Warning: only English is officially supported in Blueprints (default is "en" for English).
+            Note: this feature is slow in a .ipynb notebook environment.
         cleanup : bool, optional
             Whether to remove temporary LaTeX files after compilation. Default is True.
 

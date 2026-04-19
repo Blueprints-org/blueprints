@@ -1,7 +1,9 @@
 """Plotter for Reinforced Rectangular Cross-Sections."""
 
-# ruff: noqa: PLR0913, F821
-from typing import TypeVar
+# ruff: noqa: PLR0913
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, TypeVar
 
 from matplotlib import patches as mplpatches
 from matplotlib import pyplot as plt
@@ -10,7 +12,10 @@ from shapely import Point
 
 from blueprints.structural_sections.concrete.rebar import Rebar
 
-T = TypeVar("T", bound="RectangularReinforcedCrossSection")  # type: ignore[name-defined]
+if TYPE_CHECKING:
+    from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+
+T = TypeVar("T", bound="RectangularReinforcedCrossSection")
 
 RCS_CROSS_SECTION_COLOR = (0.827, 0.827, 0.827)
 STIRRUP_COLOR = (0.412, 0.412, 0.412)

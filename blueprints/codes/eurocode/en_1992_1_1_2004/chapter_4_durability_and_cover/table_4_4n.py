@@ -20,7 +20,7 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
     def __init__(
         self,
         exposure_classes: Table4Dot1ExposureClasses,
-        structural_class: ConcreteStructuralClassBase,
+        structural_class: ConcreteStructuralClassBase | int,
     ) -> None:
         r"""[$c_{min,dur}$] Calculates the minimum concrete cover with regard to durability [$mm$] for reinforcement steel.
 
@@ -30,17 +30,17 @@ class Table4Dot4nMinimumCoverDurabilityReinforcementSteel(Formula):
         ----------
         exposure_classes: Table4Dot1ExposureClasses
             The exposure classes of the concrete. Use the [$Table4Dot1ExposureClasses$] class. [$-$]
-        structural_class: ConcreteStructuralClassBase
-            The structural class of the concrete. Use the [$Table4Dot3ConcreteStructuralClass$] class. [$-$]
+        structural_class: ConcreteStructuralClassBase | int
+            The structural class of the concrete. Use the [$Table4Dot3ConcreteStructuralClass$] class or an integer. [$-$]
         """
         super().__init__()
         self.exposure_classes: Table4Dot1ExposureClasses = exposure_classes
-        self.structural_class: ConcreteStructuralClassBase = structural_class
+        self.structural_class: ConcreteStructuralClassBase | int = structural_class
 
     @staticmethod
     def _evaluate(
         exposure_classes: Table4Dot1ExposureClasses,
-        structural_class: ConcreteStructuralClassBase,
+        structural_class: ConcreteStructuralClassBase | int,
     ) -> MM:
         """For more detailed documentation see the class docstring."""
         if not isinstance(structural_class, int):
