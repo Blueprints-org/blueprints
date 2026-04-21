@@ -26,11 +26,17 @@ class TestForm8Dot60ReducedYieldStrength:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation_boundary_rho_one(self) -> None:
+        """Tests the boundary case where rho=1.0, meaning the full shear area is used for shear."""
+        formula = Form8Dot60ReducedYieldStrength(rho=1.0, f_y=355.0)
+        assert formula == pytest.approx(expected=0.0, abs=1e-10)
+
     @pytest.mark.parametrize(
         ("rho", "f_y"),
         [
             (-0.25, 355.0),  # rho is negative
             (0.25, -355.0),  # f_y is negative
+            (1.5, 355.0),  # rho > 1 is physically impossible
         ],
     )
     def test_raise_error_when_negative_values_are_given(self, rho: float, f_y: float) -> None:

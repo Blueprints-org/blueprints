@@ -40,8 +40,10 @@ class Form8Dot60ReducedYieldStrength(Formula):
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(rho=rho, f_y=f_y)
+        one_minus_rho = 1 - rho
+        raise_if_negative(one_minus_rho=one_minus_rho)
 
-        return (1 - rho) * f_y
+        return one_minus_rho * f_y
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.60."""
