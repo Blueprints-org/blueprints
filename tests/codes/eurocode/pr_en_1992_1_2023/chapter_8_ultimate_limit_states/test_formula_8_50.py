@@ -1,7 +1,8 @@
 """Testing formula 8.50 of prEN 1992-1:2023."""
 
-import pytest
 import math
+
+import pytest
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_50 import (
     Form8Dot50AdditionalTensileForceDueToShear,
@@ -28,7 +29,7 @@ class TestForm8Dot50AdditionalTensileForceDueToShear:
         assert test_formula == pytest.approx(manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        "v_ed,theta",
+        ("v_ed", "theta"),
         [
             (-1000.0, 21.8),  # v_ed negative
         ],
@@ -39,7 +40,7 @@ class TestForm8Dot50AdditionalTensileForceDueToShear:
             Form8Dot50AdditionalTensileForceDueToShear(v_ed=v_ed, theta=theta)
 
     @pytest.mark.parametrize(
-        "v_ed,theta",
+        ("v_ed", "theta"),
         [
             (1000.0, 0.0),      # theta zero
             (1000.0, -21.8),     # theta negative

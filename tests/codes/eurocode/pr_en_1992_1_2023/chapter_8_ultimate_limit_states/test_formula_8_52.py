@@ -22,14 +22,14 @@ class TestForm8Dot52CompressiveChordForceDueToShear:
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        "m_ed, z, n_vd, n_ed",
+        ("m_ed", "z", "n_vd", "n_ed"),
         [
             (-120e6, 300.0, 2000.0, 10000.0),  # m_ed negative
             (500000.0, 300.0, -2000.0, 10000.0),  # n_vd negative
             (500000.0, 300.0, 2000.0, -10000.0),  # n_ed negative
         ],
     )
-    def test_raise_error_when_negative_values_are_given(self, m_ed, z, n_vd, n_ed) -> None:
+    def test_raise_error_when_negative_values_are_given(self, m_ed: float, z: float, n_vd: float, n_ed: float) -> None:
         """Test negative values for m_ed, n_vd, n_ed."""
         with pytest.raises(NegativeValueError):
             Form8Dot52CompressiveChordForceDueToShear(m_ed=m_ed, z=z, n_vd=n_vd, n_ed=n_ed)
@@ -38,7 +38,7 @@ class TestForm8Dot52CompressiveChordForceDueToShear:
         "z",
         [0.0, -300.0],
     )
-    def test_raise_error_when_z_is_zero_or_negative(self, z) -> None:
+    def test_raise_error_when_z_is_zero_or_negative(self, z: float) -> None:
         """Test zero and negative values for z."""
         m_ed = 120e6
         n_vd = 2000.0
@@ -51,7 +51,8 @@ class TestForm8Dot52CompressiveChordForceDueToShear:
         [
             (
                 "complete",
-                r"F_{cd} = \frac{M_{Ed}}{z} - \frac{N_{Vd} + N_{Ed}}{2} = \frac{120000000.000}{300.000} - \frac{2000.000 + 10000.000}{2} = 394000.000 \ N",
+                r"F_{cd} = \frac{M_{Ed}}{z} - \frac{N_{Vd} + N_{Ed}}{2} = \frac{120000000.000}{300.000} - \frac{"
+                r"2000.000 + 10000.000}{2} = 394000.000 \ N",
             ),
             (
                 "short",

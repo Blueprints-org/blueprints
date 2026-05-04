@@ -1,11 +1,10 @@
 """Formula 8.52 from prEN 1992-1-2023: Chapter 8 - Ultimate Limit State."""
 
-import numpy as np
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import N, DIMENSIONLESS
+from blueprints.type_alias import DIMENSIONLESS, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -25,6 +24,7 @@ class Form8Dot52CompressiveChordForceDueToShear(Formula):
         r"""[$F_{cd}$] Calculation of the compressive chord force due to shear [$N$].
 
         prEN 1992-1-1:2023 art 8.2.3 (8) - Formula (8.52)
+
         Parameters
         ----------
         m_ed : N

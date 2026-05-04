@@ -1,11 +1,10 @@
 """Formula 8.51 from prEN 1992-1-1:2023: Chapter 8 - Ultimate Limit State."""
 
-import numpy as np
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import N, NMM, MM, DIMENSIONLESS
+from blueprints.type_alias import MM, NMM, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -88,16 +87,3 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
             comparison_operator_label="=",
             unit="N",
         )
-
-
-if __name__ == '__main__':
-    my_form = Form8Dot51TensileChordForceDueToShear(
-        m_ed=200e6,
-        z=150,
-        n_vd=250,
-        n_ed=1000
-    )
-    latex_rep = my_form.latex()
-    print(latex_rep.complete)
-    print(latex_rep.short)
-    print(latex_rep.complete_with_units)
