@@ -1,4 +1,4 @@
-"""Formula 8.52 from prEN 1992-1-2023: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.52 from prEN 1992-1-1:2023: Chapter 8 - Ultimate Limit State."""
 
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
