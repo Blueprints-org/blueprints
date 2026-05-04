@@ -1,41 +1,40 @@
-"""Formula 8.51 from prEN 1992-1-1:2023: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.52 from prEN 1992-1-2023: Chapter 8 - Ultimate Limit State."""
 
 import numpy as np
 
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import N, NMM, MM, DIMENSIONLESS
+from blueprints.type_alias import N, DIMENSIONLESS
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot51TensileChordForceDueToShear(Formula):
-    r"""Class representing formula 8.51 for the calculation of the tensile cord force due to shear."""
+class Form8Dot52CompressiveChordForceDueToShear(Formula):
+    r"""Class representing formula 8.52 for the calculation of the compressive chord force due to shear."""
 
-    label = "8.51"
+    label = "8.52"
     source_document = PR_EN_1992_1_1_2023
 
     def __init__(
             self,
-            m_ed: NMM,
-            z: MM,
+            m_ed: N,
+            z: DIMENSIONLESS,
             n_vd: N,
             n_ed: N,
     ) -> None:
-        r"""[$F_{td}$] Calculation of tensile chord force due to shear[$N$].
+        r"""[$F_{cd}$] Calculation of the compressive chord force due to shear [$N$].
 
-        prEN 1992-1-1:2023 art.8.2.3 (8) - Formula (8.51)
-
+        prEN 1992-1-1:2023 art 8.2.3 (8) - Formula (8.52)
         Parameters
         ----------
-        m_ed : NMM
-            [$M_{Ed}$] Design bending moment [$Nmm$].
-        z : MM
-            [$z$] Internal lever arm [$mm$].
+        m_ed : N
+            [$M_{Ed}$] Design moment at the section [$Nmm$].
+        z : DIMENSIONLESS
+            [$z$] Lever arm [$mm$].
         n_vd : N
             [$N_{Vd}$] Additional tensile axial force due to shear [$N$].
         n_ed : N
-            [$N_{Ed}$] Design axial force [$N$].
+            [$N_{Ed}$] Axial force in the section [$N$].
         """
         super().__init__()
         self.m_ed = m_ed
@@ -45,8 +44,8 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
 
     @staticmethod
     def _evaluate(
-            m_ed: NMM,
-            z: MM,
+            m_ed: N,
+            z: DIMENSIONLESS,
             n_vd: N,
             n_ed: N,
     ) -> N:
@@ -54,11 +53,11 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
         raise_if_less_or_equal_to_zero(z=z)
         raise_if_negative(m_ed=m_ed, n_vd=n_vd, n_ed=n_ed)
 
-        return m_ed / z + (n_vd + n_ed) / 2
+        return m_ed / z - (n_vd + n_ed) / 2
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 8.51."""
-        _equation: str = r"\frac{M_{Ed}}{z} + \frac{N_{Vd} + N_{Ed}}{2}"
+        """Returns LatexFormula object for formula 8.52."""
+        _equation: str = r"\frac{M_{Ed}}{z} - \frac{N_{Vd} + N_{Ed}}{2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -80,7 +79,7 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
             True,
         )
         return LatexFormula(
-            return_symbol=r"F_{td}",
+            return_symbol=r"F_{cd}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
@@ -88,16 +87,3 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
             comparison_operator_label="=",
             unit="N",
         )
-
-
-if __name__ == '__main__':
-    my_form = Form8Dot51TensileChordForceDueToShear(
-        m_ed=200e6,
-        z=150,
-        n_vd=250,
-        n_ed=1000
-    )
-    latex_rep = my_form.latex()
-    print(latex_rep.complete)
-    print(latex_rep.short)
-    print(latex_rep.complete_with_units)
