@@ -1,6 +1,5 @@
 """Formula 8.51 from prEN 1992-1-1:2023: Chapter 8 - Ultimate Limit State."""
 
-
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
@@ -15,11 +14,11 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
     source_document = PR_EN_1992_1_1_2023
 
     def __init__(
-            self,
-            m_ed: NMM,
-            z: MM,
-            n_vd: N,
-            n_ed: N,
+        self,
+        m_ed: NMM,
+        z: MM,
+        n_vd: N,
+        n_ed: N,
     ) -> None:
         r"""[$F_{td}$] Calculation of tensile chord force due to shear[$N$].
 
@@ -44,10 +43,10 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
 
     @staticmethod
     def _evaluate(
-            m_ed: NMM,
-            z: MM,
-            n_vd: N,
-            n_ed: N,
+        m_ed: NMM,
+        z: MM,
+        n_vd: N,
+        n_ed: N,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(z=z)

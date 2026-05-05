@@ -42,8 +42,8 @@ class TestForm8Dot50AdditionalTensileForceDueToShear:
     @pytest.mark.parametrize(
         ("v_ed", "theta"),
         [
-            (1000.0, 0.0),      # theta zero
-            (1000.0, -21.8),     # theta negative
+            (1000.0, 0.0),  # theta zero
+            (1000.0, -21.8),  # theta negative
         ],
     )
     def test_raise_error_when_invalid_theta(self, v_ed: float, theta: float) -> None:
@@ -54,14 +54,8 @@ class TestForm8Dot50AdditionalTensileForceDueToShear:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            (
-                "complete",
-                r"N_{Vd} = |V_{Ed}| \cdot \cot\theta = |1200000.000| \cdot \cot21.800 = 3000214.035 \ N"
-            ),
-            (
-                "short",
-                r"N_{Vd} = 3000214.035 \ N"
-            ),
+            ("complete", r"N_{Vd} = |V_{Ed}| \cdot \cot\theta = |1200000.000| \cdot \cot21.800 = 3000214.035 \ N"),
+            ("short", r"N_{Vd} = 3000214.035 \ N"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

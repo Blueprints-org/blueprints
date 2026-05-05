@@ -14,8 +14,8 @@ class TestForm8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads:
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         m_ed_max = 120e6  # Nmm
-        z = 300.0            # mm
-        n_ed = 10000.0       # N
+        z = 300.0  # mm
+        n_ed = 10000.0  # N
 
         formula = Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads(m_ed_max=m_ed_max, z=z, n_ed=n_ed)
         manually_calculated_result = m_ed_max / z + n_ed / 2

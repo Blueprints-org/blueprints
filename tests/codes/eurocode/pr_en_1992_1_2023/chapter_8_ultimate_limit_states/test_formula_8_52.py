@@ -12,9 +12,9 @@ class TestForm8Dot52CompressiveChordForceDueToShear:
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         m_ed = 120e6  # Nmm
-        z = 300.0        # mm
-        n_vd = 2000.0   # N
-        n_ed = 10000.0   # N
+        z = 300.0  # mm
+        n_vd = 2000.0  # N
+        n_ed = 10000.0  # N
 
         formula = Form8Dot52CompressiveChordForceDueToShear(m_ed=m_ed, z=z, n_vd=n_vd, n_ed=n_ed)
         manually_calculated_result = 120e6 / 300.0 - (2000.0 + 10000.0) / 2  # N
