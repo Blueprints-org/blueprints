@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM2
 from blueprints.validations import raise_if_negative
 
@@ -47,10 +47,31 @@ class Form8Dot13AdditionalShearReinforcement(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.13."""
+        _equation: str = r"0.25 \cdot A_s \cdot n_2"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"A_s": f"{self.a_s:.{n}f}",
+                r"n_2": f"{self.n_2:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"A_s": rf"{self.a_s:.{n}f} \ mm^2",
+                r"n_2": f"{self.n_2:.{n}f}",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"A_{sv}",
             result=f"{self:.{n}f}",
-            equation=r"0.25 \cdot A_s \cdot n_2",
-            numeric_equation=rf"0.25 \cdot {self.a_s:.{n}f} \cdot {self.n_2:.{n}f}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm^2",
         )
+
+

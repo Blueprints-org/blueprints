@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import RATIO
 from blueprints.validations import raise_if_negative
 
@@ -82,10 +82,23 @@ class Form8Dot5ProductAlphas235(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
+        _equation: str = r"\alpha_2 \cdot \alpha_3 \cdot \alpha_5 \ge 0.7"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_2": f"{self.alpha_2:.{n}f}",
+                r"\alpha_3": f"{self.alpha_3:.{n}f}",
+                r"\alpha_5": f"{self.alpha_5:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = _numeric_equation
         return LatexFormula(
             return_symbol=r"\alpha_2 \alpha_3 \alpha_5",
             result=f"{self:.{n}f}",
-            equation=r"\alpha_2 \cdot \alpha_3 \cdot \alpha_5 \ge 0.7",
-            numeric_equation=rf"{self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_5} \ge 0.7",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="\\to",
         )
+

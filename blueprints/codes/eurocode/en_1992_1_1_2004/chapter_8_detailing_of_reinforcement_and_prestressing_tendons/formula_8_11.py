@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
@@ -63,18 +63,41 @@ class Form8Dot11MinimumDesignLapLength(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns a representation of the formula in LaTeX format."""
-        arg_1_equation = r"0.3 \cdot \alpha_6 \cdot l_{b,rqd}"
-        arg_2_equation = r"15 \cdot Ø"
-        arg_3_equation = r"200 \ \text{mm}"
-
-        arg_1_numerical_equation = rf"0.3 \cdot {self.alpha_6:.{n}f} \cdot {self.l_b_rqd:.{n}f}"
-        arg_2_numerical_equation = rf"15 \cdot {self.diameter}"
-        arg_3_numerical_equation = r"200"
-
+        _equation: str = latex_max_curly_brackets(
+            r"0.3 \cdot \alpha_6 \cdot l_{b,rqd}",
+            r"15 \cdot Ø",
+            r"200 \ \text{mm}",
+        )
+        _equation_no_unit: str = latex_max_curly_brackets(
+            r"0.3 \cdot \alpha_6 \cdot l_{b,rqd}",
+            r"15 \cdot Ø",
+            r"200",
+        )
+        _numeric_equation: str = latex_replace_symbols(
+            _equation_no_unit,
+            {
+                r"\alpha_6": f"{self.alpha_6:.{n}f}",
+                r"l_{b,rqd}": f"{self.l_b_rqd:.{n}f}",
+                r"Ø": f"{self.diameter:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_6": f"{self.alpha_6:.{n}f}",
+                r"l_{b,rqd}": rf"{self.l_b_rqd:.{n}f} \ mm",
+                r"Ø": rf"{self.diameter:.{n}f} \ mm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{Ø,min}",
             result=f"{self:.{n}f}",
-            equation=f"{latex_max_curly_brackets(arg_1_equation, arg_2_equation, arg_3_equation)}",
-            numeric_equation=f"{latex_max_curly_brackets(arg_1_numerical_equation, arg_2_numerical_equation, arg_3_numerical_equation)}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )
+

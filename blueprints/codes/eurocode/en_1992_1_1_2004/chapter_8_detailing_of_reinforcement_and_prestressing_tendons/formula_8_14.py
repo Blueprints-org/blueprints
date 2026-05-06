@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM
 from blueprints.validations import raise_if_negative
 
@@ -50,10 +50,31 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.14."""
+        _equation: str = r"\min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right)"
+        _equation_no_unit: str = r"\min \left(55, Ø \cdot \sqrt{n_b} \right)"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation_no_unit,
+            {
+                r"Ø": f"{self.diameter:.{n}f}",
+                r"n_b": f"{self.n_b:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"Ø": rf"{self.diameter:.{n}f} \ mm",
+                r"n_b": f"{self.n_b:.{n}f}",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"Ø_n",
             result=f"{self:.{n}f}",
-            equation=r"\min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right)",
-            numeric_equation=rf"\min \left(55 \ \text{{mm}}, {self.diameter:.{n}f} \cdot \sqrt{{{self.n_b:.{n}f}}} \right)",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )
+

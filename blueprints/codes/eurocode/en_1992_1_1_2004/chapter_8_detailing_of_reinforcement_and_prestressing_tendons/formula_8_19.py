@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, M
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
@@ -44,10 +44,30 @@ class Form8Dot19DispersionLength(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.19."""
+        _equation: str = r"\sqrt{l_{pt}^2 + d^2}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{pt}": f"{self.l_pt:.{n}f}",
+                r"d": f"{self.d:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{pt}": rf"({self.l_pt:.{n}f} \ m)",
+                r"d": rf"({self.d:.{n}f} \ m)",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{disp}",
             result=f"{self:.{n}f}",
-            equation=r"\sqrt{l_{pt}^2 + d^2}",
-            numeric_equation=rf"\sqrt{{{self.l_pt:.{n}f}^2 + {self.d:.{n}f}^2}}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="m",
         )
+

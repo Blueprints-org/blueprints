@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -57,11 +57,37 @@ class Form8Dot21AnchorageLength(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.21."""
+        _equation: str = r"l_{pt2} + \alpha_{2} \cdot Ø \cdot \frac{\sigma_{pd} - \sigma_{pm\infty}}{f_{bpd}}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{pt2}": f"{self.l_pt2:.{n}f}",
+                r"\alpha_{2}": f"{self.alpha_2:.{n}f}",
+                r"Ø": f"{self.diameter:.{n}f}",
+                r"\sigma_{pd}": f"{self.sigma_pd:.{n}f}",
+                r"\sigma_{pm\infty}": f"{self.sigma_pminf:.{n}f}",
+                r"f_{bpd}": f"{self.f_bpd:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{pt2}": rf"{self.l_pt2:.{n}f} \ mm",
+                r"\alpha_{2}": f"{self.alpha_2:.{n}f}",
+                r"Ø": rf"{self.diameter:.{n}f} \ mm",
+                r"\sigma_{pd}": rf"{self.sigma_pd:.{n}f} \ MPa",
+                r"\sigma_{pm\infty}": rf"{self.sigma_pminf:.{n}f} \ MPa",
+                r"f_{bpd}": rf"{self.f_bpd:.{n}f} \ MPa",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{bpd}",
             result=f"{self:.{n}f}",
-            equation=r"l_{pt2} + \alpha_{2} \cdot Ø \cdot \frac{\sigma_{pd} - \sigma_{pm\infty}}{f_{bpd}}",
-            numeric_equation=rf"{self.l_pt2:.{n}f} + {self.alpha_2:.{n}f} \cdot {self.diameter:.{n}f} \cdot \frac{{{self.sigma_pd:.{n}f} - "
-            rf"{self.sigma_pminf:.{n}f}}}{{{self.f_bpd:.{n}f}}}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )
