@@ -211,22 +211,13 @@ class _ReportToWordConverter:
                     break
             else:
                 if len(line.strip()) > 0:
-                    matches.append(
-                        {
-                            "type": "text",
-                            "content": line,
-                            "start": current_pos,
-                            "end": current_pos + len(line),
-                        }
-                    )
+                    matches.append({"type": "text", "content": line, "start": current_pos, "end": current_pos + len(line)})
 
             current_pos += len(line)
 
         return matches
 
-    def _add_content_to_document(
-        self, doc: DocumentObject, parsed: list[dict[str, str | int]]
-    ) -> None:
+    def _add_content_to_document(self, doc: DocumentObject, parsed: list[dict[str, str | int]]) -> None:
         """Add parsed content items to the Word document.
 
         Args:
@@ -263,9 +254,7 @@ class _ReportToWordConverter:
                 i += 1
 
     @staticmethod
-    def _add_newline(
-        doc: DocumentObject, parsed: list[dict[str, str | int]], start_index: int
-    ) -> int:
+    def _add_newline(doc: DocumentObject, parsed: list[dict[str, str | int]], start_index: int) -> int:
         """Add newline(s) to the document by adding empty paragraphs.
 
         Args:
@@ -293,9 +282,7 @@ class _ReportToWordConverter:
             empty_para.paragraph_format.space_after = Pt(2)
         return j
 
-    def _add_heading(
-        self, doc: DocumentObject, heading_type: str, content: str
-    ) -> None:
+    def _add_heading(self, doc: DocumentObject, heading_type: str, content: str) -> None:
         r"""Add a heading to the document.
 
         Args:
@@ -304,9 +291,7 @@ class _ReportToWordConverter:
             content: The LaTeX line containing the heading (e.g., '\\title{My Title}').
         """
         # Extract text from within braces (e.g., \title{text} -> text)
-        brace_match = re.search(
-            r"\\(?:title|section|subsection|subsubsection)\{(.*?)\}", content
-        )
+        brace_match = re.search(r"\\(?:title|section|subsection|subsubsection)\{(.*?)\}", content)
         if not brace_match:
             return  # pragma: no cover
         extracted_content = brace_match.group(1).strip()
@@ -324,9 +309,7 @@ class _ReportToWordConverter:
         elif heading_type == "subsection":
             self.subsection_counter += 1
             self.subsubsection_counter = 0
-            numbered_content = (
-                f"{self.section_counter}.{self.subsection_counter}. {extracted_content}"
-            )
+            numbered_content = f"{self.section_counter}.{self.subsection_counter}. {extracted_content}"
         elif heading_type == "subsubsection":
             self.subsubsection_counter += 1
             numbered_content = f"{self.section_counter}.{self.subsection_counter}.{self.subsubsection_counter}. {extracted_content}"
@@ -338,30 +321,10 @@ class _ReportToWordConverter:
 
         # Define style configurations for each heading type
         style_config: dict[str, dict[str, int | WD_PARAGRAPH_ALIGNMENT]] = {
-            "title": {
-                "size": 18,
-                "space_before": 0,
-                "space_after": 20,
-                "alignment": WD_PARAGRAPH_ALIGNMENT.CENTER,
-            },
-            "section": {
-                "size": 14,
-                "space_before": 8,
-                "space_after": 4,
-                "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT,
-            },
-            "subsection": {
-                "size": 12,
-                "space_before": 4,
-                "space_after": 4,
-                "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT,
-            },
-            "subsubsection": {
-                "size": 12,
-                "space_before": 4,
-                "space_after": 0,
-                "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT,
-            },
+            "title": {"size": 18, "space_before": 0, "space_after": 20, "alignment": WD_PARAGRAPH_ALIGNMENT.CENTER},
+            "section": {"size": 14, "space_before": 8, "space_after": 4, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
+            "subsection": {"size": 12, "space_before": 4, "space_after": 4, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
+            "subsubsection": {"size": 12, "space_before": 4, "space_after": 0, "alignment": WD_PARAGRAPH_ALIGNMENT.LEFT},
         }
 
         config = style_config[heading_type]
@@ -375,9 +338,7 @@ class _ReportToWordConverter:
         para.paragraph_format.space_after = Pt(int(config["space_after"]))
         para.alignment = cast(WD_PARAGRAPH_ALIGNMENT, config["alignment"])
 
-    def _add_grouped_text(
-        self, doc: DocumentObject, parsed: list[dict[str, str | int]], start_index: int
-    ) -> int:
+    def _add_grouped_text(self, doc: DocumentObject, parsed: list[dict[str, str | int]], start_index: int) -> int:
         """Group consecutive text items into a single paragraph.
 
         Args:
@@ -405,9 +366,7 @@ class _ReportToWordConverter:
 
         return i
 
-    def _add_text_to_paragraph(
-        self, para: Paragraph, content: str, bold: bool = False, italic: bool = False
-    ) -> None:
+    def _add_text_to_paragraph(self, para: Paragraph, content: str, bold: bool = False, italic: bool = False) -> None:
         """Add text to an existing paragraph, applying bold/italic as needed.
 
         Args:
@@ -425,13 +384,9 @@ class _ReportToWordConverter:
                 segment_content = str(segment["content"])
                 segment_bold = bool(segment.get("bold", False))
                 segment_italic = bool(segment.get("italic", False))
-                self._parse_and_add_inline_content(
-                    para, segment_content, segment_bold, segment_italic
-                )
+                self._parse_and_add_inline_content(para, segment_content, segment_bold, segment_italic)
 
-    def _parse_and_add_inline_content(
-        self, para: Paragraph, content: str, bold: bool = False, italic: bool = False
-    ) -> None:
+    def _parse_and_add_inline_content(self, para: Paragraph, content: str, bold: bool = False, italic: bool = False) -> None:
         """Parse content with inline equations and tags, adding them to the paragraph.
 
         Args:
@@ -717,20 +672,14 @@ class _ReportToWordConverter:
                     nested = re.search(r"\\textit\{((?:[^{}]|\{[^{}]*\})*)\}", content)
                     if nested:
                         content = nested.group(1)
-                result.append(
-                    {"type": "text", "content": content, "bold": bold, "italic": italic}
-                )
+                result.append({"type": "text", "content": content, "bold": bold, "italic": italic})
             elif italic_content is not None:
                 content = italic_content
                 bold, italic = False, True
-                result.append(
-                    {"type": "text", "content": content, "bold": bold, "italic": italic}
-                )
+                result.append({"type": "text", "content": content, "bold": bold, "italic": italic})
             elif text_content is not None or txt_content is not None:
                 content = text_content if text_content is not None else txt_content
-                result.append(
-                    {"type": "text", "content": content, "bold": False, "italic": False}
-                )
+                result.append({"type": "text", "content": content, "bold": False, "italic": False})
         return result
 
     @staticmethod
@@ -745,17 +694,13 @@ class _ReportToWordConverter:
             List of rows, where each row is a list of cell contents.
         """
         # Extract tabular content
-        tabular_match = re.search(
-            r"\\begin\{tabular\}\{.*?\}(.*?)\\end\{tabular\}", table_latex, re.DOTALL
-        )
+        tabular_match = re.search(r"\\begin\{tabular\}\{.*?\}(.*?)\\end\{tabular\}", table_latex, re.DOTALL)
         if not tabular_match:
             return []  # pragma: no cover
         tabular_content = tabular_match.group(1)
 
         # Remove LaTeX table commands
-        tabular_content = re.sub(
-            r"\\toprule|\\midrule|\\bottomrule|\\hline|\\centering", "", tabular_content
-        )
+        tabular_content = re.sub(r"\\toprule|\\midrule|\\bottomrule|\\hline|\\centering", "", tabular_content)
 
         # Split by rows (\\)
         rows = re.split(r"\\\\", tabular_content)
@@ -772,9 +717,7 @@ class _ReportToWordConverter:
                 cell_stripped = cell.strip()
                 # Extract text from \text{...} blocks while preserving inline math
                 # Handle nested braces: match \text{...} with up to one level of nested braces
-                cell_content = re.sub(
-                    r"\\text\{((?:[^{}]|\{[^{}]*\})*)\}", r"\1", cell_stripped
-                )
+                cell_content = re.sub(r"\\text\{((?:[^{}]|\{[^{}]*\})*)\}", r"\1", cell_stripped)
                 parsed_cells.append(cell_content)
             if parsed_cells:
                 parsed_rows.append(parsed_cells)
@@ -808,9 +751,7 @@ class _ReportToWordConverter:
             # Look for width specification (e.g., width=0.5\textwidth)
             width_match = re.search(r"width\s*=\s*([0-9.]+)\\textwidth", options_str)
             if width_match:
-                result["width_inches"] = (
-                    float(width_match.group(1)) * 6
-                )  # textwidth is 6 inches
+                result["width_inches"] = float(width_match.group(1)) * 6  # textwidth is 6 inches
 
         # Extract caption if present
         caption_match = re.search(r"\\caption\{((?:[^{}]|\{[^{}]*\})*)\}", figure_latex)
@@ -820,9 +761,7 @@ class _ReportToWordConverter:
         return result
 
     @staticmethod
-    def _find_items_with_nested_level_and_index(
-        latex_content: str,
-    ) -> list[dict[str, str | int]]:
+    def _find_items_with_nested_level_and_index(latex_content: str) -> list[dict[str, str | int]]:
         """Determine the nesting level with index of an item at a given position in LaTeX content.
 
         Args:
@@ -836,14 +775,8 @@ class _ReportToWordConverter:
 
         # Patterns to identify begin/end of lists and items
         # Find all begin and end positions
-        begin_matches = [
-            m.start()
-            for m in re.finditer(r"\\begin\{(itemize|enumerate)\}", latex_content)
-        ]
-        end_matches = [
-            m.start()
-            for m in re.finditer(r"\\end\{(?:itemize|enumerate)\}", latex_content)
-        ]
+        begin_matches = [m.start() for m in re.finditer(r"\\begin\{(itemize|enumerate)\}", latex_content)]
+        end_matches = [m.start() for m in re.finditer(r"\\end\{(?:itemize|enumerate)\}", latex_content)]
 
         # Find all \item positions and their content
         item_pattern = r"\\item\s*"
@@ -855,25 +788,15 @@ class _ReportToWordConverter:
             start = item_match.end()
 
             # Find the next boundary: \item, \begin, \end, or end of string
-            next_item = (
-                item_matches[i + 1].start()
-                if i + 1 < len(item_matches)
-                else len(latex_content)
-            )
-            next_begin = min(
-                [pos for pos in begin_matches if pos > start] + [len(latex_content)]
-            )
-            next_end = min(
-                [pos for pos in end_matches if pos > start] + [len(latex_content)]
-            )
+            next_item = item_matches[i + 1].start() if i + 1 < len(item_matches) else len(latex_content)
+            next_begin = min([pos for pos in begin_matches if pos > start] + [len(latex_content)])
+            next_end = min([pos for pos in end_matches if pos > start] + [len(latex_content)])
 
             # Take the minimum of all boundaries
             end = min(next_item, next_begin, next_end)
 
             item_content = latex_content[start:end].strip()
-            items_content.append(
-                {"content": item_content, "position": item_match.start()}
-            )
+            items_content.append({"content": item_content, "position": item_match.start()})
 
         # Now determine nesting level for each item based on begin/end counts
         for item_info in items_content:
@@ -882,9 +805,7 @@ class _ReportToWordConverter:
             begins_before = sum(1 for b in begin_matches if b < pos)
             ends_before = sum(1 for e in end_matches if e < pos)
             level = begins_before - ends_before - 1
-            items_with_levels.append(
-                {"content": str(item_info["content"]), "level": level}
-            )
+            items_with_levels.append({"content": str(item_info["content"]), "level": level})
 
         # Find maximum nesting level and create counters
         max_level = max((int(item["level"]) for item in items_with_levels), default=0)
@@ -896,14 +817,10 @@ class _ReportToWordConverter:
             level_counters[level] += 1
             # Reset counters for deeper levels
             level_counters[level + 1 :] = 0
-            item["index"] = _ReportToWordConverter._get_number_format(
-                int(level_counters[level]), level
-            )
+            item["index"] = _ReportToWordConverter._get_number_format(int(level_counters[level]), level)
 
         # align length of indexes
-        max_index_length = max(
-            (len(str(item["index"])) for item in items_with_levels), default=0
-        )
+        max_index_length = max((len(str(item["index"])) for item in items_with_levels), default=0)
         for item in items_with_levels:
             item["index"] = str(item["index"]).ljust(max_index_length)
 
