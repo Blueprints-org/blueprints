@@ -6,11 +6,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2
-from blueprints.validations import (
-    raise_if_less_or_equal_to_zero,
-    raise_if_lists_differ_in_length,
-    raise_if_negative,
-)
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_lists_differ_in_length, raise_if_negative
 
 
 class Form6Dot18SubARolledIandHSection(Formula):
@@ -79,9 +75,7 @@ class Form6Dot18SubARolledIandHSection(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18suba."""
-        _equation: str = (
-            r"max(A - 2 \cdot b \cdot t_f + (t_w + 2 \cdot r) \cdot t_f; \eta \cdot h_w \cdot t_w)"
-        )
+        _equation: str = r"max(A - 2 \cdot b \cdot t_f + (t_w + 2 \cdot r) \cdot t_f; \eta \cdot h_w \cdot t_w)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
@@ -365,14 +359,9 @@ class Form6Dot18SubDWeldedIHandBoxSection(Formula):
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18subd."""
         _equation: str = r"\eta \cdot \sum (h_{w} \cdot t_{w})"
-        _numeric_equation: str = (
-            rf"{self.eta:.{n}f} \cdot ("
-            + rf"{self.hw_list[0]:.{n}f} \cdot {self.tw_list[0]:.{n}f}"
-        )
+        _numeric_equation: str = rf"{self.eta:.{n}f} \cdot (" + rf"{self.hw_list[0]:.{n}f} \cdot {self.tw_list[0]:.{n}f}"
         for i in range(1, len(self.hw_list)):
-            _numeric_equation += (
-                rf" + {self.hw_list[i]:.{n}f} \cdot {self.tw_list[i]:.{n}f}"
-            )
+            _numeric_equation += rf" + {self.hw_list[i]:.{n}f} \cdot {self.tw_list[i]:.{n}f}"
         _numeric_equation += ")"
         return LatexFormula(
             return_symbol=r"A_v",
@@ -433,14 +422,9 @@ class Form6Dot18SubEWeldedIHandBoxSection(Formula):
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18sube."""
         _equation: str = r"A - \sum (h_{w} \cdot t_{w})"
-        _numeric_equation: str = (
-            rf"{self.a:.{n}f} - ("
-            + rf"{self.hw_list[0]:.{n}f} \cdot {self.tw_list[0]:.{n}f}"
-        )
+        _numeric_equation: str = rf"{self.a:.{n}f} - (" + rf"{self.hw_list[0]:.{n}f} \cdot {self.tw_list[0]:.{n}f}"
         for i in range(1, len(self.hw_list)):
-            _numeric_equation += (
-                rf" + {self.hw_list[i]:.{n}f} \cdot {self.tw_list[i]:.{n}f}"
-            )
+            _numeric_equation += rf" + {self.hw_list[i]:.{n}f} \cdot {self.tw_list[i]:.{n}f}"
         _numeric_equation += ")"
         return LatexFormula(
             return_symbol=r"A_v",
