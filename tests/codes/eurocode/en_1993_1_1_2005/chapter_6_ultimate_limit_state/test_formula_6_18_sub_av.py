@@ -32,7 +32,9 @@ class TestForm6Dot18SubARolledIandHSection:
         tw = 8.0
         eta = 1.0
 
-        formula = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta)
+        formula = Form6Dot18SubARolledIandHSection(
+            a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta
+        )
         manually_calculated_result = 4420.0  # mm^2
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
@@ -50,7 +52,9 @@ class TestForm6Dot18SubARolledIandHSection:
         tw = 8.0
         eta = 1.0
 
-        formula = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta)
+        formula = Form6Dot18SubARolledIandHSection(
+            a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta
+        )
         manually_calculated_result = 4234.0  # mm^2
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
@@ -58,24 +62,146 @@ class TestForm6Dot18SubARolledIandHSection:
     @pytest.mark.parametrize(
         ("a", "b1", "b2", "hw", "r1", "r2", "tf1", "tf2", "tw", "eta"),
         [
-            (-10000.0, 200.0, 200.0, 250.0, 10.0, 10.0, 15.0, 15.0, 8.0, 1.0),  # a is negative
-            (10000.0, -200.0, 200.0, 250.0, 10.0, 10.0, 15.0, 15.0, 8.0, 1.0),  # b1 is negative
-            (10000.0, 200.0, -200.0, 250.0, 10.0, 10.0, 15.0, 15.0, 8.0, 1.0),  # b2 is negative
-            (10000.0, 200.0, 200.0, -250.0, 10.0, 10.0, 15.0, 15.0, 8.0, 1.0),  # hw is negative
-            (10000.0, 200.0, 200.0, 250.0, -10.0, 10.0, 15.0, 15.0, 8.0, 1.0),  # r1 is negative
-            (10000.0, 200.0, 200.0, 250.0, 10.0, -10.0, 15.0, 15.0, 8.0, 1.0),  # r2 is negative
-            (10000.0, 200.0, 200.0, 250.0, 10.0, 10.0, -15.0, 15.0, 8.0, 1.0),  # tf1 is negative
-            (10000.0, 200.0, 200.0, 250.0, 10.0, 10.0, 15.0, -15.0, 8.0, 1.0),  # tf2 is negative
-            (10000.0, 200.0, 200.0, 250.0, 10.0, 10.0, 15.0, 15.0, -8.0, 1.0),  # tw is negative
-            (10000.0, 200.0, 200.0, 250.0, 10.0, 10.0, 15.0, 15.0, 8.0, -1.0),  # eta is negative
+            (
+                -10000.0,
+                200.0,
+                200.0,
+                250.0,
+                10.0,
+                10.0,
+                15.0,
+                15.0,
+                8.0,
+                1.0,
+            ),  # a is negative
+            (
+                10000.0,
+                -200.0,
+                200.0,
+                250.0,
+                10.0,
+                10.0,
+                15.0,
+                15.0,
+                8.0,
+                1.0,
+            ),  # b1 is negative
+            (
+                10000.0,
+                200.0,
+                -200.0,
+                250.0,
+                10.0,
+                10.0,
+                15.0,
+                15.0,
+                8.0,
+                1.0,
+            ),  # b2 is negative
+            (
+                10000.0,
+                200.0,
+                200.0,
+                -250.0,
+                10.0,
+                10.0,
+                15.0,
+                15.0,
+                8.0,
+                1.0,
+            ),  # hw is negative
+            (
+                10000.0,
+                200.0,
+                200.0,
+                250.0,
+                -10.0,
+                10.0,
+                15.0,
+                15.0,
+                8.0,
+                1.0,
+            ),  # r1 is negative
+            (
+                10000.0,
+                200.0,
+                200.0,
+                250.0,
+                10.0,
+                -10.0,
+                15.0,
+                15.0,
+                8.0,
+                1.0,
+            ),  # r2 is negative
+            (
+                10000.0,
+                200.0,
+                200.0,
+                250.0,
+                10.0,
+                10.0,
+                -15.0,
+                15.0,
+                8.0,
+                1.0,
+            ),  # tf1 is negative
+            (
+                10000.0,
+                200.0,
+                200.0,
+                250.0,
+                10.0,
+                10.0,
+                15.0,
+                -15.0,
+                8.0,
+                1.0,
+            ),  # tf2 is negative
+            (
+                10000.0,
+                200.0,
+                200.0,
+                250.0,
+                10.0,
+                10.0,
+                15.0,
+                15.0,
+                -8.0,
+                1.0,
+            ),  # tw is negative
+            (
+                10000.0,
+                200.0,
+                200.0,
+                250.0,
+                10.0,
+                10.0,
+                15.0,
+                15.0,
+                8.0,
+                -1.0,
+            ),  # eta is negative
         ],
     )
     def test_raise_error_when_invalid_values_are_given(
-        self, a: float, b1: float, b2: float, hw: float, r1: float, r2: float, tf1: float, tf2: float, tw: float, eta: float
+        self,
+        a: float,
+        b1: float,
+        b2: float,
+        hw: float,
+        r1: float,
+        r2: float,
+        tf1: float,
+        tf2: float,
+        tw: float,
+        eta: float,
     ) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
-            Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta)
+            Form6Dot18SubARolledIandHSection(
+                a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta
+            )
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -102,14 +228,18 @@ class TestForm6Dot18SubARolledIandHSection:
         tw = 8.0
         eta = 1.0
 
-        latex = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta).latex()
+        latex = Form6Dot18SubARolledIandHSection(
+            a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta
+        ).latex()
 
         actual = {
             "complete": latex.complete,
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -137,14 +267,18 @@ class TestForm6Dot18SubARolledIandHSection:
         tw = 8.0
         eta = 1.0
 
-        latex = Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta).latex()
+        latex = Form6Dot18SubARolledIandHSection(
+            a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=eta
+        ).latex()
 
         actual = {
             "complete": latex.complete,
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubBRolledChannelSection:
@@ -173,7 +307,9 @@ class TestForm6Dot18SubBRolledChannelSection:
             (8000.0, 150.0, 12.0, 6.0, -8.0),  # r is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, tf: float, tw: float, r: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, a: float, b: float, tf: float, tw: float, r: float
+    ) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
             Form6Dot18SubBRolledChannelSection(a=a, b=b, tf=tf, tw=tw, r=r)
@@ -204,7 +340,9 @@ class TestForm6Dot18SubBRolledChannelSection:
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubCRolledTSectionRolled:
@@ -233,7 +371,9 @@ class TestForm6Dot18SubCRolledTSectionRolled:
             (6000.0, 100.0, 10.0, 8.0, -5.0),  # r is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, tf: float, tw: float, r: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, a: float, b: float, tf: float, tw: float, r: float
+    ) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
             Form6Dot18SubCTSectionRolled(a=a, b=b, tf=tf, tw=tw, r=r)
@@ -264,7 +404,9 @@ class TestForm6Dot18SubCRolledTSectionRolled:
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubCRolledTSectionWelded:
@@ -289,7 +431,9 @@ class TestForm6Dot18SubCRolledTSectionWelded:
             (10.0, 8.0, -200.0),  # h is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, tf: float, tw: float, h: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, tf: float, tw: float, h: float
+    ) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
             Form6Dot18SubCTSectionWelded(tf=tf, tw=tw, h=h)
@@ -318,7 +462,9 @@ class TestForm6Dot18SubCRolledTSectionWelded:
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubDWeldedIHandBoxSection:
@@ -330,7 +476,9 @@ class TestForm6Dot18SubDWeldedIHandBoxSection:
         tw_list = [8.0, 10.0]
         eta = 1.0
 
-        formula = Form6Dot18SubDWeldedIHandBoxSection(hw_list=hw_list, tw_list=tw_list, eta=eta)
+        formula = Form6Dot18SubDWeldedIHandBoxSection(
+            hw_list=hw_list, tw_list=tw_list, eta=eta
+        )
         manually_calculated_result = 5000.0  # mm^2
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
@@ -344,10 +492,14 @@ class TestForm6Dot18SubDWeldedIHandBoxSection:
             ([250.0], [8.0, 10.0], 1.0),  # hw_list and tw_list are not the same length
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, hw_list: list[float], tw_list: list[float], eta: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, hw_list: list[float], tw_list: list[float], eta: float
+    ) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, ListsNotSameLengthError)):
-            Form6Dot18SubDWeldedIHandBoxSection(hw_list=hw_list, tw_list=tw_list, eta=eta)
+            Form6Dot18SubDWeldedIHandBoxSection(
+                hw_list=hw_list, tw_list=tw_list, eta=eta
+            )
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -366,14 +518,18 @@ class TestForm6Dot18SubDWeldedIHandBoxSection:
         tw_list = [8.0, 10.0]
         eta = 1.0
 
-        latex = Form6Dot18SubDWeldedIHandBoxSection(hw_list=hw_list, tw_list=tw_list, eta=eta).latex()
+        latex = Form6Dot18SubDWeldedIHandBoxSection(
+            hw_list=hw_list, tw_list=tw_list, eta=eta
+        ).latex()
 
         actual = {
             "complete": latex.complete,
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubEWeldedIHandBoxSection:
@@ -385,7 +541,9 @@ class TestForm6Dot18SubEWeldedIHandBoxSection:
         hw_list = [250.0, 300.0]
         tw_list = [8.0, 10.0]
 
-        formula = Form6Dot18SubEWeldedIHandBoxSection(a=a, hw_list=hw_list, tw_list=tw_list)
+        formula = Form6Dot18SubEWeldedIHandBoxSection(
+            a=a, hw_list=hw_list, tw_list=tw_list
+        )
         manually_calculated_result = 7000.0  # mm^2
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
@@ -396,10 +554,16 @@ class TestForm6Dot18SubEWeldedIHandBoxSection:
             (-12000.0, [250.0, 300.0], [8.0, 10.0]),  # a is negative
             (12000.0, [250.0, -300.0], [8.0, 10.0]),  # hw_list contains negative value
             (12000.0, [250.0, 300.0], [8.0, -10.0]),  # tw_list contains negative value
-            (12000.0, [250.0, 300.0], [8.0, 10.0, 12.0]),  # hw_list and tw_list are not the same length
+            (
+                12000.0,
+                [250.0, 300.0],
+                [8.0, 10.0, 12.0],
+            ),  # hw_list and tw_list are not the same length
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, a: float, hw_list: list[float], tw_list: list[float]) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, a: float, hw_list: list[float], tw_list: list[float]
+    ) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, ListsNotSameLengthError)):
             Form6Dot18SubEWeldedIHandBoxSection(a=a, hw_list=hw_list, tw_list=tw_list)
@@ -421,14 +585,18 @@ class TestForm6Dot18SubEWeldedIHandBoxSection:
         hw_list = [250.0, 300.0]
         tw_list = [8.0, 10.0]
 
-        latex = Form6Dot18SubEWeldedIHandBoxSection(a=a, hw_list=hw_list, tw_list=tw_list).latex()
+        latex = Form6Dot18SubEWeldedIHandBoxSection(
+            a=a, hw_list=hw_list, tw_list=tw_list
+        ).latex()
 
         actual = {
             "complete": latex.complete,
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubF1RolledRectangularHollowSectionDepth:
@@ -453,7 +621,9 @@ class TestForm6Dot18SubF1RolledRectangularHollowSectionDepth:
             (5000.0, 100.0, -200.0),  # h is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, h: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, a: float, b: float, h: float
+    ) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
             Form6Dot18SubF1RolledRectangularHollowSectionDepth(a=a, b=b, h=h)
@@ -475,14 +645,18 @@ class TestForm6Dot18SubF1RolledRectangularHollowSectionDepth:
         b = 100.0
         h = 200.0
 
-        latex = Form6Dot18SubF1RolledRectangularHollowSectionDepth(a=a, b=b, h=h).latex()
+        latex = Form6Dot18SubF1RolledRectangularHollowSectionDepth(
+            a=a, b=b, h=h
+        ).latex()
 
         actual = {
             "complete": latex.complete,
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubF2RolledRectangularHollowSectionWidth:
@@ -507,7 +681,9 @@ class TestForm6Dot18SubF2RolledRectangularHollowSectionWidth:
             (5000.0, 100.0, -200.0),  # h is negative
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, a: float, b: float, h: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(
+        self, a: float, b: float, h: float
+    ) -> None:
         """Test invalid values."""
         with pytest.raises(NegativeValueError):
             Form6Dot18SubF2RolledRectangularHollowSectionWidth(a=a, b=b, h=h)
@@ -529,14 +705,18 @@ class TestForm6Dot18SubF2RolledRectangularHollowSectionWidth:
         b = 100.0
         h = 200.0
 
-        latex = Form6Dot18SubF2RolledRectangularHollowSectionWidth(a=a, b=b, h=h).latex()
+        latex = Form6Dot18SubF2RolledRectangularHollowSectionWidth(
+            a=a, b=b, h=h
+        ).latex()
 
         actual = {
             "complete": latex.complete,
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."
 
 
 class TestForm6Dot18SubGCircularHollowSection:
@@ -584,4 +764,6 @@ class TestForm6Dot18SubGCircularHollowSection:
             "short": latex.short,
         }
 
-        assert expected == actual[representation], f"{representation} representation failed."
+        assert (
+            expected == actual[representation]
+        ), f"{representation} representation failed."

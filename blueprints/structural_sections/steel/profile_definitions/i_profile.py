@@ -86,26 +86,6 @@ class IProfile(Profile):
         object.__setattr__(self, "width_outstand_bottom_flange", (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2)
 
     @property
-    def internal_comp_part_c(self) -> MM:
-        """Internal compression part c of the profile [mm]."""
-        return self.web_height + self.top_radius + self.bottom_radius
-    
-    @property   
-    def internal_comp_part_t(self) -> MM:
-        """Internal compression part t of the profile [mm]."""
-        return self.web_height + self.top_radius + self.bottom_radius
-
-    @property
-    def outstand_flanges_c(self) -> MM:
-        """Outstand flanges part c of the profile [mm]."""
-        return self.width_outstand_top_flange + self.width_outstand_bottom_flange
-
-    @property
-    def outstand_flanges_t(self) -> MM:
-        """Outstand flanges part t of the profile [mm]."""
-        return self.width_outstand_top_flange + self.width_outstand_bottom_flange + self.top_radius + self.bottom_radius
-
-    @property
     def max_thickness(self) -> MM:
         """Maximum element thickness of the profile [mm]."""
         return max(self.top_flange_thickness, self.bottom_flange_thickness, self.web_thickness)
