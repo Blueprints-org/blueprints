@@ -45,7 +45,7 @@ class Profile(ABC):
     @property
     def mesh_creator(self) -> partial:
         """Get the mesh creator for the profile."""
-        return partial(Geometry.create_mesh, mesh_sizes=2.0)
+        return partial(Geometry.create_mesh, mesh_sizes=20.0)
 
     @property
     def mesh_settings(self) -> dict[str, Any]:
