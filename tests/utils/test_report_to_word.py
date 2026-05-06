@@ -23,11 +23,21 @@ class TestReportToWordConverter:
         report.add_heading("Testing Section", level=1)
         report.add_heading("Testing Subsection", level=2)
         report.add_heading("Testing Subsubsection", level=3)
-        report.add_paragraph("Bold and", bold=True).add_paragraph(" normal text.").add_newline(n=2)
-        report.add_paragraph("And Italic text.", italic=True).add_paragraph(" And also bold and italic.", bold=True, italic=True).add_newline()
-        report.add_paragraph("Here is an inline equation: $E=mc^2$ within the text.").add_newline()
-        report.add_paragraph("test").add_equation("E=mc^2", tag="1", inline=True).add_paragraph("more text.").add_newline()
-        report.add_paragraph("test").add_equation("E=mc^2", inline=True).add_paragraph("more text.").add_newline()
+        report.add_paragraph("Bold and", bold=True).add_paragraph(
+            " normal text."
+        ).add_newline(n=2)
+        report.add_paragraph("And Italic text.", italic=True).add_paragraph(
+            " And also bold and italic.", bold=True, italic=True
+        ).add_newline()
+        report.add_paragraph(
+            "Here is an inline equation: $E=mc^2$ within the text."
+        ).add_newline()
+        report.add_paragraph("test").add_equation(
+            "E=mc^2", tag="1", inline=True
+        ).add_paragraph("more text.").add_newline()
+        report.add_paragraph("test").add_equation("E=mc^2", inline=True).add_paragraph(
+            "more text."
+        ).add_newline()
         report.add_equation("E=mc^2", tag="4")
         report.add_equation(r"\int_a^b f(x)dx = F(b) - F(a)")
         report.add_equation(
@@ -36,12 +46,24 @@ class TestReportToWordConverter:
             "12324.48 - 2 \\cdot 297.00 \\cdot 16.00 + (8.00 + 2 \\cdot 28.50) \\cdot 16.00;"
             " 1.00 \\cdot 265.00 \\cdot 8.00) = 3860.48 \\ mm^2 "
         )
-        report.add_list(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", ["A", "B"], "III"]]], style="numbered")
-        report.add_list(["First", "Second", ["Subfirst", "Subsecond"], "Third"], style="bulleted")
+        report.add_list(
+            ["One", ["A", "B", "C"], "Two", ["A", ["I", "II", ["A", "B"], "III"]]],
+            style="numbered",
+        )
+        report.add_list(
+            ["First", "Second", ["Subfirst", "Subsecond"], "Third"], style="bulleted"
+        )
         report.add_paragraph("Here is a table:")
         report.add_table(
             headers=["Header 1", "Header 2", "Header 3 with math $E=mc^2$"],
-            rows=[["Row 1 Col 1", "Row 1 Col 2 with inline math $a^2 + b^2 = c^2$", "Row 1 Col 3"], ["Row 2 Col 1", "Row 2 Col 2", "Row 2 Col 3"]],
+            rows=[
+                [
+                    "Row 1 Col 1",
+                    "Row 1 Col 2 with inline math $a^2 + b^2 = c^2$",
+                    "Row 1 Col 3",
+                ],
+                ["Row 2 Col 1", "Row 2 Col 2", "Row 2 Col 3"],
+            ],
         )
         report.add_heading("Another Section", level=1)
         report.add_heading("Another Subsection", level=2)
@@ -50,15 +72,21 @@ class TestReportToWordConverter:
         report.add_heading("Yet another Subsubsection v2", level=3)
 
         # Use cross-platform path that works on both Windows and Linux/Mac
-        logo_path = Path("docs") / "_overrides" / "assets" / "images" / "logo-light-mode.png"
-        report.add_figure(str(logo_path), width=0.4, caption="Description of the image.")
+        logo_path = (
+            Path("docs") / "_overrides" / "assets" / "images" / "logo-light-mode.png"
+        )
+        report.add_figure(
+            str(logo_path), width=0.4, caption="Description of the image."
+        )
         latex_content = report.to_latex(language="zh")
         assert _ReportToWordConverter(latex_content).document
 
     def test_indented_enumerate_above_26(self) -> None:
         """Test that enumerate items above 26 are handled correctly."""
         report = Report("Testing Title")
-        report.add_list(["One", [f"Item {i + 1}" for i in range(30)], "Two"], style="numbered")
+        report.add_list(
+            ["One", [f"Item {i + 1}" for i in range(30)], "Two"], style="numbered"
+        )
         latex_content = report.to_latex()
         converter = _ReportToWordConverter(latex_content)
         document = converter.document
