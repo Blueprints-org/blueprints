@@ -170,7 +170,8 @@ class Report:
                     eq_mod = eq_mod[: idx + 1] + r" \\" + eq_mod[idx + 1 :]
             return eq_mod
 
-        eq_to_use = _split_equation(equation, split_after)
+        # Don't split equations for inline math as \\ line breaks are illegal in inline math
+        eq_to_use = _split_equation(equation, None if inline else split_after)
         multline_vs_equation = "multline" if split_after else "equation"
 
         if inline:
@@ -596,6 +597,7 @@ class Report:
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
             Warning: only English is officially supported in Blueprints (default is "en" for English).
+            Note: this feature is slow in a .ipynb notebook environment.
 
         Returns
         -------
@@ -728,6 +730,7 @@ class Report:
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
             Warning: only English is officially supported in Blueprints (default is "en" for English).
+            Note: this feature is slow in a .ipynb notebook environment.
 
         Returns
         -------
@@ -795,6 +798,7 @@ class Report:
         language : str, optional
             Language code for localization, full list on https://docs.cloud.google.com/translate/docs/languages
             Warning: only English is officially supported in Blueprints (default is "en" for English).
+            Note: this feature is slow in a .ipynb notebook environment.
         cleanup : bool, optional
             Whether to remove temporary LaTeX files after compilation. Default is True.
 
