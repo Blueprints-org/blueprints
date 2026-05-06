@@ -76,7 +76,9 @@ class Report:
     title: str = ""
     content: str = field(default="", init=False)
 
-    def add_paragraph(self, text: str, bold: bool = False, italic: bool = False) -> Self:
+    def add_paragraph(
+        self, text: str, bold: bool = False, italic: bool = False
+    ) -> Self:
         r"""Add text with optional bold and italic formatting.
 
         Parameters
@@ -175,7 +177,9 @@ class Report:
         multline_vs_equation = "multline" if split_after else "equation"
 
         if inline:
-            self.content += r"\txt{ " + rf"${eq_to_use}$" + f"{f' ({tag})' if tag else ''}" + r" }"
+            self.content += (
+                r"\txt{ " + rf"${eq_to_use}$" + f"{f' ({tag})' if tag else ''}" + r" }"
+            )
         elif tag:
             self.content += rf"\begin{{{multline_vs_equation}}} {eq_to_use} \tag{{{tag}}} \end{{{multline_vs_equation}}}"
         else:
@@ -250,7 +254,9 @@ class Report:
             case "complete_with_units":
                 equation_str = latex.complete_with_units
             case _:
-                raise ValueError(f"Invalid option '{options}'. Choose from 'short', 'complete', or 'complete_with_units'.")
+                raise ValueError(
+                    f"Invalid option '{options}'. Choose from 'short', 'complete', or 'complete_with_units'."
+                )
 
         # Build tag from include_source and include_formula_number flags
         tag_parts = []
@@ -261,7 +267,12 @@ class Report:
                 tag_parts.append(formula.label)
         tag_str = " ".join(tag_parts).strip()
 
-        return self.add_equation(equation=equation_str, inline=inline, tag=tag_str or None, split_after=split_after)
+        return self.add_equation(
+            equation=equation_str,
+            inline=inline,
+            tag=tag_str or None,
+            split_after=split_after,
+        )
 
     def add_heading(self, text: str, level: int = 1) -> Self:
         """Add a heading to the report.
@@ -293,7 +304,9 @@ class Report:
             case 3:
                 self.content += rf"\subsubsection{{{text}}}"
             case _:
-                raise ValueError(f"Invalid heading level '{level}'. Choose from 1 (section), 2 (subsection), or 3 (subsubsection).")
+                raise ValueError(
+                    f"Invalid heading level '{level}'. Choose from 1 (section), 2 (subsection), or 3 (subsubsection)."
+                )
 
         # Add a newline for visual separation
         self.content += "\n"
@@ -399,7 +412,10 @@ class Report:
         latex_image_path = image_path.replace("\\", "/")
 
         # Build the figure environment
-        figure_parts = [r"\begin{figure}[H] \centering ", rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} "]
+        figure_parts = [
+            r"\begin{figure}[H] \centering ",
+            rf"\includegraphics[width={width}\textwidth]{{{latex_image_path}}} ",
+        ]
 
         # Add optional caption
         if caption:
@@ -415,7 +431,9 @@ class Report:
 
         return self
 
-    def add_list(self, items: Sequence[Any], style: Literal["bulleted", "numbered"] = "bulleted") -> Self:
+    def add_list(
+        self, items: Sequence[Any], style: Literal["bulleted", "numbered"] = "bulleted"
+    ) -> Self:
         """Add a list to the report, either bulleted or numbered.
 
         Parameters
@@ -437,7 +455,9 @@ class Report:
         >>> report.add_list(["First", "Second", "Third"], style="numbered")
         """
         if style.lower() not in ["bulleted", "numbered"]:
-            raise ValueError(f"Invalid style '{style}'. Choose 'bulleted' or 'numbered'.")
+            raise ValueError(
+                f"Invalid style '{style}'. Choose 'bulleted' or 'numbered'."
+            )
 
         def _build_list(item_list: list, depth: int = 0) -> str:
             r"""Recursively build LaTeX environment for nested lists.
@@ -454,13 +474,21 @@ class Report:
             str
                 LaTeX string with \\begin{itemize}/\\begin{enumerate} environment.
             """
-            result = r"\begin{itemize} " if style.lower() == "bulleted" else r"\begin{enumerate} "
+            result = (
+                r"\begin{itemize} "
+                if style.lower() == "bulleted"
+                else r"\begin{enumerate} "
+            )
             for item in item_list:
                 if isinstance(item, list):
                     result += _build_list(item, depth + 1)
                 else:
                     result += rf"\item {item} "
-            result += r"\end{itemize} " if style.lower() == "bulleted" else r"\end{enumerate} "
+            result += (
+                r"\end{itemize} "
+                if style.lower() == "bulleted"
+                else r"\end{enumerate} "
+            )
             return result
 
         self.content += _build_list(list(items))
@@ -531,7 +559,9 @@ class Report:
         'Part 1'
         """
         if not isinstance(other, Report):
-            raise TypeError(f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'")
+            raise TypeError(
+                f"unsupported operand type(s) for +: 'Report' and '{type(other).__name__}'"
+            )
         result = Report(title=self.title)
         result.content = self.content + other.content
         return result
@@ -540,10 +570,14 @@ class Report:
         """Return a concise representation showing report structure and content summary."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{multline}") + self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}") + self.content.count(
+            r"\begin{equation}"
+        )
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
-        lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
+        lists = self.content.count(r"\begin{itemize}") + self.content.count(
+            r"\begin{enumerate}"
+        )
 
         title_str = f'title="{self.title}"'
         stats = (
@@ -558,10 +592,14 @@ class Report:
         """Return a human-readable representation of the report structure and content."""
         sections = self.content.count(r"\section{")
         subsections = self.content.count(r"\subsection{")
-        equations = self.content.count(r"\begin{multline}") + self.content.count(r"\begin{equation}")
+        equations = self.content.count(r"\begin{multline}") + self.content.count(
+            r"\begin{equation}"
+        )
         tables = self.content.count(r"\begin{table}")
         figures = self.content.count(r"\begin{figure}")
-        lists = self.content.count(r"\begin{itemize}") + self.content.count(r"\begin{enumerate}")
+        lists = self.content.count(r"\begin{itemize}") + self.content.count(
+            r"\begin{enumerate}"
+        )
 
         lines = [
             "=" * 60,
@@ -583,7 +621,9 @@ class Report:
 
         return "\n".join(lines)
 
-    def to_latex(self, path: str | Path | None = None, language: str = "en") -> str | None:
+    def to_latex(
+        self, path: str | Path | None = None, language: str = "en"
+    ) -> str | None:
         """Generate a complete LaTeX document with proper preamble and structure.
 
         You could compile the output with pdflatex in for example Overleaf.
@@ -628,7 +668,8 @@ class Report:
             r"\documentclass[11pt]{article}" + "\n"
             # Required packages
             r"\usepackage{amsmath}" + "\n"  # Advanced math environments and symbols
-            r"\usepackage{booktabs}" + "\n"  # Professional-looking tables with \toprule, \midrule, \bottomrule
+            r"\usepackage{booktabs}"
+            + "\n"  # Professional-looking tables with \toprule, \midrule, \bottomrule
             r"\usepackage{float}" + "\n"  # Improved float handling
             r"\usepackage{geometry}" + "\n"  # Page layout and margins
             r"\usepackage{graphicx}" + "\n"  # Include images and graphics
@@ -637,7 +678,8 @@ class Report:
             r"\usepackage{xcolor}" + "\n"  # Color definitions and usage
             r"\usepackage{titlesec}" + "\n"  # Customize section titles
             r"\usepackage{helvet}" + "\n"  # Helvetica font family (sans-serif)
-            r"\usepackage[T1]{fontenc}" + "\n"  # Better font encoding for special characters
+            r"\usepackage[T1]{fontenc}"
+            + "\n"  # Better font encoding for special characters
             r"\usepackage{enumitem}" + "\n"  # Enhanced list customization
             # Page setup
             r"\geometry{a4paper, margin=1in}" + "\n"  # A4 paper with 1-inch margins
@@ -652,13 +694,15 @@ class Report:
             r"\setlist{nosep}" + "\n"  # Remove extra spacing in lists
             "\n"
             # Color definitions
-            r"\definecolor{blueprintblue}{RGB}{0,40,85}" + "\n"  # Custom blue color (0, 40, 85)
+            r"\definecolor{blueprintblue}{RGB}{0,40,85}"
+            + "\n"  # Custom blue color (0, 40, 85)
             "\n"
             # Title formatting
             r"\makeatletter" + "\n"  # Access internal LaTeX commands
             r"\renewcommand{\maketitle}{%" + "\n"  # Redefine \maketitle command
             r"    \begin{center}%" + "\n"  # Center the title
-            r"        {\sffamily\fontsize{18}{19}\selectfont\bfseries\color{blueprintblue}\@title}%" + "\n"  # 18pt, bold, blue, sans-serif title
+            r"        {\sffamily\fontsize{18}{19}\selectfont\bfseries\color{blueprintblue}\@title}%"
+            + "\n"  # 18pt, bold, blue, sans-serif title
             r"        \vspace{4pt}%" + "\n"  # 4pt vertical space after title
             r"    \end{center}%" + "\n"
             r"}" + "\n"
@@ -666,21 +710,28 @@ class Report:
             "\n"
             # Section formatting
             r"\titleformat{\section}" + "\n"  # Section heading format
-            r"    {\sffamily\fontsize{14}{15}\selectfont\bfseries\color{blueprintblue}}" + "\n"  # 14pt, bold, blue, sans-serif
+            r"    {\sffamily\fontsize{14}{15}\selectfont\bfseries\color{blueprintblue}}"
+            + "\n"  # 14pt, bold, blue, sans-serif
             r"    {\thesection}{1em}{}" + "\n"  # Section number with 1em space
-            r"\titlespacing*{\section}{0pt}{8pt}{4pt}" + "\n"  # Spacing: left, before, after
+            r"\titlespacing*{\section}{0pt}{8pt}{4pt}"
+            + "\n"  # Spacing: left, before, after
             "\n"
             # Subsection formatting
             r"\titleformat{\subsection}" + "\n"  # Subsection heading format
-            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"  # 12pt, bold, blue, sans-serif
+            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}"
+            + "\n"  # 12pt, bold, blue, sans-serif
             r"    {\thesubsection}{1em}{}" + "\n"  # Subsection number with 1em space
-            r"\titlespacing*{\subsection}{0pt}{8pt}{4pt}" + "\n"  # Spacing: left, before, after
+            r"\titlespacing*{\subsection}{0pt}{8pt}{4pt}"
+            + "\n"  # Spacing: left, before, after
             "\n"
             # Subsubsection formatting
             r"\titleformat{\subsubsection}" + "\n"  # Subsubsection heading format
-            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}" + "\n"  # 12pt, bold, blue, sans-serif
-            r"    {\thesubsubsection}{1em}{}" + "\n"  # Subsubsection number with 1em space
-            r"\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}" + "\n"  # Spacing: left, before, after
+            r"    {\sffamily\fontsize{12}{13}\selectfont\bfseries\color{blueprintblue}}"
+            + "\n"  # 12pt, bold, blue, sans-serif
+            r"    {\thesubsubsection}{1em}{}"
+            + "\n"  # Subsubsection number with 1em space
+            r"\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}"
+            + "\n"  # Spacing: left, before, after
             "\n"
             # Paragraph formatting
             r"\parindent 0in" + "\n"  # No paragraph indentation
@@ -694,7 +745,9 @@ class Report:
         latex = preamble + self.content + r"\end{document}"
         if language != "en":
             # Translate content to the specified language
-            latex = LatexTranslator(original_text=latex, destination_language=language).text
+            latex = LatexTranslator(
+                original_text=latex, destination_language=language
+            ).text
 
         # If path is provided, save to file and return None
         if path is not None:
@@ -706,7 +759,9 @@ class Report:
         # Return LaTeX string
         return latex
 
-    def to_word(self, path: str | Path | BytesIO | None = None, language: str = "en") -> bytes | None:  # pragma: no cover
+    def to_word(
+        self, path: str | Path | BytesIO | None = None, language: str = "en"
+    ) -> bytes | None:  # pragma: no cover
         """Convert the LaTeX report to a Word document.
 
         This method uses the ReportToWordConverter to convert the LaTeX content
@@ -782,7 +837,9 @@ class Report:
             return None
         return None
 
-    def to_pdf(self, path: str | Path | None = None, language: str = "en", cleanup: bool = True) -> bytes | None:  # noqa: C901
+    def to_pdf(
+        self, path: str | Path | None = None, language: str = "en", cleanup: bool = True
+    ) -> bytes | None:  # noqa: C901
         """Generate a PDF document by compiling LaTeX with pdflatex.
 
         This method generates LaTeX content using to_latex(), compiles it with pdflatex,
@@ -843,7 +900,11 @@ class Report:
                 check=True,
                 timeout=10,
             )
-        except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as e:
+        except (
+            subprocess.CalledProcessError,
+            FileNotFoundError,
+            subprocess.TimeoutExpired,
+        ) as e:
             raise RuntimeError(
                 "pdflatex is not installed or not found in PATH. Please install a LaTeX distribution (e.g., MiKTeX, TeX Live) that includes pdflatex."
                 " Go to https://miktex.org/download or https://www.tug.org/texlive/ for more information."
@@ -865,7 +926,12 @@ class Report:
             # Run pdflatex twice for proper references and table of contents
             for _ in range(2):
                 result = subprocess.run(
-                    ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", str(tex_file)],
+                    [
+                        "pdflatex",
+                        "-interaction=nonstopmode",
+                        "-halt-on-error",
+                        str(tex_file),
+                    ],
                     check=False,
                     cwd=tmpdir,
                     capture_output=True,
@@ -887,7 +953,9 @@ class Report:
 
             # Check if PDF was created
             if not pdf_file.exists():
-                raise RuntimeError("PDF file was not created by pdflatex.")  # pragma: no cover
+                raise RuntimeError(
+                    "PDF file was not created by pdflatex."
+                )  # pragma: no cover
 
             # Read the PDF content
             pdf_content = pdf_file.read_bytes()
@@ -905,7 +973,9 @@ class Report:
                     for ext in aux_files:
                         aux_file = tmpdir_path / f"report{ext}"
                         if aux_file.exists():
-                            (output_dir / f"{base_name}{ext}").write_bytes(aux_file.read_bytes())
+                            (output_dir / f"{base_name}{ext}").write_bytes(
+                                aux_file.read_bytes()
+                            )
 
                 return None
 
