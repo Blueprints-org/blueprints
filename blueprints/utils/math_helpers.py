@@ -5,6 +5,28 @@ import numpy as np
 from blueprints.type_alias import DEG, DIMENSIONLESS, PERCENTAGE
 from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_equal_to_zero, raise_if_negative
 
+# General note for all functions below.
+# Convert to Python float instead of Numpy float to prevent issues with comparisons returning bools. When Numpy
+# floats are used, also a Numpy bool is returned which has different behavior than the Python variant.
+
+
+def tan(x: DEG) -> DIMENSIONLESS:
+    """Calculate the tangent of an angle in degrees.
+
+    Parameters
+    ----------
+    x : DEG
+        Angle in degrees.
+
+    Returns
+    -------
+    DIMENSIONLESS
+        Tangent of the angle.
+    """
+    raise_if_less_or_equal_to_zero(x=x)
+    raise_if_greater_than_90(x=x)
+    return float(np.tan(np.deg2rad(x)))
+
 
 def cot(x: DEG) -> DIMENSIONLESS:
     """Calculate the cotangent of an angle in degrees.
@@ -21,7 +43,7 @@ def cot(x: DEG) -> DIMENSIONLESS:
     """
     raise_if_less_or_equal_to_zero(x=x)
     raise_if_greater_than_90(x=x)
-    return 1 / np.tan(np.deg2rad(x))
+    return float(1 / np.tan(np.deg2rad(x)))
 
 
 def sec(x: DEG) -> DIMENSIONLESS:
@@ -39,7 +61,7 @@ def sec(x: DEG) -> DIMENSIONLESS:
     """
     raise_if_negative(x=x)
     raise_if_greater_than_90(x=x)
-    return 1 / np.cos(np.deg2rad(x))
+    return float(1 / np.cos(np.deg2rad(x)))
 
 
 def csc(x: DEG) -> DIMENSIONLESS:
@@ -57,7 +79,7 @@ def csc(x: DEG) -> DIMENSIONLESS:
     """
     raise_if_less_or_equal_to_zero(x=x)
     raise_if_greater_than_90(x=x)
-    return 1 / np.sin(np.deg2rad(x))
+    return float(1 / np.sin(np.deg2rad(x)))
 
 
 def slope_to_angle(slope: PERCENTAGE) -> DEG:
@@ -73,7 +95,7 @@ def slope_to_angle(slope: PERCENTAGE) -> DEG:
     DEG
         Angle in degrees.
     """
-    return np.rad2deg(np.arctan(slope / 100))
+    return float(np.rad2deg(np.arctan(slope / 100)))
 
 
 def angle_to_slope(angle: DEG) -> PERCENTAGE:
@@ -95,4 +117,4 @@ def angle_to_slope(angle: DEG) -> PERCENTAGE:
         return -np.inf
     raise_if_greater_than_90(angle=-angle)
     raise_if_greater_than_90(angle=angle)
-    return np.tan(np.deg2rad(angle)) * 100
+    return float(np.tan(np.deg2rad(angle)) * 100)

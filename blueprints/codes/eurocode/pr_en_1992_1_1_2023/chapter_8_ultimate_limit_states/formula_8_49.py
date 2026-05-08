@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot49StrainCompressionChordInTension(Formula):
-    r"""Class representing formula 8.49 for the calculation of [$\varepsilon_{xc}$].
+    r"""Class representing formula 8.49 for the calculation of [$\epsilon_{xc}$].
 
     Strain of the compression chord if the flexural compression chord is in tension.
     [$\epsilon_{xc} = \frac{|F_{cd}|}{A_{sc} \cdot E_{s}}$]
@@ -23,7 +23,7 @@ class Form8Dot49StrainCompressionChordInTension(Formula):
         a_sc: MM2,
         e_s: MPA,
     ) -> None:
-        r"""[$\varepsilon_{xc}$] Strain in the compression chord if the flexural compression chord is in tension [$-$].
+        r"""[$\epsilon_{xc}$] Strain in the compression chord if the flexural compression chord is in tension [$-$].
 
         prEN 1992-1-1:2023 art.8 - Formula (8.49)
 
@@ -73,8 +73,9 @@ class Form8Dot49StrainCompressionChordInTension(Formula):
             },
             True,
         )
+
         return LatexFormula(
-            return_symbol=r"\varepsilon_{xc}",
+            return_symbol=r"\epsilon_{xc}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,

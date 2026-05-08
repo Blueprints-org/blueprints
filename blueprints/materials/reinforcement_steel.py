@@ -199,7 +199,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def eps_uk(self) -> PER_MILLE:
-        r"""[$\varepsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (tabel C.1 Annex C from EN 1992-1-1:2004).
+        r"""[$\epsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (tabel C.1 Annex C from EN 1992-1-1:2004).
 
         * 250 ‰ for steel class A
         * 500 ‰ for steel class B

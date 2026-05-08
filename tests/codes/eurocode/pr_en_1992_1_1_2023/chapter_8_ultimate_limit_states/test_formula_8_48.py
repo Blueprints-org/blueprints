@@ -1,4 +1,4 @@
-"""Testing formula 8.48 of prEN 1992-1-2:2023."""
+"""Testing formula 8.48 of prEN 1992-1-1:2023."""
 
 import pytest
 
@@ -9,7 +9,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot48StrainCompressionChordInCompression:
-    """Validation for formula 8.48 from prEN 1992-1-2:2023."""
+    """Validation for formula 8.48 from prEN 1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
@@ -46,15 +46,15 @@ class TestForm8Dot48StrainCompressionChordInCompression:
         [
             (
                 "complete",
-                r"\varepsilon_{xc} = \frac{-F_{cd}}{A_{cc} \cdot E_c} = "
+                r"\epsilon_{xc} = \frac{-F_{cd}}{A_{cc} \cdot E_c} = "
                 r"\frac{-800000.0000}{200000.0000 \cdot 10000.0000} = -0.0004 \ -",
             ),
             (
                 "complete_with_units",
-                r"\varepsilon_{xc} = \frac{-F_{cd}}{A_{cc} \cdot E_c} = "
+                r"\epsilon_{xc} = \frac{-F_{cd}}{A_{cc} \cdot E_c} = "
                 r"\frac{-800000.0000 \ N}{200000.0000 \ mm^2 \cdot 10000.0000 \ MPa} = -0.0004 \ -",
             ),
-            ("short", r"\varepsilon_{xc} = -0.0004 \ -"),
+            ("short", r"\epsilon_{xc} = -0.0004 \ -"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

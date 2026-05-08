@@ -27,7 +27,6 @@ class TestForm8Dot46AverageStrain:
         ("epsilon_xt", "epsilon_xc"),
         [
             (-0.0032, 0.0004),  # epsilon_xt is negative
-            (0.0032, -0.0004),  # epsilon_xc is negative
         ],
     )
     def test_raise_error_when_inputs_are_negative(self, epsilon_xt: float, epsilon_xc: float) -> None:
@@ -40,13 +39,14 @@ class TestForm8Dot46AverageStrain:
         [
             (
                 "complete",
-                r"\varepsilon_x = \frac{\varepsilon_{xt} + \varepsilon_{xc}}{2} = \frac{0.0032 + 0.0004}{2} = 0.0018 \ge 0 = 0.0018",
+                r"\epsilon_x = \frac{\epsilon_{xt} + \epsilon_{xc}}{2} = \frac{0.0032 + 0.0004}{2} = 0.0018 \ge 0 = 0.0018",
             ),
             (
                 "complete_with_units",
-                r"\varepsilon_x = \frac{\varepsilon_{xt} + \varepsilon_{xc}}{2} = \frac{0.0032 + 0.0004}{2} = 0.0018 \ge 0 = 0.0018",
+                r"\epsilon_x = \frac{\epsilon_{xt} + \epsilon_{xc}}{2} = \frac{0.0032 + 0.0004}{2} = 0.0018 \ge 0 = 0.0018",
             ),
-            ("short", r"\varepsilon_x = 0.0018"),
+            ("intermediate", r"0.0018 \ge 0"),
+            ("short", r"\epsilon_x = 0.0018"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -61,6 +61,7 @@ class TestForm8Dot46AverageStrain:
         actual = {
             "complete": latex.complete,
             "complete_with_units": latex.complete_with_units,
+            "intermediate": latex.intermediate_result,
             "short": latex.short,
         }
 

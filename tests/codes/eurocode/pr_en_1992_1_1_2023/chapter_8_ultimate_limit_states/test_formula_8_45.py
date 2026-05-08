@@ -39,12 +39,13 @@ class TestForm8Dot45StrengthReductionFactor:
         [
             (
                 "complete",
-                r"\nu = \frac{1}{1.0 + 110 \cdot (\varepsilon_x + (\varepsilon_x + 0.001) \cdot \cot^2 \theta)} \leq limit = \frac{1}{1.0 + 110 \cdot (0.002 + (0.002 + 0.001) \cdot 1.000)} \leq 1.000 = 0.645 \leq 1.000 = 0.645",  # noqa: E501
+                r"\nu = \frac{1}{1.0 + 110 \cdot \left( \epsilon_x + \left( \epsilon_x + 0.001 \right) \cdot \cot^2 \left( \theta \right) \right)} \leq 1.0 = \frac{1}{1.0 + 110 \cdot \left( 0.002 + \left( 0.002 + 0.001 \right) \cdot \cot^2 \left( 45.000 \right) \right)} \leq 1.0 = 0.645 \leq 1.0 = 0.645",  # noqa: E501
             ),
             (
                 "complete_with_units",
-                r"\nu = \frac{1}{1.0 + 110 \cdot (\varepsilon_x + (\varepsilon_x + 0.001) \cdot \cot^2 \theta)} \leq limit = \frac{1}{1.0 + 110 \cdot (0.002 + (0.002 + 0.001) \cdot 1.000)} \leq 1.000 = 0.645 \leq 1.000 = 0.645",  # noqa: E501
+                r"\nu = \frac{1}{1.0 + 110 \cdot \left( \epsilon_x + \left( \epsilon_x + 0.001 \right) \cdot \cot^2 \left( \theta \right) \right)} \leq 1.0 = \frac{1}{1.0 + 110 \cdot \left( 0.002 + \left( 0.002 + 0.001 \right) \cdot \cot^2 \left( 45.000 ^\circ \right) \right)} \leq 1.0 = 0.645 \leq 1.0 = 0.645",  # noqa: E501
             ),
+            ("intermediate", r"0.645 \leq 1.0"),
             ("short", r"\nu = 0.645"),
         ],
     )
@@ -59,6 +60,7 @@ class TestForm8Dot45StrengthReductionFactor:
         actual = {
             "complete": latex.complete,
             "complete_with_units": latex.complete_with_units,
+            "intermediate": latex.intermediate_result,
             "short": latex.short,
         }
 

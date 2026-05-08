@@ -59,7 +59,6 @@ class Form8Dot43ShearReinforcementRatio(Formula):
             },
             unique_symbol_check=False,
         )
-
         _numeric_equation_with_units: str = latex_replace_symbols(
             template=_equation,
             replacements={

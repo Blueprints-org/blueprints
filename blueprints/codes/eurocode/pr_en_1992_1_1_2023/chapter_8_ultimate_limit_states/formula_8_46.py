@@ -11,7 +11,7 @@ class Form8Dot46AverageStrainBottomTopChords(Formula):
     r"""Class representing formula 8.46 for the average strain of the bottom and top chords.
 
     Average strain of the bottom and top chords according to:
-    [$\varepsilon_x = \frac{\varepsilon_{xt} + \varepsilon_{xc}}{2} \geq 0$]
+    [$\epsilon_x = \frac{\epsilon_{xt} + \epsilon_{xc}}{2} \geq 0$]
     """
 
     label = "8.46"
@@ -29,9 +29,9 @@ class Form8Dot46AverageStrainBottomTopChords(Formula):
         Parameters
         ----------
         epsilon_xt : DIMENSIONLESS
-            [$\varepsilon_{xt}$] Strain of the bottom (tension) chord (dimensionless).
+            [$\epsilon_{xt}$] Strain of the bottom (tension) chord (dimensionless).
         epsilon_xc : DIMENSIONLESS
-            [$\varepsilon_{xc}$] Strain of the top (compression) chord (dimensionless).
+            [$\epsilon_{xc}$] Strain of the top (compression) chord (dimensionless).
         """
         super().__init__()
         self.epsilon_xt = epsilon_xt
@@ -45,32 +45,32 @@ class Form8Dot46AverageStrainBottomTopChords(Formula):
         **_kwargs,
     ) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(epsilon_xt=epsilon_xt, epsilon_xc=epsilon_xc)
+        raise_if_negative(epsilon_xt=epsilon_xt)
         return max((epsilon_xt + epsilon_xc) / 2, 0.0)
 
     def latex(self, n: int = 4) -> LatexFormula:
         """Returns LatexFormula object for formula 8.46."""
-        _equation: str = r"\frac{\varepsilon_{xt} + \varepsilon_{xc}}{2}"
+        _equation: str = r"\frac{\epsilon_{xt} + \epsilon_{xc}}{2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"\varepsilon_{xt}": f"{self.epsilon_xt:.{n}f}",
-                r"\varepsilon_{xc}": f"{self.epsilon_xc:.{n}f}",
+                r"\epsilon_{xt}": f"{self.epsilon_xt:.{n}f}",
+                r"\epsilon_{xc}": f"{self.epsilon_xc:.{n}f}",
             },
             False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"\varepsilon_{xt}": f"{self.epsilon_xt:.{n}f}",
-                r"\varepsilon_{xc}": f"{self.epsilon_xc:.{n}f}",
+                r"\epsilon_{xt}": f"{self.epsilon_xt:.{n}f}",
+                r"\epsilon_{xc}": f"{self.epsilon_xc:.{n}f}",
             },
             False,
         )
-
         intermediate_result = rf"{self._evaluate(epsilon_xt=self.epsilon_xt, epsilon_xc=self.epsilon_xc):.{n}f} \ge 0"
+
         return LatexFormula(
-            return_symbol=r"\varepsilon_x",
+            return_symbol=r"\epsilon_x",
             result=f"{self:.{n}f}",
             intermediate_result=intermediate_result,
             equation=_equation,

@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form8Dot48StrainCompressionChordInCompression(Formula):
-    r"""Class representing formula 8.48 for the calculation of [$\varepsilon_{xc}$].
+    r"""Class representing formula 8.48 for the calculation of [$\epsilon_{xc}$].
 
     Strain of the compression chord if the flexural compression chord is in compression, where the following may be
     assumed unless more refined methods are used.
@@ -24,14 +24,14 @@ class Form8Dot48StrainCompressionChordInCompression(Formula):
         a_cc: MM2,
         e_c: MPA,
     ) -> None:
-        r"""[$\varepsilon_{xc}$] Strain in the compression chord if the flexural compression chord is in compression [$-$].
+        r"""[$\epsilon_{xc}$] Strain in the compression chord if the flexural compression chord is in compression [$-$].
 
         prEN 1992-1-1:2023 art.8 - Formula (8.48)
 
         Parameters
         ----------
         f_cd : N
-            [$F_{cd}$] Force in the flexural compression chord [$N$].
+            [$F_{cd}$] Force in the flexural compression chord [$N$]. Positive for compression.
         a_cc : MM2
             [$A_{cc}$] Area of the compression chord [$mm^2$].
         e_c : MPA
@@ -75,8 +75,9 @@ class Form8Dot48StrainCompressionChordInCompression(Formula):
             },
             True,
         )
+
         return LatexFormula(
-            return_symbol=r"\varepsilon_{xc}",
+            return_symbol=r"\epsilon_{xc}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,

@@ -14,41 +14,42 @@ class TestForm8Dot42ShearStressResistanceReinforcement:
     """Validation for formula 8.42 from prEN 1992-1-1:2023."""
 
     testdata: ClassVar[list[tuple[float, float, float, float]]] = [
-        (0.3e-2, 435.0, 1.0, 1.305),
-        (0.3e-2, 435.0, 2.5, 3.262),
+        (0.3e-2, 435.0, 45.0, 1.305),
+        (0.3e-2, 435.0, 21.8, 3.262),
     ]
 
-    @pytest.mark.parametrize("rho_w,f_ywd,cot_theta,exp_result", testdata)  # noqa: PT006
-    def test_evaluation(self, rho_w: float, f_ywd: float, cot_theta: float, exp_result: float) -> None:
+    @pytest.mark.parametrize("rho_w,f_ywd,theta,exp_result", testdata)  # noqa: PT006
+    def test_evaluation(self, rho_w: float, f_ywd: float, theta: float, exp_result: float) -> None:
         """Test the evaluation of the result."""
-        form = Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, cot_theta=cot_theta)
+        form = Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, theta=theta)
         assert form == pytest.approx(expected=exp_result, rel=1e-3)
 
     @pytest.mark.parametrize(
-        ("rho_w", "f_ywd", "cot_theta"),
+        ("rho_w", "f_ywd", "theta"),
         [
-            (-0.3e-2, 435.0, 1.0),  # rho_w is negative
-            (0.3e-2, -435.0, 1.0),  # f_ywd is negative
-            (0.3e-2, 435.0, -1.0),  # cot_theta is negative
+            (-0.3e-2, 435.0, 45.0),  # rho_w is negative
+            (0.3e-2, -435.0, 45.0),  # f_ywd is negative
+            (0.3e-2, 435.0, -45.0),  # cot_theta is negative
         ],
     )
-    def test_raise_error_when_negative_values_are_given(self, rho_w: float, f_ywd: float, cot_theta: float) -> None:
+    def test_raise_error_when_negative_values_are_given(self, rho_w: float, f_ywd: float, theta: float) -> None:
         """Test if error is raised for parameters that are not allowed to be negative."""
         with pytest.raises(NegativeValueError):
-            Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, cot_theta=cot_theta)
+            Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, theta=theta)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \theta = 0.003 \cdot 435.000 \cdot 2.500 = 3.262 \ MPa",
+                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \left( \theta \right) = 0.003 \cdot 435.000 \cdot \cot \left( 45.000 \right) = 0.003 \cdot 435.000 \cdot 1.000 = 1.305 \ MPa",  # noqa: E501
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \theta = 0.003 \cdot 435.000 \ MPa \cdot 2.500 = 3.262 \ MPa",
+                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \left( \theta \right) = 0.003 \cdot 435.000 \ MPa \cdot \cot \left( 45.000 ^\circ \right) = 0.003 \cdot 435.000 \cdot 1.000 = 1.305 \ MPa",  # noqa: E501
             ),
-            ("short", r"\tau_{Rd,sy} = 3.262 \ MPa"),
+            ("intermediate", r"0.003 \cdot 435.000 \cdot 1.000"),
+            ("short", r"\tau_{Rd,sy} = 1.305 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -56,14 +57,15 @@ class TestForm8Dot42ShearStressResistanceReinforcement:
         # Example values
         rho_w = 0.3e-2
         f_ywd = 435.0
-        cot_theta = 2.5
+        theta = 45.0
 
         # Object to test
-        latex = Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, cot_theta=cot_theta).latex()
+        latex = Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, theta=theta).latex()
 
         actual = {
             "complete": latex.complete,
             "complete_with_units": latex.complete_with_units,
+            "intermediate": latex.intermediate_result,
             "short": latex.short,
         }
 

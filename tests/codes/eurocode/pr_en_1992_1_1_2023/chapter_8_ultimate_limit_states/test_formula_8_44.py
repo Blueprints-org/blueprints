@@ -11,18 +11,17 @@ from blueprints.validations import NegativeValueError
 class TestForm8Dot44StressCompressionField:
     """Validation for formula 8.44 from prEN 1992-1-1:2023."""
 
-    testdata: ClassVar[list[tuple[float, float, float, float, float, float]]] = [
-        (2.0, 1.0, 1.0, 0.5, 20.0, 4.0),
-        (5.0, 1.0, 1.0, 0.5, 20.0, 10.0),
-        (5.0, 2.5, 0.4, 0.5, 20.0, 10.0),
+    testdata: ClassVar[list[tuple[float, float, float, float, float]]] = [
+        (2.0, 45.0, 0.5, 20.0, 4.0),
+        (5.0, 45.0, 0.5, 20.0, 10.0),
+        (5.0, 21.8, 0.5, 20.0, 10.0),
     ]
 
-    @pytest.mark.parametrize("tau_ed,cot_theta,tan_theta,nu,f_cd,exp_result", testdata)  # noqa: PT006
+    @pytest.mark.parametrize("tau_ed,theta,nu,f_cd,exp_result", testdata)  # noqa: PT006
     def test_evaluation(
         self,
         tau_ed: float,
-        cot_theta: float,
-        tan_theta: float,
+        theta: float,
         nu: float,
         f_cd: float,
         exp_result: float,
@@ -30,27 +29,24 @@ class TestForm8Dot44StressCompressionField:
         """Tests the evaluation of the result."""
         formula = Form8Dot44StressCompressionField(
             tau_ed=tau_ed,
-            cot_theta=cot_theta,
-            tan_theta=tan_theta,
+            theta=theta,
             nu=nu,
             f_cd=f_cd,
         )
         assert formula == exp_result
 
     @pytest.mark.parametrize(
-        ("tau_ed", "cot_theta", "tan_theta", "nu", "f_cd"),
+        ("tau_ed", "theta", "nu", "f_cd"),
         [
-            (-5.0, 1.5, 0.5, 0.6, 16.7),  # tau_ed is negative
-            (5.0, -1.5, 0.5, 0.6, 16.7),  # cot_theta is negative
-            (5.0, 1.5, -0.5, 0.6, 16.7),  # tan_theta is negative
-            (5.0, 1.5, 0.5, -0.6, 16.7),  # nu is negative
+            (-5.0, 33.69, 0.6, 16.7),  # tau_ed is negative
+            (5.0, -33.69, 0.6, 16.7),  # theta is negative
+            (5.0, 33.69, -0.6, 16.7),  # nu is negative
         ],
     )
     def test_raise_error_when_negative_values_given(
         self,
         tau_ed: float,
-        cot_theta: float,
-        tan_theta: float,
+        theta: float,
         nu: float,
         f_cd: float,
     ) -> None:
@@ -58,27 +54,24 @@ class TestForm8Dot44StressCompressionField:
         with pytest.raises(NegativeValueError):
             Form8Dot44StressCompressionField(
                 tau_ed=tau_ed,
-                cot_theta=cot_theta,
-                tan_theta=tan_theta,
+                theta=theta,
                 nu=nu,
                 f_cd=f_cd,
             )
 
     @pytest.mark.parametrize(
-        ("tau_ed", "cot_theta", "tan_theta", "nu", "f_cd"),
+        ("tau_ed", "theta", "nu", "f_cd"),
         [
-            (-2.0, 1.0, 1.0, 0.5, 20.0),  # tau_Ed is negative
-            (2.0, -1.0, 1.0, 0.5, 20.0),  # cot_theta is negative
-            (2.0, 1.0, -1.0, 0.5, 20.0),  # tan_theta is negative
-            (2.0, 1.0, 1.0, -0.5, 20.0),  # nu is negative
-            (2.0, 1.0, 1.0, 0.5, -20.0),  # f_cd is negative
+            (-2.0, 45.0, 0.5, 20.0),  # tau_Ed is negative
+            (2.0, -45.0, 0.5, 20.0),  # theta is negative
+            (2.0, 45.0, -0.5, 20.0),  # nu is negative
+            (2.0, 45.0, 0.5, -20.0),  # f_cd is negative
         ],
     )
     def test_raise_error_when_invalid_args(
         self,
         tau_ed: float,
-        cot_theta: float,
-        tan_theta: float,
+        theta: float,
         nu: float,
         f_cd: float,
     ) -> None:
@@ -86,8 +79,7 @@ class TestForm8Dot44StressCompressionField:
         with pytest.raises(NegativeValueError):
             Form8Dot44StressCompressionField(
                 tau_ed=tau_ed,
-                cot_theta=cot_theta,
-                tan_theta=tan_theta,
+                theta=theta,
                 nu=nu,
                 f_cd=f_cd,
             )
@@ -97,29 +89,28 @@ class TestForm8Dot44StressCompressionField:
         [
             (
                 "complete",
-                r"\sigma_{Rd} = \tau_{Ed} \cdot (\cot \theta + \tan \theta) \leq \nu \cdot f_{cd} = 2.00 \cdot (2.50 + 0.40) \leq 0.50 \cdot 20.00 = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
+                r"\sigma_{cd} = \tau_{Ed} \cdot \left( \cot \left( \theta \right) + \tan \left( \theta \right) \right) \leq \nu \cdot f_{cd} = 2.00 \cdot \left( \cot \left( 21.80 \right) + \tan \left( 21.80 \right) \right) \leq 0.50 \cdot 20.00 = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
             ),
             (
                 "complete_with_units",
-                r"\sigma_{Rd} = \tau_{Ed} \cdot (\cot \theta + \tan \theta) \leq \nu \cdot f_{cd} = 2.00 \ MPa \cdot (2.50 + 0.40) \leq 0.50 \cdot 20.00 \ MPa = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
+                r"\sigma_{cd} = \tau_{Ed} \cdot \left( \cot \left( \theta \right) + \tan \left( \theta \right) \right) \leq \nu \cdot f_{cd} = 2.00 \ MPa \cdot \left( \cot \left( 21.80 ^\circ \right) + \tan \left( 21.80 ^\circ \right) \right) \leq 0.50 \cdot 20.00 \ MPa = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
             ),
-            ("short", r"\sigma_{Rd} = 5.80 \ MPa"),
+            ("intermediate", r"5.80 \leq 10.00"),
+            ("short", r"\sigma_{cd} = 5.80 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
         tau_ed = 2.0  # MPa
-        cot_theta = 2.5  # dimensionless
-        tan_theta = 0.4  # dimensionless
+        theta = 21.8  # deg
         nu = 0.5  # dimensionless
         f_cd = 20.0  # MPa
 
         # Object to test
         latex = Form8Dot44StressCompressionField(
             tau_ed=tau_ed,
-            cot_theta=cot_theta,
-            tan_theta=tan_theta,
+            theta=theta,
             nu=nu,
             f_cd=f_cd,
         ).latex()
@@ -127,6 +118,7 @@ class TestForm8Dot44StressCompressionField:
         actual = {
             "complete": latex.complete,
             "complete_with_units": latex.complete_with_units,
+            "intermediate": latex.intermediate_result,
             "short": latex.short,
         }
 

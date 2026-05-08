@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form8Dot47StrainTensionChord(Formula):
-    r"""Class representing formula 8.47 for the calculation of [$\varepsilon_{xt}$].
+    r"""Class representing formula 8.47 for the calculation of [$\epsilon_{xt}$].
 
     Strain of the tension chord where the following may be assumed unless more refined methods are used.
     [$\epsilon_{xt} = \frac{F_{td}}{A_{st} \cdot E_{s}}$]
@@ -74,8 +74,9 @@ class Form8Dot47StrainTensionChord(Formula):
             },
             True,
         )
+
         return LatexFormula(
-            return_symbol=r"\varepsilon_{xt}",
+            return_symbol=r"\epsilon_{xt}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,

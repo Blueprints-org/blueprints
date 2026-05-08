@@ -3,7 +3,8 @@
 from blueprints.codes.eurocode.pr_en_1992_1_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
+from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_negative
 
 
@@ -23,8 +24,8 @@ class Form8Dot42ShearStressResistanceReinforcement(Formula):
         [$\rho_w$] Shear reinforcement ratio (dimensionless). Defined in formula (8.42).
     f_ywd : MPA
         [$f_{ywd}$] Design yield strength of the shear reinforcement ($MPa$).
-    cot_theta : DIMENSIONLESS
-        [$\cot \theta$] Cotangent of the inclination angle of the compression strut (dimensionless).
+    theta : DEG
+        [$\theta$] Angle of the inclination angle of the compression strut [$degrees$].
     """
 
     label = "8.42"
@@ -34,46 +35,47 @@ class Form8Dot42ShearStressResistanceReinforcement(Formula):
         self,
         rho_w: DIMENSIONLESS,
         f_ywd: MPA,
-        cot_theta: DIMENSIONLESS,
+        theta: DEG,
     ) -> None:
         super().__init__()
         self.rho_w = rho_w
         self.f_ywd = f_ywd
-        self.cot_theta = cot_theta
+        self.theta = theta
 
     @staticmethod
-    def _evaluate(rho_w: DIMENSIONLESS, f_ywd: MPA, cot_theta: DIMENSIONLESS) -> MPA:
+    def _evaluate(rho_w: DIMENSIONLESS, f_ywd: MPA, theta: DEG) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         # None of the variables are denominators, they must be non-negative (zero allowed)
-        raise_if_negative(rho_w=rho_w, f_ywd=f_ywd, cot_theta=cot_theta)
-        return rho_w * f_ywd * cot_theta
+        raise_if_negative(rho_w=rho_w, f_ywd=f_ywd, theta=theta)
+        return rho_w * f_ywd * cot(theta)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.42."""
-        _equation: str = r"\rho_w \cdot f_{ywd} \cdot \cot \theta"
+        _equation: str = r"\rho_w \cdot f_{ywd} \cdot \cot \left( \theta \right)"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
             replacements={
                 r"\rho_w": f"{self.rho_w:.{n}f}",
                 r"f_{ywd}": f"{self.f_ywd:.{n}f}",
-                r"\cot \theta": f"{self.cot_theta:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
             },
             unique_symbol_check=False,
         )
-
         _numeric_equation_with_units: str = latex_replace_symbols(
             template=_equation,
             replacements={
                 r"\rho_w": rf"{self.rho_w:.{n}f}",
                 r"f_{ywd}": rf"{self.f_ywd:.{n}f} \ MPa",
-                r"\cot \theta": rf"{self.cot_theta:.{n}f}",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
             },
             unique_symbol_check=True,
         )
+        intermediate_result = rf"{self.rho_w:.{n}f} \cdot {self.f_ywd:.{n}f} \cdot {cot(self.theta):.{n}f}"
 
         return LatexFormula(
             return_symbol=r"\tau_{Rd,sy}",
             result=f"{self:.{n}f}",
+            intermediate_result=intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

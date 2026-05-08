@@ -3,7 +3,8 @@
 from blueprints.codes.eurocode.pr_en_1992_1_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
+from blueprints.utils.math_helpers import cot, tan
 from blueprints.validations import raise_if_negative
 
 
@@ -20,8 +21,7 @@ class Form8Dot44StressCompressionField(Formula):
     def __init__(
         self,
         tau_ed: MPA,
-        cot_theta: DIMENSIONLESS,
-        tan_theta: DIMENSIONLESS,
+        theta: DEG,
         nu: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
@@ -33,10 +33,8 @@ class Form8Dot44StressCompressionField(Formula):
         ----------
         tau_ed : MPA
             [$\tau_{Ed}$] Design value of the shear stress [$MPa$].
-        cot_theta : DIMENSIONLESS
-            [$\cot \theta$] Cotangent of the inclination angle of the compression strut (dimensionless).
-        tan_theta : DIMENSIONLESS
-            [$\tan \theta$] Tangent of the inclination angle of the compression strut (dimensionless).
+        theta : DEG
+            [$\theta$] Inclination angle of the compression strut [$degrees$].
         nu : DIMENSIONLESS
             [$\nu$] Strength reduction factor for concrete cracked in shear (dimensionless).
         f_cd : MPA
@@ -44,16 +42,15 @@ class Form8Dot44StressCompressionField(Formula):
         """
         super().__init__()
         self.tau_ed = tau_ed
-        self.cot_theta = cot_theta
-        self.tan_theta = tan_theta
+        self.theta = theta
         self.nu = nu
         self.f_cd = f_cd
 
     @staticmethod
-    def _evaluate_pt1(tau_ed: MPA, cot_theta: DIMENSIONLESS, tan_theta: DIMENSIONLESS, *_args, **_kwargs) -> float:
+    def _evaluate_pt1(tau_ed: MPA, theta: DEG, *_args, **_kwargs) -> float:
         """Evaluates part 1 of the formula, for more information see the __init__ method."""
-        raise_if_negative(tau_ed=tau_ed, cot_theta=cot_theta, tan_theta=tan_theta)
-        return tau_ed * (cot_theta + tan_theta)
+        raise_if_negative(tau_ed=tau_ed, theta=theta)
+        return tau_ed * (cot(theta) + tan(theta))
 
     @staticmethod
     def _evaluate_pt2(nu: DIMENSIONLESS, f_cd: MPA, *_args, **_kwargs) -> float:
@@ -62,25 +59,20 @@ class Form8Dot44StressCompressionField(Formula):
         return nu * f_cd
 
     @staticmethod
-    def _evaluate(tau_ed: MPA, cot_theta: DIMENSIONLESS, tan_theta: DIMENSIONLESS, nu: DIMENSIONLESS, f_cd: MPA, *_args, **_kwargs) -> float:
+    def _evaluate(tau_ed: MPA, theta: DEG, nu: DIMENSIONLESS, f_cd: MPA, *_args, **_kwargs) -> float:
         """Evaluates the formula, for more information see the __init__ method."""
-        eval_pt1 = Form8Dot44StressCompressionField._evaluate_pt1(
-            tau_ed=tau_ed,
-            cot_theta=cot_theta,
-            tan_theta=tan_theta,
-        )
+        eval_pt1 = Form8Dot44StressCompressionField._evaluate_pt1(tau_ed=tau_ed, theta=theta)
         eval_pt2 = Form8Dot44StressCompressionField._evaluate_pt2(nu=nu, f_cd=f_cd)
         return min(eval_pt1, eval_pt2)
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.44."""
-        _equation: str = r"\tau_{Ed} \cdot (\cot \theta + \tan \theta) \leq \nu \cdot f_{cd}"
+        _equation: str = r"\tau_{Ed} \cdot \left( \cot \left( \theta \right) + \tan \left( \theta \right) \right) \leq \nu \cdot f_{cd}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 r"\tau_{Ed}": f"{self.tau_ed:.{n}f}",
-                r"\cot \theta": f"{self.cot_theta:.{n}f}",
-                r"\tan \theta": f"{self.tan_theta:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
                 r"\nu": f"{self.nu:.{n}f}",
                 r"f_{cd}": f"{self.f_cd:.{n}f}",
             },
@@ -90,17 +82,18 @@ class Form8Dot44StressCompressionField(Formula):
             _equation,
             {
                 r"\tau_{Ed}": rf"{self.tau_ed:.{n}f} \ MPa",
-                r"\cot \theta": rf"{self.cot_theta:.{n}f}",
-                r"\tan \theta": rf"{self.tan_theta:.{n}f}",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
                 r"\nu": rf"{self.nu:.{n}f}",
                 r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
             },
             False,
         )
-        intermediate_result = rf"{self._evaluate_pt1(tau_ed=self.tau_ed, cot_theta=self.cot_theta, tan_theta=self.tan_theta):.{n}f} \leq {
-            self._evaluate_pt2(nu=self.nu, f_cd=self.f_cd):.{n}f}"
+        intermediate_result = (
+            rf"{self._evaluate_pt1(tau_ed=self.tau_ed, theta=self.theta):.{n}f} \leq {self._evaluate_pt2(nu=self.nu, f_cd=self.f_cd):.{n}f}"
+        )
+
         return LatexFormula(
-            return_symbol=r"\sigma_{Rd}",
+            return_symbol=r"\sigma_{cd}",
             result=f"{self:.{n}f}",
             intermediate_result=intermediate_result,
             equation=_equation,
