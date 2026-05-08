@@ -1,7 +1,5 @@
 """Testing formula 8.42 of prEN 1992-1-1:2023."""
 
-from typing import ClassVar
-
 import pytest
 
 from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_42 import (
@@ -13,12 +11,13 @@ from blueprints.validations import NegativeValueError
 class TestForm8Dot42ShearStressResistanceReinforcement:
     """Validation for formula 8.42 from prEN 1992-1-1:2023."""
 
-    testdata: ClassVar[list[tuple[float, float, float, float]]] = [
-        (0.3e-2, 435.0, 45.0, 1.305),
-        (0.3e-2, 435.0, 21.8, 3.262),
-    ]
-
-    @pytest.mark.parametrize("rho_w,f_ywd,theta,exp_result", testdata)  # noqa: PT006
+    @pytest.mark.parametrize(
+        ("rho_w", "f_ywd", "theta", "exp_result"),
+        [
+            (0.3e-2, 435.0, 45.0, 1.305),
+            (0.3e-2, 435.0, 21.8, 3.262),
+        ],
+    )
     def test_evaluation(self, rho_w: float, f_ywd: float, theta: float, exp_result: float) -> None:
         """Test the evaluation of the result."""
         form = Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, theta=theta)

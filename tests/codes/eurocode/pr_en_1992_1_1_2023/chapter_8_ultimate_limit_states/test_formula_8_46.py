@@ -9,19 +9,17 @@ from blueprints.validations import NegativeValueError
 class TestForm8Dot46AverageStrain:
     """Validation for formula 8.46 from prEN 1992-1-1:2023."""
 
-    def test_evaluation(self) -> None:
+    @pytest.mark.parametrize(
+        ("epsilon_xt", "epsilon_xc", "exp_result"),
+        [
+            (0.0032, 0.0004, 0.0018),
+            (0.0032, -0.0004, 0.0014),
+        ],
+    )
+    def test_evaluation(self, epsilon_xt: float, epsilon_xc: float, exp_result: float) -> None:
         """Tests the evaluation of the result."""
-        # Example values
-        epsilon_xt = 0.0032  # dimensionless
-        epsilon_xc = 0.0004  # dimensionless
-
-        # Object to test
-        formula = Form8Dot46AverageStrainBottomTopChords(epsilon_xt=epsilon_xt, epsilon_xc=epsilon_xc)
-
-        # Expected result
-        expected_result = 0.0018
-
-        assert expected_result == pytest.approx(formula, rel=1e-4)
+        form = Form8Dot46AverageStrainBottomTopChords(epsilon_xt=epsilon_xt, epsilon_xc=epsilon_xc)
+        assert form == pytest.approx(expected=exp_result, rel=1e-4)
 
     @pytest.mark.parametrize(
         ("epsilon_xt", "epsilon_xc"),

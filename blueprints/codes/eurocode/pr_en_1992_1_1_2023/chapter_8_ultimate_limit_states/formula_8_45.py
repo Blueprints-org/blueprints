@@ -33,7 +33,7 @@ class Form8Dot45StrengthReductionFactor(Formula):
         ----------
         epsilon_x : DIMENSIONLESS
             [$\epsilon_x$] Average strain of the bottom and top chords (dimensionless). The average strain may
-            be calculated according to formulae (8.46).
+            be calculated according to formula (8.46).
         theta : DEG
             [$\theta$] Angle of the compression field inclination to the member axis [$degrees$].
         """

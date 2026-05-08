@@ -1,7 +1,5 @@
 """Testing formula 8.41 of prEN 1992-1-1:2023."""
 
-from typing import ClassVar
-
 import pytest
 
 from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_41 import Form8Dot41InclinationCompressionField
@@ -11,15 +9,16 @@ from blueprints.validations import LessOrEqualToZeroError
 class TestForm8Dot41InclinationCompressionField:
     """Validation for formula 8.41 from prEN 1992-1-1:2023."""
 
-    testdata: ClassVar[list[tuple[float, float, bool]]] = [
-        (48.0, 21.8, False),
-        (45.0, 21.8, True),
-        (26.57, 21.8, True),
-        (21.8, 21.8, True),
-        (18.43, 21.8, False),
-    ]
-
-    @pytest.mark.parametrize("theta,theta_min,exp_result", testdata)  # noqa: PT006
+    @pytest.mark.parametrize(
+        ("theta", "theta_min", "exp_result"),
+        [
+            (48.0, 21.8, False),
+            (45.0, 21.8, True),
+            (26.57, 21.8, True),
+            (21.8, 21.8, True),
+            (18.43, 21.8, False),
+        ],
+    )
     def test_evaluation(self, theta: float, theta_min: float, exp_result: bool) -> None:
         """Test the evaluation of the result."""
         form = Form8Dot41InclinationCompressionField(theta=theta, theta_min=theta_min)

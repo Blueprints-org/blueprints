@@ -1,7 +1,5 @@
 """Testing formula 8.44 of prEN 1992-1-1:2023."""
 
-from typing import ClassVar
-
 import pytest
 
 from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_44 import Form8Dot44StressCompressionField
@@ -11,53 +9,18 @@ from blueprints.validations import NegativeValueError
 class TestForm8Dot44StressCompressionField:
     """Validation for formula 8.44 from prEN 1992-1-1:2023."""
 
-    testdata: ClassVar[list[tuple[float, float, float, float, float]]] = [
-        (2.0, 45.0, 0.5, 20.0, 4.0),
-        (5.0, 45.0, 0.5, 20.0, 10.0),
-        (5.0, 21.8, 0.5, 20.0, 10.0),
-    ]
-
-    @pytest.mark.parametrize("tau_ed,theta,nu,f_cd,exp_result", testdata)  # noqa: PT006
-    def test_evaluation(
-        self,
-        tau_ed: float,
-        theta: float,
-        nu: float,
-        f_cd: float,
-        exp_result: float,
-    ) -> None:
-        """Tests the evaluation of the result."""
-        formula = Form8Dot44StressCompressionField(
-            tau_ed=tau_ed,
-            theta=theta,
-            nu=nu,
-            f_cd=f_cd,
-        )
-        assert formula == exp_result
-
     @pytest.mark.parametrize(
-        ("tau_ed", "theta", "nu", "f_cd"),
+        ("tau_ed", "theta", "nu", "f_cd", "exp_result"),
         [
-            (-5.0, 33.69, 0.6, 16.7),  # tau_ed is negative
-            (5.0, -33.69, 0.6, 16.7),  # theta is negative
-            (5.0, 33.69, -0.6, 16.7),  # nu is negative
+            (2.0, 45.0, 0.5, 20.0, 4.0),  # Calculated result below upper limit
+            (5.0, 45.0, 0.5, 20.0, 10.0),  # Calculated result above upper limit --> capped at limit
+            (5.0, 21.8, 0.5, 20.0, 10.0),  # Calculated result different angle above upper limit --> capped at limit
         ],
     )
-    def test_raise_error_when_negative_values_given(
-        self,
-        tau_ed: float,
-        theta: float,
-        nu: float,
-        f_cd: float,
-    ) -> None:
-        """Test invalid values that should raise NegativeValueError."""
-        with pytest.raises(NegativeValueError):
-            Form8Dot44StressCompressionField(
-                tau_ed=tau_ed,
-                theta=theta,
-                nu=nu,
-                f_cd=f_cd,
-            )
+    def test_evaluation(self, tau_ed: float, theta: float, nu: float, f_cd: float, exp_result: float) -> None:
+        """Tests the evaluation of the result."""
+        formula = Form8Dot44StressCompressionField(tau_ed=tau_ed, theta=theta, nu=nu, f_cd=f_cd)
+        assert formula == exp_result
 
     @pytest.mark.parametrize(
         ("tau_ed", "theta", "nu", "f_cd"),
@@ -68,21 +31,10 @@ class TestForm8Dot44StressCompressionField:
             (2.0, 45.0, 0.5, -20.0),  # f_cd is negative
         ],
     )
-    def test_raise_error_when_invalid_args(
-        self,
-        tau_ed: float,
-        theta: float,
-        nu: float,
-        f_cd: float,
-    ) -> None:
+    def test_raise_error_when_invalid_args(self, tau_ed: float, theta: float, nu: float, f_cd: float) -> None:
         """Test invalid values for tau_ed, cot_theta, tan_theta, nu and f_cd."""
         with pytest.raises(NegativeValueError):
-            Form8Dot44StressCompressionField(
-                tau_ed=tau_ed,
-                theta=theta,
-                nu=nu,
-                f_cd=f_cd,
-            )
+            Form8Dot44StressCompressionField(tau_ed=tau_ed, theta=theta, nu=nu, f_cd=f_cd)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -108,12 +60,7 @@ class TestForm8Dot44StressCompressionField:
         f_cd = 20.0  # MPa
 
         # Object to test
-        latex = Form8Dot44StressCompressionField(
-            tau_ed=tau_ed,
-            theta=theta,
-            nu=nu,
-            f_cd=f_cd,
-        ).latex()
+        latex = Form8Dot44StressCompressionField(tau_ed=tau_ed, theta=theta, nu=nu, f_cd=f_cd).latex()
 
         actual = {
             "complete": latex.complete,

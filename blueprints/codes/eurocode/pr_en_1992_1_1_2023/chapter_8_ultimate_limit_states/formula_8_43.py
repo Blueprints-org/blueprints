@@ -14,7 +14,7 @@ class Form8Dot43ShearReinforcementRatio(Formula):
 
     Formula
     -------
-    $\rho_w = \frac{A_{sw}}{b_w \cdot s}$
+    [$\rho_w = \frac{A_{sw}}{b_w \cdot s}$]
 
     Parameters
     ----------

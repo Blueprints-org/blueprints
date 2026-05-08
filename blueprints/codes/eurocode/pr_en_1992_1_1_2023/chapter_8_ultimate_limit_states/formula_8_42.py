@@ -16,7 +16,7 @@ class Form8Dot42ShearStressResistanceReinforcement(Formula):
 
     Formula
     -------
-    $\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \theta$
+    [$\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \theta$]
 
     Parameters
     ----------
