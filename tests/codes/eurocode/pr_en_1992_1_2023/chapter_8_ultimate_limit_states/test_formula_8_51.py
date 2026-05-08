@@ -55,6 +55,11 @@ class TestForm8Dot51TensileChordForceDueToShear:
                 r"2000.000 + 10000.000}{2} = 406000.000 \ N",
             ),
             (
+                "complete_with_units",
+                r"F_{td} = \frac{M_{Ed}}{z} + \frac{N_{Vd} + N_{Ed}}{2} = \frac{120000000.000 \ Nmm}{300.000 \ mm} + "
+                r"\frac{2000.000 \ N + 10000.000 \ N}{2} = 406000.000 \ N",
+            ),
+            (
                 "short",
                 r"F_{td} = 406000.000 \ N",
             ),
@@ -71,6 +76,7 @@ class TestForm8Dot51TensileChordForceDueToShear:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

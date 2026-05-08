@@ -54,6 +54,11 @@ class TestForm8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads:
                 r"10000.000}{2} = 405000.000 \ N",
             ),
             (
+                "complete_with_units",
+                r"F_{td,max} = \frac{M_{Ed,max}}{z} + \frac{N_{Ed}}{2} = \frac{120000000.000 \ Nmm}{300.000 \ mm} + "
+                r"\frac{10000.000 \ N}{2} = 405000.000 \ N",
+            ),
+            (
                 "short",
                 r"F_{td,max} = 405000.000 \ N",
             ),
@@ -69,6 +74,7 @@ class TestForm8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

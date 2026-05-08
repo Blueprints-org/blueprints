@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import MM, N
+from blueprints.type_alias import MM, NMM, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -17,18 +17,18 @@ class Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads(Formu
 
     def __init__(
         self,
-        m_ed_max: N,
+        m_ed_max: NMM,
         z: MM,
         n_ed: N,
     ) -> None:
         r"""[$F_{td,max}$] Calculation of the chord force [$N$] in case of direct intermediate support or
         concentrated loads.
 
-        prEN 1992-1-2023 art.8.5(8) - Formula (8.53)
+        prEN 1992-1-1:2023 art.8.5(8) - Formula (8.53)
 
         Parameters
         ----------
-        m_ed_max : N
+        m_ed_max : NMM
             [$M_{Ed,max}$] Maximum design moment along the member [$Nmm$].
         z : MM
             [$z$] Internal lever arm [$mm$].
@@ -42,7 +42,7 @@ class Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads(Formu
 
     @staticmethod
     def _evaluate(
-        m_ed_max: N,
+        m_ed_max: NMM,
         z: MM,
         n_ed: N,
     ) -> N:
@@ -67,9 +67,9 @@ class Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads(Formu
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{Ed,max}": rf"{self.m_ed_max:.3f} \ Nmm",
-                r"z": rf"{self.z:.3f} \ mm",
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
+                r"M_{Ed,max}": rf"{self.m_ed_max:.{n}f} \ Nmm",
+                r"z": rf"{self.z:.{n}f} \ mm",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
             },
             True,
         )

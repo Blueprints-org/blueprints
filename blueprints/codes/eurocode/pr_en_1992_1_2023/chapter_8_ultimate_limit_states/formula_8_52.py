@@ -3,7 +3,7 @@
 from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, N
+from blueprints.type_alias import MM, NMM, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -15,8 +15,8 @@ class Form8Dot52CompressiveChordForceDueToShear(Formula):
 
     def __init__(
         self,
-        m_ed: N,
-        z: DIMENSIONLESS,
+        m_ed: NMM,
+        z: MM,
         n_vd: N,
         n_ed: N,
     ) -> None:
@@ -26,9 +26,9 @@ class Form8Dot52CompressiveChordForceDueToShear(Formula):
 
         Parameters
         ----------
-        m_ed : N
+        m_ed : NMM
             [$M_{Ed}$] Design moment at the section [$Nmm$].
-        z : DIMENSIONLESS
+        z : MM
             [$z$] Lever arm [$mm$].
         n_vd : N
             [$N_{Vd}$] Additional tensile axial force due to shear [$N$].
@@ -43,8 +43,8 @@ class Form8Dot52CompressiveChordForceDueToShear(Formula):
 
     @staticmethod
     def _evaluate(
-        m_ed: N,
-        z: DIMENSIONLESS,
+        m_ed: NMM,
+        z: MM,
         n_vd: N,
         n_ed: N,
     ) -> N:
@@ -70,10 +70,10 @@ class Form8Dot52CompressiveChordForceDueToShear(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{Ed}": rf"{self.m_ed:.3f} \ Nmm",
-                r"z": rf"{self.z:.3f} \ mm",
-                r"N_{Vd}": rf"{self.n_vd:.3f} \ N",
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
+                r"M_{Ed}": rf"{self.m_ed:.{n}f} \ Nmm",
+                r"z": rf"{self.z:.{n}f} \ mm",
+                r"N_{Vd}": rf"{self.n_vd:.{n}f} \ N",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
             },
             True,
         )

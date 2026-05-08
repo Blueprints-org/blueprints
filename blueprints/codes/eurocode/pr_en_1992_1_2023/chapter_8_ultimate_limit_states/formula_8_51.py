@@ -70,10 +70,10 @@ class Form8Dot51TensileChordForceDueToShear(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"M_{Ed}": rf"{self.m_ed:.3f} \ Nmm",
-                r"z": rf"{self.z:.3f} \ mm",
-                r"N_{Vd}": rf"{self.n_vd:.3f} \ N",
-                r"N_{Ed}": rf"{self.n_ed:.3f} \ N",
+                r"M_{Ed}": rf"{self.m_ed:.{n}f} \ Nmm",
+                r"z": rf"{self.z:.{n}f} \ mm",
+                r"N_{Vd}": rf"{self.n_vd:.{n}f} \ N",
+                r"N_{Ed}": rf"{self.n_ed:.{n}f} \ N",
             },
             True,
         )
