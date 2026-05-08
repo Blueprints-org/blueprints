@@ -15,6 +15,9 @@ The Eurocodes are a set of 10 European Standards (EN) that provide common struct
 - **[EN 1992-1-1:2004](en_1992_1_1_2004/formulas.md)** - General rules and rules for buildings  
   Comprehensive design rules for reinforced and prestressed concrete structures including material properties, structural analysis, and design verification.
 
+- **[prEN 1992-1-1:2023](pr_en_1992_1_1_2023/formulas.md)** - General rules and rules for buildings, bridges and civil engineering structures (Eurocode generation 2)  
+  Comprehensive design rules for reinforced and prestressed concrete structures including material properties, structural analysis, and design verification.
+
 - **[EN 1992-2:2005](en_1992_2_2005/formulas.md)** - Concrete bridges - Design and detailing rules  
   Specialized provisions for concrete bridge design including additional requirements for durability and construction.
 
