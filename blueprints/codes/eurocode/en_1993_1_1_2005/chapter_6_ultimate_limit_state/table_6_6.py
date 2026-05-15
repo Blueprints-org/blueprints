@@ -1,4 +1,9 @@
-"""Table 6.6 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state, to calculate the correction factor [$k_c$]."""
+"""Table 6.6 from EN 1993-1-1:2005: Chapter 6 - Ultimate limit state, to calculate the correction factor [$k_c$].
+
+Two main functionalities are provided:
+1. Direct calculation of $k_c$ based on a specified moment distribution type.
+2. Interpretation of moment distribution data to determine the best-fit $k_c$ value based on standard patterns.
+"""
 
 from collections.abc import Callable
 from enum import Enum
@@ -35,6 +40,9 @@ class Table6Dot6CorrectionFactorKc(Formula):
 
     This table provides correction factors for different moment distributions used in lateral-torsional buckling
     verification according to EN 1993-1-1:2005.
+
+    Use the `interpretation_of_moment_distribution_for_kc` method to analyze moment distribution data and determine
+    the appropriate correction factor based on the best fit to standard patterns.
     """
 
     label = "6.6"
