@@ -30,6 +30,7 @@ classifiers = [
 dependencies = [
     "matplotlib>=3.10.8",
     "numpy>=2.3.5",
+    "scipy>=1.17.1",
     "sectionproperties>=3.10.0",
     "shapely>=2.1.2",
     "googletrans>=4.0.2",
