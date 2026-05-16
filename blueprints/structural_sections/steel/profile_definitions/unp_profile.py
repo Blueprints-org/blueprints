@@ -57,6 +57,8 @@ class UNPProfile(Profile):
         The slope of the top flange. Default is 0.
     bottom_slope : PERCENTAGE
         The slope of the bottom flange. Default is 0.
+    corrosion_geometry : Polygon | None
+        The geometry representing the corrosion to be subtracted from the profile. Default is None.
     name : str
         The name of the profile. Default is "UNP-Profile". If corrosion is applied, the name will include the corrosion value.
     plotter : Callable[[Profile], plt.Figure]
@@ -91,6 +93,8 @@ class UNPProfile(Profile):
     """The slope of the top flange. Default is 0."""
     bottom_slope: PERCENTAGE = 0.0
     """The slope of the bottom flange. Default is 0."""
+    corrosion_geometry: Polygon | None = None
+    """The geometry representing the corrosion to be subtracted from the profile. Default is None."""
     name: str = "UNP-Profile"
     """The name of the profile. Default is "UNP-Profile". If corrosion is applied, the name will include the corrosion value."""
     plotter: Callable[[Profile], plt.Figure] = plot_shapes
@@ -204,7 +208,7 @@ class UNPProfile(Profile):
     @property
     def _polygon(self) -> Polygon:
         """Return the polygon of the UNP profile without the offset and rotation applied."""
-        return (
+        base_polygon = (
             PolygonBuilder(starting_point=(0, 0))
             # Starting halfway along the web, going up
             .append_line(length=self.total_height / 2 - self.top_outer_corner_radius, angle=90)
@@ -229,6 +233,15 @@ class UNPProfile(Profile):
             .append_line(length=self.total_height / 2 - self.bottom_outer_corner_radius, angle=90)
             .generate_polygon()
         )
+
+        # Subtract corrosion geometry if present
+        if self.corrosion_geometry is not None:
+            corroded_polygon = base_polygon.difference(self.corrosion_geometry)
+            if corroded_polygon.is_empty or corroded_polygon.area < FULL_CORROSION_TOLERANCE:
+                raise ValueError("The profile has fully corroded.")
+            return corroded_polygon
+
+        return base_polygon
 
     def with_corrosion(self, corrosion: MM = 0) -> UNPProfile:
         """Apply corrosion to the UNP-profile and return a new UNP-profile instance.
@@ -256,49 +269,58 @@ class UNPProfile(Profile):
         if corrosion == 0:
             return self
 
-        # Use a buffer dict to store updated dimensions
-        buffer = {
-            "top_flange_total_width": self.top_flange_total_width - 2 * corrosion,
-            "top_flange_thickness": self.top_flange_thickness - 2 * corrosion,
-            "bottom_flange_total_width": self.bottom_flange_total_width - 2 * corrosion,
-            "bottom_flange_thickness": self.bottom_flange_thickness - 2 * corrosion,
-            "total_height": self.total_height - 2 * corrosion,
-            "web_thickness": self.web_thickness - 2 * corrosion,
-            "top_root_fillet_radius": self.top_root_fillet_radius + corrosion,
-            "top_toe_radius": max(0, self.top_toe_radius - corrosion),
-            "top_outer_corner_radius": max(0, self.top_outer_corner_radius - corrosion),
-            "bottom_root_fillet_radius": self.bottom_root_fillet_radius + corrosion,
-            "bottom_toe_radius": max(0, self.bottom_toe_radius - corrosion),
-            "bottom_outer_corner_radius": max(0, self.bottom_outer_corner_radius - corrosion),
-        }
+        # Get the base polygon (without any existing corrosion)
+        base_polygon = (
+            PolygonBuilder(starting_point=(0, 0))
+            .append_line(length=self.total_height / 2 - self.top_outer_corner_radius, angle=90)
+            .append_arc(sweep=-90, angle=90, radius=self.top_outer_corner_radius)
+            .append_line(length=self.top_flange_total_width - self.top_outer_corner_radius, angle=0)
+            .append_line(length=self.top_toe_flat_height, angle=270)
+            .append_arc(sweep=-90 + slope_to_angle(self.top_slope), angle=270, radius=self.top_toe_radius)
+            .append_line(length=self.top_slope_length, angle=180 + slope_to_angle(self.top_slope))
+            .append_arc(sweep=90 - slope_to_angle(self.top_slope), angle=180 + slope_to_angle(self.top_slope), radius=self.top_root_fillet_radius)
+            .append_line(length=self.web_inner_height_top, angle=270)
+            .append_line(length=self.web_inner_height_bottom, angle=270)
+            .append_arc(sweep=90 - slope_to_angle(self.bottom_slope), angle=270, radius=self.bottom_root_fillet_radius)
+            .append_line(length=self.bottom_slope_length, angle=-slope_to_angle(self.bottom_slope))
+            .append_arc(sweep=-90 + slope_to_angle(self.bottom_slope), angle=-slope_to_angle(self.bottom_slope), radius=self.bottom_toe_radius)
+            .append_line(length=self.bottom_toe_flat_height, angle=270)
+            .append_line(length=self.bottom_flange_total_width - self.bottom_outer_corner_radius, angle=180)
+            .append_arc(sweep=-90, angle=180, radius=self.bottom_outer_corner_radius)
+            .append_line(length=self.total_height / 2 - self.bottom_outer_corner_radius, angle=90)
+            .generate_polygon()
+        )
 
-        if any(
-            buffer[thickness] < FULL_CORROSION_TOLERANCE
-            for thickness in (
-                "top_flange_thickness",
-                "bottom_flange_thickness",
-                "web_thickness",
-            )
-        ):
-            raise ValueError("The profile has fully corroded.")
+        # Apply buffer to get corroded polygon
+        corroded_polygon = base_polygon.buffer(-corrosion)
+
+        # Calculate the corrosion geometry (the part that was removed)
+        new_corrosion_geometry = base_polygon.difference(corroded_polygon)
+
+        # Combine with existing corrosion geometry if present
+        if self.corrosion_geometry is not None:
+            combined_corrosion_geometry = self.corrosion_geometry.union(new_corrosion_geometry)
+        else:
+            combined_corrosion_geometry = new_corrosion_geometry
 
         name = update_name_with_corrosion(self.name, corrosion=corrosion)
 
         return UNPProfile(
-            top_flange_total_width=buffer["top_flange_total_width"],
-            top_flange_thickness=buffer["top_flange_thickness"],
-            bottom_flange_total_width=buffer["bottom_flange_total_width"],
-            bottom_flange_thickness=buffer["bottom_flange_thickness"],
-            total_height=buffer["total_height"],
-            web_thickness=buffer["web_thickness"],
-            top_root_fillet_radius=buffer["top_root_fillet_radius"],
-            top_toe_radius=buffer["top_toe_radius"],
-            top_outer_corner_radius=buffer["top_outer_corner_radius"],
-            bottom_root_fillet_radius=buffer["bottom_root_fillet_radius"],
-            bottom_toe_radius=buffer["bottom_toe_radius"],
-            bottom_outer_corner_radius=buffer["bottom_outer_corner_radius"],
+            top_flange_total_width=self.top_flange_total_width,
+            top_flange_thickness=self.top_flange_thickness,
+            bottom_flange_total_width=self.bottom_flange_total_width,
+            bottom_flange_thickness=self.bottom_flange_thickness,
+            total_height=self.total_height,
+            web_thickness=self.web_thickness,
+            top_root_fillet_radius=self.top_root_fillet_radius,
+            top_toe_radius=self.top_toe_radius,
+            top_outer_corner_radius=self.top_outer_corner_radius,
+            bottom_root_fillet_radius=self.bottom_root_fillet_radius,
+            bottom_toe_radius=self.bottom_toe_radius,
+            bottom_outer_corner_radius=self.bottom_outer_corner_radius,
             top_slope=self.top_slope,
             bottom_slope=self.bottom_slope,
+            corrosion_geometry=combined_corrosion_geometry,
             name=name,
             plotter=self.plotter,
         )
