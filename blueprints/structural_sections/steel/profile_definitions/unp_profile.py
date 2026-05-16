@@ -270,26 +270,7 @@ class UNPProfile(Profile):
             return self
 
         # Get the base polygon (without any existing corrosion)
-        base_polygon = (
-            PolygonBuilder(starting_point=(0, 0))
-            .append_line(length=self.total_height / 2 - self.top_outer_corner_radius, angle=90)
-            .append_arc(sweep=-90, angle=90, radius=self.top_outer_corner_radius)
-            .append_line(length=self.top_flange_total_width - self.top_outer_corner_radius, angle=0)
-            .append_line(length=self.top_toe_flat_height, angle=270)
-            .append_arc(sweep=-90 + slope_to_angle(self.top_slope), angle=270, radius=self.top_toe_radius)
-            .append_line(length=self.top_slope_length, angle=180 + slope_to_angle(self.top_slope))
-            .append_arc(sweep=90 - slope_to_angle(self.top_slope), angle=180 + slope_to_angle(self.top_slope), radius=self.top_root_fillet_radius)
-            .append_line(length=self.web_inner_height_top, angle=270)
-            .append_line(length=self.web_inner_height_bottom, angle=270)
-            .append_arc(sweep=90 - slope_to_angle(self.bottom_slope), angle=270, radius=self.bottom_root_fillet_radius)
-            .append_line(length=self.bottom_slope_length, angle=-slope_to_angle(self.bottom_slope))
-            .append_arc(sweep=-90 + slope_to_angle(self.bottom_slope), angle=-slope_to_angle(self.bottom_slope), radius=self.bottom_toe_radius)
-            .append_line(length=self.bottom_toe_flat_height, angle=270)
-            .append_line(length=self.bottom_flange_total_width - self.bottom_outer_corner_radius, angle=180)
-            .append_arc(sweep=-90, angle=180, radius=self.bottom_outer_corner_radius)
-            .append_line(length=self.total_height / 2 - self.bottom_outer_corner_radius, angle=90)
-            .generate_polygon()
-        )
+        base_polygon = self._polygon
 
         # Apply buffer to get corroded polygon
         corroded_polygon = base_polygon.buffer(-corrosion)
