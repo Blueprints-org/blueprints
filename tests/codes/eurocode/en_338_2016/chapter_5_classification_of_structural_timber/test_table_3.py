@@ -1,21 +1,21 @@
-"""Tests for Table3StrengthClassesHardwoodBendingTests class."""
+"""Tests for Table3StrengthClassesHardwoodBending class."""
 
 import pytest
 
 from blueprints.codes.eurocode.en_338_2016.chapter_5_classification_of_structural_timber.table_3 import (
     HardwoodStrengthClass,
-    Table3StrengthClassesHardwoodBendingTests,
+    Table3StrengthClassesHardwoodBending,
 )
 from blueprints.type_alias import KG_M3, MPA
 
 
-class TestTable3StrengthClassesHardwoodBendingTests:
-    """Tests for the Table3StrengthClassesHardwoodBendingTests class."""
+class TestTable3StrengthClassesHardwoodBending:
+    """Tests for the Table3StrengthClassesHardwoodBending class."""
 
     def test_valid_initialization(self) -> None:
         """Test that valid parameters create the instance successfully."""
         # Test with a common hardwood strength class
-        table = Table3StrengthClassesHardwoodBendingTests(HardwoodStrengthClass.D40)
+        table = Table3StrengthClassesHardwoodBending(HardwoodStrengthClass.D40)
         assert table.timber_class == HardwoodStrengthClass.D40
 
     def test_invalid_timber_class(self) -> None:
@@ -26,7 +26,7 @@ class TestTable3StrengthClassesHardwoodBendingTests:
             pass
 
         with pytest.raises(ValueError) as excinfo:
-            Table3StrengthClassesHardwoodBendingTests(MockHardwoodClass())  # type: ignore[arg-type]
+            Table3StrengthClassesHardwoodBending(MockHardwoodClass())  # type: ignore[arg-type]
 
         assert "Invalid hardwood class" in str(excinfo.value)
 
@@ -68,7 +68,7 @@ class TestTable3StrengthClassesHardwoodBendingTests:
         expected_rho_mean: KG_M3,
     ) -> None:
         """Test that timber strength values match expected values for various classes."""
-        table = Table3StrengthClassesHardwoodBendingTests(timber_class)
+        table = Table3StrengthClassesHardwoodBending(timber_class)
         assert table.f_m_k == expected_f_m_k
         assert table.f_t_0_k == expected_f_t_0_k
         assert table.f_t_90_k == expected_f_t_90_k
@@ -84,6 +84,6 @@ class TestTable3StrengthClassesHardwoodBendingTests:
 
     def test_string_representation(self) -> None:
         """Test that __str__ returns the expected string format."""
-        table = Table3StrengthClassesHardwoodBendingTests(HardwoodStrengthClass.D40)
+        table = Table3StrengthClassesHardwoodBending(HardwoodStrengthClass.D40)
         expected_str = "D40, f_m,k=40 N/mm², E_0,mean=13000.0 N/mm², rho_mean=660 kg/m³"
         assert str(table) == expected_str

@@ -29,7 +29,7 @@ class HardwoodStrengthClass(Enum):
 
 
 @dataclass(frozen=True)
-class Table3StrengthClassesHardwoodBendingTests:
+class Table3StrengthClassesHardwoodBending:
     """Implementation of table 3 from EN 338:2016.
 
     Strength classes for hardwoods based on edgewise bending tests - strength, stiffness and density values.
@@ -73,7 +73,7 @@ class Table3StrengthClassesHardwoodBendingTests:
 
     Examples
     --------
-    >>> table = Table3StrengthClassesHardwoodBendingTests(HardwoodStrengthClass.D40)
+    >>> table = Table3StrengthClassesHardwoodBending(HardwoodStrengthClass.D40)
     >>> table.f_m_k
     40
     >>> table.e_m_0_mean

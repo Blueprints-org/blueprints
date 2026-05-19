@@ -33,7 +33,7 @@ class SoftwoodStrengthClassTension(Enum):
 
 
 @dataclass(frozen=True)
-class Table2StrengthClassesSoftwoodTensionTests:
+class Table2StrengthClassesSoftwoodTension:
     """Implementation of table 2 from EN 338:2016.
 
     Strength classes for softwood based on tension tests - strength, stiffness and density values.
@@ -77,7 +77,7 @@ class Table2StrengthClassesSoftwoodTensionTests:
 
     Examples
     --------
-    >>> table = Table2StrengthClassesSoftwoodTensionTests(SoftwoodStrengthClassTension.T14)
+    >>> table = Table2StrengthClassesSoftwoodTension(SoftwoodStrengthClassTension.T14)
     >>> table.f_t_0_k
     14
     >>> table.e_t_0_mean

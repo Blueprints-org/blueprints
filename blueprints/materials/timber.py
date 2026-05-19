@@ -5,15 +5,15 @@ from enum import Enum
 
 from blueprints.codes.eurocode.en_338_2016.chapter_5_classification_of_structural_timber.table_1 import (
     SoftwoodStrengthClassBending,
-    Table1StrengthClassesSoftwoodBendingTests,
+    Table1StrengthClassesSoftwoodBending,
 )
 from blueprints.codes.eurocode.en_338_2016.chapter_5_classification_of_structural_timber.table_2 import (
     SoftwoodStrengthClassTension,
-    Table2StrengthClassesSoftwoodTensionTests,
+    Table2StrengthClassesSoftwoodTension,
 )
 from blueprints.codes.eurocode.en_338_2016.chapter_5_classification_of_structural_timber.table_3 import (
     HardwoodStrengthClass,
-    Table3StrengthClassesHardwoodBendingTests,
+    Table3StrengthClassesHardwoodBending,
 )
 from blueprints.type_alias import KG_M3, MPA
 
@@ -23,13 +23,11 @@ type TimberStrengthClass = SoftwoodStrengthClassBending | SoftwoodStrengthClassT
 # Mapping from strength-class enum to the corresponding EN 338:2016 table class.
 _TIMBER_TABLE_BY_CLASS_TYPE: dict[
     type,
-    type[Table1StrengthClassesSoftwoodBendingTests]
-    | type[Table2StrengthClassesSoftwoodTensionTests]
-    | type[Table3StrengthClassesHardwoodBendingTests],
+    type[Table1StrengthClassesSoftwoodBending] | type[Table2StrengthClassesSoftwoodTension] | type[Table3StrengthClassesHardwoodBending],
 ] = {
-    SoftwoodStrengthClassBending: Table1StrengthClassesSoftwoodBendingTests,
-    SoftwoodStrengthClassTension: Table2StrengthClassesSoftwoodTensionTests,
-    HardwoodStrengthClass: Table3StrengthClassesHardwoodBendingTests,
+    SoftwoodStrengthClassBending: Table1StrengthClassesSoftwoodBending,
+    SoftwoodStrengthClassTension: Table2StrengthClassesSoftwoodTension,
+    HardwoodStrengthClass: Table3StrengthClassesHardwoodBending,
 }
 
 
@@ -76,14 +74,14 @@ class TimberMaterial:
     @property
     def _table(
         self,
-    ) -> Table1StrengthClassesSoftwoodBendingTests | Table2StrengthClassesSoftwoodTensionTests | Table3StrengthClassesHardwoodBendingTests:
+    ) -> Table1StrengthClassesSoftwoodBending | Table2StrengthClassesSoftwoodTension | Table3StrengthClassesHardwoodBending:
         """Return the EN 338:2016 table instance matching the timber class."""
         if isinstance(self.timber_class, SoftwoodStrengthClassBending):
-            return Table1StrengthClassesSoftwoodBendingTests(self.timber_class)
+            return Table1StrengthClassesSoftwoodBending(self.timber_class)
         if isinstance(self.timber_class, SoftwoodStrengthClassTension):
-            return Table2StrengthClassesSoftwoodTensionTests(self.timber_class)
+            return Table2StrengthClassesSoftwoodTension(self.timber_class)
         # HardwoodStrengthClass
-        return Table3StrengthClassesHardwoodBendingTests(self.timber_class)
+        return Table3StrengthClassesHardwoodBending(self.timber_class)
 
     @property
     def name(self) -> str:

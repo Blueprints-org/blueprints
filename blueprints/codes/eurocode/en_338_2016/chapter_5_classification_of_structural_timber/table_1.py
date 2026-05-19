@@ -27,7 +27,7 @@ class SoftwoodStrengthClassBending(Enum):
 
 
 @dataclass(frozen=True)
-class Table1StrengthClassesSoftwoodBendingTests:
+class Table1StrengthClassesSoftwoodBending:
     """Implementation of table 1 from EN 338:2016.
 
     Strength classes for softwood based on edgewise bending tests - strength, stiffness and density values.
@@ -71,7 +71,7 @@ class Table1StrengthClassesSoftwoodBendingTests:
 
     Examples
     --------
-    >>> table = Table1StrengthClassesSoftwoodBendingTests(SoftwoodStrengthClassBending.C24)
+    >>> table = Table1StrengthClassesSoftwoodBending(SoftwoodStrengthClassBending.C24)
     >>> table.f_m_k
     24
     >>> table.e_m_0_mean
