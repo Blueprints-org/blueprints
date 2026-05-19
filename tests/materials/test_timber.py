@@ -45,15 +45,15 @@ class TestTimberMaterial:
         assert timber.f_m_k == 40
         assert timber.f_t_0_k == 24
         assert timber.f_t_90_k == 0.6
-        assert timber.f_c_0_k == 30
-        assert timber.f_c_90_k == 4.8
-        assert timber.f_v_k == 5.0
-        assert timber.e_m_0_mean == 16000.0
-        assert timber.e_m_0_k == 12000.0
-        assert timber.e_m_90_mean == 630.0
-        assert timber.g_mean == 590.0
-        assert timber.rho_k == 475
-        assert timber.rho_mean == 570
+        assert timber.f_c_0_k == 27
+        assert timber.f_c_90_k == 5.5
+        assert timber.f_v_k == 4.2
+        assert timber.e_m_0_mean == 13000.0
+        assert timber.e_m_0_k == 10900.0
+        assert timber.e_m_90_mean == 870.0
+        assert timber.g_mean == 810.0
+        assert timber.rho_k == 550
+        assert timber.rho_mean == 660
 
     def test_softwood_tension_class_t14_properties(self) -> None:
         """Tests properties for softwood tension class T14."""
@@ -62,9 +62,9 @@ class TestTimberMaterial:
         assert timber.f_m_k == 20.5
         assert timber.f_t_0_k == 14
         assert timber.f_t_90_k == 0.4
-        assert timber.f_c_0_k == 16
-        assert timber.f_c_90_k == 2.0
-        assert timber.f_v_k == 2.8
+        assert timber.f_c_0_k == 21
+        assert timber.f_c_90_k == 2.5
+        assert timber.f_v_k == 4.0
         assert timber.e_m_0_mean == 11000.0
         assert timber.e_m_0_k == 7400.0
         assert timber.e_m_90_mean == 370.0
