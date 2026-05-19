@@ -5,7 +5,7 @@ from enum import Enum
 from typing import ClassVar
 
 from blueprints.codes.eurocode.en_338_2016 import EN_338_2016
-from blueprints.type_alias import MPA, KG_M3
+from blueprints.type_alias import KG_M3, MPA
 from blueprints.unit_conversion import GPA_TO_MPA
 
 
@@ -32,11 +32,11 @@ class HardwoodStrengthClass(Enum):
 class Table3StrengthClassesHardwoodBendingTests:
     """Implementation of table 3 from EN 338:2016.
 
-    Strength classes for hardwoods based on edgewise bending tests – strength, stiffness and density values.
+    Strength classes for hardwoods based on edgewise bending tests - strength, stiffness and density values.
 
     Parameters
     ----------
-    hardwood_class : HardwoodStrengthClass
+    timber_class : HardwoodStrengthClass
         The hardwood strength class according to EN 338:2016
 
     Properties
@@ -82,7 +82,7 @@ class Table3StrengthClassesHardwoodBendingTests:
     660
     """
 
-    hardwood_class: HardwoodStrengthClass
+    timber_class: HardwoodStrengthClass
     label: str = field(init=False, default="Table 3")
     source_document: str = field(init=False, default=EN_338_2016)
 
@@ -116,9 +116,9 @@ class Table3StrengthClassesHardwoodBendingTests:
             If the hardwood class is not in the strength data dictionary
         """
         # Check if hardwood class is valid
-        if self.hardwood_class not in self._strength_data:
+        if self.timber_class not in self._strength_data:
             valid_classes = ", ".join([cls.name for cls in HardwoodStrengthClass])
-            error_msg = f"Invalid hardwood class: {self.hardwood_class}. Valid classes are: {valid_classes}"
+            error_msg = f"Invalid hardwood class: {self.timber_class}. Valid classes are: {valid_classes}"
             raise ValueError(error_msg)
 
     @property
@@ -131,7 +131,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The characteristic bending strength in N/mm²
         """
-        return self._strength_data[self.hardwood_class][0]
+        return self._strength_data[self.timber_class][0]
 
     @property
     def f_t_0_k(self) -> MPA:
@@ -143,7 +143,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The characteristic tension strength parallel to grain in N/mm²
         """
-        return self._strength_data[self.hardwood_class][1]
+        return self._strength_data[self.timber_class][1]
 
     @property
     def f_t_90_k(self) -> MPA:
@@ -155,7 +155,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The characteristic tension strength perpendicular to grain in N/mm²
         """
-        return self._strength_data[self.hardwood_class][2]
+        return self._strength_data[self.timber_class][2]
 
     @property
     def f_c_0_k(self) -> MPA:
@@ -167,7 +167,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The characteristic compression strength parallel to grain in N/mm²
         """
-        return self._strength_data[self.hardwood_class][3]
+        return self._strength_data[self.timber_class][3]
 
     @property
     def f_c_90_k(self) -> MPA:
@@ -179,7 +179,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The characteristic compression strength perpendicular to grain in N/mm²
         """
-        return self._strength_data[self.hardwood_class][4]
+        return self._strength_data[self.timber_class][4]
 
     @property
     def f_v_k(self) -> MPA:
@@ -191,7 +191,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The characteristic shear strength in N/mm²
         """
-        return self._strength_data[self.hardwood_class][5]
+        return self._strength_data[self.timber_class][5]
 
     @property
     def e_m_0_mean(self) -> MPA:
@@ -203,7 +203,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The mean modulus of elasticity parallel to grain in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
         """
-        return self._strength_data[self.hardwood_class][6] * GPA_TO_MPA
+        return self._strength_data[self.timber_class][6] * GPA_TO_MPA
 
     @property
     def e_m_0_k(self) -> MPA:
@@ -215,7 +215,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The 5 percentile modulus of elasticity parallel to grain in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
         """
-        return self._strength_data[self.hardwood_class][7] * GPA_TO_MPA
+        return self._strength_data[self.timber_class][7] * GPA_TO_MPA
 
     @property
     def e_m_90_mean(self) -> MPA:
@@ -227,7 +227,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The mean modulus of elasticity perpendicular to grain in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
         """
-        return self._strength_data[self.hardwood_class][8] * GPA_TO_MPA
+        return self._strength_data[self.timber_class][8] * GPA_TO_MPA
 
     @property
     def g_mean(self) -> MPA:
@@ -239,7 +239,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         MPA
             The mean shear modulus in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
         """
-        return self._strength_data[self.hardwood_class][9] * GPA_TO_MPA
+        return self._strength_data[self.timber_class][9] * GPA_TO_MPA
 
     @property
     def rho_k(self) -> KG_M3:
@@ -251,7 +251,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         KG_M3
             The 5 percentile density in kg/m³
         """
-        return self._strength_data[self.hardwood_class][10]
+        return self._strength_data[self.timber_class][10]
 
     @property
     def rho_mean(self) -> KG_M3:
@@ -263,7 +263,7 @@ class Table3StrengthClassesHardwoodBendingTests:
         KG_M3
             The mean density in kg/m³
         """
-        return self._strength_data[self.hardwood_class][11]
+        return self._strength_data[self.timber_class][11]
 
     def __str__(self) -> str:
         """
@@ -274,9 +274,4 @@ class Table3StrengthClassesHardwoodBendingTests:
         str
             String representation with class and key strength properties
         """
-        return (
-            f"{self.hardwood_class.value}, "
-            f"f_m,k={self.f_m_k} N/mm², "
-            f"E_0,mean={self.e_m_0_mean} N/mm², "
-            f"rho_mean={self.rho_mean} kg/m³"
-        )
+        return f"{self.timber_class.value}, f_m,k={self.f_m_k} N/mm², E_0,mean={self.e_m_0_mean} N/mm², rho_mean={self.rho_mean} kg/m³"
