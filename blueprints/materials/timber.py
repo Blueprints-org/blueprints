@@ -78,8 +78,12 @@ class TimberMaterial:
         self,
     ) -> Table1StrengthClassesSoftwoodBendingTests | Table2StrengthClassesSoftwoodTensionTests | Table3StrengthClassesHardwoodBendingTests:
         """Return the EN 338:2016 table instance matching the timber class."""
-        table_cls = _TIMBER_TABLE_BY_CLASS_TYPE[type(self.timber_class)]
-        return table_cls(self.timber_class)  # type: ignore[arg-type]
+        if isinstance(self.timber_class, SoftwoodStrengthClassBending):
+            return Table1StrengthClassesSoftwoodBendingTests(self.timber_class)
+        if isinstance(self.timber_class, SoftwoodStrengthClassTension):
+            return Table2StrengthClassesSoftwoodTensionTests(self.timber_class)
+        # HardwoodStrengthClass
+        return Table3StrengthClassesHardwoodBendingTests(self.timber_class)
 
     @property
     def name(self) -> str:
