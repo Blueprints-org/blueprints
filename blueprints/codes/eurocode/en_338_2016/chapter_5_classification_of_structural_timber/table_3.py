@@ -53,17 +53,17 @@ class Table3StrengthClassesHardwoodBending:
         5-percentile characteristic value of compressive strength perpendicular to grain in N/mm²
     f_v_k : MPA
         5-percentile characteristic value of shear strength in N/mm²
-    e_m_0_mean : float
-        Mean characteristic value of modulus of elasticity in bending parallel to grain in kN/mm²
-    e_m_0_k : float
-        5-percentile characteristic value of modulus of elasticity in bending parallel to grain in kN/mm²
-    e_m_90_mean : float
-        Mean characteristic value of modulus of elasticity in bending perpendicular to grain in kN/mm²
-    g_mean : float
+    e_t_0_mean : GPA
+        Mean characteristic value of modulus of elasticity in tension parallel to grain in kN/mm²
+    e_t_0_k : GPA
+        5-percentile characteristic value of modulus of elasticity in tension parallel to grain in kN/mm²
+    e_t_90_mean : GPA
+        Mean characteristic value of modulus of elasticity in tension perpendicular to grain in kN/mm²
+    g_mean : GPA
         Mean characteristic value of shear modulus in kN/mm²
-    rho_k : float
+    rho_k : KG_M3
         5-percentile characteristic value of density in kg/m³
-    rho_mean : float
+    rho_mean : KG_M3
         Mean characteristic value of density in kg/m³
 
     Raises
