@@ -98,60 +98,60 @@ class TimberMaterial:
 
     @property
     def f_m_k(self) -> MPA:
-        """Characteristic bending strength [$f_{m,k}$] in $N/mm^2$."""
+        """5-percentile characteristic value of bending strength [$f_{m,k}$] in $N/mm^2$."""
         return self._table.f_m_k
 
     @property
     def f_t_0_k(self) -> MPA:
-        """Characteristic tension strength parallel to grain [$f_{t,0,k}$] in $N/mm^2$."""
+        """5-percentile characteristic value of tensile strength parallel to grain [$f_{t,0,k}$] in $N/mm^2$."""
         return self._table.f_t_0_k
 
     @property
     def f_t_90_k(self) -> MPA:
-        """Characteristic tension strength perpendicular to grain [$f_{t,90,k}$] in $N/mm^2$."""
+        """5-percentile characteristic value of tensile strength perpendicular to grain [$f_{t,90,k}$] in $N/mm^2$."""
         return self._table.f_t_90_k
 
     @property
     def f_c_0_k(self) -> MPA:
-        """Characteristic compression strength parallel to grain [$f_{c,0,k}$] in $N/mm^2$."""
+        """5-percentile characteristic value of compressive strength parallel to grain [$f_{c,0,k}$] in $N/mm^2$."""
         return self._table.f_c_0_k
 
     @property
     def f_c_90_k(self) -> MPA:
-        """Characteristic compression strength perpendicular to grain [$f_{c,90,k}$] in $N/mm^2$."""
+        """5-percentile characteristic value of compressive strength perpendicular to grain [$f_{c,90,k}$] in $N/mm^2$."""
         return self._table.f_c_90_k
 
     @property
     def f_v_k(self) -> MPA:
-        """Characteristic shear strength [$f_{v,k}$] in $N/mm^2$."""
+        """5-percentile characteristic value of shear strength [$f_{v,k}$] in $N/mm^2$."""
         return self._table.f_v_k
 
     @property
     def e_m_0_mean(self) -> MPA:
-        """Mean modulus of elasticity parallel to grain [$E_{0,mean}$] in $N/mm^2$."""
+        """Mean characteristic value of modulus of elasticity parallel to grain [$E_{0,mean}$] in $N/mm^2$."""
         return self._table.e_m_0_mean
 
     @property
     def e_m_0_k(self) -> MPA:
-        """5-percentile modulus of elasticity parallel to grain [$E_{0,05}$] in $N/mm^2$."""
+        """5-percentile characteristic value of modulus of elasticity parallel to grain [$E_{0,05}$] in $N/mm^2$."""
         return self._table.e_m_0_k
 
     @property
     def e_m_90_mean(self) -> MPA:
-        """Mean modulus of elasticity perpendicular to grain [$E_{90,mean}$] in $N/mm^2$."""
+        """Mean characteristic value of modulus of elasticity perpendicular to grain [$E_{90,mean}$] in $N/mm^2$."""
         return self._table.e_m_90_mean
 
     @property
     def g_mean(self) -> MPA:
-        """Mean shear modulus [$G_{mean}$] in $N/mm^2$."""
+        """Mean characteristic value of shear modulus [$G_{mean}$] in $N/mm^2$."""
         return self._table.g_mean
 
     @property
     def rho_k(self) -> KG_M3:
-        r"""5-percentile density [$\rho_k$] in $kg/m^3$."""
+        r"""5-percentile characteristic value of density [$\rho_k$] in $kg/m^3$."""
         return self._table.rho_k
 
     @property
     def rho_mean(self) -> KG_M3:
-        r"""Mean density [$\rho_{mean}$] in $kg/m^3$."""
+        r"""Mean characteristic value of density [$\rho_{mean}$] in $kg/m^3$."""
         return self._table.rho_mean

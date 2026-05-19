@@ -46,29 +46,29 @@ class Table2StrengthClassesSoftwoodTension:
     Properties
     ----------
     f_m_k : MPA
-        Characteristic bending strength in N/mm²
+        5-percentile characteristic value of bending strength in N/mm²
     f_t_0_k : MPA
-        Characteristic tension strength parallel to grain in N/mm²
+        5-percentile characteristic value of tensile strength parallel to grain in N/mm²
     f_t_90_k : MPA
-        Characteristic tension strength perpendicular to grain in N/mm²
+        5-percentile characteristic value of tensile strength perpendicular to grain in N/mm²
     f_c_0_k : MPA
-        Characteristic compression strength parallel to grain in N/mm²
+        5-percentile characteristic value of compressive strength parallel to grain in N/mm²
     f_c_90_k : MPA
-        Characteristic compression strength perpendicular to grain in N/mm²
+        5-percentile characteristic value of compressive strength perpendicular to grain in N/mm²
     f_v_k : MPA
-        Characteristic shear strength in N/mm²
+        5-percentile characteristic value of shear strength in N/mm²
     e_t_0_mean : float
-        Mean modulus of elasticity parallel to grain (tension) in kN/mm²
+        Mean characteristic value of modulus of elasticity in tension parallel to grain in kN/mm²
     e_t_0_k : float
-        5 percentile modulus of elasticity parallel to grain (tension) in kN/mm²
+        5-percentile characteristic value of modulus of elasticity in tension parallel to grain in kN/mm²
     e_t_90_mean : float
-        Mean modulus of elasticity perpendicular to grain in kN/mm²
+        Mean characteristic value of modulus of elasticity in tension perpendicular to grain in kN/mm²
     g_mean : float
-        Mean shear modulus in kN/mm²
+        Mean characteristic value of shear modulus in kN/mm²
     rho_k : float
-        5 percentile density in kg/m³
+        5-percentile characteristic value of density in kg/m³
     rho_mean : float
-        Mean density in kg/m³
+        Mean characteristic value of density in kg/m³
 
     Raises
     ------
@@ -132,144 +132,144 @@ class Table2StrengthClassesSoftwoodTension:
     @property
     def f_m_k(self) -> MPA:
         """
-        Get the characteristic bending strength.
+        Get the 5-percentile characteristic value of bending strength.
 
         Returns
         -------
         MPA
-            The characteristic bending strength in N/mm²
+            The 5-percentile characteristic value of bending strength in N/mm²
         """
         return self._strength_data[self.timber_class][0]
 
     @property
     def f_t_0_k(self) -> MPA:
         """
-        Get the characteristic tension strength parallel to grain.
+        Get the 5-percentile characteristic value of tensile strength parallel to grain.
 
         Returns
         -------
         MPA
-            The characteristic tension strength parallel to grain in N/mm²
+            The 5-percentile characteristic value of tensile strength parallel to grain in N/mm²
         """
         return self._strength_data[self.timber_class][1]
 
     @property
     def f_t_90_k(self) -> MPA:
         """
-        Get the characteristic tension strength perpendicular to grain.
+        Get the 5-percentile characteristic value of tensile strength perpendicular to grain.
 
         Returns
         -------
         MPA
-            The characteristic tension strength perpendicular to grain in N/mm²
+            The 5-percentile characteristic value of tensile strength perpendicular to grain in N/mm²
         """
         return self._strength_data[self.timber_class][2]
 
     @property
     def f_c_0_k(self) -> MPA:
         """
-        Get the characteristic compression strength parallel to grain.
+        Get the 5-percentile characteristic value of compressive strength parallel to grain.
 
         Returns
         -------
         MPA
-            The characteristic compression strength parallel to grain in N/mm²
+            The 5-percentile characteristic value of compressive strength parallel to grain in N/mm²
         """
         return self._strength_data[self.timber_class][3]
 
     @property
     def f_c_90_k(self) -> MPA:
         """
-        Get the characteristic compression strength perpendicular to grain.
+        Get the 5-percentile characteristic value of compressive strength perpendicular to grain.
 
         Returns
         -------
         MPA
-            The characteristic compression strength perpendicular to grain in N/mm²
+            The 5-percentile characteristic value of compressive strength perpendicular to grain in N/mm²
         """
         return self._strength_data[self.timber_class][4]
 
     @property
     def f_v_k(self) -> MPA:
         """
-        Get the characteristic shear strength.
+        Get the 5-percentile characteristic value of shear strength.
 
         Returns
         -------
         MPA
-            The characteristic shear strength in N/mm²
+            The 5-percentile characteristic value of shear strength in N/mm²
         """
         return self._strength_data[self.timber_class][5]
 
     @property
     def e_m_0_mean(self) -> MPA:
         """
-        Get the mean modulus of elasticity parallel to grain.
+        Get the mean characteristic value of modulus of elasticity in tension parallel to grain.
 
         Returns
         -------
         MPA
-            The mean modulus of elasticity parallel to grain in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
+            The mean characteristic value of modulus of elasticity in tension parallel to grain in N/mm²
         """
         return self._strength_data[self.timber_class][6] * GPA_TO_MPA
 
     @property
     def e_m_0_k(self) -> MPA:
         """
-        Get the 5 percentile modulus of elasticity parallel to grain.
+        Get the 5-percentile characteristic value of modulus of elasticity in tension parallel to grain.
 
         Returns
         -------
         MPA
-            The 5 percentile modulus of elasticity parallel to grain in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
+            The 5-percentile characteristic value of modulus of elasticity in tension parallel to grain in N/mm²
         """
         return self._strength_data[self.timber_class][7] * GPA_TO_MPA
 
     @property
     def e_m_90_mean(self) -> MPA:
         """
-        Get the mean modulus of elasticity perpendicular to grain.
+        Get the mean characteristic value of modulus of elasticity in tension perpendicular to grain.
 
         Returns
         -------
         MPA
-            The mean modulus of elasticity perpendicular to grain in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
+            The mean characteristic value of modulus of elasticity in tension perpendicular to grain in N/mm²
         """
         return self._strength_data[self.timber_class][8] * GPA_TO_MPA
 
     @property
     def g_mean(self) -> MPA:
         """
-        Get the mean shear modulus.
+        Get the mean characteristic value of shear modulus.
 
         Returns
         -------
         MPA
-            The mean shear modulus in kN/mm², multiplied by 1000 to convert from kN/mm² to N/mm²
+            The mean characteristic value of shear modulus in N/mm²
         """
         return self._strength_data[self.timber_class][9] * GPA_TO_MPA
 
     @property
     def rho_k(self) -> KG_M3:
         """
-        Get the 5 percentile density.
+        Get the 5-percentile characteristic value of density.
 
         Returns
         -------
         KG_M3
-            The 5 percentile density in kg/m³
+            The 5-percentile characteristic value of density in kg/m³
         """
         return self._strength_data[self.timber_class][10]
 
     @property
     def rho_mean(self) -> KG_M3:
         """
-        Get the mean density.
+        Get the mean characteristic value of density.
 
         Returns
         -------
         KG_M3
-            The mean density in kg/m³
+            The mean characteristic value of density in kg/m³
         """
         return self._strength_data[self.timber_class][11]
 
