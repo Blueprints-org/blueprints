@@ -202,7 +202,7 @@ class Table2StrengthClassesSoftwoodTension:
         return self._strength_data[self.timber_class][5]
 
     @property
-    def e_m_0_mean(self) -> MPA:
+    def e_t_0_mean(self) -> MPA:
         """
         Get the mean characteristic value of modulus of elasticity in tension parallel to grain.
 
@@ -214,7 +214,7 @@ class Table2StrengthClassesSoftwoodTension:
         return self._strength_data[self.timber_class][6] * GPA_TO_MPA
 
     @property
-    def e_m_0_k(self) -> MPA:
+    def e_t_0_k(self) -> MPA:
         """
         Get the 5-percentile characteristic value of modulus of elasticity in tension parallel to grain.
 
@@ -226,7 +226,7 @@ class Table2StrengthClassesSoftwoodTension:
         return self._strength_data[self.timber_class][7] * GPA_TO_MPA
 
     @property
-    def e_m_90_mean(self) -> MPA:
+    def e_t_90_mean(self) -> MPA:
         """
         Get the mean characteristic value of modulus of elasticity in tension perpendicular to grain.
 
