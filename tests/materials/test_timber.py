@@ -37,6 +37,9 @@ class TestTimberMaterial:
         assert timber.g_mean == 690.0
         assert timber.rho_k == 350
         assert timber.rho_mean == 420
+        assert timber.e_t_0_mean is None
+        assert timber.e_t_0_k is None
+        assert timber.e_t_90_mean is None
 
     def test_hardwood_class_d40_properties(self) -> None:
         """Tests properties for hardwood class D40."""
@@ -54,6 +57,9 @@ class TestTimberMaterial:
         assert timber.g_mean == 810.0
         assert timber.rho_k == 550
         assert timber.rho_mean == 660
+        assert timber.e_t_0_mean is None
+        assert timber.e_t_0_k is None
+        assert timber.e_t_90_mean is None
 
     def test_softwood_tension_class_t14_properties(self) -> None:
         """Tests properties for softwood tension class T14."""
@@ -65,12 +71,15 @@ class TestTimberMaterial:
         assert timber.f_c_0_k == 21
         assert timber.f_c_90_k == 2.5
         assert timber.f_v_k == 4.0
-        assert timber.e_m_0_mean == 11000.0
-        assert timber.e_m_0_k == 7400.0
-        assert timber.e_m_90_mean == 370.0
+        assert timber.e_t_0_mean == 11000.0
+        assert timber.e_t_0_k == 7400.0
+        assert timber.e_t_90_mean == 370.0
         assert timber.g_mean == 690.0
         assert timber.rho_k == 350
         assert timber.rho_mean == 420
+        assert timber.e_m_0_mean is None
+        assert timber.e_m_0_k is None
+        assert timber.e_m_90_mean is None
 
     def test_diagram_type_default(self) -> None:
         """Tests the default diagram type."""

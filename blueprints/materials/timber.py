@@ -127,19 +127,34 @@ class TimberMaterial:
         return self._table.f_v_k
 
     @property
-    def e_m_0_mean(self) -> MPA:
-        """Mean characteristic value of modulus of elasticity parallel to grain [$E_{0,mean}$] in $N/mm^2$."""
-        return self._table.e_m_0_mean
+    def e_m_0_mean(self) -> MPA | None:
+        """Mean characteristic value of modulus of elasticity in bending parallel to grain [$E_{0,mean}$] in $N/mm^2$."""
+        return getattr(self._table, "e_m_0_mean", None)
 
     @property
-    def e_m_0_k(self) -> MPA:
-        """5-percentile characteristic value of modulus of elasticity parallel to grain [$E_{0,05}$] in $N/mm^2$."""
-        return self._table.e_m_0_k
+    def e_m_0_k(self) -> MPA | None:
+        """5-percentile characteristic value of modulus of elasticity in bending parallel to grain [$E_{0,05}$] in $N/mm^2$."""
+        return getattr(self._table, "e_m_0_k", None)
 
     @property
-    def e_m_90_mean(self) -> MPA:
-        """Mean characteristic value of modulus of elasticity perpendicular to grain [$E_{90,mean}$] in $N/mm^2$."""
-        return self._table.e_m_90_mean
+    def e_m_90_mean(self) -> MPA | None:
+        """Mean characteristic value of modulus of elasticity in bending perpendicular to grain [$E_{90,mean}$] in $N/mm^2$."""
+        return getattr(self._table, "e_m_90_mean", None)
+
+    @property
+    def e_t_0_mean(self) -> MPA | None:
+        """Mean characteristic value of modulus of elasticity in tension parallel to grain [$E_{0,mean}$] in $N/mm^2$."""
+        return getattr(self._table, "e_t_0_mean", None)
+
+    @property
+    def e_t_0_k(self) -> MPA | None:
+        """5-percentile characteristic value of modulus of elasticity in tension parallel to grain [$E_{0,05}$] in $N/mm^2$."""
+        return getattr(self._table, "e_t_0_k", None)
+
+    @property
+    def e_t_90_mean(self) -> MPA | None:
+        """Mean characteristic value of modulus of elasticity in tension perpendicular to grain [$E_{90,mean}$] in $N/mm^2$."""
+        return getattr(self._table, "e_t_90_mean", None)
 
     @property
     def g_mean(self) -> MPA:

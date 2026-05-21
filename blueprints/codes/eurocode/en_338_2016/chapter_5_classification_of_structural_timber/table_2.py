@@ -282,4 +282,4 @@ class Table2StrengthClassesSoftwoodTension:
         str
             String representation with class and key strength properties
         """
-        return f"{self.timber_class.value}, f_m,k={self.f_m_k} N/mm², E_0,mean={self.e_m_0_mean} N/mm², rho_mean={self.rho_mean} kg/m³"
+        return f"{self.timber_class.value}, f_m,k={self.f_m_k} N/mm², E_0,mean={self.e_t_0_mean} N/mm², rho_mean={self.rho_mean} kg/m³"

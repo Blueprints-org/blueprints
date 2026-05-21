@@ -1,5 +1,5 @@
 **EN 338 - April 2016
-Structural timber - Strength classes 
+Structural timber - Strength classes**
 
 The table presents a list of formulas from the code on  strength classes of structural timber. 
 ( :x: or :heavy_check_mark: ) and any pertinent remarks. The 'Object Name' column references the corresponding Python entities inside of Blueprints.

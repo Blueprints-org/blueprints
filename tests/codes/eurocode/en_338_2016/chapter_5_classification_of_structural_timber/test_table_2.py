@@ -39,9 +39,9 @@ class TestTable2StrengthClassesSoftwoodTension:
             "expected_f_c_0_k",
             "expected_f_c_90_k",
             "expected_f_v_k",
-            "expected_e_m_0_mean",
-            "expected_e_m_0_k",
-            "expected_e_m_90_mean",
+            "expected_e_t_0_mean",
+            "expected_e_t_0_k",
+            "expected_e_t_90_mean",
             "expected_g_mean",
             "expected_rho_k",
             "expected_rho_mean",
@@ -60,9 +60,9 @@ class TestTable2StrengthClassesSoftwoodTension:
         expected_f_c_0_k: MPA,
         expected_f_c_90_k: MPA,
         expected_f_v_k: MPA,
-        expected_e_m_0_mean: MPA,
-        expected_e_m_0_k: MPA,
-        expected_e_m_90_mean: MPA,
+        expected_e_t_0_mean: MPA,
+        expected_e_t_0_k: MPA,
+        expected_e_t_90_mean: MPA,
         expected_g_mean: MPA,
         expected_rho_k: KG_M3,
         expected_rho_mean: KG_M3,
@@ -75,9 +75,9 @@ class TestTable2StrengthClassesSoftwoodTension:
         assert table.f_c_0_k == expected_f_c_0_k
         assert table.f_c_90_k == expected_f_c_90_k
         assert table.f_v_k == expected_f_v_k
-        assert table.e_m_0_mean == expected_e_m_0_mean
-        assert table.e_m_0_k == expected_e_m_0_k
-        assert table.e_m_90_mean == expected_e_m_90_mean
+        assert table.e_t_0_mean == expected_e_t_0_mean
+        assert table.e_t_0_k == expected_e_t_0_k
+        assert table.e_t_90_mean == expected_e_t_90_mean
         assert table.g_mean == expected_g_mean
         assert table.rho_k == expected_rho_k
         assert table.rho_mean == expected_rho_mean
