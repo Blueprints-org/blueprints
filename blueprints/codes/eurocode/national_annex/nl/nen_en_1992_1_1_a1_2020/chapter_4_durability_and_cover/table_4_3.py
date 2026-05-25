@@ -9,8 +9,8 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover._
     AbstractConcreteStructuralClassCalculator,
     ConcreteStructuralClassBase,
 )
-from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020 import NEN_EN_1992_1_1_A1_2020
-from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.national_annex.nl.nen_en_1992_1_1_a1_2020 import NEN_EN_1992_1_1_A1_2020
+from blueprints.codes.eurocode.national_annex.nl.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chloride,
     ChlorideSeawater,
