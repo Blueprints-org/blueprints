@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import cast
 
 from blueprints.codes.eurocode.en_338_2016.chapter_5_classification_of_structural_timber.table_1 import (
     SoftwoodStrengthClassBending,
@@ -127,34 +128,70 @@ class TimberMaterial:
         return self._table.f_v_k
 
     @property
-    def e_m_0_mean(self) -> MPA | None:
+    def e_m_0_mean(self) -> MPA:
         """Mean characteristic value of modulus of elasticity in bending parallel to grain [$E_{0,mean}$] in $N/mm^2$."""
-        return getattr(self._table, "e_m_0_mean", None)
+        if not hasattr(self._table, "e_m_0_mean"):
+            raise AttributeError(
+                f"Property 'e_m_0_mean' does not exist for timber class '{self.name}'. "
+                f"This property is not available in {type(self._table).__name__} "
+                f"(EN 338:2016). Check the standard for available properties."
+            )
+        return cast(MPA, getattr(self._table, "e_m_0_mean"))
 
     @property
-    def e_m_0_k(self) -> MPA | None:
+    def e_m_0_k(self) -> MPA:
         """5-percentile characteristic value of modulus of elasticity in bending parallel to grain [$E_{0,05}$] in $N/mm^2$."""
-        return getattr(self._table, "e_m_0_k", None)
+        if not hasattr(self._table, "e_m_0_k"):
+            raise AttributeError(
+                f"Property 'e_m_0_k' does not exist for timber class '{self.name}'. "
+                f"This property is not available in {type(self._table).__name__} "
+                f"(EN 338:2016). Check the standard for available properties."
+            )
+        return cast(MPA, getattr(self._table, "e_m_0_k"))
 
     @property
-    def e_m_90_mean(self) -> MPA | None:
+    def e_m_90_mean(self) -> MPA:
         """Mean characteristic value of modulus of elasticity in bending perpendicular to grain [$E_{90,mean}$] in $N/mm^2$."""
-        return getattr(self._table, "e_m_90_mean", None)
+        if not hasattr(self._table, "e_m_90_mean"):
+            raise AttributeError(
+                f"Property 'e_m_90_mean' does not exist for timber class '{self.name}'. "
+                f"This property is not available in {type(self._table).__name__} "
+                f"(EN 338:2016). Check the standard for available properties."
+            )
+        return cast(MPA, getattr(self._table, "e_m_90_mean"))
 
     @property
-    def e_t_0_mean(self) -> MPA | None:
+    def e_t_0_mean(self) -> MPA:
         """Mean characteristic value of modulus of elasticity in tension parallel to grain [$E_{0,mean}$] in $N/mm^2$."""
-        return getattr(self._table, "e_t_0_mean", None)
+        if not hasattr(self._table, "e_t_0_mean"):
+            raise AttributeError(
+                f"Property 'e_t_0_mean' does not exist for timber class '{self.name}'. "
+                f"This property is not available in {type(self._table).__name__} "
+                f"(EN 338:2016). Check the standard for available properties."
+            )
+        return cast(MPA, getattr(self._table, "e_t_0_mean"))
 
     @property
-    def e_t_0_k(self) -> MPA | None:
+    def e_t_0_k(self) -> MPA:
         """5-percentile characteristic value of modulus of elasticity in tension parallel to grain [$E_{0,05}$] in $N/mm^2$."""
-        return getattr(self._table, "e_t_0_k", None)
+        if not hasattr(self._table, "e_t_0_k"):
+            raise AttributeError(
+                f"Property 'e_t_0_k' does not exist for timber class '{self.name}'. "
+                f"This property is not available in {type(self._table).__name__} "
+                f"(EN 338:2016). Check the standard for available properties."
+            )
+        return cast(MPA, getattr(self._table, "e_t_0_k"))
 
     @property
-    def e_t_90_mean(self) -> MPA | None:
+    def e_t_90_mean(self) -> MPA:
         """Mean characteristic value of modulus of elasticity in tension perpendicular to grain [$E_{90,mean}$] in $N/mm^2$."""
-        return getattr(self._table, "e_t_90_mean", None)
+        if not hasattr(self._table, "e_t_90_mean"):
+            raise AttributeError(
+                f"Property 'e_t_90_mean' does not exist for timber class '{self.name}'. "
+                f"This property is not available in {type(self._table).__name__} "
+                f"(EN 338:2016). Check the standard for available properties."
+            )
+        return cast(MPA, getattr(self._table, "e_t_90_mean"))
 
     @property
     def g_mean(self) -> MPA:

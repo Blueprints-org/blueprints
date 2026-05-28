@@ -37,9 +37,13 @@ class TestTimberMaterial:
         assert timber.g_mean == 690.0
         assert timber.rho_k == 350
         assert timber.rho_mean == 420
-        assert timber.e_t_0_mean is None
-        assert timber.e_t_0_k is None
-        assert timber.e_t_90_mean is None
+        # Test that tension properties raise AttributeError for bending class
+        with pytest.raises(AttributeError, match="Property 'e_t_0_mean' does not exist for timber class 'C24'"):
+            _ = timber.e_t_0_mean
+        with pytest.raises(AttributeError, match="Property 'e_t_0_k' does not exist for timber class 'C24'"):
+            _ = timber.e_t_0_k
+        with pytest.raises(AttributeError, match="Property 'e_t_90_mean' does not exist for timber class 'C24'"):
+            _ = timber.e_t_90_mean
 
     def test_hardwood_class_d40_properties(self) -> None:
         """Tests properties for hardwood class D40."""
@@ -57,9 +61,13 @@ class TestTimberMaterial:
         assert timber.g_mean == 810.0
         assert timber.rho_k == 550
         assert timber.rho_mean == 660
-        assert timber.e_t_0_mean is None
-        assert timber.e_t_0_k is None
-        assert timber.e_t_90_mean is None
+        # Test that tension properties raise AttributeError for bending class
+        with pytest.raises(AttributeError, match="Property 'e_t_0_mean' does not exist for timber class 'D40'"):
+            _ = timber.e_t_0_mean
+        with pytest.raises(AttributeError, match="Property 'e_t_0_k' does not exist for timber class 'D40'"):
+            _ = timber.e_t_0_k
+        with pytest.raises(AttributeError, match="Property 'e_t_90_mean' does not exist for timber class 'D40'"):
+            _ = timber.e_t_90_mean
 
     def test_softwood_tension_class_t14_properties(self) -> None:
         """Tests properties for softwood tension class T14."""
@@ -77,9 +85,13 @@ class TestTimberMaterial:
         assert timber.g_mean == 690.0
         assert timber.rho_k == 350
         assert timber.rho_mean == 420
-        assert timber.e_m_0_mean is None
-        assert timber.e_m_0_k is None
-        assert timber.e_m_90_mean is None
+        # Test that bending properties raise AttributeError for tension class
+        with pytest.raises(AttributeError, match="Property 'e_m_0_mean' does not exist for timber class 'T14'"):
+            _ = timber.e_m_0_mean
+        with pytest.raises(AttributeError, match="Property 'e_m_0_k' does not exist for timber class 'T14'"):
+            _ = timber.e_m_0_k
+        with pytest.raises(AttributeError, match="Property 'e_m_90_mean' does not exist for timber class 'T14'"):
+            _ = timber.e_m_90_mean
 
     def test_diagram_type_default(self) -> None:
         """Tests the default diagram type."""
