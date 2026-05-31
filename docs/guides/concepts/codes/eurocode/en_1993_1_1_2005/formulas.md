@@ -90,8 +90,8 @@ Total of 108 formulas present.
 | 6.51           |        :x:         |         |                                                                                   |        :x:         |
 | 6.52           |        :x:         |         |                                                                                   |        :x:         |
 | 6.53           |        :x:         |         |                                                                                   |        :x:         |
-| 6.54           |        :x:         |         |                                                                                   |        :x:         |
-| 6.55           |        :x:         |         |                                                                                   |        :x:         |
+| 6.54           | :heavy_check_mark: |         | Form6Dot54BucklingResistanceOfMembersInBending                                    |        :x:         |
+| 6.55           | :heavy_check_mark: |         | Form6Dot55DesignBucklingResistanceMoment                                          |        :x:         |
 | 6.56           |        :x:         |         |                                                                                   |        :x:         |
 | 6.57           |        :x:         |         |                                                                                   |        :x:         |
 | 6.58           |        :x:         |         |                                                                                   |        :x:         |
