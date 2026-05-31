@@ -2,8 +2,10 @@
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.table_4_2 import Table4Dot2MinimumCoverWithRegardToBond
-from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_14 import (
+from blueprints.codes.eurocode.national_annex.nl.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.table_4_2 import (
+    Table4Dot2MinimumCoverWithRegardToBond,
+)
+from blueprints.codes.eurocode.national_annex.nl.nen_en_1992_1_1_a1_2020.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_14 import (  # noqa: E501
     Form8Dot14EquivalentDiameterBundledBars,
 )
 from blueprints.type_alias import MM

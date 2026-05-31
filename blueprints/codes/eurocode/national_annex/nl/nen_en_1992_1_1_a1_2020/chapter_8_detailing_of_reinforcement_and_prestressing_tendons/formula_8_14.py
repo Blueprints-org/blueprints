@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020 import NEN_EN_1992_1_1_A1_2020
+from blueprints.codes.eurocode.national_annex.nl.nen_en_1992_1_1_a1_2020 import NEN_EN_1992_1_1_A1_2020
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS, MM
