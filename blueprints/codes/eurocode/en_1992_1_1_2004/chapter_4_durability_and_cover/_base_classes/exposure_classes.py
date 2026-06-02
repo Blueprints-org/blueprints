@@ -172,7 +172,7 @@ class ExposureClassesBase:
         Returns
         -------
         bool
-            True if all exposure classes are euqal to _not_applicable_key ("Not applicable" by default)
+            True if all exposure classes are equal to _not_applicable_key ("Not applicable" by default)
         """
         return all(exposure_class.value == self.__class__._not_applicable_key for exposure_class in self.__dict__.values())  # noqa: SLF001
 

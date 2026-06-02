@@ -20,7 +20,7 @@ class Form5Dot38bCheckRelativeEccentricityRatio(Formula):
         b_eq: MM,
         h_eq: MM,
     ) -> None:
-        r"""Check the excentricity of the loads in x and y direction.
+        r"""Check the eccentricity of the loads in y and z direction.
 
         EN 1992-1-1:2004 art.5.8.9(3) - Formula (5.38b)
 
