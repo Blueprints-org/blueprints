@@ -4,7 +4,7 @@ according to Table 4.1 from NEN-EN 1992-1-1:2005+A1:2015+NB:2016+A1:2020: Chapte
 
 import pytest
 
-from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.table_4_1 import (
+from blueprints.codes.eurocode.national_annex.nl.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.table_4_1 import (
     Carbonation,
     Chemical,
     Chloride,

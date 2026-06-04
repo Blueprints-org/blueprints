@@ -1,6 +1,6 @@
 [project]
 name = "blue-prints"
-version = "0.6.2"
+version = "0.6.3"
 description = "Blueprints, open source python package for civil engineering calculations."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -26,6 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: MIT License",
+    "Typing :: Typed",
 ]
 dependencies = [
     "matplotlib>=3.10.8",
@@ -45,8 +46,8 @@ bp = "blueprints.cli:app"
 
 [dependency-groups]
 dev = [
-    "ty==0.0.34",
-    "ruff==0.15.12",
+    "ty==0.0.42",
+    "ruff==0.15.15",
     "pre-commit==4.6.0",
     "types-shapely==2.1.0.20250917",
     "icecream==2.2.0",
@@ -61,7 +62,7 @@ docs = [
     "mkdocs-gen-files>=0.5,<0.7",
     "mkdocs-awesome-nav>=3.1.2,<3.4.0",
     "natsort ~= 8.4.0",
-    "mkdocs-jupyter ~= 0.25.1",
+    "mkdocs-jupyter>=0.25.1,<0.27.0",
     "markdown-exec[ansi]>=1.11.0",
 ]
 test = [
