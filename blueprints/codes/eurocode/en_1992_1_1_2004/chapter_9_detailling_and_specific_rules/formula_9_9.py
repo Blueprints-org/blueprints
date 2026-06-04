@@ -1,4 +1,4 @@
-"""Formula 9.9 from EN 1992-1-1:2004: Chapter 9 - Detailling and specific rules."""
+"""Formula 9.9 from EN 1992-1-1:2004: Chapter 9 - Detailing and specific rules."""
 
 import numpy as np
 
