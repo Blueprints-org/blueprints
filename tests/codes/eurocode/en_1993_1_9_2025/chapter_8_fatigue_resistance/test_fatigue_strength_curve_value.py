@@ -5,7 +5,7 @@ from typing import Literal
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_value import Form8FatigueStrengthCurveValue
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8FatigueStrengthCurveValue:
@@ -49,17 +49,14 @@ class TestForm8FatigueStrengthCurveValue:
             (160.0, 2e6, 0.0, 3.0),  # n_target <= 0
             (160.0, 2e6, 5e6, 0.0),  # m <= 0
             (160.0, 2e6, 5e6, -3.0),  # m < 0
+            (0.0, 2e6, 5e6, 3.0),  # delta_sigma_ref <= 0 (zero reference strength gives a nonsensical zero strength)
+            (-160.0, 2e6, 5e6, 3.0),  # delta_sigma_ref < 0
         ],
     )
     def test_raise_error_if_less_or_equal_to_zero(self, delta_sigma_ref: float, n_ref: float, n_target: float, m: float) -> None:
-        """Test that a LessOrEqualToZeroError is raised for non-positive cycle numbers or slope."""
+        """Test that a LessOrEqualToZeroError is raised for non-positive cycle numbers, slope or reference strength."""
         with pytest.raises(LessOrEqualToZeroError):
             Form8FatigueStrengthCurveValue(delta_sigma_ref=delta_sigma_ref, n_ref=n_ref, n_target=n_target, m=m, point="D")
-
-    def test_raise_error_if_negative_delta_sigma_ref(self) -> None:
-        """Test that a NegativeValueError is raised when delta_sigma_ref is negative."""
-        with pytest.raises(NegativeValueError):
-            Form8FatigueStrengthCurveValue(delta_sigma_ref=-160.0, n_ref=2e6, n_target=5e6, m=3.0, point="D")
 
     @pytest.mark.parametrize(
         ("point", "representation", "expected"),

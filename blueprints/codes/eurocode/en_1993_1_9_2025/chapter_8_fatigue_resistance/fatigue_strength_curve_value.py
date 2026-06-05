@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.en_1993_1_9_2025 import EN_1993_1_9_2025
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_scientific
 from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 # Latex subscripts of the reference and target points of the fatigue strength curve for each variant.
 # point "D": constant amplitude fatigue limit, derived from the detail category C with the first slope m1.
@@ -88,8 +88,8 @@ class Form8FatigueStrengthCurveValue(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         if point not in _POINT_SYMBOLS:
             raise ValueError(f"Invalid point: {point}. Must be 'D' or 'L'.")
-        raise_if_less_or_equal_to_zero(n_ref=n_ref, n_target=n_target, m=m)
-        raise_if_negative(delta_sigma_ref=delta_sigma_ref)
+        # delta_sigma_ref is the numerator reference strength; a zero would give a nonsensical zero strength, so require it > 0 too.
+        raise_if_less_or_equal_to_zero(n_ref=n_ref, n_target=n_target, m=m, delta_sigma_ref=delta_sigma_ref)
         return delta_sigma_ref * (n_ref / n_target) ** (1 / m)
 
     def latex(self, n: int = 3) -> LatexFormula:

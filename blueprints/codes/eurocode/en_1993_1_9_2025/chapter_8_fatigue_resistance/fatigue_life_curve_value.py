@@ -7,7 +7,7 @@ from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fat
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_scientific
 from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 # Latex slope subscript of the governing branch for each reference point.
 # point "C": first branch, anchored at the detail category C with the first slope m1.
@@ -98,8 +98,8 @@ class Form8FatigueLifeCurveValue(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         if point not in _SLOPE_SUBSCRIPT:
             raise ValueError(f"Invalid point: {point}. Must be 'C' or 'D'.")
-        raise_if_less_or_equal_to_zero(n_ref=n_ref, m=m, delta_sigma_r=delta_sigma_r)
-        raise_if_negative(delta_sigma_ref=delta_sigma_ref)
+        # delta_sigma_ref is the numerator reference strength; a zero would give a nonsensical N_R = 0, so require it > 0 too.
+        raise_if_less_or_equal_to_zero(n_ref=n_ref, m=m, delta_sigma_r=delta_sigma_r, delta_sigma_ref=delta_sigma_ref)
         return n_ref * (delta_sigma_ref / delta_sigma_r) ** m
 
     def latex(self, n: int = 3) -> LatexFormula:

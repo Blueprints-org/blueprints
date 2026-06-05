@@ -6,7 +6,7 @@ import pytest
 
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_life_curve_value import Form8FatigueLifeCurveValue
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve import StressType
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8FatigueLifeCurveValue:
@@ -39,25 +39,24 @@ class TestForm8FatigueLifeCurveValue:
             Form8FatigueLifeCurveValue(delta_sigma_ref=160.0, n_ref=2e6, m=3.0, delta_sigma_r=160.0, point="X", stress_type=StressType.NORMAL)  # type: ignore[arg-type]
 
     @pytest.mark.parametrize(
-        ("n_ref", "m", "delta_sigma_r"),
+        ("delta_sigma_ref", "n_ref", "m", "delta_sigma_r"),
         [
-            (0.0, 3.0, 160.0),  # n_ref <= 0
-            (-2e6, 3.0, 160.0),  # n_ref < 0
-            (2e6, 0.0, 160.0),  # m <= 0
-            (2e6, -3.0, 160.0),  # m < 0
-            (2e6, 3.0, 0.0),  # delta_sigma_r <= 0 (would divide by zero)
-            (2e6, 3.0, -160.0),  # delta_sigma_r < 0
+            (160.0, 0.0, 3.0, 160.0),  # n_ref <= 0
+            (160.0, -2e6, 3.0, 160.0),  # n_ref < 0
+            (160.0, 2e6, 0.0, 160.0),  # m <= 0
+            (160.0, 2e6, -3.0, 160.0),  # m < 0
+            (160.0, 2e6, 3.0, 0.0),  # delta_sigma_r <= 0 (would divide by zero)
+            (160.0, 2e6, 3.0, -160.0),  # delta_sigma_r < 0
+            (0.0, 2e6, 3.0, 160.0),  # delta_sigma_ref <= 0 (zero reference strength gives a nonsensical N_R = 0)
+            (-160.0, 2e6, 3.0, 160.0),  # delta_sigma_ref < 0
         ],
     )
-    def test_raise_error_if_less_or_equal_to_zero(self, n_ref: float, m: float, delta_sigma_r: float) -> None:
-        """Test that a LessOrEqualToZeroError is raised for a non-positive cycle number, slope or applied stress range."""
+    def test_raise_error_if_less_or_equal_to_zero(self, delta_sigma_ref: float, n_ref: float, m: float, delta_sigma_r: float) -> None:
+        """Test that a LessOrEqualToZeroError is raised for a non-positive cycle number, slope, applied stress range or reference strength."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form8FatigueLifeCurveValue(delta_sigma_ref=160.0, n_ref=n_ref, m=m, delta_sigma_r=delta_sigma_r, point="C", stress_type=StressType.NORMAL)
-
-    def test_raise_error_if_negative_delta_sigma_ref(self) -> None:
-        """Test that a NegativeValueError is raised when delta_sigma_ref is negative."""
-        with pytest.raises(NegativeValueError):
-            Form8FatigueLifeCurveValue(delta_sigma_ref=-160.0, n_ref=2e6, m=3.0, delta_sigma_r=160.0, point="C", stress_type=StressType.NORMAL)
+            Form8FatigueLifeCurveValue(
+                delta_sigma_ref=delta_sigma_ref, n_ref=n_ref, m=m, delta_sigma_r=delta_sigma_r, point="C", stress_type=StressType.NORMAL
+            )
 
     @pytest.mark.parametrize(
         ("point", "stress_type", "inputs", "representation", "expected"),
