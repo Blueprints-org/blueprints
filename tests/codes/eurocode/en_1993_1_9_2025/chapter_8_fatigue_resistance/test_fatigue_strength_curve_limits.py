@@ -48,7 +48,7 @@ class TestFatigueStrengthCurveLimits:
     def test_label_and_source_document(self) -> None:
         """Test the metadata fields."""
         limits = FatigueStrengthCurveLimits(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_8_2A)
-        assert limits.label == "Figures 8.1-8.4 (fatigue strength curves)"
+        assert limits.label == "Figures 8.1-8.4 (fatigue strength curve limits)"
         assert limits.source_document == EN_1993_1_9_2025
 
     def test_raise_error_if_negative_delta_sigma_c(self) -> None:

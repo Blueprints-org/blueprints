@@ -39,7 +39,7 @@ class FatigueStrengthCurveLimits:
 
     delta_sigma_c: MPA
     curve: FatigueStrengthCurve
-    label: str = field(init=False, default="Figures 8.1-8.4 (fatigue strength curves)")
+    label: str = field(init=False, default="Figures 8.1-8.4 (fatigue strength curve limits)")
     source_document: str = field(init=False, default=EN_1993_1_9_2025)
 
     def __post_init__(self) -> None:
