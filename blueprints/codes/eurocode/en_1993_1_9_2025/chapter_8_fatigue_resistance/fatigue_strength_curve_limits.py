@@ -1,10 +1,10 @@
 """Fatigue strength curve limits from EN 1993-1-9:2025: Chapter 8 - Fatigue resistance (Figures 8.1 - 8.4)."""
 
 from blueprints.codes.eurocode.en_1993_1_9_2025 import EN_1993_1_9_2025
-from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve import FatigueStrengthCurve
+from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve import FatigueStrengthCurve, StressType
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_value import Form8FatigueStrengthCurveValue
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_scientific
 from blueprints.type_alias import MPA
 from blueprints.validations import raise_if_negative
 
@@ -44,7 +44,7 @@ class Form8ConstantAmplitudeFatigueLimit(Formula):
 
     @staticmethod
     def _curve_value(delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> Form8FatigueStrengthCurveValue:
-        r"""Underlying power-law evaluation of [$\Delta\sigma_D$] from the detail category, reused for the value and its LaTeX."""
+        r"""Underlying power-law evaluation of [$\Delta\sigma_D$] from the detail category, used for the numeric value."""
         return Form8FatigueStrengthCurveValue(
             delta_sigma_ref=delta_sigma_c,
             n_ref=curve.n_c,
@@ -60,8 +60,23 @@ class Form8ConstantAmplitudeFatigueLimit(Formula):
         return float(Form8ConstantAmplitudeFatigueLimit._curve_value(delta_sigma_c, curve))
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for the constant amplitude fatigue limit."""
-        return self._curve_value(self.delta_sigma_c, self.curve).latex(n=n)
+        """Returns LatexFormula object for the constant amplitude fatigue limit (Δτ symbol for shear curves)."""
+        symbol = r"\Delta\tau" if self.curve.stress_type == StressType.SHEAR else r"\Delta\sigma"
+        # The slope m1 is an integer (3, 5 or 9), so trailing zeros are stripped to keep the exponent clean.
+        slope_str = f"{self.curve.m1:.{n}f}"
+        if "." in slope_str:
+            slope_str = slope_str.rstrip("0").rstrip(".")
+        return LatexFormula(
+            return_symbol=rf"{symbol}_{{D}}",
+            result=f"{self:.{n}f}",
+            equation=rf"{symbol}_{{C}} \left( \frac{{N_{{C}}}}{{N_{{D}}}} \right)^{{1 / m_{{1}}}}",
+            numeric_equation=(
+                rf"{self.delta_sigma_c:.{n}f} \left( \frac{{{latex_scientific(self.curve.n_c)}}}{{{latex_scientific(self.curve.n_d)}}} \right)"
+                rf"^{{1 / {slope_str}}}"
+            ),
+            comparison_operator_label="=",
+            unit="MPa",
+        )
 
 
 class Form8CutOffLimit(Formula):

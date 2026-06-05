@@ -44,19 +44,29 @@ class TestForm8ConstantAmplitudeFatigueLimit:
             Form8ConstantAmplitudeFatigueLimit(delta_sigma_c=-160.0, curve=FatigueStrengthCurve.FIG_8_2A)
 
     @pytest.mark.parametrize(
-        ("representation", "expected"),
+        ("curve", "delta_sigma_c", "representation", "expected"),
         [
             (
+                FatigueStrengthCurve.FIG_8_2A,
+                160.0,
                 "complete",
                 r"\Delta\sigma_{D} = \Delta\sigma_{C} \left( \frac{N_{C}}{N_{D}} \right)^{1 / m_{1}} = "
                 r"160.000 \left( \frac{2.0 \cdot 10^{6}}{5.0 \cdot 10^{6}} \right)^{1 / 3} = 117.889 \ MPa",
             ),
-            ("short", r"\Delta\sigma_{D} = 117.889 \ MPa"),
+            (FatigueStrengthCurve.FIG_8_2A, 160.0, "short", r"\Delta\sigma_{D} = 117.889 \ MPa"),
+            (
+                FatigueStrengthCurve.FIG_8_4,  # shear curve: the symbol switches from Δσ to Δτ
+                100.0,
+                "complete",
+                r"\Delta\tau_{D} = \Delta\tau_{C} \left( \frac{N_{C}}{N_{D}} \right)^{1 / m_{1}} = "
+                r"100.000 \left( \frac{2.0 \cdot 10^{6}}{1.0 \cdot 10^{8}} \right)^{1 / 5} = 45.731 \ MPa",
+            ),
+            (FatigueStrengthCurve.FIG_8_4, 100.0, "short", r"\Delta\tau_{D} = 45.731 \ MPa"),
         ],
     )
-    def test_latex(self, representation: str, expected: str) -> None:
-        """Test the latex representation, delegated to the underlying curve-value relation."""
-        latex = Form8ConstantAmplitudeFatigueLimit(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_8_2A).latex()
+    def test_latex(self, curve: FatigueStrengthCurve, delta_sigma_c: float, representation: str, expected: str) -> None:
+        """Test the latex representation, including the Δσ (normal) vs Δτ (shear) symbol switch."""
+        latex = Form8ConstantAmplitudeFatigueLimit(delta_sigma_c=delta_sigma_c, curve=curve).latex()
 
         actual = {"complete": latex.complete, "short": latex.short}
 
