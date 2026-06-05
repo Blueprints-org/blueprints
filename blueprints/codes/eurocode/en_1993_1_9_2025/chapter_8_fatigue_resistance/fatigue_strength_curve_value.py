@@ -3,9 +3,8 @@
 from typing import Literal
 
 from blueprints.codes.eurocode.en_1993_1_9_2025 import EN_1993_1_9_2025
-from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance._latex_helpers import latex_scientific
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_scientific
 from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -30,7 +29,7 @@ class Form8FatigueStrengthCurveValue(Formula):
     The variant is selected through the ``point`` argument.
     """
 
-    label = "8 (fatigue strength curve)"
+    label = "Figures 8.1-8.4 (fatigue strength curve value)"
     source_document = EN_1993_1_9_2025
 
     def __init__(

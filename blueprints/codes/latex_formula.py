@@ -221,3 +221,30 @@ def latex_replace_symbols(template: str, replacements: dict[str, str], unique_sy
         _filled_latex_string = _filled_latex_string.replace(symbol, replacement)
 
     return _filled_latex_string
+
+
+def latex_scientific(value: float) -> str:
+    r"""Format a number in LaTeX scientific notation with a single-decimal mantissa.
+
+    Keeps numbers that span several orders of magnitude legible, e.g. ``2.0 \cdot 10^{6}`` instead
+    of ``2000000``.
+
+    Examples
+    --------
+    >>> latex_scientific(2e6)
+    '2.0 \\cdot 10^{6}'
+    >>> latex_scientific(1e-3)
+    '1.0 \\cdot 10^{-3}'
+
+    Parameters
+    ----------
+    value : float
+        The number to format.
+
+    Returns
+    -------
+    str
+        The value as a LaTeX string, e.g. ``2.0 \cdot 10^{6}``.
+    """
+    mantissa, exponent = f"{value:.1e}".split("e")
+    return rf"{mantissa} \cdot 10^{{{int(exponent)}}}"

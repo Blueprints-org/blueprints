@@ -3,11 +3,10 @@
 from dataclasses import dataclass
 
 from blueprints.codes.eurocode.en_1993_1_9_2025 import EN_1993_1_9_2025
-from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance._latex_helpers import latex_scientific
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve import FatigueStrengthCurve, StressType
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_limits import FatigueStrengthCurveLimits
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_scientific
 from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_negative
 

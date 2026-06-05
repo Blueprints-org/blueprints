@@ -1,17 +1,20 @@
 """Fatigue strength on a standard fatigue strength curve from EN 1993-1-9:2025: Chapter 8 - Fatigue resistance."""
 
 from blueprints.codes.eurocode.en_1993_1_9_2025 import EN_1993_1_9_2025
-from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance._latex_helpers import latex_scientific
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve import FatigueStrengthCurve, StressType
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_value import Form8FatigueStrengthCurveValue
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_scientific
 from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 def _power_law(delta_sigma_ref: MPA, n_ref: DIMENSIONLESS, n_target: DIMENSIONLESS, m: DIMENSIONLESS) -> MPA:
-    """Single power-law step of the fatigue strength curve, reusing the validated engine formula."""
+    """Single power-law step of the fatigue strength curve, reusing the validated engine formula.
+
+    Only the numeric value is taken, so ``point`` is irrelevant here (it merely labels the engine's own
+    LaTeX, which is never rendered through this helper); any valid point would give the same result.
+    """
     return float(Form8FatigueStrengthCurveValue(delta_sigma_ref=delta_sigma_ref, n_ref=n_ref, n_target=n_target, m=m, point="D"))
 
 
@@ -27,9 +30,13 @@ class Form8FatigueStrength(Formula):
 
     For the shear curve (Figure 8.4) there is a single slope and the constant amplitude fatigue limit [$\Delta\tau_D$]
     also acts as the cut-off for [$N > N_D$].
+
+    Note: only the curve relation itself is evaluated; no low-cycle bound (the curves are defined from about
+    [$10^4$] cycles) and no static upper stress limit are enforced, so for [$N < N_C$] the first branch is
+    extrapolated and returns [$\Delta\sigma_R > \Delta\sigma_C$].
     """
 
-    label = "Figures 8.1-8.4 (fatigue strength curve)"
+    label = "Figures 8.1-8.4 (fatigue strength)"
     source_document = EN_1993_1_9_2025
 
     def __init__(self, delta_sigma_c: MPA, curve: FatigueStrengthCurve, n_cycles: DIMENSIONLESS) -> None:
