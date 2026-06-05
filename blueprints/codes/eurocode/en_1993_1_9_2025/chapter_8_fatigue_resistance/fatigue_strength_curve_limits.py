@@ -1,86 +1,128 @@
 """Fatigue strength curve limits from EN 1993-1-9:2025: Chapter 8 - Fatigue resistance (Figures 8.1 - 8.4)."""
 
-from dataclasses import dataclass, field
-
 from blueprints.codes.eurocode.en_1993_1_9_2025 import EN_1993_1_9_2025
-from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength import Form8FatigueStrength
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve import FatigueStrengthCurve
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_value import Form8FatigueStrengthCurveValue
-from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.codes.formula import Formula
+from blueprints.codes.latex_formula import LatexFormula
+from blueprints.type_alias import MPA
 from blueprints.validations import raise_if_negative
 
 
-@dataclass(frozen=True)
-class FatigueStrengthCurveLimits:
-    r"""Characteristic fatigue strength limits of a standard fatigue strength curve (EN 1993-1-9:2025, Figures 8.1 - 8.4).
+class Form8ConstantAmplitudeFatigueLimit(Formula):
+    r"""Class representing the constant amplitude fatigue limit [$\Delta\sigma_D$] at [$N_D$] cycles.
 
-    Given a detail category [$\Delta\sigma_C$] and a selected curve, this exposes the constant amplitude fatigue
-    limit [$\Delta\sigma_D$] and the cut-off limit [$\Delta\sigma_L$] directly, and acts as the single entry point
-    to evaluate the fatigue strength [$\Delta\sigma_R$] at any number of cycles via :meth:`fatigue_strength`.
-
-    Parameters
-    ----------
-    delta_sigma_c : MPA
-        [$\Delta\sigma_C$] Detail category: the reference fatigue strength at [$N_C = 2 \cdot 10^6$] cycles [$MPa$].
-        For shear curves this is the shear detail category [$\Delta\tau_C$].
-    curve : FatigueStrengthCurve
-        The standard fatigue strength curve to read from (one of Figures 8.1 - 8.4).
-
-    Methods
-    -------
-    delta_sigma_d : MPA
-        Returns the constant amplitude fatigue limit [$\Delta\sigma_D$] at [$N_D$].
-    delta_sigma_l : MPA | None
-        Returns the cut-off limit [$\Delta\sigma_L$] at [$N_L$], or ``None`` for the shear curve, which has no
-        separate cut-off branch.
-    fatigue_strength : Form8FatigueStrength
-        Returns the fatigue strength [$\Delta\sigma_R$] at a given number of cycles.
+    The constant amplitude fatigue limit is read off the standard fatigue strength curve (EN 1993-1-9:2025,
+    Figures 8.1 - 8.4) at [$N_D$], by scaling the detail category [$\Delta\sigma_C$] along the first branch
+    (slope [$m_1$]): [$\Delta\sigma_D = \Delta\sigma_C \left( N_C / N_D \right)^{1 / m_1}$]. For shear curves
+    (Figure 8.4) this is the shear constant amplitude fatigue limit [$\Delta\tau_D$].
     """
 
-    delta_sigma_c: MPA
-    curve: FatigueStrengthCurve
-    label: str = field(init=False, default="Figures 8.1-8.4 (fatigue strength curve limits)")
-    source_document: str = field(init=False, default=EN_1993_1_9_2025)
+    label = "Figures 8.1-8.4 (constant amplitude fatigue limit)"
+    source_document = EN_1993_1_9_2025
 
-    def __post_init__(self) -> None:
-        """Validates the detail category."""
-        raise_if_negative(delta_sigma_c=self.delta_sigma_c)
+    def __init__(self, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> None:
+        r"""[$\Delta\sigma_D$] Constant amplitude fatigue limit at [$N_D$] cycles [$MPa$].
 
-    @property
-    def delta_sigma_d(self) -> MPA:
-        r"""[$\Delta\sigma_D$] Constant amplitude fatigue limit at [$N_D$] [$MPa$]."""
-        return Form8FatigueStrengthCurveValue(
-            delta_sigma_ref=self.delta_sigma_c,
-            n_ref=self.curve.n_c,
-            n_target=self.curve.n_d,
-            m=self.curve.m1,
-            point="D",
-        )
-
-    @property
-    def delta_sigma_l(self) -> MPA | None:
-        r"""[$\Delta\sigma_L$] Cut-off limit at [$N_L$] [$MPa$], or ``None`` for the shear curve (no separate cut-off branch)."""
-        if self.curve.m2 is None or self.curve.n_l is None:
-            return None
-        return Form8FatigueStrengthCurveValue(
-            delta_sigma_ref=self.delta_sigma_d,
-            n_ref=self.curve.n_d,
-            n_target=self.curve.n_l,
-            m=self.curve.m2,
-            point="L",
-        )
-
-    def fatigue_strength(self, n_cycles: DIMENSIONLESS) -> Form8FatigueStrength:
-        r"""[$\Delta\sigma_R$] Fatigue strength at ``n_cycles`` on this curve [$MPa$].
+        EN 1993-1-9:2025 - Chapter 8 - Fatigue resistance (Figures 8.1 - 8.4)
 
         Parameters
         ----------
-        n_cycles : DIMENSIONLESS
-            [$N$] Number of cycles at which the fatigue strength is evaluated [$-$].
+        delta_sigma_c : MPA
+            [$\Delta\sigma_C$] Detail category: the reference fatigue strength at [$N_C = 2 \cdot 10^6$] cycles [$MPa$].
+            For shear curves this is the shear detail category [$\Delta\tau_C$].
+        curve : FatigueStrengthCurve
+            The standard fatigue strength curve to read from (one of Figures 8.1 - 8.4).
 
         Returns
         -------
-        Form8FatigueStrength
-            The fatigue strength evaluator (a ``float`` carrying the value and a ``latex`` representation).
+        None
         """
-        return Form8FatigueStrength(delta_sigma_c=self.delta_sigma_c, curve=self.curve, n_cycles=n_cycles)
+        super().__init__()
+        self.delta_sigma_c: MPA = delta_sigma_c
+        self.curve: FatigueStrengthCurve = curve
+
+    @staticmethod
+    def _curve_value(delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> Form8FatigueStrengthCurveValue:
+        r"""Underlying power-law evaluation of [$\Delta\sigma_D$] from the detail category, reused for the value and its LaTeX."""
+        return Form8FatigueStrengthCurveValue(
+            delta_sigma_ref=delta_sigma_c,
+            n_ref=curve.n_c,
+            n_target=curve.n_d,
+            m=curve.m1,
+            point="D",
+        )
+
+    @staticmethod
+    def _evaluate(delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(delta_sigma_c=delta_sigma_c)
+        return float(Form8ConstantAmplitudeFatigueLimit._curve_value(delta_sigma_c, curve))
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Returns LatexFormula object for the constant amplitude fatigue limit."""
+        return self._curve_value(self.delta_sigma_c, self.curve).latex(n=n)
+
+
+class Form8CutOffLimit(Formula):
+    r"""Class representing the cut-off limit [$\Delta\sigma_L$] at [$N_L$] cycles.
+
+    The cut-off limit is read off the standard fatigue strength curve (EN 1993-1-9:2025, Figures 8.1 - 8.4) at
+    [$N_L$], by scaling the constant amplitude fatigue limit [$\Delta\sigma_D$] along the second branch
+    (slope [$m_2$]): [$\Delta\sigma_L = \Delta\sigma_D \left( N_D / N_L \right)^{1 / m_2}$].
+
+    Only curves with a second branch have a separate cut-off limit. The shear curve (Figure 8.4) has a single
+    slope and its constant amplitude fatigue limit [$\Delta\tau_D$] also acts as the cut-off, so this formula is
+    not defined for it (see :attr:`FatigueStrengthCurve.has_cutoff_segment`).
+    """
+
+    label = "Figures 8.1-8.4 (cut-off limit)"
+    source_document = EN_1993_1_9_2025
+
+    def __init__(self, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> None:
+        r"""[$\Delta\sigma_L$] Cut-off limit at [$N_L$] cycles [$MPa$].
+
+        EN 1993-1-9:2025 - Chapter 8 - Fatigue resistance (Figures 8.1 - 8.4)
+
+        Parameters
+        ----------
+        delta_sigma_c : MPA
+            [$\Delta\sigma_C$] Detail category: the reference fatigue strength at [$N_C = 2 \cdot 10^6$] cycles [$MPa$].
+        curve : FatigueStrengthCurve
+            The standard fatigue strength curve to read from (one of Figures 8.1 - 8.4). Must have a separate
+            cut-off branch; the shear curve (Figure 8.4) is not allowed.
+
+        Returns
+        -------
+        None
+        """
+        super().__init__()
+        self.delta_sigma_c: MPA = delta_sigma_c
+        self.curve: FatigueStrengthCurve = curve
+
+    @staticmethod
+    def _curve_value(delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> Form8FatigueStrengthCurveValue:
+        r"""Underlying power-law evaluation of [$\Delta\sigma_L$] from the fatigue limit, reused for the value and its LaTeX."""
+        if curve.m2 is None or curve.n_l is None:
+            raise ValueError(
+                f"Curve {curve.name} has no separate cut-off limit (single-slope shear curve); "
+                "its constant amplitude fatigue limit acts as the cut-off."
+            )
+        delta_sigma_d = float(Form8ConstantAmplitudeFatigueLimit(delta_sigma_c=delta_sigma_c, curve=curve))
+        return Form8FatigueStrengthCurveValue(
+            delta_sigma_ref=delta_sigma_d,
+            n_ref=curve.n_d,
+            n_target=curve.n_l,
+            m=curve.m2,
+            point="L",
+        )
+
+    @staticmethod
+    def _evaluate(delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> MPA:
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(delta_sigma_c=delta_sigma_c)
+        return float(Form8CutOffLimit._curve_value(delta_sigma_c, curve))
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Returns LatexFormula object for the cut-off limit."""
+        return self._curve_value(self.delta_sigma_c, self.curve).latex(n=n)

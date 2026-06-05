@@ -9,15 +9,6 @@ from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-def _power_law(delta_sigma_ref: MPA, n_ref: DIMENSIONLESS, n_target: DIMENSIONLESS, m: DIMENSIONLESS) -> MPA:
-    """Single power-law step of the fatigue strength curve, reusing the validated engine formula.
-
-    Only the numeric value is taken, so ``point`` is irrelevant here (it merely labels the engine's own
-    LaTeX, which is never rendered through this helper); any valid point would give the same result.
-    """
-    return float(Form8FatigueStrengthCurveValue(delta_sigma_ref=delta_sigma_ref, n_ref=n_ref, n_target=n_target, m=m, point="D"))
-
-
 class Form8FatigueStrength(Formula):
     r"""Class representing the characteristic fatigue strength [$\Delta\sigma_R$] (or [$\Delta\tau_R$]) at a given number of cycles.
 
@@ -65,29 +56,38 @@ class Form8FatigueStrength(Formula):
         self.n_cycles: DIMENSIONLESS = n_cycles
 
     @staticmethod
+    def _power_law(delta_sigma_ref: MPA, n_ref: DIMENSIONLESS, n_target: DIMENSIONLESS, m: DIMENSIONLESS) -> MPA:
+        """Single power-law step of the fatigue strength curve, reusing the validated engine formula.
+
+        Only the numeric value is taken, so ``point`` is irrelevant here (it merely labels the engine's own
+        LaTeX, which is never rendered through this helper); any valid point would give the same result.
+        """
+        return float(Form8FatigueStrengthCurveValue(delta_sigma_ref=delta_sigma_ref, n_ref=n_ref, n_target=n_target, m=m, point="D"))
+
+    @staticmethod
     def _evaluate(delta_sigma_c: MPA, curve: FatigueStrengthCurve, n_cycles: DIMENSIONLESS) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(delta_sigma_c=delta_sigma_c)
         raise_if_less_or_equal_to_zero(n_cycles=n_cycles)
 
-        delta_sigma_d = _power_law(delta_sigma_c, curve.n_c, curve.n_d, curve.m1)
+        delta_sigma_d = Form8FatigueStrength._power_law(delta_sigma_c, curve.n_c, curve.n_d, curve.m1)
         if n_cycles <= curve.n_d:
             # first branch, slope m1 (also covers N < N_C)
-            return _power_law(delta_sigma_c, curve.n_c, n_cycles, curve.m1)
+            return Form8FatigueStrength._power_law(delta_sigma_c, curve.n_c, n_cycles, curve.m1)
         if curve.m2 is None or curve.n_l is None:
             # shear curve: single slope, constant at the fatigue limit beyond N_D
             return delta_sigma_d
         if n_cycles <= curve.n_l:
             # second branch, slope m2
-            return _power_law(delta_sigma_d, curve.n_d, n_cycles, curve.m2)
+            return Form8FatigueStrength._power_law(delta_sigma_d, curve.n_d, n_cycles, curve.m2)
         # cut-off: constant at the cut-off limit beyond N_L
-        return _power_law(delta_sigma_d, curve.n_d, curve.n_l, curve.m2)
+        return Form8FatigueStrength._power_law(delta_sigma_d, curve.n_d, curve.n_l, curve.m2)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for the fatigue strength at the requested number of cycles."""
         curve = self.curve
         symbol = r"\Delta\tau" if curve.stress_type == StressType.SHEAR else r"\Delta\sigma"
-        delta_sigma_d = _power_law(self.delta_sigma_c, curve.n_c, curve.n_d, curve.m1)
+        delta_sigma_d = self._power_law(self.delta_sigma_c, curve.n_c, curve.n_d, curve.m1)
 
         # Each branch fixes the reference anchor, the slope and the cycle number that appear in the equation.
         if self.n_cycles <= curve.n_d:

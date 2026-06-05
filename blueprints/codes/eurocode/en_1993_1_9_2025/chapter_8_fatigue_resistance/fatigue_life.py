@@ -1,10 +1,14 @@
 """Fatigue life (number of cycles to failure) on a standard fatigue strength curve from EN 1993-1-9:2025: Chapter 8."""
 
 from dataclasses import dataclass
+from typing import Literal
 
 from blueprints.codes.eurocode.en_1993_1_9_2025 import EN_1993_1_9_2025
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve import FatigueStrengthCurve, StressType
-from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_limits import FatigueStrengthCurveLimits
+from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_limits import (
+    Form8ConstantAmplitudeFatigueLimit,
+    Form8CutOffLimit,
+)
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_scientific
 from blueprints.type_alias import DIMENSIONLESS, MPA
@@ -16,36 +20,26 @@ class _GoverningBranch:
     r"""The branch of a fatigue strength curve that governs a given applied stress range.
 
     Bundles the reference anchor of the governing branch so both the fatigue life and its LaTeX
-    representation can be derived from a single source. ``m`` is ``None`` when the applied stress
-    range falls below the cut-off limit [$\Delta\sigma_L$], for which the life is infinite.
+    representation can be derived from a single source.
+
+    Attributes
+    ----------
+    point : Literal["C", "D", "L"]
+        Reference point of the governing branch: ``"C"`` (first branch), ``"D"`` (second branch)
+        or ``"L"`` (below the cut-off limit).
+    delta_sigma_ref : MPA
+        [$\Delta\sigma_{ref}$] Fatigue strength at the reference point [$MPa$].
+    n_ref : DIMENSIONLESS
+        [$N_{ref}$] Number of cycles at the reference point [$-$].
+    m : DIMENSIONLESS | None
+        Slope of the governing branch [$-$]. ``None`` when the applied stress range falls below the
+        cut-off limit [$\Delta\sigma_L$], for which the life is infinite.
     """
 
-    point: str  # reference point of the governing branch: "C" (first branch), "D" (second branch) or "L" (below cut-off)
-    delta_sigma_ref: MPA  # fatigue strength at the reference point [MPa]
-    n_ref: DIMENSIONLESS  # number of cycles at the reference point [-]
-    m: DIMENSIONLESS | None  # slope of the governing branch [-], None below the cut-off limit (infinite life)
-
-
-def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> _GoverningBranch:
-    r"""Select the branch of ``curve`` that governs an applied stress range [$\Delta\sigma_R$].
-
-    The fatigue strength curve is piecewise (see :class:`Form8FatigueLife`); the governing branch is
-    the one whose stress range covers [$\Delta\sigma_R$].
-    """
-    limits = FatigueStrengthCurveLimits(delta_sigma_c=delta_sigma_c, curve=curve)
-    delta_sigma_d = float(limits.delta_sigma_d)
-    if delta_sigma_r >= delta_sigma_d:
-        # first branch (slope m1), anchored at the detail category point (N_C, Δσ_C)
-        return _GoverningBranch(point="C", delta_sigma_ref=delta_sigma_c, n_ref=curve.n_c, m=curve.m1)
-
-    delta_sigma_l = limits.delta_sigma_l
-    if delta_sigma_l is not None and curve.m2 is not None and delta_sigma_r >= float(delta_sigma_l):
-        # second branch (slope m2), anchored at the constant amplitude fatigue limit point (N_D, Δσ_D)
-        return _GoverningBranch(point="D", delta_sigma_ref=delta_sigma_d, n_ref=curve.n_d, m=curve.m2)
-
-    # below the cut-off limit Δσ_L (or below Δτ_D for the single-slope shear curve): infinite life, no damage
-    reference = delta_sigma_d if delta_sigma_l is None else float(delta_sigma_l)
-    return _GoverningBranch(point="L", delta_sigma_ref=reference, n_ref=curve.n_l or curve.n_d, m=None)
+    point: Literal["C", "D", "L"]
+    delta_sigma_ref: MPA
+    n_ref: DIMENSIONLESS
+    m: DIMENSIONLESS | None
 
 
 class Form8FatigueLife(Formula):
@@ -95,11 +89,34 @@ class Form8FatigueLife(Formula):
         self.curve: FatigueStrengthCurve = curve
 
     @staticmethod
+    def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> _GoverningBranch:
+        r"""Select the branch of ``curve`` that governs an applied stress range [$\Delta\sigma_R$].
+
+        The fatigue strength curve is piecewise (see :class:`Form8FatigueLife`); the governing branch is
+        the one whose stress range covers [$\Delta\sigma_R$].
+        """
+        delta_sigma_d = float(Form8ConstantAmplitudeFatigueLimit(delta_sigma_c=delta_sigma_c, curve=curve))
+        if delta_sigma_r >= delta_sigma_d:
+            # first branch (slope m1), anchored at the detail category point (N_C, Δσ_C)
+            return _GoverningBranch(point="C", delta_sigma_ref=delta_sigma_c, n_ref=curve.n_c, m=curve.m1)
+
+        if curve.has_cutoff_segment:
+            # second branch (slope m2), anchored at the constant amplitude fatigue limit point (N_D, Δσ_D)
+            delta_sigma_l = float(Form8CutOffLimit(delta_sigma_c=delta_sigma_c, curve=curve))
+            if delta_sigma_r >= delta_sigma_l:
+                return _GoverningBranch(point="D", delta_sigma_ref=delta_sigma_d, n_ref=curve.n_d, m=curve.m2)
+            # below the cut-off limit Δσ_L: infinite life, no damage
+            return _GoverningBranch(point="L", delta_sigma_ref=delta_sigma_l, n_ref=curve.n_l or curve.n_d, m=None)
+
+        # single-slope shear curve: below Δτ_D there is no second branch, so the fatigue limit acts as the cut-off
+        return _GoverningBranch(point="L", delta_sigma_ref=delta_sigma_d, n_ref=curve.n_d, m=None)
+
+    @staticmethod
     def _evaluate(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(delta_sigma_r=delta_sigma_r, delta_sigma_c=delta_sigma_c)
 
-        branch = _governing_branch(delta_sigma_r, delta_sigma_c, curve)
+        branch = Form8FatigueLife._governing_branch(delta_sigma_r, delta_sigma_c, curve)
         if branch.m is None:
             # below the cut-off limit: infinite life (the division below is never reached for Δσ_R = 0)
             return float("inf")
@@ -116,7 +133,7 @@ class Form8FatigueLife(Formula):
             ([$\Delta\sigma_C$], [$\Delta\sigma_D$] or [$\Delta\sigma_L$]), its cycle number ``n_ref`` [$-$], the
             governing slope ``m`` [$-$] (``None`` below the cut-off) and the fatigue life ``n_r`` [$-$].
         """
-        branch = _governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve)
+        branch = self._governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve)
         return {
             "reference_point": branch.point,
             "delta_sigma_ref": branch.delta_sigma_ref,
@@ -127,7 +144,7 @@ class Form8FatigueLife(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for the fatigue life at the applied stress range."""
-        branch = _governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve)
+        branch = self._governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve)
         symbol = r"\Delta\tau" if self.curve.stress_type == StressType.SHEAR else r"\Delta\sigma"
 
         if branch.m is None:
