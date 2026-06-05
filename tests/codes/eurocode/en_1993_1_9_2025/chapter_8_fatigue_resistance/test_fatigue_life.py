@@ -76,6 +76,22 @@ class TestForm8FatigueLife:
         assert detail["reference_point"] == expected_point
         assert detail["m"] == expected_m
 
+    def test_detailed_result_shear_curve_anchors_at_fatigue_limit_below_cutoff(self) -> None:
+        """For the single-slope shear curve, the cut-off anchor is the constant amplitude fatigue limit (Δτ_D, N_D).
+
+        Unlike a normal curve, the shear curve (Figure 8.4) has no separate cut-off limit Δτ_L: its fatigue limit
+        Δτ_D doubles as the cut-off. So below Δτ_D the life is infinite and the detailed result reports the fatigue
+        limit point itself as the governing reference (point "L", slope None, N_ref = N_D rather than N_L).
+        """
+        curve = FatigueStrengthCurve.FIG_8_4
+        detail = Form8FatigueLife(delta_sigma_r=40.0, delta_sigma_c=100.0, curve=curve).detailed_result
+
+        assert detail["reference_point"] == "L"
+        assert detail["m"] is None
+        assert detail["delta_sigma_ref"] == pytest.approx(45.730505, rel=1e-6)  # Δτ_D, doubling as the cut-off
+        assert detail["n_ref"] == pytest.approx(curve.n_d)  # the fatigue limit cycle number N_D = 1e8, not a separate N_L
+        assert math.isinf(detail["n_r"])
+
     def test_raise_error_if_negative_delta_sigma_r(self) -> None:
         """Test that a NegativeValueError is raised when the applied stress range is negative."""
         with pytest.raises(NegativeValueError):
