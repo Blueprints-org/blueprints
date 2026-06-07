@@ -41,11 +41,15 @@ class TestForm8Dot44StressCompressionField:
         [
             (
                 "complete",
-                r"\sigma_{cd} = \tau_{Ed} \cdot \left( \cot \left( \theta \right) + \tan \left( \theta \right) \right) \leq \nu \cdot f_{cd} = 2.00 \cdot \left( \cot \left( 21.80 \right) + \tan \left( 21.80 \right) \right) \leq 0.50 \cdot 20.00 = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
+                r"\sigma_{cd} = \tau_{Ed} \cdot \left( \cot \left( \theta \right) + \tan \left( \theta \right) \right) \leq \nu \cdot f_{cd} "
+                r"= 2.00 \cdot \left( \cot \left( 21.80 \right) + \tan \left( 21.80 \right) \right) "
+                r"\leq 0.50 \cdot 20.00 = 5.80 \leq 10.00 = 5.80 \ MPa",
             ),
             (
                 "complete_with_units",
-                r"\sigma_{cd} = \tau_{Ed} \cdot \left( \cot \left( \theta \right) + \tan \left( \theta \right) \right) \leq \nu \cdot f_{cd} = 2.00 \ MPa \cdot \left( \cot \left( 21.80 ^\circ \right) + \tan \left( 21.80 ^\circ \right) \right) \leq 0.50 \cdot 20.00 \ MPa = 5.80 \leq 10.00 = 5.80 \ MPa",  # noqa: E501
+                r"\sigma_{cd} = \tau_{Ed} \cdot \left( \cot \left( \theta \right) + \tan \left( \theta \right) \right) \leq \nu \cdot f_{cd} "
+                r"= 2.00 \ MPa \cdot \left( \cot \left( 21.80 ^\circ \right) + \tan \left( 21.80 ^\circ \right) \right) "
+                r"\leq 0.50 \cdot 20.00 \ MPa = 5.80 \leq 10.00 = 5.80 \ MPa",
             ),
             ("intermediate", r"5.80 \leq 10.00"),
             ("short", r"\sigma_{cd} = 5.80 \ MPa"),
