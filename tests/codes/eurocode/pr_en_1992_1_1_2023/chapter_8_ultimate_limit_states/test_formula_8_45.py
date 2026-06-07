@@ -39,11 +39,15 @@ class TestForm8Dot45StrengthReductionFactor:
         [
             (
                 "complete",
-                r"\nu = \frac{1}{1.0 + 110 \cdot \left( \epsilon_x + \left( \epsilon_x + 0.001 \right) \cdot \cot^2 \left( \theta \right) \right)} \leq 1.0 = \frac{1}{1.0 + 110 \cdot \left( 0.002 + \left( 0.002 + 0.001 \right) \cdot \cot^2 \left( 45.000 \right) \right)} \leq 1.0 = 0.645 \leq 1.0 = 0.645",  # noqa: E501
+                r"\nu = \frac{1}{1.0 + 110 \cdot \left( \epsilon_x + \left( \epsilon_x + 0.001 \right) \cdot \cot^2 \left( \theta \right) \right)} "
+                r"\leq 1.0 = \frac{1}{1.0 + 110 \cdot \left( 0.002 + \left( 0.002 + 0.001 \right) \cdot \cot^2 \left( 45.000 \right) \right)} "
+                r"\leq 1.0 = 0.645 \leq 1.0 = 0.645",
             ),
             (
                 "complete_with_units",
-                r"\nu = \frac{1}{1.0 + 110 \cdot \left( \epsilon_x + \left( \epsilon_x + 0.001 \right) \cdot \cot^2 \left( \theta \right) \right)} \leq 1.0 = \frac{1}{1.0 + 110 \cdot \left( 0.002 + \left( 0.002 + 0.001 \right) \cdot \cot^2 \left( 45.000 ^\circ \right) \right)} \leq 1.0 = 0.645 \leq 1.0 = 0.645",  # noqa: E501
+                r"\nu = \frac{1}{1.0 + 110 \cdot \left( \epsilon_x + \left( \epsilon_x + 0.001 \right) \cdot \cot^2 \left( \theta \right) \right)} "
+                r"\leq 1.0 = \frac{1}{1.0 + 110 \cdot \left( 0.002 + \left( 0.002 + 0.001 \right) \cdot \cot^2 \left( 45.000 ^\circ \right) \right)} "
+                r"\leq 1.0 = 0.645 \leq 1.0 = 0.645",
             ),
             ("intermediate", r"0.645 \leq 1.0"),
             ("short", r"\nu = 0.645"),
