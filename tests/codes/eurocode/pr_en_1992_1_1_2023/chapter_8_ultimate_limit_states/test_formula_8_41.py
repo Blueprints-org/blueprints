@@ -43,11 +43,13 @@ class TestForm8Dot41InclinationCompressionField:
         [
             (
                 "complete",
-                r"CHECK \to 1 \le \cot \left( \theta \right) \le \cot \left( \theta_{\min} \right) \to 1 \le \cot \left( 26.57 \right) \le \cot \left( 21.80 \right) \to 1 \le 2.00 \le 2.50 \to OK",  # noqa: E501
+                r"CHECK \to 1 \le \cot \left( \theta \right) \le \cot \left( \theta_{\min} \right) "
+                r"\to 1 \le \cot \left( 26.57 \right) \le \cot \left( 21.80 \right) \to 1 \le 2.00 \le 2.50 \to OK",
             ),
             (
                 "complete_with_units",
-                r"CHECK \to 1 \le \cot \left( \theta \right) \le \cot \left( \theta_{\min} \right) \to 1 \le \cot \left( 26.57 ^\circ\right) \le \cot \left( 21.80 ^\circ\right) \to 1 \le 2.00 \le 2.50 \to OK",  # noqa: E501
+                r"CHECK \to 1 \le \cot \left( \theta \right) \le \cot \left( \theta_{\min} \right) "
+                r"\to 1 \le \cot \left( 26.57 ^\circ\right) \le \cot \left( 21.80 ^\circ\right) \to 1 \le 2.00 \le 2.50 \to OK",
             ),
             ("intermediate", r"1 \le 2.00 \le 2.50"),
             ("short", r"CHECK \to OK"),
