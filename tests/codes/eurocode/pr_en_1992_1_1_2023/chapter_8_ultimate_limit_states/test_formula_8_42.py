@@ -41,11 +41,15 @@ class TestForm8Dot42ShearStressResistanceReinforcement:
         [
             (
                 "complete",
-                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \left( \theta \right) = 0.003 \cdot 435.000 \cdot \cot \left( 45.000 \right) = 0.003 \cdot 435.000 \cdot 1.000 = 1.305 \ MPa",  # noqa: E501
+                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \left( \theta \right) "
+                r"= 0.003 \cdot 435.000 \cdot \cot \left( 45.000 \right) "
+                r"= 0.003 \cdot 435.000 \cdot 1.000 = 1.305 \ MPa",
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \left( \theta \right) = 0.003 \cdot 435.000 \ MPa \cdot \cot \left( 45.000 ^\circ \right) = 0.003 \cdot 435.000 \cdot 1.000 = 1.305 \ MPa",  # noqa: E501
+                r"\tau_{Rd,sy} = \rho_w \cdot f_{ywd} \cdot \cot \left( \theta \right) "
+                r"= 0.003 \cdot 435.000 \ MPa \cdot \cot \left( 45.000 ^\circ \right) "
+                r"= 0.003 \cdot 435.000 \cdot 1.000 = 1.305 \ MPa",
             ),
             ("intermediate", r"0.003 \cdot 435.000 \cdot 1.000"),
             ("short", r"\tau_{Rd,sy} = 1.305 \ MPa"),
