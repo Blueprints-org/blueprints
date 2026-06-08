@@ -43,14 +43,6 @@ class GreaterThan90Error(Exception):
         super().__init__(message)
 
 
-class GreaterOrEqualThan90Error(Exception):
-    """Raised when a value is greater or equal than 90."""
-
-    def __init__(self, value_name: str, value: float) -> None:
-        message = f"Invalid value for '{value_name}': {value}. Values for '{value_name}' cannot be greater or equal than 90."
-        super().__init__(message)
-
-
 class ListsNotSameLengthError(Exception):
     """Raised when two lists are not of the same length."""
 
@@ -133,25 +125,6 @@ def raise_if_greater_than_90(**kwargs: float) -> None:
     """
     for key, value in kwargs.items():
         if value > 90:
-            raise GreaterThan90Error(value_name=key, value=value)
-
-
-def raise_if_greater_or_equal_than_90(**kwargs: float) -> None:
-    """Raise a GreaterOrEqualThan90Error if any of the given keyword arguments are greater or equal than 90.
-
-    Parameters
-    ----------
-    **kwargs : dict[str, float]
-        A dictionary of keyword arguments where keys are parameter names, and values are the values to validate.
-
-    Raises
-    ------
-    GreaterOrEqualThan90Error
-        If any value is greater or equal than 90.
-
-    """
-    for key, value in kwargs.items():
-        if value >= 90:
             raise GreaterThan90Error(value_name=key, value=value)
 
 
