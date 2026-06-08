@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_42 import (
     Form8Dot42ShearStressResistanceReinforcement,
 )
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot42ShearStressResistanceReinforcement:
@@ -28,12 +28,23 @@ class TestForm8Dot42ShearStressResistanceReinforcement:
         [
             (-0.3e-2, 435.0, 45.0),  # rho_w is negative
             (0.3e-2, -435.0, 45.0),  # f_ywd is negative
-            (0.3e-2, 435.0, -45.0),  # cot_theta is negative
         ],
     )
     def test_raise_error_when_negative_values_are_given(self, rho_w: float, f_ywd: float, theta: float) -> None:
         """Test if error is raised for parameters that are not allowed to be negative."""
         with pytest.raises(NegativeValueError):
+            Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, theta=theta)
+
+    @pytest.mark.parametrize(
+        ("rho_w", "f_ywd", "theta"),
+        [
+            (0.3e-2, 435.0, 0.0),  # theta is zero
+            (0.3e-2, 435.0, -45.0),  # theta is negative
+        ],
+    )
+    def test_raise_error_when_less_or_equal_to_zero_values_are_given(self, rho_w: float, f_ywd: float, theta: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be less or equal to zero."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot42ShearStressResistanceReinforcement(rho_w=rho_w, f_ywd=f_ywd, theta=theta)
 
     @pytest.mark.parametrize(

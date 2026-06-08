@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_44 import Form8Dot44StressCompressionField
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot44StressCompressionField:
@@ -26,14 +26,25 @@ class TestForm8Dot44StressCompressionField:
         ("tau_ed", "theta", "nu", "f_cd"),
         [
             (-2.0, 45.0, 0.5, 20.0),  # tau_Ed is negative
-            (2.0, -45.0, 0.5, 20.0),  # theta is negative
             (2.0, 45.0, -0.5, 20.0),  # nu is negative
             (2.0, 45.0, 0.5, -20.0),  # f_cd is negative
         ],
     )
-    def test_raise_error_when_invalid_args(self, tau_ed: float, theta: float, nu: float, f_cd: float) -> None:
-        """Test invalid values for tau_ed, cot_theta, tan_theta, nu and f_cd."""
+    def test_raise_error_when_negative_values_are_given(self, tau_ed: float, theta: float, nu: float, f_cd: float) -> None:
+        """Test invalid values for tau_ed, nu and f_cd."""
         with pytest.raises(NegativeValueError):
+            Form8Dot44StressCompressionField(tau_ed=tau_ed, theta=theta, nu=nu, f_cd=f_cd)
+
+    @pytest.mark.parametrize(
+        ("tau_ed", "theta", "nu", "f_cd"),
+        [
+            (2.0, 0.0, 0.5, 20.0),  # theta is zero
+            (2.0, -45.0, 0.5, 20.0),  # theta is negative
+        ],
+    )
+    def test_raise_error_when_less_or_equal_to_zero_values_are_given(self, tau_ed: float, theta: float, nu: float, f_cd: float) -> None:
+        """Test invalid values for theta."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot44StressCompressionField(tau_ed=tau_ed, theta=theta, nu=nu, f_cd=f_cd)
 
     @pytest.mark.parametrize(
