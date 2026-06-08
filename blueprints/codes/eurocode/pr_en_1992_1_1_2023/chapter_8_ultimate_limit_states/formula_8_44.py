@@ -5,7 +5,7 @@ from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
 from blueprints.utils.math_helpers import cot, tan
-from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_zero
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot44StressCompressionField(Formula):

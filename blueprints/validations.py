@@ -47,8 +47,7 @@ class GreaterOrEqualThan90Error(Exception):
     """Raised when a value is greater or equal than 90."""
 
     def __init__(self, value_name: str, value: float) -> None:
-        message = (f"Invalid value for '{value_name}': {value}. Values for '{value_name}' cannot be greater or equal "
-                   f"than 90.")
+        message = f"Invalid value for '{value_name}': {value}. Values for '{value_name}' cannot be greater or equal than 90."
         super().__init__(message)
 
 
