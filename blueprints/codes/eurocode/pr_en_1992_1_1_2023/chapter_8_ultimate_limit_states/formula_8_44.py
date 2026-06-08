@@ -5,7 +5,7 @@ from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
 from blueprints.utils.math_helpers import cot, tan
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_zero
 
 
 class Form8Dot44StressCompressionField(Formula):
@@ -49,7 +49,8 @@ class Form8Dot44StressCompressionField(Formula):
     @staticmethod
     def _evaluate_pt1(tau_ed: MPA, theta: DEG, *_args, **_kwargs) -> float:
         """Evaluates part 1 of the formula, for more information see the __init__ method."""
-        raise_if_negative(tau_ed=tau_ed, theta=theta)
+        raise_if_negative(tau_ed=tau_ed)
+        raise_if_less_or_equal_to_zero(theta=theta)
         return tau_ed * (cot(theta) + tan(theta))
 
     @staticmethod

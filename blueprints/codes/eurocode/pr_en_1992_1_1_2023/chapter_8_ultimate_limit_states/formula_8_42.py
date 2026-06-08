@@ -5,7 +5,7 @@ from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
 from blueprints.utils.math_helpers import cot
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_negative, raise_if_less_or_equal_to_zero
 
 
 class Form8Dot42ShearStressResistanceReinforcement(Formula):
@@ -45,8 +45,8 @@ class Form8Dot42ShearStressResistanceReinforcement(Formula):
     @staticmethod
     def _evaluate(rho_w: DIMENSIONLESS, f_ywd: MPA, theta: DEG) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        # None of the variables are denominators, they must be non-negative (zero allowed)
-        raise_if_negative(rho_w=rho_w, f_ywd=f_ywd, theta=theta)
+        raise_if_negative(rho_w=rho_w, f_ywd=f_ywd)
+        raise_if_less_or_equal_to_zero(theta=theta)
         return rho_w * f_ywd * cot(theta)
 
     def latex(self, n: int = 3) -> LatexFormula:
