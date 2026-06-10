@@ -22,9 +22,13 @@ consequence:
   all. Downstream tools (sections, checks, future FE/section integrations) have nothing
   uniform to depend on.
 
-The goal is to **separate the material *data* (physical/characteristic properties) from
-its *construction logic* (code formulas)** — and to do so as a **soft transition** that
-keeps every existing call-site working while the new model is introduced.
+## Goal
+
+**Separate the material *data* (physical/characteristic properties) from its *construction
+logic* (code formulas)**, so a `Material` represents only physical properties, does not know
+how it was created, and does not depend on Eurocode or any single source — and deliver it as
+a **soft transition** that keeps every existing call-site working while the new model is
+introduced.
 
 ## Use cases this must serve
 
