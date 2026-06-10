@@ -68,11 +68,6 @@ class AZProfile(Profile):
         return max(self.web_thickness, self.flange_thickness)
 
     @property
-    def mesh_creator(self) -> partial:
-        """Mesh settings for the geometrical calculations of the AZ profile."""
-        return partial(Geometry.create_mesh, mesh_sizes=[self.max_thickness])
-
-    @property
     def _polygon_single_sheet(self) -> Polygon:
         """Shapely Polygon representing the single sheet of the AZ profile from coordinates."""
         return Polygon(self.coordinates)
@@ -183,5 +178,5 @@ class AZProfile(Profile):
             coordinates=coordinates,
             web_thickness=new_web_thickness,
             flange_thickness=new_flange_thickness,
-            name=f"{self.name} with {corrosion}mm corrosion",
+            name=f"{self.name} with {corrosion} mm corrosion",
         )
