@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
-from blueprints.type_alias import DIMENSIONLESS, KG_M3, MPA, PER_MILLE
+from blueprints.type_alias import DIMENSIONLESS, KG_M3, MPA, PER_MILLE, RATIO
 
 REBAR_STEEL_YOUNG_MODULUS = 200_000.0  # [MPa] from EN 1992-1-1 3.2.7(4)
 
@@ -219,3 +219,127 @@ class ReinforcementSteelMaterial:
                 return 750
             case _:
                 raise ValueError(f"Unknown steel class: {self.steel_class}")
+
+
+@dataclass(frozen=True)
+class ReinforcementSteel:
+    r"""Code-agnostic data container for the properties of reinforcement steel.
+
+    All characteristic values are stored as plain data, so non-standard reinforcement can be created
+    directly through the constructor without any design-code dependency. Use :meth:`from_ec2` to build
+    an instance from an EN 1992-1-1 steel quality (Table C.1, Annex C). Only trivial derivations of
+    stored fields are exposed as computed properties.
+
+    Parameters
+    ----------
+    name: str
+        Name of the reinforcement steel material.
+    f_yk: MPA
+        Characteristic yield strength of reinforcement [$MPa$].
+    f_tk: MPA
+        Characteristic tensile strength of reinforcement [$MPa$].
+    eps_uk: PER_MILLE
+        Characteristic strain of reinforcement at maximum load [$‰$].
+    modulus_of_elasticity: MPA
+        Young's modulus of the reinforcement steel [$MPa$] (default= 200000.0).
+    density: KG_M3
+        Unit mass of steel [$kg/m^3$] (default= 7850.0).
+    poisson_ratio: RATIO
+        Poisson's ratio in the elastic range [$-$] (default= 0.3).
+    material_factor: DIMENSIONLESS
+        Partial safety factor [$\gamma_s$] for reinforcement steel according to EN 1992-1-1 art.2.4.2.4 (default= 1.15).
+
+    """
+
+    name: str
+    f_yk: MPA
+    f_tk: MPA
+    eps_uk: PER_MILLE
+    modulus_of_elasticity: MPA = REBAR_STEEL_YOUNG_MODULUS
+    density: KG_M3 = 7850.0
+    poisson_ratio: RATIO = 0.3
+    material_factor: DIMENSIONLESS = 1.15
+
+    @property
+    def f_yd(self) -> MPA:
+        r"""[$f_{yd}$] Design yield strength of reinforcement (EN 1992-1-1:2004 art.3.2.7 (2)) [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 434.78 (for B500B)
+        """
+        return self.f_yk / self.material_factor
+
+    @property
+    def ductility_factor_k(self) -> DIMENSIONLESS:
+        r"""Ductility factor k [$-$] -> ([$f_{tk}$] / [$f_{yk}$]) table C.1 Annex C from EN 1992-1-1:2004.
+
+        Returns
+        -------
+        DIMENSIONLESS
+            Example: 1.08 (for B500B)
+        """
+        return self.f_tk / self.f_yk
+
+    @property
+    def shear_modulus(self) -> MPA:
+        r"""[$G$] Shear modulus of the reinforcement steel [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Shear modulus of the material.
+        """
+        return self.modulus_of_elasticity / (2 * (1 + self.poisson_ratio))
+
+    @classmethod
+    def from_ec2(
+        cls,
+        steel_quality: ReinforcementSteelQuality = ReinforcementSteelQuality.B500B,
+        *,
+        name: str = "",
+        modulus_of_elasticity: MPA = REBAR_STEEL_YOUNG_MODULUS,
+        density: KG_M3 = 7850.0,
+        poisson_ratio: RATIO = 0.3,
+        material_factor: DIMENSIONLESS = 1.15,
+    ) -> "ReinforcementSteel":
+        r"""Build a reinforcement steel material from a steel quality according to Table C.1, Annex C of EN 1992-1-1:2004.
+
+        All design-code logic lives in this factory; the resulting :class:`ReinforcementSteel` stores only data.
+
+        Parameters
+        ----------
+        steel_quality: ReinforcementSteelQuality
+            Enumeration of reinforcement steel qualities (default= B500B).
+        name: str
+            Name of the reinforcement steel material (default= steel quality name).
+        modulus_of_elasticity: MPA
+            Young's modulus of the reinforcement steel [$MPa$] (default= 200000.0).
+        density: KG_M3
+            Unit mass of steel [$kg/m^3$] (default= 7850.0).
+        poisson_ratio: RATIO
+            Poisson's ratio in the elastic range [$-$] (default= 0.3).
+        material_factor: DIMENSIONLESS
+            Partial safety factor [$\gamma_s$] for reinforcement steel (default= 1.15).
+
+        Returns
+        -------
+        ReinforcementSteel
+            Reinforcement steel material with the characteristics of the given quality.
+        """
+        value = steel_quality.value
+        f_yk = float(value[1:-1])
+        steel_class = value[-1].lower()
+        ductility_factor_k = {"a": 1.05, "b": 1.08, "c": 1.15}[steel_class]
+        eps_uk = {"a": 250.0, "b": 500.0, "c": 750.0}[steel_class]
+        return cls(
+            name=name if name else value,
+            f_yk=f_yk,
+            f_tk=f_yk * ductility_factor_k,
+            eps_uk=eps_uk,
+            modulus_of_elasticity=modulus_of_elasticity,
+            density=density,
+            poisson_ratio=poisson_ratio,
+            material_factor=material_factor,
+        )

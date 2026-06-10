@@ -5,7 +5,7 @@ import re
 from dataclasses import dataclass, field
 from enum import Enum
 
-from blueprints.type_alias import DIMENSIONLESS, KG_M3, MM, MPA, PER_DEGREE, PER_MILLE, PERCENTAGE
+from blueprints.type_alias import DIMENSIONLESS, KG_M3, MM, MPA, PER_DEGREE, PER_MILLE, PERCENTAGE, RATIO
 from blueprints.unit_conversion import GPA_TO_MPA
 
 
@@ -402,3 +402,279 @@ class ConcreteMaterial:
         PERCENTAGE
         """
         return (0.223 * (self.f_ctm / f_yd)) * 100
+
+
+@dataclass(frozen=True)
+class Concrete:
+    r"""Code-agnostic data container for the strength and deformation characteristics of concrete.
+
+    All characteristic values are stored as plain data, so non-standard mixtures can be created
+    directly through the constructor without any design-code dependency. Use :meth:`from_ec2` to
+    build an instance from a NEN-EN 1992-1-1 strength class. Only trivial derivations of stored
+    fields (e.g. design values from characteristic values and the stored partial factor) are
+    exposed as computed properties.
+
+    Parameters
+    ----------
+    name: str
+        Name of the concrete material.
+    f_ck: MPA
+        Characteristic compressive cylinder strength of concrete at 28 days [$MPa$].
+    f_ck_cube: MPA
+        Characteristic compressive cubic strength of concrete at 28 days [$MPa$].
+    f_cm: MPA
+        Mean value of concrete cylinder compressive strength [$MPa$].
+    f_ctm: MPA
+        Mean value of axial tensile strength of concrete [$MPa$].
+    f_ctk_0_05: MPA
+        Characteristic axial tensile strength of concrete, 5% fractile [$MPa$].
+    f_ctk_0_95: MPA
+        Characteristic axial tensile strength of concrete, 95% fractile [$MPa$].
+    e_cm: MPA
+        Secant modulus of elasticity of concrete [$MPa$].
+    density: KG_M3
+        Unit mass of concrete [$kg/m^3$] (default= 2500.0).
+    poisson_ratio: RATIO
+        Poisson's ratio of uncracked concrete [$-$] (default= 0.2).
+    material_factor: DIMENSIONLESS
+        Partial safety factor [$\gamma_c$] for concrete according to NEN-EN 1992-1-1 art.2.4.2.4 (default= 1.5).
+    eps_c1: PER_MILLE
+        Compressive strain in the concrete at the peak stress [$f_c$] [$‰$] (default= 2.8).
+    eps_cu1: PER_MILLE
+        Nominal ultimate compressive strain in the concrete [$‰$] (default= 3.5).
+    eps_c2: PER_MILLE
+        Compressive strain at reaching the maximum strength according to Table 3.1 [$‰$] (default= 2.0).
+    eps_cu2: PER_MILLE
+        Nominal ultimate compressive strain according to Table 3.1 [$‰$] (default= 3.5).
+    eps_c3: PER_MILLE
+        Compressive strain at reaching the maximum strength for a bi-linear stress-strain relation [$‰$] (default= 1.75).
+    eps_cu3: PER_MILLE
+        Nominal ultimate compressive strain for a bi-linear stress-strain relation [$‰$] (default= 3.5).
+    n_factor: DIMENSIONLESS
+        [$n$] factor from Table 3.1 of NEN-EN 1992-1-1 [$-$] (default= 2.0).
+    cement_class: CementClass
+        Cement class needed for the calculation of creep and shrinkage strain (default= N).
+    cement_type: CementType
+        Type of cement in the concrete material (default= CEM III).
+    aggregate_type: ConcreteAggregateType
+        Type of aggregate in the concrete material (default= Quartzite).
+    aggregate_size: MM
+        Largest nominal maximum aggregate size [$mm$] (default= 16.0).
+    diagram_type: DiagramType
+        Type of stress-strain diagram (default= Bi-Linear).
+    use_plain_concrete_diagram: bool
+        Use a stress-strain diagram for plain or lightly reinforced concrete (default= False).
+    thermal_coefficient: PER_DEGREE
+        Thermal coefficient of the material [$1/°C$] (default= 1e-5).
+
+    """
+
+    name: str
+    f_ck: MPA
+    f_ck_cube: MPA
+    f_cm: MPA
+    f_ctm: MPA
+    f_ctk_0_05: MPA
+    f_ctk_0_95: MPA
+    e_cm: MPA
+    density: KG_M3 = 2500.0
+    poisson_ratio: RATIO = 0.2
+    material_factor: DIMENSIONLESS = 1.5
+    eps_c1: PER_MILLE = 2.8
+    eps_cu1: PER_MILLE = 3.5
+    eps_c2: PER_MILLE = 2.0
+    eps_cu2: PER_MILLE = 3.5
+    eps_c3: PER_MILLE = 1.75
+    eps_cu3: PER_MILLE = 3.5
+    n_factor: DIMENSIONLESS = 2.0
+    cement_class: CementClass = CementClass.N
+    cement_type: CementType = CementType.CEM_III
+    aggregate_type: ConcreteAggregateType = ConcreteAggregateType.QUARTZITE
+    aggregate_size: MM = 16.0
+    diagram_type: DiagramType = DiagramType.BILINEAR
+    use_plain_concrete_diagram: bool = False
+    thermal_coefficient: PER_DEGREE = 1e-5
+
+    @property
+    def f_cd(self) -> MPA:
+        r"""[$f_{cd}$] Design value of concrete compressive strength (NEN-EN 1992-1-1 art.3.1.6 (1)) [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 20 (for C30/37)
+        """
+        return self.f_ck / self.material_factor
+
+    @property
+    def f_ctd(self) -> MPA:
+        r"""[$f_{ctd}$] Design value of tensile strength of concrete [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 1.3516851384478814 (for C30/37)
+        """
+        return self.f_ctk_0_05 / self.material_factor
+
+    @property
+    def f_cm_cube(self) -> MPA:
+        r"""[$f_{cm,cube}$] Mean value of concrete cubic compressive strength [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 45 (for C30/37)
+        """
+        return self.f_ck_cube + 8
+
+    @property
+    def sigma_cr(self) -> MPA:
+        r"""[$\sigma_{cr}$] Crack tensile stress (long term) equal to [$0.6 \cdot f_{ctm}$] [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 1.7378808922901334 (for C30/37)
+        """
+        return self.f_ctm * 0.6
+
+    @property
+    def strain_cr(self) -> DIMENSIONLESS:
+        r"""[$\epsilon_{cr}$] Strain at crack tensile stress (long term) equal to [$\sigma_{cr} / E_{cm}$] [$-$].
+
+        Returns
+        -------
+        DIMENSIONLESS
+            Example: 5.2926083941105295e-05 (for C30/37)
+        """
+        return self.sigma_cr / self.e_cm
+
+    @property
+    def modulus_of_elasticity(self) -> MPA:
+        r"""[$E_{cm}$] Secant modulus of elasticity of concrete [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 32836 (for C30/37)
+        """
+        return self.e_cm
+
+    @property
+    def shear_modulus(self) -> MPA:
+        r"""[$G$] Shear modulus of uncracked concrete [$MPa$].
+
+        Returns
+        -------
+        MPA
+            Example: 13681.666666666666 (for C30/37)
+        """
+        return self.e_cm / (2 * (1 + self.poisson_ratio))
+
+    def rho_min(self, f_yd: MPA) -> PERCENTAGE:
+        r"""[$\rho_{min}$] Minimum reinforcement ratio (CB2, 7de druk 2011, pag.55) [$%$].
+
+        Parameters
+        ----------
+        f_yd: MPA
+            Design yield strength of reinforcement [$MPa$].
+
+        Returns
+        -------
+        PERCENTAGE
+        """
+        return (0.223 * (self.f_ctm / f_yd)) * 100
+
+    @classmethod
+    def from_ec2(  # noqa: PLR0913
+        cls,
+        concrete_class: ConcreteStrengthClass = ConcreteStrengthClass.C30_37,
+        *,
+        name: str = "",
+        e_cm: MPA | None = None,
+        density: KG_M3 = 2500.0,
+        poisson_ratio: RATIO = 0.2,
+        material_factor: DIMENSIONLESS = 1.5,
+        cement_class: CementClass = CementClass.N,
+        cement_type: CementType = CementType.CEM_III,
+        aggregate_type: ConcreteAggregateType = ConcreteAggregateType.QUARTZITE,
+        aggregate_size: MM = 16.0,
+        diagram_type: DiagramType = DiagramType.BILINEAR,
+        use_plain_concrete_diagram: bool = False,
+        thermal_coefficient: PER_DEGREE = 1e-5,
+    ) -> "Concrete":
+        r"""Build a concrete material from a strength class according to Table 3.1 of NEN-EN 1992-1-1.
+
+        All design-code formulas live in this factory; the resulting :class:`Concrete` stores only data.
+
+        Parameters
+        ----------
+        concrete_class: ConcreteStrengthClass
+            Enumeration of concrete strength classes (default= C30/37).
+        name: str
+            Name of the concrete material (default= concrete class name).
+        e_cm: MPA | None
+            Secant modulus of elasticity of concrete [$MPa$] (default= value from Table 3.1).
+        density: KG_M3
+            Unit mass of concrete [$kg/m^3$] (default= 2500.0).
+        poisson_ratio: RATIO
+            Poisson's ratio of uncracked concrete [$-$] (default= 0.2).
+        material_factor: DIMENSIONLESS
+            Partial safety factor [$\gamma_c$] for concrete according to NEN-EN 1992-1-1 art.2.4.2.4 (default= 1.5).
+        cement_class: CementClass
+            Cement class needed for the calculation of creep and shrinkage strain (default= N).
+        cement_type: CementType
+            Type of cement in the concrete material (default= CEM III).
+        aggregate_type: ConcreteAggregateType
+            Type of aggregate in the concrete material (default= Quartzite).
+        aggregate_size: MM
+            Largest nominal maximum aggregate size [$mm$] (default= 16.0).
+        diagram_type: DiagramType
+            Type of stress-strain diagram (default= Bi-Linear).
+        use_plain_concrete_diagram: bool
+            Use a stress-strain diagram for plain or lightly reinforced concrete (default= False).
+        thermal_coefficient: PER_DEGREE
+            Thermal coefficient of the material [$1/°C$] (default= 1e-5).
+
+        Returns
+        -------
+        Concrete
+            Concrete material with the characteristics of the given strength class.
+        """
+        value = concrete_class.value
+        f_ck_match = re.search(pattern=r"C(\d+)/", string=value)
+        f_ck_cube_match = re.search(pattern=r"/(\d+)", string=value)
+        if not f_ck_match or not f_ck_cube_match:
+            raise ValueError("Concrete class is invalid; could not derive f_ck and f_ck_cube.")
+        f_ck = int(f_ck_match.group(1))
+        f_ck_cube = int(f_ck_cube_match.group(1))
+        f_cm = f_ck + 8
+        f_ctm = 0.30 * f_ck ** (2 / 3) if f_ck <= 50 else 2.12 * math.log(1 + (f_cm / 10))
+        return cls(
+            name=name if name else value,
+            f_ck=f_ck,
+            f_ck_cube=f_ck_cube,
+            f_cm=f_cm,
+            f_ctm=f_ctm,
+            f_ctk_0_05=f_ctm * 0.7,
+            f_ctk_0_95=f_ctm * 1.3,
+            e_cm=e_cm if e_cm is not None else int(22 * ((f_cm / 10) ** 0.3) * GPA_TO_MPA),
+            density=density,
+            poisson_ratio=poisson_ratio,
+            material_factor=material_factor,
+            eps_c1=min(0.7 * f_cm**0.31, 2.8),
+            eps_cu1=2.8 + 27 * ((98 - f_cm) / 100) ** 4 if f_ck >= 50 else 3.5,
+            eps_c2=2.0 + 0.085 * (f_ck - 50) ** 0.53 if f_ck >= 50 else 2.0,
+            eps_cu2=2.6 + 35 * ((90 - f_ck) / 100) ** 4 if f_ck >= 50 else 3.5,
+            eps_c3=1.75 + 0.55 * ((f_ck - 50) / 40) if f_ck >= 50 else 1.75,
+            eps_cu3=2.6 + 35 * ((90 - f_ck) / 100) ** 4 if f_ck >= 50 else 3.5,
+            n_factor=1.4 + 23.4 * ((90 - f_ck) / 100) ** 4 if f_ck >= 50 else 2.0,
+            cement_class=cement_class,
+            cement_type=cement_type,
+            aggregate_type=aggregate_type,
+            aggregate_size=aggregate_size,
+            diagram_type=diagram_type,
+            use_plain_concrete_diagram=use_plain_concrete_diagram,
+            thermal_coefficient=thermal_coefficient,
+        )
