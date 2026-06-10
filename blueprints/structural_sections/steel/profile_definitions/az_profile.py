@@ -4,15 +4,12 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, replace
-from functools import partial
-
-from shapely import affinity, remove_repeated_points
-from shapely.geometry import Polygon, box
-from shapely.ops import unary_union
+from typing import cast
 
 from matplotlib import pyplot as plt
-from shapely.geometry import Polygon
-from sectionproperties.pre import Geometry
+from shapely import affinity
+from shapely.geometry import Polygon, box
+from shapely.ops import unary_union
 
 from blueprints.structural_sections._profile import Profile
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import (
@@ -78,19 +75,19 @@ class AZProfile(Profile):
         single_sheet_polygon = self._polygon_single_sheet
         if self.number_of_sheets == 1:
             return single_sheet_polygon
-        
+
         # Get ymax and ymin of the single sheet
         bounds = single_sheet_polygon.bounds
         ymin = bounds[1]
         ymax = bounds[3]
-        
+
         # Create list to hold all sheet polygons and connectors
         polygons = []
-        
+
         for i in range(self.number_of_sheets):
             # Translate the polygon horizontally
             translated_polygon = affinity.translate(single_sheet_polygon, xoff=i * self.interlocking_ctc)
-            
+
             # Every second polygon (odd indices) should be mirrored along horizontal line at ymax
             if i % 2 == 1:
                 # Mirror along horizontal line: reflect across y=ymax
@@ -111,13 +108,12 @@ class AZProfile(Profile):
                     connector_x - connector_width / 2,
                     connector_y - connector_height / 2,
                     connector_x + connector_width / 2,
-                    connector_y + connector_height / 2
+                    connector_y + connector_height / 2,
                 )
-                polygons.append(connector)        
+                polygons.append(connector)
 
         # Union all polygons into a single polygon
-        return unary_union(polygons)
-        
+        return cast(Polygon, unary_union(polygons))
 
     def multiple_sheets(self, number_of_sheets: int) -> AZProfile:
         """Return a new AZ profile instance with a different number of sheets.
@@ -161,7 +157,7 @@ class AZProfile(Profile):
         """
         if corrosion < 0:
             raise ValueError("Corrosion value must be non-negative")
-        
+
         # Corrosion reduces the thickness of the web and flanges by 2 times the corrosion value (corrosion on both sides)
         new_web_thickness = max(self.web_thickness - 2 * corrosion, 0)
         new_flange_thickness = max(self.flange_thickness - 2 * corrosion, 0)
@@ -172,7 +168,7 @@ class AZProfile(Profile):
             raise ValueError("Corrosion amount is too large, resulting in an empty profile")
 
         coordinates = list(corroded_polygon.exterior.coords)
-        
+
         return replace(
             self,
             coordinates=coordinates,
