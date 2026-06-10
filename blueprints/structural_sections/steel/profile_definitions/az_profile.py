@@ -91,7 +91,6 @@ class AZProfile(Profile):
             # Every second polygon (odd indices) should be mirrored along horizontal line at ymax
             if i % 2 == 1:
                 # Mirror along horizontal line: reflect across y=ymax
-                # This means new_y = 2*ymax - old_y
                 mirrored_polygon = affinity.scale(translated_polygon, xfact=1, yfact=-1)
                 polygons.append(mirrored_polygon)
             else:
@@ -130,8 +129,10 @@ class AZProfile(Profile):
 
         Notes
         -----
-        Multiple sheet functionality is not yet implemented for coordinate-based AZ profiles.
-        This method is provided for API compatibility but currently only supports single sheets.
+        Multiple sheet functionality is implemented for coordinate-based AZ profiles.
+        The `_polygon` property handles multi-sheet geometry by translating, mirroring (for odd-indexed sheets),
+        and generating connectors between sheets. This method validates that `number_of_sheets >= 1`
+        and returns a new instance with the updated sheet count.
         """
         if number_of_sheets < 1:
             raise ValueError("Number of sheets must be at least 1")
@@ -176,3 +177,17 @@ class AZProfile(Profile):
             flange_thickness=new_flange_thickness,
             name=f"{self.name} with {corrosion} mm corrosion",
         )
+
+if __name__ == "__main__":
+    # Example usage
+    from blueprints.structural_sections.steel.standard_profiles.az import AZ
+
+    # Access the AZ36-700N profile
+    profile = AZ.AZ36_700N.multiple_sheets(3)
+
+    # Display basic profile information
+    print("=" * 60)
+    print(f"Profile: {profile.name}")
+    print("=" * 60)
+
+    profile.plot(show=True)
