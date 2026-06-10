@@ -229,7 +229,7 @@ class Profile(ABC):
         m_x : KNM
             Torsional moment [kNm], positive for y to z, negative for z to y. Default is 0 kNm (no torsion).
         m_y : KNM
-            Bending moment about the y-axis [kNm], positive for z to x, negative for x to z. Default is 0 kNm (no bending moment about y-axis).
+            Bending moment about the y-axis [kNm], positive for x to z, negative for z to x. Default is 0 kNm (no bending moment about y-axis).
         m_z : KNM
             Bending moment about the z-axis [kNm], positive for x to y, negative for y to x. Default is 0 kNm (no bending moment about z-axis).
 
@@ -262,7 +262,7 @@ class Profile(ABC):
             n=float(n) * KN_TO_N,
             vx=-float(v_y) * KN_TO_N,
             vy=float(v_z) * KN_TO_N,
-            mxx=-float(m_y) * KNM_TO_NMM,
+            mxx=float(m_y) * KNM_TO_NMM,
             myy=float(m_z) * KNM_TO_NMM,
             mzz=float(m_x) * KNM_TO_NMM,
         )
