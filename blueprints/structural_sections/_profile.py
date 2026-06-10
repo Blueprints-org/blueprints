@@ -262,7 +262,7 @@ class Profile(ABC):
             n=float(n) * KN_TO_N,
             vx=-float(v_y) * KN_TO_N,
             vy=float(v_z) * KN_TO_N,
-            mxx=float(m_y) * KNM_TO_NMM,
+            mxx=-float(m_y) * KNM_TO_NMM,
             myy=float(m_z) * KNM_TO_NMM,
             mzz=float(m_x) * KNM_TO_NMM,
         )
