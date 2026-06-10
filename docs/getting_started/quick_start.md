@@ -74,7 +74,7 @@ cs = RectangularReinforcedCrossSection(
     concrete_material=concrete,
 )
 
-# Add reinforcement to the upper edge
+# Add reinforcement to the lower edge
 cs.add_longitudinal_reinforcement_by_quantity(
     n=10,
     diameter=16,

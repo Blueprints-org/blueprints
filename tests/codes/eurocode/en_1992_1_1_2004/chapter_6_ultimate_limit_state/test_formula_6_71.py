@@ -87,7 +87,7 @@ class TestForm6Dot71CriteriaBasedOnStressRangeRHS:
         ],
     )
     def test_raise_error_when_gamma_is_not_positive(self, gamma_s_fat: float, delta_sigma_rsk_n_star: float) -> None:
-        """Test a non postive values for gamma_s_fat."""
+        """Test a non-positive value for gamma_s_fat."""
         with pytest.raises(LessOrEqualToZeroError):
             Form6Dot71CriteriaBasedOnStressRangeRHS(gamma_s_fat=gamma_s_fat, delta_sigma_rsk_n_star=delta_sigma_rsk_n_star)
 

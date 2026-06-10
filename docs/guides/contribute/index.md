@@ -6,7 +6,7 @@ around the world will be thankful for your contribution.
 
 ## Can I Contribute?
 
-Yes! We have oportunities for contributors of all skill levels. Whether you're a seasoned developer, a civil engineer with coding skills.
+Yes! We have opportunities for contributors of all skill levels, whether you're a seasoned developer or a civil engineer with coding skills.
 
 **Whether you're new to open source or an experienced contributor, there's a place for you here.**
 
