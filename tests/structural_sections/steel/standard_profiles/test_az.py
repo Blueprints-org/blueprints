@@ -1,5 +1,7 @@
 """Test for the AZ standard profiles."""
 
+from typing import ClassVar
+
 import pytest
 
 from blueprints.structural_sections.steel.profile_definitions.az_profile import AZProfile
@@ -10,7 +12,7 @@ from blueprints.structural_sections.steel.standard_profiles.az import __AZProfil
 class TestAZ:
     """Tests for the AZ class."""
 
-    expected_area = {
+    expected_area: ClassVar[dict[str, int]] = {
         "AZ12_700": 8620,
         "AZ12_770": 9250,
         "AZ13_700": 9430,
@@ -46,6 +48,7 @@ class TestAZ:
         "AZ50_700": 21180,
         "AZ52_700": 22170,
     }
+
     @pytest.mark.parametrize(("profile_name", "expected_data"), AZ_PROFILES_DATABASE.items())
     def test_as_az_profile(self, profile_name: str, expected_data: AZProfileParameters) -> None:
         """Test that the AZ instance is converted to an AZProfile correctly."""
@@ -84,10 +87,10 @@ class TestAZ:
     def test_multiple_sheets(self, profile_name: str) -> None:
         """Test that multiple sheets can be created for all profiles."""
         profile = getattr(AZ, profile_name)
-        
+
         # Create profile with multiple sheets
         profile_multiple = profile.multiple_sheets(3)
-        
+
         assert profile_multiple.number_of_sheets == 3
         assert profile_multiple.polygon.is_valid
         assert profile_multiple.area == pytest.approx(profile.area * 3, rel=0.01)
@@ -103,7 +106,7 @@ class TestAZ:
         expected_area = max(profile.area - corroded_area, 0)
 
         corroded_profile = profile.with_corrosion(corrosion=corrosion_mm)
-        
+
         # Check that corrosion reduces dimensions
         assert corroded_profile.web_thickness == pytest.approx(profile.web_thickness - 2 * corrosion_mm, rel=0.01)
         assert corroded_profile.flange_thickness == pytest.approx(profile.flange_thickness - 2 * corrosion_mm, rel=0.01)
@@ -113,7 +116,7 @@ class TestAZ:
     def test_max_thickness(self) -> None:
         """Test that max_thickness property returns the correct value."""
         profile = AZ.AZ36_700N
-        
+
         expected_max = max(profile.web_thickness, profile.flange_thickness)
         assert profile.max_thickness == expected_max
 
