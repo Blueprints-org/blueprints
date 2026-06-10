@@ -40,7 +40,7 @@ HEM_PROFILES_DATABASE = {
     "HEM220": __HEMProfileParameters("HEM220", 226, 26, 226, 26, 240, 15.5, 18, 18),
     "HEM240": __HEMProfileParameters("HEM240", 248, 32, 248, 32, 270, 18, 21, 21),
     "HEM260": __HEMProfileParameters("HEM260", 268, 32.5, 268, 32.5, 290, 18, 24, 24),
-    "HEM280": __HEMProfileParameters("HEM280", 288, 39, 288, 39, 310, 18.5, 24, 24),
+    "HEM280": __HEMProfileParameters("HEM280", 288, 33, 288, 33, 310, 18.5, 24, 24),
     "HEM300": __HEMProfileParameters("HEM300", 310, 39, 310, 39, 340, 21, 27, 27),
     "HEM320": __HEMProfileParameters("HEM320", 309, 40, 309, 40, 359, 21, 27, 27),
     "HEM340": __HEMProfileParameters("HEM340", 309, 40, 309, 40, 377, 21, 27, 27),

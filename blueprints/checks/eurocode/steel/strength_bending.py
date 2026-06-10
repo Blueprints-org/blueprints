@@ -264,7 +264,14 @@ class CheckStrengthBendingClass3:
         # For bending about y, the relevant section modulus is zxx; for bending about z, it is zyy.
         # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
-        w = min(float(props.zxx_plus), float(props.zxx_minus)) if self.axis.lower() == "my" else min(float(props.zyy_plus), float(props.zyy_minus))  # type: ignore[attr-defined]
+        if self.axis.lower() == "my":
+            if props.zxx_plus is None or props.zxx_minus is None:
+                raise ValueError("Section properties zxx_plus and zxx_minus must not be None")
+            w = min(float(props.zxx_plus), float(props.zxx_minus))
+        else:
+            if props.zyy_plus is None or props.zyy_minus is None:
+                raise ValueError("Section properties zyy_plus and zyy_minus must not be None")
+            w = min(float(props.zyy_plus), float(props.zyy_minus))
 
         f_y = self.steel_cross_section.yield_strength
         return formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)

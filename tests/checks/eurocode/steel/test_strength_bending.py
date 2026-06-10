@@ -174,3 +174,16 @@ class TestCheckStrengthBendingClass3:
         docs = calc.source_docs()
         assert isinstance(docs, list)
         assert len(docs) == 1
+
+    def test_missing_section_properties(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test that ValueError is raised when section properties are None."""
+        m = 10
+        heb_steel_cross_section.profile.section_properties().zxx_plus = None
+        heb_steel_cross_section.profile.section_properties().zxx_minus = None
+        with pytest.raises(ValueError):
+            CheckStrengthBendingClass3(heb_steel_cross_section, m, axis="My").result()
+
+        heb_steel_cross_section.profile.section_properties().zyy_plus = None
+        heb_steel_cross_section.profile.section_properties().zyy_minus = None
+        with pytest.raises(ValueError):
+            CheckStrengthBendingClass3(heb_steel_cross_section, m, axis="Mz").result()
