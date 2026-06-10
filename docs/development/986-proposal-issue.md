@@ -323,6 +323,55 @@ consumer migration → removal. Each PR aims to stay under the 400-LOC threshold
 - **Hard cut-over (delete legacy immediately).** Rejected — violates the soft-transition
   requirement and would breach the 100%-coverage gate in a single large PR.
 
+## Forward compatibility — what we defer from section-properties / concrete-properties, and how to add it later
+
+This proposal deliberately ships the *foundation* (a code-agnostic data container + a
+minimal physical contract) and **defers** the two heavier ideas from the external repos.
+Neither is lost — both are purely **additive** on top of this design.
+
+**From `concrete-properties` — nonlinear constitutive models (`StressStrainProfile`).**
+What we skip now: pluggable stress-strain curves (linear, parabolic, Mander, rectangular
+block; service vs. ultimate) that enable nonlinear section analysis — moment–curvature,
+stress integration over an arbitrary cross-section, confined-concrete models. Our flat
+container stores scalar characteristic values plus a `diagram_type` *enum*, which is
+enough for the code-formula checks Blueprints does today but **cannot** integrate an
+arbitrary stress-strain law.
+How to add later (no breaking change): introduce a `StressStrainProfile` protocol and
+*compose* it onto the material via an optional field, e.g.
+`stress_strain_profile: StressStrainProfile | None = None`, or a `with_profile(...)`
+helper. Because the material is already a frozen data container with a stable contract,
+adding a profile object is a new optional attribute — existing consumers and factories are
+untouched. The `from_ec2` factory can later attach an `EurocodeParabolic` profile by
+default. Keeping `diagram_type` now is the seam that makes this natural.
+
+**From `concrete-properties` — `DesignCode` factory *classes*.**
+What we skip now: a first-class `DesignCode` object (`EC2`, `AS3600`, …) exposing
+`create_concrete_material(...)`. We use a `@classmethod from_ec2` instead — the same
+one-way dependency, lighter API. How to add later: a `DesignCode` class can simply *call*
+the existing `from_*` factories, so it layers on top without changing the data model.
+
+**From `section-properties` — FE / section-analysis interop.**
+This is **not** deferred — it works by default. section-properties needs only
+`elastic_modulus` + `poissons_ratio` (→ shear modulus); our `Material` protocol is a
+superset (`modulus_of_elasticity`, `poisson_ratio`, `shear_modulus`, `density`, `name`),
+and our containers are frozen/hashable exactly as their `Material` is. The only gap is
+field *naming* (`modulus_of_elasticity` vs `elastic_modulus`, `poisson_ratio` vs
+`poissons_ratio`), bridged by a trivial adapter when/if we integrate:
+
+```python
+def to_sectionproperties_material(m: Material, *, yield_strength: MPA, colour: str = "grey"):
+    from sectionproperties.pre import Material as SpMaterial
+    return SpMaterial(
+        name=m.name, elastic_modulus=m.modulus_of_elasticity,
+        poissons_ratio=m.poisson_ratio, yield_strength=yield_strength,
+        density=m.density, color=colour,
+    )
+```
+
+**Net:** the data container + protocol is the common substrate both libraries build on.
+Shipping it first unblocks #986 immediately; the constitutive-model and design-code layers
+remain available as later, non-breaking additions.
+
 ## Technical considerations (per `new-feature.md`)
 
 - **Design patterns:** Factory Method (`from_ec2`/`from_en10025`); Strategy is deferred
