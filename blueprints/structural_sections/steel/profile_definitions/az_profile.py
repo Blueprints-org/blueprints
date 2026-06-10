@@ -177,17 +177,3 @@ class AZProfile(Profile):
             flange_thickness=new_flange_thickness,
             name=f"{self.name} with {corrosion} mm corrosion",
         )
-
-if __name__ == "__main__":
-    # Example usage
-    from blueprints.structural_sections.steel.standard_profiles.az import AZ
-
-    # Access the AZ36-700N profile
-    profile = AZ.AZ36_700N.multiple_sheets(3)
-
-    # Display basic profile information
-    print("=" * 60)
-    print(f"Profile: {profile.name}")
-    print("=" * 60)
-
-    profile.plot(show=True)
