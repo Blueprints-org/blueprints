@@ -41,17 +41,17 @@ introduced.
    section-property style tooling. This mirrors `robbievanleeuwen/section-properties`,
    where the FE-minimum is exactly `elastic_modulus` + `poissons_ratio`, `shear_modulus`
    derived, and the material carries zero design-code content.
-4. **House consistency with the dd engines** — `dd-concrete`/`dd-steel` already ship the
-   target shape (`@dataclass(frozen=True) Concrete` + `from_ec2`, `Steel` +
-   `StrengthRow` tables + `from_en10025`). Blueprints should converge on it so materials
-   are recognisable across the BAM Digital Design stack.
+4. **Consumption by downstream applications** — a material built once should be passable
+   to any consuming tool (sections, checks, finite-element/section analysis) through a
+   single uniform contract, rather than each consumer having to know which code produced
+   it or which strength-list it came from.
 
 ## Proposed design
 
-Three pieces, mirroring the dd-core pattern and the convergent lessons from
-`section-properties` (immutable, hashable, code-agnostic value object; minimal shared
-contract; derive don't store) and `concrete-properties` (one-way dependency: code logic
-*produces* materials, materials never import code logic):
+Three pieces, applying an established frozen-dataclass-plus-factory pattern and the
+convergent lessons from `section-properties` (immutable, hashable, code-agnostic value
+object; minimal shared contract; derive don't store) and `concrete-properties` (one-way
+dependency: code logic *produces* materials, materials never import code logic):
 
 1. A minimal **`Material` Protocol** — the shared physical contract.
 2. **Frozen dataclass data containers** (`Concrete`, `Steel`, `ReinforcementSteel`)
@@ -310,9 +310,9 @@ consumer migration → removal. Each PR aims to stay under the 400-LOC threshold
 
 - **External factory *functions* vs `@classmethod`.** #986 leans toward free functions
   (`build_concrete_from_ec2(...)`). A `@classmethod from_ec2` is **preferred** here: it is
-  discoverable from the type, matches `dd-concrete`/`dd-steel`, and still meets every
-  acceptance criterion (the container embeds no code logic or discrete lists). Trivial to
-  switch if the core team prefers functions.
+  discoverable from the type, keeps construction next to the data it produces, and still
+  meets every acceptance criterion (the container embeds no code logic or discrete lists).
+  Trivial to switch if the core team prefers functions.
 - **`DesignCode` factory *classes* (the `concrete-properties` model).** Powerful for
   many codes, but heavier than needed now and a larger API surface. The `from_*`
   classmethod is the lightweight form of the same one-way-dependency idea; a `DesignCode`
