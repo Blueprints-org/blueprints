@@ -105,6 +105,15 @@ M4 = float
 """Meters to the fourth power (m⁴), represented as a float."""
 # </editor-fold>
 
+# <editor-fold desc="SIXTH POWER">
+MM6 = float
+"""Millimeters to the sixth power (mm⁶), represented as a float."""
+CM6 = float
+"""Centimeters to the sixth power (cm⁶), represented as a float."""
+M6 = float
+"""Meters to the sixth power (m⁶), represented as a float."""
+# </editor-fold>
+
 # <editor-fold desc="COMPOUNDS">
 N_M2 = float
 """Newton per square meter (N/m²), represented as a float."""
