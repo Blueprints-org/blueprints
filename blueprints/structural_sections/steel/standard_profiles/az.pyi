@@ -1,41 +1,41 @@
-from blueprints.structural_sections.steel.profile_definitions.az_profile import AZProfile
+from blueprints.structural_sections.steel.profile_definitions.sheetpile_z_profile import SheetpileZProfile
 from blueprints.type_alias import MM
 
 class AZ:
-    AZ12_700: AZProfile
-    AZ12_770: AZProfile
-    AZ13_700: AZProfile
-    AZ13_700_10_10: AZProfile
-    AZ13_770: AZProfile
-    AZ14_700: AZProfile
-    AZ14_770: AZProfile
-    AZ14_770_10_10: AZProfile
-    AZ17_700: AZProfile
-    AZ18: AZProfile
-    AZ18_10_10: AZProfile
-    AZ18_700: AZProfile
-    AZ18_800: AZProfile
-    AZ19_700: AZProfile
-    AZ20_700: AZProfile
-    AZ22_800: AZProfile
-    AZ24_700: AZProfile
-    AZ25_800: AZProfile
-    AZ26: AZProfile
-    AZ26_700: AZProfile
-    AZ27_800: AZProfile
-    AZ28_700: AZProfile
-    AZ28_750: AZProfile
-    AZ30_750: AZProfile
-    AZ32_750: AZProfile
-    AZ36_700N: AZProfile
-    AZ38_700N: AZProfile
-    AZ40_700N: AZProfile
-    AZ42_700N: AZProfile
-    AZ44_700N: AZProfile
-    AZ46_700N: AZProfile
-    AZ48_700: AZProfile
-    AZ50_700: AZProfile
-    AZ52_700: AZProfile
+    AZ12_700: SheetpileZProfile
+    AZ12_770: SheetpileZProfile
+    AZ13_700: SheetpileZProfile
+    AZ13_700_10_10: SheetpileZProfile
+    AZ13_770: SheetpileZProfile
+    AZ14_700: SheetpileZProfile
+    AZ14_770: SheetpileZProfile
+    AZ14_770_10_10: SheetpileZProfile
+    AZ17_700: SheetpileZProfile
+    AZ18: SheetpileZProfile
+    AZ18_10_10: SheetpileZProfile
+    AZ18_700: SheetpileZProfile
+    AZ18_800: SheetpileZProfile
+    AZ19_700: SheetpileZProfile
+    AZ20_700: SheetpileZProfile
+    AZ22_800: SheetpileZProfile
+    AZ24_700: SheetpileZProfile
+    AZ25_800: SheetpileZProfile
+    AZ26: SheetpileZProfile
+    AZ26_700: SheetpileZProfile
+    AZ27_800: SheetpileZProfile
+    AZ28_700: SheetpileZProfile
+    AZ28_750: SheetpileZProfile
+    AZ30_750: SheetpileZProfile
+    AZ32_750: SheetpileZProfile
+    AZ36_700N: SheetpileZProfile
+    AZ38_700N: SheetpileZProfile
+    AZ40_700N: SheetpileZProfile
+    AZ42_700N: SheetpileZProfile
+    AZ44_700N: SheetpileZProfile
+    AZ46_700N: SheetpileZProfile
+    AZ48_700: SheetpileZProfile
+    AZ50_700: SheetpileZProfile
+    AZ52_700: SheetpileZProfile
 
 class __AZProfileParameters:
     name: str

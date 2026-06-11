@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import NamedTuple
 
-from blueprints.structural_sections.steel.profile_definitions.az_profile import AZProfile
+from blueprints.structural_sections.steel.profile_definitions.sheetpile_z_profile import SheetpileZProfile
 from blueprints.structural_sections.steel.standard_profiles._data.az.az12_700 import AZ12_700_GEOMETRY
 from blueprints.structural_sections.steel.standard_profiles._data.az.az12_770 import AZ12_770_GEOMETRY
 from blueprints.structural_sections.steel.standard_profiles._data.az.az13_700 import AZ13_700_GEOMETRY
@@ -99,19 +99,20 @@ AZ_PROFILES_DATABASE = {
 class AZ(metaclass=StandardProfileMeta):
     """Geometrical representation of standard AZ sheet pile profiles.
 
-    This class provides access to standard AZ sheet pile profiles
-    from a predefined database. Profiles can be accessed as class attributes using
-    their standardized names. Each accessed profile returns an AZProfile instance.
+    AZ profiles are a standardized form of Z-shaped sheet piles. This class provides
+    access to standard AZ sheet pile profiles from a predefined database. Profiles
+    can be accessed as class attributes using their standardized names. Each accessed
+    profile returns a SheetpileZProfile instance.
 
     Usage example
     -------------
         >>> profile = AZ.AZ18
-        >>> print(isinstance(profile, AZProfile))  # True
+        >>> print(isinstance(profile, SheetpileZProfile))  # True
         >>>
         >>> # To iterate over all available AZ profiles:
         >>> for profile in AZ:
-        ...     print(isinstance(profile, AZProfile))  # True
+        ...     print(isinstance(profile, SheetpileZProfile))  # True
     """
 
-    _factory = AZProfile
+    _factory = SheetpileZProfile
     _database = AZ_PROFILES_DATABASE
