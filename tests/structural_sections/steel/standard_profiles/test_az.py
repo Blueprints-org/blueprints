@@ -135,5 +135,5 @@ class TestAZ:
     def test_excessive_corrosion(self) -> None:
         """Test that applying excessive corrosion raises an error."""
         profile = AZ.AZ12_700
-        with pytest.raises(ValueError, match="Corrosion amount is too large, resulting in an empty profile"):
+        with pytest.raises(ValueError, match=r"The profile has fully corroded."):
             profile.with_corrosion(100)

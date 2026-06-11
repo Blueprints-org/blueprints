@@ -12,6 +12,10 @@ from shapely.geometry import Polygon, box
 from shapely.ops import unary_union
 
 from blueprints.structural_sections._profile import Profile
+from blueprints.structural_sections.steel.profile_definitions.corrosion_utils import (
+    FULL_CORROSION_TOLERANCE,
+    update_name_with_corrosion,
+)
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import (
     plot_shapes,
 )
@@ -163,20 +167,23 @@ class SheetpileZProfile(Profile):
             raise ValueError("Corrosion value must be non-negative")
 
         # Corrosion reduces the thickness of the web and flanges by 2 times the corrosion value (corrosion on both sides)
-        new_web_thickness = max(self.web_thickness - 2 * corrosion, 0)
-        new_flange_thickness = max(self.flange_thickness - 2 * corrosion, 0)
+        new_web_thickness = self.web_thickness - 2 * corrosion
+        new_flange_thickness = self.flange_thickness - 2 * corrosion
+
+        # Check if profile has fully corroded
+        if new_web_thickness <= FULL_CORROSION_TOLERANCE or new_flange_thickness <= FULL_CORROSION_TOLERANCE:
+            raise ValueError("The profile has fully corroded.")
 
         # Apply corrosion by buffering the polygon inward by the corrosion amount
         corroded_polygon = self._polygon_single_sheet.buffer(-corrosion)
-        if corroded_polygon.is_empty:
-            raise ValueError("Corrosion amount is too large, resulting in an empty profile")
 
         coordinates = list(corroded_polygon.exterior.coords)
+        name = update_name_with_corrosion(self.name, corrosion=corrosion)
 
         return replace(
             self,
             coordinates=coordinates,
             web_thickness=new_web_thickness,
             flange_thickness=new_flange_thickness,
-            name=f"{self.name} with {corrosion} mm corrosion",
+            name=name,
         )
