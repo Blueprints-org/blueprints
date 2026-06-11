@@ -1,4 +1,4 @@
-"""AZ Profile."""
+"""Z-Shaped Sheet Pile Profile."""
 
 from __future__ import annotations
 
@@ -19,8 +19,11 @@ from blueprints.type_alias import MM
 
 
 @dataclass(frozen=True, kw_only=True)
-class AZProfile(Profile):
-    """Representation of an AZ sheet pile profile constructed from coordinates.
+class SheetpileZProfile(Profile):
+    """Representation of a Z-shaped sheet pile profile constructed from coordinates.
+
+    Z-shaped sheet piles are interlocking structural elements used in retaining walls
+    and cofferdams. AZ and PAZ profiles are standardized examples of Z-shaped sheet piles.
 
     Attributes
     ----------
@@ -52,7 +55,7 @@ class AZProfile(Profile):
     """Thickness of the flanges [mm]."""
     interlocking_ctc: MM
     """Center to center distance of the sheets (interlocking distance) [mm]."""
-    name: str = "AZ Profile"
+    name: str = "Z-Shaped Sheet Pile Profile"
     """Name of the profile."""
     plotter: Callable[[Profile], plt.Figure] = plot_shapes
     """The plotter function to visualize the profile."""
@@ -66,12 +69,12 @@ class AZProfile(Profile):
 
     @property
     def _polygon_single_sheet(self) -> Polygon:
-        """Shapely Polygon representing the single sheet of the AZ profile from coordinates."""
+        """Shapely Polygon representing the single sheet of the Z-shaped sheet pile profile from coordinates."""
         return Polygon(self.coordinates)
 
     @property
     def _polygon(self) -> Polygon:
-        """Shapely Polygon representing the AZ profile from coordinates."""
+        """Shapely Polygon representing the Z-shaped sheet pile profile from coordinates."""
         single_sheet_polygon = self._polygon_single_sheet
         if self.number_of_sheets == 1:
             return single_sheet_polygon
@@ -114,8 +117,8 @@ class AZProfile(Profile):
         # Union all polygons into a single polygon
         return cast(Polygon, unary_union(polygons))
 
-    def multiple_sheets(self, number_of_sheets: int) -> AZProfile:
-        """Return a new AZ profile instance with a different number of sheets.
+    def multiple_sheets(self, number_of_sheets: int) -> SheetpileZProfile:
+        """Return a new Z-shaped sheet pile profile instance with a different number of sheets.
 
         Parameters
         ----------
@@ -124,12 +127,12 @@ class AZProfile(Profile):
 
         Returns
         -------
-        AZProfile
+        SheetpileZProfile
             A new profile instance with the specified number of sheets.
 
         Notes
         -----
-        Multiple sheet functionality is implemented for coordinate-based AZ profiles.
+        Multiple sheet functionality is implemented for coordinate-based Z-shaped sheet pile profiles.
         The `_polygon` property handles multi-sheet geometry by translating, mirroring (for odd-indexed sheets),
         and generating connectors between sheets. This method validates that `number_of_sheets >= 1`
         and returns a new instance with the updated sheet count.
@@ -138,8 +141,8 @@ class AZProfile(Profile):
             raise ValueError("Number of sheets must be at least 1")
         return replace(self, number_of_sheets=number_of_sheets)
 
-    def with_corrosion(self, corrosion: MM = 0) -> AZProfile:
-        """Return a new AZ profile instance with corrosion applied.
+    def with_corrosion(self, corrosion: MM = 0) -> SheetpileZProfile:
+        """Return a new Z-shaped sheet pile profile instance with corrosion applied.
 
         Parameters
         ----------
@@ -148,7 +151,7 @@ class AZProfile(Profile):
 
         Returns
         -------
-        AZProfile
+        SheetpileZProfile
             A new profile instance with the specified corrosion applied.
 
         Notes
