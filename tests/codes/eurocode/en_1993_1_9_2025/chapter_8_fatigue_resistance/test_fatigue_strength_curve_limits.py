@@ -7,6 +7,7 @@ from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fat
 from blueprints.codes.eurocode.en_1993_1_9_2025.chapter_8_fatigue_resistance.fatigue_strength_curve_limits import (
     Form8ConstantAmplitudeFatigueLimit,
     Form8CutOffLimit,
+    form8_curve_corner_points,
 )
 from blueprints.validations import NegativeValueError
 
@@ -127,3 +128,32 @@ class TestForm8CutOffLimit:
         actual = {"complete": latex.complete, "short": latex.short}
 
         assert actual[representation] == expected, f"{representation} representation failed."
+
+
+class TestForm8CurveCornerPoints:
+    """Validation for the corner points C (, D), L of an EN 1993-1-9:2025 fatigue strength curve."""
+
+    def test_two_branch_curve_returns_c_d_l(self) -> None:
+        """A two-branch normal curve returns C, D and L in order of increasing cycles."""
+        points = form8_curve_corner_points(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_8_2A)
+
+        assert [point.point for point in points] == ["C", "D", "L"]
+        assert [point.n_cycles for point in points] == [2e6, 5e6, 1e8]
+        # The C point sits at the detail category; D and L match the limit formulas.
+        assert points[0].delta_sigma == pytest.approx(160.0)
+        assert points[1].delta_sigma == pytest.approx(
+            float(Form8ConstantAmplitudeFatigueLimit(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_8_2A))
+        )
+        assert points[2].delta_sigma == pytest.approx(float(Form8CutOffLimit(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_8_2A)))
+
+    def test_shear_curve_returns_c_l_without_d(self) -> None:
+        """The single-slope shear curve (Figure 8.4) returns only C and L, with L at N_D (the fatigue limit acts as cut-off)."""
+        points = form8_curve_corner_points(delta_sigma_c=100.0, curve=FatigueStrengthCurve.FIG_8_4)
+
+        assert [point.point for point in points] == ["C", "L"]
+        assert [point.n_cycles for point in points] == [2e6, 1e8]
+        assert points[0].delta_sigma == pytest.approx(100.0)
+        # L equals the shear constant amplitude fatigue limit Δτ_D, since there is no separate cut-off branch.
+        assert points[1].delta_sigma == pytest.approx(
+            float(Form8ConstantAmplitudeFatigueLimit(delta_sigma_c=100.0, curve=FatigueStrengthCurve.FIG_8_4))
+        )

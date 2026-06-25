@@ -2,6 +2,7 @@
 
 from blueprints.codes.eurocode.en_1993_1_9_2005 import EN_1993_1_9_2005
 from blueprints.codes.eurocode.en_1993_1_9_2005.chapter_7_fatigue_strength.fatigue_strength_curve import FatigueStrengthCurve
+from blueprints.codes.eurocode.en_1993_1_9_2005.chapter_7_fatigue_strength.fatigue_strength_curve_point import FatigueStrengthCurvePoint
 from blueprints.codes.eurocode.en_1993_1_9_2005.chapter_7_fatigue_strength.fatigue_strength_curve_value import Form7FatigueStrengthCurveValue
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula
@@ -144,3 +145,35 @@ class Form7CutOffLimit(Formula):
     def latex(self, n: int = 3) -> LatexFormula:
         r"""Returns LatexFormula object for the cut-off limit ([$\Delta\tau$] symbol for the shear curve)."""
         return self._curve_value(self.delta_sigma_c, self.curve).latex(n=n)
+
+
+def form7_curve_corner_points(delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> list[FatigueStrengthCurvePoint]:
+    r"""The corner points C (, D), L of a standard EN 1993-1-9:2005 fatigue strength curve at a given detail category.
+
+    Reads the corner stresses off ``curve`` through the limit formulas (:class:`Form7ConstantAmplitudeFatigueLimit`,
+    :class:`Form7CutOffLimit`), returning them in order of increasing cycles. The single-slope shear curve (Figure 7.2)
+    is handled without raising: it runs straight from the detail category to its cut-off limit [$\Delta\tau_L$] at
+    [$N_L$], so it has no constant amplitude fatigue limit and returns the ``C`` and ``L`` points only.
+
+    Parameters
+    ----------
+    delta_sigma_c : MPA
+        [$\Delta\sigma_C$] Detail category at [$N_C = 2 \cdot 10^6$] cycles [$MPa$]. For the shear curve the shear detail
+        category [$\Delta\tau_C$].
+    curve : FatigueStrengthCurve
+        The standard fatigue strength curve to read (one of Figures 7.1 - 7.2).
+
+    Returns
+    -------
+    list[FatigueStrengthCurvePoint]
+        The corner points in order of increasing cycles: ``[C, D, L]`` for the direct stress curve, ``[C, L]`` for the
+        single-slope shear curve.
+    """
+    points = [FatigueStrengthCurvePoint(point="C", n_cycles=curve.n_c, delta_sigma=delta_sigma_c)]
+    if curve.n_d is not None:
+        # The curve has a constant amplitude fatigue limit (a separate first branch); the shear curve does not.
+        delta_sigma_d = float(Form7ConstantAmplitudeFatigueLimit(delta_sigma_c=delta_sigma_c, curve=curve))
+        points.append(FatigueStrengthCurvePoint(point="D", n_cycles=curve.n_d, delta_sigma=delta_sigma_d))
+    delta_sigma_l = float(Form7CutOffLimit(delta_sigma_c=delta_sigma_c, curve=curve))
+    points.append(FatigueStrengthCurvePoint(point="L", n_cycles=curve.n_l, delta_sigma=delta_sigma_l))
+    return points

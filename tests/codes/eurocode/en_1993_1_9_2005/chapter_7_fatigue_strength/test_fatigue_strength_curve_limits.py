@@ -7,6 +7,7 @@ from blueprints.codes.eurocode.en_1993_1_9_2005.chapter_7_fatigue_strength.fatig
 from blueprints.codes.eurocode.en_1993_1_9_2005.chapter_7_fatigue_strength.fatigue_strength_curve_limits import (
     Form7ConstantAmplitudeFatigueLimit,
     Form7CutOffLimit,
+    form7_curve_corner_points,
 )
 from blueprints.validations import NegativeValueError
 
@@ -113,3 +114,28 @@ class TestForm7CutOffLimit:
         actual = {"complete": latex.complete, "short": latex.short}
 
         assert actual[representation] == expected, f"{representation} representation failed."
+
+
+class TestForm7CurveCornerPoints:
+    """Validation for the corner points C (, D), L of an EN 1993-1-9:2005 fatigue strength curve."""
+
+    def test_direct_stress_curve_returns_c_d_l(self) -> None:
+        """The direct stress curve (Figure 7.1) returns C, D and L in order of increasing cycles."""
+        points = form7_curve_corner_points(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_7_1)
+
+        assert [point.point for point in points] == ["C", "D", "L"]
+        assert [point.n_cycles for point in points] == [2e6, 5e6, 1e8]
+        assert points[0].delta_sigma == pytest.approx(160.0)
+        assert points[1].delta_sigma == pytest.approx(
+            float(Form7ConstantAmplitudeFatigueLimit(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_7_1))
+        )
+        assert points[2].delta_sigma == pytest.approx(float(Form7CutOffLimit(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_7_1)))
+
+    def test_shear_curve_returns_c_l_without_d(self) -> None:
+        """The single-slope shear curve (Figure 7.2) runs straight to its cut-off, so it returns only C and L."""
+        points = form7_curve_corner_points(delta_sigma_c=100.0, curve=FatigueStrengthCurve.FIG_7_2)
+
+        assert [point.point for point in points] == ["C", "L"]
+        assert [point.n_cycles for point in points] == [2e6, 1e8]
+        assert points[0].delta_sigma == pytest.approx(100.0)
+        assert points[1].delta_sigma == pytest.approx(float(Form7CutOffLimit(delta_sigma_c=100.0, curve=FatigueStrengthCurve.FIG_7_2)))
