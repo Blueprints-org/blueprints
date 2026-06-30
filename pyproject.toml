@@ -39,6 +39,11 @@ dependencies = [
     "mathml2omml>=0.0.2",
 ]
 
+[project.optional-dependencies]
+# Reinforced-concrete cross-section analysis backend. Kept optional because concreteproperties
+# pins python <3.14, which would otherwise cap the whole package (core stays python>=3.12 with no upper bound).
+rc-analysis = ["concreteproperties>=0.7.0"]
+
 [project.scripts]
 blueprints = "blueprints.cli:app"
 bp = "blueprints.cli:app"
