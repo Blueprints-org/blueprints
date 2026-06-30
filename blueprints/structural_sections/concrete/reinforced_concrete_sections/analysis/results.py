@@ -11,7 +11,7 @@ from typing import Any
 from matplotlib.axes import Axes
 
 from blueprints.structural_sections.section_forces import SectionForces
-from blueprints.type_alias import KN, MM, MPA, PER_MILLE
+from blueprints.type_alias import KN, KNM, MM, MM4, MPA, PER_MILLE, RAD
 
 
 @dataclass(frozen=True)
@@ -43,6 +43,31 @@ class RebarStressResult:
 
 
 @dataclass(frozen=True)
+class CrackedProperties:
+    """Cracked-section properties of a reinforced-concrete cross-section.
+
+    Parameters
+    ----------
+    m_cr : KNM
+        Cracking moment of the section [kNm].
+    neutral_axis_depth : MM
+        Depth of the cracked neutral axis from the extreme compression fibre [mm].
+    theta : RAD
+        Angle of the neutral axis used for the cracked analysis [rad].
+    i_cracked : MM4
+        Second moment of area of the cracked transformed section about the neutral axis [mm⁴].
+    raw : Any
+        The underlying backend cracked-results object, kept as an escape hatch for advanced use.
+    """
+
+    m_cr: KNM
+    neutral_axis_depth: MM
+    theta: RAD
+    i_cracked: MM4
+    raw: Any
+
+
+@dataclass(frozen=True)
 class StressStrainResult:
     """Result of a reinforced-concrete cross-section stress/strain analysis.
 
@@ -60,6 +85,8 @@ class StressStrainResult:
         Per-bar stress/strain results.
     raw : Any
         The underlying backend result object, kept as an escape hatch for advanced use.
+    cracked_properties : CrackedProperties | None
+        The cracked-section properties when ``is_cracked`` is ``True``; ``None`` for an uncracked result.
     """
 
     forces: SectionForces
@@ -68,6 +95,7 @@ class StressStrainResult:
     concrete_stress_max: MPA
     rebar_results: Sequence[RebarStressResult]
     raw: Any
+    cracked_properties: CrackedProperties | None = None
 
     def plot(self, *args: object, **kwargs: object) -> Axes:
         """Plot the stress state, delegating to the backend's stress plot.

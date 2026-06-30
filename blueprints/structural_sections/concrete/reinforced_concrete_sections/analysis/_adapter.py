@@ -17,11 +17,15 @@ from enum import Enum
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_23 import Form3Dot23FlexuralTensileStrength
 from blueprints.materials.concrete import ConcreteMaterial, DiagramType
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import RebarStressResult, StressStrainResult
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
+    CrackedProperties,
+    RebarStressResult,
+    StressStrainResult,
+)
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.base import ReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
 from blueprints.type_alias import KN, KNM, MPA
-from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, MM3_TO_M3, N_TO_KN, PER_MILLE_TO_RATIO, RATIO_TO_PER_MILLE
+from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, MM3_TO_M3, N_TO_KN, NMM_TO_KNM, PER_MILLE_TO_RATIO, RATIO_TO_PER_MILLE
 
 try:
     from concreteproperties import (
@@ -34,7 +38,7 @@ try:
         SteelElasticPlastic,
         add_bar,
     )
-    from concreteproperties.results import StressResult
+    from concreteproperties.results import CrackedResults, StressResult
     from concreteproperties.stress_strain_profile import ConcreteUltimateProfile
 except ImportError as exc:  # pragma: no cover
     raise ImportError(
@@ -151,6 +155,27 @@ def _service_steel(material: ReinforcementSteelMaterial) -> SteelBar:
     )
 
 
+def flexural_tensile_strength(cross_section: ReinforcedCrossSection) -> MPA:
+    """Mean flexural tensile strength f_ctm,fl of the section (EN 1992-1-1 formula 3.23).
+
+    Uses the profile's bounding-box height as the member depth. Also the cracking threshold for the
+    uncracked-vs-cracked decision and the value handed to the backend's ``flexural_tensile_strength``.
+
+    Parameters
+    ----------
+    cross_section : ReinforcedCrossSection
+        The reinforced cross-section.
+
+    Returns
+    -------
+    MPA
+        The mean flexural tensile strength [MPa].
+    """
+    _, min_y, _, max_y = cross_section.profile.polygon.bounds
+    section_height = max_y - min_y
+    return float(Form3Dot23FlexuralTensileStrength(h=section_height, f_ctm=cross_section.concrete_material.f_ctm))
+
+
 def build_concrete_section(cross_section: ReinforcedCrossSection, level: AnalysisLevel = AnalysisLevel.SLS) -> ConcreteSection:
     """Build a backend ``ConcreteSection`` from a Blueprints reinforced cross-section.
 
@@ -180,11 +205,7 @@ def build_concrete_section(cross_section: ReinforcedCrossSection, level: Analysi
         raise NotImplementedError(f"Analysis level {level.value!r} is not implemented yet; only SLS is available.")
 
     polygon = cross_section.profile.polygon
-    _, min_y, _, max_y = polygon.bounds
-    section_height = max_y - min_y
-    flexural_tensile_strength = float(Form3Dot23FlexuralTensileStrength(h=section_height, f_ctm=cross_section.concrete_material.f_ctm))
-
-    concrete = _service_concrete(cross_section.concrete_material, flexural_tensile_strength)
+    concrete = _service_concrete(cross_section.concrete_material, flexural_tensile_strength(cross_section))
     # concreteproperties materials are accepted structurally by sectionproperties' Geometry but are not a
     # nominal subclass of sectionproperties.pre.Material, so the static type does not line up.
     geometry = Geometry(geom=polygon, material=concrete)  # ty: ignore[invalid-argument-type]
@@ -257,7 +278,13 @@ def analyse_uncracked(section: ConcreteSection, forces: SectionForces) -> Stress
     return _to_stress_strain_result(forces=forces, raw=raw, is_cracked=False)
 
 
-def _to_stress_strain_result(forces: SectionForces, raw: StressResult, *, is_cracked: bool) -> StressStrainResult:
+def _to_stress_strain_result(
+    forces: SectionForces,
+    raw: StressResult,
+    *,
+    is_cracked: bool,
+    cracked_properties: CrackedProperties | None = None,
+) -> StressStrainResult:
     """Map a backend ``StressResult`` to a Blueprints ``StressStrainResult`` (compression negative).
 
     Parameters
@@ -268,6 +295,8 @@ def _to_stress_strain_result(forces: SectionForces, raw: StressResult, *, is_cra
         The backend ``StressResult`` (concrete stresses compression-positive).
     is_cracked : bool
         Which regime produced the result.
+    cracked_properties : CrackedProperties | None
+        The cracked-section properties for a cracked result, or ``None`` for an uncracked result.
 
     Returns
     -------
@@ -307,4 +336,124 @@ def _to_stress_strain_result(forces: SectionForces, raw: StressResult, *, is_cra
         concrete_stress_max=concrete_stress_max,
         rebar_results=rebar_results,
         raw=raw,
+        cracked_properties=cracked_properties,
     )
+
+
+def _to_cracked_actions(forces: SectionForces) -> tuple[float, float, float]:
+    """Convert Blueprints section forces to the backend's cracked-analysis actions ``(n, theta, m)``.
+
+    The backend cracked analysis is uniaxial: it takes a neutral-axis angle ``theta`` and a single scalar
+    moment ``m`` about that axis. A biaxial moment (m_x, m_y) in backend axes is decomposed to its
+    resultant magnitude and direction. For the common uniaxial case (Blueprints ``m_y`` only) this gives
+    ``theta = 0`` and ``m = m_x``.
+
+    Parameters
+    ----------
+    forces : SectionForces
+        The section forces in Blueprints conventions.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        ``(n, theta, m)`` for the backend, in N, rad and Nmm.
+    """
+    n, m_x, m_y = _to_backend_actions(forces)
+    theta = math.atan2(m_y, m_x) if (m_x or m_y) else 0.0
+    m = math.hypot(m_x, m_y)
+    return n, theta, m
+
+
+def _cracked_results(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA) -> tuple[CrackedResults, float, float]:
+    """Run the backend cracked-properties analysis and populate its transformed properties.
+
+    Parameters
+    ----------
+    section : ConcreteSection
+        The backend section.
+    forces : SectionForces
+        The section forces in Blueprints conventions.
+    elastic_modulus : MPA
+        Reference elastic modulus for the transformed cracked properties (the concrete e_cm).
+
+    Returns
+    -------
+    tuple[CrackedResults, float, float]
+        The backend cracked results plus the backend ``(n, m)`` actions for a subsequent stress analysis.
+
+    Raises
+    ------
+    RuntimeError
+        If the cracked neutral-axis iteration fails to converge, re-raised with section/force context.
+    """
+    n, theta, m = _to_cracked_actions(forces)
+    try:
+        cracked = section.calculate_cracked_properties(theta=theta)
+    except (ValueError, RuntimeError) as exc:
+        raise RuntimeError(f"Cracked neutral-axis analysis did not converge for forces {forces}: {exc}") from exc
+    cracked.calculate_transformed_properties(elastic_modulus=elastic_modulus)
+    return cracked, n, m
+
+
+def _to_cracked_properties(cracked: CrackedResults) -> CrackedProperties:
+    """Map backend ``CrackedResults`` to a Blueprints ``CrackedProperties``.
+
+    ``m_cr`` is populated by ``calculate_cracked_properties`` and ``iuu_cr`` by
+    ``calculate_transformed_properties`` (both run in ``_cracked_results``), so neither is ``None`` here.
+    """
+    m_cr = cracked.m_cr
+    i_cracked = cracked.iuu_cr
+    # the uniaxial cracked analysis (single neutral-axis angle) yields a scalar cracking moment, never the
+    # biaxial (m_cr_pos, m_cr_neg) tuple form; iuu_cr is populated by calculate_transformed_properties.
+    assert not isinstance(m_cr, tuple)
+    assert i_cracked is not None
+    return CrackedProperties(
+        m_cr=m_cr * NMM_TO_KNM,
+        neutral_axis_depth=cracked.d_nc,
+        theta=cracked.theta,
+        i_cracked=i_cracked,
+        raw=cracked,
+    )
+
+
+def cracked_properties(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA) -> CrackedProperties:
+    """Compute the cracked-section properties for the given forces.
+
+    Parameters
+    ----------
+    section : ConcreteSection
+        The backend section.
+    forces : SectionForces
+        The section forces in Blueprints conventions.
+    elastic_modulus : MPA
+        Reference elastic modulus (the concrete e_cm).
+
+    Returns
+    -------
+    CrackedProperties
+        The cracked-section properties in Blueprints conventions.
+    """
+    cracked, _, _ = _cracked_results(section, forces, elastic_modulus)
+    return _to_cracked_properties(cracked)
+
+
+def analyse_cracked(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA) -> StressStrainResult:
+    """Run the backend cracked stress analysis and map the result to Blueprints conventions.
+
+    Parameters
+    ----------
+    section : ConcreteSection
+        The backend section.
+    forces : SectionForces
+        The section forces in Blueprints conventions.
+    elastic_modulus : MPA
+        Reference elastic modulus (the concrete e_cm).
+
+    Returns
+    -------
+    StressStrainResult
+        The cracked stress/strain result, compression negative, carrying the cracked properties.
+    """
+    cracked, n, m = _cracked_results(section, forces, elastic_modulus)
+    raw = section.calculate_cracked_stress(cracked_results=cracked, n=n, m=m)
+    return _to_stress_strain_result(forces, raw, is_cracked=True, cracked_properties=_to_cracked_properties(cracked))
