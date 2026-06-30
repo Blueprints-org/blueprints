@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -95,6 +95,8 @@ class UNPProfile(Profile):
     """The name of the profile. Default is "UNP-Profile". If corrosion is applied, the name will include the corrosion value."""
     plotter: Callable[[Profile], plt.Figure] = plot_shapes
     """The plotter function to visualize the profile (default: `plot_shapes`)."""
+    _polygon_override: Polygon | None = field(default=None, kw_only=True, repr=False, compare=False)
+    """Optional polygon override for corroded profiles."""
 
     # Attributes set in __post_init__ (for type checkers)
     top_root_fillet_height: float = field(init=False, repr=False)
@@ -171,30 +173,32 @@ class UNPProfile(Profile):
             self.total_height / 2 - self.bottom_toe_total_height - self.bottom_slope_height - self.bottom_root_fillet_height,
         )
 
-        raise_if_negative(
-            top_slope=self.top_slope,
-            bottom_slope=self.bottom_slope,
-            top_root_fillet_height=self.top_root_fillet_height,
-            top_root_fillet_width=self.top_root_fillet_width,
-            bottom_root_fillet_height=self.bottom_root_fillet_height,
-            bottom_root_fillet_width=self.bottom_root_fillet_width,
-            top_toe_radius_height=self.top_toe_radius_height,
-            top_toe_radius_width=self.top_toe_radius_width,
-            bottom_toe_radius_height=self.bottom_toe_radius_height,
-            bottom_toe_radius_width=self.bottom_toe_radius_width,
-            top_slope_width=self.top_slope_width,
-            top_slope_height=self.top_slope_height,
-            top_slope_length=self.top_slope_length,
-            bottom_slope_width=self.bottom_slope_width,
-            bottom_slope_height=self.bottom_slope_height,
-            bottom_slope_length=self.bottom_slope_length,
-            top_toe_total_height=self.top_toe_total_height,
-            top_toe_flat_height=self.top_toe_flat_height,
-            bottom_toe_total_height=self.bottom_toe_total_height,
-            bottom_toe_flat_height=self.bottom_toe_flat_height,
-            web_inner_height_top=self.web_inner_height_top,
-            web_inner_height_bottom=self.web_inner_height_bottom,
-        )
+        # Only validate dimensions for non-corroded profiles, as corrosion can lead to negative dimensions which are handled in with_corrosion method
+        if not self._polygon_override:
+            raise_if_negative(
+                top_slope=self.top_slope,
+                bottom_slope=self.bottom_slope,
+                top_root_fillet_height=self.top_root_fillet_height,
+                top_root_fillet_width=self.top_root_fillet_width,
+                bottom_root_fillet_height=self.bottom_root_fillet_height,
+                bottom_root_fillet_width=self.bottom_root_fillet_width,
+                top_toe_radius_height=self.top_toe_radius_height,
+                top_toe_radius_width=self.top_toe_radius_width,
+                bottom_toe_radius_height=self.bottom_toe_radius_height,
+                bottom_toe_radius_width=self.bottom_toe_radius_width,
+                top_slope_width=self.top_slope_width,
+                top_slope_height=self.top_slope_height,
+                top_slope_length=self.top_slope_length,
+                bottom_slope_width=self.bottom_slope_width,
+                bottom_slope_height=self.bottom_slope_height,
+                bottom_slope_length=self.bottom_slope_length,
+                top_toe_total_height=self.top_toe_total_height,
+                top_toe_flat_height=self.top_toe_flat_height,
+                bottom_toe_total_height=self.bottom_toe_total_height,
+                bottom_toe_flat_height=self.bottom_toe_flat_height,
+                web_inner_height_top=self.web_inner_height_top,
+                web_inner_height_bottom=self.web_inner_height_bottom,
+            )
 
     @property
     def max_thickness(self) -> MM:
@@ -204,6 +208,8 @@ class UNPProfile(Profile):
     @property
     def _polygon(self) -> Polygon:
         """Return the polygon of the UNP profile without the offset and rotation applied."""
+        if self._polygon_override is not None:  # for corroded profiles, which make the flange toe act complex
+            return self._polygon_override
         return (
             PolygonBuilder(starting_point=(0, 0))
             # Starting halfway along the web, going up
@@ -282,9 +288,12 @@ class UNPProfile(Profile):
         ):
             raise ValueError("The profile has fully corroded.")
 
+        # Apply corrosion by buffering the polygon inward by the corrosion amount
+        corroded_polygon = self._polygon.buffer(-corrosion)
         name = update_name_with_corrosion(self.name, corrosion=corrosion)
 
-        return UNPProfile(
+        return replace(
+            self,
             top_flange_total_width=buffer["top_flange_total_width"],
             top_flange_thickness=buffer["top_flange_thickness"],
             bottom_flange_total_width=buffer["bottom_flange_total_width"],
@@ -297,8 +306,6 @@ class UNPProfile(Profile):
             bottom_root_fillet_radius=buffer["bottom_root_fillet_radius"],
             bottom_toe_radius=buffer["bottom_toe_radius"],
             bottom_outer_corner_radius=buffer["bottom_outer_corner_radius"],
-            top_slope=self.top_slope,
-            bottom_slope=self.bottom_slope,
+            _polygon_override=corroded_polygon,
             name=name,
-            plotter=self.plotter,
         )

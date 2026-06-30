@@ -141,7 +141,12 @@ class TestUNPProfile:
         assert pytest.approx(second_corroded_profile.total_height, rel=1e-6) == unp_profile.total_height - total_corrosion * 2
         assert pytest.approx(second_corroded_profile.web_thickness, rel=1e-6) == unp_profile.web_thickness - total_corrosion * 2
 
-    def test_negative_calculated_values(self, unp_profile: UNPProfile) -> None:
-        """Test that applying excessive corrosion raises NegativeValueError for calculated properties."""
-        with pytest.raises(NegativeValueError):
-            unp_profile.with_corrosion(corrosion=4)
+    def test_90_percent_corrosion(self, unp_profile: UNPProfile) -> None:
+        """Test that applying corrosion that reduces dimensions by 90% does not raise an error."""
+        # Calculate corrosion that reduces web thickness by 90%
+        corrosion = unp_profile.web_thickness * 0.9 / 2  # Divide by 2 because corrosion is applied on both sides
+        corroded_profile = unp_profile.with_corrosion(corrosion=corrosion)
+
+        # Check that the profile is still valid and has positive dimensions
+        assert corroded_profile.web_thickness > 0
+        assert corroded_profile.top_flange_thickness > 0
