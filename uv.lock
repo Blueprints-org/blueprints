@@ -139,6 +139,7 @@ rc-analysis = [
 
 [package.dev-dependencies]
 cli = [
+    { name = "concreteproperties" },
     { name = "googletrans" },
     { name = "icecream" },
     { name = "latex2mathml" },
@@ -177,6 +178,7 @@ dev = [
     { name = "types-shapely" },
 ]
 docs = [
+    { name = "concreteproperties" },
     { name = "markdown-exec", extra = ["ansi"] },
     { name = "mkdocs" },
     { name = "mkdocs-awesome-nav" },
@@ -221,6 +223,7 @@ provides-extras = ["rc-analysis"]
 
 [package.metadata.requires-dev]
 cli = [
+    { name = "concreteproperties", specifier = ">=0.7.0" },
     { name = "googletrans", specifier = ">=4.0.2" },
     { name = "icecream", specifier = "==2.2.0" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
@@ -259,6 +262,7 @@ dev = [
     { name = "types-shapely", specifier = "==2.1.0.20250917" },
 ]
 docs = [
+    { name = "concreteproperties", specifier = ">=0.7.0" },
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
     { name = "mkdocs", specifier = "~=1.6.1" },
     { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.4.0" },

@@ -68,6 +68,7 @@ docs = [
     "natsort ~= 8.4.0",
     "mkdocs-jupyter>=0.25.1,<0.27.0",
     "markdown-exec[ansi]>=1.11.0",
+    "concreteproperties>=0.7.0", # optional-dependency: rc-analysis
 ]
 test = [
     "pytest==9.0.3",
