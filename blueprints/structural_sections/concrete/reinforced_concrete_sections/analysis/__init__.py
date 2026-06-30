@@ -6,5 +6,7 @@ Requires the optional ``concreteproperties`` backend::
 """
 
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis._adapter import AnalysisLevel
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.cross_section_analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import RebarStressResult, StressStrainResult
 
-__all__ = ["AnalysisLevel"]
+__all__ = ["AnalysisLevel", "CrossSectionAnalysis", "RebarStressResult", "StressStrainResult"]

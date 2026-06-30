@@ -8,14 +8,20 @@ material mappers below convert strains (‰ → ratio) and densities; force/sign
 analysis call site (added in a later step).
 """
 
+import math
+import warnings
+from collections.abc import Iterator
+from contextlib import contextmanager
 from enum import Enum
 
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_23 import Form3Dot23FlexuralTensileStrength
 from blueprints.materials.concrete import ConcreteMaterial, DiagramType
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import RebarStressResult, StressStrainResult
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.base import ReinforcedCrossSection
-from blueprints.type_alias import MPA
-from blueprints.unit_conversion import MM3_TO_M3, PER_MILLE_TO_RATIO
+from blueprints.structural_sections.section_forces import SectionForces
+from blueprints.type_alias import KN, KNM, MPA
+from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, MM3_TO_M3, N_TO_KN, PER_MILLE_TO_RATIO, RATIO_TO_PER_MILLE
 
 try:
     from concreteproperties import (
@@ -28,6 +34,7 @@ try:
         SteelElasticPlastic,
         add_bar,
     )
+    from concreteproperties.results import StressResult
     from concreteproperties.stress_strain_profile import ConcreteUltimateProfile
 except ImportError as exc:  # pragma: no cover
     raise ImportError(
@@ -191,3 +198,113 @@ def build_concrete_section(cross_section: ReinforcedCrossSection, level: Analysi
 
     # add_bar returns a CompoundGeometry at runtime; the union annotation in the backend stub loses that.
     return ConcreteSection(geometry)  # ty: ignore[invalid-argument-type]
+
+
+def _to_backend_actions(forces: SectionForces) -> tuple[float, float, float]:
+    """Convert Blueprints section forces to the backend's (n, m_x, m_y) in N and Nmm.
+
+    Blueprints uses kN/kNm, tension-positive and the SAF y/z member axes; the backend uses N/mm,
+    compression-positive and geometric x/y axes (cross-section y -> geometric x, z -> geometric y).
+
+    Parameters
+    ----------
+    forces : SectionForces
+        The section forces in Blueprints conventions.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        ``(n, m_x, m_y)`` for the backend: ``n = -forces.n``, ``m_x = forces.m_y``, ``m_y = -forces.m_z``.
+    """
+    n: KN = -forces.n * KN_TO_N
+    m_x: KNM = forces.m_y * KNM_TO_NMM
+    m_y: KNM = -forces.m_z * KNM_TO_NMM
+    return n, m_x, m_y
+
+
+@contextmanager
+def _suppress_pure_axial_warning() -> Iterator[None]:
+    """Suppress the spurious runtime warnings the backend emits for pure-axial actions.
+
+    With zero bending the neutral-axis gradient is computed as 0/0, which propagates NaN through the
+    backend's geometry handling and raises a cluster of ``invalid value encountered in ...`` warnings
+    (scalar divide, then shapely linestrings/intersects). The resulting stresses are still correct (not
+    NaN), so the whole cluster is suppressed. The shared message prefix is matched as a regex.
+    """
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=RuntimeWarning, message="invalid value encountered")
+        yield
+
+
+def analyse_uncracked(section: ConcreteSection, forces: SectionForces) -> StressStrainResult:
+    """Run the backend uncracked stress analysis and map the result to Blueprints conventions.
+
+    Parameters
+    ----------
+    section : ConcreteSection
+        The backend section built by :func:`build_concrete_section`.
+    forces : SectionForces
+        The section forces in Blueprints conventions.
+
+    Returns
+    -------
+    StressStrainResult
+        The uncracked stress/strain result, compression negative.
+    """
+    n, m_x, m_y = _to_backend_actions(forces)
+    with _suppress_pure_axial_warning():
+        raw = section.calculate_uncracked_stress(n=n, m_x=m_x, m_y=m_y)
+    return _to_stress_strain_result(forces=forces, raw=raw, is_cracked=False)
+
+
+def _to_stress_strain_result(forces: SectionForces, raw: StressResult, *, is_cracked: bool) -> StressStrainResult:
+    """Map a backend ``StressResult`` to a Blueprints ``StressStrainResult`` (compression negative).
+
+    Parameters
+    ----------
+    forces : SectionForces
+        The section forces that produced the result, echoed back.
+    raw : StressResult
+        The backend ``StressResult`` (concrete stresses compression-positive).
+    is_cracked : bool
+        Which regime produced the result.
+
+    Returns
+    -------
+    StressStrainResult
+        The result in Blueprints conventions.
+    """
+    concrete_stresses = [stress for section_stresses in raw.concrete_stresses for stress in section_stresses]
+    # backend is compression-positive; negate to get Blueprints compression-negative (and swap min/max).
+    concrete_stress_min: MPA = -max(concrete_stresses)
+    concrete_stress_max: MPA = -min(concrete_stresses)
+
+    rebar_results = []
+    for geometry, stress, strain, force in zip(
+        raw.lumped_reinforcement_geometries,
+        raw.lumped_reinforcement_stresses,
+        raw.lumped_reinforcement_strains,
+        raw.lumped_reinforcement_forces,
+        strict=True,
+    ):
+        x, y = geometry.calculate_centroid()
+        diameter = math.sqrt(4 * geometry.calculate_area() / math.pi)
+        rebar_results.append(
+            RebarStressResult(
+                x=x,
+                y=y,
+                diameter=diameter,
+                stress=-float(stress),
+                strain=-float(strain) * RATIO_TO_PER_MILLE,
+                force=-float(force[0]) * N_TO_KN,
+            )
+        )
+
+    return StressStrainResult(
+        forces=forces,
+        is_cracked=is_cracked,
+        concrete_stress_min=concrete_stress_min,
+        concrete_stress_max=concrete_stress_max,
+        rebar_results=rebar_results,
+        raw=raw,
+    )
