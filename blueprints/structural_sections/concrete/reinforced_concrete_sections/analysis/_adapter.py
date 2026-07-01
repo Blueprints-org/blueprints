@@ -383,9 +383,19 @@ def _cracked_results(section: ConcreteSection, forces: SectionForces, elastic_mo
 
     Raises
     ------
+    NotImplementedError
+        If both bending components are non-zero: the cracked neutral-axis orientation under biaxial
+        bending cannot be derived from the moment vector alone, so no reliable result can be given.
     RuntimeError
         If the cracked neutral-axis iteration fails to converge, re-raised with section/force context.
     """
+    if forces.m_y != 0.0 and forces.m_z != 0.0:
+        raise NotImplementedError(
+            "Cracked analysis under biaxial bending (both m_y and m_z non-zero) is not supported: the "
+            "cracked neutral-axis orientation is not perpendicular to the moment vector and requires an "
+            "iterative biaxial solution. Use uncracked_stress for biaxial bending, or apply bending about "
+            "a single axis."
+        )
     n, theta, m = _to_cracked_actions(forces)
     try:
         cracked = section.calculate_cracked_properties(theta=theta)

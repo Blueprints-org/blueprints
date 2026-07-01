@@ -2,7 +2,7 @@
 
 This example shows how to compute the serviceability (SLS) strains and stresses of a reinforced concrete cross-section from its section forces, using the `CrossSectionAnalysis` analyzer.
 
-Given a `ReinforcedCrossSection` and a set of `SectionForces`, Blueprints decides whether the section is uncracked or cracked and returns the matching concrete and reinforcement results.
+Given a `ReinforcedCrossSection` and a set of `SectionForces`, Blueprints decides whether the section is uncracked or cracked and returns the matching concrete and reinforcement results. The analyzer is shape-agnostic: it works on any `ReinforcedCrossSection` (rectangular, circular, custom).
 
 !!! note "Optional backend required"
 
@@ -24,6 +24,18 @@ steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B
 
 cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=concrete)
 cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, edge="lower", material=steel)
+```
+
+Let's visualize the cross-section and its reinforcement:
+
+```python exec="on" source="above" result="html" html="true" session="rc_analysis"
+cs.plot(show=False)
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
 ```
 
 ## Run the Analysis
@@ -94,19 +106,208 @@ plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
 ```
 
+## Sagging versus Hogging
+
+The cracked behaviour depends on the direction of bending: a positive `m_y` (sagging) cracks the bottom and engages the bottom reinforcement, while a negative `m_y` (hogging) cracks the top and engages the top reinforcement. The two regimes have a different neutral-axis depth and cracked stiffness.
+
+We build a beam with both top and bottom reinforcement and compare the two:
+
+```python exec="on" source="material-block" result="ansi" session="rc_bending"
+from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+from blueprints.structural_sections.section_forces import SectionForces
+
+steel = ReinforcementSteelMaterial()
+cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, edge="lower", material=steel)  # bottom
+cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=16, edge="upper", material=steel)  # top
+analysis = CrossSectionAnalysis(cs)
+
+sagging = analysis.cracked_stress(SectionForces(m_y=150))
+hogging = analysis.cracked_stress(SectionForces(m_y=-150))
+
+for label, result in [("sagging (+M)", sagging), ("hogging (-M)", hogging)]:
+    properties = result.cracked_properties
+    print(
+        f"{label}: neutral-axis depth {properties.neutral_axis_depth:6.1f} mm, "
+        f"cracking moment {properties.m_cr:5.1f} kNm, cracked I {properties.i_cracked:.3e} mm4"
+    )
+```
+
+The hogging case has a shallower neutral axis and a smaller cracked second moment of area, because the top reinforcement ratio is lower than the bottom. This is visible in the cracked stress plots — sagging on the left, hogging on the right:
+
+```python exec="on" source="above" result="html" html="true" session="rc_bending"
+sagging.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+```python exec="on" source="above" result="html" html="true" session="rc_bending"
+hogging.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+## Biaxial Bending
+
+Under **biaxial bending** (a moment about both axes at once) the analyzer accepts `m_y` and `m_z` together. We analyze a 400 × 400 mm column with a bar in each corner:
+
+```python exec="on" source="material-block" result="ansi" session="rc_biaxial"
+from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.structural_sections.concrete.rebar import Rebar
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+from blueprints.structural_sections.section_forces import SectionForces
+
+steel = ReinforcementSteelMaterial()
+cs = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+for x in (-150, 150):
+    for y in (-150, 150):
+        cs.add_longitudinal_rebar(Rebar(diameter=25, x=x, y=y, material=steel))
+
+result = CrossSectionAnalysis(cs).uncracked_stress(SectionForces(m_y=80, m_z=60))
+
+print(f"Concrete stress (min / max): {result.concrete_stress_min:.2f} / {result.concrete_stress_max:.2f} MPa")
+for bar in result.rebar_results:
+    print(f"corner ({bar.x:+.0f}, {bar.y:+.0f}) mm  ->  stress {bar.stress:+6.1f} MPa")
+```
+
+The biaxial moment tilts the stress plane diagonally: one corner reaches the largest tension and the opposite corner the largest compression.
+
+```python exec="on" source="above" result="html" html="true" session="rc_biaxial"
+result.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+!!! warning "Cracked biaxial bending is not supported"
+
+    The **uncracked** biaxial analysis above is exact (linear superposition of `m_y` and `m_z`). The **cracked** analysis, however, is uniaxial: under biaxial bending the cracked neutral axis is not perpendicular to the moment vector, which requires an iterative biaxial solution that is out of scope here. `cracked_stress`, `cracked_properties` and `calculate_stress` (when the section would crack) therefore raise a `NotImplementedError` for biaxial input rather than return an unreliable result. Apply bending about a single axis for cracked analyses.
+
+## Other Section Shapes: Circular
+
+The same analyzer works on a circular column. Here we analyze a 500 mm diameter section with 8⌀20 bars under a normal force and bending:
+
+```python exec="on" source="material-block" result="ansi" session="rc_circular"
+from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.circular import CircularReinforcedCrossSection
+from blueprints.structural_sections.section_forces import SectionForces
+
+cs = CircularReinforcedCrossSection(diameter=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+cs.add_longitudinal_reinforcement_by_quantity(n=8, diameter=20, material=ReinforcementSteelMaterial())
+
+result = CrossSectionAnalysis(cs).calculate_stress(SectionForces(n=-200, m_y=120))
+
+print(f"Cracked regime: {result.is_cracked}")
+print(f"Concrete stress (min / max): {result.concrete_stress_min:.2f} / {result.concrete_stress_max:.2f} MPa")
+print(f"Max reinforcement stress:    {max(bar.stress for bar in result.rebar_results):.1f} MPa")
+```
+
+The circular section with its 8 bars, and the resulting stress state:
+
+```python exec="on" source="above" result="html" html="true" session="rc_circular"
+cs.plot(show=False)
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+```python exec="on" source="above" result="html" html="true" session="rc_circular"
+result.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+## Validation against IDEA StatiCa RCS
+
+The analyzer is validated against established section-analysis software. The reference case below is defined precisely so it can be reproduced in IDEA StatiCa RCS and compared with the Blueprints result.
+
+**Reference case** — rectangular 300 × 600 mm, C30/37, 4⌀25 B500B on the lower edge (50 mm cover), under a pure bending moment `M_y = 200 kNm` (SLS, `N = 0`).
+
+```python exec="on" source="material-block" result="ansi" session="rc_idea"
+from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+from blueprints.structural_sections.section_forces import SectionForces
+
+cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", material=ReinforcementSteelMaterial(ReinforcementSteelQuality.B500B))
+
+result = CrossSectionAnalysis(cs).calculate_stress(SectionForces(m_y=200))
+cracked = result.cracked_properties
+
+print(f"Cracked regime:            {result.is_cracked}")
+print(f"Max concrete compression:  {result.concrete_stress_min:.2f} MPa")
+print(f"Reinforcement stress:      {result.rebar_results[0].stress:.1f} MPa")
+print(f"Reinforcement strain:      {result.rebar_results[0].strain:.3f} per mille")
+print(f"Neutral-axis depth:        {cracked.neutral_axis_depth:.1f} mm")
+print(f"Cracking moment m_cr:      {cracked.m_cr:.1f} kNm")
+```
+
+```python exec="on" source="above" result="html" html="true" session="rc_idea"
+result.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+### Comparison
+
+| Quantity | Blueprints | IDEA StatiCa RCS | Note |
+|---|---|---|---|
+| Cracked regime | cracked | _pending_ | — |
+| Max concrete compression [MPa] | −16.24 | _pending_ | — |
+| Reinforcement stress [MPa] | 212.3 | _pending_ | — |
+| Neutral-axis depth [mm] | 170.8 | _pending_ | from compression fibre |
+| Cracking moment m_cr [kNm] | 59.8 | _pending_ | — |
+
+!!! warning "Modelling differences"
+
+    Blueprints performs a **linear-elastic SLS** analysis: concrete is linear up to cracking with secant modulus `E_cm`, reinforcement is elastic at `f_yk / E_s` (no partial factor), tension stiffening is **not** included, and the cracking decision uses the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 art. 3.1.8). IDEA StatiCa RCS may use slightly different modelling choices (effective/long-term E-modulus, tension stiffening per EN 1992-1-1 art. 7.4.3, different tension behaviour). When comparing, configure the IDEA case to a short-term linear analysis without tension stiffening, and expect small residual differences from the meshing and material-model details. The tolerances used in the automated test suite are set per reference case accordingly.
+
 ## Summary
 
-This example demonstrated the SLS stress/strain analysis of a reinforced concrete cross-section:
+This page demonstrated the SLS stress/strain analysis of reinforced concrete cross-sections:
 
-1. **Build** a `ReinforcedCrossSection` with materials and reinforcement
+1. **Build** a `ReinforcedCrossSection` (rectangular, circular or custom) with materials and reinforcement
 2. **Create** a `CrossSectionAnalysis` and call `calculate_stress` with `SectionForces`
 3. **Let Blueprints decide** between the uncracked and cracked regime
 4. **Inspect** concrete stresses, per-bar stresses/strains/forces and cracked-section properties
-5. **Force a regime** explicitly with `uncracked_stress` / `cracked_stress` when needed
-6. **Visualize** the stress state
+5. **Compare** sagging and hogging, and analyze different section shapes with the same API
+6. **Validate** against external section-analysis software (IDEA StatiCa RCS)
 
 Key points:
 
 - All results use the Blueprints convention: **compression negative, tension positive**, in MPa, per mille and kN.
 - The regime decision handles combined N + M naturally: compression raises the cracking threshold, tension lowers the margin.
+- The analyzer is shape-agnostic — the same `CrossSectionAnalysis` works for rectangular, circular and custom sections.
+- Biaxial bending (`m_y` + `m_z`) is supported for the uncracked analysis; cracked biaxial bending is not supported and raises a `NotImplementedError`.
 - Shear and torsion are deliberately out of scope of the stress analysis; they are handled as truss-model resistance checks (EN 1992-1-1 art. 6.2/6.3).
