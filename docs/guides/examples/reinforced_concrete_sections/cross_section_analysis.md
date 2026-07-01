@@ -248,6 +248,25 @@ The analyzer is validated against established section-analysis software. The ref
 
 **Reference case** — rectangular 300 × 600 mm, C30/37, 4⌀25 B500B on the lower edge (50 mm cover), under a pure bending moment `M_y = 200 kNm` (SLS, `N = 0`).
 
+!!! info "Reproducing this case in IDEA StatiCa RCS"
+
+    | Input | Value |
+    |---|---|
+    | Code / National Annex | EN 1992-1-1 / EN |
+    | Section | rectangular 300 × 600 mm |
+    | Concrete | C30/37 |
+    | Reinforcement | 4⌀25 B500B, lower edge |
+    | Concrete cover (to bar surface) | 50 mm (effective depth d = 538 mm) |
+    | Load combination | quasi-permanent, `N = 0`, `M_y = 200 kNm`, `M_z = 0` |
+    | Stiffness | short-term |
+    | Creep coefficient φ | 0 (user input) |
+
+    Read the results from the **crack-width (Scheurwijdte)** check: `x` is the neutral-axis depth, `σ_s` the reinforcement stress, and the strain/stress diagram gives the concrete stress and the strain plane.
+
+    The creep coefficient is set to zero to obtain a short-term result comparable to the Blueprints secant modulus `E_cm`:
+
+    ![IDEA StatiCa RCS creep coefficient set to zero (user input).](_images/idea_rcs_creep_setting.png)
+
 ```python exec="on" source="material-block" result="ansi" session="rc_idea"
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
@@ -281,13 +300,19 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 ### Comparison
 
-| Quantity | Blueprints | IDEA StatiCa RCS | Note |
+| Quantity | Blueprints | IDEA StatiCa RCS | Difference |
 |---|---|---|---|
-| Cracked regime | cracked | _pending_ | — |
-| Max concrete compression [MPa] | −16.24 | _pending_ | — |
-| Reinforcement stress [MPa] | 212.3 | _pending_ | — |
-| Neutral-axis depth [mm] | 170.8 | _pending_ | from compression fibre |
-| Cracking moment m_cr [kNm] | 59.8 | _pending_ | — |
+| Cracked regime | cracked | cracked | — |
+| Max concrete compression [MPa] | −16.24 | −16.23 | 0.1% |
+| Reinforcement stress [MPa] | 212.3 | 211.98 | 0.2% |
+| Reinforcement strain [‰] | 1.061 | 1.060 | 0.1% |
+| Neutral-axis depth [mm] | 170.8 | 171 | 0.1% |
+
+The two agree within ~0.2%, confirming the linear-elastic SLS analysis against established software. The cracking moment `m_cr` and cracked second moment of area `i_cracked` are Blueprints outputs; IDEA StatiCa RCS does not report a single cracking-moment or cracked-inertia value in its crack-width check, so they are not compared here.
+
+![IDEA StatiCa RCS results for the reference case: strain and stress diagrams and the crack-width table.](_images/idea_rcs_results.png)
+
+The IDEA StatiCa RCS output for the reference case. The strain diagram (in units of 1e-4) reads −4.94 at the top fibre (−0.494‰) and 10.60 at the reinforcement (1.060‰); the stress diagram reads −16.23 MPa in the concrete and 211.98 MPa in the reinforcement; the neutral-axis depth is x = 171 mm.
 
 !!! warning "Modelling differences"
 
