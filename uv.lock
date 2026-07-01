@@ -132,8 +132,14 @@ dependencies = [
     { name = "shapely" },
 ]
 
+[package.optional-dependencies]
+rc-analysis = [
+    { name = "concreteproperties" },
+]
+
 [package.dev-dependencies]
 cli = [
+    { name = "concreteproperties" },
     { name = "googletrans" },
     { name = "icecream" },
     { name = "latex2mathml" },
@@ -172,6 +178,7 @@ dev = [
     { name = "types-shapely" },
 ]
 docs = [
+    { name = "concreteproperties" },
     { name = "markdown-exec", extra = ["ansi"] },
     { name = "mkdocs" },
     { name = "mkdocs-awesome-nav" },
@@ -202,6 +209,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "concreteproperties", marker = "extra == 'rc-analysis'", specifier = ">=0.7.0" },
     { name = "googletrans", specifier = ">=4.0.2" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
     { name = "mathml2omml", specifier = ">=0.0.2" },
@@ -211,9 +219,11 @@ requires-dist = [
     { name = "sectionproperties", specifier = ">=3.10.0" },
     { name = "shapely", specifier = ">=2.1.2" },
 ]
+provides-extras = ["rc-analysis"]
 
 [package.metadata.requires-dev]
 cli = [
+    { name = "concreteproperties", specifier = ">=0.7.0" },
     { name = "googletrans", specifier = ">=4.0.2" },
     { name = "icecream", specifier = "==2.2.0" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
@@ -252,6 +262,7 @@ dev = [
     { name = "types-shapely", specifier = "==2.1.0.20250917" },
 ]
 docs = [
+    { name = "concreteproperties", specifier = ">=0.7.0" },
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
     { name = "mkdocs", specifier = "~=1.6.1" },
     { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.4.0" },
@@ -406,6 +417,26 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/e9/a8/fb783cb0abe2b5fded9f55e5703015cdf1c9c85b3669087c538dd15a6a86/comm-0.2.2.tar.gz", hash = "sha256:3fd7a84065306e07bea1773df6eb8282de51ba82f77c72f9c85716ab11fe980e", size = 6210, upload-time = "2024-03-12T16:53:41.133Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e6/75/49e5bfe642f71f272236b5b2d2691cf915a7283cc0ceda56357b61daa538/comm-0.2.2-py3-none-any.whl", hash = "sha256:e6fb86cb70ff661ee8c9c14e7d36d6de3b4066f1441be4063df9c5009f0a64d3", size = 7180, upload-time = "2024-03-12T16:53:39.226Z" },
+]
+
+[[package]]
+name = "concreteproperties"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cytriangle" },
+    { name = "matplotlib" },
+    { name = "more-itertools" },
+    { name = "numpy" },
+    { name = "quantiphy" },
+    { name = "rich", extra = ["jupyter"] },
+    { name = "scipy" },
+    { name = "sectionproperties" },
+    { name = "shapely" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/20/f8/547f1c09bd1c6a0fa0970b720255d82e72c714565ba756525465ca4439c4/concreteproperties-0.7.0.tar.gz", hash = "sha256:033c56605a415151f54bc0a04a9a65a779c27c1bed5d173171306d97efb9078b", size = 4712895, upload-time = "2025-04-30T13:40:12.887Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fc/e0/6282034c69d7778c6acb0322f61174948194c31648829d64287437f776fe/concreteproperties-0.7.0-py3-none-any.whl", hash = "sha256:c9dc429856fa42a6044aa84ab86bb8b553ccffe4466378bd62b3e7fd2454fad1", size = 84812, upload-time = "2025-04-30T13:40:11.181Z" },
 ]
 
 [[package]]
@@ -2216,6 +2247,15 @@ wheels = [
 ]
 
 [[package]]
+name = "quantiphy"
+version = "2.22.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/fb/18113305976025953f399af21e681e22d1d955c1ea6ff66e092ab7c59ff0/quantiphy-2.22.1.tar.gz", hash = "sha256:e14c0806eff01dfbb0c19ca12934719a2124c64f7100e60bed019efd634e545b", size = 43776, upload-time = "2026-06-28T18:14:12.094Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/73/60a9026439fa54de1d64cce24ab55ac8951338b4c05ca2837ab64c867c04/quantiphy-2.22.1-py3-none-any.whl", hash = "sha256:23e85fede79b73096013a05791df0467dae4cd67065e0ef9bd306effd99a086f", size = 43612, upload-time = "2026-06-28T18:14:10.932Z" },
+]
+
+[[package]]
 name = "referencing"
 version = "0.36.2"
 source = { registry = "https://pypi.org/simple" }
@@ -2246,15 +2286,15 @@ wheels = [
 
 [[package]]
 name = "rich"
-version = "15.0.0"
+version = "13.9.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c0/8f/0722ca900cc807c13a6a0c696dacf35430f72e0ec571c4275d2371fca3e9/rich-15.0.0.tar.gz", hash = "sha256:edd07a4824c6b40189fb7ac9bc4c52536e9780fbbfbddf6f1e2502c31b068c36", size = 230680, upload-time = "2026-04-12T08:24:00.75Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ab/3a/0316b28d0761c6734d6bc14e770d85506c986c85ffb239e688eeaab2c2bc/rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098", size = 223149, upload-time = "2024-11-01T16:43:57.873Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/3b/64d4899d73f91ba49a8c18a8ff3f0ea8f1c1d75481760df8c68ef5235bf5/rich-15.0.0-py3-none-any.whl", hash = "sha256:33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb", size = 310654, upload-time = "2026-04-12T08:24:02.83Z" },
+    { url = "https://files.pythonhosted.org/packages/19/71/39c7c0d87f8d4e6c020a393182060eaefeeae6c01dab6a84ec346f2567df/rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90", size = 242424, upload-time = "2024-11-01T16:43:55.817Z" },
 ]
 
 [package.optional-dependencies]

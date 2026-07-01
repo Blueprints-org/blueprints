@@ -209,7 +209,7 @@ class ReinforcementByQuantity(ReinforcementConfiguration):
                     diameter=self.diameter,
                     x=point.x,
                     y=point.y,
-                    material=ReinforcementSteelMaterial(),
+                    material=self.material,
                 )
             )
         return rebars
