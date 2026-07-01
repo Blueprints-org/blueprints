@@ -10,6 +10,7 @@ analysis call site (added in a later step).
 
 import math
 import warnings
+from collections import defaultdict
 from collections.abc import Iterator
 from contextlib import contextmanager
 from enum import Enum
@@ -17,6 +18,7 @@ from enum import Enum
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_23 import Form3Dot23FlexuralTensileStrength
 from blueprints.materials.concrete import ConcreteMaterial, DiagramType
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
     CrackedProperties,
     RebarStressResult,
@@ -47,9 +49,13 @@ except ImportError as exc:  # pragma: no cover
     ) from exc
 
 from sectionproperties.pre import Geometry  # core dependency, always available
+from shapely.errors import GEOSException  # core dependency, always available
 
 _CONCRETE_COLOUR = "lightgrey"
 _STEEL_COLOUR = "grey"
+
+# Bars closer than this (decimals of a mm) are treated as coincident and merged before analysis.
+_COINCIDENT_TOLERANCE = 3
 
 
 class AnalysisLevel(Enum):
@@ -211,14 +217,52 @@ def build_concrete_section(cross_section: ReinforcedCrossSection, level: Analysi
     geometry = Geometry(geom=polygon, material=concrete)  # ty: ignore[invalid-argument-type]
 
     steel_bars: dict[ReinforcementSteelMaterial, SteelBar] = {}
-    for rebar in cross_section.longitudinal_rebars:
-        material = rebar.material
+    for x, y, area, material in _merge_coincident_rebars(cross_section.longitudinal_rebars):
         if material not in steel_bars:
             steel_bars[material] = _service_steel(material)
-        geometry = add_bar(geometry, area=rebar.area, material=steel_bars[material], x=rebar.x, y=rebar.y)
+        geometry = add_bar(geometry, area=area, material=steel_bars[material], x=x, y=y)
 
     # add_bar returns a CompoundGeometry at runtime; the union annotation in the backend stub loses that.
     return ConcreteSection(geometry)  # ty: ignore[invalid-argument-type]
+
+
+def _merge_coincident_rebars(rebars: list[Rebar]) -> list[tuple[float, float, float, ReinforcementSteelMaterial]]:
+    """Merge bars that share a location into one bar with the combined area.
+
+    Convenience placement on multiple edges puts a bar at each shared corner from both edges, producing
+    coincident bars. The backend cannot mesh two bars at the same point, so coincident bars are merged
+    into a single bar with the summed area at the shared location. This keeps the analyzed reinforcement
+    consistent with the cross-section's own reported reinforcement area.
+
+    Parameters
+    ----------
+    rebars : list[Rebar]
+        The longitudinal rebars of the cross-section.
+
+    Returns
+    -------
+    list[tuple[float, float, float, ReinforcementSteelMaterial]]
+        One ``(x, y, area, material)`` entry per distinct location.
+
+    Raises
+    ------
+    ValueError
+        If coincident bars have different materials, which cannot be merged unambiguously.
+    """
+    groups: dict[tuple[float, float], list[Rebar]] = defaultdict(list)
+    for rebar in rebars:
+        groups[round(rebar.x, _COINCIDENT_TOLERANCE), round(rebar.y, _COINCIDENT_TOLERANCE)].append(rebar)
+
+    merged: list[tuple[float, float, float, ReinforcementSteelMaterial]] = []
+    for group in groups.values():
+        materials = {rebar.material for rebar in group}
+        if len(materials) > 1:
+            raise ValueError(
+                f"Coincident reinforcement bars with different materials at (x={group[0].x}, y={group[0].y}) cannot be merged for analysis."
+            )
+        total_area = sum(rebar.area for rebar in group)
+        merged.append((group[0].x, group[0].y, total_area, group[0].material))
+    return merged
 
 
 def _to_backend_actions(forces: SectionForces) -> tuple[float, float, float]:
@@ -257,6 +301,24 @@ def _suppress_pure_axial_warning() -> Iterator[None]:
         yield
 
 
+@contextmanager
+def _wrap_backend_geometry_errors() -> Iterator[None]:
+    """Turn a raw backend geometry failure into a clear, actionable Blueprints error.
+
+    The meshing backend raises a low-level ``shapely GEOSException`` when it cannot process the section
+    geometry (for example overlapping reinforcement, or a bar on or outside the section boundary). This
+    re-raises it as a ``ValueError`` that tells the user what to check.
+    """
+    try:
+        yield
+    except GEOSException as exc:
+        raise ValueError(
+            "The analysis backend could not process the cross-section geometry. This usually means "
+            "reinforcement bars overlap, or a bar lies on or outside the section boundary. Check the "
+            "reinforcement layout for overlapping bars and confirm every bar is fully inside the section."
+        ) from exc
+
+
 def analyse_uncracked(section: ConcreteSection, forces: SectionForces) -> StressStrainResult:
     """Run the backend uncracked stress analysis and map the result to Blueprints conventions.
 
@@ -273,7 +335,7 @@ def analyse_uncracked(section: ConcreteSection, forces: SectionForces) -> Stress
         The uncracked stress/strain result, compression negative.
     """
     n, m_x, m_y = _to_backend_actions(forces)
-    with _suppress_pure_axial_warning():
+    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors():
         raw = section.calculate_uncracked_stress(n=n, m_x=m_x, m_y=m_y)
     return _to_stress_strain_result(forces=forces, raw=raw, is_cracked=False)
 
@@ -397,11 +459,12 @@ def _cracked_results(section: ConcreteSection, forces: SectionForces, elastic_mo
             "a single axis."
         )
     n, theta, m = _to_cracked_actions(forces)
-    try:
-        cracked = section.calculate_cracked_properties(theta=theta)
-    except (ValueError, RuntimeError) as exc:
-        raise RuntimeError(f"Cracked neutral-axis analysis did not converge for forces {forces}: {exc}") from exc
-    cracked.calculate_transformed_properties(elastic_modulus=elastic_modulus)
+    with _wrap_backend_geometry_errors():
+        try:
+            cracked = section.calculate_cracked_properties(theta=theta)
+        except (ValueError, RuntimeError) as exc:
+            raise RuntimeError(f"Cracked neutral-axis analysis did not converge for forces {forces}: {exc}") from exc
+        cracked.calculate_transformed_properties(elastic_modulus=elastic_modulus)
     return cracked, n, m
 
 
@@ -465,5 +528,6 @@ def analyse_cracked(section: ConcreteSection, forces: SectionForces, elastic_mod
         The cracked stress/strain result, compression negative, carrying the cracked properties.
     """
     cracked, n, m = _cracked_results(section, forces, elastic_modulus)
-    raw = section.calculate_cracked_stress(cracked_results=cracked, n=n, m=m)
+    with _wrap_backend_geometry_errors():
+        raw = section.calculate_cracked_stress(cracked_results=cracked, n=n, m=m)
     return _to_stress_strain_result(forces, raw, is_cracked=True, cracked_properties=_to_cracked_properties(cracked))

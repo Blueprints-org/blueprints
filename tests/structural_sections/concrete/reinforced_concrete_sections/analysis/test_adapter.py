@@ -70,6 +70,34 @@ class TestBuildConcreteSection:
         bar_materials = {id(geom.material) for geom in section.reinf_geometries_lumped}
         assert len(bar_materials) == 1
 
+    def test_coincident_corner_bars_are_merged(self) -> None:
+        """Bars shared between adjacent edges (12 bars, 4 coincident corners) merge to 8 distinct bars."""
+        cs = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        for edge in ("lower", "upper", "left", "right"):
+            cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=20, edge=edge, material=ReinforcementSteelMaterial())
+        assert len(cs.longitudinal_rebars) == 12
+        section = build_concrete_section(cs)
+        assert len(section.reinf_geometries_lumped) == 8
+
+    def test_merged_corner_bar_has_combined_area(self) -> None:
+        """Two coincident 20 mm bars merge into one bar with the summed area (about sqrt(2) x diameter)."""
+        cs = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_rebar(Rebar(diameter=20, x=150, y=150, material=ReinforcementSteelMaterial()))
+        cs.add_longitudinal_rebar(Rebar(diameter=20, x=150, y=150, material=ReinforcementSteelMaterial()))
+        single_area = 3.141592653589793 / 4 * 20**2
+        section = build_concrete_section(cs)
+        assert len(section.reinf_geometries_lumped) == 1
+        # the backend polygonizes the circle, so the meshed area is within ~0.5% of the requested area
+        assert section.reinf_geometries_lumped[0].calculate_area() == pytest.approx(2 * single_area, rel=1e-2)
+
+    def test_coincident_bars_with_different_materials_raise(self) -> None:
+        """Coincident bars of different materials cannot be merged and raise a clear error."""
+        cs = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_rebar(Rebar(diameter=20, x=0, y=0, material=ReinforcementSteelMaterial()))
+        cs.add_longitudinal_rebar(Rebar(diameter=20, x=0, y=0, material=ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500C)))
+        with pytest.raises(ValueError, match="different materials"):
+            build_concrete_section(cs)
+
 
 class TestUltimateProfile:
     """Tests for the ultimate stress-strain profile mapping."""

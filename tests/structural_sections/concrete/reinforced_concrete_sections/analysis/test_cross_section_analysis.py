@@ -1,6 +1,7 @@
 """Tests for CrossSectionAnalysis (caching and uncracked analysis)."""
 
 import pytest
+from shapely.errors import GEOSException
 
 pytest.importorskip("concreteproperties")
 
@@ -69,6 +70,34 @@ class TestCrackedStress:
 
         monkeypatch.setattr(section, "calculate_cracked_properties", failing_cracked_properties)
         with pytest.raises(RuntimeError, match="did not converge"):
+            analysis.cracked_stress(SectionForces(m_y=150))
+
+
+class TestBackendGeometryErrors:
+    """Raw backend geometry failures are turned into a clear, actionable error."""
+
+    def test_uncracked_geometry_error_is_wrapped(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """A backend GEOSException during the uncracked analysis becomes a clear ValueError."""
+        analysis = _analysis()
+        section = analysis._backend_section()  # noqa: SLF001 — exercising the cached backend section
+
+        def failing_uncracked(*_args: object, **_kwargs: object) -> object:
+            raise GEOSException("getX called on empty Point")
+
+        monkeypatch.setattr(section, "calculate_uncracked_stress", failing_uncracked)
+        with pytest.raises(ValueError, match="could not process the cross-section geometry"):
+            analysis.uncracked_stress(SectionForces(m_y=100))
+
+    def test_cracked_geometry_error_is_wrapped(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """A backend GEOSException during the cracked analysis becomes a clear ValueError."""
+        analysis = _analysis()
+        section = analysis._backend_section()  # noqa: SLF001 — exercising the cached backend section
+
+        def failing_cracked(*_args: object, **_kwargs: object) -> object:
+            raise GEOSException("getX called on empty Point")
+
+        monkeypatch.setattr(section, "calculate_cracked_properties", failing_cracked)
+        with pytest.raises(ValueError, match="could not process the cross-section geometry"):
             analysis.cracked_stress(SectionForces(m_y=150))
 
 
