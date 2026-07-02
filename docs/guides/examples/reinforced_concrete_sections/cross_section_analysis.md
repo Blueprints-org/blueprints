@@ -92,9 +92,15 @@ print(f"Uncracked max concrete tensile stress: {uncracked.concrete_stress_max:.2
 print(f"Cracked max reinforcement stress:      {max(bar.stress for bar in cracked.rebar_results):.1f} MPa")
 ```
 
-## Visualize the Stress State
+## Visualize the Strain and Stress State
 
-Finally, plot the stress state. The plot is delegated to the `concreteproperties` backend:
+`result.plot()` draws the strain (ε) and stress (σ) diagrams over the section height, in the style of section-analysis software such as IDEA StatiCa RCS. It has three panels that share the height axis:
+
+- **section** — the outline with the reinforcement; the concrete in compression (strain < 0) is hatched.
+- **ε [‰]** — the linear strain profile, with the strain value at each reinforcement bar.
+- **σ [MPa]** — the concrete stress block (zero in the cracked tension zone), and the reinforcement stresses on a **separate axis** (steel stresses are an order of magnitude larger than the concrete stress, so they get their own scale to stay legible).
+
+The green dashed line marks the neutral axis. Everything is projected onto the axis perpendicular to the neutral axis, so uniaxial and biaxial-uncracked states both render upright.
 
 ```python exec="on" source="above" result="html" html="true" session="rc_analysis"
 result.plot()
@@ -105,6 +111,22 @@ buffer = StringIO()  # markdown-exec: hide
 plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
 ```
+
+### The strain plane
+
+Behind the figure sits the reconstructed **strain plane** — the linear strain field over the section (plane sections remain plane). It is available directly on the result and lets you query the strain anywhere:
+
+```python exec="on" source="material-block" result="ansi" session="rc_analysis"
+plane = result.strain_plane
+print(f"strain at the origin:   {plane.eps_0:6.3f} per mille")
+print(f"neutral-axis angle:     {plane.neutral_axis_angle:6.1f} deg")
+print(f"strain at top fibre:    {plane.strain_at(0, 250):6.3f} per mille")
+print(f"strain at bottom fibre: {plane.strain_at(0, -250):6.3f} per mille")
+```
+
+!!! tip "Backend mesh contour"
+
+    The 2D mesh stress contour from the `concreteproperties` backend is still available under its own name, `result.plot_mesh_stress()`, which forwards its arguments to the backend plotter.
 
 ## Sagging versus Hogging
 
@@ -136,7 +158,7 @@ for label, result in [("sagging (+M)", sagging), ("hogging (-M)", hogging)]:
     )
 ```
 
-The hogging case has a shallower neutral axis and a smaller cracked second moment of area, because the top reinforcement ratio is lower than the bottom. This is visible in the cracked stress plots — sagging on the left, hogging on the right:
+The hogging case has a shallower neutral axis and a smaller cracked second moment of area, because the top reinforcement ratio is lower than the bottom. This is visible in the two cracked strain/stress figures below — sagging first, hogging below. Note how the hatched compression zone flips from the top (sagging) to the bottom (hogging):
 
 ```python exec="on" source="above" result="html" html="true" session="rc_bending"
 sagging.plot()
@@ -326,8 +348,9 @@ This page demonstrated the SLS stress/strain analysis of reinforced concrete cro
 2. **Create** a `CrossSectionAnalysis` and call `calculate_stress` with `SectionForces`
 3. **Let Blueprints decide** between the uncracked and cracked regime
 4. **Inspect** concrete stresses, per-bar stresses/strains/forces and cracked-section properties
-5. **Compare** sagging and hogging, and analyze different section shapes with the same API
-6. **Validate** against external section-analysis software (IDEA StatiCa RCS)
+5. **Visualize** the strain (ε) and stress (σ) diagrams over the section height with `result.plot()`, and query the strain field anywhere with `result.strain_plane`
+6. **Compare** sagging and hogging, and analyze different section shapes with the same API
+7. **Validate** against external section-analysis software (IDEA StatiCa RCS)
 
 Key points:
 
