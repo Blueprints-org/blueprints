@@ -21,10 +21,13 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
+      # The coverage report must include the optional reinforced-concrete analysis package, which needs the
+      # 'concreteproperties' backend. That backend pins python <3.14, so this job runs on python 3.13 and
+      # installs the rc-analysis extra (via `make coverage-report`).
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.14
+          python-version: 3.13
 
       - name: Install packages
         run: make ci-install

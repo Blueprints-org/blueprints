@@ -112,3 +112,12 @@ packages = ["blueprints"]
 markers = [
     "slow: marks as slow (deselect with '-m \"not slow\"')",
 ]
+
+# The reinforced-concrete analysis package sits on the optional 'concreteproperties' backend. CI type-checks
+# without that backend installed (and it cannot install on python 3.14), so ty cannot resolve its imports there.
+# Scope the suppression to this package: 'unresolved-import' covers the missing backend, and
+# 'unused-ignore-comment' covers the type-only '# ty: ignore' directives that are only needed when the backend
+# is present (they would otherwise warn as unused in the backend-less run).
+[[tool.ty.overrides]]
+include = ["blueprints/structural_sections/concrete/reinforced_concrete_sections/analysis/**"]
+rules = { "unresolved-import" = "ignore", "unused-ignore-comment" = "ignore" }
