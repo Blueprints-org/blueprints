@@ -124,9 +124,19 @@ print(f"strain at top fibre:    {plane.strain_at(0, 250):6.3f} per mille")
 print(f"strain at bottom fibre: {plane.strain_at(0, -250):6.3f} per mille")
 ```
 
-!!! tip "Backend mesh contour"
+### Backend mesh contour
 
-    The 2D mesh stress contour from the `concreteproperties` backend is still available under its own name, `result.plot_mesh_stress()`, which forwards its arguments to the backend plotter.
+Where `result.plot()` gives the strain/stress-over-height figure, the `concreteproperties` backend can also draw a 2D **mesh stress contour** — the stress colour-mapped across the meshed cross-section. It stays available under its own name, `result.plot_mesh_stress()`, which forwards any arguments to the backend plotter:
+
+```python exec="on" source="above" result="html" html="true" session="rc_analysis"
+result.plot_mesh_stress()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
 
 ## Sagging versus Hogging
 
@@ -205,10 +215,22 @@ for bar in result.rebar_results:
     print(f"corner ({bar.x:+.0f}, {bar.y:+.0f}) mm  ->  stress {bar.stress:+6.1f} MPa")
 ```
 
-The biaxial moment tilts the stress plane diagonally: one corner reaches the largest tension and the opposite corner the largest compression.
+The biaxial moment tilts the stress plane diagonally: one corner reaches the largest tension and the opposite corner the largest compression. The strain/stress-over-height figure projects onto the axis perpendicular to the neutral axis, so it renders upright:
 
 ```python exec="on" source="above" result="html" html="true" session="rc_biaxial"
 result.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+The tilted plane is easiest to read on the backend's 2D mesh stress contour, where the diagonal stress bands and the four corner bars are visible at once:
+
+```python exec="on" source="above" result="html" html="true" session="rc_biaxial"
+result.plot_mesh_stress()
 
 from io import StringIO  # markdown-exec: hide
 import matplotlib.pyplot as plt  # markdown-exec: hide
@@ -256,6 +278,18 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 ```python exec="on" source="above" result="html" html="true" session="rc_circular"
 result.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+On a non-rectangular shape the backend's 2D mesh stress contour is particularly telling, since it follows the curved compression zone that a height plot cannot show directly:
+
+```python exec="on" source="above" result="html" html="true" session="rc_circular"
+result.plot_mesh_stress()
 
 from io import StringIO  # markdown-exec: hide
 import matplotlib.pyplot as plt  # markdown-exec: hide
