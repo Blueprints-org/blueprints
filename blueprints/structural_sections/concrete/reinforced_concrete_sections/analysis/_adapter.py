@@ -15,6 +15,8 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from enum import Enum
 
+import numpy as np
+
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_23 import Form3Dot23FlexuralTensileStrength
 from blueprints.materials.concrete import ConcreteMaterial, DiagramType
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
@@ -22,11 +24,12 @@ from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
     CrackedProperties,
     RebarStressResult,
+    StrainPlane,
     StressStrainResult,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.base import ReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
-from blueprints.type_alias import KN, KNM, MPA
+from blueprints.type_alias import DEG, KN, KNM, MM, MPA
 from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, MM3_TO_M3, N_TO_KN, NMM_TO_KNM, PER_MILLE_TO_RATIO, RATIO_TO_PER_MILLE
 
 try:
@@ -49,6 +52,7 @@ except ImportError as exc:  # pragma: no cover
     ) from exc
 
 from sectionproperties.pre import Geometry  # core dependency, always available
+from shapely import Polygon  # core dependency, always available
 from shapely.errors import GEOSException  # core dependency, always available
 
 _CONCRETE_COLOUR = "lightgrey"
@@ -56,6 +60,13 @@ _STEEL_COLOUR = "grey"
 
 # Bars closer than this (decimals of a mm) are treated as coincident and merged before analysis.
 _COINCIDENT_TOLERANCE = 3
+
+# Curvature (ratio strain per mm) below which the section is treated as having no neutral axis (pure axial).
+_CURVATURE_TOL: float = 1e-12
+
+# Tolerances for the strain-plane reconstruction consistency check (against the backend's own stresses).
+_RECONSTRUCTION_ABS_TOL: MPA = 1e-3
+_RECONSTRUCTION_REL_TOL: float = 1e-6
 
 
 class AnalysisLevel(Enum):
@@ -319,7 +330,7 @@ def _wrap_backend_geometry_errors() -> Iterator[None]:
         ) from exc
 
 
-def analyse_uncracked(section: ConcreteSection, forces: SectionForces) -> StressStrainResult:
+def analyse_uncracked(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA, geometry: Polygon) -> StressStrainResult:
     """Run the backend uncracked stress analysis and map the result to Blueprints conventions.
 
     Parameters
@@ -328,6 +339,10 @@ def analyse_uncracked(section: ConcreteSection, forces: SectionForces) -> Stress
         The backend section built by :func:`build_concrete_section`.
     forces : SectionForces
         The section forces in Blueprints conventions.
+    elastic_modulus : MPA
+        The concrete elastic modulus (e_cm), used to reconstruct concrete strains from stresses.
+    geometry : Polygon
+        The section profile polygon, carried on the result for plotting.
 
     Returns
     -------
@@ -337,12 +352,14 @@ def analyse_uncracked(section: ConcreteSection, forces: SectionForces) -> Stress
     n, m_x, m_y = _to_backend_actions(forces)
     with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors():
         raw = section.calculate_uncracked_stress(n=n, m_x=m_x, m_y=m_y)
-    return _to_stress_strain_result(forces=forces, raw=raw, is_cracked=False)
+    return _to_stress_strain_result(forces=forces, raw=raw, elastic_modulus=elastic_modulus, geometry=geometry, is_cracked=False)
 
 
 def _to_stress_strain_result(
     forces: SectionForces,
     raw: StressResult,
+    elastic_modulus: MPA,
+    geometry: Polygon,
     *,
     is_cracked: bool,
     cracked_properties: CrackedProperties | None = None,
@@ -355,6 +372,10 @@ def _to_stress_strain_result(
         The section forces that produced the result, echoed back.
     raw : StressResult
         The backend ``StressResult`` (concrete stresses compression-positive).
+    elastic_modulus : MPA
+        The concrete elastic modulus (e_cm), used to reconstruct concrete strains from stresses.
+    geometry : Polygon
+        The section profile polygon, carried on the result for plotting.
     is_cracked : bool
         Which regime produced the result.
     cracked_properties : CrackedProperties | None
@@ -371,15 +392,15 @@ def _to_stress_strain_result(
     concrete_stress_max: MPA = -min(concrete_stresses)
 
     rebar_results = []
-    for geometry, stress, strain, force in zip(
+    for bar_geometry, stress, strain, force in zip(
         raw.lumped_reinforcement_geometries,
         raw.lumped_reinforcement_stresses,
         raw.lumped_reinforcement_strains,
         raw.lumped_reinforcement_forces,
         strict=True,
     ):
-        x, y = geometry.calculate_centroid()
-        diameter = math.sqrt(4 * geometry.calculate_area() / math.pi)
+        x, y = bar_geometry.calculate_centroid()
+        diameter = math.sqrt(4 * bar_geometry.calculate_area() / math.pi)
         rebar_results.append(
             RebarStressResult(
                 x=x,
@@ -391,6 +412,14 @@ def _to_stress_strain_result(
             )
         )
 
+    strain_plane = _reconstruct_strain_plane(
+        raw,
+        elastic_modulus,
+        is_cracked=is_cracked,
+        concrete_stress_min=concrete_stress_min,
+        concrete_stress_max=concrete_stress_max,
+    )
+
     return StressStrainResult(
         forces=forces,
         is_cracked=is_cracked,
@@ -399,7 +428,212 @@ def _to_stress_strain_result(
         rebar_results=rebar_results,
         raw=raw,
         cracked_properties=cracked_properties,
+        strain_plane=strain_plane,
+        elastic_modulus=elastic_modulus,
+        geometry=geometry,
     )
+
+
+def _concrete_node_data(raw: StressResult) -> tuple[np.ndarray, np.ndarray]:
+    """Return the concrete mesh node coordinates and their stresses in the backend convention.
+
+    Parameters
+    ----------
+    raw : StressResult
+        The backend stress result.
+
+    Returns
+    -------
+    tuple[np.ndarray, np.ndarray]
+        ``(coords, stresses)`` with ``coords`` shaped ``(N, 2)`` in cross-section (x, y) [mm] and
+        ``stresses`` shaped ``(N,)`` compression-positive [MPa], aligned per node.
+    """
+    coords = []
+    stresses = []
+    for section, section_stresses in zip(raw.concrete_analysis_sections, raw.concrete_stresses, strict=True):
+        coords.append(np.asarray(section.mesh_nodes, dtype=float))
+        stresses.append(np.asarray(section_stresses, dtype=float))
+    return np.vstack(coords), np.concatenate(stresses)
+
+
+def _reconstruct_strain_plane(
+    raw: StressResult,
+    elastic_modulus: MPA,
+    *,
+    is_cracked: bool,
+    concrete_stress_min: MPA,
+    concrete_stress_max: MPA,
+) -> StrainPlane:
+    """Reconstruct the linear strain plane from the backend result and validate it against its stresses.
+
+    The strain field is exactly affine for a linear SLS analysis, so a least-squares plane through the
+    reliable strain samples recovers it exactly (this extracts the plane the backend already used, it
+    does not re-solve the section). Samples are the lumped rebar strains (valid in every regime) and the
+    concrete node strains ``stress / e_cm`` (all nodes when uncracked; compression nodes only when
+    cracked, since cracked concrete carries no tension and its tension nodes read zero stress).
+
+    Parameters
+    ----------
+    raw : StressResult
+        The backend stress result.
+    elastic_modulus : MPA
+        The concrete elastic modulus (e_cm).
+    is_cracked : bool
+        Which regime produced the result.
+    concrete_stress_min : MPA
+        The backend's minimum concrete stress in Blueprints convention (compression negative), for the
+        consistency check.
+    concrete_stress_max : MPA
+        The backend's maximum concrete stress in Blueprints convention, for the consistency check.
+
+    Returns
+    -------
+    StrainPlane
+        The reconstructed strain plane in Blueprints conventions (compression negative).
+
+    Raises
+    ------
+    ValueError
+        If the strain samples do not span the section plane (for example a single rebar layer with no
+        compression zone), leaving the plane under-determined.
+    RuntimeError
+        If the stresses recomputed from the fitted plane do not match the backend's own stresses.
+    """
+    node_coords, node_stress = _concrete_node_data(raw)
+    # Blueprints strain (compression negative) = -(compression-positive backend stress) / e_cm.
+    node_strain = -node_stress / elastic_modulus
+
+    if is_cracked:
+        compression = node_stress > 0.0  # backend compression-positive; keep only compressed concrete
+        fit_coords = [node_coords[compression]]
+        fit_strain = [node_strain[compression]]
+    else:
+        fit_coords = [node_coords]
+        fit_strain = [node_strain]
+
+    for geometry, strain in zip(raw.lumped_reinforcement_geometries, raw.lumped_reinforcement_strains, strict=True):
+        centroid_x, centroid_y = geometry.calculate_centroid()
+        fit_coords.append(np.array([[centroid_x, centroid_y]]))
+        fit_strain.append(np.array([-float(strain)]))
+
+    coords = np.vstack(fit_coords)
+    strains = np.concatenate(fit_strain)
+
+    matrix = np.column_stack([np.ones(len(coords)), coords[:, 0], coords[:, 1]])
+    if np.linalg.matrix_rank(matrix) < 3:
+        raise ValueError(
+            "The strain state is under-determined: the reinforcement and compression zone do not span the section "
+            "plane (for example a single rebar layer with no concrete in compression). The strain plane cannot be "
+            "reconstructed reliably for this case."
+        )
+    eps_0, kappa_z, kappa_y = (float(c) for c in np.linalg.lstsq(matrix, strains, rcond=None)[0])
+
+    _validate_reconstruction(
+        node_coords,
+        eps_0=eps_0,
+        kappa_z=kappa_z,
+        kappa_y=kappa_y,
+        elastic_modulus=elastic_modulus,
+        is_cracked=is_cracked,
+        concrete_stress_min=concrete_stress_min,
+        concrete_stress_max=concrete_stress_max,
+    )
+    neutral_axis_depth, neutral_axis_angle = _neutral_axis(node_coords, eps_0=eps_0, kappa_z=kappa_z, kappa_y=kappa_y)
+    return StrainPlane(
+        eps_0=eps_0 * RATIO_TO_PER_MILLE,
+        kappa_y=kappa_y,
+        kappa_z=kappa_z,
+        neutral_axis_depth=neutral_axis_depth,
+        neutral_axis_angle=neutral_axis_angle,
+    )
+
+
+def _validate_reconstruction(
+    node_coords: np.ndarray,
+    *,
+    eps_0: float,
+    kappa_z: float,
+    kappa_y: float,
+    elastic_modulus: MPA,
+    is_cracked: bool,
+    concrete_stress_min: MPA,
+    concrete_stress_max: MPA,
+) -> None:
+    """Recompute the concrete stress envelope from the fitted plane and check it matches the backend.
+
+    Parameters
+    ----------
+    node_coords : np.ndarray
+        Concrete mesh node coordinates, shaped ``(N, 2)`` [mm].
+    eps_0 : float
+        Fitted strain at the origin (ratio, compression negative).
+    kappa_z : float
+        Fitted strain gradient in x (ratio/mm).
+    kappa_y : float
+        Fitted strain gradient in y (ratio/mm).
+    elastic_modulus : MPA
+        The concrete elastic modulus (e_cm).
+    is_cracked : bool
+        Which regime produced the result (cracked zeros the concrete tension stress).
+    concrete_stress_min : MPA
+        The backend's minimum concrete stress (compression negative).
+    concrete_stress_max : MPA
+        The backend's maximum concrete stress (compression negative).
+
+    Raises
+    ------
+    RuntimeError
+        If the recomputed stress envelope does not match the backend's within tolerance.
+    """
+    strain = eps_0 + kappa_z * node_coords[:, 0] + kappa_y * node_coords[:, 1]
+    stress = elastic_modulus * strain
+    if is_cracked:
+        stress = np.where(stress < 0.0, stress, 0.0)  # cracked concrete carries no tension
+    recon_min = float(stress.min())
+    recon_max = float(stress.max())
+    if not (
+        math.isclose(recon_min, concrete_stress_min, rel_tol=_RECONSTRUCTION_REL_TOL, abs_tol=_RECONSTRUCTION_ABS_TOL)
+        and math.isclose(recon_max, concrete_stress_max, rel_tol=_RECONSTRUCTION_REL_TOL, abs_tol=_RECONSTRUCTION_ABS_TOL)
+    ):
+        raise RuntimeError(
+            "Strain-plane reconstruction failed its consistency check: concrete stresses recomputed from the fitted "
+            f"plane (min {recon_min:.4g}, max {recon_max:.4g} MPa) do not match the backend result "
+            f"(min {concrete_stress_min:.4g}, max {concrete_stress_max:.4g} MPa). This is unexpected for a linear SLS "
+            "analysis; please report it."
+        )
+
+
+def _neutral_axis(node_coords: np.ndarray, *, eps_0: float, kappa_z: float, kappa_y: float) -> tuple[MM | None, DEG]:
+    """Locate the neutral (zero-strain) line from the fitted plane.
+
+    Parameters
+    ----------
+    node_coords : np.ndarray
+        Concrete mesh node coordinates, shaped ``(N, 2)`` [mm].
+    eps_0 : float
+        Fitted strain at the origin (ratio, compression negative).
+    kappa_z : float
+        Fitted strain gradient in x (ratio/mm).
+    kappa_y : float
+        Fitted strain gradient in y (ratio/mm).
+
+    Returns
+    -------
+    tuple[MM | None, DEG]
+        ``(neutral_axis_depth, neutral_axis_angle)``. The depth is the perpendicular distance from the
+        extreme compression fibre to the neutral line, or ``None`` for pure axial (no curvature) or when
+        no fibre is in compression. The angle is the neutral line orientation in ``[-90, 90)`` degrees.
+    """
+    gradient = math.hypot(kappa_z, kappa_y)
+    if gradient <= _CURVATURE_TOL:
+        return None, 0.0
+    # neutral line is perpendicular to the strain gradient (kappa_z, kappa_y).
+    angle = (math.degrees(math.atan2(kappa_y, kappa_z)) + 90.0 + 90.0) % 180.0 - 90.0
+    strain = eps_0 + kappa_z * node_coords[:, 0] + kappa_y * node_coords[:, 1]
+    most_compressive = float(strain.min())  # most negative Blueprints strain = extreme compression fibre
+    if most_compressive >= 0.0:
+        return None, angle
+    return abs(most_compressive) / gradient, angle
 
 
 def _to_cracked_actions(forces: SectionForces) -> tuple[float, float, float]:
@@ -510,7 +744,7 @@ def cracked_properties(section: ConcreteSection, forces: SectionForces, elastic_
     return _to_cracked_properties(cracked)
 
 
-def analyse_cracked(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA) -> StressStrainResult:
+def analyse_cracked(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA, geometry: Polygon) -> StressStrainResult:
     """Run the backend cracked stress analysis and map the result to Blueprints conventions.
 
     Parameters
@@ -521,6 +755,8 @@ def analyse_cracked(section: ConcreteSection, forces: SectionForces, elastic_mod
         The section forces in Blueprints conventions.
     elastic_modulus : MPA
         Reference elastic modulus (the concrete e_cm).
+    geometry : Polygon
+        The section profile polygon, carried on the result for plotting.
 
     Returns
     -------
@@ -530,4 +766,4 @@ def analyse_cracked(section: ConcreteSection, forces: SectionForces, elastic_mod
     cracked, n, m = _cracked_results(section, forces, elastic_modulus)
     with _wrap_backend_geometry_errors():
         raw = section.calculate_cracked_stress(cracked_results=cracked, n=n, m=m)
-    return _to_stress_strain_result(forces, raw, is_cracked=True, cracked_properties=_to_cracked_properties(cracked))
+    return _to_stress_strain_result(forces, raw, elastic_modulus, geometry, is_cracked=True, cracked_properties=_to_cracked_properties(cracked))

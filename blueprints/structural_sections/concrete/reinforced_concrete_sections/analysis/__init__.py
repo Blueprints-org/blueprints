@@ -10,7 +10,8 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
     CrackedProperties,
     RebarStressResult,
+    StrainPlane,
     StressStrainResult,
 )
 
-__all__ = ["AnalysisLevel", "CrackedProperties", "CrossSectionAnalysis", "RebarStressResult", "StressStrainResult"]
+__all__ = ["AnalysisLevel", "CrackedProperties", "CrossSectionAnalysis", "RebarStressResult", "StrainPlane", "StressStrainResult"]

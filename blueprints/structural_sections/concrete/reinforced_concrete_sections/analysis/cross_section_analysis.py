@@ -83,7 +83,12 @@ class CrossSectionAnalysis:
         StressStrainResult
             The uncracked stress/strain result, compression negative.
         """
-        return analyse_uncracked(self._backend_section(AnalysisLevel.SLS), forces)
+        return analyse_uncracked(
+            self._backend_section(AnalysisLevel.SLS),
+            forces,
+            self._cross_section.concrete_material.e_cm,
+            self._cross_section.profile.polygon,
+        )
 
     def cracked_stress(self, forces: SectionForces) -> StressStrainResult:
         """Compute the cracked stress/strain state.
@@ -104,7 +109,12 @@ class CrossSectionAnalysis:
             If the cross-section has no longitudinal reinforcement.
         """
         self._require_rebars()
-        return analyse_cracked(self._backend_section(AnalysisLevel.SLS), forces, self._cross_section.concrete_material.e_cm)
+        return analyse_cracked(
+            self._backend_section(AnalysisLevel.SLS),
+            forces,
+            self._cross_section.concrete_material.e_cm,
+            self._cross_section.profile.polygon,
+        )
 
     def cracked_properties(self, forces: SectionForces) -> CrackedProperties:
         """Compute the cracked-section properties for the given forces.
