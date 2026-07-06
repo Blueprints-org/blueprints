@@ -572,7 +572,7 @@ def test_double_comparison_formula_invalid_operators(
         formula_class(a=10, b=20, c=30)
 
 
-class AggregatedComparisonFormulaTest:
+class TestAggregatedComparisonFormula:
     """Test class for AggregatedComparisonFormula."""
 
     def _le(self, a: float, b: float, c: float) -> ComparisonFormulaTestLessOrEqual:
@@ -698,6 +698,21 @@ class AggregatedComparisonFormulaTest:
         formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
         with pytest.raises(NotImplementedError):
             _ = formula.rhs
+
+    def test_aggregated_comparison_formula_comparison_operator_raises(self) -> None:
+        """Test that calling _comparison_operator raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_comparison_operator is not relevant"):
+            AggregatedComparisonFormula._comparison_operator()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_lhs_raises(self) -> None:
+        """Test that calling _evaluate_lhs raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_evaluate_lhs is not relevant"):
+            AggregatedComparisonFormula._evaluate_lhs()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_rhs_raises(self) -> None:
+        """Test that calling _evaluate_rhs raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_evaluate_rhs is not relevant"):
+            AggregatedComparisonFormula._evaluate_rhs()  # noqa: SLF001
 
     def test_aggregated_comparison_formula_all_of_any_and_all_passes(self) -> None:
         """Test 'all' aggregation of one 'any' and one 'all' AggregatedComparisonFormula — all pass.
