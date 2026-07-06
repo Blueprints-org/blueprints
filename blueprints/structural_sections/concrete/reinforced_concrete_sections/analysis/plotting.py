@@ -24,7 +24,13 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
     from matplotlib.figure import Figure
 
-    from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import StrainPlane, StressStrainResult
+    from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
+        BiaxialInteractionResult,
+        MomentCurvatureResult,
+        MomentInteractionResult,
+        StrainPlane,
+        StressStrainResult,
+    )
 
 # Strain gradient (ratio/mm) below which the section is treated as having no neutral axis (pure axial).
 _CURVATURE_TOL: float = 1e-12
@@ -41,6 +47,9 @@ _COMPRESSION_HATCH = "grey"
 _EPSILON = chr(0x03B5)  # ε
 _SIGMA = chr(0x03C3)  # σ
 _PER_MILLE = chr(0x2030)  # ‰
+_THETA = chr(0x03B8)  # θ
+_DEGREE = chr(0x00B0)  # °
+_KAPPA = chr(0x03BA)  # κ
 
 
 def _projection_axes(plane: StrainPlane) -> tuple[np.ndarray, np.ndarray]:
@@ -71,23 +80,29 @@ def _projection_axes(plane: StrainPlane) -> tuple[np.ndarray, np.ndarray]:
     return height_axis, across_axis
 
 
-def _concrete_stress(strain_per_mille: np.ndarray, elastic_modulus: MPA, *, is_cracked: bool) -> np.ndarray:
-    """Concrete stress from strain via the SLS linear law; cracked concrete carries no tension.
+def _concrete_stress(strain_per_mille: np.ndarray, elastic_modulus: MPA, *, is_cracked: bool, profile: object | None = None) -> np.ndarray:
+    """Concrete stress from strain: the SLS linear law, or a backend design profile when given.
 
     Parameters
     ----------
     strain_per_mille : np.ndarray
         Strain samples [‰], compression negative.
     elastic_modulus : MPA
-        The concrete elastic modulus (e_cm) [MPa].
+        The concrete elastic modulus (e_cm or E_c,eff) [MPa], used by the linear SLS law.
     is_cracked : bool
-        Whether the concrete tension stress must be dropped (cracked regime).
+        Whether the concrete tension stress must be dropped (cracked SLS regime).
+    profile : object | None
+        A backend concrete stress-strain profile (compression positive) for a non-linear (ULS) result;
+        overrides the linear law when given.
 
     Returns
     -------
     np.ndarray
         Concrete stress samples [MPa], compression negative.
     """
+    if profile is not None:
+        # backend profiles are compression-positive: negate the strain in, negate the stress out.
+        return np.array([-profile.get_stress(-strain * PER_MILLE_TO_RATIO) for strain in strain_per_mille])  # ty: ignore[unresolved-attribute]
     stress = elastic_modulus * strain_per_mille * PER_MILLE_TO_RATIO
     if is_cracked:
         stress = np.where(stress < 0.0, stress, 0.0)
@@ -129,7 +144,7 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
     hs = np.linspace(h_min, h_max, _N_SAMPLES)
     sample_points = np.outer(hs, height_axis)  # points along the height axis at across = 0
     strain = np.array([plane.strain_at(px, py) for px, py in sample_points])  # ‰
-    stress = _concrete_stress(strain, result.elastic_modulus, is_cracked=result.is_cracked)
+    stress = _concrete_stress(strain, result.elastic_modulus, is_cracked=result.is_cracked, profile=result.concrete_profile)
 
     fig, (ax_section, ax_strain, ax_stress) = plt.subplots(1, 3, figsize=figsize, sharey=True, gridspec_kw={"width_ratios": [1.0, 1.3, 1.3]})
 
@@ -138,8 +153,92 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
     _draw_stress(ax_stress, stress, hs, result, height_axis)
     _draw_neutral_axis((ax_section, ax_strain, ax_stress), strain, hs)
 
-    regime = "cracked" if result.is_cracked else "uncracked"
+    regime = {"SLS_UNCRACKED": "uncracked", "SLS_CRACKED": "cracked", "ULS": "ULS"}[result.regime.value]
     fig.suptitle(f"Strain & stress over height - {regime}", fontsize=11)
+    fig.tight_layout()
+    return fig
+
+
+def plot_interaction_diagram(result: MomentInteractionResult, *, figsize: tuple[float, float] = (7.0, 5.0)) -> Figure:
+    """Plot a uniaxial N-M interaction diagram (M on the x-axis, N on the y-axis, tension positive).
+
+    Parameters
+    ----------
+    result : MomentInteractionResult
+        The interaction diagram result.
+    figsize : tuple[float, float]
+        Figure size in inches.
+
+    Returns
+    -------
+    Figure
+        The matplotlib figure with the interaction diagram.
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot([point.m for point in result.points], [point.n for point in result.points], "-o", ms=3, color=_STRESS_COLOUR)
+    ax.axhline(0.0, color="grey", lw=0.8)
+    ax.axvline(0.0, color="grey", lw=0.8)
+    ax.set_xlabel("$M_{Rd}$ [kNm]")
+    ax.set_ylabel("$N_{Rd}$ [kN]  (tension +)")
+    ax.set_title(f"N-M interaction diagram ({_THETA} = {result.theta:g}{_DEGREE})")
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    return fig
+
+
+def plot_biaxial_diagram(result: BiaxialInteractionResult, *, figsize: tuple[float, float] = (6.0, 6.0)) -> Figure:
+    """Plot a biaxial M_y-M_z interaction envelope at a fixed axial force.
+
+    Parameters
+    ----------
+    result : BiaxialInteractionResult
+        The biaxial envelope result.
+    figsize : tuple[float, float]
+        Figure size in inches.
+
+    Returns
+    -------
+    Figure
+        The matplotlib figure with the biaxial envelope.
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot([point.m_y for point in result.points], [point.m_z for point in result.points], "-o", ms=3, color=_STRESS_COLOUR)
+    ax.axhline(0.0, color="grey", lw=0.8)
+    ax.axvline(0.0, color="grey", lw=0.8)
+    ax.set_xlabel("$M_{y,Rd}$ [kNm]")
+    ax.set_ylabel("$M_{z,Rd}$ [kNm]")
+    ax.set_title(f"Biaxial interaction envelope (N = {result.n:g} kN)")
+    ax.set_aspect("equal", adjustable="datalim")
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    return fig
+
+
+def plot_moment_curvature(result: MomentCurvatureResult, *, figsize: tuple[float, float] = (7.0, 5.0)) -> Figure:
+    """Plot a moment-curvature curve with the ultimate point marked.
+
+    Parameters
+    ----------
+    result : MomentCurvatureResult
+        The moment-curvature result.
+    figsize : tuple[float, float]
+        Figure size in inches.
+
+    Returns
+    -------
+    Figure
+        The matplotlib figure with the moment-curvature curve.
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot(result.kappa, result.m, "-", color=_STRESS_COLOUR)
+    peak_index = int(np.argmax(np.asarray(result.m)))
+    ax.plot(result.kappa[peak_index], result.m[peak_index], "o", color=_NEUTRAL_AXIS_COLOUR, label=f"$M_u$ = {result.m_ultimate:.1f} kNm")
+    ax.axhline(0.0, color="grey", lw=0.8)
+    ax.set_xlabel(f"{_KAPPA} [1/mm]")
+    ax.set_ylabel("M [kNm]")
+    ax.set_title(f"Moment-curvature (N = {result.n:g} kN, {_THETA} = {result.theta:g}{_DEGREE})")
+    ax.legend()
+    ax.grid(alpha=0.3)
     fig.tight_layout()
     return fig
 

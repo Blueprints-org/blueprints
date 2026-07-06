@@ -14,7 +14,7 @@ pytest.importorskip("concreteproperties")
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.structural_sections.concrete.rebar import Rebar
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
 
@@ -34,20 +34,20 @@ class TestNormalForceSign:
 
     def test_compression_is_negative(self) -> None:
         """A compressive (negative) normal force yields compressive (negative) concrete stresses."""
-        result = _symmetric_analysis().uncracked_stress(SectionForces(n=-1000))
+        result = _symmetric_analysis().stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED)
         assert result.concrete_stress_min < 0
         assert result.concrete_stress_max < 0
 
     def test_tension_is_positive(self) -> None:
         """A tensile (positive) normal force yields tensile (positive) concrete stresses."""
-        result = _symmetric_analysis().uncracked_stress(SectionForces(n=500))
+        result = _symmetric_analysis().stress(SectionForces(n=500), regime=Regime.SLS_UNCRACKED)
         assert result.concrete_stress_max > 0
 
     def test_pure_axial_is_uniform_and_does_not_warn(self) -> None:
         """Pure axial force gives a uniform stress field and the backend divide warning is suppressed."""
         with warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
-            result = _symmetric_analysis().uncracked_stress(SectionForces(n=-1000))
+            result = _symmetric_analysis().stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED)
         assert result.concrete_stress_min == pytest.approx(result.concrete_stress_max, rel=1e-9)
 
 
@@ -59,7 +59,7 @@ class TestMomentSign:
         cs = _bare_section()
         cs.add_longitudinal_rebar(Rebar(diameter=20, x=0, y=-100, material=ReinforcementSteelMaterial()))
         cs.add_longitudinal_rebar(Rebar(diameter=20, x=0, y=100, material=ReinforcementSteelMaterial()))
-        result = CrossSectionAnalysis(cs).uncracked_stress(SectionForces(m_y=100))
+        result = CrossSectionAnalysis(cs).stress(SectionForces(m_y=100), regime=Regime.SLS_UNCRACKED)
         bottom = next(r for r in result.rebar_results if r.y < 0)
         top = next(r for r in result.rebar_results if r.y > 0)
         assert bottom.stress > 0
@@ -70,7 +70,7 @@ class TestMomentSign:
         cs = _bare_section()
         cs.add_longitudinal_rebar(Rebar(diameter=20, x=-100, y=0, material=ReinforcementSteelMaterial()))
         cs.add_longitudinal_rebar(Rebar(diameter=20, x=100, y=0, material=ReinforcementSteelMaterial()))
-        result = CrossSectionAnalysis(cs).uncracked_stress(SectionForces(m_z=100))
+        result = CrossSectionAnalysis(cs).stress(SectionForces(m_z=100), regime=Regime.SLS_UNCRACKED)
         positive = next(r for r in result.rebar_results if r.x > 0)
         negative = next(r for r in result.rebar_results if r.x < 0)
         assert positive.stress > 0
@@ -89,5 +89,5 @@ class TestAxialMagnitude:
         bar_area = 3.141592653589793 / 4 * 20**2
         a_transformed = 300 * 500 + (steel.e_s / concrete.e_cm - 1) * 4 * bar_area
         expected = -1000e3 / a_transformed  # N / mm^2, compression negative
-        result = CrossSectionAnalysis(cs).uncracked_stress(SectionForces(n=-1000))
+        result = CrossSectionAnalysis(cs).stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED)
         assert result.concrete_stress_min == pytest.approx(expected, rel=1e-2)

@@ -9,9 +9,12 @@ from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial,
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis._adapter import (
     AnalysisLevel,
+    SteelBranch,
     _service_steel,
     _ultimate_profile,
+    _ultimate_steel,
     build_concrete_section,
+    effective_modulus,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import (
     RectangularReinforcedCrossSection,
@@ -34,10 +37,15 @@ class TestBuildConcreteSection:
     """Tests for build_concrete_section."""
 
     def test_maps_concrete_service_modulus(self) -> None:
-        """The concrete service profile carries the secant modulus e_cm."""
+        """The concrete service profile carries the secant modulus e_cm by default."""
         section = build_concrete_section(_section())
         concrete_material = section.concrete_geometries[0].material
         assert concrete_material.stress_strain_profile.elastic_modulus == ConcreteMaterial(ConcreteStrengthClass.C30_37).e_cm
+
+    def test_explicit_elastic_modulus_overrides_service_modulus(self) -> None:
+        """An explicit (effective) elastic modulus replaces e_cm in the service profile."""
+        section = build_concrete_section(_section(), elastic_modulus=16000.0)
+        assert section.concrete_geometries[0].material.stress_strain_profile.elastic_modulus == 16000.0
 
     def test_flexural_tensile_strength_from_formula_3_23(self) -> None:
         """flexural_tensile_strength = f_ctm,fl for the 500 mm member height: (1.6 - 500/1000) * f_ctm."""
@@ -50,10 +58,31 @@ class TestBuildConcreteSection:
         section = build_concrete_section(_section())
         assert len(section.reinf_geometries_lumped) == 4
 
-    def test_uls_level_not_implemented(self) -> None:
-        """Only the SLS level is implemented; ULS raises."""
-        with pytest.raises(NotImplementedError, match="ULS"):
-            build_concrete_section(_section(), level=AnalysisLevel.ULS)
+    def test_uls_level_maps_design_concrete(self) -> None:
+        """The ULS concrete curve is bilinear-horizontal at f_cd up to eps_cu3, with a tension branch."""
+        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
+        section = build_concrete_section(_section(), level=AnalysisLevel.ULS)
+        profile = section.concrete_geometries[0].material.stress_strain_profile
+        assert max(profile.stresses) == pytest.approx(concrete.f_cd)
+        assert profile.ultimate_strain == pytest.approx(concrete.eps_cu3 * PER_MILLE_TO_RATIO)
+        # tension branch peaks at f_ctm,fl for the 500 mm member height (backend tension negative)
+        assert min(profile.stresses) == pytest.approx(-(1.6 - 500 / 1000) * concrete.f_ctm)
+        # the compression elbow sits at f_cd / e_cm (linear at the secant modulus)
+        assert profile.get_stress(0.5 * concrete.f_cd / concrete.e_cm) == pytest.approx(0.5 * concrete.f_cd)
+
+    def test_uls_level_with_creep_softens_the_curvature_curve(self) -> None:
+        """An explicit effective modulus softens the elastic branch of the ULS moment-curvature curve."""
+        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
+        section = build_concrete_section(_section(), level=AnalysisLevel.ULS, elastic_modulus=concrete.e_cm / 2)
+        profile = section.concrete_geometries[0].material.stress_strain_profile
+        strain = 0.5 * concrete.f_cd / concrete.e_cm
+        assert profile.get_stress(strain) == pytest.approx(0.5 * concrete.f_cd / 2)
+
+    def test_uls_level_maps_design_steel(self) -> None:
+        """The ULS reinforcement yields at the design strength f_yd."""
+        section = build_concrete_section(_section(), level=AnalysisLevel.ULS)
+        bar_profile = section.reinf_geometries_lumped[0].material.stress_strain_profile
+        assert bar_profile.yield_strength == pytest.approx(ReinforcementSteelMaterial().f_yd)
 
     def test_distinct_materials_map_to_distinct_bars(self) -> None:
         """Two different reinforcement materials produce two distinct backend SteelBar instances."""
@@ -99,6 +128,25 @@ class TestBuildConcreteSection:
             build_concrete_section(cs)
 
 
+class TestEffectiveModulus:
+    """Tests for the effective-modulus helper E_c,eff = E_cm / (1 + phi)."""
+
+    def test_zero_creep_returns_e_cm(self) -> None:
+        """With phi = 0 (short-term) the effective modulus is the secant modulus e_cm."""
+        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
+        assert effective_modulus(concrete, 0.0) == concrete.e_cm
+
+    def test_creep_divides_by_one_plus_phi(self) -> None:
+        """With phi = 1 the effective modulus halves."""
+        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
+        assert effective_modulus(concrete, 1.0) == pytest.approx(concrete.e_cm / 2.0)
+
+    def test_negative_creep_raises(self) -> None:
+        """A negative creep coefficient is rejected."""
+        with pytest.raises(ValueError, match="creep coefficient"):
+            effective_modulus(ConcreteMaterial(ConcreteStrengthClass.C30_37), -0.1)
+
+
 class TestUltimateProfile:
     """Tests for the ultimate stress-strain profile mapping."""
 
@@ -133,3 +181,26 @@ class TestSteelMapping:
         assert profile.yield_strength == material.f_yk
         assert profile.elastic_modulus == material.e_s
         assert profile.fracture_strain == pytest.approx(material.eps_uk * PER_MILLE_TO_RATIO)
+
+    def test_ultimate_horizontal_branch_is_elastic_plastic_at_f_yd(self) -> None:
+        """The default ULS diagram is elastic-plastic at f_yd/E_s (horizontal branch, art. 3.2.7(2)(b))."""
+        material = ReinforcementSteelMaterial()
+        profile = _ultimate_steel(material).stress_strain_profile
+        assert type(profile).__name__ == "SteelElasticPlastic"
+        assert profile.yield_strength == pytest.approx(material.f_yd)
+        assert profile.elastic_modulus == material.e_s
+        assert profile.fracture_strain == pytest.approx(material.eps_uk * PER_MILLE_TO_RATIO)
+
+    def test_ultimate_inclined_branch_hardens_to_eps_ud(self) -> None:
+        """The inclined ULS diagram rises towards k*f_yd at eps_uk and is cut off at eps_ud = 0.9*eps_uk."""
+        material = ReinforcementSteelMaterial()  # B500B: k = 1.08, eps_uk = 50 per mille
+        profile = _ultimate_steel(material, branch=SteelBranch.INCLINED).stress_strain_profile
+        eps_uk = material.eps_uk / 1000
+        eps_yd = material.f_yd / material.e_s
+        eps_ud = 0.9 * eps_uk
+        expected_stress = material.f_yd * (1 + (material.ductility_factor_k - 1) * (eps_ud - eps_yd) / (eps_uk - eps_yd))
+        assert type(profile).__name__ == "SteelHardening"
+        assert profile.fracture_strain == pytest.approx(eps_ud)
+        assert profile.ultimate_strength == pytest.approx(expected_stress)
+        # the inclined design branch stays below the characteristic tensile strength k*f_yk
+        assert profile.ultimate_strength < material.ductility_factor_k * material.f_yk

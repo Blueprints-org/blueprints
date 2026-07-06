@@ -17,9 +17,11 @@ from matplotlib.figure import Figure
 
 pytest.importorskip("concreteproperties")
 
+from concreteproperties import BilinearStressStrain
+
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.plotting import (
     _concrete_stress,
     _draw_neutral_axis,
@@ -46,10 +48,11 @@ class TestPlotStructure:
     @pytest.mark.parametrize(
         "result_factory",
         [
-            pytest.param(lambda a: a.cracked_stress(SectionForces(m_y=200)), id="cracked_uniaxial"),
-            pytest.param(lambda a: a.uncracked_stress(SectionForces(m_y=-100)), id="uncracked_hogging"),
-            pytest.param(lambda a: a.uncracked_stress(SectionForces(m_y=60, m_z=40)), id="uncracked_biaxial"),
-            pytest.param(lambda a: a.uncracked_stress(SectionForces(n=-1500)), id="pure_axial"),
+            pytest.param(lambda a: a.stress(SectionForces(m_y=200), regime=Regime.SLS_CRACKED), id="cracked_uniaxial"),
+            pytest.param(lambda a: a.stress(SectionForces(m_y=-100), regime=Regime.SLS_UNCRACKED), id="uncracked_hogging"),
+            pytest.param(lambda a: a.stress(SectionForces(m_y=60, m_z=40), regime=Regime.SLS_UNCRACKED), id="uncracked_biaxial"),
+            pytest.param(lambda a: a.stress(SectionForces(n=-1500), regime=Regime.SLS_UNCRACKED), id="pure_axial"),
+            pytest.param(lambda a: a.stress(SectionForces(m_y=200), regime=Regime.ULS), id="uls"),
         ],
     )
     def test_plot_returns_three_panel_figure(self, result_factory: Callable[[CrossSectionAnalysis], StressStrainResult]) -> None:
@@ -65,7 +68,7 @@ class TestPlotStructure:
 
     def test_pure_axial_has_no_neutral_axis_line(self) -> None:
         """A pure-axial result has a uniform strain sign, so no neutral-axis line is drawn."""
-        figure = _analysis().uncracked_stress(SectionForces(n=-1500)).plot()
+        figure = _analysis().stress(SectionForces(n=-1500), regime=Regime.SLS_UNCRACKED).plot()
         try:
             green_lines = [line for ax in figure.axes for line in ax.get_lines() if line.get_color() == "green"]
             assert green_lines == []
@@ -74,7 +77,7 @@ class TestPlotStructure:
 
     def test_bending_draws_a_neutral_axis_line_on_every_panel(self) -> None:
         """A bending result crosses zero strain, so a neutral-axis line appears on all three panels."""
-        figure = _analysis().cracked_stress(SectionForces(m_y=200)).plot()
+        figure = _analysis().stress(SectionForces(m_y=200), regime=Regime.SLS_CRACKED).plot()
         try:
             green_lines = [line for ax in figure.axes for line in ax.get_lines() if line.get_color() == "green"]
             assert len(green_lines) == 3
@@ -83,7 +86,7 @@ class TestPlotStructure:
 
     def test_stress_panel_has_a_separate_steel_axis(self) -> None:
         """Reinforcement stresses get their own twin x-axis so the concrete block stays legible."""
-        figure = _analysis().cracked_stress(SectionForces(m_y=200)).plot()
+        figure = _analysis().stress(SectionForces(m_y=200), regime=Regime.SLS_CRACKED).plot()
         try:
             assert len(figure.axes) == 4  # section, strain, concrete stress, steel twin
             assert "rebar stress [MPa]" in [ax.get_xlabel() for ax in figure.axes]
@@ -94,7 +97,7 @@ class TestPlotStructure:
         """A result carrying a strain plane and geometry but no elastic modulus cannot be plotted."""
         result = StressStrainResult(
             forces=SectionForces(m_y=100),
-            is_cracked=False,
+            regime=Regime.SLS_UNCRACKED,
             concrete_stress_min=-1.0,
             concrete_stress_max=1.0,
             rebar_results=[],
@@ -114,7 +117,7 @@ class TestStressPanel:
         """A result without any reinforcement bars (an unreinforced concrete section)."""
         return StressStrainResult(
             forces=SectionForces(m_y=100),
-            is_cracked=False,
+            regime=Regime.SLS_UNCRACKED,
             concrete_stress_min=-1.0,
             concrete_stress_max=1.0,
             rebar_results=[],
@@ -155,7 +158,7 @@ class TestProjectionAxes:
 
 
 class TestConcreteStressLaw:
-    """The concrete stress law: linear in service, no tension when cracked."""
+    """The concrete stress law: linear in service, no tension when cracked, design profile at ULS."""
 
     def test_uncracked_keeps_tension(self) -> None:
         """An uncracked section keeps the linear tension branch."""
@@ -166,6 +169,12 @@ class TestConcreteStressLaw:
         """A cracked section zeros the concrete tension stress but keeps compression."""
         stress = _concrete_stress(np.array([-1.0, 1.0]), elastic_modulus=33000, is_cracked=True)
         assert stress == pytest.approx([33000 * -1e-3, 0.0])
+
+    def test_uls_profile_overrides_the_linear_law(self) -> None:
+        """A backend design profile caps the compression at f_cd and drops tension entirely."""
+        profile = BilinearStressStrain(compressive_strength=20.0, compressive_strain=1.75e-3, ultimate_strain=3.5e-3)
+        stress = _concrete_stress(np.array([-3.5, -1.75, 1.0]), elastic_modulus=33000, is_cracked=False, profile=profile)
+        assert stress == pytest.approx([-20.0, -20.0, 0.0])
 
 
 class TestCompressionZone:

@@ -13,7 +13,7 @@ pytest.importorskip("concreteproperties")
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis._adapter import (
     _reconstruct_strain_plane,
     _validate_reconstruction,
@@ -34,7 +34,7 @@ class TestReconstructionAgainstRebars:
 
     def test_uncracked_plane_matches_rebar_strains(self) -> None:
         """strain_at(rebar) equals the rebar's own strain for an uncracked N + M_y state."""
-        result = _analysis().uncracked_stress(SectionForces(n=-300, m_y=40))
+        result = _analysis().stress(SectionForces(n=-300, m_y=40), regime=Regime.SLS_UNCRACKED)
         plane = result.strain_plane
         assert plane is not None
         for rebar in result.rebar_results:
@@ -42,7 +42,7 @@ class TestReconstructionAgainstRebars:
 
     def test_cracked_plane_matches_rebar_strains(self) -> None:
         """strain_at(rebar) equals the rebar's own strain for a cracked M_y state."""
-        result = _analysis().cracked_stress(SectionForces(m_y=150))
+        result = _analysis().stress(SectionForces(m_y=150), regime=Regime.SLS_CRACKED)
         plane = result.strain_plane
         assert plane is not None
         for rebar in result.rebar_results:
@@ -54,22 +54,22 @@ class TestNeutralAxis:
 
     def test_uniaxial_bending_gives_horizontal_neutral_axis(self) -> None:
         """Pure m_y bending yields a horizontal neutral axis (angle ~ 0 deg)."""
-        plane = _analysis().uncracked_stress(SectionForces(m_y=100)).strain_plane
+        plane = _analysis().stress(SectionForces(m_y=100), regime=Regime.SLS_UNCRACKED).strain_plane
         assert plane is not None
         assert plane.neutral_axis_angle == pytest.approx(0.0, abs=1e-6)
 
     def test_cracked_neutral_axis_depth_matches_cracked_properties(self) -> None:
         """The plane's neutral-axis depth agrees with the cracked-section result."""
         analysis = _analysis()
-        forces = SectionForces(m_y=150)
-        plane = analysis.cracked_stress(forces).strain_plane
+        result = analysis.stress(SectionForces(m_y=150), regime=Regime.SLS_CRACKED)
+        plane = result.strain_plane
         assert plane is not None
-        expected = analysis.cracked_properties(forces).neutral_axis_depth
-        assert plane.neutral_axis_depth == pytest.approx(expected, rel=0.02)
+        assert result.cracked_properties is not None
+        assert plane.neutral_axis_depth == pytest.approx(result.cracked_properties.neutral_axis_depth, rel=0.02)
 
     def test_pure_axial_has_no_neutral_axis(self) -> None:
         """A pure axial force gives a flat strain plane: no curvature, no neutral axis."""
-        plane = _analysis().uncracked_stress(SectionForces(n=-1000)).strain_plane
+        plane = _analysis().stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED).strain_plane
         assert plane is not None
         assert plane.neutral_axis_depth is None
         assert plane.neutral_axis_angle == 0.0
@@ -77,7 +77,7 @@ class TestNeutralAxis:
 
     def test_all_tension_section_has_no_neutral_axis(self) -> None:
         """A large tensile force with slight bending keeps every fibre in tension: no neutral axis."""
-        plane = _analysis().uncracked_stress(SectionForces(n=3000, m_y=5)).strain_plane
+        plane = _analysis().stress(SectionForces(n=3000, m_y=5), regime=Regime.SLS_UNCRACKED).strain_plane
         assert plane is not None
         assert plane.neutral_axis_depth is None
 

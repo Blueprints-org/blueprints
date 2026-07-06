@@ -11,6 +11,7 @@ pytest.importorskip("concreteproperties")
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
     CrackedProperties,
     RebarStressResult,
+    Regime,
     StrainPlane,
     StressStrainResult,
 )
@@ -49,7 +50,7 @@ class TestStressStrainResult:
     def _result(self, raw: object) -> StressStrainResult:
         return StressStrainResult(
             forces=SectionForces(n=-100.0, m_y=150.0),
-            is_cracked=False,
+            regime=Regime.SLS_UNCRACKED,
             concrete_stress_min=-7.5,
             concrete_stress_max=2.0,
             rebar_results=[RebarStressResult(x=0.0, y=-200.0, diameter=20.0, stress=35.0, strain=0.18, force=11.0)],
@@ -60,10 +61,30 @@ class TestStressStrainResult:
         """The result echoes the forces and carries the stress envelope and rebar results."""
         result = self._result(raw=_FakeRaw())
         assert result.forces == SectionForces(n=-100.0, m_y=150.0)
-        assert result.is_cracked is False
+        assert result.regime is Regime.SLS_UNCRACKED
         assert result.concrete_stress_min == -7.5
         assert result.concrete_stress_max == 2.0
         assert len(result.rebar_results) == 1
+
+    @pytest.mark.parametrize(
+        ("regime", "expected"),
+        [
+            (Regime.SLS_UNCRACKED, False),
+            (Regime.SLS_CRACKED, True),
+            (Regime.ULS, False),
+        ],
+    )
+    def test_is_cracked_derives_from_regime(self, regime: Regime, expected: bool) -> None:
+        """is_cracked is a derived view on the regime: only SLS_CRACKED reads as cracked."""
+        result = StressStrainResult(
+            forces=SectionForces(m_y=150.0),
+            regime=regime,
+            concrete_stress_min=-7.5,
+            concrete_stress_max=2.0,
+            rebar_results=[],
+            raw=None,
+        )
+        assert result.is_cracked is expected
 
     def test_cracked_properties_default_none(self) -> None:
         """An uncracked result carries no cracked properties by default."""

@@ -4,17 +4,40 @@ All values are in Blueprints conventions and units: stresses and strains are **c
 tension positive**, consistent with section forces where a positive normal force is tension.
 """
 
+import math
 from collections.abc import Sequence
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 
+import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.plotting import plot_stress_strain
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.plotting import (
+    plot_biaxial_diagram,
+    plot_interaction_diagram,
+    plot_moment_curvature,
+    plot_stress_strain,
+)
 from blueprints.structural_sections.section_forces import SectionForces
-from blueprints.type_alias import DEG, KN, KNM, MM, MM4, MPA, ONE_OVER_MM, PER_MILLE, RAD
+from blueprints.type_alias import DEG, DIMENSIONLESS, KN, KNM, MM, MM4, MPA, ONE_OVER_MM, PER_MILLE, RAD
 from blueprints.unit_conversion import RATIO_TO_PER_MILLE
+
+
+class Regime(Enum):
+    """Stress/strain analysis regime.
+
+    ``AUTO`` lets the analyzer decide between the SLS regimes: it runs the (cheap) uncracked analysis
+    first and switches to the cracked analysis when the concrete tensile stress exceeds the flexural
+    tensile strength f_ctm,fl. The other members force a specific regime. A ``StressStrainResult``
+    always carries the concrete regime that actually produced it, never ``AUTO``.
+    """
+
+    AUTO = "AUTO"
+    SLS_UNCRACKED = "SLS_UNCRACKED"
+    SLS_CRACKED = "SLS_CRACKED"
+    ULS = "ULS"
 
 
 @dataclass(frozen=True)
@@ -122,6 +145,289 @@ class CrackedProperties:
 
 
 @dataclass(frozen=True)
+class UltimateCapacityResult:
+    """Ultimate (ULS) bending capacity of a reinforced-concrete cross-section at a given axial force.
+
+    The capacity follows from the design materials (f_cd, f_yd) with the strain plane pivoting on the
+    concrete crushing strain eps_cu3 at the extreme compression fibre; the neutral-axis depth is iterated
+    until the internal axial force balances ``n``.
+
+    Parameters
+    ----------
+    n : KN
+        The axial force at which the capacity was computed, compression negative / tension positive [kN].
+    m_y_rd : KNM
+        Design bending capacity about the y-axis (Blueprints sign convention: positive tensions the
+        bottom fibre) [kNm].
+    m_z_rd : KNM
+        Design bending capacity about the z-axis [kNm].
+    m_rd : KNM
+        Resultant design bending capacity, the magnitude of ``(m_y_rd, m_z_rd)`` [kNm].
+    neutral_axis_depth : MM
+        Ultimate neutral-axis depth from the extreme compression fibre [mm].
+    neutral_axis_angle : DEG
+        Orientation of the neutral axis, measured counter-clockwise from the section x-axis [deg]. ``0``
+        for sagging about the y-axis, ``180`` for hogging.
+    k_u : DIMENSIONLESS
+        Neutral-axis parameter ``d_n / d`` with ``d`` the effective depth to the extreme tension bar [-].
+    raw : Any
+        The underlying backend result object, kept as an escape hatch for advanced use.
+    """
+
+    n: KN
+    m_y_rd: KNM
+    m_z_rd: KNM
+    m_rd: KNM
+    neutral_axis_depth: MM
+    neutral_axis_angle: DEG
+    k_u: DIMENSIONLESS
+    raw: Any
+
+
+@dataclass(frozen=True)
+class InteractionPoint:
+    """One (N, M) point of an interaction diagram, in Blueprints conventions.
+
+    Parameters
+    ----------
+    n : KN
+        Axial force, compression negative / tension positive [kN].
+    m_y : KNM
+        Bending moment component about the y-axis [kNm].
+    m_z : KNM
+        Bending moment component about the z-axis [kNm].
+    m : KNM
+        Resultant bending moment, the magnitude of ``(m_y, m_z)`` [kNm].
+    label : str | None
+        Backend label of a control point (for example the pure-compression point), if any.
+    """
+
+    n: KN
+    m_y: KNM
+    m_z: KNM
+    m: KNM
+    label: str | None = None
+
+
+@dataclass(frozen=True)
+class MomentInteractionResult:
+    """Uniaxial N-M interaction diagram of a reinforced-concrete cross-section (ULS design materials).
+
+    The diagram runs from the pure-compression (squash) point to the zero-curvature tension point for a
+    fixed neutral-axis angle ``theta``. Each point is an ultimate capacity at a different axial force.
+
+    Parameters
+    ----------
+    theta : DEG
+        The neutral-axis angle of the diagram, measured counter-clockwise from the section x-axis
+        [deg]. ``0`` for sagging about the y-axis.
+    points : tuple[InteractionPoint, ...]
+        The (N, M) points of the diagram, in Blueprints conventions.
+    raw : Any
+        The underlying backend result object, kept as an escape hatch for advanced use.
+    """
+
+    theta: DEG
+    points: tuple[InteractionPoint, ...]
+    raw: Any
+
+    def plot(self, *, figsize: tuple[float, float] = (7.0, 5.0)) -> Figure:
+        """Plot the N-M interaction diagram (M on the x-axis, N on the y-axis, tension positive).
+
+        Parameters
+        ----------
+        figsize : tuple[float, float]
+            Figure size in inches, forwarded to matplotlib.
+
+        Returns
+        -------
+        Figure
+            The matplotlib figure with the interaction diagram.
+        """
+        return plot_interaction_diagram(self, figsize=figsize)
+
+
+@dataclass(frozen=True)
+class BiaxialInteractionResult:
+    """Biaxial M_y-M_z interaction envelope at a fixed axial force (ULS design materials).
+
+    The envelope traverses the neutral-axis angle over a full revolution; each point is the ultimate
+    bending capacity at that angle for the fixed axial force ``n``.
+
+    Parameters
+    ----------
+    n : KN
+        The fixed axial force of the envelope, compression negative / tension positive [kN].
+    points : tuple[InteractionPoint, ...]
+        The (M_y, M_z) points of the closed envelope, in Blueprints conventions.
+    raw : Any
+        The underlying backend result object, kept as an escape hatch for advanced use.
+    """
+
+    n: KN
+    points: tuple[InteractionPoint, ...]
+    raw: Any
+
+    def capacity_along(self, m_y: KNM, m_z: KNM) -> KNM:
+        """Resultant bending capacity along the direction of the given moment pair.
+
+        Intersects the envelope with the ray from the origin through ``(m_y, m_z)`` (linear
+        interpolation between the envelope points) and returns the resultant capacity at the
+        intersection.
+
+        Parameters
+        ----------
+        m_y : KNM
+            Bending moment component about the y-axis setting the direction [kNm].
+        m_z : KNM
+            Bending moment component about the z-axis setting the direction [kNm].
+
+        Returns
+        -------
+        KNM
+            The resultant bending capacity along the direction of ``(m_y, m_z)`` [kNm].
+
+        Raises
+        ------
+        ValueError
+            If both moment components are zero (no direction), or if the ray does not intersect the
+            envelope (a degenerate envelope).
+        """
+        magnitude = math.hypot(m_y, m_z)
+        if magnitude == 0.0:
+            raise ValueError("The moment direction is undefined: both m_y and m_z are zero.")
+        direction = np.array([m_y, m_z]) / magnitude
+        for start, end in zip(self.points[:-1], self.points[1:], strict=True):
+            p_start = np.array([start.m_y, start.m_z])
+            segment = np.array([end.m_y - start.m_y, end.m_z - start.m_z])
+            matrix = np.column_stack([segment, -direction])
+            try:
+                t, s = np.linalg.solve(matrix, -p_start)
+            except np.linalg.LinAlgError:
+                continue  # segment parallel to the ray (or degenerate)
+            if 0.0 <= t <= 1.0 and s > 0.0:
+                return float(s)
+        raise ValueError("The load direction does not intersect the biaxial envelope; the envelope appears degenerate.")
+
+    def plot(self, *, figsize: tuple[float, float] = (6.0, 6.0)) -> Figure:
+        """Plot the biaxial M_y-M_z interaction envelope.
+
+        Parameters
+        ----------
+        figsize : tuple[float, float]
+            Figure size in inches, forwarded to matplotlib.
+
+        Returns
+        -------
+        Figure
+            The matplotlib figure with the biaxial envelope.
+        """
+        return plot_biaxial_diagram(self, figsize=figsize)
+
+
+@dataclass(frozen=True)
+class UtilizationResult:
+    """Unity check of a ULS design action against the section's design capacity.
+
+    The bending capacity is evaluated at the design axial force (accounting for N-M interaction) and
+    along the design moment direction, so the utilization is the ratio of the resultant design moment
+    to the capacity in the same direction. A pure axial action is checked against the squash or tensile
+    capacity instead.
+
+    Parameters
+    ----------
+    forces : SectionForces
+        The design action that was verified (echoed back for traceability).
+    utilization : DIMENSIONLESS
+        The unity check value: <= 1 means the design action fits within the capacity [-].
+    governing : str
+        The governing check: ``"axial"``, ``"uniaxial bending"`` or ``"biaxial bending"``.
+    n_rd : KN | None
+        The axial capacity in the direction of the design axial force (squash negative, tensile
+        positive) [kN]; ``None`` when there is no axial force.
+    m_ed : KNM
+        The resultant design bending moment [kNm].
+    m_rd : KNM | None
+        The resultant bending capacity at the design axial force, along the design moment direction
+        [kNm]; ``None`` for a pure axial check or when the axial force already exceeds its capacity.
+    """
+
+    forces: SectionForces
+    utilization: DIMENSIONLESS
+    governing: str
+    n_rd: KN | None
+    m_ed: KNM
+    m_rd: KNM | None
+
+    @property
+    def is_ok(self) -> bool:
+        """Whether the design action fits within the design capacity (utilization <= 1)."""
+        return self.utilization <= 1.0
+
+
+@dataclass(frozen=True)
+class MomentCurvatureResult:
+    """Moment-curvature response of a reinforced-concrete cross-section at a fixed axial force.
+
+    The curve is computed with the design material set (concrete bilinear-horizontal at f_cd with a
+    tension branch up to f_ctm,fl, reinforcement at f_yd) and runs from zero curvature up to material
+    failure (concrete crushing or steel fracture). The cracking kink, the reinforcement yield point and
+    the ultimate moment are all part of the traced curve.
+
+    Parameters
+    ----------
+    theta : DEG
+        The neutral-axis angle of the analysis, measured counter-clockwise from the section x-axis
+        [deg].
+    n : KN
+        The fixed axial force, compression negative / tension positive [kN].
+    kappa : tuple[ONE_OVER_MM, ...]
+        The curvature steps [1/mm].
+    m_y : tuple[KNM, ...]
+        Bending moment component about the y-axis at each step [kNm].
+    m_z : tuple[KNM, ...]
+        Bending moment component about the z-axis at each step [kNm].
+    m : tuple[KNM, ...]
+        Resultant bending moment at each step, the magnitude of ``(m_y, m_z)`` [kNm].
+    raw : Any
+        The underlying backend result object (including the failed-material geometry), kept as an
+        escape hatch for advanced use.
+    tension_stiffening : bool
+        Whether the curvatures carry the tension-stiffening interpolation of EN 1992-1-1 art. 7.4.3
+        (``kappa`` is then the mean curvature between cracks, stiffer than the bare cracked response).
+    """
+
+    theta: DEG
+    n: KN
+    kappa: tuple[ONE_OVER_MM, ...]
+    m_y: tuple[KNM, ...]
+    m_z: tuple[KNM, ...]
+    m: tuple[KNM, ...]
+    raw: Any
+    tension_stiffening: bool = False
+
+    @property
+    def m_ultimate(self) -> KNM:
+        """The ultimate (peak) resultant moment of the traced curve [kNm]."""
+        return max(self.m)
+
+    def plot(self, *, figsize: tuple[float, float] = (7.0, 5.0)) -> Figure:
+        """Plot the moment-curvature curve with the ultimate point marked.
+
+        Parameters
+        ----------
+        figsize : tuple[float, float]
+            Figure size in inches, forwarded to matplotlib.
+
+        Returns
+        -------
+        Figure
+            The matplotlib figure with the moment-curvature curve.
+        """
+        return plot_moment_curvature(self, figsize=figsize)
+
+
+@dataclass(frozen=True)
 class StressStrainResult:
     """Result of a reinforced-concrete cross-section stress/strain analysis.
 
@@ -129,8 +435,9 @@ class StressStrainResult:
     ----------
     forces : SectionForces
         The section forces that produced this result (echoed back for traceability).
-    is_cracked : bool
-        Which regime produced the result: ``True`` if the cracked analysis was used, ``False`` for uncracked.
+    regime : Regime
+        The regime that actually produced the result (``SLS_UNCRACKED``, ``SLS_CRACKED`` or ``ULS``,
+        never ``AUTO``). Single source of truth for the regime; :attr:`is_cracked` derives from it.
     concrete_stress_min : MPA
         Most compressive concrete stress (algebraic minimum), compression negative [MPa].
     concrete_stress_max : MPA
@@ -140,21 +447,25 @@ class StressStrainResult:
     raw : Any
         The underlying backend result object, kept as an escape hatch for advanced use.
     cracked_properties : CrackedProperties | None
-        The cracked-section properties when ``is_cracked`` is ``True``; ``None`` for an uncracked result.
+        The cracked-section properties for an ``SLS_CRACKED`` result; ``None`` otherwise.
     strain_plane : StrainPlane | None
         The reconstructed linear strain field over the section. Always populated by the analyzer; the
         default ``None`` exists only for lightweight construction in tests.
     elastic_modulus : MPA
-        The concrete elastic modulus (e_cm) used for the analysis, needed by :meth:`plot` to turn the
+        The concrete elastic modulus used for the analysis — e_cm, or the effective modulus
+        e_cm / (1 + phi) when a creep coefficient was given — needed by :meth:`plot` to turn the
         strain profile into a concrete-stress profile [MPa].
     geometry : Any
         The section profile polygon (shapely ``Polygon``), used by :meth:`plot` to draw the section
         panel. Always populated by the analyzer; the default ``None`` exists only for lightweight
         construction in tests.
+    concrete_profile : Any
+        The backend concrete stress-strain profile for a non-linear (ULS) result, used by :meth:`plot`
+        to turn the strain profile into the design stress block; ``None`` for the linear SLS regimes.
     """
 
     forces: SectionForces
-    is_cracked: bool
+    regime: Regime
     concrete_stress_min: MPA
     concrete_stress_max: MPA
     rebar_results: Sequence[RebarStressResult]
@@ -163,6 +474,12 @@ class StressStrainResult:
     strain_plane: StrainPlane | None = None
     elastic_modulus: MPA = 0.0
     geometry: Any = None
+    concrete_profile: Any = None
+
+    @property
+    def is_cracked(self) -> bool:
+        """Whether the cracked SLS regime produced this result (derived from :attr:`regime`)."""
+        return self.regime is Regime.SLS_CRACKED
 
     def plot(self, *, figsize: tuple[float, float] = (11.0, 6.0)) -> Figure:
         """Plot the strain and stress diagrams over the section height (IDEA-RCS style).
