@@ -29,7 +29,10 @@ Reinforced concrete cross sections are fundamental elements in structural engine
 
 ### Cross Section Analysis
 
-- **[SLS Stress/Strain Analysis](cross_section_analysis.md)** - Compute serviceability concrete and reinforcement stresses and strains from section forces, with automatic uncracked/cracked detection, sagging/hogging and circular sections, and a validation case against IDEA StatiCa RCS
+- **[Cross-section Analysis](cross_section_analysis/index.md)** - Overview and quick start of the `CrossSectionAnalysis` analyzer
+- **[SLS Stress/Strain Analysis](cross_section_analysis/sls.md)** - Compute serviceability stresses and strains with automatic uncracked/cracked detection, creep via the effective modulus, and IDEA-RCS-style strain/stress figures
+- **[ULS Capacity & Checks](cross_section_analysis/uls.md)** - The full ULS toolbox: bending capacity, N-M and biaxial interaction diagrams, moment-curvature and a unity check of design actions
+- **[Validation](cross_section_analysis/validation.md)** - How the analysis results are pinned down: closed-form hand-calculation anchors and the IDEA StatiCa RCS reference case
 
 ## Design Workflow
 

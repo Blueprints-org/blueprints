@@ -22,7 +22,11 @@ nav:
         - Circular (Custom): guides/examples/reinforced_concrete_sections/circular_custom_reinforced_concrete_cross_section.ipynb
         - Rectangular: guides/examples/reinforced_concrete_sections/rectangular_reinforced_concrete_cross_section.ipynb
         - Rectangular (Custom): guides/examples/reinforced_concrete_sections/rectangular_custom_reinforced_concrete_cross_section.ipynb
-        - SLS Stress/Strain Analysis: guides/examples/reinforced_concrete_sections/cross_section_analysis.md
+        - Cross-section Analysis:
+          - guides/examples/reinforced_concrete_sections/cross_section_analysis/index.md
+          - SLS Stress/Strain Analysis: guides/examples/reinforced_concrete_sections/cross_section_analysis/sls.md
+          - ULS Capacity & Checks: guides/examples/reinforced_concrete_sections/cross_section_analysis/uls.md
+          - Validation: guides/examples/reinforced_concrete_sections/cross_section_analysis/validation.md
       - Other Examples:
         - guides/examples/other_examples/index.md
         - Nominal Concrete Cover: guides/examples/other_examples/nominal_concrete_cover.ipynb

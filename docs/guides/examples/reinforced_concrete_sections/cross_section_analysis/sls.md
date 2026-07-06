@@ -1,8 +1,10 @@
-# Analyze a Reinforced Cross-section (SLS strains and stresses)
+# SLS Stress/Strain Analysis
 
-This example shows how to compute the serviceability (SLS) strains and stresses of a reinforced concrete cross-section from its section forces, using the `CrossSectionAnalysis` analyzer.
+This example shows how to compute the serviceability (SLS) strains and stresses of a reinforced concrete cross-section from its section forces, using the `CrossSectionAnalysis` analyzer — including long-term effects through the creep coefficient.
 
 Given a `ReinforcedCrossSection` and a set of `SectionForces`, Blueprints decides whether the section is uncracked or cracked and returns the matching concrete and reinforcement results. The analyzer is shape-agnostic: it works on any `ReinforcedCrossSection` (rectangular, circular, custom).
+
+This page is part of the [cross-section analysis guide](index.md), together with the [ULS capacity & checks](uls.md) and [validation](validation.md) pages.
 
 !!! note "Optional backend required"
 
@@ -10,7 +12,7 @@ Given a `ReinforcedCrossSection` and a set of `SectionForces`, Blueprints decide
 
 ## Build the Reinforced Cross-section
 
-We create a 300 × 500 mm beam in C30/37 with 4⌀20 B500B bars on the lower (tension) edge:
+We create a 300 × 600 mm beam in C30/37 with 4⌀25 B500B bars on the lower (tension) edge:
 
 ```python exec="on" source="material-block" session="rc_analysis"
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
@@ -22,8 +24,8 @@ from blueprints.structural_sections.section_forces import SectionForces
 concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C30_37)
 steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B)
 
-cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=concrete)
-cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, edge="lower", material=steel)
+cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=concrete)
+cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", material=steel)
 ```
 
 Let's visualize the cross-section and its reinforcement:
@@ -40,7 +42,7 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 ## Run the Analysis
 
-We create the analyzer and call `calculate_stress`. Blueprints runs the cheap uncracked analysis first and, if the concrete tensile stress exceeds the flexural tensile strength, returns the cracked result instead.
+We create the analyzer and call `stress`. Blueprints runs the cheap uncracked analysis first and, if the concrete tensile stress exceeds the flexural tensile strength, returns the cracked result instead.
 
 Here we apply a small compression and a bending moment about the y-axis:
 
@@ -48,9 +50,9 @@ Here we apply a small compression and a bending moment about the y-axis:
 analysis = CrossSectionAnalysis(cs)
 
 forces = SectionForces(n=-100, m_y=150)  # 100 kN compression, 150 kNm about the y-axis
-result = analysis.calculate_stress(forces)
+result = analysis.stress(forces)
 
-print(f"Cracked regime: {result.is_cracked}")
+print(f"Regime: {result.regime.value}")
 print(f"Concrete stress (min / max): {result.concrete_stress_min:.2f} / {result.concrete_stress_max:.2f} MPa")
 ```
 
@@ -80,17 +82,37 @@ if result.cracked_properties is not None:
     print(f"Cracked second moment I: {cracked.i_cracked:.3e} mm4")
 ```
 
+!!! note "Two neutral-axis depths under combined N + M"
+
+    `cracked_properties` describes the **pure-bending** cracked section: `m_cr`, `i_cracked` and its `neutral_axis_depth` are load-independent section constants. Under a combined N + M action the **actual** neutral axis is deeper (compression) or shallower (tension) than this pure-bending value — read it from `result.strain_plane.neutral_axis_depth`. The stresses above already reflect that actual, correctly solved state. See the [validation page](validation.md#neutral-axis-actual-state-versus-pure-bending-constant) for the worked comparison.
+
 ## Force a Specific Regime
 
-Besides the automatic decision, you can request a specific regime explicitly, for example to compare the cracked and uncracked states of the same section:
+Besides the automatic decision, you can request a specific regime explicitly with the `regime` argument, for example to compare the cracked and uncracked states of the same section:
 
 ```python exec="on" source="material-block" result="ansi" session="rc_analysis"
-uncracked = analysis.uncracked_stress(forces)
-cracked = analysis.cracked_stress(forces)
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import Regime
+
+uncracked = analysis.stress(forces, regime=Regime.SLS_UNCRACKED)
+cracked = analysis.stress(forces, regime=Regime.SLS_CRACKED)
 
 print(f"Uncracked max concrete tensile stress: {uncracked.concrete_stress_max:.2f} MPa")
 print(f"Cracked max reinforcement stress:      {max(bar.stress for bar in cracked.rebar_results):.1f} MPa")
 ```
+
+## Long-term Effects: Creep
+
+Creep enters through the effective modulus `E_c,eff = E_cm / (1 + φ)`, with the creep coefficient φ as a user input. A positive φ softens the concrete, which deepens the neutral axis and sheds load to the reinforcement:
+
+```python exec="on" source="material-block" result="ansi" session="rc_analysis"
+short_term = analysis.stress(forces, regime=Regime.SLS_CRACKED)
+long_term = analysis.stress(forces, regime=Regime.SLS_CRACKED, creep_coefficient=2.0)
+
+print(f"Short-term (phi=0): steel stress {short_term.rebar_results[0].stress:6.1f} MPa")
+print(f"Long-term (phi=2):  steel stress {long_term.rebar_results[0].stress:6.1f} MPa")
+```
+
+Only the effective modulus is modelled: shrinkage, the age-adjusted effective modulus (AAEM) and tension stiffening are out of scope. With the default `creep_coefficient=0.0` the analysis is short-term (secant modulus `E_cm`).
 
 ## Visualize the Strain and Stress State
 
@@ -120,8 +142,8 @@ Behind the figure sits the reconstructed **strain plane** — the linear strain 
 plane = result.strain_plane
 print(f"strain at the origin:   {plane.eps_0:6.3f} per mille")
 print(f"neutral-axis angle:     {plane.neutral_axis_angle:6.1f} deg")
-print(f"strain at top fibre:    {plane.strain_at(0, 250):6.3f} per mille")
-print(f"strain at bottom fibre: {plane.strain_at(0, -250):6.3f} per mille")
+print(f"strain at top fibre:    {plane.strain_at(0, 300):6.3f} per mille")
+print(f"strain at bottom fibre: {plane.strain_at(0, -300):6.3f} per mille")
 ```
 
 ### Backend mesh contour
@@ -147,18 +169,18 @@ We build a beam with both top and bottom reinforcement and compare the two:
 ```python exec="on" source="material-block" result="ansi" session="rc_bending"
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
 
 steel = ReinforcementSteelMaterial()
-cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
-cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, edge="lower", material=steel)  # bottom
+cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", material=steel)  # bottom
 cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=16, edge="upper", material=steel)  # top
 analysis = CrossSectionAnalysis(cs)
 
-sagging = analysis.cracked_stress(SectionForces(m_y=150))
-hogging = analysis.cracked_stress(SectionForces(m_y=-150))
+sagging = analysis.stress(SectionForces(m_y=150), regime=Regime.SLS_CRACKED)
+hogging = analysis.stress(SectionForces(m_y=-150), regime=Regime.SLS_CRACKED)
 
 for label, result in [("sagging (+M)", sagging), ("hogging (-M)", hogging)]:
     properties = result.cracked_properties
@@ -198,7 +220,7 @@ Under **biaxial bending** (a moment about both axes at once) the analyzer accept
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.structural_sections.concrete.rebar import Rebar
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
 
@@ -208,7 +230,7 @@ for x in (-150, 150):
     for y in (-150, 150):
         cs.add_longitudinal_rebar(Rebar(diameter=25, x=x, y=y, material=steel))
 
-result = CrossSectionAnalysis(cs).uncracked_stress(SectionForces(m_y=80, m_z=60))
+result = CrossSectionAnalysis(cs).stress(SectionForces(m_y=80, m_z=60), regime=Regime.SLS_UNCRACKED)
 
 print(f"Concrete stress (min / max): {result.concrete_stress_min:.2f} / {result.concrete_stress_max:.2f} MPa")
 for bar in result.rebar_results:
@@ -241,7 +263,7 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 !!! warning "Cracked biaxial bending is not supported"
 
-    The **uncracked** biaxial analysis above is exact (linear superposition of `m_y` and `m_z`). The **cracked** analysis, however, is uniaxial: under biaxial bending the cracked neutral axis is not perpendicular to the moment vector, which requires an iterative biaxial solution that is out of scope here. `cracked_stress`, `cracked_properties` and `calculate_stress` (when the section would crack) therefore raise a `NotImplementedError` for biaxial input rather than return an unreliable result. Apply bending about a single axis for cracked analyses.
+    The **uncracked** biaxial analysis above is exact (linear superposition of `m_y` and `m_z`). The **cracked** analysis, however, is uniaxial: under biaxial bending the cracked neutral axis is not perpendicular to the moment vector, which requires an iterative biaxial solution that is out of scope here. `stress` with `regime=Regime.SLS_CRACKED` — or with the default `Regime.AUTO` when the section would crack — therefore raises a `NotImplementedError` for biaxial input rather than return an unreliable result. Apply bending about a single axis for cracked analyses.
 
 ## Other Section Shapes: Circular
 
@@ -257,9 +279,9 @@ from blueprints.structural_sections.section_forces import SectionForces
 cs = CircularReinforcedCrossSection(diameter=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
 cs.add_longitudinal_reinforcement_by_quantity(n=8, diameter=20, material=ReinforcementSteelMaterial())
 
-result = CrossSectionAnalysis(cs).calculate_stress(SectionForces(n=-200, m_y=120))
+result = CrossSectionAnalysis(cs).stress(SectionForces(n=-200, m_y=120))
 
-print(f"Cracked regime: {result.is_cracked}")
+print(f"Regime: {result.regime.value}")
 print(f"Concrete stress (min / max): {result.concrete_stress_min:.2f} / {result.concrete_stress_max:.2f} MPa")
 print(f"Max reinforcement stress:    {max(bar.stress for bar in result.rebar_results):.1f} MPa")
 ```
@@ -298,98 +320,68 @@ plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
 ```
 
-## Validation against IDEA StatiCa RCS
 
-The analyzer is validated against established section-analysis software. The reference case below is defined precisely so it can be reproduced in IDEA StatiCa RCS and compared with the Blueprints result.
+## Complete Example
 
-**Reference case** — rectangular 300 × 600 mm, C30/37, 4⌀25 B500B on the lower edge (50 mm cover), under a pure bending moment `M_y = 200 kNm` (SLS, `N = 0`).
+Everything above in one copy-paste-ready script:
 
-!!! info "Reproducing this case in IDEA StatiCa RCS"
-
-    | Input | Value |
-    |---|---|
-    | Code / National Annex | EN 1992-1-1 / EN |
-    | Section | rectangular 300 × 600 mm |
-    | Concrete | C30/37 |
-    | Reinforcement | 4⌀25 B500B, lower edge |
-    | Concrete cover (to bar surface) | 50 mm (effective depth d = 538 mm) |
-    | Load combination | quasi-permanent, `N = 0`, `M_y = 200 kNm`, `M_z = 0` |
-    | Stiffness | short-term |
-    | Creep coefficient φ | 0 (user input) |
-
-    Read the results from the **crack-width (Scheurwijdte)** check: `x` is the neutral-axis depth, `σ_s` the reinforcement stress, and the strain/stress diagram gives the concrete stress and the strain plane.
-
-    The creep coefficient is set to zero to obtain a short-term result comparable to the Blueprints secant modulus `E_cm`:
-
-    ![IDEA StatiCa RCS creep coefficient set to zero (user input).](_images/idea_rcs_creep_setting.png)
-
-```python exec="on" source="material-block" result="ansi" session="rc_idea"
+```python
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
 
-cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
-cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", material=ReinforcementSteelMaterial(ReinforcementSteelQuality.B500B))
+# 300 x 600 mm beam, C30/37, 4 diameter-25 B500B bars on the lower (tension) edge
+concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C30_37)
+steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B)
+cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=concrete)
+cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", material=steel)
 
-result = CrossSectionAnalysis(cs).calculate_stress(SectionForces(m_y=200))
-cracked = result.cracked_properties
+analysis = CrossSectionAnalysis(cs)
+forces = SectionForces(n=-100, m_y=150)  # 100 kN compression, 150 kNm about the y-axis
 
-print(f"Cracked regime:            {result.is_cracked}")
-print(f"Max concrete compression:  {result.concrete_stress_min:.2f} MPa")
-print(f"Reinforcement stress:      {result.rebar_results[0].stress:.1f} MPa")
-print(f"Reinforcement strain:      {result.rebar_results[0].strain:.3f} per mille")
-print(f"Neutral-axis depth:        {cracked.neutral_axis_depth:.1f} mm")
-print(f"Cracking moment m_cr:      {cracked.m_cr:.1f} kNm")
+# automatic uncracked/cracked decision
+result = analysis.stress(forces)
+print(f"Regime: {result.regime.value}")
+print(f"Concrete stress (min / max): {result.concrete_stress_min:.2f} / {result.concrete_stress_max:.2f} MPa")
+for bar in result.rebar_results:
+    print(f"bar at (x={bar.x:6.1f}, y={bar.y:6.1f}) mm -> stress {bar.stress:7.1f} MPa, strain {bar.strain:6.3f} per mille")
+
+# cracked-section properties (populated when the section cracks)
+if result.cracked_properties is not None:
+    print(f"Cracking moment m_cr: {result.cracked_properties.m_cr:.1f} kNm")
+    print(f"Neutral-axis depth:   {result.cracked_properties.neutral_axis_depth:.1f} mm")
+
+# force a specific regime, with and without creep
+uncracked = analysis.stress(forces, regime=Regime.SLS_UNCRACKED)
+long_term = analysis.stress(forces, regime=Regime.SLS_CRACKED, creep_coefficient=2.0)
+print(f"Uncracked max concrete tension: {uncracked.concrete_stress_max:.2f} MPa")
+print(f"Long-term (phi=2) steel stress: {long_term.rebar_results[0].stress:.1f} MPa")
+
+# query the strain plane anywhere and draw the strain/stress figure
+print(f"Strain at top fibre: {result.strain_plane.strain_at(0, 300):.3f} per mille")
+figure = result.plot()
+figure.show()
 ```
-
-```python exec="on" source="above" result="html" html="true" session="rc_idea"
-result.plot()
-
-from io import StringIO  # markdown-exec: hide
-import matplotlib.pyplot as plt  # markdown-exec: hide
-buffer = StringIO()  # markdown-exec: hide
-plt.savefig(buffer, format="svg")  # markdown-exec: hide
-print(buffer.getvalue())  # markdown-exec: hide
-```
-
-### Comparison
-
-| Quantity | Blueprints | IDEA StatiCa RCS | Difference |
-|---|---|---|---|
-| Cracked regime | cracked | cracked | — |
-| Max concrete compression [MPa] | −16.24 | −16.23 | 0.1% |
-| Reinforcement stress [MPa] | 212.3 | 211.98 | 0.2% |
-| Reinforcement strain [‰] | 1.061 | 1.060 | 0.1% |
-| Neutral-axis depth [mm] | 170.8 | 171 | 0.1% |
-
-The two agree within ~0.2%, confirming the linear-elastic SLS analysis against established software. The cracking moment `m_cr` and cracked second moment of area `i_cracked` are Blueprints outputs; IDEA StatiCa RCS does not report a single cracking-moment or cracked-inertia value in its crack-width check, so they are not compared here.
-
-![IDEA StatiCa RCS results for the reference case: strain and stress diagrams and the crack-width table.](_images/idea_rcs_results.png)
-
-The IDEA StatiCa RCS output for the reference case. The strain diagram (in units of 1e-4) reads −4.94 at the top fibre (−0.494‰) and 10.60 at the reinforcement (1.060‰); the stress diagram reads −16.23 MPa in the concrete and 211.98 MPa in the reinforcement; the neutral-axis depth is x = 171 mm.
-
-!!! warning "Modelling differences"
-
-    Blueprints performs a **linear-elastic SLS** analysis: concrete is linear up to cracking with secant modulus `E_cm`, reinforcement is elastic at `f_yk / E_s` (no partial factor), tension stiffening is **not** included, and the cracking decision uses the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 art. 3.1.8). IDEA StatiCa RCS may use slightly different modelling choices (effective/long-term E-modulus, tension stiffening per EN 1992-1-1 art. 7.4.3, different tension behaviour). When comparing, configure the IDEA case to a short-term linear analysis without tension stiffening, and expect small residual differences from the meshing and material-model details. The tolerances used in the automated test suite are set per reference case accordingly.
 
 ## Summary
 
 This page demonstrated the SLS stress/strain analysis of reinforced concrete cross-sections:
 
 1. **Build** a `ReinforcedCrossSection` (rectangular, circular or custom) with materials and reinforcement
-2. **Create** a `CrossSectionAnalysis` and call `calculate_stress` with `SectionForces`
-3. **Let Blueprints decide** between the uncracked and cracked regime
+2. **Create** a `CrossSectionAnalysis` and call `stress` with `SectionForces`
+3. **Let Blueprints decide** between the uncracked and cracked regime (or force one with `regime`), optionally with a creep coefficient
 4. **Inspect** concrete stresses, per-bar stresses/strains/forces and cracked-section properties
 5. **Visualize** the strain (ε) and stress (σ) diagrams over the section height with `result.plot()`, and query the strain field anywhere with `result.strain_plane`
 6. **Compare** sagging and hogging, and analyze different section shapes with the same API
-7. **Validate** against external section-analysis software (IDEA StatiCa RCS)
 
 Key points:
 
 - All results use the Blueprints convention: **compression negative, tension positive**, in MPa, per mille and kN.
 - The regime decision handles combined N + M naturally: compression raises the cracking threshold, tension lowers the margin.
-- The analyzer is shape-agnostic — the same `CrossSectionAnalysis` works for rectangular, circular and custom sections.
+- Creep uses one mental model: `creep_coefficient=0.0` is short-term, a positive φ softens the concrete to `E_c,eff = E_cm / (1 + φ)`.
 - Biaxial bending (`m_y` + `m_z`) is supported for the uncracked analysis; cracked biaxial bending is not supported and raises a `NotImplementedError`.
 - Shear and torsion are deliberately out of scope of the stress analysis; they are handled as truss-model resistance checks (EN 1992-1-1 art. 6.2/6.3).
+
+**Next:** compute design capacities and run unity checks on the [ULS capacity & checks](uls.md) page, or see how the results are validated on the [validation](validation.md) page.
