@@ -3,8 +3,24 @@
 import numpy as np
 import pytest
 
-from blueprints.utils.math_helpers import angle_to_slope, cot, csc, sec, slope_to_angle
+from blueprints.utils.math_helpers import angle_to_slope, cot, csc, sec, slope_to_angle, tan
 from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
+
+
+class TestTan:
+    """Validation for tangent function."""
+
+    def test_evaluation(self) -> None:
+        """Tests the evaluation of the result."""
+        x = 45.0
+        expected_result = 1.0
+        assert tan(x) == pytest.approx(expected_result, rel=1e-4)
+
+    @pytest.mark.parametrize("x", [0.0, -45.0, 91.0])
+    def test_raise_error_when_invalid_values_are_given(self, x: float) -> None:
+        """Test invalid values."""
+        with pytest.raises((LessOrEqualToZeroError, GreaterThan90Error)):
+            tan(x)
 
 
 class TestCot:
