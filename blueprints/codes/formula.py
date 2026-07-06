@@ -261,7 +261,6 @@ class AggregatedComparisonFormula(ComparisonFormula):
         super().__init__()
         self.aggregation = aggregation
         self.comparison_formulas = comparison_formulas
-        self._initialized = True
 
     @classmethod
     def _comparison_operator(cls) -> Callable[[float, float], bool]:
