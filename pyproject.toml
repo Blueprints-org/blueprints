@@ -37,12 +37,8 @@ dependencies = [
     "python-docx>=1.2.0",
     "latex2mathml>=3.78.1",
     "mathml2omml>=0.0.2",
+    "concreteproperties>=0.8.0",
 ]
-
-[project.optional-dependencies]
-# Reinforced-concrete cross-section analysis backend. Kept optional because concreteproperties
-# pins python <3.14, which would otherwise cap the whole package (core stays python>=3.12 with no upper bound).
-rc-analysis = ["concreteproperties>=0.7.0"]
 
 [project.scripts]
 blueprints = "blueprints.cli:app"
@@ -68,7 +64,6 @@ docs = [
     "natsort ~= 8.4.0",
     "mkdocs-jupyter>=0.25.1,<0.27.0",
     "markdown-exec[ansi]>=1.11.0",
-    "concreteproperties>=0.7.0", # optional-dependency: rc-analysis
 ]
 test = [
     "pytest==9.0.3",
@@ -112,12 +107,3 @@ packages = ["blueprints"]
 markers = [
     "slow: marks as slow (deselect with '-m \"not slow\"')",
 ]
-
-# The reinforced-concrete analysis package sits on the optional 'concreteproperties' backend. CI type-checks
-# without that backend installed (and it cannot install on python 3.14), so ty cannot resolve its imports there.
-# Scope the suppression to this package: 'unresolved-import' covers the missing backend, and
-# 'unused-ignore-comment' covers the type-only '# ty: ignore' directives that are only needed when the backend
-# is present (they would otherwise warn as unused in the backend-less run).
-[[tool.ty.overrides]]
-include = ["blueprints/structural_sections/concrete/reinforced_concrete_sections/analysis/**"]
-rules = { "unresolved-import" = "ignore", "unused-ignore-comment" = "ignore" }

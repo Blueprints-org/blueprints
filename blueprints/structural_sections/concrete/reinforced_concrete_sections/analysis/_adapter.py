@@ -16,6 +16,24 @@ from contextlib import contextmanager
 from enum import Enum
 
 import numpy as np
+from concreteproperties import (
+    BilinearStressStrain,
+    Concrete,
+    ConcreteLinear,
+    ConcreteSection,
+    EurocodeParabolicUltimate,
+    SteelBar,
+    SteelElasticPlastic,
+    SteelHardening,
+    add_bar,
+)
+from concreteproperties.results import CrackedResults, MomentCurvatureResults, StressResult, UltimateBendingResults
+from concreteproperties.stress_strain_profile import ConcreteServiceProfile, ConcreteUltimateProfile
+from concreteproperties.utils import AnalysisError
+from scipy.optimize import brentq
+from sectionproperties.pre import CompoundGeometry, Geometry
+from shapely import Polygon
+from shapely.errors import GEOSException
 
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_23 import Form3Dot23FlexuralTensileStrength
 from blueprints.materials.concrete import ConcreteMaterial, DiagramType
@@ -37,32 +55,6 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.base i
 from blueprints.structural_sections.section_forces import SectionForces
 from blueprints.type_alias import DEG, DIMENSIONLESS, KN, KNM, MM, MPA
 from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, MM3_TO_M3, N_TO_KN, NMM_TO_KNM, PER_MILLE_TO_RATIO, RATIO_TO_PER_MILLE
-
-try:
-    from concreteproperties import (
-        BilinearStressStrain,
-        Concrete,
-        ConcreteLinear,
-        ConcreteSection,
-        EurocodeParabolicUltimate,
-        SteelBar,
-        SteelElasticPlastic,
-        SteelHardening,
-        add_bar,
-    )
-    from concreteproperties.results import CrackedResults, MomentCurvatureResults, StressResult, UltimateBendingResults
-    from concreteproperties.stress_strain_profile import ConcreteServiceProfile, ConcreteUltimateProfile
-    from concreteproperties.utils import AnalysisError
-    from scipy.optimize import brentq
-except ImportError as exc:  # pragma: no cover
-    raise ImportError(
-        "Reinforced-concrete section analysis requires the optional 'concreteproperties' backend. "
-        "Install it with: pip install blue-prints[rc-analysis]"
-    ) from exc
-
-from sectionproperties.pre import CompoundGeometry, Geometry  # core dependency, always available
-from shapely import Polygon  # core dependency, always available
-from shapely.errors import GEOSException  # core dependency, always available
 
 _CONCRETE_COLOUR = "lightgrey"
 _STEEL_COLOUR = "grey"
@@ -499,7 +491,7 @@ def build_concrete_section(
     # added) is still a plain Geometry and must be wrapped explicitly.
     if not isinstance(geometry, CompoundGeometry):
         geometry = CompoundGeometry([geometry])
-    return ConcreteSection(geometry)  # ty: ignore[invalid-argument-type]
+    return ConcreteSection(geometry)
 
 
 def _merge_coincident_rebars(rebars: list[Rebar]) -> list[tuple[float, float, float, ReinforcementSteelMaterial]]:

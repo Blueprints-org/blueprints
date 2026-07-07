@@ -122,6 +122,7 @@ name = "blue-prints"
 version = "0.6.3"
 source = { editable = "." }
 dependencies = [
+    { name = "concreteproperties" },
     { name = "googletrans" },
     { name = "latex2mathml" },
     { name = "mathml2omml" },
@@ -132,14 +133,8 @@ dependencies = [
     { name = "shapely" },
 ]
 
-[package.optional-dependencies]
-rc-analysis = [
-    { name = "concreteproperties" },
-]
-
 [package.dev-dependencies]
 cli = [
-    { name = "concreteproperties" },
     { name = "googletrans" },
     { name = "icecream" },
     { name = "latex2mathml" },
@@ -178,7 +173,6 @@ dev = [
     { name = "types-shapely" },
 ]
 docs = [
-    { name = "concreteproperties" },
     { name = "markdown-exec", extra = ["ansi"] },
     { name = "mkdocs" },
     { name = "mkdocs-awesome-nav" },
@@ -209,7 +203,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "concreteproperties", marker = "extra == 'rc-analysis'", specifier = ">=0.7.0" },
+    { name = "concreteproperties", specifier = ">=0.8.0" },
     { name = "googletrans", specifier = ">=4.0.2" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
     { name = "mathml2omml", specifier = ">=0.0.2" },
@@ -219,11 +213,9 @@ requires-dist = [
     { name = "sectionproperties", specifier = ">=3.10.0" },
     { name = "shapely", specifier = ">=2.1.2" },
 ]
-provides-extras = ["rc-analysis"]
 
 [package.metadata.requires-dev]
 cli = [
-    { name = "concreteproperties", specifier = ">=0.7.0" },
     { name = "googletrans", specifier = ">=4.0.2" },
     { name = "icecream", specifier = "==2.2.0" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
@@ -262,7 +254,6 @@ dev = [
     { name = "types-shapely", specifier = "==2.1.0.20250917" },
 ]
 docs = [
-    { name = "concreteproperties", specifier = ">=0.7.0" },
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
     { name = "mkdocs", specifier = "~=1.6.1" },
     { name = "mkdocs-awesome-nav", specifier = ">=3.1.2,<3.4.0" },
@@ -421,7 +412,7 @@ wheels = [
 
 [[package]]
 name = "concreteproperties"
-version = "0.7.0"
+version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cytriangle" },
@@ -434,9 +425,9 @@ dependencies = [
     { name = "sectionproperties" },
     { name = "shapely" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/20/f8/547f1c09bd1c6a0fa0970b720255d82e72c714565ba756525465ca4439c4/concreteproperties-0.7.0.tar.gz", hash = "sha256:033c56605a415151f54bc0a04a9a65a779c27c1bed5d173171306d97efb9078b", size = 4712895, upload-time = "2025-04-30T13:40:12.887Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6d/58/8b330be1f109abc941ad9fe644f60d79da9ce0a80a026ff421c441301a14/concreteproperties-0.8.0.tar.gz", hash = "sha256:7d7a3555d1e0299b3525b232fd57650a59fac65c214f59eeea44dbfe980d830a", size = 4733274, upload-time = "2026-07-06T12:15:11.292Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/e0/6282034c69d7778c6acb0322f61174948194c31648829d64287437f776fe/concreteproperties-0.7.0-py3-none-any.whl", hash = "sha256:c9dc429856fa42a6044aa84ab86bb8b553ccffe4466378bd62b3e7fd2454fad1", size = 84812, upload-time = "2025-04-30T13:40:11.181Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/34/f92c501555ad328f10aafc5e06040a47440fb24ae5363c789597f95d8118/concreteproperties-0.8.0-py3-none-any.whl", hash = "sha256:0a9c52d4adc24527553906171acbfb8fe6190a6826ff281a193f830645648331", size = 84785, upload-time = "2026-07-06T12:15:09.903Z" },
 ]
 
 [[package]]

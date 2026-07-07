@@ -6,10 +6,6 @@ All ULS analyses use the design materials — concrete at `f_cd` and reinforceme
 
 This page is part of the [cross-section analysis guide](index.md), together with the [SLS stress/strain analysis](sls.md) and [validation](validation.md) pages.
 
-!!! note "Optional backend required"
-
-    The analyzer needs the optional `concreteproperties` backend. Install it with `pip install blue-prints[rc-analysis]`.
-
 ## Build the Reinforced Cross-section
 
 We reuse the reference beam of the SLS page: 300 × 600 mm in C30/37 with 4⌀25 B500B bars on the lower (tension) edge:

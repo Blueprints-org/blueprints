@@ -8,10 +8,6 @@ The guide is split over three pages:
 - **[ULS Capacity & Checks](uls.md)** — bending capacity, N-M and biaxial interaction diagrams, moment-curvature, and the unity check of design actions
 - **[Validation](validation.md)** — how the results are pinned down: closed-form hand-calculation anchors and the IDEA StatiCa RCS reference case
 
-!!! note "Optional backend required"
-
-    The analyzer needs the optional `concreteproperties` backend. Install it with `pip install blue-prints[rc-analysis]`.
-
 ## Quick Start
 
 A complete, copy-paste-ready example: build a beam, compute the SLS stress state, the ULS bending capacity and the unity check of a design action.

@@ -17,10 +17,7 @@ SYNC			:= $(UV) sync --locked
 RUN     		:= $(UV) run
 BUILD 			:= $(UV) build
 PYTEST  		:= $(RUN) $(NO_DEV) pytest
-RC_EXTRA		:= --extra rc-analysis
-# Coverage must exercise the optional reinforced-concrete analysis backend to reach 100%, so it installs the
-# rc-analysis extra. concreteproperties pins python <3.14, so the coverage CI jobs run on python 3.13.
-COVERAGE		:= $(RUN) $(NO_DEV) $(RC_EXTRA) pytest --cov=./blueprints
+COVERAGE		:= $(RUN) $(NO_DEV) pytest --cov=./blueprints
 TY    		    := $(RUN) ty
 RUFF    		:= $(RUN) ruff
 

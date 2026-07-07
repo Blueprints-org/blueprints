@@ -3,9 +3,7 @@
 SLS strain/stress (uncracked/cracked, with creep via the effective modulus) and the ULS toolbox:
 bending capacity, N-M and biaxial interaction diagrams, moment-curvature and a unity check.
 
-Requires the optional ``concreteproperties`` backend::
-
-    pip install blue-prints[rc-analysis]
+Runs on the ``concreteproperties`` backend, a core Blueprints dependency.
 """
 
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis._adapter import AnalysisLevel, SteelBranch

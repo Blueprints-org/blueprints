@@ -6,10 +6,6 @@ Given a `ReinforcedCrossSection` and a set of `SectionForces`, Blueprints decide
 
 This page is part of the [cross-section analysis guide](index.md), together with the [ULS capacity & checks](uls.md) and [validation](validation.md) pages.
 
-!!! note "Optional backend required"
-
-    The analyzer needs the optional `concreteproperties` backend. Install it with `pip install blue-prints[rc-analysis]`.
-
 ## Build the Reinforced Cross-section
 
 We create a 300 × 600 mm beam in C30/37 with 4⌀25 B500B bars on the lower (tension) edge:
