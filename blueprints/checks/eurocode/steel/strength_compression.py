@@ -30,7 +30,7 @@ class CheckStrengthCompressionClass123:
         |  /
         | /
         |/
-    ←-----O
+    ←---O
     y (horizontal/side, usually weak axis)
     ```
 
