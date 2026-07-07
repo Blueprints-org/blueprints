@@ -12,7 +12,10 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
     BiaxialInteractionResult,
     CrackedProperties,
     InteractionPoint,
+    InteractionSection,
+    InteractionSurface,
     MomentCurvatureResult,
+    MomentInteractionEnvelope,
     MomentInteractionResult,
     RebarStressResult,
     Regime,
@@ -20,6 +23,7 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
     StressStrainResult,
     UltimateCapacityResult,
     UtilizationResult,
+    VerificationDiagram,
 )
 
 __all__ = [
@@ -28,7 +32,10 @@ __all__ = [
     "CrackedProperties",
     "CrossSectionAnalysis",
     "InteractionPoint",
+    "InteractionSection",
+    "InteractionSurface",
     "MomentCurvatureResult",
+    "MomentInteractionEnvelope",
     "MomentInteractionResult",
     "RebarStressResult",
     "Regime",
@@ -37,4 +44,5 @@ __all__ = [
     "StressStrainResult",
     "UltimateCapacityResult",
     "UtilizationResult",
+    "VerificationDiagram",
 ]

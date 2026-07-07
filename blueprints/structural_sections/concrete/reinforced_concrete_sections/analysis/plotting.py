@@ -1,4 +1,4 @@
-"""IDEA-RCS-style strain/stress-over-height plotting for reinforced-concrete section results.
+"""Strain/stress-over-height plotting for reinforced-concrete section results.
 
 Draws three panels sharing the section-height axis: the section with its reinforcement, the linear
 strain profile and the stress profile. The height axis is the direction perpendicular to the neutral
@@ -26,10 +26,14 @@ if TYPE_CHECKING:
 
     from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
         BiaxialInteractionResult,
+        InteractionSection,
+        InteractionSurface,
         MomentCurvatureResult,
+        MomentInteractionEnvelope,
         MomentInteractionResult,
         StrainPlane,
         StressStrainResult,
+        VerificationDiagram,
     )
 
 # Strain gradient (ratio/mm) below which the section is treated as having no neutral axis (pure axial).
@@ -181,6 +185,167 @@ def plot_interaction_diagram(result: MomentInteractionResult, *, figsize: tuple[
     ax.set_xlabel("$M_{Rd}$ [kNm]")
     ax.set_ylabel("$N_{Rd}$ [kN]  (tension +)")
     ax.set_title(f"N-M interaction diagram ({_THETA} = {result.theta:g}{_DEGREE})")
+    ax.invert_yaxis()  # compression (negative) on top, tension (positive) below
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    return fig
+
+
+def plot_interaction_envelope(result: MomentInteractionEnvelope, *, figsize: tuple[float, float] = (7.0, 5.0)) -> Figure:
+    """Plot a closed uniaxial N-M interaction envelope (signed M on the x-axis, N on the y-axis, tension +).
+
+    Unlike :func:`plot_interaction_diagram`, which plots the resultant (unsigned) moment of a single
+    branch, this plots the signed moment component of the envelope's bending axis, so the positive- and
+    negative-moment sides close into one loop.
+
+    Parameters
+    ----------
+    result : MomentInteractionEnvelope
+        The closed interaction envelope.
+    figsize : tuple[float, float]
+        Figure size in inches.
+
+    Returns
+    -------
+    Figure
+        The matplotlib figure with the closed interaction envelope.
+    """
+    moments = [point.m_y if result.axis == "y" else point.m_z for point in result.points]
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot(moments, [point.n for point in result.points], "-o", ms=3, color=_STRESS_COLOUR)
+    ax.axhline(0.0, color="grey", lw=0.8)
+    ax.axvline(0.0, color="grey", lw=0.8)
+    ax.set_xlabel(f"$M_{{{result.axis},Rd}}$ [kNm]")
+    ax.set_ylabel("$N_{Rd}$ [kN]  (tension +)")
+    ax.set_title(f"N-M interaction envelope (about the {result.axis}-axis)")
+    ax.invert_yaxis()  # compression (negative) on top, tension (positive) below
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    return fig
+
+
+def _section_labels(result: InteractionSection) -> tuple[str, str]:
+    """The x-axis label and title for a planar N-M section, per its cut kind."""
+    m_y, m_z = result.fixed
+    if result.kind == "n_my":
+        return "$M_{y,Rd}$ [kNm]", f"N-$M_y$ section ($M_z$ = {m_z:g} kNm)"
+    if result.kind == "n_mz":
+        return "$M_{z,Rd}$ [kNm]", f"N-$M_z$ section ($M_y$ = {m_y:g} kNm)"
+    angle = math.degrees(math.atan2(m_z, m_y))
+    return "$M_{Rd}$ [kNm]", f"N-M resultant section (moment direction {angle:g}{_DEGREE})"
+
+
+def plot_interaction_surface(result: InteractionSurface, *, figsize: tuple[float, float] = (7.0, 6.0), n_levels: int = 24) -> Figure:
+    """3D plot of the ULS interaction surface in (M_y, M_z, N).
+
+    The surface is resampled onto a common axial grid — each level a fixed-N ring interpolated from the
+    meridians — and drawn as a coloured surface, with the axial force on the vertical axis (tension
+    positive).
+
+    Parameters
+    ----------
+    result : InteractionSurface
+        The sampled interaction surface.
+    figsize : tuple[float, float]
+        Figure size in inches.
+    n_levels : int
+        Number of axial rings sampled across the surface's axial range.
+
+    Returns
+    -------
+    Figure
+        The matplotlib figure with the 3D interaction surface.
+    """
+    meridians = result.meridians
+    n_min = max(min(point.n for point in meridian.points) for meridian in meridians)
+    n_max = min(max(point.n for point in meridian.points) for meridian in meridians)
+    rings = [result.ring(float(n)).points for n in np.linspace(n_min, n_max, n_levels)]
+    m_y = np.array([[point.m_y for point in ring] for ring in rings])
+    m_z = np.array([[point.m_z for point in ring] for ring in rings])
+    axial = np.array([[point.n for point in ring] for ring in rings])
+
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(projection="3d")
+    ax.plot_surface(m_y, m_z, axial, cmap="viridis", alpha=0.85, linewidth=0.2, edgecolor="grey")
+    ax.set_xlabel("$M_{y,Rd}$ [kNm]")
+    ax.set_ylabel("$M_{z,Rd}$ [kNm]")
+    ax.set_zlabel("$N_{Rd}$ [kN]  (tension +)")
+    ax.invert_zaxis()  # compression (negative) on top, tension (positive) below
+    ax.set_title("ULS interaction surface")
+    fig.tight_layout()
+    return fig
+
+
+def plot_interaction_section(result: InteractionSection, *, figsize: tuple[float, float] = (7.0, 5.0)) -> Figure:
+    """Plot a closed planar N-M section (signed M on the x-axis, N on the y-axis, tension +).
+
+    The plotted moment and the labels follow the section's cut kind: the signed resultant projected onto
+    the moment direction for a resultant section, the signed M_y or M_z for a fixed-component section.
+
+    Parameters
+    ----------
+    result : InteractionSection
+        The closed N-M section.
+    figsize : tuple[float, float]
+        Figure size in inches.
+
+    Returns
+    -------
+    Figure
+        The matplotlib figure with the closed section.
+    """
+    xlabel, title = _section_labels(result)
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot(result.signed_moments(), [point.n for point in result.points], "-o", ms=3, color=_STRESS_COLOUR)
+    ax.axhline(0.0, color="grey", lw=0.8)
+    ax.axvline(0.0, color="grey", lw=0.8)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel("$N_{Rd}$ [kN]  (tension +)")
+    ax.set_title(title)
+    ax.invert_yaxis()  # compression (negative) on top, tension (positive) below
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    return fig
+
+
+def plot_verification(result: VerificationDiagram, *, figsize: tuple[float, float] = (7.0, 5.0)) -> Figure:
+    """Plot a capacity section with the design-action and capacity markers and the unity check.
+
+    The closed capacity section is drawn along the design moment direction; the design action and the
+    capacity are marked at the design axial force (both on the ``N = N_Ed`` line), and the title states
+    the utilization. The capacity marker comes from the exact check, so it may sit marginally off the
+    interpolated loop.
+
+    Parameters
+    ----------
+    result : VerificationDiagram
+        The verification diagram (capacity section plus unity-check result).
+    figsize : tuple[float, float]
+        Figure size in inches.
+
+    Returns
+    -------
+    Figure
+        The matplotlib figure with the capacity section and the unity-check markers.
+    """
+    section = result.section
+    check = result.utilization
+    assert check.m_rd is not None  # a verification diagram is only built for a bending check
+    n_ed = check.forces.n
+    xlabel, _ = _section_labels(section)
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot(section.signed_moments(), [point.n for point in section.points], "-", color=_STRESS_COLOUR, lw=1.6)
+    ax.axhline(0.0, color="grey", lw=0.8)
+    ax.axvline(0.0, color="grey", lw=0.8)
+    ax.plot([check.m_ed, check.m_rd], [n_ed, n_ed], "--", color="grey", lw=0.9)
+    ax.plot(check.m_ed, n_ed, "x", color=_NEUTRAL_AXIS_COLOUR, ms=11, mew=2.2, label=f"$M_{{Ed}}$ = {check.m_ed:.1f} kNm")
+    ax.plot(check.m_rd, n_ed, "x", color=_STRESS_COLOUR, ms=11, mew=2.2, label=f"$M_{{Rd}}$ = {check.m_rd:.1f} kNm")
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel("$N_{Rd}$ [kN]  (tension +)")
+    status = "OK" if check.is_ok else "exceeded"
+    ax.set_title(f"ULS verification - unity check {check.utilization:.2f} ({status})")
+    ax.invert_yaxis()  # compression (negative) on top, tension (positive) below
+    ax.legend(loc="best")
     ax.grid(alpha=0.3)
     fig.tight_layout()
     return fig

@@ -282,8 +282,8 @@ def _curvature_concrete_profile(concrete: ConcreteMaterial, elastic_modulus: MPA
     """Build the bilinear-horizontal concrete curve for the moment-curvature analysis.
 
     Compression is linear at the given elastic modulus up to f_cd, then a horizontal plateau to eps_cu3
-    (the diagram IDEA StatiCa RCS uses for its N-M-kappa stiffness points, keeping moment-curvature
-    results benchmarkable). Tension is linear up to the flexural tensile strength f_ctm,fl, then softens
+    (the bilinear-horizontal diagram commonly used for N-M-kappa stiffness points, keeping
+    moment-curvature results benchmarkable). Tension is linear up to the flexural tensile strength f_ctm,fl, then softens
     to zero at twice the cracking strain — a near-brittle drop that produces the cracking kink in the
     moment-curvature curve while staying numerically stable.
 

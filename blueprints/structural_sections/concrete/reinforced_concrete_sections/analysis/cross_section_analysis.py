@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import replace
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_7_serviceability_limit_state.formula_7_18 import Form7Dot18DeformationParameter
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_7_serviceability_limit_state.formula_7_19 import Form7Dot19DistributionCoefficient
@@ -31,12 +31,15 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
     BiaxialInteractionResult,
+    InteractionSurface,
     MomentCurvatureResult,
+    MomentInteractionEnvelope,
     MomentInteractionResult,
     Regime,
     StressStrainResult,
     UltimateCapacityResult,
     UtilizationResult,
+    VerificationDiagram,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.base import ReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
@@ -233,6 +236,79 @@ class CrossSectionAnalysis:
         self._require_rebars("Interaction analysis")
         return moment_interaction(self._backend_section(AnalysisLevel.ULS), theta, n_points)
 
+    def interaction_envelope(self, *, axis: Literal["y", "z"] = "y", n_points: int = 24) -> MomentInteractionEnvelope:
+        """Generate the closed uniaxial N-M interaction envelope about a single bending axis.
+
+        Where :meth:`interaction` traces one neutral-axis angle — a single side of the envelope — this
+        combines the positive- and negative-moment branches into one closed loop, the familiar closed
+        "N-M resultant" interaction envelope. For ``axis="y"`` it runs the sagging
+        (``theta=0``) and hogging (``theta=180``) branches; for ``axis="z"`` the ``theta=90`` and
+        ``theta=-90`` branches. The plotted moment keeps its sign, so an asymmetrically reinforced
+        section shows its two different capacities rather than one branch mirrored.
+
+        Parameters
+        ----------
+        axis : str
+            The bending axis of the envelope: ``"y"`` (sagging/hogging about the y-axis) or ``"z"``
+            (about the z-axis).
+        n_points : int
+            Number of points per branch, forwarded to :meth:`interaction`; the closed loop carries
+            roughly twice this number.
+
+        Returns
+        -------
+        MomentInteractionEnvelope
+            The closed N-M interaction envelope in Blueprints conventions, with a ``plot()`` method.
+
+        Raises
+        ------
+        ValueError
+            If ``axis`` is not ``"y"`` or ``"z"``, if the cross-section has no longitudinal
+            reinforcement, or if a branch point cannot reach equilibrium.
+        """
+        if axis not in ("y", "z"):
+            raise ValueError(f"The bending axis must be 'y' or 'z', got {axis!r}.")
+        positive_theta, negative_theta = (0.0, 180.0) if axis == "y" else (90.0, -90.0)
+        positive = self.interaction(theta=positive_theta, n_points=n_points)
+        negative = self.interaction(theta=negative_theta, n_points=n_points)
+        return MomentInteractionEnvelope.from_branches(positive, negative, axis=axis)
+
+    def interaction_surface(self, *, n_theta: int = 24, n_points: int = 24) -> InteractionSurface:
+        """Build the ULS interaction surface in (N, M_y, M_z) by sweeping the neutral-axis angle.
+
+        The surface is sampled as ``n_theta`` meridians over a full revolution, each a uniaxial N-M
+        diagram at a fixed neutral-axis angle (:meth:`interaction`). It is the general parent of the
+        fixed-angle diagram and the fixed-axial-force envelope: any planar section is sliced from it, such
+        as the fixed-axial-force ring (:meth:`~...InteractionSurface.ring`) or the fixed-direction
+        N-M resultant section (:meth:`~...InteractionSurface.section_resultant`).
+
+        The build runs one interaction diagram per angle, so it is heavier than a single diagram; its
+        slicing uses interpolation, so the surface is a visualization tool. The governing unity check
+        stays on the exact routines (:meth:`bending_capacity`, :meth:`biaxial_interaction`).
+
+        Parameters
+        ----------
+        n_theta : int
+            Number of neutral-axis angles sampled over ``[0, 360)``. An even value places meridians
+            exactly on the principal directions (0, 90, 180, 270 deg).
+        n_points : int
+            Number of points per meridian, forwarded to :meth:`interaction`.
+
+        Returns
+        -------
+        InteractionSurface
+            The sampled interaction surface, with ``ring`` and ``section_resultant`` slicing methods.
+
+        Raises
+        ------
+        ValueError
+            If the cross-section has no longitudinal reinforcement, or if a meridian cannot be computed.
+        """
+        self._require_rebars("Interaction surface analysis")
+        thetas = tuple(index * 360.0 / n_theta for index in range(n_theta))
+        meridians = tuple(self.interaction(theta=theta, n_points=n_points) for theta in thetas)
+        return InteractionSurface(thetas=thetas, meridians=meridians, raw=None)
+
     def biaxial_interaction(self, *, n: KN = 0.0, n_points: int = 48) -> BiaxialInteractionResult:
         """Generate the biaxial M_y-M_z interaction envelope at a fixed axial force.
 
@@ -416,6 +492,51 @@ class CrossSectionAnalysis:
             m_rd = self.bending_capacity(n=n_ed, theta=theta).m_rd
             governing = "uniaxial bending"
         return UtilizationResult(forces=forces_ed, utilization=m_ed / m_rd, governing=governing, n_rd=n_rd, m_ed=m_ed, m_rd=m_rd)
+
+    def verification_diagram(self, forces_ed: SectionForces, *, n_theta: int = 24, n_points: int = 24, n_levels: int = 48) -> VerificationDiagram:
+        """Draw the ULS unity check of a design action on the capacity section along its moment direction.
+
+        Runs the exact unity check (:meth:`verify`) and slices the resultant capacity section
+        (:meth:`~...InteractionSurface.section_resultant`) along the design moment direction, so the
+        returned diagram plots the design action and the capacity as two markers on one N-M axes with the
+        utilization. The check needs a bending action: a pure axial design action, or one beyond the axial
+        capacity, has no moment section to draw.
+
+        Building the surface runs one interaction diagram per angle, so this is heavier than a single
+        capacity call; the capacity marker itself comes from the exact :meth:`verify`, not from the
+        interpolated loop.
+
+        Parameters
+        ----------
+        forces_ed : SectionForces
+            The ULS design action in Blueprints conventions (kN/kNm, tension positive).
+        n_theta : int
+            Number of neutral-axis angles for the surface, forwarded to :meth:`interaction_surface`.
+        n_points : int
+            Number of points per meridian, forwarded to :meth:`interaction_surface`.
+        n_levels : int
+            Number of axial levels for the section slice.
+
+        Returns
+        -------
+        VerificationDiagram
+            The verification diagram, with a ``plot()`` method.
+
+        Raises
+        ------
+        ValueError
+            If the cross-section has no longitudinal reinforcement, or if the design action is pure axial
+            or beyond the axial capacity (no bending section to draw).
+        """
+        utilization = self.verify(forces_ed)
+        if utilization.m_rd is None:
+            raise ValueError(
+                "A verification diagram needs a bending design action; the given action is pure axial or beyond the "
+                "axial capacity, so there is no moment section to draw. Use verify() for the axial check."
+            )
+        surface = self.interaction_surface(n_theta=n_theta, n_points=n_points)
+        section = surface.section_resultant(m_y=forces_ed.m_y, m_z=forces_ed.m_z, n_levels=n_levels)
+        return VerificationDiagram(section=section, utilization=utilization)
 
     def _require_rebars(self, analysis: str = "Cracked analysis") -> None:
         """Raise a clear error when an analysis needs longitudinal reinforcement and there is none."""

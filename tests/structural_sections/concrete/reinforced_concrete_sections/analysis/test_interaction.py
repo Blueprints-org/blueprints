@@ -61,6 +61,7 @@ class TestInteractionDiagram:
             (ax,) = figure.axes
             assert "M" in ax.get_xlabel()
             assert "N" in ax.get_ylabel()
+            assert ax.get_ylim()[0] > ax.get_ylim()[1]  # compression (negative) drawn on top
         finally:
             plt.close(figure)
 
