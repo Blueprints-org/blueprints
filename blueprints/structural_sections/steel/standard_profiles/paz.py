@@ -104,7 +104,7 @@ class PAZ(metaclass=StandardProfileMeta):
     -------------
         >>> profile = PAZ.PAZ4350
         >>> print(isinstance(profile, SheetpileZProfile))  # True
-        >>> print(profile.number_of_sheets)  # 2
+        >>> print(profile.number_of_sheets)
         >>>
         >>> # To iterate over all available PAZ profiles:
         >>> for profile in PAZ:
