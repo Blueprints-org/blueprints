@@ -70,6 +70,79 @@ plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
 ```
 
+## Closed N-M Resultant Envelope
+
+`interaction` traces one side of the diagram at a fixed neutral-axis angle. `interaction_envelope` stitches the positive- and negative-moment branches into the closed "N-M resultant" loop, plotting the **signed** moment — so an asymmetrically reinforced section shows both of its (different) capacities instead of one branch mirrored onto the other:
+
+```python exec="on" source="material-block" result="ansi" session="rc_uls"
+envelope = analysis.interaction_envelope(axis="y")
+moments = [point.m_y for point in envelope.points]
+print(f"Peak sagging M_y: {max(moments):6.1f} kNm")
+print(f"Peak hogging M_y: {min(moments):6.1f} kNm")
+```
+
+```python exec="on" source="above" result="html" html="true" session="rc_uls"
+envelope.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+The two branches share the squash and pure-tension poles, so the loop closes there; in between, the sagging (top-tension) and hogging (bottom-tension) capacities differ because this beam only has bottom reinforcement.
+
+## Interaction Surface and Sections
+
+`interaction_surface` samples the full 3-D capacity surface in (N, M_y, M_z) as neutral-axis-angle meridians — the general parent of the fixed-angle diagram and the fixed-axial-force envelope. Any planar section slices from it, and the cutting plane is fixed by the design forces, so a section's shape depends on them:
+
+- `ring(n)` — the M_y-M_z ring at a fixed axial force (a horizontal slice, the same as `biaxial_interaction`)
+- `section_resultant(m_y, m_z)` — the closed N-M loop along a moment direction
+- `section_n_my(m_z=...)` / `section_n_mz(m_y=...)` — the N-M_y / N-M_z loops at a fixed transverse moment
+
+```python exec="on" source="material-block" result="ansi" session="rc_uls"
+surface = analysis.interaction_surface(n_theta=16, n_points=12)
+
+ring = surface.ring(0)  # M_y-M_z capacity ring at N = 0
+print(f"Ring at N=0: strong-axis M_y = {ring.capacity_along(1, 0):.1f} kNm, weak-axis M_z = {ring.capacity_along(0, 1):.1f} kNm")
+
+section = surface.section_n_mz(m_y=200)  # N-M_z at a fixed M_y = 200 kNm
+print(f"N-M_z section at M_y=200: max M_z = {max(point.m_z for point in section.points):.1f} kNm")
+```
+
+```python exec="on" source="above" result="html" html="true" session="rc_uls"
+surface.section_resultant(m_y=1, m_z=0).plot()  # the closed N-M resultant loop about the y-axis
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+The surface is a **visualization tool**: its sections are interpolated across the meridians, so the governing unity check stays on the exact `bending_capacity` / `biaxial_interaction` routines. Building the surface runs one interaction diagram per angle, so keep `n_theta` modest unless you need a smooth section.
+
+`plot_3d` shows the whole (M_y, M_z, N) capacity envelope that every section above slices through. Rendered as a rotation you can step through the viewing angles (drag the slider or press play):
+
+```python exec="on" source="material-block" result="html" html="true" session="rc_uls"
+import matplotlib.animation as animation
+
+fig = surface.plot_3d()
+ax = fig.axes[0]
+
+
+def spin(azimuth):
+    ax.view_init(elev=22, azim=azimuth)
+
+
+rotation = animation.FuncAnimation(fig, spin, frames=range(0, 360, 30), interval=200)
+print(rotation.to_jshtml(default_mode="loop"))
+
+import matplotlib.pyplot as plt  # markdown-exec: hide
+plt.close(fig)  # markdown-exec: hide
+```
+
 ## Biaxial Interaction
 
 For a column under bending about both axes, `biaxial_interaction` traverses the neutral-axis angle over a full revolution and returns the M_y-M_z capacity envelope at a fixed axial force:
@@ -183,11 +256,33 @@ print(f"M_Ed = {biaxial_check.m_ed:.0f} kNm, M_Rd = {biaxial_check.m_rd:.0f} kNm
 print(f"Utilization:     {biaxial_check.utilization:.2f}  ({'OK' if biaxial_check.is_ok else 'NOT OK'})")
 ```
 
+## Verification Diagram
+
+`verification_diagram` draws the unity check on the capacity section: it runs the exact `verify` and slices the resultant capacity section along the design moment direction, so the design action and the capacity appear as two markers on one N-M plot with the utilization. The capacity marker comes from the exact check, not from the interpolated loop:
+
+```python exec="on" source="material-block" result="ansi" session="rc_uls"
+diagram = analysis.verification_diagram(SectionForces(n=0, m_y=200), n_theta=16, n_points=12)
+check = diagram.utilization
+print(f"M_Ed = {check.m_ed:.0f} kNm, M_Rd = {check.m_rd:.1f} kNm, utilization = {check.utilization:.2f}")
+```
+
+```python exec="on" source="above" result="html" html="true" session="rc_uls"
+diagram.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+The design action (green) sits inside the capacity loop and the capacity marker (red) on its boundary along the load direction; a pure axial action has no moment section to draw, so use `verify` directly for that case.
+
 !!! info "Modelling assumptions (ULS and creep)"
 
     - **Reinforcement at ULS**: the simplified horizontal branch at `f_yd` without a strain limit is the default (EN 1992-1-1 art. 3.2.7(2)(b)); the inclined branch with `ε_ud = 0.9·ε_uk` is available via `steel_branch=SteelBranch.INCLINED`.
     - **Concrete at ULS**: the design diagram follows the material's `diagram_type` (bilinear default, parabola-rectangle via `DiagramType.PARABOLIC`), always at `f_cd`.
-    - **Moment-curvature** uses a bilinear-horizontal concrete curve at `f_cd` (the diagram IDEA StatiCa RCS uses for its N-M-κ stiffness points) with a near-brittle tension branch up to `f_ctm,fl`.
+    - **Moment-curvature** uses a bilinear-horizontal concrete curve at `f_cd` (a common diagram for N-M-κ stiffness points) with a near-brittle tension branch up to `f_ctm,fl`.
     - **Creep** is modelled through the effective modulus `E_c,eff = E_cm / (1 + φ)` only, with φ as user input: shrinkage, the age-adjusted effective modulus (AAEM) and tension stiffening are out of scope.
     - **Cracked biaxial SLS** analysis remains unsupported (see the SLS page); the ULS analyses are fully biaxial.
 
@@ -216,10 +311,16 @@ hogging = analysis.bending_capacity(theta=180)
 print(f"Sagging M_Rd: {sagging.m_rd:.1f} kNm (neutral axis at {sagging.neutral_axis_depth:.0f} mm)")
 print(f"Hogging M_Rd: {hogging.m_rd:.1f} kNm")
 
-# uniaxial N-M interaction diagram
+# uniaxial N-M interaction diagram, and the closed N-M resultant envelope (both moment signs)
 diagram = analysis.interaction()
 print(f"Squash load: {min(point.n for point in diagram.points):.0f} kN")
 diagram.plot().show()
+analysis.interaction_envelope(axis="y").plot().show()
+
+# interaction surface: any planar N-M section slices from it (here the N-M resultant loop), or view it in 3D
+surface = analysis.interaction_surface(n_theta=16, n_points=12)
+surface.section_resultant(m_y=1, m_z=0).plot().show()
+surface.plot_3d().show()
 
 # moment-curvature, short-term and long-term
 curve = analysis.moment_curvature()
@@ -235,6 +336,9 @@ uls_state.plot().show()
 # unity check of a design action (automatic axial / uniaxial / biaxial routing)
 check = analysis.verify(SectionForces(n=-200, m_y=150))
 print(f"Unity check: {check.utilization:.2f} ({'OK' if check.is_ok else 'NOT OK'}), governing: {check.governing}")
+
+# the same check drawn on the capacity section (design action + capacity markers)
+analysis.verification_diagram(SectionForces(n=-200, m_y=150)).plot().show()
 
 # biaxial: a 400 x 400 mm column with a corner bar layout
 column = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=concrete)
@@ -254,9 +358,10 @@ print(f"Biaxial unity check: {biaxial_check.utilization:.2f} ({'OK' if biaxial_c
 This page demonstrated the ULS toolbox of `CrossSectionAnalysis`:
 
 1. **Compute** the bending capacity with `bending_capacity` — sagging, hogging, about either axis, at any axial force
-2. **Trace** the uniaxial N-M `interaction` diagram and the `biaxial_interaction` M_y-M_z envelope
-3. **Follow** the full `moment_curvature` response, short-term or long-term via the creep coefficient
-4. **Inspect** the ultimate stress/strain state of a design action with `stress(..., regime=Regime.ULS)`
-5. **Check** a design action with `verify` (automatic axial / uniaxial / biaxial routing)
+2. **Trace** the uniaxial N-M `interaction` diagram, the closed `interaction_envelope`, and the `biaxial_interaction` M_y-M_z envelope
+3. **Slice** any planar N-M section from the `interaction_surface` (`ring`, `section_resultant`, `section_n_my`, `section_n_mz`), or view it in 3D with `plot_3d`
+4. **Follow** the full `moment_curvature` response, short-term or long-term via the creep coefficient
+5. **Inspect** the ultimate stress/strain state of a design action with `stress(..., regime=Regime.ULS)`
+6. **Check** a design action with `verify`, and draw it on the capacity section with `verification_diagram`
 
 **Next:** see how these results are pinned to hand calculations and reference software on the [validation](validation.md) page.

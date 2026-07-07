@@ -296,6 +296,19 @@ IDEA's interaction export is a biaxial `My-Mz` envelope at a constant axial forc
 
 The uniaxial capacities — sagging and hogging, the top and bottom of each envelope — match to 0.1 %. The envelopes agree within ~3 % over most of the curve, widening to ~5–10 % towards pure weak-axis bending (`Mz`, the sides of each envelope), where the two solvers traverse the neutral-axis angle differently. This is a normal difference between biaxial ULS algorithms, not a modelling error.
 
+### Interaction surface sections
+
+The N-Mres, N-My and N-Mz interaction views are **planar sections of the same capacity surface** validated above: they add no new physics, only slicing and interpolation on top of the fixed-angle capacities (sagging/hogging) and the biaxial envelope. `interaction_surface` reproduces those capacities faithfully — the N-M resultant section about the y-axis returns the exact sagging and hogging `M_Rd` at `N = 0`, matching the IDEA StatiCa RCS values in the [uniaxial N-My table](#uniaxial-n-my) above:
+
+```python exec="on" source="material-block" result="ansi" session="rc_validation"
+surface = analysis.interaction_surface(n_theta=16, n_points=12)
+ring0 = surface.ring(0)  # M_y-M_z capacity ring at N = 0
+print(f"sagging M_Rd at N=0: {ring0.capacity_along(1, 0):6.1f} kNm   (exact 395.3, IDEA 395.8)")
+print(f"hogging M_Rd at N=0: {-ring0.capacity_along(-1, 0):6.1f} kNm   (exact  -10.0, IDEA  -10.0)")
+```
+
+Because each section is a slice of the validated surface, the closed **N-Mres** loop (`section_resultant`), the **N-My** section at a fixed `M_z` (`section_n_my`) and the **N-Mz** section at a fixed `M_y` (`section_n_mz`) reproduce the corresponding N-Mres / N-My / N-Mz interaction views of IDEA StatiCa RCS for the same design forces — including the way the N-Mz section at `M_y = 200 kNm` truncates on the compression side, because the near-squash rings never reach `M_y = 200`. The interpolated sections are for visualization; the exact `bending_capacity` / `biaxial_interaction` anchors above remain the validated quantities.
+
 ### Moment-curvature (M-N-κ)
 
 `moment_curvature` traces the full M-κ response. It is a **hybrid** diagram: the elastic and cracked stiffness use the secant modulus `E_cm` (no tension stiffening), while the ultimate moment uses the design materials (`f_cd`, `f_yd`). Reproduce the two physical anchors:
