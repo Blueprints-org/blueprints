@@ -1,12 +1,13 @@
 # Steel Z-Shaped Sheet Pile Profile
 
-This page demonstrates how to create and visualize Z-shaped sheet pile profiles using the Blueprints library. Z-shaped sheet piles are interlocking structural elements used in retaining walls and cofferdams. The `AZ` series is a standardized family of Z-shaped sheet piles available in Blueprints.
+This page demonstrates how to create and visualize Z-shaped sheet pile profiles using the Blueprints library. Z-shaped sheet piles are interlocking structural elements used in retaining walls and cofferdams. The `AZ` and `PAZ` series are standardized families of Z-shaped sheet piles available in Blueprints.
 
 We will:
 
 - Create, plot and inspect the section properties of a standard AZ profile
 - Combine several interlocking sheets into a wall
 - Apply a corrosion allowance
+- Use a standard PAZ combined double sheet pile
 - Define a fully custom Z-shaped sheet pile from raw coordinates
 
 ## 1. Create a Standard AZ Profile
@@ -51,7 +52,7 @@ print(f"Section modulus (zxx_plus): {properties.zxx_plus:.0f} mm³")
 
 ## 4. Build a Wall from Multiple Interlocking Sheets
 
-Sheet piles are installed side by side to form a continuous wall. Use the `multiple_sheets()` method to create a new profile made up of several interlocking sheets. Every second sheet is automatically mirrored and connected at the interlock, matching how the sheets snap together on site.
+Sheet piles are installed side by side to form a continuous wall. Use the `multiple_sheets()` method to create a new profile made up of several interlocking sheets. Every second sheet is automatically mirrored and connected at the interlock, matching how the sheets snap together on site. At each interlock a small connector element is drawn between adjacent sheets to represent the clutch where the two sheets lock together, alternating between the top and bottom of the wall.
 
 ```python exec="on" source="material-block" session="sheetpile" result="html" html="true"
 az_wall = az_profile.multiple_sheets(number_of_sheets=4)
@@ -79,7 +80,29 @@ plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
 ```
 
-## 6. Define a Custom Z-Shaped Sheet Pile (optional)
+## 6. Use a Standard PAZ Combined Sheet Pile (optional)
+
+The `PAZ` series ("Pile and AZ") is another standardized family of Z-shaped sheet piles. Access them just like the AZ profiles from the `standard_profiles` module. Each `PAZ` profile is a `SheetpileZProfile` and supports the same `plot()`, `section_properties()`, `multiple_sheets()` and `with_corrosion()` methods shown above.
+
+```python exec="on" source="material-block" result="ansi" session="sheetpile"
+from blueprints.structural_sections.steel.standard_profiles import PAZ
+
+paz_profile = PAZ.PAZ4370
+print(f"Profile name: {paz_profile.name}")
+print(f"Interlocking distance (center-to-center): {paz_profile.interlocking_ctc} mm")
+```
+
+```python exec="on" source="material-block" session="sheetpile" result="html" html="true"
+fig = paz_profile.plot(show=False)
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+## 7. Define a Custom Z-Shaped Sheet Pile (optional)
 
 When a profile is not part of the standard database, you can build one directly from its outline coordinates using `SheetpileZProfile`. Provide the `(x, y)` coordinates of the single-sheet outline together with the web thickness, flange thickness and the center-to-center interlocking distance. The custom profile supports the same `plot()`, `section_properties()`, `multiple_sheets()` and `with_corrosion()` methods as the standard profiles.
 
