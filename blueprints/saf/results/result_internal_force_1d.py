@@ -4,12 +4,12 @@ Internal forces on line, beam, member. Result in member axis (not in principal a
 """
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 from blueprints.type_alias import KN, KNM, M
 
 
-class ResultOn(str, Enum):
+class ResultOn(StrEnum):
     """Enumeration for where the internal force result is located.
 
     Following SAF standard specification for ResultInternalForce1D.
@@ -19,7 +19,7 @@ class ResultOn(str, Enum):
     ON_RIB = "On rib"
 
 
-class ResultFor(str, Enum):
+class ResultFor(StrEnum):
     """Enumeration for the source type of the internal force result.
 
     Following SAF standard specification for ResultInternalForce1D.
@@ -53,7 +53,7 @@ class ResultInternalForce1D:
     - Shear force V_y: positive = left (see coordinate system above).
     - Shear force V_z: positive = up (see coordinate system above).
     - Torsion M_x: positive = from y to z (twisting around x-axis, see coordinate system above).
-    - Bending moment M_y: positive = from z to x (rotation around y-axis, see coordinate system above).
+    - Bending moment M_y: positive = from x to z (rotation around y-axis, see coordinate system above).
     - Bending moment M_z: positive = from x to y (rotation around z-axis, see coordinate system above).
 
     Attributes

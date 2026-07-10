@@ -26,7 +26,7 @@ class Form9Dot11MinimumShearReinforcement(Formula):
         r"""[$$A_{sw,min}$$] Minimum shear reinforcement [$$mm^2$$].
 
         The spirit of the equation is to calculate the shear reinforcement area. The formula is converted such that
-        it actully does that, as opposed to the presentation in the Eurocode which only checks if the area is sufficient
+        it actually does that, as opposed to the presentation in the Eurocode which only checks if the area is sufficient
         with a boolean result.
 
         EN 1992-1-1:2004 art.9.4.3(2) - Formula (9.11)

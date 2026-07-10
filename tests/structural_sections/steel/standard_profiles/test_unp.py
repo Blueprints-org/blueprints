@@ -50,3 +50,10 @@ class TestUNP:
 
         profile3 = UNP.UNP300
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the UNP class yields valid profiles."""
+        for profile in UNP:
+            assert isinstance(profile, UNPProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0
