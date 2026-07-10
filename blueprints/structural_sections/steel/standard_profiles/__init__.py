@@ -7,6 +7,7 @@ from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.standard_profiles.hem import HEM
 from blueprints.structural_sections.steel.standard_profiles.ipe import IPE
 from blueprints.structural_sections.steel.standard_profiles.lnp import LNP
+from blueprints.structural_sections.steel.standard_profiles.paz import PAZ
 from blueprints.structural_sections.steel.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.standard_profiles.rhscf import RHSCF
 from blueprints.structural_sections.steel.standard_profiles.shs import SHS
@@ -23,6 +24,7 @@ __all__ = [
     "HEM",
     "IPE",
     "LNP",
+    "PAZ",
     "RHS",
     "RHSCF",
     "SHS",
