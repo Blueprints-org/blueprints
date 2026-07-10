@@ -122,6 +122,7 @@ name = "blue-prints"
 version = "0.6.3"
 source = { editable = "." }
 dependencies = [
+    { name = "concreteproperties" },
     { name = "googletrans" },
     { name = "latex2mathml" },
     { name = "mathml2omml" },
@@ -202,6 +203,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "concreteproperties", specifier = ">=0.8.0" },
     { name = "googletrans", specifier = ">=4.0.2" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
     { name = "mathml2omml", specifier = ">=0.0.2" },
@@ -406,6 +408,26 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/e9/a8/fb783cb0abe2b5fded9f55e5703015cdf1c9c85b3669087c538dd15a6a86/comm-0.2.2.tar.gz", hash = "sha256:3fd7a84065306e07bea1773df6eb8282de51ba82f77c72f9c85716ab11fe980e", size = 6210, upload-time = "2024-03-12T16:53:41.133Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e6/75/49e5bfe642f71f272236b5b2d2691cf915a7283cc0ceda56357b61daa538/comm-0.2.2-py3-none-any.whl", hash = "sha256:e6fb86cb70ff661ee8c9c14e7d36d6de3b4066f1441be4063df9c5009f0a64d3", size = 7180, upload-time = "2024-03-12T16:53:39.226Z" },
+]
+
+[[package]]
+name = "concreteproperties"
+version = "0.8.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cytriangle" },
+    { name = "matplotlib" },
+    { name = "more-itertools" },
+    { name = "numpy" },
+    { name = "quantiphy" },
+    { name = "rich", extra = ["jupyter"] },
+    { name = "scipy" },
+    { name = "sectionproperties" },
+    { name = "shapely" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6d/58/8b330be1f109abc941ad9fe644f60d79da9ce0a80a026ff421c441301a14/concreteproperties-0.8.0.tar.gz", hash = "sha256:7d7a3555d1e0299b3525b232fd57650a59fac65c214f59eeea44dbfe980d830a", size = 4733274, upload-time = "2026-07-06T12:15:11.292Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/34/f92c501555ad328f10aafc5e06040a47440fb24ae5363c789597f95d8118/concreteproperties-0.8.0-py3-none-any.whl", hash = "sha256:0a9c52d4adc24527553906171acbfb8fe6190a6826ff281a193f830645648331", size = 84785, upload-time = "2026-07-06T12:15:09.903Z" },
 ]
 
 [[package]]
