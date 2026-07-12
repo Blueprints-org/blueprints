@@ -147,7 +147,7 @@ The SLS analyzer is also validated against established section-analysis software
     | Section | rectangular 300 × 600 mm |
     | Concrete | C30/37 |
     | Reinforcement | 4⌀25 B500B, lower edge |
-    | Concrete cover (to bar surface) | 50 mm (effective depth d = 538 mm) |
+    | Concrete cover (to bar surface) | 50 mm (effective depth d = 537.5 mm) |
     | Case A — pure bending | `M_y = 200 kNm`, `N = 0`, short-term (φ = 0) |
     | Case B — combined N + M | `M_y = 200 kNm`, `N = -300 kN`, short-term (φ = 0) |
     | Case C — long-term (creep) | `M_y = 200 kNm`, `N = 0`, long-term with `φ = 2` |

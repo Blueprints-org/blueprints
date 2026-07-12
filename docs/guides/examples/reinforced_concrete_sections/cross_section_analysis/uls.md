@@ -1,10 +1,19 @@
 # ULS Capacity & Checks
 
-This example shows the ultimate limit state (ULS) toolbox of the `CrossSectionAnalysis` analyzer: the bending capacity, the N-M and biaxial interaction diagrams, the moment-curvature response and the unity check of a design action.
+This example shows the ultimate limit state (ULS) toolbox of the `CrossSectionAnalysis` analyzer: the bending capacity, the N-M / closed-envelope / biaxial interaction diagrams, the full 3-D interaction surface, the moment-curvature response, and the unity check of a design action (as a number and as a diagram).
 
-All ULS analyses use the design materials — concrete at `f_cd` and reinforcement at `f_yd` — and are fully biaxial.
+All ULS analyses use the design materials — concrete at `f_cd` and reinforcement at `f_yd` — and are fully biaxial. New to the axes, signs and units? See the [conventions on the guide overview](index.md#coordinate-system-signs-and-units); for a one-line map of every method, see the [task → method map](index.md#task-method-map).
 
 This page is part of the [cross-section analysis guide](index.md), together with the [SLS stress/strain analysis](sls.md) and [validation](validation.md) pages.
+
+!!! tip "Which interaction tool do I want?"
+
+    - **`interaction(theta=...)`** — one moment sense at a fixed neutral-axis angle (an open N-M curve).
+    - **`interaction_envelope(axis=...)`** — the closed N-M loop about a principal axis (both senses at once).
+    - **`biaxial_interaction(n=...)`** — the `M_y`-`M_z` capacity envelope at a fixed axial force.
+    - **`interaction_surface()`** — the full 3-D capacity surface; slice any planar section (`ring`, `section_resultant`, `section_n_my`, `section_n_mz`) or view it in 3-D.
+
+    To actually **check** a design action, use `verify` (a number) or `verification_diagram` (a drawing) — not the diagrams directly.
 
 ## Build the Reinforced Cross-section
 
@@ -36,7 +45,7 @@ print(f"Hogging capacity M_Rd:          {hogging.m_rd:6.1f} kNm")
 print(f"Capacity at N = -500 kN:        {with_compression.m_rd:6.1f} kNm")
 ```
 
-The hogging capacity is smaller because this beam only has bottom reinforcement. A moderate compression raises the capacity of an under-reinforced section (N-M interaction).
+The hogging capacity is smaller because this beam only has bottom reinforcement. A moderate compression raises the capacity of an under-reinforced section (N-M interaction). `m_rd` is always a positive **magnitude**; the sign only appears when a capacity is placed on an interaction diagram (where hogging sits on the negative-moment side).
 
 The reinforcement design diagram defaults to the simplified **horizontal branch** at `f_yd` (EN 1992-1-1 art. 3.2.7(2)(b), no strain limit). The **inclined branch** — rising towards `k·f_yd` with the strain limit `ε_ud = 0.9·ε_uk` — is available on the analyzer:
 
@@ -123,6 +132,10 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 The surface is a **visualization tool**: its sections are interpolated across the meridians, so the governing unity check stays on the exact `bending_capacity` / `biaxial_interaction` routines. Building the surface runs one interaction diagram per angle, so keep `n_theta` modest unless you need a smooth section.
 
+!!! tip "Envelope or surface section?"
+
+    For the closed loop about a **principal** axis, `interaction_envelope(axis=...)` is the exact and much cheaper route — it runs only two interaction diagrams. Reach for `section_resultant` (and the surface) only when you already built the surface, or when you need a loop along an **off-axis** moment direction that the envelope cannot give.
+
 `plot_3d` shows the whole (M_y, M_z, N) capacity envelope that every section above slices through. Rendered as a rotation you can step through the viewing angles (drag the slider or press play):
 
 ```python exec="on" source="material-block" result="html" html="true" session="rc_uls"
@@ -180,7 +193,7 @@ The envelope cost grows linearly with `n_points`; `capacity_along` intersects th
 
 ## Moment-Curvature
 
-`moment_curvature` traces the full M-κ response with the design material set: concrete bilinear-horizontal at `f_cd` with a tension branch up to `f_ctm,fl` (producing the cracking kink), reinforcement at `f_yd`. The trace ends at material failure, so the peak reproduces the ultimate capacity. The `creep_coefficient` follows the same mental model as `stress`: `0.0` is short-term (`E_cm`), a positive φ softens the elastic branch to `E_c,eff`:
+`moment_curvature` traces the full M-κ response with a **hybrid** material set: the compression branch is linear at the secant modulus `E_cm` up to `f_cd` and then a horizontal plateau (bilinear-horizontal), with a tension branch up to `f_ctm,fl` (producing the cracking kink), and reinforcement at `f_yd`. The pre-peak stiffness is therefore governed by `E_cm` (so the elastic and cracked branches match an SLS analysis), while the peak reaches the design ultimate moment. The trace ends at material failure, so the peak reproduces the ultimate capacity. The `creep_coefficient` follows the same mental model as `stress`: `0.0` is short-term (`E_cm`), a positive φ softens the elastic branch to `E_c,eff`:
 
 ```python exec="on" source="material-block" result="ansi" session="rc_uls"
 short_term = analysis.moment_curvature()
@@ -188,7 +201,7 @@ long_term = analysis.moment_curvature(creep_coefficient=2.0)
 
 print(f"Ultimate moment (short-term): {short_term.m_ultimate:6.1f} kNm")
 print(f"Ultimate moment (phi = 2):    {long_term.m_ultimate:6.1f} kNm")
-print(f"Bending capacity M_Rd:        {sagging.m_rd:6.1f} kNm  (the M-K peak matches)")
+print(f"Bending capacity M_Rd:        {sagging.m_rd:6.1f} kNm  (the M-kappa peak matches to ~0.5%)")
 ```
 
 ```python exec="on" source="above" result="html" html="true" session="rc_uls"
@@ -203,7 +216,7 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 Creep barely changes the ultimate moment (strength is material-driven) but visibly softens the pre-yield branches — the long-term curve reaches the same moment at a larger curvature.
 
-By default the curve is the bare section response. Passing `tension_stiffening=True` returns the **mean** curvature of EN 1992-1-1 art. 7.4.3 instead — the concrete between cracks keeps carrying tension, stiffening the cracked branch (the curve used for deflections). The distribution factor β is chosen automatically (1.0 short-term, 0.5 when creep marks a sustained load), and the result's `tension_stiffening` flag records that the interpolation was applied. See the [validation page](validation.md#moment-curvature-m-n-) for the comparison against IDEA StatiCa RCS.
+By default the curve is the bare section response. Passing `tension_stiffening=True` returns the **mean** curvature of EN 1992-1-1 art. 7.4.3 instead — the concrete between cracks keeps carrying tension, stiffening the cracked branch (the curve used for deflections). The distribution factor β is chosen automatically (1.0 short-term, 0.5 when creep marks a sustained load), and the result's `tension_stiffening` flag records that the interpolation was applied. See the [validation page](validation.md#moment-curvature-m-n-) for the comparison against reference software.
 
 ```python exec="on" source="material-block" result="ansi" session="rc_uls"
 mean = analysis.moment_curvature(tension_stiffening=True)
@@ -282,7 +295,7 @@ The design action (green) sits inside the capacity loop and the capacity marker 
 
     - **Reinforcement at ULS**: the simplified horizontal branch at `f_yd` without a strain limit is the default (EN 1992-1-1 art. 3.2.7(2)(b)); the inclined branch with `ε_ud = 0.9·ε_uk` is available via `steel_branch=SteelBranch.INCLINED`.
     - **Concrete at ULS**: the design diagram follows the material's `diagram_type` (bilinear default, parabola-rectangle via `DiagramType.PARABOLIC`), always at `f_cd`.
-    - **Moment-curvature** uses a bilinear-horizontal concrete curve at `f_cd` (a common diagram for N-M-κ stiffness points) with a near-brittle tension branch up to `f_ctm,fl`.
+    - **Moment-curvature** uses a hybrid concrete curve: linear at the secant modulus `E_cm` up to `f_cd`, then a horizontal plateau (bilinear-horizontal), with a near-brittle tension branch up to `f_ctm,fl`. The stiffness is `E_cm`-governed; only the peak uses the design ultimate.
     - **Creep** is modelled through the effective modulus `E_c,eff = E_cm / (1 + φ)` only, with φ as user input: shrinkage, the age-adjusted effective modulus (AAEM) and tension stiffening are out of scope.
     - **Cracked biaxial SLS** analysis remains unsupported (see the SLS page); the ULS analyses are fully biaxial.
 

@@ -4,6 +4,8 @@ This example shows how to compute the serviceability (SLS) strains and stresses 
 
 Given a `ReinforcedCrossSection` and a set of `SectionForces`, Blueprints decides whether the section is uncracked or cracked and returns the matching concrete and reinforcement results. The analyzer is shape-agnostic: it works on any `ReinforcedCrossSection` (rectangular, circular, custom).
 
+New to the axes, signs and units? See the [conventions on the guide overview](index.md#coordinate-system-signs-and-units) — in short: **tension positive, compression negative**, in kN / kNm / mm / MPa / ‰.
+
 This page is part of the [cross-section analysis guide](index.md), together with the [ULS capacity & checks](uls.md) and [validation](validation.md) pages.
 
 ## Build the Reinforced Cross-section
@@ -80,7 +82,7 @@ if result.cracked_properties is not None:
 
 !!! note "Two neutral-axis depths under combined N + M"
 
-    `cracked_properties` describes the **pure-bending** cracked section: `m_cr`, `i_cracked` and its `neutral_axis_depth` are load-independent section constants. Under a combined N + M action the **actual** neutral axis is deeper (compression) or shallower (tension) than this pure-bending value — read it from `result.strain_plane.neutral_axis_depth`. The stresses above already reflect that actual, correctly solved state. See the [validation page](validation.md#neutral-axis-actual-state-versus-pure-bending-constant) for the worked comparison.
+    `cracked_properties` describes the **pure-bending** cracked section: `m_cr`, `i_cracked` and its `neutral_axis_depth` are load-independent section constants. Under a combined N + M action the **actual** neutral axis is deeper (compression) or shallower (tension) than this pure-bending value — read it from `result.strain_plane.neutral_axis_depth` (the strain plane is introduced in [The strain plane](#the-strain-plane) below). The stresses above already reflect that actual, correctly solved state. See the [validation page](validation.md#neutral-axis-actual-state-versus-pure-bending-constant) for the worked comparison.
 
 ## Force a Specific Regime
 
@@ -112,7 +114,7 @@ Only the effective modulus is modelled: shrinkage, the age-adjusted effective mo
 
 ## Visualize the Strain and Stress State
 
-`result.plot()` draws the strain (ε) and stress (σ) diagrams over the section height, in the style of section-analysis software such as IDEA StatiCa RCS. It has three panels that share the height axis:
+`result.plot()` draws the strain (ε) and stress (σ) diagrams over the section height, in the style used by section-analysis software. It has three panels that share the height axis:
 
 - **section** — the outline with the reinforcement; the concrete in compression (strain < 0) is hatched.
 - **ε [‰]** — the linear strain profile, with the strain value at each reinforcement bar.
