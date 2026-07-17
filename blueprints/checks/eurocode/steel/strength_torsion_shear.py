@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from typing import Literal
 
 import numpy as np
-from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12
@@ -41,16 +40,14 @@ class CheckStrengthTorsionShearClass12:
     ----------
     steel_cross_section : SteelCrossSection
         The steel cross-section to check.
-    mx : KNM
-        The applied torsional moment (positive value, in kNm).
+    m_x : KNM
+        The applied torsional moment (in kNm).
     v : KN
-        The applied shear force (positive value, in kN).
+        The applied shear force (in kN).
     axis : Literal["Vz", "Vy"]
         Axis along which the shear force is applied. "Vz" (default) for z (vertical), "Vy" for y (horizontal).
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -75,11 +72,10 @@ class CheckStrengthTorsionShearClass12:
     v: KN = 0
     axis: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Torsion strength check for steel class 1 and 2"
 
     def __post_init__(self) -> None:
-        """Post-initialization to extract section properties and check profile type."""
+        """Check on implemented_shapes."""
         implemented_shapes = (IProfile,)
         if type(self.steel_cross_section.profile) not in implemented_shapes:
             raise NotImplementedError(f"The provided profile shape {type(self.steel_cross_section.profile).__name__} has not been implemented yet.")
@@ -265,9 +261,9 @@ class CheckStrengthTorsionShearClass34:
     steel_cross_section : SteelCrossSection
         The steel cross-section to check.
     m_x : KNM
-        The applied torsional moment (positive value, in kNm).
+        The applied torsional moment (in kNm).
     v : KN
-        The applied shear force (positive value, in kN).
+        The applied shear force (in kN).
     axis : Literal["Vz", "Vy"]
         Axis along which the shear force is applied. "Vz" (default) for z (vertical), "Vy" for y (horizontal).
     gamma_m0 : DIMENSIONLESS, optional
