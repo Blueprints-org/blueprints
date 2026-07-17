@@ -34,7 +34,7 @@ class CheckStrengthStVenantTorsionClass1234:
     Parameters
     ----------
     steel_cross_section : SteelCrossSection
-        The steel cross-section, of type I-profile, to check.
+        The steel cross-section to check.
     m_x : KNM
         The applied torsional moment (in kNm).
     gamma_m0 : DIMENSIONLESS, optional
