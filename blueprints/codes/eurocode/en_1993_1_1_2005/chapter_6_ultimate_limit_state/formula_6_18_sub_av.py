@@ -12,7 +12,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_list
 class Form6Dot18SubARolledIandHSection(Formula):
     r"""Class representing formula 6.18suba for the calculation of shear area for a rolled I and H section.
 
-    The equations has been slightly modified to split effects of top and bottom flange.
+    The equation has been slightly modified to split effects of top and bottom flange, when they are not identical.
     """
 
     label = "6.18suba"
@@ -34,6 +34,11 @@ class Form6Dot18SubARolledIandHSection(Formula):
         r"""[$A_v$] Calculation of the shear area for a rolled I and H section with load parallel to web [$mm^2$].
 
         EN 1993-1-1:2005 art.6.2.6(3) - Formula (6.18suba)
+
+        Notes
+        -----
+        The original formula has been slightly modified to split effects of top and bottom flange, when they are not identical.
+        When they do be identical, b2, r2, and tf2 should be equal to b1, r1, and tf1 respectively.
 
         Parameters
         ----------
@@ -93,26 +98,43 @@ class Form6Dot18SubARolledIandHSection(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.18suba."""
-        _equation: str = (
-            r"\max(A - b_1 \cdot t_{f1} - b_2 \cdot t_{f2} + (t_w + 2 \cdot r_1) \cdot \frac{t_{f1}}{2} + "
-            r"(t_w + 2 \cdot r_2) \cdot \frac{t_{f2}}{2}; \eta \cdot h_w \cdot t_w)"
-        )
-        _numeric_equation: str = latex_replace_symbols(
-            _equation,
-            {
-                r"A": f"{self.a:.{n}f}",
-                r"b_1": f"{self.b1:.{n}f}",
-                r"b_2": f"{self.b2:.{n}f}",
-                r"h_w": f"{self.hw:.{n}f}",
-                r"r_1": f"{self.r1:.{n}f}",
-                r"r_2": f"{self.r2:.{n}f}",
-                r"t_{f1}": f"{self.tf1:.{n}f}",
-                r"t_{f2}": f"{self.tf2:.{n}f}",
-                r"t_w": f"{self.tw:.{n}f}",
-                r"\eta": f"{self.eta:.{n}f}",
-            },
-            False,
-        )
+        if self.b1 == self.b2 and self.tf1 == self.tf2 and self.r1 == self.r2:
+            _equation: str = r"max(A - 2 \cdot b \cdot t_f + (t_w + 2 \cdot r) \cdot t_f; \eta \cdot h_w \cdot t_w)"
+            _numeric_equation: str = latex_replace_symbols(
+                _equation,
+                {
+                    r"A": f"{self.a:.{n}f}",
+                    r"b": f"{self.b1:.{n}f}",
+                    r"h_w": f"{self.hw:.{n}f}",
+                    r"r": f"{self.r1:.{n}f}",
+                    r"t_f": f"{self.tf1:.{n}f}",
+                    r"t_w": f"{self.tw:.{n}f}",
+                    r"\eta": f"{self.eta:.{n}f}",
+                },
+                False,
+            )
+        else:
+            _equation: str = (
+                r"\max(A - b_1 \cdot t_{f1} - b_2 \cdot t_{f2} + (t_w + 2 \cdot r_1) \cdot \frac{t_{f1}}{2} + "
+                r"(t_w + 2 \cdot r_2) \cdot \frac{t_{f2}}{2}; \eta \cdot h_w \cdot t_w)"
+            )
+            _numeric_equation: str = latex_replace_symbols(
+                _equation,
+                {
+                    r"A": f"{self.a:.{n}f}",
+                    r"b_1": f"{self.b1:.{n}f}",
+                    r"b_2": f"{self.b2:.{n}f}",
+                    r"h_w": f"{self.hw:.{n}f}",
+                    r"r_1": f"{self.r1:.{n}f}",
+                    r"r_2": f"{self.r2:.{n}f}",
+                    r"t_{f1}": f"{self.tf1:.{n}f}",
+                    r"t_{f2}": f"{self.tf2:.{n}f}",
+                    r"t_w": f"{self.tw:.{n}f}",
+                    r"\eta": f"{self.eta:.{n}f}",
+                },
+                False,
+            )
+
         return LatexFormula(
             return_symbol=r"A_v",
             result=f"{self:.{n}f}",

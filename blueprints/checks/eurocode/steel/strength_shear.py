@@ -1,4 +1,4 @@
-"""Module for checking plastic shear force resistance of steel(Eurocode 3)."""
+"""Module for checking shear force resistance of steel (Eurocode 3)."""
 
 from dataclasses import dataclass
 from typing import Literal
@@ -33,10 +33,14 @@ class CheckStrengthShearClass12:
       ←-----O
        y (horizontal/side, usually weak axis)
 
+    Notes
+    -----
+    Not all profile shapes have been implemented for this check yet. Currently, only I-profiles are supported.
+
     Parameters
     ----------
     steel_cross_section : SteelCrossSection
-        The steel cross-section, of type I-profile, to check.
+        The steel cross-section to check.
     v : KN
         The applied shear force (in kN).
     axis : Literal["Vz", "Vy"]
@@ -203,7 +207,7 @@ class CheckStrengthShearClass12:
 
 @dataclass(frozen=True)
 class CheckStrengthShearClass34:
-    """Class to perform plastic shear force resistance check for steel cross-section class 3 and 4 (Eurocode 3).
+    """Class to perform elastic shear force resistance check for steel cross-section class 3 and 4 (Eurocode 3).
 
     Coordinate System:
 
@@ -263,6 +267,17 @@ class CheckStrengthShearClass34:
         """
         return [EN_1993_1_1_2005]
 
+    def shear_unit_stress(self) -> float:
+        """Calculate the unit shear stress in the steel cross-section.
+
+        Returns
+        -------
+        float
+            The unit shear stress in N/mm².
+        """
+        unit_stress = self.steel_cross_section.profile.unit_stress()
+        return float(np.max(np.abs(unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"])))
+
     def shear_stress(self) -> float:
         """Calculate the maximum shear stress in the steel cross-section using elastic theory.
 
@@ -271,9 +286,8 @@ class CheckStrengthShearClass34:
         float
             The maximum shear stress in N/mm².
         """
-        unit_stress = self.steel_cross_section.profile.unit_stress()
-        unit_sig_zxy = unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"]
-        return float(np.max(np.abs(unit_sig_zxy))) * abs(self.v)
+        unit_stress = self.shear_unit_stress()
+        return unit_stress * abs(self.v)
 
     def elastic_resistance(self) -> float:
         """Calculate the shear force elastic resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.6).
@@ -283,8 +297,8 @@ class CheckStrengthShearClass34:
         float
             The calculated shear force resistance in N.
         """
-        sig_zxy = self.shear_stress()
-        return float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / sig_zxy * abs(self.v) * KN_TO_N)
+        unit_stress = self.shear_unit_stress()
+        return float(self.steel_cross_section.yield_strength / np.sqrt(3) / self.gamma_m0 / unit_stress * KN_TO_N)
 
     def shear_strength_unity_check(self) -> Formula:
         """Calculate the unity check for shear strength of the steel cross-section (EN 1993-1-1:2005 art. 6.2.6 - Formula (6.19)).

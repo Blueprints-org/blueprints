@@ -85,7 +85,7 @@ blueprints/
     eurocode/
       en_1992_1_1_2004/    # Eurocode 2, Part 1-1, 2004 edition
       en_1993_1_1_2005/    # Eurocode 3, Part 1-1, 2005 edition
-      nen_en_1992_1_1_a1_2020/  # Dutch national annex
+      nen_9997_1_c2_2017/  # Dutch NEN standard (NEN 9997-1)
     cur/
       cur_228/             # CUR Recommendation 228
 ```

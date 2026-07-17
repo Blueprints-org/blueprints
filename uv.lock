@@ -2216,15 +2216,6 @@ wheels = [
 ]
 
 [[package]]
-name = "quantiphy"
-version = "2.21"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/34/26/5a14317a74bdd3311963fa45aff8553592117e988a697ccf0d0adfc5be5c/quantiphy-2.21.tar.gz", hash = "sha256:bf8d06ffa7150f69a5c7e3fb4a7a0a535109df85e7c0ab0f39fb317c5c9cafe0", size = 43514, upload-time = "2025-12-26T05:22:52.237Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/27/55/d979f5c13dfd3418c650befc045ada747facb2393be2f39a2744c23032de/quantiphy-2.21-py3-none-any.whl", hash = "sha256:7d145d89a908de38d63c8dc0a8883bc668c85d84ed37fe6535d26cf7c077f69f", size = 43299, upload-time = "2025-12-26T05:22:50.82Z" },
-]
-
-[[package]]
 name = "referencing"
 version = "0.36.2"
 source = { registry = "https://pypi.org/simple" }
