@@ -65,7 +65,7 @@ class CheckStrengthTorsionShearClass12:
     axis = "Vz"  # Shear force applied in z-direction
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = CheckStrengthTorsionShearClass12(heb_300_s355, mx, v=v, axis=axis, gamma_m0=1.0)
+    calc = CheckStrengthTorsionShearClass12(heb_300_s355, m_x=m_x, v=v, axis=axis, gamma_m0=1.0)
     calc.report().to_word("torsion_and_shear_strength.docx", language="nl")
 
     """
@@ -212,7 +212,7 @@ class CheckStrengthTorsionShearClass12:
 
         # unit torsional shear stress
         unit_stress_val = self.unit_torsional_shear_stress()
-        total_stress_val = unit_stress_val * self.m_x
+        total_stress_val = unit_stress_val * abs(self.m_x)
         report.add_paragraph(
             f"The unit torsional stress (at 1 kNm) is: {unit_stress_val:.{n}f} MPa. "
             f"With the applied torsion, this results in a torsional stress of {total_stress_val:.{n}f} MPa."

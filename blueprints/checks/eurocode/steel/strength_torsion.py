@@ -1,4 +1,4 @@
-"""Module for checking torsional shear stress resistance (Eurocode 2, formula 6.23)."""
+"""Module for checking torsional shear stress resistance."""
 
 from dataclasses import dataclass
 
@@ -44,7 +44,7 @@ class CheckStrengthStVenantTorsionClass1234:
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.torsion_strength import TorsionStrengthCheck
+    from blueprints.checks.eurocode.steel.strength_torsion import CheckStrengthStVenantTorsionClass1234
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
@@ -53,7 +53,7 @@ class CheckStrengthStVenantTorsionClass1234:
     m_x = 10  # Applied torsional moment in kNm
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
-    calc = TorsionStrengthCheck(heb_300_s355, m_x, gamma_m0=1.0)
+    calc = CheckStrengthStVenantTorsionClass1234(heb_300_s355, m_x, gamma_m0=1.0)
     calc.report().to_word("torsion_strength.docx", language="nl")
 
     """
