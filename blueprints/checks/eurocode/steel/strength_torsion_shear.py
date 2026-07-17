@@ -1,4 +1,4 @@
-"""Module for checking torsional shear stress resistance with shear force present (Eurocode 2, formula 6.23)."""
+"""Module for checking torsional shear stress resistance with shear force present."""
 
 from dataclasses import dataclass
 from typing import Literal
