@@ -232,8 +232,6 @@ class CheckStrengthShearClass34:
         Axis along which the shear force is applied. "Vz" (default) for z (vertical), "Vy" for y (horizontal).
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
