@@ -23,8 +23,8 @@ class TestCheckStrengthStVenantTorsionClass1234:
         calc_without_section_props = CheckStrengthStVenantTorsionClass1234(unp_steel_cross_section, m_x, gamma_m0=1.0)
         assert calc == calc_without_section_props
 
-    def test_result_tension_ok(self, unp_steel_cross_section: SteelCrossSection) -> None:
-        """Test result() for ok tension load."""
+    def test_result_torsion_ok(self, unp_steel_cross_section: SteelCrossSection) -> None:
+        """Test result() for ok torsion load."""
         m_x = -0.3896 * 0.99
         calc = CheckStrengthStVenantTorsionClass1234(unp_steel_cross_section, m_x, gamma_m0=1.0)
         result = calc.result()
@@ -33,8 +33,8 @@ class TestCheckStrengthStVenantTorsionClass1234:
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
         assert calc.report()
 
-    def test_result_tension_not_ok(self, unp_steel_cross_section: SteelCrossSection) -> None:
-        """Test result() for not ok tension load."""
+    def test_result_torsion_not_ok(self, unp_steel_cross_section: SteelCrossSection) -> None:
+        """Test result() for not ok torsion load."""
         m_x = 0.3896 * 1.01
         calc = CheckStrengthStVenantTorsionClass1234(unp_steel_cross_section, m_x, gamma_m0=1.0)
         result = calc.result()
