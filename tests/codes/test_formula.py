@@ -620,6 +620,11 @@ class TestAggregatedComparisonFormula:
         with pytest.raises(ValueError, match="Comparison formulas must be provided"):
             AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=None)  # noqa: SLF001
 
+    def test_aggregated_comparison_formula_evaluate_raises_when_comparison_formulas_is_empty(self) -> None:
+        """Test that ValueError is raised when comparison_formulas is empty."""
+        with pytest.raises(ValueError, match="At least one comparison formula must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=[])  # noqa: SLF001
+
     def test_aggregated_comparison_formula_evaluate_raises_when_positional_argument_count_is_not_two(self) -> None:
         """Test that ValueError is raised when more than two positional arguments are provided."""
         formula = self._le(1, 1, 10)
