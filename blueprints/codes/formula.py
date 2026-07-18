@@ -298,7 +298,7 @@ class AggregatedComparisonFormula(ComparisonFormula):
         - If aggregation is all, the unity check is the maximum of the unity checks of the individual formulas.
         - If aggregation is any, the unity check is the minimum of the unity checks of the individual formulas.
 
-        A unity check < 1 indicates the condition is satisfied. A unity check >= 1 indicates the condition is not satisfied.
+        A unity check <= 1 indicates the condition is satisfied. A unity check > 1 indicates the condition is not satisfied.
 
         Examples
         --------
@@ -343,18 +343,25 @@ class AggregatedComparisonFormula(ComparisonFormula):
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
-        """Implements the comparison using the class-level operator."""
+        """Implements the comparison using the class-level operator.
+
+        Raises
+        ------
+        ValueError
+            If the aggregation function is not provided or is neither ``all`` nor ``any``.
+            Also raised if no comparison formulas are provided, or if any provided
+            formula is not an instance of :class:`ComparisonFormula`.
+        """
         aggregation_func: Callable[[Iterable[bool]], bool] = kwargs.get("aggregation", args[0] if args else None)
         if aggregation_func is None:
             raise ValueError("Aggregation function must be provided as a keyword argument 'aggregation' or as the first positional argument.")
         if aggregation_func not in (all, any):
             raise ValueError("Aggregation function must be either 'all' or 'any'.")
-        comparison_formulas: Sequence[ComparisonFormula] = kwargs.get("comparison_formulas", args[1:] if len(args) > 1 else None)
+        comparison_formulas: Sequence[ComparisonFormula] = kwargs.get("comparison_formulas", args[1] if len(args) == 2 else None)
         if comparison_formulas is None:
-            raise ValueError(
-                "Comparison formulas must be provided as a keyword argument 'comparison_formulas' or "
-                "as positional arguments after the aggregation function."
-            )
+            raise ValueError("Comparison formulas must be provided as a keyword argument 'comparison_formulas' or as the second positional argument.")
+        if not comparison_formulas:
+            raise ValueError("At least one comparison formula must be provided.")
         if not all(isinstance(formula, ComparisonFormula) for formula in comparison_formulas):
             raise ValueError("All provided comparison formulas must be instances of ComparisonFormula.")
         return aggregation_func(formula.__bool__() for formula in comparison_formulas)

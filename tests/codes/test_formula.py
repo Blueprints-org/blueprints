@@ -620,10 +620,37 @@ class TestAggregatedComparisonFormula:
         with pytest.raises(ValueError, match="Comparison formulas must be provided"):
             AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=None)  # noqa: SLF001
 
+    def test_aggregated_comparison_formula_evaluate_raises_when_positional_argument_count_is_not_two(self) -> None:
+        """Test that ValueError is raised when more than two positional arguments are provided."""
+        formula = self._le(1, 1, 10)
+
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(all, formula, formula)  # noqa: SLF001
+
     def test_aggregated_comparison_formula_evaluate_raises_when_not_comparison_formula_instances(self) -> None:
         """Test that ValueError is raised when comparison_formulas contains non-ComparisonFormula instances."""
         with pytest.raises(ValueError, match="All provided comparison formulas must be instances of ComparisonFormula"):
             AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=[1.0, 2.0])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_accepts_positional_formulas(self) -> None:
+        """Test that comparison formulas can be provided as positional arguments."""
+        passing_formula = self._le(1, 1, 10)
+        failing_formula = self._le(4, 1, 4)
+
+        result = AggregatedComparisonFormula._evaluate(all, (passing_formula, failing_formula))  # noqa: SLF001
+
+        assert result is False
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_formulas_precede_keyword_aggregation(self) -> None:
+        """Test that formulas cannot precede a keyword aggregation argument."""
+        passing_formula = self._le(1, 1, 10)
+        failing_formula = self._le(4, 1, 4)
+
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(  # noqa: SLF001
+                [passing_formula, failing_formula],
+                aggregation=all,
+            )
 
     def test_aggregated_comparison_formula_all_three_formulas_all_pass(self) -> None:
         """Test AggregatedComparisonFormula with 'all' when all three formulas pass."""
@@ -640,7 +667,7 @@ class TestAggregatedComparisonFormula:
         # f3 fails: 4+1=5 > 4/2=2  →  not (lhs <= rhs)
         f1 = self._le(1, 1, 10)
         f2 = self._le(2, 1, 10)
-        f3 = self._le(4, 1, 4)  # lhs=5, rhs=2  →  fails
+        f3 = self._ge(4, 1, 12)  # lhs=5, rhs=6  →  fails
         formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f1, f2, f3])
         assert not formula
         assert bool(formula) is False
