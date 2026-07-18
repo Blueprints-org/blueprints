@@ -17,7 +17,7 @@ SYNC			:= $(UV) sync --locked
 RUN     		:= $(UV) run
 BUILD 			:= $(UV) build
 PYTEST  		:= $(RUN) $(NO_DEV) pytest
-COVERAGE		:= $(PYTEST) --cov=./blueprints
+COVERAGE		:= $(RUN) $(NO_DEV) pytest --cov=./blueprints
 TY    		    := $(RUN) ty
 RUFF    		:= $(RUN) ruff
 
