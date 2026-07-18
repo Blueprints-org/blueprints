@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from blueprints.codes.formula import ComparisonFormula, DoubleComparisonFormula, Formula
+from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula, DoubleComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula
 
 
@@ -570,3 +570,258 @@ def test_double_comparison_formula_invalid_operators(
 
     with pytest.raises(ValueError, match="must point in the same direction"):
         formula_class(a=10, b=20, c=30)
+
+
+class TestAggregatedComparisonFormula:
+    """Test class for AggregatedComparisonFormula."""
+
+    def _le(self, a: float, b: float, c: float) -> ComparisonFormulaTestLessOrEqual:
+        """Helper function to create a ComparisonFormulaTestLessOrEqual instance.
+
+        Reuses the ComparisonFormulaTestLessOrEqual class defined above,
+        which implements a comparison formula with the <= operator.
+
+        # _le(a, b, c): lhs = a+b, rhs = c/2  →  passes when a+b <= c/2
+        """
+        return ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
+
+    def _ge(self, a: float, b: float, c: float) -> ComparisonFormulaTestGreaterOrEqual:
+        """Helper function to create a ComparisonFormulaTestGreaterOrEqual instance.
+
+        Reuses the ComparisonFormulaTestGreaterOrEqual class defined above,
+        which implements a comparison formula with the >= operator.
+
+        # _ge(a, b, c): lhs = a+b, rhs = c/2  →  passes when a+b >= c/2
+        """
+        return ComparisonFormulaTestGreaterOrEqual(a=a, b=b, c=c)
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_no_aggregation(self) -> None:
+        """Test that ValueError is raised when no aggregation function is provided."""
+        with pytest.raises(ValueError, match="Aggregation function must be provided"):
+            AggregatedComparisonFormula._evaluate(comparison_formulas=[self._le(1, 1, 10)])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_aggregation_is_none(self) -> None:
+        """Test that ValueError is raised when aggregation is explicitly None."""
+        with pytest.raises(ValueError, match="Aggregation function must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=None, comparison_formulas=[self._le(1, 1, 10)])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_invalid_aggregation(self) -> None:
+        """Test that ValueError is raised when aggregation is not 'all' or 'any'."""
+        with pytest.raises(ValueError, match="Aggregation function must be either 'all' or 'any'"):
+            AggregatedComparisonFormula._evaluate(aggregation=sum, comparison_formulas=[self._le(1, 1, 10)])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_no_comparison_formulas(self) -> None:
+        """Test that ValueError is raised when no comparison_formulas are provided."""
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=all)  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_comparison_formulas_is_none(self) -> None:
+        """Test that ValueError is raised when comparison_formulas is explicitly None."""
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=None)  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_comparison_formulas_is_empty(self) -> None:
+        """Test that ValueError is raised when comparison_formulas is empty."""
+        with pytest.raises(ValueError, match="At least one comparison formula must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=[])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_positional_argument_count_is_not_two(self) -> None:
+        """Test that ValueError is raised when more than two positional arguments are provided."""
+        formula = self._le(1, 1, 10)
+
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(all, formula, formula)  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_not_comparison_formula_instances(self) -> None:
+        """Test that ValueError is raised when comparison_formulas contains non-ComparisonFormula instances."""
+        with pytest.raises(ValueError, match="All provided comparison formulas must be instances of ComparisonFormula"):
+            AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=[1.0, 2.0])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_accepts_positional_formulas(self) -> None:
+        """Test that comparison formulas can be provided as positional arguments."""
+        passing_formula = self._le(1, 1, 10)
+        failing_formula = self._le(4, 1, 4)
+
+        result = AggregatedComparisonFormula._evaluate(all, (passing_formula, failing_formula))  # noqa: SLF001
+
+        assert result is False
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_formulas_precede_keyword_aggregation(self) -> None:
+        """Test that formulas cannot precede a keyword aggregation argument."""
+        passing_formula = self._le(1, 1, 10)
+        failing_formula = self._le(4, 1, 4)
+
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(  # noqa: SLF001
+                [passing_formula, failing_formula],
+                aggregation=all,
+            )
+
+    def test_aggregated_comparison_formula_all_three_formulas_all_pass(self) -> None:
+        """Test AggregatedComparisonFormula with 'all' when all three formulas pass."""
+        # All lhs <= rhs: 1+1=2 <= 10/2=5  ✓
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(2, 1, 10)
+        f3 = self._le(1, 2, 10)
+        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f1, f2, f3])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_all_three_formulas_one_fails(self) -> None:
+        """Test AggregatedComparisonFormula with 'all' when one of three formulas fails."""
+        # f3 fails: 4+1=5 > 4/2=2  →  not (lhs <= rhs)
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(2, 1, 10)
+        f3 = self._ge(4, 1, 12)  # lhs=5, rhs=6  →  fails
+        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f1, f2, f3])
+        assert not formula
+        assert bool(formula) is False
+
+    def test_aggregated_comparison_formula_all_three_formulas_unity_check_is_max(self) -> None:
+        """Test that unity_check for 'all' aggregation is the maximum of individual unity checks."""
+        # f1: lhs=2, rhs=5  →  uc=0.4
+        # f2: lhs=3, rhs=5  →  uc=0.6
+        # f3: lhs=4, rhs=5  →  uc=0.8  ← maximum
+        f1 = self._le(1, 1, 10)  # lhs=2, rhs=5, uc=0.4
+        f2 = self._le(2, 1, 10)  # lhs=3, rhs=5, uc=0.6
+        f3 = self._le(3, 1, 10)  # lhs=4, rhs=5, uc=0.8
+        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f1, f2, f3])
+        assert formula.unity_check == pytest.approx(0.8)
+
+    def test_aggregated_comparison_formula_any_three_formulas_all_fail(self) -> None:
+        """Test AggregatedComparisonFormula with 'any' when all three formulas fail."""
+        # All fail: lhs > rhs
+        f1 = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
+        f2 = self._le(10, 2, 4)  # lhs=12, rhs=2  →  fails
+        f3 = self._le(10, 3, 4)  # lhs=13, rhs=2  →  fails
+        formula = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f1, f2, f3])
+        assert not formula
+        assert bool(formula) is False
+
+    def test_aggregated_comparison_formula_any_three_formulas_one_passes(self) -> None:
+        """Test AggregatedComparisonFormula with 'any' when one of three formulas passes."""
+        # f1 passes, f2 and f3 fail
+        f1 = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
+        f2 = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
+        f3 = self._le(10, 3, 4)  # lhs=13, rhs=2  →  fails
+        formula = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f1, f2, f3])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_any_three_formulas_unity_check_is_min(self) -> None:
+        """Test that unity_check for 'any' aggregation is the minimum of individual unity checks."""
+        # f1: lhs=2, rhs=5  →  uc=0.4  ← minimum
+        # f2: lhs=3, rhs=5  →  uc=0.6
+        # f3: lhs=4, rhs=5  →  uc=0.8
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(2, 1, 10)
+        f3 = self._le(3, 1, 10)
+        formula = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f1, f2, f3])
+        assert formula.unity_check == pytest.approx(0.4)
+
+    def test_aggregated_comparison_formula_lhs_raises(self) -> None:
+        """Test that accessing lhs raises NotImplementedError."""
+        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
+        with pytest.raises(NotImplementedError):
+            _ = formula.lhs
+
+    def test_aggregated_comparison_formula_rhs_raises(self) -> None:
+        """Test that accessing rhs raises NotImplementedError."""
+        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
+        with pytest.raises(NotImplementedError):
+            _ = formula.rhs
+
+    def test_aggregated_comparison_formula_comparison_operator_raises(self) -> None:
+        """Test that calling _comparison_operator raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_comparison_operator is not relevant"):
+            AggregatedComparisonFormula._comparison_operator()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_lhs_raises(self) -> None:
+        """Test that calling _evaluate_lhs raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_evaluate_lhs is not relevant"):
+            AggregatedComparisonFormula._evaluate_lhs()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_rhs_raises(self) -> None:
+        """Test that calling _evaluate_rhs raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_evaluate_rhs is not relevant"):
+            AggregatedComparisonFormula._evaluate_rhs()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_all_of_any_and_all_passes(self) -> None:
+        """Test 'all' aggregation of one 'any' and one 'all' AggregatedComparisonFormula — all pass.
+
+        Composite structure:
+            outer_all(
+                inner_any(f_pass, f_fail),   # True  (any passes)
+                inner_all(f_pass, f_pass),   # True  (all pass)
+            )
+        Expected: True
+        """
+        f_pass = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
+        f_fail = self._le(10, 1, 4)  # lhs=11, rhs=2 →  fails
+
+        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_pass])
+
+        outer = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[inner_any, inner_all])
+        assert outer
+        assert bool(outer) is True
+
+    def test_aggregated_comparison_formula_all_of_any_and_all_fails_when_inner_all_fails(self) -> None:
+        """Test 'all' aggregation fails when the inner 'all' has a failing formula.
+
+        Composite structure:
+            outer_all(
+                inner_any(f_pass, f_fail),   # True
+                inner_all(f_pass, f_fail),   # False  ← one fails
+            )
+        Expected: False
+        """
+        f_pass = self._le(1, 1, 10)
+        f_fail = self._le(10, 1, 4)
+
+        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_fail])
+
+        outer = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[inner_any, inner_all])
+        assert not outer
+        assert bool(outer) is False
+
+    def test_aggregated_comparison_formula_any_of_any_and_all_passes_when_one_inner_passes(self) -> None:
+        """Test 'any' aggregation of one 'any' and one 'all' AggregatedComparisonFormula — passes when at least one inner passes.
+
+        Composite structure:
+            outer_any(
+                inner_any(f_pass, f_fail),   # True  ← at least one passes
+                inner_all(f_pass, f_fail),   # False
+            )
+        Expected: True
+        """
+        f_pass = self._le(1, 1, 10)
+        f_fail = self._le(10, 1, 4)
+
+        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_fail])
+
+        outer = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[inner_any, inner_all])
+        assert outer
+        assert bool(outer) is True
+
+    def test_aggregated_comparison_formula_any_of_any_and_all_fails_when_all_inner_fail(self) -> None:
+        """Test 'any' aggregation fails when both inner formulas fail.
+
+        Composite structure:
+            outer_any(
+                inner_any(f_fail, f_fail),   # False
+                inner_all(f_pass, f_fail),   # False
+            )
+        Expected: False
+        """
+        f_pass = self._le(1, 1, 10)
+        f_fail = self._le(10, 1, 4)
+
+        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_fail, f_fail])
+        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_fail])
+
+        outer = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[inner_any, inner_all])
+        assert not outer
+        assert bool(outer) is False
