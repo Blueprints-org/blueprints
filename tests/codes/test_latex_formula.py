@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_max_curly_brackets, latex_min_curly_brackets, latex_scientific
 
 
 @pytest.fixture
@@ -62,3 +62,16 @@ def test_latex_min_curly_brackets() -> None:
     """Test the latex_max_curly_brackets function."""
     result = latex_min_curly_brackets(r"a+b", r"500", r"c-d")
     assert result == r"\min \left\{a+b; 500; c-d\right\}"
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        (2e6, r"2.0 \cdot 10^{6}"),
+        (7.5e5, r"7.5 \cdot 10^{5}"),
+        (1e-3, r"1.0 \cdot 10^{-3}"),
+    ],
+)
+def test_latex_scientific(value: float, expected: str) -> None:
+    """Test the latex_scientific function."""
+    assert latex_scientific(value) == expected
