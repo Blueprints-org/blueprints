@@ -92,7 +92,9 @@ Total of 108 formulas present.
 | 6.53           |        :x:         |         |                                                                                   |        :x:         |
 | 6.54           |        :x:         |         |                                                                                   |        :x:         |
 | 6.55           |        :x:         |         |                                                                                   |        :x:         |
-| 6.56           |        :x:         |         |                                                                                   |        :x:         |
+| 6.56 (λ̄_LT)    | :heavy_check_mark: |         | Form6Dot56NonDimensionalSlendernessLT                                             |        :x:         |
+| 6.56 (Φ_LT)    | :heavy_check_mark: |         | Form6Dot56LateralTorsionalIntermediateFactor                                      |        :x:         |
+| 6.56 (χ_LT)    | :heavy_check_mark: |         | Form6Dot56ReductionFactorLateralTorsionalBuckling                                 |        :x:         |
 | 6.57           |        :x:         |         |                                                                                   |        :x:         |
 | 6.58           |        :x:         |         |                                                                                   |        :x:         |
 | 6.59           |        :x:         |         |                                                                                   |        :x:         |
