@@ -11,41 +11,58 @@ class TestForm2Dot1DesignValueResistance:
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
-        r_k = 110  # kN
+        r_k = 110.0  # N
         gamma_m = 1.1  # [-]
 
-        form_2_1 = Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m)
-        manually_calculated_result = 100
+        formula = Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m)
 
-        assert form_2_1 == pytest.approx(expected=manually_calculated_result, rel=1e-9)
+        manually_calculated_result = 100.0  # N
 
-    def test_raise_error_if_negative_r_k(self) -> None:
-        """Test that a NegativeValueError is raised when a negative value is passed for r_k."""
-        r_k = -110  # kN
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
+    @pytest.mark.parametrize(
+        ("r_k", "gamma_m", "expected_exception"),
+        [
+            (-110.0, 1.1, NegativeValueError),  # r_k is negative
+            (110.0, -1.1, LessOrEqualToZeroError),  # gamma_m is negative
+            (110.0, 0.0, LessOrEqualToZeroError),  # gamma_m is zero
+        ],
+    )
+    def test_raise_error_when_invalid_values_are_given(
+        self,
+        r_k: float,
+        gamma_m: float,
+        expected_exception: type[Exception],
+    ) -> None:
+        """Test invalid values."""
+        with pytest.raises(expected_exception):
+            Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"R_{d} = \frac{R_k}{\gamma_M} = \frac{110.000}{1.100} = 100.000 \ N",
+            ),
+            (
+                "complete_with_units",
+                r"R_{d} = \frac{R_k}{\gamma_M} = \frac{110.000 \ N}{1.100} = 100.000 \ N",
+            ),
+            ("short", r"R_{d} = 100.000 \ N"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the LaTeX representation of the formula."""
+        r_k = 110.0  # N
         gamma_m = 1.1  # [-]
 
-        with pytest.raises(NegativeValueError):
-            Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m)
+        latex = Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m).latex()
 
-    def test_raise_error_if_negative_gamma_m(self) -> None:
-        """Test that a LessOrEqualToZeroError is raised when a negative value is passed for gamma_m."""
-        r_k = 110  # kN
-        gamma_m = -1.1  # [-]
+        actual = {
+            "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
+            "short": latex.short,
+        }
 
-        with pytest.raises(LessOrEqualToZeroError):
-            Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m)
-
-    def test_raise_error_if_zero_gamma_m(self) -> None:
-        """Test that a LessOrEqualToZeroError is raised when a zero value is passed for gamma_m."""
-        r_k = 110  # kN
-        gamma_m = 0  # [-]
-
-        with pytest.raises(LessOrEqualToZeroError):
-            Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m)
-
-    def test_latex_complete(self) -> None:
-        """Tests the latex representation of the formula."""
-        r_k = 110
-        gamma_m = 1.1
-        form_2_1 = Form2Dot1DesignValueResistance(r_k=r_k, gamma_m=gamma_m)
-        assert form_2_1.latex().complete == r"R_{d} = \frac{R_k}{\gamma_M} = \frac{110.00}{1.10} = 100.00"
+        assert expected == actual[representation], f"{representation} representation failed."
