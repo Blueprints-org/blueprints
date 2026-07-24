@@ -82,10 +82,10 @@ Total of 602 formulas present.
 |      8.18      | :heavy_check_mark: |         | Form8Dot18AverageShearStress                                       |
 |      8.19      | :heavy_check_mark: |         | Form8Dot19AverageShearStressPlanarMembers                          |
 |      8.20      | :heavy_check_mark: |         | Form8Dot20MinimumShearStressResistance                             |
-|      8.21      |        :x:         |         |                                                                    |
-|      8.22      |        :x:         |         |                                                                    |
-|      8.23      |        :x:         |         |                                                                    |
-|      8.24      |        :x:         |         |                                                                    |
+|      8.21      | :heavy_check_mark: |         | Form8Dot21DesignShearForcePerUnitWidth                             |
+|      8.22      | :heavy_check_mark: |         | Form8Dot22To24EffectiveDepth                                       |
+|      8.23      | :heavy_check_mark: |         | Form8Dot22To24EffectiveDepth                                       |
+|      8.24      | :heavy_check_mark: |         | Form8Dot22To24EffectiveDepth                                       |
 |      8.25      | :heavy_check_mark: |         | Form8Dot25EffectiveDepthFromPrincipalShearForce                    |
 |      8.26      | :heavy_check_mark: |         | Form8Dot26AngleBetweenPrincipalShearForceAndXAxis                  |
 |      8.27      |        :x:         |         |                                                                    |
