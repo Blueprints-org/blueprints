@@ -25,7 +25,7 @@ class Form2Dot1DesignValueResistance(Formula):
         Parameters
         ----------
         r_k : N
-            [$R_k$] Characteristic value of the resistance based on EN 1990 [$N$].
+            [$R_k$] Characteristic value of the resistance [$N$].
         gamma_m : DIMENSIONLESS
             [$\gamma_{M}$] Global partial factor for the resistance [$-$].
         """
