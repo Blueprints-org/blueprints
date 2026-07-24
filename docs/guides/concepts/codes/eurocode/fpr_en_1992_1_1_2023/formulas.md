@@ -80,8 +80,8 @@ Total of 602 formulas present.
 |      8.16      |        :x:         |         |                                                                    |
 |      8.17      |        :x:         |         |                                                                    |
 |      8.18      | :heavy_check_mark: |         | Form8Dot18AverageShearStress                                       |
-|      8.19      |        :x:         |         |                                                                    |
-|      8.20      |        :x:         |         |                                                                    |
+|      8.19      | :heavy_check_mark: |         | Form8Dot19AverageShearStressPlanarMembers                          |
+|      8.20      | :heavy_check_mark: |         | Form8Dot20MinimumShearStressResistance                             |
 |      8.21      |        :x:         |         |                                                                    |
 |      8.22      |        :x:         |         |                                                                    |
 |      8.23      |        :x:         |         |                                                                    |
