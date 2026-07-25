@@ -93,7 +93,7 @@ Total of 602 formulas present.
 |      8.29      |        :x:         |         |                                                                    |
 |      8.30      |        :x:         |         |                                                                    |
 |      8.31      |        :x:         |         |                                                                    |
-|      8.32      |        :x:         |         |                                                                    |
+|      8.32      | :heavy_check_mark: |         | Form8Dot32DesignShearStressResistanceWithNormalForce               |
 |      8.33      |        :x:         |         |                                                                    |
 |      8.34      |        :x:         |         |                                                                    |
 |      8.35      |        :x:         |         |                                                                    |
