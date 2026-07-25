@@ -88,8 +88,8 @@ Total of 602 formulas present.
 |      8.24      | :heavy_check_mark: |         | Form8Dot22To24EffectiveDepth                                       |
 |      8.25      | :heavy_check_mark: |         | Form8Dot25EffectiveDepthFromPrincipalShearForce                    |
 |      8.26      | :heavy_check_mark: |         | Form8Dot26AngleBetweenPrincipalShearForceAndXAxis                  |
-|      8.27      |        :x:         |         |                                                                    |
-|      8.28      |        :x:         |         |                                                                    |
+|      8.27      | :heavy_check_mark: |         | Form8Dot27DesignShearStressResistance                              |
+|      8.28      | :heavy_check_mark: |         | Form8Dot28LongitudinalReinforcementRatio                           |
 |      8.29      |        :x:         |         |                                                                    |
 |      8.30      |        :x:         |         |                                                                    |
 |      8.31      |        :x:         |         |                                                                    |
