@@ -97,8 +97,8 @@ Total of 602 formulas present.
 |      8.33      |        :x:         |         |                                                                    |
 |      8.34      |        :x:         |         |                                                                    |
 |      8.35      |        :x:         |         |                                                                    |
-|      8.36      |        :x:         |         |                                                                    |
-|      8.37      |        :x:         |         |                                                                    |
+|      8.36      | :heavy_check_mark: |         | Form8Dot36EffectiveDepthPrestressedMembers                         |
+|      8.37      | :heavy_check_mark: |         | Form8Dot37ReinforcementRatioPrestressedMembers                     |
 |      8.38      |        :x:         |         |                                                                    |
 |      8.39      |        :x:         |         |                                                                    |
 |      8.40      |        :x:         |         |                                                                    |
