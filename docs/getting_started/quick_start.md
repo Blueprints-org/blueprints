@@ -46,7 +46,7 @@ Blueprints organizes formulas by engineering standard. Here's how to use them:
 
 ```python exec="on" source="material-block" session="quickstart" result="ansi"
 # Create a Formula instance using Eurocode formula 4.1: c_nom = c_min + Δc_dev
-from blueprints.codes.eurocode.nen_en_1992_1_1_a1_2020.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_4_durability_and_cover.formula_4_1 import Form4Dot1NominalConcreteCover
 
 c_min = 25.0  # mm
 delta_c_dev = 10.0  # mm
@@ -74,7 +74,7 @@ cs = RectangularReinforcedCrossSection(
     concrete_material=concrete,
 )
 
-# Add reinforcement to the upper edge
+# Add reinforcement to the lower edge
 cs.add_longitudinal_reinforcement_by_quantity(
     n=10,
     diameter=16,

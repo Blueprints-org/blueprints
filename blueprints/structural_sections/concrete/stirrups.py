@@ -30,7 +30,7 @@ class StirrupConfiguration:
         Take stirrup into account in torsion check
     mandrel_diameter_factor: MM
         Inner diameter of mandrel as multiple of stirrup diameter [-]
-        (default: 4⌀ for ⌀<=16mm and 5⌀ for ⌀>16mm) Tabel 8.1Na NEN-EN 1992-1-1 Dutch National Annex.
+        (default: 4⌀ for ⌀<=16mm and 5⌀ for ⌀>16mm) Table 8.1Na NEN-EN 1992-1-1 Dutch National Annex.
     anchorage_length: MM
         Anchorage length [mm]
     based_on_cover: bool

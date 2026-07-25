@@ -29,29 +29,15 @@ uv sync --group cli
     blueprints <command> --help    # Show command-specific help
     ```
     
-    ```console
-    ========================================================================
-                           Blueprints CLI - vx.y.z
-    ========================================================================
-                                                                                                                                                                                        
-     Usage: blueprints [OPTIONS] COMMAND [ARGS]...                                                                                                                                      
-                                                                                                                                                                                        
-     Blueprints - Development automation CLI                                                                                                                                            
-                                                                                                                                                                                        
-    ╭─ Options ────────────────────────────────────────────────────────────╮
-    │ --version  -v        Show the CLI version.                                                                                                                                       │
-    │ --help               Show this message and exit.                                                                                                                                 │
-    ╰──────────────────────────────────────────────────────────────────────╯
-    ╭─ Commands ───────────────────────────────────────────────────────────╮
-    │ install      Sync all dependencies and create venv if needed.                                                                                                                    │
-    │ lint         Lint with Ruff.                                                                                                                                                     │
-    │ formatting   Enforce formatting compliance using Ruff's formatter.                                                                                                               │
-    │ typecheck    Run static type checks with ty.                                                                                                                                   │
-    │ test         Run tests with pytest.                                                                                                                                              │
-    │ coverage     Run tests and generate coverage reports.                                                                                                                            │
-    │ check        Run all quality checks before making a PR.                                                                                                                          │
-    │ docs         Serve documentation locally with live reload.                                                                                                                       │
-    ╰──────────────────────────────────────────────────────────────────────╯
+    ```python exec="on" result="ansi"
+    import subprocess, os
+    result = subprocess.run(
+        ["blueprints", "--help"],
+        capture_output=True,
+        text=True,
+        env={**os.environ, "COLUMNS": "80", "FORCE_COLOR": "1"},
+    )
+    print(result.stdout)
     ```
 !!! tip "Alias"
     
