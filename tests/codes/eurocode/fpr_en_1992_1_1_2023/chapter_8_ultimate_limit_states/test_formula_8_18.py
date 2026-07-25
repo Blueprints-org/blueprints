@@ -1,13 +1,13 @@
-"""Testing formula 8.18 of prEN 1992-1-1:2023."""
+"""Testing formula 8.18 of FprEN 1992-1-1:2023."""
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023.chapter_8_ultimate_limit_states.formula_8_18 import Form8Dot18AverageShearStress
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_18 import Form8Dot18AverageShearStress
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot18AverageShearStress:
-    """Validation for formula 8.18 from prEN 1992-1-1:2023."""
+    """Validation for formula 8.18 from FprEN 1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
