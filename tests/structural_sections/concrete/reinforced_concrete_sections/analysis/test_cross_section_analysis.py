@@ -1,10 +1,11 @@
 """Tests for CrossSectionAnalysis (regime dispatch, creep and caching)."""
 
 import pytest
-from concreteproperties.utils import AnalysisError
 from shapely.errors import GEOSException
 
 pytest.importorskip("concreteproperties")
+
+from concreteproperties.utils import AnalysisError
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
@@ -109,6 +110,14 @@ class TestCrackedCombinedAxialMoment:
         result = _reference_beam_analysis().stress(SectionForces(m_y=200), regime=Regime.SLS_CRACKED)
         assert result.concrete_stress_min == pytest.approx(-16.24, rel=1e-3)
         assert max(bar.stress for bar in result.rebar_results) == pytest.approx(212.3, rel=1e-3)
+
+    def test_pure_axial_returns_a_zero_curvature_state(self) -> None:
+        """With N != 0 and M = 0 there is no moment to solve for, so the state has uniform (zero-curvature) stress instead of crashing."""
+        result = _reference_beam_analysis().stress(SectionForces(n=-200), regime=Regime.SLS_CRACKED)
+        assert result.regime is Regime.SLS_CRACKED
+        # zero curvature -> the concrete stress is uniform over the section (compression everywhere).
+        assert result.concrete_stress_min == pytest.approx(result.concrete_stress_max, rel=1e-6)
+        assert result.concrete_stress_min < 0.0
 
     def test_sagging_and_hogging_match_on_a_symmetric_section(self) -> None:
         """On a top-bottom symmetric section a sagging and the mirrored hogging state are identical."""

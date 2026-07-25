@@ -549,9 +549,9 @@ def _to_backend_actions(forces: SectionForces) -> tuple[float, float, float]:
     tuple[float, float, float]
         ``(n, m_x, m_y)`` for the backend: ``n = -forces.n``, ``m_x = forces.m_y``, ``m_y = -forces.m_z``.
     """
-    n: KN = -forces.n * KN_TO_N
-    m_x: KNM = forces.m_y * KNM_TO_NMM
-    m_y: KNM = -forces.m_z * KNM_TO_NMM
+    n = -forces.n * KN_TO_N  # [N]
+    m_x = forces.m_y * KNM_TO_NMM  # [Nmm]
+    m_y = -forces.m_z * KNM_TO_NMM  # [Nmm]
     return n, m_x, m_y
 
 
@@ -1163,6 +1163,8 @@ def _cracked_stress_with_axial(
 
     description = f"cracked stress analysis for forces {forces}"
     with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
+        if m == 0.0:
+            return stress_at(0.0)  # pure axial: no moment, so no curvature to solve for
         curvature = _solve_service_curvature(moment_error, m / (elastic_modulus * i_cracked))
         return stress_at(curvature)
 

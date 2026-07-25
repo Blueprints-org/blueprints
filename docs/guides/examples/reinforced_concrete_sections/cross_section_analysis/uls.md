@@ -100,7 +100,7 @@ plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
 ```
 
-The two branches share the squash and pure-tension poles, so the loop closes there; in between, the sagging (top-tension) and hogging (bottom-tension) capacities differ because this beam only has bottom reinforcement.
+The two branches share the squash and pure-tension poles, so the loop closes there; in between, the sagging (bottom-tension) and hogging (top-tension) capacities differ because this beam only has bottom reinforcement.
 
 ## Interaction Surface and Sections
 

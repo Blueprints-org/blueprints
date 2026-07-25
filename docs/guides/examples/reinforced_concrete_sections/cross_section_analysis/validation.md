@@ -95,7 +95,7 @@ matching the hand calculation within 0.2 %.
 
     Reusing the pure-bending crack depth ($x = 171$ mm) here — instead of solving for the actual $x = 226$ mm — would delete a ~55 mm strip of concrete that is really in compression and overestimate the steel stress by about 25 %, an error that grows with the axial force. Blueprints therefore solves the true cracked N + M equilibrium; see the [neutral-axis note](#neutral-axis-actual-state-versus-pure-bending-constant) below.
 
-## Hand calculation — ULS bending capacity
+## Hand calculation — ULS bending capacity { #hand-calculation-uls-bending-capacity }
 
 The reference beam ($A_s = 1963\ \text{mm}^2$, $d = 537.5$ mm, $A_c = b\,h = 300 \times 600 = 180\,000\ \text{mm}^2$) with design materials and the bilinear concrete stress block ($\varepsilon_{c3} = 1.75‰$, $\varepsilon_{cu3} = 3.5‰$). The mean-stress factor $\alpha$ and the block-centroid factor $\beta$ of that block are
 
@@ -331,7 +331,7 @@ IDEA StatiCa RCS draws two separate M-N-κ diagrams — a short-term SLS one (`K
 
 The **cracking moment** matches IDEA's short-term diagram (both use `E_cm` and `f_ctm,fl`) and the **ultimate moment** matches IDEA's ULS diagram (both use design materials). In between, the *bare* cracked stiffness sits between the two IDEA curves: stiffer than `UGT` (which uses the ULS stiffness assumption) and softer than `Kort` (which adds tension stiffening). Unlike the SLS and capacity checks, the M-N-κ diagram cannot be validated with a single curve because its definition differs by tool and limit state.
 
-**Tension stiffening.** The concrete between cracks keeps carrying tension, which stiffens the cracked branch. Passing `tension_stiffening=True` applies the EN 1992-1-1 art. 7.4.3 mean-curvature interpolation (Expressions 7.18/7.19), moving the cracked branch onto IDEA's short-term (`Kort`) curve while keeping the design ultimate:
+**Tension stiffening.** The concrete between cracks keeps carrying tension, which stiffens the cracked branch. Passing `tension_stiffening=True` applies the EN 1992-1-1 art. 7.4.3 mean-curvature interpolation (Expressions 7.18/7.19), moving the cracked branch toward IDEA's short-term (`Kort`) curve while keeping the design ultimate:
 
 ```python exec="on" source="material-block" result="ansi" session="rc_validation"
 bare = analysis.moment_curvature()
@@ -343,7 +343,7 @@ print(f"  bare cracked curvature: {bare.kappa[index] * 1000:.5f} 1/m")
 print(f"  mean (tension stiffened): {mean.kappa[index] * 1000:.5f} 1/m   (IDEA Kort: 0.0026)")
 ```
 
-![M-N-κ at N=0: tension_stiffening=True moves the cracked branch onto IDEA's short-term (Kort) curve.](../_images/idea_vs_blueprints_uls_tension_stiffening.png)
+![M-N-κ at N=0: tension_stiffening=True moves the cracked branch toward IDEA's short-term (Kort) curve.](../_images/idea_vs_blueprints_uls_tension_stiffening.png)
 
 With tension stiffening on, the cracked-branch curvature matches IDEA `Kort` to within ~1–7 % (β = 1.0 short-term, 0.5 for a sustained load, selected automatically from the creep coefficient). It affects only the deflection curvature; the crack-section stresses and the ULS capacity are unchanged.
 
@@ -362,4 +362,4 @@ For pure bending the two coincide. Use `strain_plane` for the state under the ac
 
 ## Software versions
 
-The IDEA StatiCa RCS comparison was performed with **IDEA StatiCa RCS 24.1.1.1479** and the **`concreteproperties` 0.7.0** backend, in July 2026.
+The IDEA StatiCa RCS comparison was performed with **IDEA StatiCa RCS 24.1.1.1479** and the **`concreteproperties` 0.8.0** backend, in July 2026.
