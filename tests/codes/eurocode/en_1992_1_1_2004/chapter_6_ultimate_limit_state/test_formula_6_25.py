@@ -33,13 +33,36 @@ class TestForm6Dot25DesignShearResistance:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
+    def test_evaluation_negative_sigma_n(self) -> None:
+        """Tests that a tensile (negative) sigma_n is accepted and that cohesion is dropped."""
+        # Example values, identical to test_evaluation except for a tensile sigma_n
+        c = 0.5
+        mu = 0.6
+        f_ctd = 2.0
+        sigma_n = -1.0
+        a_s = 1000.0
+        a_i = 200000.0
+        f_yd = 500.0
+        alpha = 30.0
+        nu = 0.9
+        f_cd = 30.0
+
+        # Object to test
+        formula = Form6Dot25DesignShearResistance(
+            c=c, mu=mu, f_ctd=f_ctd, sigma_n=sigma_n, a_s=a_s, a_i=a_i, f_yd=f_yd, alpha=alpha, nu=nu, f_cd=f_cd
+        )
+
+        # Expected result, manually calculated with c * f_ctd taken as 0 under tension
+        manually_calculated_result = 2.31506350946  # MPa
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("c", "mu", "f_ctd", "sigma_n", "a_s", "a_i", "f_yd", "alpha", "nu", "f_cd"),
         [
             (-0.5, 0.6, 2.0, 1.0, 1000.0, 200000.0, 500.0, 30.0, 0.9, 30.0),  # c is negative
             (0.5, -0.6, 2.0, 1.0, 1000.0, 200000.0, 500.0, 30.0, 0.9, 30.0),  # mu is negative
             (0.5, 0.6, -2.0, 1.0, 1000.0, 200000.0, 500.0, 30.0, 0.9, 30.0),  # f_ctd is negative
-            (0.5, 0.6, 2.0, -1.0, 1000.0, 200000.0, 500.0, 30.0, 0.9, 30.0),  # sigma_n is negative
             (0.5, 0.6, 2.0, 1.0, -1000.0, 200000.0, 500.0, 30.0, 0.9, 30.0),  # a_s is negative
             (0.5, 0.6, 2.0, 1.0, 1000.0, -200000.0, 500.0, 30.0, 0.9, 30.0),  # a_i is negative
             (0.5, 0.6, 2.0, 1.0, 1000.0, 200000.0, -500.0, 30.0, 0.9, 30.0),  # f_yd is negative

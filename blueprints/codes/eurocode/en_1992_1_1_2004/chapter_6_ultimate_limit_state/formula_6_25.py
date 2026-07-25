@@ -85,7 +85,6 @@ class Form6Dot25DesignShearResistance(Formula):
             c=c,
             mu=mu,
             f_ctd=f_ctd,
-            sigma_n=sigma_n,
             a_s=a_s,
             f_yd=f_yd,
             alpha=alpha,
@@ -95,7 +94,11 @@ class Form6Dot25DesignShearResistance(Formula):
         raise_if_less_or_equal_to_zero(a_i=a_i)
         raise_if_greater_than_90(alpha=alpha)
 
-        term1 = c * f_ctd + mu * sigma_n + (a_s / a_i) * f_yd * (mu * np.sin(np.deg2rad(alpha)) + np.cos(np.deg2rad(alpha)))
+        # EN 1992-1-1:2004 art.6.2.5(1): sigma_n is positive for compression and negative
+        # for tension. When sigma_n is tensile, c * f_ctd should be taken as 0.
+        cohesion = c * f_ctd if sigma_n >= 0 else 0.0
+
+        term1 = cohesion + mu * sigma_n + (a_s / a_i) * f_yd * (mu * np.sin(np.deg2rad(alpha)) + np.cos(np.deg2rad(alpha)))
         term2 = 0.5 * nu * f_cd
 
         return min(term1, term2)
