@@ -32,7 +32,7 @@ class CheckStrengthBendingClass12:
         |  /
         | /
         |/
-    ←-----O
+    ←---O
     y (horizontal/side, usually weak axis)
     ```
 
@@ -192,7 +192,7 @@ class CheckStrengthBendingClass3:
         |  /
         | /
         |/
-    ←-----O
+    ←---O
     y (horizontal/side, usually weak axis)
     ```
 
