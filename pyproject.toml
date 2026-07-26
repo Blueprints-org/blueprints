@@ -107,3 +107,9 @@ packages = ["blueprints"]
 markers = [
     "slow: marks as slow (deselect with '-m \"not slow\"')",
 ]
+
+[tool.coverage.run]
+# Use the PEP 669 sys.monitoring tracer instead of coverage's C trace function. The C tracer
+# instruments the cytriangle native meshing calls and segfaults under coverage; sys.monitoring is
+# far less intrusive on native extensions and measures identical coverage.
+core = "sysmon"
