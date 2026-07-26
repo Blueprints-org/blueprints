@@ -5,6 +5,8 @@ once per module and reused. Its rings are cross-checked against the exact capaci
 correctness anchor for the interpolation and slicing.
 """
 
+import sys
+
 import matplotlib as mpl
 import pytest
 
@@ -24,6 +26,14 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
     MomentInteractionResult,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+
+# The surface build meshes one section per neutral-axis angle in quick succession. The concreteproperties
+# meshing backend (cytriangle) segfaults during triangulation on Python 3.14, taking down the test worker.
+# 3.12/3.13 are unaffected, and coverage is measured on 3.13, so skip only this heavy build on 3.14.
+pytestmark = pytest.mark.skipif(
+    sys.version_info >= (3, 14),
+    reason="cytriangle meshing backend segfaults on Python 3.14 while building the interaction surface (concreteproperties)",
+)
 
 
 def _analysis() -> CrossSectionAnalysis:
