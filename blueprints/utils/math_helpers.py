@@ -5,28 +5,6 @@ import numpy as np
 from blueprints.type_alias import DEG, DIMENSIONLESS, PERCENTAGE
 from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_equal_to_zero, raise_if_negative
 
-# General note for all functions below.
-# Convert to Python float instead of Numpy float to prevent issues with comparisons returning bools. When Numpy
-# floats are used, also a Numpy bool is returned which has different behavior than the Python variant.
-
-
-def tan(x: DEG) -> DIMENSIONLESS:
-    """Calculate the tangent of an angle in degrees.
-
-    Parameters
-    ----------
-    x : DEG
-        Angle in degrees.
-
-    Returns
-    -------
-    DIMENSIONLESS
-        Tangent of the angle.
-    """
-    raise_if_less_or_equal_to_zero(x=x)
-    raise_if_greater_than_90(x=x)
-    return float(np.tan(np.deg2rad(x)))
-
 
 def cot(x: DEG) -> DIMENSIONLESS:
     """Calculate the cotangent of an angle in degrees.

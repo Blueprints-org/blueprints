@@ -1,10 +1,12 @@
 """Formula 8.44 from prEN-1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
+import numpy as np
+
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
-from blueprints.utils.math_helpers import cot, tan
+from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -51,7 +53,7 @@ class Form8Dot44StressCompressionField(Formula):
         """Evaluates part 1 of the formula, for more information see the __init__ method."""
         raise_if_negative(tau_ed=tau_ed)
         raise_if_less_or_equal_to_zero(theta=theta)
-        return tau_ed * (cot(theta) + tan(theta))
+        return tau_ed * (cot(theta) + np.tan(np.deg2rad(theta)))
 
     @staticmethod
     def _evaluate_pt2(nu: DIMENSIONLESS, f_cd: MPA, *_args, **_kwargs) -> float:
