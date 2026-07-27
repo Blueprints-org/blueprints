@@ -2,28 +2,28 @@ from blueprints.structural_sections.steel.profile_definitions.sheetpile_u_profil
 from blueprints.type_alias import MM
 
 class GU:
-    GU6: SheetpileUProfile
-    GU7: SheetpileUProfile
-    GU8: SheetpileUProfile
-    GU10: SheetpileUProfile
-    GU11: SheetpileUProfile
-    GU12: SheetpileUProfile
-    GU13: SheetpileUProfile
-    GU14: SheetpileUProfile
-    GU15: SheetpileUProfile
-    GU16: SheetpileUProfile
-    GU18: SheetpileUProfile
+    GU6N: SheetpileUProfile
+    GU7S: SheetpileUProfile
+    GU8S: SheetpileUProfile
+    GU10N: SheetpileUProfile
+    GU11N: SheetpileUProfile
+    GU12N: SheetpileUProfile
+    GU13N: SheetpileUProfile
+    GU14N: SheetpileUProfile
+    GU15N: SheetpileUProfile
+    GU16N: SheetpileUProfile
+    GU18N: SheetpileUProfile
     GU18_400: SheetpileUProfile
-    GU20: SheetpileUProfile
-    GU21: SheetpileUProfile
-    GU22: SheetpileUProfile
-    GU23: SheetpileUProfile
-    GU27: SheetpileUProfile
-    GU28: SheetpileUProfile
-    GU30: SheetpileUProfile
-    GU31: SheetpileUProfile
-    GU32: SheetpileUProfile
-    GU33: SheetpileUProfile
+    GU20N: SheetpileUProfile
+    GU21N: SheetpileUProfile
+    GU22N: SheetpileUProfile
+    GU23N: SheetpileUProfile
+    GU27N: SheetpileUProfile
+    GU28N: SheetpileUProfile
+    GU30N: SheetpileUProfile
+    GU31N: SheetpileUProfile
+    GU32N: SheetpileUProfile
+    GU33N: SheetpileUProfile
 
 class __GUProfileParameters:
     name: str
