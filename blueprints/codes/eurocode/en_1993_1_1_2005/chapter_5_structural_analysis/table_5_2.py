@@ -7,7 +7,7 @@ from math import sqrt
 from typing import ClassVar
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
-from blueprints.codes.formula import ComparisonFormula
+from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula
 
 
@@ -312,8 +312,27 @@ class Table5Dot2MaximumWidthToThicknessRatio:
         },
         Table5Dot2CompressionPart.ANGLE: {
             CrossSectionClass.CLASS_3: {
-                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION: lambda h, b, t, epsilon: operator.le(h / t, 15 * epsilon)
-                and operator.le((h + b) / (2 * t), 11.5 * epsilon),
+                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION: AggregatedComparisonFormula(
+                    aggregation=all,
+                    comparison_formulas=[
+                        _make_limit_class(
+                            name="Form5Dot2AngleCompressionClass3HeightToThickness",
+                            params=("h", "t", "epsilon"),
+                            lhs_fn=lambda h, t, **_: h / t,
+                            rhs_fn=lambda epsilon, **_: 15 * epsilon,
+                            lhs_latex=r"\frac{h}{t}",
+                            rhs_latex=r"15 \epsilon",
+                        ),
+                        _make_limit_class(
+                            name="Form5Dot2AngleCompressionClass3",
+                            params=("h", "b", "t", "epsilon"),
+                            lhs_fn=lambda h, b, t, **_: (h + b) / (2 * t),
+                            rhs_fn=lambda epsilon, **_: 11.5 * epsilon,
+                            lhs_latex=r"\frac{h + b}{2 t}",
+                            rhs_latex=r"11.5 \epsilon",
+                        ),
+                    ],
+                ),
             }
         },
         Table5Dot2CompressionPart.TUBULAR_SECTION: {
