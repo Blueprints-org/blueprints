@@ -19,7 +19,6 @@ from blueprints.structural_sections.steel.standard_profiles.shs import SHS
 from blueprints.structural_sections.steel.standard_profiles.shscf import SHSCF
 from blueprints.structural_sections.steel.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.standard_profiles.unp import UNP
-from blueprints.structural_sections.steel.standard_profiles.usections import USections
 
 __all__ = [
     "AU",
@@ -41,5 +40,4 @@ __all__ = [
     "SHSCF",
     "UNP",
     "Strip",
-    "USections",
 ]
