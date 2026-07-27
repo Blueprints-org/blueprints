@@ -29,10 +29,17 @@ class Form8Dot20MinimumShearStressResistance(Formula):
             [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         f_yd : MPA
             [$f_{yd}$] Design value of the yield strength which has been used to design the flexural
-            reinforcement [$MPa$].
+            reinforcement. In case of prestressed members without ordinary reinforcement it may be replaced by
+            [$f_{pd} - \sigma_{pm,\infty}$], where [$\sigma_{pm,\infty}$] is the prestress in the tendons after
+            losses [$MPa$].
         d_dg : MM
             [$d_{dg}$] Size parameter describing the failure zone roughness, which depends on the concrete type
-            and its aggregate properties [$mm$].
+            and its aggregate properties. The standard gives it as [$16 + D_{lower} \leq 40$] for concrete with
+            [$f_{ck} \leq 60$] MPa, and as [$16 + D_{lower} \cdot \left(60/f_{ck}\right)^2 \leq 40$] for concrete
+            with [$f_{ck} > 60$] MPa, both in millimetres. [$D_{lower}$] is the smallest value of the upper sieve
+            size [$D$] in an aggregate for the coarsest fraction of aggregates in the concrete permitted by the
+            specification of concrete according to EN 206; where [$D_{max}$] is known it may replace
+            [$D_{lower}$], see the NOTE 2 to 8.2.1(4) [$mm$].
         d : MM
             [$d$] Effective depth of the flexural reinforcement. For prestressed members see 8.2.2(6) [$mm$].
         """

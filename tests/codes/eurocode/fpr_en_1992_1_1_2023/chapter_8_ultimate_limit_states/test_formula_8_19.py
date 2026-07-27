@@ -27,13 +27,23 @@ class TestForm8Dot19AverageShearStressPlanarMembers:
         ("v_ed", "z"),
         [
             (-250.0, 450.0),  # v_ed is negative
+        ],
+    )
+    def test_raise_error_when_negative_values_are_given(self, v_ed: float, z: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be negative."""
+        with pytest.raises(NegativeValueError):
+            Form8Dot19AverageShearStressPlanarMembers(v_ed=v_ed, z=z)
+
+    @pytest.mark.parametrize(
+        ("v_ed", "z"),
+        [
             (250.0, -450.0),  # z is negative
             (250.0, 0.0),  # z is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, v_ed: float, z: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+    def test_raise_error_when_less_or_equal_to_zero(self, v_ed: float, z: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be zero or less."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot19AverageShearStressPlanarMembers(v_ed=v_ed, z=z)
 
     @pytest.mark.parametrize(

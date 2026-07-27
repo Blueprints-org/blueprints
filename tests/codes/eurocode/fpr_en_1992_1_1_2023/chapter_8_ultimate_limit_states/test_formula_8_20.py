@@ -31,6 +31,16 @@ class TestForm8Dot20MinimumShearStressResistance:
         [
             (1.4, -30.0, 435.0, 32.0, 500.0),  # f_ck is negative
             (1.4, 30.0, 435.0, -32.0, 500.0),  # d_dg is negative
+        ],
+    )
+    def test_raise_error_when_negative_values_are_given(self, gamma_v: float, f_ck: float, f_yd: float, d_dg: float, d: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be negative."""
+        with pytest.raises(NegativeValueError):
+            Form8Dot20MinimumShearStressResistance(gamma_v=gamma_v, f_ck=f_ck, f_yd=f_yd, d_dg=d_dg, d=d)
+
+    @pytest.mark.parametrize(
+        ("gamma_v", "f_ck", "f_yd", "d_dg", "d"),
+        [
             (-1.4, 30.0, 435.0, 32.0, 500.0),  # gamma_v is negative
             (0.0, 30.0, 435.0, 32.0, 500.0),  # gamma_v is zero
             (1.4, 30.0, -435.0, 32.0, 500.0),  # f_yd is negative
@@ -39,9 +49,12 @@ class TestForm8Dot20MinimumShearStressResistance:
             (1.4, 30.0, 435.0, 32.0, 0.0),  # d is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, gamma_v: float, f_ck: float, f_yd: float, d_dg: float, d: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+    def test_raise_error_when_less_or_equal_to_zero(self, gamma_v: float, f_ck: float, f_yd: float, d_dg: float, d: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be zero or less.
+
+        All three sit in a denominator: gamma_v and d directly, f_yd inside the square root.
+        """
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot20MinimumShearStressResistance(gamma_v=gamma_v, f_ck=f_ck, f_yd=f_yd, d_dg=d_dg, d=d)
 
     @pytest.mark.parametrize(
