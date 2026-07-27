@@ -18,7 +18,7 @@ Total of 108 formulas present.
 | 2.1            | :heavy_check_mark: |         | Form2Dot1DesignValueResistance                                                    |        :x:         |
 | 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance                                            |        :x:         |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1CriteriumDisregardSecondOrderEffects                                     | :heavy_check_mark: |
-| 5.2            |        :x:         |         |                                                                                   |        :x:         |
+| 5.2            | :heavy_check_mark: |         | Form5Dot2ElasticCriticalBucklingFactor                                            |        :x:         |
 | 5.3            |        :x:         |         |                                                                                   |        :x:         |
 | 5.4            |        :x:         |         |                                                                                   |        :x:         |
 | 5.5            |        :x:         |         |                                                                                   |        :x:         |
