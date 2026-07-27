@@ -1,4 +1,4 @@
-"""Formula 8.50 from prEN-1992-1-1:2023: Chapter 8 - Ultimate limit states (ULS)."""
+"""Formula 8.50 from FprEN-1992-1-1:2023: Chapter 8 - Ultimate limit states (ULS)."""
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula

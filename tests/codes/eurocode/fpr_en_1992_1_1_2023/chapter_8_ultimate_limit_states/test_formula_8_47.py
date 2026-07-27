@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot47StrainTensionChord:
-    """Validation for formula 8.47 from prEN-1992-1-1:2023."""
+    """Validation for formula 8.47 from FprEN-1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

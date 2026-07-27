@@ -1,4 +1,4 @@
-"""Formula 8.44 from prEN-1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
+"""Formula 8.44 from FprEN-1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
 import numpy as np
 
