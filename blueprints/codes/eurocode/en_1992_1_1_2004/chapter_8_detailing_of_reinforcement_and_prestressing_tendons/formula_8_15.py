@@ -225,4 +225,3 @@ class SubForm8Dot15TensileStrengthAtRelease(Formula):
             comparison_operator_label="=",
             unit="MPa",
         )
-

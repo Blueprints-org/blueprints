@@ -107,9 +107,9 @@ class TestSubForm8Dot15TensileStrengthAtRelease:
         [
             (
                 "complete",
-                (r"f_{ctd}(t) = \frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c} = \frac{1.00 \cdot 0.7 \cdot 1.75}{1.50} = 0.82"),
+                (r"f_{ctd}(t) = \frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c} = \frac{1.00 \cdot 0.7 \cdot 1.75}{1.50} = 0.82 \ MPa"),
             ),
-            ("short", r"f_{ctd}(t) = 0.82"),
+            ("short", r"f_{ctd}(t) = 0.82 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

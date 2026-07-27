@@ -120,3 +120,8 @@ class SubForm8Dot20EtaP2(Formula):
             numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label=r"\rightarrow",
         )
+
+if __name__ == "__main__":
+    my_form = SubForm8Dot20EtaP2(type_of_wire="indented")
+    latex = my_form.latex()
+    print(latex.complete)
