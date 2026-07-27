@@ -357,6 +357,31 @@ class AggregatedComparisonFormula(ComparisonFormula):
             raise ValueError("All provided comparison formulas must be instances of ComparisonFormula.")
         return aggregation(bool(formula) for formula in comparison_formulas)
 
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return the latex representation of the aggregated comparison formula.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of decimal places to round the result to.
+
+        Returns
+        -------
+        LatexFormula
+            The latex representation of the formula, given in math mode.
+        """
+        aggregation = " \\land " if self.aggregation is all else " \\lor "
+        comparison_equations = aggregation.join(formula.latex(n).equation for formula in self.comparison_formulas)
+        comparison_numeric_equations = aggregation.join(formula.latex(n).numeric_equation for formula in self.comparison_formulas)
+        return LatexFormula(
+            return_symbol=r"CHECK",
+            result="OK" if self.__bool__() else "\\text{Not OK}",
+            equation=comparison_equations,
+            numeric_equation=comparison_numeric_equations,
+            comparison_operator_label="\\to",
+            unit="",
+        )
+
 
 class DoubleComparisonFormula(Formula):
     """Base class for double comparison formulas used in the codes.

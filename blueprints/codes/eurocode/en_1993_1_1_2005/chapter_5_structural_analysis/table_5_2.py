@@ -8,7 +8,7 @@ from typing import ClassVar
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 
 
 class CrossSectionClass(IntEnum):
@@ -89,7 +89,13 @@ class _MaximumWidthToThicknessRatio(ComparisonFormula):
     _rhs_latex: ClassVar[str]
 
     def __init__(self, *args, **kwargs) -> None:
-        # Map positional args → named attributes using _param_names
+        """Initialize the formula with named attributes based on the provided parameters.
+
+        Parameters
+        ----------
+        *args : positional arguments corresponding to the parameters defined in _param_names.
+        **kwargs : keyword arguments corresponding to the parameters defined in _param_names.
+        """
         merged = {**dict(zip(type(self)._param_names, args)), **kwargs}  # noqa: SLF001
         for name in type(self)._param_names:  # noqa: SLF001
             setattr(self, name, merged[name])
@@ -102,19 +108,31 @@ class _MaximumWidthToThicknessRatio(ComparisonFormula):
 
     @classmethod
     def _evaluate_lhs(cls, *args, **kwargs) -> float:
+        """Evaluate the left-hand side of the formula using the provided parameters."""
         return cls._lhs_fn(*args, **kwargs)
 
     @classmethod
     def _evaluate_rhs(cls, *args, **kwargs) -> float:
+        """Evaluate the right-hand side of the formula using the provided parameters."""
         return cls._rhs_fn(*args, **kwargs)
 
     def latex(self, n: int = 3) -> LatexFormula:
+        """Return the latex representation of the formula, given in math mode."""
+        _equation: str = f"{self._lhs_latex} {self._comparison_operator().__name__} {self._rhs_latex}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                param_name: f"{getattr(self, param_name):.{n}f}"
+                for param_name in type(self)._param_names  # noqa: SLF001
+            },
+            unique_symbol_check=False,
+        )
         return LatexFormula(
-            return_symbol=self._lhs_latex,
-            result=f"{round(self.lhs / self.rhs, n):.{n}f}",
-            equation=f"{self._lhs_latex} {self._comparison_operator().__name__} {self._rhs_latex}",
-            numeric_equation=rf"{self.lhs:.{n}f} \leq {self.rhs:.{n}f}",
-            comparison_operator_label=r"\leq",
+            return_symbol=r"CHECK",
+            result="OK" if bool(self) else "\\text{Not OK}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            comparison_operator_label="\\to",
         )
 
 
@@ -129,7 +147,7 @@ def _make_limit_class(
     """Dynamically build a _MaximumWidthToThicknessRatio subclass."""
     return type(
         name,
-        (_MaximumWidthToThicknessRatio,),
+        (_MaximumWidthToThicknessRatio, ComparisonFormula),
         {
             "_param_names": params,
             "_lhs_fn": staticmethod(lhs_fn),
@@ -140,12 +158,21 @@ def _make_limit_class(
     )
 
 
+class _AggregatedMaximumWidthToThicknessRatio(AggregatedComparisonFormula):
+    """Aggregated comparison formula for Table 5.2 checks with multiple conditions."""
+
+    label = "Maximum width-to-thickness ratio"
+    source_document = EN_1993_1_1_2005
+
+
 class Table5Dot2MaximumWidthToThicknessRatio:
     """Proposal API for EN 1993-1-1:2005 Table 5.2."""
 
     label = "Table 5.2"
     source_document = EN_1993_1_1_2005
-    _ratio_factor_mapping: ClassVar = {
+    _ratio_factor_mapping: ClassVar[
+        dict[Table5Dot2CompressionPart, dict[CrossSectionClass, dict[Table5Dot2LoadingCondition, type[_MaximumWidthToThicknessRatio]]]]
+    ] = {
         Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART: {
             CrossSectionClass.CLASS_1: {
                 Table5Dot2LoadingCondition.SUBJECT_TO_BENDING: _make_limit_class(
@@ -232,7 +259,7 @@ class Table5Dot2MaximumWidthToThicknessRatio:
         },
         Table5Dot2CompressionPart.OUTSTAND_FLANGE: {
             CrossSectionClass.CLASS_1: {
-                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION: _make_limit_class(
+                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION: _make_limit_class(
                     name="Form5Dot2OutstandBendingAndCompressionClass1",
                     params=("c", "t", "epsilon"),
                     lhs_fn=lambda c, t, **_: c / t,
@@ -312,11 +339,11 @@ class Table5Dot2MaximumWidthToThicknessRatio:
         },
         Table5Dot2CompressionPart.ANGLE: {
             CrossSectionClass.CLASS_3: {
-                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION: AggregatedComparisonFormula(
+                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION: _AggregatedMaximumWidthToThicknessRatio(
                     aggregation=all,
                     comparison_formulas=[
                         _make_limit_class(
-                            name="Form5Dot2AngleCompressionClass3HeightToThickness",
+                            name="Form5Dot2AngleCompressionClass3Part1",
                             params=("h", "t", "epsilon"),
                             lhs_fn=lambda h, t, **_: h / t,
                             rhs_fn=lambda epsilon, **_: 15 * epsilon,
@@ -324,7 +351,7 @@ class Table5Dot2MaximumWidthToThicknessRatio:
                             rhs_latex=r"15 \epsilon",
                         ),
                         _make_limit_class(
-                            name="Form5Dot2AngleCompressionClass3",
+                            name="Form5Dot2AngleCompressionClass3Part2",
                             params=("h", "b", "t", "epsilon"),
                             lhs_fn=lambda h, b, t, **_: (h + b) / (2 * t),
                             rhs_fn=lambda epsilon, **_: 11.5 * epsilon,
@@ -374,13 +401,25 @@ class Table5Dot2MaximumWidthToThicknessRatio:
         cross_section_class: CrossSectionClass | int,
         part: Table5Dot2CompressionPart,
         force_type: Table5Dot2LoadingCondition,
-    ) -> None: ...
+    ) -> None:
+        self.cross_section_class = CrossSectionClass(cross_section_class)
+        self.part = part
+        self.force_type = force_type
+        limit_class = self._ratio_factor_mapping[part][self.cross_section_class][force_type]
+        super().__init__(comparison_formulas=[limit_class()], aggregation=all)
 
-    def latex(
-        self,
-        cross_section_class: CrossSectionClass | int,
-        part: Table5Dot2CompressionPart,
-        force_type: Table5Dot2LoadingCondition,
-        n: int = 3,
-    ) -> LatexFormula:
-        """Return a LaTeX explanation for the selected Table 5.2 limit."""
+
+if __name__ == "__main__":
+    # first check the class of dynamically generated class
+    formula = Table5Dot2MaximumWidthToThicknessRatio._ratio_factor_mapping[Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART][
+        CrossSectionClass.CLASS_1
+    ][Table5Dot2LoadingCondition.SUBJECT_TO_BENDING]
+    print(f"Class of dynamically generated class: {formula.__name__}")
+    print(isinstance(formula(), ComparisonFormula))  # Should be True
+    # Example usage
+    formula = Table5Dot2MaximumWidthToThicknessRatio(
+        cross_section_class=CrossSectionClass.CLASS_1,
+        part=Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+        force_type=Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+    )
+    print(formula.latex().equation)
