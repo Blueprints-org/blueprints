@@ -849,3 +849,59 @@ class TestAggregatedComparisonFormula:
         outer = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[inner_any, inner_all])
         assert not outer
         assert bool(outer) is False
+
+
+class TestComparisonFormulaBooleanAgreesWithEvaluate:
+    """The boolean of a comparison must agree with the comparison itself, whatever the signs of the two sides.
+
+    Deriving it from the unity check does not: that ratio only orders the two sides correctly while both have
+    the same sign. These cases are reachable in practice whenever a lower bound is written as
+    ``constant <= value``, which puts the value under check on the right-hand side of the comparison.
+
+    ``ComparisonFormulaTestLessOrEqual`` has ``lhs = a + b`` and ``rhs = c / 2`` with the ``le`` operator.
+    """
+
+    @pytest.mark.parametrize(
+        ("a", "b", "c", "expected"),
+        [
+            (1, 1, 10, True),  # lhs = 2, rhs = 5, both positive
+            (4, 1, 4, False),  # lhs = 5, rhs = 2, both positive
+            (1, 1, -4, False),  # lhs = 2, rhs = -2, so the ratio is -1 and would report a satisfied condition
+            (-1, -1, 4, True),  # lhs = -2, rhs = 2, so the ratio is -1 as well, and here it is satisfied
+            # lhs = -2, rhs = -1, both negative, so the ratio is 2 and would report a violated condition
+            (-1, -1, -2, True),
+            (1, 1, 0, False),  # lhs = 2, rhs = 0, where the ratio does not exist at all
+        ],
+    )
+    def test_bool_matches_the_operator(self, a: float, b: float, c: float, expected: bool) -> None:
+        """The boolean follows the operator applied to the two sides."""
+        formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
+
+        assert bool(formula) is expected
+        assert bool(formula) == bool(float(formula)), "bool() and float() must not disagree"
+
+    @pytest.mark.parametrize(
+        ("a", "b", "c"),
+        [
+            (1, 1, -4),  # lhs = 2, rhs = -2
+            (1, 1, 0),  # lhs = 2, rhs = 0
+        ],
+    )
+    def test_aggregation_of_a_sign_crossing_member(self, a: float, b: float, c: float) -> None:
+        """An aggregate follows its members, including where their two sides straddle zero.
+
+        The aggregate cannot reuse the inherited boolean, because it disables the comparison operator and the
+        two sides. It aggregates the results of its members instead, which is what its own ``_evaluate``
+        already does.
+        """
+        crossing = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
+        passing = ComparisonFormulaTestLessOrEqual(a=1, b=1, c=10)
+
+        aggregate_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[passing, crossing])
+        aggregate_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[passing, crossing])
+
+        assert bool(crossing) is False
+        assert bool(aggregate_all) is False
+        assert bool(aggregate_any) is True
+        assert bool(aggregate_all) == bool(float(aggregate_all))
+        assert bool(aggregate_any) == bool(float(aggregate_any))

@@ -211,21 +211,28 @@ class ComparisonFormula(Formula, ABC):
     def __bool__(self) -> bool:
         """Return whether the comparison condition is satisfied.
 
-        Returns True if the unity check is less than or equal to 1.0, indicating the condition is satisfied.
-        This allows ComparisonFormula instances to be used directly in boolean contexts.
+        The comparison operator is applied to the two sides directly, so that this agrees with
+        :meth:`_evaluate` and therefore with ``float(self)`` for every input.
+
+        It deliberately does not go through :attr:`unity_check`. That ratio only orders the two sides
+        correctly while both have the same sign. Where they do not, ``lhs / rhs`` turns negative and a
+        negative value is below 1, so a condition that is in fact violated would be reported as satisfied;
+        a right-hand side of zero would raise :class:`ZeroDivisionError` instead of answering. Both are
+        reachable whenever a lower bound is written as ``constant <= value``, which puts the value under
+        check on the right-hand side.
 
         Examples
         --------
         formula = SomeComparisonFormula(...)
-        if formula:  # Equivalent to: if formula.unity_check <= 1.0
+        if formula:  # Equivalent to: if formula.lhs <= formula.rhs, for the le operator
             print("Condition satisfied")
 
         Returns
         -------
         bool
-            True if unity_check <= 1.0 (condition is satisfied), False otherwise.
+            True if the comparison holds, False otherwise.
         """
-        return self.unity_check <= 1.0
+        return bool(self._comparison_operator()(self.lhs, self.rhs))
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
@@ -325,6 +332,25 @@ class AggregatedComparisonFormula(ComparisonFormula):
             if self.aggregation is all
             else min(formula.unity_check for formula in self.comparison_formulas)
         )
+
+    def __bool__(self) -> bool:
+        """Return whether the aggregated condition is satisfied.
+
+        The aggregation function is applied to the results of the individual comparison formulas, so that
+        this agrees with :meth:`_evaluate` and therefore with ``float(self)``.
+
+        It cannot use the inherited implementation, because this class disables the comparison operator and
+        the two sides it works on. It deliberately does not go through :attr:`unity_check` either: for an
+        ``any`` aggregation the smallest ratio decides, which is not the same question as whether any of the
+        conditions holds, and the ratios of the members carry the sign problem described on
+        :meth:`ComparisonFormula.__bool__`.
+
+        Returns
+        -------
+        bool
+            True if the aggregated condition holds, False otherwise.
+        """
+        return bool(self.aggregation(bool(formula) for formula in self.comparison_formulas))
 
     @classmethod
     def _evaluate(
