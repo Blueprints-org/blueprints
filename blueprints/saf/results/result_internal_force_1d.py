@@ -53,7 +53,7 @@ class ResultInternalForce1D:
     - Shear force V_y: positive = left (see coordinate system above).
     - Shear force V_z: positive = up (see coordinate system above).
     - Torsion M_x: positive = from y to z (twisting around x-axis, see coordinate system above).
-    - Bending moment M_y: positive = from z to x (rotation around y-axis, see coordinate system above).
+    - Bending moment M_y: positive = from x to z (rotation around y-axis, see coordinate system above).
     - Bending moment M_z: positive = from x to y (rotation around z-axis, see coordinate system above).
 
     Attributes

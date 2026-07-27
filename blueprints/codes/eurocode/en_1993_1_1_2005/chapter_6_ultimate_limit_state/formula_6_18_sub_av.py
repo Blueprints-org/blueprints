@@ -1,4 +1,4 @@
-"""Subformula a trough g from 6.18 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
+"""Subformula a through g from 6.18 from EN 1993-1-1:2005: Chapter 6 - Ultimate Limit State."""
 
 import numpy as np
 
