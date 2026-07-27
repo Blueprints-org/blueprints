@@ -43,8 +43,8 @@ class TestForm8Dot12AdditionalShearReinforcement:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"A_{sh} = 0.25 \cdot A_s \cdot n_1 = 0.25 \cdot 100.00 \cdot 2.00 = 50.00"),
-            ("short", r"A_{sh} = 50.00"),
+            ("complete", r"A_{sh} = 0.25 \cdot A_s \cdot n_1 = 0.25 \cdot 100.00 \cdot 2.00 = 50.00 \ mm^2"),
+            ("short", r"A_{sh} = 50.00 \ mm^2"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -72,4 +72,3 @@ class Form8Dot6MinimumTensionAnchorage(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
-

@@ -50,8 +50,8 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.14."""
-        _equation: str = r"\min \left(55 \ \text{mm}, Ø \cdot \sqrt{n_b} \right)"
-        _equation_no_unit: str = r"\min \left(55, Ø \cdot \sqrt{n_b} \right)"
+        _equation: str = r"\min \left(55 \ mm, Ø \cdot \sqrt{n_b} \right)"
+        _equation_no_unit: str = r"\min \left(55 \ mm, Ø \cdot \sqrt{n_b} \right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation_no_unit,
             {
@@ -77,4 +77,3 @@ class Form8Dot14EquivalentDiameterBundledBars(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
-

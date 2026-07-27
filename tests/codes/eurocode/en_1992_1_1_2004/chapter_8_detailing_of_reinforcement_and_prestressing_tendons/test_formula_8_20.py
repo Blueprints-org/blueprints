@@ -34,8 +34,8 @@ class TestForm8Dot20BondStrengthAnchorageULS:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"f_{bpd} = \eta_{p2} \cdot \eta_{1} \cdot f_{ctd} = 1.400 \cdot 1.000 \cdot 2.500 = 3.500"),
-            ("short", r"f_{bpd} = 3.500"),
+            ("complete", r"f_{bpd} = \eta_{p2} \cdot \eta_{1} \cdot f_{ctd} = 1.400 \cdot 1.000 \cdot 2.500 = 3.500 \ MPa"),
+            ("short", r"f_{bpd} = 3.500 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

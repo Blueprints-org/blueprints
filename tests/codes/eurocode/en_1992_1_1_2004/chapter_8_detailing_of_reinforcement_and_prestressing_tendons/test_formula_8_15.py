@@ -123,9 +123,9 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
         [
             (
                 "complete",
-                (r"f_{bpt} = \eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t) = 2.70 \cdot 1.00 \cdot 2.50 = 6.75"),
+                (r"f_{bpt} = \eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t) = 2.70 \cdot 1.00 \cdot 2.50 = 6.75 \ MPa"),
             ),
-            ("short", r"f_{bpt} = 6.75"),
+            ("short", r"f_{bpt} = 6.75 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

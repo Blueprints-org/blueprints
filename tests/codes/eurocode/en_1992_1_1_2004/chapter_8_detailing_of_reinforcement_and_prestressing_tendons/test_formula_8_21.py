@@ -100,9 +100,9 @@ class TestForm8Dot21DispersionLength:
             (
                 "complete",
                 r"l_{bpd} = l_{pt2} + \alpha_{2} \cdot Ø \cdot \frac{\sigma_{pd} - \sigma_{pm\infty}}{f_{bpd}} = "
-                r"100.000 + 0.800 \cdot 12.000 \cdot \frac{1000.000 - 900.000}{2.500} = 484.000",
+                r"100.000 + 0.800 \cdot 12.000 \cdot \frac{1000.000 - 900.000}{2.500} = 484.000 \ mm",
             ),
-            ("short", r"l_{bpd} = 484.000"),
+            ("short", r"l_{bpd} = 484.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

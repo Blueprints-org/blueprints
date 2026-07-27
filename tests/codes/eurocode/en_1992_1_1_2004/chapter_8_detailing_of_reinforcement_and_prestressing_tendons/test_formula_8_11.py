@@ -137,9 +137,9 @@ class TestForm8Dot11MinimumDesignLapLength:
             (
                 "complete",
                 r"l_{Ø,min} = \max \left\{0.3 \cdot \alpha_6 \cdot l_{b,rqd}; 15 \cdot Ø; 200 \ \text{mm}\right\} = \max \left\{0.3 \cdot 1.000 "
-                r"\cdot 450.000; 15 \cdot 8; 200\right\} = 200.000",
+                r"\cdot 450.000; 15 \cdot 8.000; 200\right\} = 200.000 \ mm",
             ),
-            ("short", r"l_{Ø,min} = 200.000"),
+            ("short", r"l_{Ø,min} = 200.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:

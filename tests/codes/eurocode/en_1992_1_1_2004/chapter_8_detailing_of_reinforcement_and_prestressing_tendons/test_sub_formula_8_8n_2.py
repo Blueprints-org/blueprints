@@ -153,10 +153,10 @@ class TestSubForm8Dot8nConcreteStress:
                 "complete",
                 (
                     r"\sigma_{td} = \min\left( 3 \cdot f_{cd}, \frac{f_{ctd} + \sigma_{cm}}{y} \right)"
-                    r" = \min\left(3 \cdot 50.00, \frac{2.60 + 15.00}{0.12} \right) = 144.41"
+                    r" = \min\left(3 \cdot 50.00, \frac{2.60 + 15.00}{0.12} \right) = 144.41 \ MPa"
                 ),
             ),
-            ("short", r"\sigma_{td} = 144.41"),
+            ("short", r"\sigma_{td} = 144.41 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -52,7 +52,7 @@ class Form8Dot3RequiredAnchorageLength(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
-        _equation: str = rf"{latex_fraction(r'Ø', 4)} \cdot {latex_fraction(r'\sigma_{sd}', r'f_{bd}')} "
+        _equation: str = rf"{latex_fraction(r'Ø',4)} \cdot {latex_fraction(r'\sigma_{sd}', r'f_{bd}')}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {

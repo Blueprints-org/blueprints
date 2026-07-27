@@ -68,14 +68,14 @@ class TestForm8Dot3RequiredAnchorageLength:
         [
             (
                 "complete",
-                r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12}{4} \cdot \frac{435}{2.9} = 450.000",
+                r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12.000}{4} \cdot \frac{435.000}{2.900} = 450.000 \ mm",
             ),
-            ("short", "l_{b,rqd} = 450.000"),
+            ("short", "l_{b,rqd} = 450.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:
         """Test the LaTeX representation."""
-        diameter = 12  # MPa
+        diameter = 12  # mm
         f_bd = 2.9  # MPa
         sigma_sd = 435  # MPa
 

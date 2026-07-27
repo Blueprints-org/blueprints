@@ -87,10 +87,10 @@ class TestForm8Dot7MinimumCompressionAnchorage:
                 "complete",
                 (
                     r"l_{b,min} = \max \left\{0.6 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = "
-                    r"\max \left\{0.6 \cdot 500.00; 10 \cdot 8; 100\right\} = 300.00"
+                    r"\max \left\{0.6 \cdot 500.00; 10 \cdot 8.00; 100\right\} = 300.00 \ mm"
                 ),
             ),
-            ("short", "l_{b,min} = 300.00"),
+            ("short", "l_{b,min} = 300.00 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:

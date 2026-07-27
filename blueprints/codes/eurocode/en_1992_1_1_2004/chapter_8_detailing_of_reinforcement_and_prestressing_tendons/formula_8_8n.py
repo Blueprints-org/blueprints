@@ -387,3 +387,8 @@ class SubForm8Dot8nFunctionX(Formula):
             numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
         )
+
+if __name__ == "__main__":
+    my_form = SubForm8Dot8nConcreteStress(f_ctd=2.6, sigma_cm=15, y_function=0.12, f_cd=50)
+    latex = my_form.latex()
+    print(latex.complete)

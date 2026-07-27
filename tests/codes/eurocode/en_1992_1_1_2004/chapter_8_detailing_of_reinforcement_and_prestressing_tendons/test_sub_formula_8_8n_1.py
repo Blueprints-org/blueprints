@@ -160,10 +160,10 @@ class TestSubForm8Dot8nDesignLengthOfTransverseBar:
                 "complete",
                 (
                     r"l_{td} = \min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right) = "
-                    r"\min\left(100.00, 1.16 \cdot 16.00 \cdot ({\frac{500.00}{35.20}})^{0.5} \right) = 69.95"
+                    r"\min\left(100.00, 1.16 \cdot 16.00 \cdot ({\frac{500.00}{35.20}})^{0.5} \right) = 69.95 \ mm"
                 ),
             ),
-            ("short", r"l_{td} = 69.95"),
+            ("short", r"l_{td} = 69.95 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

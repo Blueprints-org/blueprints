@@ -53,8 +53,8 @@ class TestForm8Dot17DesignValueTransmissionLength1:
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"l_{pt1} = 0.8 \cdot l_{pt} = 0.8 \cdot 140.000 = 112.000"),
-            ("short", r"l_{pt1} = 112.000"),
+            ("complete", r"l_{pt1} = 0.8 \cdot l_{pt} = 0.8 \cdot 140.000 = 112.000 \ mm"),
+            ("short", r"l_{pt1} = 112.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

@@ -101,4 +101,3 @@ class Form8Dot5ProductAlphas235(Formula):
             numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="\\to",
         )
-

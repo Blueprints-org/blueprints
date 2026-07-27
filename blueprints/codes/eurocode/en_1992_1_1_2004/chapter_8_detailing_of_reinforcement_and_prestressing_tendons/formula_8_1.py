@@ -65,11 +65,11 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.1."""
-        _equation: str = r"\frac{F_{bt} \cdot 1000 \cdot \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right)}{f_{cd}}"
+        _equation: str = r"\frac{F_{bt} \cdot \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"F_{bt}": f"{self.f_bt:.{n}f}",
+                r"F_{bt}": f"{self.f_bt:.{n}f} \cdot 1000",
                 r"a_b": f"{self.a_b:.{n}f}",
                 r"Ø": f"{self.diameter:.{n}f}",
                 r"f_{cd}": f"{self.f_cd:.{n}f}",
@@ -79,7 +79,7 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"F_{bt}": rf"{self.f_bt:.{n}f} \ kN",
+                r"F_{bt}": rf"{self.f_bt:.{n}f} \ kN \cdot 1000",
                 r"a_b": rf"{self.a_b:.{n}f} \ mm",
                 r"Ø": rf"{self.diameter:.{n}f} \ mm",
                 r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
@@ -95,3 +95,13 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
+
+if __name__ == "__main__":
+    my_form = Form8Dot1RequiredMinimumMandrelDiameter(
+        f_bt=80,
+        a_b=200,
+        diameter=16,
+        f_cd=30,
+    )
+    latex = my_form.latex()
+    print(latex.complete_with_units)

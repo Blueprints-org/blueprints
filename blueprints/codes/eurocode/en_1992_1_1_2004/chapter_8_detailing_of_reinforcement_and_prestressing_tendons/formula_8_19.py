@@ -71,3 +71,10 @@ class Form8Dot19DispersionLength(Formula):
             unit="m",
         )
 
+if __name__ == "__main__":
+    my_form = Form8Dot19DispersionLength(
+        l_pt=10,
+        d=2,
+    )
+    latex = my_form.latex()
+    print(latex.complete)

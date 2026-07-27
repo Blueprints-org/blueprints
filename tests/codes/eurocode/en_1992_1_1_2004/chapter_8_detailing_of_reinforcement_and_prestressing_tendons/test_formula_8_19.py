@@ -46,9 +46,9 @@ class TestForm8Dot19DispersionLength:
         [
             (
                 "complete",
-                r"l_{disp} = \sqrt{l_{pt}^2 + d^2} = \sqrt{10.000^2 + 2.000^2} = 10.198",
+                r"l_{disp} = \sqrt{l_{pt}^2 + d^2} = \sqrt{10.000^2 + 2.000^2} = 10.198 \ m",
             ),
-            ("short", r"l_{disp} = 10.198"),
+            ("short", r"l_{disp} = 10.198 \ m"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

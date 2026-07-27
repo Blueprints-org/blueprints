@@ -91,3 +91,15 @@ class Form8Dot21AnchorageLength(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
+    
+if __name__ == "__main__":
+    my_form = Form8Dot21AnchorageLength(
+        l_pt2=200,
+        alpha_2=1.2,
+        diameter=15,
+        sigma_pd=1500,
+        sigma_pminf=1200,
+        f_bpd=2.9,
+    )
+    latex = my_form.latex()
+    print(latex.complete)
