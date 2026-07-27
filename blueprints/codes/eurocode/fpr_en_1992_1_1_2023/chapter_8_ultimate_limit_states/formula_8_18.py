@@ -1,6 +1,6 @@
-"""Formula 8.18 from prEN-1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
+"""Formula 8.18 from FprEN 1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
-from blueprints.codes.eurocode.pr_en_1992_1_2023 import PR_EN_1992_1_1_2023
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM, MPA, N
@@ -13,12 +13,12 @@ class Form8Dot18AverageShearStress(Formula):
     """
 
     label = "8.18"
-    source_document = PR_EN_1992_1_1_2023
+    source_document = FPR_EN_1992_1_1_2023
 
     def __init__(self, v_ed: N, b_w: MM, z: MM) -> None:
         r"""[$\tau_{Ed}$] Average shear stress over the cross-section area in regions of members without geometric discontinuities [$MPa$].
 
-        prEN 1992-1-1:2023 art 8.2.1 (3) - Formula (8.18)
+        FprEN 1992-1-1:2023 (E) art 8.2.1 (3) - Formula (8.18)
 
         Parameters
         ----------
