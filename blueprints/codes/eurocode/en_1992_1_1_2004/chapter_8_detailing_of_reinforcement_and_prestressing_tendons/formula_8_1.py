@@ -95,13 +95,3 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
-
-if __name__ == "__main__":
-    my_form = Form8Dot1RequiredMinimumMandrelDiameter(
-        f_bt=80,
-        a_b=200,
-        diameter=16,
-        f_cd=30,
-    )
-    latex = my_form.latex()
-    print(latex.complete_with_units)

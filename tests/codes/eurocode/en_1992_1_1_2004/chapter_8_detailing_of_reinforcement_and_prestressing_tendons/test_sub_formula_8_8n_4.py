@@ -55,6 +55,7 @@ class TestSubForm8Dot8nFunctionX:
         ("representation", "expected"),
         [
             ("complete", r"x = 2 \cdot \frac{c}{Ø_t} + 1 = 2 \cdot \frac{60.00}{16.00} + 1 = 8.50"),
+            ("complete_with_units", r"x = 2 \cdot \frac{c}{Ø_t} + 1 = 2 \cdot \frac{60.00 \ mm}{16.00 \ mm} + 1 = 8.50"),
             ("short", r"x = 8.50"),
         ],
     )
@@ -67,6 +68,10 @@ class TestSubForm8Dot8nFunctionX:
         # Object to test
         sub_form_8_8n_4_latex = SubForm8Dot8nFunctionX(cover=cover, diameter_t=diameter_t).latex()
 
-        actual = {"complete": sub_form_8_8n_4_latex.complete, "short": sub_form_8_8n_4_latex.short}
+        actual = {
+            "complete": sub_form_8_8n_4_latex.complete,
+            "complete_with_units": sub_form_8_8n_4_latex.complete_with_units,
+            "short": sub_form_8_8n_4_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

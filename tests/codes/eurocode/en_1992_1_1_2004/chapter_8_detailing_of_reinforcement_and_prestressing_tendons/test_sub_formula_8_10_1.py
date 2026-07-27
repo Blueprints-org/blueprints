@@ -60,6 +60,11 @@ class TestSubFormula8Dot8Alpha6:
                 r"\alpha_6 = \max \left\{\min \left\{\left(\frac{\rho_1}{25}\right)^{0.5}; 1.5\right\}; 1\right\} = \max \left\{\min "
                 r"\left\{\left(\frac{32.50}{25}\right)^{0.5}; 1.5\right\}; 1\right\} = 1.14",
             ),
+            (
+                "complete_with_units",
+                r"\alpha_6 = \max \left\{\min \left\{\left(\frac{\rho_1}{25}\right)^{0.5}; 1.5\right\}; 1\right\} = \max \left\{\min "
+                r"\left\{\left(\frac{32.50}{25}\right)^{0.5}; 1.5\right\}; 1\right\} = 1.14",
+            ),
             ("short", r"\alpha_6 = 1.14"),
         ],
     )
@@ -72,6 +77,7 @@ class TestSubFormula8Dot8Alpha6:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

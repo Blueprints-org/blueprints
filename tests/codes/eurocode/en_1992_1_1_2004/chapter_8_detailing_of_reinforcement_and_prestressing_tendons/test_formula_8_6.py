@@ -91,7 +91,7 @@ class TestForm8Dot6MinimumTensionAnchorage:
             (
                 "complete_with_units",
                 r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.3 \cdot 500.00 \ mm; 10 \cdot 8.00 \ mm; "
-                r"100 \ mm\right\} = 150.00 \ mm",
+                r"100 \ \text{mm}\right\} = 150.00 \ mm",
             ),
             ("short", "l_{b,min} = 150.00 \ mm"),
         ],

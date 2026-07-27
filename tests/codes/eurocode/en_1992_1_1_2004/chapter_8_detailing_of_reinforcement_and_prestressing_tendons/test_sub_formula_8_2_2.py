@@ -44,10 +44,18 @@ class TestSubForm8Dot2CoefficientBarDiameter:
                 "complete_latex_16",
                 r"\eta_2 = \begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases} = 1.00 = 1.00",
             ),
+            (
+                "complete_with_units_latex_16",
+                r"\eta_2 = \begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases} = 1.00 = 1.00",
+            ),
             ("short_latex_16", r"\eta_2 = 1.00"),
             (
                 "complete_latex_64",
                 r"\eta_2 = \begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases} = (132 - 64.00) / 100 = 0.68",
+            ),
+            (
+                "complete_with_units_latex_64",
+                r"\eta_2 = \begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases} = (132 - 64.00 \ mm) / 100 = 0.68",
             ),
             ("short_latex_64", r"\eta_2 = 0.68"),
         ],
@@ -59,8 +67,10 @@ class TestSubForm8Dot2CoefficientBarDiameter:
 
         actual = {
             "complete_latex_16": latex_16.complete,
+            "complete_with_units_latex_16": latex_16.complete_with_units,
             "short_latex_16": latex_16.short,
             "complete_latex_64": latex_64.complete,
+            "complete_with_units_latex_64": latex_64.complete_with_units,
             "short_latex_64": latex_64.short,
         }
 

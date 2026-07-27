@@ -154,7 +154,7 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
         _equation: str = r"\begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases}"
         _numeric_equation: str = f"1.00" if self.diameter <= 32 else f"(132 - {self.diameter:.{n}f}) / 100"
         _numeric_equation_with_units: str = (
-            f"1.000" if self.diameter <= 32 else rf"(132 - {self.diameter:.{n}f} \ mm) / 100"
+            f"1.00" if self.diameter <= 32 else rf"(132 - {self.diameter:.{n}f} \ mm) / 100"
         )
 
         return LatexFormula(

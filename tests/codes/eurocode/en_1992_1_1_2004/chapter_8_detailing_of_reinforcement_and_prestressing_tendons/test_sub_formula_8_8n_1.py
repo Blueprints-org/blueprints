@@ -163,6 +163,13 @@ class TestSubForm8Dot8nDesignLengthOfTransverseBar:
                     r"\min\left(100.00, 1.16 \cdot 16.00 \cdot ({\frac{500.00}{35.20}})^{0.5} \right) = 69.95 \ mm"
                 ),
             ),
+            (
+                "complete_with_units",
+                (
+                    r"l_{td} = \min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right) = "
+                    r"\min\left(100.00 \ mm, 1.16 \cdot 16.00 \ mm \cdot ({\frac{500.00 \ MPa}{35.20 \ MPa}})^{0.5} \right) = 69.95 \ mm"
+                ),
+            ),
             ("short", r"l_{td} = 69.95 \ mm"),
         ],
     )
@@ -191,6 +198,10 @@ class TestSubForm8Dot8nDesignLengthOfTransverseBar:
             l_t=l_t,
         ).latex()
 
-        actual = {"complete": sub_form_8_8n_1_latex.complete, "short": sub_form_8_8n_1_latex.short}
+        actual = {
+            "complete": sub_form_8_8n_1_latex.complete,
+            "complete_with_units": sub_form_8_8n_1_latex.complete_with_units,
+            "short": sub_form_8_8n_1_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."
