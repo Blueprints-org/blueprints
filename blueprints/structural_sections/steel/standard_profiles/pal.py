@@ -5,12 +5,12 @@ from __future__ import annotations
 from typing import NamedTuple
 
 from blueprints.structural_sections.steel.profile_definitions.sheetpile_u_profile import SheetpileUProfile
-from blueprints.structural_sections.steel.standard_profiles._data.pal.pal3030 import PAL3030_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pal.pal3040 import PAL3040_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pal.pal3050 import PAL3050_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pal.pal3130 import PAL3130_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pal.pal3140 import PAL3140_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pal.pal3150 import PAL3150_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pal.pal3030 import PAL3030_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pal.pal3040 import PAL3040_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pal.pal3050 import PAL3050_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pal.pal3130 import PAL3130_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pal.pal3140 import PAL3140_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pal.pal3150 import PAL3150_GEOMETRY
 from blueprints.structural_sections.steel.standard_profiles.utils import StandardProfileMeta
 from blueprints.type_alias import MM
 

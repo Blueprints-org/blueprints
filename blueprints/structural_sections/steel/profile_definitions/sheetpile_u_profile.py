@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import cast
 
 from matplotlib import pyplot as plt
@@ -98,32 +98,34 @@ class SheetpileUProfile(Profile):
                 mirrored_polygon = affinity.scale(single_sheet_polygon, xfact=-1, yfact=-1, origin=((xmin + xmax) / 2, 0))
                 # Then translate the mirrored polygon horizontally
                 translated_polygon = affinity.translate(mirrored_polygon, xoff=i * self.interlocking_ctc)
-                polygons.append(translated_polygon)
             else:
                 # Translate the polygon horizontally
                 translated_polygon = affinity.translate(single_sheet_polygon, xoff=i * self.interlocking_ctc)
-                polygons.append(translated_polygon)
+            polygons.append(translated_polygon)
+
+            if i == self.number_of_sheets - 1:
+                continue  # Skip connector after the last sheet
 
             # Add connector rectangle between sheets (except after the last sheet)
             if i < self.number_of_sheets - 1:
                 # Find the point where x is maximum in the single sheet polygon
                 coords = list(single_sheet_polygon.exterior.coords)
                 max_x_point = max(coords, key=lambda pt: pt[0])
-                max_x = max_x_point[0]
+                max_x_x = max_x_point[0]
                 max_x_y = max_x_point[1]
 
                 # Find the point where x is minimum in the single sheet polygon
                 coords = list(single_sheet_polygon.exterior.coords)
                 min_x_point = min(coords, key=lambda pt: (pt[0], pt[1]))
-                min_x = min_x_point[0]
+                min_x_x = min_x_point[0]
                 min_x_y = min_x_point[1]
 
                 # Connector position at halfway between sheets
                 connector_height = 1
                 connector = box(
-                    max_x + self.interlocking_ctc * i,
+                    max_x_x + self.interlocking_ctc * i,
                     (min_x_y + max_x_y) / 2 - connector_height / 2,
-                    min_x + self.interlocking_ctc * (i + 1),
+                    min_x_x + self.interlocking_ctc * (i + 1),
                     (min_x_y + max_x_y) / 2 + connector_height / 2,
                 )
                 polygons.append(connector)
@@ -153,7 +155,15 @@ class SheetpileUProfile(Profile):
         """
         if number_of_sheets < 1:
             raise ValueError("Number of sheets must be at least 1")
-        return replace(self, number_of_sheets=number_of_sheets)
+        return SheetpileUProfile(
+            coordinates=self.coordinates,
+            web_thickness=self.web_thickness,
+            flange_thickness=self.flange_thickness,
+            interlocking_ctc=self.interlocking_ctc,
+            name=self.name,
+            plotter=self.plotter,
+            number_of_sheets=number_of_sheets,
+        )
 
     def with_corrosion(self, corrosion: MM = 0) -> SheetpileUProfile:
         """Return a new U-shaped sheet pile profile instance with corrosion applied.
@@ -187,13 +197,15 @@ class SheetpileUProfile(Profile):
         # Apply corrosion by buffering the polygon inward by the corrosion amount
         corroded_polygon = self._polygon_single_sheet.buffer(-corrosion)
 
-        coordinates = list(corroded_polygon.exterior.coords)
+        coordinates: list[tuple[float, float]] = [(x, y) for x, y in corroded_polygon.exterior.coords]
         name = update_name_with_corrosion(self.name, corrosion=corrosion)
 
-        return replace(
-            self,
+        return SheetpileUProfile(
             coordinates=coordinates,
             web_thickness=new_web_thickness,
             flange_thickness=new_flange_thickness,
+            interlocking_ctc=self.interlocking_ctc,
             name=name,
+            plotter=self.plotter,
+            number_of_sheets=self.number_of_sheets,
         )

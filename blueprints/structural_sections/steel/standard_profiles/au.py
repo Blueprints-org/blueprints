@@ -5,12 +5,12 @@ from __future__ import annotations
 from typing import NamedTuple
 
 from blueprints.structural_sections.steel.profile_definitions.sheetpile_u_profile import SheetpileUProfile
-from blueprints.structural_sections.steel.standard_profiles._data.au.au14 import AU14_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.au.au16 import AU16_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.au.au18 import AU18_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.au.au20 import AU20_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.au.au23 import AU23_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.au.au25 import AU25_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.au.au14 import AU14_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.au.au16 import AU16_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.au.au18 import AU18_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.au.au20 import AU20_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.au.au23 import AU23_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.au.au25 import AU25_GEOMETRY
 from blueprints.structural_sections.steel.standard_profiles.utils import StandardProfileMeta
 from blueprints.type_alias import MM
 

@@ -5,14 +5,14 @@ from __future__ import annotations
 from typing import NamedTuple
 
 from blueprints.structural_sections.steel.profile_definitions.sheetpile_u_profile import SheetpileUProfile
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2240 import PAU2240_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2250 import PAU2250_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2260 import PAU2260_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2440 import PAU2440_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2450 import PAU2450_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2460 import PAU2460_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2770 import PAU2770_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pau.pau2780 import PAU2780_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2240 import PAU2240_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2250 import PAU2250_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2260 import PAU2260_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2440 import PAU2440_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2450 import PAU2450_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2460 import PAU2460_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2770 import PAU2770_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pau.pau2780 import PAU2780_GEOMETRY
 from blueprints.structural_sections.steel.standard_profiles.utils import StandardProfileMeta
 from blueprints.type_alias import MM
 

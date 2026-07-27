@@ -5,11 +5,11 @@ from __future__ import annotations
 from typing import NamedTuple
 
 from blueprints.structural_sections.steel.profile_definitions.sheetpile_u_profile import SheetpileUProfile
-from blueprints.structural_sections.steel.standard_profiles._data.pu.pu12 import PU12_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pu.pu18 import PU18_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pu.pu22 import PU22_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pu.pu28 import PU28_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.pu.pu32 import PU32_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pu.pu12 import PU12_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pu.pu18 import PU18_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pu.pu22 import PU22_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pu.pu28 import PU28_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.pu.pu32 import PU32_GEOMETRY
 from blueprints.structural_sections.steel.standard_profiles.utils import StandardProfileMeta
 from blueprints.type_alias import MM
 

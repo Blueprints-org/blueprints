@@ -5,28 +5,28 @@ from __future__ import annotations
 from typing import NamedTuple
 
 from blueprints.structural_sections.steel.profile_definitions.sheetpile_u_profile import SheetpileUProfile
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu6 import GU6_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu7 import GU7_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu8 import GU8_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu10 import GU10_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu11 import GU11_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu12 import GU12_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu13 import GU13_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu14 import GU14_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu15 import GU15_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu16 import GU16_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu18 import GU18_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu18_400 import GU18_400_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu20 import GU20_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu21 import GU21_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu22 import GU22_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu23 import GU23_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu27 import GU27_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu28 import GU28_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu30 import GU30_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu31 import GU31_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu32 import GU32_GEOMETRY
-from blueprints.structural_sections.steel.standard_profiles._data.gu.gu33 import GU33_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu6 import GU6_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu7 import GU7_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu8 import GU8_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu10 import GU10_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu11 import GU11_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu12 import GU12_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu13 import GU13_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu14 import GU14_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu15 import GU15_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu16 import GU16_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu18 import GU18_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu18_400 import GU18_400_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu20 import GU20_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu21 import GU21_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu22 import GU22_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu23 import GU23_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu27 import GU27_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu28 import GU28_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu30 import GU30_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu31 import GU31_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu32 import GU32_GEOMETRY
+from blueprints.structural_sections.steel.standard_profiles._geometry_data.gu.gu33 import GU33_GEOMETRY
 from blueprints.structural_sections.steel.standard_profiles.utils import StandardProfileMeta
 from blueprints.type_alias import MM
 
@@ -82,7 +82,7 @@ class GU(metaclass=StandardProfileMeta):
 
     Usage example
     -------------
-        >>> profile = GU.GU18
+        >>> profile = GU.GU18N
         >>> print(isinstance(profile, SheetpileUProfile))  # True
         >>>
         >>> # To iterate over all available GU profiles:
