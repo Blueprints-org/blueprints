@@ -86,8 +86,8 @@ Total of 602 formulas present.
 |      8.22      |        :x:         |         |                              |
 |      8.23      |        :x:         |         |                              |
 |      8.24      |        :x:         |         |                              |
-|      8.25      |        :x:         |         |                              |
-|      8.26      |        :x:         |         |                              |
+|      8.25      | :heavy_check_mark: |         | Form8Dot25EffectiveDepthFromPrincipalShearForce |
+|      8.26      | :heavy_check_mark: |         | Form8Dot26AngleBetweenPrincipalShearForceAndXAxis |
 |      8.27      |        :x:         |         |                              |
 |      8.28      |        :x:         |         |                              |
 |      8.29      |        :x:         |         |                              |
