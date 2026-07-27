@@ -57,6 +57,11 @@ class TestForm8Dot32DesignShearStressResistanceWithNormalForce:
     def test_evaluation_with_a_negative_factor(self) -> None:
         """Tests that a negative factor, which Formula (8.34) can produce, is accepted and used as such.
 
+        Formula (8.34) prints only an upper bound on the factor, and its eccentricity is defined as positive
+        towards the tensile side, so a tendon eccentric towards the compression side gives a negative
+        eccentricity and can drive the factor below zero. Requiring it to be non-negative here would refuse
+        input that the sibling formula in the same clause can legitimately produce.
+
         The inputs are chosen so the result stays between both bounds, otherwise the clamping would hide
         whether the sign of the factor was handled at all.
         """
@@ -92,14 +97,14 @@ class TestForm8Dot32DesignShearStressResistanceWithNormalForce:
             (
                 "complete",
                 r"\tau_{Rd,c} = \min\left(\max\left(\tau_{Rdc,0} - k_1 \cdot \sigma_{cp}, \tau_{Rdc,min}\right), "
-                r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 - 0.133 \cdot -2.000, 0.522\right), "
-                r"1.483\right) = 0.853 \ MPa",
+                r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 - 0.133 \cdot \left(-2.000\right), 0.522\right), "
+                r"1.483\right) = 0.853 = 0.853 \ MPa",
             ),
             (
                 "complete_with_units",
                 r"\tau_{Rd,c} = \min\left(\max\left(\tau_{Rdc,0} - k_1 \cdot \sigma_{cp}, \tau_{Rdc,min}\right), "
-                r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 \ MPa - 0.133 \cdot -2.000 \ MPa, "
-                r"0.522 \ MPa\right), 1.483 \ MPa\right) = 0.853 \ MPa",
+                r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 \ MPa - 0.133 \cdot \left(-2.000 \ MPa\right), "
+                r"0.522 \ MPa\right), 1.483 \ MPa\right) = 0.853 = 0.853 \ MPa",
             ),
             ("short", r"\tau_{Rd,c} = 0.853 \ MPa"),
         ],
@@ -125,3 +130,22 @@ class TestForm8Dot32DesignShearStressResistanceWithNormalForce:
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
+
+    def test_intermediate_result_shows_whether_a_bound_was_active(self) -> None:
+        """The intermediate result is the expression before clamping, so it differs from the result exactly
+        when one of the two bounds bit.
+        """
+        # A compressive normal stress raises the resistance and leaves both bounds inactive
+        free = Form8Dot32DesignShearStressResistanceWithNormalForce(
+            tau_rdc_0=0.585935, k_1=0.133333, sigma_cp=-2.0, tau_rdc_min=0.522, tau_rdc_max=1.483483
+        ).latex()
+
+        # A tensile normal stress lowers it below the minimum, so the lower bound governs
+        clamped = Form8Dot32DesignShearStressResistanceWithNormalForce(
+            tau_rdc_0=0.585935, k_1=0.133333, sigma_cp=2.0, tau_rdc_min=0.522, tau_rdc_max=1.483483
+        ).latex()
+
+        assert free.intermediate_result == "0.853"
+        assert free.result == "0.853"
+        assert clamped.intermediate_result == "0.319"
+        assert clamped.result == "0.522"

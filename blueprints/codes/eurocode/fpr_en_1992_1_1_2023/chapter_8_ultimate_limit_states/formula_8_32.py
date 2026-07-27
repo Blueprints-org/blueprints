@@ -42,10 +42,21 @@ class Form8Dot32DesignShearStressResistanceWithNormalForce(Formula):
             normal forces according to Formula (8.33), see Form8Dot33ShearStressResistanceWithoutAxialForce [$MPa$].
         k_1 : DIMENSIONLESS
             [$k_1$] Factor according to Formula (8.34), see Form8Dot34FactorK1, unless the National Annex gives
-            another value. The standard prints no lower bound on it, so a negative value is valid [$-$].
+            another value. It is not required to be positive and is not guarded here: Formula (8.34) prints only
+            an upper bound, and its eccentricity [$e_p$] is defined as positive towards the tensile side, so a
+            tendon eccentric towards the compression side gives a negative [$e_p$] and can drive [$k_1$] below
+            zero [$-$].
         sigma_cp : MPA
             [$\sigma_{cp}$] Normal stress, defined by the standard as [$N_{Ed} / A_c$] with [$A_c$] the area of
-            the concrete cross-section. Its sign carries meaning and is used as given [$MPa$].
+            the concrete cross-section. **Compression is negative.** The standard does not say so anywhere near
+            this formula, but the printed minus sign settles it: compression has to raise the shear stress
+            resistance, and with a positive [$k_1$] the term [$- k_1 \cdot \sigma_{cp}$] only does that for a
+            negative [$\sigma_{cp}$]. It also follows from [$N_{Ed}$] itself, which this clause treats as
+            positive in tension, as Formula (8.31) does.
+
+            Note that the sign of this term flipped between the two generations of the code. EN 1992-1-1:2004
+            prints [$+ k_1 \cdot \sigma_{cp}$] with compression positive, so a value carried over from a
+            calculation to that code has the wrong sign here [$MPa$].
         tau_rdc_min : MPA
             [$\tau_{Rdc,min}$] Minimum shear stress resistance according to Formula (8.20), see
             Form8Dot20MinimumShearStressResistance [$MPa$].
@@ -81,7 +92,7 @@ class Form8Dot32DesignShearStressResistanceWithNormalForce(Formula):
             replacements={
                 r"\tau_{Rdc,0}": f"{self.tau_rdc_0:.{n}f}",
                 r"k_1": f"{self.k_1:.{n}f}",
-                r"\sigma_{cp}": f"{self.sigma_cp:.{n}f}",
+                r"\sigma_{cp}": r"\left(" + f"{self.sigma_cp:.{n}f}" + r"\right)",
                 r"\tau_{Rdc,min}": f"{self.tau_rdc_min:.{n}f}",
                 r"\tau_{Rdc,max}": f"{self.tau_rdc_max:.{n}f}",
             },
@@ -92,15 +103,20 @@ class Form8Dot32DesignShearStressResistanceWithNormalForce(Formula):
             replacements={
                 r"\tau_{Rdc,0}": rf"{self.tau_rdc_0:.{n}f} \ MPa",
                 r"k_1": f"{self.k_1:.{n}f}",
-                r"\sigma_{cp}": rf"{self.sigma_cp:.{n}f} \ MPa",
+                r"\sigma_{cp}": r"\left(" + rf"{self.sigma_cp:.{n}f} \ MPa" + r"\right)",
                 r"\tau_{Rdc,min}": rf"{self.tau_rdc_min:.{n}f} \ MPa",
                 r"\tau_{Rdc,max}": rf"{self.tau_rdc_max:.{n}f} \ MPa",
             },
             unique_symbol_check=False,
         )
+        # The value of the expression before the two bounds are applied. The line above already shows the
+        # arithmetic, so what this adds is whether a bound was active: it differs from the result exactly then.
+        _intermediate: str = f"{self.tau_rdc_0 - self.k_1 * self.sigma_cp:.{n}f}"
+
         return LatexFormula(
             return_symbol=r"\tau_{Rd,c}",
             result=f"{self:.{n}f}",
+            intermediate_result=_intermediate,
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
