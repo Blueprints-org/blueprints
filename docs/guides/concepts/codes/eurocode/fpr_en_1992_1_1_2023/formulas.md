@@ -111,10 +111,10 @@ Total of 602 formulas present.
 |      8.47      | :heavy_check_mark: |         | Form8Dot47StrainTensionChord                                       |
 |      8.48      | :heavy_check_mark: |         | Form8Dot48StrainCompressionChordInCompression                      |
 |      8.49      | :heavy_check_mark: |         | Form8Dot49StrainCompressionChordInTension                          |
-|      8.50      |        :x:         |         |                                                                    |
-|      8.51      |        :x:         |         |                                                                    |
-|      8.52      |        :x:         |         |                                                                    |
-|      8.53      |        :x:         |         |                                                                    |
+|      8.50      | :heavy_check_mark: |         | Form8Dot50AdditionalTensileForceDueToShear                         |
+|      8.51      | :heavy_check_mark: |         | Form8Dot51TensileChordForceDueToShear                              |
+|      8.52      | :heavy_check_mark: |         | Form8Dot52CompressiveChordForceDueToShear                          |
+|      8.53      | :heavy_check_mark: |         | Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads |
 |      8.54      |        :x:         |         |                                                                    |
 |      8.55      |        :x:         |         |                                                                    |
 |      8.56      |        :x:         |         |                                                                    |
