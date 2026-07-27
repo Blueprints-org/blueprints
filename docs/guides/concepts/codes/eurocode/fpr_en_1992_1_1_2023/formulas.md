@@ -102,19 +102,19 @@ Total of 602 formulas present.
 |      8.38      |        :x:         |         |                                                                    |
 |      8.39      |        :x:         |         |                                                                    |
 |      8.40      |        :x:         |         |                                                                    |
-|      8.41      |        :x:         |         |                                                                    |
-|      8.42      |        :x:         |         |                                                                    |
-|      8.43      |        :x:         |         |                                                                    |
-|      8.44      |        :x:         |         |                                                                    |
-|      8.45      |        :x:         |         |                                                                    |
-|      8.46      |        :x:         |         |                                                                    |
-|      8.47      |        :x:         |         |                                                                    |
-|      8.48      |        :x:         |         |                                                                    |
-|      8.49      |        :x:         |         |                                                                    |
-|      8.50      |        :x:         |         |                                                                    |
-|      8.51      |        :x:         |         |                                                                    |
-|      8.52      |        :x:         |         |                                                                    |
-|      8.53      |        :x:         |         |                                                                    |
+|      8.41      | :heavy_check_mark: |         | Form8Dot41InclinationCompressionField                              |
+|      8.42      | :heavy_check_mark: |         | Form8Dot42ShearStressResistanceReinforcement                       |
+|      8.43      | :heavy_check_mark: |         | Form8Dot43ShearReinforcementRatio                                  |
+|      8.44      | :heavy_check_mark: |         | Form8Dot44StressCompressionField                                   |
+|      8.45      | :heavy_check_mark: |         | Form8Dot45StrengthReductionFactor                                  |
+|      8.46      | :heavy_check_mark: |         | Form8Dot46AverageStrainBottomTopChords                             |
+|      8.47      | :heavy_check_mark: |         | Form8Dot47StrainTensionChord                                       |
+|      8.48      | :heavy_check_mark: |         | Form8Dot48StrainCompressionChordInCompression                      |
+|      8.49      | :heavy_check_mark: |         | Form8Dot49StrainCompressionChordInTension                          |
+|      8.50      | :heavy_check_mark: |         | Form8Dot50AdditionalTensileForceDueToShear                         |
+|      8.51      | :heavy_check_mark: |         | Form8Dot51TensileChordForceDueToShear                              |
+|      8.52      | :heavy_check_mark: |         | Form8Dot52CompressiveChordForceDueToShear                          |
+|      8.53      | :heavy_check_mark: |         | Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads |
 |      8.54      |        :x:         |         |                                                                    |
 |      8.55      |        :x:         |         |                                                                    |
 |      8.56      |        :x:         |         |                                                                    |
