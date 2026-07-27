@@ -5,6 +5,7 @@ from blueprints.structural_sections.steel.profile_definitions.i_profile import I
 from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
 from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
+from blueprints.structural_sections.steel.profile_definitions.unp_profile import UNPProfile
 
 __all__ = [
     "CHSProfile",
@@ -12,4 +13,5 @@ __all__ = [
     "LNPProfile",
     "RHSProfile",
     "StripProfile",
+    "UNPProfile",
 ]

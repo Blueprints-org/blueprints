@@ -35,7 +35,7 @@ class Form7Dot11MaximumCrackSpacing(Formula):
             [$c$] Cover to the longitudinal reinforcement [$mm$].
         k_1 : DIMENSIONLESS
             [$k_1$] Coefficient which takes account of the bond properties of the bonded reinforcement.
-            Use 0.8 for high bond bars and 1.6 for bars with an efffectively plain surface
+            Use 0.8 for high bond bars and 1.6 for bars with an effectively plain surface
             (e.g. prestressing tendons) [$-$].
         k_2 : DIMENSIONLESS
             [$k_2$] Coefficient which takes account of the distribution of strain.
