@@ -99,9 +99,9 @@ Total of 602 formulas present.
 |      8.35      |        :x:         |         |                                                                    |
 |      8.36      |        :x:         |         |                                                                    |
 |      8.37      |        :x:         |         |                                                                    |
-|      8.38      |        :x:         |         |                                                                    |
-|      8.39      |        :x:         |         |                                                                    |
-|      8.40      |        :x:         |         |                                                                    |
+|      8.38      | :heavy_check_mark: |         | Form8Dot38To40ReinforcementRatioPlanarMembers                      |
+|      8.39      | :heavy_check_mark: |         | Form8Dot38To40ReinforcementRatioPlanarMembers                      |
+|      8.40      | :heavy_check_mark: |         | Form8Dot38To40ReinforcementRatioPlanarMembers                      |
 |      8.41      |        :x:         |         |                                                                    |
 |      8.42      |        :x:         |         |                                                                    |
 |      8.43      |        :x:         |         |                                                                    |
