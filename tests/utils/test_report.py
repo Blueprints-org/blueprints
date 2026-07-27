@@ -103,7 +103,7 @@ class TestReport:
         expected = r"\textbf{\textit{This is bold and italic}}" + "\n"
         assert fixture_report.content == expected
 
-    def test_multiline_add_text_calls(self, fixture_report: Report) -> None:
+    def test_multline_add_text_calls(self, fixture_report: Report) -> None:
         """Test multline add_text calls."""
         fixture_report.add_paragraph("First line.Second line.")
         expected = r"\txt{First line.Second line.}" + "\n"
@@ -127,6 +127,19 @@ class TestReport:
         fixture_report.add_equation("a^2+b^2=c^2", tag="6.83")
         expected = r"\begin{equation} a^2+b^2=c^2 \tag{6.83} \end{equation}" + "\n"
         assert fixture_report.content == expected
+
+    def test_very_long_equation_splitting(self, fixture_report: Report) -> None:
+        """Test adding a very long equation that requires splitting."""
+        long_equation = "a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z"
+        fixture_report.add_equation(long_equation, split_after=[(3, "+"), (6, "+"), (9, "+")])
+        expected_parts = [
+            r"\begin{multline} a = b + c + d + \\",
+            r"e + f + g + \\",
+            r"h + i + j + \\",
+            r"k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z \notag \end{multline}",
+        ]
+        for part in expected_parts:
+            assert part in fixture_report.content
 
     def test_add_equation_method_chaining(self, fixture_report: Report) -> None:
         """Test that add_equation returns self for method chaining."""
