@@ -125,6 +125,10 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
                 "complete",
                 (r"f_{bpt} = \eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t) = 2.70 \cdot 1.00 \cdot 2.50 = 6.75 \ MPa"),
             ),
+            (
+                "complete_with_units",
+                (r"f_{bpt} = \eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t) = 2.70 \cdot 1.00 \cdot 2.50 \ MPa = 6.75 \ MPa"),
+            ),
             ("short", r"f_{bpt} = 6.75 \ MPa"),
         ],
     )
@@ -139,6 +143,10 @@ class TestForm8Dot15Form8Dot15PrestressTransferStress:
         # Object to test
         form_8_15_latex = Form8Dot15PrestressTransferStress(eta_p1=eta_p1, eta_1=eta_1, f_ctd_t=f_ctd_t).latex()
 
-        actual = {"complete": form_8_15_latex.complete, "short": form_8_15_latex.short}
+        actual = {
+            "complete": form_8_15_latex.complete,
+            "complete_with_units": form_8_15_latex.complete_with_units,
+            "short": form_8_15_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

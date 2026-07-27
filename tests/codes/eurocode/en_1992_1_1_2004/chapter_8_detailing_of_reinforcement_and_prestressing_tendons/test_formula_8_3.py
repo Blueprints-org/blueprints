@@ -70,6 +70,10 @@ class TestForm8Dot3RequiredAnchorageLength:
                 "complete",
                 r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12.000}{4} \cdot \frac{435.000}{2.900} = 450.000 \ mm",
             ),
+            (
+                "complete_with_units",
+                r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12.000 \ mm}{4} \cdot \frac{435.000 \ MPa}{2.900 \ MPa} = 450.000 \ mm",
+            ),
             ("short", "l_{b,rqd} = 450.000 \ mm"),
         ],
     )
@@ -83,6 +87,7 @@ class TestForm8Dot3RequiredAnchorageLength:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

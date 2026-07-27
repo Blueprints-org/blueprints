@@ -48,6 +48,10 @@ class TestForm8Dot19DispersionLength:
                 "complete",
                 r"l_{disp} = \sqrt{l_{pt}^2 + d^2} = \sqrt{10.000^2 + 2.000^2} = 10.198 \ m",
             ),
+            (
+                "complete_with_units",
+                r"l_{disp} = \sqrt{l_{pt}^2 + d^2} = \sqrt{(10.000 \ m)^2 + (2.000 \ m)^2} = 10.198 \ m",
+            ),
             ("short", r"l_{disp} = 10.198 \ m"),
         ],
     )
@@ -62,6 +66,7 @@ class TestForm8Dot19DispersionLength:
 
         actual = {
             "complete": form_8_19_latex.complete,
+            "complete_with_units": form_8_19_latex.complete_with_units,
             "short": form_8_19_latex.short,
         }
 

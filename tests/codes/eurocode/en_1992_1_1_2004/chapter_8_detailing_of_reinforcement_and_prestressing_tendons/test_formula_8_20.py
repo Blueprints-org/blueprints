@@ -54,6 +54,7 @@ class TestForm8Dot20BondStrengthAnchorageULS:
         ("representation", "expected"),
         [
             ("complete", r"f_{bpd} = \eta_{p2} \cdot \eta_{1} \cdot f_{ctd} = 1.400 \cdot 1.000 \cdot 2.500 = 3.500 \ MPa"),
+            ("complete_with_units", r"f_{bpd} = \eta_{p2} \cdot \eta_{1} \cdot f_{ctd} = 1.400 \cdot 1.000 \cdot 2.500 \ MPa = 3.500 \ MPa"),
             ("short", r"f_{bpd} = 3.500 \ MPa"),
         ],
     )
@@ -68,6 +69,10 @@ class TestForm8Dot20BondStrengthAnchorageULS:
         # Object to test
         form_8_20_latex = form_8_20.latex()
 
-        actual = {"complete": form_8_20_latex.complete, "short": form_8_20_latex.short}
+        actual = {
+            "complete": form_8_20_latex.complete,
+            "complete_with_units": form_8_20_latex.complete_with_units,
+            "short": form_8_20_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

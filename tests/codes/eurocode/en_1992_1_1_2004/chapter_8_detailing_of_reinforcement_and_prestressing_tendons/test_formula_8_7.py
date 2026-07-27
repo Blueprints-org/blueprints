@@ -90,6 +90,13 @@ class TestForm8Dot7MinimumCompressionAnchorage:
                     r"\max \left\{0.6 \cdot 500.00; 10 \cdot 8.00; 100\right\} = 300.00 \ mm"
                 ),
             ),
+            (
+                "complete_with_units",
+                (
+                    r"l_{b,min} = \max \left\{0.6 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = "
+                    r"\max \left\{0.6 \cdot 500.00 \ mm; 10 \cdot 8.00 \ mm; 100 \ \text{mm}\right\} = 300.00 \ mm"
+                ),
+            ),
             ("short", "l_{b,min} = 300.00 \ mm"),
         ],
     )
@@ -102,6 +109,7 @@ class TestForm8Dot7MinimumCompressionAnchorage:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

@@ -60,6 +60,10 @@ class TestForm8Dot14EquivalentDiameterBundledBars:
                 "complete",
                 (r"Ø_n = \min \left(55 \ mm, Ø \cdot \sqrt{n_b} \right) = \min \left(55 \ mm, 16.00 \cdot \sqrt{4.00} \right) = 32.00 \ mm"),
             ),
+            (
+                "complete_with_units",
+                (r"Ø_n = \min \left(55 \ mm, Ø \cdot \sqrt{n_b} \right) = \min \left(55 \ mm, 16.00 \ mm \cdot \sqrt{4.00} \right) = 32.00 \ mm"),
+            ),
             ("short", r"Ø_n = 32.00 \ mm"),
         ],
     )
@@ -71,6 +75,10 @@ class TestForm8Dot14EquivalentDiameterBundledBars:
         # Object to test
         form_8_14_latex = Form8Dot14EquivalentDiameterBundledBars(diameter=diameter, n_b=n_b).latex()
 
-        actual = {"complete": form_8_14_latex.complete, "short": form_8_14_latex.short}
+        actual = {
+            "complete": form_8_14_latex.complete,
+            "complete_with_units": form_8_14_latex.complete_with_units,
+            "short": form_8_14_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

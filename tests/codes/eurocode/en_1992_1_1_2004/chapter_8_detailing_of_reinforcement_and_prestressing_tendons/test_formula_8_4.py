@@ -234,6 +234,11 @@ class TestForm8Dot4DesignAnchorageLength:
                 r"l_{bd} = \max \left\{\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}; l_{b,min}\right\}"
                 r" = \max \left\{1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00 \cdot 200.00; 400.00\right\} = 400.00 \ mm",
             ),
+            (
+                "complete_with_units",
+                r"l_{bd} = \max \left\{\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}; l_{b,min}\right\}"
+                r" = \max \left\{1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00 \cdot 200.00 \ mm; 400.00 \ mm\right\} = 400.00 \ mm",
+            ),
             ("short", "l_{bd} = 400.00 \ mm"),
         ],
     )
@@ -258,6 +263,7 @@ class TestForm8Dot4DesignAnchorageLength:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

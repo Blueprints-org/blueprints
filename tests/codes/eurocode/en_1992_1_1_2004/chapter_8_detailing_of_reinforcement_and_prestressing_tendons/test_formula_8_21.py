@@ -102,6 +102,11 @@ class TestForm8Dot21DispersionLength:
                 r"l_{bpd} = l_{pt2} + \alpha_{2} \cdot Ø \cdot \frac{\sigma_{pd} - \sigma_{pm\infty}}{f_{bpd}} = "
                 r"100.000 + 0.800 \cdot 12.000 \cdot \frac{1000.000 - 900.000}{2.500} = 484.000 \ mm",
             ),
+            (
+                "complete_with_units",
+                r"l_{bpd} = l_{pt2} + \alpha_{2} \cdot Ø \cdot \frac{\sigma_{pd} - \sigma_{pm\infty}}{f_{bpd}} = "
+                r"100.000 \ mm + 0.800 \cdot 12.000 \ mm \cdot \frac{1000.000 \ MPa - 900.000 \ MPa}{2.500 \ MPa} = 484.000 \ mm",
+            ),
             ("short", r"l_{bpd} = 484.000 \ mm"),
         ],
     )
@@ -121,6 +126,10 @@ class TestForm8Dot21DispersionLength:
         # Object to test
         form_8_21_latex = form_8_21.latex()
 
-        actual = {"complete": form_8_21_latex.complete, "short": form_8_21_latex.short}
+        actual = {
+            "complete": form_8_21_latex.complete,
+            "complete_with_units": form_8_21_latex.complete_with_units,
+            "short": form_8_21_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

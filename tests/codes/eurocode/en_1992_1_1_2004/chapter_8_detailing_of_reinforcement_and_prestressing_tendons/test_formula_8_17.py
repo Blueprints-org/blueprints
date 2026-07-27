@@ -54,6 +54,7 @@ class TestForm8Dot17DesignValueTransmissionLength1:
         ("representation", "expected"),
         [
             ("complete", r"l_{pt1} = 0.8 \cdot l_{pt} = 0.8 \cdot 140.000 = 112.000 \ mm"),
+            ("complete_with_units", r"l_{pt1} = 0.8 \cdot l_{pt} = 0.8 \cdot 140.000 \ mm = 112.000 \ mm"),
             ("short", r"l_{pt1} = 112.000 \ mm"),
         ],
     )
@@ -76,6 +77,10 @@ class TestForm8Dot17DesignValueTransmissionLength1:
         # Object to test
         form_8_17_latex = Form8Dot17DesignValueTransmissionLength1(l_pt=l_pt).latex()
 
-        actual = {"complete": form_8_17_latex.complete, "short": form_8_17_latex.short}
+        actual = {
+            "complete": form_8_17_latex.complete,
+            "complete_with_units": form_8_17_latex.complete_with_units,
+            "short": form_8_17_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

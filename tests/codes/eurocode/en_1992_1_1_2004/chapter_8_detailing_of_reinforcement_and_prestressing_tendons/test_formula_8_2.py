@@ -93,6 +93,10 @@ class TestForm8Dot2UltimateBondStress:
                 "complete",
                 r"f_{bd} = 2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd} = 2.25 \cdot 1.00 \cdot 1.00 \cdot 20.00 = 45.00 \ MPa",
             ),
+            (
+                "complete_with_units",
+                r"f_{bd} = 2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd} = 2.25 \cdot 1.00 \cdot 1.00 \cdot 20.00 \ MPa = 45.00 \ MPa",
+            ),
             ("short", "f_{bd} = 45.00 \ MPa"),
         ],
     )
@@ -106,6 +110,7 @@ class TestForm8Dot2UltimateBondStress:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

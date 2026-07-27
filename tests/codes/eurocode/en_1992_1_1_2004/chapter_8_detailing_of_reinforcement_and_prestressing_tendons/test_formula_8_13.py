@@ -44,6 +44,7 @@ class TestForm8Dot13AdditionalShearReinforcement:
         ("representation", "expected"),
         [
             ("complete", r"A_{sv} = 0.25 \cdot A_s \cdot n_2 = 0.25 \cdot 100.00 \cdot 2.00 = 50.00 \ mm^2"),
+            ("complete_with_units", r"A_{sv} = 0.25 \cdot A_s \cdot n_2 = 0.25 \cdot 100.00 \ mm^2 \cdot 2.00 = 50.00 \ mm^2"),
             ("short", r"A_{sv} = 50.00 \ mm^2"),
         ],
     )
@@ -56,6 +57,10 @@ class TestForm8Dot13AdditionalShearReinforcement:
         # Object to test
         form_8_13_latex = Form8Dot13AdditionalShearReinforcement(a_s=a_s, n_2=n_2).latex()
 
-        actual = {"complete": form_8_13_latex.complete, "short": form_8_13_latex.short}
+        actual = {
+            "complete": form_8_13_latex.complete,
+            "complete_with_units": form_8_13_latex.complete_with_units,
+            "short": form_8_13_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."
