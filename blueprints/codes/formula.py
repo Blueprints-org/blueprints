@@ -108,7 +108,7 @@ class Formula(float, ABC):
         """
 
 
-class ComparisonFormula(Formula):
+class ComparisonFormula(Formula, ABC):
     """Base class for comparison formulas used in the codes."""
 
     _lhs: float
@@ -237,8 +237,12 @@ class ComparisonFormula(Formula):
 
 
 class AggregatedComparisonFormula(ComparisonFormula):
-    """Class for aggregating comparison formulas used in the codes.
+    """Base class for aggregating comparison formulas used in the codes.
     Examples: (angle < angle_max) and (height > height_min).
+
+    This class is abstract: it does not implement ``label``, ``source_document`` or ``latex``.
+    A concrete formula that aggregates other comparison formulas should subclass this and provide those,
+    the same way concrete subclasses of :class:`ComparisonFormula` do.
     """
 
     def __new__(cls, *args, **kwargs) -> Self:
@@ -260,7 +264,7 @@ class AggregatedComparisonFormula(ComparisonFormula):
         """
         super().__init__()
         self.aggregation = aggregation
-        self.comparison_formulas = comparison_formulas
+        self.comparison_formulas = tuple(comparison_formulas)
 
     @classmethod
     def _comparison_operator(cls) -> Callable[[float, float], bool]:
@@ -322,27 +326,12 @@ class AggregatedComparisonFormula(ComparisonFormula):
             else min(formula.unity_check for formula in self.comparison_formulas)
         )
 
-    def __bool__(self) -> bool:
-        """Return whether the comparison condition is satisfied.
-
-        Returns True if the unity check is less than or equal to 1.0, indicating the condition is satisfied.
-        This allows ComparisonFormula instances to be used directly in boolean contexts.
-
-        Examples
-        --------
-        formula = SomeComparisonFormula(...)
-        if formula:  # Equivalent to: if formula.unity_check <= 1.0
-            print("Condition satisfied")
-
-        Returns
-        -------
-        bool
-            True if unity_check <= 1.0 (condition is satisfied), False otherwise.
-        """
-        return self.unity_check <= 1.0
-
     @classmethod
-    def _evaluate(cls, *args, **kwargs) -> bool:
+    def _evaluate(
+        cls,
+        aggregation: Callable[[Iterable[bool]], bool] | None = None,
+        comparison_formulas: Sequence[ComparisonFormula] | None = None,
+    ) -> bool:
         """Implements the comparison using the class-level operator.
 
         Raises
@@ -351,20 +340,22 @@ class AggregatedComparisonFormula(ComparisonFormula):
             If the aggregation function is not provided or is neither ``all`` nor ``any``.
             Also raised if no comparison formulas are provided, or if any provided
             formula is not an instance of :class:`ComparisonFormula`.
+        TypeError
+            If ``comparison_formulas`` is not a re-iterable ``Sequence`` (e.g. a one-shot generator).
         """
-        aggregation_func: Callable[[Iterable[bool]], bool] = kwargs.get("aggregation", args[0] if args else None)
-        if aggregation_func is None:
+        if aggregation is None:
             raise ValueError("Aggregation function must be provided as a keyword argument 'aggregation' or as the first positional argument.")
-        if aggregation_func not in (all, any):
+        if aggregation not in (all, any):
             raise ValueError("Aggregation function must be either 'all' or 'any'.")
-        comparison_formulas: Sequence[ComparisonFormula] = kwargs.get("comparison_formulas", args[1] if len(args) == 2 else None)
         if comparison_formulas is None:
             raise ValueError("Comparison formulas must be provided as a keyword argument 'comparison_formulas' or as the second positional argument.")
+        if not isinstance(comparison_formulas, Sequence):
+            raise TypeError("comparison_formulas must be a Sequence (e.g. a list or tuple).")
         if not comparison_formulas:
             raise ValueError("At least one comparison formula must be provided.")
         if not all(isinstance(formula, ComparisonFormula) for formula in comparison_formulas):
             raise ValueError("All provided comparison formulas must be instances of ComparisonFormula.")
-        return aggregation_func(formula.__bool__() for formula in comparison_formulas)
+        return aggregation(bool(formula) for formula in comparison_formulas)
 
 
 class DoubleComparisonFormula(Formula):

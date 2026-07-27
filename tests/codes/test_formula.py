@@ -572,6 +572,17 @@ def test_double_comparison_formula_invalid_operators(
         formula_class(a=10, b=20, c=30)
 
 
+class AggregatedComparisonFormulaTest(AggregatedComparisonFormula):
+    """Dummy aggregated comparison formula for testing purposes."""
+
+    label = "Dummy testing aggregated comparison formula"
+    source_document = "Dummy testing document"
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(return_symbol=r"check", result=str(round(float(self), n)), equation=r"\text{aggregated check}")
+
+
 class TestAggregatedComparisonFormula:
     """Test class for AggregatedComparisonFormula."""
 
@@ -626,10 +637,10 @@ class TestAggregatedComparisonFormula:
             AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=[])  # noqa: SLF001
 
     def test_aggregated_comparison_formula_evaluate_raises_when_positional_argument_count_is_not_two(self) -> None:
-        """Test that ValueError is raised when more than two positional arguments are provided."""
+        """Test that TypeError is raised when more than two positional arguments are provided."""
         formula = self._le(1, 1, 10)
 
-        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+        with pytest.raises(TypeError):
             AggregatedComparisonFormula._evaluate(all, formula, formula)  # noqa: SLF001
 
     def test_aggregated_comparison_formula_evaluate_raises_when_not_comparison_formula_instances(self) -> None:
@@ -646,12 +657,25 @@ class TestAggregatedComparisonFormula:
 
         assert result is False
 
+    def test_aggregated_comparison_formula_rejects_one_shot_iterable_for_comparison_formulas(self) -> None:
+        """Test that a one-shot iterable (e.g. a generator) is rejected rather than silently mishandled.
+
+        comparison_formulas is iterated more than once (during validation/evaluation, and again on every
+        unity_check access), so a one-shot iterable would silently be exhausted after the first pass,
+        producing wrong results instead of a clear error.
+        """
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(10, 1, 4)
+
+        with pytest.raises(TypeError, match="must be a Sequence"):
+            AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=(f for f in (f1, f2)))
+
     def test_aggregated_comparison_formula_evaluate_raises_when_formulas_precede_keyword_aggregation(self) -> None:
         """Test that formulas cannot precede a keyword aggregation argument."""
         passing_formula = self._le(1, 1, 10)
         failing_formula = self._le(4, 1, 4)
 
-        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+        with pytest.raises(TypeError):
             AggregatedComparisonFormula._evaluate(  # noqa: SLF001
                 [passing_formula, failing_formula],
                 aggregation=all,
@@ -663,7 +687,7 @@ class TestAggregatedComparisonFormula:
         f1 = self._le(1, 1, 10)
         f2 = self._le(2, 1, 10)
         f3 = self._le(1, 2, 10)
-        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f1, f2, f3])
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2, f3])
         assert formula
         assert bool(formula) is True
 
@@ -673,7 +697,7 @@ class TestAggregatedComparisonFormula:
         f1 = self._le(1, 1, 10)
         f2 = self._le(2, 1, 10)
         f3 = self._ge(4, 1, 12)  # lhs=5, rhs=6  →  fails
-        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f1, f2, f3])
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2, f3])
         assert not formula
         assert bool(formula) is False
 
@@ -685,7 +709,7 @@ class TestAggregatedComparisonFormula:
         f1 = self._le(1, 1, 10)  # lhs=2, rhs=5, uc=0.4
         f2 = self._le(2, 1, 10)  # lhs=3, rhs=5, uc=0.6
         f3 = self._le(3, 1, 10)  # lhs=4, rhs=5, uc=0.8
-        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f1, f2, f3])
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2, f3])
         assert formula.unity_check == pytest.approx(0.8)
 
     def test_aggregated_comparison_formula_any_three_formulas_all_fail(self) -> None:
@@ -694,7 +718,7 @@ class TestAggregatedComparisonFormula:
         f1 = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
         f2 = self._le(10, 2, 4)  # lhs=12, rhs=2  →  fails
         f3 = self._le(10, 3, 4)  # lhs=13, rhs=2  →  fails
-        formula = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f1, f2, f3])
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
         assert not formula
         assert bool(formula) is False
 
@@ -704,7 +728,7 @@ class TestAggregatedComparisonFormula:
         f1 = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
         f2 = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
         f3 = self._le(10, 3, 4)  # lhs=13, rhs=2  →  fails
-        formula = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f1, f2, f3])
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
         assert formula
         assert bool(formula) is True
 
@@ -716,18 +740,18 @@ class TestAggregatedComparisonFormula:
         f1 = self._le(1, 1, 10)
         f2 = self._le(2, 1, 10)
         f3 = self._le(3, 1, 10)
-        formula = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f1, f2, f3])
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
         assert formula.unity_check == pytest.approx(0.4)
 
     def test_aggregated_comparison_formula_lhs_raises(self) -> None:
         """Test that accessing lhs raises NotImplementedError."""
-        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
         with pytest.raises(NotImplementedError):
             _ = formula.lhs
 
     def test_aggregated_comparison_formula_rhs_raises(self) -> None:
         """Test that accessing rhs raises NotImplementedError."""
-        formula = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
         with pytest.raises(NotImplementedError):
             _ = formula.rhs
 
@@ -759,10 +783,10 @@ class TestAggregatedComparisonFormula:
         f_pass = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
         f_fail = self._le(10, 1, 4)  # lhs=11, rhs=2 →  fails
 
-        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_pass, f_fail])
-        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_pass])
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_pass])
 
-        outer = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[inner_any, inner_all])
+        outer = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[inner_any, inner_all])
         assert outer
         assert bool(outer) is True
 
@@ -779,10 +803,10 @@ class TestAggregatedComparisonFormula:
         f_pass = self._le(1, 1, 10)
         f_fail = self._le(10, 1, 4)
 
-        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_pass, f_fail])
-        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_fail])
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_fail])
 
-        outer = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[inner_any, inner_all])
+        outer = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[inner_any, inner_all])
         assert not outer
         assert bool(outer) is False
 
@@ -799,10 +823,10 @@ class TestAggregatedComparisonFormula:
         f_pass = self._le(1, 1, 10)
         f_fail = self._le(10, 1, 4)
 
-        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_pass, f_fail])
-        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_fail])
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_fail])
 
-        outer = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[inner_any, inner_all])
+        outer = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[inner_any, inner_all])
         assert outer
         assert bool(outer) is True
 
@@ -819,9 +843,9 @@ class TestAggregatedComparisonFormula:
         f_pass = self._le(1, 1, 10)
         f_fail = self._le(10, 1, 4)
 
-        inner_any = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[f_fail, f_fail])
-        inner_all = AggregatedComparisonFormula(aggregation=all, comparison_formulas=[f_pass, f_fail])
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_fail, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_fail])
 
-        outer = AggregatedComparisonFormula(aggregation=any, comparison_formulas=[inner_any, inner_all])
+        outer = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[inner_any, inner_all])
         assert not outer
         assert bool(outer) is False
