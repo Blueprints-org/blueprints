@@ -72,4 +72,3 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
-

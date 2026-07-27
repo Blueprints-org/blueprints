@@ -1,7 +1,6 @@
 """Formula 8.15 from EN 1992-1-1:2004: Chapter 8: Detailing of reinforcement and prestressing tendons."""
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
-from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_2 import SubForm8Dot2CoefficientQualityOfBond
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA

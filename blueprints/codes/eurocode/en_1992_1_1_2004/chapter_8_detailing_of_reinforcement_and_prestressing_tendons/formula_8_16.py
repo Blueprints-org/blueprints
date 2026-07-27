@@ -208,4 +208,3 @@ class SubForm8Dot16Alpha2(Formula):
             numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label=r"\rightarrow",
         )
-

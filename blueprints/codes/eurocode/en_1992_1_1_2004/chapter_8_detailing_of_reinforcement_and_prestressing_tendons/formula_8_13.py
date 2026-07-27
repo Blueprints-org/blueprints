@@ -73,5 +73,3 @@ class Form8Dot13AdditionalShearReinforcement(Formula):
             comparison_operator_label="=",
             unit="mm^2",
         )
-
-

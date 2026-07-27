@@ -63,4 +63,3 @@ class Form8Dot18DesignValueTransmissionLength2(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
-

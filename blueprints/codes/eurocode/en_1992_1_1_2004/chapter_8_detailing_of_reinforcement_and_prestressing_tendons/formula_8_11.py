@@ -100,4 +100,3 @@ class Form8Dot11MinimumDesignLapLength(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
-

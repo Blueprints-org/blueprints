@@ -152,10 +152,8 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
         _equation: str = r"\begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases}"
-        _numeric_equation: str = f"1.00" if self.diameter <= 32 else f"(132 - {self.diameter:.{n}f}) / 100"
-        _numeric_equation_with_units: str = (
-            f"1.00" if self.diameter <= 32 else rf"(132 - {self.diameter:.{n}f} \ mm) / 100"
-        )
+        _numeric_equation: str = "1.00" if self.diameter <= 32 else f"(132 - {self.diameter:.{n}f}) / 100"
+        _numeric_equation_with_units: str = "1.00" if self.diameter <= 32 else rf"(132 - {self.diameter:.{n}f} \ mm) / 100"
 
         return LatexFormula(
             return_symbol=r"\eta_2",

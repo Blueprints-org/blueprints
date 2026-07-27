@@ -69,7 +69,7 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
-                r"F_{bt}": f"{self.f_bt:.{n}f} \cdot 1000",
+                r"F_{bt}": f"{self.f_bt:.{n}f} \\cdot 1000",
                 r"a_b": f"{self.a_b:.{n}f}",
                 r"Ø": f"{self.diameter:.{n}f}",
                 r"f_{cd}": f"{self.f_cd:.{n}f}",

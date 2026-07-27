@@ -72,9 +72,10 @@ class TestForm8Dot3RequiredAnchorageLength:
             ),
             (
                 "complete_with_units",
-                r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12.000 \ mm}{4} \cdot \frac{435.000 \ MPa}{2.900 \ MPa} = 450.000 \ mm",
+                r"l_{b,rqd} = \frac{Ø}{4} \cdot \frac{\sigma_{sd}}{f_{bd}} = \frac{12.000 \ mm}{4} \cdot \frac{435.000 \ MPa}{2.900 \ MPa}"
+                r" = 450.000 \ mm",
             ),
-            ("short", "l_{b,rqd} = 450.000 \ mm"),
+            ("short", r"l_{b,rqd} = 450.000 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:

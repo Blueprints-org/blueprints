@@ -70,6 +70,7 @@ class Form8Dot20BondStrengthAnchorageULS(Formula):
             unit="MPa",
         )
 
+
 class SubForm8Dot20EtaP2(Formula):
     r"""Class representing sub-formula 8.20 for the calculation of the coefficient [$\eta_{p2}$]."""
 

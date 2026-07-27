@@ -107,7 +107,8 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
                 "complete_with_units",
                 (
                     r"Ø_{m,min} = \frac{F_{bt} \cdot \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}} "
-                    r"= \frac{80.000 \ kN \cdot 1000 \cdot \left( \frac{1}{200.000 \ mm} + \frac{1}{2 \cdot 16.000 \ mm} \right) }{30.000 \ MPa} = 96.667 \ mm"
+                    r"= \frac{80.000 \ kN \cdot 1000 \cdot \left( \frac{1}{200.000 \ mm} + \frac{1}{2 \cdot 16.000 \ mm} \right) }{30.000 \ MPa} "
+                    r"= 96.667 \ mm"
                 ),
             ),
             ("short", r"Ø_{m,min} = 96.667 \ mm"),

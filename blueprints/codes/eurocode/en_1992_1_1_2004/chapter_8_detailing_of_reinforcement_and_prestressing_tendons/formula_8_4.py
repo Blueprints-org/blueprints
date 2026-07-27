@@ -163,4 +163,3 @@ class Form8Dot4DesignAnchorageLength(Formula):
             comparison_operator_label="=",
             unit="mm",
         )
-
