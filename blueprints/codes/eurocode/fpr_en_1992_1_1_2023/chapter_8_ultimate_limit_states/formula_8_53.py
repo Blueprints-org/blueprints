@@ -1,6 +1,6 @@
-"""Formula 8.53 from prEN 1992-1-1:2023: Chapter 8 - Ultimate Limit State."""
+"""Formula 8.53 from FprEN 1992-1-1:2023: Chapter 8 - Ultimate Limit State."""
 
-from blueprints.codes.eurocode.pr_en_1992_1_1_2023 import PR_EN_1992_1_1_2023
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM, NMM, N
@@ -13,7 +13,7 @@ class Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads(Formu
     """
 
     label = "8.53"
-    source_document = PR_EN_1992_1_1_2023
+    source_document = FPR_EN_1992_1_1_2023
 
     def __init__(
         self,
@@ -24,7 +24,7 @@ class Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads(Formu
         r"""[$F_{td,max}$] Calculation of the chord force [$N$] in case of direct intermediate support or
         concentrated loads.
 
-        prEN 1992-1-1:2023 art.8.5(8) - Formula (8.53)
+        FprEN 1992-1-1:2023 art.8.5(8) - Formula (8.53)
 
         Parameters
         ----------

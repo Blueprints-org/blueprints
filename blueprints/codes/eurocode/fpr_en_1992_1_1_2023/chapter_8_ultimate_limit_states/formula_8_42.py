@@ -1,6 +1,6 @@
 """Formula 8.42 from prEN-1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
-from blueprints.codes.eurocode.pr_en_1992_1_1_2023 import PR_EN_1992_1_1_2023
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
@@ -12,7 +12,7 @@ class Form8Dot42ShearStressResistanceReinforcement(Formula):
     r"""Class representing formula 8.42 for the shear stress resistance perpendicular to the longitudinal
     member axis in case of yielding of the shear reinforcement.
 
-    prEN 1992-1-1:2023 art. 8.2.3 (5) - Formula (8.42)
+    FprEN 1992-1-1:2023 art. 8.2.3 (5) - Formula (8.42)
 
     Formula
     -------
@@ -29,7 +29,7 @@ class Form8Dot42ShearStressResistanceReinforcement(Formula):
     """
 
     label = "8.42"
-    source_document = PR_EN_1992_1_1_2023
+    source_document = FPR_EN_1992_1_1_2023
 
     def __init__(
         self,

@@ -1,13 +1,13 @@
-"""Testing formula 8.44 of prEN 1992-1-1:2023."""
+"""Testing formula 8.44 of FprEN 1992-1-1:2023."""
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_44 import Form8Dot44StressCompressionField
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_44 import Form8Dot44StressCompressionField
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot44StressCompressionField:
-    """Validation for formula 8.44 from prEN 1992-1-1:2023."""
+    """Validation for formula 8.44 from FprEN 1992-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("tau_ed", "theta", "nu", "f_cd", "exp_result"),

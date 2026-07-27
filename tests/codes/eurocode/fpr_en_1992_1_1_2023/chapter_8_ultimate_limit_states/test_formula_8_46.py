@@ -1,13 +1,13 @@
-"""Testing formula 8.46 of prEN 1992-1-1:2023."""
+"""Testing formula 8.46 of FprEN 1992-1-1:2023."""
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_46 import Form8Dot46AverageStrainBottomTopChords
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_46 import Form8Dot46AverageStrainBottomTopChords
 from blueprints.validations import NegativeValueError
 
 
 class TestForm8Dot46AverageStrain:
-    """Validation for formula 8.46 from prEN 1992-1-1:2023."""
+    """Validation for formula 8.46 from FprEN 1992-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("epsilon_xt", "epsilon_xc", "exp_result"),

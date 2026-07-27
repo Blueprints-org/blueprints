@@ -1,13 +1,13 @@
-"""Testing formula 8.45 of prEN 1992-1-1:2023."""
+"""Testing formula 8.45 of FprEN 1992-1-1:2023."""
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_45 import Form8Dot45StrengthReductionFactor
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_45 import Form8Dot45StrengthReductionFactor
 from blueprints.validations import NegativeValueError
 
 
 class TestForm8Dot45StrengthReductionFactor:
-    """Validation for formula 8.45 from prEN 1992-1-1:2023."""
+    """Validation for formula 8.45 from FprEN 1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""

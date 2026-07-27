@@ -2,11 +2,7 @@
 
 import pytest
 
-<<<<<<<< HEAD:tests/codes/eurocode/pr_en_1992_1_1_2023/chapter_8_ultimate_limit_states/test_formula_8_18.py
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_18 import Form8Dot18AverageShearStress
-========
-from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_18 import Form8Dot18AverageShearStress
->>>>>>>> origin/main:tests/codes/eurocode/fpr_en_1992_1_1_2023/chapter_8_ultimate_limit_states/test_formula_8_18.py
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 

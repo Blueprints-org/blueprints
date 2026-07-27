@@ -1,15 +1,15 @@
-"""Testing formula 8.42 of prEN 1992-1-1:2023."""
+"""Testing formula 8.42 of FprEN 1992-1-1:2023."""
 
 import pytest
 
-from blueprints.codes.eurocode.pr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_42 import (
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_42 import (
     Form8Dot42ShearStressResistanceReinforcement,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot42ShearStressResistanceReinforcement:
-    """Validation for formula 8.42 from prEN 1992-1-1:2023."""
+    """Validation for formula 8.42 from FprEN 1992-1-1:2023."""
 
     @pytest.mark.parametrize(
         ("rho_w", "f_ywd", "theta", "exp_result"),

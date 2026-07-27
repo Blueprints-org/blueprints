@@ -4,7 +4,7 @@ import operator
 from collections.abc import Callable
 from typing import Any
 
-from blueprints.codes.eurocode.pr_en_1992_1_1_2023 import PR_EN_1992_1_1_2023
+from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import DoubleComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG
@@ -16,12 +16,12 @@ class Form8Dot41InclinationCompressionField(DoubleComparisonFormula):
     """Class representing formula 8.41 for checking inclination of the compression field in the web carrying shear."""
 
     label = "8.41"
-    source_document = PR_EN_1992_1_1_2023
+    source_document = FPR_EN_1992_1_1_2023
 
     def __init__(self, theta: DEG, theta_min: DEG) -> None:
         r"""Checking inclination of the compression field in the web carrying shear.
 
-        prEN 1992-1-1:2023 art 8.2.3 (4) - Formula (8.41)
+        FprEN 1992-1-1:2023 art 8.2.3 (4) - Formula (8.41)
 
         Parameters
         ----------
