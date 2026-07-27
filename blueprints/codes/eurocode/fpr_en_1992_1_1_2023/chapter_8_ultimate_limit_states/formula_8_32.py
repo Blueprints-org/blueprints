@@ -82,6 +82,17 @@ class Form8Dot32DesignShearStressResistanceWithNormalForce(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(tau_rdc_0=tau_rdc_0, tau_rdc_min=tau_rdc_min, tau_rdc_max=tau_rdc_max)
 
+        # The two bounds come from different formulas, (8.20) and (8.35), and nothing ties them together.
+        # (8.20) does not depend on the reinforcement ratio while (8.35) does, so for a lightly reinforced
+        # member the maximum can fall below the minimum and the printed chain has no solution at all. Clamping
+        # anyway would return one of the two bounds and quietly break the relation this formula prints, so the
+        # combination is refused instead. The standard says nothing about it; this is a decision taken here.
+        if tau_rdc_min > tau_rdc_max:
+            raise ValueError(
+                f"The minimum shear stress resistance of {tau_rdc_min} MPa exceeds the maximum of {tau_rdc_max} MPa, "
+                f"so no value can satisfy Formula (8.32). Check the inputs of Formulas (8.20) and (8.35)."
+            )
+
         return min(max(tau_rdc_0 - k_1 * sigma_cp, tau_rdc_min), tau_rdc_max)
 
     def latex(self, n: int = 3) -> LatexFormula:

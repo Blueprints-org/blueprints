@@ -149,3 +149,19 @@ class TestForm8Dot32DesignShearStressResistanceWithNormalForce:
         assert free.result == "0.853"
         assert clamped.intermediate_result == "0.319"
         assert clamped.result == "0.522"
+
+    def test_raise_error_when_the_bounds_are_inverted(self) -> None:
+        """The two bounds come from different formulas and can cross, which leaves the chain unsatisfiable.
+
+        The minimum of (8.20) does not depend on the reinforcement ratio while the maximum of (8.35) does, so
+        a lightly reinforced member can produce a maximum below the minimum. The values here are the ones that
+        come out of (8.20) and (8.33) to (8.35) for a reinforcement ratio of 0.04 percent, with gamma_v = 1.4,
+        f_ck = 30 MPa, f_yd = 435 MPa, d_dg = 32 mm, d = 500 mm and a_cs_0 = 1333.333 mm.
+
+        Clamping anyway would return 0.5073, which is below the declared minimum of 0.5220 and therefore
+        breaks the relation the formula prints.
+        """
+        with pytest.raises(ValueError, match="exceeds the maximum"):
+            Form8Dot32DesignShearStressResistanceWithNormalForce(
+                tau_rdc_0=0.2004, k_1=0.133333, sigma_cp=-2.0, tau_rdc_min=0.5220, tau_rdc_max=0.5073
+            )
