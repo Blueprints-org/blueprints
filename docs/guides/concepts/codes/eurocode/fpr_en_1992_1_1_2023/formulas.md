@@ -102,7 +102,7 @@ Total of 602 formulas present.
 |      8.38      |        :x:         |         |                                                                    |
 |      8.39      |        :x:         |         |                                                                    |
 |      8.40      |        :x:         |         |                                                                    |
-|      8.41      |        :x:         |         |                                                                    |
+|      8.41      | :heavy_check_mark: |         | Form8Dot41CheckCotangentCompressionFieldAngle                      |
 |      8.42      |        :x:         |         |                                                                    |
 |      8.43      |        :x:         |         |                                                                    |
 |      8.44      |        :x:         |         |                                                                    |
