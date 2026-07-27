@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM, NMM, N
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot30EffectiveShearSpan(Formula):
@@ -43,8 +43,11 @@ class Form8Dot30EffectiveShearSpan(Formula):
     @staticmethod
     def _evaluate(m_ed: NMM, v_ed: N, d: MM) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(d=d)
-        raise_if_less_or_equal_to_zero(v_ed=abs(v_ed))
+        # The guard is on the magnitude, so a negative shear force passes and only zero is refused. Naming
+        # the keyword after the magnitude keeps the error from claiming that a negative value is illegal.
+        # Refusing a shear force of zero is a reading of the standard, since it is a denominator. Refusing an
+        # effective depth of zero is an addition made here: the standard prints no such condition.
+        raise_if_less_or_equal_to_zero(abs_v_ed=abs(v_ed), d=d)
 
         return max(abs(m_ed / v_ed), d)
 

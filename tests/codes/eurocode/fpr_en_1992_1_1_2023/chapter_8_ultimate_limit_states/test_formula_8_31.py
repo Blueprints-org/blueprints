@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_31 import Form8Dot31AxialForceCoefficient
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot31AxialForceCoefficient:
@@ -49,15 +49,19 @@ class TestForm8Dot31AxialForceCoefficient:
     @pytest.mark.parametrize(
         ("n_ed", "v_ed", "d", "a_cs"),
         [
-            (-200000.0, 0.0, 500.0, 1333.333333),  # v_ed is zero
+            (-200000.0, 0.0, 500.0, 1333.333333),  # v_ed is zero, the only value of it that is refused
             (-200000.0, 150000.0, -500.0, 1333.333333),  # d is negative
+            (-200000.0, 150000.0, 0.0, 1333.333333),  # d is zero, which is not a cross-section
             (-200000.0, 150000.0, 500.0, -1333.333333),  # a_cs is negative
             (-200000.0, 150000.0, 500.0, 0.0),  # a_cs is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, n_ed: float, v_ed: float, d: float, a_cs: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+    def test_raise_error_when_less_or_equal_to_zero(self, n_ed: float, v_ed: float, d: float, a_cs: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be zero or less.
+
+        The guard on the shear force is on its magnitude, so a negative one passes it. Only zero is refused.
+        """
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot31AxialForceCoefficient(n_ed=n_ed, v_ed=v_ed, d=d, a_cs=a_cs)
 
     @pytest.mark.parametrize(
@@ -95,3 +99,32 @@ class TestForm8Dot31AxialForceCoefficient:
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
+                r"\max\left(1 + \frac{-200000.000}{\left|-150000.000\right|} \cdot "
+                r"\frac{500.000}{3 \cdot 1333.333}, 0.1\right) = 0.833 \ -",
+            ),
+            (
+                "complete_with_units",
+                r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
+                r"\max\left(1 + \frac{-200000.000 \ N}{\left|-150000.000 \ N\right|} \cdot "
+                r"\frac{500.000 \ mm}{3 \cdot 1333.333 \ mm}, 0.1\right) = 0.833 \ -",
+            ),
+        ],
+    )
+    def test_latex_with_both_forces_negative(self, representation: str, expected: str) -> None:
+        """Both a negative axial force and a negative shear force keep their sign in the output.
+
+        The axial force is printed signed, and the shear force appears inside the absolute value bars that
+        the standard prints, so the reader can see that the magnitude is what enters the division.
+        """
+        latex = Form8Dot31AxialForceCoefficient(n_ed=-200000.0, v_ed=-150000.0, d=500.0, a_cs=1333.333333).latex()
+
+        actual = {"complete": latex.complete, "complete_with_units": latex.complete_with_units}
+
+        assert expected == actual[representation]

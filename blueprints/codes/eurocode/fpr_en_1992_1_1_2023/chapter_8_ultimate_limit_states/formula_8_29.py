@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM
-from blueprints.validations import raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot29MechanicalShearSpan(Formula):
@@ -41,7 +41,10 @@ class Form8Dot29MechanicalShearSpan(Formula):
     @staticmethod
     def _evaluate(a_cs: MM, d: MM) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(a_cs=a_cs, d=d)
+        # An effective depth or shear span of zero is not a cross-section. The standard prints no such
+        # condition, so this is an addition made here, consistent with (8.22) to (8.24) and with (8.31),
+        # where a_cs sits in a denominator and is guarded the same way.
+        raise_if_less_or_equal_to_zero(a_cs=a_cs, d=d)
 
         return np.sqrt(a_cs / 4 * d)
 

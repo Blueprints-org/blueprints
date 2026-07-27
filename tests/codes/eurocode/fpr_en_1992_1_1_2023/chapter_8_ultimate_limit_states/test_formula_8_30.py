@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_30 import Form8Dot30EffectiveShearSpan
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot30EffectiveShearSpan:
@@ -51,14 +51,25 @@ class TestForm8Dot30EffectiveShearSpan:
     @pytest.mark.parametrize(
         ("m_ed", "v_ed", "d"),
         [
-            (200000000.0, 0.0, 500.0),  # v_ed is zero
+            (200000000.0, 0.0, 500.0),  # v_ed is zero, the only value of it that is refused
             (200000000.0, 150000.0, -500.0),  # d is negative
+            (200000000.0, 150000.0, 0.0),  # d is zero, which is not a cross-section
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, m_ed: float, v_ed: float, d: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+    def test_raise_error_when_less_or_equal_to_zero(self, m_ed: float, v_ed: float, d: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be zero or less.
+
+        The guard on the shear force is on its magnitude, so a negative one passes it. Only zero is refused.
+        """
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot30EffectiveShearSpan(m_ed=m_ed, v_ed=v_ed, d=d)
+
+    @pytest.mark.parametrize("v_ed", [150000.0, -150000.0])
+    def test_a_negative_shear_force_is_accepted(self, v_ed: float) -> None:
+        """A negative shear force is ordinary input: the standard prints the ratio inside absolute value bars."""
+        formula = Form8Dot30EffectiveShearSpan(m_ed=200000000.0, v_ed=v_ed, d=500.0)
+
+        assert formula == pytest.approx(expected=1333.333333, rel=1e-4)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),

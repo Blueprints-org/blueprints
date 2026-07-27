@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_29 import Form8Dot29MechanicalShearSpan
-from blueprints.validations import NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot29MechanicalShearSpan:
@@ -34,12 +34,14 @@ class TestForm8Dot29MechanicalShearSpan:
         ("a_cs", "d"),
         [
             (-1333.333333, 500.0),  # a_cs is negative
+            (0.0, 500.0),  # a_cs is zero
             (1333.333333, -500.0),  # d is negative
+            (1333.333333, 0.0),  # d is zero, which is not a cross-section
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, a_cs: float, d: float) -> None:
-        """Test invalid values."""
-        with pytest.raises(NegativeValueError):
+    def test_raise_error_when_less_or_equal_to_zero(self, a_cs: float, d: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be zero or less."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot29MechanicalShearSpan(a_cs=a_cs, d=d)
 
     @pytest.mark.parametrize(

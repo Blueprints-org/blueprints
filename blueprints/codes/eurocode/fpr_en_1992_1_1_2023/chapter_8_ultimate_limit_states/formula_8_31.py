@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, N
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot31AxialForceCoefficient(Formula):
@@ -47,8 +47,11 @@ class Form8Dot31AxialForceCoefficient(Formula):
     @staticmethod
     def _evaluate(n_ed: N, v_ed: N, d: MM, a_cs: MM) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(d=d)
-        raise_if_less_or_equal_to_zero(v_ed=abs(v_ed), a_cs=a_cs)
+        # The guard is on the magnitude, so a negative shear force passes and only zero is refused. Naming
+        # the keyword after the magnitude keeps the error from claiming that a negative value is illegal.
+        # Refusing a shear force of zero is a reading of the standard, since it is a denominator. Refusing an
+        # effective depth of zero is an addition made here: the standard prints no such condition.
+        raise_if_less_or_equal_to_zero(abs_v_ed=abs(v_ed), a_cs=a_cs, d=d)
 
         return max(1 + (n_ed / abs(v_ed)) * (d / (3 * a_cs)), 0.1)
 
