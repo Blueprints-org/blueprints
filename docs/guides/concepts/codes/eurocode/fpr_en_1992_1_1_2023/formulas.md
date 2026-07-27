@@ -117,8 +117,8 @@ Total of 602 formulas present.
 |      8.53      |        :x:         |         |                                                                    |
 |      8.54      |        :x:         |         |                                                                    |
 |      8.55      |        :x:         |         |                                                                    |
-|      8.56      |        :x:         |         |                                                                    |
-|      8.57      |        :x:         |         |                                                                    |
+|      8.56      | :heavy_check_mark: |         | Form8Dot56StressInShearReinforcement                               |
+|      8.57      | :heavy_check_mark: |         | Form8Dot57AdditionalBendingMoment                                  |
 |      8.58      |        :x:         |         |                                                                    |
 |      8.59      |        :x:         |         |                                                                    |
 |      8.60      |        :x:         |         |                                                                    |
