@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:docs/guides/concepts/codes/eurocode/pr_en_1992_1_1_2023/tables.md
+**prEN 1992-1-1 - 2023
+========
 **FprEN 1992-1-1 - April 2023
+>>>>>>>> origin/main:docs/guides/concepts/codes/eurocode/fpr_en_1992_1_1_2023/tables.md
 Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings, bridges and civil engineering structures**
 
