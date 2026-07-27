@@ -39,16 +39,21 @@ class TestForm8Dot35MaximumShearStressResistance:
     @pytest.mark.parametrize(
         ("tau_rdc_0", "a_cs_0", "d"),
         [
-            (-0.585935, 1333.333333, 500.0),  # tau_rdc_0 is negative
             (0.585935, -1333.333333, 500.0),  # a_cs_0 is negative
+            (0.585935, 0.0, 500.0),  # a_cs_0 is zero, which Formula (8.34) also refuses
             (0.585935, 1333.333333, -500.0),  # d is negative
             (0.585935, 1333.333333, 0.0),  # d is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, tau_rdc_0: float, a_cs_0: float, d: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+    def test_raise_error_when_less_or_equal_to_zero(self, tau_rdc_0: float, a_cs_0: float, d: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be zero or less."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot35MaximumShearStressResistance(tau_rdc_0=tau_rdc_0, a_cs_0=a_cs_0, d=d)
+
+    def test_raise_error_when_negative_values_are_given(self) -> None:
+        """The shear stress resistance it scales is the one quantity here that may be zero."""
+        with pytest.raises(NegativeValueError):
+            Form8Dot35MaximumShearStressResistance(tau_rdc_0=-0.585935, a_cs_0=1333.333333, d=500.0)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),

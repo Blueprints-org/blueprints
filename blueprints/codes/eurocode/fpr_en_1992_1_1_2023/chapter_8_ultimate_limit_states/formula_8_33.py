@@ -47,7 +47,13 @@ class Form8Dot33ShearStressResistanceWithoutAxialForce(Formula):
         f_ck : MPA
             [$f_{ck}$] Characteristic compressive strength of concrete [$MPa$].
         d_dg : MM
-            [$d_{dg}$] Size parameter describing the failure zone roughness, defined in 8.2.1(4) [$mm$].
+            [$d_{dg}$] Size parameter describing the failure zone roughness, which depends on the concrete type
+            and its aggregate properties. The standard gives it as [$16 + D_{lower} \leq 40$] for concrete with
+            [$f_{ck} \leq 60$] MPa, and as [$16 + D_{lower} \cdot \left(60/f_{ck}\right)^2 \leq 40$] for concrete
+            with [$f_{ck} > 60$] MPa, both in millimetres. [$D_{lower}$] is the smallest value of the upper sieve
+            size [$D$] in an aggregate for the coarsest fraction of aggregates in the concrete permitted by the
+            specification of concrete according to EN 206; where [$D_{max}$] is known it may replace
+            [$D_{lower}$], see the NOTE 2 to 8.2.1(4) [$mm$].
         d : MM
             [$d$] Effective depth [$mm$].
         """

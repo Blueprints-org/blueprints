@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_34 import Form8Dot34FactorK1
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot34FactorK1:
@@ -63,7 +63,9 @@ class TestForm8Dot34FactorK1:
         ("a_cs_0", "e_p", "d", "a_c", "b_w", "z"),
         [
             (1333.333333, 100.0, -500.0, 180000.0, 300.0, 450.0),  # d is negative
+            (1333.333333, 100.0, 0.0, 180000.0, 300.0, 450.0),  # d is zero, which is not a cross-section
             (1333.333333, 100.0, 500.0, -180000.0, 300.0, 450.0),  # a_c is negative
+            (1333.333333, 100.0, 500.0, 0.0, 300.0, 450.0),  # a_c is zero
             (-1333.333333, 100.0, 500.0, 180000.0, 300.0, 450.0),  # a_cs_0 is negative
             (0.0, 100.0, 500.0, 180000.0, 300.0, 450.0),  # a_cs_0 is zero
             (1333.333333, 100.0, 500.0, 180000.0, -300.0, 450.0),  # b_w is negative
@@ -72,9 +74,9 @@ class TestForm8Dot34FactorK1:
             (1333.333333, 100.0, 500.0, 180000.0, 300.0, 0.0),  # z is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, a_cs_0: float, e_p: float, d: float, a_c: float, b_w: float, z: float) -> None:
-        """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+    def test_raise_error_when_less_or_equal_to_zero(self, a_cs_0: float, e_p: float, d: float, a_c: float, b_w: float, z: float) -> None:
+        """Test if error is raised for parameters that are not allowed to be zero or less."""
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot34FactorK1(a_cs_0=a_cs_0, e_p=e_p, d=d, a_c=a_c, b_w=b_w, z=z)
 
     @pytest.mark.parametrize(

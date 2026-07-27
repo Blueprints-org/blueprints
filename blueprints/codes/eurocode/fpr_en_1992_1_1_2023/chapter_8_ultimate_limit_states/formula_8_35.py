@@ -42,8 +42,12 @@ class Form8Dot35MaximumShearStressResistance(Formula):
     @staticmethod
     def _evaluate(tau_rdc_0: MPA, a_cs_0: MM, d: MM) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(tau_rdc_0=tau_rdc_0, a_cs_0=a_cs_0)
-        raise_if_less_or_equal_to_zero(d=d)
+        # Zero is refused for all of these. For the ones that sit in a denominator that is a reading of the
+        # standard. For a_cs_0 it is also a reading, one step removed: Formula (8.30) defines the effective
+        # shear span as at least the effective depth, so it cannot be zero. For the rest it is an addition made
+        # here, so that the same quantity is not admitted in one formula of this clause and refused in the next.
+        raise_if_negative(tau_rdc_0=tau_rdc_0)
+        raise_if_less_or_equal_to_zero(a_cs_0=a_cs_0, d=d)
 
         return min(2.15 * tau_rdc_0 * (a_cs_0 / d) ** (1 / 6), 2.7 * tau_rdc_0)
 
