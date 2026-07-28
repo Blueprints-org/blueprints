@@ -340,6 +340,64 @@ def test_comparison_formula_equal_unity_check_property() -> None:
     assert formula.unity_check == 1.0
 
 
+def test_comparison_formula_bool_with_negative_values_le() -> None:
+    """Test __bool__ for the <= operator with negative lhs and/or rhs values.
+
+    A unity_check-based bool (lhs / rhs <= 1.0) silently flips when dividing by a negative
+    number, so these cases would misreport pass/fail under that old implementation.
+    """
+    # lhs=-10, rhs=-5: -10 <= -5 is True. unity_check = -10 / -5 = 2.0, which a
+    # unity_check-based bool would wrongly read as "not satisfied".
+    formula = ComparisonFormulaTestLessOrEqual(a=-10, b=0, c=-10)
+    assert formula.lhs == -10
+    assert formula.rhs == -5
+    assert bool(formula) is True
+
+    # lhs=10, rhs=-5: 10 <= -5 is False. unity_check = 10 / -5 = -2.0, which a
+    # unity_check-based bool would wrongly read as "satisfied".
+    formula = ComparisonFormulaTestLessOrEqual(a=10, b=0, c=-10)
+    assert formula.lhs == 10
+    assert formula.rhs == -5
+    assert bool(formula) is False
+
+    # lhs=-10, rhs=5: -10 <= 5 is True.
+    formula = ComparisonFormulaTestLessOrEqual(a=-10, b=0, c=10)
+    assert formula.lhs == -10
+    assert formula.rhs == 5
+    assert bool(formula) is True
+
+
+def test_comparison_formula_bool_with_negative_values_ge() -> None:
+    """Test __bool__ for the >= operator with negative lhs and/or rhs values."""
+    # lhs=-5, rhs=-10: -5 >= -10 is True.
+    formula = ComparisonFormulaTestGreaterOrEqual(a=-5, b=0, c=-20)
+    assert formula.lhs == -5
+    assert formula.rhs == -10
+    assert bool(formula) is True
+
+    # lhs=-20, rhs=-5: -20 >= -5 is False. unity_check = rhs / lhs = -5 / -20 = 0.25, which a
+    # unity_check-based bool would wrongly read as "satisfied".
+    formula = ComparisonFormulaTestGreaterOrEqual(a=-20, b=0, c=-10)
+    assert formula.lhs == -20
+    assert formula.rhs == -5
+    assert bool(formula) is False
+
+
+def test_comparison_formula_bool_with_negative_values_eq() -> None:
+    """Test __bool__ for the == operator with negative lhs and/or rhs values."""
+    # lhs=-10, rhs=-10: equal.
+    formula = ComparisonFormulaTestEqual(a=-15, b=5, c=-20)
+    assert formula.lhs == -10
+    assert formula.rhs == -10
+    assert bool(formula) is True
+
+    # lhs=-10, rhs=-5: not equal.
+    formula = ComparisonFormulaTestEqual(a=-15, b=5, c=-10)
+    assert formula.lhs == -10
+    assert formula.rhs == -5
+    assert bool(formula) is False
+
+
 # Helper function to create dynamic test classes for DoubleComparisonFormula
 def _create_double_comparison_formula_test_class(
     comp_op_lhs: Callable[[float, float], bool], comp_op_rhs: Callable[[float, float], bool], comp_op_ids: str = ""
@@ -729,6 +787,30 @@ class TestAggregatedComparisonFormula:
         f2 = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
         f3 = self._le(10, 3, 4)  # lhs=13, rhs=2  →  fails
         formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_bool_with_negative_values_all_passes(self) -> None:
+        """Test 'all' aggregation bool with negative lhs/rhs values, where each sub-formula passes."""
+        f1 = self._le(-10, 0, -10)  # lhs=-10, rhs=-5  →  -10 <= -5 True
+        f2 = self._ge(-5, 0, -20)  # lhs=-5, rhs=-10  →  -5 >= -10 True
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_bool_with_negative_values_all_fails(self) -> None:
+        """Test 'all' aggregation bool with negative lhs/rhs values, where one sub-formula fails."""
+        f1 = self._le(-10, 0, -10)  # lhs=-10, rhs=-5  →  -10 <= -5 True
+        f2 = self._le(10, 0, -10)  # lhs=10, rhs=-5  →  10 <= -5 False
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2])
+        assert not formula
+        assert bool(formula) is False
+
+    def test_aggregated_comparison_formula_bool_with_negative_values_any_passes(self) -> None:
+        """Test 'any' aggregation bool with negative lhs/rhs values, where one sub-formula passes."""
+        f1 = self._le(10, 0, -10)  # lhs=10, rhs=-5  →  10 <= -5 False
+        f2 = self._le(-10, 0, -10)  # lhs=-10, rhs=-5  →  -10 <= -5 True
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2])
         assert formula
         assert bool(formula) is True
 
