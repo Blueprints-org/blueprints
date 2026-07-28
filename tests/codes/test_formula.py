@@ -4,6 +4,7 @@ import operator
 from collections.abc import Callable
 from typing import Any
 
+import numpy as np
 import pytest
 
 from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula, DoubleComparisonFormula, Formula
@@ -396,6 +397,30 @@ def test_comparison_formula_bool_with_negative_values_eq() -> None:
     assert formula.lhs == -10
     assert formula.rhs == -5
     assert bool(formula) is False
+
+
+def test_comparison_formula_bool_with_numpy_floats_returns_real_bool() -> None:
+    """Test that __bool__ returns a real Python bool even when lhs/rhs are numpy floats.
+
+    When _evaluate_lhs/_evaluate_rhs return numpy floats (e.g. from np.sqrt, np.tan, etc.),
+    operator.le/.ge/.eq on them returns numpy.bool_ rather than bool. Python requires __bool__
+    to return an actual bool, so without an explicit bool() cast this raises:
+    TypeError: __bool__ should return bool, returned numpy.bool_
+    """
+    a = np.float64(5.0)
+    b = np.float64(5.0)
+    c = np.float64(20.0)
+
+    # Sanity check that the raw comparison operator indeed returns numpy.bool_, not bool.
+    raw_comparison_result = ComparisonFormulaTestLessOrEqual._comparison_operator()(a + b, c / 2)  # noqa: SLF001
+    assert isinstance(raw_comparison_result, np.bool_)
+    assert not isinstance(raw_comparison_result, bool)
+
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
+
+    result = bool(formula)
+
+    assert result is True
 
 
 # Helper function to create dynamic test classes for DoubleComparisonFormula

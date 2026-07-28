@@ -225,7 +225,9 @@ class ComparisonFormula(Formula, ABC):
         bool
             True if the comparison condition is satisfied, False otherwise.
         """
-        return self._comparison_operator()(self.lhs, self.rhs)
+        # bool() is required here: if _evaluate_lhs/_evaluate_rhs return numpy floats, the comparison
+        # operator returns a numpy.bool_, and Python requires __bool__ to return a real bool.
+        return bool(self._comparison_operator()(self.lhs, self.rhs))
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
