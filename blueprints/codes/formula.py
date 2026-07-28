@@ -396,7 +396,7 @@ class AggregatedComparisonFormula(ComparisonFormula):
         LatexFormula
             The latex representation of the formula, given in math mode.
         """
-        aggregation = " \\land " if self.aggregation is all else " \\lor "
+        aggregation = r"\ \&\ " if self.aggregation is all else r"\ \text{or}\ "
         comparison_equations = aggregation.join(formula.latex(n).equation for formula in self.comparison_formulas)
         comparison_numeric_equations = aggregation.join(formula.latex(n).numeric_equation for formula in self.comparison_formulas)
         return LatexFormula(

@@ -631,14 +631,90 @@ def test_double_comparison_formula_invalid_operators(
 
 
 class AggregatedComparisonFormulaTest(AggregatedComparisonFormula):
-    """Dummy aggregated comparison formula for testing purposes."""
+    """Dummy aggregated comparison formula for testing purposes.
+
+    Relies on the concrete ``latex`` implementation of ``AggregatedComparisonFormula`` itself
+    (no override here), so that implementation is what gets exercised by the latex tests below.
+    """
 
     label = "Dummy testing aggregated comparison formula"
     source_document = "Dummy testing document"
 
+
+class ComparisonFormulaTestLatexLessOrEqual(ComparisonFormula):
+    """Dummy comparison formula with a realistic latex representation (<=), for testing AggregatedComparisonFormula.latex."""
+
+    label = "Dummy testing comparison formula (latex, <=)"
+    source_document = "Dummy testing document"
+
+    def __init__(self, x: float, y: float) -> None:
+        """Dummy comparison formula for testing purposes."""
+        super().__init__()
+        self.x = x
+        self.y = y
+
+    @staticmethod
+    def _evaluate_lhs(x: float, **_) -> float:
+        """Left-hand side value of the comparison."""
+        return x
+
+    @staticmethod
+    def _evaluate_rhs(y: float, **_) -> float:
+        """Right-hand side value of the comparison."""
+        return y
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
+        return operator.le
+
     def latex(self, n: int = 3) -> LatexFormula:
         """Dummy latex implementation for testing purposes."""
-        return LatexFormula(return_symbol=r"check", result=str(round(float(self), n)), equation=r"\text{aggregated check}")
+        return LatexFormula(
+            return_symbol="CHECK_X",
+            result="OK" if bool(self) else r"\text{Not OK}",
+            equation=r"X \leq Y",
+            numeric_equation=rf"{self.x:.{n}f} \leq {self.y:.{n}f}",
+            comparison_operator_label=r"\to",
+        )
+
+
+class ComparisonFormulaTestLatexGreaterOrEqual(ComparisonFormula):
+    """Dummy comparison formula with a realistic latex representation (>=), for testing AggregatedComparisonFormula.latex."""
+
+    label = "Dummy testing comparison formula (latex, >=)"
+    source_document = "Dummy testing document"
+
+    def __init__(self, x: float, y: float) -> None:
+        """Dummy comparison formula for testing purposes."""
+        super().__init__()
+        self.x = x
+        self.y = y
+
+    @staticmethod
+    def _evaluate_lhs(x: float, **_) -> float:
+        """Left-hand side value of the comparison."""
+        return x
+
+    @staticmethod
+    def _evaluate_rhs(y: float, **_) -> float:
+        """Right-hand side value of the comparison."""
+        return y
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
+        return operator.ge
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(
+            return_symbol="CHECK_Y",
+            result="OK" if bool(self) else r"\text{Not OK}",
+            equation=r"X \geq Y",
+            numeric_equation=rf"{self.x:.{n}f} \geq {self.y:.{n}f}",
+            comparison_operator_label=r"\to",
+        )
 
 
 class TestAggregatedComparisonFormula:
@@ -931,3 +1007,60 @@ class TestAggregatedComparisonFormula:
         outer = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[inner_any, inner_all])
         assert not outer
         assert bool(outer) is False
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to X \leq Y\ \&\ X \geq Y \to 10.000 \leq 20.000\ \&\ 15.000 \geq 10.000 \to OK",
+            ),
+            ("short", r"CHECK \to OK"),
+            (
+                "complete_with_units",
+                r"CHECK \to X \leq Y\ \&\ X \geq Y \to 10.000 \leq 20.000\ \&\ 15.000 \geq 10.000 \to OK",
+            ),
+        ],
+    )
+    def test_latex_all_aggregation_all_pass(self, representation: str, expected: str) -> None:
+        """Test the latex representation for 'all' aggregation when every sub-formula passes."""
+        # f1: 10 <= 20 -> True, f2: 15 >= 10 -> True
+        f1 = ComparisonFormulaTestLatexLessOrEqual(x=10, y=20)
+        f2 = ComparisonFormulaTestLatexGreaterOrEqual(x=15, y=10)
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2])
+
+        latex = formula.latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to X \leq Y\ \text{or}\ X \geq Y \to 30.000 \leq 20.000\ \text{or}\ 5.000 \geq 10.000 \to \text{Not OK}",
+            ),
+            ("short", r"CHECK \to \text{Not OK}"),
+        ],
+    )
+    def test_latex_any_aggregation_all_fail(self, representation: str, expected: str) -> None:
+        """Test the latex representation for 'any' aggregation when every sub-formula fails."""
+        # f1: 30 <= 20 -> False, f2: 5 >= 10 -> False
+        f1 = ComparisonFormulaTestLatexLessOrEqual(x=30, y=20)
+        f2 = ComparisonFormulaTestLatexGreaterOrEqual(x=5, y=10)
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2])
+
+        latex = formula.latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
