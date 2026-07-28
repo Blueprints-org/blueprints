@@ -46,7 +46,7 @@ class TestForm5Dot9ReducedBendingMomentResistance:
 
     @pytest.mark.parametrize(
         ("invalid_argument", "invalid_value"),
-        itertools.product(("beta_b", "w_pl", "rho", "a_v", "t_w", "alpha", "f_y", "gamma_m_0", "mc_rd"), (-1.0, 0.0)),
+        tuple(itertools.product(("beta_b", "w_pl", "rho", "a_v", "t_w", "alpha", "f_y", "gamma_m_0", "mc_rd"), (-1.0, 0.0))),
     )
     def test_raise_error_when_invalid_values_are_given(self, invalid_argument: str, invalid_value: float) -> None:
         """Test a zero and negative value for parameters."""
