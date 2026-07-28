@@ -1,62 +1,57 @@
-"""Formula 8.18 from FprEN 1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
+"""Formula 8.19 from FprEN 1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import MM, MPA, N
+from blueprints.type_alias import MM, MPA, N_MM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot18AverageShearStress(Formula):
-    """Class representing formula 8.18 for the calculation of the average shear stress over the cross-section
-    of linear members in regions without geometric discontinuities.
+class Form8Dot19AverageShearStressPlanarMembers(Formula):
+    """Class representing formula 8.19 for the calculation of the average shear stress over the cross-section
+    of planar members in regions without geometric discontinuities.
     """
 
-    label = "8.18"
+    label = "8.19"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, v_ed: N, b_w: MM, z: MM) -> None:
+    def __init__(self, v_ed: N_MM, z: MM) -> None:
         r"""[$\tau_{Ed}$] Average shear stress over the cross-section area in regions of members without geometric discontinuities [$MPa$].
 
-        FprEN 1992-1-1:2023 (E) art 8.2.1 (3) - Formula (8.18)
+        FprEN 1992-1-1:2023 (E) art 8.2.1 (3) - Formula (8.19)
 
         Parameters
         ----------
-        v_ed : N
-            [$V_{Ed}$] Design shear force at the control section in linear members [$N$]. Note that this is the upper case
-            [$V_{Ed}$] of linear members, not the shear force per unit width [$v_{Ed}$] in [$N/mm$] used in Formula (8.19).
-        b_w : MM
-            [$b_w$] Width of the cross-section of linear members. The width [$b_w$] for cross-sections with variable width
-            and for circular cross-sections is defined in 8.2.3(9) [$mm$].
+        v_ed : N_MM
+            [$v_{Ed}$] Design shear force per unit width in planar members [$N/mm$]. Note that this is the lower case
+            [$v_{Ed}$] of planar members, not the shear force [$V_{Ed}$] in [$N$] used in Formula (8.18).
         z : MM
             [$z$] Lever arm for the shear stress calculation defined as [$z = 0.9 \cdot d$], where [$d$] refers to the
             centroid of tensile reinforcement [$mm$].
         """
         super().__init__()
         self.v_ed = v_ed
-        self.b_w = b_w
         self.z = z
 
     @staticmethod
-    def _evaluate(v_ed: N, b_w: MM, z: MM) -> MPA:
+    def _evaluate(v_ed: N_MM, z: MM) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(v_ed=v_ed)
-        raise_if_less_or_equal_to_zero(b_w=b_w, z=z)
-        return v_ed / (b_w * z)
+        raise_if_less_or_equal_to_zero(z=z)
+        return v_ed / z
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 8.18."""
-        _equation: str = r"\frac{V_{Ed}}{b_w \cdot z}"
+        """Returns LatexFormula object for formula 8.19."""
+        _equation: str = r"\frac{v_{Ed}}{z}"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
-            replacements={r"V_{Ed}": f"{self.v_ed:.{n}f}", r"b_w": f"{self.b_w:.{n}f}", r"z": f"{self.z:.{n}f}"},
+            replacements={r"v_{Ed}": f"{self.v_ed:.{n}f}", r"z": f"{self.z:.{n}f}"},
             unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             template=_equation,
             replacements={
-                r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
-                r"b_w": rf"{self.b_w:.{n}f} \ mm",
+                r"v_{Ed}": rf"{self.v_ed:.{n}f} \ N/mm",
                 r"z": rf"{self.z:.{n}f} \ mm",
             },
             unique_symbol_check=False,
