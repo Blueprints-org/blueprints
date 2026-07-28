@@ -33,12 +33,14 @@ class TestForm8Dot37ReinforcementRatioPrestressedMembers:
         """Tests that omitting the prestressed reinforcement reproduces Formula (8.28).
 
         With a_p = 0 the formula becomes d_s * A_s / (b_w * d_s^2), which is A_s / (b_w * d_s), the
-        reinforcement ratio of Formula (8.28) for the same section.
+        reinforcement ratio of Formula (8.28) for the same section. The assertion is on exact equality rather
+        than on a tolerance, because that reduction is exact and a tolerance would only hide it if it ever
+        stopped being.
         """
         formula = Form8Dot37ReinforcementRatioPrestressedMembers(d_s=500.0, a_s=1500.0, d_p=450.0, a_p=0.0, b_w=300.0, d=500.0)
 
         # 1500 / (300 * 500), the value Formula (8.28) gives for the same section
-        assert formula == pytest.approx(expected=0.01, rel=1e-9)
+        assert float(formula) == 0.01
 
     @pytest.mark.parametrize(
         ("d_s", "a_s", "d_p", "a_p", "b_w", "d"),

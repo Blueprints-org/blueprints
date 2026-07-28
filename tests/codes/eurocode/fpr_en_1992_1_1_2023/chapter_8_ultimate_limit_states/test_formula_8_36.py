@@ -28,12 +28,16 @@ class TestForm8Dot36EffectiveDepthPrestressedMembers:
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     def test_evaluation_when_the_prestressed_reinforcement_is_omitted(self) -> None:
-        """Tests the omission of the prestressed reinforcement allowed by 8.2.2(6), which returns the effective depth
-        of the longitudinal tension reinforcement.
+        r"""Tests the omission of the prestressed reinforcement allowed by 8.2.2(6), which returns the effective
+        depth of the longitudinal tension reinforcement.
+
+        With [$A_p = 0$] the formula reduces to [$d_s^2 \cdot A_s / (d_s \cdot A_s)$], which is [$d_s$]. The
+        assertion is on exact equality rather than on a tolerance, because that reduction is exact and a
+        tolerance would only hide it if it ever stopped being.
         """
         formula = Form8Dot36EffectiveDepthPrestressedMembers(d_s=500.0, a_s=1500.0, d_p=450.0, a_p=0.0)
 
-        assert formula == pytest.approx(expected=500.0, rel=1e-9)
+        assert float(formula) == 500.0
 
     @pytest.mark.parametrize(
         ("d_s", "a_s", "d_p", "a_p"),
