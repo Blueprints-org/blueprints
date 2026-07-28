@@ -217,13 +217,13 @@ class ComparisonFormula(Formula, ABC):
         Examples
         --------
         formula = SomeComparisonFormula(...)
-        if formula:  # Equivalent to: if formula.unity_check <= 1.0
+        if formula:  # Equivalent to: if formula.__bool__()
             print("Condition satisfied")
 
         Returns
         -------
         bool
-            True if unity_check <= 1.0 (condition is satisfied), False otherwise.
+            True if the comparison condition is satisfied, False otherwise.
         """
         return self._comparison_operator()(self.lhs, self.rhs)
 
