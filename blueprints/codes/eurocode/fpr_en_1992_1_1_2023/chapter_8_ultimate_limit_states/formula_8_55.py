@@ -3,8 +3,9 @@
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_negative
+from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
+from blueprints.utils.math_helpers import cot
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot55EnhancedShearStressResistance(Formula):
@@ -19,8 +20,8 @@ class Form8Dot55EnhancedShearStressResistance(Formula):
         self,
         nu: DIMENSIONLESS,
         f_cd: MPA,
-        cot_theta: DIMENSIONLESS,
-        cot_beta_incl: DIMENSIONLESS,
+        theta: DEG,
+        beta_incl: DEG,
         rho_w: DIMENSIONLESS,
         f_ywd: MPA,
     ) -> None:
@@ -40,12 +41,14 @@ class Form8Dot55EnhancedShearStressResistance(Formula):
             adopted under the conditions of 8.2.3(7), calculated according to Formula (8.45) [$-$].
         f_cd : MPA
             [$f_{cd}$] Design value of the compressive strength of concrete [$MPa$].
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the inclination of the compression field in the web, selected within the
-            range of Formula (8.41) [$-$].
-        cot_beta_incl : DIMENSIONLESS
-            [$\cot\beta_{incl}$] Cotangent of the angle [$\beta_{incl}$] that follows from the distance of the
-            concentrated load to the support through [$a_v = z \cdot \cot\beta_{incl}$] [$-$].
+        theta : DEG
+            [$\theta$] Inclination of the compression field in the web, selected within the range of Formula
+            (8.41). A flatter field, [$\cot\theta < 1$], is allowed under 8.2.3(11), but only if [$f_{ywd}$] is
+            replaced by [$\sigma_{swd}$] of Formula (8.56); making that substitution is left to the caller
+            [$degrees$].
+        beta_incl : DEG
+            [$\beta_{incl}$] Angle that follows from the distance of the concentrated load to the support
+            through [$a_v = z \cdot \cot\beta_{incl}$], so [$\beta_{incl} = \arctan(z/a_v)$] [$degrees$].
         rho_w : DIMENSIONLESS
             [$\rho_w$] Shear reinforcement ratio according to Formula (8.43) [$-$].
         f_ywd : MPA
@@ -54,8 +57,8 @@ class Form8Dot55EnhancedShearStressResistance(Formula):
         super().__init__()
         self.nu = nu
         self.f_cd = f_cd
-        self.cot_theta = cot_theta
-        self.cot_beta_incl = cot_beta_incl
+        self.theta = theta
+        self.beta_incl = beta_incl
         self.rho_w = rho_w
         self.f_ywd = f_ywd
 
@@ -63,13 +66,16 @@ class Form8Dot55EnhancedShearStressResistance(Formula):
     def _evaluate(
         nu: DIMENSIONLESS,
         f_cd: MPA,
-        cot_theta: DIMENSIONLESS,
-        cot_beta_incl: DIMENSIONLESS,
+        theta: DEG,
+        beta_incl: DEG,
         rho_w: DIMENSIONLESS,
         f_ywd: MPA,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(nu=nu, f_cd=f_cd, cot_theta=cot_theta, cot_beta_incl=cot_beta_incl, rho_w=rho_w, f_ywd=f_ywd)
+        raise_if_negative(nu=nu, f_cd=f_cd, rho_w=rho_w, f_ywd=f_ywd)
+        raise_if_less_or_equal_to_zero(theta=theta, beta_incl=beta_incl)
+
+        cot_theta, cot_beta_incl = cot(theta), cot(beta_incl)
 
         # The denominator 1 + cot^2(theta) is never zero, so it needs no guard of its own.
         enhanced = nu * f_cd * (cot_theta - cot_beta_incl) / (1 + cot_theta**2) + rho_w * f_ywd * cot_beta_incl
@@ -88,8 +94,8 @@ class Form8Dot55EnhancedShearStressResistance(Formula):
             replacements={
                 r"\nu": f"{self.nu:.{n}f}",
                 r"f_{cd}": f"{self.f_cd:.{n}f}",
-                r"\cot(\beta_{incl})": f"{self.cot_beta_incl:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\beta_{incl}": f"{self.beta_incl:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
                 r"\rho_w": f"{self.rho_w:.{n}f}",
                 r"f_{ywd}": f"{self.f_ywd:.{n}f}",
             },
@@ -100,8 +106,8 @@ class Form8Dot55EnhancedShearStressResistance(Formula):
             replacements={
                 r"\nu": f"{self.nu:.{n}f}",
                 r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
-                r"\cot(\beta_{incl})": f"{self.cot_beta_incl:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\beta_{incl}": rf"{self.beta_incl:.{n}f} ^\circ",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
                 r"\rho_w": f"{self.rho_w:.{n}f}",
                 r"f_{ywd}": rf"{self.f_ywd:.{n}f} \ MPa",
             },

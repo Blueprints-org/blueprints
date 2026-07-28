@@ -39,7 +39,6 @@ class TestForm8Dot54NominalWebWidth:
     @pytest.mark.parametrize(
         ("b_w", "k_duct", "sum_phi_duct"),
         [
-            (400.0, -0.8, 100.0),  # k_duct is negative
             (400.0, 0.8, -100.0),  # sum_phi_duct is negative
         ],
     )
@@ -53,10 +52,18 @@ class TestForm8Dot54NominalWebWidth:
         [
             (-400.0, 0.8, 100.0),  # b_w is negative
             (0.0, 0.8, 100.0),  # b_w is zero
+            (400.0, -0.8, 100.0),  # k_duct is negative
+            (400.0, 0.0, 100.0),  # k_duct is zero, which would leave the web width unreduced
         ],
     )
     def test_raise_error_when_less_or_equal_to_zero(self, b_w: float, k_duct: float, sum_phi_duct: float) -> None:
-        """Test if error is raised for parameters that are not allowed to be zero or less."""
+        """Test if error is raised for parameters that are not allowed to be zero or less.
+
+        The standard gives only 0,5, 0,8 and 1,2 for k_duct, so zero is not a value it offers, and it would
+        leave the web width unreduced while 8.2.3(10) applies precisely where the ducts are wide enough to
+        matter. Membership of the three values is not checked, so the choice between them stays with the
+        caller.
+        """
         with pytest.raises(LessOrEqualToZeroError):
             Form8Dot54NominalWebWidth(b_w=b_w, k_duct=k_duct, sum_phi_duct=sum_phi_duct)
 

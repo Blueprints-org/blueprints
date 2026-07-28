@@ -34,7 +34,9 @@ class Form8Dot54NominalWebWidth(Formula):
             [$\leq \max\{0,035 \cdot \phi_{duct}; 2 mm\}$], and 1,2 for non-grouted ducts, for grouted plastic
             ducts with a wall thickness [$> \max\{0,035 \cdot \phi_{duct}; 2 mm\}$] or for ducts injected with
             soft filling material. None of these three carries a formula number, so the classification is made
-            by the caller [$-$].
+            by the caller. Zero and negative values are rejected, since neither is a coefficient the standard
+            offers and zero would leave the web width unreduced. Membership of the three values is not checked,
+            so the choice between them stays with the caller [$-$].
         sum_phi_duct : MM
             [$\Sigma\phi_{duct}$] Sum of the outer diameters of the ducts, determined for the most unfavourable
             level. In the case of variable cross-section widths, calculations at different heights can be
@@ -48,8 +50,8 @@ class Form8Dot54NominalWebWidth(Formula):
     @staticmethod
     def _evaluate(b_w: MM, k_duct: DIMENSIONLESS, sum_phi_duct: MM) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(k_duct=k_duct, sum_phi_duct=sum_phi_duct)
-        raise_if_less_or_equal_to_zero(b_w=b_w)
+        raise_if_negative(sum_phi_duct=sum_phi_duct)
+        raise_if_less_or_equal_to_zero(b_w=b_w, k_duct=k_duct)
 
         return b_w - k_duct * sum_phi_duct
 
