@@ -211,7 +211,7 @@ class ComparisonFormula(Formula, ABC):
     def __bool__(self) -> bool:
         """Return whether the comparison condition is satisfied.
 
-        Returns True if the unity check is less than or equal to 1.0, indicating the condition is satisfied.
+        Returns True if the comparison e.g. lhs <= rhs is satisfied.
         This allows ComparisonFormula instances to be used directly in boolean contexts.
 
         Examples
@@ -225,15 +225,15 @@ class ComparisonFormula(Formula, ABC):
         bool
             True if unity_check <= 1.0 (condition is satisfied), False otherwise.
         """
-        return self.unity_check <= 1.0
+        return self._comparison_operator()(self.lhs, self.rhs)
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
         """Implements the comparison using the class-level operator."""
         lhs = cls._evaluate_lhs(*args, **kwargs)
         rhs = cls._evaluate_rhs(*args, **kwargs)
-        comparison = cls._comparison_operator
-        return comparison()(lhs, rhs)
+        comparison = cls._comparison_operator()
+        return comparison(lhs, rhs)
 
 
 class AggregatedComparisonFormula(ComparisonFormula):
@@ -325,6 +325,32 @@ class AggregatedComparisonFormula(ComparisonFormula):
             if self.aggregation is all
             else min(formula.unity_check for formula in self.comparison_formulas)
         )
+
+    def __bool__(self) -> bool:
+        """Return whether the aggregated comparison condition is satisfied.
+
+        Returns True if the aggregated comparison condition is satisfied based on the aggregation function (all or any).
+        This allows AggregatedComparisonFormula instances to be used directly in boolean contexts.
+
+        Examples
+        --------
+        formula1 = SomeComparisonFormula(...)
+        formula2 = SomeComparisonFormula(...)
+
+        aggregated_formula = AggregatedComparisonFormula(all, [formula1, formula2])
+        if aggregated_formula:  # Equivalent to: if all(formula1, formula2)
+            print("All conditions satisfied")
+
+        aggregated_formula = AggregatedComparisonFormula(any, [formula1, formula2])
+        if aggregated_formula:  # Equivalent to: if any(formula1, formula2)
+            print("At least one condition satisfied")
+
+        Returns
+        -------
+        bool
+            True if the aggregated condition is satisfied, False otherwise.
+        """
+        return self.aggregation(bool(formula) for formula in self.comparison_formulas)
 
     @classmethod
     def _evaluate(
