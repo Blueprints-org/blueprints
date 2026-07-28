@@ -1,5 +1,9 @@
 """Formula 5.18 from EN 1993-5:2007: Chapter 5 - Ultimate limit state."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 from blueprints.codes.eurocode.en_1993_5_2007 import EN_1993_5_2007
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
@@ -34,6 +38,11 @@ class Form5Dot18CompressionCheckUProfilesClass1And2(ComparisonFormula):
         self.n_ed = n_ed
         self.n_pl_rd = n_pl_rd
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Return the comparison operator for the formula."""
+        return operator.le
+
     @staticmethod
     def _evaluate_lhs(
         n_ed: KN,
@@ -48,25 +57,10 @@ class Form5Dot18CompressionCheckUProfilesClass1And2(ComparisonFormula):
         """Evaluates the right-hand side of the comparison; see __init__ for details."""
         return 0.25
 
-    @staticmethod
-    def _evaluate(  # ty: ignore[invalid-method-override]
-        n_ed: KN,
-        n_pl_rd: KN,
-    ) -> bool:
-        """Evaluates the comparison; see __init__ for details."""
-        return (
-            Form5Dot18CompressionCheckUProfilesClass1And2._evaluate_lhs(n_ed=n_ed, n_pl_rd=n_pl_rd)
-            <= Form5Dot18CompressionCheckUProfilesClass1And2._evaluate_rhs()
-        )
-
     @property
     def unity_check(self) -> float:
         """Returns the unity check value."""
         return self.lhs
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(self.n_ed, self.n_pl_rd)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 5.18."""
