@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS, N_MM
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot38To40ReinforcementRatioPlanarMembers(Formula):
@@ -17,7 +17,14 @@ class Form8Dot38To40ReinforcementRatioPlanarMembers(Formula):
     label = "8.38/8.39/8.40"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, v_ed_x: N_MM, v_ed_y: N_MM, rho_l_x: DIMENSIONLESS, rho_l_y: DIMENSIONLESS, alpha_v: DEG) -> None:
+    def __init__(
+        self,
+        v_ed_x: N_MM,
+        v_ed_y: N_MM,
+        rho_l_x: DIMENSIONLESS,
+        rho_l_y: DIMENSIONLESS,
+        alpha_v: DEG | None = None,
+    ) -> None:
         r"""[$\rho_l$] Reinforcement ratio of planar members, as a function of the ratio of the shear forces
         [$v_{Ed,y}/v_{Ed,x}$] [$-$].
 
@@ -25,8 +32,13 @@ class Form8Dot38To40ReinforcementRatioPlanarMembers(Formula):
 
         The boundaries of the ratio are one-sided as printed: a ratio of exactly 0.5 falls under Formula (8.38)
         and a ratio of exactly 2 falls under Formula (8.40). The standard gives no rule for [$v_{Ed,x} = 0$],
-        for which the ratio is undefined, so that input is rejected. Both shear forces are taken as magnitudes,
-        since a negative ratio would fall under Formula (8.38) without the standard intending it.
+        for which the ratio is undefined, so that input is rejected.
+
+        Both shear forces are taken as magnitudes. They are components of a shear force vector and the standard
+        places no restriction on their sign, but the printed boundaries only order a ratio of magnitudes: a
+        signed ratio turns negative as soon as one component does, and every negative value would fall under
+        Formula (8.38) regardless of which direction carries the shear. This matches Formulas (8.22) to (8.24),
+        which the standard writes with the same ratio and the same two boundaries.
 
         Parameters
         ----------
@@ -40,40 +52,62 @@ class Form8Dot38To40ReinforcementRatioPlanarMembers(Formula):
             [$\rho_{l,x}$] Reinforcement ratio in the x direction [$-$].
         rho_l_y : DIMENSIONLESS
             [$\rho_{l,y}$] Reinforcement ratio in the y direction [$-$].
-        alpha_v : DEG
-            [$\alpha_v$] Angle between the principal shear force and the x-axis as defined in 8.2.1(5), which may be
-            taken according to Formula (8.26), see Form8Dot26AngleBetweenPrincipalShearForceAndXAxis. It is only used
-            by Formula (8.39), and it is the caller's responsibility to keep it consistent with the shear forces
-            passed here [$degrees$].
+        alpha_v : DEG, optional
+            [$\alpha_v$] Angle between the principal shear force and the x-axis, which the standard defines in
+            8.2.1(5). When it is left out it is computed from the two shear forces with Formula (8.26),
+            [$\arctan\left(\left|v_{Ed,y}\right| / \left|v_{Ed,x}\right|\right)$], the value that clause allows
+            it to be taken as and the only one consistent with the forces passed here. That clause prints
+            Formula (8.26) as what the angle "may be taken as", so a directly determined direction of the
+            principal shear force is admissible as well and can be passed here instead; it is then the caller's
+            responsibility to keep it consistent with the two forces. The angle only reaches Formula (8.39). It
+            lies between 0 and 90 degrees, as Formula (8.26) can produce nothing else [$degrees$].
         """
         super().__init__()
         self.v_ed_x = v_ed_x
         self.v_ed_y = v_ed_y
         self.rho_l_x = rho_l_x
         self.rho_l_y = rho_l_y
-        self.alpha_v = alpha_v
+        self.alpha_v = self._angle(v_ed_x, v_ed_y) if alpha_v is None else alpha_v
 
     @staticmethod
-    def _evaluate(v_ed_x: N_MM, v_ed_y: N_MM, rho_l_x: DIMENSIONLESS, rho_l_y: DIMENSIONLESS, alpha_v: DEG) -> DIMENSIONLESS:
-        """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(v_ed_y=v_ed_y, rho_l_x=rho_l_x, rho_l_y=rho_l_y, alpha_v=alpha_v)
-        raise_if_less_or_equal_to_zero(v_ed_x=v_ed_x)
+    def _angle(v_ed_x: N_MM, v_ed_y: N_MM) -> DEG:
+        """The angle of Formula (8.26), taken on the magnitudes of the two shear forces."""
+        raise_if_less_or_equal_to_zero(abs_v_ed_x=abs(v_ed_x))
 
-        ratio = v_ed_y / v_ed_x
+        return float(np.rad2deg(np.arctan(abs(v_ed_y) / abs(v_ed_x))))
+
+    @classmethod
+    def _evaluate(
+        cls,
+        v_ed_x: N_MM,
+        v_ed_y: N_MM,
+        rho_l_x: DIMENSIONLESS,
+        rho_l_y: DIMENSIONLESS,
+        alpha_v: DEG | None = None,
+    ) -> DIMENSIONLESS:
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_negative(rho_l_x=rho_l_x, rho_l_y=rho_l_y)
+        raise_if_less_or_equal_to_zero(abs_v_ed_x=abs(v_ed_x))
+
+        angle = cls._angle(v_ed_x, v_ed_y) if alpha_v is None else alpha_v
+        raise_if_negative(alpha_v=angle)
+        raise_if_greater_than_90(alpha_v=angle)
+
+        ratio = abs(v_ed_y) / abs(v_ed_x)
         if ratio <= 0.5:
             return rho_l_x
         if ratio < 2:
-            alpha_v_rad = np.deg2rad(alpha_v)
+            alpha_v_rad = np.deg2rad(angle)
             return rho_l_x * np.cos(alpha_v_rad) ** 4 + rho_l_y * np.sin(alpha_v_rad) ** 4
         return rho_l_y
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formulas 8.38, 8.39 and 8.40."""
         _equation: str = (
-            r"\begin{cases} \rho_{l,x} & \text{if } \frac{v_{Ed,y}}{v_{Ed,x}} \leq 0.5 \\ "
+            r"\begin{cases} \rho_{l,x} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
             r"\rho_{l,x} \cdot \cos^4(\alpha_v) + \rho_{l,y} \cdot \sin^4(\alpha_v) "
-            r"& \text{if } 0.5 < \frac{v_{Ed,y}}{v_{Ed,x}} < 2 \\ "
-            r"\rho_{l,y} & \text{if } \frac{v_{Ed,y}}{v_{Ed,x}} \geq 2 \end{cases}"
+            r"& \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
+            r"\rho_{l,y} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases}"
         )
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
