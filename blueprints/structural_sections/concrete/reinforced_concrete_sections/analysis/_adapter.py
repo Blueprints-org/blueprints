@@ -14,6 +14,7 @@ from collections import defaultdict
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from enum import Enum
+from types import ModuleType
 
 import numpy as np
 from concreteproperties import (
@@ -27,6 +28,7 @@ from concreteproperties import (
     SteelHardening,
     add_bar,
 )
+from concreteproperties import analysis_section as backend_analysis_section
 from concreteproperties.results import CrackedResults, MomentCurvatureResults, StressResult, UltimateBendingResults
 from concreteproperties.stress_strain_profile import ConcreteServiceProfile, ConcreteUltimateProfile
 from concreteproperties.utils import AnalysisError
@@ -82,6 +84,12 @@ _CURVATURE_BRACKET_START: float = 1e-3
 _CURVATURE_BRACKET_STEPS: int = 60
 _CURVATURE_XTOL: float = 1e-12
 _CURVATURE_RTOL: float = 1e-8
+
+# Fewest vertices the meshing backend accepts for a planar straight-line graph; below this it raises.
+_MIN_PSLG_VERTICES: int = 3
+
+# Marks the stand-in meshing module, so a nested guard recognises one that is already in place.
+_MESH_GUARD_FLAG = "__blueprints_mesh_guard__"
 
 
 class AnalysisLevel(Enum):
@@ -644,6 +652,101 @@ def _wrap_backend_geometry_errors() -> Iterator[None]:
         ) from exc
 
 
+def _deduplicate_pslg(tri: dict[str, list]) -> dict[str, list]:
+    """Remove duplicate vertices from a planar straight-line graph before it reaches the meshing backend.
+
+    The backend splits the concrete geometry at the neutral axis for every ultimate analysis point. At some
+    neutral-axis angles that split yields a polygon whose vertex list repeats a point, which hands the meshing
+    backend (``cytriangle``) a zero-length segment. Triangle removes such duplicates itself but still sizes its
+    output copy on the original vertex count, so it reads past the end of that buffer. That shows up as a hard
+    interpreter crash on some heap layouts and, on others, as a silently wrong capacity for the affected point.
+
+    Removing the duplicates up front is what Triangle does anyway, so the mesh is unchanged; it simply no longer
+    reads out of bounds. A graph that would shrink below the backend minimum is handed over untouched: those are
+    zero-area slivers, which the backend already handles by returning no triangles.
+
+    Parameters
+    ----------
+    tri : dict[str, list]
+        The planar straight-line graph: ``vertices`` as coordinate pairs, ``segments`` as vertex-index pairs.
+
+    Returns
+    -------
+    dict[str, list]
+        The graph with unique vertices and remapped segments, or the graph unchanged if nothing had to give.
+    """
+    vertices = tri["vertices"]
+    first_index: dict[tuple[float, float], int] = {}
+    remapped: list[int] = []
+    unique: list = []
+    for vertex in vertices:
+        key = (vertex[0], vertex[1])
+        index = first_index.get(key)
+        if index is None:
+            index = len(unique)
+            first_index[key] = index
+            unique.append(vertex)
+        remapped.append(index)
+
+    if len(unique) == len(vertices) or len(unique) < _MIN_PSLG_VERTICES:
+        return tri
+
+    guarded = dict(tri)
+    guarded["vertices"] = unique
+    guarded["segments"] = [(remapped[start], remapped[end]) for start, end in tri["segments"] if remapped[start] != remapped[end]]
+    return guarded
+
+
+def _guarded_meshing_module(module: ModuleType) -> ModuleType:
+    """Build a stand-in for the backend's meshing module that sanitises every graph on its way to Triangle.
+
+    The stand-in is a copy of the module namespace with only ``triangulate`` replaced, so everything else the
+    backend reads keeps working and the real ``cytriangle`` module is left untouched for anyone else.
+
+    Parameters
+    ----------
+    module : ModuleType
+        The meshing module to wrap (``cytriangle``).
+
+    Returns
+    -------
+    ModuleType
+        The stand-in module, flagged so a nested guard can recognise it.
+    """
+
+    def triangulate(tri: dict[str, list], opts: str) -> dict[str, list]:
+        """Triangulate the graph after removing duplicate vertices (see :func:`_deduplicate_pslg`)."""
+        return module.triangulate(_deduplicate_pslg(tri), opts)
+
+    guard = ModuleType(module.__name__)
+    guard.__dict__.update(module.__dict__)
+    guard.__dict__["triangulate"] = triangulate
+    guard.__dict__[_MESH_GUARD_FLAG] = True
+    return guard
+
+
+@contextmanager
+def _guard_degenerate_meshes() -> Iterator[None]:
+    """Protect every backend analysis against the meshing crash described in :func:`_deduplicate_pslg`.
+
+    The backend meshes from a module-level ``cytriangle`` import, so the guard swaps that name in the backend's
+    own namespace for the duration of the call and puts it back afterwards. Only the backend's view changes;
+    ``cytriangle`` itself is left alone for any other user in the same process. Nesting is a no-op, and the swap
+    is not thread-safe, which matches the rest of this adapter (the backend analyses are single-threaded).
+    """
+    original = backend_analysis_section.triangle
+    if getattr(original, _MESH_GUARD_FLAG, False):
+        yield
+        return
+
+    # deliberately swapping the backend's meshing module for a stand-in, which its declared type disallows
+    backend_analysis_section.triangle = _guarded_meshing_module(original)  # ty: ignore[invalid-assignment]
+    try:
+        yield
+    finally:
+        backend_analysis_section.triangle = original
+
+
 def analyse_uncracked(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA, geometry: Polygon) -> StressStrainResult:
     """Run the backend uncracked stress analysis and map the result to Blueprints conventions.
 
@@ -665,7 +768,7 @@ def analyse_uncracked(section: ConcreteSection, forces: SectionForces, elastic_m
         The uncracked stress/strain result, compression negative.
     """
     n, m_x, m_y = _to_backend_actions(forces)
-    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors():
+    with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors():
         raw = section.calculate_uncracked_stress(n=n, m_x=m_x, m_y=m_y)
     return _to_stress_strain_result(forces=forces, raw=raw, elastic_modulus=elastic_modulus, geometry=geometry, regime=Regime.SLS_UNCRACKED)
 
@@ -1023,7 +1126,7 @@ def _cracked_results(section: ConcreteSection, forces: SectionForces, elastic_mo
             "a single axis."
         )
     n, theta, m = _to_cracked_actions(forces)
-    with _wrap_backend_geometry_errors():
+    with _guard_degenerate_meshes(), _wrap_backend_geometry_errors():
         try:
             cracked = section.calculate_cracked_properties(theta=theta)
         except (ValueError, RuntimeError, AnalysisError) as exc:
@@ -1093,7 +1196,7 @@ def analyse_cracked(
     """
     cracked, n, theta, m = _cracked_results(section, forces, elastic_modulus)
     if forces.n == 0.0:
-        with _wrap_backend_geometry_errors():
+        with _guard_degenerate_meshes(), _wrap_backend_geometry_errors():
             raw = section.calculate_cracked_stress(cracked_results=cracked, n=n, m=m)
     else:
         i_cracked = cracked.iuu_cr
@@ -1162,7 +1265,7 @@ def _cracked_stress_with_axial(
         return math.hypot(moments[0], moments[1]) - m
 
     description = f"cracked stress analysis for forces {forces}"
-    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
+    with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         if m == 0.0:
             return stress_at(0.0)  # pure axial: no moment, so no curvature to solve for
         curvature = _solve_service_curvature(moment_error, m / (elastic_modulus * i_cracked))
@@ -1238,7 +1341,7 @@ def ultimate_capacity(section: ConcreteSection, n: KN, theta: DEG) -> UltimateCa
         squash or tensile capacity of the section), or on a backend geometry failure.
     """
     description = f"ultimate bending capacity analysis (n={n} kN, theta={theta} deg)"
-    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
+    with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         raw = section.ultimate_bending_capacity(theta=math.radians(theta), n=-n * KN_TO_N)
     n_out, m_y, m_z = _from_backend_actions(raw.n, raw.m_x, raw.m_y)
     return UltimateCapacityResult(
@@ -1279,7 +1382,7 @@ def moment_interaction(section: ConcreteSection, theta: DEG, n_points: int) -> M
         If a diagram point cannot reach equilibrium, or on a backend geometry failure.
     """
     description = f"moment interaction analysis (theta={theta} deg)"
-    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
+    with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         raw = section.moment_interaction_diagram(theta=math.radians(theta), n_points=n_points, progress_bar=False)
     return MomentInteractionResult(theta=theta, points=tuple(_to_interaction_point(result) for result in raw.results), raw=raw)
 
@@ -1318,7 +1421,7 @@ def biaxial_interaction(section: ConcreteSection, n: KN, n_points: int) -> Biaxi
         tensile capacity), or on a backend geometry failure.
     """
     description = f"biaxial interaction analysis (n={n} kN)"
-    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
+    with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         raw = section.biaxial_bending_diagram(n=-n * KN_TO_N, n_points=n_points, progress_bar=False)
     return BiaxialInteractionResult(n=n, points=tuple(_to_interaction_point(result) for result in raw.results), raw=raw)
 
@@ -1397,7 +1500,7 @@ def analyse_ultimate(section: ConcreteSection, forces: SectionForces, elastic_mo
     """
     n, theta, _ = _to_cracked_actions(forces)
     description = f"ultimate stress analysis for forces {forces}"
-    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
+    with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         ultimate = section.ultimate_bending_capacity(theta=theta, n=n)
         raw = section.calculate_ultimate_stress(ultimate_results=ultimate)
     strain_plane = _ultimate_strain_plane(
@@ -1447,7 +1550,7 @@ def moment_curvature(section: ConcreteSection, theta: DEG, n: KN) -> MomentCurva
         If a curvature step cannot reach axial equilibrium, or on a backend geometry failure.
     """
     description = f"moment-curvature analysis (n={n} kN, theta={theta} deg)"
-    with _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
+    with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         raw = section.moment_curvature_analysis(theta=math.radians(theta), n=-n * KN_TO_N, progress_bar=False)
     return MomentCurvatureResult(
         theta=theta,

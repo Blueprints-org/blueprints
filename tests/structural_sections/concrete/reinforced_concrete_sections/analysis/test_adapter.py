@@ -8,11 +8,15 @@ from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClas
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
 from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis._adapter import (
+    _MESH_GUARD_FLAG,
     AnalysisLevel,
     SteelBranch,
+    _deduplicate_pslg,
+    _guard_degenerate_meshes,
     _service_steel,
     _ultimate_profile,
     _ultimate_steel,
+    backend_analysis_section,
     build_concrete_section,
     effective_modulus,
 )
@@ -204,3 +208,93 @@ class TestSteelMapping:
         assert profile.ultimate_strength == pytest.approx(expected_stress)
         # the inclined design branch stays below the characteristic tensile strength k*f_yk
         assert profile.ultimate_strength < material.ductility_factor_k * material.f_yk
+
+
+class TestDeduplicatePslg:
+    """The meshing guard removes duplicate vertices before the graph reaches Triangle.
+
+    A repeated vertex makes the meshing backend read past the end of its output buffer, which crashes the
+    interpreter on some heap layouts and silently corrupts the meshed capacity on others.
+    """
+
+    def test_removes_duplicate_vertex_and_remaps_segments(self) -> None:
+        """A repeated vertex is dropped and the segments are renumbered onto the surviving vertices."""
+        tri = {
+            "vertices": [(0.0, 0.0), (100.0, 0.0), (100.0, 100.0), (100.0, 100.0)],
+            "segments": [(0, 1), (1, 2), (2, 3), (3, 0)],
+        }
+        guarded = _deduplicate_pslg(tri)
+        assert guarded["vertices"] == [(0.0, 0.0), (100.0, 0.0), (100.0, 100.0)]
+        # the (2, 3) segment collapsed onto a single vertex and is gone; the closing segment now ends at 2
+        assert guarded["segments"] == [(0, 1), (1, 2), (2, 0)]
+
+    def test_keeps_other_keys(self) -> None:
+        """Keys the backend sets besides vertices and segments (such as holes) are carried over untouched."""
+        holes = [(50.0, 50.0)]
+        tri = {
+            "vertices": [(0.0, 0.0), (100.0, 0.0), (100.0, 100.0), (100.0, 100.0)],
+            "segments": [(0, 1), (1, 2), (2, 3), (3, 0)],
+            "holes": holes,
+        }
+        assert _deduplicate_pslg(tri)["holes"] == holes
+
+    def test_graph_without_duplicates_is_returned_unchanged(self) -> None:
+        """A clean graph is handed on as-is, so the guard costs nothing for the vast majority of calls."""
+        tri = {"vertices": [(0.0, 0.0), (100.0, 0.0), (100.0, 100.0)], "segments": [(0, 1), (1, 2), (2, 0)]}
+        assert _deduplicate_pslg(tri) is tri
+
+    def test_degenerate_sliver_is_left_alone(self) -> None:
+        """A graph that would shrink below three vertices is passed through: the backend handles those itself.
+
+        Deduplicating a zero-area sliver would leave fewer vertices than the backend accepts, so it would turn
+        a harmless "no triangles" result into an error.
+        """
+        tri = {"vertices": [(0.0, 0.0), (0.0, 100.0), (0.0, 100.0)], "segments": [(0, 1), (1, 2), (2, 0)]}
+        assert _deduplicate_pslg(tri) is tri
+
+
+class TestGuardDegenerateMeshes:
+    """The guard is swapped into the backend's namespace for the duration of an analysis and taken out after."""
+
+    def test_installs_and_restores_the_meshing_module(self) -> None:
+        """Inside the context the backend meshes through the guard; afterwards its own module is back."""
+        original = backend_analysis_section.triangle
+        with _guard_degenerate_meshes():
+            assert getattr(backend_analysis_section.triangle, _MESH_GUARD_FLAG, False)
+            assert backend_analysis_section.triangle is not original
+        assert backend_analysis_section.triangle is original
+
+    def test_nesting_does_not_stack_guards(self) -> None:
+        """Nested backend calls reuse the guard already in place instead of wrapping it twice."""
+        with _guard_degenerate_meshes():
+            installed = backend_analysis_section.triangle
+            with _guard_degenerate_meshes():
+                assert backend_analysis_section.triangle is installed
+            assert backend_analysis_section.triangle is installed
+
+    def test_restores_the_module_when_the_analysis_raises(self) -> None:
+        """A failing analysis must not leave the guard behind in the backend's namespace."""
+        original = backend_analysis_section.triangle
+        with pytest.raises(ValueError, match="boom"), _guard_degenerate_meshes():
+            raise ValueError("boom")
+        assert backend_analysis_section.triangle is original
+
+    def test_serves_other_attributes_from_the_wrapped_module(self) -> None:
+        """Only triangulate is intercepted; anything else the backend reads comes from the real module."""
+        original = backend_analysis_section.triangle
+        with _guard_degenerate_meshes():
+            guard = backend_analysis_section.triangle
+            assert guard.__name__ == original.__name__
+            assert guard.triangulate is not original.triangulate
+            assert {name for name in vars(original) if not name.startswith("_")} <= set(vars(guard))
+
+    def test_triangulates_a_graph_with_a_duplicate_vertex(self) -> None:
+        """The guarded call meshes the deduplicated graph and returns a usable mesh."""
+        tri = {
+            "vertices": [(0.0, 0.0), (100.0, 0.0), (100.0, 100.0), (100.0, 100.0)],
+            "segments": [(0, 1), (1, 2), (2, 3), (3, 0)],
+        }
+        with _guard_degenerate_meshes():
+            mesh = backend_analysis_section.triangle.triangulate(tri, "p")
+        assert len(mesh["vertices"]) == 3
+        assert len(mesh["triangles"]) == 1

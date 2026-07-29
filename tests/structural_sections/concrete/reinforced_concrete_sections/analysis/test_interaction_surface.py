@@ -5,8 +5,6 @@ once per module and reused. Its rings are cross-checked against the exact capaci
 correctness anchor for the interpolation and slicing.
 """
 
-import sys
-
 import matplotlib as mpl
 import pytest
 
@@ -26,14 +24,6 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
     MomentInteractionResult,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
-
-# The surface build meshes one section per neutral-axis angle in quick succession. The concreteproperties
-# meshing backend (cytriangle) segfaults during triangulation on Python 3.14, taking down the test worker.
-# 3.12/3.13 are unaffected, and coverage is measured on 3.13, so skip only this heavy build on 3.14.
-pytestmark = pytest.mark.skipif(
-    sys.version_info >= (3, 14),
-    reason="cytriangle meshing backend segfaults on Python 3.14 while building the interaction surface (concreteproperties)",
-)
 
 
 def _analysis() -> CrossSectionAnalysis:
@@ -218,3 +208,27 @@ class TestComponentSections:
         finally:
             plt.close(my_figure)
             plt.close(mz_figure)
+
+
+class TestMeshingGuard:
+    """The meridians stay free of the meshing corruption the adapter guards against.
+
+    At some neutral-axis angles the backend splits the section into a polygon with a repeated vertex, which
+    made the meshing backend read out of bounds. Without the guard in the adapter that either crashed the
+    interpreter or, more insidiously, returned one badly wrong point while every other point stayed exact.
+    """
+
+    def test_meridian_at_315_deg_is_continuous_with_its_neighbours(self) -> None:
+        """The 315 degree meridian is bracketed by the 292.5 and 337.5 degree ones, as a smooth surface requires.
+
+        This is the meridian and the point (index 4 of a 10 point diagram) that the meshing bug corrupted:
+        N jumped from about -1550 kN to +200 kN and M_y from 272 to 48 kNm, while its neighbours were exact.
+        """
+        analysis = _analysis()
+        before, here, after = (analysis.interaction(theta=theta, n_points=10) for theta in (292.5, 315.0, 337.5))
+        index = 4
+
+        for component in ("n", "m_y", "m_z"):
+            low, high = sorted((getattr(before.points[index], component), getattr(after.points[index], component)))
+            value = getattr(here.points[index], component)
+            assert low <= value <= high, f"{component} at theta=315 deg is outside its neighbours: {low} .. {value} .. {high}"
