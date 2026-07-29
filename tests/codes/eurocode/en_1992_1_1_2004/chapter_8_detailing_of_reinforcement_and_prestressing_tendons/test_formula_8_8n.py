@@ -181,9 +181,14 @@ class TestForm8Dot8nAnchorageCapacityWeldedTransverseBar:
             (
                 "complete",
                 r"F_{btd} = \min\left( l_{td} \cdot Ø_t \cdot \sigma_{td}, F_{wd} \right)"
-                r" = \min\left( 80.00 \cdot 16.00 \cdot 36.00 / 1000, 150.00 \right) = 46.08",
+                r" = \min\left( 80.00 \cdot 16.00 \cdot 36.00 / 1000, 150.00 \right) = 46.08 \ kN",
             ),
-            ("short", r"F_{btd} = 46.08"),
+            (
+                "complete_with_units",
+                r"F_{btd} = \min\left( l_{td} \cdot Ø_t \cdot \sigma_{td}, F_{wd} \right)"
+                r" = \min\left( 80.00 \ mm \cdot 16.00 \ mm \cdot 36.00 \ MPa, 150.00 \ kN \right) = 46.08 \ kN",
+            ),
+            ("short", r"F_{btd} = 46.08 \ kN"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -211,6 +216,10 @@ class TestForm8Dot8nAnchorageCapacityWeldedTransverseBar:
             f_wd=f_wd,
         ).latex()
 
-        actual = {"complete": form_8_8n_latex.complete, "short": form_8_8n_latex.short}
+        actual = {
+            "complete": form_8_8n_latex.complete,
+            "complete_with_units": form_8_8n_latex.complete_with_units,
+            "short": form_8_8n_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."
