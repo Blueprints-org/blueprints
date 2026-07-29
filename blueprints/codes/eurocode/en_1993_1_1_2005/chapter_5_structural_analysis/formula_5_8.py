@@ -1,5 +1,9 @@
 """Formula 5.8 from EN 1993-1-1:2005: Chapter 5 - Structural Analysis."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 import numpy as np
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -44,6 +48,11 @@ class Form5Dot8CheckSlenderness(ComparisonFormula):
         self.f_y = f_y
         self.n_ed = n_ed
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Return the comparison operator for the formula."""
+        return operator.gt
+
     @staticmethod
     def _evaluate_lhs(lambda_bar: DIMENSIONLESS, *_args, **_kwargs) -> float:
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
@@ -56,32 +65,6 @@ class Form5Dot8CheckSlenderness(ComparisonFormula):
         raise_if_less_or_equal_to_zero(n_ed=n_ed)
         raise_if_negative(a=a, f_y=f_y)
         return 0.5 * np.sqrt(a * f_y / n_ed)
-
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.lhs / self.rhs
-
-    @staticmethod
-    def _evaluate(  # ty: ignore[invalid-method-override]
-        lambda_bar: DIMENSIONLESS,
-        a: MM2,
-        f_y: MPA,
-        n_ed: N,
-    ) -> bool:
-        """Evaluates the formula, for more information see the __init__ method."""
-        lhs = Form5Dot8CheckSlenderness._evaluate_lhs(lambda_bar=lambda_bar)
-        rhs = Form5Dot8CheckSlenderness._evaluate_rhs(a=a, f_y=f_y, n_ed=n_ed)
-        return lhs > rhs
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(
-            lambda_bar=self.lambda_bar,
-            a=self.a,
-            f_y=self.f_y,
-            n_ed=self.n_ed,
-        )
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.8."""
