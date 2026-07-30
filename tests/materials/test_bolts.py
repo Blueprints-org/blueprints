@@ -101,6 +101,30 @@ class TestBoltMaterial:
         assert material.thermal_coefficient == pytest.approx(expected=1.0e-5)
 
     @pytest.mark.parametrize(
+        ("field_name", "property_name"),
+        [
+            ("custom_e_modulus", "e_modulus"),
+            ("custom_poisson_ratio", "poisson_ratio"),
+            ("custom_thermal_coefficient", "thermal_coefficient"),
+            ("custom_yield_strength", "yield_strength"),
+            ("custom_ultimate_strength", "ultimate_strength"),
+        ],
+    )
+    def test_a_zero_override_is_honoured(self, field_name: str, property_name: str) -> None:
+        """A deliberate zero has to survive, so the overrides test against None and not truthiness.
+
+        The case that matters in practice is a zero thermal coefficient, which is how an analysis
+        suppresses thermal expansion. A truthiness check would silently hand back the default instead.
+        """
+        material = BoltMaterial(**{field_name: 0.0})
+
+        assert getattr(material, property_name) == pytest.approx(expected=0.0)
+
+    def test_an_empty_custom_name_falls_back_to_the_class(self) -> None:
+        """The name is the one override that keeps its truthiness check, since "" is not a name."""
+        assert BoltMaterial(bolt_class=BoltClass.CLASS_10_9, custom_name="").name == "10.9"
+
+    @pytest.mark.parametrize(
         ("bolt_class", "expected"),
         [
             (BoltClass.CLASS_4_6, False),

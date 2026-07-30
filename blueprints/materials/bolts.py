@@ -116,6 +116,10 @@ class BoltMaterial:
     strength takes the material outside the classes of that standard, so its rules no longer follow
     from the class; that is the caller's responsibility.
 
+    Every numeric override is applied whenever it is not None, so a deliberate zero is honoured
+    rather than silently replaced by the default. A zero thermal coefficient is the case that matters
+    in practice, since it is how an analysis suppresses thermal expansion.
+
     Parameters
     ----------
     bolt_class : BoltClass
@@ -155,6 +159,8 @@ class BoltMaterial:
         str
             Example: "8.8"
         """
+        # Truthiness on purpose here, unlike the numeric overrides: an empty string is not a name, so
+        # falling back to the class designation is more useful than returning it.
         if self.custom_name:
             return self.custom_name
         return self.bolt_class.value
@@ -168,7 +174,7 @@ class BoltMaterial:
         MPA
             Modulus of elasticity [$MPa$].
         """
-        if self.custom_e_modulus:
+        if self.custom_e_modulus is not None:
             return self.custom_e_modulus
         return BOLT_YOUNG_MODULUS
 
@@ -181,7 +187,7 @@ class BoltMaterial:
         DIMENSIONLESS
             Poisson's ratio of the material.
         """
-        if self.custom_poisson_ratio:
+        if self.custom_poisson_ratio is not None:
             return self.custom_poisson_ratio
         return BOLT_POISSON_RATIO
 
@@ -194,7 +200,7 @@ class BoltMaterial:
         PER_DEGREE
             Thermal coefficient of the material.
         """
-        if self.custom_thermal_coefficient:
+        if self.custom_thermal_coefficient is not None:
             return self.custom_thermal_coefficient
         return BOLT_THERMAL_COEFFICIENT
 
@@ -218,7 +224,7 @@ class BoltMaterial:
         MPA
             The custom value where one is given, otherwise the value of Table 3.1 [$MPa$].
         """
-        if self.custom_yield_strength:
+        if self.custom_yield_strength is not None:
             return self.custom_yield_strength
         return Table3Dot1NominalValuesBolts(bolt_class=self.bolt_class).f_yb
 
@@ -231,7 +237,7 @@ class BoltMaterial:
         MPA
             The custom value where one is given, otherwise the value of Table 3.1 [$MPa$].
         """
-        if self.custom_ultimate_strength:
+        if self.custom_ultimate_strength is not None:
             return self.custom_ultimate_strength
         return Table3Dot1NominalValuesBolts(bolt_class=self.bolt_class).f_ub
 
