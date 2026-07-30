@@ -16,32 +16,27 @@ from collections.abc import Callable
 from enum import StrEnum
 
 from blueprints.codes.eurocode.en_1993_1_8_2005 import EN_1993_1_8_2005
+from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import BoltClass
 from blueprints.codes.formula import ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
+# The shear factor of Table 3.4, for a shear plane through the threaded portion of the bolt. Where the
+# plane passes through the unthreaded shank the table gives 0.6 for every class, so the class does not
+# enter the calculation there. Every class of Table 3.1 is mapped, so an unmapped class raises a
+# KeyError rather than silently taking a value the table does not give it.
+ALPHA_V_THREADED: dict[BoltClass, DIMENSIONLESS] = {
+    BoltClass.CLASS_4_6: 0.6,
+    BoltClass.CLASS_4_8: 0.5,
+    BoltClass.CLASS_5_6: 0.6,
+    BoltClass.CLASS_5_8: 0.5,
+    BoltClass.CLASS_6_8: 0.5,
+    BoltClass.CLASS_8_8: 0.6,
+    BoltClass.CLASS_10_9: 0.5,
+}
 
-class BoltClass(StrEnum):
-    """Bolt classes of EN 1993-1-8:2005, with the shear factor Table 3.4 gives for each.
-
-    The factor applies where the shear plane passes through the threaded portion of the bolt. Where
-    it passes through the unthreaded shank the table gives 0,6 for every class, so the class does not
-    enter the calculation there.
-    """
-
-    CLASS_4_6 = "4.6"
-    CLASS_4_8 = "4.8"
-    CLASS_5_6 = "5.6"
-    CLASS_5_8 = "5.8"
-    CLASS_6_8 = "6.8"
-    CLASS_8_8 = "8.8"
-    CLASS_10_9 = "10.9"
-
-    @property
-    def alpha_v_threaded(self) -> DIMENSIONLESS:
-        r"""[$\alpha_v$] that Table 3.4 gives for this class where the shear plane crosses the threads [$-$]."""
-        return 0.5 if self in {BoltClass.CLASS_4_8, BoltClass.CLASS_5_8, BoltClass.CLASS_6_8, BoltClass.CLASS_10_9} else 0.6
+ALPHA_V_SHANK: DIMENSIONLESS = 0.6
 
 
 class ShearPlane(StrEnum):
@@ -51,7 +46,7 @@ class ShearPlane(StrEnum):
     the tensile stress area and the factor depends on the bolt class.
 
     SHANK: the shear plane passes through the unthreaded portion of the bolt, so the area to use is
-    the gross cross-section of the bolt and the factor is 0,6 for every class.
+    the gross cross-section of the bolt and the factor is 0.6 for every class.
     """
 
     THREADED = "Shear plane through the threaded portion"
@@ -66,15 +61,22 @@ class BoltHead(StrEnum):
 
     @property
     def k_2(self) -> DIMENSIONLESS:
-        r"""[$k_2$] that Table 3.4 gives for this head shape [$-$]."""
-        return 0.63 if self is BoltHead.COUNTERSUNK else 0.9
+        r"""[$k_2$] that Table 3.4 gives for this head shape [$-$].
+
+        Returns
+        -------
+        DIMENSIONLESS
+            0.63 for a countersunk head and 0.9 for a normal one. Every member is mapped, so a head
+            shape added later raises a KeyError instead of silently taking one of the two.
+        """
+        return {BoltHead.NORMAL: 0.9, BoltHead.COUNTERSUNK: 0.63}[self]
 
 
 class HoleType(StrEnum):
     """Hole shape, with the reduction on the bearing resistance from note 1 of Table 3.4.
 
-    The note reduces the bearing resistance to 0,8 times its value for a bolt in an oversized hole,
-    and to 0,6 times its value for a bolt in a slotted hole whose long axis is perpendicular to the
+    The note reduces the bearing resistance to 0.8 times its value for a bolt in an oversized hole,
+    and to 0.6 times its value for a bolt in a slotted hole whose long axis is perpendicular to the
     direction of load transfer. It prints no factor for a slotted hole whose long axis is parallel to
     that direction, so that case is not offered here.
     """
@@ -85,14 +87,16 @@ class HoleType(StrEnum):
 
     @property
     def reduction(self) -> DIMENSIONLESS:
-        """Factor by which note 1 of Table 3.4 multiplies the bearing resistance for this hole shape."""
-        match self:
-            case HoleType.OVERSIZED:
-                return 0.8
-            case HoleType.SLOTTED_PERPENDICULAR:
-                return 0.6
-            case _:
-                return 1.0
+        """Factor by which note 1 of Table 3.4 multiplies the bearing resistance for this hole shape.
+
+        Returns
+        -------
+        DIMENSIONLESS
+            1.0 for a normal round hole, 0.8 for an oversized one and 0.6 for a slotted one. Every
+            member is mapped, so a hole shape added later raises a KeyError instead of silently
+            passing as unreduced.
+        """
+        return {HoleType.NORMAL: 1.0, HoleType.OVERSIZED: 0.8, HoleType.SLOTTED_PERPENDICULAR: 0.6}[self]
 
 
 class BoltPositionParallel(StrEnum):
@@ -167,7 +171,7 @@ class Table3Dot4ShearResistanceBolt(Formula):
     @staticmethod
     def _alpha_v(bolt_class: BoltClass, shear_plane: ShearPlane) -> DIMENSIONLESS:
         r"""Returns [$\alpha_v$], which depends on the class only where the shear plane crosses the threads."""
-        return bolt_class.alpha_v_threaded if shear_plane is ShearPlane.THREADED else 0.6
+        return ALPHA_V_THREADED[bolt_class] if shear_plane is ShearPlane.THREADED else ALPHA_V_SHANK
 
     @classmethod
     def _evaluate(
@@ -362,14 +366,16 @@ class Table3Dot4AlphaB(Formula):
     source_document = EN_1993_1_8_2005
 
     def __init__(self, alpha_d: DIMENSIONLESS, f_ub: MPA, f_u: MPA) -> None:
-        r"""[$\alpha_b$] Smallest of [$\alpha_d$], [$f_{ub}/f_u$] and 1,0 [$-$].
+        r"""[$\alpha_b$] Smallest of [$\alpha_d$], [$f_{ub}/f_u$] and 1.0 [$-$].
 
         EN 1993-1-8:2005 art.3.6.1 - Table 3.4
 
         Parameters
         ----------
         alpha_d : DIMENSIONLESS
-            [$\alpha_d$] Factor in the direction of load transfer, see Table3Dot4AlphaD [$-$].
+            [$\alpha_d$] Factor in the direction of load transfer, see Table3Dot4AlphaD. It is not
+            required to be positive, since Table3Dot4AlphaD returns the printed expression unclamped
+            and that expression turns negative for a small spacing [$-$].
         f_ub : MPA
             [$f_{ub}$] Ultimate tensile strength of the bolt [$MPa$].
         f_u : MPA
@@ -383,7 +389,7 @@ class Table3Dot4AlphaB(Formula):
     @staticmethod
     def _evaluate(alpha_d: DIMENSIONLESS, f_ub: MPA, f_u: MPA) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(alpha_d=alpha_d, f_ub=f_ub)
+        raise_if_negative(f_ub=f_ub)
         raise_if_less_or_equal_to_zero(f_u=f_u)
 
         return min(alpha_d, f_ub / f_u, 1.0)
@@ -556,9 +562,11 @@ class Table3Dot4BearingResistance(Formula):
         Parameters
         ----------
         k_1 : DIMENSIONLESS
-            [$k_1$] Factor perpendicular to the direction of load transfer, see Table3Dot4K1 [$-$].
+            [$k_1$] Factor perpendicular to the direction of load transfer, see Table3Dot4K1. It is
+            not required to be positive, for the reason given above [$-$].
         alpha_b : DIMENSIONLESS
-            [$\alpha_b$] Factor in the direction of load transfer, see Table3Dot4AlphaB [$-$].
+            [$\alpha_b$] Factor in the direction of load transfer, see Table3Dot4AlphaB. It is not
+            required to be positive, for the reason given above [$-$].
         f_u : MPA
             [$f_u$] Ultimate tensile strength of the connected plate [$MPa$].
         d : MM
@@ -570,7 +578,7 @@ class Table3Dot4BearingResistance(Formula):
             [$\gamma_{M2}$] Partial factor for the resistance of the fastener [$-$].
         hole_type : HoleType
             Shape of the hole, which sets the reduction of note 1 of the table. Defaults to a normal
-            round hole, for which the reduction is 1,0.
+            round hole, for which the reduction is 1.0.
         """
         super().__init__()
         self.k_1 = k_1
@@ -592,7 +600,7 @@ class Table3Dot4BearingResistance(Formula):
         hole_type: HoleType = HoleType.NORMAL,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(k_1=k_1, alpha_b=alpha_b, f_u=f_u, d=d, t=t)
+        raise_if_negative(f_u=f_u, d=d, t=t)
         raise_if_less_or_equal_to_zero(gamma_m2=gamma_m2)
 
         return hole_type.reduction * k_1 * alpha_b * f_u * d * t / gamma_m2
@@ -652,7 +660,7 @@ class Table3Dot4TensionResistanceBolt(Formula):
         gamma_m2 : DIMENSIONLESS
             [$\gamma_{M2}$] Partial factor for the resistance of the fastener [$-$].
         bolt_head : BoltHead
-            Head shape of the bolt, which sets [$k_2$] to 0,63 for a countersunk head and to 0,9
+            Head shape of the bolt, which sets [$k_2$] to 0.63 for a countersunk head and to 0.9
             otherwise. Defaults to a normal head.
         """
         super().__init__()

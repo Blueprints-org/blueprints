@@ -2,8 +2,9 @@
 
 import pytest
 
+from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import BoltClass
 from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_4 import (
-    BoltClass,
+    ALPHA_V_THREADED,
     BoltHead,
     BoltPositionParallel,
     BoltPositionPerpendicular,
@@ -23,7 +24,7 @@ from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
-class TestBoltClass:
+class TestAlphaVThreaded:
     """Validation of the shear factor that Table 3.4 attaches to each bolt class."""
 
     @pytest.mark.parametrize(
@@ -39,8 +40,12 @@ class TestBoltClass:
         ],
     )
     def test_alpha_v_threaded(self, bolt_class: BoltClass, expected: float) -> None:
-        """The table gives 0,6 for classes 4.6, 5.6 and 8.8, and 0,5 for 4.8, 5.8, 6.8 and 10.9."""
-        assert bolt_class.alpha_v_threaded == pytest.approx(expected=expected)
+        """The table gives 0.6 for classes 4.6, 5.6 and 8.8, and 0.5 for 4.8, 5.8, 6.8 and 10.9."""
+        assert ALPHA_V_THREADED[bolt_class] == pytest.approx(expected=expected)
+
+    def test_every_bolt_class_of_table_3_1_is_mapped(self) -> None:
+        """A class without a factor would raise a KeyError, so the mapping has to be complete."""
+        assert set(ALPHA_V_THREADED) == set(BoltClass)
 
 
 class TestBoltHead:
@@ -280,11 +285,21 @@ class TestTable3Dot4AlphaB:
 
         assert formula == pytest.approx(expected=expected, rel=1e-6)
 
-    @pytest.mark.parametrize(("alpha_d", "f_ub"), [(-0.6, 800.0), (0.6, -800.0)])
-    def test_raise_error_when_negative_values_are_given(self, alpha_d: float, f_ub: float) -> None:
+    def test_a_negative_alpha_d_is_accepted_and_governs(self) -> None:
+        """Table3Dot4AlphaD returns the printed expression unclamped, so it can hand over a negative.
+
+        Rejecting it here would break the chain the two classes are meant to form, and would be an
+        addition beyond the printed text just as clamping would be.
+        """
+        alpha_d = Table3Dot4AlphaD(position=BoltPositionParallel.INNER, spacing=15.0, d_0=22.0)
+        formula = Table3Dot4AlphaB(alpha_d=float(alpha_d), f_ub=800.0, f_u=360.0)
+
+        assert formula == pytest.approx(expected=-0.022727272, rel=1e-6)
+
+    def test_raise_error_when_negative_values_are_given(self) -> None:
         """Test if error is raised for parameters that are not allowed to be negative."""
         with pytest.raises(NegativeValueError):
-            Table3Dot4AlphaB(alpha_d=alpha_d, f_ub=f_ub, f_u=360.0)
+            Table3Dot4AlphaB(alpha_d=0.6, f_ub=-800.0, f_u=360.0)
 
     def test_raise_error_when_the_plate_strength_is_zero(self) -> None:
         """The plate strength divides the strength ratio, so it cannot be zero."""
@@ -448,20 +463,27 @@ class TestTable3Dot4BearingResistance:
 
         assert default == pytest.approx(expected=float(explicit), rel=1e-12)
 
+    def test_a_negative_k_1_is_accepted_and_carries_through(self) -> None:
+        """Table3Dot4K1 returns the printed minimum unclamped, so it can hand over a negative.
+
+        Rejecting it here would break the chain the two classes are meant to form. A negative bearing
+        resistance signals a detailing violation rather than a real resistance, which is the caller's
+        to judge, not this class's to hide.
+        """
+        k_1 = Table3Dot4K1(position=BoltPositionPerpendicular.EDGE, d_0=22.0, e_2=10.0, p_2=70.0)
+        formula = Table3Dot4BearingResistance(k_1=float(k_1), alpha_b=0.606061, f_u=360.0, d=20.0, t=10.0, gamma_m2=1.25)
+
+        # -0.427272727 * 0.606061 * 360 * 20 * 10 / 1.25
+        assert formula == pytest.approx(expected=-14915.712, rel=1e-6)
+
     @pytest.mark.parametrize(
-        ("k_1", "alpha_b", "f_u", "d", "t"),
-        [
-            (-2.5, 0.606061, 360.0, 20.0, 10.0),
-            (2.5, -0.606061, 360.0, 20.0, 10.0),
-            (2.5, 0.606061, -360.0, 20.0, 10.0),
-            (2.5, 0.606061, 360.0, -20.0, 10.0),
-            (2.5, 0.606061, 360.0, 20.0, -10.0),
-        ],
+        ("f_u", "d", "t"),
+        [(-360.0, 20.0, 10.0), (360.0, -20.0, 10.0), (360.0, 20.0, -10.0)],
     )
-    def test_raise_error_when_negative_values_are_given(self, k_1: float, alpha_b: float, f_u: float, d: float, t: float) -> None:
+    def test_raise_error_when_negative_values_are_given(self, f_u: float, d: float, t: float) -> None:
         """Test if error is raised for parameters that are not allowed to be negative."""
         with pytest.raises(NegativeValueError):
-            Table3Dot4BearingResistance(k_1=k_1, alpha_b=alpha_b, f_u=f_u, d=d, t=t, gamma_m2=1.25)
+            Table3Dot4BearingResistance(k_1=2.5, alpha_b=0.606061, f_u=f_u, d=d, t=t, gamma_m2=1.25)
 
     def test_raise_error_when_gamma_m2_is_zero(self) -> None:
         """The partial factor divides the result, so it cannot be zero."""
