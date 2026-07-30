@@ -135,7 +135,7 @@ class TestInterpretMomentDistributionForKcNormalize:
     """Tests for the _normalize method of Table6Dot6CorrectionFactorKc."""
 
     def test_normalizing_data_mid_positive_right_negative(self) -> None:
-        """Test that mirroring of data works correctly."""
+        """Test that rescaling produces x in [0, 1] and y in [-1, 1] (max positive in middle)."""
         y_data = [0, 100, -100]
         x_data = [0, 1, 2]
 
@@ -147,7 +147,7 @@ class TestInterpretMomentDistributionForKcNormalize:
         assert all(rescaled_y == [0.0, 1.0, -1.0])
 
     def test_normalizing_data_mid_negative_left_positive(self) -> None:
-        """Test that mirroring of data works correctly."""
+        """Test that rescaling produces x in [0, 1] and y in [-1, 1] (max positive on left)."""
         # Original data (linearly decreasing)
         y_data = [100, -100, 0]
         x_data = [0, 1, 4]
@@ -160,7 +160,7 @@ class TestInterpretMomentDistributionForKcNormalize:
         assert all(rescaled_y == [1.0, -1.0, 0.0])
 
     def test_normalizing_data_mid_negative_left_negative(self) -> None:
-        """Test that mirroring of data works correctly."""
+        """Test that rescaling produces x in [0, 1] and y in [-1, 1] (max positive in middle)."""
         # Original data (linearly decreasing)
         y_data = [-100, 100, 0]
         x_data = [-1, 0, 1]
@@ -172,8 +172,8 @@ class TestInterpretMomentDistributionForKcNormalize:
         assert all(rescaled_x == [0.0, 0.5, 1.0])
         assert all(rescaled_y == [-1.0, 1.0, 0.0])
 
-    def test_normalizing_data_mid_negative_right_postive(self) -> None:
-        """Test that mirroring of data works correctly."""
+    def test_normalizing_data_mid_negative_right_positive(self) -> None:
+        """Test that rescaling produces x in [0, 1] and y in [-1, 1] (max positive on right)."""
         y_data = [0, -100, 100]
         x_data = [1, 3, 5]
 

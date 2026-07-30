@@ -285,7 +285,8 @@ class Table6Dot6CorrectionFactorKc(Formula):
         # Rescale x_data to range [0, 1]
         x_min = np.min(x_data)
         x_max = np.max(x_data)
-        x_data = (x_data - x_min) / (x_max - x_min)
+        x_range = x_max - x_min
+        x_data = (x_data - x_min) / x_range if x_range != 0 else np.zeros_like(x_data, dtype=np.float64)
 
         # Rescale y_data to range [-1, 1]
         y_abs_max = np.max(np.abs(y_data))
@@ -358,12 +359,12 @@ class Table6Dot6CorrectionFactorKc(Formula):
         -------
         float
             The correction factor k_c corresponding to the best-fit moment distribution pattern.
-            Returns 1.0 if no valid fit is found.
+            Returns 0.0 if no valid fit is found. Returns 1.0 for a single data point.
 
         Examples
         --------
         >>> y_data = [-60.22, -48.78, -38.54, -29.51, -21.68, -15.06, -9.64, 5.42, -2.41, -0.6, 0]
-        >>> k_c = Table6Dot6CorrectionFactorKc.interpret_moment_distribution_for_kc(y_data)
+        >>> k_c = Table6Dot6CorrectionFactorKc.interpretation_of_moment_distribution_for_kc(y_data)
         >>> print(f"Calculated k_c: {k_c:.3f}")
         """
         x_data = np.array(x_data, dtype=np.float64) if x_data is not None else np.arange(len(y_data), dtype=np.float64)
