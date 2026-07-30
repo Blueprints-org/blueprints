@@ -105,12 +105,13 @@ class Form6Dot25DesignShearResistance(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 6.25."""
+        cohesion = self.c * self.f_ctd if self.sigma_n >= 0 else 0.0
         return LatexFormula(
             return_symbol=r"v_{Rdi}",
             result=f"{self:.{n}f}",
             equation=r"\min \left( c \cdot f_{ctd} + \mu \cdot \sigma_{n} + \frac{A_{s}}{A_{i}} \cdot f_{yd} \cdot "
             r"(\mu \cdot \sin(\alpha) + \cos(\alpha)); 0.5 \cdot \nu \cdot f_{cd} \right)",
-            numeric_equation=rf"\min \left( {self.c:.{n}f} \cdot {self.f_ctd:.{n}f} + {self.mu:.{n}f} \cdot {self.sigma_n:.{n}f} "
+            numeric_equation=rf"\min \left( {cohesion:.{n}f} + {self.mu:.{n}f} \cdot {self.sigma_n:.{n}f} "
             rf"+ \frac{{{self.a_s:.{n}f}}}{{{self.a_i:.{n}f}}} \cdot {self.f_yd:.{n}f} \cdot ({self.mu:.{n}f} \cdot \sin({self.alpha:.{n}f}) "
             rf"+ \cos({self.alpha:.{n}f})); 0.5 \cdot {self.nu:.{n}f} \cdot {self.f_cd:.{n}f} \right)",
             comparison_operator_label="=",
