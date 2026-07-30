@@ -23,7 +23,9 @@ class TestForm5Dot8CheckSlenderness:
 
         # Expected result, manually calculated
         expected_result = True
-        expected_unity_check = lambda_bar / (0.5 * np.sqrt(a * f_y / n_ed))
+        expected_unity_check = (
+            0.5 * np.sqrt(a * f_y / n_ed)
+        ) / lambda_bar  # lambda_bar > 0.5 * sqrt(A * f_y / N_ed) => unity check = (0.5 * sqrt(A * f_y / N_ed)) / lambda_bar
 
         assert formula == expected_result
         assert formula.unity_check == expected_unity_check
