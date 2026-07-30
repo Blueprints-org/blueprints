@@ -99,9 +99,9 @@ Total of 602 formulas present.
 |      8.35      | :heavy_check_mark: |         | Form8Dot35MaximumShearStressResistance                             |
 |      8.36      | :heavy_check_mark: |         | Form8Dot36EffectiveDepthPrestressedMembers                         |
 |      8.37      | :heavy_check_mark: |         | Form8Dot37ReinforcementRatioPrestressedMembers                     |
-|      8.38      |        :x:         |         |                                                                    |
-|      8.39      |        :x:         |         |                                                                    |
-|      8.40      |        :x:         |         |                                                                    |
+|      8.38      | :heavy_check_mark: |         | Form8Dot38To40ReinforcementRatioPlanarMembers                      |
+|      8.39      | :heavy_check_mark: |         | Form8Dot38To40ReinforcementRatioPlanarMembers                      |
+|      8.40      | :heavy_check_mark: |         | Form8Dot38To40ReinforcementRatioPlanarMembers                      |
 |      8.41      | :heavy_check_mark: |         | Form8Dot41InclinationCompressionField                              |
 |      8.42      | :heavy_check_mark: |         | Form8Dot42ShearStressResistanceReinforcement                       |
 |      8.43      | :heavy_check_mark: |         | Form8Dot43ShearReinforcementRatio                                  |
@@ -114,9 +114,9 @@ Total of 602 formulas present.
 |      8.50      | :heavy_check_mark: |         | Form8Dot50AdditionalTensileForceDueToShear                         |
 |      8.51      | :heavy_check_mark: |         | Form8Dot51TensileChordForceDueToShear                              |
 |      8.52      | :heavy_check_mark: |         | Form8Dot52CompressiveChordForceDueToShear                          |
-|      8.53      | :heavy_check_mark: |         | Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads |
-|      8.54      |        :x:         |         |                                                                    |
-|      8.55      |        :x:         |         |                                                                    |
+|      8.53      | :heavy_check_mark: |         | Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads|
+|      8.54      | :heavy_check_mark: |         | Form8Dot54NominalWebWidth                                          |
+|      8.55      | :heavy_check_mark: |         | Form8Dot55EnhancedShearStressResistance                            |
 |      8.56      |        :x:         |         |                                                                    |
 |      8.57      |        :x:         |         |                                                                    |
 |      8.58      |        :x:         |         |                                                                    |

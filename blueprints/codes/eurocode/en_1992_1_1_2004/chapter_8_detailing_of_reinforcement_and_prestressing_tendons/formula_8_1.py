@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import KN, MM, MPA
 from blueprints.unit_conversion import KN_TO_N
 from blueprints.validations import raise_if_negative
@@ -65,13 +65,33 @@ class Form8Dot1RequiredMinimumMandrelDiameter(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.1."""
+        _equation: str = r"\frac{F_{bt} \cdot \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"F_{bt}": f"{self.f_bt:.{n}f} \\cdot 1000",
+                r"a_b": f"{self.a_b:.{n}f}",
+                r"Ø": f"{self.diameter:.{n}f}",
+                r"f_{cd}": f"{self.f_cd:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"F_{bt}": rf"{self.f_bt:.{n}f} \ kN \cdot 1000",
+                r"a_b": rf"{self.a_b:.{n}f} \ mm",
+                r"Ø": rf"{self.diameter:.{n}f} \ mm",
+                r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"Ø_{m,min}",
             result=f"{self:.{n}f}",
-            equation=r"\frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}}",
-            numeric_equation=(
-                rf"\frac{{{self.f_bt:.{n}f} \cdot 1000 \cdot \left( \frac{{1}}{{{self.a_b:.{n}f}}}"
-                rf" + \frac{{1}}{{2 \cdot {self.diameter:.{n}f}}} \right)}}{{{self.f_cd:.{n}f}}}"
-            ),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )
