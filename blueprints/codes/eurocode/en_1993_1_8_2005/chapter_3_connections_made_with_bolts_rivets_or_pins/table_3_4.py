@@ -19,6 +19,10 @@ from blueprints.codes.eurocode.en_1993_1_8_2005 import EN_1993_1_8_2005
 from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import BoltClass
 from blueprints.codes.formula import ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
+from blueprints.structural_sections.bolts.bolt_geometry import (
+    BoltPositionParallel,
+    BoltPositionPerpendicular,
+)
 from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -97,20 +101,6 @@ class HoleType(StrEnum):
             passing as unreduced.
         """
         return {HoleType.NORMAL: 1.0, HoleType.OVERSIZED: 0.8, HoleType.SLOTTED_PERPENDICULAR: 0.6}[self]
-
-
-class BoltPositionParallel(StrEnum):
-    """Position of the bolt in the direction of load transfer, which selects the expression for alpha_d."""
-
-    END = "End bolt"
-    INNER = "Inner bolt"
-
-
-class BoltPositionPerpendicular(StrEnum):
-    """Position of the bolt perpendicular to the direction of load transfer, which selects the expression for k_1."""
-
-    EDGE = "Edge bolt"
-    INNER = "Inner bolt"
 
 
 class Table3Dot4ShearResistanceBolt(Formula):
