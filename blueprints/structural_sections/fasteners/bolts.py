@@ -126,7 +126,6 @@ class BoltSize(StrEnum):
         -------
         MM
             The diameter of the hole for a normal sized hole.
-            normal hole.
         """
         return _BOLT_PARAMETERS[self].hole_diameter_normal
 
