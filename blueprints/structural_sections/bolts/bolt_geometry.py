@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 
 from blueprints.materials.bolts import BoltMaterial
+from blueprints.materials.steel import SteelStrengthClass
 from blueprints.type_alias import KN, MM, MM2
 
 __all__ = [
@@ -263,6 +264,8 @@ class PlateAttachment:
         caller. Used to later find the attachment for a specific plate.
     plate_thickness: MM | None
         Thickness of the plate the bolt passes through in mm. Optional when unknown.
+    plate_material: SteelStrengthClass
+        Material of the plate the bolt passes through. Default is S235.
     p1: MM | None
         Spacing to the next bolt in the loading direction (mm).
     e1: MM | None
@@ -279,6 +282,10 @@ class PlateAttachment:
         This is used for slotted holes where the long axis is perpendicular to the load transfer direction.
     hole_type: HoleType
         Shape/type of the hole (normal, oversized, slotted perpendicular). Default is normal.
+    bolt_position_parallel: BoltPositionParallel
+        Position of the bolt in the direction of load transfer (end or inner). Default is end.
+    bolt_position_perpendicular: BoltPositionPerpendicular
+        Position of the bolt perpendicular to the direction of load transfer (edge or inner). Default is edge.
     d0: MM | None
         Hole diameter in mm. Automatically set by BoltElement based on hole_type if not provided.
     gap_filling: BoltGapFilling | None
@@ -287,6 +294,7 @@ class PlateAttachment:
 
     plate_id: str
     plate_thickness: MM | None = None
+    plate_material: SteelStrengthClass = SteelStrengthClass.S235
     p1: MM | None = None
     p2: MM | None = None
     e1: MM | None = None
@@ -294,6 +302,8 @@ class PlateAttachment:
     e3: MM | None = None
     e4: MM | None = None
     hole_type: HoleType = HoleType.NORMAL
+    bolt_position_parallel: BoltPositionParallel = BoltPositionParallel.END
+    bolt_position_perpendicular: BoltPositionPerpendicular = BoltPositionPerpendicular.EDGE
     d0: MM | None = None
     gap_filling: BoltGapFilling | None = None
 
@@ -324,13 +334,14 @@ class BoltElement:
     >>> from blueprints.materials.bolts import BoltMaterial, BoltClass
     ... from blueprints.structural_sections.bolts.bolt_geometry import BoltElement, BoltSize, PlateAttachment, HoleType
     ...
+    ... s235 = SteelStrengthClass.S235
     ... bolt = BoltElement(
     ...     material=BoltMaterial(bolt_class=BoltClass.CLASS_8_8),
     ...     size=BoltSize.M20,
     ...     attachments=(
-    ...         PlateAttachment(plate_id="P1", plate_thickness=20.0, p1=50.0, e1=25.0, p2=30.0, e2=15.0, hole_type=HoleType.NORMAL),
-    ...         PlateAttachment(plate_id="P2", plate_thickness=15.0, p1=40.0, e1=20.0, p2=25.0, e2=12.5, hole_type=HoleType.OVERSIZED),
-    ...         PlateAttachment(plate_id="P3", plate_thickness=10.0, e3=25.0, e4=30.0, hole_type=HoleType.SLOTTED_PERPENDICULAR),
+    ...         PlateAttachment(plate_id="P1", plate_thickness=20.0, plate_material=s235, hole_type=HoleType.NORMAL),
+    ...         PlateAttachment(plate_id="P2", plate_thickness=15.0, plate_material=s235, hole_type=HoleType.OVERSIZED),
+    ...         PlateAttachment(plate_id="P3", plate_thickness=10.0, plate_material=s235, hole_type=HoleType.SLOTTED_PERPENDICULAR),
     ...     ),
     ...     label="Bolt A1",
     ...     preload_force=50.0,  # kN
@@ -364,6 +375,7 @@ class BoltElement:
                 new_att = PlateAttachment(
                     plate_id=att.plate_id,
                     plate_thickness=att.plate_thickness,
+                    plate_material=att.plate_material,
                     p1=att.p1,
                     p2=att.p2,
                     e1=att.e1,
