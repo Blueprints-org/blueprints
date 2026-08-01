@@ -4,7 +4,7 @@ import numpy as np
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, KN, MM, MPA
 from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
@@ -75,13 +75,35 @@ class Form8Dot8nAnchorageCapacityWeldedTransverseBar(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.8N."""
+        _equation: str = r"\min\left( l_{td} \cdot Ø_t \cdot \sigma_{td}, F_{wd} \right)"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{td}": f"{self.l_td:.{n}f}",
+                r"Ø_t": f"{self.diameter_t:.{n}f}",
+                r"\sigma_{td}": f"{self.sigma_td:.{n}f} / 1000",
+                r"F_{wd}": f"{self.f_wd:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{td}": rf"{self.l_td:.{n}f} \ mm",
+                r"Ø_t": rf"{self.diameter_t:.{n}f} \ mm",
+                r"\sigma_{td}": rf"{self.sigma_td:.{n}f} \ MPa",
+                r"F_{wd}": rf"{self.f_wd:.{n}f} \ kN",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"F_{btd}",
             result=f"{self:.{n}f}",
-            equation=r"\min\left( l_{td} \cdot Ø_t \cdot \sigma_{td}, F_{wd} \right)",
-            numeric_equation=rf"\min\left( {self.l_td:.{n}f} \cdot {self.diameter_t:.{n}f} "
-            rf"\cdot {self.sigma_td:.{n}f} / 1000, {self.f_wd:.{n}f} \right)",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="kN",
         )
 
 
@@ -141,15 +163,35 @@ class SubForm8Dot8nDesignLengthOfTransverseBar(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.8N transverse bar."""
+        _equation: str = r"\min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right)"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_t": f"{self.l_t:.{n}f}",
+                r"Ø_t": f"{self.diameter_t:.{n}f}",
+                r"f_{yd}": f"{self.f_yd:.{n}f}",
+                r"\sigma_{td}": f"{self.sigma_td:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_t": rf"{self.l_t:.{n}f} \ mm",
+                r"Ø_t": rf"{self.diameter_t:.{n}f} \ mm",
+                r"f_{yd}": rf"{self.f_yd:.{n}f} \ MPa",
+                r"\sigma_{td}": rf"{self.sigma_td:.{n}f} \ MPa",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{td}",
             result=f"{self:.{n}f}",
-            equation=r"\min\left(l_t, 1.16 \cdot Ø_t \cdot ({\frac{f_{yd}}{\sigma_{td}}})^{0.5} \right)",
-            numeric_equation=(
-                rf"\min\left({self.l_t:.{n}f}, 1.16 \cdot {self.diameter_t:.{n}f} \cdot "
-                rf"({{\frac{{{self.f_yd:.{n}f}}}{{{self.sigma_td:.{n}f}}}}})^{{0.5}} \right)"
-            ),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )
 
 
@@ -209,14 +251,35 @@ class SubForm8Dot8nConcreteStress(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.8N concrete stress."""
+        _equation: str = r"\min\left( 3 \cdot f_{cd}, \frac{f_{ctd} + \sigma_{cm}}{y} \right)"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"f_{cd}": f"{self.f_cd:.{n}f}",
+                r"f_{ctd}": f"{self.f_ctd:.{n}f}",
+                r"\sigma_{cm}": f"{self.sigma_cm:.{n}f}",
+                r"y": f"{self.y_function:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
+                r"f_{ctd}": rf"{self.f_ctd:.{n}f} \ MPa",
+                r"\sigma_{cm}": rf"{self.sigma_cm:.{n}f} \ MPa",
+                r"y": f"{self.y_function:.{n}f}",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"\sigma_{td}",
             result=f"{self:.{n}f}",
-            equation=r"\min\left( 3 \cdot f_{cd}, \frac{f_{ctd} + \sigma_{cm}}{y} \right)",
-            numeric_equation=(
-                rf"\min\left(3 \cdot {self.f_cd:.{n}f}, \frac{{{self.f_ctd:.{n}f} " rf"+ {self.sigma_cm:.{n}f}}}{{{self.y_function:.{n}f}}} \right)"
-            ),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="MPa",
         )
 
 
@@ -256,11 +319,21 @@ class SubForm8Dot8nFunctionY(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.8N y-function."""
+        _equation: str = r"0.015 + 0.14 \cdot e^{-0.18 \cdot x}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"x": f"{self.x_function:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = _numeric_equation
         return LatexFormula(
             return_symbol=r"y",
             result=f"{self:.{n}f}",
-            equation=r"0.015 + 0.14 \cdot e^{-0.18 \cdot x}",
-            numeric_equation=rf"0.015 + 0.14 \cdot e^{{-0.18 \cdot {self.x_function:.{n}f}}}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
         )
 
@@ -303,10 +376,14 @@ class SubForm8Dot8nFunctionX(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.8N x-function."""
+        _equation: str = r"2 \cdot \frac{c}{Ø_t} + 1"
+        _numeric_equation: str = rf"2 \cdot \frac{{{self.cover:.{n}f}}}{{{self.diameter_t:.{n}f}}} + 1"
+        _numeric_equation_with_units: str = rf"2 \cdot \frac{{{self.cover:.{n}f} \ mm}}{{{self.diameter_t:.{n}f} \ mm}} + 1"
         return LatexFormula(
             return_symbol=r"x",
             result=f"{self:.{n}f}",
-            equation=r"2 \cdot \frac{c}{Ø_t}",
-            numeric_equation=rf"2 \cdot \frac{{{self.cover:.{n}f}}}{{{self.diameter_t:.{n}f}}}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
         )
