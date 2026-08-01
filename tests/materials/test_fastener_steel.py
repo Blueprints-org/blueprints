@@ -4,7 +4,7 @@ import math
 
 import pytest
 
-from blueprints.materials.bolts import BOLT_YOUNG_MODULUS, BoltClass, BoltMaterial, BoltSize
+from blueprints.materials.fastener_steel import BOLT_YOUNG_MODULUS, BoltSize, FastenerClass, FastenerMaterial
 
 
 class TestBoltSize:
@@ -44,14 +44,14 @@ class TestBoltSize:
         assert size.tensile_stress_area < size.gross_area
 
 
-class TestBoltMaterial:
+class TestFastenerMaterial:
     """Validation of the bolt material."""
 
     def test_defaults(self) -> None:
         """The default is a class 8.8 bolt with the properties of structural steel."""
-        material = BoltMaterial()
+        material = FastenerMaterial()
 
-        assert material.bolt_class is BoltClass.CLASS_8_8
+        assert material.bolt_class is FastenerClass.CLASS_8_8
         assert material.name == "8.8"
         assert material.density == pytest.approx(expected=7850.0)
         assert material.e_modulus == pytest.approx(expected=BOLT_YOUNG_MODULUS)
@@ -60,35 +60,35 @@ class TestBoltMaterial:
 
     def test_shear_modulus(self) -> None:
         """The shear modulus follows from the modulus of elasticity and Poisson's ratio."""
-        material = BoltMaterial()
+        material = FastenerMaterial()
 
         assert material.shear_modulus == pytest.approx(expected=210_000.0 / (2 * 1.3))
 
     @pytest.mark.parametrize(
         ("bolt_class", "f_yb", "f_ub"),
         [
-            (BoltClass.CLASS_4_6, 240, 400),
-            (BoltClass.CLASS_8_8, 640, 800),
-            (BoltClass.CLASS_10_9, 900, 1000),
+            (FastenerClass.CLASS_4_6, 240, 400),
+            (FastenerClass.CLASS_8_8, 640, 800),
+            (FastenerClass.CLASS_10_9, 900, 1000),
         ],
     )
-    def test_strengths_come_from_table_3_1(self, bolt_class: BoltClass, f_yb: int, f_ub: int) -> None:
+    def test_strengths_come_from_table_3_1(self, bolt_class: FastenerClass, f_yb: int, f_ub: int) -> None:
         """Without a custom value the strengths are the ones the standard prints."""
-        material = BoltMaterial(bolt_class=bolt_class)
+        material = FastenerMaterial(bolt_class=bolt_class)
 
         assert material.yield_strength == f_yb
         assert material.ultimate_strength == f_ub
 
     def test_custom_strengths_win(self) -> None:
         """A custom strength takes the bolt outside the classes of the standard, which is allowed."""
-        material = BoltMaterial(bolt_class=BoltClass.CLASS_8_8, custom_yield_strength=700.0, custom_ultimate_strength=900.0)
+        material = FastenerMaterial(bolt_class=FastenerClass.CLASS_8_8, custom_yield_strength=700.0, custom_ultimate_strength=900.0)
 
         assert material.yield_strength == pytest.approx(expected=700.0)
         assert material.ultimate_strength == pytest.approx(expected=900.0)
 
     def test_custom_deformation_properties_win(self) -> None:
         """Every default can be overridden the way SteelMaterial allows it."""
-        material = BoltMaterial(
+        material = FastenerMaterial(
             custom_name="special",
             custom_e_modulus=200_000.0,
             custom_poisson_ratio=0.28,
@@ -116,36 +116,36 @@ class TestBoltMaterial:
         The case that matters in practice is a zero thermal coefficient, which is how an analysis
         suppresses thermal expansion. A truthiness check would silently hand back the default instead.
         """
-        material = BoltMaterial(**{field_name: 0.0})
+        material = FastenerMaterial(**{field_name: 0.0})
 
         assert getattr(material, property_name) == pytest.approx(expected=0.0)
 
     def test_an_empty_custom_name_falls_back_to_the_class(self) -> None:
         """The name is the one override that keeps its truthiness check, since "" is not a name."""
-        assert BoltMaterial(bolt_class=BoltClass.CLASS_10_9, custom_name="").name == "10.9"
+        assert FastenerMaterial(bolt_class=FastenerClass.CLASS_10_9, custom_name="").name == "10.9"
 
     @pytest.mark.parametrize(
         ("bolt_class", "expected"),
         [
-            (BoltClass.CLASS_4_6, False),
-            (BoltClass.CLASS_6_8, False),
-            (BoltClass.CLASS_8_8, True),
-            (BoltClass.CLASS_10_9, True),
+            (FastenerClass.CLASS_4_6, False),
+            (FastenerClass.CLASS_6_8, False),
+            (FastenerClass.CLASS_8_8, True),
+            (FastenerClass.CLASS_10_9, True),
         ],
     )
-    def test_can_be_preloaded(self, bolt_class: BoltClass, expected: bool) -> None:
+    def test_can_be_preloaded(self, bolt_class: FastenerClass, expected: bool) -> None:
         """Art.3.1.2(1) allows only classes 8.8 and 10.9 to be used as preloaded bolts."""
-        assert BoltMaterial(bolt_class=bolt_class).can_be_preloaded is expected
+        assert FastenerMaterial(bolt_class=bolt_class).can_be_preloaded is expected
 
     def test_a_custom_strength_does_not_change_the_class(self) -> None:
         """Preloading is tied to the class, not to the strength, so overriding one leaves the other."""
-        material = BoltMaterial(bolt_class=BoltClass.CLASS_4_6, custom_ultimate_strength=1000.0)
+        material = FastenerMaterial(bolt_class=FastenerClass.CLASS_4_6, custom_ultimate_strength=1000.0)
 
         assert material.can_be_preloaded is False
 
     def test_the_material_is_immutable(self) -> None:
         """The dataclass is frozen, like the other materials."""
-        material = BoltMaterial()
+        material = FastenerMaterial()
 
         with pytest.raises(AttributeError):
-            material.bolt_class = BoltClass.CLASS_4_6  # type: ignore[misc]
+            material.bolt_class = FastenerClass.CLASS_4_6  # type: ignore[misc]

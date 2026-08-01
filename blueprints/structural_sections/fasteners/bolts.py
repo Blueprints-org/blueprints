@@ -1,7 +1,7 @@
 """Bolt geometry definitions.
 
 This module provides representations of bolt geometry that are independent of material properties
-(which live in `blueprints.materials.bolts`). A single `BoltElement` can hold multiple `PlateAttachment`
+(which live in `blueprints.materials.fastener_steel`). A single `BoltElement` can hold multiple `PlateAttachment`
 records so the same bolt can be referenced from several plates (e.g. lap joints). This keeps the
 geometry separate from the material while making it straightforward to list bolts later.
 """
@@ -12,7 +12,7 @@ import math
 from dataclasses import dataclass, field
 from enum import StrEnum
 
-from blueprints.materials.bolts import BoltMaterial
+from blueprints.materials.fastener_steel import FastenerMaterial
 from blueprints.materials.steel import SteelStrengthClass
 from blueprints.type_alias import KN, MM, MM2
 
@@ -312,13 +312,13 @@ class PlateAttachment:
 class BoltElement:
     """Geometry record for an individual bolt coupled to a material.
 
-    This class intentionally keeps material (a `BoltMaterial`) separate from plate-local
+    This class intentionally keeps material (a `FastenerMaterial`) separate from plate-local
     geometry (the `attachments` tuple). It is frozen and lightweight so callers can safely
     create many bolts and keep them in sequences or other containers.
 
     Parameters
     ----------
-    material: BoltMaterial
+    material: FastenerMaterial
         The material object describing the bolt strength and deformation behaviour.
     size: BoltSize
         Standard ISO metric designation describing the nominal diameter and thread area.
@@ -331,12 +331,12 @@ class BoltElement:
 
     Example
     -------
-    >>> from blueprints.materials.bolts import BoltMaterial, BoltClass
+    >>> from blueprints.materials.bolts import FastenerMaterial, FastenerClass
     ... from blueprints.structural_sections.bolts.bolt_geometry import BoltElement, BoltSize, PlateAttachment, HoleType
     ...
     ... s235 = SteelStrengthClass.S235
     ... bolt = BoltElement(
-    ...     material=BoltMaterial(bolt_class=BoltClass.CLASS_8_8),
+    ...     material=FastenerMaterial(bolt_class=FastenerClass.CLASS_8_8),
     ...     size=BoltSize.M20,
     ...     attachments=(
     ...         PlateAttachment(plate_id="P1", plate_thickness=20.0, plate_material=s235, hole_type=HoleType.NORMAL),
@@ -350,7 +350,7 @@ class BoltElement:
     ... print(bolt.attachment_for_plate("P1").d0)
     """
 
-    material: BoltMaterial
+    material: FastenerMaterial
     size: BoltSize
     attachments: tuple[PlateAttachment, ...] = field(default_factory=tuple)
     label: str | None = None

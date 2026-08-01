@@ -2,7 +2,7 @@
 
 The bolt classes and their nominal strengths come from Table 3.1 of EN 1993-1-8:2005; that table is
 implemented in the codes tree and is imported here, the same way SteelMaterial reads its strengths
-from Table 3.1 of EN 1993-1-1:2005. BoltClass is re-exported from this module so that callers can
+from Table 3.1 of EN 1993-1-1:2005. FastenerClass is re-exported from this module so that callers can
 reach the classification and the material through one import.
 
 This module contains material-related information only: strengths, moduli, density and whether the
@@ -13,12 +13,12 @@ bolt can be preloaded. Geometric descriptors such as diameter, hole type and spa
 from dataclasses import dataclass, field
 
 from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import (
-    BoltClass,
+    FastenerClass,
     Table3Dot1NominalValuesBolts,
 )
 from blueprints.type_alias import DIMENSIONLESS, KG_M3, MPA, PER_DEGREE
 
-__all__ = ["BoltClass", "BoltMaterial"]
+__all__ = ["FastenerClass", "FastenerMaterial"]
 
 # default data from EN 1993-1-1:2005 art.3.2.6
 BOLT_YOUNG_MODULUS = 210_000.0  # [MPa]
@@ -27,7 +27,7 @@ BOLT_THERMAL_COEFFICIENT = 1.2e-5  # [1/°C]
 
 
 @dataclass(frozen=True)
-class BoltMaterial:
+class FastenerMaterial:
     r"""Representation of the strength and deformation characteristics of a bolt.
 
     The strengths come from Table 3.1 of EN 1993-1-8:2005 unless a custom value is given. A custom
@@ -42,7 +42,7 @@ class BoltMaterial:
 
     Parameters
     ----------
-    bolt_class : BoltClass
+    bolt_class : FastenerClass
         Bolt class according to art.3.1.1(2) (default: 8.8).
     density : KG_M3
         Unit mass of the bolt [$kg/m^3$] (default: 7850.0).
@@ -61,7 +61,7 @@ class BoltMaterial:
         Table 3.1.
     """
 
-    bolt_class: BoltClass = field(default=BoltClass.CLASS_8_8)
+    bolt_class: FastenerClass = field(default=FastenerClass.CLASS_8_8)
     density: KG_M3 = field(default=7850.0, metadata={"unit": "kg/m³"})
     custom_name: str | None = field(default=None, compare=False)
     custom_e_modulus: MPA | None = field(default=None, metadata={"unit": "MPa"})

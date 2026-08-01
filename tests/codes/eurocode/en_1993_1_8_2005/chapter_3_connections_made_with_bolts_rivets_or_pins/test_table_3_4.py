@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import BoltClass
+from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import FastenerClass
 from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_4 import (
     ALPHA_V_THREADED,
     BoltHead,
@@ -30,22 +30,22 @@ class TestAlphaVThreaded:
     @pytest.mark.parametrize(
         ("bolt_class", "expected"),
         [
-            (BoltClass.CLASS_4_6, 0.6),
-            (BoltClass.CLASS_5_6, 0.6),
-            (BoltClass.CLASS_8_8, 0.6),
-            (BoltClass.CLASS_4_8, 0.5),
-            (BoltClass.CLASS_5_8, 0.5),
-            (BoltClass.CLASS_6_8, 0.5),
-            (BoltClass.CLASS_10_9, 0.5),
+            (FastenerClass.CLASS_4_6, 0.6),
+            (FastenerClass.CLASS_5_6, 0.6),
+            (FastenerClass.CLASS_8_8, 0.6),
+            (FastenerClass.CLASS_4_8, 0.5),
+            (FastenerClass.CLASS_5_8, 0.5),
+            (FastenerClass.CLASS_6_8, 0.5),
+            (FastenerClass.CLASS_10_9, 0.5),
         ],
     )
-    def test_alpha_v_threaded(self, bolt_class: BoltClass, expected: float) -> None:
+    def test_alpha_v_threaded(self, bolt_class: FastenerClass, expected: float) -> None:
         """The table gives 0.6 for classes 4.6, 5.6 and 8.8, and 0.5 for 4.8, 5.8, 6.8 and 10.9."""
         assert ALPHA_V_THREADED[bolt_class] == pytest.approx(expected=expected)
 
     def test_every_bolt_class_of_table_3_1_is_mapped(self) -> None:
         """A class without a factor would raise a KeyError, so the mapping has to be complete."""
-        assert set(ALPHA_V_THREADED) == set(BoltClass)
+        assert set(ALPHA_V_THREADED) == set(FastenerClass)
 
 
 class TestBoltHead:
@@ -76,14 +76,14 @@ class TestTable3Dot4ShearResistanceBolt:
         ("f_ub", "a", "bolt_class", "shear_plane", "expected"),
         [
             # M20 class 8.8, shear plane through the threads: 0.6 * 800 * 245 / 1.25
-            (800.0, 245.0, BoltClass.CLASS_8_8, ShearPlane.THREADED, 94080.0),
+            (800.0, 245.0, FastenerClass.CLASS_8_8, ShearPlane.THREADED, 94080.0),
             # M20 class 10.9, shear plane through the threads: 0.5 * 1000 * 245 / 1.25
-            (1000.0, 245.0, BoltClass.CLASS_10_9, ShearPlane.THREADED, 98000.0),
+            (1000.0, 245.0, FastenerClass.CLASS_10_9, ShearPlane.THREADED, 98000.0),
             # M20 class 10.9, shear plane through the shank, so 0.6 despite the class: 0.6 * 1000 * 314.159265 / 1.25
-            (1000.0, 314.159265, BoltClass.CLASS_10_9, ShearPlane.SHANK, 150796.4472),
+            (1000.0, 314.159265, FastenerClass.CLASS_10_9, ShearPlane.SHANK, 150796.4472),
         ],
     )
-    def test_evaluation(self, f_ub: float, a: float, bolt_class: BoltClass, shear_plane: ShearPlane, expected: float) -> None:
+    def test_evaluation(self, f_ub: float, a: float, bolt_class: FastenerClass, shear_plane: ShearPlane, expected: float) -> None:
         """Tests the evaluation of the result."""
         formula = Table3Dot4ShearResistanceBolt(f_ub=f_ub, a=a, bolt_class=bolt_class, shear_plane=shear_plane, gamma_m2=1.25)
 
@@ -92,9 +92,9 @@ class TestTable3Dot4ShearResistanceBolt:
     def test_alpha_v_is_exposed(self) -> None:
         """The factor the table selected is readable, since it is not an argument the caller passed."""
         threaded = Table3Dot4ShearResistanceBolt(
-            f_ub=1000.0, a=245.0, bolt_class=BoltClass.CLASS_10_9, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
+            f_ub=1000.0, a=245.0, bolt_class=FastenerClass.CLASS_10_9, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
         )
-        shank = Table3Dot4ShearResistanceBolt(f_ub=1000.0, a=245.0, bolt_class=BoltClass.CLASS_10_9, shear_plane=ShearPlane.SHANK, gamma_m2=1.25)
+        shank = Table3Dot4ShearResistanceBolt(f_ub=1000.0, a=245.0, bolt_class=FastenerClass.CLASS_10_9, shear_plane=ShearPlane.SHANK, gamma_m2=1.25)
 
         assert threaded.alpha_v == pytest.approx(expected=0.5)
         assert shank.alpha_v == pytest.approx(expected=0.6)
@@ -103,13 +103,13 @@ class TestTable3Dot4ShearResistanceBolt:
     def test_raise_error_when_negative_values_are_given(self, f_ub: float, a: float) -> None:
         """Test if error is raised for parameters that are not allowed to be negative."""
         with pytest.raises(NegativeValueError):
-            Table3Dot4ShearResistanceBolt(f_ub=f_ub, a=a, bolt_class=BoltClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25)
+            Table3Dot4ShearResistanceBolt(f_ub=f_ub, a=a, bolt_class=FastenerClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25)
 
     @pytest.mark.parametrize("gamma_m2", [0.0, -1.25])
     def test_raise_error_when_gamma_m2_is_less_or_equal_to_zero(self, gamma_m2: float) -> None:
         """The partial factor divides the result, so it cannot be zero or negative."""
         with pytest.raises(LessOrEqualToZeroError):
-            Table3Dot4ShearResistanceBolt(f_ub=800.0, a=245.0, bolt_class=BoltClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=gamma_m2)
+            Table3Dot4ShearResistanceBolt(f_ub=800.0, a=245.0, bolt_class=FastenerClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=gamma_m2)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -130,7 +130,7 @@ class TestTable3Dot4ShearResistanceBolt:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         test_latex = Table3Dot4ShearResistanceBolt(
-            f_ub=800.0, a=245.0, bolt_class=BoltClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
+            f_ub=800.0, a=245.0, bolt_class=FastenerClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
         ).latex()
 
         actual = {

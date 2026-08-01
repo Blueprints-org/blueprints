@@ -16,10 +16,10 @@ from collections.abc import Callable
 from enum import StrEnum
 
 from blueprints.codes.eurocode.en_1993_1_8_2005 import EN_1993_1_8_2005
-from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import BoltClass
+from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import FastenerClass
 from blueprints.codes.formula import ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.structural_sections.bolts.bolt_geometry import (
+from blueprints.structural_sections.bolts.bolts import (
     BoltPositionParallel,
     BoltPositionPerpendicular,
 )
@@ -30,14 +30,14 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 # plane passes through the unthreaded shank the table gives 0.6 for every class, so the class does not
 # enter the calculation there. Every class of Table 3.1 is mapped, so an unmapped class raises a
 # KeyError rather than silently taking a value the table does not give it.
-ALPHA_V_THREADED: dict[BoltClass, DIMENSIONLESS] = {
-    BoltClass.CLASS_4_6: 0.6,
-    BoltClass.CLASS_4_8: 0.5,
-    BoltClass.CLASS_5_6: 0.6,
-    BoltClass.CLASS_5_8: 0.5,
-    BoltClass.CLASS_6_8: 0.5,
-    BoltClass.CLASS_8_8: 0.6,
-    BoltClass.CLASS_10_9: 0.5,
+ALPHA_V_THREADED: dict[FastenerClass, DIMENSIONLESS] = {
+    FastenerClass.CLASS_4_6: 0.6,
+    FastenerClass.CLASS_4_8: 0.5,
+    FastenerClass.CLASS_5_6: 0.6,
+    FastenerClass.CLASS_5_8: 0.5,
+    FastenerClass.CLASS_6_8: 0.5,
+    FastenerClass.CLASS_8_8: 0.6,
+    FastenerClass.CLASS_10_9: 0.5,
 }
 
 ALPHA_V_SHANK: DIMENSIONLESS = 0.6
@@ -113,7 +113,7 @@ class Table3Dot4ShearResistanceBolt(Formula):
         self,
         f_ub: MPA,
         a: MM2,
-        bolt_class: BoltClass,
+        bolt_class: FastenerClass,
         shear_plane: ShearPlane,
         gamma_m2: DIMENSIONLESS,
     ) -> None:
@@ -139,7 +139,7 @@ class Table3Dot4ShearResistanceBolt(Formula):
             [$A$] Area of the bolt at the shear plane. The tensile stress area [$A_s$] where the shear
             plane passes through the threaded portion, the gross cross-section where it passes through
             the unthreaded shank [$mm^2$].
-        bolt_class : BoltClass
+        bolt_class : FastenerClass
             Class of the bolt, which sets [$\alpha_v$] where the shear plane passes through the threads.
         shear_plane : ShearPlane
             Location of the shear plane through the bolt.
@@ -159,7 +159,7 @@ class Table3Dot4ShearResistanceBolt(Formula):
         return self._alpha_v(self.bolt_class, self.shear_plane)
 
     @staticmethod
-    def _alpha_v(bolt_class: BoltClass, shear_plane: ShearPlane) -> DIMENSIONLESS:
+    def _alpha_v(bolt_class: FastenerClass, shear_plane: ShearPlane) -> DIMENSIONLESS:
         r"""Returns [$\alpha_v$], which depends on the class only where the shear plane crosses the threads."""
         return ALPHA_V_THREADED[bolt_class] if shear_plane is ShearPlane.THREADED else ALPHA_V_SHANK
 
@@ -168,7 +168,7 @@ class Table3Dot4ShearResistanceBolt(Formula):
         cls,
         f_ub: MPA,
         a: MM2,
-        bolt_class: BoltClass,
+        bolt_class: FastenerClass,
         shear_plane: ShearPlane,
         gamma_m2: DIMENSIONLESS,
     ) -> N:
