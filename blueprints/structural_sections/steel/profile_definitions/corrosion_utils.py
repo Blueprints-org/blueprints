@@ -98,7 +98,8 @@ def update_name_with_corrosion(
         raise ValueError(msg)
 
     if single_mode:
-        return _update_single_corrosion(current_name, corrosion)  # type: ignore[arg-type]
+        assert corrosion is not None, "corrosion must not be None in single mode"
+        return _update_single_corrosion(current_name, corrosion)
     return _update_double_corrosion(current_name, corrosion_inside or 0, corrosion_outside or 0)
 
 

@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_fraction
+from blueprints.codes.latex_formula import LatexFormula, latex_fraction, latex_replace_symbols
 from blueprints.type_alias import MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -52,13 +52,31 @@ class Form8Dot3RequiredAnchorageLength(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
-        latex_diameter = r"Ø"
-        latex_sigma_sd = r"\sigma_{sd}"
-        latex_f_bd = r"f_{bd}"
+        _equation: str = rf"{latex_fraction(r'Ø', 4)} \cdot {latex_fraction(r'\sigma_{sd}', r'f_{bd}')}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"Ø": f"{self.diameter:.{n}f}",
+                r"\sigma_{sd}": f"{self.sigma_sd:.{n}f}",
+                r"f_{bd}": f"{self.f_bd:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"Ø": rf"{self.diameter:.{n}f} \ mm",
+                r"\sigma_{sd}": rf"{self.sigma_sd:.{n}f} \ MPa",
+                r"f_{bd}": rf"{self.f_bd:.{n}f} \ MPa",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{b,rqd}",
             result=f"{self:.{n}f}",
-            equation=rf"{latex_fraction(latex_diameter, 4)} \cdot {latex_fraction(latex_sigma_sd, latex_f_bd)}",
-            numeric_equation=rf"{latex_fraction(self.diameter, 4)} \cdot {latex_fraction(self.sigma_sd, self.f_bd)}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )

@@ -3,6 +3,7 @@
 import math
 from dataclasses import dataclass
 from functools import partial
+from typing import cast
 
 from sectionproperties.pre import Geometry
 from shapely.affinity import rotate
@@ -140,4 +141,5 @@ class AnnularSectorProfile(Profile):
         sector = Polygon(sector_points).buffer(0)
 
         result = outer_ring.difference(inner_ring).intersection(sector)
-        return Polygon(result)  # type: ignore[arg-type]
+        # Cast result to Polygon to satisfy type checker (intersection returns BaseGeometry)
+        return cast(Polygon, result)

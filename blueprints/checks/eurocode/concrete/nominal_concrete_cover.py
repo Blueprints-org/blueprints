@@ -1,7 +1,7 @@
 r"""Calculation of nominal concrete cover from EN 1992-1-1: Chapter 4 - Durability and cover to reinforcement."""
 
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Literal, cast
 
 from blueprints.checks.check_protocol import CheckProtocol
 from blueprints.checks.check_result import CheckResult
@@ -114,7 +114,13 @@ class NominalConcreteCover(CheckProtocol):
 
     def exposure_classes(self) -> Table4Dot1ExposureClasses:
         """Exposure classes according to table 4.1 from EN 1992-1-1."""
-        return Table4Dot1ExposureClasses(self.carbonation, self.chloride, self.chloride_seawater, FreezeThaw.NA, Chemical.NA)  # type: ignore[arg-type]
+        return Table4Dot1ExposureClasses(
+            cast(Carbonation, self.carbonation),
+            cast(Chloride, self.chloride),
+            cast(ChlorideSeawater, self.chloride_seawater),
+            FreezeThaw.NA,
+            Chemical.NA,
+        )
 
     def c_min_b(self) -> Table4Dot2MinimumCoverWithRegardToBond:
         """Minimum concrete cover with regard to bond according to table 4.2 from EN 1992-1-1."""
@@ -122,7 +128,7 @@ class NominalConcreteCover(CheckProtocol):
 
     def c_min_dur(self) -> Table4Dot4nMinimumCoverDurabilityReinforcementSteel:
         """Minimum concrete cover with regard to durability according to table 4.4N from EN 1992-1-1."""
-        return Table4Dot4nMinimumCoverDurabilityReinforcementSteel(self.exposure_classes(), self.structural_class)  # type: ignore[arg-type]
+        return Table4Dot4nMinimumCoverDurabilityReinforcementSteel(self.exposure_classes(), self.structural_class)
 
     def c_min(self) -> Form4Dot2MinimumConcreteCover:
         """Minimum concrete cover according to formula 4.2 from EN 1992-1-1."""
