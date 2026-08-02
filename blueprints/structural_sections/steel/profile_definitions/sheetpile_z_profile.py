@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import cast
 
 from matplotlib import pyplot as plt
@@ -143,7 +143,15 @@ class SheetpileZProfile(Profile):
         """
         if number_of_sheets < 1:
             raise ValueError("Number of sheets must be at least 1")
-        return replace(self, number_of_sheets=number_of_sheets)
+        return SheetpileZProfile(
+            coordinates=self.coordinates,
+            web_thickness=self.web_thickness,
+            flange_thickness=self.flange_thickness,
+            interlocking_ctc=self.interlocking_ctc,
+            name=self.name,
+            plotter=self.plotter,
+            number_of_sheets=number_of_sheets,
+        )
 
     def with_corrosion(self, corrosion: MM = 0) -> SheetpileZProfile:
         """Return a new Z-shaped sheet pile profile instance with corrosion applied.
@@ -177,13 +185,15 @@ class SheetpileZProfile(Profile):
         # Apply corrosion by buffering the polygon inward by the corrosion amount
         corroded_polygon = self._polygon_single_sheet.buffer(-corrosion)
 
-        coordinates = list(corroded_polygon.exterior.coords)
+        coordinates: list[tuple[float, float]] = [(x, y) for x, y in corroded_polygon.exterior.coords]
         name = update_name_with_corrosion(self.name, corrosion=corrosion)
 
-        return replace(
-            self,
+        return SheetpileZProfile(
             coordinates=coordinates,
             web_thickness=new_web_thickness,
             flange_thickness=new_flange_thickness,
+            interlocking_ctc=self.interlocking_ctc,
             name=name,
+            plotter=self.plotter,
+            number_of_sheets=self.number_of_sheets,
         )
