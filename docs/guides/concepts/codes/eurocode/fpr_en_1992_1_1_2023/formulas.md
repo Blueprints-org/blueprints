@@ -125,7 +125,7 @@ Total of 602 formulas present.
 |      8.61      |        :x:         |         |                                                                    |
 |      8.62      |        :x:         |         |                                                                    |
 |      8.63      |        :x:         |         |                                                                    |
-|      8.64      |        :x:         |         |                                                                    |
+|      8.64      | :heavy_check_mark: |         | Form8Dot64ShearStressResistanceWithTransverseBending               |
 |      8.65      |        :x:         |         |                                                                    |
 |      8.66      |        :x:         |         |                                                                    |
 |      8.67      |        :x:         |         |                                                                    |
