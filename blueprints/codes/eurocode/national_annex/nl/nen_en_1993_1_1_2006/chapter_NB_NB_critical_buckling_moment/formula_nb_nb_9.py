@@ -61,7 +61,7 @@ class FormNBDotNB9Alpha(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula NB.NB.9."""
-        _equation: str = r"\max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{\left(t_w\right)^3 \cdot b \cdot \left(L_g\right)^2}\right)"
+        _equation: str = r"\max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right)"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
