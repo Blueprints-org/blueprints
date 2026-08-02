@@ -119,9 +119,9 @@ Total of 602 formulas present.
 |      8.55      | :heavy_check_mark: |         | Form8Dot55EnhancedShearStressResistance                            |
 |      8.56      |        :x:         |         |                                                                    |
 |      8.57      |        :x:         |         |                                                                    |
-|      8.58      |        :x:         |         |                                                                    |
-|      8.59      |        :x:         |         |                                                                    |
-|      8.60      |        :x:         |         |                                                                    |
+|      8.58      | :heavy_check_mark: |         | Form8Dot58CheckCotangentInclinedShearReinforcement                 |
+|      8.59      | :heavy_check_mark: |         | Form8Dot59ShearStressResistanceInclinedShearReinforcement          |
+|      8.60      | :heavy_check_mark: |         | Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement    |
 |      8.61      |        :x:         |         |                                                                    |
 |      8.62      |        :x:         |         |                                                                    |
 |      8.63      |        :x:         |         |                                                                    |
