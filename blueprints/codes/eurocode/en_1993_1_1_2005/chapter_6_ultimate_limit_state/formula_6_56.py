@@ -83,7 +83,7 @@ class Form6Dot56NonDimensionalSlendernessLT(Formula):
         )
 
 
-class Form6Dot56LateralTorsionalIntermediateFactor(Formula):
+class SubForm6Dot56LateralTorsionalIntermediateFactor(Formula):
     r"""Class representing formula 6.56 for the calculation of [$\Phi_{LT}$]."""
 
     label = "6.56"
@@ -142,7 +142,7 @@ class Form6Dot56LateralTorsionalIntermediateFactor(Formula):
         )
 
 
-class Form6Dot56ReductionFactorLateralTorsionalBuckling(Formula):
+class SubForm6Dot56ReductionFactorLateralTorsionalBuckling(Formula):
     r"""Class representing formula 6.56 for the calculation of [$\chi_{LT}$]."""
 
     label = "6.56"

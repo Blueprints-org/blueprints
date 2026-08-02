@@ -3,9 +3,9 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_56 import (
-    Form6Dot56LateralTorsionalIntermediateFactor,
     Form6Dot56NonDimensionalSlendernessLT,
-    Form6Dot56ReductionFactorLateralTorsionalBuckling,
+    SubForm6Dot56LateralTorsionalIntermediateFactor,
+    SubForm6Dot56ReductionFactorLateralTorsionalBuckling,
 )
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
@@ -47,13 +47,17 @@ class TestForm6Dot56NonDimensionalSlendernessLT:
         [
             (
                 "complete",
-                r"\overline{\lambda}_{LT} = \sqrt{\frac{W_y \cdot f_y}{M_{cr}}} = "
-                r"\sqrt{\frac{500000.000 \cdot 355.000}{100000000.000}} = 1.332",
+                (
+                    r"\overline{\lambda}_{LT} = \sqrt{\frac{W_y \cdot f_y}{M_{cr}}} = "
+                    r"\sqrt{\frac{500000.000 \cdot 355.000}{100000000.000}} = 1.332"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\overline{\lambda}_{LT} = \sqrt{\frac{W_y \cdot f_y}{M_{cr}}} = "
-                r"\sqrt{\frac{500000.000 \ mm^3 \cdot 355.000 \ MPa}{100000000.000 \ Nmm}} = 1.332",
+                (
+                    r"\overline{\lambda}_{LT} = \sqrt{\frac{W_y \cdot f_y}{M_{cr}}} = "
+                    r"\sqrt{\frac{500000.000 \ mm^3 \cdot 355.000 \ MPa}{100000000.000 \ Nmm}} = 1.332"
+                ),
             ),
             ("short", r"\overline{\lambda}_{LT} = 1.332"),
         ],
@@ -77,7 +81,7 @@ class TestForm6Dot56NonDimensionalSlendernessLT:
         assert expected == actual[representation], f"{representation} representation failed."
 
 
-class TestForm6Dot56LateralTorsionalIntermediateFactor:
+class TestSubForm6Dot56LateralTorsionalIntermediateFactor:
     """Validation for formula 6.56 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
@@ -87,7 +91,7 @@ class TestForm6Dot56LateralTorsionalIntermediateFactor:
         lambda_bar_lt = 0.8
 
         # Object to test
-        formula = Form6Dot56LateralTorsionalIntermediateFactor(alpha_lt=alpha_lt, lambda_bar_lt=lambda_bar_lt)
+        formula = SubForm6Dot56LateralTorsionalIntermediateFactor(alpha_lt=alpha_lt, lambda_bar_lt=lambda_bar_lt)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.922  # -
@@ -104,22 +108,26 @@ class TestForm6Dot56LateralTorsionalIntermediateFactor:
     def test_raise_error_when_invalid_values_are_given(self, alpha_lt: float, lambda_bar_lt: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot56LateralTorsionalIntermediateFactor(alpha_lt=alpha_lt, lambda_bar_lt=lambda_bar_lt)
+            SubForm6Dot56LateralTorsionalIntermediateFactor(alpha_lt=alpha_lt, lambda_bar_lt=lambda_bar_lt)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"\Phi_{LT} = 0.5 \cdot \left[ 1 + \alpha_{LT} \cdot \left( \overline{\lambda}_{LT} - 0.2 \right) + "
-                r"\overline{\lambda}_{LT}^2 \right] = "
-                r"0.5 \cdot \left[ 1 + 0.340 \cdot \left( 0.800 - 0.2 \right) + 0.800^2 \right] = 0.922",
+                (
+                    r"\Phi_{LT} = 0.5 \cdot \left[ 1 + \alpha_{LT} \cdot \left( \overline{\lambda}_{LT} - 0.2 \right) + "
+                    r"\overline{\lambda}_{LT}^2 \right] = "
+                    r"0.5 \cdot \left[ 1 + 0.340 \cdot \left( 0.800 - 0.2 \right) + 0.800^2 \right] = 0.922"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\Phi_{LT} = 0.5 \cdot \left[ 1 + \alpha_{LT} \cdot \left( \overline{\lambda}_{LT} - 0.2 \right) + "
-                r"\overline{\lambda}_{LT}^2 \right] = 0.5 \cdot \left[ 1 + 0.340 \cdot \left( 0.800 - 0.2 \right) + "
-                r"0.800^2 \right] = 0.922",
+                (
+                    r"\Phi_{LT} = 0.5 \cdot \left[ 1 + \alpha_{LT} \cdot \left( \overline{\lambda}_{LT} - 0.2 \right) + "
+                    r"\overline{\lambda}_{LT}^2 \right] = 0.5 \cdot \left[ 1 + 0.340 \cdot \left( 0.800 - 0.2 \right) + "
+                    r"0.800^2 \right] = 0.922"
+                ),
             ),
             ("short", r"\Phi_{LT} = 0.922"),
         ],
@@ -131,7 +139,7 @@ class TestForm6Dot56LateralTorsionalIntermediateFactor:
         lambda_bar_lt = 0.8
 
         # Object to test
-        latex = Form6Dot56LateralTorsionalIntermediateFactor(alpha_lt=alpha_lt, lambda_bar_lt=lambda_bar_lt).latex()
+        latex = SubForm6Dot56LateralTorsionalIntermediateFactor(alpha_lt=alpha_lt, lambda_bar_lt=lambda_bar_lt).latex()
 
         actual = {
             "complete": latex.complete,
@@ -142,7 +150,7 @@ class TestForm6Dot56LateralTorsionalIntermediateFactor:
         assert expected == actual[representation], f"{representation} representation failed."
 
 
-class TestForm6Dot56ReductionFactorLateralTorsionalBuckling:
+class TestSubForm6Dot56ReductionFactorLateralTorsionalBuckling:
     """Validation for formula 6.56 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
@@ -152,7 +160,7 @@ class TestForm6Dot56ReductionFactorLateralTorsionalBuckling:
         lambda_bar_lt = 0.8
 
         # Object to test
-        formula = Form6Dot56ReductionFactorLateralTorsionalBuckling(phi_lt=phi_lt, lambda_bar_lt=lambda_bar_lt)
+        formula = SubForm6Dot56ReductionFactorLateralTorsionalBuckling(phi_lt=phi_lt, lambda_bar_lt=lambda_bar_lt)
 
         # Expected result, manually calculated
         manually_calculated_result = 0.724518  # -
@@ -171,20 +179,24 @@ class TestForm6Dot56ReductionFactorLateralTorsionalBuckling:
     def test_raise_error_when_invalid_values_are_given(self, phi_lt: float, lambda_bar_lt: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
-            Form6Dot56ReductionFactorLateralTorsionalBuckling(phi_lt=phi_lt, lambda_bar_lt=lambda_bar_lt)
+            SubForm6Dot56ReductionFactorLateralTorsionalBuckling(phi_lt=phi_lt, lambda_bar_lt=lambda_bar_lt)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"\chi_{LT} = \frac{1}{\Phi_{LT} + \sqrt{\Phi_{LT}^2 - \overline{\lambda}_{LT}^2}} = "
-                r"\frac{1}{0.922 + \sqrt{0.922^2 - 0.800^2}} = 0.724",
+                (
+                    r"\chi_{LT} = \frac{1}{\Phi_{LT} + \sqrt{\Phi_{LT}^2 - \overline{\lambda}_{LT}^2}} = "
+                    r"\frac{1}{0.922 + \sqrt{0.922^2 - 0.800^2}} = 0.724"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\chi_{LT} = \frac{1}{\Phi_{LT} + \sqrt{\Phi_{LT}^2 - \overline{\lambda}_{LT}^2}} = "
-                r"\frac{1}{0.922 + \sqrt{0.922^2 - 0.800^2}} = 0.724",
+                (
+                    r"\chi_{LT} = \frac{1}{\Phi_{LT} + \sqrt{\Phi_{LT}^2 - \overline{\lambda}_{LT}^2}} = "
+                    r"\frac{1}{0.922 + \sqrt{0.922^2 - 0.800^2}} = 0.724"
+                ),
             ),
             ("short", r"\chi_{LT} = 0.724"),
         ],
@@ -196,7 +208,7 @@ class TestForm6Dot56ReductionFactorLateralTorsionalBuckling:
         lambda_bar_lt = 0.8
 
         # Object to test
-        latex = Form6Dot56ReductionFactorLateralTorsionalBuckling(phi_lt=phi_lt, lambda_bar_lt=lambda_bar_lt).latex()
+        latex = SubForm6Dot56ReductionFactorLateralTorsionalBuckling(phi_lt=phi_lt, lambda_bar_lt=lambda_bar_lt).latex()
 
         actual = {
             "complete": latex.complete,
