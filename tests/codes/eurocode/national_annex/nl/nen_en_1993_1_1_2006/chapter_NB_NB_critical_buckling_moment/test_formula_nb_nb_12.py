@@ -48,13 +48,17 @@ class TestFormNBDotNB12ParameterS:
         [
             (
                 "complete",
-                r"S = \sqrt{\frac{E \cdot I_w}{G \cdot I_t}} = "
-                r"\sqrt{\frac{210000.000 \cdot 8000000000.000}{81000.000 \cdot 200000.000}} = 322.031 \ mm",
+                (
+                    r"S = \sqrt{\frac{E \cdot I_w}{G \cdot I_t}} = "
+                    r"\sqrt{\frac{210000.000 \cdot 8000000000.000}{81000.000 \cdot 200000.000}} = 322.031 \ mm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"S = \sqrt{\frac{E \cdot I_w}{G \cdot I_t}} = "
-                r"\sqrt{\frac{210000.000 \ MPa \cdot 8000000000.000 \ mm^6}{81000.000 \ MPa \cdot 200000.000 \ mm^4}} = 322.031 \ mm",
+                (
+                    r"S = \sqrt{\frac{E \cdot I_w}{G \cdot I_t}} = "
+                    r"\sqrt{\frac{210000.000 \ MPa \cdot 8000000000.000 \ mm^6}{81000.000 \ MPa \cdot 200000.000 \ mm^4}} = 322.031 \ mm"
+                ),
             ),
             ("short", r"S = 322.031 \ mm"),
         ],

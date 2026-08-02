@@ -53,14 +53,19 @@ class TestFormNBDotNB2CriticalElasticBucklingMoment:
         [
             (
                 "complete",
-                r"M_{cr} = k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t} = "
-                r"1.000 \cdot \frac{0.990}{5000.000} \cdot \sqrt{210000.000 \cdot 8000000.000 \cdot 81000.000 \cdot 200000.000} = 32664599.554 \ Nmm",
+                (
+                    r"M_{cr} = k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t} = "
+                    r"1.000 \cdot \frac{0.990}{5000.000} \cdot \sqrt{210000.000 \cdot "
+                    r"8000000.000 \cdot 81000.000 \cdot 200000.000} = 32664599.554 \ Nmm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"M_{cr} = k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t} = "
-                r"1.000 \cdot \frac{0.990}{5000.000 \ mm} \cdot \sqrt{210000.000 \ MPa \cdot 8000000.000 \ mm^4 "
-                r"\cdot 81000.000 \ MPa \cdot 200000.000 \ mm^4} = 32664599.554 \ Nmm",
+                (
+                    r"M_{cr} = k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t} = "
+                    r"1.000 \cdot \frac{0.990}{5000.000 \ mm} \cdot \sqrt{210000.000 \ MPa \cdot 8000000.000 \ mm^4 "
+                    r"\cdot 81000.000 \ MPa \cdot 200000.000 \ mm^4} = 32664599.554 \ Nmm"
+                ),
             ),
             ("short", r"M_{cr} = 32664599.554 \ Nmm"),
         ],

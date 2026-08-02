@@ -34,13 +34,12 @@ class FormNBDotNB11CoefficientC(Formula):
         c_2 : DIMENSIONLESS
             [$C_2$] Coefficient dependent on the location of application of the load relative to the neutral axis.
             C₂ = 0 if the load acts at the centroid of the cross-section.
-            C₂ must be entered in the formula for determining coefficient C with a positive sign if the load acts at the centroid of the top flange.
-            C₂ must be entered in this formula with a negative sign if the load acts at the centroid of the bottom flange [-].
+            C₂ must be entered in the formula with a positive sign if the load acts at the centroid of the bottom flange.
+            C₂ must be entered in this formula with a negative sign if the load acts at the centroid of the top flange [-].
         l_g : MM
-            [$L_g$] Length of the beam between the supports [$mm$].
+            [$L_g$] Length of the beam between the forksupports [$mm$].
         l_kip : MM
-            [$L_{kip}$] Replaced unsupported tip length between two supports, between one support and one lateral support,
-            or between two lateral supports [$mm$].
+            [$L_{kip}$] Lateral-torsional buckling length between [$mm$].
         s : MM
             [$S$] Parameter, for calculating S applies NB.NB.12 [$mm$].
         """
@@ -61,7 +60,7 @@ class FormNBDotNB11CoefficientC(Formula):
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(l_kip=l_kip)
-        raise_if_negative(c_1=c_1, l_g=l_g, s=s, c_2=c_2)
+        raise_if_negative(c_1=c_1, l_g=l_g, s=s)
 
         term1 = (np.pi * c_1 * l_g) / l_kip
         term2 = np.sqrt(1 + (np.pi**2 * s**2) / (l_kip**2) * (c_2**2 + 1))

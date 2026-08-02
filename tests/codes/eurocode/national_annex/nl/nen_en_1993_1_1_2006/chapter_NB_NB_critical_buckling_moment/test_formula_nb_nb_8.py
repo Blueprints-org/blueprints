@@ -58,13 +58,17 @@ class TestFormNBDotNB8ReductionFactorKred:
         [
             (
                 "complete",
-                r"k_{red} = \min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot \alpha\right) + 1.03\right), 1\right) = "
-                r"\min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot 1000.000\right) + 1.03\right), 1\right) = 0.976 \ -",
+                (
+                    r"k_{red} = \min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot \alpha\right) + 1.03\right), 1\right) = "
+                    r"\min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot 1000.000\right) + 1.03\right), 1\right) = 0.976 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"k_{red} = \min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot \alpha\right) + 1.03\right), 1\right) = "
-                r"\min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot 1000.000\right) + 1.03\right), 1\right) = 0.976 \ -",
+                (
+                    r"k_{red} = \min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot \alpha\right) + 1.03\right), 1\right) = "
+                    r"\min\left(\left(\left(-5.4 \cdot 10^{-5} \cdot 1000.000\right) + 1.03\right), 1\right) = 0.976 \ -"
+                ),
             ),
             ("short", r"k_{red} = 0.976 \ -"),
         ],

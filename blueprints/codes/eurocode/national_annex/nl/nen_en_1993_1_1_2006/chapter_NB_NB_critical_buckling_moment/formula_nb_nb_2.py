@@ -38,7 +38,7 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
             [$C$] Coefficient dependent on beam length and load point location, and support point of the load;
             for calculating [$C$] applies NB.NB.4.3 [-].
         l_g : MM
-            [$L_g$] Length of the beam between supports [$mm$].
+            [$L_g$] Length of the beam between fork supports [$mm$].
         e : MPA
             [$E$] Elasticity modulus [$MPa$].
         i_z : MM4
@@ -75,16 +75,16 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula NB.NB.2."""
-        _equation: str = r"k_{red} \cdot \frac{C}{L_g} \cdot \sqrt{E \cdot I_z \cdot G \cdot I_t}"
+        _equation: str = r"k_{red} \cdot \frac{ C }{L_g} \cdot \sqrt{ E \cdot I_z \cdot G \cdot I_t}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 r"k_{red}": f"{self.k_red:.{n}f}",
-                r"C": f"{self.c:.{n}f}",
+                r" C ": f"{self.c:.{n}f}",
                 r"L_g": f"{self.l_g:.{n}f}",
-                r"E": f"{self.e:.{n}f}",
+                r" E ": f"{self.e:.{n}f}",
                 r"I_z": f"{self.i_z:.{n}f}",
-                r"G": f"{self.g:.{n}f}",
+                r" G ": f"{self.g:.{n}f}",
                 r"I_t": f"{self.i_t:.{n}f}",
             },
             False,
@@ -93,11 +93,11 @@ class FormNBDotNB2CriticalElasticBucklingMoment(Formula):
             _equation,
             {
                 r"k_{red}": f"{self.k_red:.{n}f}",
-                r"C": f"{self.c:.{n}f}",
+                r" C ": f"{self.c:.{n}f}",
                 r"L_g": rf"{self.l_g:.{n}f} \ mm",
-                r"E": rf"{self.e:.{n}f} \ MPa",
+                r" E ": rf"{self.e:.{n}f} \ MPa",
                 r"I_z": rf"{self.i_z:.{n}f} \ mm^4",
-                r"G": rf"{self.g:.{n}f} \ MPa",
+                r" G ": rf"{self.g:.{n}f} \ MPa",
                 r"I_t": rf"{self.i_t:.{n}f} \ mm^4",
             },
             True,

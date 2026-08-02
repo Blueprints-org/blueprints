@@ -49,18 +49,22 @@ class TestFormNBDotNB11CoefficientC:
         [
             (
                 "complete",
-                r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} "
-                r"\cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
-                r"\frac{\pi \cdot 1.130 \cdot 5000.000}{6000.000} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot 1000.000^2}{6000.000^2} "
-                r"\cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000}{6000.000} \right) = 4.108 \ -",
+                (
+                    r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} "
+                    r"\cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
+                    r"\frac{\pi \cdot 1.130 \cdot 5000.000}{6000.000} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot 1000.000^2}{6000.000^2} "
+                    r"\cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000}{6000.000} \right) = 4.108 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} "
-                r"\cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
-                r"\frac{\pi \cdot 1.130 \cdot 5000.000 \ mm}{6000.000 \ mm} \cdot \left( "
-                r"\sqrt{1 + \frac{\pi^2 \cdot 1000.000 \ mm^2}{6000.000 \ mm^2} "
-                r"\cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000 \ mm}{6000.000 \ mm} \right) = 4.108 \ -",
+                (
+                    r"C = \frac{\pi \cdot C_1 \cdot L_g}{L_{kip}} \cdot \left( \sqrt{1 + \frac{\pi^2 \cdot S^2}{L_{kip}^2} "
+                    r"\cdot \left(C_2^2 + 1\right)} + \frac{\pi \cdot C_2 \cdot S}{L_{kip}} \right) = "
+                    r"\frac{\pi \cdot 1.130 \cdot 5000.000 \ mm}{6000.000 \ mm} \cdot \left( "
+                    r"\sqrt{1 + \frac{\pi^2 \cdot 1000.000 \ mm^2}{6000.000 \ mm^2} "
+                    r"\cdot \left(0.450^2 + 1\right)} + \frac{\pi \cdot 0.450 \cdot 1000.000 \ mm}{6000.000 \ mm} \right) = 4.108 \ -"
+                ),
             ),
             ("short", r"C = 4.108 \ -"),
         ],

@@ -68,14 +68,18 @@ class TestFormNBDotNB9Alpha:
         [
             (
                 "complete",
-                r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
-                r"\max\left(575, \frac{400.000 \cdot 15.000 \cdot 10^{12}}{8.000^3 \cdot 200.000 \cdot 5000.000^2}\right) = 2343.750 \ -",
+                (
+                    r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
+                    r"\max\left(575, \frac{400.000 \cdot 15.000 \cdot 10^{12}}{8.000^3 \cdot 200.000 \cdot 5000.000^2}\right) = 2343.750 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
-                r"\max\left(575, \frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{8.000 \ mm^3 \cdot 200.000 \ mm "
-                r"\cdot 5000.000 \ mm^2}\right) = 2343.750 \ -",
+                (
+                    r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
+                    r"\max\left(575, \frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{8.000 \ mm^3 \cdot 200.000 \ mm "
+                    r"\cdot 5000.000 \ mm^2}\right) = 2343.750 \ -"
+                ),
             ),
             ("short", r"\alpha = 2343.750 \ -"),
         ],
