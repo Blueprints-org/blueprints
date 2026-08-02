@@ -62,8 +62,10 @@ class TestForm5Dot38bCheckRelativeEccentricityRatio:
         [
             (
                 "complete",
-                r"CHECK \to \left(\frac{e_{y}/h_{eq}}{e_{z}/b_{eq}} \leq 0.2 \text{ or } \frac{e_{z}/b_{eq}}{e_{y}/h_{eq}} \leq 0.2 \right) \to"
-                r" \left(\frac{30.000/101.000}{4.000/100.000} \leq 0.2 \text{ or } \frac{4.000/100.000}{30.000/101.000} \leq 0.2 \right) \to OK",
+                (
+                    r"CHECK \to \left(\frac{e_{y}/h_{eq}}{e_{z}/b_{eq}} \leq 0.2 \text{ or } \frac{e_{z}/b_{eq}}{e_{y}/h_{eq}} \leq 0.2 \right) \to"
+                    r" \left(\frac{30.000/101.000}{4.000/100.000} \leq 0.2 \text{ or } \frac{4.000/100.000}{30.000/101.000} \leq 0.2 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

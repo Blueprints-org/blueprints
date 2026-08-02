@@ -57,9 +57,11 @@ class TestFormEDot2MechanicalConnectEfficiencyFactor:
                 1,
                 1000,
                 r"\gamma_1 = 1.00",
-                r"\gamma_1 = \frac{1}{1+\frac{\pi^2 E_1 A_1 s_1}{K_1 l^2}}"
-                r" = \frac{1}{1+\frac{\pi^2 1.00 \cdot 1.00 \cdot 1.00}{1.00 \cdot 1000.00^2}}"
-                r" = 1.00",
+                (
+                    r"\gamma_1 = \frac{1}{1+\frac{\pi^2 E_1 A_1 s_1}{K_1 l^2}}"
+                    r" = \frac{1}{1+\frac{\pi^2 1.00 \cdot 1.00 \cdot 1.00}{1.00 \cdot 1000.00^2}}"
+                    r" = 1.00"
+                ),
             ),
             (
                 3,
@@ -69,9 +71,11 @@ class TestFormEDot2MechanicalConnectEfficiencyFactor:
                 8000,
                 5000,
                 r"\gamma_3 = 0.39",
-                r"\gamma_3 = \frac{1}{1+\frac{\pi^2 E_3 A_3 s_3}{K_3 l^2}}"
-                r" = \frac{1}{1+\frac{\pi^2 8000.00 \cdot 20000.00 \cdot 200.00}{8000.00 \cdot 5000.00^2}}"
-                r" = 0.39",
+                (
+                    r"\gamma_3 = \frac{1}{1+\frac{\pi^2 E_3 A_3 s_3}{K_3 l^2}}"
+                    r" = \frac{1}{1+\frac{\pi^2 8000.00 \cdot 20000.00 \cdot 200.00}{8000.00 \cdot 5000.00^2}}"
+                    r" = 0.39"
+                ),
             ),
             (
                 2,

@@ -153,10 +153,17 @@ class TestSubForm8Dot8nConcreteStress:
                 "complete",
                 (
                     r"\sigma_{td} = \min\left( 3 \cdot f_{cd}, \frac{f_{ctd} + \sigma_{cm}}{y} \right)"
-                    r" = \min\left(3 \cdot 50.00, \frac{2.60 + 15.00}{0.12} \right) = 144.41"
+                    r" = \min\left( 3 \cdot 50.00, \frac{2.60 + 15.00}{0.12} \right) = 144.41 \ MPa"
                 ),
             ),
-            ("short", r"\sigma_{td} = 144.41"),
+            (
+                "complete_with_units",
+                (
+                    r"\sigma_{td} = \min\left( 3 \cdot f_{cd}, \frac{f_{ctd} + \sigma_{cm}}{y} \right)"
+                    r" = \min\left( 3 \cdot 50.00 \ MPa, \frac{2.60 \ MPa + 15.00 \ MPa}{0.12} \right) = 144.41 \ MPa"
+                ),
+            ),
+            ("short", r"\sigma_{td} = 144.41 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -176,6 +183,10 @@ class TestSubForm8Dot8nConcreteStress:
             f_cd=f_cd,
         ).latex()
 
-        actual = {"complete": sub_form_8_8n_2_latex.complete, "short": sub_form_8_8n_2_latex.short}
+        actual = {
+            "complete": sub_form_8_8n_2_latex.complete,
+            "complete_with_units": sub_form_8_8n_2_latex.complete_with_units,
+            "short": sub_form_8_8n_2_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

@@ -2,7 +2,7 @@
 
 import operator
 from abc import ABC, abstractmethod
-from collections.abc import Callable
+from collections.abc import Callable, Iterable, Sequence
 from typing import Self
 
 from blueprints.codes.latex_formula import LatexFormula
@@ -108,7 +108,7 @@ class Formula(float, ABC):
         """
 
 
-class ComparisonFormula(Formula):
+class ComparisonFormula(Formula, ABC):
     """Base class for comparison formulas used in the codes."""
 
     _lhs: float
@@ -211,29 +211,204 @@ class ComparisonFormula(Formula):
     def __bool__(self) -> bool:
         """Return whether the comparison condition is satisfied.
 
-        Returns True if the unity check is less than or equal to 1.0, indicating the condition is satisfied.
+        Returns True if the comparison e.g. lhs <= rhs is satisfied.
         This allows ComparisonFormula instances to be used directly in boolean contexts.
 
         Examples
         --------
         formula = SomeComparisonFormula(...)
-        if formula:  # Equivalent to: if formula.unity_check <= 1.0
+        if formula:  # Equivalent to: if formula.__bool__()
             print("Condition satisfied")
 
         Returns
         -------
         bool
-            True if unity_check <= 1.0 (condition is satisfied), False otherwise.
+            True if the comparison condition is satisfied, False otherwise.
         """
-        return self.unity_check <= 1.0
+        # bool() is required here: if _evaluate_lhs/_evaluate_rhs return numpy floats, the comparison
+        # operator returns a numpy.bool_, and Python requires __bool__ to return a real bool.
+        return bool(self._comparison_operator()(self.lhs, self.rhs))
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
         """Implements the comparison using the class-level operator."""
         lhs = cls._evaluate_lhs(*args, **kwargs)
         rhs = cls._evaluate_rhs(*args, **kwargs)
-        comparison = cls._comparison_operator
-        return comparison()(lhs, rhs)
+        comparison = cls._comparison_operator()
+        return comparison(lhs, rhs)
+
+
+class AggregatedComparisonFormula(ComparisonFormula):
+    """Base class for aggregating comparison formulas used in the codes.
+    Examples: (angle < angle_max) and (height > height_min).
+
+    This class is abstract: it does not implement ``label``, ``source_document`` or ``latex``.
+    A concrete formula that aggregates other comparison formulas should subclass this and provide those,
+    the same way concrete subclasses of :class:`ComparisonFormula` do.
+    """
+
+    def __new__(cls, *args, **kwargs) -> Self:
+        """Method for creating a new instance of the class."""
+        result = cls._evaluate(*args, **kwargs)
+        instance = float.__new__(cls, result)
+        instance._initialized = False  # noqa: SLF001
+        return instance
+
+    def __init__(self, aggregation: Callable[[Iterable[bool]], bool], comparison_formulas: Sequence[ComparisonFormula]) -> None:
+        """Method for initializing a new instance of the class.
+
+        Parameters
+        ----------
+        aggregation : Callable[[Iterable[bool]], bool]
+            Type of aggregation function to be used for the comparison formulas. Must be either all or any.
+        comparison_formulas : Sequence[ComparisonFormula]
+            Sequence of ComparisonFormula instances to be aggregated.
+        """
+        super().__init__()
+        self.aggregation = aggregation
+        self.comparison_formulas = tuple(comparison_formulas)
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[float, float], bool]:
+        """Disabled comparison operator for AggregatedComparisonFormula, as it is not relevant for this class."""
+        raise NotImplementedError("The _comparison_operator is not relevant for AggregatedComparisonFormula.")
+
+    @staticmethod
+    def _evaluate_lhs(*args, **kwargs) -> float:
+        """Disabled evaluation of the left-hand side for AggregatedComparisonFormula, as it is not relevant for this class."""
+        raise NotImplementedError("The _evaluate_lhs is not relevant for AggregatedComparisonFormula.")
+
+    @staticmethod
+    def _evaluate_rhs(*args, **kwargs) -> float:
+        """Disabled evaluation of the right-hand side for AggregatedComparisonFormula, as it is not relevant for this class."""
+        raise NotImplementedError("The _evaluate_rhs is not relevant for AggregatedComparisonFormula.")
+
+    @property
+    def lhs(self) -> float:
+        """Disabled property for getting the left-hand side of the comparison, as it is not relevant for this class."""
+        raise NotImplementedError("The lhs property is not relevant for AggregatedComparisonFormula.")
+
+    @property
+    def rhs(self) -> float:
+        """Disabled property for getting the right-hand side of the comparison, as it is not relevant for this class."""
+        raise NotImplementedError("The rhs property is not relevant for AggregatedComparisonFormula.")
+
+    @property
+    def unity_check(self) -> float:
+        """Property to present the unity check of the formula.
+
+        A unity check is the ratio between the left-hand side (lhs) and right-hand side (rhs) of a comparison formula.
+        For an aggregated comparison formula, the unity check is determined by the aggregation function (all or any)
+        applied to the unity checks of the individual comparison formulas:
+
+        - If aggregation is all, the unity check is the maximum of the unity checks of the individual formulas.
+        - If aggregation is any, the unity check is the minimum of the unity checks of the individual formulas.
+
+        A unity check <= 1 indicates the condition is satisfied. A unity check > 1 indicates the condition is not satisfied.
+
+        Examples
+        --------
+        formula1.unity_check = 0.9
+        formula2.unity_check = 1.1
+
+        aggregated_formula = AggregatedComparisonFormula(all, [formula1, formula2])
+        aggregated_formula.unity_check  # Returns 1.1, as the maximum of the unity checks is taken for 'all' aggregation.
+
+        aggregated_formula = AggregatedComparisonFormula(any, [formula1, formula2])
+        aggregated_formula.unity_check  # Returns 0.9, as the minimum of the unity checks is taken for 'any' aggregation.
+
+        Returns
+        -------
+        float
+            The unity check ratio.
+        """
+        return (
+            max(formula.unity_check for formula in self.comparison_formulas)
+            if self.aggregation is all
+            else min(formula.unity_check for formula in self.comparison_formulas)
+        )
+
+    def __bool__(self) -> bool:
+        """Return whether the aggregated comparison condition is satisfied.
+
+        Returns True if the aggregated comparison condition is satisfied based on the aggregation function (all or any).
+        This allows AggregatedComparisonFormula instances to be used directly in boolean contexts.
+
+        Examples
+        --------
+        formula1 = SomeComparisonFormula(...)
+        formula2 = SomeComparisonFormula(...)
+
+        aggregated_formula = AggregatedComparisonFormula(all, [formula1, formula2])
+        if aggregated_formula:  # Equivalent to: if all(formula1, formula2)
+            print("All conditions satisfied")
+
+        aggregated_formula = AggregatedComparisonFormula(any, [formula1, formula2])
+        if aggregated_formula:  # Equivalent to: if any(formula1, formula2)
+            print("At least one condition satisfied")
+
+        Returns
+        -------
+        bool
+            True if the aggregated condition is satisfied, False otherwise.
+        """
+        return self.aggregation(bool(formula) for formula in self.comparison_formulas)
+
+    @classmethod
+    def _evaluate(
+        cls,
+        aggregation: Callable[[Iterable[bool]], bool] | None = None,
+        comparison_formulas: Sequence[ComparisonFormula] | None = None,
+    ) -> bool:
+        """Implements the comparison using the class-level operator.
+
+        Raises
+        ------
+        ValueError
+            If the aggregation function is not provided or is neither ``all`` nor ``any``.
+            Also raised if no comparison formulas are provided, or if any provided
+            formula is not an instance of :class:`ComparisonFormula`.
+        TypeError
+            If ``comparison_formulas`` is not a re-iterable ``Sequence`` (e.g. a one-shot generator).
+        """
+        if aggregation is None:
+            raise ValueError("Aggregation function must be provided as a keyword argument 'aggregation' or as the first positional argument.")
+        if aggregation not in (all, any):
+            raise ValueError("Aggregation function must be either 'all' or 'any'.")
+        if comparison_formulas is None:
+            raise ValueError("Comparison formulas must be provided as a keyword argument 'comparison_formulas' or as the second positional argument.")
+        if not isinstance(comparison_formulas, Sequence):
+            raise TypeError("comparison_formulas must be a Sequence (e.g. a list or tuple).")
+        if not comparison_formulas:
+            raise ValueError("At least one comparison formula must be provided.")
+        if not all(isinstance(formula, ComparisonFormula) for formula in comparison_formulas):
+            raise ValueError("All provided comparison formulas must be instances of ComparisonFormula.")
+        return aggregation(bool(formula) for formula in comparison_formulas)
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return the latex representation of the aggregated comparison formula.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of decimal places to round the result to.
+
+        Returns
+        -------
+        LatexFormula
+            The latex representation of the formula, given in math mode.
+        """
+        aggregation = r"\ \&\ " if self.aggregation is all else r"\ \text{or}\ "
+        comparison_equations = aggregation.join(formula.latex(n).equation for formula in self.comparison_formulas)
+        comparison_numeric_equations = aggregation.join(formula.latex(n).numeric_equation for formula in self.comparison_formulas)
+        return LatexFormula(
+            return_symbol=r"CHECK",
+            result="OK" if self.__bool__() else "\\text{Not OK}",
+            equation=comparison_equations,
+            numeric_equation=comparison_numeric_equations,
+            comparison_operator_label="\\to",
+            unit="",
+        )
 
 
 class DoubleComparisonFormula(Formula):

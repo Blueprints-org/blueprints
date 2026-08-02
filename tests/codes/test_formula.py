@@ -4,9 +4,10 @@ import operator
 from collections.abc import Callable
 from typing import Any
 
+import numpy as np
 import pytest
 
-from blueprints.codes.formula import ComparisonFormula, DoubleComparisonFormula, Formula
+from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula, DoubleComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula
 
 
@@ -340,6 +341,88 @@ def test_comparison_formula_equal_unity_check_property() -> None:
     assert formula.unity_check == 1.0
 
 
+def test_comparison_formula_bool_with_negative_values_le() -> None:
+    """Test __bool__ for the <= operator with negative lhs and/or rhs values.
+
+    A unity_check-based bool (lhs / rhs <= 1.0) silently flips when dividing by a negative
+    number, so these cases would misreport pass/fail under that old implementation.
+    """
+    # lhs=-10, rhs=-5: -10 <= -5 is True. unity_check = -10 / -5 = 2.0, which a
+    # unity_check-based bool would wrongly read as "not satisfied".
+    formula = ComparisonFormulaTestLessOrEqual(a=-10, b=0, c=-10)
+    assert formula.lhs == -10
+    assert formula.rhs == -5
+    assert bool(formula) is True
+
+    # lhs=10, rhs=-5: 10 <= -5 is False. unity_check = 10 / -5 = -2.0, which a
+    # unity_check-based bool would wrongly read as "satisfied".
+    formula = ComparisonFormulaTestLessOrEqual(a=10, b=0, c=-10)
+    assert formula.lhs == 10
+    assert formula.rhs == -5
+    assert bool(formula) is False
+
+    # lhs=-10, rhs=5: -10 <= 5 is True.
+    formula = ComparisonFormulaTestLessOrEqual(a=-10, b=0, c=10)
+    assert formula.lhs == -10
+    assert formula.rhs == 5
+    assert bool(formula) is True
+
+
+def test_comparison_formula_bool_with_negative_values_ge() -> None:
+    """Test __bool__ for the >= operator with negative lhs and/or rhs values."""
+    # lhs=-5, rhs=-10: -5 >= -10 is True.
+    formula = ComparisonFormulaTestGreaterOrEqual(a=-5, b=0, c=-20)
+    assert formula.lhs == -5
+    assert formula.rhs == -10
+    assert bool(formula) is True
+
+    # lhs=-20, rhs=-5: -20 >= -5 is False. unity_check = rhs / lhs = -5 / -20 = 0.25, which a
+    # unity_check-based bool would wrongly read as "satisfied".
+    formula = ComparisonFormulaTestGreaterOrEqual(a=-20, b=0, c=-10)
+    assert formula.lhs == -20
+    assert formula.rhs == -5
+    assert bool(formula) is False
+
+
+def test_comparison_formula_bool_with_negative_values_eq() -> None:
+    """Test __bool__ for the == operator with negative lhs and/or rhs values."""
+    # lhs=-10, rhs=-10: equal.
+    formula = ComparisonFormulaTestEqual(a=-15, b=5, c=-20)
+    assert formula.lhs == -10
+    assert formula.rhs == -10
+    assert bool(formula) is True
+
+    # lhs=-10, rhs=-5: not equal.
+    formula = ComparisonFormulaTestEqual(a=-15, b=5, c=-10)
+    assert formula.lhs == -10
+    assert formula.rhs == -5
+    assert bool(formula) is False
+
+
+def test_comparison_formula_bool_with_numpy_floats_returns_real_bool() -> None:
+    """Test that __bool__ returns a real Python bool even when lhs/rhs are numpy floats.
+
+    When _evaluate_lhs/_evaluate_rhs return numpy floats (e.g. from np.sqrt, np.tan, etc.),
+    operator.le/.ge/.eq on them returns numpy.bool_ rather than bool. Python requires __bool__
+    to return an actual bool, so without an explicit bool() cast this raises:
+    TypeError: __bool__ should return bool, returned numpy.bool_
+    """
+    a = np.float64(5.0)
+    b = np.float64(5.0)
+    c = np.float64(20.0)
+
+    # Sanity check that the raw comparison operator indeed returns numpy.bool_, not bool.
+    raw_comparison_result = ComparisonFormulaTestLessOrEqual._comparison_operator()(a + b, c / 2)  # noqa: SLF001
+    assert isinstance(raw_comparison_result, np.bool_)
+    assert not isinstance(raw_comparison_result, bool)
+
+    formula = ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
+
+    result = bool(formula)
+
+    assert result is True
+
+
 # Helper function to create dynamic test classes for DoubleComparisonFormula
 def _create_double_comparison_formula_test_class(
     comp_op_lhs: Callable[[float, float], bool], comp_op_rhs: Callable[[float, float], bool], comp_op_ids: str = ""
@@ -570,3 +653,439 @@ def test_double_comparison_formula_invalid_operators(
 
     with pytest.raises(ValueError, match="must point in the same direction"):
         formula_class(a=10, b=20, c=30)
+
+
+class AggregatedComparisonFormulaTest(AggregatedComparisonFormula):
+    """Dummy aggregated comparison formula for testing purposes.
+
+    Relies on the concrete ``latex`` implementation of ``AggregatedComparisonFormula`` itself
+    (no override here), so that implementation is what gets exercised by the latex tests below.
+    """
+
+    label = "Dummy testing aggregated comparison formula"
+    source_document = "Dummy testing document"
+
+
+class ComparisonFormulaTestLatexLessOrEqual(ComparisonFormula):
+    """Dummy comparison formula with a realistic latex representation (<=), for testing AggregatedComparisonFormula.latex."""
+
+    label = "Dummy testing comparison formula (latex, <=)"
+    source_document = "Dummy testing document"
+
+    def __init__(self, x: float, y: float) -> None:
+        """Dummy comparison formula for testing purposes."""
+        super().__init__()
+        self.x = x
+        self.y = y
+
+    @staticmethod
+    def _evaluate_lhs(x: float, **_) -> float:
+        """Left-hand side value of the comparison."""
+        return x
+
+    @staticmethod
+    def _evaluate_rhs(y: float, **_) -> float:
+        """Right-hand side value of the comparison."""
+        return y
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
+        return operator.le
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(
+            return_symbol="CHECK_X",
+            result="OK" if bool(self) else r"\text{Not OK}",
+            equation=r"X \leq Y",
+            numeric_equation=rf"{self.x:.{n}f} \leq {self.y:.{n}f}",
+            comparison_operator_label=r"\to",
+        )
+
+
+class ComparisonFormulaTestLatexGreaterOrEqual(ComparisonFormula):
+    """Dummy comparison formula with a realistic latex representation (>=), for testing AggregatedComparisonFormula.latex."""
+
+    label = "Dummy testing comparison formula (latex, >=)"
+    source_document = "Dummy testing document"
+
+    def __init__(self, x: float, y: float) -> None:
+        """Dummy comparison formula for testing purposes."""
+        super().__init__()
+        self.x = x
+        self.y = y
+
+    @staticmethod
+    def _evaluate_lhs(x: float, **_) -> float:
+        """Left-hand side value of the comparison."""
+        return x
+
+    @staticmethod
+    def _evaluate_rhs(y: float, **_) -> float:
+        """Right-hand side value of the comparison."""
+        return y
+
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Abstract property for the comparison operator (e.g., operator.le, operator.ge, etc.)."""
+        return operator.ge
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Dummy latex implementation for testing purposes."""
+        return LatexFormula(
+            return_symbol="CHECK_Y",
+            result="OK" if bool(self) else r"\text{Not OK}",
+            equation=r"X \geq Y",
+            numeric_equation=rf"{self.x:.{n}f} \geq {self.y:.{n}f}",
+            comparison_operator_label=r"\to",
+        )
+
+
+class TestAggregatedComparisonFormula:
+    """Test class for AggregatedComparisonFormula."""
+
+    def _le(self, a: float, b: float, c: float) -> ComparisonFormulaTestLessOrEqual:
+        """Helper function to create a ComparisonFormulaTestLessOrEqual instance.
+
+        Reuses the ComparisonFormulaTestLessOrEqual class defined above,
+        which implements a comparison formula with the <= operator.
+
+        # _le(a, b, c): lhs = a+b, rhs = c/2  →  passes when a+b <= c/2
+        """
+        return ComparisonFormulaTestLessOrEqual(a=a, b=b, c=c)
+
+    def _ge(self, a: float, b: float, c: float) -> ComparisonFormulaTestGreaterOrEqual:
+        """Helper function to create a ComparisonFormulaTestGreaterOrEqual instance.
+
+        Reuses the ComparisonFormulaTestGreaterOrEqual class defined above,
+        which implements a comparison formula with the >= operator.
+
+        # _ge(a, b, c): lhs = a+b, rhs = c/2  →  passes when a+b >= c/2
+        """
+        return ComparisonFormulaTestGreaterOrEqual(a=a, b=b, c=c)
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_no_aggregation(self) -> None:
+        """Test that ValueError is raised when no aggregation function is provided."""
+        with pytest.raises(ValueError, match="Aggregation function must be provided"):
+            AggregatedComparisonFormula._evaluate(comparison_formulas=[self._le(1, 1, 10)])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_aggregation_is_none(self) -> None:
+        """Test that ValueError is raised when aggregation is explicitly None."""
+        with pytest.raises(ValueError, match="Aggregation function must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=None, comparison_formulas=[self._le(1, 1, 10)])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_invalid_aggregation(self) -> None:
+        """Test that ValueError is raised when aggregation is not 'all' or 'any'."""
+        with pytest.raises(ValueError, match="Aggregation function must be either 'all' or 'any'"):
+            AggregatedComparisonFormula._evaluate(aggregation=sum, comparison_formulas=[self._le(1, 1, 10)])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_no_comparison_formulas(self) -> None:
+        """Test that ValueError is raised when no comparison_formulas are provided."""
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=all)  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_comparison_formulas_is_none(self) -> None:
+        """Test that ValueError is raised when comparison_formulas is explicitly None."""
+        with pytest.raises(ValueError, match="Comparison formulas must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=None)  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_comparison_formulas_is_empty(self) -> None:
+        """Test that ValueError is raised when comparison_formulas is empty."""
+        with pytest.raises(ValueError, match="At least one comparison formula must be provided"):
+            AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=[])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_positional_argument_count_is_not_two(self) -> None:
+        """Test that TypeError is raised when more than two positional arguments are provided."""
+        formula = self._le(1, 1, 10)
+
+        with pytest.raises(TypeError):
+            AggregatedComparisonFormula._evaluate(all, formula, formula)  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_not_comparison_formula_instances(self) -> None:
+        """Test that ValueError is raised when comparison_formulas contains non-ComparisonFormula instances."""
+        with pytest.raises(ValueError, match="All provided comparison formulas must be instances of ComparisonFormula"):
+            AggregatedComparisonFormula._evaluate(aggregation=all, comparison_formulas=[1.0, 2.0])  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_accepts_positional_formulas(self) -> None:
+        """Test that comparison formulas can be provided as positional arguments."""
+        passing_formula = self._le(1, 1, 10)
+        failing_formula = self._le(4, 1, 4)
+
+        result = AggregatedComparisonFormula._evaluate(all, (passing_formula, failing_formula))  # noqa: SLF001
+
+        assert result is False
+
+    def test_aggregated_comparison_formula_rejects_one_shot_iterable_for_comparison_formulas(self) -> None:
+        """Test that a one-shot iterable (e.g. a generator) is rejected rather than silently mishandled.
+
+        comparison_formulas is iterated more than once (during validation/evaluation, and again on every
+        unity_check access), so a one-shot iterable would silently be exhausted after the first pass,
+        producing wrong results instead of a clear error.
+        """
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(10, 1, 4)
+
+        with pytest.raises(TypeError, match="must be a Sequence"):
+            AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=(f for f in (f1, f2)))
+
+    def test_aggregated_comparison_formula_evaluate_raises_when_formulas_precede_keyword_aggregation(self) -> None:
+        """Test that formulas cannot precede a keyword aggregation argument."""
+        passing_formula = self._le(1, 1, 10)
+        failing_formula = self._le(4, 1, 4)
+
+        with pytest.raises(TypeError):
+            AggregatedComparisonFormula._evaluate(  # noqa: SLF001
+                [passing_formula, failing_formula],
+                aggregation=all,
+            )
+
+    def test_aggregated_comparison_formula_all_three_formulas_all_pass(self) -> None:
+        """Test AggregatedComparisonFormula with 'all' when all three formulas pass."""
+        # All lhs <= rhs: 1+1=2 <= 10/2=5  ✓
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(2, 1, 10)
+        f3 = self._le(1, 2, 10)
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2, f3])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_all_three_formulas_one_fails(self) -> None:
+        """Test AggregatedComparisonFormula with 'all' when one of three formulas fails."""
+        # f3 fails: 4+1=5 > 4/2=2  →  not (lhs <= rhs)
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(2, 1, 10)
+        f3 = self._ge(4, 1, 12)  # lhs=5, rhs=6  →  fails
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2, f3])
+        assert not formula
+        assert bool(formula) is False
+
+    def test_aggregated_comparison_formula_all_three_formulas_unity_check_is_max(self) -> None:
+        """Test that unity_check for 'all' aggregation is the maximum of individual unity checks."""
+        # f1: lhs=2, rhs=5  →  uc=0.4
+        # f2: lhs=3, rhs=5  →  uc=0.6
+        # f3: lhs=4, rhs=5  →  uc=0.8  ← maximum
+        f1 = self._le(1, 1, 10)  # lhs=2, rhs=5, uc=0.4
+        f2 = self._le(2, 1, 10)  # lhs=3, rhs=5, uc=0.6
+        f3 = self._le(3, 1, 10)  # lhs=4, rhs=5, uc=0.8
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2, f3])
+        assert formula.unity_check == pytest.approx(0.8)
+
+    def test_aggregated_comparison_formula_any_three_formulas_all_fail(self) -> None:
+        """Test AggregatedComparisonFormula with 'any' when all three formulas fail."""
+        # All fail: lhs > rhs
+        f1 = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
+        f2 = self._le(10, 2, 4)  # lhs=12, rhs=2  →  fails
+        f3 = self._le(10, 3, 4)  # lhs=13, rhs=2  →  fails
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
+        assert not formula
+        assert bool(formula) is False
+
+    def test_aggregated_comparison_formula_any_three_formulas_one_passes(self) -> None:
+        """Test AggregatedComparisonFormula with 'any' when one of three formulas passes."""
+        # f1 passes, f2 and f3 fail
+        f1 = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
+        f2 = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
+        f3 = self._le(10, 3, 4)  # lhs=13, rhs=2  →  fails
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_bool_with_negative_values_all_passes(self) -> None:
+        """Test 'all' aggregation bool with negative lhs/rhs values, where each sub-formula passes."""
+        f1 = self._le(-10, 0, -10)  # lhs=-10, rhs=-5  →  -10 <= -5 True
+        f2 = self._ge(-5, 0, -20)  # lhs=-5, rhs=-10  →  -5 >= -10 True
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_bool_with_negative_values_all_fails(self) -> None:
+        """Test 'all' aggregation bool with negative lhs/rhs values, where one sub-formula fails."""
+        f1 = self._le(-10, 0, -10)  # lhs=-10, rhs=-5  →  -10 <= -5 True
+        f2 = self._le(10, 0, -10)  # lhs=10, rhs=-5  →  10 <= -5 False
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2])
+        assert not formula
+        assert bool(formula) is False
+
+    def test_aggregated_comparison_formula_bool_with_negative_values_any_passes(self) -> None:
+        """Test 'any' aggregation bool with negative lhs/rhs values, where one sub-formula passes."""
+        f1 = self._le(10, 0, -10)  # lhs=10, rhs=-5  →  10 <= -5 False
+        f2 = self._le(-10, 0, -10)  # lhs=-10, rhs=-5  →  -10 <= -5 True
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2])
+        assert formula
+        assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_any_three_formulas_unity_check_is_min(self) -> None:
+        """Test that unity_check for 'any' aggregation is the minimum of individual unity checks."""
+        # f1: lhs=2, rhs=5  →  uc=0.4  ← minimum
+        # f2: lhs=3, rhs=5  →  uc=0.6
+        # f3: lhs=4, rhs=5  →  uc=0.8
+        f1 = self._le(1, 1, 10)
+        f2 = self._le(2, 1, 10)
+        f3 = self._le(3, 1, 10)
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
+        assert formula.unity_check == pytest.approx(0.4)
+
+    def test_aggregated_comparison_formula_lhs_raises(self) -> None:
+        """Test that accessing lhs raises NotImplementedError."""
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
+        with pytest.raises(NotImplementedError):
+            _ = formula.lhs
+
+    def test_aggregated_comparison_formula_rhs_raises(self) -> None:
+        """Test that accessing rhs raises NotImplementedError."""
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[self._le(1, 1, 10)])
+        with pytest.raises(NotImplementedError):
+            _ = formula.rhs
+
+    def test_aggregated_comparison_formula_comparison_operator_raises(self) -> None:
+        """Test that calling _comparison_operator raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_comparison_operator is not relevant"):
+            AggregatedComparisonFormula._comparison_operator()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_lhs_raises(self) -> None:
+        """Test that calling _evaluate_lhs raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_evaluate_lhs is not relevant"):
+            AggregatedComparisonFormula._evaluate_lhs()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_evaluate_rhs_raises(self) -> None:
+        """Test that calling _evaluate_rhs raises NotImplementedError."""
+        with pytest.raises(NotImplementedError, match="_evaluate_rhs is not relevant"):
+            AggregatedComparisonFormula._evaluate_rhs()  # noqa: SLF001
+
+    def test_aggregated_comparison_formula_all_of_any_and_all_passes(self) -> None:
+        """Test 'all' aggregation of one 'any' and one 'all' AggregatedComparisonFormula — all pass.
+
+        Composite structure:
+            outer_all(
+                inner_any(f_pass, f_fail),   # True  (any passes)
+                inner_all(f_pass, f_pass),   # True  (all pass)
+            )
+        Expected: True
+        """
+        f_pass = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
+        f_fail = self._le(10, 1, 4)  # lhs=11, rhs=2 →  fails
+
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_pass])
+
+        outer = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[inner_any, inner_all])
+        assert outer
+        assert bool(outer) is True
+
+    def test_aggregated_comparison_formula_all_of_any_and_all_fails_when_inner_all_fails(self) -> None:
+        """Test 'all' aggregation fails when the inner 'all' has a failing formula.
+
+        Composite structure:
+            outer_all(
+                inner_any(f_pass, f_fail),   # True
+                inner_all(f_pass, f_fail),   # False  ← one fails
+            )
+        Expected: False
+        """
+        f_pass = self._le(1, 1, 10)
+        f_fail = self._le(10, 1, 4)
+
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_fail])
+
+        outer = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[inner_any, inner_all])
+        assert not outer
+        assert bool(outer) is False
+
+    def test_aggregated_comparison_formula_any_of_any_and_all_passes_when_one_inner_passes(self) -> None:
+        """Test 'any' aggregation of one 'any' and one 'all' AggregatedComparisonFormula — passes when at least one inner passes.
+
+        Composite structure:
+            outer_any(
+                inner_any(f_pass, f_fail),   # True  ← at least one passes
+                inner_all(f_pass, f_fail),   # False
+            )
+        Expected: True
+        """
+        f_pass = self._le(1, 1, 10)
+        f_fail = self._le(10, 1, 4)
+
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_pass, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_fail])
+
+        outer = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[inner_any, inner_all])
+        assert outer
+        assert bool(outer) is True
+
+    def test_aggregated_comparison_formula_any_of_any_and_all_fails_when_all_inner_fail(self) -> None:
+        """Test 'any' aggregation fails when both inner formulas fail.
+
+        Composite structure:
+            outer_any(
+                inner_any(f_fail, f_fail),   # False
+                inner_all(f_pass, f_fail),   # False
+            )
+        Expected: False
+        """
+        f_pass = self._le(1, 1, 10)
+        f_fail = self._le(10, 1, 4)
+
+        inner_any = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f_fail, f_fail])
+        inner_all = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f_pass, f_fail])
+
+        outer = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[inner_any, inner_all])
+        assert not outer
+        assert bool(outer) is False
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to X \leq Y\ \&\ X \geq Y \to 10.000 \leq 20.000\ \&\ 15.000 \geq 10.000 \to OK",
+            ),
+            ("short", r"CHECK \to OK"),
+            (
+                "complete_with_units",
+                r"CHECK \to X \leq Y\ \&\ X \geq Y \to 10.000 \leq 20.000\ \&\ 15.000 \geq 10.000 \to OK",
+            ),
+        ],
+    )
+    def test_latex_all_aggregation_all_pass(self, representation: str, expected: str) -> None:
+        """Test the latex representation for 'all' aggregation when every sub-formula passes."""
+        # f1: 10 <= 20 -> True, f2: 15 >= 10 -> True
+        f1 = ComparisonFormulaTestLatexLessOrEqual(x=10, y=20)
+        f2 = ComparisonFormulaTestLatexGreaterOrEqual(x=15, y=10)
+        formula = AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[f1, f2])
+
+        latex = formula.latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+            "complete_with_units": latex.complete_with_units,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            (
+                "complete",
+                r"CHECK \to X \leq Y\ \text{or}\ X \geq Y \to 30.000 \leq 20.000\ \text{or}\ 5.000 \geq 10.000 \to \text{Not OK}",
+            ),
+            ("short", r"CHECK \to \text{Not OK}"),
+        ],
+    )
+    def test_latex_any_aggregation_all_fail(self, representation: str, expected: str) -> None:
+        """Test the latex representation for 'any' aggregation when every sub-formula fails."""
+        # f1: 30 <= 20 -> False, f2: 5 >= 10 -> False
+        f1 = ComparisonFormulaTestLatexLessOrEqual(x=30, y=20)
+        f2 = ComparisonFormulaTestLatexGreaterOrEqual(x=5, y=10)
+        formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2])
+
+        latex = formula.latex()
+
+        actual = {
+            "complete": latex.complete,
+            "short": latex.short,
+        }
+
+        assert expected == actual[representation], f"{representation} representation failed."

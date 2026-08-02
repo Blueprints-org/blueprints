@@ -15,10 +15,10 @@ Total of 108 formulas present.
 
 | Formula number |        Done        | Remarks | Object name                                                                       |         NL         |
 |:---------------|:------------------:|:--------|:----------------------------------------------------------------------------------|:------------------:|
-| 2.1            |        :x:         |         |                                                                                   |        :x:         |
+| 2.1            | :heavy_check_mark: |         | Form2Dot1DesignValueResistance                                                    |        :x:         |
 | 2.2            | :heavy_check_mark: |         | Form2Dot2CharacteristicValueResistance                                            |        :x:         |
 | 5.1            | :heavy_check_mark: |         | Form5Dot1CriteriumDisregardSecondOrderEffects                                     | :heavy_check_mark: |
-| 5.2            |        :x:         |         |                                                                                   |        :x:         |
+| 5.2            | :heavy_check_mark: |         | Form5Dot2ElasticCriticalBucklingFactor                                            |        :x:         |
 | 5.3            |        :x:         |         |                                                                                   |        :x:         |
 | 5.4            |        :x:         |         |                                                                                   |        :x:         |
 | 5.5            |        :x:         |         |                                                                                   |        :x:         |
@@ -90,8 +90,8 @@ Total of 108 formulas present.
 | 6.51           |        :x:         |         |                                                                                   |        :x:         |
 | 6.52           |        :x:         |         |                                                                                   |        :x:         |
 | 6.53           |        :x:         |         |                                                                                   |        :x:         |
-| 6.54           |        :x:         |         |                                                                                   |        :x:         |
-| 6.55           |        :x:         |         |                                                                                   |        :x:         |
+| 6.54           | :heavy_check_mark: |         | Form6Dot54BucklingResistanceOfMembersInBending                                    |        :x:         |
+| 6.55           | :heavy_check_mark: |         | Form6Dot55DesignBucklingResistanceMoment                                          |        :x:         |
 | 6.56           |        :x:         |         |                                                                                   |        :x:         |
 | 6.57           |        :x:         |         |                                                                                   |        :x:         |
 | 6.58           |        :x:         |         |                                                                                   |        :x:         |
