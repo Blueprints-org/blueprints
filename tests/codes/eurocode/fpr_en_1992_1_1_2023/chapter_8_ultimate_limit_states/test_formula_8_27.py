@@ -62,17 +62,21 @@ class TestForm8Dot27DesignShearStressResistance:
         [
             (
                 "complete",
-                r"\tau_{Rd,c} = \max\left(\frac{0.66}{\gamma_V} \cdot \left(100 \cdot \rho_l \cdot f_{ck} \cdot "
-                r"\frac{d_{dg}}{d}\right)^{\frac{1}{3}}, \tau_{Rdc,min}\right) = "
-                r"\max\left(\frac{0.66}{1.400} \cdot \left(100 \cdot 0.010 \cdot 30.000 \cdot "
-                r"\frac{32.000}{500.000}\right)^{\frac{1}{3}}, 0.522\right) = 0.586 \ MPa",
+                (
+                    r"\tau_{Rd,c} = \max\left(\frac{0.66}{\gamma_V} \cdot \left(100 \cdot \rho_l \cdot f_{ck} \cdot "
+                    r"\frac{d_{dg}}{d}\right)^{\frac{1}{3}}, \tau_{Rdc,min}\right) = "
+                    r"\max\left(\frac{0.66}{1.400} \cdot \left(100 \cdot 0.010 \cdot 30.000 \cdot "
+                    r"\frac{32.000}{500.000}\right)^{\frac{1}{3}}, 0.522\right) = 0.586 \ MPa"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rd,c} = \max\left(\frac{0.66}{\gamma_V} \cdot \left(100 \cdot \rho_l \cdot f_{ck} \cdot "
-                r"\frac{d_{dg}}{d}\right)^{\frac{1}{3}}, \tau_{Rdc,min}\right) = "
-                r"\max\left(\frac{0.66}{1.400} \cdot \left(100 \cdot 0.010 \cdot 30.000 \ MPa \cdot "
-                r"\frac{32.000 \ mm}{500.000 \ mm}\right)^{\frac{1}{3}}, 0.522 \ MPa\right) = 0.586 \ MPa",
+                (
+                    r"\tau_{Rd,c} = \max\left(\frac{0.66}{\gamma_V} \cdot \left(100 \cdot \rho_l \cdot f_{ck} \cdot "
+                    r"\frac{d_{dg}}{d}\right)^{\frac{1}{3}}, \tau_{Rdc,min}\right) = "
+                    r"\max\left(\frac{0.66}{1.400} \cdot \left(100 \cdot 0.010 \cdot 30.000 \ MPa \cdot "
+                    r"\frac{32.000 \ mm}{500.000 \ mm}\right)^{\frac{1}{3}}, 0.522 \ MPa\right) = 0.586 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Rd,c} = 0.586 \ MPa"),
         ],

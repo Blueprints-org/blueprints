@@ -58,8 +58,10 @@ class TestForm5Dot30TotalDesignMoment:
         [
             (
                 "complete",
-                r"M_{Ed} = \frac{M_{0Ed}}{1 - \left(\frac{N_{Ed}}{N_{B}}\right)} = "
-                r"\frac{50.000}{1 - \left(\frac{100.000}{200.000}\right)} = 100.000 \ kNm",
+                (
+                    r"M_{Ed} = \frac{M_{0Ed}}{1 - \left(\frac{N_{Ed}}{N_{B}}\right)} = "
+                    r"\frac{50.000}{1 - \left(\frac{100.000}{200.000}\right)} = 100.000 \ kNm"
+                ),
             ),
             ("short", r"M_{Ed} = 100.000 \ kNm"),
         ],

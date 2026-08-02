@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_25 import (
     Form8Dot25EffectiveDepthFromPrincipalShearForce,
 )
-from blueprints.validations import NegativeValueError
+from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm8Dot25EffectiveDepthFromPrincipalShearForce:
@@ -62,13 +62,17 @@ class TestForm8Dot25EffectiveDepthFromPrincipalShearForce:
         [
             (
                 "complete",
-                r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
-                r"300.000 \cdot \cos^2(45.000) + 250.000 \cdot \sin^2(45.000) = 275.000 \ mm",
+                (
+                    r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
+                    r"300.000 \cdot \cos^2(45.000) + 250.000 \cdot \sin^2(45.000) = 275.000 \ mm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
-                r"300.000 \ mm \cdot \cos^2(45.000 \ degrees) + 250.000 \ mm \cdot \sin^2(45.000 \ degrees) = 275.000 \ mm",
+                (
+                    r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
+                    r"300.000 \ mm \cdot \cos^2(45.000 \ degrees) + 250.000 \ mm \cdot \sin^2(45.000 \ degrees) = 275.000 \ mm"
+                ),
             ),
             ("short", r"d = 275.000 \ mm"),
         ],
@@ -90,3 +94,34 @@ class TestForm8Dot25EffectiveDepthFromPrincipalShearForce:
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
+
+    @pytest.mark.parametrize(
+        ("v_ed_x", "v_ed_y", "expected_alpha_v"),
+        [
+            (100.0, 57.735, 30.0),
+            (100.0, 100.0, 45.0),
+            (-100.0, -57.735, 30.0),  # the angle is taken on the magnitudes
+        ],
+    )
+    def test_angle_from_the_shear_forces(self, v_ed_x: float, v_ed_y: float, expected_alpha_v: float) -> None:
+        """Leaving out the angle has Formula (8.26) supply it from the two shear forces."""
+        formula = Form8Dot25EffectiveDepthFromPrincipalShearForce(d_x=450.0, d_y=350.0, v_ed_x=v_ed_x, v_ed_y=v_ed_y)
+        directly = Form8Dot25EffectiveDepthFromPrincipalShearForce(d_x=450.0, d_y=350.0, alpha_v=expected_alpha_v)
+
+        assert formula.alpha_v == pytest.approx(expected=expected_alpha_v, rel=1e-6)
+        assert float(formula) == pytest.approx(expected=float(directly), rel=1e-6)
+
+    def test_raise_error_when_neither_the_angle_nor_the_shear_forces_are_given(self) -> None:
+        """One of the two ways of supplying the angle is required."""
+        with pytest.raises(ValueError, match="must be given"):
+            Form8Dot25EffectiveDepthFromPrincipalShearForce(d_x=450.0, d_y=350.0)
+
+    def test_raise_error_when_the_shear_force_in_the_x_direction_is_zero(self) -> None:
+        """Formula (8.26) divides by it, so zero leaves the angle undefined."""
+        with pytest.raises(LessOrEqualToZeroError):
+            Form8Dot25EffectiveDepthFromPrincipalShearForce(d_x=450.0, d_y=350.0, v_ed_x=0.0, v_ed_y=57.735)
+
+    def test_raise_error_when_the_angle_exceeds_90_degrees(self) -> None:
+        """Formula (8.26) is an arctangent of two magnitudes, so it can never exceed 90 degrees."""
+        with pytest.raises(GreaterThan90Error):
+            Form8Dot25EffectiveDepthFromPrincipalShearForce(d_x=450.0, d_y=350.0, alpha_v=120.0)

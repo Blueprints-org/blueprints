@@ -45,8 +45,10 @@ class TestForm7Dot10RhoPEff:
         [
             (
                 "complete",
-                r"\rho_{p,eff} = \frac{A_s + \xi_1 \cdot A'_p}{A_{c,eff}} = "
-                r"\frac{1500.000 + 0.723 \cdot 1200.000}{25000.000} = 0.095 \ -",
+                (
+                    r"\rho_{p,eff} = \frac{A_s + \xi_1 \cdot A'_p}{A_{c,eff}} = "
+                    r"\frac{1500.000 + 0.723 \cdot 1200.000}{25000.000} = 0.095 \ -"
+                ),
             ),
             ("short", r"\rho_{p,eff} = 0.095 \ -"),
         ],
