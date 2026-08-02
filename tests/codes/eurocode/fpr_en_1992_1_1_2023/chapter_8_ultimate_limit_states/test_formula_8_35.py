@@ -60,15 +60,19 @@ class TestForm8Dot35MaximumShearStressResistance:
         [
             (
                 "complete",
-                r"\tau_{Rdc,max} = \min\left(2.15 \cdot \tau_{Rdc,0} \cdot \left(\frac{a_{cs,0}}{d}\right)^{\frac{1}{6}}, "
-                r"2.7 \cdot \tau_{Rdc,0}\right) = \min\left(2.15 \cdot 0.586 \cdot "
-                r"\left(\frac{1333.333}{500.000}\right)^{\frac{1}{6}}, 2.7 \cdot 0.586\right) = 1.483 \ MPa",
+                (
+                    r"\tau_{Rdc,max} = \min\left(2.15 \cdot \tau_{Rdc,0} \cdot \left(\frac{a_{cs,0}}{d}\right)^{\frac{1}{6}}, "
+                    r"2.7 \cdot \tau_{Rdc,0}\right) = \min\left(2.15 \cdot 0.586 \cdot "
+                    r"\left(\frac{1333.333}{500.000}\right)^{\frac{1}{6}}, 2.7 \cdot 0.586\right) = 1.483 \ MPa"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rdc,max} = \min\left(2.15 \cdot \tau_{Rdc,0} \cdot \left(\frac{a_{cs,0}}{d}\right)^{\frac{1}{6}}, "
-                r"2.7 \cdot \tau_{Rdc,0}\right) = \min\left(2.15 \cdot 0.586 \ MPa \cdot "
-                r"\left(\frac{1333.333 \ mm}{500.000 \ mm}\right)^{\frac{1}{6}}, 2.7 \cdot 0.586 \ MPa\right) = 1.483 \ MPa",
+                (
+                    r"\tau_{Rdc,max} = \min\left(2.15 \cdot \tau_{Rdc,0} \cdot \left(\frac{a_{cs,0}}{d}\right)^{\frac{1}{6}}, "
+                    r"2.7 \cdot \tau_{Rdc,0}\right) = \min\left(2.15 \cdot 0.586 \ MPa \cdot "
+                    r"\left(\frac{1333.333 \ mm}{500.000 \ mm}\right)^{\frac{1}{6}}, 2.7 \cdot 0.586 \ MPa\right) = 1.483 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Rdc,max} = 1.483 \ MPa"),
         ],

@@ -42,8 +42,10 @@ class TestForm5Dot38aCheckRelativeSlendernessRatio:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{\lambda_{y}}{\lambda_{z}} \leq 2 \text{ and } \frac{\lambda_{z}}{\lambda_{y}} \leq 2 \right) \to "
-                r"\left( \frac{1.000}{1.500} \leq 2 \text{ and } \frac{1.500}{1.000} \leq 2 \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{\lambda_{y}}{\lambda_{z}} \leq 2 \text{ and } \frac{\lambda_{z}}{\lambda_{y}} \leq 2 \right) \to "
+                    r"\left( \frac{1.000}{1.500} \leq 2 \text{ and } \frac{1.500}{1.000} \leq 2 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

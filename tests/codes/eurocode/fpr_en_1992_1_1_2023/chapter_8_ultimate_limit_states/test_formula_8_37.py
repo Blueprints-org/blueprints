@@ -65,14 +65,18 @@ class TestForm8Dot37ReinforcementRatioPrestressedMembers:
         [
             (
                 "complete",
-                r"\rho_l = \frac{d_s \cdot A_s + d_p \cdot A_p}{b_w \cdot \left(d\right)^2} = "
-                r"\frac{500.000 \cdot 1500.000 + 450.000 \cdot 800.000}{300.000 \cdot \left(483.784\right)^2} = 0.016 \ -",
+                (
+                    r"\rho_l = \frac{d_s \cdot A_s + d_p \cdot A_p}{b_w \cdot \left(d\right)^2} = "
+                    r"\frac{500.000 \cdot 1500.000 + 450.000 \cdot 800.000}{300.000 \cdot \left(483.784\right)^2} = 0.016 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\rho_l = \frac{d_s \cdot A_s + d_p \cdot A_p}{b_w \cdot \left(d\right)^2} = "
-                r"\frac{500.000 \ mm \cdot 1500.000 \ mm^2 + 450.000 \ mm \cdot 800.000 \ mm^2}"
-                r"{300.000 \ mm \cdot \left(483.784 \ mm\right)^2} = 0.016 \ -",
+                (
+                    r"\rho_l = \frac{d_s \cdot A_s + d_p \cdot A_p}{b_w \cdot \left(d\right)^2} = "
+                    r"\frac{500.000 \ mm \cdot 1500.000 \ mm^2 + 450.000 \ mm \cdot 800.000 \ mm^2}"
+                    r"{300.000 \ mm \cdot \left(483.784 \ mm\right)^2} = 0.016 \ -"
+                ),
             ),
             ("short", r"\rho_l = 0.016 \ -"),
         ],

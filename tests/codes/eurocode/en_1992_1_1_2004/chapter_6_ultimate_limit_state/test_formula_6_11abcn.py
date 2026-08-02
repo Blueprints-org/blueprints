@@ -72,12 +72,14 @@ class TestForm6Dot11abcnCompressionChordCoefficient:
         [
             (
                 "complete",
-                r"\alpha_{cw} = \begin{cases} 1 + \frac{\sigma_{cp}}{f_{cd}} & \text{if } 0 \lt \sigma_{cp} \leq 0.25 f_{cd} "
-                r"\\ 1.25 & \text{if } 0.25 f_{cd} \lt \sigma_{cp} \leq 0.5 f_{cd} \\ 2.5 \left(1 - \frac{\sigma_{cp}}{f_{cd}}\right) "
-                r"& \text{if } \sigma_{cp} \gt 0.5 f_{cd} \end{cases} = "
-                r"\begin{cases} 1 + \frac{5.000}{30.000} & \text{if } 0 \lt 5.000 \leq 0.25 \cdot 30.000 \\ 1.250 & \text{if } "
-                r"0.25 \cdot 30.000 \lt 5.000 \leq 0.5 \cdot 30.000 \\ 2.5 \left(1 - \frac{5.000}{30.000}\right) & \text{if } "
-                r"5.000 \gt 0.5 \cdot 30.000 \end{cases} = 1.167 \ -",
+                (
+                    r"\alpha_{cw} = \begin{cases} 1 + \frac{\sigma_{cp}}{f_{cd}} & \text{if } 0 \lt \sigma_{cp} \leq 0.25 f_{cd} "
+                    r"\\ 1.25 & \text{if } 0.25 f_{cd} \lt \sigma_{cp} \leq 0.5 f_{cd} \\ 2.5 \left(1 - \frac{\sigma_{cp}}{f_{cd}}\right) "
+                    r"& \text{if } \sigma_{cp} \gt 0.5 f_{cd} \end{cases} = "
+                    r"\begin{cases} 1 + \frac{5.000}{30.000} & \text{if } 0 \lt 5.000 \leq 0.25 \cdot 30.000 \\ 1.250 & \text{if } "
+                    r"0.25 \cdot 30.000 \lt 5.000 \leq 0.5 \cdot 30.000 \\ 2.5 \left(1 - \frac{5.000}{30.000}\right) & \text{if } "
+                    r"5.000 \gt 0.5 \cdot 30.000 \end{cases} = 1.167 \ -"
+                ),
             ),
             ("short", r"\alpha_{cw} = 1.167 \ -"),
         ],
