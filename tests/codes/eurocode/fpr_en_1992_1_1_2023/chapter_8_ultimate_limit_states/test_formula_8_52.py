@@ -51,13 +51,17 @@ class TestForm8Dot52CompressiveChordForceDueToShear:
         [
             (
                 "complete",
-                r"F_{cd} = \frac{M_{Ed}}{z} - \frac{N_{Vd} + N_{Ed}}{2} = \frac{120000000.000}{300.000} - \frac{"
-                r"2000.000 + 10000.000}{2} = 394000.000 \ N",
+                (
+                    r"F_{cd} = \frac{M_{Ed}}{z} - \frac{N_{Vd} + N_{Ed}}{2} = \frac{120000000.000}{300.000} - \frac{"
+                    r"2000.000 + 10000.000}{2} = 394000.000 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{cd} = \frac{M_{Ed}}{z} - \frac{N_{Vd} + N_{Ed}}{2} = \frac{120000000.000 \ Nmm}{300.000 \ mm} - "
-                r"\frac{2000.000 \ N + 10000.000 \ N}{2} = 394000.000 \ N",
+                (
+                    r"F_{cd} = \frac{M_{Ed}}{z} - \frac{N_{Vd} + N_{Ed}}{2} = \frac{120000000.000 \ Nmm}{300.000 \ mm} - "
+                    r"\frac{2000.000 \ N + 10000.000 \ N}{2} = 394000.000 \ N"
+                ),
             ),
             (
                 "short",

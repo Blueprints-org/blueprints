@@ -46,8 +46,10 @@ class TestForm6Dot22CheckShearBucklingResistance:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \right) \to "
-                r"\left( \frac{500.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \right) \to "
+                    r"\left( \frac{500.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

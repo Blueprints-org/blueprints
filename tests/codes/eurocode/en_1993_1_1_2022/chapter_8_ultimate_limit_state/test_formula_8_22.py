@@ -72,8 +72,10 @@ class TestForm8Dot22CheckShearForce:
         [
             (
                 "complete",
-                r"CHECK \to \frac{V_{Ed}}{V_{c,Rd}} \leq 1.0 \to \frac{200.000}{150.000} "
-                r"\leq 1.0 \to \left( 1.333 \leq 1.0 \right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \frac{V_{Ed}}{V_{c,Rd}} \leq 1.0 \to \frac{200.000}{150.000} "
+                    r"\leq 1.0 \to \left( 1.333 \leq 1.0 \right) \to \text{Not OK}"
+                ),
             ),
         ],
     )

@@ -810,7 +810,7 @@ class USections(Enum):
         "ArcelorMittal",
     )
 
-    def __init__(  # noqa: PLR0913
+    def __init__(  # noqa: PLR0913, PLR0917
         self,
         alias: str,
         b_width_single_pile: MM,

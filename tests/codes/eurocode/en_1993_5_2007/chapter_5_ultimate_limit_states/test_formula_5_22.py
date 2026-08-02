@@ -53,8 +53,10 @@ class TestForm5Dot22ReducedMomentResistanceClass3:
         [
             (
                 "complete",
-                r"M_{N,Rd} = M_{c,Rd} \cdot \left(1 - \frac{N_{Ed}}{N_{pl,Rd}}\right) = "
-                r"50.000 \cdot \left(1 - \frac{20.000}{40.000}\right) = 25.000 \ kNm",
+                (
+                    r"M_{N,Rd} = M_{c,Rd} \cdot \left(1 - \frac{N_{Ed}}{N_{pl,Rd}}\right) = "
+                    r"50.000 \cdot \left(1 - \frac{20.000}{40.000}\right) = 25.000 \ kNm"
+                ),
             ),
             ("short", r"M_{N,Rd} = 25.000 \ kNm"),
         ],
