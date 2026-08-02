@@ -126,8 +126,8 @@ Total of 602 formulas present.
 |      8.62      |        :x:         |         |                                                                    |
 |      8.63      |        :x:         |         |                                                                    |
 |      8.64      |        :x:         |         |                                                                    |
-|      8.65      |        :x:         |         |                                                                    |
-|      8.66      |        :x:         |         |                                                                    |
+|      8.65      | :heavy_check_mark: |         | Form8Dot65LongitudinalShearStressFlangeWebJunction                 |
+|      8.66      | :heavy_check_mark: |         | Form8Dot66CheckOmissionOfShearVerification                         |
 |      8.67      |        :x:         |         |                                                                    |
 |      8.68      |        :x:         |         |                                                                    |
 |      8.69      |        :x:         |         |                                                                    |
