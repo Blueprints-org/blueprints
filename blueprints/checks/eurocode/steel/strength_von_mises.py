@@ -8,8 +8,8 @@ from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN, KNM
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 from blueprints.utils.report import Report
-
 
 @dataclass(frozen=True)
 class CheckStrengthVonMises:
@@ -102,15 +102,10 @@ class CheckStrengthVonMises:
 
         Raises
         ------
-        ValueError
+        LessOrEqualToZeroError
             If gamma_m0 is not positive or yield_strength is not positive.
         """
-        if self.gamma_m0 <= 0:
-            raise ValueError(f"gamma_m0 must be positive, got {self.gamma_m0}")
-        if self.steel_cross_section.yield_strength <= 0:
-            raise ValueError(
-                f"yield_strength must be positive, got {self.steel_cross_section.yield_strength}"
-            )
+        raise_if_less_or_equal_to_zero(gamma_m0=self.gamma_m0, yield_strength=self.steel_cross_section.yield_strength)
 
     def maximum_von_mises_stress(self) -> float:
         """Calculate the maximum von Mises equivalent stress in the cross-section.
