@@ -11,6 +11,7 @@ from blueprints.type_alias import DIMENSIONLESS, KN, KNM
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 from blueprints.utils.report import Report
 
+
 @dataclass(frozen=True)
 class CheckStrengthVonMises:
     """Class to perform von Mises equivalent stress check for steel cross-sections based on Eurocode 3.

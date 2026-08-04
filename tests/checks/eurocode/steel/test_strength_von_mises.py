@@ -261,4 +261,3 @@ class TestCheckStrengthVonMises:
         calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=-1.25)
         with pytest.raises(LessOrEqualToZeroError):
             calc._validate_design_resistance()
-
