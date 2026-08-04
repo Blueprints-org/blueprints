@@ -242,3 +242,80 @@ class TestCheckStrengthVonMises:
         calc1 = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=1.0)
         calc2 = CheckStrengthVonMises(heb_steel_cross_section, n=200, gamma_m0=1.0)
         assert calc1 != calc2
+
+    # Tests for _validate_design_resistance() helper method
+
+    def test_validate_design_resistance_valid_parameters(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test _validate_design_resistance() with valid parameters."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=1.0)
+        # Should not raise any exception
+        calc._validate_design_resistance()
+
+    def test_validate_design_resistance_with_gamma_m0_zero(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test _validate_design_resistance() raises ValueError when gamma_m0 is zero."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=0.0)
+        with pytest.raises(ValueError, match="gamma_m0 must be positive"):
+            calc._validate_design_resistance()
+
+    def test_validate_design_resistance_with_gamma_m0_negative(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test _validate_design_resistance() raises ValueError when gamma_m0 is negative."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=-1.25)
+        with pytest.raises(ValueError, match="gamma_m0 must be positive"):
+            calc._validate_design_resistance()
+
+    def test_validate_design_resistance_with_invalid_yield_strength(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test _validate_design_resistance() raises ValueError when yield_strength is invalid."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=1.0)
+        # Mock the yield_strength to be zero or negative
+        calc.steel_cross_section.yield_strength = 0
+        with pytest.raises(ValueError, match="yield_strength must be positive"):
+            calc._validate_design_resistance()
+
+    def test_unity_check_with_invalid_gamma_m0(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test unity_check() raises ValueError when gamma_m0 is invalid."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=-1.0)
+        with pytest.raises(ValueError, match="gamma_m0 must be positive"):
+            calc.unity_check()
+
+    def test_unity_check_with_nonzero_loads_calls_validation(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test unity_check() validates design resistance before calculations."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=1.0)
+        # Valid case should work
+        uc = calc.unity_check()
+        assert isinstance(uc, float)
+        assert uc > 0
+
+    def test_result_with_invalid_gamma_m0(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test result() raises ValueError when gamma_m0 is invalid."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=0.0)
+        with pytest.raises(ValueError, match="gamma_m0 must be positive"):
+            calc.result()
+
+    def test_result_with_invalid_yield_strength(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test result() raises ValueError when yield_strength is invalid."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=1.0)
+        calc.steel_cross_section.yield_strength = -1
+        with pytest.raises(ValueError, match="yield_strength must be positive"):
+            calc.result()
+
+    def test_report_with_nonzero_loads_and_invalid_gamma_m0(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test report() raises ValueError with nonzero loads and invalid gamma_m0."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=-1.5)
+        with pytest.raises(ValueError, match="gamma_m0 must be positive"):
+            calc.report()
+
+    def test_report_with_nonzero_loads_and_invalid_yield_strength(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test report() raises ValueError with nonzero loads and invalid yield_strength."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, v_y=50, gamma_m0=1.0)
+        calc.steel_cross_section.yield_strength = 0
+        with pytest.raises(ValueError, match="yield_strength must be positive"):
+            calc.report()
+
+    def test_report_with_no_loads_and_invalid_gamma_m0(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test report() with no loads does not validate (skips validation path)."""
+        calc = CheckStrengthVonMises(heb_steel_cross_section, n=0, v_y=0, v_z=0, m_x=0, m_y=0, m_z=0, gamma_m0=-1.0)
+        # With no loads, report should return early without validating
+        report = calc.report()
+        assert report is not None
+        # Should have only the "no forces" paragraph
+        assert "No internal forces" in str(report)
