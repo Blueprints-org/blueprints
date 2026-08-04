@@ -1,7 +1,6 @@
 """Tests for von Mises equivalent stress check according to Eurocode 3."""
 
 import pytest
-import numpy as np
 
 from blueprints.checks.eurocode.steel.strength_von_mises import CheckStrengthVonMises
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
