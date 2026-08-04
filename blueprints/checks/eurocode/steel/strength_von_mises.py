@@ -8,8 +8,8 @@ from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN, KNM
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 from blueprints.utils.report import Report
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 @dataclass(frozen=True)

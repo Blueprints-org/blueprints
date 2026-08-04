@@ -248,16 +248,16 @@ class TestCheckStrengthVonMises:
         """Test _validate_design_resistance() with valid parameters."""
         calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=1.0)
         # Should not raise any exception
-        calc._validate_design_resistance()
+        calc._validate_design_resistance()  # noqa: SLF001
 
     def test_validate_design_resistance_with_gamma_m0_zero(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test _validate_design_resistance() raises ValueError when gamma_m0 is zero."""
         calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=0.0)
         with pytest.raises(LessOrEqualToZeroError):
-            calc._validate_design_resistance()
+            calc._validate_design_resistance()  # noqa: SLF001
 
     def test_validate_design_resistance_with_gamma_m0_negative(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test _validate_design_resistance() raises ValueError when gamma_m0 is negative."""
         calc = CheckStrengthVonMises(heb_steel_cross_section, n=100, gamma_m0=-1.25)
         with pytest.raises(LessOrEqualToZeroError):
-            calc._validate_design_resistance()
+            calc._validate_design_resistance()  # noqa: SLF001
