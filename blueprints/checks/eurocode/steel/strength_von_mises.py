@@ -97,6 +97,21 @@ class CheckStrengthVonMises:
         """
         return [EN_1993_1_1_2005]
 
+    def _validate_design_resistance(self) -> None:
+        """Validate that design resistance parameters are valid.
+
+        Raises
+        ------
+        ValueError
+            If gamma_m0 is not positive or yield_strength is not positive.
+        """
+        if self.gamma_m0 <= 0:
+            raise ValueError(f"gamma_m0 must be positive, got {self.gamma_m0}")
+        if self.steel_cross_section.yield_strength <= 0:
+            raise ValueError(
+                f"yield_strength must be positive, got {self.steel_cross_section.yield_strength}"
+            )
+
     def maximum_von_mises_stress(self) -> float:
         """Calculate the maximum von Mises equivalent stress in the cross-section.
 
@@ -134,6 +149,7 @@ class CheckStrengthVonMises:
         float
             The unity check value (should be ≤ 1.0 for adequate resistance).
         """
+        self._validate_design_resistance()
         von_mises_stress = self.maximum_von_mises_stress()
         design_yield_strength = self.steel_cross_section.yield_strength / self.gamma_m0
         return von_mises_stress / design_yield_strength
@@ -146,6 +162,7 @@ class CheckStrengthVonMises:
         CheckResult
             True if the von Mises stress check passes, False otherwise.
         """
+        self._validate_design_resistance()
         return CheckResult.from_comparison(
             provided=self.maximum_von_mises_stress(),
             required=self.steel_cross_section.yield_strength / self.gamma_m0,
@@ -171,6 +188,9 @@ class CheckStrengthVonMises:
         if total_load == 0:
             report.add_paragraph("No internal forces were applied; therefore, no von Mises stress check is necessary.")
             return report
+
+        # Validate design resistance before calculations
+        self._validate_design_resistance()
 
         # Add profile and material information
         report.add_paragraph(
