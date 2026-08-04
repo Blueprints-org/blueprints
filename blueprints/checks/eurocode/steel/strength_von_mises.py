@@ -68,10 +68,10 @@ class CheckStrengthVonMises:
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = CheckStrengthVonMises(
         heb_300_s355,
-        n=100,           # 100 kN axial force
-        v_z=50,          # 50 kN shear force
-        m_y=200,         # 200 kNm bending moment
-        gamma_m0=1.0
+        n=100,  # 100 kN axial force
+        v_z=50,  # 50 kN shear force
+        m_y=200,  # 200 kNm bending moment
+        gamma_m0=1.0,
     )
     calc.report().to_word("von_mises_check.docx")
     ```
