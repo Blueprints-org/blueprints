@@ -71,7 +71,10 @@ class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
     @staticmethod
     def _evaluate_rhs(nu: DIMENSIONLESS, f_cd: MPA, *_args, **_kwargs) -> float:
         """Evaluates the compressive strength of the compression field, for more information see the __init__ method."""
-        raise_if_negative(nu=nu, f_cd=f_cd)
+        # Neither a strength reduction factor nor a concrete strength can be zero. Allowing zero would report
+        # OK for a member with no strength at all whenever the shear stress is also zero, and would make the
+        # unity check divide by zero.
+        raise_if_less_or_equal_to_zero(nu=nu, f_cd=f_cd)
 
         return float(nu * f_cd)
 

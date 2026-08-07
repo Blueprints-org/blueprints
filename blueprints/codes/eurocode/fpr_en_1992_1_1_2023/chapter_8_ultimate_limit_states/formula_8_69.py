@@ -77,8 +77,12 @@ class Form8Dot69CheckTransverseReinforcementInFlange(ComparisonFormula):
     @staticmethod
     def _evaluate_rhs(a_sf: MM2, s_f: MM, h_f: MM, f_yd: MPA, cot_theta_f: DIMENSIONLESS, *_args, **_kwargs) -> float:
         """Evaluates the shear stress that the transverse reinforcement in the flange can carry."""
-        raise_if_negative(a_sf=a_sf, f_yd=f_yd, cot_theta_f=cot_theta_f)
-        raise_if_less_or_equal_to_zero(s_f=s_f, h_f=h_f)
+        # A flange without transverse reinforcement is a real design case, so a zero area is accepted. A yield
+        # strength or a cotangent of zero is not: the cotangent is bounded below by 1 in Formulas (8.67) and
+        # (8.68), and allowing either to be zero would report OK for a flange with no capacity at all whenever
+        # the shear stress is also zero, and would make the unity check divide by zero.
+        raise_if_negative(a_sf=a_sf)
+        raise_if_less_or_equal_to_zero(s_f=s_f, h_f=h_f, f_yd=f_yd, cot_theta_f=cot_theta_f)
 
         return float(a_sf / (s_f * h_f) * f_yd * cot_theta_f)
 

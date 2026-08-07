@@ -72,7 +72,9 @@ class TestForm8Dot70CheckCrushingOfCompressionFieldInFlange:
             (3.0, -1.2, 0.5, 20.0),  # cot_theta_f is negative
             (3.0, 0.0, 0.5, 20.0),  # cot_theta_f is zero
             (3.0, 1.2, -0.5, 20.0),  # nu is negative
+            (3.0, 1.2, 0.0, 20.0),  # nu is zero
             (3.0, 1.2, 0.5, -20.0),  # f_cd is negative
+            (3.0, 1.2, 0.5, 0.0),  # f_cd is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, tau_ed: float, cot_theta_f: float, nu: float, f_cd: float) -> None:

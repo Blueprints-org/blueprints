@@ -67,7 +67,9 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
             (1.5, 201.0, 150.0, -200.0, 435.0, 1.2),  # h_f is negative
             (1.5, 201.0, 150.0, 0.0, 435.0, 1.2),  # h_f is zero
             (1.5, 201.0, 150.0, 200.0, -435.0, 1.2),  # f_yd is negative
+            (1.5, 201.0, 150.0, 200.0, 0.0, 1.2),  # f_yd is zero
             (1.5, 201.0, 150.0, 200.0, 435.0, -1.2),  # cot_theta_f is negative
+            (1.5, 201.0, 150.0, 200.0, 435.0, 0.0),  # cot_theta_f is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(
