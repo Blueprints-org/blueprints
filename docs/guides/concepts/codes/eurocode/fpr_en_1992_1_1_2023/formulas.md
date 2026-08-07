@@ -137,7 +137,7 @@ Total of 602 formulas present.
 |      8.73      |        :x:         |         |                                                                    |
 |      8.74      |        :x:         |         |                                                                    |
 |      8.75      |        :x:         |         |                                                                    |
-|      8.76      |        :x:         |         |                                                                    |
+|      8.76      | :heavy_check_mark: |         | Form8Dot76ShearStressResistanceAtInterface                         |
 |      8.77      |        :x:         |         |                                                                    |
 |      8.78      |        :x:         |         |                                                                    |
 |      8.79      |        :x:         |         |                                                                    |
