@@ -133,7 +133,7 @@ Total of 602 formulas present.
 |      8.69      |        :x:         |         |                                                                    |
 |      8.70      |        :x:         |         |                                                                    |
 |      8.71      |        :x:         |         |                                                                    |
-|      8.72      |        :x:         |         |                                                                    |
+|      8.72      | :heavy_check_mark: |         | Form8Dot72LongitudinalStrainInTensileFlange                        |
 |      8.73      |        :x:         |         |                                                                    |
 |      8.74      |        :x:         |         |                                                                    |
 |      8.75      |        :x:         |         |                                                                    |
