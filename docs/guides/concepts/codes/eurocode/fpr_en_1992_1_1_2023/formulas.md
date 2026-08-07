@@ -130,9 +130,9 @@ Total of 602 formulas present.
 |      8.66      |        :x:         |         |                                                                    |
 |      8.67      |        :x:         |         |                                                                    |
 |      8.68      |        :x:         |         |                                                                    |
-|      8.69      |        :x:         |         |                                                                    |
-|      8.70      |        :x:         |         |                                                                    |
-|      8.71      |        :x:         |         |                                                                    |
+|      8.69      | :heavy_check_mark: |         | Form8Dot69CheckTransverseReinforcementInFlange                     |
+|      8.70      | :heavy_check_mark: |         | Form8Dot70CheckCrushingOfCompressionFieldInFlange                  |
+|      8.71      | :heavy_check_mark: |         | Form8Dot71StrengthReductionFactor                                  |
 |      8.72      |        :x:         |         |                                                                    |
 |      8.73      |        :x:         |         |                                                                    |
 |      8.74      |        :x:         |         |                                                                    |
