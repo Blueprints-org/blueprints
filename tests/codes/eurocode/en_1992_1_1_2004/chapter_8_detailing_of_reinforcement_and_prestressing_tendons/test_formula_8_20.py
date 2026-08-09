@@ -2,8 +2,12 @@
 
 import pytest
 
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_2 import (
+    SubForm8Dot2CoefficientQualityOfBond,
+)
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforcement_and_prestressing_tendons.formula_8_20 import (
     Form8Dot20BondStrengthAnchorageULS,
+    SubForm8Dot20EtaP2,
 )
 from blueprints.validations import NegativeValueError
 
@@ -31,11 +35,27 @@ class TestForm8Dot20BondStrengthAnchorageULS:
         with pytest.raises(NegativeValueError):
             Form8Dot20BondStrengthAnchorageULS(eta_p2=eta_p2, eta_1=eta_1, f_ctd=f_ctd)
 
+    def test_integration_with_sub_formula_8_20_etap2(self) -> None:
+        """Test the integration with sub-formula 8.20 for the coefficient for the type of tendon and the bond situation at the anchorage ηP2."""
+        # Example values
+        eta_1 = SubForm8Dot2CoefficientQualityOfBond(bond_quality="good")
+        eta_p2 = SubForm8Dot20EtaP2(type_of_wire="indented")
+        f_ctd = 2.5  # MPa
+
+        # Object to test
+        form_8_20 = Form8Dot20BondStrengthAnchorageULS(eta_1=eta_1, eta_p2=eta_p2, f_ctd=f_ctd)
+
+        # Expected result, manually calculated
+        manually_calculated_result = 3.5  # MPa
+
+        assert form_8_20 == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
-            ("complete", r"f_{bpd} = \eta_{p2} \cdot \eta_{1} \cdot f_{ctd} = 1.400 \cdot 1.000 \cdot 2.500 = 3.500"),
-            ("short", r"f_{bpd} = 3.500"),
+            ("complete", r"f_{bpd} = \eta_{p2} \cdot \eta_{1} \cdot f_{ctd} = 1.400 \cdot 1.000 \cdot 2.500 = 3.500 \ MPa"),
+            ("complete_with_units", r"f_{bpd} = \eta_{p2} \cdot \eta_{1} \cdot f_{ctd} = 1.400 \cdot 1.000 \cdot 2.500 \ MPa = 3.500 \ MPa"),
+            ("short", r"f_{bpd} = 3.500 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -49,6 +69,10 @@ class TestForm8Dot20BondStrengthAnchorageULS:
         # Object to test
         form_8_20_latex = form_8_20.latex()
 
-        actual = {"complete": form_8_20_latex.complete, "short": form_8_20_latex.short}
+        actual = {
+            "complete": form_8_20_latex.complete,
+            "complete_with_units": form_8_20_latex.complete_with_units,
+            "short": form_8_20_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."
