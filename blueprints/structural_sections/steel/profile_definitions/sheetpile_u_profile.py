@@ -6,9 +6,10 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import cast
 
+import numpy as np
 from matplotlib import pyplot as plt
 from shapely import affinity
-from shapely.geometry import Polygon, box
+from shapely.geometry import LineString, MultiPoint, Point, Polygon, box
 from shapely.ops import unary_union
 
 from blueprints.structural_sections._profile import Profile
@@ -19,7 +20,7 @@ from blueprints.structural_sections.steel.profile_definitions.corrosion_utils im
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import (
     plot_shapes,
 )
-from blueprints.type_alias import MM
+from blueprints.type_alias import DEG, MM
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -75,6 +76,73 @@ class SheetpileUProfile(Profile):
     def _polygon_single_sheet(self) -> Polygon:
         """Shapely Polygon representing the single sheet of the U-shaped sheet pile profile from coordinates."""
         return Polygon(self.coordinates)
+
+    @property
+    def flange_to_web_angle(self) -> DEG:
+        """Angle between the web and the (horizontal) flange direction of the U-shaped sheet pile profile [deg].
+
+        Determined by intersecting a horizontal line through the vertical middle of the profile's bounding box
+        with the profile boundary, then using the two endpoints of the polygon edge crossed nearest to the
+        horizontal middle of the bounding box to compute the angle relative to the horizontal.
+        """
+        # Get the bounding box of the profile
+        xs = [x for x, _ in self.coordinates]
+        ys = [y for _, y in self.coordinates]
+        x_mid = (min(xs) + max(xs)) / 2
+        y_mid = (min(ys) + max(ys)) / 2
+        horizontal_line = LineString([(min(xs) - 1, y_mid), (max(xs) + 1, y_mid)])
+
+        # Find the intersection points of the horizontal line with the profile boundary
+        n = len(self.coordinates)
+        candidate_edges = []
+        for i in range(n):
+            p1 = self.coordinates[i]
+            p2 = self.coordinates[(i + 1) % n]
+            point = LineString([p1, p2]).intersection(horizontal_line)
+            if isinstance(point, Point):
+                candidate_edges.append((point, p1, p2))
+
+        if not candidate_edges:
+            raise ValueError("Horizontal line through the middle of the bounding box does not intersect the profile boundary.")  # pragma: no cover
+
+        # Find the edge whose intersection point is closest to the horizontal middle of the bounding box and compute the angle
+        point, (x1, y1), (x2, y2) = min(candidate_edges, key=lambda edge: abs(edge[0].x - x_mid))
+        return np.degrees(np.arctan2(abs(y2 - y1), abs(x2 - x1)))
+
+    @property
+    def width_of_flat_portion(self) -> MM:
+        """Width of the flat (bottom) portion of the U-shaped sheet pile profile [mm].
+
+        Determined by intersecting a vertical line through the horizontal middle of the profile's
+        bounding box with the profile boundary, taking the highest y-value among the intersection
+        points, and measuring the horizontal distance between the coordinates sharing that
+        y-value (within a small tolerance).
+
+        Based on the classification in table 5-1 in EN 1993-5.
+        """
+        # Get the bounding box of the profile
+        xs = [x for x, _ in self.coordinates]
+        ys = [y for _, y in self.coordinates]
+        x_mid = (min(xs) + max(xs)) / 2
+        vertical_line = LineString([(x_mid, min(ys) - 1), (x_mid, max(ys) + 1)])
+        intersection = vertical_line.intersection(self._polygon_single_sheet.exterior)
+
+        if intersection.is_empty:
+            raise ValueError("Vertical line through the middle of the bounding box does not intersect the profile boundary.")  # pragma: no cover
+
+        intersection_points = [intersection] if isinstance(intersection, Point) else list(cast(MultiPoint, intersection).geoms)
+
+        # Find the highest intersection point (maximum y-value)
+        y_at_intersection = max(point.y for point in intersection_points)
+        xs_at_y = [x for x, y in self.coordinates if abs(y - y_at_intersection) <= 0.01]
+        width_inner = max(xs_at_y) - min(xs_at_y)
+
+        # Find the lowest intersection point (minimum y-value) for the outer width
+        y_at_intersection = min(point.y for point in intersection_points)
+        xs_at_y = [x for x, y in self.coordinates if abs(y - y_at_intersection) <= 0.01]
+        width_outer = max(xs_at_y) - min(xs_at_y)
+
+        return width_inner / 2 + width_outer / 2
 
     @property
     def _polygon(self) -> Polygon:

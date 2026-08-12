@@ -165,3 +165,13 @@ class TestSheetpileUProfile:
         # PU18 has interlocking_ctc of 600 mm
         expected_interlocking_ctc = 600.0  # mm
         assert pytest.approx(pu_profile.interlocking_ctc, rel=1e-6) == expected_interlocking_ctc
+
+    def test_flange_to_web_angle(self, pu_profile: SheetpileUProfile) -> None:
+        """Test the flange to web angle."""
+        expected_angle = 57.5  # degrees
+        assert pytest.approx(pu_profile.flange_to_web_angle, rel=1e-2) == expected_angle
+
+    def test_width_of_flat_portion(self, pu_profile: SheetpileUProfile) -> None:
+        """Test the width of the flat portion of the flange."""
+        expected_width_of_flat_portion = 288.0  # mm
+        assert pytest.approx(pu_profile.width_of_flat_portion, rel=1e-2) == expected_width_of_flat_portion

@@ -6,9 +6,10 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import cast
 
+import numpy as np
 from matplotlib import pyplot as plt
 from shapely import affinity
-from shapely.geometry import Polygon, box
+from shapely.geometry import LineString, Point, Polygon, box
 from shapely.ops import unary_union
 
 from blueprints.structural_sections._profile import Profile
@@ -19,7 +20,7 @@ from blueprints.structural_sections.steel.profile_definitions.corrosion_utils im
 from blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter import (
     plot_shapes,
 )
-from blueprints.type_alias import MM
+from blueprints.type_alias import DEG, MM
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -75,6 +76,53 @@ class SheetpileZProfile(Profile):
     def _polygon_single_sheet(self) -> Polygon:
         """Shapely Polygon representing the single sheet of the Z-shaped sheet pile profile from coordinates."""
         return Polygon(self.coordinates)
+
+    @property
+    def flange_to_web_angle(self) -> DEG:
+        """Angle between the web and the (horizontal) flanges of the Z-shaped sheet pile profile [degrees].
+
+        The angle is calculated by finding the edge of the web that intersects a horizontal line
+        through the middle of the profile's bounding box.
+        The angle is then computed using the arctangent of the rise over run of that edge.
+        """
+        # Get the bounding box of the profile
+        xs = [x for x, _ in self.coordinates]
+        ys = [y for _, y in self.coordinates]
+        x_mid = (min(xs) + max(xs)) / 2
+        y_mid = (min(ys) + max(ys)) / 2
+        horizontal_line = LineString([(min(xs) - 1, y_mid), (max(xs) + 1, y_mid)])
+
+        # Find the intersection points of the horizontal line with the profile boundary
+        n = len(self.coordinates)
+        candidate_edges = []
+        for i in range(n):
+            p1 = self.coordinates[i]
+            p2 = self.coordinates[(i + 1) % n]
+            point = LineString([p1, p2]).intersection(horizontal_line)
+            if isinstance(point, Point):
+                candidate_edges.append((point, p1, p2))
+
+        if not candidate_edges:
+            raise ValueError("Horizontal line through the middle of the bounding box does not intersect the profile boundary.")  # pragma: no cover
+
+        # Find the edge whose intersection point is closest to the horizontal middle of the bounding box and compute the angle
+        point, (x1, y1), (x2, y2) = min(candidate_edges, key=lambda edge: abs(edge[0].x - x_mid))
+        return np.degrees(np.arctan2(abs(y2 - y1), abs(x2 - x1)))
+
+    @property
+    def width_of_flat_portion(self) -> MM:
+        """Width of the flange of the Z-shaped sheet pile profile [mm].
+
+        The flange width is calculated based on the height of the profile, the angle between the web and flange,
+        the web thickness, and the interlocking center-to-center distance. The formula accounts for the geometry
+        of the Z-shaped profile and the positioning of the flanges relative to the web.
+
+        Based on the classification in table 5-1 in EN 1993-5.
+        """
+        height_of_profile = self._polygon_single_sheet.bounds[3] - self._polygon_single_sheet.bounds[1]
+        width_of_web = height_of_profile / np.tan(np.radians(self.flange_to_web_angle))
+        horizontal_thickness_web = self.web_thickness / np.sin(np.radians(self.flange_to_web_angle))
+        return self.interlocking_ctc - width_of_web - horizontal_thickness_web
 
     @property
     def _polygon(self) -> Polygon:
