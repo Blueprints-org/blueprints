@@ -48,8 +48,10 @@ class TestForm6Dot53CheckPunchingShear:
         [
             (
                 "complete",
-                r"CHECK \to \frac{\beta \cdot V_{Ed}}{u_{0} \cdot d} \leq v_{Rd,max} \to "
-                r"\frac{1.100 \cdot 500.000}{400.000 \cdot 200.000} \leq 2.500 \to OK",
+                (
+                    r"CHECK \to \frac{\beta \cdot V_{Ed}}{u_{0} \cdot d} \leq v_{Rd,max} \to "
+                    r"\frac{1.100 \cdot 500.000}{400.000 \cdot 200.000} \leq 2.500 \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

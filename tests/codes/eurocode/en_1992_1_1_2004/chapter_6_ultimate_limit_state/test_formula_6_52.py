@@ -55,10 +55,12 @@ class TestForm6Dot52PunchingShearResistance:
         [
             (
                 "complete",
-                r"v_{Rd,cs} = 0.75 \cdot v_{Rd,c} + 1.5 \cdot \frac{ d}{s_r} \cdot A_{sw} \cdot "
-                r"f_{ywd,ef} \cdot \frac{1}{u_{1} \cdot d} \cdot \sin(\alpha) = "
-                r"0.75 \cdot 1.500 + 1.5 \cdot \frac{ 200.000}{150.000} \cdot 1000.000 \cdot 500.000 "
-                r"\cdot \frac{1}{400.000 \cdot 200.000} \cdot \sin(45.000) = 9.964 \ MPa",
+                (
+                    r"v_{Rd,cs} = 0.75 \cdot v_{Rd,c} + 1.5 \cdot \frac{ d}{s_r} \cdot A_{sw} \cdot "
+                    r"f_{ywd,ef} \cdot \frac{1}{u_{1} \cdot d} \cdot \sin(\alpha) = "
+                    r"0.75 \cdot 1.500 + 1.5 \cdot \frac{ 200.000}{150.000} \cdot 1000.000 \cdot 500.000 "
+                    r"\cdot \frac{1}{400.000 \cdot 200.000} \cdot \sin(45.000) = 9.964 \ MPa"
+                ),
             ),
             ("short", r"v_{Rd,cs} = 9.964 \ MPa"),
         ],
