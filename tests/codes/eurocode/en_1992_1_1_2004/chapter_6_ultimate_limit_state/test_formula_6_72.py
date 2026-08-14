@@ -43,8 +43,10 @@ class TestForm6Dot72FatigueResistanceConcreteCompression:
         [
             (
                 "complete",
-                r"CHECK \to E_{cd,max,equ} + 0.43 \cdot \sqrt{1 - R_{equ}} \leq 1 \to "
-                r"0.800 + 0.43 \cdot \sqrt{1 - 0.500} \leq 1 \to \text{Not OK}",
+                (
+                    r"CHECK \to E_{cd,max,equ} + 0.43 \cdot \sqrt{1 - R_{equ}} \leq 1 \to "
+                    r"0.800 + 0.43 \cdot \sqrt{1 - 0.500} \leq 1 \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

@@ -49,8 +49,10 @@ class TestForm6Dot21CheckTransverseReinforcement:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{A_{sf} \cdot f_{yd}}{s_{f}} \geq \frac{v_{Ed} \cdot h_{f}}{\cot(\theta_{f})} \right) \to"
-                r" \left( \frac{100.000 \cdot 500.000}{200.000} \geq \frac{2.000 \cdot 300.000}{\cot(45.000)} \right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \left( \frac{A_{sf} \cdot f_{yd}}{s_{f}} \geq \frac{v_{Ed} \cdot h_{f}}{\cot(\theta_{f})} \right) \to"
+                    r" \left( \frac{100.000 \cdot 500.000}{200.000} \geq \frac{2.000 \cdot 300.000}{\cot(45.000)} \right) \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

@@ -61,8 +61,10 @@ class TestForm3Dot17CompressiveStressConcrete:
         [
             (
                 "complete",
-                r"\sigma_c = f_{cd} \cdot \left[ 1 - \left( 1 - \frac{\epsilon_c}{\epsilon_{c2}} \right)^n \right] = "
-                r"18.500 \cdot \left[ 1 - \left( 1 - \frac{0.640}{0.810} \right)^{2.000} \right] = 17.685",
+                (
+                    r"\sigma_c = f_{cd} \cdot \left[ 1 - \left( 1 - \frac{\epsilon_c}{\epsilon_{c2}} \right)^n \right] = "
+                    r"18.500 \cdot \left[ 1 - \left( 1 - \frac{0.640}{0.810} \right)^{2.000} \right] = 17.685"
+                ),
             ),
             ("short", r"\sigma_c = 17.685"),
         ],

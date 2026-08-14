@@ -46,14 +46,18 @@ class TestForm8Dot27CheckShearBucklingResistance:
         [
             (
                 "complete",
-                r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
-                r"\frac{500.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \to \left( 100.000 > 72.000 \right) \to OK",
+                (
+                    r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
+                    r"\frac{500.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \to \left( 100.000 > 72.000 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
             (
                 "complete_with_units",
-                r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
-                r"\frac{500.000 \ mm}{5.000 \ mm} > 72 \cdot \frac{1.000}{1.000} \to \left( 100.000 > 72.000 \right) \to OK",
+                (
+                    r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
+                    r"\frac{500.000 \ mm}{5.000 \ mm} > 72 \cdot \frac{1.000}{1.000} \to \left( 100.000 > 72.000 \right) \to OK"
+                ),
             ),
         ],
     )
@@ -81,8 +85,10 @@ class TestForm8Dot27CheckShearBucklingResistance:
         [
             (
                 "complete",
-                r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
-                r"\frac{350.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \to \left( 70.000 > 72.000 \right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \frac{h_w}{t_w} > 72 \cdot \frac{\epsilon}{\eta} \to "
+                    r"\frac{350.000}{5.000} > 72 \cdot \frac{1.000}{1.000} \to \left( 70.000 > 72.000 \right) \to \text{Not OK}"
+                ),
             ),
         ],
     )

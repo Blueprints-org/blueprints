@@ -114,7 +114,7 @@ class TestNominalConcreteCover:
             ),
         ],
     )
-    def test_evaluation(  # noqa: PLR0913
+    def test_evaluation(  # noqa: PLR0913, PLR0917
         self,
         reinforcement_diameter: MM,
         nominal_max_aggregate_size: bool,
