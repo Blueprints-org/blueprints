@@ -162,6 +162,7 @@ class CheckStrengthCompressionClass123:
         # unity check
         report.add_paragraph("The unity check is calculated as follows:")
         report.add_formula(self.compression_strength_unity_check(), n=n).add_newline(n=2)
+
         if self.result().is_ok:
             report.add_paragraph("The check for compression force satisfies the requirements.")
         else:
