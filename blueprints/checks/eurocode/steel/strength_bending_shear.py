@@ -116,9 +116,13 @@ class CheckStrengthBendingShearClass12:
             }
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
-            shear_resistance_calculation = CheckStrengthTorsionShearClass12(
+            torsion_shear_calc = CheckStrengthTorsionShearClass12(
                 self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0
-            ).calculation_formula()
+            )
+            shear_resistance_calculation = {
+                "shear_area": torsion_shear_calc.shear_area(),
+                "resistance": torsion_shear_calc.combined_resistance(),
+            }
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
 
         f_y_reduced = formula_6_29.Form6Dot29ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
@@ -310,9 +314,13 @@ class CheckStrengthBendingShearClass3:
             }
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
-            shear_resistance_calculation = CheckStrengthTorsionShearClass12(
-                self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
-            ).calculation_formula()
+            torsion_shear_calc = CheckStrengthTorsionShearClass12(
+                self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0
+            )
+            shear_resistance_calculation = {
+                "shear_area": torsion_shear_calc.shear_area(),
+                "resistance": torsion_shear_calc.combined_resistance(),
+            }
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
 
         f_y_reduced = formula_6_29.Form6Dot29ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
