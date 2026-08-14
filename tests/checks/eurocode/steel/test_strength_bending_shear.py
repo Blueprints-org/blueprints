@@ -67,7 +67,6 @@ class TestCheckStrengthBendingShearClass12:
         v = -355 * 4.74 / 1.732 * FACTOR_SHEAR  # Applied shear force in kN
         m = 355 * 1.869 * 0.5 * 0.99
         calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
-        calc.report().to_word("bending_moment_strength.docx")
         calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
@@ -161,7 +160,6 @@ class TestCheckStrengthBendingShearClass3:
         m_x = 0  # no torsional moment
         v = -600  # Applied shear force in kN
         calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
-        calc.report().to_word("bending_moment_strength.docx")
         calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
         result = calc.result()
         assert result.is_ok is True
