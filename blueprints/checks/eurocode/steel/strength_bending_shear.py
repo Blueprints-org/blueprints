@@ -3,11 +3,9 @@
 from dataclasses import dataclass
 from typing import ClassVar, Literal
 
-from sectionproperties.post.post import SectionProperties
-
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12
-from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12IProfile
+from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
     formula_6_12,
@@ -59,8 +57,6 @@ class CheckStrengthBendingShearClass12:
         Note: 'Vz' should be used together with 'My' for bending moment. 'Vy' with 'Mz' for bending moment.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -88,15 +84,11 @@ class CheckStrengthBendingShearClass12:
     axis_m: Literal["My", "Mz"] = "My"
     axis_v: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Bending moment strength check for steel profiles (Class 1 and 2 only)"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
-        """Post-initialization to extract section properties."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
+        """Post-initialization to validate axis parameters."""
         if self.axis_m not in ("My", "Mz"):
             raise ValueError("Axis must be 'My' or 'Mz'.")
         if self.axis_v not in ("Vz", "Vy"):
@@ -124,14 +116,15 @@ class CheckStrengthBendingShearClass12:
             }
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
-            shear_resistance_calculation = CheckStrengthTorsionShearClass12IProfile(
-                self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
+            shear_resistance_calculation = CheckStrengthTorsionShearClass12(
+                self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0
             ).calculation_formula()
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
 
         f_y_reduced = formula_6_29.Form6Dot29ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
-        sxx = self.section_properties.sxx if self.section_properties else None
-        syy = self.section_properties.syy if self.section_properties else None
+        section_properties = self.steel_cross_section.profile.section_properties()
+        sxx = section_properties.sxx
+        syy = section_properties.syy
         if sxx is None or syy is None:
             raise ValueError("Section properties must be defined to access sxx and syy")
         w = float(sxx) if self.axis_m == "My" else float(syy)
@@ -258,8 +251,6 @@ class CheckStrengthBendingShearClass3:
         Note: 'Vz' should be used together with 'My' for bending moment. 'Vy' with 'Mz' for bending moment.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -287,15 +278,11 @@ class CheckStrengthBendingShearClass3:
     axis_m: Literal["My", "Mz"] = "My"
     axis_v: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Bending moment strength check for steel profiles (Class 3 only)"
     source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
-        """Post-initialization to extract section properties."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
+        """Post-initialization to validate axis parameters."""
         if self.axis_m not in ("My", "Mz"):
             raise ValueError("Axis must be 'My' or 'Mz'.")
         if self.axis_v not in ("Vz", "Vy"):
@@ -323,25 +310,22 @@ class CheckStrengthBendingShearClass3:
             }
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
-            shear_resistance_calculation = CheckStrengthTorsionShearClass12IProfile(
+            shear_resistance_calculation = CheckStrengthTorsionShearClass12(
                 self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
             ).calculation_formula()
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
 
         f_y_reduced = formula_6_29.Form6Dot29ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
+        section_properties = self.steel_cross_section.profile.section_properties()
         if self.axis_m == "My":
-            if self.section_properties is None:
-                raise ValueError("Section properties must be defined to access section moduli")
-            zxx_plus = self.section_properties.zxx_plus
-            zxx_minus = self.section_properties.zxx_minus
+            zxx_plus = section_properties.zxx_plus
+            zxx_minus = section_properties.zxx_minus
             if zxx_plus is None or zxx_minus is None:
                 raise ValueError("Section properties zxx_plus and zxx_minus must be defined")
             w = min(float(zxx_plus), float(zxx_minus))
         else:
-            if self.section_properties is None:
-                raise ValueError("Section properties must be defined to access section moduli")
-            zyy_plus = self.section_properties.zyy_plus
-            zyy_minus = self.section_properties.zyy_minus
+            zyy_plus = section_properties.zyy_plus
+            zyy_minus = section_properties.zyy_minus
             if zyy_plus is None or zyy_minus is None:
                 raise ValueError("Section properties zyy_plus and zyy_minus must be defined")
             w = min(float(zyy_plus), float(zyy_minus))
