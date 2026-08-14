@@ -3,7 +3,6 @@
 from dataclasses import dataclass
 
 import numpy as np
-from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -39,8 +38,6 @@ class CheckStrengthStVenantTorsionClass1234:
         The applied torsional moment (in kNm).
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
@@ -61,14 +58,7 @@ class CheckStrengthStVenantTorsionClass1234:
     steel_cross_section: SteelCrossSection
     m_x: KNM = 0
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Torsion strength check"
-
-    def __post_init__(self) -> None:
-        """Post-initialization to extract section properties."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
 
     @staticmethod
     def source_docs() -> list[str]:
