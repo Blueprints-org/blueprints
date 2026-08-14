@@ -176,7 +176,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def ductility_factor_k(self) -> DIMENSIONLESS:
-        r"""Ductility factor k [$-$] -> ([$f_{tk}$] / [$f_{yk}$]) tabel C.1 Annex C from EN 1992-1-1:2004.
+        r"""Ductility factor k [$-$] -> ([$f_{tk}$] / [$f_{yk}$]) table C.1 Annex C from EN 1992-1-1:2004.
 
         * 1.05 for steel class A
         * 1.08 for steel class B
@@ -199,7 +199,7 @@ class ReinforcementSteelMaterial:
 
     @property
     def eps_uk(self) -> PER_MILLE:
-        r"""[$\varepsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (tabel C.1 Annex C from EN 1992-1-1:2004).
+        r"""[$\varepsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (table C.1 Annex C from EN 1992-1-1:2004).
 
         * 250 ‰ for steel class A
         * 500 ‰ for steel class B

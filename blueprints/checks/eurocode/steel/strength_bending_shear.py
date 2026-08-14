@@ -6,7 +6,7 @@ from typing import ClassVar, Literal
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12IProfile
+from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12
 from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12IProfile
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
@@ -117,9 +117,11 @@ class CheckStrengthBendingShearClass12:
         m_ed = abs(self.m * KNM_TO_NMM)
 
         if m_x == 0:
-            shear_resistance_calculation = CheckStrengthShearClass12IProfile(
-                self.steel_cross_section, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
-            ).calculation_formula()
+            shear_calc = CheckStrengthShearClass12(self.steel_cross_section, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0)
+            shear_resistance_calculation = {
+                "shear_area": shear_calc.shear_area(),
+                "resistance": shear_calc.plastic_resistance(),
+            }
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
             shear_resistance_calculation = CheckStrengthTorsionShearClass12IProfile(
@@ -128,13 +130,19 @@ class CheckStrengthBendingShearClass12:
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
 
         f_y_reduced = formula_6_29.Form6Dot29ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
-        w = float(self.section_properties.sxx) if self.axis_m == "My" else float(self.section_properties.syy)  # type: ignore[attr-defined]
+        sxx = self.section_properties.sxx if self.section_properties else None
+        syy = self.section_properties.syy if self.section_properties else None
+        if sxx is None or syy is None:
+            raise ValueError("Section properties must be defined to access sxx and syy")
+        w = float(sxx) if self.axis_m == "My" else float(syy)
 
         m_c_rd = formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y_reduced, gamma_m0=self.gamma_m0)
         check_moment = formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
 
         return {
-            "a_v": shear_resistance_calculation["shear_area"],
+            "a_v": Formula(name="a_v", value=shear_resistance_calculation["shear_area"])
+            if not isinstance(shear_resistance_calculation["shear_area"], Formula)
+            else shear_resistance_calculation["shear_area"],
             "v_pl(_t)_rd": shear_resistance_calculation["resistance"],
             "rho": rho,
             "f_y_reduced": f_y_reduced,
@@ -308,9 +316,11 @@ class CheckStrengthBendingShearClass3:
         m_ed = abs(self.m * KNM_TO_NMM)
 
         if m_x == 0:
-            shear_resistance_calculation = CheckStrengthShearClass12IProfile(
-                self.steel_cross_section, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0, section_properties=self.section_properties
-            ).calculation_formula()
+            shear_calc = CheckStrengthShearClass12(self.steel_cross_section, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0)
+            shear_resistance_calculation = {
+                "shear_area": shear_calc.shear_area(),
+                "resistance": shear_calc.plastic_resistance(),
+            }
             rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
         else:
             shear_resistance_calculation = CheckStrengthTorsionShearClass12IProfile(
@@ -319,16 +329,30 @@ class CheckStrengthBendingShearClass3:
             rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
 
         f_y_reduced = formula_6_29.Form6Dot29ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
-        if self.axis == "My":
-            w = min(float(self.section_properties.zxx_plus), float(self.section_properties.zxx_minus))  # type: ignore[attr-defined]
+        if self.axis_m == "My":
+            if self.section_properties is None:
+                raise ValueError("Section properties must be defined to access section moduli")
+            zxx_plus = self.section_properties.zxx_plus
+            zxx_minus = self.section_properties.zxx_minus
+            if zxx_plus is None or zxx_minus is None:
+                raise ValueError("Section properties zxx_plus and zxx_minus must be defined")
+            w = min(float(zxx_plus), float(zxx_minus))
         else:
-            w = min(float(self.section_properties.zyy_plus), float(self.section_properties.zyy_minus))  # type: ignore[attr-defined]
+            if self.section_properties is None:
+                raise ValueError("Section properties must be defined to access section moduli")
+            zyy_plus = self.section_properties.zyy_plus
+            zyy_minus = self.section_properties.zyy_minus
+            if zyy_plus is None or zyy_minus is None:
+                raise ValueError("Section properties zyy_plus and zyy_minus must be defined")
+            w = min(float(zyy_plus), float(zyy_minus))
 
         m_c_rd = formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y_reduced, gamma_m0=self.gamma_m0)
         check_moment = formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
 
         return {
-            "a_v": shear_resistance_calculation["shear_area"],
+            "a_v": Formula(name="a_v", value=shear_resistance_calculation["shear_area"])
+            if not isinstance(shear_resistance_calculation["shear_area"], Formula)
+            else shear_resistance_calculation["shear_area"],
             "v_pl(_t)_rd": shear_resistance_calculation["resistance"],
             "rho": rho,
             "f_y_reduced": f_y_reduced,

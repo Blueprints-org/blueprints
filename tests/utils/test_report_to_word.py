@@ -6,8 +6,8 @@ from pathlib import Path
 
 from docx import Document as DocxDocument
 
-from blueprints.utils._report_to_word import _ReportToWordConverter
 from blueprints.utils.report import Report
+from blueprints.utils.report._report_to_word import _ReportToWordConverter
 
 
 class TestReportToWordConverter:

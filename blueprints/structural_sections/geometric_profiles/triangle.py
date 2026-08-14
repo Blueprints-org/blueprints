@@ -50,7 +50,7 @@ class RightAngledTriangularProfile(Profile):
             raise ValueError(f"Height must be a positive value, but got {self.height}")
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the triangular profile [mm]."""
         return min(self.base, self.height)
 

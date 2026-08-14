@@ -32,7 +32,7 @@ class Carbonation(Exposure):
         """
         return "Corrosion induced by carbonation"
 
-    def description_of_the_environment(self) -> str:
+    def description_of_the_environment(self) -> str:  # ty: ignore[invalid-return-type]
         """Description of the environment based on the instance.
 
         Returns
@@ -73,7 +73,7 @@ class Chloride(Exposure):
         """
         return "Corrosion induced by chlorides other than by sea water"
 
-    def description_of_the_environment(self) -> str:
+    def description_of_the_environment(self) -> str:  # ty: ignore[invalid-return-type]
         """Description of the environment based on the instance.
 
         Returns
@@ -112,7 +112,7 @@ class ChlorideSeawater(Exposure):
         """
         return "Corrosion induced by chlorides from sea water"
 
-    def description_of_the_environment(self) -> str:
+    def description_of_the_environment(self) -> str:  # ty: ignore[invalid-return-type]
         """Description of the environment based on the instance.
 
         Returns
@@ -152,7 +152,7 @@ class FreezeThaw(Exposure):
         """
         return "Freeze/thaw attack with or without de-icing agents"
 
-    def description_of_the_environment(self) -> str:
+    def description_of_the_environment(self) -> str:  # ty: ignore[invalid-return-type]
         """Description of the environment based on the instance.
 
         Returns
@@ -193,7 +193,7 @@ class Chemical(Exposure):
         """
         return "Chemical attack"
 
-    def description_of_the_environment(self) -> str:
+    def description_of_the_environment(self) -> str:  # ty: ignore[invalid-return-type]
         """Description of the environment based on the instance.
 
         Returns

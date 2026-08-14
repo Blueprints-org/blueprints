@@ -50,7 +50,7 @@ class CHSProfile(Profile):
         raise_if_negative(inner_diameter=self.inner_diameter, outer_diameter=self.outer_diameter, wall_thickness=self.wall_thickness)
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the profile [mm]."""
         return self.wall_thickness
 

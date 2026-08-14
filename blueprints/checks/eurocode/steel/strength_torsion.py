@@ -90,7 +90,9 @@ class CheckStrengthStVenantTorsionClass1234:
             mx=1,  # 1 kNm
         )
 
-        unit_stress = self.steel_cross_section.profile.calculate_stress(rif1d)
+        unit_stress = self.steel_cross_section.profile.calculate_stress(
+            n=rif1d.n, v_y=rif1d.vy, v_z=rif1d.vz, m_x=rif1d.mx, m_y=rif1d.my, m_z=rif1d.mz
+        )
         unit_sig_zxy = unit_stress.get_stress()[0]["sig_zxy"]
         unit_max_sig_zxy = float(np.max(np.abs(unit_sig_zxy)))
 

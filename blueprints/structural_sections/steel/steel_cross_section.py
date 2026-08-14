@@ -63,11 +63,21 @@ class SteelCrossSection:
         hot_rolled_profiles = [(cls, "_database") for cls in (IPE, RHS, SHS, HEB, HEA, HEM)]
         cold_formed_profiles = [(cls, "_database") for cls in (RHSCF, SHSCF)]
         if self._set_fabrication_if_in_db(
-            profile_name, corrosion, corrosion_inside, corrosion_outside, hot_rolled_profiles, FabricationMethod.HOT_ROLLED
+            profile_name,
+            corrosion,
+            corrosion_inside,
+            corrosion_outside,
+            hot_rolled_profiles,  # ty: ignore[invalid-argument-type]
+            FabricationMethod.HOT_ROLLED,
         ):
             return
         self._set_fabrication_if_in_db(
-            profile_name, corrosion, corrosion_inside, corrosion_outside, cold_formed_profiles, FabricationMethod.COLD_FORMED
+            profile_name,
+            corrosion,
+            corrosion_inside,
+            corrosion_outside,
+            cold_formed_profiles,  # ty: ignore[invalid-argument-type]
+            FabricationMethod.COLD_FORMED,
         )
 
     @staticmethod
@@ -132,7 +142,7 @@ class SteelCrossSection:
         MPA
             The yield strength of the steel material.
         """
-        fy = self.material.yield_strength(thickness=self.profile.max_profile_thickness)
+        fy = self.material.yield_strength(thickness=self.profile.max_thickness)
         return fy if fy is not None else 0
 
     @property
@@ -145,7 +155,7 @@ class SteelCrossSection:
         MPA
             The ultimate strength of the steel material.
         """
-        fu = self.material.ultimate_strength(thickness=self.profile.max_profile_thickness)
+        fu = self.material.ultimate_strength(thickness=self.profile.max_thickness)
         return fu if fu is not None else 0
 
     @property

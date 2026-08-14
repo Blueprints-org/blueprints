@@ -88,8 +88,10 @@ class TestForm9Dot1nMinimumTensileReinforcementBeam:
         [
             (
                 "complete",
-                r"A_{s,min} = \max \left\{0.26 \cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; 0.0013 \cdot b_t \cdot d\right\} = "
-                r"\max \left\{0.26 \cdot \frac{2.00}{355.00} \cdot 50.00 \cdot 150.00; 0.0013 \cdot 50.00 \cdot 150.00\right\} = 10.99",
+                (
+                    r"A_{s,min} = \max \left\{0.26 \cdot \frac{f_{ctm}}{f_{yk}} \cdot b_t \cdot d; 0.0013 \cdot b_t \cdot d\right\} = "
+                    r"\max \left\{0.26 \cdot \frac{2.00}{355.00} \cdot 50.00 \cdot 150.00; 0.0013 \cdot 50.00 \cdot 150.00\right\} = 10.99"
+                ),
             ),
             ("short", "A_{s,min} = 10.99"),
         ],

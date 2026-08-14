@@ -86,7 +86,7 @@ class IProfile(Profile):
         object.__setattr__(self, "width_outstand_bottom_flange", (self.bottom_flange_width - self.web_thickness - 2 * self.bottom_radius) / 2)
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the profile [mm]."""
         return max(self.top_flange_thickness, self.bottom_flange_thickness, self.web_thickness)
 

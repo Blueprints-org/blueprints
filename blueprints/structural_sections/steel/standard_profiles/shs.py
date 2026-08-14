@@ -166,6 +166,11 @@ class SHS(metaclass=StandardProfileMeta):
     Usage example
     -------------
         >>> profile = SHS.SHS100x5
+        >>> print(isinstance(profile, RHSProfile))  # True
+        >>>
+        >>> # To iterate over all available SHS profiles:
+        >>> for profile in SHS:
+        ...     print(isinstance(profile, RHSProfile))  # True
     """
 
     _factory = RHSProfile

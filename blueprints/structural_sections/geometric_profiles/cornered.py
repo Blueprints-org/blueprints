@@ -75,7 +75,7 @@ class CircularCorneredProfile(Profile):
             raise ValueError(f"corner_direction must be one of 0, 1, 2, or 3, got {self.corner_direction}")
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the corner profile [mm]."""
         return min(self.thickness_vertical, self.thickness_horizontal)
 

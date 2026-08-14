@@ -164,6 +164,6 @@ class TestAnnularSectorProfile:
         assert pytest.approx(transformed_profile.profile_height, rel=1e-6) == annular_sector_profile.profile_width
 
     def test_max_thickness(self, annular_sector_profile: AnnularSectorProfile) -> None:
-        """Test the max_profile_thickness property of the AnnularSectorProfile class."""
+        """Test the max_thickness property of the AnnularSectorProfile class."""
         expected_max_thickness = 20.0
-        assert annular_sector_profile.max_profile_thickness == pytest.approx(expected=expected_max_thickness, rel=1e-6)
+        assert annular_sector_profile.max_thickness == pytest.approx(expected=expected_max_thickness, rel=1e-6)

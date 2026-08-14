@@ -75,7 +75,7 @@ The `Report` class helps you build professional engineering reports with text, e
             [r"\text{Tensile strength}", "0.750", r"\text{PASS}"],
             [r"\text{Buckling}", "0.823", r"\text{PASS}"],
             [r"\text{Combined}", "0.891", r"\text{PASS}"],
-        ]
+        ],
     )
 
     # --- FIGURES ---
@@ -88,28 +88,37 @@ The `Report` class helps you build professional engineering reports with text, e
 
     # Bulleted list
     report.add_paragraph("Key findings:", bold=True)
-    report.add_list([
-        "All unity checks passed",
-        "Maximum utilization: 89.1%",
-        "Safety margin: adequate",
-    ], style="bulleted")
+    report.add_list(
+        [
+            "All unity checks passed",
+            "Maximum utilization: 89.1%",
+            "Safety margin: adequate",
+        ],
+        style="bulleted",
+    )
 
     # Numbered list
     report.add_paragraph("Recommended actions:", bold=True)
-    report.add_list([
-        "Verify connection details",
-        "Check fabrication tolerances",
-        "Confirm material certificates",
-    ], style="numbered")
+    report.add_list(
+        [
+            "Verify connection details",
+            "Check fabrication tolerances",
+            "Confirm material certificates",
+        ],
+        style="numbered",
+    )
 
     # Nested list
     report.add_paragraph("Design verification steps:", bold=True)
-    report.add_list([
-        "Material properties",
-        ["Yield strength", "Ultimate strength", "Elastic modulus"],
-        "Cross-section checks",
-        ["Classification", "Local buckling", ["Web", "Flange"]]
-    ], style="numbered")
+    report.add_list(
+        [
+            "Material properties",
+            ["Yield strength", "Ultimate strength", "Elastic modulus"],
+            "Cross-section checks",
+            ["Classification", "Local buckling", ["Web", "Flange"]],
+        ],
+        style="numbered",
+    )
 
     # --- SPACING ---
     report.add_newline(n=2)
@@ -165,7 +174,7 @@ A very useful way to work with the report is to export it as a LaTeX document. Y
 
 ```python exec="on" session="report_quick_start" source="above"
 # Save the complete LaTeX document to your local disk (ready for Overleaf or pdflatex)
-report.to_latex('report.tex')
+report.to_latex("report.tex")
 ```
 
 ### Export to Word
@@ -282,7 +291,7 @@ report.to_pdf("report.pdf", cleanup=False)
 
 ## Translate Your Report
 
-Export your report in different languages using the `language` parameter. This works with `to_latex()`, `to_word()`, and `to_pdf()`.
+Export your report in different languages using the `language` parameter. This works with `to_latex()`, `to_word()`, and `to_pdf()`. Note: this feature is slow in a .ipynb notebook environment.
 
 !!! warning "Translation Support"
 
@@ -516,7 +525,7 @@ report.add_table(
     rows=[
         [r"\text{Shear capacity}", "0.588", r"\text{PASS}"],
         [r"\text{Torsion capacity}", "0.925", r"\text{PASS}"],
-    ]
+    ],
 )
 print(report.to_latex())
 ```
@@ -553,7 +562,7 @@ report = Report(title="My report")
 report.add_list(["Check 1 passed", "Check 2 passed", "Check 3 failed"], style="bulleted")
 
 # Numbered list
-report.add_list(["First step: verify inputs", "Second step: run calculations", "Third step: review results"], style='numbered')
+report.add_list(["First step: verify inputs", "Second step: run calculations", "Third step: review results"], style="numbered")
 
 # Numbered list, nested
 report.add_list(["One", ["A", "B", "C"], "Two", ["A", ["I", "II", "III"]]], style="numbered")

@@ -13,7 +13,7 @@ from googletrans import Translator
 
 class LatexTranslator:
     r"""
-    Utility class for extracting and translating LaTeX text.
+    Utility class for extracting and translating LaTeX text. Note: this feature is slow in a .ipynb notebook environment.
 
     Supports translation between any language pair when using a CSV translation file.
     Falls back to Google Translate for text not found in the CSV.

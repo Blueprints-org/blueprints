@@ -25,7 +25,7 @@ class TestLNPProfile:
     def test_maximum_element_thickness(self, lnp_profile: LNPProfile) -> None:
         """Test the maximum element thickness of the LNP profile."""
         expected_max_thickness: float = 6.0  # mm
-        assert pytest.approx(lnp_profile.max_profile_thickness, rel=1e-6) == expected_max_thickness
+        assert pytest.approx(lnp_profile.max_thickness, rel=1e-6) == expected_max_thickness
 
     def test_steel_volume_per_meter(self, lnp_profile: LNPProfile) -> None:
         """Test the steel volume per meter."""

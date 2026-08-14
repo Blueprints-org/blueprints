@@ -46,3 +46,10 @@ class TestIPE:
 
         profile3 = IPE.IPE300
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the IPE class yields valid profiles."""
+        for profile in IPE:
+            assert isinstance(profile, IProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0

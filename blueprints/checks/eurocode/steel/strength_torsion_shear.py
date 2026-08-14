@@ -7,13 +7,12 @@ import numpy as np
 from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
-from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12IProfile
+from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_19 import Form6Dot19CheckDesignElasticShearResistance
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_25 import Form6Dot25CheckCombinedShearForceAndTorsionalMoment
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state.formula_6_26 import Form6Dot26VplTRdIOrHSection
 from blueprints.codes.formula import Formula
-from blueprints.saf.results.result_internal_force_1d import ResultFor, ResultInternalForce1D, ResultOn
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN, KNM
@@ -96,27 +95,17 @@ class CheckStrengthTorsionShearClass12IProfile:
         dict[str, Formula | float]
             Calculation results keyed by formula number. Returns an empty dict if no torsion is applied.
         """
-        shear_calculation = CheckStrengthShearClass12IProfile(
+        shear_calculation = CheckStrengthShearClass12(
             steel_cross_section=self.steel_cross_section,
             v=self.v,
             axis=self.axis,
             gamma_m0=self.gamma_m0,
-            section_properties=self.section_properties,
         )
 
-        shear_formulas = shear_calculation.calculation_formula()
-        a_v = shear_formulas["shear_area"]
-        v_pl_rd = shear_formulas["resistance"]
+        a_v = shear_calculation.shear_area()
+        v_pl_rd = shear_calculation.plastic_resistance()
 
-        rif1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM,
-            member="N/A",
-            result_for=ResultFor.LOAD_CASE,
-            load_case="N/A",
-            mx=1,  # 1 kNm
-        )
-
-        unit_stress = self.steel_cross_section.profile.calculate_stress(rif1d)
+        unit_stress = self.steel_cross_section.profile.calculate_stress(m_x=1)
         unit_sig_zxy = unit_stress.get_stress()[0]["sig_zxy"]
         unit_max_sig_zxy = float(np.max(np.abs(unit_sig_zxy)))
 
@@ -286,17 +275,11 @@ class CheckStrengthTorsionShearClass34:
         dict[str, Formula | float]
             Calculation results keyed by formula number. Returns an empty dict if no torsion is applied.
         """
-        rif1d = ResultInternalForce1D(
-            result_on=ResultOn.ON_BEAM,
-            member="N/A",
-            result_for=ResultFor.LOAD_CASE,
-            load_case="N/A",
-            vy=self.v if self.axis == "Vy" else 0,
-            vz=self.v if self.axis == "Vz" else 0,
-            mx=self.m_x,
+        stress = self.steel_cross_section.profile.calculate_stress(
+            v_y=self.v if self.axis == "Vy" else 0,
+            v_z=self.v if self.axis == "Vz" else 0,
+            m_x=self.m_x,
         )
-
-        stress = self.steel_cross_section.profile.calculate_stress(rif1d)
         sig_zxy = stress.get_stress()[0]["sig_zxy"]
         max_sig_zxy = float(np.max(np.abs(sig_zxy)))
 

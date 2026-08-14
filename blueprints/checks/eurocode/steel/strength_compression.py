@@ -1,9 +1,6 @@
-"""Module for checking compression force resistance of steel cross-sections."""
+"""Module for checking compression force resistance of steel cross-sections based on EN 1993-1-1:2005 art. 6.2.4."""
 
 from dataclasses import dataclass
-from typing import ClassVar
-
-from sectionproperties.post.post import SectionProperties
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -21,20 +18,21 @@ from blueprints.utils.report import Report
 @dataclass(frozen=True)
 class CheckStrengthCompressionClass123:
     """Class to perform compression force resistance check for steel cross-sections,
-        for cross-section class 1, 2, and 3 (Eurocode 3).
+    for cross-section class 1, 2, and 3, based on EN 1993-1-1:2005 art. 6.2.4.
 
     Coordinate System:
-
-        z (vertical, usually strong axis)
-            ↑
-            |     x (longitudinal beam direction, into screen)
-            |    ↗
-            |   /
-            |  /
-            | /
-            |/
-      ←-----O
-       y (horizontal/side, usually weak axis)
+    ```
+    z (vertical, usually strong axis)
+        ↑
+        |     x (longitudinal beam direction, into screen)
+        |    ↗
+        |   /
+        |  /
+        | /
+        |/
+    ←---O
+    y (horizontal/side, usually weak axis)
+    ```
 
     Parameters
     ----------
@@ -42,60 +40,81 @@ class CheckStrengthCompressionClass123:
         The steel cross-section to check.
     n : KN, optional
         The applied compressive force (negative value), default is 0 kN.
+        Will raise an error if a positive value is provided, as this check is only for compression.
     gamma_m0 : DIMENSIONLESS, optional
         Partial safety factor for resistance of cross-sections, default is 1.0.
-    section_properties : SectionProperties | None, optional
-        Pre-calculated section properties. If None, they will be calculated internally.
 
     Example
     -------
-    from blueprints.checks.eurocode.steel.strength_compression import CompressionForceCheck
+    ```python
+    from blueprints.checks import CheckStrengthCompressionClass123
     from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
     from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
     heb_300_profile = HEB.HEB300.with_corrosion(1.5)
-    n = -10000  # Applied compressive force in kN
+    n = -100  # Applied compressive force in kN
 
     heb_300_s355 = SteelCrossSection(profile=heb_300_profile, material=steel_material)
     calc = CheckStrengthCompressionClass123(heb_300_s355, n, gamma_m0=1.0)
     calc.report().to_word("compression_strength.docx", language="nl")
+    ```
 
+    Raises
+    ------
+    ValueError
+        If a positive value is provided for the applied force `n`, as this check is only for compression.
+        The applied force must be negative to indicate compression.
     """
 
     steel_cross_section: SteelCrossSection
     n: KN = 0
     gamma_m0: DIMENSIONLESS = 1.0
-    section_properties: SectionProperties | None = None
     name: str = "Compression strength check for steel profiles"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
-        """Post-initialization to extract section properties."""
-        if self.section_properties is None:
-            section_properties = self.steel_cross_section.profile.section_properties()
-            object.__setattr__(self, "section_properties", section_properties)
+        """Post-initialization to validate input parameters."""
+        if self.n > 0:
+            raise ValueError(
+                f"Input force N (F_x) must be negative for compression check. You provided n={self.n} kN, which is not valid for this check."
+            )
 
-    def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate compression force resistance check.
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
 
         Returns
         -------
-        dict[str, Formula]
-                Calculation results keyed by formula number. Returns an empty dict if no compression force is applied.
+        list[str]
         """
-        if self.n > 0:
-            raise ValueError("Input force N (F_x) must be negative for compression check.")
+        return [EN_1993_1_1_2005]
 
-        a = float(self.section_properties.area)  # type: ignore[attr-defined]
+    def plastic_resistance(self) -> Formula:
+        """Calculate the compression force plastic resistance of the steel cross-section based on the gross
+        cross-sectional area and yield strength (EN 1993-1-1:2005 art. 6.2.4(2) - Formula (6.10)).
+
+        Returns
+        -------
+        Formula
+            The calculated compression force resistance.
+        """
+        area = self.steel_cross_section.profile.section_properties().area
+        assert area is not None, "Cross-sectional area must be defined for the steel profile."
         f_y = self.steel_cross_section.yield_strength
-        n_ed = -self.n * KN_TO_N
-        n_c_rd = formula_6_10.Form6Dot10NcRdClass1And2And3(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
-        check_compression = formula_6_9.Form6Dot9CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd)
-        return {
-            "resistance": n_c_rd,
-            "check": check_compression,
-        }
+        return formula_6_10.Form6Dot10NcRdClass1And2And3(a=area, f_y=f_y, gamma_m0=self.gamma_m0)
+
+    def compression_strength_unity_check(self) -> Formula:
+        """Calculate the unity check for compression strength of the steel cross-section based on the applied compressive
+        force and the calculated resistance (EN 1993-1-1:2005 art. 6.2.4(1) - Formula (6.9)).
+
+        Returns
+        -------
+        Formula
+            The calculated unity check for compression strength.
+        """
+        n_ed = abs(self.n * KN_TO_N)
+        n_c_rd = self.plastic_resistance()
+        return formula_6_9.Form6Dot9CheckCompressionForce(n_ed=n_ed, n_c_rd=n_c_rd)
 
     def result(self) -> CheckResult:
         """Calculate result of compression force resistance.
@@ -103,12 +122,11 @@ class CheckStrengthCompressionClass123:
         Returns
         -------
         CheckResult
-                True if the compression force check passes, False otherwise.
+                This is the result of the compression force resistance check, which compares the provided compressive force
+            with the calculated resistance. The check is satisfied if the provided compressive force does not exceed
+            the resistance.
         """
-        steps = self.calculation_formula()
-        provided = -self.n * KN_TO_N
-        required = steps["resistance"]
-        return CheckResult.from_comparison(provided=provided, required=float(required))
+        return CheckResult.from_comparison(provided=abs(self.n * KN_TO_N), required=self.plastic_resistance())
 
     def report(self, n: int = 2) -> Report:
         """Returns the report for the compression force check.
@@ -116,29 +134,34 @@ class CheckStrengthCompressionClass123:
         Parameters
         ----------
         n : int, optional
-                Number of decimal places for numerical values in the report (default is 2).
+            Number of decimal places for numerical values in the report (default is 2).
 
         Returns
         -------
         Report
-                Report of the compression force check.
+            Full report on the compression force check, including the applied force, calculated resistance,
+            unity check, and overall result.
         """
-        report = Report("Check: compression force steel beam")
+        report = Report("Compression check of steel cross-section")
+
+        # will not generate a report if no compressive force is applied, as the check is not necessary in that case
         if self.n == 0:
             report.add_paragraph("No compressive force was applied; therefore, no compression force check is necessary.")
             return report
 
-        # Cache calculation formulas to avoid redundant recalculations
-        formulas = self.calculation_formula()
-
+        # generate report if compressive force is applied
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
             rf"is loaded with a compressive force of {abs(self.n):.{n}f} kN. "
-            rf"The resistance is calculated as follows:"
-        )
-        report.add_formula(formulas["resistance"], n=n)
+        ).add_newline(n=2)
+
+        # resistance
+        report.add_paragraph(r"The resistance is calculated as follows:")
+        report.add_formula(self.plastic_resistance(), n=n).add_newline(n=2)
+
+        # unity check
         report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(formulas["check"], n=n)
+        report.add_formula(self.compression_strength_unity_check(), n=n).add_newline(n=2)
         if self.result().is_ok:
             report.add_paragraph("The check for compression force satisfies the requirements.")
         else:

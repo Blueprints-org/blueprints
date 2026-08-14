@@ -81,6 +81,7 @@ class TestForm6Dot41W1Rectangular:
         latex = Form6Dot41W1Rectangular(c_1=c_1, c_2=c_2, d=d).latex()
 
         actual = {
+            "complete_with_units": latex.complete_with_units,
             "complete": latex.complete,
             "short": latex.short,
         }

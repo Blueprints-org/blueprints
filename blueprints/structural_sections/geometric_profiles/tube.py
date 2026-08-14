@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from functools import partial
+from typing import cast
 
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
@@ -48,7 +49,7 @@ class TubeProfile(Profile):
             raise ValueError(msg)
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the tube profile [mm]."""
         return self.wall_thickness
 
@@ -112,4 +113,5 @@ class TubeProfile(Profile):
         outer_circle = center.buffer(self.outer_radius, quad_segs=quad_segs)
         inner_circle = center.buffer(self.inner_radius, quad_segs=quad_segs)
         difference = outer_circle.difference(inner_circle)
-        return Polygon(difference)  # type: ignore[arg-type]
+        # Cast result to Polygon to satisfy type checker (difference returns BaseGeometry)
+        return cast(Polygon, difference)

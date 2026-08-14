@@ -52,7 +52,7 @@ class Table4Dot2MinimumCoverWithRegardToBond(Formula):
         return LatexFormula(
             return_symbol=r"c_{min,b}",
             result=f"{self:.{n}f}",
-            equation=r"(equivalent) rebar diameter" + suffix,
+            equation=r"\text{(equivalent) rebar diameter}" + suffix,
             numeric_equation=f"{self.diameter}" + suffix,
             comparison_operator_label="=",
         )

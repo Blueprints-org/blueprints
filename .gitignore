@@ -162,3 +162,14 @@ cython_debug/
 # ENV file
 .ENV
 /local/
+
+# Files created by building the documentation
+full_design_report.tex
+report_de.tex
+report_en.tex
+report_es.tex
+report_fr.tex
+report_nl.tex
+report_nl.docx
+report.docx
+report.tex

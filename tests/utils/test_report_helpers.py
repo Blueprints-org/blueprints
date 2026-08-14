@@ -2,8 +2,8 @@
 
 import pytest
 
-from blueprints.utils import report_helpers
-from blueprints.utils.report import Report
+from blueprints.checks.check_result import CheckResult
+from blueprints.utils.report import Report, report_helpers
 
 
 @pytest.fixture
@@ -126,8 +126,9 @@ def test_add_unity_check_summary(fixture_report: Report) -> None:
         "bending": DummyCheck(0.95, True),
         "shear": DummyCheck(1.05, False),
         "none": None,
+        "check_result": CheckResult(is_ok=True),
     }
-    report_helpers.add_unity_check_summary(fixture_report, checks, n=2)
+    report_helpers.add_unity_check_summary(report=fixture_report, calculations=checks, n=2)
     content = fixture_report.content
     assert "utilization" in content.lower()
     assert "Check" in content

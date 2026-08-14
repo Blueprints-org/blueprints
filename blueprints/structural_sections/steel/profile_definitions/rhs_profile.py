@@ -140,7 +140,7 @@ class RHSProfile(Profile):
         )
 
     @property
-    def max_profile_thickness(self) -> MM:
+    def max_thickness(self) -> MM:
         """Maximum element thickness of the profile [mm]."""
         return max(self.left_wall_thickness, self.right_wall_thickness, self.top_wall_thickness, self.bottom_wall_thickness)
 

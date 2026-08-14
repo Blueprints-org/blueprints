@@ -40,3 +40,10 @@ class TestStrip:
 
         profile3 = Strip.STRIP180x5
         assert profile1 != profile3
+
+    def test_iteration(self) -> None:
+        """Test that iterating over the Strip class yields valid profiles."""
+        for profile in Strip:
+            assert isinstance(profile, StripProfile)
+            assert profile.polygon.is_valid
+            assert profile.area > 0

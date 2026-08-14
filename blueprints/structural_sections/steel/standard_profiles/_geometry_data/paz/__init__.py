@@ -1,0 +1,69 @@
+"""PAZ profile geometry data extracted from DXF files.
+
+Each module in this package contains coordinate data for one PAZ profile,
+with smooth curves interpolated from DXF bulge values.
+"""
+
+from .paz4350 import PAZ4350_GEOMETRY
+from .paz4360 import PAZ4360_GEOMETRY
+from .paz4370 import PAZ4370_GEOMETRY
+from .paz4450 import PAZ4450_GEOMETRY
+from .paz4460 import PAZ4460_GEOMETRY
+from .paz4470 import PAZ4470_GEOMETRY
+from .paz4550 import PAZ4550_GEOMETRY
+from .paz4560 import PAZ4560_GEOMETRY
+from .paz4570 import PAZ4570_GEOMETRY
+from .paz4660 import PAZ4660_GEOMETRY
+from .paz4670 import PAZ4670_GEOMETRY
+from .paz5360 import PAZ5360_GEOMETRY
+from .paz5370 import PAZ5370_GEOMETRY
+from .paz5380 import PAZ5380_GEOMETRY
+from .paz5390 import PAZ5390_GEOMETRY
+from .paz5460 import PAZ5460_GEOMETRY
+from .paz5470 import PAZ5470_GEOMETRY
+from .paz5480 import PAZ5480_GEOMETRY
+from .paz5490 import PAZ5490_GEOMETRY
+from .paz5560 import PAZ5560_GEOMETRY
+from .paz5570 import PAZ5570_GEOMETRY
+from .paz5580 import PAZ5580_GEOMETRY
+from .paz5590 import PAZ5590_GEOMETRY
+from .paz5660 import PAZ5660_GEOMETRY
+from .paz5670 import PAZ5670_GEOMETRY
+from .paz5680 import PAZ5680_GEOMETRY
+from .paz5690 import PAZ5690_GEOMETRY
+from .paz54100 import PAZ54100_GEOMETRY
+from .paz55100 import PAZ55100_GEOMETRY
+from .paz56100 import PAZ56100_GEOMETRY
+
+__all__ = [
+    "PAZ4350_GEOMETRY",
+    "PAZ4360_GEOMETRY",
+    "PAZ4370_GEOMETRY",
+    "PAZ4450_GEOMETRY",
+    "PAZ4460_GEOMETRY",
+    "PAZ4470_GEOMETRY",
+    "PAZ4550_GEOMETRY",
+    "PAZ4560_GEOMETRY",
+    "PAZ4570_GEOMETRY",
+    "PAZ4660_GEOMETRY",
+    "PAZ4670_GEOMETRY",
+    "PAZ5360_GEOMETRY",
+    "PAZ5370_GEOMETRY",
+    "PAZ5380_GEOMETRY",
+    "PAZ5390_GEOMETRY",
+    "PAZ5460_GEOMETRY",
+    "PAZ5470_GEOMETRY",
+    "PAZ5480_GEOMETRY",
+    "PAZ5490_GEOMETRY",
+    "PAZ5560_GEOMETRY",
+    "PAZ5570_GEOMETRY",
+    "PAZ5580_GEOMETRY",
+    "PAZ5590_GEOMETRY",
+    "PAZ5660_GEOMETRY",
+    "PAZ5670_GEOMETRY",
+    "PAZ5680_GEOMETRY",
+    "PAZ5690_GEOMETRY",
+    "PAZ54100_GEOMETRY",
+    "PAZ55100_GEOMETRY",
+    "PAZ56100_GEOMETRY",
+]
