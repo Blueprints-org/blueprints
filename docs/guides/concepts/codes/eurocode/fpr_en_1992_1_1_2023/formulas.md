@@ -138,8 +138,8 @@ Total of 602 formulas present.
 |      8.74      | :heavy_check_mark: |         | Form8Dot74DesignShearStressAtInterface                             |
 |      8.75      | :heavy_check_mark: |         | Form8Dot75LongitudinalShearStressDueToCompositeAction              |
 |      8.76      | :heavy_check_mark: |         | Form8Dot76ShearStressResistanceAtInterface                         |
-|      8.77      |        :x:         |         |                                                                    |
-|      8.78      |        :x:         |         |                                                                    |
+|      8.77      | :heavy_check_mark: |         | Form8Dot77ShearStressResistanceAtInterfaceWithoutYielding          |
+|      8.78      | :heavy_check_mark: |         | Form8Dot78MinimumInterfaceReinforcementAlongEdge                   |
 |      8.79      |        :x:         |         |                                                                    |
 |      8.80      |        :x:         |         |                                                                    |
 |      8.81      |        :x:         |         |                                                                    |
