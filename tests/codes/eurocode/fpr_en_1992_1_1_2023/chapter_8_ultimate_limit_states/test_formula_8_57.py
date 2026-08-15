@@ -110,17 +110,21 @@ class TestForm8Dot57AdditionalBendingMoment:
         [
             (
                 "complete",
-                r"\Delta M_{Ed} = \left(\tau_{Ed} - \rho_w \cdot f_{ywd} \cdot \cot(\theta)\right) "
-                r"\cdot z \cdot b_w \cdot \left(\frac{a}{2} - x\right) = "
-                r"\left(2.000 - 0.002 \cdot 435.000 \cdot \cot(26.565)\right) "
-                r"\cdot 400.000 \cdot 300.000 \cdot \left(\frac{600.000}{2} - 200.000\right) = 3120000.000 \ Nmm",
+                (
+                    r"\Delta M_{Ed} = \left(\tau_{Ed} - \rho_w \cdot f_{ywd} \cdot \cot(\theta)\right) "
+                    r"\cdot z \cdot b_w \cdot \left(\frac{a}{2} - x\right) = "
+                    r"\left(2.000 - 0.002 \cdot 435.000 \cdot \cot(26.565)\right) "
+                    r"\cdot 400.000 \cdot 300.000 \cdot \left(\frac{600.000}{2} - 200.000\right) = 3120000.000 \ Nmm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\Delta M_{Ed} = \left(\tau_{Ed} - \rho_w \cdot f_{ywd} \cdot \cot(\theta)\right) "
-                r"\cdot z \cdot b_w \cdot \left(\frac{a}{2} - x\right) = "
-                r"\left(2.000 \ MPa - 0.002 \cdot 435.000 \ MPa \cdot \cot(26.565 ^\circ)\right) "
-                r"\cdot 400.000 \ mm \cdot 300.000 \ mm \cdot \left(\frac{600.000 \ mm}{2} - 200.000 \ mm\right) = 3120000.000 \ Nmm",
+                (
+                    r"\Delta M_{Ed} = \left(\tau_{Ed} - \rho_w \cdot f_{ywd} \cdot \cot(\theta)\right) "
+                    r"\cdot z \cdot b_w \cdot \left(\frac{a}{2} - x\right) = "
+                    r"\left(2.000 \ MPa - 0.002 \cdot 435.000 \ MPa \cdot \cot(26.565 ^\circ)\right) "
+                    r"\cdot 400.000 \ mm \cdot 300.000 \ mm \cdot \left(\frac{600.000 \ mm}{2} - 200.000 \ mm\right) = 3120000.000 \ Nmm"
+                ),
             ),
             ("short", r"\Delta M_{Ed} = 3120000.000 \ Nmm"),
         ],

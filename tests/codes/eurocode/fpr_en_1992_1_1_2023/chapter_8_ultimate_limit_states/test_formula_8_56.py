@@ -77,17 +77,21 @@ class TestForm8Dot56StressInShearReinforcement:
         [
             (
                 "complete",
-                r"\sigma_{swd} = \min\left(E_s \cdot \left[\left(\cot(\theta)\right)^2 \cdot "
-                r"\left(\varepsilon_x + 0.001\right) - 0.001\right], f_{ywd}\right) = "
-                r"\min\left(200000.000 \cdot \left[\left(\cot(51.340)\right)^2 \cdot "
-                r"\left(0.001 + 0.001\right) - 0.001\right], 435.000\right) = 56.000 \ MPa",
+                (
+                    r"\sigma_{swd} = \min\left(E_s \cdot \left[\left(\cot(\theta)\right)^2 \cdot "
+                    r"\left(\varepsilon_x + 0.001\right) - 0.001\right], f_{ywd}\right) = "
+                    r"\min\left(200000.000 \cdot \left[\left(\cot(51.340)\right)^2 \cdot "
+                    r"\left(0.001 + 0.001\right) - 0.001\right], 435.000\right) = 56.000 \ MPa"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\sigma_{swd} = \min\left(E_s \cdot \left[\left(\cot(\theta)\right)^2 \cdot "
-                r"\left(\varepsilon_x + 0.001\right) - 0.001\right], f_{ywd}\right) = "
-                r"\min\left(200000.000 \ MPa \cdot \left[\left(\cot(51.340 ^\circ)\right)^2 \cdot "
-                r"\left(0.001 + 0.001\right) - 0.001\right], 435.000 \ MPa\right) = 56.000 \ MPa",
+                (
+                    r"\sigma_{swd} = \min\left(E_s \cdot \left[\left(\cot(\theta)\right)^2 \cdot "
+                    r"\left(\varepsilon_x + 0.001\right) - 0.001\right], f_{ywd}\right) = "
+                    r"\min\left(200000.000 \ MPa \cdot \left[\left(\cot(51.340 ^\circ)\right)^2 \cdot "
+                    r"\left(0.001 + 0.001\right) - 0.001\right], 435.000 \ MPa\right) = 56.000 \ MPa"
+                ),
             ),
             ("short", r"\sigma_{swd} = 56.000 \ MPa"),
         ],
