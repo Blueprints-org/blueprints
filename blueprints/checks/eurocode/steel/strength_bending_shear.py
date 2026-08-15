@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from typing import ClassVar, Literal
 
+import numpy as np
+
 from blueprints.checks.check_result import CheckResult
 from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12
 from blueprints.checks.eurocode.steel.strength_torsion_shear import CheckStrengthTorsionShearClass12
@@ -10,7 +12,6 @@ from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import (
     formula_6_12,
     formula_6_13,
-    formula_6_14,
     formula_6_29,
     formula_6_29rho,
 )
@@ -294,63 +295,45 @@ class CheckStrengthBendingShearClass3:
         if (self.axis_m == "My" and self.axis_v != "Vz") or (self.axis_m == "Mz" and self.axis_v != "Vy"):
             raise ValueError("Axis for bending moment and shear force are not compatible. Use 'My' with 'Vz' and 'Mz' with 'Vy'.")
 
-    def calculation_formula(self) -> dict[str, Formula]:
-        """Calculate bending moment resistance check (Class 3 only, units: kNm).
+    def combined_von_mises_stress(self) -> float:
+        """Calculate the combined von Mises stress due to bending, shear and torsion using elastic theory.
 
         Returns
         -------
-        dict[str, Formula]
-            Calculation results keyed by formula number. Returns an empty dict if no moment is applied.
+        float
+            The maximum combined von Mises stress in MPa.
         """
-        v_ed = abs(self.v * KN_TO_N)
-        m_x = abs(self.m_x * KNM_TO_NMM)
-        m_ed = abs(self.m * KNM_TO_NMM)
+        if self.v == 0 and self.m_x == 0 and self.m == 0:
+            return 0.0
 
-        if m_x == 0:
-            shear_calc = CheckStrengthShearClass12(self.steel_cross_section, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0)
-            shear_resistance_calculation = {
-                "shear_area": shear_calc.shear_area(),
-                "resistance": shear_calc.plastic_resistance(),
-            }
-            rho = formula_6_29rho.Form6Dot29Rho(v_ed=v_ed, v_pl_rd=shear_resistance_calculation["resistance"])
-        else:
-            torsion_shear_calc = CheckStrengthTorsionShearClass12(
-                self.steel_cross_section, m_x=self.m_x, v=self.v, axis=self.axis_v, gamma_m0=self.gamma_m0
-            )
-            shear_resistance_calculation = {
-                "shear_area": torsion_shear_calc.shear_area(),
-                "resistance": torsion_shear_calc.combined_resistance(),
-            }
-            rho = formula_6_29rho.Form6Dot29RhoWithTorsion(v_ed=v_ed, v_pl_t_rd=shear_resistance_calculation["resistance"])
+        v_y = self.v if self.axis_v == "Vy" else 0.0
+        v_z = self.v if self.axis_v == "Vz" else 0.0
+        m_y = self.m if self.axis_m == "My" else 0.0
+        m_z = self.m if self.axis_m == "Mz" else 0.0
 
-        f_y_reduced = formula_6_29.Form6Dot29ReducedYieldStrength(rho=rho, f_y=self.steel_cross_section.yield_strength)
-        section_properties = self.steel_cross_section.profile.section_properties()
-        if self.axis_m == "My":
-            zxx_plus = section_properties.zxx_plus
-            zxx_minus = section_properties.zxx_minus
-            if zxx_plus is None or zxx_minus is None:
-                raise ValueError("Section properties zxx_plus and zxx_minus must be defined")
-            w = min(float(zxx_plus), float(zxx_minus))
-        else:
-            zyy_plus = section_properties.zyy_plus
-            zyy_minus = section_properties.zyy_minus
-            if zyy_plus is None or zyy_minus is None:
-                raise ValueError("Section properties zyy_plus and zyy_minus must be defined")
-            w = min(float(zyy_plus), float(zyy_minus))
+        stress_post = self.steel_cross_section.profile.calculate_stress(
+            n=0,
+            v_y=v_y,
+            v_z=v_z,
+            m_x=self.m_x,
+            m_y=m_y,
+            m_z=m_z,
+        )
 
-        m_c_rd = formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y_reduced, gamma_m0=self.gamma_m0)
-        check_moment = formula_6_12.Form6Dot12CheckBendingMoment(m_ed=m_ed, m_c_rd=m_c_rd)
+        stress_data = stress_post.get_stress()[0]
+        von_mises = stress_data["sig_vm"]
+        # Return the maximum von Mises stress
+        return float(np.max(np.abs(von_mises)))
 
-        return {
-            "a_v": Formula(name="a_v", value=shear_resistance_calculation["shear_area"])
-            if not isinstance(shear_resistance_calculation["shear_area"], Formula)
-            else shear_resistance_calculation["shear_area"],
-            "v_pl(_t)_rd": shear_resistance_calculation["resistance"],
-            "rho": rho,
-            "f_y_reduced": f_y_reduced,
-            "resistance": m_c_rd,
-            "check": check_moment,
-        }
+    def elastic_resistance(self) -> float:
+        """Calculate the elastic resistance for Class 3 (yield strength).
+
+        Returns
+        -------
+        float
+            The calculated elastic resistance in MPa.
+        """
+        return float(self.steel_cross_section.yield_strength / self.gamma_m0)
 
     def result(self) -> CheckResult:
         """Calculate result of bending moment resistance (Class 3).
@@ -360,9 +343,8 @@ class CheckStrengthBendingShearClass3:
         CheckResult
             True if the bending moment check passes, False otherwise.
         """
-        steps = self.calculation_formula()
-        provided = abs(self.m) * KNM_TO_NMM
-        required = steps["resistance"]
+        provided = self.combined_von_mises_stress()
+        required = self.elastic_resistance()
         return CheckResult.from_comparison(provided=provided, required=float(required))
 
     def report(self, n: int = 2) -> Report:
@@ -378,45 +360,49 @@ class CheckStrengthBendingShearClass3:
         Report
             Report of the bending moment check.
         """
-        report = Report(f"Check: bending moment steel beam (axis {self.axis_m})")
+        report = Report("Check: bending moment + shear steel beam")
         if self.m == 0:
             report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
             return report
 
-        formulas = self.calculation_formula()
-
+        # introduction
+        profile_name = self.steel_cross_section.profile.name
+        steel_quality = self.steel_cross_section.material.steel_class.name
         report.add_paragraph(
-            rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
-            rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis_m}). "
+            f"Profile {profile_name} with steel quality {steel_quality} "
+            f"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis_m}). "
         )
 
         if abs(self.v) > 0 or abs(self.m_x) > 0:
             report.add_paragraph(
-                rf"Additionally a shear force of {abs(self.v):.{n}f} kN (axis {self.axis_v})"
-                + (rf" and a torsional moment of {abs(self.m_x):.{n}f} kNm. " if abs(self.m_x) > 0 else ". ")
+                f"Additionally a shear force of {abs(self.v):.{n}f} kN (axis {self.axis_v})"
+                + (f" and a torsional moment of {abs(self.m_x):.{n}f} kNm. " if abs(self.m_x) > 0 else ". ")
             )
-        report.add_paragraph("The resistance is calculated as follows, using cross-section class 3:").add_newline(2)
 
-        report.add_paragraph("First, the shear area is determined:")
-        report.add_formula(formulas["a_v"], n=n, split_after=[(2, "="), (7, "+"), (3, "=")])
+        report.add_paragraph(
+            "For class 3 sections, the combined von Mises stress from bending, shear and torsion is calculated using elastic theory."
+        )
+        report.add_newline(n=2)
 
-        report.add_paragraph("The shear resistance is calculated as:")
-        report.add_formula(formulas["v_pl(_t)_rd"], n=n)
+        # combined von Mises stress
+        vm_val = self.combined_von_mises_stress()
+        report.add_paragraph(f"The maximum combined von Mises stress is: {vm_val:.{n}f} N/mm².")
+        report.add_newline(n=2)
 
-        report.add_paragraph("The reduction factor for bending moment resistance is defined as:")
-        report.add_formula(formulas["rho"], n=n, options="short")
+        # elastic resistance
+        f_y_val = self.elastic_resistance()
+        report.add_paragraph("The maximum allowed yield stress is calculated as follows: ")
+        report.add_paragraph(rf"$f_y / \gamma_{{M0}}$ = {f_y_val:.{n}f} N/mm².")
+        report.add_newline(n=2)
 
-        report.add_paragraph("This gives a reduced yield strength of:")
-        report.add_formula(formulas["f_y_reduced"], n=n)
+        # unity check
+        result = self.result()
+        report.add_paragraph("The unity check is calculated as follows: ")
+        report.add_paragraph(rf"$UC = \sigma_{{vm}} / (f_y / \gamma_{{M0}})$ = {vm_val:.{n}f} / {f_y_val:.{n}f} N/mm² = {vm_val / f_y_val:.{n}f}.")
+        report.add_newline(n=2)
 
-        report.add_paragraph("The bending moment resistance with reduced yield strength is:")
-
-        report.add_formula(formulas["resistance"], n=n)
-
-        report.add_paragraph("The unity check is calculated as follows:")
-        report.add_formula(formulas["check"], n=n)
-
-        if self.result().is_ok:
+        # add overall result
+        if result.is_ok:
             report.add_paragraph("The check for bending moment satisfies the requirements.")
         else:
             report.add_paragraph("The check for bending moment does NOT satisfy the requirements.")

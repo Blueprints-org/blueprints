@@ -47,7 +47,7 @@ class TestCheckStrengthTorsionShearClass12:
         heb_steel_cross_section: SteelCrossSection,
     ) -> None:
         """Test result() for ok shear force."""
-        v = 585.023 * 0.99
+        v = 587.8 * 0.99
         m_x = 10
         calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
@@ -81,7 +81,7 @@ class TestCheckStrengthTorsionShearClass12:
     def test_result_shear_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for not ok shear force."""
         object.__setattr__(heb_steel_cross_section, "fabrication_method", "hot-rolled")
-        v = 585.023 * 1.01
+        v = 587.8 * 1.01
         m_x = 10
         calc = CheckStrengthTorsionShearClass12(heb_steel_cross_section, m_x, v, axis="Vz", gamma_m0=1.0)
         result = calc.result()
@@ -158,7 +158,7 @@ class TestCheckStrengthTorsionShearClass34:
         self,
         heb_steel_cross_section: SteelCrossSection,
     ) -> None:
-        """Test result() for ok shear force in Vz direction."""
+        """Test result() for ok shear force in Vy direction."""
         v = 699 * 0.99
         m_x = 7.75 * 0.99
         calc = CheckStrengthTorsionShearClass34(heb_steel_cross_section, m_x, v, axis="Vy", gamma_m0=1.0)

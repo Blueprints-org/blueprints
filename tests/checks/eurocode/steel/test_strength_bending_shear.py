@@ -9,7 +9,8 @@ from blueprints.checks.eurocode.steel.strength_bending_shear import (
 )
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
-# factor chosen in such a way that it reduces 50% of strength according to 1993-1-1 6.29
+# Factor chosen in such a way that it reduces 50% of strength according to 1993-1-1 6.29
+# That way, the test values from test_strength_bending.py and test_strength_shear.py can be used to test the combined check.
 FACTOR_SHEAR = (np.sqrt(0.5) + 1.0) / 2.0
 
 
@@ -19,8 +20,7 @@ class TestCheckStrengthBendingShearClass12:
     def test_result_none(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() returns True for no bending moment."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        calc = CheckStrengthBendingShearClass12(cross_section, axis_m="My", axis_v="Vz", section_properties=section_properties)
+        calc = CheckStrengthBendingShearClass12(cross_section, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -34,11 +34,10 @@ class TestCheckStrengthBendingShearClass12:
     def test_result_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for ok bending moment about y-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        m_x = 10 * FACTOR_SHEAR  # Applied torsional moment in kNm
-        v = 585 * FACTOR_SHEAR  # Applied shear force in kN
+        m_x = 10  # Applied torsional moment in kNm
+        v = 587.8 * FACTOR_SHEAR  # Applied shear force in kN
         m = 355 * 1.869 * 0.5 * 0.99
-        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.01) == 0.99
@@ -48,11 +47,10 @@ class TestCheckStrengthBendingShearClass12:
     def test_result_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for not ok bending moment about y-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        m_x = 10 * FACTOR_SHEAR  # Applied torsional moment in kNm
-        v = 585 * FACTOR_SHEAR  # Applied shear force in kN
+        m_x = 10  # Applied torsional moment in kNm
+        v = 587.8 * FACTOR_SHEAR  # Applied shear force in kN
         m = 355 * 1.869 * 0.5 * 1.01
-        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.01) == 1.01
@@ -62,12 +60,11 @@ class TestCheckStrengthBendingShearClass12:
     def test_result_no_m_x_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for ok bending moment about z-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
         m_x = 0  # no torsional moment
         v = -355 * 4.74 / 1.732 * FACTOR_SHEAR  # Applied shear force in kN
         m = 355 * 1.869 * 0.5 * 0.99
         calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
-        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.01) == 0.99
@@ -77,11 +74,10 @@ class TestCheckStrengthBendingShearClass12:
     def test_result_no_m_x_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for not ok bending moment about z-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
         m_x = 0  # no torsional moment
         v = -355 * 4.74 / 1.732 * FACTOR_SHEAR  # Applied shear force in kN
         m = 355 * 1.869 * 0.5 * 1.01
-        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+        calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.01) == 1.01
@@ -91,19 +87,12 @@ class TestCheckStrengthBendingShearClass12:
     def test_invalid_axis(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test ValueError is raised for invalid axis input."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
         with pytest.raises(ValueError):
-            CheckStrengthBendingShearClass12(
-                cross_section, 100, 0, 0, axis_m="Ma", axis_v="Vz", section_properties=section_properties
-            ).calculation_formula()
+            CheckStrengthBendingShearClass12(cross_section, 100, 0, 0, axis_m="Ma", axis_v="Vz").calculation_formula()
         with pytest.raises(ValueError):
-            CheckStrengthBendingShearClass12(
-                cross_section, 100, 0, 0, axis_m="My", axis_v="Va", section_properties=section_properties
-            ).calculation_formula()
+            CheckStrengthBendingShearClass12(cross_section, 100, 0, 0, axis_m="My", axis_v="Va").calculation_formula()
         with pytest.raises(ValueError):
-            CheckStrengthBendingShearClass12(
-                cross_section, 100, 0, 0, axis_m="Mz", axis_v="Vz", section_properties=section_properties
-            ).calculation_formula()
+            CheckStrengthBendingShearClass12(cross_section, 100, 0, 0, axis_m="Mz", axis_v="Vz").calculation_formula()
 
 
 class TestCheckStrengthBendingShearClass3:
@@ -112,8 +101,8 @@ class TestCheckStrengthBendingShearClass3:
     def test_result_none(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() returns True for no bending moment."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        calc = CheckStrengthBendingShearClass3(cross_section, axis_m="My", axis_v="Vz", section_properties=section_properties)
+
+        calc = CheckStrengthBendingShearClass3(cross_section, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is True
         assert result.unity_check == 0
@@ -127,11 +116,11 @@ class TestCheckStrengthBendingShearClass3:
     def test_result_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for ok bending moment about y-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        m = 613.3 * 0.99  # Applied bending moment in kNm
-        m_x = 1  # Applied torsional moment in kNm
-        v = 600  # Applied shear force in kN
-        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+
+        m = 180 * 0.99
+        v = 410 * 0.99  # Applied shear force in kN
+        m_x = 10 * 0.99  # Applied torsional moment in kNm
+        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="Mz", axis_v="Vy")
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.01) == 0.99
@@ -141,11 +130,11 @@ class TestCheckStrengthBendingShearClass3:
     def test_result_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for not ok bending moment about y-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        m = -613.3 * 1.01  # Applied bending moment in kNm
-        m_x = 1  # Applied torsional moment in kNm
-        v = 600  # Applied shear force in kN
-        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+
+        m = 180 * 1.01
+        v = 410 * 1.01  # Applied shear force in kN
+        m_x = 10 * 1.01  # Applied torsional moment in kNm
+        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="Mz", axis_v="Vy")
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.01) == 1.01
@@ -155,12 +144,11 @@ class TestCheckStrengthBendingShearClass3:
     def test_result_no_m_x_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for ok bending moment about z-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        m = 627.3 * 0.99
-        m_x = 0  # no torsional moment
-        v = -600  # Applied shear force in kN
-        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", gamma_m0=1.0)
-        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+
+        m = 203 * 0.99
+        v = 450 * 0.99  # Applied shear force in kN
+        m_x = 0
+        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="Mz", axis_v="Vy")
         result = calc.result()
         assert result.is_ok is True
         assert pytest.approx(result.unity_check, 0.01) == 0.99
@@ -170,11 +158,11 @@ class TestCheckStrengthBendingShearClass3:
     def test_result_no_m_x_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for not ok bending moment about z-axis."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
-        m = -627.3 * 1.01
-        m_x = 0  # no torsional moment
-        v = -600  # Applied shear force in kN
-        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="My", axis_v="Vz", section_properties=section_properties)
+
+        m = 203 * 1.01
+        v = 450 * 1.01  # Applied shear force in kN
+        m_x = 0
+        calc = CheckStrengthBendingShearClass3(cross_section, m, m_x, v, axis_m="Mz", axis_v="Vy")
         result = calc.result()
         assert result.is_ok is False
         assert pytest.approx(result.unity_check, 0.01) == 1.01
@@ -184,16 +172,9 @@ class TestCheckStrengthBendingShearClass3:
     def test_invalid_axis(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test ValueError is raised for invalid axis input."""
         cross_section = heb_steel_cross_section
-        section_properties = cross_section.profile.section_properties()
         with pytest.raises(ValueError):
-            CheckStrengthBendingShearClass3(
-                cross_section, 100, 0, 0, axis_m="Ma", axis_v="Vz", section_properties=section_properties
-            ).calculation_formula()
+            CheckStrengthBendingShearClass3(cross_section, 100, 0, 0, axis_m="Ma", axis_v="Vz").calculation_formula()
         with pytest.raises(ValueError):
-            CheckStrengthBendingShearClass3(
-                cross_section, 100, 0, 0, axis_m="My", axis_v="Va", section_properties=section_properties
-            ).calculation_formula()
+            CheckStrengthBendingShearClass3(cross_section, 100, 0, 0, axis_m="My", axis_v="Va").calculation_formula()
         with pytest.raises(ValueError):
-            CheckStrengthBendingShearClass3(
-                cross_section, 100, 0, 0, axis_m="Mz", axis_v="Vz", section_properties=section_properties
-            ).calculation_formula()
+            CheckStrengthBendingShearClass3(cross_section, 100, 0, 0, axis_m="Mz", axis_v="Vz").calculation_formula()
