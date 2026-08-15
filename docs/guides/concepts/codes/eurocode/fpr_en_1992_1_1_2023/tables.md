@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:docs/guides/concepts/codes/eurocode/pr_en_1992_1_1_2023/tables.md
-**prEN 1992-1-1 - 2023
-========
 **FprEN 1992-1-1 - April 2023
->>>>>>>> origin/main:docs/guides/concepts/codes/eurocode/fpr_en_1992_1_1_2023/tables.md
 Eurocode 2: Design of concrete structures
 Part 1-1: General rules and rules for buildings, bridges and civil engineering structures**
 
@@ -33,7 +29,7 @@ Total of 92 tables present.
 |     7.1      | :x:  |         |             |
 |     7.2      | :x:  |         |             |
 |     8.1      | :x:  |         |             |
-|     8.2      | :x:  |         |             |
+|     8.2      | :heavy_check_mark: | Coefficients depending on the roughness of the surface | Table8Dot2CoefficientsSurfaceRoughness, SurfaceRoughness |
 |     8.3      | :x:  |         |             |
 |     9.1      | :x:  |         |             |
 |     9.2      | :x:  |         |             |
