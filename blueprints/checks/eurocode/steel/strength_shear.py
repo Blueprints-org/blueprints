@@ -221,7 +221,7 @@ class CheckStrengthShearClass12:
         Report
             Report of the plastic shear force check.
         """
-        report = Report("Check: shear force (Class 3/4)")
+        report = Report("Check: shear force (Class 1/2)")
 
         # will not generate a report if no shear force is applied, as the check is not necessary in that case
         if self.v == 0:
