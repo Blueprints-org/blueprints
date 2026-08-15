@@ -11,6 +11,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state i
     formula_6_14,
 )
 from blueprints.codes.formula import Formula
+from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KNM
 from blueprints.unit_conversion import KNM_TO_NMM
@@ -81,6 +82,11 @@ class CheckStrengthBendingClass12:
         """Post-initialization to extract section properties."""
         if self.axis.lower() not in ("my", "mz"):
             raise ValueError(f"Axis must be 'My' or 'Mz'. You provided '{self.axis}'.")
+        if self.steel_cross_section.profile.rotation != 0:
+            raise ValueError(
+                f"The profile must be oriented with rotation=0 for bending moment checks. "
+                f"Current rotation is {self.steel_cross_section.profile.rotation} degrees."
+            )
 
     @staticmethod
     def source_docs() -> list[str]:
@@ -342,3 +348,26 @@ class CheckStrengthBendingClass3:
         else:
             report.add_paragraph("The check for bending moment does NOT satisfy the requirements.")
         return report
+
+
+if __name__ == "__main__":
+    from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+    from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
+
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    heb_300_profile = IProfile(
+        rotation=50,
+        top_flange_width=100,
+        top_flange_thickness=10,
+        bottom_flange_width=100,
+        bottom_flange_thickness=10,
+        total_height=500,
+        web_thickness=40,
+        top_radius=0,
+        bottom_radius=0,
+    )
+    heb_300_profile.plot()
+
+    CheckStrengthBendingClass3(
+        steel_cross_section=SteelCrossSection(profile=heb_300_profile, material=steel_material), m=355 * 1.868, axis="My", gamma_m0=1.0
+    )

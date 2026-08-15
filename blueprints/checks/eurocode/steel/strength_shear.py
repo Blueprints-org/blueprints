@@ -75,6 +75,11 @@ class CheckStrengthShearClass12:
         implemented_shapes = (IProfile,)
         if type(self.steel_cross_section.profile) not in implemented_shapes:
             raise NotImplementedError(f"The provided profile shape {type(self.steel_cross_section.profile).__name__} has not been implemented yet.")
+        if self.steel_cross_section.profile.rotation != 0:
+            raise ValueError(
+                f"The profile must be oriented with rotation=0 for plastic shear checks. "
+                f"Current rotation is {self.steel_cross_section.profile.rotation} degrees."
+            )
 
     @staticmethod
     def source_docs() -> list[str]:

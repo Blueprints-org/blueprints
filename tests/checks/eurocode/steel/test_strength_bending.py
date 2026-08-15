@@ -3,6 +3,8 @@
 import pytest
 
 from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass3, CheckStrengthBendingClass12
+from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
+from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
@@ -89,6 +91,25 @@ class TestCheckStrengthBendingClass12:
         docs = calc.source_docs()
         assert isinstance(docs, list)
         assert len(docs) == 1
+
+    def test_invalid_rotation(self) -> None:
+        """Test ValueError is raised for invalid rotation input."""
+        steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+        heb_300_profile = IProfile(
+            rotation=50,
+            top_flange_width=100,
+            top_flange_thickness=10,
+            bottom_flange_width=100,
+            bottom_flange_thickness=10,
+            total_height=500,
+            web_thickness=40,
+            top_radius=0,
+            bottom_radius=0,
+        )
+        with pytest.raises(ValueError):
+            CheckStrengthBendingClass12(
+                steel_cross_section=SteelCrossSection(profile=heb_300_profile, material=steel_material), m=355 * 1.868, axis="My", gamma_m0=1.0
+            )
 
 
 class TestCheckStrengthBendingClass3:
