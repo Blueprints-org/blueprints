@@ -5,7 +5,10 @@ import pytest
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_60 import (
     Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement,
 )
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
+
+# Angle chosen so that its cotangent is a round number, which keeps the hand calculations readable
+THETA_COT_2 = 26.565051177078  # cot(theta) = 2
 
 
 class TestForm8Dot60CheckCompressionFieldStressInclinedShearReinforcement:
@@ -25,7 +28,7 @@ class TestForm8Dot60CheckCompressionFieldStressInclinedShearReinforcement:
         # Create object to test
         formula = Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(
             tau_ed=tau_ed,
-            cot_theta=2.0,
+            theta=THETA_COT_2,
             alpha_w=60.0,
             nu=0.5,
             f_cd=20.0,
@@ -41,7 +44,7 @@ class TestForm8Dot60CheckCompressionFieldStressInclinedShearReinforcement:
         # Example values
         formula = Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(
             tau_ed=2.0,
-            cot_theta=2.0,
+            theta=THETA_COT_2,
             alpha_w=60.0,
             nu=0.5,
             f_cd=20.0,
@@ -57,7 +60,7 @@ class TestForm8Dot60CheckCompressionFieldStressInclinedShearReinforcement:
         # Example values
         formula = Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(
             tau_ed=2.0,
-            cot_theta=2.0,
+            theta=THETA_COT_2,
             alpha_w=90.0,
             nu=0.5,
             f_cd=20.0,
@@ -66,34 +69,50 @@ class TestForm8Dot60CheckCompressionFieldStressInclinedShearReinforcement:
         # 2 * (1 + 2^2) / 2 = 5, which equals 2 * (2 + 1/2)
         assert formula.lhs == pytest.approx(expected=5.0, rel=1e-4)
 
-    @pytest.mark.parametrize(
-        ("tau_ed", "cot_theta", "alpha_w", "nu", "f_cd"),
-        [
-            (-2.0, 2.0, 60.0, 0.5, 20.0),  # tau_ed is negative
-            (2.0, -2.0, 60.0, 0.5, 20.0),  # cot_theta is negative
-            (2.0, 2.0, 60.0, -0.5, 20.0),  # nu is negative
-            (2.0, 2.0, 60.0, 0.5, -20.0),  # f_cd is negative
-        ],
-    )
-    def test_raise_error_when_negative_values_are_given(self, tau_ed: float, cot_theta: float, alpha_w: float, nu: float, f_cd: float) -> None:
-        """Test if error is raised for parameters that are not allowed to be negative."""
+    def test_raise_error_when_the_shear_stress_is_negative(self) -> None:
+        """Test if error is raised for the one parameter that may be zero but not negative."""
         with pytest.raises(NegativeValueError):
-            Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(tau_ed=tau_ed, cot_theta=cot_theta, alpha_w=alpha_w, nu=nu, f_cd=f_cd)
+            Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(tau_ed=-2.0, theta=THETA_COT_2, alpha_w=60.0, nu=0.5, f_cd=20.0)
 
     @pytest.mark.parametrize(
-        ("tau_ed", "cot_theta", "alpha_w", "nu", "f_cd"),
+        ("theta", "alpha_w"),
         [
-            (2.0, 2.0, -60.0, 0.5, 20.0),  # alpha_w is negative
-            (2.0, 2.0, 0.0, 0.5, 20.0),  # alpha_w is zero, for which the cotangent is undefined
-            # Above 90 degrees the cotangent turns negative and can take the denominator with it. The standard
-            # says such angles should be avoided, and here the expression would silently return a negative stress.
-            (2.0, 0.0, 120.0, 0.5, 20.0),
+            (-THETA_COT_2, 60.0),  # theta is negative
+            (0.0, 60.0),  # theta is zero, for which the cotangent diverges
+            (THETA_COT_2, -60.0),  # alpha_w is negative
+            (THETA_COT_2, 0.0),  # alpha_w is zero, for which the cotangent diverges
         ],
     )
-    def test_raise_error_when_less_or_equal_to_zero(self, tau_ed: float, cot_theta: float, alpha_w: float, nu: float, f_cd: float) -> None:
-        """Test if error is raised where a value or the denominator is not allowed to be zero or less."""
+    def test_raise_error_when_the_angles_are_less_or_equal_to_zero(self, theta: float, alpha_w: float) -> None:
+        """Test if error is raised for angles that are not allowed to be zero or less."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(tau_ed=tau_ed, cot_theta=cot_theta, alpha_w=alpha_w, nu=nu, f_cd=f_cd)
+            Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(tau_ed=2.0, theta=theta, alpha_w=alpha_w, nu=0.5, f_cd=20.0)
+
+    @pytest.mark.parametrize(
+        ("theta", "alpha_w"),
+        [
+            (120.0, 60.0),  # theta exceeds 90 degrees
+            (THETA_COT_2, 120.0),  # alpha_w exceeds 90 degrees, which the standard says should be avoided
+        ],
+    )
+    def test_raise_error_when_the_angles_exceed_90_degrees(self, theta: float, alpha_w: float) -> None:
+        """Both angles are inclinations to the member axis, so neither can pass 90 degrees."""
+        with pytest.raises(GreaterThan90Error):
+            Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(tau_ed=2.0, theta=theta, alpha_w=alpha_w, nu=0.5, f_cd=20.0)
+
+    @pytest.mark.parametrize(
+        ("nu", "f_cd"),
+        [
+            (-0.5, 20.0),  # nu is negative
+            (0.0, 20.0),  # nu is zero, which leaves the unity check without a denominator
+            (0.5, -20.0),  # f_cd is negative
+            (0.5, 0.0),  # f_cd is zero, which leaves the unity check without a denominator
+        ],
+    )
+    def test_raise_error_when_the_limit_is_less_or_equal_to_zero(self, nu: float, f_cd: float) -> None:
+        """The limit is the denominator of the unity check, so a zero one is rejected and not merely failed."""
+        with pytest.raises(LessOrEqualToZeroError):
+            Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(tau_ed=2.0, theta=THETA_COT_2, alpha_w=60.0, nu=nu, f_cd=f_cd)
 
     @pytest.mark.parametrize(
         ("tau_ed", "representation", "expected"),
@@ -101,18 +120,22 @@ class TestForm8Dot60CheckCompressionFieldStressInclinedShearReinforcement:
             (
                 2.0,
                 "complete",
-                r"CHECK \to \sigma_{cd} = \tau_{Ed} \cdot \frac{1 + \left(\cot(\theta)\right)^2}"
-                r"{\cot(\theta) + \cot(\alpha_w)} \leq \nu \cdot f_{cd} \to "
-                r"3.880 = 2.000 \cdot \frac{1 + \left(2.000\right)^2}"
-                r"{2.000 + \cot(60.000)} \leq 0.500 \cdot 20.000 \to OK",
+                (
+                    r"CHECK \to \sigma_{cd} = \tau_{Ed} \cdot \frac{1 + \left(\cot(\theta)\right)^2}"
+                    r"{\cot(\theta) + \cot(\alpha_w)} \leq \nu \cdot f_{cd} \to "
+                    r"3.880 = 2.000 \cdot \frac{1 + \left(\cot(26.565)\right)^2}"
+                    r"{\cot(26.565) + \cot(60.000)} \leq 0.500 \cdot 20.000 \to OK"
+                ),
             ),
             (
                 2.0,
                 "complete_with_units",
-                r"CHECK \to \sigma_{cd} = \tau_{Ed} \cdot \frac{1 + \left(\cot(\theta)\right)^2}"
-                r"{\cot(\theta) + \cot(\alpha_w)} \leq \nu \cdot f_{cd} \to "
-                r"3.880 \ MPa = 2.000 \ MPa \cdot \frac{1 + \left(2.000\right)^2}"
-                r"{2.000 + \cot(60.000 \ degrees)} \leq 0.500 \cdot 20.000 \ MPa \to OK",
+                (
+                    r"CHECK \to \sigma_{cd} = \tau_{Ed} \cdot \frac{1 + \left(\cot(\theta)\right)^2}"
+                    r"{\cot(\theta) + \cot(\alpha_w)} \leq \nu \cdot f_{cd} \to "
+                    r"3.880 \ MPa = 2.000 \ MPa \cdot \frac{1 + \left(\cot(26.565 ^\circ)\right)^2}"
+                    r"{\cot(26.565 ^\circ) + \cot(60.000 ^\circ)} \leq 0.500 \cdot 20.000 \ MPa \to OK"
+                ),
             ),
             (2.0, "short", r"CHECK \to OK"),
             (6.0, "short", r"CHECK \to \text{Not OK}"),
@@ -123,7 +146,7 @@ class TestForm8Dot60CheckCompressionFieldStressInclinedShearReinforcement:
         # Object to test
         test_latex = Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement(
             tau_ed=tau_ed,
-            cot_theta=2.0,
+            theta=THETA_COT_2,
             alpha_w=60.0,
             nu=0.5,
             f_cd=20.0,

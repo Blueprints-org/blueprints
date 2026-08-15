@@ -9,7 +9,9 @@ import numpy as np
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DEG, DIMENSIONLESS
+from blueprints.type_alias import DEG
+from blueprints.utils.math_helpers import cot
+from blueprints.validations import raise_if_greater_than_90, raise_if_less_or_equal_to_zero
 
 
 class SubForm8Dot58LowerBound(ComparisonFormula):
@@ -18,20 +20,20 @@ class SubForm8Dot58LowerBound(ComparisonFormula):
     label = "8.58"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, cot_theta: DIMENSIONLESS, alpha_w: DEG) -> None:
+    def __init__(self, theta: DEG, alpha_w: DEG) -> None:
         r"""Check the selected inclination of the compression field against its lower bound.
 
         FprEN 1992-1-1:2023 (E) art 8.2.3 (13) - Formula (8.58)
 
         Parameters
         ----------
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the selected inclination of the compression field [$-$].
+        theta : DEG
+            [$\theta$] Selected inclination of the compression field [$degrees$].
         alpha_w : DEG
             [$\alpha_w$] Inclination of the shear reinforcement [$degrees$].
         """
         super().__init__()
-        self.cot_theta = cot_theta
+        self.theta = theta
         self.alpha_w = alpha_w
 
     @classmethod
@@ -41,17 +43,22 @@ class SubForm8Dot58LowerBound(ComparisonFormula):
     @staticmethod
     def _evaluate_lhs(alpha_w: DEG, *_args, **_kwargs) -> float:
         """Evaluates the lower bound, for more information see the __init__ method."""
+        raise_if_less_or_equal_to_zero(alpha_w=alpha_w)
+        raise_if_greater_than_90(alpha_w=alpha_w)
+
         return float(np.tan(np.deg2rad(alpha_w) / 2))
 
     @staticmethod
-    def _evaluate_rhs(cot_theta: DIMENSIONLESS, *_args, **_kwargs) -> float:
+    def _evaluate_rhs(theta: DEG, *_args, **_kwargs) -> float:
         """Evaluates the value under check, for more information see the __init__ method."""
-        return float(cot_theta)
+        raise_if_less_or_equal_to_zero(theta=theta)
+
+        return float(cot(theta))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for the lower bound of formula 8.58."""
         _equation: str = r"\tan\left(\frac{\alpha_w}{2}\right) \leq \cot(\theta)"
-        _replacements = {r"\alpha_w": f"{self.alpha_w:.{n}f}", r"\cot(\theta)": f"{self.cot_theta:.{n}f}"}
+        _replacements = {r"\alpha_w": f"{self.alpha_w:.{n}f}", r"\theta": f"{self.theta:.{n}f}"}
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else r"\text{Not OK}",
@@ -68,40 +75,44 @@ class SubForm8Dot58UpperBound(ComparisonFormula):
     label = "8.58"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, cot_theta: DIMENSIONLESS, cot_theta_min: DIMENSIONLESS) -> None:
+    def __init__(self, theta: DEG, theta_min: DEG) -> None:
         r"""Check the selected inclination of the compression field against its upper bound.
 
         FprEN 1992-1-1:2023 (E) art 8.2.3 (13) - Formula (8.58)
 
         Parameters
         ----------
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the selected inclination of the compression field [$-$].
-        cot_theta_min : DIMENSIONLESS
-            [$\cot\theta_{min}$] Cotangent of the minimal inclination according to 8.2.3(4) [$-$].
+        theta : DEG
+            [$\theta$] Selected inclination of the compression field [$degrees$].
+        theta_min : DEG
+            [$\theta_{min}$] Minimal inclination of the compression field according to 8.2.3(4) [$degrees$].
         """
         super().__init__()
-        self.cot_theta = cot_theta
-        self.cot_theta_min = cot_theta_min
+        self.theta = theta
+        self.theta_min = theta_min
 
     @classmethod
     def _comparison_operator(cls) -> Callable[[float, float], bool]:
         return operator.le
 
     @staticmethod
-    def _evaluate_lhs(cot_theta: DIMENSIONLESS, *_args, **_kwargs) -> float:
+    def _evaluate_lhs(theta: DEG, *_args, **_kwargs) -> float:
         """Evaluates the value under check, for more information see the __init__ method."""
-        return float(cot_theta)
+        raise_if_less_or_equal_to_zero(theta=theta)
+
+        return float(cot(theta))
 
     @staticmethod
-    def _evaluate_rhs(cot_theta_min: DIMENSIONLESS, *_args, **_kwargs) -> float:
+    def _evaluate_rhs(theta_min: DEG, *_args, **_kwargs) -> float:
         """Evaluates the upper bound, for more information see the __init__ method."""
-        return float(cot_theta_min)
+        raise_if_less_or_equal_to_zero(theta_min=theta_min)
+
+        return float(cot(theta_min))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for the upper bound of formula 8.58."""
         _equation: str = r"\cot(\theta) \leq \cot(\theta_{min})"
-        _replacements = {r"\cot(\theta_{min})": f"{self.cot_theta_min:.{n}f}", r"\cot(\theta)": f"{self.cot_theta:.{n}f}"}
+        _replacements = {r"\theta_{min}": f"{self.theta_min:.{n}f}", r"\theta": f"{self.theta:.{n}f}"}
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else r"\text{Not OK}",
@@ -128,7 +139,7 @@ class Form8Dot58CheckCotangentInclinedShearReinforcement(AggregatedComparisonFor
     label = "8.58"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, cot_theta: DIMENSIONLESS, cot_theta_min: DIMENSIONLESS, alpha_w: DEG) -> None:
+    def __init__(self, theta: DEG, theta_min: DEG, alpha_w: DEG) -> None:
         r"""Check whether the selected inclination of the compression field lies within the permitted range for
         members with inclined shear reinforcement.
 
@@ -139,34 +150,35 @@ class Form8Dot58CheckCotangentInclinedShearReinforcement(AggregatedComparisonFor
 
         Parameters
         ----------
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the selected inclination of the compression field in the web
-            carrying shear [$-$].
-        cot_theta_min : DIMENSIONLESS
-            [$\cot\theta_{min}$] Cotangent of the minimal inclination of the compression field according to
-            8.2.3(4). None of the rules that give it carries a formula number, so it is an input here [$-$].
+        theta : DEG
+            [$\theta$] Selected inclination of the compression field in the web carrying shear [$degrees$].
+        theta_min : DEG
+            [$\theta_{min}$] Minimal inclination of the compression field according to 8.2.3(4). None of the
+            rules that give it carries a formula number, so it is an input here [$degrees$].
         alpha_w : DEG
             [$\alpha_w$] Inclination of the shear reinforcement, measured positive as shown in Figure 8.11 b).
-            The standard gives this clause for [$45 \leq \alpha_w < 90$] degrees and states that angles above
-            90 degrees should be avoided. That is a condition of application rather than a bound, so it is not
-            enforced here [$degrees$].
+            The standard gives this clause for [$45 \leq \alpha_w < 90$] degrees, which is a condition of
+            application and is not enforced. Angles above 90 degrees are rejected: the standard says they
+            should be avoided, and [$\cot\alpha_w$] in the Formulae (8.59) and (8.60) of the same clause
+            refuses them, so accepting them here would let a check pass that its own clause cannot then
+            evaluate [$degrees$].
         """
-        super().__init__(aggregation=all, comparison_formulas=self._bounds(cot_theta, cot_theta_min, alpha_w))
-        self.cot_theta = cot_theta
-        self.cot_theta_min = cot_theta_min
+        super().__init__(aggregation=all, comparison_formulas=self._bounds(theta, theta_min, alpha_w))
+        self.theta = theta
+        self.theta_min = theta_min
         self.alpha_w = alpha_w
 
     @staticmethod
-    def _bounds(cot_theta: DIMENSIONLESS, cot_theta_min: DIMENSIONLESS, alpha_w: DEG) -> Sequence[ComparisonFormula]:
+    def _bounds(theta: DEG, theta_min: DEG, alpha_w: DEG) -> Sequence[ComparisonFormula]:
         """Builds the two halves of the printed range."""
         return (
-            SubForm8Dot58LowerBound(cot_theta=cot_theta, alpha_w=alpha_w),
-            SubForm8Dot58UpperBound(cot_theta=cot_theta, cot_theta_min=cot_theta_min),
+            SubForm8Dot58LowerBound(theta=theta, alpha_w=alpha_w),
+            SubForm8Dot58UpperBound(theta=theta, theta_min=theta_min),
         )
 
-    def __new__(cls, cot_theta: DIMENSIONLESS, cot_theta_min: DIMENSIONLESS, alpha_w: DEG) -> Self:
+    def __new__(cls, theta: DEG, theta_min: DEG, alpha_w: DEG) -> Self:
         """Translates the arguments of this formula into the aggregation the base class evaluates."""
-        return super().__new__(cls, aggregation=all, comparison_formulas=cls._bounds(cot_theta, cot_theta_min, alpha_w))
+        return super().__new__(cls, aggregation=all, comparison_formulas=cls._bounds(theta, theta_min, alpha_w))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.58."""
@@ -175,17 +187,17 @@ class Form8Dot58CheckCotangentInclinedShearReinforcement(AggregatedComparisonFor
             template=_equation,
             replacements={
                 r"\alpha_w": f"{self.alpha_w:.{n}f}",
-                r"\cot(\theta_{min})": f"{self.cot_theta_min:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\theta_{min}": f"{self.theta_min:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
             },
             unique_symbol_check=False,
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
             template=_equation,
             replacements={
-                r"\alpha_w": rf"{self.alpha_w:.{n}f} \ degrees",
-                r"\cot(\theta_{min})": f"{self.cot_theta_min:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\alpha_w": rf"{self.alpha_w:.{n}f} ^\circ",
+                r"\theta_{min}": rf"{self.theta_min:.{n}f} ^\circ",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
             },
             unique_symbol_check=False,
         )
