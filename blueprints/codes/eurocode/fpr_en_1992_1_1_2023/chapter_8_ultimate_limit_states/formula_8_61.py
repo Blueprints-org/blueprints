@@ -1,12 +1,11 @@
 """Formula 8.61 from FprEN 1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
-import numpy as np
-
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DEG, DIMENSIONLESS, N
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.type_alias import DEG, N
+from blueprints.utils.math_helpers import cot
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot61AdditionalTensileForceInclinedShearReinforcement(Formula):
@@ -19,7 +18,7 @@ class Form8Dot61AdditionalTensileForceInclinedShearReinforcement(Formula):
     label = "8.61"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, v_ed: N, cot_theta: DIMENSIONLESS, alpha_w: DEG) -> None:
+    def __init__(self, v_ed: N, theta: DEG, alpha_w: DEG) -> None:
         r"""[$N_{Vd}$] Additional tensile axial force due to shear [$V_{Ed}$] [$N$].
 
         FprEN 1992-1-1:2023 (E) art 8.2.3 (13) - Formula (8.61)
@@ -33,26 +32,26 @@ class Form8Dot61AdditionalTensileForceInclinedShearReinforcement(Formula):
         ----------
         v_ed : N
             [$V_{Ed}$] Design shear force at the control section. Only its magnitude is used [$N$].
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the inclination of the compression field in the web, selected within the
-            range of Formula (8.58), see Form8Dot58CheckCotangentInclinedShearReinforcement [$-$].
+        theta : DEG
+            [$\theta$] Inclination of the compression field in the web, selected within the range of Formula
+            (8.58), see Form8Dot58CheckCotangentInclinedShearReinforcement [$degrees$].
         alpha_w : DEG
             [$\alpha_w$] Inclination of the shear reinforcement, measured positive as shown in Figure 8.11 b).
-            The standard gives this clause for [$45 \leq \alpha_w < 90$] degrees. That is a condition of
-            application rather than a bound, so it is not enforced here [$degrees$].
+            The standard gives this clause for [$45 \leq \alpha_w < 90$] degrees, which is a condition of
+            application and is not enforced. Angles above 90 degrees are rejected, since the standard says
+            they should be avoided [$degrees$].
         """
         super().__init__()
         self.v_ed = v_ed
-        self.cot_theta = cot_theta
+        self.theta = theta
         self.alpha_w = alpha_w
 
     @staticmethod
-    def _evaluate(v_ed: N, cot_theta: DIMENSIONLESS, alpha_w: DEG) -> N:
+    def _evaluate(v_ed: N, theta: DEG, alpha_w: DEG) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(cot_theta=cot_theta)
-        raise_if_less_or_equal_to_zero(alpha_w=alpha_w)
+        raise_if_less_or_equal_to_zero(theta=theta, alpha_w=alpha_w)
 
-        return abs(v_ed) * (cot_theta - 1 / np.tan(np.deg2rad(alpha_w)))
+        return abs(v_ed) * (cot(theta) - cot(alpha_w))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.61."""
@@ -61,7 +60,7 @@ class Form8Dot61AdditionalTensileForceInclinedShearReinforcement(Formula):
             template=_equation,
             replacements={
                 r"V_{Ed}": f"{self.v_ed:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
                 r"\alpha_w": f"{self.alpha_w:.{n}f}",
             },
             unique_symbol_check=False,
@@ -70,8 +69,8 @@ class Form8Dot61AdditionalTensileForceInclinedShearReinforcement(Formula):
             template=_equation,
             replacements={
                 r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
-                r"\alpha_w": rf"{self.alpha_w:.{n}f} \ degrees",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
+                r"\alpha_w": rf"{self.alpha_w:.{n}f} ^\circ",
             },
             unique_symbol_check=False,
         )

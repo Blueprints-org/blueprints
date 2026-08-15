@@ -1,11 +1,10 @@
 """Formula 8.63 from FprEN 1992-1-1:2023: Chapter 8: Ultimate limit states (ULS)."""
 
-import numpy as np
-
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
+from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -19,7 +18,7 @@ class Form8Dot63StressInInclinedShearReinforcement(Formula):
     label = "8.63"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, e_s: MPA, epsilon_x: DIMENSIONLESS, cot_theta: DIMENSIONLESS, alpha_w: DEG, f_ywd: MPA) -> None:
+    def __init__(self, e_s: MPA, epsilon_x: DIMENSIONLESS, theta: DEG, alpha_w: DEG, f_ywd: MPA) -> None:
         r"""[$\sigma_{swd}$] Stress in the inclined shear reinforcement [$MPa$].
 
         FprEN 1992-1-1:2023 (E) art 8.2.3 (13) - Formula (8.63)
@@ -36,12 +35,14 @@ class Form8Dot63StressInInclinedShearReinforcement(Formula):
         epsilon_x : DIMENSIONLESS
             [$\varepsilon_x$] Longitudinal strain, which may be calculated according to 8.2.3(7) for a
             cross-section located midway between the support and the load [$-$].
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the inclination of the compression field in the web. This formula covers
-            the case [$\cot\theta < \tan(\alpha_w/2)$], which lies outside the range of Formula (8.58) [$-$].
+        theta : DEG
+            [$\theta$] Inclination of the compression field in the web. This formula covers the case
+            [$\cot\theta < \tan(\alpha_w/2)$], which lies outside the range of Formula (8.58) [$degrees$].
         alpha_w : DEG
             [$\alpha_w$] Inclination of the shear reinforcement, measured positive as shown in Figure 8.11 b).
-            The standard gives this clause for [$45 \leq \alpha_w < 90$] degrees [$degrees$].
+            The standard gives this clause for [$45 \leq \alpha_w < 90$] degrees, which is a condition of
+            application and is not enforced. Angles above 90 degrees are rejected, since the standard says
+            they should be avoided [$degrees$].
         f_ywd : MPA
             [$f_{ywd}$] Design value of the yield strength of the shear reinforcement, which the stress may not
             exceed [$MPa$].
@@ -49,20 +50,20 @@ class Form8Dot63StressInInclinedShearReinforcement(Formula):
         super().__init__()
         self.e_s = e_s
         self.epsilon_x = epsilon_x
-        self.cot_theta = cot_theta
+        self.theta = theta
         self.alpha_w = alpha_w
         self.f_ywd = f_ywd
 
     @staticmethod
-    def _evaluate(e_s: MPA, epsilon_x: DIMENSIONLESS, cot_theta: DIMENSIONLESS, alpha_w: DEG, f_ywd: MPA) -> MPA:
+    def _evaluate(e_s: MPA, epsilon_x: DIMENSIONLESS, theta: DEG, alpha_w: DEG, f_ywd: MPA) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(e_s=e_s, epsilon_x=epsilon_x, cot_theta=cot_theta, f_ywd=f_ywd)
-        raise_if_less_or_equal_to_zero(alpha_w=alpha_w)
+        raise_if_negative(e_s=e_s, epsilon_x=epsilon_x, f_ywd=f_ywd)
+        raise_if_less_or_equal_to_zero(theta=theta, alpha_w=alpha_w)
 
-        cot_alpha_w = 1 / np.tan(np.deg2rad(alpha_w))
+        cot_alpha_w = cot(alpha_w)
 
         # The denominator 1 + cot^2(alpha_w) is never zero, so it needs no guard of its own.
-        stress = e_s * ((epsilon_x + 0.001) * (cot_theta + cot_alpha_w) ** 2 / (1 + cot_alpha_w**2) - 0.001)
+        stress = e_s * ((epsilon_x + 0.001) * (cot(theta) + cot_alpha_w) ** 2 / (1 + cot_alpha_w**2) - 0.001)
         return min(stress, f_ywd)
 
     def latex(self, n: int = 3) -> LatexFormula:
@@ -77,7 +78,7 @@ class Form8Dot63StressInInclinedShearReinforcement(Formula):
             replacements={
                 r"E_s": f"{self.e_s:.{n}f}",
                 r"\varepsilon_x": f"{self.epsilon_x:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
                 r"\alpha_w": f"{self.alpha_w:.{n}f}",
                 r"f_{ywd}": f"{self.f_ywd:.{n}f}",
             },
@@ -88,8 +89,8 @@ class Form8Dot63StressInInclinedShearReinforcement(Formula):
             replacements={
                 r"E_s": rf"{self.e_s:.{n}f} \ MPa",
                 r"\varepsilon_x": f"{self.epsilon_x:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
-                r"\alpha_w": rf"{self.alpha_w:.{n}f} \ degrees",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
+                r"\alpha_w": rf"{self.alpha_w:.{n}f} ^\circ",
                 r"f_{ywd}": rf"{self.f_ywd:.{n}f} \ MPa",
             },
             unique_symbol_check=False,
