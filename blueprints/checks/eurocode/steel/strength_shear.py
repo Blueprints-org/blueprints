@@ -91,8 +91,11 @@ class CheckStrengthShearClass12:
         """Calculate the shear area of the steel cross-section.
 
         Based on the applied shear force axis and fabrication method
-        (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18a/d/e)).
+        (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18)).
         """
+        if self.steel_cross_section.fabrication_method is None:
+            raise ValueError("Fabrication method must be specified for shear area calculation.")
+
         if isinstance(self.steel_cross_section.profile, IProfile):
             return self._shear_area_iprofile()
         if isinstance(self.steel_cross_section.profile, RHSProfile):
@@ -100,7 +103,7 @@ class CheckStrengthShearClass12:
         raise NotImplementedError("Profile type is not supported")  # pragma: no cover
 
     def _shear_area_iprofile(self) -> Formula:
-        """Calculate the shear area of an I-profile steel cross-section (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18a/d/e))."""
+        """Calculate the shear area of an I-profile steel cross-section (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18))."""
         profile = self.steel_cross_section.profile
         assert isinstance(profile, IProfile)
 
@@ -127,7 +130,7 @@ class CheckStrengthShearClass12:
         return formula_6_18_sub_av.Form6Dot18SubEWeldedIHandBoxSection(a=a, hw_list=[hw], tw_list=[tw])
 
     def _shear_area_rhs(self) -> Formula:
-        """Calculate the shear area of an RHS-profile steel cross-section (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18a/d/e))."""
+        """Calculate the shear area of an RHS-profile steel cross-section (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18))."""
         profile = self.steel_cross_section.profile
         assert isinstance(profile, RHSProfile)
 

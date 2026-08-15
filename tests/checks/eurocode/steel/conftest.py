@@ -37,6 +37,16 @@ def rhs_custom_steel_cross_section() -> SteelCrossSection:
 
 
 @pytest.fixture(scope="class")
+def rhs_custom_no_fabrication_steel_cross_section() -> SteelCrossSection:
+    """Create a SteelCrossSection fixture with custom RHS profile and S355 steel material, without specifying fabrication method."""
+    steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+    profile = RHSProfile(
+        total_width=200, total_height=300, left_wall_thickness=10, right_wall_thickness=11, top_wall_thickness=12, bottom_wall_thickness=12
+    )
+    return SteelCrossSection(profile=profile, material=steel_material)
+
+
+@pytest.fixture(scope="class")
 def heb_steel_cross_section() -> SteelCrossSection:
     """Create a SteelCrossSection fixture with HEB300 profile and S355 steel material."""
     steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)

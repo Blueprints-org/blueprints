@@ -144,6 +144,13 @@ class TestCheckStrengthShearClass12:
         with pytest.raises(NotImplementedError):
             calc.result()
 
+    def test_custom_no_fabrication_rhs_profile(self, rhs_custom_no_fabrication_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for custom RHS profile without specifying fabrication method."""
+        v = 1.0  # kN, arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_custom_no_fabrication_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        with pytest.raises(ValueError):
+            calc.result()
+
 
 class TestCheckStrengthShearClass34:
     """Tests for CheckStrengthShearClass34."""
