@@ -3,8 +3,9 @@
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MM, MPA, NMM
-from blueprints.validations import raise_if_negative
+from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MPA, NMM
+from blueprints.utils.math_helpers import cot
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot57AdditionalBendingMoment(Formula):
@@ -20,7 +21,7 @@ class Form8Dot57AdditionalBendingMoment(Formula):
         tau_ed: MPA,
         rho_w: DIMENSIONLESS,
         f_ywd: MPA,
-        cot_theta: DIMENSIONLESS,
+        theta: DEG,
         z: MM,
         b_w: MM,
         a: MM,
@@ -45,10 +46,12 @@ class Form8Dot57AdditionalBendingMoment(Formula):
             [$\rho_w$] Shear reinforcement ratio according to Formula (8.43) [$-$].
         f_ywd : MPA
             [$f_{ywd}$] Design value of the yield strength of the shear reinforcement. For compression field
-            inclinations with [$\cot\theta < 1$] it is replaced by the stress [$\sigma_{swd}$] according to
-            Formula (8.56), see Form8Dot56StressInShearReinforcement [$MPa$].
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the inclination of the compression field in the web [$-$].
+            inclinations with [$\cot\theta < 1$] the standard requires it to be replaced by the stress
+            [$\sigma_{swd}$] according to Formula (8.56), see Form8Dot56StressInShearReinforcement. That stress
+            carries no printed lower bound and is negative over much of its range, so this argument is not
+            guarded against negative values [$MPa$].
+        theta : DEG
+            [$\theta$] Inclination of the compression field in the web [$degrees$].
         z : MM
             [$z$] Lever arm for the shear calculation, which may be assumed as in 8.2.1(3) [$mm$].
         b_w : MM
@@ -64,7 +67,7 @@ class Form8Dot57AdditionalBendingMoment(Formula):
         self.tau_ed = tau_ed
         self.rho_w = rho_w
         self.f_ywd = f_ywd
-        self.cot_theta = cot_theta
+        self.theta = theta
         self.z = z
         self.b_w = b_w
         self.a = a
@@ -75,16 +78,17 @@ class Form8Dot57AdditionalBendingMoment(Formula):
         tau_ed: MPA,
         rho_w: DIMENSIONLESS,
         f_ywd: MPA,
-        cot_theta: DIMENSIONLESS,
+        theta: DEG,
         z: MM,
         b_w: MM,
         a: MM,
         x: MM,
     ) -> NMM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(tau_ed=tau_ed, rho_w=rho_w, f_ywd=f_ywd, cot_theta=cot_theta, z=z, b_w=b_w, a=a, x=x)
+        raise_if_negative(tau_ed=tau_ed, rho_w=rho_w, z=z, b_w=b_w, a=a, x=x)
+        raise_if_less_or_equal_to_zero(theta=theta)
 
-        return (tau_ed - rho_w * f_ywd * cot_theta) * z * b_w * (a / 2 - x)
+        return (tau_ed - rho_w * f_ywd * cot(theta)) * z * b_w * (a / 2 - x)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.57."""
@@ -98,7 +102,7 @@ class Form8Dot57AdditionalBendingMoment(Formula):
                 r"\tau_{Ed}": f"{self.tau_ed:.{n}f}",
                 r"\rho_w": f"{self.rho_w:.{n}f}",
                 r"f_{ywd}": f"{self.f_ywd:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
                 r"\cdot z \cdot": rf"\cdot {self.z:.{n}f} \cdot",
                 r"b_w": f"{self.b_w:.{n}f}",
                 r"\frac{a}{2}": r"\frac{" + f"{self.a:.{n}f}" + r"}{2}",
@@ -112,7 +116,7 @@ class Form8Dot57AdditionalBendingMoment(Formula):
                 r"\tau_{Ed}": rf"{self.tau_ed:.{n}f} \ MPa",
                 r"\rho_w": f"{self.rho_w:.{n}f}",
                 r"f_{ywd}": rf"{self.f_ywd:.{n}f} \ MPa",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
                 r"\cdot z \cdot": rf"\cdot {self.z:.{n}f} \ mm \cdot",
                 r"b_w": rf"{self.b_w:.{n}f} \ mm",
                 r"\frac{a}{2}": r"\frac{" + rf"{self.a:.{n}f} \ mm" + r"}{2}",

@@ -3,8 +3,9 @@
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_negative
+from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
+from blueprints.utils.math_helpers import cot
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form8Dot56StressInShearReinforcement(Formula):
@@ -15,7 +16,7 @@ class Form8Dot56StressInShearReinforcement(Formula):
     label = "8.56"
     source_document = FPR_EN_1992_1_1_2023
 
-    def __init__(self, e_s: MPA, cot_theta: DIMENSIONLESS, epsilon_x: DIMENSIONLESS, f_ywd: MPA) -> None:
+    def __init__(self, e_s: MPA, theta: DEG, epsilon_x: DIMENSIONLESS, f_ywd: MPA) -> None:
         r"""[$\sigma_{swd}$] Stress in the shear reinforcement [$MPa$].
 
         FprEN 1992-1-1:2023 (E) art 8.2.3 (12) - Formula (8.56)
@@ -23,15 +24,18 @@ class Form8Dot56StressInShearReinforcement(Formula):
         Compression field inclinations with [$\cot\theta < 1$] are allowed if the yield strength [$f_{ywd}$] in
         Formulae (8.55) and (8.57) is replaced by this stress. That is a condition of application, not a bound,
         so it is not enforced here. The standard prints no lower bound on the result either, so a combination
-        that gives a negative stress returns that value unchanged.
+        that gives a negative stress returns that value unchanged. Such a result is not an edge case: with
+        [$\varepsilon_x \geq 0$] required by Formula (8.46), the bracket is negative for every
+        [$\varepsilon_x < 0,001 \cdot \left(\tan^2\theta - 1\right)$], which covers most of the intended range.
 
         Parameters
         ----------
         e_s : MPA
             [$E_s$] Modulus of elasticity of the reinforcing steel [$MPa$].
-        cot_theta : DIMENSIONLESS
-            [$\cot\theta$] Cotangent of the inclination of the compression field in the web. This formula covers
-            the case [$\cot\theta < 1$], which lies outside the range of Formula (8.41) [$-$].
+        theta : DEG
+            [$\theta$] Inclination of the compression field in the web. This formula covers the case
+            [$\cot\theta < 1$], so an angle steeper than 45 degrees, which lies outside the range of Formula
+            (8.41) [$degrees$].
         epsilon_x : DIMENSIONLESS
             [$\varepsilon_x$] Longitudinal strain, which may be calculated according to 8.2.3(7) for a
             cross-section located midway between the support and the load [$-$].
@@ -41,16 +45,17 @@ class Form8Dot56StressInShearReinforcement(Formula):
         """
         super().__init__()
         self.e_s = e_s
-        self.cot_theta = cot_theta
+        self.theta = theta
         self.epsilon_x = epsilon_x
         self.f_ywd = f_ywd
 
     @staticmethod
-    def _evaluate(e_s: MPA, cot_theta: DIMENSIONLESS, epsilon_x: DIMENSIONLESS, f_ywd: MPA) -> MPA:
+    def _evaluate(e_s: MPA, theta: DEG, epsilon_x: DIMENSIONLESS, f_ywd: MPA) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(e_s=e_s, cot_theta=cot_theta, epsilon_x=epsilon_x, f_ywd=f_ywd)
+        raise_if_negative(e_s=e_s, epsilon_x=epsilon_x, f_ywd=f_ywd)
+        raise_if_less_or_equal_to_zero(theta=theta)
 
-        return min(e_s * (cot_theta**2 * (epsilon_x + 0.001) - 0.001), f_ywd)
+        return min(e_s * (cot(theta) ** 2 * (epsilon_x + 0.001) - 0.001), f_ywd)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.56."""
@@ -62,7 +67,7 @@ class Form8Dot56StressInShearReinforcement(Formula):
             template=_equation,
             replacements={
                 r"E_s": f"{self.e_s:.{n}f}",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\theta": f"{self.theta:.{n}f}",
                 r"\varepsilon_x": f"{self.epsilon_x:.{n}f}",
                 r"f_{ywd}": f"{self.f_ywd:.{n}f}",
             },
@@ -72,7 +77,7 @@ class Form8Dot56StressInShearReinforcement(Formula):
             template=_equation,
             replacements={
                 r"E_s": rf"{self.e_s:.{n}f} \ MPa",
-                r"\cot(\theta)": f"{self.cot_theta:.{n}f}",
+                r"\theta": rf"{self.theta:.{n}f} ^\circ",
                 r"\varepsilon_x": f"{self.epsilon_x:.{n}f}",
                 r"f_{ywd}": rf"{self.f_ywd:.{n}f} \ MPa",
             },
