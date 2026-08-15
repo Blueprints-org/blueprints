@@ -96,15 +96,19 @@ class TestForm8Dot32DesignShearStressResistanceWithNormalForce:
         [
             (
                 "complete",
-                r"\tau_{Rd,c} = \min\left(\max\left(\tau_{Rdc,0} - k_1 \cdot \sigma_{cp}, \tau_{Rdc,min}\right), "
-                r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 - 0.133 \cdot \left(-2.000\right), 0.522\right), "
-                r"1.483\right) = 0.853 = 0.853 \ MPa",
+                (
+                    r"\tau_{Rd,c} = \min\left(\max\left(\tau_{Rdc,0} - k_1 \cdot \sigma_{cp}, \tau_{Rdc,min}\right), "
+                    r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 - 0.133 \cdot \left(-2.000\right), 0.522\right), "
+                    r"1.483\right) = 0.853 = 0.853 \ MPa"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rd,c} = \min\left(\max\left(\tau_{Rdc,0} - k_1 \cdot \sigma_{cp}, \tau_{Rdc,min}\right), "
-                r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 \ MPa - 0.133 \cdot \left(-2.000 \ MPa\right), "
-                r"0.522 \ MPa\right), 1.483 \ MPa\right) = 0.853 = 0.853 \ MPa",
+                (
+                    r"\tau_{Rd,c} = \min\left(\max\left(\tau_{Rdc,0} - k_1 \cdot \sigma_{cp}, \tau_{Rdc,min}\right), "
+                    r"\tau_{Rdc,max}\right) = \min\left(\max\left(0.586 \ MPa - 0.133 \cdot \left(-2.000 \ MPa\right), "
+                    r"0.522 \ MPa\right), 1.483 \ MPa\right) = 0.853 = 0.853 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Rd,c} = 0.853 \ MPa"),
         ],

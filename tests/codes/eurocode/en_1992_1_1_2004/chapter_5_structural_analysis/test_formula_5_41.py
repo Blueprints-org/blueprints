@@ -46,8 +46,10 @@ class TestForm5Dot41MaxForceTendon:
         [
             (
                 "complete",
-                r"P_{max} = A_{p} \cdot \min(k_1 \cdot f_{pk}, k_2 \cdot f_{p0.1k}) = "
-                r"1000.000 \cdot \min(0.800 \cdot 1860.000, 0.900 \cdot 1674.000) = 1488000.000 \ N",
+                (
+                    r"P_{max} = A_{p} \cdot \min(k_1 \cdot f_{pk}, k_2 \cdot f_{p0.1k}) = "
+                    r"1000.000 \cdot \min(0.800 \cdot 1860.000, 0.900 \cdot 1674.000) = 1488000.000 \ N"
+                ),
             ),
             ("short", r"P_{max} = 1488000.000 \ N"),
         ],

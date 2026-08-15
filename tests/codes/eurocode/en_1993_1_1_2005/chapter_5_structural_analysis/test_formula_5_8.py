@@ -70,8 +70,10 @@ class TestForm5Dot8CheckSlenderness:
         [
             (
                 "complete",
-                r"CHECK \to \left( \overline{\lambda} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} "
-                r"\right) \to \left( \overline{1.00} > 0.5 \sqrt{\frac{1000.00 \cdot 355.00}{100000.00}} \right) \to OK",
+                (
+                    r"CHECK \to \left( \overline{\lambda} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} "
+                    r"\right) \to \left( \overline{1.00} > 0.5 \sqrt{\frac{1000.00 \cdot 355.00}{100000.00}} \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

@@ -55,13 +55,17 @@ class TestForm8Dot46CheckAxialForceY:
         [
             (
                 "complete",
-                r"CHECK \to N_{Ed} \leq \frac{0.5 \cdot h_{w} \cdot t_{w} \cdot f_{y}}{\gamma_{M0}} \to "
-                r"50.000 \leq \frac{0.5 \cdot 200.000 \cdot 10.000 \cdot 355.000}{1.000} \to OK",
+                (
+                    r"CHECK \to N_{Ed} \leq \frac{0.5 \cdot h_{w} \cdot t_{w} \cdot f_{y}}{\gamma_{M0}} \to "
+                    r"50.000 \leq \frac{0.5 \cdot 200.000 \cdot 10.000 \cdot 355.000}{1.000} \to OK"
+                ),
             ),
             (
                 "complete_with_units",
-                r"CHECK \to N_{Ed} \leq \frac{0.5 \cdot h_{w} \cdot t_{w} \cdot f_{y}}{\gamma_{M0}} \to "
-                r"50.000 \ N \leq \frac{0.5 \cdot 200.000 \ mm \cdot 10.000 \ mm \cdot 355.000 \ MPa}{1.000} \to OK",
+                (
+                    r"CHECK \to N_{Ed} \leq \frac{0.5 \cdot h_{w} \cdot t_{w} \cdot f_{y}}{\gamma_{M0}} \to "
+                    r"50.000 \ N \leq \frac{0.5 \cdot 200.000 \ mm \cdot 10.000 \ mm \cdot 355.000 \ MPa}{1.000} \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],
