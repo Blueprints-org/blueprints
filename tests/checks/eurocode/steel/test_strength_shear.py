@@ -1,5 +1,6 @@
 """Tests for shear strength checks according to Eurocode 3."""
 
+import numpy as np
 import pytest
 
 from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12, CheckStrengthShearClass34
@@ -96,6 +97,52 @@ class TestCheckStrengthShearClass12:
         docs = calc.source_docs()
         assert isinstance(docs, list)
         assert len(docs) == 1
+
+    def test_rhs_profile(self, rhs_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for RHS profile."""
+        a = 4324.0  # mm²
+        fy = 355.0  # MPa
+        b = 100.0  # mm
+        h = 200.0  # mm
+
+        v = 1.0  # kN,  arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * a * h / (b + h), rel=1e-3)
+
+        calc = CheckStrengthShearClass12(rhs_steel_cross_section, v, axis="Vy", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * a * b / (b + h), rel=1e-3)
+
+    def test_welded_rhs_profile(self, rhs_welded_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for RHS profile."""
+        a = 4324.0  # mm²
+        fy = 355.0  # MPa
+        h = 200.0  # mm
+        t = 8.0  # mm
+        r_i = 12.0  # mm
+        h_w = h - 2 * t - 2 * r_i
+        eta = 1.0
+
+        v = 1.0  # kN,  arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_welded_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * eta * 2 * h_w * t, rel=1e-3)
+
+        calc = CheckStrengthShearClass12(rhs_welded_steel_cross_section, v, axis="Vy", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * (a - 2 * h_w * t), rel=1e-3)
+
+    def test_custom_rhs_profile(self, rhs_custom_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for custom RHS profile."""
+        v = 1.0  # kN, arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_custom_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        with pytest.raises(NotImplementedError):
+            calc.result()
 
 
 class TestCheckStrengthShearClass34:

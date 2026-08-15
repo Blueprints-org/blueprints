@@ -10,6 +10,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_6_ultimate_limit_state import formula_6_17, formula_6_18, formula_6_18_sub_av, formula_6_19
 from blueprints.codes.formula import Formula
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
+from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN
 from blueprints.unit_conversion import KN_TO_N
@@ -35,7 +36,7 @@ class CheckStrengthShearClass12:
 
     Notes
     -----
-    Not all profile shapes have been implemented for this check yet. Currently, only I-profiles are supported.
+    Not all profile shapes have been implemented for this check yet. Currently, only I- and RHS-profiles are supported.
 
     Parameters
     ----------
@@ -72,7 +73,7 @@ class CheckStrengthShearClass12:
 
     def __post_init__(self) -> None:
         """Check on implemented_shapes."""
-        implemented_shapes = (IProfile,)
+        implemented_shapes = (IProfile, RHSProfile)
         if type(self.steel_cross_section.profile) not in implemented_shapes:
             raise NotImplementedError(f"The provided profile shape {type(self.steel_cross_section.profile).__name__} has not been implemented yet.")
 
@@ -93,30 +94,83 @@ class CheckStrengthShearClass12:
         (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18a/d/e)).
         """
         if isinstance(self.steel_cross_section.profile, IProfile):
-            # Get parameters from profile, average top and bottom flange properties
-            a = float(self.steel_cross_section.profile.area)
-            b1 = self.steel_cross_section.profile.top_flange_width
-            b2 = self.steel_cross_section.profile.bottom_flange_width
-            tf1 = self.steel_cross_section.profile.top_flange_thickness
-            tf2 = self.steel_cross_section.profile.bottom_flange_thickness
-            tw = self.steel_cross_section.profile.web_thickness
-            hw = self.steel_cross_section.profile.total_height - (
-                self.steel_cross_section.profile.top_flange_thickness + self.steel_cross_section.profile.bottom_flange_thickness
-            )
-            r1 = self.steel_cross_section.profile.top_radius
-            r2 = self.steel_cross_section.profile.bottom_radius
-
-            assert all(param is not None for param in [a, b1, b2, tf1, tf2, tw, hw, r1, r2]), (
-                "All profile parameters must be defined for I-profile shear area calculation."
-            )
-
-            if self.axis == "Vz" and self.steel_cross_section.fabrication_method in ["hot-rolled", "cold-formed"]:
-                return formula_6_18_sub_av.Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=1.0)
-            if self.axis == "Vz" and self.steel_cross_section.fabrication_method == "welded":
-                return formula_6_18_sub_av.Form6Dot18SubDWeldedIHandBoxSection(hw_list=[hw], tw_list=[tw], eta=1.0)
-            # when axis == "Vy"
-            return formula_6_18_sub_av.Form6Dot18SubEWeldedIHandBoxSection(a=a, hw_list=[hw], tw_list=[tw])
+            return self._shear_area_iprofile()
+        if isinstance(self.steel_cross_section.profile, RHSProfile):
+            return self._shear_area_rhs()
         raise NotImplementedError("Profile type is not supported")  # pragma: no cover
+
+    def _shear_area_iprofile(self) -> Formula:
+        """Calculate the shear area of an I-profile steel cross-section (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18a/d/e))."""
+        profile = self.steel_cross_section.profile
+        assert isinstance(profile, IProfile)
+
+        # Get parameters from profile, average top and bottom flange properties
+        a = float(profile.area)
+        b1 = profile.top_flange_width
+        b2 = profile.bottom_flange_width
+        tf1 = profile.top_flange_thickness
+        tf2 = profile.bottom_flange_thickness
+        tw = profile.web_thickness
+        hw = profile.total_height - (profile.top_flange_thickness + profile.bottom_flange_thickness)
+        r1 = profile.top_radius
+        r2 = profile.bottom_radius
+
+        assert all(param is not None for param in [a, b1, b2, tf1, tf2, tw, hw, r1, r2]), (
+            "All profile parameters must be defined for I-profile shear area calculation."
+        )
+
+        if self.axis == "Vz" and self.steel_cross_section.fabrication_method in ["hot-rolled", "cold-formed"]:
+            return formula_6_18_sub_av.Form6Dot18SubARolledIandHSection(a=a, b1=b1, b2=b2, hw=hw, r1=r1, r2=r2, tf1=tf1, tf2=tf2, tw=tw, eta=1.0)
+        if self.axis == "Vz" and self.steel_cross_section.fabrication_method == "welded":
+            return formula_6_18_sub_av.Form6Dot18SubDWeldedIHandBoxSection(hw_list=[hw], tw_list=[tw], eta=1.0)
+        # when axis == "Vy"
+        return formula_6_18_sub_av.Form6Dot18SubEWeldedIHandBoxSection(a=a, hw_list=[hw], tw_list=[tw])
+
+    def _shear_area_rhs(self) -> Formula:
+        """Calculate the shear area of an RHS-profile steel cross-section (EN 1993-1-1:2005 art. 6.2.6(3) - Formulas (6.18a/d/e))."""
+        profile = self.steel_cross_section.profile
+        assert isinstance(profile, RHSProfile)
+
+        # Get parameters from profile
+        a = float(profile.area)
+        b = profile.total_width
+        h = profile.total_height
+        t_w1 = profile.left_wall_thickness
+        t_w2 = profile.right_wall_thickness
+        t_f1 = profile.top_wall_thickness
+        t_f2 = profile.bottom_wall_thickness
+        r_i1 = profile.top_left_inner_radius
+        r_i2 = profile.top_right_inner_radius
+        r_i3 = profile.bottom_left_inner_radius
+        r_i4 = profile.bottom_right_inner_radius
+        r_o1 = profile.top_left_outer_radius
+        r_o2 = profile.top_right_outer_radius
+        r_o3 = profile.bottom_left_outer_radius
+        r_o4 = profile.bottom_right_outer_radius
+
+        assert all(param is not None for param in [a, b, h, t_w1, t_w2, t_f1, t_f2, r_i1, r_i2, r_i3, r_i4, r_o1, r_o2, r_o3, r_o4]), (
+            "All profile parameters must be defined for RHS-profile shear area calculation."
+        )
+
+        # Check for rolled rectangular hollow sections of uniform thickness
+        if self.steel_cross_section.fabrication_method in ["hot-rolled", "cold-formed"] and not (
+            t_w1 == t_w2 == t_f1 == t_f2 and r_i1 == r_i2 == r_i3 == r_i4 and r_o1 == r_o2 == r_o3 == r_o4
+        ):
+            raise NotImplementedError(
+                "Currently, when RHS-profiles are hot-rolled/cold-formed, it must be provided with equal wall thicknesses and equal corner radii."
+            )
+
+        h_w1 = h - t_f1 - t_f2 - r_i1 - r_i3
+        h_w2 = h - t_f1 - t_f2 - r_i2 - r_i4
+
+        if self.axis == "Vz" and self.steel_cross_section.fabrication_method in ["hot-rolled", "cold-formed"]:
+            return formula_6_18_sub_av.Form6Dot18SubF1RolledRectangularHollowSectionDepth(a, b, h)
+        if self.axis == "Vz" and self.steel_cross_section.fabrication_method == "welded":
+            return formula_6_18_sub_av.Form6Dot18SubDWeldedIHandBoxSection([h_w1, h_w2], [t_w1, t_w2], eta=1.0)
+        if self.axis == "Vy" and self.steel_cross_section.fabrication_method in ["hot-rolled", "cold-formed"]:
+            return formula_6_18_sub_av.Form6Dot18SubF2RolledRectangularHollowSectionWidth(a, b, h)
+        # when axis == "Vy" and welded
+        return formula_6_18_sub_av.Form6Dot18SubEWeldedIHandBoxSection(a, [h_w1, h_w2], [t_w1, t_w2])
 
     def plastic_resistance(self) -> Formula:
         """Calculate the shear force plastic resistance of the steel cross-section (EN 1993-1-1:2005 art. 6.2.6(2) - Formula (6.18)).
@@ -167,7 +221,7 @@ class CheckStrengthShearClass12:
         Report
             Report of the plastic shear force check.
         """
-        report = Report("Check: shear force steel I-beam")
+        report = Report("Check: shear force (Class 3/4)")
 
         # will not generate a report if no shear force is applied, as the check is not necessary in that case
         if self.v == 0:
@@ -338,7 +392,7 @@ class CheckStrengthShearClass34:
         Report
             Report of the elastic shear force check.
         """
-        report = Report("Check: shear force steel I-beam (Class 3/4)")
+        report = Report("Check: shear force (Class 3/4)")
 
         # will not generate a report if no shear force is applied, as the check is not necessary in that case
         if self.v == 0:
