@@ -117,8 +117,8 @@ Total of 602 formulas present.
 |      8.53      | :heavy_check_mark: |         | Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads|
 |      8.54      | :heavy_check_mark: |         | Form8Dot54NominalWebWidth                                          |
 |      8.55      | :heavy_check_mark: |         | Form8Dot55EnhancedShearStressResistance                            |
-|      8.56      |        :x:         |         |                                                                    |
-|      8.57      |        :x:         |         |                                                                    |
+|      8.56      | :heavy_check_mark: |         | Form8Dot56StressInShearReinforcement                               |
+|      8.57      | :heavy_check_mark: |         | Form8Dot57AdditionalBendingMoment                                  |
 |      8.58      |        :x:         |         |                                                                    |
 |      8.59      |        :x:         |         |                                                                    |
 |      8.60      |        :x:         |         |                                                                    |
