@@ -81,11 +81,6 @@ class CheckStrengthBendingClass12:
         """Post-initialization to extract section properties."""
         if self.axis.lower() not in ("my", "mz"):
             raise ValueError(f"Axis must be 'My' or 'Mz'. You provided '{self.axis}'.")
-        if self.steel_cross_section.profile.rotation != 0:
-            raise ValueError(
-                f"The profile must be oriented with rotation=0 for bending moment checks. "
-                f"Current rotation is {self.steel_cross_section.profile.rotation} degrees."
-            )
 
     @staticmethod
     def source_docs() -> list[str]:
