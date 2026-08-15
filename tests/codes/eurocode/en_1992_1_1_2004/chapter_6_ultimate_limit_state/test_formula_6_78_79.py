@@ -58,17 +58,19 @@ class TestForm6Dot78And79FatigueResistance:
         [
             (
                 "complete",
-                r"CHECK \to \begin{cases} \frac{\left|V_{Ed,max}\right|}{\left|V_{Rd,c}\right|} \leq "
-                r"\min\left(0.5 + 0.45 \cdot \frac{\left|V_{Ed,min}\right|}{\left|V_{Rd,c}\right|}, "
-                r"\begin{cases} 0.9 & \text{if } f_{ck} \le 50 \\ 0.8 & \text{if } f_{ck} > 50 \end{cases} \right) "
-                r"& \text{if } \frac{V_{Ed,min}}{V_{Ed,max}} \geq 0 \\ \frac{\left|V_{Ed,max}\right|}"
-                r"{\left|V_{Rd,c}\right|} \leq 0.5 - \frac{\left|V_{Ed,min}\right|}{\left|V_{Rd,c}\right|} & \text{if } "
-                r"\frac{V_{Ed,min}}{V_{Ed,max}} < 0 \end{cases} \to "
-                r"\begin{cases} \frac{\left|100.000\right|}{\left|200.000\right|} \leq \min\left(0.5 + "
-                r"0.45 \cdot \frac{\left|50.000\right|}{\left|200.000\right|}, \begin{cases} 0.9 & \text{if } 30.000 "
-                r"\le 50 \\ 0.8 & \text{if } 30.000 > 50 \end{cases} \right) & \text{if } \frac{50.000}{100.000} \geq 0 "
-                r"\\ \frac{\left|100.000\right|}{\left|200.000\right|} \leq 0.5 - \frac{\left|50.000\right|}{\left|200.000\right|} "
-                r"& \text{if } \frac{50.000}{100.000} < 0 \end{cases} \to OK",
+                (
+                    r"CHECK \to \begin{cases} \frac{\left|V_{Ed,max}\right|}{\left|V_{Rd,c}\right|} \leq "
+                    r"\min\left(0.5 + 0.45 \cdot \frac{\left|V_{Ed,min}\right|}{\left|V_{Rd,c}\right|}, "
+                    r"\begin{cases} 0.9 & \text{if } f_{ck} \le 50 \\ 0.8 & \text{if } f_{ck} > 50 \end{cases} \right) "
+                    r"& \text{if } \frac{V_{Ed,min}}{V_{Ed,max}} \geq 0 \\ \frac{\left|V_{Ed,max}\right|}"
+                    r"{\left|V_{Rd,c}\right|} \leq 0.5 - \frac{\left|V_{Ed,min}\right|}{\left|V_{Rd,c}\right|} & \text{if } "
+                    r"\frac{V_{Ed,min}}{V_{Ed,max}} < 0 \end{cases} \to "
+                    r"\begin{cases} \frac{\left|100.000\right|}{\left|200.000\right|} \leq \min\left(0.5 + "
+                    r"0.45 \cdot \frac{\left|50.000\right|}{\left|200.000\right|}, \begin{cases} 0.9 & \text{if } 30.000 "
+                    r"\le 50 \\ 0.8 & \text{if } 30.000 > 50 \end{cases} \right) & \text{if } \frac{50.000}{100.000} \geq 0 "
+                    r"\\ \frac{\left|100.000\right|}{\left|200.000\right|} \leq 0.5 - \frac{\left|50.000\right|}{\left|200.000\right|} "
+                    r"& \text{if } \frac{50.000}{100.000} < 0 \end{cases} \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

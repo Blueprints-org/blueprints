@@ -211,29 +211,31 @@ class ComparisonFormula(Formula, ABC):
     def __bool__(self) -> bool:
         """Return whether the comparison condition is satisfied.
 
-        Returns True if the unity check is less than or equal to 1.0, indicating the condition is satisfied.
+        Returns True if the comparison e.g. lhs <= rhs is satisfied.
         This allows ComparisonFormula instances to be used directly in boolean contexts.
 
         Examples
         --------
         formula = SomeComparisonFormula(...)
-        if formula:  # Equivalent to: if formula.unity_check <= 1.0
+        if formula:  # Equivalent to: if formula.__bool__()
             print("Condition satisfied")
 
         Returns
         -------
         bool
-            True if unity_check <= 1.0 (condition is satisfied), False otherwise.
+            True if the comparison condition is satisfied, False otherwise.
         """
-        return self.unity_check <= 1.0
+        # bool() is required here: if _evaluate_lhs/_evaluate_rhs return numpy floats, the comparison
+        # operator returns a numpy.bool_, and Python requires __bool__ to return a real bool.
+        return bool(self._comparison_operator()(self.lhs, self.rhs))
 
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
         """Implements the comparison using the class-level operator."""
         lhs = cls._evaluate_lhs(*args, **kwargs)
         rhs = cls._evaluate_rhs(*args, **kwargs)
-        comparison = cls._comparison_operator
-        return comparison()(lhs, rhs)
+        comparison = cls._comparison_operator()
+        return comparison(lhs, rhs)
 
 
 class AggregatedComparisonFormula(ComparisonFormula):
@@ -326,6 +328,32 @@ class AggregatedComparisonFormula(ComparisonFormula):
             else min(formula.unity_check for formula in self.comparison_formulas)
         )
 
+    def __bool__(self) -> bool:
+        """Return whether the aggregated comparison condition is satisfied.
+
+        Returns True if the aggregated comparison condition is satisfied based on the aggregation function (all or any).
+        This allows AggregatedComparisonFormula instances to be used directly in boolean contexts.
+
+        Examples
+        --------
+        formula1 = SomeComparisonFormula(...)
+        formula2 = SomeComparisonFormula(...)
+
+        aggregated_formula = AggregatedComparisonFormula(all, [formula1, formula2])
+        if aggregated_formula:  # Equivalent to: if all(formula1, formula2)
+            print("All conditions satisfied")
+
+        aggregated_formula = AggregatedComparisonFormula(any, [formula1, formula2])
+        if aggregated_formula:  # Equivalent to: if any(formula1, formula2)
+            print("At least one condition satisfied")
+
+        Returns
+        -------
+        bool
+            True if the aggregated condition is satisfied, False otherwise.
+        """
+        return self.aggregation(bool(formula) for formula in self.comparison_formulas)
+
     @classmethod
     def _evaluate(
         cls,
@@ -356,6 +384,31 @@ class AggregatedComparisonFormula(ComparisonFormula):
         if not all(isinstance(formula, ComparisonFormula) for formula in comparison_formulas):
             raise ValueError("All provided comparison formulas must be instances of ComparisonFormula.")
         return aggregation(bool(formula) for formula in comparison_formulas)
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Return the latex representation of the aggregated comparison formula.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of decimal places to round the result to.
+
+        Returns
+        -------
+        LatexFormula
+            The latex representation of the formula, given in math mode.
+        """
+        aggregation = r"\ \&\ " if self.aggregation is all else r"\ \text{or}\ "
+        comparison_equations = aggregation.join(formula.latex(n).equation for formula in self.comparison_formulas)
+        comparison_numeric_equations = aggregation.join(formula.latex(n).numeric_equation for formula in self.comparison_formulas)
+        return LatexFormula(
+            return_symbol=r"CHECK",
+            result="OK" if self.__bool__() else "\\text{Not OK}",
+            equation=comparison_equations,
+            numeric_equation=comparison_numeric_equations,
+            comparison_operator_label="\\to",
+            unit="",
+        )
 
 
 class DoubleComparisonFormula(Formula):

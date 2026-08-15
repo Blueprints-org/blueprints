@@ -21,7 +21,7 @@ def cot(x: DEG) -> DIMENSIONLESS:
     """
     raise_if_less_or_equal_to_zero(x=x)
     raise_if_greater_than_90(x=x)
-    return 1 / np.tan(np.deg2rad(x))
+    return float(1 / np.tan(np.deg2rad(x)))
 
 
 def sec(x: DEG) -> DIMENSIONLESS:
@@ -39,7 +39,7 @@ def sec(x: DEG) -> DIMENSIONLESS:
     """
     raise_if_negative(x=x)
     raise_if_greater_than_90(x=x)
-    return 1 / np.cos(np.deg2rad(x))
+    return float(1 / np.cos(np.deg2rad(x)))
 
 
 def csc(x: DEG) -> DIMENSIONLESS:
@@ -57,7 +57,7 @@ def csc(x: DEG) -> DIMENSIONLESS:
     """
     raise_if_less_or_equal_to_zero(x=x)
     raise_if_greater_than_90(x=x)
-    return 1 / np.sin(np.deg2rad(x))
+    return float(1 / np.sin(np.deg2rad(x)))
 
 
 def slope_to_angle(slope: PERCENTAGE) -> DEG:
@@ -73,7 +73,7 @@ def slope_to_angle(slope: PERCENTAGE) -> DEG:
     DEG
         Angle in degrees.
     """
-    return np.rad2deg(np.arctan(slope / 100))
+    return float(np.rad2deg(np.arctan(slope / 100)))
 
 
 def angle_to_slope(angle: DEG) -> PERCENTAGE:
@@ -95,4 +95,4 @@ def angle_to_slope(angle: DEG) -> PERCENTAGE:
         return -np.inf
     raise_if_greater_than_90(angle=-angle)
     raise_if_greater_than_90(angle=angle)
-    return np.tan(np.deg2rad(angle)) * 100
+    return float(np.tan(np.deg2rad(angle)) * 100)

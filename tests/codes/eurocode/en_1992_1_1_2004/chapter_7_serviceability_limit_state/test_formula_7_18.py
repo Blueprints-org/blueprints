@@ -42,8 +42,10 @@ class TestForm7Dot18DeformationParameter:
         [
             (
                 "complete",
-                r"\alpha = \zeta \cdot \alpha_{II} + (1 - \zeta) \cdot \alpha_{I} = "
-                r"0.500 \cdot 1.200 + (1 - 0.500) \cdot 0.800 = 1.000 \ -",
+                (
+                    r"\alpha = \zeta \cdot \alpha_{II} + (1 - \zeta) \cdot \alpha_{I} = "
+                    r"0.500 \cdot 1.200 + (1 - 0.500) \cdot 0.800 = 1.000 \ -"
+                ),
             ),
             ("short", r"\alpha = 1.000 \ -"),
         ],

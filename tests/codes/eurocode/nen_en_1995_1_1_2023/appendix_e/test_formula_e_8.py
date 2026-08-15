@@ -73,8 +73,10 @@ class TestFormEDot8AxialStressInILayer:
                 1,
                 1,
                 r"\sigma_{2} = 1.00",
-                r"\sigma_{2} = \frac{\gamma_2 E_2 \alpha_2 M_{yd}}{EI_{ef}}"
-                r" = \frac{1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00}{1.00} = 1.00",
+                (
+                    r"\sigma_{2} = \frac{\gamma_2 E_2 \alpha_2 M_{yd}}{EI_{ef}}"
+                    r" = \frac{1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00}{1.00} = 1.00"
+                ),
             ),
             (
                 1,
@@ -84,8 +86,10 @@ class TestFormEDot8AxialStressInILayer:
                 10e06,
                 6015486104925.15,
                 r"\sigma_{1} = 1.07",
-                r"\sigma_{1} = \frac{\gamma_1 E_1 \alpha_1 M_{yd}}{EI_{ef}}"
-                r" = \frac{0.77 \cdot 12000.00 \cdot 70.00 \cdot 10000000.00}{6015486104925.15} = 1.07",
+                (
+                    r"\sigma_{1} = \frac{\gamma_1 E_1 \alpha_1 M_{yd}}{EI_{ef}}"
+                    r" = \frac{0.77 \cdot 12000.00 \cdot 70.00 \cdot 10000000.00}{6015486104925.15} = 1.07"
+                ),
             ),
         ],
         ids=["latex_layer1", "latex_layer2"],

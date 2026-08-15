@@ -110,17 +110,21 @@ class TestForm6Dot41BiaxialBendingCheck:
         [
             (
                 "complete",
-                r"CHECK \to \left[ \frac{M_{y,Ed}}{M_{N,y,Rd}} \right]^{\alpha} + "
-                r"\left[ \frac{M_{z,Ed}}{M_{N,z,Rd}} \right]^{\beta} \leq 1 \to "
-                r"\left[ \frac{100.000}{200.000} \right]^{1.000} + "
-                r"\left[ \frac{50.000}{150.000} \right]^{1.000} \leq 1 \to OK",
+                (
+                    r"CHECK \to \left[ \frac{M_{y,Ed}}{M_{N,y,Rd}} \right]^{\alpha} + "
+                    r"\left[ \frac{M_{z,Ed}}{M_{N,z,Rd}} \right]^{\beta} \leq 1 \to "
+                    r"\left[ \frac{100.000}{200.000} \right]^{1.000} + "
+                    r"\left[ \frac{50.000}{150.000} \right]^{1.000} \leq 1 \to OK"
+                ),
             ),
             (
                 "complete_with_units",
-                r"CHECK \to \left[ \frac{M_{y,Ed}}{M_{N,y,Rd}} \right]^{\alpha} + "
-                r"\left[ \frac{M_{z,Ed}}{M_{N,z,Rd}} \right]^{\beta} \leq 1 \to "
-                r"\left[ \frac{100.000 \ Nmm}{200.000 \ Nmm} \right]^{1.000} + "
-                r"\left[ \frac{50.000 \ Nmm}{150.000 \ Nmm} \right]^{1.000} \leq 1 \to OK",
+                (
+                    r"CHECK \to \left[ \frac{M_{y,Ed}}{M_{N,y,Rd}} \right]^{\alpha} + "
+                    r"\left[ \frac{M_{z,Ed}}{M_{N,z,Rd}} \right]^{\beta} \leq 1 \to "
+                    r"\left[ \frac{100.000 \ Nmm}{200.000 \ Nmm} \right]^{1.000} + "
+                    r"\left[ \frac{50.000 \ Nmm}{150.000 \ Nmm} \right]^{1.000} \leq 1 \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],
