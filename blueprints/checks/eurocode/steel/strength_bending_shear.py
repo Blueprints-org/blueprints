@@ -131,7 +131,7 @@ class CheckStrengthBendingShearClass12:
         sxx = section_properties.sxx
         syy = section_properties.syy
         if sxx is None or syy is None:
-            raise ValueError("Section properties must be defined to access sxx and syy")
+            raise ValueError("Section properties must be defined to access sxx and syy")  # pragma: no cover
         w = float(sxx) if self.axis_m == "My" else float(syy)
 
         m_c_rd = formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y_reduced, gamma_m0=self.gamma_m0)
