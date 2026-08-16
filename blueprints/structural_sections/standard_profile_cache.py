@@ -16,7 +16,10 @@ import json
 import os
 from typing import Any
 
-DEFAULT_DATA_DIR = os.path.join("blueprints", "structural_sections", "steel", "standard_profiles", "_section_properties")
+# Default to the package-relative _section_properties directory so the loader
+# works regardless of the current working directory when importing/running
+# modules directly (e.g., running a profile file as __main__).
+DEFAULT_DATA_DIR = os.path.join(os.path.dirname(__file__), "steel", "standard_profiles", "_section_properties")
 
 
 def _search_file_for_profile(profile_name: str, data_dir: str) -> str | None:
@@ -24,8 +27,13 @@ def _search_file_for_profile(profile_name: str, data_dir: str) -> str | None:
 
     Returns the path if found, else None.
     """
+    if not profile_name:
+        return None
+
+    base = profile_name.strip().replace(" ", "").replace("/", "_").replace(".", "_").replace("-", "_")
+
     for root, _, files in os.walk(data_dir):
-        target = f"{profile_name}.json"
+        target = f"{base}.json"
         if target in files:
             return os.path.join(root, target)
     return None
@@ -123,8 +131,13 @@ def get_section_properties_for(
 
     If no cache file is found, returns `None`.
     """
-    # accept either a profile instance or a string name
-    name = profile_or_name if isinstance(profile_or_name, str) else getattr(profile_or_name, "name", None)
+    # accept either a profile instance or a string name; prefer `name` then `profile_name`
+    if isinstance(profile_or_name, str):
+        name = profile_or_name
+    else:
+        name = getattr(profile_or_name, "name", None) or getattr(profile_or_name, "profile_name", None)
+    if isinstance(name, str):
+        name = name.strip()
     # mark unused params used to satisfy linters
     _ = (geometric, plastic)
     if not name:
