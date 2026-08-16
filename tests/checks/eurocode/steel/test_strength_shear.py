@@ -151,7 +151,7 @@ class TestCheckStrengthShearClass12:
         """Test shear check for custom RHS profile without specifying fabrication method."""
         v = 1.0  # kN, arbitrary small value to trigger the check
         calc = CheckStrengthShearClass12(rhs_custom_no_fabrication_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=r"Fabrication method must be specified for shear area calculation."):
             calc.result()
 
     def test_invalid_rotation(self) -> None:
@@ -168,7 +168,7 @@ class TestCheckStrengthShearClass12:
             top_radius=0,
             bottom_radius=0,
         )
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=r"The profile must be oriented with rotation=0 for plastic shear checks."):
             CheckStrengthShearClass12(
                 steel_cross_section=SteelCrossSection(profile=heb_300_profile, material=steel_material), v=1, axis="Vy", gamma_m0=1.0
             )
