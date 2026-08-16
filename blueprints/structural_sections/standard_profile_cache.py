@@ -16,7 +16,7 @@ import json
 import os
 from typing import Any
 
-DEFAULT_DATA_DIR = os.path.join("data", "profile_sections")
+DEFAULT_DATA_DIR = os.path.join("blueprints", "structural_sections", "steel", "standard_profiles", "_section_properties")
 
 
 def _search_file_for_profile(profile_name: str, data_dir: str) -> str | None:
