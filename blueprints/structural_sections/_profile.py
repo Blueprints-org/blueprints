@@ -14,6 +14,7 @@ from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 from shapely.affinity import rotate, translate
 
+from blueprints.structural_sections.standard_profile_cache import get_section_properties_for
 from blueprints.type_alias import DEG, KN, KNM, M3_M, MM, MM2
 from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, M_TO_MM, MM3_TO_M3
 
@@ -181,11 +182,27 @@ class Profile(ABC):
         """
         cache_key = (geometric, plastic, warping)
 
+        # Fast path: if the profile is not transformed (rotation/offsets) and the
+        # requested calculation is a common case, try to load a precomputed JSON cache
+        # to avoid expensive meshing operations. We allow loading full cache even when
+        # caller requests only a subset (geometric/plastic); however if warping is
+        # requested the cache must contain warping data (see cache metadata).
+        if self.rotation == 0.0 and self.horizontal_offset == 0.0 and self.vertical_offset == 0.0:
+            try:
+                cached_obj = get_section_properties_for(self, geometric=geometric, plastic=plastic, warping=warping)
+                if cached_obj is not None:
+                    # cache the wrapper for future calls
+                    self._section_props_cache[cache_key] = cached_obj
+                    return cached_obj
+            except Exception:
+                # ignore cache-related errors and fall back to live calculation
+                pass
+
         # Check if we already have cached properties for this configuration
         if cache_key in self._section_props_cache:
             return self._section_props_cache[cache_key]
 
-        # Calculate section properties
+        # Live calculation path
         section = self._section()
 
         if any([geometric, plastic, warping]):
