@@ -7,7 +7,7 @@ reach the classification and the material through one import.
 
 This module contains material-related information only: strengths, moduli, density and whether the
 bolt can be preloaded. Geometric descriptors such as diameter, hole type and spacing live in
-`blueprints.structural_sections.bolts.bolt_geometry` to keep concerns separated.
+`blueprints.structural_sections.fasteners.bolts` to keep concerns separated.
 """
 
 from dataclasses import dataclass, field

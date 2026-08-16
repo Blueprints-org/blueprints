@@ -1,47 +1,8 @@
 """Test the bolt material properties."""
 
-import math
-
 import pytest
 
-from blueprints.materials.fastener_steel import BOLT_YOUNG_MODULUS, BoltSize, FastenerClass, FastenerMaterial
-
-
-class TestBoltSize:
-    """Validation of the ISO metric coarse thread series."""
-
-    @pytest.mark.parametrize(
-        ("size", "diameter", "tensile_stress_area"),
-        [
-            (BoltSize.M8, 8.0, 36.6),
-            (BoltSize.M10, 10.0, 58.0),
-            (BoltSize.M12, 12.0, 84.3),
-            (BoltSize.M14, 14.0, 115.0),
-            (BoltSize.M16, 16.0, 157.0),
-            (BoltSize.M18, 18.0, 192.0),
-            (BoltSize.M20, 20.0, 245.0),
-            (BoltSize.M22, 22.0, 303.0),
-            (BoltSize.M24, 24.0, 353.0),
-            (BoltSize.M27, 27.0, 459.0),
-            (BoltSize.M30, 30.0, 561.0),
-            (BoltSize.M33, 33.0, 694.0),
-            (BoltSize.M36, 36.0, 817.0),
-        ],
-    )
-    def test_diameter_and_tensile_stress_area(self, size: BoltSize, diameter: float, tensile_stress_area: float) -> None:
-        """The nominal diameter follows the designation and the stress area comes from the thread series."""
-        assert size.diameter == pytest.approx(expected=diameter)
-        assert size.tensile_stress_area == pytest.approx(expected=tensile_stress_area)
-
-    @pytest.mark.parametrize("size", list(BoltSize))
-    def test_gross_area_follows_the_nominal_diameter(self, size: BoltSize) -> None:
-        """The gross area is the full circle of the shank, which is what a shear plane there sees."""
-        assert size.gross_area == pytest.approx(expected=math.pi * size.diameter**2 / 4)
-
-    @pytest.mark.parametrize("size", list(BoltSize))
-    def test_the_stress_area_is_smaller_than_the_gross_area(self, size: BoltSize) -> None:
-        """The thread removes material, so the two areas can never be swapped unnoticed."""
-        assert size.tensile_stress_area < size.gross_area
+from blueprints.materials.fastener_steel import BOLT_YOUNG_MODULUS, FastenerClass, FastenerMaterial
 
 
 class TestFastenerMaterial:

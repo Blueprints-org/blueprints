@@ -19,7 +19,7 @@ from blueprints.codes.eurocode.en_1993_1_8_2005 import EN_1993_1_8_2005
 from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import FastenerClass
 from blueprints.codes.formula import ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.structural_sections.bolts.bolts import (
+from blueprints.structural_sections.fasteners.bolts import (
     BoltPositionParallel,
     BoltPositionPerpendicular,
 )

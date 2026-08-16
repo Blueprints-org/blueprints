@@ -116,13 +116,17 @@ class TestTable3Dot4ShearResistanceBolt:
         [
             (
                 "complete",
-                r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
-                r"\frac{0.600 \cdot 800.000 \cdot 245.000}{1.250} = 94080.000 \ N",
+                (
+                    r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
+                    r"\frac{0.600 \cdot 800.000 \cdot 245.000}{1.250} = 94080.000 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
-                r"\frac{0.600 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 94080.000 \ N",
+                (
+                    r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
+                    r"\frac{0.600 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 94080.000 \ N"
+                ),
             ),
             ("short", r"F_{v,Rd} = 94080.000 \ N"),
         ],
@@ -171,8 +175,10 @@ class TestTable3Dot4ShearResistanceRivet:
             ),
             (
                 "complete_with_units",
-                r"F_{v,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N",
+                (
+                    r"F_{v,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N"
+                ),
             ),
             ("short", r"F_{v,Rd} = 60318.579 \ N"),
         ],
@@ -311,13 +317,17 @@ class TestTable3Dot4AlphaB:
         [
             (
                 "complete",
-                r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
-                r"\min\left(0.606, \frac{800.000}{360.000}, 1.0\right) = 0.606 \ -",
+                (
+                    r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
+                    r"\min\left(0.606, \frac{800.000}{360.000}, 1.0\right) = 0.606 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
-                r"\min\left(0.606, \frac{800.000 \ MPa}{360.000 \ MPa}, 1.0\right) = 0.606 \ -",
+                (
+                    r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
+                    r"\min\left(0.606, \frac{800.000 \ MPa}{360.000 \ MPa}, 1.0\right) = 0.606 \ -"
+                ),
             ),
             ("short", r"\alpha_b = 0.606 \ -"),
         ],
@@ -405,14 +415,18 @@ class TestTable3Dot4K1:
         [
             (
                 "complete",
-                r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
-                r"\min\left(2.8 \cdot \frac{30.000}{22.000} - 1.7, 1.4 \cdot \frac{70.000}{22.000} - 1.7, 2.5\right) = 2.118 \ -",
+                (
+                    r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
+                    r"\min\left(2.8 \cdot \frac{30.000}{22.000} - 1.7, 1.4 \cdot \frac{70.000}{22.000} - 1.7, 2.5\right) = 2.118 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
-                r"\min\left(2.8 \cdot \frac{30.000 \ mm}{22.000 \ mm} - 1.7, "
-                r"1.4 \cdot \frac{70.000 \ mm}{22.000 \ mm} - 1.7, 2.5\right) = 2.118 \ -",
+                (
+                    r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
+                    r"\min\left(2.8 \cdot \frac{30.000 \ mm}{22.000 \ mm} - 1.7, "
+                    r"1.4 \cdot \frac{70.000 \ mm}{22.000 \ mm} - 1.7, 2.5\right) = 2.118 \ -"
+                ),
             ),
             ("short", r"k_1 = 2.118 \ -"),
         ],
@@ -495,13 +509,17 @@ class TestTable3Dot4BearingResistance:
         [
             (
                 "complete",
-                r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
-                r"\frac{2.500 \cdot 0.606 \cdot 360.000 \cdot 20.000 \cdot 10.000}{1.250} = 87272.784 \ N",
+                (
+                    r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
+                    r"\frac{2.500 \cdot 0.606 \cdot 360.000 \cdot 20.000 \cdot 10.000}{1.250} = 87272.784 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
-                r"\frac{2.500 \cdot 0.606 \cdot 360.000 \ MPa \cdot 20.000 \ mm \cdot 10.000 \ mm}{1.250} = 87272.784 \ N",
+                (
+                    r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
+                    r"\frac{2.500 \cdot 0.606 \cdot 360.000 \ MPa \cdot 20.000 \ mm \cdot 10.000 \ mm}{1.250} = 87272.784 \ N"
+                ),
             ),
             ("short", r"F_{b,Rd} = 87272.784 \ N"),
         ],
@@ -567,13 +585,17 @@ class TestTable3Dot4TensionResistanceBolt:
         [
             (
                 "complete",
-                r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
-                r"\frac{0.900 \cdot 800.000 \cdot 245.000}{1.250} = 141120.000 \ N",
+                (
+                    r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
+                    r"\frac{0.900 \cdot 800.000 \cdot 245.000}{1.250} = 141120.000 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
-                r"\frac{0.900 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 141120.000 \ N",
+                (
+                    r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
+                    r"\frac{0.900 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 141120.000 \ N"
+                ),
             ),
             ("short", r"F_{t,Rd} = 141120.000 \ N"),
         ],
@@ -620,8 +642,10 @@ class TestTable3Dot4TensionResistanceRivet:
             ),
             (
                 "complete_with_units",
-                r"F_{t,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N",
+                (
+                    r"F_{t,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N"
+                ),
             ),
             ("short", r"F_{t,Rd} = 60318.579 \ N"),
         ],
@@ -667,13 +691,17 @@ class TestTable3Dot4PunchingShearResistance:
         [
             (
                 "complete",
-                r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot \pi \cdot 32.400 \cdot 10.000 \cdot 360.000}{1.250} = 175888.976 \ N",
+                (
+                    r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot \pi \cdot 32.400 \cdot 10.000 \cdot 360.000}{1.250} = 175888.976 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot \pi \cdot 32.400 \ mm \cdot 10.000 \ mm \cdot 360.000 \ MPa}{1.250} = 175888.976 \ N",
+                (
+                    r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot \pi \cdot 32.400 \ mm \cdot 10.000 \ mm \cdot 360.000 \ MPa}{1.250} = 175888.976 \ N"
+                ),
             ),
             ("short", r"B_{p,Rd} = 175888.976 \ N"),
         ],
@@ -741,13 +769,17 @@ class TestTable3Dot4CombinedShearAndTension:
         [
             (
                 "complete",
-                r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
-                r"\frac{50000.000}{94080.000} + \frac{30000.000}{1.4 \cdot 141120.000} \leq 1.0 \to OK",
+                (
+                    r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
+                    r"\frac{50000.000}{94080.000} + \frac{30000.000}{1.4 \cdot 141120.000} \leq 1.0 \to OK"
+                ),
             ),
             (
                 "complete_with_units",
-                r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
-                r"\frac{50000.000 \ N}{94080.000 \ N} + \frac{30000.000 \ N}{1.4 \cdot 141120.000 \ N} \leq 1.0 \to OK",
+                (
+                    r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
+                    r"\frac{50000.000 \ N}{94080.000 \ N} + \frac{30000.000 \ N}{1.4 \cdot 141120.000 \ N} \leq 1.0 \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

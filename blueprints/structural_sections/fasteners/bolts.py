@@ -9,7 +9,7 @@ geometry separate from the material while making it straightforward to list bolt
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import StrEnum
 
 from blueprints.materials.fastener_steel import FastenerMaterial
@@ -331,7 +331,7 @@ class BoltElement:
     Example
     -------
     >>> from blueprints.materials.bolts import FastenerMaterial, FastenerClass
-    ... from blueprints.structural_sections.bolts.bolt_geometry import BoltElement, BoltSize, PlateAttachment, HoleType
+    ... from blueprints.structural_sections.fasteners.bolts import BoltElement, BoltSize, PlateAttachment, HoleType
     ...
     ... s235 = SteelStrengthClass.S235
     ... bolt = BoltElement(
@@ -368,24 +368,11 @@ class BoltElement:
         updated_attachments = []
         for att in self.attachments:
             if att.d0 is None:
-                # Compute d0 based on bolt size and hole type
+                # Compute d0 based on bolt size and hole type. Rebuild with dataclasses.replace so that
+                # every other field is carried over: listing them by hand silently dropped the two bolt
+                # positions back to their defaults, and would do so again for any field added later.
                 computed_d0 = self.size.hole_diameter_oversized if att.hole_type == HoleType.OVERSIZED else self.size.hole_diameter_normal
-                # Create a new attachment with d0 set
-                new_att = PlateAttachment(
-                    plate_id=att.plate_id,
-                    plate_thickness=att.plate_thickness,
-                    plate_material=att.plate_material,
-                    p1=att.p1,
-                    p2=att.p2,
-                    e1=att.e1,
-                    e2=att.e2,
-                    e3=att.e3,
-                    e4=att.e4,
-                    hole_type=att.hole_type,
-                    d0=computed_d0,
-                    gap_filling=att.gap_filling,
-                )
-                updated_attachments.append(new_att)
+                updated_attachments.append(replace(att, d0=computed_d0))
             else:
                 updated_attachments.append(att)
         # Use object.__setattr__ because this dataclass is frozen
