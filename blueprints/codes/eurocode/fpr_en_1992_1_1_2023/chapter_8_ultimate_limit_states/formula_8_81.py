@@ -62,7 +62,10 @@ class Form8Dot81DesignTorsionalCapacity(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.81."""
-        _equation: str = r"\min\left\{\tau_{t,Rd,sw}; \tau_{t,Rd,sl}; \tau_{t,Rd,max}\right\}"
+        # \lbrace and \rbrace rather than \{ and \}: they render identically, but a backslash in front of a
+        # brace is eaten by the Markdown parser before the maths is rendered, which breaks the equation on
+        # GitHub. Seen on the pull request for this clause.
+        _equation: str = r"\min\left\lbrace \tau_{t,Rd,sw}; \tau_{t,Rd,sl}; \tau_{t,Rd,max} \right\rbrace"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
             replacements={

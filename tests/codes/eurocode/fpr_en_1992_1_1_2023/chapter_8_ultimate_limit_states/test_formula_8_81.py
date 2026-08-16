@@ -47,15 +47,15 @@ class TestForm8Dot81DesignTorsionalCapacity:
             (
                 "complete",
                 (
-                    r"\tau_{t,Rd} = \min\left\{\tau_{t,Rd,sw}; \tau_{t,Rd,sl}; \tau_{t,Rd,max}\right\} = "
-                    r"\min\left\{3.625; 2.900; 4.000\right\} = 2.900 \ MPa"
+                    r"\tau_{t,Rd} = \min\left\lbrace \tau_{t,Rd,sw}; \tau_{t,Rd,sl}; \tau_{t,Rd,max} \right\rbrace = "
+                    r"\min\left\lbrace 3.625; 2.900; 4.000 \right\rbrace = 2.900 \ MPa"
                 ),
             ),
             (
                 "complete_with_units",
                 (
-                    r"\tau_{t,Rd} = \min\left\{\tau_{t,Rd,sw}; \tau_{t,Rd,sl}; \tau_{t,Rd,max}\right\} = "
-                    r"\min\left\{3.625 \ MPa; 2.900 \ MPa; 4.000 \ MPa\right\} = 2.900 \ MPa"
+                    r"\tau_{t,Rd} = \min\left\lbrace \tau_{t,Rd,sw}; \tau_{t,Rd,sl}; \tau_{t,Rd,max} \right\rbrace = "
+                    r"\min\left\lbrace 3.625 \ MPa; 2.900 \ MPa; 4.000 \ MPa \right\rbrace = 2.900 \ MPa"
                 ),
             ),
             ("short", r"\tau_{t,Rd} = 2.900 \ MPa"),
