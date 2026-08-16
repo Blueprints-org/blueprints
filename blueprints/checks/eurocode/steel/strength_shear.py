@@ -37,6 +37,7 @@ class CheckStrengthShearClass12:
     Notes
     -----
     Not all profile shapes have been implemented for this check yet. Currently, only I- and RHS-profiles are supported.
+    The shear areas of 6.2.6(3) apply to upright profiles only, so a profile with a rotation other than 0 is rejected.
 
     Parameters
     ----------
