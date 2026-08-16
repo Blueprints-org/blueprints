@@ -143,9 +143,9 @@ Total of 602 formulas present.
 |      8.79      |        :x:         |         |                                                                    |
 |      8.80      |        :x:         |         |                                                                    |
 |      8.81      |        :x:         |         |                                                                    |
-|      8.82      |        :x:         |         |                                                                    |
-|      8.83      |        :x:         |         |                                                                    |
-|      8.84      |        :x:         |         |                                                                    |
+|      8.82      | :heavy_check_mark: |         | Form8Dot82TorsionalStressResistanceShearReinforcement              |
+|      8.83      | :heavy_check_mark: |         | Form8Dot83TorsionalStressResistanceLongitudinalReinforcement       |
+|      8.84      | :heavy_check_mark: |         | Form8Dot84TorsionalStressResistanceConcreteCrushing                |
 |      8.85      |        :x:         |         |                                                                    |
 |      8.86      |        :x:         |         |                                                                    |
 |      8.87      |        :x:         |         |                                                                    |
