@@ -142,11 +142,11 @@ Total of 602 formulas present.
 |      8.78      | :heavy_check_mark: |         | Form8Dot78MinimumInterfaceReinforcementAlongEdge                   |
 |      8.79      |        :x:         |         |                                                                    |
 |      8.80      |        :x:         |         |                                                                    |
-|      8.81      |        :x:         |         |                                                                    |
+|      8.81      | :heavy_check_mark: |         | Form8Dot81DesignTorsionalCapacity                                  |
 |      8.82      | :heavy_check_mark: |         | Form8Dot82TorsionalStressResistanceShearReinforcement              |
 |      8.83      | :heavy_check_mark: |         | Form8Dot83TorsionalStressResistanceLongitudinalReinforcement       |
 |      8.84      | :heavy_check_mark: |         | Form8Dot84TorsionalStressResistanceConcreteCrushing                |
-|      8.85      |        :x:         |         |                                                                    |
+|      8.85      | :heavy_check_mark: |         | Form8Dot85CheckCotangentCompressionFieldTorsion                    |
 |      8.86      |        :x:         |         |                                                                    |
 |      8.87      |        :x:         |         |                                                                    |
 |      8.88      |        :x:         |         |                                                                    |
