@@ -6,8 +6,8 @@ from blueprints.materials.steel import SteelMaterial, SteelStrengthClass
 from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
 from blueprints.structural_sections.steel.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.standard_profiles.heb import HEB
-from blueprints.structural_sections.steel.standard_profiles.unp import UNP
 from blueprints.structural_sections.steel.standard_profiles.rhscf import RHSCF
+from blueprints.structural_sections.steel.standard_profiles.unp import UNP
 from blueprints.structural_sections.steel.steel_cross_section import FabricationMethod, SteelCrossSection
 
 

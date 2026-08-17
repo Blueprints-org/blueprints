@@ -176,20 +176,20 @@ class CheckStrengthBendingShearClass12:
         """
         report = Report(f"Check: bending moment steel beam (axis {self.axis_m})")
         if self.m == 0:
-            report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
+            report.add_paragraph("No bending moment was applied; therefore, no check is necessary.")
             return report
 
         formulas = self.calculation_formula()
 
         report.add_paragraph(
             rf"Profile {self.steel_cross_section.profile.name} with steel quality {self.steel_cross_section.material.steel_class.name} "
-            rf"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis_m}). "
+            rf"is loaded with a bending moment of {self.m:.{n}f} kNm (axis {self.axis_m}). "
         )
 
         if abs(self.v) > 0 or abs(self.m_x) > 0:
             report.add_paragraph(
-                rf"Additionally a shear force of {abs(self.v):.{n}f} kN (axis {self.axis_v})"
-                + (rf" and a torsional moment of {abs(self.m_x):.{n}f} kNm. " if abs(self.m_x) > 0 else ". ")
+                rf"Additionally a shear force of {self.v:.{n}f} kN (axis {self.axis_v})"
+                + (rf" and a torsional moment of {self.m_x:.{n}f} kNm. " if abs(self.m_x) > 0 else ". ")
             )
         report.add_paragraph("The resistance is calculated as follows, using cross-section class 1 or 2:").add_newline(2)
 
@@ -295,6 +295,10 @@ class CheckStrengthBendingShearClass3:
         if (self.axis_m == "My" and self.axis_v != "Vz") or (self.axis_m == "Mz" and self.axis_v != "Vy"):
             raise ValueError("Axis for bending moment and shear force are not compatible. Use 'My' with 'Vz' and 'Mz' with 'Vy'.")
 
+    def calculation_formula(self) -> dict[str, Formula]:
+        """Calculation formula"""
+        return {}
+
     def combined_von_mises_stress(self) -> float:
         """Calculate the combined von Mises stress due to bending, shear and torsion using elastic theory.
 
@@ -362,7 +366,7 @@ class CheckStrengthBendingShearClass3:
         """
         report = Report("Check: bending moment + shear steel beam")
         if self.m == 0:
-            report.add_paragraph("No bending moment was applied; therefore, no bending moment check is necessary.")
+            report.add_paragraph("No bending moment was applied; therefore, no check is necessary.")
             return report
 
         # introduction
@@ -370,13 +374,13 @@ class CheckStrengthBendingShearClass3:
         steel_quality = self.steel_cross_section.material.steel_class.name
         report.add_paragraph(
             f"Profile {profile_name} with steel quality {steel_quality} "
-            f"is loaded with a bending moment of {abs(self.m):.{n}f} kNm (axis {self.axis_m}). "
+            f"is loaded with a bending moment of {self.m:.{n}f} kNm (axis {self.axis_m}). "
         )
 
         if abs(self.v) > 0 or abs(self.m_x) > 0:
             report.add_paragraph(
-                f"Additionally a shear force of {abs(self.v):.{n}f} kN (axis {self.axis_v})"
-                + (f" and a torsional moment of {abs(self.m_x):.{n}f} kNm. " if abs(self.m_x) > 0 else ". ")
+                f"Additionally a shear force of {self.v:.{n}f} kN (axis {self.axis_v})"
+                + (f" and a torsional moment of {self.m_x:.{n}f} kNm. " if abs(self.m_x) > 0 else ". ")
             )
 
         report.add_paragraph(
