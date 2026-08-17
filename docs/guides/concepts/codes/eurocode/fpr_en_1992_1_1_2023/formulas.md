@@ -117,14 +117,14 @@ Total of 602 formulas present.
 |      8.53      | :heavy_check_mark: |         | Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads|
 |      8.54      | :heavy_check_mark: |         | Form8Dot54NominalWebWidth                                          |
 |      8.55      | :heavy_check_mark: |         | Form8Dot55EnhancedShearStressResistance                            |
-|      8.56      |        :x:         |         |                                                                    |
-|      8.57      |        :x:         |         |                                                                    |
-|      8.58      |        :x:         |         |                                                                    |
-|      8.59      |        :x:         |         |                                                                    |
-|      8.60      |        :x:         |         |                                                                    |
-|      8.61      |        :x:         |         |                                                                    |
-|      8.62      |        :x:         |         |                                                                    |
-|      8.63      |        :x:         |         |                                                                    |
+|      8.56      | :heavy_check_mark: |         | Form8Dot56StressInShearReinforcement                               |
+|      8.57      | :heavy_check_mark: |         | Form8Dot57AdditionalBendingMoment                                  |
+|      8.58      | :heavy_check_mark: |         | Form8Dot58CheckCotangentInclinedShearReinforcement                 |
+|      8.59      | :heavy_check_mark: |         | Form8Dot59ShearStressResistanceInclinedShearReinforcement          |
+|      8.60      | :heavy_check_mark: |         | Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement    |
+|      8.61      | :heavy_check_mark: |         | Form8Dot61AdditionalTensileForceInclinedShearReinforcement         |
+|      8.62      | :heavy_check_mark: |         | Form8Dot62EnhancedShearStressResistanceInclinedShearReinforcement  |
+|      8.63      | :heavy_check_mark: |         | Form8Dot63StressInInclinedShearReinforcement                       |
 |      8.64      |        :x:         |         |                                                                    |
 |      8.65      |        :x:         |         |                                                                    |
 |      8.66      |        :x:         |         |                                                                    |
@@ -133,13 +133,13 @@ Total of 602 formulas present.
 |      8.69      |        :x:         |         |                                                                    |
 |      8.70      |        :x:         |         |                                                                    |
 |      8.71      |        :x:         |         |                                                                    |
-|      8.72      |        :x:         |         |                                                                    |
-|      8.73      |        :x:         |         |                                                                    |
-|      8.74      |        :x:         |         |                                                                    |
-|      8.75      |        :x:         |         |                                                                    |
-|      8.76      |        :x:         |         |                                                                    |
-|      8.77      |        :x:         |         |                                                                    |
-|      8.78      |        :x:         |         |                                                                    |
+|      8.72      | :heavy_check_mark: |         | Form8Dot72LongitudinalStrainInTensileFlange                        |
+|      8.73      | :heavy_check_mark: |         | Form8Dot73CheckShearStressAtInterface                              |
+|      8.74      | :heavy_check_mark: |         | Form8Dot74DesignShearStressAtInterface                             |
+|      8.75      | :heavy_check_mark: |         | Form8Dot75LongitudinalShearStressDueToCompositeAction              |
+|      8.76      | :heavy_check_mark: |         | Form8Dot76ShearStressResistanceAtInterface                         |
+|      8.77      | :heavy_check_mark: |         | Form8Dot77ShearStressResistanceAtInterfaceWithoutYielding          |
+|      8.78      | :heavy_check_mark: |         | Form8Dot78MinimumInterfaceReinforcementAlongEdge                   |
 |      8.79      |        :x:         |         |                                                                    |
 |      8.80      |        :x:         |         |                                                                    |
 |      8.81      |        :x:         |         |                                                                    |

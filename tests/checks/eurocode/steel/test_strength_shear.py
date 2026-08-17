@@ -1,8 +1,12 @@
 """Tests for shear strength checks according to Eurocode 3."""
 
+import numpy as np
 import pytest
 
 from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12, CheckStrengthShearClass34
+from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_3_materials.table_3_1 import SteelStrengthClass
+from blueprints.materials.steel import SteelMaterial
+from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 
 
@@ -96,6 +100,78 @@ class TestCheckStrengthShearClass12:
         docs = calc.source_docs()
         assert isinstance(docs, list)
         assert len(docs) == 1
+
+    def test_rhs_profile(self, rhs_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for RHS profile."""
+        a = 4324.0  # mm²
+        fy = 355.0  # MPa
+        b = 100.0  # mm
+        h = 200.0  # mm
+
+        v = 1.0  # kN,  arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * a * h / (b + h), rel=1e-3)
+
+        calc = CheckStrengthShearClass12(rhs_steel_cross_section, v, axis="Vy", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * a * b / (b + h), rel=1e-3)
+
+    def test_welded_rhs_profile(self, rhs_welded_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for RHS profile."""
+        a = 4324.0  # mm²
+        fy = 355.0  # MPa
+        h = 200.0  # mm
+        t = 8.0  # mm
+        r_i = 12.0  # mm
+        h_w = h - 2 * t - 2 * r_i
+        eta = 1.0
+
+        v = 1.0  # kN,  arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_welded_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * eta * 2 * h_w * t, rel=1e-3)
+
+        calc = CheckStrengthShearClass12(rhs_welded_steel_cross_section, v, axis="Vy", gamma_m0=1.0)
+        result = calc.result()
+        assert result.is_ok is True
+        assert result.required == pytest.approx(fy / np.sqrt(3) * (a - 2 * h_w * t), rel=1e-3)
+
+    def test_custom_rhs_profile(self, rhs_custom_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for custom RHS profile."""
+        v = 1.0  # kN, arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_custom_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        with pytest.raises(NotImplementedError):
+            calc.result()
+
+    def test_custom_no_fabrication_rhs_profile(self, rhs_custom_no_fabrication_steel_cross_section: SteelCrossSection) -> None:
+        """Test shear check for custom RHS profile without specifying fabrication method."""
+        v = 1.0  # kN, arbitrary small value to trigger the check
+        calc = CheckStrengthShearClass12(rhs_custom_no_fabrication_steel_cross_section, v, axis="Vz", gamma_m0=1.0)
+        with pytest.raises(ValueError, match=r"Fabrication method must be specified for shear area calculation."):
+            calc.result()
+
+    def test_invalid_rotation(self) -> None:
+        """Test ValueError is raised for invalid rotation input."""
+        steel_material = SteelMaterial(steel_class=SteelStrengthClass.S355)
+        heb_300_profile = IProfile(
+            rotation=50,
+            top_flange_width=100,
+            top_flange_thickness=10,
+            bottom_flange_width=100,
+            bottom_flange_thickness=10,
+            total_height=500,
+            web_thickness=40,
+            top_radius=0,
+            bottom_radius=0,
+        )
+        with pytest.raises(ValueError, match=r"The profile must be oriented with rotation=0 for plastic shear checks."):
+            CheckStrengthShearClass12(
+                steel_cross_section=SteelCrossSection(profile=heb_300_profile, material=steel_material), v=1, axis="Vy", gamma_m0=1.0
+            )
 
 
 class TestCheckStrengthShearClass34:
