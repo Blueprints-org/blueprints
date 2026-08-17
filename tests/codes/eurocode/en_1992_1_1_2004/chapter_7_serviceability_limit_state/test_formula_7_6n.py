@@ -65,9 +65,11 @@ class TestForm7Dot6nMaxBarDiameterBending:
         [
             (
                 "complete",
-                r"⌀_s = ⌀^*_s \cdot \left(\frac{f_{ct,eff}}{2.9}\right) \cdot \left(\frac{k_c \cdot h_{cr}}{2 \cdot ( h - d)}\right) = "
-                r"16.000 \cdot \left(\frac{2.500}{2.9}\right) \cdot \left(\frac{0.800 \cdot 200.000}{2 \cdot ( 500.000 - 450.000)}\right) "
-                r"= 22.069 \ mm",
+                (
+                    r"⌀_s = ⌀^*_s \cdot \left(\frac{f_{ct,eff}}{2.9}\right) \cdot \left(\frac{k_c \cdot h_{cr}}{2 \cdot ( h - d)}\right) = "
+                    r"16.000 \cdot \left(\frac{2.500}{2.9}\right) \cdot \left(\frac{0.800 \cdot 200.000}{2 \cdot ( 500.000 - 450.000)}\right) "
+                    r"= 22.069 \ mm"
+                ),
             ),
             ("short", r"⌀_s = 22.069 \ mm"),
         ],

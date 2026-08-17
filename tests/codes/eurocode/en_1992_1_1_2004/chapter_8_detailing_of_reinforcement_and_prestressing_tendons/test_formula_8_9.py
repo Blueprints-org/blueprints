@@ -167,10 +167,17 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
                 "complete",
                 (
                     r"F_{btd} = \min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right) = "
-                    r"\min \left( 15.00, 1000 \cdot 16 \cdot 78.50 \cdot 20.00 \cdot \frac{8.00}{10.00} \right) = 15.00"
+                    r"\min \left( 15.00, 1000 \cdot 16 \cdot 78.50 \cdot 20.00 \cdot \frac{8.00}{10.00} \right) = 15.00 \ kN"
                 ),
             ),
-            ("short", r"F_{btd} = 15.00"),
+            (
+                "complete_with_units",
+                (
+                    r"F_{btd} = \min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right) = "
+                    r"\min \left( 15.00 \ kN, 16 \cdot 78.50 \ mm^2 \cdot 20.00 \ MPa \cdot \frac{8.00 \ mm}{10.00 \ mm} \right) = 15.00 \ kN"
+                ),
+            ),
+            ("short", r"F_{btd} = 15.00 \ kN"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -191,6 +198,10 @@ class TestForm8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter:
             f_cd=f_cd,
         ).latex()
 
-        actual = {"complete": form_8_9_latex.complete, "short": form_8_9_latex.short}
+        actual = {
+            "complete": form_8_9_latex.complete,
+            "complete_with_units": form_8_9_latex.complete_with_units,
+            "short": form_8_9_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

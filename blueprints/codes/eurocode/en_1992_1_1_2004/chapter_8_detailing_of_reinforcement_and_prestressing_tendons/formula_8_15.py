@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -62,12 +62,33 @@ class Form8Dot15PrestressTransferStress(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.15."""
+        _equation: str = r"\eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t)"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\eta_{p1}": f"{self.eta_p1:.{n}f}",
+                r"\eta_1": f"{self.eta_1:.{n}f}",
+                r"f_{ctd}(t)": f"{self.f_ctd_t:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\eta_{p1}": f"{self.eta_p1:.{n}f}",
+                r"\eta_1": f"{self.eta_1:.{n}f}",
+                r"f_{ctd}(t)": rf"{self.f_ctd_t:.{n}f} \ MPa",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"f_{bpt}",
             result=f"{self:.{n}f}",
-            equation=r"\eta_{p1} \cdot \eta_1 \cdot f_{ctd}(t)",
-            numeric_equation=rf"{self.eta_p1:.{n}f} \cdot {self.eta_1:.{n}f} \cdot {self.f_ctd_t:.{n}f}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="MPa",
         )
 
 
@@ -112,11 +133,15 @@ class SubForm8Dot15EtaP1(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the first subformula of formula 8.15."""
+        _equation: str = r"type\;of\;wire"
+        _numeric_equation: str = f"{self.type_of_wire}".replace("_", r"\;")
+        _numeric_equation_with_units: str = _numeric_equation
         return LatexFormula(
             return_symbol=r"\eta_{p1}",
             result=f"{self:.{n}f}",
-            equation=r"type\;of\;wire",
-            numeric_equation=f"{self.type_of_wire}".replace(" ", r"\;"),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label=r"\rightarrow",
         )
 
@@ -171,10 +196,31 @@ class SubForm8Dot15TensileStrengthAtRelease(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the second subformula of formula 8.15."""
+        _equation: str = r"\frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_{ct}": f"{self.alpha_ct:.{n}f}",
+                r"f_{ctm}(t)": f"{self.f_ctm_t:.{n}f}",
+                r"\gamma_c": f"{self.gamma_c:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_{ct}": f"{self.alpha_ct:.{n}f}",
+                r"f_{ctm}(t)": rf"{self.f_ctm_t:.{n}f} \ MPa",
+                r"\gamma_c": f"{self.gamma_c:.{n}f}",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"f_{ctd}(t)",
             result=f"{self:.{n}f}",
-            equation=r"\frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c}",
-            numeric_equation=rf"\frac{{{self.alpha_ct:.{n}f} \cdot 0.7 \cdot {self.f_ctm_t:.{n}f}}}{{{self.gamma_c:.{n}f}}}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="MPa",
         )
