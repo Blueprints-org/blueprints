@@ -53,6 +53,7 @@ class TestCheckStrengthBendingShearClass12:
         calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is False
+        assert calc.calculation_formula == {}
         assert pytest.approx(result.unity_check, 0.01) == 1.01
         assert pytest.approx(result.factor_of_safety, 0.01) == 1 / 1.01
         assert calc.report()
