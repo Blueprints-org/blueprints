@@ -58,8 +58,8 @@ class CHSProfile(Profile):
     def _polygon(self) -> Polygon:
         """Return the polygon of the CHS profile without the offset and rotation applied."""
         max_segment_angle = max(
-            1,  # minimum segment angle to avoid too fine segmentation
-            min(5, 360 / (pi * self.outer_diameter)),  # limit to 1 mm arc length per segment. Also, limit to 5 degrees to avoid too many segments for small diameters
+            1,  # minimum segment angle to avoid too fine segmentation, also limit to 1 mm.
+            min(5, 360 / (pi * self.outer_diameter)),
         )
         outer_polygon = (
             PolygonBuilder(starting_point=(0, 0))

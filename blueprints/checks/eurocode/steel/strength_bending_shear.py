@@ -296,7 +296,7 @@ class CheckStrengthBendingShearClass3:
             raise ValueError("Axis for bending moment and shear force are not compatible. Use 'My' with 'Vz' and 'Mz' with 'Vy'.")
 
     def calculation_formula(self) -> dict[str, Formula]:
-        """Calculation formula"""
+        """Calculation formula."""
         return {}
 
     def combined_von_mises_stress(self) -> float:
