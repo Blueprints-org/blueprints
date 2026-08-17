@@ -31,6 +31,14 @@ class TestCheckStrengthBendingShearClass12:
         calc_without_section_props = CheckStrengthBendingShearClass12(cross_section, axis_m="My", axis_v="Vz", gamma_m0=1.0)
         assert pytest.approx(result.unity_check) == calc_without_section_props.result().unity_check
 
+    def test_source_docs_and_calculation_formula(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test source_docs() method."""
+        calc = CheckStrengthBendingShearClass12(heb_steel_cross_section, axis_m="My", axis_v="Vz")
+        docs = calc.source_docs()
+        assert isinstance(docs, list)
+        assert len(docs) == 1
+        assert calc.calculation_formula() == {}
+
     def test_result_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
         """Test result() for ok bending moment about y-axis."""
         cross_section = heb_steel_cross_section
@@ -53,7 +61,6 @@ class TestCheckStrengthBendingShearClass12:
         calc = CheckStrengthBendingShearClass12(cross_section, m, m_x, v, axis_m="My", axis_v="Vz")
         result = calc.result()
         assert result.is_ok is False
-        assert calc.calculation_formula == {}
         assert pytest.approx(result.unity_check, 0.01) == 1.01
         assert pytest.approx(result.factor_of_safety, 0.01) == 1 / 1.01
         assert calc.report()
