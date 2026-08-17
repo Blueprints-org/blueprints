@@ -284,7 +284,6 @@ class CheckStrengthBendingShearClass3:
     axis_v: Literal["Vz", "Vy"] = "Vz"
     gamma_m0: DIMENSIONLESS = 1.0
     name: str = "Bending moment strength check for steel profiles (Class 3 only)"
-    source_docs: ClassVar[list] = [EN_1993_1_1_2005]
 
     def __post_init__(self) -> None:
         """Post-initialization to validate axis parameters."""
@@ -294,6 +293,16 @@ class CheckStrengthBendingShearClass3:
             raise ValueError("Axis must be 'Vz' or 'Vy'.")
         if (self.axis_m == "My" and self.axis_v != "Vz") or (self.axis_m == "Mz" and self.axis_v != "Vy"):
             raise ValueError("Axis for bending moment and shear force are not compatible. Use 'My' with 'Vz' and 'Mz' with 'Vy'.")
+
+    @staticmethod
+    def source_docs() -> list[str]:
+        """List of source document identifiers used for this check.
+
+        Returns
+        -------
+        list[str]
+        """
+        return [EN_1993_1_1_2005]
 
     def calculation_formula(self) -> dict[str, Formula]:
         """Calculation formula."""
@@ -373,8 +382,7 @@ class CheckStrengthBendingShearClass3:
         profile_name = self.steel_cross_section.profile.name
         steel_quality = self.steel_cross_section.material.steel_class.name
         report.add_paragraph(
-            f"Profile {profile_name} with steel quality {steel_quality} "
-            f"is loaded with a bending moment of {self.m:.{n}f} kNm (axis {self.axis_m}). "
+            f"Profile {profile_name} with steel quality {steel_quality} is loaded with a bending moment of {self.m:.{n}f} kNm (axis {self.axis_m}). "
         )
 
         if abs(self.v) > 0 or abs(self.m_x) > 0:
