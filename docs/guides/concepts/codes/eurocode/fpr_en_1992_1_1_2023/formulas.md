@@ -152,9 +152,9 @@ Total of 602 formulas present.
 |      8.88      |        :x:         |         |                                                                    |
 |      8.89      |        :x:         |         |                                                                    |
 |      8.90      |        :x:         |         |                                                                    |
-|      8.91      |        :x:         |         |                                                                    |
-|      8.92      |        :x:         |         |                                                                    |
-|      8.93      |        :x:         |         |                                                                    |
+|      8.91      | :heavy_check_mark: |         | Form8Dot91ShearResistingEffectiveDepth                             |
+|      8.92      | :heavy_check_mark: |         | Form8Dot92DesignPunchingShearStress                                |
+|      8.93      | :heavy_check_mark: |         | Form8Dot93DesignPunchingShearStressFromDetailedAnalysis            |
 |      8.94      |        :x:         |         |                                                                    |
 |      8.95      |        :x:         |         |                                                                    |
 |      8.96      |        :x:         |         |                                                                    |
