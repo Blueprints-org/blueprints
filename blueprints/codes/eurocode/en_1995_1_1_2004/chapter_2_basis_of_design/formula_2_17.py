@@ -29,6 +29,8 @@ class Form2Dot17DesignValueResistance(Formula):
             [$R_k$] Characteristic value of the resistance [$N$].
         gamma_m : DIMENSIONLESS
             [$\gamma_{M}$] partial factor for the resistance [$-$].
+        k_mod : DIMENSIONLESS
+            [$\k_{mod}$] modification factor for load and moisture content [$-$].
         """
         super().__init__()
         self.r_k = r_k
@@ -42,19 +44,20 @@ class Form2Dot17DesignValueResistance(Formula):
         k_mod: DIMENSIONLESS,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(gamma_m=gamma_m)
         raise_if_negative(r_k=r_k)
+        raise_if_less_or_equal_to_zero(gamma_m=gamma_m)
+        raise_if_less_or_equal_to_zero(gamma_m=k_mod)
         return k_mod * r_k / gamma_m
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 2.1."""
-        _equation: str = r"k_{mod}* \frac{R_k}{\gamma_M}"
+        """Returns LatexFormula object for formula 2.17."""
+        _equation: str = r"k_{mod}*\frac{R_k}{\gamma_M}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {
                 r"R_k": f"{self.r_k:.{n}f}",
                 r"\gamma_M": f"{self.gamma_m:.{n}f}",
-                r"\k_mod": f"{self.k_mod:.{n}f}",
+                r"k_{mod}": f"{self.k_mod:.{n}f}",
             },
         )
         _numeric_equation_with_units: str = latex_replace_symbols(
@@ -62,7 +65,7 @@ class Form2Dot17DesignValueResistance(Formula):
             {
                 r"R_k": rf"{self.r_k:.{n}f} \ N",
                 r"\gamma_M": f"{self.gamma_m:.{n}f}",
-                r"\k_mod": f"{self.k_mod:.{n}f}",
+                r"k_{mod}": f"{self.k_mod:.{n}f}",
             },
         )
         return LatexFormula(
