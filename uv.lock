@@ -242,14 +242,14 @@ cli = [
     { name = "ruff", specifier = "==0.16.5" },
     { name = "ty", specifier = "==0.0.75" },
     { name = "typer", specifier = ">=0.24.0" },
-    { name = "types-shapely", specifier = "==2.1.0.20250917" },
+    { name = "types-shapely", specifier = "==2.1.0.20260728" },
 ]
 dev = [
     { name = "icecream", specifier = "==2.2.0" },
     { name = "pre-commit", specifier = "==4.6.2" },
     { name = "ruff", specifier = "==0.16.5" },
     { name = "ty", specifier = "==0.0.75" },
-    { name = "types-shapely", specifier = "==2.1.0.20250917" },
+    { name = "types-shapely", specifier = "==2.1.0.20260728" },
 ]
 docs = [
     { name = "markdown-exec", extras = ["ansi"], specifier = ">=1.11.0" },
@@ -2630,14 +2630,14 @@ wheels = [
 
 [[package]]
 name = "types-shapely"
-version = "2.1.0.20250917"
+version = "2.1.0.20260728"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fa/19/7f28b10994433d43b9caa66f3b9bd6a0a9192b7ce8b5a7fc41534e54b821/types_shapely-2.1.0.20250917.tar.gz", hash = "sha256:5c56670742105aebe40c16414390d35fcaa55d6f774d328c1a18273ab0e2134a", size = 26363, upload-time = "2025-09-17T02:47:44.604Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/be/cf/1ea740a3532b6e4cdeae8ba121618eb58a543eba2721016d358e4c0992e3/types_shapely-2.1.0.20260728.tar.gz", hash = "sha256:8ec23a5aa484c1ec7bbc56aa353cc230ae63e38e0f35a6e4b79a011d99bcfcc2", size = 27501, upload-time = "2026-07-28T04:51:41.724Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e5/a9/554ac40810e530263b6163b30a2b623bc16aae3fb64416f5d2b3657d0729/types_shapely-2.1.0.20250917-py3-none-any.whl", hash = "sha256:9334a79339504d39b040426be4938d422cec419168414dc74972aa746a8bf3a1", size = 37813, upload-time = "2025-09-17T02:47:43.788Z" },
+    { url = "https://files.pythonhosted.org/packages/79/8d/2e6c38118cc6b20075ccd1609840314aa8a694a255a09149b185d8a608e1/types_shapely-2.1.0.20260728-py3-none-any.whl", hash = "sha256:7299a62025528b3f0cc5af37095f05fbe7d76d399bdc8d7ea9b3d395e988f547", size = 38539, upload-time = "2026-07-28T04:51:40.638Z" },
 ]
 
 [[package]]
