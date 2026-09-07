@@ -75,3 +75,8 @@ def test_latex_min_curly_brackets() -> None:
 def test_latex_scientific(value: float, expected: str) -> None:
     """Test the latex_scientific function."""
     assert latex_scientific(value) == expected
+
+
+def test_latex_scientific_with_a_wider_mantissa() -> None:
+    """Test the latex_scientific function with more decimals than the default."""
+    assert latex_scientific(1.25e6, n=2) == r"1.25 \cdot 10^{6}"

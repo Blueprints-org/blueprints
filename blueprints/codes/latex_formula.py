@@ -223,8 +223,8 @@ def latex_replace_symbols(template: str, replacements: dict[str, str], unique_sy
     return _filled_latex_string
 
 
-def latex_scientific(value: float) -> str:
-    r"""Format a number in LaTeX scientific notation with a single-decimal mantissa.
+def latex_scientific(value: float, n: int = 1) -> str:
+    r"""Format a number in LaTeX scientific notation.
 
     Keeps numbers that span several orders of magnitude legible, e.g. ``2.0 \cdot 10^{6}`` instead
     of ``2000000``.
@@ -240,11 +240,13 @@ def latex_scientific(value: float) -> str:
     ----------
     value : float
         The number to format.
+    n : int
+        Number of decimals of the mantissa, 1 by default.
 
     Returns
     -------
     str
         The value as a LaTeX string, e.g. ``2.0 \cdot 10^{6}``.
     """
-    mantissa, exponent = f"{value:.1e}".split("e")
+    mantissa, exponent = f"{value:.{n}e}".split("e")
     return rf"{mantissa} \cdot 10^{{{int(exponent)}}}"

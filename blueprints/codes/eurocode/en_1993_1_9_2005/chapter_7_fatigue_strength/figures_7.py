@@ -17,8 +17,13 @@ N_C: DIMENSIONLESS = 2e6
 class StressType(Enum):
     """Type of nominal stress range a fatigue strength curve applies to."""
 
-    DIRECT = "direct stress"  # [$\Delta\sigma$]
-    SHEAR = "shear stress"  # [$\Delta\tau$]
+    DIRECT = "direct stress"
+    SHEAR = "shear stress"
+
+    @property
+    def symbol(self) -> str:
+        r"""The stress symbol as it is rendered: [$\Delta\tau$] for shear, [$\Delta\sigma$] for direct stress."""
+        return r"\Delta\tau" if self is StressType.SHEAR else r"\Delta\sigma"
 
 
 class FatigueStrengthCurve(Enum):
@@ -114,7 +119,7 @@ class Fig7ConstantAmplitudeFatigueLimit(Formula):
         """Returns LatexFormula object for the constant amplitude fatigue limit."""
         return _stress_range_latex(
             branch=_fatigue_limit_branch(self.delta_sigma_c, self.curve),
-            symbol=_stress_symbol(self.curve.stress_type),
+            symbol=self.curve.stress_type.symbol,
             out_subscript="D",
             result=float(self),
             n=n,
@@ -167,7 +172,7 @@ class Fig7CutOffLimit(Formula):
         r"""Returns LatexFormula object for the cut-off limit ([$\Delta\tau$] symbol for the shear curve)."""
         return _stress_range_latex(
             branch=_cut_off_branch(self.delta_sigma_c, self.curve),
-            symbol=_stress_symbol(self.curve.stress_type),
+            symbol=self.curve.stress_type.symbol,
             out_subscript="L",
             result=float(self),
             n=n,
@@ -236,7 +241,7 @@ class Fig7NominalStressRange(Formula):
         """Returns LatexFormula object for the nominal stress range at the requested number of cycles."""
         return _stress_range_latex(
             branch=_branch_at_cycles(self.delta_sigma_c, self.curve, self.n_cycles),
-            symbol=_stress_symbol(self.curve.stress_type),
+            symbol=self.curve.stress_type.symbol,
             out_subscript="R",
             result=float(self),
             n=n,
@@ -299,10 +304,7 @@ class Fig7NumberOfCycles(Formula):
         raise_if_negative(delta_sigma_r=delta_sigma_r)
         raise_if_less_or_equal_to_zero(delta_sigma_c=delta_sigma_c)
 
-        branch = _governing_branch(delta_sigma_r, delta_sigma_c, curve)
-        if branch is None:
-            return float("inf")
-        return branch.value
+        return _governing_branch(delta_sigma_r, delta_sigma_c, curve).value
 
     @property
     def detailed_result(self) -> dict:
@@ -316,9 +318,6 @@ class Fig7NumberOfCycles(Formula):
             governing slope ``m`` [$-$] (``None`` below the cut-off) and the number of cycles ``n_r`` [$-$].
         """
         branch = _governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve)
-        if branch is None:
-            cut_off = _cut_off_branch(self.delta_sigma_c, self.curve)
-            return {"reference_point": "L", "delta_sigma_ref": cut_off.value, "n_ref": cut_off.target_n, "m": None, "n_r": float(self)}
         return {
             "reference_point": branch.reference_point,
             "delta_sigma_ref": branch.delta_sigma_ref,
@@ -329,11 +328,12 @@ class Fig7NumberOfCycles(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for the number of cycles at the applied stress range."""
-        branch = _governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve)
-        if branch is None:
-            # below the cut-off limit: the life is infinite, so there is no fraction to evaluate
-            return LatexFormula(return_symbol="N_{R}", result=r"\infty", comparison_operator_label="=")
-        return _cycles_latex(branch=branch, symbol=_stress_symbol(self.curve.stress_type), result=float(self), n=n)
+        return _cycles_latex(
+            branch=_governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve),
+            symbol=self.curve.stress_type.symbol,
+            result=float(self),
+            n=n,
+        )
 
 
 @dataclass(frozen=True)
@@ -360,17 +360,22 @@ class _StressRangeBranch:
 
 @dataclass(frozen=True)
 class _CyclesBranch:
-    """A constant-slope branch of a fatigue strength curve, inverted to give the cycles at an applied stress range."""
+    """A constant-slope branch of a fatigue strength curve, inverted to give the cycles at an applied stress range.
 
-    reference_point: Literal["C", "D"]
+    Below the cut-off limit L the curve has no power-law relation, which is carried as ``m = None``.
+    """
+
+    reference_point: Literal["C", "D", "L"]
     delta_sigma_ref: MPA
     n_ref: DIMENSIONLESS
-    m: DIMENSIONLESS
+    m: DIMENSIONLESS | None
     delta_sigma_r: MPA
 
     @property
     def value(self) -> DIMENSIONLESS:
-        r"""[$N_{ref} \left( \Delta\sigma_{ref} / \Delta\sigma_R \right)^{m}$] Number of cycles on this branch [$-$]."""
+        r"""[$N_{ref} \left( \Delta\sigma_{ref} / \Delta\sigma_R \right)^{m}$] Number of cycles on this branch [$-$], infinite below the cut-off."""
+        if self.m is None:
+            return float("inf")
         return self.n_ref * (self.delta_sigma_ref / self.delta_sigma_r) ** self.m
 
 
@@ -451,16 +456,22 @@ def _branch_at_cycles(delta_sigma_c: MPA, curve: FatigueStrengthCurve, n_cycles:
     return _cut_off_branch(delta_sigma_c, curve)
 
 
-def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> _CyclesBranch | None:
-    r"""The branch of ``curve`` that governs [$\Delta\sigma_R$], or ``None`` below the cut-off.
+def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> _CyclesBranch:
+    r"""The branch of ``curve`` that governs [$\Delta\sigma_R$].
 
     The fatigue strength curve is piecewise; the governing branch is the one whose stress range covers
-    [$\Delta\sigma_R$]. ``None`` signals the branch below the cut-off limit, where the life is infinite and there
-    is no power-law relation to evaluate.
+    [$\Delta\sigma_R$]. Below the cut-off limit the life is infinite and there is no power-law relation to
+    evaluate, which the returned branch carries as reference point "L" without a slope.
     """
-    if delta_sigma_r < _cut_off_branch(delta_sigma_c, curve).value:
-        # below the cut-off limit: infinite life, no damage
-        return None
+    cut_off = _cut_off_branch(delta_sigma_c, curve)
+    if delta_sigma_r < cut_off.value:
+        return _CyclesBranch(
+            reference_point="L",
+            delta_sigma_ref=cut_off.value,
+            n_ref=cut_off.target_n,
+            m=None,
+            delta_sigma_r=delta_sigma_r,
+        )
 
     if curve.n_d is not None and curve.m2 is not None:
         delta_sigma_d = _fatigue_limit_branch(delta_sigma_c, curve).value
@@ -482,17 +493,6 @@ def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStre
     )
 
 
-def _stress_symbol(stress_type: StressType) -> str:
-    r"""The rendered stress symbol of a curve: [$\Delta\tau$] for shear, [$\Delta\sigma$] otherwise."""
-    return r"\Delta\tau" if stress_type == StressType.SHEAR else r"\Delta\sigma"
-
-
-def _slope_latex(m: DIMENSIONLESS, n: int) -> str:
-    """The slope as it appears in an exponent; the slopes are integers (3, 5), so trailing zeros are stripped."""
-    text = f"{m:.{n}f}"
-    return text.rstrip("0").rstrip(".") if "." in text else text
-
-
 def _stress_range_latex(branch: _StressRangeBranch, symbol: str, out_subscript: str, result: MPA, n: int) -> LatexFormula:
     """Renders a stress range read off ``branch``, labelled with ``out_subscript`` ("D", "L" or "R")."""
     ref = branch.reference_point
@@ -502,7 +502,7 @@ def _stress_range_latex(branch: _StressRangeBranch, symbol: str, out_subscript: 
         equation=rf"{symbol}_{{{ref}}} \left( \frac{{N_{{{ref}}}}}{{{branch.target_symbol}}} \right)^{{1 / m}}",
         numeric_equation=(
             rf"{branch.delta_sigma_ref:.{n}f} \left( \frac{{{latex_scientific(branch.n_ref)}}}{{{latex_scientific(branch.target_n)}}} \right)"
-            rf"^{{1 / {_slope_latex(branch.m, n)}}}"
+            rf"^{{1 / {branch.m:g}}}"
         ),
         comparison_operator_label="=",
         unit="MPa",
@@ -510,7 +510,9 @@ def _stress_range_latex(branch: _StressRangeBranch, symbol: str, out_subscript: 
 
 
 def _cycles_latex(branch: _CyclesBranch, symbol: str, result: DIMENSIONLESS, n: int) -> LatexFormula:
-    """Renders the number of cycles read off ``branch`` for the applied stress range it carries."""
+    """Renders the number of cycles read off ``branch``; below the cut-off the life is infinite, so there is no fraction to evaluate."""
+    if branch.m is None:
+        return LatexFormula(return_symbol="N_{R}", result=r"\infty", comparison_operator_label="=")
     ref = branch.reference_point
     return LatexFormula(
         return_symbol="N_{R}",
@@ -518,7 +520,7 @@ def _cycles_latex(branch: _CyclesBranch, symbol: str, result: DIMENSIONLESS, n: 
         equation=rf"N_{{{ref}}} \left( \frac{{{symbol}_{{{ref}}}}}{{{symbol}_{{R}}}} \right)^{{m}}",
         numeric_equation=(
             rf"{latex_scientific(branch.n_ref)} \left( \frac{{{branch.delta_sigma_ref:.{n}f}}}{{{branch.delta_sigma_r:.{n}f}}} \right)"
-            rf"^{{{_slope_latex(branch.m, n)}}}"
+            rf"^{{{branch.m:g}}}"
         ),
         comparison_operator_label="=",
     )
