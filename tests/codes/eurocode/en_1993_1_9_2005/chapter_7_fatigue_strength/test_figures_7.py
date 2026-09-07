@@ -188,6 +188,7 @@ class TestFig7NominalStressRange:
             (FatigueStrengthCurve.FIG_7_1, 160.0, 2e6, 160.00000),  # detail category reference point N_C -> Δσ_C
             (FatigueStrengthCurve.FIG_7_1, 160.0, 5e6, 117.88901),  # N_D boundary -> Δσ_D = 0.737·Δσ_C
             (FatigueStrengthCurve.FIG_7_1, 160.0, 2e7, 89.34316),  # second branch (slope m=5), N_D < N < N_L
+            (FatigueStrengthCurve.FIG_7_1, 160.0, 1e8, 64.75411),  # N_L boundary -> Δσ_L = 0.549·Δσ_D
             (FatigueStrengthCurve.FIG_7_1, 160.0, 5e8, 64.75411),  # cut-off, N > N_L -> Δσ_L (constant)
             (FatigueStrengthCurve.FIG_7_2, 100.0, 1e6, 114.86984),  # shear, single slope (m=5)
             (FatigueStrengthCurve.FIG_7_2, 100.0, 1e8, 45.73051),  # shear, N_L boundary -> Δτ_L = 0.457·Δτ_C
@@ -274,6 +275,16 @@ class TestFig7NominalStressRange:
                 ),
             ),
             (FatigueStrengthCurve.FIG_7_2, 100.0, 2e8, "short", r"\Delta\tau_{R} = 45.731 \ MPa"),
+            (
+                FatigueStrengthCurve.FIG_7_1,  # exactly at N_L the target is still rendered as N, not N_L
+                160.0,
+                1e8,
+                "complete",
+                (
+                    r"\Delta\sigma_{R} = \Delta\sigma_{D} \left( \frac{N_{D}}{N} \right)^{1 / m} = "
+                    r"117.889 \left( \frac{5.0 \cdot 10^{6}}{1.0 \cdot 10^{8}} \right)^{1 / 5} = 64.754 \ MPa"
+                ),
+            ),
         ],
     )
     def test_latex(self, curve: FatigueStrengthCurve, delta_sigma_c: float, n_cycles: float, representation: str, expected: str) -> None:
@@ -283,6 +294,15 @@ class TestFig7NominalStressRange:
         actual = {"complete": latex.complete, "short": latex.short}
 
         assert actual[representation] == expected, f"{representation} representation failed."
+
+    def test_latex_without_decimals(self) -> None:
+        """At n = 0 the stress values lose their decimals and the integer slope is rendered without a decimal point."""
+        latex = Fig7NominalStressRange(delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_7_1, n_cycles=1e6).latex(n=0)
+
+        assert latex.complete == (
+            r"\Delta\sigma_{R} = \Delta\sigma_{C} \left( \frac{N_{C}}{N} \right)^{1 / m} = "
+            r"160 \left( \frac{2.0 \cdot 10^{6}}{1.0 \cdot 10^{6}} \right)^{1 / 3} = 202 \ MPa"
+        )
 
 
 class TestFig7NumberOfCycles:
@@ -343,19 +363,39 @@ class TestFig7NumberOfCycles:
         assert n_r.source_document == EN_1993_1_9_2005
 
     @pytest.mark.parametrize(
-        ("delta_sigma_r", "expected_point", "expected_m"),
+        ("delta_sigma_r", "expected_point", "expected_m", "expected_delta_sigma_ref", "expected_n_ref"),
         [
-            (201.587, "C", 3.0),  # first branch
-            (89.343, "D", 5.0),  # second branch
-            (60.0, "L", None),  # below the cut-off limit
+            (201.587, "C", 3.0, 160.0, 2e6),  # first branch, anchored at the detail category
+            (89.343, "D", 5.0, 117.889, 5e6),  # second branch, anchored at the constant amplitude fatigue limit
+            (60.0, "L", None, 64.754, 1e8),  # below the cut-off limit, anchored at the cut-off point
         ],
     )
-    def test_detailed_result_reports_governing_branch(self, delta_sigma_r: float, expected_point: str, expected_m: float | None) -> None:
-        """The detailed result exposes which branch governs, so callers can label N_R without re-deriving it."""
-        detail = Fig7NumberOfCycles(delta_sigma_r=delta_sigma_r, delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_7_1).detailed_result
+    def test_detailed_result_reports_governing_branch(
+        self,
+        delta_sigma_r: float,
+        expected_point: str,
+        expected_m: float | None,
+        expected_delta_sigma_ref: float,
+        expected_n_ref: float,
+    ) -> None:
+        """The detailed result exposes the whole governing anchor, so callers can label N_R without re-deriving it."""
+        n_r = Fig7NumberOfCycles(delta_sigma_r=delta_sigma_r, delta_sigma_c=160.0, curve=FatigueStrengthCurve.FIG_7_1)
+        detail = n_r.detailed_result
 
         assert detail["reference_point"] == expected_point
         assert detail["m"] == expected_m
+        assert detail["delta_sigma_ref"] == pytest.approx(expected_delta_sigma_ref, rel=1e-4)
+        assert detail["n_ref"] == pytest.approx(expected_n_ref)
+        assert detail["n_r"] == float(n_r)
+
+    def test_stress_range_read_beyond_the_cut_off_maps_back_to_n_l(self) -> None:
+        """Past N_L the curve is flat, so the two directions stop being inverses: any N > N_L reads Δσ_L, which maps back to N_L."""
+        curve = FatigueStrengthCurve.FIG_7_1
+        delta_sigma_l = float(Fig7NominalStressRange(delta_sigma_c=160.0, curve=curve, n_cycles=5e8))
+
+        n_r = Fig7NumberOfCycles(delta_sigma_r=delta_sigma_l, delta_sigma_c=160.0, curve=curve)
+
+        assert n_r == pytest.approx(expected=curve.n_l, rel=1e-9)
 
     def test_detailed_result_shear_curve_anchors_at_cutoff_limit(self) -> None:
         """For the single-slope shear curve, the cut-off anchor is the cut-off limit (Δτ_L, N_L).

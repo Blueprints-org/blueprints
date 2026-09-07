@@ -293,7 +293,6 @@ class Fig8NumberOfCycles(Formula):
 
         branch = _governing_branch(delta_sigma_r, delta_sigma_c, curve)
         if branch is None:
-            # below the cut-off limit: infinite life, no damage
             return float("inf")
         return branch.value
 
@@ -310,8 +309,13 @@ class Fig8NumberOfCycles(Formula):
         """
         branch = _governing_branch(self.delta_sigma_r, self.delta_sigma_c, self.curve)
         if branch is None:
-            delta_sigma_ref, n_ref = _cutoff_anchor(self.delta_sigma_c, self.curve)
-            return {"reference_point": "L", "delta_sigma_ref": delta_sigma_ref, "n_ref": n_ref, "m": None, "n_r": float(self)}
+            # for the single-slope shear curve the fatigue limit acts as the cut-off, so it is the anchor there
+            cut_off = (
+                _cut_off_branch(self.delta_sigma_c, self.curve)
+                if self.curve.has_cutoff_segment
+                else _fatigue_limit_branch(self.delta_sigma_c, self.curve)
+            )
+            return {"reference_point": "L", "delta_sigma_ref": cut_off.value, "n_ref": cut_off.target_n, "m": None, "n_r": float(self)}
         return {
             "reference_point": branch.reference_point,
             "delta_sigma_ref": branch.delta_sigma_ref,
@@ -425,15 +429,15 @@ def _branch_at_cycles(delta_sigma_c: MPA, curve: FatigueStrengthCurve, n_cycles:
     if curve.m2 is None or curve.n_l is None:
         # shear curve: single slope, constant at the fatigue limit beyond N_D
         return _fatigue_limit_branch(delta_sigma_c, curve)
-    beyond_cut_off = n_cycles > curve.n_l
+    within_cut_off = n_cycles <= curve.n_l
     return _StressRangeBranch(
         reference_point="D",
         delta_sigma_ref=_fatigue_limit_branch(delta_sigma_c, curve).value,
         n_ref=curve.n_d,
         m=curve.m2,
         slope_subscript="2",
-        target_symbol="N_{L}" if beyond_cut_off else "N",
-        target_n=curve.n_l if beyond_cut_off else n_cycles,
+        target_symbol="N" if within_cut_off else "N_{L}",
+        target_n=n_cycles if within_cut_off else curve.n_l,
     )
 
 
@@ -446,7 +450,6 @@ def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStre
     """
     delta_sigma_d = _fatigue_limit_branch(delta_sigma_c, curve).value
     if delta_sigma_r >= delta_sigma_d:
-        # first branch (slope m1), anchored at the detail category point (N_C, Δσ_C)
         return _CyclesBranch(
             reference_point="C",
             delta_sigma_ref=delta_sigma_c,
@@ -456,7 +459,6 @@ def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStre
             delta_sigma_r=delta_sigma_r,
         )
     if curve.m2 is not None and curve.n_l is not None and delta_sigma_r >= _cut_off_branch(delta_sigma_c, curve).value:
-        # second branch (slope m2), anchored at the constant amplitude fatigue limit point (N_D, Δσ_D)
         return _CyclesBranch(
             reference_point="D",
             delta_sigma_ref=delta_sigma_d,
@@ -467,16 +469,6 @@ def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStre
         )
     # below the cut-off limit Δσ_L (or below Δτ_D for the single-slope shear curve): infinite life, no damage
     return None
-
-
-def _cutoff_anchor(delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> tuple[MPA, DIMENSIONLESS]:
-    r"""Reference strength and cycle number of the cut-off point, below which the life is infinite.
-
-    For curves with a second branch this is the cut-off limit [$(\Delta\sigma_L, N_L)$]; for the single-slope
-    shear curve it is the constant amplitude fatigue limit [$(\Delta\tau_D, N_D)$], which also acts as the cut-off.
-    """
-    branch = _cut_off_branch(delta_sigma_c, curve) if curve.has_cutoff_segment else _fatigue_limit_branch(delta_sigma_c, curve)
-    return branch.value, branch.target_n
 
 
 def _stress_symbol(stress_type: StressType) -> str:

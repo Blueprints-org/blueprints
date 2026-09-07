@@ -24,9 +24,9 @@ class StressType(Enum):
 class FatigueStrengthCurve(Enum):
     r"""Standard characteristic fatigue strength curves of EN 1993-1-9:2005, Figures 7.1 - 7.2.
 
-    Each member bundles the fixed geometry of one curve: the slope [$m_1$] of the first branch, the
+    Each member bundles the fixed geometry of one curve: the slope [$m$] of the first branch, the
     number of cycles [$N_D$] at the constant amplitude fatigue limit (when one exists), the slope
-    [$m_2$] of the second branch (when one exists) and the number of cycles [$N_L$] at the cut-off
+    [$m$] of the second branch (when one exists) and the number of cycles [$N_L$] at the cut-off
     limit. The detail category reference point [$N_C$] is shared by both curves (see [$N_C$]).
 
     Every member is defined as a tuple ``(stress_type, description, m1, n_d, m2, n_l)``. For shear
@@ -301,7 +301,6 @@ class Fig7NumberOfCycles(Formula):
 
         branch = _governing_branch(delta_sigma_r, delta_sigma_c, curve)
         if branch is None:
-            # below the cut-off limit: infinite life, no damage
             return float("inf")
         return branch.value
 
@@ -439,18 +438,17 @@ def _branch_at_cycles(delta_sigma_c: MPA, curve: FatigueStrengthCurve, n_cycles:
             target_symbol="N",
             target_n=n_cycles,
         )
-    if curve.n_d is None or curve.m2 is None or n_cycles > curve.n_l:
-        # the shear curve beyond N_L, or the direct stress curve beyond N_L: constant at the cut-off limit
-        return _cut_off_branch(delta_sigma_c, curve)
-    # second branch, slope m2
-    return _StressRangeBranch(
-        reference_point="D",
-        delta_sigma_ref=_fatigue_limit_branch(delta_sigma_c, curve).value,
-        n_ref=curve.n_d,
-        m=curve.m2,
-        target_symbol="N",
-        target_n=n_cycles,
-    )
+    if curve.n_d is not None and curve.m2 is not None and n_cycles <= curve.n_l:
+        # second branch, slope m2
+        return _StressRangeBranch(
+            reference_point="D",
+            delta_sigma_ref=_fatigue_limit_branch(delta_sigma_c, curve).value,
+            n_ref=curve.n_d,
+            m=curve.m2,
+            target_symbol="N",
+            target_n=n_cycles,
+        )
+    return _cut_off_branch(delta_sigma_c, curve)
 
 
 def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStrengthCurve) -> _CyclesBranch | None:
@@ -467,7 +465,6 @@ def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStre
     if curve.n_d is not None and curve.m2 is not None:
         delta_sigma_d = _fatigue_limit_branch(delta_sigma_c, curve).value
         if delta_sigma_r < delta_sigma_d:
-            # second branch (slope m2), anchored at the constant amplitude fatigue limit point (N_D, Δσ_D)
             return _CyclesBranch(
                 reference_point="D",
                 delta_sigma_ref=delta_sigma_d,
@@ -476,7 +473,6 @@ def _governing_branch(delta_sigma_r: MPA, delta_sigma_c: MPA, curve: FatigueStre
                 delta_sigma_r=delta_sigma_r,
             )
 
-    # first branch (slope m1), anchored at the detail category point (N_C, Δσ_C)
     return _CyclesBranch(
         reference_point="C",
         delta_sigma_ref=delta_sigma_c,
