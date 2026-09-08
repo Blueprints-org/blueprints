@@ -44,8 +44,10 @@ class Profile(ABC):
 
     @property
     def mesh_creator(self) -> partial:
-        """Get the mesh creator for the profile."""
-        return partial(Geometry.create_mesh, mesh_sizes=2.0)
+        """Get the mesh creator for the profile. Mesh size is area, so when 4 elements
+        are used along the maximum thickness in a triangle, the mesh size is 0.5 * (max_thickness / 4)^2.
+        """
+        return partial(Geometry.create_mesh, mesh_sizes=self.max_thickness**2 / 32)
 
     @property
     def mesh_settings(self) -> dict[str, Any]:
