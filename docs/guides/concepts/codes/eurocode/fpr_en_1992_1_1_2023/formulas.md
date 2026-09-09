@@ -128,8 +128,8 @@ Total of 602 formulas present.
 |      8.64      |        :x:         |         |                                                                    |
 |      8.65      |        :x:         |         |                                                                    |
 |      8.66      |        :x:         |         |                                                                    |
-|      8.67      |        :x:         |         |                                                                    |
-|      8.68      |        :x:         |         |                                                                    |
+|      8.67      | :heavy_check_mark: |         | Form8Dot67To68CheckCotangentFlangeCompressionField                 |
+|      8.68      | :heavy_check_mark: |         | Form8Dot67To68CheckCotangentFlangeCompressionField                 |
 |      8.69      |        :x:         |         |                                                                    |
 |      8.70      |        :x:         |         |                                                                    |
 |      8.71      |        :x:         |         |                                                                    |
