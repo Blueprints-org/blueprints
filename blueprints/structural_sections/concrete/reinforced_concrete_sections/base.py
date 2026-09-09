@@ -37,7 +37,7 @@ class ReinforcedCrossSection(ABC):
         """
         self.profile = profile
         self.concrete_material = concrete_material
-        self._reinforcement_configurations: list[tuple[LineString | Callable[..., LineString], ReinforcementConfiguration]] = []
+        self._reinforcement_configurations: list[tuple[LineString | Callable[[], LineString], ReinforcementConfiguration]] = []
         self._single_longitudinal_rebars: list[Rebar] = []
         self._stirrups: list[StirrupConfiguration] = []
 
@@ -51,14 +51,15 @@ class ReinforcedCrossSection(ABC):
 
         # add the rebars from the reinforcement configurations
         for line, configuration in self._reinforcement_configurations:
-            if callable(line):
+            if isinstance(line, LineString):
+                rebars.extend(configuration.to_rebars(line=line))
+            else:
                 # partial function with additional arguments where the line should be called to get the LineString
                 # the implementation will be made at that level and inserted here to produce the rebars needed.
                 # this keeps this ABC class clean and allows for a lot of flexibility in the implementation of the line.
                 # this has been done to be able to add any shape of line to the cross-section (e.g. a circle or any other in the future).
-                rebars.extend(configuration.to_rebars(line=line()))  # ty: ignore[call-top-callable]
-            else:
-                rebars.extend(configuration.to_rebars(line=line))
+                line_string = line()
+                rebars.extend(configuration.to_rebars(line=line_string))
 
         # check if all rebars are inside the cross-section.
         # needed for the case where custom configurations are added to the RCS

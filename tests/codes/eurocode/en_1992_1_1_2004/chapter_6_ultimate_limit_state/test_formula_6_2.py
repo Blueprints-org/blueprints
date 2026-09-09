@@ -60,10 +60,12 @@ class TestForm6Dot2ShearResistance:
         [
             (
                 "complete",
-                r"V_{Rd,c} = \max(C_{Rd,c} \cdot k \cdot \left(100 \cdot \rho_l \cdot f_{ck}\right)^{1/3} + "
-                r"k_1 \cdot \sigma_{cp}, v_{min} + k_1 \cdot \sigma_{cp}) \cdot b_w \cdot d"
-                r" = \max(0.180 \cdot 1.000 \cdot \left(100 \cdot 0.020 \cdot 30.000\right)^{1/3} + 0.150 \cdot "
-                r"1.000, 0.035 + 0.150 \cdot 1.000) \cdot 300.000 \cdot 500.000 = 128201.426 \ N",
+                (
+                    r"V_{Rd,c} = \max(C_{Rd,c} \cdot k \cdot \left(100 \cdot \rho_l \cdot f_{ck}\right)^{1/3} + "
+                    r"k_1 \cdot \sigma_{cp}, v_{min} + k_1 \cdot \sigma_{cp}) \cdot b_w \cdot d"
+                    r" = \max(0.180 \cdot 1.000 \cdot \left(100 \cdot 0.020 \cdot 30.000\right)^{1/3} + 0.150 \cdot "
+                    r"1.000, 0.035 + 0.150 \cdot 1.000) \cdot 300.000 \cdot 500.000 = 128201.426 \ N"
+                ),
             ),
             ("short", r"V_{Rd,c} = 128201.426 \ N"),
         ],

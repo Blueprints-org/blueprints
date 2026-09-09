@@ -62,15 +62,17 @@ class TestForm6Dot1ElasticVerification:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{\sigma_{x,\text{Ed}}}{f_y / \gamma_{M0}} \right)^2 + "
-                r"\left( \frac{\sigma_{z,\text{Ed}}}{f_y / \gamma_{M0}} \right)^2 - "
-                r"\left( \frac{\sigma_{x,\text{Ed}}}{f_y / \gamma_{M0}} \right) "
-                r"\left( \frac{\sigma_{z,\text{Ed}}}{f_y / \gamma_{M0}} \right) "
-                r"+ 3 \left( \frac{\tau_{\text{Ed}}}{f_y / \gamma_{M0}} \right)^2 \leq 1 \to "
-                r"\left( \frac{100.000}{355.000 / 1.000} \right)^2 + "
-                r"\left( \frac{50.000}{355.000 / 1.000} \right)^2 - "
-                r"\left( \frac{100.000}{355.000 / 1.000} \right) \left( \frac{50.000}{355.000 / 1.000} \right) "
-                r"+ 3 \left( \frac{30.000}{355.000 / 1.000} \right)^2 \leq 1 \to OK",
+                (
+                    r"CHECK \to \left( \frac{\sigma_{x,\text{Ed}}}{f_y / \gamma_{M0}} \right)^2 + "
+                    r"\left( \frac{\sigma_{z,\text{Ed}}}{f_y / \gamma_{M0}} \right)^2 - "
+                    r"\left( \frac{\sigma_{x,\text{Ed}}}{f_y / \gamma_{M0}} \right) "
+                    r"\left( \frac{\sigma_{z,\text{Ed}}}{f_y / \gamma_{M0}} \right) "
+                    r"+ 3 \left( \frac{\tau_{\text{Ed}}}{f_y / \gamma_{M0}} \right)^2 \leq 1 \to "
+                    r"\left( \frac{100.000}{355.000 / 1.000} \right)^2 + "
+                    r"\left( \frac{50.000}{355.000 / 1.000} \right)^2 - "
+                    r"\left( \frac{100.000}{355.000 / 1.000} \right) \left( \frac{50.000}{355.000 / 1.000} \right) "
+                    r"+ 3 \left( \frac{30.000}{355.000 / 1.000} \right)^2 \leq 1 \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

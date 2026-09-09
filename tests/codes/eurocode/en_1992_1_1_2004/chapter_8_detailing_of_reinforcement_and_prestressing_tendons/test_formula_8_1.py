@@ -99,11 +99,19 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
             (
                 "complete",
                 (
-                    r"Ø_{m,min} = \frac{F_{bt} \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}} "
-                    r"= \frac{80.000 \cdot 1000 \cdot \left( \frac{1}{200.000} + \frac{1}{2 \cdot 16.000} \right)}{30.000} = 96.667"
+                    r"Ø_{m,min} = \frac{F_{bt} \cdot \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}} "
+                    r"= \frac{80.000 \cdot 1000 \cdot \left( \frac{1}{200.000} + \frac{1}{2 \cdot 16.000} \right) }{30.000} = 96.667 \ mm"
                 ),
             ),
-            ("short", r"Ø_{m,min} = 96.667"),
+            (
+                "complete_with_units",
+                (
+                    r"Ø_{m,min} = \frac{F_{bt} \cdot \left( \frac{1}{a_b} + \frac{1}{2 \cdot Ø} \right) }{f_{cd}} "
+                    r"= \frac{80.000 \ kN \cdot 1000 \cdot \left( \frac{1}{200.000 \ mm} + \frac{1}{2 \cdot 16.000 \ mm} \right) }{30.000 \ MPa} "
+                    r"= 96.667 \ mm"
+                ),
+            ),
+            ("short", r"Ø_{m,min} = 96.667 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -122,6 +130,10 @@ class TestForm8Dot1RequiredMinimumMandrelDiameter:
             f_cd=f_cd,
         ).latex()
 
-        actual = {"complete": form_8_1_latex.complete, "short": form_8_1_latex.short}
+        actual = {
+            "complete": form_8_1_latex.complete,
+            "complete_with_units": form_8_1_latex.complete_with_units,
+            "short": form_8_1_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

@@ -63,9 +63,11 @@ class TestFormEDot4DistanceToCentroidA2:
                 [1, 1],
                 [1, 1],
                 r"\alpha_{2} = 0.50",
-                r"\alpha_{2} = \frac{\gamma_1 E_1 A_1 (h_1 + h_2)}{2 \left(\gamma_1 E_1 A_1 + \gamma_2 E_2 A_2\right)}"
-                r" = \frac{1.00 \cdot 1.00 \cdot 1.00 (1.00 + 1.00)}{2 \left(1.00 \cdot 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00\right)}"
-                " = 0.50",
+                (
+                    r"\alpha_{2} = \frac{\gamma_1 E_1 A_1 (h_1 + h_2)}{2 \left(\gamma_1 E_1 A_1 + \gamma_2 E_2 A_2\right)}"
+                    r" = \frac{1.00 \cdot 1.00 \cdot 1.00 (1.00 + 1.00)}{2 \left(1.00 \cdot 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00\right)}"
+                    " = 0.50"
+                ),
             ),
             (
                 [1, 1, 200],
@@ -73,11 +75,13 @@ class TestFormEDot4DistanceToCentroidA2:
                 [1, 1, 0.2],
                 [1, 1, 0.25],
                 r"\alpha_{2} = -0.62",
-                r"\alpha_{2} = \frac{\gamma_1 E_1 A_1 (h_1 + h_2) - \gamma_3 E_3 A_3 (h_2 + h_3)}"
-                r"{2 \left(\gamma_1 E_1 A_1 + \gamma_2 E_2 A_2 + \gamma_3 E_3 A_3\right)}"
-                r" = \frac{1.00 \cdot 1.00 \cdot 1.00 (1.00 + 1.00) - 0.20 \cdot 200.00 \cdot 400.00 (1.00 + 0.25)}"
-                r"{2 \left(1.00 \cdot 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 + 0.20 \cdot 200.00 \cdot 400.00\right)}"
-                " = -0.62",
+                (
+                    r"\alpha_{2} = \frac{\gamma_1 E_1 A_1 (h_1 + h_2) - \gamma_3 E_3 A_3 (h_2 + h_3)}"
+                    r"{2 \left(\gamma_1 E_1 A_1 + \gamma_2 E_2 A_2 + \gamma_3 E_3 A_3\right)}"
+                    r" = \frac{1.00 \cdot 1.00 \cdot 1.00 (1.00 + 1.00) - 0.20 \cdot 200.00 \cdot 400.00 (1.00 + 0.25)}"
+                    r"{2 \left(1.00 \cdot 1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 + 0.20 \cdot 200.00 \cdot 400.00\right)}"
+                    " = -0.62"
+                ),
             ),
         ],
         ids=["length_2", "length_3"],

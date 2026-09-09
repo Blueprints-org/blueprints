@@ -23,7 +23,9 @@ class TestForm5Dot8CheckSlenderness:
 
         # Expected result, manually calculated
         expected_result = True
-        expected_unity_check = lambda_bar / (0.5 * np.sqrt(a * f_y / n_ed))
+        expected_unity_check = (
+            0.5 * np.sqrt(a * f_y / n_ed)
+        ) / lambda_bar  # lambda_bar > 0.5 * sqrt(A * f_y / N_ed) => unity check = (0.5 * sqrt(A * f_y / N_ed)) / lambda_bar
 
         assert formula == expected_result
         assert formula.unity_check == expected_unity_check
@@ -68,8 +70,10 @@ class TestForm5Dot8CheckSlenderness:
         [
             (
                 "complete",
-                r"CHECK \to \left( \overline{\lambda} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} "
-                r"\right) \to \left( \overline{1.00} > 0.5 \sqrt{\frac{1000.00 \cdot 355.00}{100000.00}} \right) \to OK",
+                (
+                    r"CHECK \to \left( \overline{\lambda} > 0.5 \sqrt{\frac{A \cdot f_{y}}{N_{Ed}}} "
+                    r"\right) \to \left( \overline{1.00} > 0.5 \sqrt{\frac{1000.00 \cdot 355.00}{100000.00}} \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

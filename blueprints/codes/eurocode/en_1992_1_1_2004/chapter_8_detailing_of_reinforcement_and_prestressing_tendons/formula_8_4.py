@@ -5,7 +5,7 @@ from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_8_detailing_of_reinforce
     Form8Dot5ProductAlphas235,
 )
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets, latex_replace_symbols
 from blueprints.type_alias import MM, RATIO
 from blueprints.validations import raise_if_negative
 
@@ -124,13 +124,42 @@ class Form8Dot4DesignAnchorageLength(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula representation of the formula."""
+        _equation: str = latex_max_curly_brackets(
+            r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}",
+            r"l_{b,min}",
+        )
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_1": f"{self.alpha_1:.{n}f}",
+                r"\alpha_2": f"{self.alpha_2:.{n}f}",
+                r"\alpha_3": f"{self.alpha_3:.{n}f}",
+                r"\alpha_4": f"{self.alpha_4:.{n}f}",
+                r"\alpha_5": f"{self.alpha_5:.{n}f}",
+                r"l_{b,rqd}": f"{self.l_b_rqd:.{n}f}",
+                r"l_{b,min}": f"{self.l_b_min:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_1": f"{self.alpha_1:.{n}f}",
+                r"\alpha_2": f"{self.alpha_2:.{n}f}",
+                r"\alpha_3": f"{self.alpha_3:.{n}f}",
+                r"\alpha_4": f"{self.alpha_4:.{n}f}",
+                r"\alpha_5": f"{self.alpha_5:.{n}f}",
+                r"l_{b,rqd}": rf"{self.l_b_rqd:.{n}f} \ mm",
+                r"l_{b,min}": rf"{self.l_b_min:.{n}f} \ mm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{bd}",
             result=f"{self:.{n}f}",
-            equation=latex_max_curly_brackets(r"\alpha_1 \cdot \alpha_2 \cdot \alpha_3 \cdot \alpha_4 \cdot \alpha_5 \cdot l_{b,rqd}", r"l_{b,min}"),
-            numeric_equation=latex_max_curly_brackets(
-                rf"{self.alpha_1} \cdot {self.alpha_2} \cdot {self.alpha_3} \cdot {self.alpha_4} \cdot {self.alpha_5} \cdot {self.l_b_rqd:.{n}f}",
-                self.l_b_min,
-            ),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )

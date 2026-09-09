@@ -48,6 +48,10 @@ class TestSubForm8Dot16Alpha2:
                 "complete",
                 (r"\alpha_2 \rightarrow type\;of\;wire \rightarrow circular \rightarrow 0.25"),
             ),
+            (
+                "complete_with_units",
+                (r"\alpha_2 \rightarrow type\;of\;wire \rightarrow circular \rightarrow 0.25"),
+            ),
             ("short", r"\alpha_2 \rightarrow 0.25"),
         ],
     )
@@ -59,6 +63,10 @@ class TestSubForm8Dot16Alpha2:
         # Object to test
         form_8_16_p2_latex = SubForm8Dot16Alpha2(type_of_wire=type_of_wire).latex()
 
-        actual = {"complete": form_8_16_p2_latex.complete, "short": form_8_16_p2_latex.short}
+        actual = {
+            "complete": form_8_16_p2_latex.complete,
+            "complete_with_units": form_8_16_p2_latex.complete_with_units,
+            "short": form_8_16_p2_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

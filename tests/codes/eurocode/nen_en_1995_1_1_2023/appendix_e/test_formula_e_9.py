@@ -60,8 +60,10 @@ class TestFormEDot9BendingStressInILayer:
                 1,
                 1,
                 r"\sigma_{2} = 0.50",
-                r"\sigma_{2} = \frac{0.5 E_2 h_2 M_{yd}}{EI_{ef}}"
-                r" = \frac{0.5 \cdot 1.00 \cdot 1.00 \cdot 1.00}{1.00} = 0.50",
+                (
+                    r"\sigma_{2} = \frac{0.5 E_2 h_2 M_{yd}}{EI_{ef}}"
+                    r" = \frac{0.5 \cdot 1.00 \cdot 1.00 \cdot 1.00}{1.00} = 0.50"
+                ),
             ),
             (
                 1,
@@ -70,8 +72,10 @@ class TestFormEDot9BendingStressInILayer:
                 10e06,
                 6015486104925.15,
                 r"\sigma_{1} = 0.70",
-                r"\sigma_{1} = \frac{0.5 E_1 h_1 M_{yd}}{EI_{ef}}"
-                r" = \frac{0.5 \cdot 12000.00 \cdot 70.00 \cdot 10000000.00}{6015486104925.15} = 0.70",
+                (
+                    r"\sigma_{1} = \frac{0.5 E_1 h_1 M_{yd}}{EI_{ef}}"
+                    r" = \frac{0.5 \cdot 12000.00 \cdot 70.00 \cdot 10000000.00}{6015486104925.15} = 0.70"
+                ),
             ),
         ],
         ids=["latex_layer1", "latex_layer2"],

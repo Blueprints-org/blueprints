@@ -49,8 +49,10 @@ class TestForm5Dot39SimplifiedCriterionBiaxialBending:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{M_{Edz}}{M_{Rdz}} \right)^{a} + \left( \frac{M_{Edy}}{M_{Rdy}} \right)^{a} \leq 1 \to "
-                r"\left( \frac{10.000}{20.000} \right)^{0.800} + \left( \frac{15.000}{25.000} \right)^{0.800} \leq 1 \to \text{Not OK}",
+                (
+                    r"CHECK \to \left( \frac{M_{Edz}}{M_{Rdz}} \right)^{a} + \left( \frac{M_{Edy}}{M_{Rdy}} \right)^{a} \leq 1 \to "
+                    r"\left( \frac{10.000}{20.000} \right)^{0.800} + \left( \frac{15.000}{25.000} \right)^{0.800} \leq 1 \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

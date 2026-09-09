@@ -47,14 +47,18 @@ class TestForm5Dot8RelativeWebSlenderness:
         [
             (
                 "complete",
-                r"\overline{\lambda} = 0.346 \cdot \frac{c}{t_w} \sqrt{\frac{f_y}{E}} = "
-                r"0.346 \cdot \frac{500}{10} \sqrt{\frac{250}{200000}} = 0.61",
+                (
+                    r"\overline{\lambda} = 0.346 \cdot \frac{c}{t_w} \sqrt{\frac{f_y}{E}} = "
+                    r"0.346 \cdot \frac{500}{10} \sqrt{\frac{250}{200000}} = 0.61"
+                ),
             ),
             ("short", r"\overline{\lambda} = 0.61"),
             (
                 "string",
-                r"\overline{\lambda} = 0.346 \cdot \frac{c}{t_w} \sqrt{\frac{f_y}{E}} = "
-                r"0.346 \cdot \frac{500}{10} \sqrt{\frac{250}{200000}} = 0.61",
+                (
+                    r"\overline{\lambda} = 0.346 \cdot \frac{c}{t_w} \sqrt{\frac{f_y}{E}} = "
+                    r"0.346 \cdot \frac{500}{10} \sqrt{\frac{250}{200000}} = 0.61"
+                ),
             ),
         ],
     )

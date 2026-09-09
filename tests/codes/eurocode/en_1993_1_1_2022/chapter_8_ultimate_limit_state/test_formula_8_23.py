@@ -54,14 +54,18 @@ class TestForm8Dot23DesignPlasticShearResistance:
         [
             (
                 "complete",
-                r"V_{pl,Rd} = \frac{A_v \cdot (f_y / \sqrt{3})}{\gamma_{M0}} = "
-                r"\frac{2000.000 \cdot (355.000 / \sqrt{3})}{1.000} = 409918.691 \ N",
+                (
+                    r"V_{pl,Rd} = \frac{A_v \cdot (f_y / \sqrt{3})}{\gamma_{M0}} = "
+                    r"\frac{2000.000 \cdot (355.000 / \sqrt{3})}{1.000} = 409918.691 \ N"
+                ),
             ),
             ("short", r"V_{pl,Rd} = 409918.691 \ N"),
             (
                 "complete_with_units",
-                r"V_{pl,Rd} = \frac{A_v \cdot (f_y / \sqrt{3})}{\gamma_{M0}} = "
-                r"\frac{2000.000 \ mm^2 \cdot (355.000 \ MPa / \sqrt{3})}{1.000} = 409918.691 \ N",
+                (
+                    r"V_{pl,Rd} = \frac{A_v \cdot (f_y / \sqrt{3})}{\gamma_{M0}} = "
+                    r"\frac{2000.000 \ mm^2 \cdot (355.000 \ MPa / \sqrt{3})}{1.000} = 409918.691 \ N"
+                ),
             ),
         ],
     )

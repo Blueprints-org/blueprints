@@ -43,14 +43,18 @@ class TestForm8Dot30CheckCombinedShearForceAndTorsionalMoment:
         [
             (
                 "complete",
-                r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{100.000}{150.000} \leq 1.0 \to "
-                r"\left( 0.667 \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{100.000}{150.000} \leq 1.0 \to "
+                    r"\left( 0.667 \leq 1.0 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
             (
                 "complete_with_units",
-                r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{100.000 \ N}{150.000 \ N} \leq 1.0 \to "
-                r"\left( 0.667 \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{100.000 \ N}{150.000 \ N} \leq 1.0 \to "
+                    r"\left( 0.667 \leq 1.0 \right) \to OK"
+                ),
             ),
         ],
     )
@@ -76,8 +80,10 @@ class TestForm8Dot30CheckCombinedShearForceAndTorsionalMoment:
         [
             (
                 "complete",
-                r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{200.000}{150.000} \leq 1.0 \to "
-                r"\left( 1.333 \leq 1.0 \right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \to \frac{200.000}{150.000} \leq 1.0 \to "
+                    r"\left( 1.333 \leq 1.0 \right) \to \text{Not OK}"
+                ),
             ),
         ],
     )

@@ -104,8 +104,10 @@ class TestForm5Dot21NominalStiffness:
         [
             (
                 "complete",
-                r"EI = K_{c} \cdot E_{cd} \cdot I_{c} + K_{s} \cdot E_{s} \cdot I_{s} = 0.800 \cdot 30000.000 \cdot 5000.000 + "
-                r"0.200 \cdot 200000.000 \cdot 1000.000 = 160000000.000",
+                (
+                    r"EI = K_{c} \cdot E_{cd} \cdot I_{c} + K_{s} \cdot E_{s} \cdot I_{s} = 0.800 \cdot 30000.000 \cdot 5000.000 + "
+                    r"0.200 \cdot 200000.000 \cdot 1000.000 = 160000000.000"
+                ),
             ),
             ("short", r"EI = 160000000.000"),
         ],

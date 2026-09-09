@@ -57,8 +57,10 @@ class TestForm3Dot23FlexuralTensileStrength:
         [
             (
                 "complete",
-                r"f_{ctm,fl} = \max \left[ (1.6 - h/1000) \cdot f_{ctm} ; f_{ctm} \right] = "
-                r"\max \left[ (1.6 - 305.300/1000) \cdot 23.800 ; 23.800 \right] = 30.814",
+                (
+                    r"f_{ctm,fl} = \max \left[ (1.6 - h/1000) \cdot f_{ctm} ; f_{ctm} \right] = "
+                    r"\max \left[ (1.6 - 305.300/1000) \cdot 23.800 ; 23.800 \right] = 30.814"
+                ),
             ),
             ("short", r"f_{ctm,fl} = 30.814"),
         ],

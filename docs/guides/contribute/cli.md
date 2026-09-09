@@ -31,6 +31,7 @@ uv sync --group cli
     
     ```python exec="on" result="ansi"
     import subprocess, os
+
     result = subprocess.run(
         ["blueprints", "--help"],
         capture_output=True,

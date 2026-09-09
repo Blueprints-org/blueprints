@@ -59,9 +59,11 @@ class TestForm7Dot7nMaxBarDiameterTension:
         [
             (
                 "complete",
-                r"⌀_s = ⌀^*_s \cdot \left(\frac{f_{ct,eff}}{2.9}\right) \cdot \left(\frac{h_{cr}}{8 \cdot ( h - d)}\right) = "
-                r"16.000 \cdot \left(\frac{2.500}{2.9}\right) \cdot \left(\frac{200.000}{8 \cdot ( 500.000 - 450.000)}\right) "
-                r"= 6.897 \ mm",
+                (
+                    r"⌀_s = ⌀^*_s \cdot \left(\frac{f_{ct,eff}}{2.9}\right) \cdot \left(\frac{h_{cr}}{8 \cdot ( h - d)}\right) = "
+                    r"16.000 \cdot \left(\frac{2.500}{2.9}\right) \cdot \left(\frac{200.000}{8 \cdot ( 500.000 - 450.000)}\right) "
+                    r"= 6.897 \ mm"
+                ),
             ),
             ("short", r"⌀_s = 6.897 \ mm"),
         ],

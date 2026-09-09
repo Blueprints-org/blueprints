@@ -55,10 +55,12 @@ class TestForm6Dot77FatigueVerification:
         [
             (
                 "complete",
-                r"CHECK \to \frac{\sigma_{c,max}}{f_{cd,fat}} \leq \min\left(0.5 + 0.45 \cdot \frac{\sigma_{c,min}}{f_{cd,fat}}, "
-                r"\begin{cases} 0.9 & \text{if } f_{ck} \leq 50 \\ 0.8 & \text{if } f_{ck} > 50 \end{cases}\right) \to "
-                r"\frac{15.000}{20.000} \leq \min\left(0.5 + 0.45 \cdot \frac{5.000}{20.000}, \begin{cases} 0.9 & "
-                r"\text{if } 30.000 \leq 50 \\ 0.8 & \text{if } 30.000 > 50 \end{cases}\right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \frac{\sigma_{c,max}}{f_{cd,fat}} \leq \min\left(0.5 + 0.45 \cdot \frac{\sigma_{c,min}}{f_{cd,fat}}, "
+                    r"\begin{cases} 0.9 & \text{if } f_{ck} \leq 50 \\ 0.8 & \text{if } f_{ck} > 50 \end{cases}\right) \to "
+                    r"\frac{15.000}{20.000} \leq \min\left(0.5 + 0.45 \cdot \frac{5.000}{20.000}, \begin{cases} 0.9 & "
+                    r"\text{if } 30.000 \leq 50 \\ 0.8 & \text{if } 30.000 > 50 \end{cases}\right) \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

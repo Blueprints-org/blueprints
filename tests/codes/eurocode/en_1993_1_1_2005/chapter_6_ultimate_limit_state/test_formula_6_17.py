@@ -41,8 +41,10 @@ class TestForm6Dot17CheckShearForce:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{V_{Ed}}{V_{c,Rd}} \leq 1.0 \right) \to "
-                r"\left( \frac{100.000}{150.000} \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{V_{Ed}}{V_{c,Rd}} \leq 1.0 \right) \to "
+                    r"\left( \frac{100.000}{150.000} \leq 1.0 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

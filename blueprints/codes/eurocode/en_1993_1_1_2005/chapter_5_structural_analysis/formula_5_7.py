@@ -1,5 +1,9 @@
 """Formula 5.7 from EN 1993-1-1:2005: Chapter 5 - Structural Analysis."""
 
+import operator
+from collections.abc import Callable
+from typing import Any
+
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
@@ -32,6 +36,11 @@ class Form5Dot7DisregardFrameSwayImperfections(ComparisonFormula):
         self.h_ed = h_ed
         self.v_ed = v_ed
 
+    @classmethod
+    def _comparison_operator(cls) -> Callable[[Any, Any], bool]:
+        """Return the comparison operator for the formula."""
+        return operator.ge
+
     @staticmethod
     def _evaluate_lhs(h_ed: N, *args, **kwargs) -> float:  # noqa: ARG004
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
@@ -43,22 +52,6 @@ class Form5Dot7DisregardFrameSwayImperfections(ComparisonFormula):
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         raise_if_negative(v_ed=v_ed)
         return 0.15 * v_ed
-
-    @property
-    def unity_check(self) -> float:
-        """Returns the unity check value."""
-        return self.lhs / self.rhs
-
-    @staticmethod
-    def _evaluate(h_ed: N, v_ed: N) -> bool:  # ty: ignore[invalid-method-override]
-        """Evaluates the formula, for more information see the __init__ method."""
-        lhs = Form5Dot7DisregardFrameSwayImperfections._evaluate_lhs(h_ed=h_ed)
-        rhs = Form5Dot7DisregardFrameSwayImperfections._evaluate_rhs(v_ed=v_ed)
-        return lhs >= rhs
-
-    def __bool__(self) -> bool:
-        """Allow truth-checking of the check object itself."""
-        return self._evaluate(h_ed=self.h_ed, v_ed=self.v_ed)
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 5.7."""
