@@ -792,6 +792,11 @@ class AggregatedComparisonFormulaTestOwnParameters(AggregatedComparisonFormula):
         )
 
 
+def neither_all_nor_any(values: Iterable[bool]) -> bool:
+    """Dummy aggregation function that has the signature of an aggregation, but is neither all nor any."""
+    return all(values)
+
+
 class AggregatedComparisonFormulaTestInvalidDefinition(AggregatedComparisonFormula):
     """Dummy aggregated comparison formula whose _define_aggregation returns an unusable aggregation."""
 
@@ -801,7 +806,7 @@ class AggregatedComparisonFormulaTestInvalidDefinition(AggregatedComparisonFormu
     @classmethod
     def _define_aggregation(cls, *_args, **_kwargs) -> tuple[Callable[[Iterable[bool]], bool], Sequence[ComparisonFormula] | None]:
         """Returns an aggregation function that is neither all nor any."""
-        return sum, None
+        return neither_all_nor_any, None
 
 
 class TestAggregatedComparisonFormula:

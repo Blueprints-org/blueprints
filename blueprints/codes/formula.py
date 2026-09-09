@@ -307,8 +307,9 @@ class AggregatedComparisonFormula(ComparisonFormula):
         aggregation, comparison_formulas = cls._define_aggregation(*args, **kwargs)
         result = cls._evaluate(aggregation=aggregation, comparison_formulas=comparison_formulas)
         instance = float.__new__(cls, result)
-        instance.aggregation = aggregation
-        instance.comparison_formulas = tuple(comparison_formulas)
+        # _evaluate above rejects an aggregation or a sequence of formulas that is None, which a type checker cannot see.
+        instance.aggregation = aggregation  # ty: ignore[invalid-assignment]
+        instance.comparison_formulas = tuple(comparison_formulas)  # ty: ignore[invalid-argument-type]
         instance._initialized = False  # noqa: SLF001
         return instance
 
