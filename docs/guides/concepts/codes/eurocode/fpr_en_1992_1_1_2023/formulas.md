@@ -140,8 +140,8 @@ Total of 602 formulas present.
 |      8.76      | :heavy_check_mark: |         | Form8Dot76ShearStressResistanceAtInterface                         |
 |      8.77      | :heavy_check_mark: |         | Form8Dot77ShearStressResistanceAtInterfaceWithoutYielding          |
 |      8.78      | :heavy_check_mark: |         | Form8Dot78MinimumInterfaceReinforcementAlongEdge                   |
-|      8.79      |        :x:         |         |                                                                    |
-|      8.80      |        :x:         |         |                                                                    |
+|      8.79      | :heavy_check_mark: |         | Form8Dot79TorsionalShearStressInWall                               |
+|      8.80      | :heavy_check_mark: |         | Form8Dot80ShearForceInWallDueToTorsion                             |
 |      8.81      |        :x:         |         |                                                                    |
 |      8.82      |        :x:         |         |                                                                    |
 |      8.83      |        :x:         |         |                                                                    |
