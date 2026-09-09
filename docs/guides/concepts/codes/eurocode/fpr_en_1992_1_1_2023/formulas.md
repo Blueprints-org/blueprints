@@ -165,10 +165,10 @@ Total of 602 formulas present.
 |     8.101      |        :x:         |         |                                                                    |
 |     8.102      |        :x:         |         |                                                                    |
 |     8.103      |        :x:         |         |                                                                    |
-|     8.104      |        :x:         |         |                                                                    |
-|     8.105      |        :x:         |         |                                                                    |
-|     8.106      |        :x:         |         |                                                                    |
-|     8.107      |        :x:         |         |                                                                    |
+|     8.104      | :heavy_check_mark: |         | Form8Dot104PunchingShearStressResistanceWithShearReinforcement     |
+|     8.105      | :heavy_check_mark: |         | Form8Dot105StrengthReductionCoefficientForShearResistance          |
+|     8.106      | :heavy_check_mark: |         | Form8Dot106StrengthReductionCoefficientForShearReinforcement       |
+|     8.107      | :heavy_check_mark: |         | Form8Dot107ShearReinforcementRatio                                  |
 |     8.108      |        :x:         |         |                                                                    |
 |     8.109      |        :x:         |         |                                                                    |
 |     8.110      |        :x:         |         |                                                                    |
