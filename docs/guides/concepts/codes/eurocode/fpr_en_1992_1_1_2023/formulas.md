@@ -184,9 +184,9 @@ Total of 602 formulas present.
 |     8.120      |        :x:         |         |                                                                    |
 |     8.121      |        :x:         |         |                                                                    |
 |     8.122      |        :x:         |         |                                                                    |
-|     8.123      |        :x:         |         |                                                                    |
-|     8.124      |        :x:         |         |                                                                    |
-|     8.125      |        :x:         |         |                                                                    |
+|     8.123      | :heavy_check_mark: |         | Form8Dot123TransverseTieForceSpreadingForces                      |
+|     8.124      | :heavy_check_mark: |         | Form8Dot124SpreadingAngleTangent                                  |
+|     8.125      | :heavy_check_mark: |         | Form8Dot125TransverseTieForceNearEdge                             |
 |     8.126      |        :x:         |         |                                                                    |
 |     8.127      |        :x:         |         |                                                                    |
 |     8.128      |        :x:         |         |                                                                    |
