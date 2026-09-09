@@ -229,6 +229,24 @@ class ComparisonFormula(Formula, ABC):
         # operator returns a numpy.bool_, and Python requires __bool__ to return a real bool.
         return bool(self._comparison_operator()(self.lhs, self.rhs))
 
+    def __repr__(self) -> str:
+        """Return the result of the comparison as a readable string.
+
+        A ComparisonFormula is a float, so its default representation is the numeric value of the
+        comparison (1.0 or 0.0). This representation shows whether the condition is satisfied instead.
+
+        Examples
+        --------
+        formula = SomeComparisonFormula(...)
+        print(formula)  # Prints "Ok" if the condition is satisfied, "Not Ok" otherwise.
+
+        Returns
+        -------
+        str
+            "Ok" if the comparison condition is satisfied, "Not Ok" otherwise.
+        """
+        return "Ok" if self.__bool__() else "Not Ok"
+
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
         """Implements the comparison using the class-level operator."""
@@ -247,26 +265,53 @@ class AggregatedComparisonFormula(ComparisonFormula):
     the same way concrete subclasses of :class:`ComparisonFormula` do.
     """
 
+    aggregation: Callable[[Iterable[bool]], bool]
+    comparison_formulas: tuple[ComparisonFormula, ...]
+
     def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
-        result = cls._evaluate(*args, **kwargs)
+        aggregation, comparison_formulas = cls._resolve_aggregation(*args, **kwargs)
+        result = cls._evaluate(aggregation=aggregation, comparison_formulas=comparison_formulas)
         instance = float.__new__(cls, result)
+        instance.aggregation = aggregation
+        instance.comparison_formulas = tuple(comparison_formulas)
         instance._initialized = False  # noqa: SLF001
         return instance
 
-    def __init__(self, aggregation: Callable[[Iterable[bool]], bool], comparison_formulas: Sequence[ComparisonFormula]) -> None:
+    def __init__(self, *_args, **_kwargs) -> None:
         """Method for initializing a new instance of the class.
+
+        The aggregation function and the comparison formulas are resolved and stored by ``__new__``
+        through :meth:`_resolve_aggregation`, so the constructor arguments are not read again here.
+        """
+        super().__init__()
+
+    @classmethod
+    def _resolve_aggregation(
+        cls,
+        aggregation: Callable[[Iterable[bool]], bool] | None = None,
+        comparison_formulas: Sequence[ComparisonFormula] | None = None,
+    ) -> tuple[Callable[[Iterable[bool]], bool] | None, Sequence[ComparisonFormula] | None]:
+        """Resolve the constructor arguments into the aggregation function and the formulas to aggregate.
+
+        By default the two are passed to the constructor directly. A subclass whose constructor takes
+        something else (e.g. a table lookup that has to build the formulas first) overrides this method
+        instead of _evaluate, so that the formulas are built exactly once per instance.
 
         Parameters
         ----------
-        aggregation : Callable[[Iterable[bool]], bool]
+        aggregation : Callable[[Iterable[bool]], bool] | None
             Type of aggregation function to be used for the comparison formulas. Must be either all or any.
-        comparison_formulas : Sequence[ComparisonFormula]
+        comparison_formulas : Sequence[ComparisonFormula] | None
             Sequence of ComparisonFormula instances to be aggregated.
+
+        Returns
+        -------
+        tuple[Callable[[Iterable[bool]], bool] | None, Sequence[ComparisonFormula] | None]
+            The aggregation function and the comparison formulas. They are validated by _evaluate,
+            so returning None for either of them is allowed and yields a readable error.
         """
-        super().__init__()
-        self.aggregation = aggregation
-        self.comparison_formulas = tuple(comparison_formulas)
+        return aggregation, comparison_formulas
 
     @classmethod
     def _comparison_operator(cls) -> Callable[[float, float], bool]:

@@ -161,6 +161,22 @@ def test_comparison_operator() -> None:
     assert ComparisonFormulaTestLessOrEqual._comparison_operator() == operator.le  # noqa: SLF001
 
 
+def test_comparison_formula_repr() -> None:
+    """Test that the representation is 'Ok'/'Not Ok' instead of the numeric value of the comparison."""
+    b = 5
+    c = 40
+
+    # check passing condition (lhs <= rhs) = True
+    formula = ComparisonFormulaTestLessOrEqual(a=10, b=b, c=c)
+    assert repr(formula) == "Ok"
+    assert str(formula) == "Ok"
+
+    # check failing condition (lhs > rhs) = False
+    formula = ComparisonFormulaTestLessOrEqual(a=30, b=b, c=c)
+    assert repr(formula) == "Not Ok"
+    assert str(formula) == "Not Ok"
+
+
 class ComparisonFormulaTestGreaterOrEqual(ComparisonFormula):
     """Dummy comparison formula with >= operator for testing purposes."""
 
@@ -890,6 +906,16 @@ class TestAggregatedComparisonFormula:
         formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
         assert formula
         assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_repr(self) -> None:
+        """Test that the inherited representation is 'Ok'/'Not Ok' for the aggregated result."""
+        passing_formula = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
+        failing_formula = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
+
+        assert repr(AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[passing_formula, passing_formula])) == "Ok"
+        assert repr(AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[passing_formula, failing_formula])) == "Not Ok"
+        assert repr(AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[passing_formula, failing_formula])) == "Ok"
+        assert repr(AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[failing_formula, failing_formula])) == "Not Ok"
 
     def test_aggregated_comparison_formula_bool_with_negative_values_all_passes(self) -> None:
         """Test 'all' aggregation bool with negative lhs/rhs values, where each sub-formula passes."""
