@@ -147,7 +147,7 @@ Total of 602 formulas present.
 |      8.83      |        :x:         |         |                                                                    |
 |      8.84      |        :x:         |         |                                                                    |
 |      8.85      |        :x:         |         |                                                                    |
-|      8.86      |        :x:         |         |                                                                    |
+|      8.86      | :heavy_check_mark: |         | Form8Dot86CheckInteractionInternalForces                           |
 |      8.87      |        :x:         |         |                                                                    |
 |      8.88      |        :x:         |         |                                                                    |
 |      8.89      |        :x:         |         |                                                                    |
