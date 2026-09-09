@@ -155,9 +155,9 @@ Total of 602 formulas present.
 |      8.91      |        :x:         |         |                                                                    |
 |      8.92      |        :x:         |         |                                                                    |
 |      8.93      |        :x:         |         |                                                                    |
-|      8.94      |        :x:         |         |                                                                    |
-|      8.95      |        :x:         |         |                                                                    |
-|      8.96      |        :x:         |         |                                                                    |
+|      8.94      | :heavy_check_mark: |         | Form8Dot94PunchingShearStressResistance                            |
+|      8.95      | :heavy_check_mark: |         | Form8Dot95LongitudinalReinforcementRatioPunchingShear               |
+|      8.96      | :heavy_check_mark: |         | Form8Dot96PunchingShearGradientEnhancementCoefficient               |
 |      8.97      |        :x:         |         |                                                                    |
 |      8.98      |        :x:         |         |                                                                    |
 |      8.99      |        :x:         |         |                                                                    |
