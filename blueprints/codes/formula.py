@@ -263,6 +263,40 @@ class AggregatedComparisonFormula(ComparisonFormula):
     This class is abstract: it does not implement ``label``, ``source_document`` or ``latex``.
     A concrete formula that aggregates other comparison formulas should subclass this and provide those,
     the same way concrete subclasses of :class:`ComparisonFormula` do.
+
+    Such a subclass takes the parameters of the code formula it represents, and not an aggregation function
+    with a list of formulas. It translates the one into the other by overriding :meth:`_define_aggregation`,
+    which is where the formulas to aggregate are built.
+
+    Examples
+    --------
+    class SomeAggregatedComparisonFormula(AggregatedComparisonFormula):
+        label = "1.1"
+        source_document = "Some code document"
+
+        def __init__(self, value: float, lower_bound: float, upper_bound: float) -> None:
+            # The arguments are read by _define_aggregation, so nothing is passed on to the base class here.
+            super().__init__()
+            self.value = value
+            self.lower_bound = lower_bound
+            self.upper_bound = upper_bound
+
+        @classmethod
+        def _define_aggregation(cls, value, lower_bound, upper_bound):
+            return all, (
+                SomeLowerBoundFormula(value=value, lower_bound=lower_bound),
+                SomeUpperBoundFormula(value=value, upper_bound=upper_bound),
+            )
+
+    formula = SomeAggregatedComparisonFormula(value=5, lower_bound=1, upper_bound=10)
+    bool(formula)  # True, both bounds are satisfied
+    formula.comparison_formulas  # the two bounds, built once by _define_aggregation
+    formula.unity_check  # the largest of the two unity checks, because the aggregation is 'all'
+
+    The default implementation returns what it is given, so formulas that are already instantiated can be
+    aggregated without such a subclass:
+
+    aggregated_formula = AggregatedComparisonFormula(all, [formula1, formula2])
     """
 
     aggregation: Callable[[Iterable[bool]], bool]
@@ -270,7 +304,7 @@ class AggregatedComparisonFormula(ComparisonFormula):
 
     def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
-        aggregation, comparison_formulas = cls._resolve_aggregation(*args, **kwargs)
+        aggregation, comparison_formulas = cls._define_aggregation(*args, **kwargs)
         result = cls._evaluate(aggregation=aggregation, comparison_formulas=comparison_formulas)
         instance = float.__new__(cls, result)
         instance.aggregation = aggregation
@@ -281,22 +315,25 @@ class AggregatedComparisonFormula(ComparisonFormula):
     def __init__(self, *_args, **_kwargs) -> None:
         """Method for initializing a new instance of the class.
 
-        The aggregation function and the comparison formulas are resolved and stored by ``__new__``
-        through :meth:`_resolve_aggregation`, so the constructor arguments are not read again here.
+        The aggregation function and the comparison formulas are defined and stored by ``__new__``
+        through :meth:`_define_aggregation`, so the constructor arguments are not read again here.
         """
         super().__init__()
 
     @classmethod
-    def _resolve_aggregation(
+    def _define_aggregation(
         cls,
         aggregation: Callable[[Iterable[bool]], bool] | None = None,
         comparison_formulas: Sequence[ComparisonFormula] | None = None,
     ) -> tuple[Callable[[Iterable[bool]], bool] | None, Sequence[ComparisonFormula] | None]:
-        """Resolve the constructor arguments into the aggregation function and the formulas to aggregate.
+        """Define the aggregation function and the comparison formulas that this formula aggregates.
 
-        By default the two are passed to the constructor directly. A subclass whose constructor takes
-        something else (e.g. a table lookup that has to build the formulas first) overrides this method
-        instead of _evaluate, so that the formulas are built exactly once per instance.
+        This is the method a concrete subclass overrides, see the examples in the class docstring. Its
+        parameters are then the parameters of the code formula itself, which it translates into the
+        aggregation to be evaluated. By default the two are passed to the constructor directly.
+
+        It is called exactly once per instance, from ``__new__``, and it is the place to build the formulas
+        to aggregate: building them in ``__init__`` or in ``_evaluate`` instead would build them twice.
 
         Parameters
         ----------
