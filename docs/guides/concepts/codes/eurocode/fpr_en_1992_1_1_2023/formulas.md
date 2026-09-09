@@ -130,9 +130,9 @@ Total of 602 formulas present.
 |      8.66      |        :x:         |         |                                                                    |
 |      8.67      |        :x:         |         |                                                                    |
 |      8.68      |        :x:         |         |                                                                    |
-|      8.69      |        :x:         |         |                                                                    |
-|      8.70      |        :x:         |         |                                                                    |
-|      8.71      |        :x:         |         |                                                                    |
+|      8.69      | :heavy_check_mark: |         | Form8Dot69CheckTransverseReinforcementInFlange                     |
+|      8.70      | :heavy_check_mark: |         | Form8Dot70CheckPreventCrushingOfCompressionFieldInFlange           |
+|      8.71      | :heavy_check_mark: |         | Form8Dot71StrengthReductionFactor                                  |
 |      8.72      | :heavy_check_mark: |         | Form8Dot72LongitudinalStrainInTensileFlange                        |
 |      8.73      | :heavy_check_mark: |         | Form8Dot73CheckShearStressAtInterface                              |
 |      8.74      | :heavy_check_mark: |         | Form8Dot74DesignShearStressAtInterface                             |
@@ -147,11 +147,11 @@ Total of 602 formulas present.
 |      8.83      |        :x:         |         |                                                                    |
 |      8.84      |        :x:         |         |                                                                    |
 |      8.85      |        :x:         |         |                                                                    |
-|      8.86      |        :x:         |         |                                                                    |
-|      8.87      |        :x:         |         |                                                                    |
-|      8.88      |        :x:         |         |                                                                    |
-|      8.89      |        :x:         |         |                                                                    |
-|      8.90      |        :x:         |         |                                                                    |
+|      8.86      | :heavy_check_mark: |         | Form8Dot86CheckInteractionInternalForces                           |
+|      8.87      | :heavy_check_mark: |         | Form8Dot87CheckDetailedPunchingVerificationMayBeOmitted            |
+|      8.88      | :heavy_check_mark: |         | Form8Dot88CheckPunchingShearReinforcementMayBeOmitted              |
+|      8.89      | :heavy_check_mark: |         | Form8Dot89CheckMaximumPunchingShearResistance                      |
+|      8.90      | :heavy_check_mark: |         | Form8Dot90CheckPunchingShearResistanceWithReinforcement            |
 |      8.91      | :heavy_check_mark: |         | Form8Dot91ShearResistingEffectiveDepth                             |
 |      8.92      | :heavy_check_mark: |         | Form8Dot92DesignPunchingShearStress                                |
 |      8.93      | :heavy_check_mark: |         | Form8Dot93DesignPunchingShearStressFromDetailedAnalysis            |
