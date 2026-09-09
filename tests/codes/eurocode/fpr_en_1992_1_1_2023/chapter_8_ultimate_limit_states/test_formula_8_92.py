@@ -42,6 +42,25 @@ class TestForm8Dot92DesignPunchingShearStress:
             Form8Dot92DesignPunchingShearStress(beta_e=beta_e, v_ed=v_ed, b_0_5=b_0_5, d_v=d_v)
 
     @pytest.mark.parametrize(
+        "beta_e",
+        [
+            1.0499,  # just below the minimum of Table 8.3
+            1.0,  # below the minimum of Table 8.3
+            0.0,  # zero
+        ],
+    )
+    def test_raise_error_when_beta_e_below_minimum(self, beta_e: float) -> None:
+        """Test that beta_e values below the minimum of Table 8.3 (1,05) are rejected."""
+        with pytest.raises(ValueError, match="beta_e"):
+            Form8Dot92DesignPunchingShearStress(beta_e=beta_e, v_ed=500000.0, b_0_5=2400.0, d_v=200.0)
+
+    def test_no_error_when_beta_e_at_minimum(self) -> None:
+        """Test that beta_e equal to the minimum of Table 8.3 (1,05) is accepted."""
+        formula = Form8Dot92DesignPunchingShearStress(beta_e=1.05, v_ed=500000.0, b_0_5=2400.0, d_v=200.0)
+
+        assert formula == pytest.approx(expected=1.09375, rel=1e-4)
+
+    @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (

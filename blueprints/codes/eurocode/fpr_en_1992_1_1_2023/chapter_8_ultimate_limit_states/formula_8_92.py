@@ -6,6 +6,10 @@ from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA, N
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
+BETA_E_MIN: DIMENSIONLESS = 1.05
+"""Lowest value [$\\beta_e$] can take according to Table 8.3, reached by the refined formula for edge and
+corner columns."""
+
 
 class Form8Dot92DesignPunchingShearStress(Formula):
     r"""Class representing formula 8.92 for the calculation of the design punching shear stress at the control
@@ -36,7 +40,8 @@ class Form8Dot92DesignPunchingShearStress(Formula):
         beta_e : DIMENSIONLESS
             [$\beta_e$] Coefficient accounting for concentrations of the shear forces, which may be adopted from
             Table 8.3. The approximated values for internal, edge and corner columns may be used only if all the
-            conditions listed in 8.4.2(6) are fulfilled, otherwise the refined values should be adopted [$-$].
+            conditions listed in 8.4.2(6) are fulfilled, otherwise the refined values should be adopted. Table 8.3
+            does not give values below [$1,05$] [$-$].
         v_ed : N
             [$V_{Ed}$] Design shear force at the control perimeter [$b_{0,5}$]. All favourable loads acting on
             the tensile side of the planar member, soil reactions on foundations and ground slabs and the
@@ -67,6 +72,8 @@ class Form8Dot92DesignPunchingShearStress(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(beta_e=beta_e, v_ed=v_ed)
         raise_if_less_or_equal_to_zero(b_0_5=b_0_5, d_v=d_v)
+        if beta_e < BETA_E_MIN:
+            raise ValueError(f"Invalid value for 'beta_e': {beta_e}. Table 8.3 does not give values below {BETA_E_MIN}.")
 
         return beta_e * v_ed / (b_0_5 * d_v)
 
