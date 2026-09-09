@@ -135,17 +135,16 @@ class _LimitSpecification:
     lhs_latex: str
     rhs_latex: str
 
-    def __post_init__(self) -> None:
-        """Check that the templates and the declared parameters describe the same criterion.
+    def _validate_latex_rendering(self) -> None:
+        """Check that the placeholders are exactly the declared parameters, each with a latex symbol.
 
-        This runs when the table below is built, so a criterion whose templates and parameters
-        disagree is rejected on import instead of rendering a placeholder into the latex output.
+        A stray placeholder is left unchanged in the rendered equation, and a parameter missing from
+        _LATEX_SYMBOLS makes symbolic_equation raise a KeyError.
 
         Raises
         ------
         ValueError
-            If the placeholders in the templates are not exactly the declared parameters,
-            or if a declared parameter has no latex symbol.
+            If the placeholders differ from the declared parameters, or a parameter has no latex symbol.
         """
         placeholders = set(_PLACEHOLDER_PATTERN.findall(f"{self.lhs_latex} {self.rhs_latex}"))
         if placeholders != set(self.params):
@@ -205,6 +204,7 @@ class _LimitSpecification:
         str
             The rendered latex equation.
         """
+        self._validate_latex_rendering()
         return latex_replace_symbols(
             template=f"{self.lhs_latex} \\le {self.rhs_latex}",
             replacements={f"{_PLACEHOLDER}{name}{_PLACEHOLDER}": replacements[name] for name in self.params},

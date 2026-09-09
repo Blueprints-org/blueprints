@@ -20,40 +20,57 @@ class TestLimitSpecification:
 
     def test_raise_error_if_a_placeholder_is_not_a_declared_parameter(self) -> None:
         """A placeholder that is not declared would survive into the rendered latex."""
+        limit_spec = _LimitSpecification(
+            params=("c", "t"),
+            lhs_fn=lambda c, t, **_: c / t,
+            rhs_fn=lambda **_: 72.0,
+            lhs_latex=r"\frac{@c@}{@t@}",
+            rhs_latex=r"72 \cdot @epsilon@",
+        )
+
         with pytest.raises(ValueError, match=re.escape("use placeholders ['c', 'epsilon', 't'], but the criterion declares")):
-            _LimitSpecification(
-                params=("c", "t"),
-                lhs_fn=lambda c, t, **_: c / t,
-                rhs_fn=lambda **_: 72.0,
-                lhs_latex=r"\frac{@c@}{@t@}",
-                rhs_latex=r"72 \cdot @epsilon@",
-            )
+            limit_spec._validate_latex_rendering()  # noqa: SLF001
 
     def test_raise_error_if_a_declared_parameter_has_no_placeholder(self) -> None:
         """A declared parameter that never appears in the templates is a mistake as well."""
+        limit_spec = _LimitSpecification(
+            params=("c", "t", "epsilon"),
+            lhs_fn=lambda c, t, **_: c / t,
+            rhs_fn=lambda **_: 72.0,
+            lhs_latex=r"\frac{@c@}{@t@}",
+            rhs_latex=r"72",
+        )
+
         with pytest.raises(ValueError, match=re.escape("use placeholders ['c', 't'], but the criterion declares")):
-            _LimitSpecification(
-                params=("c", "t", "epsilon"),
-                lhs_fn=lambda c, t, **_: c / t,
-                rhs_fn=lambda **_: 72.0,
-                lhs_latex=r"\frac{@c@}{@t@}",
-                rhs_latex=r"72",
-            )
+            limit_spec._validate_latex_rendering()  # noqa: SLF001
 
     def test_raise_error_if_a_parameter_has_no_latex_symbol(self) -> None:
         """Every parameter must have a latex symbol to render the symbolic equation with."""
+        limit_spec = _LimitSpecification(
+            params=("gamma",),
+            lhs_fn=lambda gamma, **_: gamma,
+            rhs_fn=lambda **_: 1.0,
+            lhs_latex=r"@gamma@",
+            rhs_latex=r"1",
+        )
+
         with pytest.raises(ValueError, match=re.escape("No latex symbol is defined for gamma.")):
-            _LimitSpecification(
-                params=("gamma",),
-                lhs_fn=lambda gamma, **_: gamma,
-                rhs_fn=lambda **_: 1.0,
-                lhs_latex=r"@gamma@",
-                rhs_latex=r"1",
-            )
+            limit_spec._validate_latex_rendering()  # noqa: SLF001
 
 
 class TestTable5Dot2MaximumWidthToThicknessRatio:
     """Validation for table 5.2 from EN 1993-1-1:2005."""
+
+    @pytest.mark.parametrize(
+        ("cell", "limit_specs"),
+        Table5Dot2MaximumWidthToThicknessRatio._ratio_factor_mapping.items(),  # noqa: SLF001
+        ids=str,
+    )
+    def test_every_criterion_of_the_table_is_valid(self, cell: object, limit_specs: tuple[_LimitSpecification, ...]) -> None:
+        """Validation is not done on import, so check every cell of the table here instead."""
+        assert limit_specs, f"Cell {cell} has no criteria."
+        for limit_spec in limit_specs:
+            limit_spec._validate_latex_rendering()  # noqa: SLF001
 
     # (part, cross-section class, loading condition, parameters, expected bool, expected unity check)
     testdata: ClassVar[list[tuple]] = [
