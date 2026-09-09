@@ -230,7 +230,7 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             t=10,
             epsilon=0.81,
         )
-        latex = form.comparison_formulas[0].latex()
+        latex = form.latex()
 
         assert latex.equation == r"\frac{c}{t} \le 72 \cdot \epsilon"
         assert latex.numeric_equation == r"\frac{500.000}{10.000} \le 72 \cdot 0.810"
@@ -265,7 +265,7 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             psi=-0.5,
             epsilon=1.0,
         )
-        numeric_equation = form.comparison_formulas[0].latex().numeric_equation
+        numeric_equation = form.latex().numeric_equation
 
         assert r"0.67 + 0.33 \cdot \left(-0.500\right)" in numeric_equation
         assert "--0.500" not in numeric_equation

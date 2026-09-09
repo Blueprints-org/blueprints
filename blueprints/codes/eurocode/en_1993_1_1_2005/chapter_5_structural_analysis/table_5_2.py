@@ -98,24 +98,6 @@ _LATEX_SYMBOLS: Final[dict[str, str]] = {
 }
 
 
-def _format_value_for_latex(value: float, n: int) -> str:
-    """Format a value for latex, parenthesising negatives so that they compose safely.
-
-    Parameters
-    ----------
-    value : float
-        The value to format.
-    n : int
-        The number of decimal places to round the value to.
-
-    Returns
-    -------
-    str
-        The formatted value.
-    """
-    return rf"\left({value:.{n}f}\right)" if value < 0 else f"{value:.{n}f}"
-
-
 @dataclass(frozen=True)
 class _TableCell:
     """Identifies one cell of Table 5.2: the three keys the table is indexed by."""
@@ -195,10 +177,17 @@ class _LimitSpecification:
         ValueError
             If any of the required parameters was not provided.
         """
-        missing = [name for name in self.params if params.get(name) is None]
+        required_parameters: dict[str, float] = {}
+        missing: list[str] = []
+        for name in self.params:
+            value = params.get(name)
+            if value is None:
+                missing.append(name)
+            else:
+                required_parameters[name] = value
         if missing:
             raise ValueError(f"Table 5.2 check for {cell} requires {', '.join(self.params)}; missing: {', '.join(missing)}.")
-        return {name: params[name] for name in self.params}
+        return required_parameters
 
     def render_latex_equation(self, replacements: dict[str, str]) -> str:
         """Render the criterion by replacing every ``@name@`` placeholder.
@@ -226,6 +215,25 @@ class _LimitSpecification:
     def symbolic_equation(self) -> str:
         """The criterion rendered with latex symbols instead of values."""
         return self.render_latex_equation(_LATEX_SYMBOLS)
+
+    def numeric_equation(self, values: dict[str, float], n: int = 3) -> str:
+        r"""Render the criterion with the given values instead of symbols.
+
+        Parameters
+        ----------
+        values : dict[str, float]
+            Value per parameter name.
+        n : int, optional
+            The number of decimal places to round the values to.
+
+        Returns
+        -------
+        str
+            The rendered latex equation.
+        """
+        # Negatives are bracketed so that they compose with the surrounding latex: without it,
+        # \sqrt{-@psi@} would render as \sqrt{--0.500} instead of \sqrt{-\left(-0.500\right)}.
+        return self.render_latex_equation({name: rf"\left({value:.{n}f}\right)" if value < 0 else f"{value:.{n}f}" for name, value in values.items()})
 
 
 class _MaximumWidthToThicknessRatio(ComparisonFormula):
@@ -275,13 +283,12 @@ class _MaximumWidthToThicknessRatio(ComparisonFormula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Return the latex representation of the formula, given in math mode."""
+        values = {name: getattr(self, name) for name in self.limit_spec.params}
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if bool(self) else r"\text{Not OK}",
             equation=self.limit_spec.symbolic_equation,
-            numeric_equation=self.limit_spec.render_latex_equation(
-                {name: _format_value_for_latex(getattr(self, name), n) for name in self.limit_spec.params}
-            ),
+            numeric_equation=self.limit_spec.numeric_equation(values, n),
             comparison_operator_label=r"\to",
         )
 
@@ -589,8 +596,10 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         self.psi = psi
         self.k_sigma = k_sigma
 
+    # Taking the parameters of the code formula instead of the base signature is the documented purpose
+    # of _define_aggregation, so the deviation is intentional.
     @classmethod
-    def _define_aggregation(
+    def _define_aggregation(  # ty: ignore[invalid-method-override]
         cls,
         cross_section_class: CrossSectionClass | int,
         part: Table5Dot2CompressionPart,
