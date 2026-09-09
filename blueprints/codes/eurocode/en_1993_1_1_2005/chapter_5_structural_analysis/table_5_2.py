@@ -130,7 +130,7 @@ class _TableCell:
 
 
 @dataclass(frozen=True)
-class _LimitSpec:
+class _LimitSpecification:
     r"""One width-to-thickness criterion of Table 5.2, as data: lhs <= rhs.
 
     Attributes
@@ -234,12 +234,12 @@ class _MaximumWidthToThicknessRatio(ComparisonFormula):
     label = "Table 5.2"
     source_document = EN_1993_1_1_2005
 
-    def __init__(self, limit_spec: _LimitSpec, table_cell: _TableCell, **params: float | None) -> None:
+    def __init__(self, limit_spec: _LimitSpecification, table_cell: _TableCell, **params: float | None) -> None:
         """Check a single width-to-thickness criterion of Table 5.2 based on the provided limit specification.
 
         Parameters
         ----------
-        limit_spec : _LimitSpec
+        limit_spec : _LimitSpecification
             The criterion to check.
         table_cell : _TableCell
             The cell of Table 5.2 the criterion was taken from.
@@ -264,12 +264,12 @@ class _MaximumWidthToThicknessRatio(ComparisonFormula):
         return operator.le
 
     @staticmethod
-    def _evaluate_lhs(spec: _LimitSpec, table_cell: _TableCell, **params: float | None) -> float:
+    def _evaluate_lhs(spec: _LimitSpecification, table_cell: _TableCell, **params: float | None) -> float:
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
         return spec.lhs_fn(**spec.collect_required_parameters(table_cell, **params))
 
     @staticmethod
-    def _evaluate_rhs(spec: _LimitSpec, table_cell: _TableCell, **params: float | None) -> float:
+    def _evaluate_rhs(spec: _LimitSpecification, table_cell: _TableCell, **params: float | None) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
         return spec.rhs_fn(**spec.collect_required_parameters(table_cell, **params))
 
@@ -302,10 +302,10 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
     label = "Table 5.2"
     source_document = EN_1993_1_1_2005
 
-    _ratio_factor_mapping: ClassVar[dict[_TableCell, tuple[_LimitSpec, ...]]] = {
+    _ratio_factor_mapping: ClassVar[dict[_TableCell, tuple[_LimitSpecification, ...]]] = {
         # --- Internal compression parts ---
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_1, _LOAD.SUBJECT_TO_BENDING): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 72 * epsilon,
@@ -314,7 +314,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_1, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 33 * epsilon,
@@ -323,7 +323,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_1, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "alpha", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda alpha, epsilon, **_: 396 * epsilon / (13 * alpha - 1) if alpha > 0.5 else 36 * epsilon / alpha,
@@ -336,7 +336,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_2, _LOAD.SUBJECT_TO_BENDING): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 83 * epsilon,
@@ -345,7 +345,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_2, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 38 * epsilon,
@@ -354,7 +354,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_2, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "alpha", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda alpha, epsilon, **_: 456 * epsilon / (13 * alpha - 1) if alpha > 0.5 else 41.5 * epsilon / alpha,
@@ -367,7 +367,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 124 * epsilon,
@@ -376,7 +376,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_3, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 42 * epsilon,
@@ -385,7 +385,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "psi", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda psi, epsilon, **_: 42 * epsilon / (0.67 + 0.33 * psi) if psi > -1 else 62 * epsilon * (1 - psi) * sqrt(-psi),
@@ -399,7 +399,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         ),
         # --- Outstand flanges ---
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_1, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 9 * epsilon,
@@ -408,7 +408,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_1, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "alpha", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda alpha, epsilon, **_: 9 * epsilon / alpha,
@@ -417,7 +417,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_1, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "alpha", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda alpha, epsilon, **_: 9 * epsilon / (alpha * sqrt(alpha)),
@@ -426,7 +426,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_2, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 10 * epsilon,
@@ -435,7 +435,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_2, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "alpha", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda alpha, epsilon, **_: 10 * epsilon / alpha,
@@ -444,7 +444,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_2, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "alpha", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda alpha, epsilon, **_: 10 * epsilon / (alpha * sqrt(alpha)),
@@ -453,7 +453,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_3, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda epsilon, **_: 14 * epsilon,
@@ -462,7 +462,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "k_sigma", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda k_sigma, epsilon, **_: 21 * sqrt(k_sigma) * epsilon,
@@ -471,7 +471,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "k_sigma", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda k_sigma, epsilon, **_: 21 * sqrt(k_sigma) * epsilon,
@@ -481,14 +481,14 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         ),
         # --- Angles ---
         _TableCell(_PART.ANGLE, _CLS.CLASS_3, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("h", "t", "epsilon"),
                 lhs_fn=lambda h, t, **_: h / t,
                 rhs_fn=lambda epsilon, **_: 15 * epsilon,
                 lhs_latex=r"\frac{@h@}{@t@}",
                 rhs_latex=r"15 \cdot @epsilon@",
             ),
-            _LimitSpec(
+            _LimitSpecification(
                 params=("h", "b", "t", "epsilon"),
                 lhs_fn=lambda h, b, t, **_: (h + b) / (2 * t),
                 rhs_fn=lambda epsilon, **_: 11.5 * epsilon,
@@ -498,7 +498,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         ),
         # --- Tubular sections ---
         _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_1, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("d", "t", "epsilon"),
                 lhs_fn=lambda d, t, **_: d / t,
                 rhs_fn=lambda epsilon, **_: 50 * epsilon**2,
@@ -507,7 +507,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_2, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("d", "t", "epsilon"),
                 lhs_fn=lambda d, t, **_: d / t,
                 rhs_fn=lambda epsilon, **_: 70 * epsilon**2,
@@ -516,7 +516,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_3, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpec(
+            _LimitSpecification(
                 params=("d", "t", "epsilon"),
                 lhs_fn=lambda d, t, **_: d / t,
                 rhs_fn=lambda epsilon, **_: 90 * epsilon**2,
@@ -575,7 +575,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         k_sigma : DIMENSIONLESS | None
             [$k_{\sigma}$] Buckling factor of the compression part (-).
         """
-        # The checks themselves were already built by __new__ through _resolve_aggregation; what is stored
+        # The checks themselves were already built by __new__ through _define_aggregation; what is stored
         # here is the input of the check, so that the instance describes what it was asked to verify.
         super().__init__()
         self.cell = _TableCell(part, CrossSectionClass(cross_section_class), loading_condition)
@@ -590,7 +590,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         self.k_sigma = k_sigma
 
     @classmethod
-    def _resolve_aggregation(
+    def _define_aggregation(
         cls,
         cross_section_class: CrossSectionClass | int,
         part: Table5Dot2CompressionPart,
@@ -609,8 +609,8 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         ValueError
             If Table 5.2 does not define a limit for the given combination.
         """
-        cell = _TableCell(part, CrossSectionClass(cross_section_class), loading_condition)
-        specs = cls._ratio_factor_mapping.get(cell)
-        if specs is None:
-            raise ValueError(f"Table 5.2 does not define a limit for {cell}.")
-        return all, [_MaximumWidthToThicknessRatio(spec, cell, **params) for spec in specs]
+        table_cell = _TableCell(part, CrossSectionClass(cross_section_class), loading_condition)
+        limit_specs = cls._ratio_factor_mapping.get(table_cell)
+        if limit_specs is None:
+            raise ValueError(f"Table 5.2 does not define a limit for {table_cell}.")
+        return all, [_MaximumWidthToThicknessRatio(limit_spec, table_cell, **params) for limit_spec in limit_specs]

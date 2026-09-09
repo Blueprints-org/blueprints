@@ -10,18 +10,18 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.ta
     Table5Dot2CompressionPart,
     Table5Dot2LoadingCondition,
     Table5Dot2MaximumWidthToThicknessRatio,
-    _LimitSpec,
+    _LimitSpecification,
 )
 from blueprints.codes.formula import ComparisonFormula
 
 
-class TestLimitSpec:
+class TestLimitSpecification:
     """Validation of a single criterion of table 5.2."""
 
     def test_raise_error_if_a_placeholder_is_not_a_declared_parameter(self) -> None:
         """A placeholder that is not declared would survive into the rendered latex."""
         with pytest.raises(ValueError, match=re.escape("use placeholders ['c', 'epsilon', 't'], but the criterion declares")):
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda **_: 72.0,
@@ -32,7 +32,7 @@ class TestLimitSpec:
     def test_raise_error_if_a_declared_parameter_has_no_placeholder(self) -> None:
         """A declared parameter that never appears in the templates is a mistake as well."""
         with pytest.raises(ValueError, match=re.escape("use placeholders ['c', 't'], but the criterion declares")):
-            _LimitSpec(
+            _LimitSpecification(
                 params=("c", "t", "epsilon"),
                 lhs_fn=lambda c, t, **_: c / t,
                 rhs_fn=lambda **_: 72.0,
@@ -43,7 +43,7 @@ class TestLimitSpec:
     def test_raise_error_if_a_parameter_has_no_latex_symbol(self) -> None:
         """Every parameter must have a latex symbol to render the symbolic equation with."""
         with pytest.raises(ValueError, match=re.escape("No latex symbol is defined for gamma.")):
-            _LimitSpec(
+            _LimitSpecification(
                 params=("gamma",),
                 lhs_fn=lambda gamma, **_: gamma,
                 rhs_fn=lambda **_: 1.0,
