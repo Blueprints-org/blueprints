@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_negative
 
@@ -58,12 +58,33 @@ class Form8Dot2UltimateBondStress(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns a representation of the formula in LaTeX format."""
+        _equation: str = r"2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\eta_1": f"{self.eta_1:.{n}f}",
+                r"\eta_2": f"{self.eta_2:.{n}f}",
+                r"f_{ctd}": f"{self.f_ctd:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\eta_1": f"{self.eta_1:.{n}f}",
+                r"\eta_2": f"{self.eta_2:.{n}f}",
+                r"f_{ctd}": rf"{self.f_ctd:.{n}f} \ MPa",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"f_{bd}",
             result=f"{self:.{n}f}",
-            equation=r"2.25 \cdot \eta_1 \cdot \eta_2 \cdot f_{ctd}",
-            numeric_equation=rf"2.25 \cdot {self.eta_1:.{n}f} \cdot {self.eta_2:.{n}f} \cdot {self.f_ctd:.{n}f}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="MPa",
         )
 
 
@@ -130,12 +151,15 @@ class SubForm8Dot2CoefficientBarDiameter(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
-        numerical_equation = "1.00" if self.diameter <= 32 else f"(132 - {self.diameter}) / 100"
+        _equation: str = r"\begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases}"
+        _numeric_equation: str = "1.00" if self.diameter <= 32 else f"(132 - {self.diameter:.{n}f}) / 100"
+        _numeric_equation_with_units: str = "1.00" if self.diameter <= 32 else rf"(132 - {self.diameter:.{n}f} \ mm) / 100"
 
         return LatexFormula(
             return_symbol=r"\eta_2",
             result=f"{self:.{n}f}",
-            equation=r"\begin{matrix} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{matrix}",
-            numeric_equation=numerical_equation,
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
         )

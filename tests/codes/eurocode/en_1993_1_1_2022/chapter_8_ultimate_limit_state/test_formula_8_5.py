@@ -51,16 +51,20 @@ class TestForm8Dot5MinDeductionAreaStaggeredFastenerHoles:
         [
             (
                 "complete",
-                r"\Delta A_{net,1} = t \left( n_1 \cdot d_0 - \sum \frac{s^2}{4 \cdot p_2} \right) = "
-                r"10.000 \left( 5.000 \cdot 20.000 - \left( \frac{50.000^2}{4 \cdot 100.000} + "
-                r"\frac{60.000^2}{4 \cdot 120.000} \right) \right) = 862.500 \ mm^2",
+                (
+                    r"\Delta A_{net,1} = t \left( n_1 \cdot d_0 - \sum \frac{s^2}{4 \cdot p_2} \right) = "
+                    r"10.000 \left( 5.000 \cdot 20.000 - \left( \frac{50.000^2}{4 \cdot 100.000} + "
+                    r"\frac{60.000^2}{4 \cdot 120.000} \right) \right) = 862.500 \ mm^2"
+                ),
             ),
             ("short", r"\Delta A_{net,1} = 862.500 \ mm^2"),
             (
                 "complete_with_units",
-                r"\Delta A_{net,1} = t \left( n_1 \cdot d_0 - \sum \frac{s^2}{4 \cdot p_2} \right) = "
-                r"10.000 \ mm \left( 5.000 \cdot 20.000 \ mm - \left( \frac{50.000^2 \ mm^2}{4 \cdot 100.000 \ mm} + "
-                r"\frac{60.000^2 \ mm^2}{4 \cdot 120.000 \ mm} \right) \right) = 862.500 \ mm^2",
+                (
+                    r"\Delta A_{net,1} = t \left( n_1 \cdot d_0 - \sum \frac{s^2}{4 \cdot p_2} \right) = "
+                    r"10.000 \ mm \left( 5.000 \cdot 20.000 \ mm - \left( \frac{50.000^2 \ mm^2}{4 \cdot 100.000 \ mm} + "
+                    r"\frac{60.000^2 \ mm^2}{4 \cdot 120.000 \ mm} \right) \right) = 862.500 \ mm^2"
+                ),
             ),
         ],
     )

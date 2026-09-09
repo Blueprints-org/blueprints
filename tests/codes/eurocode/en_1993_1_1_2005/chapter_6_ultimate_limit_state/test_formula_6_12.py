@@ -41,8 +41,10 @@ class TestForm6Dot12CheckBendingMoment:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to "
-                r"\left( \frac{1000.000}{1500.000} \leq 1 \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{M_{Ed}}{M_{c,Rd}} \leq 1 \right) \to "
+                    r"\left( \frac{1000.000}{1500.000} \leq 1 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

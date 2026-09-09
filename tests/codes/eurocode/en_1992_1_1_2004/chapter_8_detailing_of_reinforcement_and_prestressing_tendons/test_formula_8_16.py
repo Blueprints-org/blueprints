@@ -135,10 +135,17 @@ class TestForm8Dot16BasicTransmissionLength:
                 "complete",
                 (
                     r"l_{pt} = \alpha_1 \cdot \alpha_2 \cdot Ø \cdot \frac{\sigma_{pm0}}{f_{bpt}} = "
-                    r"1.00 \cdot 0.25 \cdot 8.00 \cdot \frac{350.00}{5.00} = 140.00"
+                    r"1.00 \cdot 0.25 \cdot 8.00 \cdot \frac{350.00}{5.00} = 140.00 \ mm"
                 ),
             ),
-            ("short", r"l_{pt} = 140.00"),
+            (
+                "complete_with_units",
+                (
+                    r"l_{pt} = \alpha_1 \cdot \alpha_2 \cdot Ø \cdot \frac{\sigma_{pm0}}{f_{bpt}} = "
+                    r"1.00 \cdot 0.25 \cdot 8.00 \ mm \cdot \frac{350.00 \ MPa}{5.00 \ MPa} = 140.00 \ mm"
+                ),
+            ),
+            ("short", r"l_{pt} = 140.00 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -159,6 +166,10 @@ class TestForm8Dot16BasicTransmissionLength:
             f_bpt=f_bpt,
         ).latex()
 
-        actual = {"complete": form_8_16_latex.complete, "short": form_8_16_latex.short}
+        actual = {
+            "complete": form_8_16_latex.complete,
+            "complete_with_units": form_8_16_latex.complete_with_units,
+            "short": form_8_16_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

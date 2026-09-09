@@ -46,8 +46,10 @@ class TestForm6Dot5ShearForceCheck:
         [
             (
                 "complete",
-                r"CHECK \to V_{Ed} \leq 0.5 \cdot b_w \cdot d \cdot \nu \cdot f_{cd} \to 1400000.000 \leq "
-                r"0.5 \cdot 300.000 \cdot 500.000 \cdot 0.600 \cdot 30.000 \to \text{Not OK}",
+                (
+                    r"CHECK \to V_{Ed} \leq 0.5 \cdot b_w \cdot d \cdot \nu \cdot f_{cd} \to 1400000.000 \leq "
+                    r"0.5 \cdot 300.000 \cdot 500.000 \cdot 0.600 \cdot 30.000 \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

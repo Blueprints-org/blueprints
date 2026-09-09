@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import KN, MM, MM2, MPA
 from blueprints.unit_conversion import N_TO_KN
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
@@ -73,13 +73,28 @@ class Form8Dot9AnchorageCapacityWeldedTransverseBarSmallDiameter(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.9."""
+        _equation: str = r"\min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right)"
+        _numeric_equation: str = (
+            rf"\min \left( {self.f_wd:.{n}f}, 1000 \cdot 16 \cdot {self.a_s:.{n}f} \cdot {self.f_cd:.{n}f} \cdot "
+            rf"\frac{{{self.diameter_t:.{n}f}}}{{{self.diameter_l:.{n}f}}} \right)"
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"F_{wd}": rf"{self.f_wd:.{n}f} \ kN",
+                r"A_s": rf"{self.a_s:.{n}f} \ mm^2",
+                r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
+                r"Ø_t": rf"{self.diameter_t:.{n}f} \ mm",
+                r"Ø_l": rf"{self.diameter_l:.{n}f} \ mm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"F_{btd}",
             result=f"{self:.{n}f}",
-            equation=r"\min \left( F_{wd}, 16 \cdot A_s \cdot f_{cd} \cdot \frac{Ø_t}{Ø_l} \right)",
-            numeric_equation=(
-                rf"\min \left( {self.f_wd:.{n}f}, 1000 \cdot 16 \cdot {self.a_s:.{n}f} \cdot {self.f_cd:.{n}f} \cdot "
-                rf"\frac{{{self.diameter_t:.{n}f}}}{{{self.diameter_l:.{n}f}}} \right)"
-            ),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="kN",
         )

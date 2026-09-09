@@ -66,6 +66,7 @@ After installation, verify that Blueprints is correctly installed:
 
 ```python
 import blueprints
+
 print(blueprints.__version__)
 ```
 

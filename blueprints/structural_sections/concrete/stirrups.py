@@ -45,7 +45,7 @@ class StirrupConfiguration:
 
     counter = 1
 
-    def __init__(  # noqa: PLR0913
+    def __init__(  # noqa: PLR0913, PLR0917
         self,
         geometry: Polygon,
         diameter: MM,

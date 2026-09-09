@@ -67,16 +67,18 @@ class TestForm7Dot16abSpanDepthRatio:
         [
             (
                 "complete",
-                r"\frac{l}{d} = \begin{cases} K \cdot \left[11 + 1.5 \cdot \sqrt{f_{ck}} \cdot "
-                r"\frac{\rho_0}{\rho} + 3.2 \cdot \sqrt{f_{ck}} \cdot \left(\frac{\rho_0}{\rho} - 1\right)^{3/2}\right] & "
-                r"\text{if } \rho \leq \rho_0 \\ K \cdot \left[11 + 1.5 \cdot \sqrt{f_{ck}} \cdot "
-                r"\frac{\rho_0}{\rho - \rho'} + \frac{1}{12} \cdot \sqrt{f_{ck}} \cdot \sqrt{\frac{\rho'}"
-                r"{\rho_0}}\right] & \text{if } \rho > \rho_0 \end{cases} = "
-                r"\begin{cases} 1.000 \cdot \left[11 + 1.5 \cdot \sqrt{30.000} \cdot \frac{0.0020}{0.0010} + "
-                r"3.2 \cdot \sqrt{30.000} \cdot \left(\frac{0.0020}{0.0010} - 1\right)^{3/2}\right] & "
-                r"\text{if } 0.0010 \leq 0.0020 \\ 1.000 \cdot \left[11 + 1.5 \cdot \sqrt{30.000} "
-                r"\cdot \frac{0.0020}{0.0010 - 0.0005} + \frac{1}{12} \cdot \sqrt{30.000} \cdot "
-                r"\sqrt{\frac{0.0005}{0.0020}}\right] & \text{if } 0.0010 > 0.0020 \end{cases} = 44.959 \ -",
+                (
+                    r"\frac{l}{d} = \begin{cases} K \cdot \left[11 + 1.5 \cdot \sqrt{f_{ck}} \cdot "
+                    r"\frac{\rho_0}{\rho} + 3.2 \cdot \sqrt{f_{ck}} \cdot \left(\frac{\rho_0}{\rho} - 1\right)^{3/2}\right] & "
+                    r"\text{if } \rho \leq \rho_0 \\ K \cdot \left[11 + 1.5 \cdot \sqrt{f_{ck}} \cdot "
+                    r"\frac{\rho_0}{\rho - \rho'} + \frac{1}{12} \cdot \sqrt{f_{ck}} \cdot \sqrt{\frac{\rho'}"
+                    r"{\rho_0}}\right] & \text{if } \rho > \rho_0 \end{cases} = "
+                    r"\begin{cases} 1.000 \cdot \left[11 + 1.5 \cdot \sqrt{30.000} \cdot \frac{0.0020}{0.0010} + "
+                    r"3.2 \cdot \sqrt{30.000} \cdot \left(\frac{0.0020}{0.0010} - 1\right)^{3/2}\right] & "
+                    r"\text{if } 0.0010 \leq 0.0020 \\ 1.000 \cdot \left[11 + 1.5 \cdot \sqrt{30.000} "
+                    r"\cdot \frac{0.0020}{0.0010 - 0.0005} + \frac{1}{12} \cdot \sqrt{30.000} \cdot "
+                    r"\sqrt{\frac{0.0005}{0.0020}}\right] & \text{if } 0.0010 > 0.0020 \end{cases} = 44.959 \ -"
+                ),
             ),
             ("short", r"\frac{l}{d} = 44.959 \ -"),
         ],
@@ -129,8 +131,10 @@ class TestForm7Dot16ReferenceReinforcementRatio:
         [
             (
                 "complete",
-                r"\rho_0 = \sqrt{f_{ck}} \cdot 10^{-3}"
-                r" = \sqrt{30.000} \cdot 10^{-3} = 0.005477 \ -",
+                (
+                    r"\rho_0 = \sqrt{f_{ck}} \cdot 10^{-3}"
+                    r" = \sqrt{30.000} \cdot 10^{-3} = 0.005477 \ -"
+                ),
             ),
             ("short", r"\rho_0 = 0.005477 \ -"),
         ],

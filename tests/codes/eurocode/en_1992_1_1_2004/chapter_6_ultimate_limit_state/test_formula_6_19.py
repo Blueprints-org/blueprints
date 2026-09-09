@@ -44,8 +44,10 @@ class TestForm6Dot19CheckShearForce:
         [
             (
                 "complete",
-                r"CHECK \to V_{Ed} \leq A_{sw} \cdot f_{ywd} \cdot \sin(\alpha) \to"
-                r" 100000.000 \leq 200.000 \cdot 400.000 \cdot \sin(45.000) \to \text{Not OK}",
+                (
+                    r"CHECK \to V_{Ed} \leq A_{sw} \cdot f_{ywd} \cdot \sin(\alpha) \to"
+                    r" 100000.000 \leq 200.000 \cdot 400.000 \cdot \sin(45.000) \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

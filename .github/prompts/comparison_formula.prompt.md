@@ -105,6 +105,4 @@ class Form5Dot17CompressionCheckZProfilesClass1And2(ComparisonFormula):
             comparison_operator_label=r"\to",
             unit="",
         )
-
-
 ```

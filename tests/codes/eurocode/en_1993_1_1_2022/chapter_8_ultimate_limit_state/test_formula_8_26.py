@@ -64,15 +64,19 @@ class TestForm8Dot26ShearStressIOrHSection:
         [
             (
                 "complete",
-                r"\tau_{Ed} = \frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6 = "
-                r"\frac{1000.000}{200.000} \text{ if } 150.000 / 200.000 \ge 0.6 = 5.000 \ MPa",
+                (
+                    r"\tau_{Ed} = \frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6 = "
+                    r"\frac{1000.000}{200.000} \text{ if } 150.000 / 200.000 \ge 0.6 = 5.000 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Ed} = 5.000 \ MPa"),
             (
                 "complete_with_units",
-                r"\tau_{Ed} = \frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6 = "
-                r"\frac{1000.000 \ N}{200.000 \ mm^2} \text{ if } 150.000 \ mm^2 / 200.000 \ mm^2 "
-                r"\ge 0.6 = 5.000 \ MPa",
+                (
+                    r"\tau_{Ed} = \frac{V_{Ed}}{A_w} \text{ if } A_f / A_w \ge 0.6 = "
+                    r"\frac{1000.000 \ N}{200.000 \ mm^2} \text{ if } 150.000 \ mm^2 / 200.000 \ mm^2 "
+                    r"\ge 0.6 = 5.000 \ MPa"
+                ),
             ),
         ],
     )

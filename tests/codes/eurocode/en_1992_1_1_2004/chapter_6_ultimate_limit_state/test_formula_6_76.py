@@ -50,14 +50,18 @@ class TestForm6Dot76DesignFatigueStrengthConcrete:
         [
             (
                 "complete",
-                r"f_{cd,fat} = k_{1} \cdot β_{cc}(t_0) \cdot f_{cd} \cdot \left(1-\frac{f_{ck}}{250}\right) = "
-                r"0.850 \cdot 1.100 \cdot 3.000 \cdot \left(1-\frac{2.000}{250}\right) = 2.783",
+                (
+                    r"f_{cd,fat} = k_{1} \cdot β_{cc}(t_0) \cdot f_{cd} \cdot \left(1-\frac{f_{ck}}{250}\right) = "
+                    r"0.850 \cdot 1.100 \cdot 3.000 \cdot \left(1-\frac{2.000}{250}\right) = 2.783"
+                ),
             ),
             ("short", r"f_{cd,fat} = 2.783"),
             (
                 "string",
-                r"f_{cd,fat} = k_{1} \cdot β_{cc}(t_0) \cdot f_{cd} \cdot \left(1-\frac{f_{ck}}{250}\right) = "
-                r"0.850 \cdot 1.100 \cdot 3.000 \cdot \left(1-\frac{2.000}{250}\right) = 2.783",
+                (
+                    r"f_{cd,fat} = k_{1} \cdot β_{cc}(t_0) \cdot f_{cd} \cdot \left(1-\frac{f_{ck}}{250}\right) = "
+                    r"0.850 \cdot 1.100 \cdot 3.000 \cdot \left(1-\frac{2.000}{250}\right) = 2.783"
+                ),
             ),
         ],
     )

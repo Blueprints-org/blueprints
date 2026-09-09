@@ -51,8 +51,10 @@ class TestForm8Dot25ShearStress:
             ("short", r"\tau_{Ed} = 166.667 \ MPa"),
             (
                 "complete_with_units",
-                r"\tau_{Ed} = \frac{V_{Ed} \cdot S}{I \cdot t} = "
-                r"\frac{1000.000 \ N \cdot 2000.000 \ mm^3}{3000.000 \ mm^4 \cdot 4.000 \ mm} = 166.667 \ MPa",
+                (
+                    r"\tau_{Ed} = \frac{V_{Ed} \cdot S}{I \cdot t} = "
+                    r"\frac{1000.000 \ N \cdot 2000.000 \ mm^3}{3000.000 \ mm^4 \cdot 4.000 \ mm} = 166.667 \ MPa"
+                ),
             ),
         ],
     )

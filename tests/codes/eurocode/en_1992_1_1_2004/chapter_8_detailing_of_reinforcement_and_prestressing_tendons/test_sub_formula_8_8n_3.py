@@ -49,6 +49,7 @@ class TestSubForm8Dot8nFunctionY:
         ("representation", "expected"),
         [
             ("complete", r"y = 0.015 + 0.14 \cdot e^{-0.18 \cdot x} = 0.015 + 0.14 \cdot e^{-0.18 \cdot 8.50} = 0.05"),
+            ("complete_with_units", r"y = 0.015 + 0.14 \cdot e^{-0.18 \cdot x} = 0.015 + 0.14 \cdot e^{-0.18 \cdot 8.50} = 0.05"),
             ("short", r"y = 0.05"),
         ],
     )
@@ -62,6 +63,10 @@ class TestSubForm8Dot8nFunctionY:
         # Object to test
         sub_form_8_8n_3_latex = SubForm8Dot8nFunctionY(x_function=x_function).latex()
 
-        actual = {"complete": sub_form_8_8n_3_latex.complete, "short": sub_form_8_8n_3_latex.short}
+        actual = {
+            "complete": sub_form_8_8n_3_latex.complete,
+            "complete_with_units": sub_form_8_8n_3_latex.complete_with_units,
+            "short": sub_form_8_8n_3_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

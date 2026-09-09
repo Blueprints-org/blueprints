@@ -98,22 +98,26 @@ class TestForm6Dot44CombinedCompressionBendingClass4CrossSections:
         [
             (
                 "complete",
-                r"CHECK \to \frac{N_{Ed}}{A_{eff} \cdot f_y / \gamma_{M0}} + "
-                r"\frac{M_{y,Ed} + N_{Ed} \cdot e_{Ny}}{W_{eff,y,min} \cdot f_y / \gamma_{M0}} + "
-                r"\frac{M_{z,Ed} + N_{Ed} \cdot e_{Nz}}{W_{eff,z,min} \cdot f_y / \gamma_{M0}} \leq 1 \to "
-                r"\frac{50000.000}{2000.000 \cdot 355.000 / 1.000} + "
-                r"\frac{5000000.000 + 50000.000 \cdot 10.000}{50000.000 \cdot 355.000 / 1.000} + "
-                r"\frac{3000000.000 + 50000.000 \cdot 8.000}{40000.000 \cdot 355.000 / 1.000} \leq 1 \to OK",
+                (
+                    r"CHECK \to \frac{N_{Ed}}{A_{eff} \cdot f_y / \gamma_{M0}} + "
+                    r"\frac{M_{y,Ed} + N_{Ed} \cdot e_{Ny}}{W_{eff,y,min} \cdot f_y / \gamma_{M0}} + "
+                    r"\frac{M_{z,Ed} + N_{Ed} \cdot e_{Nz}}{W_{eff,z,min} \cdot f_y / \gamma_{M0}} \leq 1 \to "
+                    r"\frac{50000.000}{2000.000 \cdot 355.000 / 1.000} + "
+                    r"\frac{5000000.000 + 50000.000 \cdot 10.000}{50000.000 \cdot 355.000 / 1.000} + "
+                    r"\frac{3000000.000 + 50000.000 \cdot 8.000}{40000.000 \cdot 355.000 / 1.000} \leq 1 \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
             (
                 "complete_with_units",
-                r"CHECK \to \frac{N_{Ed}}{A_{eff} \cdot f_y / \gamma_{M0}} + "
-                r"\frac{M_{y,Ed} + N_{Ed} \cdot e_{Ny}}{W_{eff,y,min} \cdot f_y / \gamma_{M0}} + "
-                r"\frac{M_{z,Ed} + N_{Ed} \cdot e_{Nz}}{W_{eff,z,min} \cdot f_y / \gamma_{M0}} \leq 1 \to "
-                r"\frac{50000.000 \ N}{2000.000 \ mm^2 \cdot 355.000 \ MPa / 1.000} + "
-                r"\frac{5000000.000 \ Nmm + 50000.000 \ N \cdot 10.000 \ mm}{50000.000 \ mm^3 \cdot 355.000 \ MPa / 1.000} + "
-                r"\frac{3000000.000 \ Nmm + 50000.000 \ N \cdot 8.000 \ mm}{40000.000 \ mm^3 \cdot 355.000 \ MPa / 1.000} \leq 1 \to OK",
+                (
+                    r"CHECK \to \frac{N_{Ed}}{A_{eff} \cdot f_y / \gamma_{M0}} + "
+                    r"\frac{M_{y,Ed} + N_{Ed} \cdot e_{Ny}}{W_{eff,y,min} \cdot f_y / \gamma_{M0}} + "
+                    r"\frac{M_{z,Ed} + N_{Ed} \cdot e_{Nz}}{W_{eff,z,min} \cdot f_y / \gamma_{M0}} \leq 1 \to "
+                    r"\frac{50000.000 \ N}{2000.000 \ mm^2 \cdot 355.000 \ MPa / 1.000} + "
+                    r"\frac{5000000.000 \ Nmm + 50000.000 \ N \cdot 10.000 \ mm}{50000.000 \ mm^3 \cdot 355.000 \ MPa / 1.000} + "
+                    r"\frac{3000000.000 \ Nmm + 50000.000 \ N \cdot 8.000 \ mm}{40000.000 \ mm^3 \cdot 355.000 \ MPa / 1.000} \leq 1 \to OK"
+                ),
             ),
         ],
     )
