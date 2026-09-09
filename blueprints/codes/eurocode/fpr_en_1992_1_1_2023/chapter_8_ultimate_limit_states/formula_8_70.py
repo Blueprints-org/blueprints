@@ -11,13 +11,18 @@ from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
-class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
+class Form8Dot70CheckPreventCrushingOfCompressionFieldInFlange(ComparisonFormula):
     r"""Class representing formula 8.70 for the check that prevents crushing of the compression field in the flange.
 
-    The standard writes the compressive stress [$\sigma_{cd}$] and the condition it has to satisfy on one line.
-    The line is a verification and not a value with a cap on it, since the paragraph introduces it with "the
-    following condition should be satisfied", so it is implemented as a comparison. The stress itself remains
-    available through the ``lhs`` property.
+    The check compares the compressive stress in the compression field [$\sigma_{cd}$] with the compressive
+    strength available to it [$\nu \cdot f_{cd}$]. It evaluates to True when the stress does not exceed that
+    strength, which means the compression field in the flange does *not* crush; False means that crushing is
+    not prevented and that the flange fails this verification.
+
+    The standard writes the compressive stress and the condition it has to satisfy on one line. The line is a
+    verification and not a value with a cap on it, since the paragraph introduces it with "the following
+    condition should be satisfied", so it is implemented as a comparison. The stress itself remains available
+    through the ``lhs`` property.
     """
 
     label = "8.70"
