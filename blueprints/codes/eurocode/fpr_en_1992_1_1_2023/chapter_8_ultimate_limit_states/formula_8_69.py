@@ -6,7 +6,8 @@ from collections.abc import Callable
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MM, MM2, MPA
+from blueprints.type_alias import DEG, MM, MM2, MPA
+from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -28,7 +29,7 @@ class Form8Dot69CheckTransverseReinforcementInFlange(ComparisonFormula):
         s_f: MM,
         h_f: MM,
         f_yd: MPA,
-        cot_theta_f: DIMENSIONLESS,
+        theta_f: DEG,
     ) -> None:
         r"""Check whether the transverse reinforcement in the flange carries the longitudinal shear stress.
 
@@ -50,9 +51,9 @@ class Form8Dot69CheckTransverseReinforcementInFlange(ComparisonFormula):
             [$h_f$] Thickness of the flange at the junctions [$mm$].
         f_yd : MPA
             [$f_{yd}$] Design value of the yield strength of the transverse reinforcement [$MPa$].
-        cot_theta_f : DIMENSIONLESS
-            [$\cot\theta_f$] Cotangent of the selected inclination of the compression field in the flange with
-            respect to the longitudinal axis, bounded by Formulas (8.67) and (8.68) [$-$].
+        theta_f : DEG
+            [$\theta_f$] Selected inclination of the compression field in the flange with respect to the
+            longitudinal axis, bounded by Formulas (8.67) and (8.68) [$degrees$].
         """
         super().__init__()
         self.tau_ed = tau_ed
@@ -60,7 +61,7 @@ class Form8Dot69CheckTransverseReinforcementInFlange(ComparisonFormula):
         self.s_f = s_f
         self.h_f = h_f
         self.f_yd = f_yd
-        self.cot_theta_f = cot_theta_f
+        self.theta_f = theta_f
 
     @classmethod
     def _comparison_operator(cls) -> Callable[[float, float], bool]:
@@ -75,16 +76,15 @@ class Form8Dot69CheckTransverseReinforcementInFlange(ComparisonFormula):
         return float(tau_ed)
 
     @staticmethod
-    def _evaluate_rhs(a_sf: MM2, s_f: MM, h_f: MM, f_yd: MPA, cot_theta_f: DIMENSIONLESS, *_args, **_kwargs) -> float:
+    def _evaluate_rhs(a_sf: MM2, s_f: MM, h_f: MM, f_yd: MPA, theta_f: DEG, *_args, **_kwargs) -> float:
         """Evaluates the shear stress that the transverse reinforcement in the flange can carry."""
         # A flange without transverse reinforcement is a real design case, so a zero area is accepted. A yield
-        # strength or a cotangent of zero is not: the cotangent is bounded below by 1 in Formulas (8.67) and
-        # (8.68), and allowing either to be zero would report OK for a flange with no capacity at all whenever
-        # the shear stress is also zero, and would make the unity check divide by zero.
+        # strength of zero is not, since allowing it would report OK for a flange with no capacity at all
+        # whenever the shear stress is also zero. The angle is bounded to (0, 90] degrees by cot() itself.
         raise_if_negative(a_sf=a_sf)
-        raise_if_less_or_equal_to_zero(s_f=s_f, h_f=h_f, f_yd=f_yd, cot_theta_f=cot_theta_f)
+        raise_if_less_or_equal_to_zero(s_f=s_f, h_f=h_f, f_yd=f_yd, theta_f=theta_f)
 
-        return float(a_sf / (s_f * h_f) * f_yd * cot_theta_f)
+        return float(a_sf / (s_f * h_f) * f_yd * cot(theta_f))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.69."""
@@ -97,7 +97,7 @@ class Form8Dot69CheckTransverseReinforcementInFlange(ComparisonFormula):
                 r"s_f": f"{self.s_f:.{n}f}",
                 r"h_f": f"{self.h_f:.{n}f}",
                 r"f_{yd}": f"{self.f_yd:.{n}f}",
-                r"\cot(\theta_f)": f"{self.cot_theta_f:.{n}f}",
+                r"\cot(\theta_f)": f"{cot(self.theta_f):.{n}f}",
             },
             unique_symbol_check=True,
         )
@@ -110,7 +110,7 @@ class Form8Dot69CheckTransverseReinforcementInFlange(ComparisonFormula):
                 r"h_f": rf"{self.h_f:.{n}f} \ mm",
                 r"f_{yd}": rf"{self.f_yd:.{n}f} \ MPa",
                 # The cotangent is dimensionless, so it carries no unit here.
-                r"\cot(\theta_f)": f"{self.cot_theta_f:.{n}f}",
+                r"\cot(\theta_f)": f"{cot(self.theta_f):.{n}f}",
             },
             unique_symbol_check=True,
         )

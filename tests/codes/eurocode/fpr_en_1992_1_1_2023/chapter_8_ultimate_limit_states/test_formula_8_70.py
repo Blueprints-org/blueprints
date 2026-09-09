@@ -5,7 +5,10 @@ import pytest
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_70 import (
     Form8Dot70CheckCrushingOfCompressionFieldInFlange,
 )
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
+
+# Angle chosen so that its cotangent is a round number, which keeps the hand calculations readable
+THETA_F_COT_1_2 = 39.805571092265  # cot(theta_f) = 1.2
 
 
 class TestForm8Dot70CheckCrushingOfCompressionFieldInFlange:
@@ -21,14 +24,14 @@ class TestForm8Dot70CheckCrushingOfCompressionFieldInFlange:
     def test_evaluation(self, tau_ed: float, expected: bool) -> None:
         """Tests the evaluation of the result."""
         # Example values
-        cot_theta_f = 1.2
+        theta_f = THETA_F_COT_1_2
         nu = 0.5
         f_cd = 20.0
 
         # Object to test
         formula = Form8Dot70CheckCrushingOfCompressionFieldInFlange(
             tau_ed=tau_ed,
-            cot_theta_f=cot_theta_f,
+            theta_f=theta_f,
             nu=nu,
             f_cd=f_cd,
         )
@@ -40,7 +43,7 @@ class TestForm8Dot70CheckCrushingOfCompressionFieldInFlange:
         # Object to test
         formula = Form8Dot70CheckCrushingOfCompressionFieldInFlange(
             tau_ed=3.0,
-            cot_theta_f=1.2,
+            theta_f=THETA_F_COT_1_2,
             nu=0.5,
             f_cd=20.0,
         )
@@ -55,7 +58,7 @@ class TestForm8Dot70CheckCrushingOfCompressionFieldInFlange:
         # Object to test
         formula = Form8Dot70CheckCrushingOfCompressionFieldInFlange(
             tau_ed=3.0,
-            cot_theta_f=1.2,
+            theta_f=THETA_F_COT_1_2,
             nu=0.5,
             f_cd=20.0,
         )
@@ -66,25 +69,35 @@ class TestForm8Dot70CheckCrushingOfCompressionFieldInFlange:
         assert formula.rhs == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("tau_ed", "cot_theta_f", "nu", "f_cd"),
+        ("tau_ed", "theta_f", "nu", "f_cd"),
         [
-            (-3.0, 1.2, 0.5, 20.0),  # tau_ed is negative
-            (3.0, -1.2, 0.5, 20.0),  # cot_theta_f is negative
-            (3.0, 0.0, 0.5, 20.0),  # cot_theta_f is zero
-            (3.0, 1.2, -0.5, 20.0),  # nu is negative
-            (3.0, 1.2, 0.0, 20.0),  # nu is zero
-            (3.0, 1.2, 0.5, -20.0),  # f_cd is negative
-            (3.0, 1.2, 0.5, 0.0),  # f_cd is zero
+            (-3.0, THETA_F_COT_1_2, 0.5, 20.0),  # tau_ed is negative
+            (3.0, -THETA_F_COT_1_2, 0.5, 20.0),  # theta_f is negative
+            (3.0, 0.0, 0.5, 20.0),  # theta_f is zero
+            (3.0, THETA_F_COT_1_2, -0.5, 20.0),  # nu is negative
+            (3.0, THETA_F_COT_1_2, 0.0, 20.0),  # nu is zero
+            (3.0, THETA_F_COT_1_2, 0.5, -20.0),  # f_cd is negative
+            (3.0, THETA_F_COT_1_2, 0.5, 0.0),  # f_cd is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, tau_ed: float, cot_theta_f: float, nu: float, f_cd: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, tau_ed: float, theta_f: float, nu: float, f_cd: float) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form8Dot70CheckCrushingOfCompressionFieldInFlange(
                 tau_ed=tau_ed,
-                cot_theta_f=cot_theta_f,
+                theta_f=theta_f,
                 nu=nu,
                 f_cd=f_cd,
+            )
+
+    def test_raise_error_when_theta_f_exceeds_90_degrees(self) -> None:
+        """The angle is an inclination to the member axis, so it cannot pass 90 degrees."""
+        with pytest.raises(GreaterThan90Error):
+            Form8Dot70CheckCrushingOfCompressionFieldInFlange(
+                tau_ed=3.0,
+                theta_f=120.0,
+                nu=0.5,
+                f_cd=20.0,
             )
 
     @pytest.mark.parametrize(
@@ -115,7 +128,7 @@ class TestForm8Dot70CheckCrushingOfCompressionFieldInFlange:
         # Object to test
         latex = Form8Dot70CheckCrushingOfCompressionFieldInFlange(
             tau_ed=tau_ed,
-            cot_theta_f=1.2,
+            theta_f=THETA_F_COT_1_2,
             nu=0.5,
             f_cd=20.0,
         ).latex()

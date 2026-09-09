@@ -6,7 +6,8 @@ from collections.abc import Callable
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MPA
+from blueprints.type_alias import DEG, DIMENSIONLESS, MPA
+from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
@@ -25,7 +26,7 @@ class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
     def __init__(
         self,
         tau_ed: MPA,
-        cot_theta_f: DIMENSIONLESS,
+        theta_f: DEG,
         nu: DIMENSIONLESS,
         f_cd: MPA,
     ) -> None:
@@ -38,10 +39,10 @@ class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
         tau_ed : MPA
             [$\tau_{Ed}$] Longitudinal shear stress at the junction between one side of a flange and the web
             according to Formula (8.65) [$MPa$].
-        cot_theta_f : DIMENSIONLESS
-            [$\cot\theta_f$] Cotangent of the selected inclination of the compression field in the flange with
-            respect to the longitudinal axis, bounded by Formulas (8.67) and (8.68). The printed formula also
-            contains [$\tan\theta_f$], which is taken as its reciprocal [$-$].
+        theta_f : DEG
+            [$\theta_f$] Selected inclination of the compression field in the flange with respect to the
+            longitudinal axis, bounded by Formulas (8.67) and (8.68). The printed formula also contains
+            [$\tan\theta_f$], which is taken as the reciprocal of [$\cot\theta_f$] [$degrees$].
         nu : DIMENSIONLESS
             [$\nu$] Strength reduction factor, for which 0,5 may be used according to Formula (8.71) [$-$].
         f_cd : MPA
@@ -49,7 +50,7 @@ class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
         """
         super().__init__()
         self.tau_ed = tau_ed
-        self.cot_theta_f = cot_theta_f
+        self.theta_f = theta_f
         self.nu = nu
         self.f_cd = f_cd
 
@@ -59,12 +60,13 @@ class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
         return operator.le
 
     @staticmethod
-    def _evaluate_lhs(tau_ed: MPA, cot_theta_f: DIMENSIONLESS, *_args, **_kwargs) -> float:
+    def _evaluate_lhs(tau_ed: MPA, theta_f: DEG, *_args, **_kwargs) -> float:
         """Evaluates the compressive stress in the compression field, for more information see the __init__ method."""
         raise_if_negative(tau_ed=tau_ed)
-        # The cotangent is the denominator of the tangent in the printed formula, so it cannot be zero. A
-        # cotangent of zero or less is not the inclination of a compression field either.
-        raise_if_less_or_equal_to_zero(cot_theta_f=cot_theta_f)
+        # The angle is bounded to (0, 90] degrees by cot() itself.
+        raise_if_less_or_equal_to_zero(theta_f=theta_f)
+
+        cot_theta_f = cot(theta_f)
 
         return float(tau_ed * (cot_theta_f + 1 / cot_theta_f))
 
@@ -86,8 +88,8 @@ class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
             replacements={
                 r"\sigma_{cd}": f"{self.lhs:.{n}f}",
                 r"\tau_{Ed}": f"{self.tau_ed:.{n}f}",
-                r"\cot(\theta_f)": f"{self.cot_theta_f:.{n}f}",
-                r"\tan(\theta_f)": f"{1 / self.cot_theta_f:.{n}f}",
+                r"\cot(\theta_f)": f"{cot(self.theta_f):.{n}f}",
+                r"\tan(\theta_f)": f"{1 / cot(self.theta_f):.{n}f}",
                 r"\nu": f"{self.nu:.{n}f}",
                 r"f_{cd}": f"{self.f_cd:.{n}f}",
             },
@@ -99,8 +101,8 @@ class Form8Dot70CheckCrushingOfCompressionFieldInFlange(ComparisonFormula):
                 r"\sigma_{cd}": rf"{self.lhs:.{n}f} \ MPa",
                 r"\tau_{Ed}": rf"{self.tau_ed:.{n}f} \ MPa",
                 # The cotangent, the tangent and the strength reduction factor are dimensionless.
-                r"\cot(\theta_f)": f"{self.cot_theta_f:.{n}f}",
-                r"\tan(\theta_f)": f"{1 / self.cot_theta_f:.{n}f}",
+                r"\cot(\theta_f)": f"{cot(self.theta_f):.{n}f}",
+                r"\tan(\theta_f)": f"{1 / cot(self.theta_f):.{n}f}",
                 r"\nu": f"{self.nu:.{n}f}",
                 r"f_{cd}": rf"{self.f_cd:.{n}f} \ MPa",
             },

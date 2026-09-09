@@ -5,7 +5,10 @@ import pytest
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_69 import (
     Form8Dot69CheckTransverseReinforcementInFlange,
 )
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError, NegativeValueError
+
+# Angle chosen so that its cotangent is a round number, which keeps the hand calculations readable
+THETA_F_COT_1_2 = 39.805571092265  # cot(theta_f) = 1.2
 
 
 class TestForm8Dot69CheckTransverseReinforcementInFlange:
@@ -26,7 +29,7 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
         s_f = 150.0
         h_f = 200.0
         f_yd = 435.0
-        cot_theta_f = 1.2
+        theta_f = THETA_F_COT_1_2
 
         # Object to test
         formula = Form8Dot69CheckTransverseReinforcementInFlange(
@@ -35,7 +38,7 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
             s_f=s_f,
             h_f=h_f,
             f_yd=f_yd,
-            cot_theta_f=cot_theta_f,
+            theta_f=theta_f,
         )
 
         assert bool(formula) is expected
@@ -49,7 +52,7 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
             s_f=150.0,
             h_f=200.0,
             f_yd=435.0,
-            cot_theta_f=1.2,
+            theta_f=THETA_F_COT_1_2,
         )
 
         # Expected result, manually calculated: 201 / (150 * 200) * 435 * 1.2
@@ -58,18 +61,18 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
         assert formula.rhs == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("tau_ed", "a_sf", "s_f", "h_f", "f_yd", "cot_theta_f"),
+        ("tau_ed", "a_sf", "s_f", "h_f", "f_yd", "theta_f"),
         [
-            (-1.5, 201.0, 150.0, 200.0, 435.0, 1.2),  # tau_ed is negative
-            (1.5, -201.0, 150.0, 200.0, 435.0, 1.2),  # a_sf is negative
-            (1.5, 201.0, -150.0, 200.0, 435.0, 1.2),  # s_f is negative
-            (1.5, 201.0, 0.0, 200.0, 435.0, 1.2),  # s_f is zero
-            (1.5, 201.0, 150.0, -200.0, 435.0, 1.2),  # h_f is negative
-            (1.5, 201.0, 150.0, 0.0, 435.0, 1.2),  # h_f is zero
-            (1.5, 201.0, 150.0, 200.0, -435.0, 1.2),  # f_yd is negative
-            (1.5, 201.0, 150.0, 200.0, 0.0, 1.2),  # f_yd is zero
-            (1.5, 201.0, 150.0, 200.0, 435.0, -1.2),  # cot_theta_f is negative
-            (1.5, 201.0, 150.0, 200.0, 435.0, 0.0),  # cot_theta_f is zero
+            (-1.5, 201.0, 150.0, 200.0, 435.0, THETA_F_COT_1_2),  # tau_ed is negative
+            (1.5, -201.0, 150.0, 200.0, 435.0, THETA_F_COT_1_2),  # a_sf is negative
+            (1.5, 201.0, -150.0, 200.0, 435.0, THETA_F_COT_1_2),  # s_f is negative
+            (1.5, 201.0, 0.0, 200.0, 435.0, THETA_F_COT_1_2),  # s_f is zero
+            (1.5, 201.0, 150.0, -200.0, 435.0, THETA_F_COT_1_2),  # h_f is negative
+            (1.5, 201.0, 150.0, 0.0, 435.0, THETA_F_COT_1_2),  # h_f is zero
+            (1.5, 201.0, 150.0, 200.0, -435.0, THETA_F_COT_1_2),  # f_yd is negative
+            (1.5, 201.0, 150.0, 200.0, 0.0, THETA_F_COT_1_2),  # f_yd is zero
+            (1.5, 201.0, 150.0, 200.0, 435.0, -THETA_F_COT_1_2),  # theta_f is negative
+            (1.5, 201.0, 150.0, 200.0, 435.0, 0.0),  # theta_f is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(
@@ -79,7 +82,7 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
         s_f: float,
         h_f: float,
         f_yd: float,
-        cot_theta_f: float,
+        theta_f: float,
     ) -> None:
         """Test invalid values."""
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
@@ -89,7 +92,19 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
                 s_f=s_f,
                 h_f=h_f,
                 f_yd=f_yd,
-                cot_theta_f=cot_theta_f,
+                theta_f=theta_f,
+            )
+
+    def test_raise_error_when_theta_f_exceeds_90_degrees(self) -> None:
+        """The angle is an inclination to the member axis, so it cannot pass 90 degrees."""
+        with pytest.raises(GreaterThan90Error):
+            Form8Dot69CheckTransverseReinforcementInFlange(
+                tau_ed=1.5,
+                a_sf=201.0,
+                s_f=150.0,
+                h_f=200.0,
+                f_yd=435.0,
+                theta_f=120.0,
             )
 
     @pytest.mark.parametrize(
@@ -124,7 +139,7 @@ class TestForm8Dot69CheckTransverseReinforcementInFlange:
             s_f=150.0,
             h_f=200.0,
             f_yd=435.0,
-            cot_theta_f=1.2,
+            theta_f=THETA_F_COT_1_2,
         ).latex()
 
         actual = {
