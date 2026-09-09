@@ -71,9 +71,9 @@ class TestReinforcementSteelMaterial:
     @pytest.mark.parametrize(
         ("steel_quality", "expected"),
         [
-            (ReinforcementSteelQuality.B500A, 250),
-            (ReinforcementSteelQuality.B500B, 500),
-            (ReinforcementSteelQuality.B500C, 750),
+            (ReinforcementSteelQuality.B500A, 25),
+            (ReinforcementSteelQuality.B500B, 50),
+            (ReinforcementSteelQuality.B500C, 75),
         ],
     )
     def test_eps_uk(self, steel_quality: ReinforcementSteelQuality, expected: str) -> None:

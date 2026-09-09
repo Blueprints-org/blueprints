@@ -27,6 +27,13 @@ Reinforced concrete cross sections are fundamental elements in structural engine
 - **[Standard Rectangular Section](rectangular_reinforced_concrete_cross_section.ipynb)** - Basic rectangular reinforced concrete section with standard reinforcement
 - **[Custom Rectangular Section](rectangular_custom_reinforced_concrete_cross_section.ipynb)** - Advanced rectangular section with custom reinforcement layouts
 
+### Cross Section Analysis
+
+- **[Cross-section Analysis](cross_section_analysis/index.md)** - Overview and quick start of the `CrossSectionAnalysis` analyzer
+- **[SLS Stress/Strain Analysis](cross_section_analysis/sls.md)** - Compute serviceability stresses and strains with automatic uncracked/cracked detection, creep via the effective modulus, and IDEA-RCS-style strain/stress figures
+- **[ULS Capacity & Checks](cross_section_analysis/uls.md)** - The full ULS toolbox: bending capacity, N-M and biaxial interaction diagrams, moment-curvature and a unity check of design actions
+- **[Validation](cross_section_analysis/validation.md)** - How the analysis results are pinned down: closed-form hand-calculation anchors and the IDEA StatiCa RCS reference case
+
 ## Design Workflow
 
 1. **Define Materials** - Specify concrete and steel properties
