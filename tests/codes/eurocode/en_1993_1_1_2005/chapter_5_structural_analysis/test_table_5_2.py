@@ -196,6 +196,33 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
         assert bool(form) is expected
         assert form.unity_check == pytest.approx(expected=unity_check, rel=1e-4)
 
+    def test_maximum_width_to_thickness_ratio_of_a_single_criterion(self) -> None:
+        """A cell holding one criterion returns its limit as a float."""
+        form = Table5Dot2MaximumWidthToThicknessRatio(
+            CrossSectionClass.CLASS_1,
+            Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+            c=500,
+            t=10,
+            epsilon=0.81,
+        )
+
+        assert form.maximum_width_to_thickness_ratio == pytest.approx(expected=72 * 0.81, rel=1e-4)
+
+    def test_maximum_width_to_thickness_ratio_of_several_criteria(self) -> None:
+        """A cell holding several criteria returns a limit per criterion."""
+        form = Table5Dot2MaximumWidthToThicknessRatio(
+            CrossSectionClass.CLASS_3,
+            Table5Dot2CompressionPart.ANGLE,
+            Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION,
+            h=100,
+            b=200,
+            t=10,
+            epsilon=1.0,
+        )
+
+        assert form.maximum_width_to_thickness_ratio == pytest.approx(expected=(15.0, 11.5), rel=1e-4)
+
     def test_is_a_comparison_formula(self) -> None:
         """An instance of the table is a ComparisonFormula, and so are the checks it aggregates."""
         form = Table5Dot2MaximumWidthToThicknessRatio(

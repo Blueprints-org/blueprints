@@ -596,6 +596,19 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         self.psi = psi
         self.k_sigma = k_sigma
 
+    @property
+    def maximum_width_to_thickness_ratio(self) -> float | tuple[float, ...]:
+        """The limit that the width-to-thickness ratio of the compression part is checked against.
+
+        Returns
+        -------
+        float | tuple[float, ...]
+            The limit of the selected cell, or one limit per criterion for a cell that holds several
+            (of Table 5.2, only angles in compression do).
+        """
+        limits = tuple(comparison_formula.rhs for comparison_formula in self.comparison_formulas)
+        return limits[0] if len(limits) == 1 else limits
+
     # Taking the parameters of the code formula instead of the base signature is the documented purpose
     # of _define_aggregation, so the deviation is intentional.
     @classmethod
