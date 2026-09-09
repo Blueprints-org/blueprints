@@ -130,9 +130,9 @@ Total of 602 formulas present.
 |      8.66      |        :x:         |         |                                                                    |
 |      8.67      |        :x:         |         |                                                                    |
 |      8.68      |        :x:         |         |                                                                    |
-|      8.69      |        :x:         |         |                                                                    |
-|      8.70      |        :x:         |         |                                                                    |
-|      8.71      |        :x:         |         |                                                                    |
+|      8.69      | :heavy_check_mark: |         | Form8Dot69CheckTransverseReinforcementInFlange                     |
+|      8.70      | :heavy_check_mark: |         | Form8Dot70CheckPreventCrushingOfCompressionFieldInFlange           |
+|      8.71      | :heavy_check_mark: |         | Form8Dot71StrengthReductionFactor                                  |
 |      8.72      | :heavy_check_mark: |         | Form8Dot72LongitudinalStrainInTensileFlange                        |
 |      8.73      | :heavy_check_mark: |         | Form8Dot73CheckShearStressAtInterface                              |
 |      8.74      | :heavy_check_mark: |         | Form8Dot74DesignShearStressAtInterface                             |
@@ -147,7 +147,7 @@ Total of 602 formulas present.
 |      8.83      | :heavy_check_mark: |         | Form8Dot83TorsionalStressResistanceLongitudinalReinforcement       |
 |      8.84      | :heavy_check_mark: |         | Form8Dot84TorsionalStressResistanceConcreteCrushing                |
 |      8.85      | :heavy_check_mark: |         | Form8Dot85CheckCotangentCompressionFieldTorsion                    |
-|      8.86      |        :x:         |         |                                                                    |
+|      8.86      | :heavy_check_mark: |         | Form8Dot86CheckInteractionInternalForces                           |
 |      8.87      |        :x:         |         |                                                                    |
 |      8.88      |        :x:         |         |                                                                    |
 |      8.89      |        :x:         |         |                                                                    |
