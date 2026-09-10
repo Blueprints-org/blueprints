@@ -80,8 +80,8 @@ class Table5Dot2LoadingCondition(StrEnum):
 
 
 # Substitution is a plain string replace, so parameters are wrapped in placeholders: a bare "c" would also
-# match the "c" of \frac. Warning: the delimiter must be meaningless in latex; "%" would start a comment and swallow
-# the rest of the equation.
+# match the "c" of \frac.
+# Warning: the delimiter must be meaningless in latex; "%" would start a comment and swallow the rest of the equation.
 _PLACEHOLDER: Final[str] = "@"
 _PLACEHOLDER_PATTERN: Final[re.Pattern[str]] = re.compile(rf"{_PLACEHOLDER}(\w+){_PLACEHOLDER}")
 
@@ -511,7 +511,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         ),
         # --- Tubular sections ---
         _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_1, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpecification(
+            tubular_class_1_limit_specification := _LimitSpecification(
                 params=("d", "t", "epsilon"),
                 lhs_fn=lambda d, t, **_: d / t,
                 rhs_fn=lambda epsilon, **_: 50 * epsilon**2,
@@ -520,7 +520,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_2, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpecification(
+            tubular_class_2_limit_specification := _LimitSpecification(
                 params=("d", "t", "epsilon"),
                 lhs_fn=lambda d, t, **_: d / t,
                 rhs_fn=lambda epsilon, **_: 70 * epsilon**2,
@@ -529,7 +529,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
             ),
         ),
         _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_3, _LOAD.SUBJECT_TO_COMPRESSION): (
-            _LimitSpecification(
+            tubular_class_3_limit_specification := _LimitSpecification(
                 params=("d", "t", "epsilon"),
                 lhs_fn=lambda d, t, **_: d / t,
                 rhs_fn=lambda epsilon, **_: 90 * epsilon**2,
@@ -537,6 +537,12 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
                 rhs_latex=r"90 \cdot @epsilon@^2",
             ),
         ),
+        _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_1, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION): (tubular_class_1_limit_specification,),
+        _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_2, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION): (tubular_class_2_limit_specification,),
+        _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION): (tubular_class_3_limit_specification,),
+        _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_1, _LOAD.SUBJECT_TO_BENDING): (tubular_class_1_limit_specification,),
+        _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_2, _LOAD.SUBJECT_TO_BENDING): (tubular_class_2_limit_specification,),
+        _TableCell(_PART.TUBULAR_SECTION, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING): (tubular_class_3_limit_specification,),
     }
 
     def __init__(  # noqa: PLR0913

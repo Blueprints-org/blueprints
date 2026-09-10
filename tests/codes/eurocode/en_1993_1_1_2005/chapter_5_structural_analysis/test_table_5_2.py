@@ -212,6 +212,22 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             False,
             100 / 90,
         ),
+        (
+            Table5Dot2CompressionPart.TUBULAR_SECTION,
+            CrossSectionClass.CLASS_2,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+            {"d": 600, "t": 10, "epsilon": 1.0},
+            True,
+            60 / 70,
+        ),
+        (
+            Table5Dot2CompressionPart.TUBULAR_SECTION,
+            CrossSectionClass.CLASS_3,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION,
+            {"d": 1000, "t": 10, "epsilon": 1.0},
+            False,
+            100 / 90,
+        ),
     ]
 
     @pytest.mark.parametrize(("part", "cross_section_class", "loading_condition", "params", "expected", "unity_check"), testdata)
