@@ -70,8 +70,8 @@ Total of 602 formulas present.
 |      8.6       |        :x:         |         |                                                                    |
 |      8.7       |        :x:         |         |                                                                    |
 |      8.8       |        :x:         |         |                                                                    |
-|      8.9       |        :x:         |         |                                                                    |
-|      8.10      |        :x:         |         |                                                                    |
+|      8.9       | :heavy_check_mark: |         | Form8Dot9To10ConcreteStrengthIncreaseConfinement                  |
+|      8.10      | :heavy_check_mark: |         | Form8Dot9To10ConcreteStrengthIncreaseConfinement                  |
 |      8.11      |        :x:         |         |                                                                    |
 |      8.12      |        :x:         |         |                                                                    |
 |      8.13      |        :x:         |         |                                                                    |
