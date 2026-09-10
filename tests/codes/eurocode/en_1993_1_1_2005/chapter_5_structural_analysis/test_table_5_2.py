@@ -387,23 +387,65 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
                 epsilon=1.0,
             )
 
-    @pytest.mark.parametrize("t", [0.0, -1.0])
-    def test_raise_error_if_required_thickness_is_not_positive(self, t: float) -> None:
-        """Thickness must be positive when the selected criterion uses it."""
-        with pytest.raises(LessOrEqualToZeroError):
-            Table5Dot2MaximumWidthToThicknessRatio(
+    @pytest.mark.parametrize("parameter", ["c", "h", "b", "d", "t", "epsilon"])
+    @pytest.mark.parametrize("invalid_value", [0.0, -1.0])
+    def test_raise_error_if_a_required_dimension_or_epsilon_is_not_positive(self, parameter: str, invalid_value: float) -> None:
+        """Dimensions and epsilon must be positive when the selected criterion uses them."""
+        cell_arguments = {
+            "c": (
                 CrossSectionClass.CLASS_1,
                 Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
                 Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
-                c=500,
-                t=t,
-                epsilon=1.0,
-            )
+                {"c": 100, "t": 10, "epsilon": 1.0},
+            ),
+            "h": (
+                CrossSectionClass.CLASS_3,
+                Table5Dot2CompressionPart.ANGLE,
+                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION,
+                {"h": 100, "b": 100, "t": 10, "epsilon": 1.0},
+            ),
+            "b": (
+                CrossSectionClass.CLASS_3,
+                Table5Dot2CompressionPart.ANGLE,
+                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION,
+                {"h": 100, "b": 100, "t": 10, "epsilon": 1.0},
+            ),
+            "d": (
+                CrossSectionClass.CLASS_1,
+                Table5Dot2CompressionPart.TUBULAR_SECTION,
+                Table5Dot2LoadingCondition.SUBJECT_TO_COMPRESSION,
+                {"d": 100, "t": 10, "epsilon": 1.0},
+            ),
+            "t": (
+                CrossSectionClass.CLASS_1,
+                Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+                {"c": 100, "t": 10, "epsilon": 1.0},
+            ),
+            "epsilon": (
+                CrossSectionClass.CLASS_1,
+                Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+                {"c": 100, "t": 10, "epsilon": 1.0},
+            ),
+        }
+        cross_section_class, part, loading_condition, params = cell_arguments[parameter]
+        params[parameter] = invalid_value
 
-    @pytest.mark.parametrize("alpha", [0.0, -1.0])
-    def test_raise_error_if_required_alpha_is_not_positive(self, alpha: float) -> None:
-        """Alpha must be positive when the selected criterion uses it."""
         with pytest.raises(LessOrEqualToZeroError):
+            Table5Dot2MaximumWidthToThicknessRatio(cross_section_class, part, loading_condition, **params)
+
+    @pytest.mark.parametrize(
+        ("alpha", "expected_error"),
+        [
+            (0.0, pytest.raises(LessOrEqualToZeroError)),
+            (-1.0, pytest.raises(LessOrEqualToZeroError)),
+            (1.1, pytest.raises(ValueError, match="cannot be greater than 1")),
+        ],
+    )
+    def test_raise_error_if_required_alpha_is_outside_its_range(self, alpha: float, expected_error: pytest.RaisesExc) -> None:
+        """Alpha must be greater than zero and at most one when required."""
+        with expected_error:
             Table5Dot2MaximumWidthToThicknessRatio(
                 CrossSectionClass.CLASS_1,
                 Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
@@ -413,6 +455,20 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
                 alpha=alpha,
                 epsilon=1.0,
             )
+
+    def test_required_alpha_may_equal_one(self) -> None:
+        """The upper bound for alpha is inclusive."""
+        form = Table5Dot2MaximumWidthToThicknessRatio(
+            CrossSectionClass.CLASS_1,
+            Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION,
+            c=100,
+            t=10,
+            alpha=1.0,
+            epsilon=1.0,
+        )
+
+        assert form.alpha == 1.0
 
     def test_raise_error_if_required_k_sigma_is_negative(self) -> None:
         """The buckling factor must be non-negative when the selected criterion uses it."""
@@ -426,6 +482,20 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
                 k_sigma=-1.0,
                 epsilon=1.0,
             )
+
+    def test_required_k_sigma_may_equal_zero(self) -> None:
+        """Zero is valid for the criterion containing sqrt(k_sigma)."""
+        form = Table5Dot2MaximumWidthToThicknessRatio(
+            CrossSectionClass.CLASS_3,
+            Table5Dot2CompressionPart.OUTSTAND_FLANGE,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION,
+            c=20,
+            t=10,
+            k_sigma=0.0,
+            epsilon=1.0,
+        )
+
+        assert form.maximum_width_to_thickness_ratio == 0.0
 
     def test_negative_psi_is_valid(self) -> None:
         """Negative psi remains valid, including the sqrt(-psi) branch at psi <= -1."""
@@ -449,6 +519,9 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
             c=500,
             t=10,
+            h=0.0,
+            b=-1.0,
+            d=0.0,
             alpha=-1.0,
             k_sigma=-1.0,
             epsilon=1.0,

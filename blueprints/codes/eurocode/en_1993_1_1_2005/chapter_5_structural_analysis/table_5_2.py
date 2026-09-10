@@ -188,9 +188,13 @@ class _LimitSpecification:
         if missing:
             raise ValueError(f"Table 5.2 check for {cell} requires {', '.join(self.params)}; missing: {', '.join(missing)}.")
 
-        positive_parameters = {name: required_parameters[name] for name in ("t", "alpha") if name in required_parameters}
+        positive_parameters = {
+            name: required_parameters[name] for name in ("c", "h", "b", "d", "t", "epsilon", "alpha") if name in required_parameters
+        }
         non_negative_parameters = {name: required_parameters[name] for name in ("k_sigma",) if name in required_parameters}
         raise_if_less_or_equal_to_zero(**positive_parameters)
+        if required_parameters.get("alpha", 0) > 1:
+            raise ValueError(f"Invalid value for 'alpha': {required_parameters['alpha']}. Values for 'alpha' cannot be greater than 1.")
         raise_if_negative(**non_negative_parameters)
         return required_parameters
 
