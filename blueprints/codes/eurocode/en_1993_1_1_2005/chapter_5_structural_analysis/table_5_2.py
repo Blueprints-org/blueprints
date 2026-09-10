@@ -12,6 +12,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class CrossSectionClass(IntEnum):
@@ -186,6 +187,11 @@ class _LimitSpecification:
                 required_parameters[name] = value
         if missing:
             raise ValueError(f"Table 5.2 check for {cell} requires {', '.join(self.params)}; missing: {', '.join(missing)}.")
+
+        positive_parameters = {name: required_parameters[name] for name in ("t", "alpha") if name in required_parameters}
+        non_negative_parameters = {name: required_parameters[name] for name in ("k_sigma",) if name in required_parameters}
+        raise_if_less_or_equal_to_zero(**positive_parameters)
+        raise_if_negative(**non_negative_parameters)
         return required_parameters
 
     def render_latex_equation(self, replacements: dict[str, str]) -> str:
@@ -272,14 +278,14 @@ class _MaximumWidthToThicknessRatio(ComparisonFormula):
         return operator.le
 
     @staticmethod
-    def _evaluate_lhs(spec: _LimitSpecification, table_cell: _TableCell, **params: float | None) -> float:
+    def _evaluate_lhs(limit_spec: _LimitSpecification, table_cell: _TableCell, **params: float | None) -> float:
         """Evaluates the left-hand side of the comparison. See __init__ for details."""
-        return spec.lhs_fn(**spec.collect_required_parameters(table_cell, **params))
+        return limit_spec.lhs_fn(**limit_spec.collect_required_parameters(table_cell, **params))
 
     @staticmethod
-    def _evaluate_rhs(spec: _LimitSpecification, table_cell: _TableCell, **params: float | None) -> float:
+    def _evaluate_rhs(limit_spec: _LimitSpecification, table_cell: _TableCell, **params: float | None) -> float:
         """Evaluates the right-hand side of the comparison. See __init__ for details."""
-        return spec.rhs_fn(**spec.collect_required_parameters(table_cell, **params))
+        return limit_spec.rhs_fn(**limit_spec.collect_required_parameters(table_cell, **params))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Return the latex representation of the formula, given in math mode."""

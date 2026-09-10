@@ -13,6 +13,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.ta
     _LimitSpecification,
 )
 from blueprints.codes.formula import ComparisonFormula
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestLimitSpecification:
@@ -117,6 +118,14 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             True,
             50 / (36 / 0.4),
         ),
+        (
+            Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+            CrossSectionClass.CLASS_2,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION,
+            {"c": 500, "t": 10, "alpha": 0.4, "epsilon": 1.0},
+            True,
+            50 / (41.5 / 0.4),
+        ),
         # psi > -1 branch of the piecewise limit
         (
             Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
@@ -126,6 +135,15 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             True,
             50 / (42 / (0.67 + 0.33 * -0.5)),
         ),
+        # psi <= -1 branch of the piecewise limit
+        (
+            Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+            CrossSectionClass.CLASS_3,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION,
+            {"c": 500, "t": 10, "psi": -2.0, "epsilon": 1.0},
+            True,
+            50 / (62 * 3 * 2**0.5),
+        ),
         # Outstand flanges
         (
             Table5Dot2CompressionPart.OUTSTAND_FLANGE,
@@ -134,6 +152,22 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             {"c": 100, "t": 10, "epsilon": 1.0},
             False,
             10 / 9,
+        ),
+        (
+            Table5Dot2CompressionPart.OUTSTAND_FLANGE,
+            CrossSectionClass.CLASS_1,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION,
+            {"c": 500, "t": 10, "alpha": 0.25, "epsilon": 1.0},
+            True,
+            50 / (9 / (0.25 * 0.25**0.5)),
+        ),
+        (
+            Table5Dot2CompressionPart.OUTSTAND_FLANGE,
+            CrossSectionClass.CLASS_2,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION,
+            {"c": 500, "t": 10, "alpha": 0.25, "epsilon": 1.0},
+            True,
+            50 / (10 / (0.25 * 0.25**0.5)),
         ),
         (
             Table5Dot2CompressionPart.OUTSTAND_FLANGE,
@@ -336,3 +370,72 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
                 Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
                 epsilon=1.0,
             )
+
+    @pytest.mark.parametrize("t", [0.0, -1.0])
+    def test_raise_error_if_required_thickness_is_not_positive(self, t: float) -> None:
+        """Thickness must be positive when the selected criterion uses it."""
+        with pytest.raises(LessOrEqualToZeroError):
+            Table5Dot2MaximumWidthToThicknessRatio(
+                CrossSectionClass.CLASS_1,
+                Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+                c=500,
+                t=t,
+                epsilon=1.0,
+            )
+
+    @pytest.mark.parametrize("alpha", [0.0, -1.0])
+    def test_raise_error_if_required_alpha_is_not_positive(self, alpha: float) -> None:
+        """Alpha must be positive when the selected criterion uses it."""
+        with pytest.raises(LessOrEqualToZeroError):
+            Table5Dot2MaximumWidthToThicknessRatio(
+                CrossSectionClass.CLASS_1,
+                Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION,
+                c=500,
+                t=10,
+                alpha=alpha,
+                epsilon=1.0,
+            )
+
+    def test_raise_error_if_required_k_sigma_is_negative(self) -> None:
+        """The buckling factor must be non-negative when the selected criterion uses it."""
+        with pytest.raises(NegativeValueError):
+            Table5Dot2MaximumWidthToThicknessRatio(
+                CrossSectionClass.CLASS_3,
+                Table5Dot2CompressionPart.OUTSTAND_FLANGE,
+                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION,
+                c=200,
+                t=10,
+                k_sigma=-1.0,
+                epsilon=1.0,
+            )
+
+    def test_negative_psi_is_valid(self) -> None:
+        """Negative psi remains valid, including the sqrt(-psi) branch at psi <= -1."""
+        form = Table5Dot2MaximumWidthToThicknessRatio(
+            CrossSectionClass.CLASS_3,
+            Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION,
+            c=500,
+            t=10,
+            psi=-2.0,
+            epsilon=1.0,
+        )
+
+        assert form.maximum_width_to_thickness_ratio == pytest.approx(62 * 3 * 2**0.5)
+
+    def test_unused_optional_parameters_are_not_validated(self) -> None:
+        """Invalid-looking optional inputs are ignored when the selected criterion does not use them."""
+        form = Table5Dot2MaximumWidthToThicknessRatio(
+            CrossSectionClass.CLASS_1,
+            Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+            c=500,
+            t=10,
+            alpha=-1.0,
+            k_sigma=-1.0,
+            epsilon=1.0,
+        )
+
+        assert bool(form) is True
