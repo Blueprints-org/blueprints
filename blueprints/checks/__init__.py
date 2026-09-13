@@ -3,12 +3,17 @@
 from blueprints.checks.eurocode.concrete.nominal_concrete_cover import NominalConcreteCover
 from blueprints.checks.eurocode.steel.strength_bending import CheckStrengthBendingClass3, CheckStrengthBendingClass12
 from blueprints.checks.eurocode.steel.strength_compression import CheckStrengthCompressionClass123
+from blueprints.checks.eurocode.steel.strength_shear import CheckStrengthShearClass12, CheckStrengthShearClass34
 from blueprints.checks.eurocode.steel.strength_tension import CheckStrengthTensionClass1234
+from blueprints.checks.eurocode.steel.strength_von_mises import CheckStrengthVonMises
 
 __all__ = [
     "CheckStrengthBendingClass3",
     "CheckStrengthBendingClass12",
     "CheckStrengthCompressionClass123",
+    "CheckStrengthShearClass12",
+    "CheckStrengthShearClass34",
     "CheckStrengthTensionClass1234",
+    "CheckStrengthVonMises",
     "NominalConcreteCover",
 ]
