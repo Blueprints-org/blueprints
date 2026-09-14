@@ -37,14 +37,17 @@ class TestForm8Dot64ShearStressResistanceWithTransverseBending:
         [
             (-3.0, 25000.0, 100000.0),  # tau_rd is negative
             (3.0, -25000.0, 100000.0),  # m_ed is negative
-            # a transverse bending moment above the bending resistance leaves no real square root
-            (3.0, 150000.0, 100000.0),
         ],
     )
     def test_raise_error_when_negative_values_are_given(self, tau_rd: float, m_ed: float, m_rd: float) -> None:
-        """Test if error is raised for parameters, or a radicand, that are not allowed to be negative."""
+        """Test if error is raised for parameters that are not allowed to be negative."""
         with pytest.raises(NegativeValueError):
             Form8Dot64ShearStressResistanceWithTransverseBending(tau_rd=tau_rd, m_ed=m_ed, m_rd=m_rd)
+
+    def test_raise_error_when_m_ed_exceeds_m_rd(self) -> None:
+        """A transverse bending moment above the bending resistance leaves no real square root."""
+        with pytest.raises(ValueError, match=r"m_ed .* must not exceed m_rd"):
+            Form8Dot64ShearStressResistanceWithTransverseBending(tau_rd=3.0, m_ed=150000.0, m_rd=100000.0)
 
     @pytest.mark.parametrize(
         ("tau_rd", "m_ed", "m_rd"),
@@ -63,13 +66,17 @@ class TestForm8Dot64ShearStressResistanceWithTransverseBending:
         [
             (
                 "complete",
-                r"\tau_{Rdm} = \tau_{Rd} \cdot \sqrt{1 - \frac{m_{Ed}}{m_{Rd}}} = "
-                r"3.000 \cdot \sqrt{1 - \frac{25000.000}{100000.000}} = 2.598 \ MPa",
+                (
+                    r"\tau_{Rdm} = \tau_{Rd} \cdot \sqrt{1 - \frac{m_{Ed}}{m_{Rd}}} = "
+                    r"3.000 \cdot \sqrt{1 - \frac{25000.000}{100000.000}} = 2.598 \ MPa"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rdm} = \tau_{Rd} \cdot \sqrt{1 - \frac{m_{Ed}}{m_{Rd}}} = "
-                r"3.000 \ MPa \cdot \sqrt{1 - \frac{25000.000 \ Nmm/mm}{100000.000 \ Nmm/mm}} = 2.598 \ MPa",
+                (
+                    r"\tau_{Rdm} = \tau_{Rd} \cdot \sqrt{1 - \frac{m_{Ed}}{m_{Rd}}} = "
+                    r"3.000 \ MPa \cdot \sqrt{1 - \frac{25000.000 \ Nmm/mm}{100000.000 \ Nmm/mm}} = 2.598 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Rdm} = 2.598 \ MPa"),
         ],

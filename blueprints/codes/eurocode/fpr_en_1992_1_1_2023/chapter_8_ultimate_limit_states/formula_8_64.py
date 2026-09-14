@@ -58,10 +58,10 @@ class Form8Dot64ShearStressResistanceWithTransverseBending(Formula):
         # the standard. It is preferred over returning zero or a nan, either of which would hide that the
         # bending resistance is already exhausted. Note that m_ed equal to m_rd is inside the formula and
         # returns zero rather than raising.
-        radicand = 1 - m_ed / m_rd
-        raise_if_negative(one_minus_m_ed_over_m_rd=radicand)
+        if m_ed > m_rd:
+            raise ValueError(f"m_ed ({m_ed}) must not exceed m_rd ({m_rd}): the square root would not be real.")
 
-        return tau_rd * np.sqrt(radicand)
+        return tau_rd * np.sqrt(1 - m_ed / m_rd)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.64."""
