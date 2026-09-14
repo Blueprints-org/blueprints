@@ -84,18 +84,22 @@ class TestForm8Dot34FactorK1:
         [
             (
                 "complete",
-                r"k_1 = \min\left(\frac{0.5}{a_{cs,0}} \cdot \left(e_p + \frac{d}{3}\right) \cdot "
-                r"\frac{A_c}{b_w \cdot z}, 0.18 \cdot \frac{A_c}{b_w \cdot z}\right) = "
-                r"\min\left(\frac{0.5}{1333.333} \cdot \left(100.000 + \frac{500.000}{3}\right) \cdot "
-                r"\frac{180000.000}{300.000 \cdot 450.000}, 0.18 \cdot \frac{180000.000}{300.000 \cdot 450.000}\right) = 0.133 \ -",
+                (
+                    r"k_1 = \min\left(\frac{0.5}{a_{cs,0}} \cdot \left(e_p + \frac{d}{3}\right) \cdot "
+                    r"\frac{A_c}{b_w \cdot z}, 0.18 \cdot \frac{A_c}{b_w \cdot z}\right) = "
+                    r"\min\left(\frac{0.5}{1333.333} \cdot \left(100.000 + \frac{500.000}{3}\right) \cdot "
+                    r"\frac{180000.000}{300.000 \cdot 450.000}, 0.18 \cdot \frac{180000.000}{300.000 \cdot 450.000}\right) = 0.133 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"k_1 = \min\left(\frac{0.5}{a_{cs,0}} \cdot \left(e_p + \frac{d}{3}\right) \cdot "
-                r"\frac{A_c}{b_w \cdot z}, 0.18 \cdot \frac{A_c}{b_w \cdot z}\right) = "
-                r"\min\left(\frac{0.5}{1333.333 \ mm} \cdot \left(100.000 \ mm + \frac{500.000 \ mm}{3}\right) \cdot "
-                r"\frac{180000.000 \ mm^2}{300.000 \ mm \cdot 450.000 \ mm}, 0.18 \cdot "
-                r"\frac{180000.000 \ mm^2}{300.000 \ mm \cdot 450.000 \ mm}\right) = 0.133 \ -",
+                (
+                    r"k_1 = \min\left(\frac{0.5}{a_{cs,0}} \cdot \left(e_p + \frac{d}{3}\right) \cdot "
+                    r"\frac{A_c}{b_w \cdot z}, 0.18 \cdot \frac{A_c}{b_w \cdot z}\right) = "
+                    r"\min\left(\frac{0.5}{1333.333 \ mm} \cdot \left(100.000 \ mm + \frac{500.000 \ mm}{3}\right) \cdot "
+                    r"\frac{180000.000 \ mm^2}{300.000 \ mm \cdot 450.000 \ mm}, 0.18 \cdot "
+                    r"\frac{180000.000 \ mm^2}{300.000 \ mm \cdot 450.000 \ mm}\right) = 0.133 \ -"
+                ),
             ),
             ("short", r"k_1 = 0.133 \ -"),
         ],

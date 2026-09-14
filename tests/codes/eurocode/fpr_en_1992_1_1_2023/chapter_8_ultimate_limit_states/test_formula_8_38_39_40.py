@@ -87,25 +87,29 @@ class TestForm8Dot38To40ReinforcementRatioPlanarMembers:
         [
             (
                 "complete",
-                r"\rho_l = \begin{cases} \rho_{l,x} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
-                r"\rho_{l,x} \cdot \cos^4(\alpha_v) + \rho_{l,y} \cdot \sin^4(\alpha_v) "
-                r"& \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
-                r"\rho_{l,y} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
-                r"\begin{cases} 0.012 & \text{if } \frac{\left|57.735\right|}{\left|100.000\right|} \leq 0.5 \\ "
-                r"0.012 \cdot \cos^4(30.000) + 0.008 \cdot \sin^4(30.000) "
-                r"& \text{if } 0.5 < \frac{\left|57.735\right|}{\left|100.000\right|} < 2 \\ "
-                r"0.008 & \text{if } \frac{\left|57.735\right|}{\left|100.000\right|} \geq 2 \end{cases} = 0.007 \ -",
+                (
+                    r"\rho_l = \begin{cases} \rho_{l,x} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
+                    r"\rho_{l,x} \cdot \cos^4(\alpha_v) + \rho_{l,y} \cdot \sin^4(\alpha_v) "
+                    r"& \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
+                    r"\rho_{l,y} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
+                    r"\begin{cases} 0.012 & \text{if } \frac{\left|57.735\right|}{\left|100.000\right|} \leq 0.5 \\ "
+                    r"0.012 \cdot \cos^4(30.000) + 0.008 \cdot \sin^4(30.000) "
+                    r"& \text{if } 0.5 < \frac{\left|57.735\right|}{\left|100.000\right|} < 2 \\ "
+                    r"0.008 & \text{if } \frac{\left|57.735\right|}{\left|100.000\right|} \geq 2 \end{cases} = 0.007 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\rho_l = \begin{cases} \rho_{l,x} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
-                r"\rho_{l,x} \cdot \cos^4(\alpha_v) + \rho_{l,y} \cdot \sin^4(\alpha_v) "
-                r"& \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
-                r"\rho_{l,y} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
-                r"\begin{cases} 0.012 & \text{if } \frac{\left|57.735 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \leq 0.5 \\ "
-                r"0.012 \cdot \cos^4(30.000 \ degrees) + 0.008 \cdot \sin^4(30.000 \ degrees) "
-                r"& \text{if } 0.5 < \frac{\left|57.735 \ N/mm\right|}{\left|100.000 \ N/mm\right|} < 2 \\ "
-                r"0.008 & \text{if } \frac{\left|57.735 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \geq 2 \end{cases} = 0.007 \ -",
+                (
+                    r"\rho_l = \begin{cases} \rho_{l,x} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
+                    r"\rho_{l,x} \cdot \cos^4(\alpha_v) + \rho_{l,y} \cdot \sin^4(\alpha_v) "
+                    r"& \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
+                    r"\rho_{l,y} & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
+                    r"\begin{cases} 0.012 & \text{if } \frac{\left|57.735 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \leq 0.5 \\ "
+                    r"0.012 \cdot \cos^4(30.000 \ degrees) + 0.008 \cdot \sin^4(30.000 \ degrees) "
+                    r"& \text{if } 0.5 < \frac{\left|57.735 \ N/mm\right|}{\left|100.000 \ N/mm\right|} < 2 \\ "
+                    r"0.008 & \text{if } \frac{\left|57.735 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \geq 2 \end{cases} = 0.007 \ -"
+                ),
             ),
             ("short", r"\rho_l = 0.007 \ -"),
         ],

@@ -76,13 +76,17 @@ class TestForm8Dot30EffectiveShearSpan:
         [
             (
                 "complete",
-                r"a_{cs} = \max\left(\left|\frac{M_{Ed}}{V_{Ed}}\right|, d\right) = "
-                r"\max\left(\left|\frac{200000000.000}{150000.000}\right|, 500.000\right) = 1333.333 \ mm",
+                (
+                    r"a_{cs} = \max\left(\left|\frac{M_{Ed}}{V_{Ed}}\right|, d\right) = "
+                    r"\max\left(\left|\frac{200000000.000}{150000.000}\right|, 500.000\right) = 1333.333 \ mm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"a_{cs} = \max\left(\left|\frac{M_{Ed}}{V_{Ed}}\right|, d\right) = "
-                r"\max\left(\left|\frac{200000000.000 \ Nmm}{150000.000 \ N}\right|, 500.000 \ mm\right) = 1333.333 \ mm",
+                (
+                    r"a_{cs} = \max\left(\left|\frac{M_{Ed}}{V_{Ed}}\right|, d\right) = "
+                    r"\max\left(\left|\frac{200000000.000 \ Nmm}{150000.000 \ N}\right|, 500.000 \ mm\right) = 1333.333 \ mm"
+                ),
             ),
             ("short", r"a_{cs} = 1333.333 \ mm"),
         ],

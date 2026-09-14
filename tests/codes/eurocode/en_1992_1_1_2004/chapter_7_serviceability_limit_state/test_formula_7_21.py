@@ -46,8 +46,10 @@ class TestForm7Dot21CurvatureDueToShrinkage:
         [
             (
                 "complete",
-                r"\frac{1}{r_{cs}} = \epsilon_{cs} \cdot \frac{E_s}{E_{c,eff}} \cdot \frac{S}{I} = "
-                r"0.0003 \cdot \frac{200000.000}{30000.000} \cdot \frac{50000.000}{200000.000} = 0.000500 \ mm^{-1}",
+                (
+                    r"\frac{1}{r_{cs}} = \epsilon_{cs} \cdot \frac{E_s}{E_{c,eff}} \cdot \frac{S}{I} = "
+                    r"0.0003 \cdot \frac{200000.000}{30000.000} \cdot \frac{50000.000}{200000.000} = 0.000500 \ mm^{-1}"
+                ),
             ),
             ("short", r"\frac{1}{r_{cs}} = 0.000500 \ mm^{-1}"),
         ],

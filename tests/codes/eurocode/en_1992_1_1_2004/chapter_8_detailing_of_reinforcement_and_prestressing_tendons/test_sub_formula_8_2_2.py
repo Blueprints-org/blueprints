@@ -55,8 +55,10 @@ class TestSubForm8Dot2CoefficientBarDiameter:
             ),
             (
                 "complete_with_units_latex_64",
-                r"\eta_2 = \begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases} = "
-                r"(132 - 64.00 \ mm) / 100 = 0.68",
+                (
+                    r"\eta_2 = \begin{cases} 1.0 & \text{for }Ø ≤ 32 \\ (132 - Ø) / 100 & \text{for }Ø > 32  \end{cases} = "
+                    r"(132 - 64.00 \ mm) / 100 = 0.68"
+                ),
             ),
             ("short_latex_64", r"\eta_2 = 0.68"),
         ],

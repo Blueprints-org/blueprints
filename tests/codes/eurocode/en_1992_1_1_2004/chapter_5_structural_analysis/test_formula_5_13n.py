@@ -69,15 +69,19 @@ class TestForm5Dot13nSlendernessCriterionIsolatedMembers:
         [
             (
                 "complete",
-                r"\lambda_{lim} = \frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}} = "
-                r"\frac{20 \cdot 0.700 \cdot 1.100 \cdot 0.700}{\sqrt{1000000.000 \cdot 500000.000 \cdot 20.000}} "
-                r"= 34.089 \ -",
+                (
+                    r"\lambda_{lim} = \frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}} = "
+                    r"\frac{20 \cdot 0.700 \cdot 1.100 \cdot 0.700}{\sqrt{1000000.000 \cdot 500000.000 \cdot 20.000}} "
+                    r"= 34.089 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\lambda_{lim} = \frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}} = "
-                r"\frac{20 \cdot 0.700 \cdot 1.100 \cdot 0.700}{\sqrt{1000000.000 \ N \cdot 500000.000 "
-                r"\ mm^2 \cdot 20.000 \ MPa}} = 34.089 \ -",
+                (
+                    r"\lambda_{lim} = \frac{20 \cdot A \cdot B \cdot C}{\sqrt{N_{Ed} \cdot A_c \cdot f_{cd}}} = "
+                    r"\frac{20 \cdot 0.700 \cdot 1.100 \cdot 0.700}{\sqrt{1000000.000 \ N \cdot 500000.000 "
+                    r"\ mm^2 \cdot 20.000 \ MPa}} = 34.089 \ -"
+                ),
             ),
             ("short", r"\lambda_{lim} = 34.089 \ -"),
         ],
@@ -202,13 +206,17 @@ class TestForm5Dot13bMechanicalReinforcementFactor:
         [
             (
                 "complete",
-                r"B = \sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}} = \sqrt{1 + 2 \cdot "
-                r"\frac{1000.000 \cdot 500.000}{10000.000 \cdot 20.000}} = 2.449 \ -",
+                (
+                    r"B = \sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}} = \sqrt{1 + 2 \cdot "
+                    r"\frac{1000.000 \cdot 500.000}{10000.000 \cdot 20.000}} = 2.449 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"B = \sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}} = \sqrt{1 + 2 \cdot "
-                r"\frac{1000.000 \ mm^2 \cdot 500.000 \ MPa}{10000.000 \ mm^2 \cdot 20.000 \ MPa}} = 2.449 \ -",
+                (
+                    r"B = \sqrt{1 + 2 \cdot \frac{A_s \cdot f_{yd}}{A_c \cdot f_{cd}}} = \sqrt{1 + 2 \cdot "
+                    r"\frac{1000.000 \ mm^2 \cdot 500.000 \ MPa}{10000.000 \ mm^2 \cdot 20.000 \ MPa}} = 2.449 \ -"
+                ),
             ),
             ("short", r"B = 2.449 \ -"),
         ],

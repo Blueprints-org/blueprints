@@ -50,13 +50,17 @@ class TestForm8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads:
         [
             (
                 "complete",
-                r"F_{td,max} = \frac{M_{Ed,max}}{z} + \frac{N_{Ed}}{2} = \frac{120000000.000}{300.000} + \frac{"
-                r"10000.000}{2} = 405000.000 \ N",
+                (
+                    r"F_{td,max} = \frac{M_{Ed,max}}{z} + \frac{N_{Ed}}{2} = \frac{120000000.000}{300.000} + \frac{"
+                    r"10000.000}{2} = 405000.000 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{td,max} = \frac{M_{Ed,max}}{z} + \frac{N_{Ed}}{2} = \frac{120000000.000 \ Nmm}{300.000 \ mm} + "
-                r"\frac{10000.000 \ N}{2} = 405000.000 \ N",
+                (
+                    r"F_{td,max} = \frac{M_{Ed,max}}{z} + \frac{N_{Ed}}{2} = \frac{120000000.000 \ Nmm}{300.000 \ mm} + "
+                    r"\frac{10000.000 \ N}{2} = 405000.000 \ N"
+                ),
             ),
             (
                 "short",

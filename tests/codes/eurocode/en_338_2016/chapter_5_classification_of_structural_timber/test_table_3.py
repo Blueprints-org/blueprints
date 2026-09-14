@@ -51,7 +51,7 @@ class TestTable3StrengthClassesHardwoodBending:
             (HardwoodStrengthClass.D80, 80, 48, 0.6, 38, 13.5, 5.0, 24000.0, 20200.0, 1600.0, 1500.0, 900, 1080),
         ],
     )
-    def test_timber_strength_values(  # noqa: PLR0913
+    def test_timber_strength_values(  # noqa: PLR0913, PLR0917
         self,
         timber_class: HardwoodStrengthClass,
         expected_f_m_k: MPA,

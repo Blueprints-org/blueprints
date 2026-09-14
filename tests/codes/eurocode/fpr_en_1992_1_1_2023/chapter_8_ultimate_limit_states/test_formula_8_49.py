@@ -43,13 +43,17 @@ class TestForm8Dot49StrainCompressionChordInTension:
         [
             (
                 "complete",
-                r"\epsilon_{xc} = \frac{|F_{cd}|}{A_{sc} \cdot E_s} = "
-                r"\frac{800000.0000}{1257.0000 \cdot 200000.0000} = 0.0032 \ -",
+                (
+                    r"\epsilon_{xc} = \frac{|F_{cd}|}{A_{sc} \cdot E_s} = "
+                    r"\frac{800000.0000}{1257.0000 \cdot 200000.0000} = 0.0032 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\epsilon_{xc} = \frac{|F_{cd}|}{A_{sc} \cdot E_s} = "
-                r"\frac{800000.0000 \ N}{1257.0000 \ mm^2 \cdot 200000.0000 \ MPa} = 0.0032 \ -",
+                (
+                    r"\epsilon_{xc} = \frac{|F_{cd}|}{A_{sc} \cdot E_s} = "
+                    r"\frac{800000.0000 \ N}{1257.0000 \ mm^2 \cdot 200000.0000 \ MPa} = 0.0032 \ -"
+                ),
             ),
             ("short", r"\epsilon_{xc} = 0.0032 \ -"),
         ],

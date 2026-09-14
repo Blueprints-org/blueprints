@@ -50,10 +50,12 @@ class TestForm9Dot11MinimumShearReinforcement:
         [
             (
                 "complete",
-                r"A_{sw,min} = \frac{0.08 \cdot \sqrt{f_{ck}}}{f_{yk}} \cdot \frac{s_r \cdot s_t}"
-                r"{1.5 \cdot \sin(\alpha) + \cos(\alpha)} = "
-                r"\frac{0.08 \cdot \sqrt{30.000}}{500.000} \cdot \frac{200.000 \cdot 200.000}{1.5 \cdot \sin(45.000) "
-                r"+ \cos(45.000)} = 19.830 \ mm^2",
+                (
+                    r"A_{sw,min} = \frac{0.08 \cdot \sqrt{f_{ck}}}{f_{yk}} \cdot \frac{s_r \cdot s_t}"
+                    r"{1.5 \cdot \sin(\alpha) + \cos(\alpha)} = "
+                    r"\frac{0.08 \cdot \sqrt{30.000}}{500.000} \cdot \frac{200.000 \cdot 200.000}{1.5 \cdot \sin(45.000) "
+                    r"+ \cos(45.000)} = 19.830 \ mm^2"
+                ),
             ),
             ("short", r"A_{sw,min} = 19.830 \ mm^2"),
         ],

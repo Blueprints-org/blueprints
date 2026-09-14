@@ -47,8 +47,10 @@ class TestForm7Dot1MultiplicationFactorLimitSlenderness:
         [
             (
                 "complete",
-                r"\frac{310}{\sigma_s} = \frac{500}{f_{yk} \cdot \frac{A_{s,req}}{A_{s,prov}}} = "
-                r"\frac{500}{500.000 \cdot \frac{200.000}{250.000}} = 1.250 \ -",
+                (
+                    r"\frac{310}{\sigma_s} = \frac{500}{f_{yk} \cdot \frac{A_{s,req}}{A_{s,prov}}} = "
+                    r"\frac{500}{500.000 \cdot \frac{200.000}{250.000}} = 1.250 \ -"
+                ),
             ),
             ("short", r"\frac{310}{\sigma_s} = 1.250 \ -"),
         ],

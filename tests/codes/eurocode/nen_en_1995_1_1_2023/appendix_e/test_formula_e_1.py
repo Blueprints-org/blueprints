@@ -67,9 +67,11 @@ class TestFormEDot1EffBendingStiffnessLi:
                 [1, 1],
                 [1, 1],
                 r"(EI)_{ef} = 4.00",
-                r"(EI)_{ef} = (E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2) + (E_2 I_2 + \gamma_2 E_2 A_2 \alpha_2^2) = "
-                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
-                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) = 4.00",
+                (
+                    r"(EI)_{ef} = (E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2) + (E_2 I_2 + \gamma_2 E_2 A_2 \alpha_2^2) = "
+                    r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
+                    r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) = 4.00"
+                ),
             ),
             (
                 [1, 1, 200],
@@ -78,11 +80,13 @@ class TestFormEDot1EffBendingStiffnessLi:
                 [1, 1, 0.5],
                 [1, 1, 0.25],
                 r"(EI)_{ef} = 80005.25",
-                r"(EI)_{ef} = (E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2) + (E_2 I_2 + \gamma_2 E_2 A_2 \alpha_2^2) + "
-                r"(E_3 I_3 + \gamma_3 E_3 A_3 \alpha_3^2) = "
-                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
-                r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
-                r"(200.00 \cdot 400.00 + 0.20 \cdot 200.00 \cdot 0.50 \cdot 0.25^2) = 80005.25",
+                (
+                    r"(EI)_{ef} = (E_1 I_1 + \gamma_1 E_1 A_1 \alpha_1^2) + (E_2 I_2 + \gamma_2 E_2 A_2 \alpha_2^2) + "
+                    r"(E_3 I_3 + \gamma_3 E_3 A_3 \alpha_3^2) = "
+                    r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
+                    r"(1.00 \cdot 1.00 + 1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00^2) + "
+                    r"(200.00 \cdot 400.00 + 0.20 \cdot 200.00 \cdot 0.50 \cdot 0.25^2) = 80005.25"
+                ),
             ),
         ],
         ids=["length_2", "length_3"],
