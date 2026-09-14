@@ -174,8 +174,8 @@ Total of 602 formulas present.
 |     8.110      |        :x:         |         |                                                                    |
 |     8.111      |        :x:         |         |                                                                    |
 |     8.112      |        :x:         |         |                                                                    |
-|     8.113      |        :x:         |         |                                                                    |
-|     8.114      |        :x:         |         |                                                                    |
+|     8.113      | :heavy_check_mark: |         | Form8Dot113CompressiveStressInStrutOrCompressionField              |
+|     8.114      | :heavy_check_mark: |         | Form8Dot114CheckCompressiveStressInStrutOrCompressionField         |
 |     8.115      |        :x:         |         |                                                                    |
 |     8.116      |        :x:         |         |                                                                    |
 |     8.117      |        :x:         |         |                                                                    |
