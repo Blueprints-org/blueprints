@@ -39,8 +39,10 @@ class TestForm5Dot32EquivalentFirstOrderEndMoment:
         [
             (
                 "complete",
-                r"M_{0e} = \max\left(0.6 \cdot M_{02} + 0.4 \cdot M_{01}; 0.4 \cdot M_{02}\right) "
-                r"= \max\left(0.6 \cdot 50.000 + 0.4 \cdot 30.000; 0.4 \cdot 50.000\right) = 42.000 \ kNm",
+                (
+                    r"M_{0e} = \max\left(0.6 \cdot M_{02} + 0.4 \cdot M_{01}; 0.4 \cdot M_{02}\right) "
+                    r"= \max\left(0.6 \cdot 50.000 + 0.4 \cdot 30.000; 0.4 \cdot 50.000\right) = 42.000 \ kNm"
+                ),
             ),
             ("short", r"M_{0e} = 42.000 \ kNm"),
         ],

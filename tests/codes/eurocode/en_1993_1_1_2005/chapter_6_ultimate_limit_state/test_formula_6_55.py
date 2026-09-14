@@ -66,17 +66,21 @@ class TestForm6Dot55DesignBucklingResistanceMoment:
         [
             (
                 "complete",
-                r"M_{b,Rd} = \chi_{LT} \cdot W_y \cdot "
-                r"\frac{f_y}{\gamma_{M1}} = "
-                r"0.800 \cdot 500000.000 \cdot "
-                r"\frac{355.000}{1.000} = 142000000.000 \ Nmm",
+                (
+                    r"M_{b,Rd} = \chi_{LT} \cdot W_y \cdot "
+                    r"\frac{f_y}{\gamma_{M1}} = "
+                    r"0.800 \cdot 500000.000 \cdot "
+                    r"\frac{355.000}{1.000} = 142000000.000 \ Nmm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"M_{b,Rd} = \chi_{LT} \cdot W_y \cdot "
-                r"\frac{f_y}{\gamma_{M1}} = "
-                r"0.800 \cdot 500000.000 \ mm^3 \cdot "
-                r"\frac{355.000 \ MPa}{1.000} = 142000000.000 \ Nmm",
+                (
+                    r"M_{b,Rd} = \chi_{LT} \cdot W_y \cdot "
+                    r"\frac{f_y}{\gamma_{M1}} = "
+                    r"0.800 \cdot 500000.000 \ mm^3 \cdot "
+                    r"\frac{355.000 \ MPa}{1.000} = 142000000.000 \ Nmm"
+                ),
             ),
             ("short", r"M_{b,Rd} = 142000000.000 \ Nmm"),
         ],

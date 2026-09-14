@@ -53,8 +53,10 @@ class TestForm7Dot11MaximumCrackSpacing:
         [
             (
                 "complete",
-                r"s_{r,max} = k_3 \cdot c + k_1 \cdot k_2 \cdot k_4 \cdot \frac{⌀}{\rho_{p,eff}} = "
-                r"0.800 \cdot 30.000 + 0.500 \cdot 1.000 \cdot 0.600 \cdot \frac{16.000}{0.020} = 264.000 \ mm",
+                (
+                    r"s_{r,max} = k_3 \cdot c + k_1 \cdot k_2 \cdot k_4 \cdot \frac{⌀}{\rho_{p,eff}} = "
+                    r"0.800 \cdot 30.000 + 0.500 \cdot 1.000 \cdot 0.600 \cdot \frac{16.000}{0.020} = 264.000 \ mm"
+                ),
             ),
             ("short", r"s_{r,max} = 264.000 \ mm"),
         ],

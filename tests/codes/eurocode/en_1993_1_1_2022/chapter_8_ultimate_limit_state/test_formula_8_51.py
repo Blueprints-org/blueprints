@@ -49,13 +49,17 @@ class TestForm8Dot51ReducedBendingMomentResistance:
         [
             (
                 "complete",
-                r"M_{N,y,Rd} = \min \left( M_{pl,y,Rd} \cdot \frac{1 - n}{1 - 0.5 \cdot a_w}, M_{pl,y,Rd} \right) = "
-                r"\min \left( 5000.000 \cdot \frac{1 - 0.200}{1 - 0.5 \cdot 0.300}, 5000.000 \right) = 4705.882 \ Nmm",
+                (
+                    r"M_{N,y,Rd} = \min \left( M_{pl,y,Rd} \cdot \frac{1 - n}{1 - 0.5 \cdot a_w}, M_{pl,y,Rd} \right) = "
+                    r"\min \left( 5000.000 \cdot \frac{1 - 0.200}{1 - 0.5 \cdot 0.300}, 5000.000 \right) = 4705.882 \ Nmm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"M_{N,y,Rd} = \min \left( M_{pl,y,Rd} \cdot \frac{1 - n}{1 - 0.5 \cdot a_w}, M_{pl,y,Rd} \right) = "
-                r"\min \left( 5000.000 \ Nmm \cdot \frac{1 - 0.200}{1 - 0.5 \cdot 0.300}, 5000.000 \ Nmm \right) = 4705.882 \ Nmm",
+                (
+                    r"M_{N,y,Rd} = \min \left( M_{pl,y,Rd} \cdot \frac{1 - n}{1 - 0.5 \cdot a_w}, M_{pl,y,Rd} \right) = "
+                    r"\min \left( 5000.000 \ Nmm \cdot \frac{1 - 0.200}{1 - 0.5 \cdot 0.300}, 5000.000 \ Nmm \right) = 4705.882 \ Nmm"
+                ),
             ),
             ("short", r"M_{N,y,Rd} = 4705.882 \ Nmm"),
         ],

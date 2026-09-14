@@ -72,8 +72,10 @@ class TestForm6Dot12CheckMaxEffectiveCrossSectionalAreaShearReinf:
         [
             (
                 "complete",
-                r"CHECK \to \frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{1}{2} \cdot \alpha_{cw} \cdot \nu_{1} \cdot f_{cd} \to "
-                r"\frac{100.000 \cdot 400.000}{300.000 \cdot 200.000} \leq \frac{1}{2} \cdot 1.000 \cdot 0.600 \cdot 30.000 \to OK",
+                (
+                    r"CHECK \to \frac{A_{sw,max} \cdot f_{ywd}}{b_{w} \cdot s} \leq \frac{1}{2} \cdot \alpha_{cw} \cdot \nu_{1} \cdot f_{cd} \to "
+                    r"\frac{100.000 \cdot 400.000}{300.000 \cdot 200.000} \leq \frac{1}{2} \cdot 1.000 \cdot 0.600 \cdot 30.000 \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

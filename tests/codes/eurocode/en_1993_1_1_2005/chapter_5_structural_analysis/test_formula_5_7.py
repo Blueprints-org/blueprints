@@ -20,7 +20,7 @@ class TestForm5Dot8NeglectFrameTilt:
 
         # Expected results
         exp_result = True
-        exp_uc = h_ed / (0.15 * v_ed)
+        exp_uc = (0.15 * v_ed) / h_ed  # h_ed >= 0.15 * v_ed => unity check = (0.15 * v_ed) / h_ed
 
         # Test
         assert form == exp_result

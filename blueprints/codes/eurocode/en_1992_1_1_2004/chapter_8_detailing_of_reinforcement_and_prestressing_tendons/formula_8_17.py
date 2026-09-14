@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -39,10 +39,27 @@ class Form8Dot17DesignValueTransmissionLength1(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.17."""
+        _equation: str = r"0.8 \cdot l_{pt}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{pt}": f"{self.l_pt:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{pt}": rf"{self.l_pt:.{n}f} \ mm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{pt1}",
             result=f"{self:.{n}f}",
-            equation=r"0.8 \cdot l_{pt}",
-            numeric_equation=rf"0.8 \cdot {self.l_pt:.{n}f}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )

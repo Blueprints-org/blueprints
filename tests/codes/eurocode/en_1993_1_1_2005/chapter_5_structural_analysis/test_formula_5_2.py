@@ -63,13 +63,17 @@ class TestForm5Dot2ElasticCriticalBucklingFactor:
         [
             (
                 "complete",
-                r"\alpha_{cr} = \frac{H_{Ed}}{V_{Ed}} \cdot \frac{h}{\delta_{H,Ed}} = "
-                r"\frac{100000.000}{500000.000} \cdot \frac{3500.000}{10.000} = 70.000",
+                (
+                    r"\alpha_{cr} = \frac{H_{Ed}}{V_{Ed}} \cdot \frac{h}{\delta_{H,Ed}} = "
+                    r"\frac{100000.000}{500000.000} \cdot \frac{3500.000}{10.000} = 70.000"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\alpha_{cr} = \frac{H_{Ed}}{V_{Ed}} \cdot \frac{h}{\delta_{H,Ed}} = "
-                r"\frac{100000.000 \ N}{500000.000 \ N} \cdot \frac{3500.000 \ mm}{10.000 \ mm} = 70.000",
+                (
+                    r"\alpha_{cr} = \frac{H_{Ed}}{V_{Ed}} \cdot \frac{h}{\delta_{H,Ed}} = "
+                    r"\frac{100000.000 \ N}{500000.000 \ N} \cdot \frac{3500.000 \ mm}{10.000 \ mm} = 70.000"
+                ),
             ),
             ("short", r"\alpha_{cr} = 70.000"),
         ],

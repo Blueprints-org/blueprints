@@ -2,7 +2,7 @@ r"""Formula 8.16 from EN 1992-1-1:2004: Chapter 8: Detailing of reinforcement an
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula
+from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
@@ -79,15 +79,37 @@ class Form8Dot16BasicTransmissionLength(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for formula 8.16."""
+        _equation: str = r"\alpha_1 \cdot \alpha_2 \cdot Ø \cdot \frac{\sigma_{pm0}}{f_{bpt}}"
+        _numeric_equation: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_1": f"{self.alpha_1:.{n}f}",
+                r"\alpha_2": f"{self.alpha_2:.{n}f}",
+                r"Ø": f"{self.diameter:.{n}f}",
+                r"\sigma_{pm0}": f"{self.sigma_pm0:.{n}f}",
+                r"f_{bpt}": f"{self.f_bpt:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"\alpha_1": f"{self.alpha_1:.{n}f}",
+                r"\alpha_2": f"{self.alpha_2:.{n}f}",
+                r"Ø": rf"{self.diameter:.{n}f} \ mm",
+                r"\sigma_{pm0}": rf"{self.sigma_pm0:.{n}f} \ MPa",
+                r"f_{bpt}": rf"{self.f_bpt:.{n}f} \ MPa",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{pt}",
             result=f"{self:.{n}f}",
-            equation=r"\alpha_1 \cdot \alpha_2 \cdot Ø \cdot \frac{\sigma_{pm0}}{f_{bpt}}",
-            numeric_equation=(
-                rf"{self.alpha_1:.{n}f} \cdot {self.alpha_2:.{n}f} "
-                rf"\cdot {self.diameter:.{n}f} \cdot \frac{{{self.sigma_pm0:.{n}f}}}{{{self.f_bpt:.{n}f}}}"
-            ),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )
 
 
@@ -123,11 +145,15 @@ class SubForm8Dot16Alpha1(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the first subformula of formula 8.16."""
+        _equation: str = r"release\;type"
+        _numeric_equation: str = f"{self.release_type}"
+        _numeric_equation_with_units: str = _numeric_equation
         return LatexFormula(
             return_symbol=r"\alpha_1",
             result=f"{self:.{n}f}",
-            equation=r"release\;type",
-            numeric_equation=f"{self.release_type}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label=r"\rightarrow",
         )
 
@@ -171,10 +197,14 @@ class SubForm8Dot16Alpha2(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns LatexFormula object for the second subformula of formula 8.16."""
+        _equation: str = r"type\;of\;wire"
+        _numeric_equation: str = f"{self.type_of_wire}".replace("_", r"\;")
+        _numeric_equation_with_units: str = _numeric_equation
         return LatexFormula(
             return_symbol=r"\alpha_2",
             result=f"{self:.{n}f}",
-            equation=r"type\;of\;wire",
-            numeric_equation=f"{self.type_of_wire}".replace(" ", r"\;"),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label=r"\rightarrow",
         )

@@ -54,6 +54,10 @@ class TestForm8Dot18AverageShearStress:
         ("representation", "expected"),
         [
             ("complete", r"\tau_{Ed} = \frac{V_{Ed}}{b_w \cdot z} = \frac{10000.000}{50.000 \cdot 215.000} = 0.930 \ MPa"),
+            (
+                "complete_with_units",
+                r"\tau_{Ed} = \frac{V_{Ed}}{b_w \cdot z} = \frac{10000.000 \ N}{50.000 \ mm \cdot 215.000 \ mm} = 0.930 \ MPa",
+            ),
             ("short", r"\tau_{Ed} = 0.930 \ MPa"),
         ],
     )
@@ -67,6 +71,6 @@ class TestForm8Dot18AverageShearStress:
         # Object to test
         test_latex = Form8Dot18AverageShearStress(v_ed=v_ed, b_w=b_w, z=z).latex()
 
-        actual = {"complete": test_latex.complete, "short": test_latex.short}
+        actual = {"complete": test_latex.complete, "complete_with_units": test_latex.complete_with_units, "short": test_latex.short}
 
         assert expected == actual[representation]

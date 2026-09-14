@@ -53,8 +53,10 @@ class TestForm5Dot20ReducedMomentResistanceClass2ZProfiles:
         [
             (
                 "complete",
-                r"M_{N,Rd} = 1.11 \cdot M_{c,Rd} \cdot \left(1 - \frac{N_{Ed}}{N_{pl,Rd}}\right) = "
-                r"1.11 \cdot 50.000 \cdot \left(1 - \frac{20.000}{40.000}\right) = 27.750 \ kNm",
+                (
+                    r"M_{N,Rd} = 1.11 \cdot M_{c,Rd} \cdot \left(1 - \frac{N_{Ed}}{N_{pl,Rd}}\right) = "
+                    r"1.11 \cdot 50.000 \cdot \left(1 - \frac{20.000}{40.000}\right) = 27.750 \ kNm"
+                ),
             ),
             ("short", r"M_{N,Rd} = 27.750 \ kNm"),
         ],

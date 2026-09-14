@@ -44,8 +44,10 @@ class TestForm6Dot22CheckCrushingCompressionStruts:
         [
             (
                 "complete",
-                r"CHECK \to v_{Ed} \leq \nu \cdot f_{cd} \cdot \sin(\theta_{f}) \cdot \cos(\theta_{f}) \to "
-                r"8.000 \leq 0.600 \cdot 30.000 \cdot \sin(45.000) \cdot \cos(45.000) \to OK",
+                (
+                    r"CHECK \to v_{Ed} \leq \nu \cdot f_{cd} \cdot \sin(\theta_{f}) \cdot \cos(\theta_{f}) \to "
+                    r"8.000 \leq 0.600 \cdot 30.000 \cdot \sin(45.000) \cdot \cos(45.000) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],
