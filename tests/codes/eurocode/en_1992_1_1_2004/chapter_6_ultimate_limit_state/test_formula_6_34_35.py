@@ -63,10 +63,12 @@ class TestForm6Dot34And35ContourRadiusRectangular:
         [
             (
                 "complete",
-                r"r_{cont} = min\left(2 \cdot d + 0.56 \cdot \sqrt{(c_1 + 2 \cdot l_{H1}) \cdot (c_2 + 2 \cdot l_{H2})}, "
-                r"2 \cdot d + 0.69 \cdot (c_1 + 2 \cdot l_{H1})\right)"
-                r" = min\left(2 \cdot 500.000 + 0.56 \cdot \sqrt{(300.000 + 2 \cdot 600.000) \cdot (400.000 + 2 \cdot 800.000)}, "
-                r"2 \cdot 500.000 + 0.69 \cdot (300.000 + 2 \cdot 600.000)\right) = 1969.948 \ mm",
+                (
+                    r"r_{cont} = min\left(2 \cdot d + 0.56 \cdot \sqrt{(c_1 + 2 \cdot l_{H1}) \cdot (c_2 + 2 \cdot l_{H2})}, "
+                    r"2 \cdot d + 0.69 \cdot (c_1 + 2 \cdot l_{H1})\right)"
+                    r" = min\left(2 \cdot 500.000 + 0.56 \cdot \sqrt{(300.000 + 2 \cdot 600.000) \cdot (400.000 + 2 \cdot 800.000)}, "
+                    r"2 \cdot 500.000 + 0.69 \cdot (300.000 + 2 \cdot 600.000)\right) = 1969.948 \ mm"
+                ),
             ),
             ("short", r"r_{cont} = 1969.948 \ mm"),
         ],
@@ -95,10 +97,12 @@ class TestForm6Dot34And35ContourRadiusRectangular:
         [
             (
                 "complete",
-                r"r_{cont} = min\left(2 \cdot d + 0.56 \cdot \sqrt{(c_1 + 2 \cdot l_{H1}) \cdot (c_2 + 2 \cdot l_{H2})}, "
-                r"2 \cdot d + 0.69 \cdot (c_1 + 2 \cdot l_{H1})\right)"
-                r" = min\left(2 \cdot 500.000 + 0.56 \cdot \sqrt{(300.000 + 2 \cdot 600.000) \cdot (400.000 + 2 \cdot 800.000)}, "
-                r"2 \cdot 500.000 + 0.69 \cdot (300.000 + 2 \cdot 600.000)\right) = 1969.948 \ mm",
+                (
+                    r"r_{cont} = min\left(2 \cdot d + 0.56 \cdot \sqrt{(c_1 + 2 \cdot l_{H1}) \cdot (c_2 + 2 \cdot l_{H2})}, "
+                    r"2 \cdot d + 0.69 \cdot (c_1 + 2 \cdot l_{H1})\right)"
+                    r" = min\left(2 \cdot 500.000 + 0.56 \cdot \sqrt{(300.000 + 2 \cdot 600.000) \cdot (400.000 + 2 \cdot 800.000)}, "
+                    r"2 \cdot 500.000 + 0.69 \cdot (300.000 + 2 \cdot 600.000)\right) = 1969.948 \ mm"
+                ),
             ),
             ("short", r"r_{cont} = 1969.948 \ mm"),
         ],

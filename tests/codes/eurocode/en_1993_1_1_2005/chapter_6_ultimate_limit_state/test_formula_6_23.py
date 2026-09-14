@@ -41,8 +41,10 @@ class TestForm6Dot23CheckTorsionalMoment:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{T_{Ed}}{T_{Rd}} \leq 1.0 \right) \to "
-                r"\left( \frac{500.000}{1000.000} \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{T_{Ed}}{T_{Rd}} \leq 1.0 \right) \to "
+                    r"\left( \frac{500.000}{1000.000} \leq 1.0 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

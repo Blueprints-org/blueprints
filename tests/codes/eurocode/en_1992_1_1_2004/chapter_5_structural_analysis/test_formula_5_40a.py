@@ -44,9 +44,11 @@ class TestForm5Dot40aCheckLateralInstability:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{l_{0t}}{b} \leq \frac{50}{\left( h/b \right)^{1/3}} \text{ and } \frac{h}{b} \leq 2.5 \right) \to "
-                r"\left( \frac{6.000}{0.300} \leq \frac{50}{\left( 0.500/0.300 \right)^{1/3}} \text{ and } "
-                r"\frac{0.500}{0.300} \leq 2.5 \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{l_{0t}}{b} \leq \frac{50}{\left( h/b \right)^{1/3}} \text{ and } \frac{h}{b} \leq 2.5 \right) \to "
+                    r"\left( \frac{6.000}{0.300} \leq \frac{50}{\left( 0.500/0.300 \right)^{1/3}} \text{ and } "
+                    r"\frac{0.500}{0.300} \leq 2.5 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

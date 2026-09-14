@@ -44,8 +44,10 @@ class TestForm3Dot14StressStrainForShortTermLoading:
         [
             (
                 "complete",
-                r"\frac{\sigma_c}{f_{cm}} = \frac{k \cdot \eta - \eta^2}{1 + (k-2) \cdot \eta} = "
-                r"\frac{0.380 \cdot 0.880 - 0.880^2}{1 + (0.380-2) \cdot 0.880} = 1.034",
+                (
+                    r"\frac{\sigma_c}{f_{cm}} = \frac{k \cdot \eta - \eta^2}{1 + (k-2) \cdot \eta} = "
+                    r"\frac{0.380 \cdot 0.880 - 0.880^2}{1 + (0.380-2) \cdot 0.880} = 1.034"
+                ),
             ),
             ("short", r"\frac{\sigma_c}{f_{cm}} = 1.034"),
         ],

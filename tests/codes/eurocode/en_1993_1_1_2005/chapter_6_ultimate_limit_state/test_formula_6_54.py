@@ -44,16 +44,20 @@ class TestForm6Dot54BucklingResistanceOfMembersInBending:
         [
             (
                 "complete",
-                r"CHECK \to \frac{M_{Ed}}{M_{b,Rd}} \leq 1.0 \to "
-                r"\frac{50000.000}{100000.000} \leq 1.0 \to "
-                r"\left( 0.500 \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \frac{M_{Ed}}{M_{b,Rd}} \leq 1.0 \to "
+                    r"\frac{50000.000}{100000.000} \leq 1.0 \to "
+                    r"\left( 0.500 \leq 1.0 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
             (
                 "complete_with_units",
-                r"CHECK \to \frac{M_{Ed}}{M_{b,Rd}} \leq 1.0 \to "
-                r"\frac{50000.000 \ Nmm}{100000.000 \ Nmm} \leq 1.0 \to "
-                r"\left( 0.500 \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \frac{M_{Ed}}{M_{b,Rd}} \leq 1.0 \to "
+                    r"\frac{50000.000 \ Nmm}{100000.000 \ Nmm} \leq 1.0 \to "
+                    r"\left( 0.500 \leq 1.0 \right) \to OK"
+                ),
             ),
         ],
     )

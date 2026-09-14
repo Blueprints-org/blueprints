@@ -72,20 +72,24 @@ class TestForm8Dot49And50MomentReduction:
         [
             (
                 "complete",
-                r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
-                r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{ n - a}{1 - a}\right)^2\right] & \text{if } "
-                r"n > a \end{cases} = "
-                r"\begin{cases} 60000.000 & \text{if } 0.300 \leq 0.400 \\ "
-                r"60000.000 \cdot \left[1 - \left(\frac{ 0.300 - 0.400}{1 - 0.400}\right)^2\right] & "
-                r"\text{if } 0.300 > 0.400 \end{cases} = 60000.000 \ Nmm",
+                (
+                    r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
+                    r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{ n - a}{1 - a}\right)^2\right] & \text{if } "
+                    r"n > a \end{cases} = "
+                    r"\begin{cases} 60000.000 & \text{if } 0.300 \leq 0.400 \\ "
+                    r"60000.000 \cdot \left[1 - \left(\frac{ 0.300 - 0.400}{1 - 0.400}\right)^2\right] & "
+                    r"\text{if } 0.300 > 0.400 \end{cases} = 60000.000 \ Nmm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
-                r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{ n - a}{1 - a}\right)^2\right] & \text{if } n > a \end{cases} = "
-                r"\begin{cases} 60000.000 \ Nmm & \text{if } 0.300 \leq 0.400 \\ "
-                r"60000.000 \ Nmm \cdot \left[1 - \left(\frac{ 0.300 - 0.400}{1 - 0.400}\right)^2\right] & "
-                r"\text{if } 0.300 > 0.400 \end{cases} = 60000.000 \ Nmm",
+                (
+                    r"M_{N,z,Rd} = \begin{cases} M_{pl,z,Rd} & \text{if } n \leq a \\ "
+                    r"M_{pl,z,Rd} \cdot \left[1 - \left(\frac{ n - a}{1 - a}\right)^2\right] & \text{if } n > a \end{cases} = "
+                    r"\begin{cases} 60000.000 \ Nmm & \text{if } 0.300 \leq 0.400 \\ "
+                    r"60000.000 \ Nmm \cdot \left[1 - \left(\frac{ 0.300 - 0.400}{1 - 0.400}\right)^2\right] & "
+                    r"\text{if } 0.300 > 0.400 \end{cases} = 60000.000 \ Nmm"
+                ),
             ),
             ("short", r"M_{N,z,Rd} = 60000.000 \ Nmm"),
         ],
@@ -234,13 +238,17 @@ class TestForm8Dot50A:
         [
             (
                 "complete",
-                r"a = \min\left(\frac{A - 2 \cdot b \cdot t_f}{A}, 0.5\right) = \min\left(\frac{2000.000 - "
-                r"2 \cdot 100.000 \cdot 10.000}{2000.000}, 0.5\right) = 0.000 \ -",
+                (
+                    r"a = \min\left(\frac{A - 2 \cdot b \cdot t_f}{A}, 0.5\right) = \min\left(\frac{2000.000 - "
+                    r"2 \cdot 100.000 \cdot 10.000}{2000.000}, 0.5\right) = 0.000 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"a = \min\left(\frac{A - 2 \cdot b \cdot t_f}{A}, 0.5\right) = \min\left(\frac{2000.000 \ mm^2 - "
-                r"2 \cdot 100.000 \ mm \cdot 10.000 \ mm}{2000.000 \ mm^2}, 0.5\right) = 0.000 \ -",
+                (
+                    r"a = \min\left(\frac{A - 2 \cdot b \cdot t_f}{A}, 0.5\right) = \min\left(\frac{2000.000 \ mm^2 - "
+                    r"2 \cdot 100.000 \ mm \cdot 10.000 \ mm}{2000.000 \ mm^2}, 0.5\right) = 0.000 \ -"
+                ),
             ),
             ("short", r"a = 0.000 \ -"),
         ],

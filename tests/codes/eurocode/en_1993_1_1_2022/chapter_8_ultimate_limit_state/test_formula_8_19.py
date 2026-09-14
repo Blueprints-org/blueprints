@@ -46,8 +46,10 @@ class TestForm8Dot19CheckBendingMoment:
             ("short", r"CHECK \to OK"),
             (
                 "complete_with_units",
-                r"CHECK \to \frac{M_{Ed}}{M_{c,Rd}} \leq 1.0 \to \frac{1000.000 \ Nmm}{1500.000 \ Nmm} \leq 1.0 "
-                r"\to \left( 0.667 \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \frac{M_{Ed}}{M_{c,Rd}} \leq 1.0 \to \frac{1000.000 \ Nmm}{1500.000 \ Nmm} \leq 1.0 "
+                    r"\to \left( 0.667 \leq 1.0 \right) \to OK"
+                ),
             ),
         ],
     )
@@ -73,8 +75,10 @@ class TestForm8Dot19CheckBendingMoment:
         [
             (
                 "complete",
-                r"CHECK \to \frac{M_{Ed}}{M_{c,Rd}} \leq 1.0 \to \frac{2000.000}{1500.000} \leq 1.0 \to "
-                r"\left( 1.333 \leq 1.0 \right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \frac{M_{Ed}}{M_{c,Rd}} \leq 1.0 \to \frac{2000.000}{1500.000} \leq 1.0 \to "
+                    r"\left( 1.333 \leq 1.0 \right) \to \text{Not OK}"
+                ),
             ),
         ],
     )

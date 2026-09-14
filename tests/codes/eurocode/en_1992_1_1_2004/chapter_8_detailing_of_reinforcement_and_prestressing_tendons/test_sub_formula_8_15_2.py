@@ -107,9 +107,13 @@ class TestSubForm8Dot15TensileStrengthAtRelease:
         [
             (
                 "complete",
-                (r"f_{ctd}(t) = \frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c} = \frac{1.00 \cdot 0.7 \cdot 1.75}{1.50} = 0.82"),
+                (r"f_{ctd}(t) = \frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c} = \frac{1.00 \cdot 0.7 \cdot 1.75}{1.50} = 0.82 \ MPa"),
             ),
-            ("short", r"f_{ctd}(t) = 0.82"),
+            (
+                "complete_with_units",
+                (r"f_{ctd}(t) = \frac{\alpha_{ct} \cdot 0.7 \cdot f_{ctm}(t)}{\gamma_c} = \frac{1.00 \cdot 0.7 \cdot 1.75 \ MPa}{1.50} = 0.82 \ MPa"),
+            ),
+            ("short", r"f_{ctd}(t) = 0.82 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
@@ -129,6 +133,10 @@ class TestSubForm8Dot15TensileStrengthAtRelease:
             gamma_c=gamma_c,
         ).latex()
 
-        actual = {"complete": form_8_15_p2_latex.complete, "short": form_8_15_p2_latex.short}
+        actual = {
+            "complete": form_8_15_p2_latex.complete,
+            "complete_with_units": form_8_15_p2_latex.complete_with_units,
+            "short": form_8_15_p2_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."
