@@ -65,11 +65,11 @@ Total of 602 formulas present.
 |      8.1       |        :x:         |         |                                                                    |
 |      8.2       |        :x:         |         |                                                                    |
 |      8.3       |        :x:         |         |                                                                    |
-|      8.4       |        :x:         |         |                                                                    |
-|      8.5       |        :x:         |         |                                                                    |
-|      8.6       |        :x:         |         |                                                                    |
-|      8.7       |        :x:         |         |                                                                    |
-|      8.8       |        :x:         |         |                                                                    |
+|      8.4       | :heavy_check_mark: |         | Form8Dot4DesignStressCompressionZone                               |
+|      8.5       | :heavy_check_mark: |         | Form8Dot5To8DesignMomentsForOrthogonalReinforcement                |
+|      8.6       | :heavy_check_mark: |         | Form8Dot5To8DesignMomentsForOrthogonalReinforcement                |
+|      8.7       | :heavy_check_mark: |         | Form8Dot5To8DesignMomentsForOrthogonalReinforcement                |
+|      8.8       | :heavy_check_mark: |         | Form8Dot5To8DesignMomentsForOrthogonalReinforcement                |
 |      8.9       |        :x:         |         |                                                                    |
 |      8.10      |        :x:         |         |                                                                    |
 |      8.11      |        :x:         |         |                                                                    |
