@@ -1,8 +1,7 @@
 """Formula 8.85 from FprEN 1992-1-1:2023: Chapter 8 - Ultimate Limit State."""
 
 import operator
-from collections.abc import Callable, Sequence
-from typing import Self
+from collections.abc import Callable, Iterable, Sequence
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula
@@ -29,6 +28,15 @@ class SubForm8Dot85LowerBound(ComparisonFormula):
             [$\theta$] Selected inclination of the compression field [$degrees$].
         theta_min : DEG
             [$\theta_{min}$] Minimal inclination of the compression field according to 8.2.3(4) [$degrees$].
+            Minimal inclination of the compression field theta_min for shear reinforcement of ductility class B or C.
+            - cot_theta_min = 2.5 (theta = 21.8 deg) for ordinary reinforced members without axial force;
+            - cot_theta_min = 3.0 (theta = 18.4) for members subjected to significant axial compressive force (average
+              axial compressive stress >= |3 MPa| and provided that the depth of the compression chord x determined
+              from a sectional analysis according to 8.1.1 and 8.1.2 is less than 0.25d. Interpolated values between
+              2.5 and 3.0 may be adopted for intermediate cases. For very high compressive forces (x > 0.25d), (11)
+              can apply;
+            - cot_theta_min = 2.5 - 0.1 * N_Ed / |V_Ed| >= 1.0 for members subjected to axial tension.
+            For shear reinforcement of ductility class A, cot_theta_min shall be reduced by 20%.
         """
         super().__init__()
         self.theta = theta
@@ -83,6 +91,15 @@ class SubForm8Dot85UpperBound(ComparisonFormula):
             [$\theta$] Selected inclination of the compression field [$degrees$].
         theta_min : DEG
             [$\theta_{min}$] Minimal inclination of the compression field according to 8.2.3(4) [$degrees$].
+            Minimal inclination of the compression field theta_min for shear reinforcement of ductility class B or C.
+            - cot_theta_min = 2.5 (theta = 21.8 deg) for ordinary reinforced members without axial force;
+            - cot_theta_min = 3.0 (theta = 18.4) for members subjected to significant axial compressive force (average
+              axial compressive stress >= |3 MPa| and provided that the depth of the compression chord x determined
+              from a sectional analysis according to 8.1.1 and 8.1.2 is less than 0.25d. Interpolated values between
+              2.5 and 3.0 may be adopted for intermediate cases. For very high compressive forces (x > 0.25d), (11)
+              can apply;
+            - cot_theta_min = 2.5 - 0.1 * N_Ed / |V_Ed| >= 1.0 for members subjected to axial tension.
+            For shear reinforcement of ductility class A, cot_theta_min shall be reduced by 20%.
         """
         super().__init__()
         self.theta = theta
@@ -154,22 +171,29 @@ class Form8Dot85CheckCotangentCompressionFieldTorsion(AggregatedComparisonFormul
         theta_min : DEG
             [$\theta_{min}$] Minimal inclination of the compression field according to 8.2.3(4). None of the
             rules that give it carries a formula number, so it is an input here [$degrees$].
+            Minimal inclination of the compression field theta_min for shear reinforcement of ductility class B or C.
+            - cot_theta_min = 2.5 (theta = 21.8 deg) for ordinary reinforced members without axial force;
+            - cot_theta_min = 3.0 (theta = 18.4) for members subjected to significant axial compressive force (average
+              axial compressive stress >= |3 MPa| and provided that the depth of the compression chord x determined
+              from a sectional analysis according to 8.1.1 and 8.1.2 is less than 0.25d. Interpolated values between
+              2.5 and 3.0 may be adopted for intermediate cases. For very high compressive forces (x > 0.25d), (11)
+              can apply;
+            - cot_theta_min = 2.5 - 0.1 * N_Ed / |V_Ed| >= 1.0 for members subjected to axial tension.
+            For shear reinforcement of ductility class A, cot_theta_min shall be reduced by 20%.
         """
-        super().__init__(aggregation=all, comparison_formulas=self._bounds(theta, theta_min))
+        super().__init__()
         self.theta = theta
         self.theta_min = theta_min
 
-    @staticmethod
-    def _bounds(theta: DEG, theta_min: DEG) -> Sequence[ComparisonFormula]:
-        """Builds the two halves of the printed range."""
-        return (
+    @classmethod
+    def _define_aggregation(  # ty: ignore[invalid-method-override]
+        cls, theta: DEG, theta_min: DEG
+    ) -> tuple[Callable[[Iterable[bool]], bool], Sequence[ComparisonFormula]]:
+        """Translates the arguments of this formula into the two halves of the printed range that the base class evaluates."""
+        return all, (
             SubForm8Dot85LowerBound(theta=theta, theta_min=theta_min),
             SubForm8Dot85UpperBound(theta=theta, theta_min=theta_min),
         )
-
-    def __new__(cls, theta: DEG, theta_min: DEG) -> Self:
-        """Translates the arguments of this formula into the aggregation the base class evaluates."""
-        return super().__new__(cls, aggregation=all, comparison_formulas=cls._bounds(theta, theta_min))
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.85."""
