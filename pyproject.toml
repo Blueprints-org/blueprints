@@ -45,16 +45,16 @@ bp = "blueprints.cli:app"
 
 [dependency-groups]
 dev = [
-    "ty==0.0.65",
-    "ruff==0.16.0",
-    "pre-commit==4.6.1",
-    "types-shapely==2.1.0.20250917",
+    "ty==0.0.75",
+    "ruff==0.16.5",
+    "pre-commit==4.6.2",
+    "types-shapely==2.1.0.20260728",
     "icecream==2.2.0",
 ]
 docs = [
     "mkdocs ~= 1.6.1",
     "mkdocs-material>=9.6.14,<9.8.0",
-    "pygments==2.19.1",
+    "pygments==2.21.0",
     "mkdocs-open-in-new-tab ~= 1.0.8",
     "mkdocs-git-revision-date-localized-plugin>=1.4.7,<1.6.0",
     "mkdocstrings[python]>=0.29.1,<1.1.0",
