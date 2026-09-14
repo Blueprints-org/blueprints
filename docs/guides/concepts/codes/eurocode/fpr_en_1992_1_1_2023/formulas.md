@@ -128,8 +128,8 @@ Total of 602 formulas present.
 |      8.64      | :heavy_check_mark: |         | Form8Dot64ShearStressResistanceWithTransverseBending               |
 |      8.65      |        :x:         |         |                                                                    |
 |      8.66      |        :x:         |         |                                                                    |
-|      8.67      |        :x:         |         |                                                                    |
-|      8.68      |        :x:         |         |                                                                    |
+|      8.67      | :heavy_check_mark: |         | Form8Dot67And68CheckCotangentFlangeCompressionField                |
+|      8.68      | :heavy_check_mark: |         | Form8Dot67And68CheckCotangentFlangeCompressionField                |
 |      8.69      | :heavy_check_mark: |         | Form8Dot69CheckTransverseReinforcementInFlange                     |
 |      8.70      | :heavy_check_mark: |         | Form8Dot70CheckPreventCrushingOfCompressionFieldInFlange           |
 |      8.71      | :heavy_check_mark: |         | Form8Dot71StrengthReductionFactor                                  |
@@ -142,11 +142,11 @@ Total of 602 formulas present.
 |      8.78      | :heavy_check_mark: |         | Form8Dot78MinimumInterfaceReinforcementAlongEdge                   |
 |      8.79      |        :x:         |         |                                                                    |
 |      8.80      |        :x:         |         |                                                                    |
-|      8.81      |        :x:         |         |                                                                    |
-|      8.82      |        :x:         |         |                                                                    |
-|      8.83      |        :x:         |         |                                                                    |
-|      8.84      |        :x:         |         |                                                                    |
-|      8.85      |        :x:         |         |                                                                    |
+|      8.81      | :heavy_check_mark: |         | Form8Dot81DesignTorsionalCapacity                                  |
+|      8.82      | :heavy_check_mark: |         | Form8Dot82TorsionalStressResistanceShearReinforcement              |
+|      8.83      | :heavy_check_mark: |         | Form8Dot83TorsionalStressResistanceLongitudinalReinforcement       |
+|      8.84      | :heavy_check_mark: |         | Form8Dot84TorsionalStressResistanceConcreteCrushing                |
+|      8.85      | :heavy_check_mark: |         | Form8Dot85CheckCotangentCompressionFieldTorsion                    |
 |      8.86      | :heavy_check_mark: |         | Form8Dot86CheckInteractionInternalForces                           |
 |      8.87      | :heavy_check_mark: |         | Form8Dot87CheckDetailedPunchingVerificationMayBeOmitted            |
 |      8.88      | :heavy_check_mark: |         | Form8Dot88CheckPunchingShearReinforcementMayBeOmitted              |
