@@ -37,6 +37,10 @@ class FormNBDotNB9Alpha(Formula):
             [$b$] Width of the beam [$mm$].
         l_g : MM
             [$L_g$] Length of the beam between supports [$mm$].
+
+        Notes
+        -----
+        This formula applies when α > 575.
         """
         super().__init__()
         self.h = h
@@ -57,11 +61,15 @@ class FormNBDotNB9Alpha(Formula):
         raise_if_less_or_equal_to_zero(t_w=t_w, b=b, l_g=l_g)
         raise_if_negative(h=h, t_f=t_f)
 
-        return max(575, (h * t_f * 1e12) / (t_w**3 * b * l_g**2))
+        alpha = (h * t_f * 1e12) / (t_w**3 * b * l_g**2)
+        if alpha <= 575:
+            raise ValueError(f"alpha must be > 575 for this formula to be valid. Got alpha={alpha}")
+
+        return alpha
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula NB.NB.9."""
-        _equation: str = r"\max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right)"
+        _equation: str = r"\frac{h \cdot t_f \cdot 10^{12}}{\left(t_w\right)^3 \cdot b \cdot \left(L_g\right)^2}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
             {

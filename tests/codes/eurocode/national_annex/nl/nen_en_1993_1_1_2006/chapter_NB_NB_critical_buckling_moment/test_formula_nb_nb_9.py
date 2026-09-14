@@ -28,22 +28,10 @@ class TestFormNBDotNB9Alpha:
 
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
-    def test_evaluation_result_575(self) -> None:
-        """Tests the evaluation of the result if it is limited with the 575."""
-        # Example values
-        h = 10.0
-        t_f = 15.0
-        t_w = 8.0
-        b = 200.0
-        l_g = 5000.0
-
-        # Object to test
-        formula = FormNBDotNB9Alpha(h=h, t_f=t_f, t_w=t_w, b=b, l_g=l_g)
-
-        # Expected result, manually calculated
-        manually_calculated_result = 575.0
-
-        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+    def test_raise_error_when_alpha_is_below_lower_bound(self) -> None:
+        """Test that alpha <= 575 raises ValueError, since NB.NB.9 only applies above that value."""
+        with pytest.raises(ValueError, match=r"alpha must be > 575"):
+            FormNBDotNB9Alpha(h=10.0, t_f=15.0, t_w=8.0, b=200.0, l_g=5000.0)
 
     @pytest.mark.parametrize(
         ("h", "t_f", "t_w", "b", "l_g"),
@@ -69,16 +57,16 @@ class TestFormNBDotNB9Alpha:
             (
                 "complete",
                 (
-                    r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
-                    r"\max\left(575, \frac{400.000 \cdot 15.000 \cdot 10^{12}}{8.000^3 \cdot 200.000 \cdot 5000.000^2}\right) = 2343.750 \ -"
+                    r"\alpha = \frac{h \cdot t_f \cdot 10^{12}}{\left(t_w\right)^3 \cdot b \cdot \left(L_g\right)^2} = "
+                    r"\frac{400.000 \cdot 15.000 \cdot 10^{12}}{\left(8.000\right)^3 \cdot 200.000 \cdot \left(5000.000\right)^2} = 2343.750 \ -"
                 ),
             ),
             (
                 "complete_with_units",
                 (
-                    r"\alpha = \max\left(575, \frac{h \cdot t_f \cdot 10^{12}}{t_w^3 \cdot b \cdot L_g^2}\right) = "
-                    r"\max\left(575, \frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{8.000 \ mm^3 \cdot 200.000 \ mm "
-                    r"\cdot 5000.000 \ mm^2}\right) = 2343.750 \ -"
+                    r"\alpha = \frac{h \cdot t_f \cdot 10^{12}}{\left(t_w\right)^3 \cdot b \cdot \left(L_g\right)^2} = "
+                    r"\frac{400.000 \ mm \cdot 15.000 \ mm \cdot 10^{12}}{\left(8.000 \ mm\right)^3 \cdot 200.000 \ mm "
+                    r"\cdot \left(5000.000 \ mm\right)^2} = 2343.750 \ -"
                 ),
             ),
             ("short", r"\alpha = 2343.750 \ -"),
