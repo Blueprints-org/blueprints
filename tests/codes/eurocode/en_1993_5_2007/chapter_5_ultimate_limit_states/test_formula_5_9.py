@@ -46,7 +46,7 @@ class TestForm5Dot9ReducedBendingMomentResistance:
 
     @pytest.mark.parametrize(
         ("invalid_argument", "invalid_value"),
-        itertools.product(("beta_b", "w_pl", "rho", "a_v", "t_w", "alpha", "f_y", "gamma_m_0", "mc_rd"), (-1.0, 0.0)),
+        tuple(itertools.product(("beta_b", "w_pl", "rho", "a_v", "t_w", "alpha", "f_y", "gamma_m_0", "mc_rd"), (-1.0, 0.0))),
     )
     def test_raise_error_when_invalid_values_are_given(self, invalid_argument: str, invalid_value: float) -> None:
         """Test a zero and negative value for parameters."""
@@ -62,18 +62,22 @@ class TestForm5Dot9ReducedBendingMomentResistance:
         [
             (
                 "complete",
-                r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
-                r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} "
-                r"= \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
-                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.27",
+                (
+                    r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
+                    r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} "
+                    r"= \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
+                    r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.27"
+                ),
             ),
             ("short", r"M_{V,Rd} = 1204.27"),
             (
                 "string",
-                r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
-                r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} "
-                r"= \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
-                r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.27",
+                (
+                    r"M_{V,Rd} = \min \left\{\left(\beta_b \cdot W_{pl} - \frac{\rho \cdot A_v^2}{4 \cdot t_w \cdot \sin(\alpha)}\right) \cdot "
+                    r"\frac{f_y}{\gamma_{M0}}, M_{c,Rd}\right\} "
+                    r"= \min \left\{\left(0.90 \cdot 3070000.00 - \frac{0.01 \cdot 7805.00^2}{4 \cdot 12.20 \cdot "
+                    r"\sin(55.00)}\right) \cdot \frac{355.00}{0.81} \cdot 10^{-6}, 1500.00\right\} = 1204.27"
+                ),
             ),
         ],
     )

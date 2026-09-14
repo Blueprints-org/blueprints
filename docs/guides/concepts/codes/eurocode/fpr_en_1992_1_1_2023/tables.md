@@ -29,7 +29,7 @@ Total of 92 tables present.
 |     7.1      | :x:  |         |             |
 |     7.2      | :x:  |         |             |
 |     8.1      | :x:  |         |             |
-|     8.2      | :x:  |         |             |
+|     8.2      | :heavy_check_mark: | Coefficients depending on the roughness of the surface | Table8Dot2CoefficientsSurfaceRoughness, SurfaceRoughness |
 |     8.3      | :x:  |         |             |
 |     9.1      | :x:  |         |             |
 |     9.2      | :x:  |         |             |

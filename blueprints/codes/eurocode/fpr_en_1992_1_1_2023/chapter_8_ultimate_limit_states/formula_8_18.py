@@ -9,7 +9,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 class Form8Dot18AverageShearStress(Formula):
     """Class representing formula 8.18 for the calculation of the average shear stress over the cross-section
-    in regions of members without geometric discontinuities.
+    of linear members in regions without geometric discontinuities.
     """
 
     label = "8.18"
@@ -23,11 +23,14 @@ class Form8Dot18AverageShearStress(Formula):
         Parameters
         ----------
         v_ed : N
-            [$V_{Ed}$] Design shear force at the control section in linear members
+            [$V_{Ed}$] Design shear force at the control section in linear members [$N$]. Note that this is the upper case
+            [$V_{Ed}$] of linear members, not the shear force per unit width [$v_{Ed}$] in [$N/mm$] used in Formula (8.19).
         b_w : MM
-            [$b_w$] Width of the cross-section of linear members.
+            [$b_w$] Width of the cross-section of linear members. The width [$b_w$] for cross-sections with variable width
+            and for circular cross-sections is defined in 8.2.3(9) [$mm$].
         z : MM
-            [$z$] Lever arm for the shear stress calculation defined as z = 0.9d
+            [$z$] Lever arm for the shear stress calculation defined as [$z = 0.9 \cdot d$], where [$d$] refers to the
+            centroid of tensile reinforcement [$mm$].
         """
         super().__init__()
         self.v_ed = v_ed
@@ -49,11 +52,21 @@ class Form8Dot18AverageShearStress(Formula):
             replacements={r"V_{Ed}": f"{self.v_ed:.{n}f}", r"b_w": f"{self.b_w:.{n}f}", r"z": f"{self.z:.{n}f}"},
             unique_symbol_check=False,
         )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            template=_equation,
+            replacements={
+                r"V_{Ed}": rf"{self.v_ed:.{n}f} \ N",
+                r"b_w": rf"{self.b_w:.{n}f} \ mm",
+                r"z": rf"{self.z:.{n}f} \ mm",
+            },
+            unique_symbol_check=False,
+        )
         return LatexFormula(
             return_symbol=r"\tau_{Ed}",
             result=f"{self:.{n}f}",
             equation=_equation,
             numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
             unit="MPa",
         )

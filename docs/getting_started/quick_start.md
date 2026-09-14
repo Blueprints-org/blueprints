@@ -83,13 +83,14 @@ cs.add_longitudinal_reinforcement_by_quantity(
 )
 
 # Plot the cross-section
-fig = cs.plot(show=False) #change show to True in your local example to show the plot directly 
+fig = cs.plot(show=False)  # change show to True in your local example to show the plot directly
 
-from io import StringIO   # markdown-exec: hide
-import matplotlib.pyplot as plt   # markdown-exec: hide
-buffer = StringIO()   # markdown-exec: hide
-plt.savefig(buffer, format="svg")   # markdown-exec: hide
-print(buffer.getvalue())   # markdown-exec: hide
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
 ```
 ## Next Steps
 

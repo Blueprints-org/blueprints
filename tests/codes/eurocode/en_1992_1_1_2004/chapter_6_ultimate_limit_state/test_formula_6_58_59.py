@@ -62,11 +62,13 @@ class TestForm6Dot58And59TensileForce:
         [
             (
                 "complete",
-                r"T = \begin{cases} \frac{1}{4} \cdot \frac{ b - a}{ b} \cdot F & \text{if } b \leq \frac{H}{2} \\ "
-                r"\frac{1}{4} \cdot \left(1 - 0.7 \cdot \frac{ a}{\frac{H}{2}}\right) \cdot F & \text{if } b > \frac{H}{2} \end{cases}"
-                r" = \begin{cases} \frac{1}{4} \cdot \frac{ 300.000 - 200.000}{ 300.000} \cdot 500.000 & \text{if } 300.000 "
-                r"\leq \frac{400.000}{2} \\ \frac{1}{4} \cdot \left(1 - 0.7 \cdot \frac{ 200.000}{\frac{400.000}{2}}\right) \cdot "
-                r"500.000 & \text{if } 300.000 > \frac{400.000}{2} \end{cases} = 37.500 \ N",
+                (
+                    r"T = \begin{cases} \frac{1}{4} \cdot \frac{ b - a}{ b} \cdot F & \text{if } b \leq \frac{H}{2} \\ "
+                    r"\frac{1}{4} \cdot \left(1 - 0.7 \cdot \frac{ a}{\frac{H}{2}}\right) \cdot F & \text{if } b > \frac{H}{2} \end{cases}"
+                    r" = \begin{cases} \frac{1}{4} \cdot \frac{ 300.000 - 200.000}{ 300.000} \cdot 500.000 & \text{if } 300.000 "
+                    r"\leq \frac{400.000}{2} \\ \frac{1}{4} \cdot \left(1 - 0.7 \cdot \frac{ 200.000}{\frac{400.000}{2}}\right) \cdot "
+                    r"500.000 & \text{if } 300.000 > \frac{400.000}{2} \end{cases} = 37.500 \ N"
+                ),
             ),
             ("short", r"T = 37.500 \ N"),
         ],

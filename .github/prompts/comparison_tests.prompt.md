@@ -76,6 +76,4 @@ class TestForm5Dot17CompressionCheckZProfilesClass1And2:
         }
 
         assert expected == actual[representation], f"{representation} representation failed."
-
-
 ```

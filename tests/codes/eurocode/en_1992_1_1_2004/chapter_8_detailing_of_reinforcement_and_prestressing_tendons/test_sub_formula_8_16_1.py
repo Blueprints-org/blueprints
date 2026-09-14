@@ -48,6 +48,10 @@ class TestSubForm8Dot16Alpha1:
                 "complete",
                 (r"\alpha_1 \rightarrow release\;type \rightarrow gradual \rightarrow 1.00"),
             ),
+            (
+                "complete_with_units",
+                (r"\alpha_1 \rightarrow release\;type \rightarrow gradual \rightarrow 1.00"),
+            ),
             ("short", r"\alpha_1 \rightarrow 1.00"),
         ],
     )
@@ -59,6 +63,10 @@ class TestSubForm8Dot16Alpha1:
         # Object to test
         form_8_16_p1_latex = SubForm8Dot16Alpha1(release_type=release_type).latex()
 
-        actual = {"complete": form_8_16_p1_latex.complete, "short": form_8_16_p1_latex.short}
+        actual = {
+            "complete": form_8_16_p1_latex.complete,
+            "complete_with_units": form_8_16_p1_latex.complete_with_units,
+            "short": form_8_16_p1_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."

@@ -2,7 +2,7 @@
 
 from blueprints.codes.eurocode.en_1992_1_1_2004 import EN_1992_1_1_2004
 from blueprints.codes.formula import Formula
-from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets
+from blueprints.codes.latex_formula import LatexFormula, latex_max_curly_brackets, latex_replace_symbols
 from blueprints.type_alias import MM
 from blueprints.validations import raise_if_negative
 
@@ -45,14 +45,30 @@ class Form8Dot7MinimumCompressionAnchorage(Formula):
 
     def latex(self, n: int = 2) -> LatexFormula:
         """Returns a LatexFormula object for this formula."""
+        _equation: str = latex_max_curly_brackets(r"0.6 \cdot l_{b,rqd}", r"10 \cdot Ø", r"100 \ \text{mm}")
+        _equation_no_unit: str = latex_max_curly_brackets(r"0.6 \cdot l_{b,rqd}", r"10 \cdot Ø", r"100")
+        _numeric_equation: str = latex_replace_symbols(
+            _equation_no_unit,
+            {
+                r"l_{b,rqd}": f"{self.l_b_rqd:.{n}f}",
+                r"Ø": f"{self.diameter:.{n}f}",
+            },
+            False,
+        )
+        _numeric_equation_with_units: str = latex_replace_symbols(
+            _equation,
+            {
+                r"l_{b,rqd}": rf"{self.l_b_rqd:.{n}f} \ mm",
+                r"Ø": rf"{self.diameter:.{n}f} \ mm",
+            },
+            False,
+        )
         return LatexFormula(
             return_symbol=r"l_{b,min}",
             result=f"{self:.{n}f}",
-            equation=latex_max_curly_brackets(r"0.6 \cdot l_{b,rqd}", r"10 \cdot Ø", r"100 \ \text{mm}"),
-            numeric_equation=latex_max_curly_brackets(
-                rf"0.6 \cdot {self.l_b_rqd:.{n}f}",
-                rf"10 \cdot {self.diameter}",
-                r"100",
-            ),
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
+            unit="mm",
         )

@@ -68,8 +68,10 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
         [
             (
                 "complete",
-                r"CHECK \rightarrow F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
-                r"\rightarrow 53.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK",
+                (
+                    r"CHECK \rightarrow F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
+                    r"\rightarrow 53.333\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow OK"
+                ),
             ),
             ("short", r"CHECK \rightarrow OK"),
         ],
@@ -99,8 +101,10 @@ class TestForm5Dot18ComparisonGeneralSecondOrderEffects:
         [
             (
                 "complete",
-                r"CHECK \rightarrow F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} \rightarrow 2000.000\leq \frac{2}{"
-                r"3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow \text{Not OK}",
+                (
+                    r"CHECK \rightarrow F_{V,Ed} \leq \frac{n_s}{n_s + 1.6} \cdot \frac{\sum E_{cd} \cdot I_c}{L^2} "
+                    r"\rightarrow 2000.000\leq \frac{2}{3.6} \cdot \frac{\sum 30000 \cdot 100000000}{25} \rightarrow \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \rightarrow \text{Not OK}"),
         ],

@@ -85,10 +85,20 @@ class TestForm8Dot6MinimumTensionAnchorage:
         [
             (
                 "complete",
-                r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = \max \left\{0.3 \cdot 500.00; 10 \cdot 8; "
-                r"100\right\} = 150.00",
+                (
+                    r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} = "
+                    r"\max \left\{0.3 \cdot 500.00; 10 \cdot 8.00; 100\right\} = 150.00 \ mm"
+                ),
             ),
-            ("short", "l_{b,min} = 150.00"),
+            (
+                "complete_with_units",
+                (
+                    r"l_{b,min} = \max \left\{0.3 \cdot l_{b,rqd}; 10 \cdot Ø; 100 \ \text{mm}\right\} ="
+                    r" \max \left\{0.3 \cdot 500.00 \ mm; 10 \cdot 8.00 \ mm; "
+                    r"100 \ \text{mm}\right\} = 150.00 \ mm"
+                ),
+            ),
+            ("short", r"l_{b,min} = 150.00 \ mm"),
         ],
     )
     def test_latex(self, representation: str, expected_result: str) -> None:
@@ -100,6 +110,7 @@ class TestForm8Dot6MinimumTensionAnchorage:
 
         actual = {
             "complete": latex.complete,
+            "complete_with_units": latex.complete_with_units,
             "short": latex.short,
         }
 

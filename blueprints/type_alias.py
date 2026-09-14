@@ -61,6 +61,12 @@ KNM = float
 """Kilonewton-meters (kNm), represented as a float."""
 # </editor-fold>
 
+# <editor-fold desc="MOMENT PER UNIT LENGTH">
+NMM_MM = float
+"""Newton-millimeters per millimeter (Nmm/mm), represented as a float. Used for the bending moment per unit
+width of a planar member, which the codes write with a lower case m to distinguish it from a sectional moment."""
+# </editor-fold>
+
 # <editor-fold desc="STRESSES">
 KPA = float
 """Kilopascals (KPa), represented as a float."""
@@ -75,6 +81,8 @@ MM2 = float
 """Square millimeters (mm²), represented as a float."""
 MM2_M = float
 """Square millimeters per meter, (mm²/m), represented as a float."""
+MM2_MM = float
+"""Square millimeters per millimeter, (mm²/mm), represented as a float."""
 CM2 = float
 """Square centimeters (cm²), represented as a float."""
 DM2 = float

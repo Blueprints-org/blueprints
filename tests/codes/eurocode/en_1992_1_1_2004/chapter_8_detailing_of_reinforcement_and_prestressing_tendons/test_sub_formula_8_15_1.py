@@ -41,6 +41,10 @@ class TestSubForm8Dot15EtaP1:
                 "complete",
                 (r"\eta_{p1} \rightarrow type\;of\;wire \rightarrow indented \rightarrow 2.70"),
             ),
+            (
+                "complete_with_units",
+                (r"\eta_{p1} \rightarrow type\;of\;wire \rightarrow indented \rightarrow 2.70"),
+            ),
             ("short", r"\eta_{p1} \rightarrow 2.70"),
         ],
     )
@@ -52,6 +56,10 @@ class TestSubForm8Dot15EtaP1:
         # Object to test
         form_8_15_p1_latex = SubForm8Dot15EtaP1(type_of_wire=type_of_wire).latex()
 
-        actual = {"complete": form_8_15_p1_latex.complete, "short": form_8_15_p1_latex.short}
+        actual = {
+            "complete": form_8_15_p1_latex.complete,
+            "complete_with_units": form_8_15_p1_latex.complete_with_units,
+            "short": form_8_15_p1_latex.short,
+        }
 
         assert actual[representation] == expected, f"{representation} representation failed."
