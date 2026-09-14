@@ -55,8 +55,10 @@ class TestForm8Dot65LongitudinalShearStressFlangeWebJunction:
             ),
             (
                 "complete_with_units",
-                r"\tau_{Ed} = \frac{\Delta F_d}{h_f \cdot \Delta x} = "
-                r"\frac{200000.000 \ N}{200.000 \ mm \cdot 2000.000 \ mm} = 0.500 \ MPa",
+                (
+                    r"\tau_{Ed} = \frac{\Delta F_d}{h_f \cdot \Delta x} = "
+                    r"\frac{200000.000 \ N}{200.000 \ mm \cdot 2000.000 \ mm} = 0.500 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Ed} = 0.500 \ MPa"),
         ],

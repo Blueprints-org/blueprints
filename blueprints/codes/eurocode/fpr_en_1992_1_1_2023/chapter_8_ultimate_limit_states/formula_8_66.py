@@ -65,8 +65,10 @@ class Form8Dot66CheckOmissionOfShearVerification(ComparisonFormula):
     @staticmethod
     def _evaluate_rhs(a_st_min: MM2, s_f: MM, h_f: MM, f_yd: MPA, *_args, **_kwargs) -> float:
         """Evaluates the stress that the minimum transverse reinforcement already carries."""
-        raise_if_negative(a_st_min=a_st_min, f_yd=f_yd)
-        raise_if_less_or_equal_to_zero(s_f=s_f, h_f=h_f)
+        # Unlike an as-built reinforcement area, a_st_min comes from the NDP table of 12.1 and is never zero,
+        # and a yield strength is never zero either. Accepting either as zero would make this side of the
+        # check zero, which divides by zero in unity_check.
+        raise_if_less_or_equal_to_zero(a_st_min=a_st_min, s_f=s_f, h_f=h_f, f_yd=f_yd)
 
         return float(a_st_min / (s_f * h_f) * f_yd)
 
@@ -95,9 +97,11 @@ class Form8Dot66CheckOmissionOfShearVerification(ComparisonFormula):
             },
             unique_symbol_check=False,
         )
+        _intermediate_result: str = rf"{self.lhs:.{n}f} \leq {self.rhs:.{n}f}"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else r"\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
