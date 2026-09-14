@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm2Dot17DesignValueResistance:
-    """Validation for formula 2.1 from EN 1993-1-1:2005."""
+    """Validation for formula 2.17 from EN 1993-1-1:2005."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""
@@ -47,11 +47,11 @@ class TestForm2Dot17DesignValueResistance:
         [
             (
                 "complete",
-                r"R_{d} = k_{mod}*\frac{R_k}{\gamma_M} = 0.500*\frac{260.000}{1.300} = 100.000 \ N",
+                r"R_{d} = k_{mod} \cdot \frac{R_k}{\gamma_M} = 0.500 \cdot \frac{260.000}{1.300} = 100.000 \ N",
             ),
             (
                 "complete_with_units",
-                r"R_{d} = k_{mod}*\frac{R_k}{\gamma_M} = 0.500*\frac{260.000 \ N}{1.300} = 100.000 \ N",
+                r"R_{d} = k_{mod} \cdot \frac{R_k}{\gamma_M} = 0.500 \cdot \frac{260.000 \ N}{1.300} = 100.000 \ N",
             ),
             ("short", r"R_{d} = 100.000 \ N"),
         ],
