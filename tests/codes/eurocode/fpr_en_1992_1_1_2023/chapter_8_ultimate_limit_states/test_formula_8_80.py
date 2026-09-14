@@ -40,6 +40,19 @@ class TestForm8Dot80ShearForceInWallDueToTorsion:
             Form8Dot80ShearForceInWallDueToTorsion(tau_t_i=tau_t_i, t_eff_i=t_eff_i, z_i=z_i)
 
     @pytest.mark.parametrize(
+        ("tau_t_i", "t_eff_i", "z_i"),
+        [
+            (1.875, 0.0, 400.0),  # t_eff_i is zero
+            (1.875, 120.0, 0.0),  # z_i is zero
+        ],
+    )
+    def test_evaluation_with_zero_wall_dimension(self, tau_t_i: float, t_eff_i: float, z_i: float) -> None:
+        """Neither t_eff_i nor z_i is a denominator, so a zero simply returns a zero force."""
+        formula = Form8Dot80ShearForceInWallDueToTorsion(tau_t_i=tau_t_i, t_eff_i=t_eff_i, z_i=z_i)
+
+        assert formula == pytest.approx(expected=0.0, abs=1e-9)
+
+    @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (

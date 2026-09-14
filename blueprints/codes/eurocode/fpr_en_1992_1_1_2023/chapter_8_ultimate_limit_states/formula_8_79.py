@@ -11,8 +11,9 @@ class Form8Dot79TorsionalShearStressInWall(Formula):
     r"""Class representing formula 8.79 for the calculation of the torsional shear stress in a wall element of a
     section subject to a torsional moment.
 
-    It applies to closed thin-walled sections and solid sections, for which 8.3.2(1) allows warping torsion to be
-    ignored. Solid sections are first modelled as equivalent thin-walled sections according to 8.3.1(2).
+    It applies to closed thin-walled sections and solid sections. For these, 8.3.2(1) states that the warping
+    component of torsion may normally be ignored, though not always. Solid sections are first modelled as
+    equivalent thin-walled sections according to 8.3.1(2).
 
     The stress follows from the Bredt shear flow, so it is constant over the effective thickness of the wall and
     the same for every wall of a section with a constant effective thickness.
