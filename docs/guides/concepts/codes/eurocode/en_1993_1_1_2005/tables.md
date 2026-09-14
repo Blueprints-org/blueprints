@@ -18,7 +18,7 @@ Total of 20 tables present.
 | 3.1          | :heavy_check_mark: |         | Table3Dot1NominalValuesHotRolledStructuralSteel | :x: |
 | 3.2          |        :x:         |         |                                                 | :x: |
 | 5.1          |        :x:         |         |                                                 | :x: |
-| 5.2          |        :x:         |         |                                                 | :x: |
+| 5.2          | :heavy_check_mark: |         | Table5Dot2MaximumWidthToThicknessRatio          | :x: |
 | 6.1          |        :x:         |         |                                                 | :x: |
 | 6.2          |        :x:         |         |                                                 | :x: |
 | 6.3          |        :x:         |         |                                                 | :x: |
