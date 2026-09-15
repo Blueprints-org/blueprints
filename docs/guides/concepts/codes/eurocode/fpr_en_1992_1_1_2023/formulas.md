@@ -173,7 +173,7 @@ Total of 602 formulas present.
 |     8.109      |        :x:         |         |                                                                    |
 |     8.110      |        :x:         |         |                                                                    |
 |     8.111      |        :x:         |         |                                                                    |
-|     8.112      |        :x:         |         |                                                                    |
+|     8.112      | :heavy_check_mark: |         | Form8Dot112OuterControlPerimeterWithoutShearReinforcement          |
 |     8.113      |        :x:         |         |                                                                    |
 |     8.114      |        :x:         |         |                                                                    |
 |     8.115      |        :x:         |         |                                                                    |
