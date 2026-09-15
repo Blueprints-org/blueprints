@@ -3,7 +3,7 @@
 import pytest
 from shapely import LineString
 
-from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.reinforcement_configurations import (
     ReinforcementByDistance,
     ReinforcementByQuantity,
@@ -87,6 +87,13 @@ class TestReinforcementByQuantity:
         assert len(rebars) == 10
         assert all(rebar.diameter == 12 for rebar in rebars)
         assert all(rebar.material == ReinforcementSteelMaterial() for rebar in rebars)
+
+    def test_to_rebars_propagates_material(self) -> None:
+        """The configured (non-default) material is carried over to every produced rebar."""
+        material = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500C)
+        configuration = ReinforcementByQuantity(diameter=12, material=material, n=4)
+        rebars = configuration.to_rebars(line=LineString([(0, 0), (1000, 0)]))
+        assert all(rebar.material == material for rebar in rebars)
 
     def test__repr__(self, reinforcement_by_quantity: ReinforcementByQuantity) -> None:
         """Test the representation of the reinforcement."""
