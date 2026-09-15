@@ -52,6 +52,9 @@ nav:
           - EN 1993-1-9:2005 (Steel Fatigue):
             - Formulas: guides/concepts/codes/eurocode/en_1993_1_9_2005/formulas.md
             - Tables: guides/concepts/codes/eurocode/en_1993_1_9_2005/tables.md
+            - Figures: guides/concepts/codes/eurocode/en_1993_1_9_2005/figures.md
+          - EN 1993-1-9:2025 (Steel Fatigue):
+            - Figures: guides/concepts/codes/eurocode/en_1993_1_9_2025/figures.md
           - EN 1993-5:2007 (Steel Piling):
             - Formulas: guides/concepts/codes/eurocode/en_1993_5_2007/formulas.md
             - Tables: guides/concepts/codes/eurocode/en_1993_5_2007/tables.md
