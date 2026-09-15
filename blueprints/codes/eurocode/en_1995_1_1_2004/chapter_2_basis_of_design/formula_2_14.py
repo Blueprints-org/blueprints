@@ -8,7 +8,7 @@ from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_nega
 
 
 class Form2Dot14DesignValueStrength(Formula):
-    """Class representing formula 2.14 for the calculation of the design value of the strength [$X_d$]."""
+    """Class representing formula 2.14 for the calculation of the design value of the strength property [$X_d$]."""
 
     label = "2.14"
     source_document = EN_1995_1_1_2004
@@ -19,18 +19,18 @@ class Form2Dot14DesignValueStrength(Formula):
         gamma_m: DIMENSIONLESS,
         k_mod: DIMENSIONLESS,
     ) -> None:
-        r"""[$X_d$] Design value of the strength [$MPA$].
+        r"""[$X_d$] Design value of the strength property [$MPA$].
 
         EN 1995-1-1:2004 art.2.4.1(1) - Formula (2.14)
 
         Parameters
         ----------
         x_k : MPA
-            [$X_k$] Characteristic value of the strength [$MPA$].
+            [$X_k$] Characteristic value of the strength property [$MPA$].
         gamma_m : DIMENSIONLESS
-            [$\gamma_{M}$] partial factor for the strength [$-$].
+            [$\gamma_M$] Partial factor for a material property [$-$].
         k_mod : DIMENSIONLESS
-            [$\k_{mod}$] modification factor for load and moisture content [$-$].
+            [$k_{mod}$] Modification factor for load and moisture content [$-$].
         """
         super().__init__()
         self.x_k = x_k

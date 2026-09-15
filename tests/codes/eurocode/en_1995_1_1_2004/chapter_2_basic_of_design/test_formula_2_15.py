@@ -7,7 +7,7 @@ from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm2Dot15DesignModulusElasticity:
-    """Validation for formula 2.15 from EN 1993-1-1:2004."""
+    """Validation for formula 2.15 from EN 1995-1-1:2004."""
 
     def test_evaluation(self) -> None:
         """Test the evaluation of the result."""

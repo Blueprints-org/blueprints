@@ -28,9 +28,9 @@ class Form2Dot17DesignValueResistance(Formula):
         r_k : N
             [$R_k$] Characteristic value of the resistance [$N$].
         gamma_m : DIMENSIONLESS
-            [$\gamma_{M}$] partial factor for the resistance [$-$].
+            [$\gamma_M$] Partial factor for a material property [$-$].
         k_mod : DIMENSIONLESS
-            [$\k_{mod}$] modification factor for load and moisture content [$-$].
+            [$k_{mod}$] Modification factor for load and moisture content [$-$].
         """
         super().__init__()
         self.r_k = r_k

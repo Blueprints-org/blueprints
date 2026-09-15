@@ -44,7 +44,7 @@ class Form2Dot16DesignShearModulus(Formula):
         return g_mean / gamma_m
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 2.14."""
+        """Returns LatexFormula object for formula 2.16."""
         _equation: str = r"\frac{G_{mean}}{\gamma_M}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,

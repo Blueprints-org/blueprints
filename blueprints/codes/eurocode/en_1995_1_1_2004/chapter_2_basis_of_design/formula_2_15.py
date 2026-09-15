@@ -27,7 +27,7 @@ class Form2Dot15DesignModulusElasticity(Formula):
         e_mean : MPA
             [$E_{mean}$] Mean value of the modulus of elasticity [$MPA$].
         gamma_m : DIMENSIONLESS
-             [$\gamma_M$] Partial factor for a material property [$-$].
+            [$\gamma_M$] Partial factor for a material property [$-$].
         """
         super().__init__()
         self.e_mean = e_mean
@@ -44,7 +44,7 @@ class Form2Dot15DesignModulusElasticity(Formula):
         return e_mean / gamma_m
 
     def latex(self, n: int = 3) -> LatexFormula:
-        """Returns LatexFormula object for formula 2.14."""
+        """Returns LatexFormula object for formula 2.15."""
         _equation: str = r"\frac{E_{mean}}{\gamma_M}"
         _numeric_equation: str = latex_replace_symbols(
             _equation,
