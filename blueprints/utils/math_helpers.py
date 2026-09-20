@@ -24,6 +24,24 @@ def cot(x: DEG) -> DIMENSIONLESS:
     return float(1 / np.tan(np.deg2rad(x)))
 
 
+def tan(x: DEG) -> DIMENSIONLESS:
+    """Calculate the tangent of an angle in degrees.
+
+    Parameters
+    ----------
+    x : DEG
+        Angle in degrees.
+
+    Returns
+    -------
+    DIMENSIONLESS
+        Tangent of the angle.
+    """
+    raise_if_negative(x=x)
+    raise_if_greater_than_90(x=x)
+    return float(np.tan(np.deg2rad(x)))
+
+
 def sec(x: DEG) -> DIMENSIONLESS:
     """Calculate the secant of an angle in degrees.
 
