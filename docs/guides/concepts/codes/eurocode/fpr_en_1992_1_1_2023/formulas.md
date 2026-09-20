@@ -169,10 +169,10 @@ Total of 602 formulas present.
 |     8.105      |        :x:         |         |                                                                    |
 |     8.106      |        :x:         |         |                                                                    |
 |     8.107      |        :x:         |         |                                                                    |
-|     8.108      |        :x:         |         |                                                                    |
-|     8.109      |        :x:         |         |                                                                    |
-|     8.110      |        :x:         |         |                                                                    |
-|     8.111      |        :x:         |         |                                                                    |
+|     8.108      | :heavy_check_mark: |         | Form8Dot108ShearResistingEffectiveDepthOuterShearReinforcement     |
+|     8.109      | :heavy_check_mark: |         | Form8Dot109MaximumPunchingShearResistance                          |
+|     8.110      | :heavy_check_mark: |         | Form8Dot110To111CoefficientForPunchingShearReinforcingSystem       |
+|     8.111      | :heavy_check_mark: |         | Form8Dot110To111CoefficientForPunchingShearReinforcingSystem       |
 |     8.112      |        :x:         |         |                                                                    |
 |     8.113      |        :x:         |         |                                                                    |
 |     8.114      |        :x:         |         |                                                                    |
