@@ -72,10 +72,10 @@ Total of 602 formulas present.
 |      8.8       |        :x:         |         |                                                                    |
 |      8.9       |        :x:         |         |                                                                    |
 |      8.10      |        :x:         |         |                                                                    |
-|      8.11      |        :x:         |         |                                                                    |
-|      8.12      |        :x:         |         |                                                                    |
-|      8.13      |        :x:         |         |                                                                    |
-|      8.14      |        :x:         |         |                                                                    |
+|      8.11      | :heavy_check_mark: |         | Form8Dot11ConfinementStressCircularSquareSingleConfinement        |
+|      8.12      | :heavy_check_mark: |         | Form8Dot12ConfinementStressRectangularSingleConfinement           |
+|      8.13      | :heavy_check_mark: |         | Form8Dot13ConfinementStressMultipleConfinement                    |
+|      8.14      | :heavy_check_mark: |         | Form8Dot14ConfinementStressCompressionZone                        |
 |      8.15      |        :x:         |         |                                                                    |
 |      8.16      |        :x:         |         |                                                                    |
 |      8.17      |        :x:         |         |                                                                    |
