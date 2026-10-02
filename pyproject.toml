@@ -45,8 +45,8 @@ bp = "blueprints.cli:app"
 
 [dependency-groups]
 dev = [
-    "ty==0.0.75",
-    "ruff==0.16.5",
+    "ty==0.0.84",
+    "ruff==0.16.9",
     "pre-commit==4.6.2",
     "types-shapely==2.1.0.20260728",
     "icecream==2.2.0",
