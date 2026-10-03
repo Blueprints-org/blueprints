@@ -85,7 +85,7 @@ Total of 108 formulas present.
 | 6.46           |        :x:         |         |                                                                                   |        :x:         |
 | 6.47           |        :x:         |         |                                                                                   |        :x:         |
 | 6.48           |        :x:         |         |                                                                                   |        :x:         |
-| 6.49           |        :x:         |         |                                                                                   |        :x:         |
+| 6.49           | :heavy_check_mark: |         | Form6Dot49ReductionFactorForBuckling and SubForm6Dot49Phi                         |        :x:         |
 | 6.50           |        :x:         |         |                                                                                   |        :x:         |
 | 6.51           |        :x:         |         |                                                                                   |        :x:         |
 | 6.52           |        :x:         |         |                                                                                   |        :x:         |
