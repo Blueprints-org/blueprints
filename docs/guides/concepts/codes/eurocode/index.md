@@ -37,6 +37,9 @@ The Eurocodes are a set of 10 European Standards (EN) that provide common struct
 - **[EN 1993-1-9:2005](en_1993_1_9_2005/formulas.md)** - Fatigue design  
   Rules for the assessment of fatigue resistance of steel structures and components.
 
+- **[EN 1993-1-9:2025](en_1993_1_9_2025/figures.md)** - Fatigue design  
+  The 2025 edition of the fatigue rules, with the fatigue strength curves of Chapter 8.
+
 - **[EN 1993-5:2007](en_1993_5_2007/formulas.md)** - Piling design  
   Specific rules for the design of steel piles and pile foundations.
 
