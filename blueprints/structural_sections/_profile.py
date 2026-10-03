@@ -8,12 +8,12 @@ from typing import Any, ClassVar, Self
 
 import matplotlib.pyplot as plt
 from sectionproperties.analysis import Section
-from sectionproperties.post.post import SectionProperties
-from sectionproperties.post.stress_post import StressPost
 from sectionproperties.pre import Geometry
 from shapely import Point, Polygon
 from shapely.affinity import rotate, translate
 
+from blueprints.structural_sections._coordinate_wrappers._section_properties import BPSectionProperties
+from blueprints.structural_sections._coordinate_wrappers._stress_post import BPStressPost
 from blueprints.type_alias import DEG, KN, KNM, M3_M, MM, MM2
 from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, M_TO_MM, MM3_TO_M3
 
@@ -35,7 +35,7 @@ class Profile(ABC):
     rotation: DEG = field(default=0.0, kw_only=True)
     """Rotation of the profile [degrees]. Positive values rotate the profile counter-clockwise around its centroid."""
 
-    _section_props_cache: dict[tuple[bool, bool, bool], SectionProperties] = field(
+    _section_props_cache: dict[tuple[bool, bool, bool], BPSectionProperties] = field(
         default_factory=dict, init=False, repr=False, compare=False, hash=False
     )
     """Cache for section properties to avoid recalculation."""
@@ -165,7 +165,7 @@ class Profile(ABC):
         geometric: bool = True,
         plastic: bool = True,
         warping: bool = False,
-    ) -> SectionProperties:
+    ) -> BPSectionProperties:
         """Calculate and return the section properties of the profile.
 
         Parameters
@@ -193,17 +193,20 @@ class Profile(ABC):
         if plastic:
             section.calculate_plastic_properties()
 
-        # Cache the result
-        self._section_props_cache[cache_key] = section.section_props
+        # Wrap the raw sectionproperties result in the Blueprints coordinate system.
+        props = BPSectionProperties.from_sectionproperties(section.section_props)
 
-        return section.section_props
+        # Cache the result
+        self._section_props_cache[cache_key] = props
+
+        return props
 
     @property
     def plotter(self) -> Callable[[Any], plt.Figure]:
         """Default plotter function for the profile."""
         raise AttributeError("No plotter is defined.")
 
-    def calculate_stress(self, n: KN = 0, v_y: KN = 0, v_z: KN = 0, m_x: KNM = 0, m_y: KNM = 0, m_z: KNM = 0) -> StressPost:
+    def calculate_stress(self, n: KN = 0, v_y: KN = 0, v_z: KN = 0, m_x: KNM = 0, m_y: KNM = 0, m_z: KNM = 0) -> BPStressPost:
         """Calculate the stress distribution for the profile given internal forces.
 
         # Coordinate System Blueprints:
@@ -235,8 +238,8 @@ class Profile(ABC):
 
         Returns
         -------
-        StressPost
-            The stress distribution result object for the section under the given loads.
+        BPStressPost
+            The stress distribution result object for the section under the given loads, expressed in Blueprints coordinate system.
         """
         section = self._section()
         section.calculate_geometric_properties()
@@ -258,7 +261,7 @@ class Profile(ABC):
         #   ←-----O                                                        O------>
         #    y (horizontal/side, usually weak axis)                     x (horizontal/side, usually weak axis)
 
-        return section.calculate_stress(
+        stress_post = section.calculate_stress(
             n=float(n) * KN_TO_N,
             vx=-float(v_y) * KN_TO_N,
             vy=float(v_z) * KN_TO_N,
@@ -266,6 +269,9 @@ class Profile(ABC):
             myy=float(m_z) * KNM_TO_NMM,
             mzz=float(m_x) * KNM_TO_NMM,
         )
+
+        # Wrap the raw stress post result in the Blueprints coordinate system.
+        return BPStressPost(stress_post)
 
     def unit_stress(self) -> dict[str, Any]:
         """Calculate the unit stress distribution for the profile.
