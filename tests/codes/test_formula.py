@@ -1,7 +1,7 @@
 """Module for testing the Formula classes."""
 
 import operator
-from collections.abc import Callable
+from collections.abc import Callable, Iterable, Sequence
 from typing import Any
 
 import numpy as np
@@ -159,6 +159,22 @@ def test_comparison_formula_change_value_after_initialization() -> None:
 def test_comparison_operator() -> None:
     """Test that the comparison operator is correct."""
     assert ComparisonFormulaTestLessOrEqual._comparison_operator() == operator.le  # noqa: SLF001
+
+
+def test_comparison_formula_repr() -> None:
+    """Test that the representation is 'Ok'/'Not Ok' instead of the numeric value of the comparison."""
+    b = 5
+    c = 40
+
+    # check passing condition (lhs <= rhs) = True
+    formula = ComparisonFormulaTestLessOrEqual(a=10, b=b, c=c)
+    assert repr(formula) == "Ok"
+    assert str(formula) == "Ok"
+
+    # check failing condition (lhs > rhs) = False
+    formula = ComparisonFormulaTestLessOrEqual(a=30, b=b, c=c)
+    assert repr(formula) == "Not Ok"
+    assert str(formula) == "Not Ok"
 
 
 class ComparisonFormulaTestGreaterOrEqual(ComparisonFormula):
@@ -742,6 +758,57 @@ class ComparisonFormulaTestLatexGreaterOrEqual(ComparisonFormula):
         )
 
 
+class AggregatedComparisonFormulaTestOwnParameters(AggregatedComparisonFormula):
+    """Dummy aggregated comparison formula whose constructor takes the parameters of the formula itself.
+
+    Mirrors a concrete code formula: it translates its own parameters into the aggregation by overriding
+    _define_aggregation, and counts the calls to it so that they can be asserted.
+    """
+
+    label = "Dummy testing aggregated comparison formula (own parameters)"
+    source_document = "Dummy testing document"
+
+    definitions = 0
+
+    def __init__(self, value: float, lower_bound: float, upper_bound: float) -> None:
+        """Dummy aggregated comparison formula for testing purposes."""
+        super().__init__()
+        self.value = value
+        self.lower_bound = lower_bound
+        self.upper_bound = upper_bound
+
+    @classmethod
+    def _define_aggregation(
+        cls,
+        value: float,
+        lower_bound: float,
+        upper_bound: float,
+    ) -> tuple[Callable[[Iterable[bool]], bool], Sequence[ComparisonFormula]]:
+        """Translates the parameters of this formula into the two bounds it aggregates."""
+        AggregatedComparisonFormulaTestOwnParameters.definitions += 1
+        return all, (
+            ComparisonFormulaTestLatexGreaterOrEqual(x=value, y=lower_bound),
+            ComparisonFormulaTestLatexLessOrEqual(x=value, y=upper_bound),
+        )
+
+
+def neither_all_nor_any(values: Iterable[bool]) -> bool:
+    """Dummy aggregation function that has the signature of an aggregation, but is neither all nor any."""
+    return all(values)
+
+
+class AggregatedComparisonFormulaTestInvalidDefinition(AggregatedComparisonFormula):
+    """Dummy aggregated comparison formula whose _define_aggregation returns an unusable aggregation."""
+
+    label = "Dummy testing aggregated comparison formula (invalid definition)"
+    source_document = "Dummy testing document"
+
+    @classmethod
+    def _define_aggregation(cls, *_args, **_kwargs) -> tuple[Callable[[Iterable[bool]], bool], Sequence[ComparisonFormula] | None]:
+        """Returns an aggregation function that is neither all nor any."""
+        return neither_all_nor_any, None
+
+
 class TestAggregatedComparisonFormula:
     """Test class for AggregatedComparisonFormula."""
 
@@ -890,6 +957,59 @@ class TestAggregatedComparisonFormula:
         formula = AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[f1, f2, f3])
         assert formula
         assert bool(formula) is True
+
+    def test_aggregated_comparison_formula_repr(self) -> None:
+        """Test that the inherited representation is 'Ok'/'Not Ok' for the aggregated result."""
+        passing_formula = self._le(1, 1, 10)  # lhs=2, rhs=5  →  passes
+        failing_formula = self._le(10, 1, 4)  # lhs=11, rhs=2  →  fails
+
+        assert repr(AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[passing_formula, passing_formula])) == "Ok"
+        assert repr(AggregatedComparisonFormulaTest(aggregation=all, comparison_formulas=[passing_formula, failing_formula])) == "Not Ok"
+        assert repr(AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[passing_formula, failing_formula])) == "Ok"
+        assert repr(AggregatedComparisonFormulaTest(aggregation=any, comparison_formulas=[failing_formula, failing_formula])) == "Not Ok"
+
+    def test_define_aggregation_passes_the_constructor_arguments_through_by_default(self) -> None:
+        """Test that the default _define_aggregation returns the aggregation and the formulas it is given."""
+        comparison_formulas = [self._le(1, 1, 10), self._le(2, 1, 10)]
+
+        assert AggregatedComparisonFormulaTest._define_aggregation(all, comparison_formulas) == (all, comparison_formulas)  # noqa: SLF001
+
+    def test_define_aggregation_translates_the_parameters_of_the_formula_itself(self) -> None:
+        """Test that a subclass can translate its own constructor parameters into the aggregation."""
+        formula = AggregatedComparisonFormulaTestOwnParameters(value=5, lower_bound=1, upper_bound=10)
+
+        lower_bound, upper_bound = formula.comparison_formulas
+        assert isinstance(lower_bound, ComparisonFormulaTestLatexGreaterOrEqual)
+        assert (lower_bound.x, lower_bound.y) == (5, 1)
+        assert isinstance(upper_bound, ComparisonFormulaTestLatexLessOrEqual)
+        assert (upper_bound.x, upper_bound.y) == (5, 10)
+        assert formula.aggregation is all
+
+        # 1 <= 5 <= 10, so both bounds are satisfied. The unity checks are 1/5 and 5/10, of which the largest is taken.
+        assert formula
+        assert formula.unity_check == pytest.approx(0.5)
+
+    def test_define_aggregation_result_is_evaluated_as_the_result_of_the_formula(self) -> None:
+        """Test that the formulas defined by a subclass determine the result of the aggregated formula."""
+        formula = AggregatedComparisonFormulaTestOwnParameters(value=20, lower_bound=1, upper_bound=10)
+
+        # 20 > 10, so the upper bound is violated and the aggregated check fails.
+        assert not formula
+        assert repr(formula) == "Not Ok"
+        assert formula.unity_check == pytest.approx(2.0)
+
+    def test_define_aggregation_is_called_exactly_once_per_instance(self) -> None:
+        """Test that the formulas to aggregate are built once, which is why they are built in _define_aggregation."""
+        AggregatedComparisonFormulaTestOwnParameters.definitions = 0
+
+        AggregatedComparisonFormulaTestOwnParameters(value=5, lower_bound=1, upper_bound=10)
+
+        assert AggregatedComparisonFormulaTestOwnParameters.definitions == 1
+
+    def test_define_aggregation_result_is_validated(self) -> None:
+        """Test that what a subclass returns from _define_aggregation is validated by _evaluate."""
+        with pytest.raises(ValueError, match="Aggregation function must be either 'all' or 'any'"):
+            AggregatedComparisonFormulaTestInvalidDefinition()
 
     def test_aggregated_comparison_formula_bool_with_negative_values_all_passes(self) -> None:
         """Test 'all' aggregation bool with negative lhs/rhs values, where each sub-formula passes."""
