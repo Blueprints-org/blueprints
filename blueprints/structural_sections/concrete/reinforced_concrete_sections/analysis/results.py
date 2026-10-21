@@ -197,6 +197,7 @@ class StressStrainResult:
         linear strain profile (‰, compression negative), and the stress profile (MPa, compression
         negative) with the reinforcement stresses marked. The profiles are projected onto the axis
         perpendicular to the neutral axis, so uniaxial and biaxial-uncracked states both render upright.
+        The applied forces N, M_y and M_z are listed in a box below the section panel.
 
         Parameters
         ----------

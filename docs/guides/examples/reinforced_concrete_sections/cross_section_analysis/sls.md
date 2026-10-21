@@ -141,7 +141,7 @@ The 100 kN compression pushes the neutral axis down from 170.8 to 193.9 mm. Unde
 - **ε [‰]** — the linear strain profile, with the strain at each bar.
 - **σ [MPa]** — the concrete stress (zero in the cracked tension zone), with the reinforcement stresses on a separate axis because they are an order of magnitude larger.
 
-The dashed line is the neutral axis.
+The dashed line is the neutral axis. The box below the section lists the applied forces `N`, `M_y` and `M_z` that cause this state.
 
 ```python exec="on" source="above" result="html" html="true" session="rc_analysis"
 result.plot()

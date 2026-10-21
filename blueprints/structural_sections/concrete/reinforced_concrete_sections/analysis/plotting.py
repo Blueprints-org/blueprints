@@ -1,10 +1,10 @@
 """Strain/stress-over-height plotting for reinforced-concrete section results.
 
 Draws three panels sharing the section-height axis: the section with its reinforcement, the linear
-strain profile and the stress profile. The height axis is the direction perpendicular to the neutral
-axis (the strain gradient), so uniaxial and biaxial-uncracked states both render upright without special
-casing. Everything is in Blueprints conventions: strain in ‰ and stress in MPa, both compression
-negative / tension positive.
+strain profile and the stress profile. A box below the section panel lists the applied forces. The
+height axis is the direction perpendicular to the neutral axis (the strain gradient), so uniaxial and
+biaxial-uncracked states both render upright without special casing. Everything is in Blueprints
+conventions: strain in ‰ and stress in MPa, both compression negative / tension positive.
 """
 
 from __future__ import annotations
@@ -24,6 +24,7 @@ from blueprints.unit_conversion import PER_MILLE_TO_RATIO
 if TYPE_CHECKING:
     from matplotlib.axes import Axes
     from matplotlib.figure import Figure
+    from matplotlib.text import Text
 
     from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import StrainPlane, StressStrainResult
 
@@ -52,6 +53,10 @@ _X_MARGIN: float = 0.05
 # that line, as fractions of the section width.
 _DIMENSION_OFFSET: float = 0.12
 _DIMENSION_LABEL_ROOM: float = 0.25
+# Bottom margin below the applied-forces text box and the gap between the box and the panels above it, as
+# fractions of the figure height.
+_FORCES_BOX_MARGIN: float = 0.02
+_FORCES_BOX_GAP: float = 0.02
 # Neutral-axis angles (deg) within this tolerance of 0 or -90 count as bending about a single axis.
 _UNIAXIAL_ANGLE_TOL: float = 1e-6
 
@@ -154,6 +159,7 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
     )
 
     _draw_section(ax_section, across, heights, strain, hs, result, across_axis, height_axis)
+    forces_box = _draw_forces(fig, result)
     if _shows_compression_depth(plane, strain, hs):
         _draw_compression_depth(ax_section, plane, across, strain, hs)
     _draw_strain(ax_strain, strain, hs, result, height_axis)
@@ -162,19 +168,22 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
 
     regime = {"SLS_UNCRACKED": "uncracked", "SLS_CRACKED": "cracked"}[result.regime.value]
     fig.suptitle(f"Strain & stress over height - {regime}", fontsize=11)
-    fig.tight_layout()
-    _fit_section_panel_height(fig, ax_section, ax_strain)
+    layout_rect = (0.0, _forces_box_top(fig, forces_box) + _FORCES_BOX_GAP, 1.0, 1.0)
+    fig.tight_layout(rect=layout_rect)
+    _fit_section_panel_height(fig, ax_section, ax_strain, layout_rect)
+    _place_forces_box(fig, forces_box, ax_section)
     return fig
 
 
-def _fit_section_panel_height(fig: Figure, ax_section: Axes, ax_reference: Axes) -> None:
+def _fit_section_panel_height(fig: Figure, ax_section: Axes, ax_reference: Axes, layout_rect: tuple[float, float, float, float]) -> None:
     """Widen or narrow the section panel until it has the full height of the strain and stress panels.
 
     The section is drawn to scale, so its panel shrinks in height when its shape is wider than the panel. The
     panels share the height axis, so a shorter section panel would put the neutral axis at a different height
     than in the other panels. The section panel's share of the figure width is scaled by the missing height. A
     section too wide for that (a slab, or a beam bent about its vertical axis) keeps its reduced height, and the
-    other panels are shortened to match it instead.
+    other panels are shortened to match it instead. ``layout_rect`` is the figure area the panels are laid out
+    in, which keeps the strip with the applied forces free.
     """
     gridspec = ax_section.get_gridspec()
     assert gridspec is not None  # created by plt.subplots
@@ -188,7 +197,7 @@ def _fit_section_panel_height(fig: Figure, ax_section: Axes, ax_reference: Axes)
         share = min(section_ratio / (section_ratio + others) * missing, _MAX_SECTION_SHARE)
         section_ratio = others * share / (1.0 - share)
         gridspec.set_width_ratios([section_ratio, *_PANEL_WIDTH_RATIOS[1:]])
-        fig.tight_layout()
+        fig.tight_layout(rect=layout_rect)
     ax_section.apply_aspect()
     section = ax_section.get_position()
     for ax in fig.axes:
@@ -217,6 +226,56 @@ def _draw_section(
     ax.set_xlabel("across neutral axis [mm]")
     ax.set_ylabel("height along strain gradient [mm]")
     ax.set_aspect("equal")
+
+
+def _draw_forces(fig: Figure, result: StressStrainResult) -> Text:
+    """Show the applied section forces in a text box at the bottom of the figure, below the section panel.
+
+    N, M_y and M_z are always listed, also when zero, so every plot reads the same. The shear forces and
+    the torsional moment are left out because the strain-plane analysis does not use them. The box is placed
+    below the panels rather than in the section panel, where it would cover part of the section. It starts at
+    the bottom of the figure so its height can be reserved in the layout; :func:`_place_forces_box` then moves it
+    directly below the section panel.
+    """
+    forces = result.forces
+    text = "\n".join(
+        (
+            f"$N$ = {forces.n:.1f} kN",
+            f"$M_y$ = {forces.m_y:.1f} kNm",
+            f"$M_z$ = {forces.m_z:.1f} kNm",
+        )
+    )
+    return fig.text(
+        0.0,
+        _FORCES_BOX_MARGIN,
+        text,
+        ha="left",
+        va="bottom",
+        fontsize=8.5,
+        bbox={"boxstyle": "round", "facecolor": "white", "edgecolor": "grey"},
+    )
+
+
+def _forces_box_top(fig: Figure, forces_box: Text) -> float:
+    """Return the top of the applied-forces text box, including its frame, as a fraction of the figure height."""
+    fig.draw_without_rendering()
+    frame = forces_box.get_bbox_patch()
+    assert frame is not None  # the box is created with a bbox
+    return float(frame.get_window_extent().y1 / fig.bbox.height)
+
+
+def _place_forces_box(fig: Figure, forces_box: Text, ax_section: Axes) -> None:
+    """Move the applied-forces text box directly below the section panel, left-aligned with it.
+
+    The layout reserved the box's height at the bottom of the figure, so the box never ends up lower than
+    where it started.
+    """
+    fig.draw_without_rendering()
+    x_axis = ax_section.xaxis.get_tightbbox()  # the tick labels and the x-label
+    assert x_axis is not None  # the section panel always has a visible x-axis
+    panel_bottom = x_axis.y0 / fig.bbox.height
+    forces_box.set_verticalalignment("top")
+    forces_box.set_position((ax_section.get_position().x0, panel_bottom - _FORCES_BOX_GAP))
 
 
 def _shows_compression_depth(plane: StrainPlane, strain: np.ndarray, hs: np.ndarray) -> bool:
