@@ -41,11 +41,11 @@ class TestForm8Dot114CheckCompressiveStressInStrutOrCompressionField:
     @pytest.mark.parametrize(
         ("sigma_cd", "representation", "expected"),
         [
-            (2.5, "complete", r"CHECK \to \sigma_{cd} \leq \nu \cdot f_{cd} \to 2.500 \leq 0.700 \cdot 25.000 \to OK"),
+            (2.5, "complete", r"CHECK \to \sigma_{cd} \leq \nu \cdot f_{cd} \to 2.500 \leq 0.700 \cdot 25.000 \to 2.500 \leq 17.500 \to OK"),
             (
                 2.5,
                 "complete_with_units",
-                r"CHECK \to \sigma_{cd} \leq \nu \cdot f_{cd} \to 2.500 \ MPa \leq 0.700 \cdot 25.000 \ MPa \to OK",
+                r"CHECK \to \sigma_{cd} \leq \nu \cdot f_{cd} \to 2.500 \ MPa \leq 0.700 \cdot 25.000 \ MPa \to 2.500 \leq 17.500 \to OK",
             ),
             (2.5, "short", r"CHECK \to OK"),
             (20.0, "short", r"CHECK \to \text{Not OK}"),

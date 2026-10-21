@@ -14,12 +14,12 @@ class TestForm8Dot113CompressiveStressInStrutOrCompressionField:
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         # Example values
-        f_cd = 150000.0
+        f_cd_force = 150000.0
         b_c = 300.0
         t = 200.0
 
         # Object to test
-        formula = Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd=f_cd, b_c=b_c, t=t)
+        formula = Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd_force=f_cd_force, b_c=b_c, t=t)
 
         # Expected result, manually calculated
         manually_calculated_result = 2.5  # MPa
@@ -29,12 +29,12 @@ class TestForm8Dot113CompressiveStressInStrutOrCompressionField:
     def test_evaluation_with_negative_force(self) -> None:
         """Tests the evaluation of the result when the compressive force is given as a negative value."""
         # Example values
-        f_cd = -150000.0
+        f_cd_force = -150000.0
         b_c = 300.0
         t = 200.0
 
         # Object to test
-        formula = Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd=f_cd, b_c=b_c, t=t)
+        formula = Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd_force=f_cd_force, b_c=b_c, t=t)
 
         # Expected result, manually calculated
         manually_calculated_result = 2.5  # MPa
@@ -42,7 +42,7 @@ class TestForm8Dot113CompressiveStressInStrutOrCompressionField:
         assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
 
     @pytest.mark.parametrize(
-        ("f_cd", "b_c", "t"),
+        ("f_cd_force", "b_c", "t"),
         [
             (150000.0, -300.0, 200.0),  # b_c is negative
             (150000.0, 0.0, 200.0),  # b_c is zero
@@ -50,10 +50,10 @@ class TestForm8Dot113CompressiveStressInStrutOrCompressionField:
             (150000.0, 300.0, 0.0),  # t is zero
         ],
     )
-    def test_raise_error_when_invalid_values_are_given(self, f_cd: float, b_c: float, t: float) -> None:
+    def test_raise_error_when_invalid_values_are_given(self, f_cd_force: float, b_c: float, t: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd=f_cd, b_c=b_c, t=t)
+            Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd_force=f_cd_force, b_c=b_c, t=t)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -75,12 +75,12 @@ class TestForm8Dot113CompressiveStressInStrutOrCompressionField:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Example values
-        f_cd = 150000.0
+        f_cd_force = 150000.0
         b_c = 300.0
         t = 200.0
 
         # Object to test
-        latex = Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd=f_cd, b_c=b_c, t=t).latex()
+        latex = Form8Dot113CompressiveStressInStrutOrCompressionField(f_cd_force=f_cd_force, b_c=b_c, t=t).latex()
 
         actual = {
             "complete": latex.complete,

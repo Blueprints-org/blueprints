@@ -17,7 +17,7 @@ class Form8Dot113CompressiveStressInStrutOrCompressionField(Formula):
 
     def __init__(
         self,
-        f_cd: N,
+        f_cd_force: N,
         b_c: MM,
         t: MM,
     ) -> None:
@@ -27,7 +27,7 @@ class Form8Dot113CompressiveStressInStrutOrCompressionField(Formula):
 
         Parameters
         ----------
-        f_cd : N
+        f_cd_force : N
             [$F_{cd}$] Compressive force of the strut [$N$].
         b_c : MM
             [$b_c$] Width of the strut at the considered location [$mm$].
@@ -35,20 +35,20 @@ class Form8Dot113CompressiveStressInStrutOrCompressionField(Formula):
             [$t$] Thickness of the strut, which can be limited by the thickness of the member [$mm$].
         """
         super().__init__()
-        self.f_cd = f_cd
+        self.f_cd_force = f_cd_force
         self.b_c = b_c
         self.t = t
 
     @staticmethod
     def _evaluate(
-        f_cd: N,
+        f_cd_force: N,
         b_c: MM,
         t: MM,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(b_c=b_c, t=t)
 
-        return abs(f_cd) / (b_c * t)
+        return abs(f_cd_force) / (b_c * t)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.113."""
@@ -56,7 +56,7 @@ class Form8Dot113CompressiveStressInStrutOrCompressionField(Formula):
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
             replacements={
-                r"F_{cd}": f"{self.f_cd:.{n}f}",
+                r"F_{cd}": f"{self.f_cd_force:.{n}f}",
                 r"b_c": f"{self.b_c:.{n}f}",
                 r"\cdot t": rf"\cdot {self.t:.{n}f}",
             },
@@ -65,7 +65,7 @@ class Form8Dot113CompressiveStressInStrutOrCompressionField(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             template=_equation,
             replacements={
-                r"F_{cd}": rf"{self.f_cd:.{n}f} \ N",
+                r"F_{cd}": rf"{self.f_cd_force:.{n}f} \ N",
                 r"b_c": rf"{self.b_c:.{n}f} \ mm",
                 r"\cdot t": rf"\cdot {self.t:.{n}f} \ mm",
             },

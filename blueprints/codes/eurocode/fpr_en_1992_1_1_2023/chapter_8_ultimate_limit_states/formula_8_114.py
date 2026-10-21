@@ -80,9 +80,11 @@ class Form8Dot114CheckCompressiveStressInStrutOrCompressionField(ComparisonFormu
             },
             unique_symbol_check=True,
         )
+        _intermediate_result: str = rf"{self.lhs:.{n}f} \leq {self.rhs:.{n}f}"
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else r"\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
