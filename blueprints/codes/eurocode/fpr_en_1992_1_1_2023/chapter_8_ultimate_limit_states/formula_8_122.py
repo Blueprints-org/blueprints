@@ -59,7 +59,7 @@ class Form8Dot122CheckTieResistance(ComparisonFormula):
         return float(f_td)
 
     @staticmethod
-    def _evaluate_rhs(a_s: MM2, f_yd: MPA, a_p: MM2, f_pd: MPA, *_args, **_kwargs) -> float:
+    def _evaluate_rhs(f_td: N, a_s: MM2, f_yd: MPA, a_p: MM2, f_pd: MPA, *_args, **_kwargs) -> float:  # noqa: ARG004
         """Evaluates the resistance of the tie, for more information see the __init__ method."""
         raise_if_negative(a_s=a_s, f_yd=f_yd, a_p=a_p, f_pd=f_pd)
 
@@ -90,9 +90,14 @@ class Form8Dot122CheckTieResistance(ComparisonFormula):
             },
             unique_symbol_check=False,
         )
+        _intermediate_result: str = (
+            rf"{self.lhs:.{n}f} \leq {self.a_s * self.f_yd:.{n}f} + {self.a_p * self.f_pd:.{n}f} "
+            rf"\to {self.lhs:.{n}f} \leq {self.rhs:.{n}f}"
+        )
         return LatexFormula(
             return_symbol=r"CHECK",
             result="OK" if self.__bool__() else r"\text{Not OK}",
+            intermediate_result=_intermediate_result,
             equation=_equation,
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,

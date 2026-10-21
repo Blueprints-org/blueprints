@@ -14,15 +14,22 @@ class TestForm8Dot122CheckTieResistance:
     @pytest.mark.parametrize(
         ("f_td", "a_s", "f_yd", "a_p", "f_pd", "expected"),
         [
-            (200000.0, 300.0, 500.0, 100.0, 1000.0, True),  # the tie resists the tensile force
-            (250000.0, 300.0, 500.0, 100.0, 1000.0, True),  # exactly on the boundary, which the standard includes
-            (300000.0, 300.0, 500.0, 100.0, 1000.0, False),  # the tie does not resist the tensile force
+            (200000.0, 300.0, 435.0, 100.0, 1000.0, True),  # the tie resists the tensile force
+            (230500.0, 300.0, 435.0, 100.0, 1000.0, True),  # exactly on the boundary, which the standard includes
+            (300000.0, 300.0, 435.0, 100.0, 1000.0, False),  # the tie does not resist the tensile force
             (100000.0, 500.0, 435.0, 0.0, 0.0, True),  # no prestressed reinforcement
         ],
     )
     def test_evaluation(self, f_td: float, a_s: float, f_yd: float, a_p: float, f_pd: float, expected: bool) -> None:
         """Tests the evaluation of the result."""
         assert bool(Form8Dot122CheckTieResistance(f_td=f_td, a_s=a_s, f_yd=f_yd, a_p=a_p, f_pd=f_pd)) is expected
+
+    def test_evaluation_with_positional_arguments(self) -> None:
+        """Tests that positional arguments give the same resistance as keyword arguments."""
+        formula = Form8Dot122CheckTieResistance(200000.0, 300.0, 435.0, 100.0, 1000.0)
+
+        assert formula.rhs == pytest.approx(230500.0)
+        assert bool(formula) is True
 
     @pytest.mark.parametrize(
         ("f_td", "a_s", "f_yd", "a_p", "f_pd"),
@@ -47,7 +54,8 @@ class TestForm8Dot122CheckTieResistance:
                 "complete",
                 (
                     r"CHECK \to F_{td} \leq A_s \cdot f_{yd} + A_p \cdot f_{pd} \to "
-                    r"200000.000 \leq 300.000 \cdot 500.000 + 100.000 \cdot 1000.000 \to OK"
+                    r"200000.000 \leq 300.000 \cdot 435.000 + 100.000 \cdot 1000.000 \to "
+                    r"200000.000 \leq 130500.000 + 100000.000 \to 200000.000 \leq 230500.000 \to OK"
                 ),
             ),
             (
@@ -55,7 +63,8 @@ class TestForm8Dot122CheckTieResistance:
                 "complete_with_units",
                 (
                     r"CHECK \to F_{td} \leq A_s \cdot f_{yd} + A_p \cdot f_{pd} \to "
-                    r"200000.000 \ N \leq 300.000 \ mm^2 \cdot 500.000 \ MPa + 100.000 \ mm^2 \cdot 1000.000 \ MPa \to OK"
+                    r"200000.000 \ N \leq 300.000 \ mm^2 \cdot 435.000 \ MPa + 100.000 \ mm^2 \cdot 1000.000 \ MPa \to "
+                    r"200000.000 \leq 130500.000 + 100000.000 \to 200000.000 \leq 230500.000 \to OK"
                 ),
             ),
             (200000.0, "short", r"CHECK \to OK"),
@@ -65,7 +74,7 @@ class TestForm8Dot122CheckTieResistance:
     def test_latex(self, f_td: float, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         # Object to test
-        latex = Form8Dot122CheckTieResistance(f_td=f_td, a_s=300.0, f_yd=500.0, a_p=100.0, f_pd=1000.0).latex()
+        latex = Form8Dot122CheckTieResistance(f_td=f_td, a_s=300.0, f_yd=435.0, a_p=100.0, f_pd=1000.0).latex()
 
         actual = {
             "complete": latex.complete,
