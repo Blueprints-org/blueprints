@@ -50,7 +50,7 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 Use `plt.show()` in a script to open the figure in a window.
 
-The analyzer caches the meshed section, so asking it about many load cases is cheap: create it once and call `stress` for every set of forces. If you change the cross-section afterwards (for example by adding bars), call `analysis.invalidate_cache()` so the next analysis rebuilds it.
+The analyzer meshes the section once and reuses that mesh, so analysing many load cases is cheap: create it once and call `stress` for every set of forces. It always analyses the cross-section as it is at that moment; if you change it afterwards, for example by adding bars, the next `stress` call picks up the change.
 
 ## Axes, signs and units
 

@@ -2,11 +2,13 @@
 
 Owns a lazily built, cached backend section per configuration so that ``ReinforcedCrossSection`` stays a
 pure data object. One backend section is cached per (analysis level, elastic modulus) pair, so SLS
-analyses with and without creep live next to each other.
+analyses with and without creep live next to each other. The cache follows the cross-section: when its
+geometry, concrete or longitudinal reinforcement changes, the next analysis rebuilds the backend sections.
 """
 
 from __future__ import annotations
 
+from collections.abc import Hashable
 from typing import TYPE_CHECKING
 
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis._adapter import (
@@ -43,9 +45,23 @@ class CrossSectionAnalysis:
         """
         self._cross_section = cross_section
         self._sections: dict[tuple[AnalysisLevel, MPA | None], ConcreteSection] = {}
+        self._cached_fingerprint: Hashable = None
+
+    def _section_fingerprint(self) -> Hashable:
+        """Return a hashable snapshot of everything the backend sections are built from."""
+        cross_section = self._cross_section
+        return cross_section.profile.polygon.wkb, cross_section.concrete_material, tuple(cross_section.longitudinal_rebars)
+
+    def _drop_stale_sections(self) -> None:
+        """Drop the cached backend sections when the cross-section changed since they were built."""
+        fingerprint = self._section_fingerprint()
+        if fingerprint != self._cached_fingerprint:
+            self._sections.clear()
+            self._cached_fingerprint = fingerprint
 
     def _backend_section(self, level: AnalysisLevel, elastic_modulus: MPA | None = None) -> ConcreteSection:
         """Return the cached backend section for the given configuration, building it on first use."""
+        self._drop_stale_sections()
         key = (level, elastic_modulus)
         if key not in self._sections:
             self._sections[key] = build_concrete_section(self._cross_section, level, elastic_modulus)
@@ -110,7 +126,3 @@ class CrossSectionAnalysis:
         """Raise a clear error when an analysis needs longitudinal reinforcement and there is none."""
         if not self._cross_section.longitudinal_rebars:
             raise ValueError(f"{analysis} requires at least one longitudinal rebar in the cross-section.")
-
-    def invalidate_cache(self) -> None:
-        """Drop the cached backend sections, forcing a rebuild on the next analysis."""
-        self._sections.clear()

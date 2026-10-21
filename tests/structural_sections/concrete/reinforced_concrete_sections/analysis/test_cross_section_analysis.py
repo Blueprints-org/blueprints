@@ -369,8 +369,22 @@ class TestCaching:
         analysis.stress(SectionForces(m_y=200), regime=Regime.SLS_UNCRACKED, creep_coefficient=2.0)
         assert calls == 2
 
-    def test_invalidate_cache_forces_rebuild(self, monkeypatch: pytest.MonkeyPatch) -> None:
-        """invalidate_cache drops the cached section so the next analysis rebuilds it."""
+    def test_changed_reinforcement_is_picked_up(self) -> None:
+        """Adding bars after an analysis is reflected in the next one, without any action from the user."""
+        cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=ReinforcementSteelMaterial(), edge="lower")
+        analysis = CrossSectionAnalysis(cs)
+        before = analysis.stress(SectionForces(m_y=150), regime=Regime.SLS_CRACKED)
+        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=ReinforcementSteelMaterial(), edge="lower", cover=100)
+        after = analysis.stress(SectionForces(m_y=150), regime=Regime.SLS_CRACKED)
+        fresh = CrossSectionAnalysis(cs).stress(SectionForces(m_y=150), regime=Regime.SLS_CRACKED)
+        assert len(before.rebar_results) == 4
+        assert len(after.rebar_results) == 8
+        assert after.concrete_stress_min == pytest.approx(fresh.concrete_stress_min)
+        assert max(b.stress for b in after.rebar_results) == pytest.approx(max(b.stress for b in fresh.rebar_results))
+
+    def test_changed_concrete_rebuilds_the_section(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """Replacing the concrete material invalidates the cached backend section."""
         calls = 0
         original = cross_section_analysis.build_concrete_section
 
@@ -382,6 +396,6 @@ class TestCaching:
         monkeypatch.setattr(cross_section_analysis, "build_concrete_section", counting_build)
         analysis = _analysis()
         analysis.stress(SectionForces(m_y=100), regime=Regime.SLS_UNCRACKED)
-        analysis.invalidate_cache()
+        analysis._cross_section.concrete_material = ConcreteMaterial(ConcreteStrengthClass.C45_55)  # noqa: SLF001 — mutating the analysed section
         analysis.stress(SectionForces(m_y=100), regime=Regime.SLS_UNCRACKED)
         assert calls == 2
