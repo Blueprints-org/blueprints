@@ -389,6 +389,6 @@ Key points:
 - The regime decision handles combined N + M naturally: compression raises the cracking threshold, tension lowers the margin.
 - Creep uses one mental model: `creep_coefficient=0.0` is short-term, a positive φ softens the concrete to `E_c,eff = E_cm / (1 + φ)`.
 - Biaxial bending (`m_y` + `m_z`) is supported for the uncracked analysis; cracked biaxial bending is not supported and raises a `NotImplementedError`.
-- Shear and torsion are deliberately out of scope of the stress analysis; they are handled as truss-model resistance checks (EN 1992-1-1 art. 6.2/6.3).
+- Shear and torsion are deliberately out of scope: they cannot come out of a strain-plane analysis. EN 1992-1-1 art. 6.2/6.3 treats them as truss-model resistance checks, which are a separate follow-up.
 
 **Next:** see how these results are pinned down against hand calculations and IDEA StatiCa RCS on the [validation](validation.md) page.

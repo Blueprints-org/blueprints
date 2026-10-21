@@ -147,11 +147,11 @@ Every method below is called on the `analysis` object. The result column links t
 
 Read this once to know when the analyzer fits your problem:
 
-- **SLS is linear-elastic.** Concrete is linear up to cracking at the secant modulus `E_cm`; reinforcement is elastic at `f_yk / E_s` (no partial factor). Tension stiffening is not included in the stress state (it *is* available for moment-curvature deflections).
+- **SLS is linear-elastic.** Concrete is linear up to cracking at the secant modulus `E_cm`; reinforcement is elastic at `f_yk / E_s` (no partial factor). Tension stiffening is not included.
 - **Creep is the effective modulus only** — `E_c,eff = E_cm / (1 + φ)`, with φ a user input. Shrinkage and the age-adjusted effective modulus are out of scope.
 - **Cracked analysis is uniaxial.** Uncracked biaxial bending is exact (linear superposition); cracked *biaxial* bending raises a `NotImplementedError`. Bend about a single axis for cracked SLS.
 - **The ultimate limit state is a follow-up.** Bending capacity, interaction diagrams, moment-curvature and the unity check are not part of this release.
-- **Shear and torsion are out of scope** of the stress analysis; they are handled as truss-model resistance checks (EN 1992-1-1 art. 6.2/6.3).
+- **Shear and torsion are out of scope.** They cannot be obtained from a strain-plane analysis at all: EN 1992-1-1 art. 6.2/6.3 treats them as truss-model resistance checks, which are a separate follow-up and not part of Blueprints yet. `SectionForces` already carries `v_y`, `v_z` and `t`, so that interface will not change when they land.
 - **Backend.** Analyses run on the `concreteproperties` backend, a core Blueprints dependency.
 
 ## The pages of this guide

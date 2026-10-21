@@ -432,9 +432,9 @@ def _suppress_asymmetric_modulus_warning() -> Iterator[None]:
 def _wrap_backend_convergence_errors(description: str) -> Iterator[None]:
     """Turn a backend solver failure into a clear Blueprints ``ValueError``.
 
-    The backend's iterative solvers (ultimate capacity, interaction diagrams, moment-curvature) raise a
-    backend-specific ``AnalysisError`` when the neutral-axis iteration cannot reach equilibrium — most
-    commonly because the axial force exceeds the tensile or compressive capacity of the section.
+    The backend's iterative cracked-section solver raises a backend-specific ``AnalysisError`` when the
+    neutral-axis iteration cannot reach equilibrium — most commonly because the axial force exceeds the
+    tensile or compressive capacity of the section.
 
     Parameters
     ----------
