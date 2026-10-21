@@ -53,7 +53,7 @@ class Form8Dot114CheckCompressiveStressInStrutOrCompressionField(ComparisonFormu
         return float(sigma_cd)
 
     @staticmethod
-    def _evaluate_rhs(nu: DIMENSIONLESS, f_cd: MPA, *_args, **_kwargs) -> float:
+    def _evaluate_rhs(sigma_cd: MPA, nu: DIMENSIONLESS, f_cd: MPA, *_args, **_kwargs) -> float:  # noqa: ARG004
         """Evaluates the limit on the compressive stress, for more information see the __init__ method."""
         raise_if_less_or_equal_to_zero(nu=nu, f_cd=f_cd)
 

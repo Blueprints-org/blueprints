@@ -23,6 +23,13 @@ class TestForm8Dot114CheckCompressiveStressInStrutOrCompressionField:
         """Tests the evaluation of the result."""
         assert bool(Form8Dot114CheckCompressiveStressInStrutOrCompressionField(sigma_cd=sigma_cd, nu=nu, f_cd=f_cd)) is expected
 
+    def test_evaluation_with_positional_arguments(self) -> None:
+        """Tests that positional arguments give the same limit as keyword arguments."""
+        formula = Form8Dot114CheckCompressiveStressInStrutOrCompressionField(2.5, 0.7, 25.0)
+
+        assert formula.rhs == pytest.approx(17.5)
+        assert bool(formula) is True
+
     @pytest.mark.parametrize(
         ("sigma_cd", "nu", "f_cd"),
         [
