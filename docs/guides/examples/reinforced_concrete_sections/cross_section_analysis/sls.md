@@ -13,12 +13,14 @@ We will:
 - Include creep through the effective modulus
 - Compare sagging and hogging, and analyse biaxial bending and a circular section
 
-## Assumptions
+<div id="assumptions"></div>
 
-- **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
-- **Cracked or uncracked.** The section counts as cracked when the uncracked concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). A cracked section carries no concrete tension. See [section 2](#2-cracked-or-uncracked).
-- **Creep** through the effective modulus `E_c,eff = E_cm / (1 + φ)` (EN 1992-1-1 formula 7.20), with the creep coefficient φ as an input. Shrinkage, the age-adjusted effective modulus and tension stiffening are not included.
-- **Biaxial bending** is supported in the uncracked regime. A cracked analysis under biaxial bending raises a `NotImplementedError`.
+???+ info "Assumptions"
+
+    - **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
+    - **Cracked or uncracked.** The section counts as cracked when the uncracked concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). A cracked section carries no concrete tension. See [section 2](#2-cracked-or-uncracked).
+    - **Creep** through the effective modulus `E_c,eff = E_cm / (1 + φ)` (EN 1992-1-1 formula 7.20), with the creep coefficient φ as an input. Shrinkage, the age-adjusted effective modulus and tension stiffening are not included.
+    - **Biaxial bending** is supported in the uncracked regime. A cracked analysis under biaxial bending raises a `NotImplementedError`.
 
 ## 1. Build the Cross-section
 
