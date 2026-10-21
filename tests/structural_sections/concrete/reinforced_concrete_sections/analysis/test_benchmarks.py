@@ -8,12 +8,9 @@ import math
 
 import pytest
 
-pytest.importorskip("concreteproperties")
-
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import StressStrainResult
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
 from blueprints.structural_sections.section_forces import SectionForces
 
@@ -92,40 +89,36 @@ class TestCreepBenchmarks:
 
 
 @pytest.mark.slow
-class TestIdeaStaticaReference:
-    """Pin the IDEA StatiCa RCS reference case from the analysis example documentation page.
+class TestValidationPageHandCalculations:
+    """Pin the hand calculations of the validation documentation page on its reference beam.
 
-    Rectangular 300 x 600 mm, C30/37, 4 D25 B500B on the lower edge (50 mm cover), pure M_y = 200 kNm
-    (SLS, N = 0). The IDEA StatiCa RCS reference values are hard-coded here so the suite never calls the
-    external tool; keeping this test green keeps the documented comparison table honest.
+    Rectangular 300 x 600 mm, C30/37, 4 D25 B500B on the lower edge (50 mm cover). The closed-form values
+    are those worked out step by step on the page; keeping this test green keeps the page honest.
     """
 
-    def _idea_reference_result(self) -> StressStrainResult:
-        """Build and analyze the documented IDEA reference section."""
+    @staticmethod
+    def _analysis() -> CrossSectionAnalysis:
         concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
         steel = ReinforcementSteelMaterial(ReinforcementSteelQuality.B500B)
         cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=concrete)
-        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", material=steel)
-        return CrossSectionAnalysis(cs).stress(SectionForces(m_y=200))
+        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", cover=50, material=steel)
+        return CrossSectionAnalysis(cs)
 
-    def test_cracks_like_idea(self) -> None:
-        """The reference case cracks, matching IDEA StatiCa RCS."""
-        assert self._idea_reference_result().is_cracked
+    def test_cracked_pure_bending(self) -> None:
+        """M = 200 kNm: x = 171.0 mm, sigma_c = -16.24 MPa, sigma_s = 212.0 MPa."""
+        result = self._analysis().stress(SectionForces(m_y=200))
+        assert result.is_cracked
+        assert result.strain_plane is not None
+        assert result.strain_plane.neutral_axis_depth == pytest.approx(171.0, rel=2e-3)
+        assert result.concrete_stress_min == pytest.approx(-16.24, rel=2e-3)
+        assert max(bar.stress for bar in result.rebar_results) == pytest.approx(212.0, rel=2e-3)
 
-    def test_concrete_compression_matches_idea(self) -> None:
-        """Max concrete compression matches IDEA StatiCa RCS (-16.23 MPa)."""
-        assert self._idea_reference_result().concrete_stress_min == pytest.approx(-16.23, abs=0.1)
-
-    def test_reinforcement_stress_matches_idea(self) -> None:
-        """Reinforcement stress matches IDEA StatiCa RCS (211.98 MPa)."""
-        assert self._idea_reference_result().rebar_results[0].stress == pytest.approx(211.98, rel=0.01)
-
-    def test_reinforcement_strain_matches_idea(self) -> None:
-        """Reinforcement strain matches IDEA StatiCa RCS (1.060 per mille)."""
-        assert self._idea_reference_result().rebar_results[0].strain == pytest.approx(1.060, rel=0.01)
-
-    def test_neutral_axis_depth_matches_idea(self) -> None:
-        """Neutral-axis depth matches IDEA StatiCa RCS (x = 171 mm)."""
-        properties = self._idea_reference_result().cracked_properties
-        assert properties is not None
-        assert properties.neutral_axis_depth == pytest.approx(171.0, rel=0.02)
+    def test_uncracked_transformed_section(self) -> None:
+        """M = 40 kNm: x = 312.5 mm, sigma_c = -2.106 / +1.938 MPa, sigma_s = 9.24 MPa."""
+        result = self._analysis().stress(SectionForces(m_y=40))
+        assert not result.is_cracked
+        assert result.strain_plane is not None
+        assert result.strain_plane.neutral_axis_depth == pytest.approx(312.5, rel=2e-3)
+        assert result.concrete_stress_min == pytest.approx(-2.106, rel=2e-3)
+        assert result.concrete_stress_max == pytest.approx(1.938, rel=2e-3)
+        assert max(bar.stress for bar in result.rebar_results) == pytest.approx(9.24, rel=2e-3)

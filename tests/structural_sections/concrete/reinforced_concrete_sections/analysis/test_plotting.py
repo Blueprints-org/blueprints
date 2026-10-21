@@ -15,9 +15,6 @@ mpl.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 
-pytest.importorskip("concreteproperties")
-
-
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime

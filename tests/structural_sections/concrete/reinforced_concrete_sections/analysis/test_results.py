@@ -1,15 +1,9 @@
-"""Tests for the analysis result dataclasses.
-
-Importing the analysis package pulls in the ``_adapter`` module, which requires the optional
-``concreteproperties`` backend, so the whole module is skipped when that backend is absent.
-"""
+"""Tests for the analysis result dataclasses."""
 
 from dataclasses import dataclass, field
 
 import numpy as np
 import pytest
-
-pytest.importorskip("concreteproperties")
 
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
     CrackedProperties,

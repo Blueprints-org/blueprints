@@ -9,8 +9,6 @@ consistency-check guards are exercised directly with crafted inputs.
 import numpy as np
 import pytest
 
-pytest.importorskip("concreteproperties")
-
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime

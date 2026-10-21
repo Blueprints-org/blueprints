@@ -34,7 +34,7 @@ class SectionForces:
     - Normal force ``n`` (N_x): positive = tension, negative = compression.
     - Shear force ``v_y`` (V_y): positive = along +y.
     - Shear force ``v_z`` (V_z): positive = along +z.
-    - Torsion ``t`` (M_x): positive = from y to z (twisting around x-axis).
+    - Torsional moment ``m_x`` (M_x): positive = from y to z (twisting around x-axis).
     - Bending moment ``m_y`` (M_y): positive = from x to z (rotation around y-axis).
     - Bending moment ``m_z`` (M_z): positive = from x to y (rotation around z-axis).
 
@@ -46,8 +46,8 @@ class SectionForces:
         Shear force in y-direction [kN]. Not used by strain-plane analyses. Default 0.0.
     v_z : KN
         Shear force in z-direction [kN]. Not used by strain-plane analyses. Default 0.0.
-    t : KNM
-        Torsional moment (SAF M_x) [kNm]. Not used by strain-plane analyses. Default 0.0.
+    m_x : KNM
+        Torsional moment about the x-axis [kNm]. Not used by strain-plane analyses. Default 0.0.
     m_y : KNM
         Bending moment about the y-axis [kNm]. Default 0.0.
     m_z : KNM
@@ -57,7 +57,7 @@ class SectionForces:
     n: KN = 0.0
     v_y: KN = 0.0
     v_z: KN = 0.0
-    t: KNM = 0.0
+    m_x: KNM = 0.0
     m_y: KNM = 0.0
     m_z: KNM = 0.0
 
@@ -66,7 +66,7 @@ class SectionForces:
         """Create a ``SectionForces`` from a SAF ``ResultInternalForce1D``.
 
         Both objects use the same SAF member axis system, units (kN/kNm) and sign conventions,
-        so no unit or sign conversion is applied. The SAF torsional moment ``mx`` maps to ``t``.
+        so no unit or sign conversion is applied.
 
         Parameters
         ----------
@@ -82,7 +82,7 @@ class SectionForces:
             n=result.n,
             v_y=result.vy,
             v_z=result.vz,
-            t=result.mx,
+            m_x=result.mx,
             m_y=result.my,
             m_z=result.mz,
         )

@@ -110,12 +110,12 @@ outline (mid-height for a rectangle), and the moments are taken about that point
 | Bending moment M_y | `SectionForces.m_y` | kNm  | sagging: tension at the lower face |
 | Bending moment M_z | `SectionForces.m_z` | kNm  | tension at the left face           |
 
-`SectionForces` also accepts the shear forces `v_y`, `v_z` and the torsional moment `t`, so a complete SAF result can be
+`SectionForces` also accepts the shear forces `v_y`, `v_z` and the torsional moment `m_x`, so a complete SAF result can be
 passed in one go — for example with `SectionForces.from_saf_result(...)`.
 
 ## Scope
 
-- **Shear and torsion** are not part of a strain-plane analysis; `v_y`, `v_z` and `t` are ignored.
+- **Shear and torsion** are not part of a strain-plane analysis; `v_y`, `v_z` and `m_x` are ignored.
 - **Backend.** The section is meshed and analysed by
   [`concreteproperties`](https://robbievanleeuwen.github.io/concrete-properties/), a core Blueprints dependency. Every
   input and result is converted to the Blueprints conventions above.

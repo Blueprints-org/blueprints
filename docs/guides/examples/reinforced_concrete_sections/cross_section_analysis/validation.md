@@ -1,6 +1,6 @@
 # Validation of the Cross-section Analysis
 
-The `CrossSectionAnalysis` results are validated in two independent ways: **hand calculations** that can be followed on paper, and a comparison with **IDEA StatiCa RCS** on precisely defined reference cases. Both are pinned in the automated test suite.
+The `CrossSectionAnalysis` results are validated in two independent ways: **hand calculations** that can be followed on paper, and a comparison with **IDEA StatiCa RCS** on precisely defined reference cases. The hand calculations are pinned in the automated test suite; the IDEA comparison is a validation and is not part of the tests.
 
 !!! note "Reference section and material values"
 
@@ -228,7 +228,7 @@ The cracking moment `m_cr` and the cracked second moment of area `i_cracked` are
 
 !!! warning "Modelling differences"
 
-    Blueprints performs a **linear-elastic SLS** analysis: concrete is linear up to cracking with the secant modulus `E_cm`, reinforcement is elastic up to `f_yk` (no partial factor), tension stiffening is **not** included, and the cracking decision uses the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). IDEA StatiCa RCS can use other choices (an effective or long-term modulus, tension stiffening per EN 1992-1-1 art. 7.4.3). When comparing, set up the IDEA case as a short-term linear analysis without tension stiffening. The tolerances in the automated test suite are set per reference case accordingly.
+    Blueprints performs a **linear-elastic SLS** analysis: concrete is linear up to cracking with the secant modulus `E_cm`, reinforcement is elastic up to `f_yk` (no partial factor), tension stiffening is **not** included, and the cracking decision uses the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). IDEA StatiCa RCS can use other choices (an effective or long-term modulus, tension stiffening per EN 1992-1-1 art. 7.4.3). When comparing, set up the IDEA case as a short-term linear analysis without tension stiffening.
 
 ## Software versions
 

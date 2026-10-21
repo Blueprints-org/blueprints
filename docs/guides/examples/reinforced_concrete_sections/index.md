@@ -13,6 +13,7 @@ Reinforced concrete cross sections are fundamental elements in structural engine
 - **Reinforcement layouts** with flexible bar arrangements
 - **Material properties** based on Eurocode standards
 - **Section property calculations** for structural analysis
+- **Cross-section analysis** of the serviceability (SLS) stresses and strains under N, M_y and M_z, cracked or uncracked and with creep — see the [Cross-section Analysis](cross_section_analysis/index.md) guide
 - **Visualization capabilities** for design verification
 
 ## Available Examples

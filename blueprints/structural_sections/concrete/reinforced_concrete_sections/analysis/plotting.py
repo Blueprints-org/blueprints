@@ -17,6 +17,7 @@ import numpy as np
 from matplotlib.patches import Polygon as MplPolygon
 from matplotlib.patches import Rectangle
 
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.rectangular import RCS_CROSS_SECTION_COLOR, REBAR_COLOR
 from blueprints.type_alias import MPA
 from blueprints.unit_conversion import PER_MILLE_TO_RATIO
 
@@ -30,8 +31,9 @@ if TYPE_CHECKING:
 _CURVATURE_TOL: float = 1e-12
 _N_SAMPLES: int = 100
 
-_CONCRETE_FACE = "lightgrey"
-_REBAR_COLOUR = "saddlebrown"
+# Concrete and reinforcement in the same colours as the cross-section plotters.
+_CONCRETE_FACE = RCS_CROSS_SECTION_COLOR
+_REBAR_COLOUR = REBAR_COLOR
 _STRAIN_COLOUR = "tab:blue"
 _STRESS_COLOUR = "tab:red"
 _NEUTRAL_AXIS_COLOUR = "green"

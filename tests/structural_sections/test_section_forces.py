@@ -15,17 +15,17 @@ class TestSectionForces:
         assert forces.n == 0.0
         assert forces.v_y == 0.0
         assert forces.v_z == 0.0
-        assert forces.t == 0.0
+        assert forces.m_x == 0.0
         assert forces.m_y == 0.0
         assert forces.m_z == 0.0
 
     def test_full_construction(self) -> None:
         """All six components are stored as given."""
-        forces = SectionForces(n=-100.0, v_y=10.0, v_z=20.0, t=5.0, m_y=150.0, m_z=30.0)
+        forces = SectionForces(n=-100.0, v_y=10.0, v_z=20.0, m_x=5.0, m_y=150.0, m_z=30.0)
         assert forces.n == -100.0
         assert forces.v_y == 10.0
         assert forces.v_z == 20.0
-        assert forces.t == 5.0
+        assert forces.m_x == 5.0
         assert forces.m_y == 150.0
         assert forces.m_z == 30.0
 
@@ -50,4 +50,4 @@ class TestSectionForces:
             mz=30.0,
         )
         forces = SectionForces.from_saf_result(result)
-        assert forces == SectionForces(n=-100.0, v_y=10.0, v_z=20.0, t=5.0, m_y=150.0, m_z=30.0)
+        assert forces == SectionForces(n=-100.0, v_y=10.0, v_z=20.0, m_x=5.0, m_y=150.0, m_z=30.0)

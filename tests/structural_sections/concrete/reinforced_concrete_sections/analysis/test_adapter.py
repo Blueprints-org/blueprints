@@ -2,8 +2,6 @@
 
 import pytest
 
-pytest.importorskip("concreteproperties")
-
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass, DiagramType
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
 from blueprints.structural_sections.concrete.rebar import Rebar
@@ -15,7 +13,6 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
     _ultimate_profile,
     backend_analysis_section,
     build_concrete_section,
-    effective_modulus,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import (
     RectangularReinforcedCrossSection,
@@ -94,6 +91,14 @@ class TestBuildConcreteSection:
         # the backend polygonizes the circle, so the meshed area is within ~0.5% of the requested area
         assert section.reinf_geometries_lumped[0].calculate_area() == pytest.approx(2 * single_area, rel=1e-2)
 
+    def test_bars_within_the_coincidence_tolerance_are_merged(self) -> None:
+        """Bars whose centres are less than 1e-3 mm apart count as coincident; bars further apart do not."""
+        cs = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_rebar(Rebar(diameter=20, x=150, y=150, material=ReinforcementSteelMaterial()))
+        cs.add_longitudinal_rebar(Rebar(diameter=20, x=150.0005, y=150, material=ReinforcementSteelMaterial()))
+        cs.add_longitudinal_rebar(Rebar(diameter=20, x=-150, y=150, material=ReinforcementSteelMaterial()))
+        assert len(build_concrete_section(cs).reinf_geometries_lumped) == 2
+
     def test_coincident_bars_with_different_materials_raise(self) -> None:
         """Coincident bars of different materials cannot be merged and raise a clear error."""
         cs = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
@@ -101,25 +106,6 @@ class TestBuildConcreteSection:
         cs.add_longitudinal_rebar(Rebar(diameter=20, x=0, y=0, material=ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500C)))
         with pytest.raises(ValueError, match="different materials"):
             build_concrete_section(cs)
-
-
-class TestEffectiveModulus:
-    """Tests for the effective-modulus helper E_c,eff = E_cm / (1 + phi)."""
-
-    def test_zero_creep_returns_e_cm(self) -> None:
-        """With phi = 0 (short-term) the effective modulus is the secant modulus e_cm."""
-        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
-        assert effective_modulus(concrete, 0.0) == concrete.e_cm
-
-    def test_creep_divides_by_one_plus_phi(self) -> None:
-        """With phi = 1 the effective modulus halves."""
-        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
-        assert effective_modulus(concrete, 1.0) == pytest.approx(concrete.e_cm / 2.0)
-
-    def test_negative_creep_raises(self) -> None:
-        """A negative creep coefficient is rejected."""
-        with pytest.raises(ValueError, match="creep coefficient"):
-            effective_modulus(ConcreteMaterial(ConcreteStrengthClass.C30_37), -0.1)
 
 
 class TestUltimateProfile:

@@ -6,7 +6,6 @@ with creep through the effective modulus.
 Runs on the ``concreteproperties`` backend, a core Blueprints dependency.
 """
 
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis._adapter import AnalysisLevel
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.cross_section_analysis import CrossSectionAnalysis
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import (
     CrackedProperties,
@@ -17,7 +16,6 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
 )
 
 __all__ = [
-    "AnalysisLevel",
     "CrackedProperties",
     "CrossSectionAnalysis",
     "RebarStressResult",

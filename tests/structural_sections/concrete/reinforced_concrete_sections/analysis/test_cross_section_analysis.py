@@ -1,11 +1,8 @@
 """Tests for CrossSectionAnalysis (regime dispatch, creep and caching)."""
 
 import pytest
-from shapely.errors import GEOSException
-
-pytest.importorskip("concreteproperties")
-
 from concreteproperties.utils import AnalysisError
+from shapely.errors import GEOSException
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
@@ -27,7 +24,7 @@ def _analysis() -> CrossSectionAnalysis:
 
 
 def _reference_beam_analysis() -> CrossSectionAnalysis:
-    """The 300 x 600 mm C30/37 4d25 B500B reference beam of the validation page (IDEA StatiCa RCS case)."""
+    """The 300 x 600 mm C30/37 4d25 B500B reference beam of the validation page."""
     cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
     cs.add_longitudinal_reinforcement_by_quantity(
         n=4, diameter=25, edge="lower", material=ReinforcementSteelMaterial(ReinforcementSteelQuality.B500B)
@@ -86,11 +83,11 @@ class TestCrackedRegime:
 class TestCrackedCombinedAxialMoment:
     """Combined N + M cracked stress: the neutral axis is solved for N and M, not the pure-bending crack depth."""
 
-    def test_matches_hand_calculation_and_idea(self) -> None:
-        """N = -300 kN, M = 200 kNm on the reference beam reproduces the closed-form / IDEA StatiCa RCS state."""
+    def test_matches_hand_calculation(self) -> None:
+        """N = -300 kN, M = 200 kNm on the reference beam reproduces the closed-form cracked N + M state."""
         result = _reference_beam_analysis().stress(SectionForces(n=-300, m_y=200), regime=Regime.SLS_CRACKED)
         steel_stress = max(bar.stress for bar in result.rebar_results)
-        # closed-form cracked N + M solution (= IDEA StatiCa RCS): sigma_c = -17.34 MPa, sigma_s = 146.0 MPa.
+        # closed-form cracked N + M solution (validation page): sigma_c = -17.34 MPa, sigma_s = 146.0 MPa.
         assert result.concrete_stress_min == pytest.approx(-17.34, rel=1e-2)
         assert steel_stress == pytest.approx(146.0, rel=1e-2)
 

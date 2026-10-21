@@ -10,11 +10,11 @@ analysis call site (added in a later step).
 
 import math
 import warnings
-from collections import defaultdict
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from enum import Enum
 from types import ModuleType
+from typing import cast
 
 import numpy as np
 from concreteproperties import (
@@ -32,8 +32,9 @@ from concreteproperties.post import si_n_mm
 from concreteproperties.results import CrackedResults, MomentCurvatureResults, StressResult
 from concreteproperties.stress_strain_profile import ConcreteServiceProfile, ConcreteUltimateProfile
 from concreteproperties.utils import AnalysisError
+from matplotlib.colors import to_hex
 from scipy.optimize import brentq
-from sectionproperties.pre import CompoundGeometry, Geometry
+from sectionproperties.pre import CompoundGeometry, Geometry, Material
 from shapely import Polygon
 from shapely.errors import GEOSException
 
@@ -50,15 +51,17 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
     StressStrainResult,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.base import ReinforcedCrossSection
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.rectangular import RCS_CROSS_SECTION_COLOR, REBAR_COLOR
 from blueprints.structural_sections.section_forces import SectionForces
 from blueprints.type_alias import DEG, DIMENSIONLESS, MM, MPA
 from blueprints.unit_conversion import KN_TO_N, KNM_TO_NMM, MM3_TO_M3, N_TO_KN, NMM_TO_KNM, PER_MILLE_TO_RATIO, RATIO_TO_PER_MILLE
 
-_CONCRETE_COLOUR = "lightgrey"
-_STEEL_COLOUR = "grey"
+# The backend plots in the same colours as the cross-section plotters.
+_CONCRETE_COLOUR = to_hex(RCS_CROSS_SECTION_COLOR)
+_STEEL_COLOUR = to_hex(REBAR_COLOR)
 
-# Bars closer than this (decimals of a mm) are treated as coincident and merged before analysis.
-_COINCIDENT_TOLERANCE = 3
+# Bars whose centres lie closer together than this are treated as coincident and merged before analysis [mm].
+_COINCIDENT_TOLERANCE: MM = 1e-3
 
 # Curvature (ratio strain per mm) below which the section is treated as having no neutral axis (pure axial).
 _CURVATURE_TOL: float = 1e-12
@@ -90,7 +93,10 @@ _MESH_GUARD_FLAG = "__blueprints_mesh_guard__"
 
 
 class AnalysisLevel(Enum):
-    """Material model level driving the stress-strain profiles handed to the backend.
+    """Material model level driving the stress-strain profiles handed to the backend (internal).
+
+    Not to be confused with the public :class:`Regime`: a ``Regime`` is the stress state the user asks for
+    (automatic, uncracked or cracked), an ``AnalysisLevel`` is the backend material model used to compute it.
 
     SLS keeps steel elastic at f_yk/E_s (no partial factor) with a linear (tension-carrying) concrete, used
     for the uncracked analysis and the pure-bending cracked stress. SLS_CRACKED swaps the concrete for a
@@ -326,8 +332,8 @@ def build_concrete_section(
     else:
         concrete = _notension_service_concrete(cross_section.concrete_material, f_ctm_fl, elastic_modulus)
     # concreteproperties materials are accepted structurally by sectionproperties' Geometry but are not a
-    # nominal subclass of sectionproperties.pre.Material, so the static type does not line up.
-    geometry = Geometry(geom=polygon, material=concrete)  # ty: ignore[invalid-argument-type]
+    # nominal subclass of sectionproperties.pre.Material, so the static type is cast.
+    geometry = Geometry(geom=polygon, material=cast(Material, concrete))
 
     steel_bars: dict[ReinforcementSteelMaterial, SteelBar] = {}
     for x, y, area, material in _merge_coincident_rebars(cross_section.longitudinal_rebars):
@@ -366,12 +372,16 @@ def _merge_coincident_rebars(rebars: list[Rebar]) -> list[tuple[float, float, fl
     ValueError
         If coincident bars have different materials, which cannot be merged unambiguously.
     """
-    groups: dict[tuple[float, float], list[Rebar]] = defaultdict(list)
+    groups: list[list[Rebar]] = []
     for rebar in rebars:
-        groups[round(rebar.x, _COINCIDENT_TOLERANCE), round(rebar.y, _COINCIDENT_TOLERANCE)].append(rebar)
+        group = next((g for g in groups if math.dist((g[0].x, g[0].y), (rebar.x, rebar.y)) <= _COINCIDENT_TOLERANCE), None)
+        if group is None:
+            groups.append([rebar])
+        else:
+            group.append(rebar)
 
     merged: list[tuple[float, float, float, ReinforcementSteelMaterial]] = []
-    for group in groups.values():
+    for group in groups:
         materials = {rebar.material for rebar in group}
         if len(materials) > 1:
             raise ValueError(
