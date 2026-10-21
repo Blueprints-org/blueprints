@@ -14,6 +14,7 @@ from shapely import Polygon
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
+from matplotlib.text import Text
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
@@ -325,5 +326,47 @@ class TestPanelAlignment:
             for y0, y1 in extents[1:]:
                 assert y0 == pytest.approx(extents[0][0], abs=2e-3)
                 assert y1 == pytest.approx(extents[0][1], abs=2e-3)
+        finally:
+            plt.close(figure)
+
+
+class TestAppliedForcesBox:
+    """A box below the section panel lists the applied forces that cause the drawn state."""
+
+    @staticmethod
+    def _forces_boxes(figure: Figure) -> list[Text]:
+        return [text for text in figure.texts if text.get_text().startswith("$N$")]
+
+    def test_lists_n_m_y_and_m_z_including_zeros(self) -> None:
+        """N, M_y and M_z are always listed, also a zero component."""
+        figure = _analysis().stress(SectionForces(n=-100, m_y=150), regime=Regime.SLS_CRACKED).plot()
+        try:
+            assert [text.get_text() for text in self._forces_boxes(figure)] == ["$N$ = -100.0 kN\n$M_y$ = 150.0 kNm\n$M_z$ = 0.0 kNm"]
+        finally:
+            plt.close(figure)
+
+    @pytest.mark.parametrize(
+        ("width", "height", "figsize"),
+        [
+            pytest.param(300, 600, (11.0, 6.0), id="tall_beam"),
+            pytest.param(300, 600, (8.0, 4.0), id="tall_beam_small_figure"),
+            pytest.param(1000, 250, (11.0, 6.0), id="wide_slab"),
+        ],
+    )
+    def test_box_sits_below_the_section_panel_inside_the_figure(self, width: float, height: float, figsize: tuple[float, float]) -> None:
+        """The box neither covers the section panel nor is cut off at the bottom of the figure."""
+        cs = RectangularReinforcedCrossSection(width=width, height=height, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=16, material=ReinforcementSteelMaterial(), edge="lower")
+        figure = CrossSectionAnalysis(cs).stress(SectionForces(m_y=40), regime=Regime.SLS_UNCRACKED).plot(figsize=figsize)
+        try:
+            figure.draw_without_rendering()
+            (box,) = self._forces_boxes(figure)
+            frame = box.get_bbox_patch()
+            assert frame is not None
+            extent = frame.get_window_extent()
+            x_axis = figure.axes[0].xaxis.get_tightbbox()
+            assert x_axis is not None
+            assert extent.y0 >= 0.0
+            assert extent.y1 <= x_axis.y0
         finally:
             plt.close(figure)
