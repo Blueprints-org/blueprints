@@ -2,7 +2,7 @@
 
 This page shows how to compute the serviceability (SLS) stresses and strains of a reinforced concrete cross-section from its section forces with `CrossSectionAnalysis`. Blueprints decides whether the section is cracked and returns the matching concrete and reinforcement results.
 
-The axes, signs and units are explained on the [guide overview](index.md#axes-signs-and-units): **tension positive, compression negative**, in kN, kNm, mm, MPa and ‰.
+The section forces and their signs are explained on the [guide overview](index.md#axes-signs-and-units): **tension positive, compression negative**, in kN, kNm, mm, MPa and ‰.
 
 We will:
 
@@ -12,6 +12,13 @@ We will:
 - Draw the strain and stress state
 - Include creep through the effective modulus
 - Compare sagging and hogging, and analyse biaxial bending and a circular section
+
+## Assumptions
+
+- **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
+- **Cracked or uncracked.** The section counts as cracked when the uncracked concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). A cracked section carries no concrete tension. See [section 2](#2-cracked-or-uncracked).
+- **Creep** through the effective modulus `E_c,eff = E_cm / (1 + φ)` (EN 1992-1-1 formula 7.20), with the creep coefficient φ as an input. Shrinkage, the age-adjusted effective modulus and tension stiffening are not included.
+- **Biaxial bending** is supported in the uncracked regime. A cracked analysis under biaxial bending raises a `NotImplementedError`.
 
 ## 1. Build the Cross-section
 
@@ -77,6 +84,22 @@ As shown above, the `regime` argument forces a specific regime: `Regime.SLS_UNCR
 
 ## 3. Concrete and Reinforcement Results
 
+`stress()` returns a [`StressStrainResult`][structural_sections.concrete.reinforced_concrete_sections.analysis.results.StressStrainResult], a frozen dataclass:
+
+| Field | Contents |
+|---|---|
+| `regime`, `is_cracked` | Which regime produced the result: `Regime.SLS_UNCRACKED` or `Regime.SLS_CRACKED`. |
+| `concrete_stress_min` | The largest concrete **compression** (the most negative stress) [MPa]. |
+| `concrete_stress_max` | The largest concrete **tension** [MPa]; `0` in the cracked regime, where concrete carries no tension. |
+| `rebar_results` | One [`RebarStressResult`][structural_sections.concrete.reinforced_concrete_sections.analysis.results.RebarStressResult] per bar: position `x`, `y` [mm], `diameter` [mm], `stress` [MPa], `strain` [‰] and `force` [kN]. |
+| `strain_plane` | The linear strain field: a [`StrainPlane`][structural_sections.concrete.reinforced_concrete_sections.analysis.results.StrainPlane] with the strain at the origin [‰], the curvatures `kappa_y` and `kappa_z` [1/mm], the **actual** neutral-axis depth [mm] and angle [°], and `strain_at(x, y)`. |
+| `cracked_properties` | For a cracked result, [`CrackedProperties`][structural_sections.concrete.reinforced_concrete_sections.analysis.results.CrackedProperties]: cracking moment `m_cr` [kNm], cracked second moment of area `i_cracked` [mm⁴], and the pure-bending neutral-axis depth [mm] and angle [°]. `None` for an uncracked result. |
+| `elastic_modulus` | The concrete modulus used: `E_cm`, or `E_c,eff` with creep [MPa]. |
+| `forces` | The `SectionForces` that were analysed. |
+| `raw` | The backend's own result object, for advanced use (in the backend's sign convention). |
+
+Stresses and strains are positive in tension. Positions — the bar `x` and `y` and the arguments of `strain_at(x, y)` — are coordinates of the section drawing (`cs.plot()`): section `x` runs along the member `y` axis and section `y` along the member `z` axis. Neutral-axis angles are measured counter-clockwise from the horizontal; `0` means bending about `y`.
+
 The cracked result carries the largest concrete compression and, per bar, the stress, strain and force:
 
 ```python exec="on" source="material-block" result="ansi" session="rc_analysis"
@@ -85,7 +108,7 @@ for bar in result.rebar_results:
     print(f"bar at (x={bar.x:6.1f}, y={bar.y:6.1f}) mm: stress {bar.stress:6.1f} MPa, strain {bar.strain:.3f} per mille, force {bar.force:5.1f} kN")
 ```
 
-Behind these values sits the **strain plane**: the linear strain field over the section (plane sections remain plane). It gives the strain at any point, in the section coordinates of `cs.plot()`:
+Behind these values sits the **strain plane**: the linear strain field over the section (plane sections remain plane). It gives the strain at any point:
 
 ```python exec="on" source="material-block" result="ansi" session="rc_analysis"
 plane = result.strain_plane
