@@ -23,8 +23,8 @@ class Form8Dot121StrengthReductionFactorCrackedZone(Formula):
 
         FprEN 1992-1-1:2023 (E) art. 8.5.2(5) - Formula (8.121)
 
-        The standard writes this as an expression bounded from above by 1,0, which is implemented as the
-        minimum of the two.
+        The standard bounds this expression from above by 1,0. For [$\varepsilon_1 \geq 0$] the expression
+        never exceeds 1,0, so the bound is always met and is not repeated here.
 
         Parameters
         ----------
@@ -41,13 +41,11 @@ class Form8Dot121StrengthReductionFactorCrackedZone(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(epsilon_1=epsilon_1)
 
-        # For epsilon_1 >= 0 the denominator is >= 1.0, so the raw expression never exceeds 1.0 and the
-        # bound is tight only at epsilon_1 = 0. The min is kept to match the standard's printed condition.
-        return min(1 / (1.0 + 110 * epsilon_1), 1.0)
+        return 1 / (1.0 + 110 * epsilon_1)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.121."""
-        _equation: str = r"\min\left(\frac{1}{1.0 + 110 \cdot \varepsilon_1}, 1.0\right)"
+        _equation: str = r"\frac{1}{1.0 + 110 \cdot \varepsilon_1}"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
             replacements={

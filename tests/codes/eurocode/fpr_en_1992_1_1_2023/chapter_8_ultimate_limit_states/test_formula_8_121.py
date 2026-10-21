@@ -48,15 +48,15 @@ class TestForm8Dot121StrengthReductionFactorCrackedZone:
             (
                 "complete",
                 (
-                    r"\nu = \min\left(\frac{1}{1.0 + 110 \cdot \varepsilon_1}, 1.0\right) = "
-                    r"\min\left(\frac{1}{1.0 + 110 \cdot 0.005}, 1.0\right) = 0.645 \ -"
+                    r"\nu = \frac{1}{1.0 + 110 \cdot \varepsilon_1} = "
+                    r"\frac{1}{1.0 + 110 \cdot 0.005} = 0.645 \ -"
                 ),
             ),
             (
                 "complete_with_units",
                 (
-                    r"\nu = \min\left(\frac{1}{1.0 + 110 \cdot \varepsilon_1}, 1.0\right) = "
-                    r"\min\left(\frac{1}{1.0 + 110 \cdot 0.005}, 1.0\right) = 0.645 \ -"
+                    r"\nu = \frac{1}{1.0 + 110 \cdot \varepsilon_1} = "
+                    r"\frac{1}{1.0 + 110 \cdot 0.005} = 0.645 \ -"
                 ),
             ),
             ("short", r"\nu = 0.645 \ -"),
