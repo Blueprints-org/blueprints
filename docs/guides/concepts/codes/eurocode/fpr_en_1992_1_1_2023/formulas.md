@@ -158,8 +158,8 @@ Total of 602 formulas present.
 |      8.94      | :heavy_check_mark: |         | Form8Dot94PunchingShearStressResistance                            |
 |      8.95      | :heavy_check_mark: |         | Form8Dot95LongitudinalReinforcementRatioPunchingShear              |
 |      8.96      | :heavy_check_mark: |         | Form8Dot96PunchingShearGradientEnhancementCoefficient              |
-|      8.97      |        :x:         |         |                                                                    |
-|      8.98      |        :x:         |         |                                                                    |
+|      8.97      | :heavy_check_mark: |         | Form8Dot97ReplacementEffectiveDepth                                |
+|      8.98      | :heavy_check_mark: |         | Form8Dot98DistanceToPointOfContraflexure                           |
 |      8.99      |        :x:         |         |                                                                    |
 |     8.100      |        :x:         |         |                                                                    |
 |     8.101      |        :x:         |         |                                                                    |
