@@ -39,6 +39,18 @@ class TestForm8Dot97ReplacementEffectiveDepth:
             Form8Dot97ReplacementEffectiveDepth(a_p=a_p, d_v=d_v)
 
     @pytest.mark.parametrize(
+        ("a_p", "d_v"),
+        [
+            (1600.0, 200.0),  # a_p equals 8 * d_v
+            (2000.0, 200.0),  # a_p exceeds 8 * d_v
+        ],
+    )
+    def test_raise_error_when_a_p_is_not_smaller_than_8_d_v(self, a_p: float, d_v: float) -> None:
+        """Test that Formula (8.97) is refused outside its range of application."""
+        with pytest.raises(ValueError, match="must be smaller than 8"):
+            Form8Dot97ReplacementEffectiveDepth(a_p=a_p, d_v=d_v)
+
+    @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (

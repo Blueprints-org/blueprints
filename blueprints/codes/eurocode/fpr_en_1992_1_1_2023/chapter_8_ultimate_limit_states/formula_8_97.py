@@ -52,6 +52,8 @@ class Form8Dot97ReplacementEffectiveDepth(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(a_p=a_p)
         raise_if_less_or_equal_to_zero(d_v=d_v)
+        if a_p >= 8 * d_v:
+            raise ValueError(f"a_p ({a_p}) must be smaller than 8 * d_v ({8 * d_v}): Formula (8.97) only applies below that limit.")
 
         return np.sqrt((a_p / 8) * d_v)
 
