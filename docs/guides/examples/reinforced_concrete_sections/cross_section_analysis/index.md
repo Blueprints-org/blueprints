@@ -2,6 +2,8 @@
 
 `CrossSectionAnalysis` computes the serviceability (SLS) stresses and strains of any `ReinforcedCrossSection` — rectangular, circular or custom — directly from its section forces.
 
+![Blueprints CrossSectionAnalysis](../_images/cross_section_analysis.png)
+
 This guide has three pages:
 
 - **This page** — a quick start, the axes and sign conventions, and what a result contains.
