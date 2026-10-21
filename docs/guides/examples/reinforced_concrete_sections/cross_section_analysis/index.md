@@ -61,43 +61,7 @@ print(buffer.getvalue())  # markdown-exec: hide
 **Tension is positive, compression is negative**, for the axial force, the strains and the stresses alike. Forces are in
 kN and kNm, lengths in mm, stresses in MPa and strains in ‰ (per mille).
 
-```python exec="on" result="html" html="true"
-import matplotlib.pyplot as plt
-
-fig, ax = plt.subplots(figsize=(5.2, 5.6))
-w, h = 300, 600
-ax.add_patch(plt.Rectangle((-w / 2, -h / 2), w, h, facecolor="#efefef", edgecolor="black", lw=1.5))
-for x in (-105, -35, 35, 105):
-    ax.add_patch(plt.Circle((x, -h / 2 + 62.5), 12.5, color="saddlebrown", zorder=5))
-
-# member axes at the centroid: y to the right, z upwards, x out of the page
-arrow = dict(arrowstyle="-|>", color="black", lw=1.6, mutation_scale=16)
-ax.annotate("", xy=(110, 0), xytext=(0, 0), arrowprops=arrow)
-ax.annotate("", xy=(0, 110), xytext=(0, 0), arrowprops=arrow)
-ax.add_patch(plt.Circle((0, 0), 9, facecolor="white", edgecolor="black", lw=1.4, zorder=6))
-ax.add_patch(plt.Circle((0, 0), 2.5, color="black", zorder=7))
-ax.text(118, 0, "y", va="center", fontsize=11)
-ax.text(0, 122, "z", ha="center", fontsize=11)
-ax.text(-14, -14, "x", ha="right", va="top", fontsize=11)
-
-# faces in tension under positive moments
-ax.plot([-w / 2, w / 2], [-h / 2 - 6, -h / 2 - 6], color="crimson", lw=4)
-ax.text(0, -h / 2 - 22, "tension face under +M_y (sagging)", ha="center", va="top", color="crimson", fontsize=9.5)
-ax.plot([-w / 2 - 6, -w / 2 - 6], [-h / 2, h / 2], color="tab:purple", lw=4)
-ax.text(-w / 2 - 18, h / 4, "tension face\nunder +M_z", ha="right", va="center", color="tab:purple", fontsize=9.5)
-
-ax.set_xlim(-w / 2 - 130, w / 2 + 40)
-ax.set_ylim(-h / 2 - 70, h / 2 + 30)
-ax.set_aspect("equal")
-ax.axis("off")
-fig.tight_layout()
-
-from io import StringIO
-
-buffer = StringIO()
-plt.savefig(buffer, format="svg")
-print(buffer.getvalue())
-```
+![Member axes and section forces](../_images/section_forces_axes.gif)
 
 The forces follow the member axes of
 the [SAF](https://www.saf.guide/en/stable/getting-started/introduction.html#coordinate-systems) format: `x` along the
