@@ -76,7 +76,11 @@ class Form8Dot103FactorKNEccentricTendons(Formula):
         control_perimeter_ratio_complement = 1 - b_0 / b_0_5
         raise_if_less_or_equal_to_zero(control_perimeter_ratio_complement=control_perimeter_ratio_complement)
 
-        return np.sqrt(1 + (0.47 / control_perimeter_ratio_complement) * (abs(sigma_d) / np.sqrt(f_ck)) * (1 + 6 * e_p / d))
+        radicand = 1 + (0.47 / control_perimeter_ratio_complement) * (abs(sigma_d) / np.sqrt(f_ck)) * (1 + 6 * e_p / d)
+        if radicand < 0:
+            raise ValueError(f"e_p ({e_p}) is too far on the compression side: the square root would not be real.")
+
+        return np.sqrt(radicand)
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.103."""

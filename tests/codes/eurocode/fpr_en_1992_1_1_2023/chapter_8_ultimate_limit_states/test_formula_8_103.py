@@ -49,6 +49,11 @@ class TestForm8Dot103FactorKNEccentricTendons:
         with pytest.raises(LessOrEqualToZeroError):
             Form8Dot103FactorKNEccentricTendons(b_0=b_0, b_0_5=b_0_5, sigma_d=sigma_d, f_ck=f_ck, e_p=e_p, d=d)
 
+    def test_raise_error_when_square_root_is_not_real(self) -> None:
+        """Test that a large negative eccentricity, giving a negative radicand, is refused."""
+        with pytest.raises(ValueError, match="square root would not be real"):
+            Form8Dot103FactorKNEccentricTendons(b_0=600.0, b_0_5=2400.0, sigma_d=-3.0, f_ck=30.0, e_p=-200.0, d=250.0)
+
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
