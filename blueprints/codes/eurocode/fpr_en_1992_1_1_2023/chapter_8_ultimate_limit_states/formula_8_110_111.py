@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot110To111CoefficientForPunchingShearReinforcingSystem(Formula):
@@ -23,7 +23,7 @@ class Form8Dot110To111CoefficientForPunchingShearReinforcingSystem(Formula):
         self,
         b_0: MM,
         d_v: MM,
-        is_stud: bool,
+        is_link_or_stirrup: bool,
     ) -> None:
         r"""[$\eta_{sys}$] Coefficient accounting for the performance of punching shear reinforcing systems
         [$-$].
@@ -33,29 +33,28 @@ class Form8Dot110To111CoefficientForPunchingShearReinforcingSystem(Formula):
         Parameters
         ----------
         b_0 : MM
-            [$b_0$] Length of the perimeter at the face of the supporting area, see Formula (8.96) [$mm$].
+            [$b_0$] Length of the perimeter at the face of the supporting area, see Figure 8.18 [$mm$].
         d_v : MM
             [$d_v$] Shear-resisting effective depth of the slab according to Formula (8.91) [$mm$].
-        is_stud : bool
-            True for shear reinforcement in the form of studs, which selects Formula (8.110). False for shear
-            reinforcement in the form of links and stirrups, which selects Formula (8.111).
+        is_link_or_stirrup : bool
+            True for shear reinforcement in the form of links and stirrups, which selects Formula (8.111). False
+            for shear reinforcement in the form of studs, which selects Formula (8.110).
         """
         super().__init__()
         self.b_0 = b_0
         self.d_v = d_v
-        self.is_stud = is_stud
+        self.is_link_or_stirrup = is_link_or_stirrup
 
     @staticmethod
     def _evaluate(
         b_0: MM,
         d_v: MM,
-        is_stud: bool,
+        is_link_or_stirrup: bool,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(b_0=b_0)
-        raise_if_less_or_equal_to_zero(d_v=d_v)
+        raise_if_less_or_equal_to_zero(b_0=b_0, d_v=d_v)
 
-        base = 0.70 if is_stud else 0.50
+        base = 0.50 if is_link_or_stirrup else 0.70
         return max(base + 0.63 * (b_0 / d_v) ** (1 / 4), 1.0)
 
     def latex(self, n: int = 3) -> LatexFormula:

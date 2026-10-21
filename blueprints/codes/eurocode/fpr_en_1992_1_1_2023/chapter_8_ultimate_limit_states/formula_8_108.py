@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import MM
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot108ShearResistingEffectiveDepthOuterShearReinforcement(Formula):
@@ -46,8 +46,7 @@ class Form8Dot108ShearResistingEffectiveDepthOuterShearReinforcement(Formula):
         c_v: MM,
     ) -> MM:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(d_x=d_x, d_y=d_y)
-        raise_if_negative(c_v=c_v)
+        raise_if_less_or_equal_to_zero(d_x=d_x, d_y=d_y, c_v=c_v)
 
         return (d_x + d_y) / 2 - c_v
 

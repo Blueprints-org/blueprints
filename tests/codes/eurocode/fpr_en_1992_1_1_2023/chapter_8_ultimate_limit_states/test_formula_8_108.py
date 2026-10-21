@@ -5,7 +5,7 @@ import pytest
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_108 import (
     Form8Dot108ShearResistingEffectiveDepthOuterShearReinforcement,
 )
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot108ShearResistingEffectiveDepthOuterShearReinforcement:
@@ -34,11 +34,12 @@ class TestForm8Dot108ShearResistingEffectiveDepthOuterShearReinforcement:
             (250.0, -230.0, 20.0),  # d_y is negative
             (250.0, 0.0, 20.0),  # d_y is zero
             (250.0, 230.0, -20.0),  # c_v is negative
+            (250.0, 230.0, 0.0),  # c_v is zero
         ],
     )
     def test_raise_error_when_invalid_values_are_given(self, d_x: float, d_y: float, c_v: float) -> None:
         """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot108ShearResistingEffectiveDepthOuterShearReinforcement(d_x=d_x, d_y=d_y, c_v=c_v)
 
     @pytest.mark.parametrize(
