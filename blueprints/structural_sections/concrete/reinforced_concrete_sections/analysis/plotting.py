@@ -38,8 +38,18 @@ _NEUTRAL_AXIS_COLOUR = "green"
 _COMPRESSION_HATCH = "grey"
 _DIMENSION_COLOUR = "black"
 
-# Gap between the section and the compression-depth dimension line, as a fraction of the section width.
+# Width ratios of the section, strain and stress panels; the section ratio is then fitted to the section's shape.
+_PANEL_WIDTH_RATIOS: tuple[float, float, float] = (1.0, 1.3, 1.3)
+# Layout passes used to fit the section panel to the full height of the strain and stress panels, and the largest
+# share of the figure width the section panel may take (a very wide section keeps the other panels readable).
+_LAYOUT_PASSES: int = 6
+_MAX_SECTION_SHARE: float = 0.4
+# Matplotlib's default horizontal data margin, as a fraction of the section width on either side.
+_X_MARGIN: float = 0.05
+# Gap between the section and the compression-depth dimension line, and the room for its label to the right of
+# that line, as fractions of the section width.
 _DIMENSION_OFFSET: float = 0.12
+_DIMENSION_LABEL_ROOM: float = 0.25
 # Neutral-axis angles (deg) within this tolerance of 0 or -90 count as bending about a single axis.
 _UNIAXIAL_ANGLE_TOL: float = 1e-6
 
@@ -137,10 +147,13 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
     strain = np.array([plane.strain_at(px, py) for px, py in sample_points])  # ‰
     stress = _concrete_stress(strain, result.elastic_modulus, is_cracked=result.is_cracked)
 
-    fig, (ax_section, ax_strain, ax_stress) = plt.subplots(1, 3, figsize=figsize, sharey=True, gridspec_kw={"width_ratios": [1.0, 1.3, 1.3]})
+    fig, (ax_section, ax_strain, ax_stress) = plt.subplots(
+        1, 3, figsize=figsize, sharey=True, gridspec_kw={"width_ratios": list(_PANEL_WIDTH_RATIOS)}
+    )
 
     _draw_section(ax_section, across, heights, strain, hs, result, across_axis, height_axis)
-    _draw_compression_depth(ax_section, plane, across, strain, hs)
+    if _shows_compression_depth(plane, strain, hs):
+        _draw_compression_depth(ax_section, plane, across, strain, hs)
     _draw_strain(ax_strain, strain, hs, result, height_axis)
     _draw_stress(ax_stress, stress, hs, result, height_axis)
     _draw_neutral_axis((ax_section, ax_strain, ax_stress), strain, hs)
@@ -148,7 +161,38 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
     regime = {"SLS_UNCRACKED": "uncracked", "SLS_CRACKED": "cracked"}[result.regime.value]
     fig.suptitle(f"Strain & stress over height - {regime}", fontsize=11)
     fig.tight_layout()
+    _fit_section_panel_height(fig, ax_section, ax_strain)
     return fig
+
+
+def _fit_section_panel_height(fig: Figure, ax_section: Axes, ax_reference: Axes) -> None:
+    """Widen or narrow the section panel until it has the full height of the strain and stress panels.
+
+    The section is drawn to scale, so its panel shrinks in height when its shape is wider than the panel. The
+    panels share the height axis, so a shorter section panel would put the neutral axis at a different height
+    than in the other panels. The section panel's share of the figure width is scaled by the missing height. A
+    section too wide for that (a slab, or a beam bent about its vertical axis) keeps its reduced height, and the
+    other panels are shortened to match it instead.
+    """
+    gridspec = ax_section.get_gridspec()
+    assert gridspec is not None  # created by plt.subplots
+    others = sum(_PANEL_WIDTH_RATIOS[1:])
+    section_ratio = _PANEL_WIDTH_RATIOS[0]
+    for _ in range(_LAYOUT_PASSES):
+        ax_section.apply_aspect()
+        missing = ax_reference.get_position().height / ax_section.get_position().height
+        if math.isclose(missing, 1.0, rel_tol=1e-3):
+            return
+        share = min(section_ratio / (section_ratio + others) * missing, _MAX_SECTION_SHARE)
+        section_ratio = others * share / (1.0 - share)
+        gridspec.set_width_ratios([section_ratio, *_PANEL_WIDTH_RATIOS[1:]])
+        fig.tight_layout()
+    ax_section.apply_aspect()
+    section = ax_section.get_position()
+    for ax in fig.axes:
+        if ax is not ax_section:
+            position = ax.get_position()
+            ax.set_position((position.x0, section.y0, position.width, section.height))
 
 
 def _draw_section(
@@ -173,17 +217,23 @@ def _draw_section(
     ax.set_aspect("equal")
 
 
+def _shows_compression_depth(plane: StrainPlane, strain: np.ndarray, hs: np.ndarray) -> bool:
+    """Whether the compression-zone depth is dimensioned: bending about a single axis, neutral axis inside the section.
+
+    Under biaxial bending the depth is not a single section height, so it is left out.
+    """
+    uniaxial = any(math.isclose(plane.neutral_axis_angle, angle, abs_tol=_UNIAXIAL_ANGLE_TOL) for angle in (0.0, -90.0))
+    return uniaxial and plane.neutral_axis_depth is not None and _neutral_axis_height(strain, hs) is not None
+
+
 def _draw_compression_depth(ax: Axes, plane: StrainPlane, across: np.ndarray, strain: np.ndarray, hs: np.ndarray) -> None:
-    """Dimension the depth of the compression zone beside the section, for bending about a single axis.
+    """Dimension the depth of the compression zone beside the section.
 
     The dimension runs from the extreme compression fibre to the neutral axis and is labelled with the
-    actual neutral-axis depth of the strain plane. It is left out under biaxial bending, where the depth is
-    not a single section height, and when the neutral axis lies outside the section.
+    actual neutral-axis depth of the strain plane. Only called when :func:`_shows_compression_depth` holds.
     """
     h_na = _neutral_axis_height(strain, hs)
-    uniaxial = any(math.isclose(plane.neutral_axis_angle, angle, abs_tol=_UNIAXIAL_ANGLE_TOL) for angle in (0.0, -90.0))
-    if h_na is None or plane.neutral_axis_depth is None or not uniaxial:
-        return
+    assert h_na is not None  # guaranteed by _shows_compression_depth
     h_compression = float(hs[0] if strain[0] < strain[-1] else hs[-1])  # extreme compression fibre
     left, right = float(across.min()), float(across.max())
     x_dim = right + _DIMENSION_OFFSET * (right - left)
@@ -198,7 +248,7 @@ def _draw_compression_depth(ax: Axes, plane: StrainPlane, across: np.ndarray, st
         fontsize=8.5,
         color=_DIMENSION_COLOUR,
     )
-    ax.set_xlim(left - 0.08 * (right - left), x_dim + 0.25 * (right - left))
+    ax.set_xlim(left - _X_MARGIN * (right - left), x_dim + _DIMENSION_LABEL_ROOM * (right - left))
 
 
 def _shade_compression_zone(ax: Axes, across: np.ndarray, heights: np.ndarray, strain: np.ndarray, hs: np.ndarray) -> None:

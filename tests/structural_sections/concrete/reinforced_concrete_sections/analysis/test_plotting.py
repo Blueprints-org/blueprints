@@ -303,3 +303,30 @@ class TestCompressionDepthDimension:
             assert self._depth_labels(figure) == []
         finally:
             plt.close(figure)
+
+
+class TestPanelAlignment:
+    """All panels span the same height, so the neutral axis lines up across them for any section shape."""
+
+    @pytest.mark.parametrize(
+        ("width", "height", "forces"),
+        [
+            pytest.param(300, 600, SectionForces(n=-100, m_y=150), id="tall_beam"),
+            pytest.param(400, 400, SectionForces(m_y=60), id="square_column"),
+            pytest.param(1000, 250, SectionForces(m_y=40), id="wide_slab"),
+            pytest.param(300, 600, SectionForces(m_y=10, m_z=8), id="biaxial"),
+        ],
+    )
+    def test_panels_share_their_vertical_extent(self, width: float, height: float, forces: SectionForces) -> None:
+        """The section panel and the strain and stress panels (with its steel axis) start and end at the same height."""
+        cs = RectangularReinforcedCrossSection(width=width, height=height, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_reinforcement_by_quantity(n=3, diameter=16, material=ReinforcementSteelMaterial(), edge="lower")
+        figure = CrossSectionAnalysis(cs).stress(forces, regime=Regime.SLS_UNCRACKED).plot()
+        try:
+            figure.canvas.draw()
+            extents = [(ax.get_position().y0, ax.get_position().y1) for ax in figure.axes]
+            for y0, y1 in extents[1:]:
+                assert y0 == pytest.approx(extents[0][0], abs=2e-3)
+                assert y1 == pytest.approx(extents[0][1], abs=2e-3)
+        finally:
+            plt.close(figure)
