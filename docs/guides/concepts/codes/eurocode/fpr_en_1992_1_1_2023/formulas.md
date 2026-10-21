@@ -160,11 +160,11 @@ Total of 602 formulas present.
 |      8.96      | :heavy_check_mark: |         | Form8Dot96PunchingShearGradientEnhancementCoefficient              |
 |      8.97      | :heavy_check_mark: |         | Form8Dot97ReplacementEffectiveDepth                                |
 |      8.98      | :heavy_check_mark: |         | Form8Dot98DistanceToPointOfContraflexure                           |
-|      8.99      |        :x:         |         |                                                                    |
-|     8.100      |        :x:         |         |                                                                    |
-|     8.101      |        :x:         |         |                                                                    |
-|     8.102      |        :x:         |         |                                                                    |
-|     8.103      |        :x:         |         |                                                                    |
+|      8.99      | :heavy_check_mark: |         | Form8Dot99To100CoefficientAccountingForAxialForces                 |
+|     8.100      | :heavy_check_mark: |         | Form8Dot99To100CoefficientAccountingForAxialForces                 |
+|     8.101      | :heavy_check_mark: |         | Form8Dot101FactorKN                                                |
+|     8.102      | :heavy_check_mark: |         | Form8Dot102CoefficientAccountingForAxialForcesTwoDirections        |
+|     8.103      | :heavy_check_mark: |         | Form8Dot103FactorKNEccentricTendons                                |
 |     8.104      |        :x:         |         |                                                                    |
 |     8.105      |        :x:         |         |                                                                    |
 |     8.106      |        :x:         |         |                                                                    |
