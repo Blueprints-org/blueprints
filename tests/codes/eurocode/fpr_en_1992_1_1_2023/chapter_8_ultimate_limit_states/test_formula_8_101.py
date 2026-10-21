@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_101 import Form8Dot101FactorKN
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestForm8Dot101FactorKN:
@@ -29,6 +29,7 @@ class TestForm8Dot101FactorKN:
         ("b_0", "b_0_5", "sigma_d", "f_ck"),
         [
             (-600.0, 2400.0, -3.0, 30.0),  # b_0 is negative
+            (0.0, 2400.0, -3.0, 30.0),  # b_0 is zero
             (600.0, -2400.0, -3.0, 30.0),  # b_0_5 is negative
             (600.0, 0.0, -3.0, 30.0),  # b_0_5 is zero
             (600.0, 2400.0, -3.0, -30.0),  # f_ck is negative
@@ -39,7 +40,7 @@ class TestForm8Dot101FactorKN:
     )
     def test_raise_error_when_invalid_values_are_given(self, b_0: float, b_0_5: float, sigma_d: float, f_ck: float) -> None:
         """Test invalid values."""
-        with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
+        with pytest.raises(LessOrEqualToZeroError):
             Form8Dot101FactorKN(b_0=b_0, b_0_5=b_0_5, sigma_d=sigma_d, f_ck=f_ck)
 
     @pytest.mark.parametrize(

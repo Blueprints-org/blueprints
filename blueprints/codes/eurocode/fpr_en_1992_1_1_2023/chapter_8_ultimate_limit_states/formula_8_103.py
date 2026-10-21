@@ -6,7 +6,7 @@ from blueprints.codes.eurocode.fpr_en_1992_1_1_2023 import FPR_EN_1992_1_1_2023
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class Form8Dot103FactorKNEccentricTendons(Formula):
@@ -38,7 +38,7 @@ class Form8Dot103FactorKNEccentricTendons(Formula):
         Parameters
         ----------
         b_0 : MM
-            [$b_0$] Length of the perimeter at the face of the supporting area, see Formula (8.96) [$mm$].
+            [$b_0$] Length of the perimeter at the face of the supporting area, see Figure 8.18 [$mm$].
         b_0_5 : MM
             [$b_{0,5}$] Length of the control perimeter, taken at a distance [$0,5 d_v$] from the face of the
             supporting area according to 8.4.2(2) to (5) [$mm$].
@@ -72,8 +72,7 @@ class Form8Dot103FactorKNEccentricTendons(Formula):
         d: MM,
     ) -> DIMENSIONLESS:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(b_0=b_0)
-        raise_if_less_or_equal_to_zero(b_0_5=b_0_5, f_ck=f_ck, d=d)
+        raise_if_less_or_equal_to_zero(b_0=b_0, b_0_5=b_0_5, f_ck=f_ck, d=d)
         control_perimeter_ratio_complement = 1 - b_0 / b_0_5
         raise_if_less_or_equal_to_zero(control_perimeter_ratio_complement=control_perimeter_ratio_complement)
 

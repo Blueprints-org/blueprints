@@ -32,10 +32,10 @@ class Form8Dot102CoefficientAccountingForAxialForcesTwoDirections(Formula):
         ----------
         k_pp_x : DIMENSIONLESS
             [$k_{pp,x}$] Coefficient accounting for the presence of axial stresses in the x-direction,
-            according to Formula (8.99), (8.100) or (8.103) [$-$].
+            according to Formula (8.99) or (8.100) [$-$].
         k_pp_y : DIMENSIONLESS
             [$k_{pp,y}$] Coefficient accounting for the presence of axial stresses in the y-direction,
-            according to Formula (8.99), (8.100) or (8.103) [$-$].
+            according to Formula (8.99) or (8.100) [$-$].
         """
         super().__init__()
         self.k_pp_x = k_pp_x
