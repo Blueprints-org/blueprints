@@ -58,6 +58,20 @@ class TestForm8Dot96PunchingShearGradientEnhancementCoefficient:
         with pytest.raises((NegativeValueError, LessOrEqualToZeroError)):
             Form8Dot96PunchingShearGradientEnhancementCoefficient(b_0=b_0, b_0_5=b_0_5)
 
+    def test_raise_error_when_b_0_exceeds_b_0_5(self) -> None:
+        """Test that a perimeter at the face of the support longer than the control perimeter is rejected."""
+        with pytest.raises(ValueError, match="must not exceed"):
+            Form8Dot96PunchingShearGradientEnhancementCoefficient(b_0=2500.0, b_0_5=2400.0)
+
+    def test_evaluation_when_b_0_equals_b_0_5(self) -> None:
+        """Tests that equal perimeters are accepted and give the lower bound."""
+        formula = Form8Dot96PunchingShearGradientEnhancementCoefficient(b_0=2400.0, b_0_5=2400.0)
+
+        # Expected result, manually calculated: the expression yields 0, so the lower bound governs
+        manually_calculated_result = 1.0  # -
+
+        assert formula == pytest.approx(expected=manually_calculated_result, rel=1e-4)
+
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [

@@ -54,7 +54,8 @@ class Form8Dot94PunchingShearStressResistance(Formula):
             specification of concrete according to EN 206; where [$D_{max}$] is known it may replace
             [$D_{lower}$], see the NOTE 2 to 8.2.1(4) [$mm$].
         d_v : MM
-            [$d_v$] Shear-resisting effective depth of the slab according to Formula (8.91) [$mm$].
+            [$d_v$] Shear-resisting effective depth of the slab according to Formula (8.91), see
+            Form8Dot91ShearResistingEffectiveDepth [$mm$].
         """
         super().__init__()
         self.gamma_v = gamma_v

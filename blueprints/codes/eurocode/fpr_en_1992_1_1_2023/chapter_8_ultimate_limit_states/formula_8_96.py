@@ -52,6 +52,8 @@ class Form8Dot96PunchingShearGradientEnhancementCoefficient(Formula):
         """Evaluates the formula, for more information see the __init__ method."""
         raise_if_negative(b_0=b_0)
         raise_if_less_or_equal_to_zero(b_0_5=b_0_5)
+        if b_0 > b_0_5:
+            raise ValueError(f"b_0 ({b_0}) must not exceed b_0_5 ({b_0_5}): the square root would not be real.")
 
         return min(max(3.6 * np.sqrt(1 - b_0 / b_0_5), 1), 2.5)
 
