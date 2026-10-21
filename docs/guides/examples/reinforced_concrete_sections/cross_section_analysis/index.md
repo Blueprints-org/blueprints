@@ -83,10 +83,10 @@ ax.text(-14, -14, "x", ha="right", va="top", fontsize=11)
 # faces in tension under positive moments
 ax.plot([-w / 2, w / 2], [-h / 2 - 6, -h / 2 - 6], color="crimson", lw=4)
 ax.text(0, -h / 2 - 22, "tension face under +M_y (sagging)", ha="center", va="top", color="crimson", fontsize=9.5)
-ax.plot([w / 2 + 6, w / 2 + 6], [-h / 2, h / 2], color="tab:purple", lw=4)
-ax.text(w / 2 + 18, h / 4, "tension face\nunder +M_z", va="center", color="tab:purple", fontsize=9.5)
+ax.plot([-w / 2 - 6, -w / 2 - 6], [-h / 2, h / 2], color="tab:purple", lw=4)
+ax.text(-w / 2 - 18, h / 4, "tension face\nunder +M_z", ha="right", va="center", color="tab:purple", fontsize=9.5)
 
-ax.set_xlim(-w / 2 - 40, w / 2 + 130)
+ax.set_xlim(-w / 2 - 130, w / 2 + 40)
 ax.set_ylim(-h / 2 - 70, h / 2 + 30)
 ax.set_aspect("equal")
 ax.axis("off")
@@ -108,7 +108,7 @@ outline (mid-height for a rectangle), and the moments are taken about that point
 |--------------------|---------------------|------|------------------------------------|
 | Axial force N      | `SectionForces.n`   | kN   | tension                            |
 | Bending moment M_y | `SectionForces.m_y` | kNm  | sagging: tension at the lower face |
-| Bending moment M_z | `SectionForces.m_z` | kNm  | tension at the right face          |
+| Bending moment M_z | `SectionForces.m_z` | kNm  | tension at the left face           |
 
 `SectionForces` also accepts the shear forces `v_y`, `v_z` and the torsional moment `t`, so a complete SAF result can be
 passed in one go — for example with `SectionForces.from_saf_result(...)`.

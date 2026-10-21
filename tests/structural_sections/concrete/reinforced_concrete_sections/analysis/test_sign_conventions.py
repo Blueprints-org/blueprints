@@ -65,16 +65,19 @@ class TestMomentSign:
         assert bottom.stress > 0
         assert top.stress < 0
 
-    def test_positive_m_z_tensions_the_positive_y_side(self) -> None:
-        """Positive m_z (about the z-axis) tensions the +x side and compresses the -x side."""
+    @pytest.mark.parametrize("regime", [Regime.SLS_UNCRACKED, Regime.SLS_CRACKED])
+    def test_positive_m_z_tensions_the_negative_y_side(self, regime: Regime) -> None:
+        """Positive m_z (rotation from x to y, SAF) tensions the -y side (section -x) and compresses the +y side, in both regimes."""
         cs = _bare_section()
         cs.add_longitudinal_rebar(Rebar(diameter=20, x=-100, y=0, material=ReinforcementSteelMaterial()))
         cs.add_longitudinal_rebar(Rebar(diameter=20, x=100, y=0, material=ReinforcementSteelMaterial()))
-        result = CrossSectionAnalysis(cs).stress(SectionForces(m_z=100), regime=Regime.SLS_UNCRACKED)
+        result = CrossSectionAnalysis(cs).stress(SectionForces(m_z=100), regime=regime)
         positive = next(r for r in result.rebar_results if r.x > 0)
         negative = next(r for r in result.rebar_results if r.x < 0)
-        assert positive.stress > 0
-        assert negative.stress < 0
+        assert negative.stress > 0
+        assert negative.stress > positive.stress
+        assert result.strain_plane.strain_at(-150, 0) > 0
+        assert result.strain_plane.strain_at(150, 0) < 0
 
 
 class TestAxialMagnitude:

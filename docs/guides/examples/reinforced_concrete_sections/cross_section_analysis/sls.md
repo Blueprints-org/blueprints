@@ -263,7 +263,7 @@ for bar in result.rebar_results:
     print(f"corner ({bar.x:+.0f}, {bar.y:+.0f}) mm: stress {bar.stress:+5.1f} MPa")
 ```
 
-The two moments tilt the neutral axis: the bottom-right corner (tension from both `+m_y` and `+m_z`) carries the largest tension, the top-left corner the largest compression. `result.plot()` projects the state onto the direction perpendicular to the neutral axis, so the section is drawn rotated:
+The two moments tilt the neutral axis: the bottom-left corner (tension from both `+m_y` and `+m_z`) carries the largest tension, the top-right corner the largest compression. `result.plot()` projects the state onto the direction perpendicular to the neutral axis, so the section is drawn rotated:
 
 ```python exec="on" source="above" result="html" html="true" session="rc_biaxial"
 result.plot()

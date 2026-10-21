@@ -396,11 +396,11 @@ def _to_backend_actions(forces: SectionForces) -> tuple[float, float, float]:
     Returns
     -------
     tuple[float, float, float]
-        ``(n, m_x, m_y)`` for the backend: ``n = -forces.n``, ``m_x = forces.m_y``, ``m_y = -forces.m_z``.
+        ``(n, m_x, m_y)`` for the backend: ``n = -forces.n``, ``m_x = forces.m_y``, ``m_y = forces.m_z``.
     """
     n = -forces.n * KN_TO_N  # [N]
     m_x = forces.m_y * KNM_TO_NMM  # [Nmm]
-    m_y = -forces.m_z * KNM_TO_NMM  # [Nmm]
+    m_y = forces.m_z * KNM_TO_NMM  # [Nmm]
     return n, m_x, m_y
 
 
@@ -897,7 +897,9 @@ def _to_cracked_actions(forces: SectionForces) -> tuple[float, float, float]:
     The backend cracked analysis is uniaxial: it takes a neutral-axis angle ``theta`` and a single scalar
     moment ``m`` about that axis. A biaxial moment (m_x, m_y) in backend axes is decomposed to its
     resultant magnitude and direction. For the common uniaxial case (Blueprints ``m_y`` only) this gives
-    ``theta = 0`` and ``m = m_x``.
+    ``theta = 0`` and ``m = m_x``. The backend's cracked angle turns the compression zone towards geometric
+    ``-x`` at ``theta = +pi/2``, whereas its elastic ``m_y > 0`` compresses geometric ``+x``, so the ``m_y``
+    component enters the angle with a minus sign: ``theta = atan2(-m_y, m_x)``.
 
     Parameters
     ----------
@@ -910,7 +912,7 @@ def _to_cracked_actions(forces: SectionForces) -> tuple[float, float, float]:
         ``(n, theta, m)`` for the backend, in N, rad and Nmm.
     """
     n, m_x, m_y = _to_backend_actions(forces)
-    theta = math.atan2(m_y, m_x) if (m_x or m_y) else 0.0
+    theta = math.atan2(-m_y, m_x) if (m_x or m_y) else 0.0
     if theta == math.pi / 2:
         # the backend (concreteproperties 0.8.0) measures the cracked neutral-axis depth from the wrong side at
         # exactly +pi/2 (a negative Blueprints m_z); a negligible nudge keeps it on the correct side.
