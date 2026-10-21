@@ -182,8 +182,8 @@ Total of 602 formulas present.
 |     8.118      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
 |     8.119      | :heavy_check_mark: |         | Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined   |
 |     8.120      | :heavy_check_mark: |         | Form8Dot120StrengthReductionFactorNoTransverseCracking             |
-|     8.121      |        :x:         |         |                                                                    |
-|     8.122      |        :x:         |         |                                                                    |
+|     8.121      | :heavy_check_mark: |         | Form8Dot121StrengthReductionFactorCrackedZone                      |
+|     8.122      | :heavy_check_mark: |         | Form8Dot122CheckTieResistance                                      |
 |     8.123      |        :x:         |         |                                                                    |
 |     8.124      |        :x:         |         |                                                                    |
 |     8.125      |        :x:         |         |                                                                    |
