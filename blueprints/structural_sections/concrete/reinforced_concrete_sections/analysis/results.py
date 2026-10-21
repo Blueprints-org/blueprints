@@ -5,7 +5,7 @@ tension positive**, consistent with section forces where a positive normal force
 """
 
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from enum import Enum
 from typing import Any
 
@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.plotting import plot_stress_strain
 from blueprints.structural_sections.section_forces import SectionForces
-from blueprints.type_alias import DEG, KN, KNM, MM, MM4, MPA, ONE_OVER_MM, PER_MILLE, RAD
+from blueprints.type_alias import DEG, KN, KNM, MM, MM4, MPA, ONE_OVER_MM, PER_MILLE
 from blueprints.unit_conversion import RATIO_TO_PER_MILLE
 
 
@@ -120,9 +120,13 @@ class CrackedProperties:
     m_cr : KNM
         Cracking moment of the section [kNm].
     neutral_axis_depth : MM
-        Depth of the cracked neutral axis from the extreme compression fibre [mm].
-    theta : RAD
-        Angle of the neutral axis used for the cracked analysis [rad].
+        Depth of the cracked neutral axis from the extreme compression fibre under pure bending [mm]. This
+        is a load-independent section constant; the actual depth under combined N + M is
+        :attr:`StrainPlane.neutral_axis_depth`.
+    neutral_axis_angle : DEG
+        Orientation of the cracked neutral axis, measured counter-clockwise from the x-axis and
+        normalized to ``[-90, 90)`` [deg] — the same convention as
+        :attr:`StrainPlane.neutral_axis_angle`. ``0`` for bending about the y-axis (sagging or hogging).
     i_cracked : MM4
         Second moment of area of the cracked transformed section about the neutral axis [mm⁴].
     raw : Any
@@ -131,7 +135,7 @@ class CrackedProperties:
 
     m_cr: KNM
     neutral_axis_depth: MM
-    theta: RAD
+    neutral_axis_angle: DEG
     i_cracked: MM4
     raw: Any
 
@@ -213,10 +217,12 @@ class StressStrainResult:
         return plot_stress_strain(self, figsize=figsize)
 
     def plot_mesh_stress(self, *args: object, **kwargs: object) -> Axes:
-        """Plot the backend's 2D mesh stress contour, delegating to the backend's stress plot.
+        """Plot the 2D mesh stress contour: the stress colour-mapped across the meshed cross-section.
 
-        This is the ``concreteproperties`` mesh-contour view (a colour-mapped cross-section), kept
-        available under its own name so :meth:`plot` can produce the strain/stress-over-height figure.
+        The figure is drawn by the ``concreteproperties`` backend, but from a copy of its result with the
+        stresses converted to the Blueprints convention, so the contour reads **compression negative /
+        tension positive** in MPa, like every other result. ``raw`` itself is left untouched. Red marks
+        tension in both the concrete and the reinforcement colour map (pass ``conc_cmap`` to override).
 
         Parameters
         ----------
@@ -230,4 +236,11 @@ class StressStrainResult:
         Axes
             The matplotlib axes produced by the backend plotter.
         """
-        return self.raw.plot_stress(*args, **kwargs)
+        converted = replace(
+            self.raw,
+            concrete_stresses=[-stress for stress in self.raw.concrete_stresses],
+            meshed_reinforcement_stresses=[-stress for stress in self.raw.meshed_reinforcement_stresses],
+            lumped_reinforcement_stresses=[-stress for stress in self.raw.lumped_reinforcement_stresses],
+            strand_stresses=[-stress for stress in self.raw.strand_stresses],
+        )
+        return converted.plot_stress(*args, **{"conc_cmap": "RdGy_r", **kwargs})

@@ -41,9 +41,6 @@ _COMPRESSION_HATCH = "grey"
 _EPSILON = chr(0x03B5)  # ε
 _SIGMA = chr(0x03C3)  # σ
 _PER_MILLE = chr(0x2030)  # ‰
-_THETA = chr(0x03B8)  # θ
-_DEGREE = chr(0x00B0)  # °
-_KAPPA = chr(0x03BA)  # κ
 
 
 def _projection_axes(plane: StrainPlane) -> tuple[np.ndarray, np.ndarray]:

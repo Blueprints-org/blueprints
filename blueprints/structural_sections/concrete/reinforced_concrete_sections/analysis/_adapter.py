@@ -28,6 +28,7 @@ from concreteproperties import (
     add_bar,
 )
 from concreteproperties import analysis_section as backend_analysis_section
+from concreteproperties.post import si_n_mm
 from concreteproperties.results import CrackedResults, MomentCurvatureResults, StressResult
 from concreteproperties.stress_strain_profile import ConcreteServiceProfile, ConcreteUltimateProfile
 from concreteproperties.utils import AnalysisError
@@ -37,6 +38,7 @@ from shapely import Polygon
 from shapely.errors import GEOSException
 
 from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_3_materials.formula_3_23 import Form3Dot23FlexuralTensileStrength
+from blueprints.codes.eurocode.en_1992_1_1_2004.chapter_7_serviceability_limit_state.formula_7_20 import Form7Dot20EffectiveModulusCreep
 from blueprints.materials.concrete import ConcreteMaterial, DiagramType
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
 from blueprints.structural_sections.concrete.rebar import Rebar
@@ -61,12 +63,13 @@ _COINCIDENT_TOLERANCE = 3
 # Curvature (ratio strain per mm) below which the section is treated as having no neutral axis (pure axial).
 _CURVATURE_TOL: float = 1e-12
 
+# Offset (rad) that keeps the backend cracked analysis off an exact +pi/2 neutral-axis angle (see
+# _to_cracked_actions); a 1e-9 rad rotation shifts a fibre 1 m away by 1e-6 mm.
+_NEUTRAL_AXIS_ANGLE_NUDGE: float = 1e-9
+
 # Tolerances for the strain-plane reconstruction consistency check (against the backend's own stresses).
 _RECONSTRUCTION_ABS_TOL: MPA = 1e-3
 _RECONSTRUCTION_REL_TOL: float = 1e-6
-
-# Design strain limit factor for the inclined steel branch: eps_ud = 0.9 * eps_uk (EN 1992-1-1 art. 3.2.7(2)).
-_EPS_UD_FACTOR: float = 0.9
 
 # Strain range (ratio) of the no-tension cracked service profile. Chosen an order of magnitude beyond any
 # linear-elastic SLS strain (~1-2 per mille), so the profile stays exactly linear across every service state.
@@ -93,8 +96,7 @@ class AnalysisLevel(Enum):
     for the uncracked analysis and the pure-bending cracked stress. SLS_CRACKED swaps the concrete for a
     no-tension linear-compression service profile, so a combined N + M state solves its own cracked neutral
     axis (see :func:`_cracked_stress_with_axial`). The analyzer caches one backend section per
-    configuration, so only the sections needed for the requested analyses are ever built. A future ULS
-    level with design materials (f_yd, f_cd) slots in here.
+    configuration, so only the sections needed for the requested analyses are ever built.
     """
 
     SLS = "SLS"
@@ -105,7 +107,7 @@ def _ultimate_profile(concrete: ConcreteMaterial) -> ConcreteUltimateProfile:
     """Build the backend ultimate stress-strain profile from the concrete's diagram type.
 
     The ultimate profile is mandatory for ``concreteproperties.Concrete`` but stays unused in the SLS
-    (linear-elastic) analyses; it is filled here so the same material can serve a future ULS phase.
+    (linear-elastic) analyses; it is filled from the concrete's own diagram type so the backend material is complete.
 
     Parameters
     ----------
@@ -145,8 +147,9 @@ def _ultimate_profile(concrete: ConcreteMaterial) -> ConcreteUltimateProfile:
 def effective_modulus(concrete: ConcreteMaterial, creep_coefficient: DIMENSIONLESS) -> MPA:
     """Effective concrete elastic modulus E_c,eff = E_cm / (1 + phi) for a given creep coefficient.
 
-    With ``creep_coefficient = 0`` (short-term) this is simply the secant modulus e_cm. The creep
-    coefficient phi is a user input; Blueprints does not derive it from loading age or notional size.
+    EN 1992-1-1:2004 art. 7.4.3(5), formula (7.20). With ``creep_coefficient = 0`` (short-term) this is
+    simply the secant modulus e_cm. The creep coefficient phi is a user input; Blueprints does not derive
+    it from loading age or notional size.
 
     Parameters
     ----------
@@ -167,7 +170,7 @@ def effective_modulus(concrete: ConcreteMaterial, creep_coefficient: DIMENSIONLE
     """
     if creep_coefficient < 0.0:
         raise ValueError(f"The creep coefficient must be zero or positive, got {creep_coefficient}.")
-    return concrete.e_cm / (1.0 + creep_coefficient)
+    return float(Form7Dot20EffectiveModulusCreep(e_cm=concrete.e_cm, phi_inf_t0=creep_coefficient))
 
 
 def _service_concrete(concrete: ConcreteMaterial, flexural_tensile_strength: MPA, elastic_modulus: MPA | None = None) -> Concrete:
@@ -336,7 +339,8 @@ def build_concrete_section(
     # added) is still a plain Geometry and must be wrapped explicitly.
     if not isinstance(geometry, CompoundGeometry):
         geometry = CompoundGeometry([geometry])
-    return ConcreteSection(geometry)
+    # the backend works in N and mm; declaring that unit system labels its plots (stresses in MPa).
+    return ConcreteSection(geometry, default_units=si_n_mm)
 
 
 def _merge_coincident_rebars(rebars: list[Rebar]) -> list[tuple[float, float, float, ReinforcementSteelMaterial]]:
@@ -468,11 +472,11 @@ def _wrap_backend_geometry_errors() -> Iterator[None]:
 def _deduplicate_pslg(tri: dict[str, list]) -> dict[str, list]:
     """Remove duplicate vertices from a planar straight-line graph before it reaches the meshing backend.
 
-    The backend splits the concrete geometry at the neutral axis for every ultimate analysis point. At some
+    The backend splits the concrete geometry at the neutral axis for every cracked analysis. At some
     neutral-axis angles that split yields a polygon whose vertex list repeats a point, which hands the meshing
     backend (``cytriangle``) a zero-length segment. Triangle removes such duplicates itself but still sizes its
     output copy on the original vertex count, so it reads past the end of that buffer. That shows up as a hard
-    interpreter crash on some heap layouts and, on others, as a silently wrong capacity for the affected point.
+    interpreter crash on some heap layouts and, on others, as a silently wrong result for the affected state.
 
     Removing the duplicates up front is what Triangle does anyway, so the mesh is unchanged; it simply no longer
     reads out of bounds. A graph that would shrink below the backend minimum is handed over untouched: those are
@@ -835,6 +839,25 @@ def _validate_reconstruction(
         )
 
 
+def _line_orientation(angle: DEG) -> DEG:
+    """Normalize the direction angle of a line to its orientation in ``[-90, 90)`` degrees.
+
+    A line has no direction, so ``angle`` and ``angle + 180`` describe the same line. The angle is first
+    rounded to a micro-degree, so round-off just below +90 lands on -90 instead of wrapping to almost +90.
+
+    Parameters
+    ----------
+    angle : DEG
+        Any direction angle of the line, counter-clockwise from the x-axis [deg].
+
+    Returns
+    -------
+    DEG
+        The orientation of the line in ``[-90, 90)`` [deg].
+    """
+    return (round(angle, 6) + 90.0) % 180.0 - 90.0
+
+
 def _neutral_axis(node_coords: np.ndarray, *, eps_0: float, kappa_z: float, kappa_y: float) -> tuple[MM | None, DEG]:
     """Locate the neutral (zero-strain) line from the fitted plane.
 
@@ -860,7 +883,7 @@ def _neutral_axis(node_coords: np.ndarray, *, eps_0: float, kappa_z: float, kapp
     if gradient <= _CURVATURE_TOL:
         return None, 0.0
     # neutral line is perpendicular to the strain gradient (kappa_z, kappa_y).
-    angle = (math.degrees(math.atan2(kappa_y, kappa_z)) + 90.0 + 90.0) % 180.0 - 90.0
+    angle = _line_orientation(math.degrees(math.atan2(kappa_y, kappa_z)) + 90.0)
     strain = eps_0 + kappa_z * node_coords[:, 0] + kappa_y * node_coords[:, 1]
     most_compressive = float(strain.min())  # most negative Blueprints strain = extreme compression fibre
     if most_compressive >= 0.0:
@@ -888,6 +911,10 @@ def _to_cracked_actions(forces: SectionForces) -> tuple[float, float, float]:
     """
     n, m_x, m_y = _to_backend_actions(forces)
     theta = math.atan2(m_y, m_x) if (m_x or m_y) else 0.0
+    if theta == math.pi / 2:
+        # the backend (concreteproperties 0.8.0) measures the cracked neutral-axis depth from the wrong side at
+        # exactly +pi/2 (a negative Blueprints m_z); a negligible nudge keeps it on the correct side.
+        theta -= _NEUTRAL_AXIS_ANGLE_NUDGE
     m = math.hypot(m_x, m_y)
     return n, theta, m
 
@@ -952,7 +979,7 @@ def _to_cracked_properties(cracked: CrackedResults) -> CrackedProperties:
     return CrackedProperties(
         m_cr=m_cr * NMM_TO_KNM,
         neutral_axis_depth=cracked.d_nc,
-        theta=cracked.theta,
+        neutral_axis_angle=_line_orientation(math.degrees(cracked.theta)),
         i_cracked=i_cracked,
         raw=cracked,
     )

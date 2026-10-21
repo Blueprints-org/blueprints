@@ -241,3 +241,25 @@ class TestNeutralAxisLine:
             assert green[0].get_ydata()[0] == pytest.approx(expected)
         finally:
             plt.close("all")
+
+
+class TestMeshStressPlot:
+    """plot_mesh_stress() draws the backend contour in the Blueprints convention, labelled in MPa."""
+
+    @pytest.mark.parametrize(
+        "forces",
+        [pytest.param(SectionForces(m_y=200), id="pure_bending"), pytest.param(SectionForces(n=-300, m_y=200), id="combined_n_m")],
+    )
+    def test_compression_is_negative_and_labelled_in_mpa(self, forces: SectionForces) -> None:
+        """The concrete colour bar spans the compressive (negative) stresses and both colour bars carry MPa."""
+        result = _analysis().stress(forces, regime=Regime.SLS_CRACKED)
+        ax = result.plot_mesh_stress()
+        try:
+            concrete_bar, steel_bar = ax.figure.axes[1:3]
+            assert concrete_bar.get_ylabel() == "Concrete Stress [MPa]"
+            assert steel_bar.get_ylabel() == "Reinforcement Stress [MPa]"
+            low, high = concrete_bar.get_ylim()
+            assert low == pytest.approx(result.concrete_stress_min, abs=0.01)
+            assert high == pytest.approx(0.0, abs=0.01)
+        finally:
+            plt.close(ax.figure)

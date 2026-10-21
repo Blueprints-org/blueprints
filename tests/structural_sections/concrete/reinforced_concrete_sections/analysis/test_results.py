@@ -4,6 +4,9 @@ Importing the analysis package pulls in the ``_adapter`` module, which requires 
 ``concreteproperties`` backend, so the whole module is skipped when that backend is absent.
 """
 
+from dataclasses import dataclass, field
+
+import numpy as np
 import pytest
 
 pytest.importorskip("concreteproperties")
@@ -33,14 +36,18 @@ class TestRebarStressResult:
             rebar.stress = 1.0  # type: ignore[misc]
 
 
+@dataclass
 class _FakeRaw:
-    """Minimal stand-in for a backend StressResult, recording plot_stress calls."""
+    """Minimal stand-in for a backend StressResult, recording the stresses each plot_stress call sees."""
 
-    def __init__(self) -> None:
-        self.calls: list[tuple[tuple, dict]] = []
+    concrete_stresses: list = field(default_factory=lambda: [np.array([2.0, -1.0])])
+    meshed_reinforcement_stresses: list = field(default_factory=lambda: [np.array([-5.0])])
+    lumped_reinforcement_stresses: list = field(default_factory=lambda: [-120.0, 30.0])
+    strand_stresses: list = field(default_factory=lambda: [-7.0])
+    calls: list = field(default_factory=list)
 
     def plot_stress(self, *args: object, **kwargs: object) -> str:
-        self.calls.append((args, kwargs))
+        self.calls.append((args, kwargs, self))
         return "plotted"
 
 
@@ -92,10 +99,30 @@ class TestStressStrainResult:
     def test_plot_mesh_stress_delegates_to_backend(self) -> None:
         """plot_mesh_stress() forwards its arguments to the backend's plot_stress and returns its result."""
         raw = _FakeRaw()
-        result = self._result(raw=raw)
-        returned = result.plot_mesh_stress("a", keyword=1)
+        returned = self._result(raw=raw).plot_mesh_stress("a", keyword=1)
         assert returned == "plotted"
-        assert raw.calls == [(("a",), {"keyword": 1})]
+        [(args, kwargs, _)] = raw.calls
+        assert (args, kwargs) == (("a",), {"conc_cmap": "RdGy_r", "keyword": 1})
+
+    def test_plot_mesh_stress_concrete_colour_map_can_be_overridden(self) -> None:
+        """A caller's conc_cmap wins over the default that marks tension red."""
+        raw = _FakeRaw()
+        self._result(raw=raw).plot_mesh_stress(conc_cmap="viridis")
+        [(_, kwargs, _)] = raw.calls
+        assert kwargs == {"conc_cmap": "viridis"}
+
+    def test_plot_mesh_stress_plots_blueprints_signs_on_a_copy(self) -> None:
+        """The backend plots a copy with compression negative; the raw result keeps the backend's own signs."""
+        raw = _FakeRaw()
+        self._result(raw=raw).plot_mesh_stress()
+        [(_, _, plotted)] = raw.calls
+        assert plotted is not raw
+        assert plotted.concrete_stresses[0].tolist() == [-2.0, 1.0]
+        assert plotted.meshed_reinforcement_stresses[0].tolist() == [5.0]
+        assert plotted.lumped_reinforcement_stresses == [120.0, -30.0]
+        assert plotted.strand_stresses == [7.0]
+        assert raw.concrete_stresses[0].tolist() == [2.0, -1.0]
+        assert raw.lumped_reinforcement_stresses == [-120.0, 30.0]
 
     def test_plot_without_strain_plane_raises(self) -> None:
         """plot() needs an analyzer-produced result (strain plane + geometry); a bare result raises."""
@@ -140,11 +167,11 @@ class TestCrackedProperties:
 
     def test_stores_fields(self) -> None:
         """All fields are stored as given."""
-        properties = CrackedProperties(m_cr=44.0, neutral_axis_depth=126.4, theta=0.0, i_cracked=9.5e8, raw=object())
-        assert (properties.m_cr, properties.neutral_axis_depth, properties.theta, properties.i_cracked) == (44.0, 126.4, 0.0, 9.5e8)
+        properties = CrackedProperties(m_cr=44.0, neutral_axis_depth=126.4, neutral_axis_angle=0.0, i_cracked=9.5e8, raw=object())
+        assert (properties.m_cr, properties.neutral_axis_depth, properties.neutral_axis_angle, properties.i_cracked) == (44.0, 126.4, 0.0, 9.5e8)
 
     def test_is_frozen(self) -> None:
         """CrackedProperties is immutable."""
-        properties = CrackedProperties(m_cr=44.0, neutral_axis_depth=126.4, theta=0.0, i_cracked=9.5e8, raw=object())
+        properties = CrackedProperties(m_cr=44.0, neutral_axis_depth=126.4, neutral_axis_angle=0.0, i_cracked=9.5e8, raw=object())
         with pytest.raises(AttributeError):
             properties.m_cr = 0.0  # type: ignore[misc]

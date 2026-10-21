@@ -2,11 +2,7 @@
 
 Owns a lazily built, cached backend section per configuration so that ``ReinforcedCrossSection`` stays a
 pure data object. One backend section is cached per (analysis level, elastic modulus) pair, so SLS
-analyses with and without creep live next to each other and a future ULS section slots in without an
-API change.
-
-Scope: SLS strain/stress (uncracked and cracked). ULS capacity, interaction diagrams and
-moment-curvature are a follow-up on the same analyzer.
+analyses with and without creep live next to each other.
 """
 
 from __future__ import annotations

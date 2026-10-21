@@ -142,6 +142,38 @@ class TestCrackedCombinedAxialMoment:
         assert about_z.concrete_stress_min == pytest.approx(about_y.concrete_stress_min, rel=1e-4)
         assert max(b.stress for b in about_z.rebar_results) == pytest.approx(max(b.stress for b in about_y.rebar_results), rel=1e-4)
 
+    @pytest.mark.parametrize(
+        ("forces", "expected_angle"),
+        [(SectionForces(m_y=120), 0.0), (SectionForces(m_y=-120), 0.0), (SectionForces(m_z=120), -90.0), (SectionForces(m_z=-120), -90.0)],
+    )
+    def test_cracked_neutral_axis_angle_is_in_degrees_like_the_strain_plane(self, forces: SectionForces, expected_angle: float) -> None:
+        """The cracked neutral-axis angle is a line orientation in degrees, matching the strain plane's convention."""
+        column = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        for x in (-150, 150):
+            for y in (-150, 150):
+                column.add_longitudinal_rebar(Rebar(diameter=25, x=x, y=y, material=ReinforcementSteelMaterial()))
+        result = CrossSectionAnalysis(column).stress(forces, regime=Regime.SLS_CRACKED)
+        assert result.cracked_properties is not None
+        assert result.strain_plane is not None
+        assert result.cracked_properties.neutral_axis_angle == pytest.approx(expected_angle, abs=1e-6)
+        assert result.strain_plane.neutral_axis_angle == pytest.approx(expected_angle, abs=1e-6)
+
+    @pytest.mark.parametrize("n", [0.0, -300.0])
+    def test_negative_m_z_mirrors_positive_m_z(self, n: float) -> None:
+        """A negative m_z mirrors the positive one on a symmetric column (the backend's exact +pi/2 angle is avoided)."""
+        column = RectangularReinforcedCrossSection(width=400, height=400, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        for x in (-150, 150):
+            for y in (-150, 150):
+                column.add_longitudinal_rebar(Rebar(diameter=25, x=x, y=y, material=ReinforcementSteelMaterial()))
+        analysis = CrossSectionAnalysis(column)
+        positive = analysis.stress(SectionForces(n=n, m_z=120), regime=Regime.SLS_CRACKED)
+        negative = analysis.stress(SectionForces(n=n, m_z=-120), regime=Regime.SLS_CRACKED)
+        assert positive.cracked_properties is not None
+        assert negative.cracked_properties is not None
+        assert negative.cracked_properties.neutral_axis_depth == pytest.approx(positive.cracked_properties.neutral_axis_depth, rel=1e-6)
+        assert negative.concrete_stress_min == pytest.approx(positive.concrete_stress_min, rel=1e-4)
+        assert max(b.stress for b in negative.rebar_results) == pytest.approx(max(b.stress for b in positive.rebar_results), rel=1e-4)
+
     def test_creep_raises_steel_stress_with_axial_force(self) -> None:
         """Creep (effective modulus) also softens the combined N + M cracked state, shedding load to the steel."""
         analysis = _reference_beam_analysis()
