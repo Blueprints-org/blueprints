@@ -10,12 +10,16 @@ from blueprints.structural_sections.steel.profile_definitions.chs_profile import
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
 from blueprints.structural_sections.steel.profile_definitions.rhs_profile import RHSProfile
+from blueprints.structural_sections.steel.profile_definitions.sheetpile_u_profile import SheetpileUProfile
+from blueprints.structural_sections.steel.profile_definitions.sheetpile_z_profile import SheetpileZProfile
 from blueprints.structural_sections.steel.profile_definitions.strip_profile import StripProfile
 from blueprints.structural_sections.steel.profile_definitions.unp_profile import UNPProfile
+from blueprints.structural_sections.steel.standard_profiles.az import AZ
 from blueprints.structural_sections.steel.standard_profiles.chs import CHS
 from blueprints.structural_sections.steel.standard_profiles.heb import HEB
 from blueprints.structural_sections.steel.standard_profiles.ipe import IPE
 from blueprints.structural_sections.steel.standard_profiles.lnp import LNP
+from blueprints.structural_sections.steel.standard_profiles.pu import PU
 from blueprints.structural_sections.steel.standard_profiles.rhs import RHS
 from blueprints.structural_sections.steel.standard_profiles.strip import Strip
 from blueprints.structural_sections.steel.standard_profiles.unp import UNP
@@ -69,3 +73,15 @@ def lnp_profile() -> LNPProfile:
 def unp_profile() -> UNPProfile:
     """Fixture to set up a UNP profile for testing."""
     return UNP.UNP200
+
+
+@pytest.fixture
+def az_profile() -> SheetpileZProfile:
+    """Fixture to set up an AZ sheet pile profile for testing."""
+    return AZ.AZ18
+
+
+@pytest.fixture
+def pu_profile() -> SheetpileUProfile:
+    """Fixture to set up a PU sheet pile profile for testing."""
+    return PU.PU18
