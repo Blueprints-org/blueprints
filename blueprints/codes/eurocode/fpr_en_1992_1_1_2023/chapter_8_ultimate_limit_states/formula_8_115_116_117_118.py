@@ -7,9 +7,11 @@ from blueprints.type_alias import DEG, DIMENSIONLESS
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form8Dot115To118StrengthReductionFactorCrossedByTie(Formula):
+class Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut(Formula):
     """Class representing formulas 8.115, 8.116, 8.117 and 8.118 for the calculation of the strength reduction factor
     for compression fields and struts crossed or deviated by a tie at an angle.
+
+    Formula (8.119) gives a more refined method, see Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined.
     """
 
     label = "8.115/8.116/8.117/8.118"

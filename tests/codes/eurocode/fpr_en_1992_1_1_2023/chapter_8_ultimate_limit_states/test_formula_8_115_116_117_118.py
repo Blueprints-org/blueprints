@@ -3,12 +3,12 @@
 import pytest
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_115_116_117_118 import (
-    Form8Dot115To118StrengthReductionFactorCrossedByTie,
+    Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut,
 )
 from blueprints.validations import LessOrEqualToZeroError
 
 
-class TestForm8Dot115To118StrengthReductionFactorCrossedByTie:
+class TestForm8Dot115To118StrengthReductionFactorCompressionFieldOrStrut:
     """Validation for formulas 8.115, 8.116, 8.117 and 8.118 from FprEN 1992-1-1:2023."""
 
     @pytest.mark.parametrize(
@@ -30,7 +30,7 @@ class TestForm8Dot115To118StrengthReductionFactorCrossedByTie:
     )
     def test_evaluation(self, theta_cs: float, expected: float) -> None:
         """Tests the evaluation of the result."""
-        assert Form8Dot115To118StrengthReductionFactorCrossedByTie(theta_cs=theta_cs) == pytest.approx(expected=expected, rel=1e-4)
+        assert Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut(theta_cs=theta_cs) == pytest.approx(expected=expected, rel=1e-4)
 
     @pytest.mark.parametrize(
         "theta_cs",
@@ -42,7 +42,7 @@ class TestForm8Dot115To118StrengthReductionFactorCrossedByTie:
     def test_raise_error_when_invalid_values_are_given(self, theta_cs: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form8Dot115To118StrengthReductionFactorCrossedByTie(theta_cs=theta_cs)
+            Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut(theta_cs=theta_cs)
 
     @pytest.mark.parametrize(
         "theta_cs",
@@ -55,7 +55,7 @@ class TestForm8Dot115To118StrengthReductionFactorCrossedByTie:
     def test_raise_error_when_theta_cs_outside_covered_range(self, theta_cs: float) -> None:
         """Test values of theta_cs outside the range covered by formulas (8.115) to (8.118)."""
         with pytest.raises(ValueError, match="outside the range covered by formulas"):
-            Form8Dot115To118StrengthReductionFactorCrossedByTie(theta_cs=theta_cs)
+            Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut(theta_cs=theta_cs)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -95,7 +95,7 @@ class TestForm8Dot115To118StrengthReductionFactorCrossedByTie:
         theta_cs = 45.0
 
         # Object to test
-        latex = Form8Dot115To118StrengthReductionFactorCrossedByTie(theta_cs=theta_cs).latex()
+        latex = Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut(theta_cs=theta_cs).latex()
 
         actual = {
             "complete": latex.complete,

@@ -6,9 +6,10 @@ from blueprints.codes.latex_formula import LatexFormula
 from blueprints.type_alias import DIMENSIONLESS
 
 
-class Form8Dot120StrengthReductionFactorUncrackedStrut(Formula):
+class Form8Dot120StrengthReductionFactorNoTransverseCracking(Formula):
     """Class representing formula 8.120 for the calculation of the strength reduction factor for compression
-    fields and struts in a region without transverse cracking.
+    fields and struts in a region without transverse cracking, for example when transverse compressive stresses
+    are present.
     """
 
     label = "8.120"

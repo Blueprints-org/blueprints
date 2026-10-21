@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_119 import (
-    Form8Dot119StrengthReductionFactorCrossedByTieRefined,
+    Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined,
 )
 from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError
 
@@ -11,7 +11,7 @@ from blueprints.validations import GreaterThan90Error, LessOrEqualToZeroError
 THETA_COT_2 = 26.565051177078  # cot(theta) = 2
 
 
-class TestForm8Dot119StrengthReductionFactorCrossedByTieRefined:
+class TestForm8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined:
     """Validation for formula 8.119 from FprEN 1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
@@ -20,7 +20,7 @@ class TestForm8Dot119StrengthReductionFactorCrossedByTieRefined:
         theta_cs = THETA_COT_2
 
         # Object to test
-        formula = Form8Dot119StrengthReductionFactorCrossedByTieRefined(theta_cs=theta_cs)
+        formula = Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined(theta_cs=theta_cs)
 
         # Expected result, manually calculated: 1 / (1.11 + 0.22 * 2**2) = 1 / 1.99
         manually_calculated_result = 0.5025125628140705
@@ -37,12 +37,12 @@ class TestForm8Dot119StrengthReductionFactorCrossedByTieRefined:
     def test_raise_error_when_theta_cs_is_less_or_equal_to_zero(self, theta_cs: float) -> None:
         """Test invalid values."""
         with pytest.raises(LessOrEqualToZeroError):
-            Form8Dot119StrengthReductionFactorCrossedByTieRefined(theta_cs=theta_cs)
+            Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined(theta_cs=theta_cs)
 
     def test_raise_error_when_theta_cs_is_greater_than_90(self) -> None:
         """Test invalid value beyond the valid range of the cotangent."""
         with pytest.raises(GreaterThan90Error):
-            Form8Dot119StrengthReductionFactorCrossedByTieRefined(theta_cs=95.0)
+            Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined(theta_cs=95.0)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
@@ -50,15 +50,15 @@ class TestForm8Dot119StrengthReductionFactorCrossedByTieRefined:
             (
                 "complete",
                 (
-                    r"\nu = \frac{1}{1.11 + 0.22 \cdot \left(\cot(\theta_{cs})\right)^2} = "
-                    r"\frac{1}{1.11 + 0.22 \cdot \left(\cot(26.565)\right)^2} = 0.503 \ -"
+                    r"\nu = \frac{1}{1.11 + 0.22 \cdot \cot^2(\theta_{cs})} = "
+                    r"\frac{1}{1.11 + 0.22 \cdot \cot^2(26.565)} = 0.503 \ -"
                 ),
             ),
             (
                 "complete_with_units",
                 (
-                    r"\nu = \frac{1}{1.11 + 0.22 \cdot \left(\cot(\theta_{cs})\right)^2} = "
-                    r"\frac{1}{1.11 + 0.22 \cdot \left(\cot(26.565 ^\circ)\right)^2} = 0.503 \ -"
+                    r"\nu = \frac{1}{1.11 + 0.22 \cdot \cot^2(\theta_{cs})} = "
+                    r"\frac{1}{1.11 + 0.22 \cdot \cot^2(26.565 ^\circ)} = 0.503 \ -"
                 ),
             ),
             ("short", r"\nu = 0.503 \ -"),
@@ -70,7 +70,7 @@ class TestForm8Dot119StrengthReductionFactorCrossedByTieRefined:
         theta_cs = THETA_COT_2
 
         # Object to test
-        latex = Form8Dot119StrengthReductionFactorCrossedByTieRefined(theta_cs=theta_cs).latex()
+        latex = Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined(theta_cs=theta_cs).latex()
 
         actual = {
             "complete": latex.complete,

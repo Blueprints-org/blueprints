@@ -176,12 +176,12 @@ Total of 602 formulas present.
 |     8.112      |        :x:         |         |                                                                    |
 |     8.113      | :heavy_check_mark: |         | Form8Dot113CompressiveStressInStrutOrCompressionField              |
 |     8.114      | :heavy_check_mark: |         | Form8Dot114CheckCompressiveStressInStrutOrCompressionField         |
-|     8.115      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCrossedByTie                |
-|     8.116      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCrossedByTie                |
-|     8.117      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCrossedByTie                |
-|     8.118      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCrossedByTie                |
-|     8.119      | :heavy_check_mark: |         | Form8Dot119StrengthReductionFactorCrossedByTieRefined              |
-|     8.120      | :heavy_check_mark: |         | Form8Dot120StrengthReductionFactorUncrackedStrut                   |
+|     8.115      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.116      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.117      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.118      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.119      | :heavy_check_mark: |         | Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined   |
+|     8.120      | :heavy_check_mark: |         | Form8Dot120StrengthReductionFactorNoTransverseCracking             |
 |     8.121      |        :x:         |         |                                                                    |
 |     8.122      |        :x:         |         |                                                                    |
 |     8.123      |        :x:         |         |                                                                    |

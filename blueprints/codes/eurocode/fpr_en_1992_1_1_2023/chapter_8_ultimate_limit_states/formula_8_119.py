@@ -8,7 +8,7 @@ from blueprints.utils.math_helpers import cot
 from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
-class Form8Dot119StrengthReductionFactorCrossedByTieRefined(Formula):
+class Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined(Formula):
     """Class representing formula 8.119 for the calculation of the strength reduction factor for compression
     fields and struts crossed or deviated by a tie at an angle, as an alternative to formulas (8.115) to (8.118).
     """
@@ -45,7 +45,7 @@ class Form8Dot119StrengthReductionFactorCrossedByTieRefined(Formula):
 
     def latex(self, n: int = 3) -> LatexFormula:
         """Returns LatexFormula object for formula 8.119."""
-        _equation: str = r"\frac{1}{1.11 + 0.22 \cdot \left(\cot(\theta_{cs})\right)^2}"
+        _equation: str = r"\frac{1}{1.11 + 0.22 \cdot \cot^2(\theta_{cs})}"
         _numeric_equation: str = latex_replace_symbols(
             template=_equation,
             replacements={

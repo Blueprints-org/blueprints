@@ -1,17 +1,17 @@
 """Testing formula 8.120 of FprEN 1992-1-1:2023."""
 
 from blueprints.codes.eurocode.fpr_en_1992_1_1_2023.chapter_8_ultimate_limit_states.formula_8_120 import (
-    Form8Dot120StrengthReductionFactorUncrackedStrut,
+    Form8Dot120StrengthReductionFactorNoTransverseCracking,
 )
 
 
-class TestForm8Dot120StrengthReductionFactorUncrackedStrut:
+class TestForm8Dot120StrengthReductionFactorNoTransverseCracking:
     """Validation for formula 8.120 from FprEN 1992-1-1:2023."""
 
     def test_evaluation(self) -> None:
         """Tests the evaluation of the result."""
         # Object to test
-        formula = Form8Dot120StrengthReductionFactorUncrackedStrut()
+        formula = Form8Dot120StrengthReductionFactorNoTransverseCracking()
 
         # Expected result, as printed in the standard
         manually_calculated_result = 1.0
@@ -21,7 +21,7 @@ class TestForm8Dot120StrengthReductionFactorUncrackedStrut:
     def test_latex(self) -> None:
         """Test the latex representation of the formula."""
         # Object to test
-        latex = Form8Dot120StrengthReductionFactorUncrackedStrut().latex()
+        latex = Form8Dot120StrengthReductionFactorNoTransverseCracking().latex()
 
         assert latex.complete == r"\nu = 1.0 = 1.0 = 1.000 \ -"
         assert latex.complete_with_units == r"\nu = 1.0 = 1.0 = 1.000 \ -"
