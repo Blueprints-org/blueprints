@@ -137,7 +137,7 @@ The 100 kN compression pushes the neutral axis down from 170.8 to 193.9 mm. Unde
 
 `result.plot()` draws the state over the section height in three panels:
 
-- **section** — the outline with the reinforcement; the concrete in compression is hatched.
+- **section** — the outline with the reinforcement; the concrete in compression is hatched and, for bending about a single axis, the depth `x` of the compression zone is dimensioned.
 - **ε [‰]** — the linear strain profile, with the strain at each bar.
 - **σ [MPa]** — the concrete stress (zero in the cracked tension zone), with the reinforcement stresses on a separate axis because they are an order of magnitude larger.
 

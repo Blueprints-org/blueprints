@@ -263,3 +263,43 @@ class TestMeshStressPlot:
             assert high == pytest.approx(0.0, abs=0.01)
         finally:
             plt.close(ax.figure)
+
+
+class TestCompressionDepthDimension:
+    """The section panel dimensions the compression-zone depth x for bending about a single axis."""
+
+    @staticmethod
+    def _depth_labels(figure: Figure) -> list[str]:
+        return [text.get_text() for text in figure.axes[0].texts if text.get_text().startswith("x = ")]
+
+    @pytest.mark.parametrize(
+        ("forces", "regime"),
+        [
+            pytest.param(SectionForces(n=-100, m_y=150), Regime.SLS_CRACKED, id="cracked_sagging"),
+            pytest.param(SectionForces(m_y=-150), Regime.SLS_CRACKED, id="cracked_hogging"),
+            pytest.param(SectionForces(m_y=40), Regime.SLS_UNCRACKED, id="uncracked"),
+            pytest.param(SectionForces(m_z=-15), Regime.SLS_UNCRACKED, id="uncracked_about_z"),
+        ],
+    )
+    def test_uniaxial_bending_labels_the_actual_depth(self, forces: SectionForces, regime: Regime) -> None:
+        """The label carries the actual neutral-axis depth of the strain plane."""
+        result = _analysis().stress(forces, regime=regime)
+        assert result.strain_plane is not None
+        assert result.strain_plane.neutral_axis_depth is not None
+        figure = result.plot()
+        try:
+            assert self._depth_labels(figure) == [f"x = {result.strain_plane.neutral_axis_depth:.1f} mm"]
+        finally:
+            plt.close(figure)
+
+    @pytest.mark.parametrize(
+        "forces",
+        [pytest.param(SectionForces(m_y=10, m_z=8), id="biaxial"), pytest.param(SectionForces(n=-500), id="pure_axial")],
+    )
+    def test_no_dimension_without_a_single_bending_axis(self, forces: SectionForces) -> None:
+        """Biaxial bending and a section without a neutral axis get no compression-depth dimension."""
+        figure = _analysis().stress(forces, regime=Regime.SLS_UNCRACKED).plot()
+        try:
+            assert self._depth_labels(figure) == []
+        finally:
+            plt.close(figure)

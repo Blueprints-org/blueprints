@@ -36,6 +36,12 @@ _STRAIN_COLOUR = "tab:blue"
 _STRESS_COLOUR = "tab:red"
 _NEUTRAL_AXIS_COLOUR = "green"
 _COMPRESSION_HATCH = "grey"
+_DIMENSION_COLOUR = "black"
+
+# Gap between the section and the compression-depth dimension line, as a fraction of the section width.
+_DIMENSION_OFFSET: float = 0.12
+# Neutral-axis angles (deg) within this tolerance of 0 or -90 count as bending about a single axis.
+_UNIAXIAL_ANGLE_TOL: float = 1e-6
 
 # Axis-label symbols kept as chr() so the source stays ASCII (avoids ambiguous-unicode lint in string literals).
 _EPSILON = chr(0x03B5)  # ε
@@ -134,6 +140,7 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
     fig, (ax_section, ax_strain, ax_stress) = plt.subplots(1, 3, figsize=figsize, sharey=True, gridspec_kw={"width_ratios": [1.0, 1.3, 1.3]})
 
     _draw_section(ax_section, across, heights, strain, hs, result, across_axis, height_axis)
+    _draw_compression_depth(ax_section, plane, across, strain, hs)
     _draw_strain(ax_strain, strain, hs, result, height_axis)
     _draw_stress(ax_stress, stress, hs, result, height_axis)
     _draw_neutral_axis((ax_section, ax_strain, ax_stress), strain, hs)
@@ -164,6 +171,34 @@ def _draw_section(
     ax.set_xlabel("across neutral axis [mm]")
     ax.set_ylabel("height along strain gradient [mm]")
     ax.set_aspect("equal")
+
+
+def _draw_compression_depth(ax: Axes, plane: StrainPlane, across: np.ndarray, strain: np.ndarray, hs: np.ndarray) -> None:
+    """Dimension the depth of the compression zone beside the section, for bending about a single axis.
+
+    The dimension runs from the extreme compression fibre to the neutral axis and is labelled with the
+    actual neutral-axis depth of the strain plane. It is left out under biaxial bending, where the depth is
+    not a single section height, and when the neutral axis lies outside the section.
+    """
+    h_na = _neutral_axis_height(strain, hs)
+    uniaxial = any(math.isclose(plane.neutral_axis_angle, angle, abs_tol=_UNIAXIAL_ANGLE_TOL) for angle in (0.0, -90.0))
+    if h_na is None or plane.neutral_axis_depth is None or not uniaxial:
+        return
+    h_compression = float(hs[0] if strain[0] < strain[-1] else hs[-1])  # extreme compression fibre
+    left, right = float(across.min()), float(across.max())
+    x_dim = right + _DIMENSION_OFFSET * (right - left)
+    ax.annotate("", xy=(x_dim, h_compression), xytext=(x_dim, h_na), arrowprops={"arrowstyle": "<->", "color": _DIMENSION_COLOUR, "lw": 1.0})
+    ax.text(
+        x_dim + 0.04 * (right - left),
+        (h_compression + h_na) / 2,
+        f"x = {plane.neutral_axis_depth:.1f} mm",
+        rotation=90,
+        ha="left",
+        va="center",
+        fontsize=8.5,
+        color=_DIMENSION_COLOUR,
+    )
+    ax.set_xlim(left - 0.08 * (right - left), x_dim + 0.25 * (right - left))
 
 
 def _shade_compression_zone(ax: Axes, across: np.ndarray, heights: np.ndarray, strain: np.ndarray, hs: np.ndarray) -> None:
