@@ -163,7 +163,7 @@ class CheckStrengthVonMises:
         design_yield_strength = self.steel_cross_section.yield_strength / self.gamma_m0
         return von_mises_stress / design_yield_strength
 
-    def plot_stress(self) -> plt.Figure:
+    def plot_stress(self) -> plt.Figure | plt.SubFigure | None:
         """Plot the von Mises equivalent stress distribution in the cross-section.
 
         Returns
