@@ -3,31 +3,31 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import (
-    BoltClass,
+    FastenerClass,
     Table3Dot1NominalValuesBolts,
 )
 
 
-class TestBoltClass:
+class TestFastenerClass:
     """Validation of the bolt classes of EN 1993-1-8:2005."""
 
     def test_the_seven_classes_of_the_standard_are_present(self) -> None:
         """Art.3.1.1(2) names exactly these seven, and a National Annex can only exclude, never add."""
-        assert [bolt_class.value for bolt_class in BoltClass] == ["4.6", "4.8", "5.6", "5.8", "6.8", "8.8", "10.9"]
+        assert [bolt_class.value for bolt_class in FastenerClass] == ["4.6", "4.8", "5.6", "5.8", "6.8", "8.8", "10.9"]
 
     @pytest.mark.parametrize(
         ("bolt_class", "expected"),
         [
-            (BoltClass.CLASS_4_6, False),
-            (BoltClass.CLASS_4_8, False),
-            (BoltClass.CLASS_5_6, False),
-            (BoltClass.CLASS_5_8, False),
-            (BoltClass.CLASS_6_8, False),
-            (BoltClass.CLASS_8_8, True),
-            (BoltClass.CLASS_10_9, True),
+            (FastenerClass.CLASS_4_6, False),
+            (FastenerClass.CLASS_4_8, False),
+            (FastenerClass.CLASS_5_6, False),
+            (FastenerClass.CLASS_5_8, False),
+            (FastenerClass.CLASS_6_8, False),
+            (FastenerClass.CLASS_8_8, True),
+            (FastenerClass.CLASS_10_9, True),
         ],
     )
-    def test_can_be_preloaded(self, bolt_class: BoltClass, expected: bool) -> None:
+    def test_can_be_preloaded(self, bolt_class: FastenerClass, expected: bool) -> None:
         """Art.3.1.2(1) allows only classes 8.8 and 10.9 to be used as preloaded bolts."""
         assert bolt_class.can_be_preloaded is expected
 
@@ -38,24 +38,24 @@ class TestTable3Dot1NominalValuesBolts:
     @pytest.mark.parametrize(
         ("bolt_class", "f_yb", "f_ub"),
         [
-            (BoltClass.CLASS_4_6, 240, 400),
-            (BoltClass.CLASS_4_8, 320, 400),
-            (BoltClass.CLASS_5_6, 300, 500),
-            (BoltClass.CLASS_5_8, 400, 500),
-            (BoltClass.CLASS_6_8, 480, 600),
-            (BoltClass.CLASS_8_8, 640, 800),
-            (BoltClass.CLASS_10_9, 900, 1000),
+            (FastenerClass.CLASS_4_6, 240, 400),
+            (FastenerClass.CLASS_4_8, 320, 400),
+            (FastenerClass.CLASS_5_6, 300, 500),
+            (FastenerClass.CLASS_5_8, 400, 500),
+            (FastenerClass.CLASS_6_8, 480, 600),
+            (FastenerClass.CLASS_8_8, 640, 800),
+            (FastenerClass.CLASS_10_9, 900, 1000),
         ],
     )
-    def test_the_printed_values(self, bolt_class: BoltClass, f_yb: int, f_ub: int) -> None:
+    def test_the_printed_values(self, bolt_class: FastenerClass, f_yb: int, f_ub: int) -> None:
         """Every pair of the printed table, read from the standard."""
         table = Table3Dot1NominalValuesBolts(bolt_class=bolt_class)
 
         assert table.f_yb == f_yb
         assert table.f_ub == f_ub
 
-    @pytest.mark.parametrize("bolt_class", list(BoltClass))
-    def test_the_values_follow_the_designation(self, bolt_class: BoltClass) -> None:
+    @pytest.mark.parametrize("bolt_class", list(FastenerClass))
+    def test_the_values_follow_the_designation(self, bolt_class: FastenerClass) -> None:
         """The designation encodes both strengths, which is a cross-check on the transcribed table.
 
         For a class written a.b the ultimate strength is a * 100 and the yield strength a * b * 10.
@@ -69,7 +69,7 @@ class TestTable3Dot1NominalValuesBolts:
 
     def test_the_label_and_source_document(self) -> None:
         """The table carries its own identification, like the other table implementations."""
-        table = Table3Dot1NominalValuesBolts(bolt_class=BoltClass.CLASS_8_8)
+        table = Table3Dot1NominalValuesBolts(bolt_class=FastenerClass.CLASS_8_8)
 
         assert table.label == "Table 3.1"
         assert table.source_document == "EN 1993-1-8:2005"

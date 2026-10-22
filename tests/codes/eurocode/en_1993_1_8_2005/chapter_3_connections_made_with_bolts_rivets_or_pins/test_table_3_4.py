@@ -2,7 +2,7 @@
 
 import pytest
 
-from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import BoltClass
+from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_1 import FastenerClass
 from blueprints.codes.eurocode.en_1993_1_8_2005.chapter_3_connections_made_with_bolts_rivets_or_pins.table_3_4 import (
     ALPHA_V_THREADED,
     BoltHead,
@@ -30,22 +30,22 @@ class TestAlphaVThreaded:
     @pytest.mark.parametrize(
         ("bolt_class", "expected"),
         [
-            (BoltClass.CLASS_4_6, 0.6),
-            (BoltClass.CLASS_5_6, 0.6),
-            (BoltClass.CLASS_8_8, 0.6),
-            (BoltClass.CLASS_4_8, 0.5),
-            (BoltClass.CLASS_5_8, 0.5),
-            (BoltClass.CLASS_6_8, 0.5),
-            (BoltClass.CLASS_10_9, 0.5),
+            (FastenerClass.CLASS_4_6, 0.6),
+            (FastenerClass.CLASS_5_6, 0.6),
+            (FastenerClass.CLASS_8_8, 0.6),
+            (FastenerClass.CLASS_4_8, 0.5),
+            (FastenerClass.CLASS_5_8, 0.5),
+            (FastenerClass.CLASS_6_8, 0.5),
+            (FastenerClass.CLASS_10_9, 0.5),
         ],
     )
-    def test_alpha_v_threaded(self, bolt_class: BoltClass, expected: float) -> None:
+    def test_alpha_v_threaded(self, bolt_class: FastenerClass, expected: float) -> None:
         """The table gives 0.6 for classes 4.6, 5.6 and 8.8, and 0.5 for 4.8, 5.8, 6.8 and 10.9."""
         assert ALPHA_V_THREADED[bolt_class] == pytest.approx(expected=expected)
 
     def test_every_bolt_class_of_table_3_1_is_mapped(self) -> None:
         """A class without a factor would raise a KeyError, so the mapping has to be complete."""
-        assert set(ALPHA_V_THREADED) == set(BoltClass)
+        assert set(ALPHA_V_THREADED) == set(FastenerClass)
 
 
 class TestBoltHead:
@@ -76,14 +76,14 @@ class TestTable3Dot4ShearResistanceBolt:
         ("f_ub", "a", "bolt_class", "shear_plane", "expected"),
         [
             # M20 class 8.8, shear plane through the threads: 0.6 * 800 * 245 / 1.25
-            (800.0, 245.0, BoltClass.CLASS_8_8, ShearPlane.THREADED, 94080.0),
+            (800.0, 245.0, FastenerClass.CLASS_8_8, ShearPlane.THREADED, 94080.0),
             # M20 class 10.9, shear plane through the threads: 0.5 * 1000 * 245 / 1.25
-            (1000.0, 245.0, BoltClass.CLASS_10_9, ShearPlane.THREADED, 98000.0),
+            (1000.0, 245.0, FastenerClass.CLASS_10_9, ShearPlane.THREADED, 98000.0),
             # M20 class 10.9, shear plane through the shank, so 0.6 despite the class: 0.6 * 1000 * 314.159265 / 1.25
-            (1000.0, 314.159265, BoltClass.CLASS_10_9, ShearPlane.SHANK, 150796.4472),
+            (1000.0, 314.159265, FastenerClass.CLASS_10_9, ShearPlane.SHANK, 150796.4472),
         ],
     )
-    def test_evaluation(self, f_ub: float, a: float, bolt_class: BoltClass, shear_plane: ShearPlane, expected: float) -> None:
+    def test_evaluation(self, f_ub: float, a: float, bolt_class: FastenerClass, shear_plane: ShearPlane, expected: float) -> None:
         """Tests the evaluation of the result."""
         formula = Table3Dot4ShearResistanceBolt(f_ub=f_ub, a=a, bolt_class=bolt_class, shear_plane=shear_plane, gamma_m2=1.25)
 
@@ -92,9 +92,9 @@ class TestTable3Dot4ShearResistanceBolt:
     def test_alpha_v_is_exposed(self) -> None:
         """The factor the table selected is readable, since it is not an argument the caller passed."""
         threaded = Table3Dot4ShearResistanceBolt(
-            f_ub=1000.0, a=245.0, bolt_class=BoltClass.CLASS_10_9, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
+            f_ub=1000.0, a=245.0, bolt_class=FastenerClass.CLASS_10_9, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
         )
-        shank = Table3Dot4ShearResistanceBolt(f_ub=1000.0, a=245.0, bolt_class=BoltClass.CLASS_10_9, shear_plane=ShearPlane.SHANK, gamma_m2=1.25)
+        shank = Table3Dot4ShearResistanceBolt(f_ub=1000.0, a=245.0, bolt_class=FastenerClass.CLASS_10_9, shear_plane=ShearPlane.SHANK, gamma_m2=1.25)
 
         assert threaded.alpha_v == pytest.approx(expected=0.5)
         assert shank.alpha_v == pytest.approx(expected=0.6)
@@ -103,26 +103,30 @@ class TestTable3Dot4ShearResistanceBolt:
     def test_raise_error_when_negative_values_are_given(self, f_ub: float, a: float) -> None:
         """Test if error is raised for parameters that are not allowed to be negative."""
         with pytest.raises(NegativeValueError):
-            Table3Dot4ShearResistanceBolt(f_ub=f_ub, a=a, bolt_class=BoltClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25)
+            Table3Dot4ShearResistanceBolt(f_ub=f_ub, a=a, bolt_class=FastenerClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25)
 
     @pytest.mark.parametrize("gamma_m2", [0.0, -1.25])
     def test_raise_error_when_gamma_m2_is_less_or_equal_to_zero(self, gamma_m2: float) -> None:
         """The partial factor divides the result, so it cannot be zero or negative."""
         with pytest.raises(LessOrEqualToZeroError):
-            Table3Dot4ShearResistanceBolt(f_ub=800.0, a=245.0, bolt_class=BoltClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=gamma_m2)
+            Table3Dot4ShearResistanceBolt(f_ub=800.0, a=245.0, bolt_class=FastenerClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=gamma_m2)
 
     @pytest.mark.parametrize(
         ("representation", "expected"),
         [
             (
                 "complete",
-                r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
-                r"\frac{0.600 \cdot 800.000 \cdot 245.000}{1.250} = 94080.000 \ N",
+                (
+                    r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
+                    r"\frac{0.600 \cdot 800.000 \cdot 245.000}{1.250} = 94080.000 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
-                r"\frac{0.600 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 94080.000 \ N",
+                (
+                    r"F_{v,Rd} = \frac{\alpha_v \cdot f_{ub} \cdot A}{\gamma_{M2}} = "
+                    r"\frac{0.600 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 94080.000 \ N"
+                ),
             ),
             ("short", r"F_{v,Rd} = 94080.000 \ N"),
         ],
@@ -130,7 +134,7 @@ class TestTable3Dot4ShearResistanceBolt:
     def test_latex(self, representation: str, expected: str) -> None:
         """Test the latex representation of the formula."""
         test_latex = Table3Dot4ShearResistanceBolt(
-            f_ub=800.0, a=245.0, bolt_class=BoltClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
+            f_ub=800.0, a=245.0, bolt_class=FastenerClass.CLASS_8_8, shear_plane=ShearPlane.THREADED, gamma_m2=1.25
         ).latex()
 
         actual = {
@@ -171,8 +175,10 @@ class TestTable3Dot4ShearResistanceRivet:
             ),
             (
                 "complete_with_units",
-                r"F_{v,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N",
+                (
+                    r"F_{v,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N"
+                ),
             ),
             ("short", r"F_{v,Rd} = 60318.579 \ N"),
         ],
@@ -311,13 +317,17 @@ class TestTable3Dot4AlphaB:
         [
             (
                 "complete",
-                r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
-                r"\min\left(0.606, \frac{800.000}{360.000}, 1.0\right) = 0.606 \ -",
+                (
+                    r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
+                    r"\min\left(0.606, \frac{800.000}{360.000}, 1.0\right) = 0.606 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
-                r"\min\left(0.606, \frac{800.000 \ MPa}{360.000 \ MPa}, 1.0\right) = 0.606 \ -",
+                (
+                    r"\alpha_b = \min\left(\alpha_d, \frac{f_{ub}}{f_u}, 1.0\right) = "
+                    r"\min\left(0.606, \frac{800.000 \ MPa}{360.000 \ MPa}, 1.0\right) = 0.606 \ -"
+                ),
             ),
             ("short", r"\alpha_b = 0.606 \ -"),
         ],
@@ -405,14 +415,18 @@ class TestTable3Dot4K1:
         [
             (
                 "complete",
-                r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
-                r"\min\left(2.8 \cdot \frac{30.000}{22.000} - 1.7, 1.4 \cdot \frac{70.000}{22.000} - 1.7, 2.5\right) = 2.118 \ -",
+                (
+                    r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
+                    r"\min\left(2.8 \cdot \frac{30.000}{22.000} - 1.7, 1.4 \cdot \frac{70.000}{22.000} - 1.7, 2.5\right) = 2.118 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
-                r"\min\left(2.8 \cdot \frac{30.000 \ mm}{22.000 \ mm} - 1.7, "
-                r"1.4 \cdot \frac{70.000 \ mm}{22.000 \ mm} - 1.7, 2.5\right) = 2.118 \ -",
+                (
+                    r"k_1 = \min\left(2.8 \cdot \frac{e_2}{d_0} - 1.7, 1.4 \cdot \frac{p_2}{d_0} - 1.7, 2.5\right) = "
+                    r"\min\left(2.8 \cdot \frac{30.000 \ mm}{22.000 \ mm} - 1.7, "
+                    r"1.4 \cdot \frac{70.000 \ mm}{22.000 \ mm} - 1.7, 2.5\right) = 2.118 \ -"
+                ),
             ),
             ("short", r"k_1 = 2.118 \ -"),
         ],
@@ -495,13 +509,17 @@ class TestTable3Dot4BearingResistance:
         [
             (
                 "complete",
-                r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
-                r"\frac{2.500 \cdot 0.606 \cdot 360.000 \cdot 20.000 \cdot 10.000}{1.250} = 87272.784 \ N",
+                (
+                    r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
+                    r"\frac{2.500 \cdot 0.606 \cdot 360.000 \cdot 20.000 \cdot 10.000}{1.250} = 87272.784 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
-                r"\frac{2.500 \cdot 0.606 \cdot 360.000 \ MPa \cdot 20.000 \ mm \cdot 10.000 \ mm}{1.250} = 87272.784 \ N",
+                (
+                    r"F_{b,Rd} = \frac{k_1 \cdot \alpha_b \cdot f_u \cdot d \cdot t}{\gamma_{M2}} = "
+                    r"\frac{2.500 \cdot 0.606 \cdot 360.000 \ MPa \cdot 20.000 \ mm \cdot 10.000 \ mm}{1.250} = 87272.784 \ N"
+                ),
             ),
             ("short", r"F_{b,Rd} = 87272.784 \ N"),
         ],
@@ -567,13 +585,17 @@ class TestTable3Dot4TensionResistanceBolt:
         [
             (
                 "complete",
-                r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
-                r"\frac{0.900 \cdot 800.000 \cdot 245.000}{1.250} = 141120.000 \ N",
+                (
+                    r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
+                    r"\frac{0.900 \cdot 800.000 \cdot 245.000}{1.250} = 141120.000 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
-                r"\frac{0.900 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 141120.000 \ N",
+                (
+                    r"F_{t,Rd} = \frac{k_2 \cdot f_{ub} \cdot A_s}{\gamma_{M2}} = "
+                    r"\frac{0.900 \cdot 800.000 \ MPa \cdot 245.000 \ mm^2}{1.250} = 141120.000 \ N"
+                ),
             ),
             ("short", r"F_{t,Rd} = 141120.000 \ N"),
         ],
@@ -620,8 +642,10 @@ class TestTable3Dot4TensionResistanceRivet:
             ),
             (
                 "complete_with_units",
-                r"F_{t,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N",
+                (
+                    r"F_{t,Rd} = \frac{0.6 \cdot f_{ur} \cdot A_0}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot 400.000 \ MPa \cdot 314.159 \ mm^2}{1.250} = 60318.579 \ N"
+                ),
             ),
             ("short", r"F_{t,Rd} = 60318.579 \ N"),
         ],
@@ -667,13 +691,17 @@ class TestTable3Dot4PunchingShearResistance:
         [
             (
                 "complete",
-                r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot \pi \cdot 32.400 \cdot 10.000 \cdot 360.000}{1.250} = 175888.976 \ N",
+                (
+                    r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot \pi \cdot 32.400 \cdot 10.000 \cdot 360.000}{1.250} = 175888.976 \ N"
+                ),
             ),
             (
                 "complete_with_units",
-                r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
-                r"\frac{0.6 \cdot \pi \cdot 32.400 \ mm \cdot 10.000 \ mm \cdot 360.000 \ MPa}{1.250} = 175888.976 \ N",
+                (
+                    r"B_{p,Rd} = \frac{0.6 \cdot \pi \cdot d_m \cdot t_p \cdot f_u}{\gamma_{M2}} = "
+                    r"\frac{0.6 \cdot \pi \cdot 32.400 \ mm \cdot 10.000 \ mm \cdot 360.000 \ MPa}{1.250} = 175888.976 \ N"
+                ),
             ),
             ("short", r"B_{p,Rd} = 175888.976 \ N"),
         ],
@@ -741,13 +769,17 @@ class TestTable3Dot4CombinedShearAndTension:
         [
             (
                 "complete",
-                r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
-                r"\frac{50000.000}{94080.000} + \frac{30000.000}{1.4 \cdot 141120.000} \leq 1.0 \to OK",
+                (
+                    r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
+                    r"\frac{50000.000}{94080.000} + \frac{30000.000}{1.4 \cdot 141120.000} \leq 1.0 \to OK"
+                ),
             ),
             (
                 "complete_with_units",
-                r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
-                r"\frac{50000.000 \ N}{94080.000 \ N} + \frac{30000.000 \ N}{1.4 \cdot 141120.000 \ N} \leq 1.0 \to OK",
+                (
+                    r"CHECK \to \frac{F_{v,Ed}}{F_{v,Rd}} + \frac{F_{t,Ed}}{1.4 \cdot F_{t,Rd}} \leq 1.0 \to "
+                    r"\frac{50000.000 \ N}{94080.000 \ N} + \frac{30000.000 \ N}{1.4 \cdot 141120.000 \ N} \leq 1.0 \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

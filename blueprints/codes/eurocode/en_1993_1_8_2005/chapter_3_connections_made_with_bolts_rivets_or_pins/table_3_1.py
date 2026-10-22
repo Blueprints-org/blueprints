@@ -8,7 +8,7 @@ from blueprints.codes.eurocode.en_1993_1_8_2005 import EN_1993_1_8_2005
 from blueprints.type_alias import MPA
 
 
-class BoltClass(StrEnum):
+class FastenerClass(StrEnum):
     """Bolt classes for which the rules of EN 1993-1-8:2005 are valid, art.3.1.1(2).
 
     Art.3.1.1(3) gives the yield strength and the ultimate tensile strength of each of them in Table
@@ -36,7 +36,7 @@ class BoltClass(StrEnum):
         bool
             True for classes 8.8 and 10.9, False for the remaining classes.
         """
-        return self in {BoltClass.CLASS_8_8, BoltClass.CLASS_10_9}
+        return self in {FastenerClass.CLASS_8_8, FastenerClass.CLASS_10_9}
 
 
 @dataclass(frozen=True)
@@ -53,7 +53,7 @@ class Table3Dot1NominalValuesBolts:
 
     Parameters
     ----------
-    bolt_class : BoltClass
+    bolt_class : FastenerClass
         The bolt class according to art.3.1.1(2).
 
     Methods
@@ -65,26 +65,26 @@ class Table3Dot1NominalValuesBolts:
 
     Examples
     --------
-    >>> table = Table3Dot1NominalValuesBolts(BoltClass.CLASS_8_8)
+    >>> table = Table3Dot1NominalValuesBolts(FastenerClass.CLASS_8_8)
     >>> table.f_yb
     640
     >>> table.f_ub
     800
     """
 
-    bolt_class: BoltClass
+    bolt_class: FastenerClass
     label: str = field(init=False, default="Table 3.1")
     source_document: str = field(init=False, default=EN_1993_1_8_2005)
 
     # Per bolt class the yield strength first and the ultimate tensile strength second, both in MPa.
-    _strength_data: ClassVar[dict[BoltClass, tuple[int, int]]] = {
-        BoltClass.CLASS_4_6: (240, 400),
-        BoltClass.CLASS_4_8: (320, 400),
-        BoltClass.CLASS_5_6: (300, 500),
-        BoltClass.CLASS_5_8: (400, 500),
-        BoltClass.CLASS_6_8: (480, 600),
-        BoltClass.CLASS_8_8: (640, 800),
-        BoltClass.CLASS_10_9: (900, 1000),
+    _strength_data: ClassVar[dict[FastenerClass, tuple[int, int]]] = {
+        FastenerClass.CLASS_4_6: (240, 400),
+        FastenerClass.CLASS_4_8: (320, 400),
+        FastenerClass.CLASS_5_6: (300, 500),
+        FastenerClass.CLASS_5_8: (400, 500),
+        FastenerClass.CLASS_6_8: (480, 600),
+        FastenerClass.CLASS_8_8: (640, 800),
+        FastenerClass.CLASS_10_9: (900, 1000),
     }
 
     @property
