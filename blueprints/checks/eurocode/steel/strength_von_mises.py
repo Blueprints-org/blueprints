@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.figure import Figure, SubFigure
 from sectionproperties.post.stress_post import StressPost
 
 from blueprints.checks.check_result import CheckResult
@@ -163,7 +164,7 @@ class CheckStrengthVonMises:
         design_yield_strength = self.steel_cross_section.yield_strength / self.gamma_m0
         return von_mises_stress / design_yield_strength
 
-    def plot_stress(self) -> plt.Figure | plt.SubFigure | None:
+    def plot_stress(self) -> Figure | SubFigure | None:
         """Plot the von Mises equivalent stress distribution in the cross-section.
 
         Returns
