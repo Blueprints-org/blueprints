@@ -185,11 +185,11 @@ class TestCheckStrengthVonMises:
         # With higher gamma_m0, unity check should be higher (more critical)
         assert calc.unity_check() > calc_ref.unity_check()
 
-    def test_maximum_von_mises_stress(self, heb_steel_cross_section: SteelCrossSection) -> None:
-        """Test maximum_von_mises_stress() calculation."""
+    def test_calculate_maximum_von_mises_stress(self, heb_steel_cross_section: SteelCrossSection) -> None:
+        """Test calculate_maximum_von_mises_stress() calculation."""
         n = 1000
         calc = CheckStrengthVonMises(heb_steel_cross_section, n=n, gamma_m0=1.0)
-        max_stress = calc.maximum_von_mises_stress()
+        max_stress = calc.calculate_maximum_von_mises_stress()
         assert isinstance(max_stress, float)
         assert max_stress > 0
 
