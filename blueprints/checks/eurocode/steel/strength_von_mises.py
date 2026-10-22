@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 
 import numpy as np
+from matplotlib import pyplot as plt
+from sectionproperties.post.stress_post import StressPost
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
@@ -75,6 +77,8 @@ class CheckStrengthVonMises:
         gamma_m0=1.0,
     )
     calc.report().to_word("von_mises_check.docx")
+
+    calc.plot_stress()
     ```
     """
 
@@ -108,6 +112,23 @@ class CheckStrengthVonMises:
         """
         raise_if_less_or_equal_to_zero(gamma_m0=self.gamma_m0, yield_strength=self.steel_cross_section.yield_strength)
 
+    def _calculate_stress_post(self) -> StressPost:
+        """Calculate the stress distribution in the cross-section for the applied internal forces.
+
+        Returns
+        -------
+        StressPost
+            The stress distribution result object from sectionproperties.
+        """
+        return self.steel_cross_section.profile.calculate_stress(
+            n=self.n,
+            v_y=self.v_y,
+            v_z=self.v_z,
+            m_x=self.m_x,
+            m_y=self.m_y,
+            m_z=self.m_z,
+        )
+
     def calculate_maximum_von_mises_stress(self) -> float:
         """Calculate the maximum von Mises equivalent stress in the cross-section.
 
@@ -119,15 +140,7 @@ class CheckStrengthVonMises:
         float
             The maximum von Mises equivalent stress in N/mm².
         """
-        # Calculate stress distribution using sectionproperties
-        stress_post = self.steel_cross_section.profile.calculate_stress(
-            n=self.n,
-            v_y=self.v_y,
-            v_z=self.v_z,
-            m_x=self.m_x,
-            m_y=self.m_y,
-            m_z=self.m_z,
-        )
+        stress_post = self._calculate_stress_post()
 
         stress_data = stress_post.get_stress()[0]
         von_mises = stress_data["sig_vm"]
@@ -149,6 +162,18 @@ class CheckStrengthVonMises:
         von_mises_stress = self.calculate_maximum_von_mises_stress()
         design_yield_strength = self.steel_cross_section.yield_strength / self.gamma_m0
         return von_mises_stress / design_yield_strength
+
+    def plot_stress(self) -> plt.Figure:
+        """Plot the von Mises equivalent stress distribution in the cross-section.
+
+        Returns
+        -------
+        plt.Figure
+            Figure with a contour plot of the von Mises equivalent stress in N/mm².
+        """
+        stress_post = self._calculate_stress_post()
+        ax = stress_post.plot_stress(stress="vm", render=False)
+        return ax.get_figure()
 
     def result(self) -> CheckResult:
         """Calculate result of von Mises equivalent stress check.
