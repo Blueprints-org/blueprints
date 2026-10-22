@@ -108,7 +108,7 @@ class CheckStrengthVonMises:
         """
         raise_if_less_or_equal_to_zero(gamma_m0=self.gamma_m0, yield_strength=self.steel_cross_section.yield_strength)
 
-    def maximum_von_mises_stress(self) -> float:
+    def calculate_maximum_von_mises_stress(self) -> float:
         """Calculate the maximum von Mises equivalent stress in the cross-section.
 
         The von Mises stress is calculated from the full 3D stress tensor at all points in the
@@ -146,7 +146,7 @@ class CheckStrengthVonMises:
             The unity check value (should be ≤ 1.0 for adequate resistance).
         """
         self._validate_design_resistance()
-        von_mises_stress = self.maximum_von_mises_stress()
+        von_mises_stress = self.calculate_maximum_von_mises_stress()
         design_yield_strength = self.steel_cross_section.yield_strength / self.gamma_m0
         return von_mises_stress / design_yield_strength
 
@@ -160,7 +160,7 @@ class CheckStrengthVonMises:
         """
         self._validate_design_resistance()
         return CheckResult.from_comparison(
-            provided=self.maximum_von_mises_stress(),
+            provided=self.calculate_maximum_von_mises_stress(),
             required=self.steel_cross_section.yield_strength / self.gamma_m0,
         )
 
@@ -216,7 +216,7 @@ class CheckStrengthVonMises:
         report.add_newline(n=2)
 
         # Calculate von Mises stress
-        von_mises_max = self.maximum_von_mises_stress()
+        von_mises_max = self.calculate_maximum_von_mises_stress()
         design_yield = self.steel_cross_section.yield_strength / self.gamma_m0
 
         report.add_paragraph("The maximum von Mises equivalent stress is calculated from the 3D stress tensor: ")
