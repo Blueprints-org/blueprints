@@ -62,9 +62,9 @@ Total of 602 formulas present.
 |      7.33      |        :x:         |         |                                                                    |
 |      7.34      |        :x:         |         |                                                                    |
 |      7.35      |        :x:         |         |                                                                    |
-|      8.1       |        :x:         |         |                                                                    |
-|      8.2       |        :x:         |         |                                                                    |
-|      8.3       |        :x:         |         |                                                                    |
+|      8.1       | :heavy_check_mark: |         | Form8Dot1MinimumDesignMoment                                       |
+|      8.2       | :heavy_check_mark: |         | Form8Dot2CheckBiaxialBending                                       |
+|      8.3       | :heavy_check_mark: |         | Form8Dot3AxialResistanceWithoutMoment                              |
 |      8.4       |        :x:         |         |                                                                    |
 |      8.5       |        :x:         |         |                                                                    |
 |      8.6       |        :x:         |         |                                                                    |
