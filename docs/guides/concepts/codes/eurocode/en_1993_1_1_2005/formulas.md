@@ -92,7 +92,9 @@ Total of 108 formulas present.
 | 6.53           |        :x:         |         |                                                                                   |        :x:         |
 | 6.54           | :heavy_check_mark: |         | Form6Dot54BucklingResistanceOfMembersInBending                                    |        :x:         |
 | 6.55           | :heavy_check_mark: |         | Form6Dot55DesignBucklingResistanceMoment                                          |        :x:         |
-| 6.56           |        :x:         |         |                                                                                   |        :x:         |
+| 6.56 (λ̄_LT)    | :heavy_check_mark: |         | Form6Dot56NonDimensionalSlendernessLT                                             |        :x:         |
+| 6.56 (Φ_LT)    | :heavy_check_mark: |         | SubForm6Dot56LateralTorsionalIntermediateFactor                                   |        :x:         |
+| 6.56 (χ_LT)    | :heavy_check_mark: |         | SubForm6Dot56ReductionFactorLateralTorsionalBuckling                              |        :x:         |
 | 6.57           |        :x:         |         |                                                                                   |        :x:         |
 | 6.58           |        :x:         |         |                                                                                   |        :x:         |
 | 6.59           |        :x:         |         |                                                                                   |        :x:         |
@@ -282,15 +284,15 @@ National Annex of the Netherlands.
 | NB.NA.58       | :x:  |         |             |
 | NB.NA.59       | :x:  |         |             |
 | NB.NB.1        | :x:  |         |             |
-| NB.NB.2        | :x:  |         |             |
+| NB.NB.2        | :heavy_check_mark:    |         | FormNBDotNB2CriticalElasticBucklingMoment |
 | NB.NB.3        | :x:  |         |             |
 | NB.NB.4        | :x:  |         |             |
 | NB.NB.5        | :x:  |         |             |
 | NB.NB.6        | :x:  |         |             |
-| NB.NB.7        | :x:  |         |             |
-| NB.NB.8        | :x:  |         |             |
-| NB.NB.9        | :x:  |         |             |
+| NB.NB.7        | :heavy_check_mark:    |         | FormNBDotNB7ReductionFactorKred |
+| NB.NB.8        | :heavy_check_mark:    |         | FormNBDotNB8ReductionFactorKred |
+| NB.NB.9        | :heavy_check_mark:    |         | FormNBDotNB9Alpha |
 | NB.NB.10       | :x:  |         |             |
-| NB.NB.11       | :x:  |         |             |
-| NB.NB.12       | :x:  |         |             |
+| NB.NB.11       | :heavy_check_mark:    |         | FormNBDotNB11CoefficientC |
+| NB.NB.12       | :heavy_check_mark:    |         | FormNBDotNB12ParameterS |
 | NB.NB.13       | :x:  |         |             |
