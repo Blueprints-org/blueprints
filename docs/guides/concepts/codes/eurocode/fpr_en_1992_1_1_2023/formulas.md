@@ -187,10 +187,10 @@ Total of 602 formulas present.
 |     8.123      |        :x:         |         |                                                                    |
 |     8.124      |        :x:         |         |                                                                    |
 |     8.125      |        :x:         |         |                                                                    |
-|     8.126      |        :x:         |         |                                                                    |
-|     8.127      |        :x:         |         |                                                                    |
-|     8.128      |        :x:         |         |                                                                    |
-|     8.129      |        :x:         |         |                                                                    |
+|     8.126      | :heavy_check_mark: |         | Form8Dot126CheckPartiallyLoadedAreaResistance                     |
+|     8.127      | :heavy_check_mark: |         | Form8Dot127ConcentricallyLoadedArea                               |
+|     8.128      | :heavy_check_mark: |         | Form8Dot128EccentricallyLoadedArea                                |
+|     8.129      | :heavy_check_mark: |         | Form8Dot129ContributingConcreteArea                               |
 |      9.1       |        :x:         |         |                                                                    |
 |      9.2       |        :x:         |         |                                                                    |
 |      9.3       |        :x:         |         |                                                                    |
