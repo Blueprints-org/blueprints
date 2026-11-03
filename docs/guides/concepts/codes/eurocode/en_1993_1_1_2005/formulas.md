@@ -86,8 +86,8 @@ Total of 108 formulas present.
 | 6.47           |        :x:         |         |                                                                                   |        :x:         |
 | 6.48           |        :x:         |         |                                                                                   |        :x:         |
 | 6.49           |        :x:         |         |                                                                                   |        :x:         |
-| 6.50           |        :x:         |         |                                                                                   |        :x:         |
-| 6.51           |        :x:         |         |                                                                                   |        :x:         |
+| 6.50           | :heavy_check_mark: |         | Form6Dot50NonDimensionalSlendernessClass1And2And3, Form6Dot50NonDimensionalSlendernessFromBucklingLengthClass1And2And3 and SubForm6Dot50SlendernessValueLambda1 |        :x:         |
+| 6.51           | :heavy_check_mark: |         | Form6Dot51NonDimensionalSlendernessClass4 and Form6Dot51NonDimensionalSlendernessFromBucklingLengthClass4 |        :x:         |
 | 6.52           |        :x:         |         |                                                                                   |        :x:         |
 | 6.53           |        :x:         |         |                                                                                   |        :x:         |
 | 6.54           | :heavy_check_mark: |         | Form6Dot54BucklingResistanceOfMembersInBending                                    |        :x:         |
