@@ -82,9 +82,9 @@ Total of 108 formulas present.
 | 6.43           | :heavy_check_mark: |         | Form6Dot43LongitudinalStressClass4CrossSections                                   |        :x:         |
 | 6.44           | :heavy_check_mark: |         | Form6Dot44CombinedCompressionBendingClass4CrossSections                           |        :x:         |
 | 6.45           | :heavy_check_mark: |         | Form6Dot45ReducedYieldStrength                                                    |        :x:         |
-| 6.46           |        :x:         |         |                                                                                   |        :x:         |
-| 6.47           |        :x:         |         |                                                                                   |        :x:         |
-| 6.48           |        :x:         |         |                                                                                   |        :x:         |
+| 6.46           | :heavy_check_mark: |         | Form6Dot46BucklingResistanceOfMembersInCompression                                |        :x:         |
+| 6.47           | :heavy_check_mark: |         | Form6Dot47DesignBucklingResistanceClass1And2And3                                  |        :x:         |
+| 6.48           | :heavy_check_mark: |         | Form6Dot48DesignBucklingResistanceClass4                                          |        :x:         |
 | 6.49           |        :x:         |         |                                                                                   |        :x:         |
 | 6.50           |        :x:         |         |                                                                                   |        :x:         |
 | 6.51           |        :x:         |         |                                                                                   |        :x:         |
