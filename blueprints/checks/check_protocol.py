@@ -42,7 +42,10 @@ class CheckProtocol(Protocol):
     >>> isinstance(check, CheckProtocol)  # True
     """
 
-    name: str
+    @property
+    def name(self) -> str:
+        """Return the name of the check."""
+        ...
 
     @staticmethod
     def source_docs() -> list[str]:
