@@ -76,9 +76,9 @@ Total of 602 formulas present.
 |      8.12      |        :x:         |         |                                                                    |
 |      8.13      |        :x:         |         |                                                                    |
 |      8.14      |        :x:         |         |                                                                    |
-|      8.15      |        :x:         |         |                                                                    |
-|      8.16      |        :x:         |         |                                                                    |
-|      8.17      |        :x:         |         |                                                                    |
+|      8.15      | :heavy_check_mark: |         | Form8Dot15AverageConfinedConcreteStrength                         |
+|      8.16      | :heavy_check_mark: |         | Form8Dot16ConfinedStrainAtPeakStress                              |
+|      8.17      | :heavy_check_mark: |         | Form8Dot17ConfinedUltimateStrain                                  |
 |      8.18      | :heavy_check_mark: |         | Form8Dot18AverageShearStress                                       |
 |      8.19      | :heavy_check_mark: |         | Form8Dot19AverageShearStressPlanarMembers                          |
 |      8.20      | :heavy_check_mark: |         | Form8Dot20MinimumShearStressResistance                             |
