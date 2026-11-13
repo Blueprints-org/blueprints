@@ -88,8 +88,8 @@ Total of 108 formulas present.
 | 6.49           |        :x:         |         |                                                                                   |        :x:         |
 | 6.50           |        :x:         |         |                                                                                   |        :x:         |
 | 6.51           |        :x:         |         |                                                                                   |        :x:         |
-| 6.52           |        :x:         |         |                                                                                   |        :x:         |
-| 6.53           |        :x:         |         |                                                                                   |        :x:         |
+| 6.52           | :heavy_check_mark: |         | Form6Dot52NonDimensionalSlendernessTorsionalBucklingClass1And2And3                |        :x:         |
+| 6.53           | :heavy_check_mark: |         | Form6Dot53NonDimensionalSlendernessTorsionalBucklingClass4                        |        :x:         |
 | 6.54           | :heavy_check_mark: |         | Form6Dot54BucklingResistanceOfMembersInBending                                    |        :x:         |
 | 6.55           | :heavy_check_mark: |         | Form6Dot55DesignBucklingResistanceMoment                                          |        :x:         |
 | 6.56 (λ̄_LT)    | :heavy_check_mark: |         | Form6Dot56NonDimensionalSlendernessLT                                             |        :x:         |
