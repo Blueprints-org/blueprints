@@ -229,6 +229,24 @@ class ComparisonFormula(Formula, ABC):
         # operator returns a numpy.bool_, and Python requires __bool__ to return a real bool.
         return bool(self._comparison_operator()(self.lhs, self.rhs))
 
+    def __repr__(self) -> str:
+        """Return the result of the comparison as a readable string.
+
+        A ComparisonFormula is a float, so its default representation is the numeric value of the
+        comparison (1.0 or 0.0). This representation shows whether the condition is satisfied instead.
+
+        Examples
+        --------
+        formula = SomeComparisonFormula(...)
+        print(formula)  # Prints "Ok" if the condition is satisfied, "Not Ok" otherwise.
+
+        Returns
+        -------
+        str
+            "Ok" if the comparison condition is satisfied, "Not Ok" otherwise.
+        """
+        return "Ok" if self.__bool__() else "Not Ok"
+
     @classmethod
     def _evaluate(cls, *args, **kwargs) -> bool:
         """Implements the comparison using the class-level operator."""
@@ -245,28 +263,93 @@ class AggregatedComparisonFormula(ComparisonFormula):
     This class is abstract: it does not implement ``label``, ``source_document`` or ``latex``.
     A concrete formula that aggregates other comparison formulas should subclass this and provide those,
     the same way concrete subclasses of :class:`ComparisonFormula` do.
+
+    Such a subclass takes the parameters of the code formula it represents, and not an aggregation function
+    with a list of formulas. It translates the one into the other by overriding :meth:`_define_aggregation`,
+    which is where the formulas to aggregate are built.
+
+    Examples
+    --------
+    class SomeAggregatedComparisonFormula(AggregatedComparisonFormula):
+        label = "1.1"
+        source_document = "Some code document"
+
+        def __init__(self, value: float, lower_bound: float, upper_bound: float) -> None:
+            # The arguments are read by _define_aggregation, so nothing is passed on to the base class here.
+            super().__init__()
+            self.value = value
+            self.lower_bound = lower_bound
+            self.upper_bound = upper_bound
+
+        @classmethod
+        def _define_aggregation(cls, value, lower_bound, upper_bound):
+            return all, (
+                SomeLowerBoundFormula(value=value, lower_bound=lower_bound),
+                SomeUpperBoundFormula(value=value, upper_bound=upper_bound),
+            )
+
+    formula = SomeAggregatedComparisonFormula(value=5, lower_bound=1, upper_bound=10)
+    bool(formula)  # True, both bounds are satisfied
+    formula.comparison_formulas  # the two bounds, built once by _define_aggregation
+    formula.unity_check  # the largest of the two unity checks, because the aggregation is 'all'
+
+    The default implementation returns what it is given, so formulas that are already instantiated can be
+    aggregated without such a subclass:
+
+    aggregated_formula = AggregatedComparisonFormula(all, [formula1, formula2])
     """
+
+    aggregation: Callable[[Iterable[bool]], bool]
+    comparison_formulas: tuple[ComparisonFormula, ...]
 
     def __new__(cls, *args, **kwargs) -> Self:
         """Method for creating a new instance of the class."""
-        result = cls._evaluate(*args, **kwargs)
+        aggregation, comparison_formulas = cls._define_aggregation(*args, **kwargs)
+        result = cls._evaluate(aggregation=aggregation, comparison_formulas=comparison_formulas)
         instance = float.__new__(cls, result)
+        # _evaluate above rejects an aggregation or a sequence of formulas that is None, which a type checker cannot see.
+        instance.aggregation = aggregation  # ty: ignore[invalid-assignment]
+        instance.comparison_formulas = tuple(comparison_formulas)  # ty: ignore[invalid-argument-type]
         instance._initialized = False  # noqa: SLF001
         return instance
 
-    def __init__(self, aggregation: Callable[[Iterable[bool]], bool], comparison_formulas: Sequence[ComparisonFormula]) -> None:
+    def __init__(self, *_args, **_kwargs) -> None:
         """Method for initializing a new instance of the class.
+
+        The aggregation function and the comparison formulas are defined and stored by ``__new__``
+        through :meth:`_define_aggregation`, so the constructor arguments are not read again here.
+        """
+        super().__init__()
+
+    @classmethod
+    def _define_aggregation(
+        cls,
+        aggregation: Callable[[Iterable[bool]], bool] | None = None,
+        comparison_formulas: Sequence[ComparisonFormula] | None = None,
+    ) -> tuple[Callable[[Iterable[bool]], bool] | None, Sequence[ComparisonFormula] | None]:
+        """Define the aggregation function and the comparison formulas that this formula aggregates.
+
+        This is the method a concrete subclass overrides, see the examples in the class docstring. Its
+        parameters are then the parameters of the code formula itself, which it translates into the
+        aggregation to be evaluated. By default the two are passed to the constructor directly.
+
+        It is called exactly once per instance, from ``__new__``, and it is the place to build the formulas
+        to aggregate: building them in ``__init__`` or in ``_evaluate`` instead would build them twice.
 
         Parameters
         ----------
-        aggregation : Callable[[Iterable[bool]], bool]
+        aggregation : Callable[[Iterable[bool]], bool] | None
             Type of aggregation function to be used for the comparison formulas. Must be either all or any.
-        comparison_formulas : Sequence[ComparisonFormula]
+        comparison_formulas : Sequence[ComparisonFormula] | None
             Sequence of ComparisonFormula instances to be aggregated.
+
+        Returns
+        -------
+        tuple[Callable[[Iterable[bool]], bool] | None, Sequence[ComparisonFormula] | None]
+            The aggregation function and the comparison formulas. They are validated by _evaluate,
+            so returning None for either of them is allowed and yields a readable error.
         """
-        super().__init__()
-        self.aggregation = aggregation
-        self.comparison_formulas = tuple(comparison_formulas)
+        return aggregation, comparison_formulas
 
     @classmethod
     def _comparison_operator(cls) -> Callable[[float, float], bool]:
