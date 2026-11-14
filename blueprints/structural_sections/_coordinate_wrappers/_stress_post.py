@@ -88,9 +88,9 @@ _VECTOR_STRESSES: dict[str, tuple[str, str]] = {
 }
 
 
-def _neg_array(value: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
-    """Negate a numpy array."""
-    return -value
+def _neg_array(value: str | npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    """Negate a numpy stress array (the str member only exists in the typing of the stress dictionaries)."""
+    return -np.asarray(value, dtype=np.float64)
 
 
 def _to_blueprints_axes(ax: matplotlib.axes.Axes) -> None:
