@@ -9,18 +9,18 @@ from math import sqrt
 from typing import ClassVar, Final
 
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
-from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula
+from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
-from blueprints.type_alias import DIMENSIONLESS, MM
+from blueprints.type_alias import DIMENSIONLESS, MM, MPA
 from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class CrossSectionClass(IntEnum):
-    """Cross-section classes as defined by EN 1993-1-1:2005 paragraf 5.5.2 Classification.
+    """Cross-section classes as defined by EN 1993-1-1:2005 clause 5.5.2 Classification.
 
     - Class 1 cross-sections are those which can form a plastic hinge with the rotation
       capacity required from plastic analysis without reduction of the resistance.
-    - Class 2 cross-sections arc those which can develop their plastic moment resistance,
+    - Class 2 cross-sections are those which can develop their plastic moment resistance,
       but have limited rotation capacity because of local buckling.
     - Class 3 cross-sections are those in which the stress in the extreme compression fibre
       of the steel member assuming an elastic distribution of stresses can reach the yield
@@ -50,11 +50,14 @@ class Table5Dot2CompressionPart(StrEnum):
 
     ANGLE: Angles consist of two outstand legs connected at right angles; when in compression,
     each leg behaves similarly to an outstand flange with classification based on both
-    height-to-thickness and height-plus-width-to-thickness ratios.
+    height-to-thickness and height-plus-width-to-thickness ratios. Table 5.2 only defines class 3
+    for angles; for classes 1 and 2 use OUTSTAND_FLANGE. Does not apply to angles in continuous
+    contact with other components.
 
     TUBULAR_SECTION: Tubular sections (circular hollow sections) have compression uniformly
     distributed around a closed perimeter, providing high inherent stability against local buckling,
-    with classification typically based on diameter-to-thickness ratios.
+    with classification typically based on diameter-to-thickness ratios. For d/t > 90 * epsilon^2,
+    see EN 1993-1-6.
     """
 
     INTERNAL_COMPRESSION_PART = "Internal compression part"
@@ -136,6 +139,10 @@ class _LimitSpecification:
     lhs_latex: str
     rhs_latex: str
 
+    def __post_init__(self) -> None:
+        """Validate the latex templates when the criterion is defined, so that a mistake surfaces on import."""
+        self._validate_latex_rendering()
+
     def _validate_latex_rendering(self) -> None:
         """Check that the placeholders are exactly the declared parameters, each with a latex symbol.
 
@@ -195,6 +202,8 @@ class _LimitSpecification:
         raise_if_less_or_equal_to_zero(**positive_parameters)
         if required_parameters.get("alpha", 0) > 1:
             raise ValueError(f"Invalid value for 'alpha': {required_parameters['alpha']}. Values for 'alpha' cannot be greater than 1.")
+        if required_parameters.get("psi", 0) > 1:
+            raise ValueError(f"Invalid value for 'psi': {required_parameters['psi']}. Values for 'psi' cannot be greater than 1.")
         raise_if_negative(**non_negative_parameters)
         return required_parameters
 
@@ -214,7 +223,6 @@ class _LimitSpecification:
         str
             The rendered latex equation.
         """
-        self._validate_latex_rendering()
         return latex_replace_symbols(
             template=f"{self.lhs_latex} \\le {self.rhs_latex}",
             replacements={f"{_PLACEHOLDER}{name}{_PLACEHOLDER}": replacements[name] for name in self.params},
@@ -401,6 +409,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
                 rhs_latex=r"42 \cdot @epsilon@",
             ),
         ),
+        # psi <= -1 applies where either the compression stress sigma <= f_y or the tensile strain epsilon_y > f_y / E.
         _TableCell(_PART.INTERNAL_COMPRESSION_PART, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION): (
             _LimitSpecification(
                 params=("c", "t", "psi", "epsilon"),
@@ -478,23 +487,18 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
                 rhs_latex=r"14 \cdot @epsilon@",
             ),
         ),
+        # Table 5.2 holds a single criterion for both tip cases; for k_sigma see EN 1993-1-5.
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION): (
-            _LimitSpecification(
-                params=("c", "t", "k_sigma", "epsilon"),
+            outstand_flange_class_3_limit_specification := _LimitSpecification(
+                params=("c", "t", "epsilon", "k_sigma"),
                 lhs_fn=lambda c, t, **_: c / t,
-                rhs_fn=lambda k_sigma, epsilon, **_: 21 * sqrt(k_sigma) * epsilon,
+                rhs_fn=lambda epsilon, k_sigma, **_: 21 * epsilon * sqrt(k_sigma),
                 lhs_latex=r"\frac{@c@}{@t@}",
-                rhs_latex=r"21 \sqrt{@k_sigma@} \cdot @epsilon@",
+                rhs_latex=r"21 \cdot @epsilon@ \cdot \sqrt{@k_sigma@}",
             ),
         ),
         _TableCell(_PART.OUTSTAND_FLANGE, _CLS.CLASS_3, _LOAD.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION): (
-            _LimitSpecification(
-                params=("c", "t", "k_sigma", "epsilon"),
-                lhs_fn=lambda c, t, **_: c / t,
-                rhs_fn=lambda k_sigma, epsilon, **_: 21 * sqrt(k_sigma) * epsilon,
-                lhs_latex=r"\frac{@c@}{@t@}",
-                rhs_latex=r"21 \sqrt{@k_sigma@} \cdot @epsilon@",
-            ),
+            outstand_flange_class_3_limit_specification,
         ),
         # --- Angles ---
         _TableCell(_PART.ANGLE, _CLS.CLASS_3, _LOAD.SUBJECT_TO_COMPRESSION): (
@@ -580,7 +584,7 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         loading_condition : Table5Dot2LoadingCondition
             The loading condition the compression part is subjected to.
         epsilon : DIMENSIONLESS
-            [$\epsilon$] Material factor $\sqrt{235 / f_y}$ (-).
+            [$\epsilon$] Material factor $\sqrt{235 / f_y}$ (-), see Table5Dot2Epsilon.
         c : MM | None
             [$c$] Width of the compression part (mm).
         t : MM | None
@@ -594,9 +598,9 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         alpha : DIMENSIONLESS | None
             [$\alpha$] Ratio of the plastic compressed part of the compression part (-).
         psi : DIMENSIONLESS | None
-            [$\psi$] Ratio of the elastic stresses at both ends of the compression part (-).
+            [$\psi$] Ratio of the elastic stresses at both ends of the compression part (-). Must be at most 1.
         k_sigma : DIMENSIONLESS | None
-            [$k_{\sigma}$] Buckling factor of the compression part (-).
+            [$k_{\sigma}$] Buckling factor of the compression part, see EN 1993-1-5 (-).
         """
         # The checks themselves were already built by __new__ through _define_aggregation; what is stored
         # here is the input of the check, so that the instance describes what it was asked to verify.
@@ -650,5 +654,49 @@ class Table5Dot2MaximumWidthToThicknessRatio(AggregatedComparisonFormula):
         table_cell = _TableCell(part, CrossSectionClass(cross_section_class), loading_condition)
         limit_specs = cls._ratio_factor_mapping.get(table_cell)
         if limit_specs is None:
-            raise ValueError(f"Table 5.2 does not define a limit for {table_cell}.")
+            hint = ""
+            if table_cell.part == Table5Dot2CompressionPart.ANGLE and table_cell.cross_section_class < CrossSectionClass.CLASS_3:
+                hint = f" For classes 1 and 2 of angles, use {Table5Dot2CompressionPart.OUTSTAND_FLANGE.name}."
+            raise ValueError(f"Table 5.2 does not define a limit for {table_cell}.{hint}")
         return all, [_MaximumWidthToThicknessRatio(limit_spec, table_cell, **params) for limit_spec in limit_specs]
+
+
+class Table5Dot2Epsilon(Formula):
+    r"""Class representing the material factor [$\epsilon$] of EN 1993-1-1:2005 Table 5.2."""
+
+    label = "Table 5.2"
+    source_document = EN_1993_1_1_2005
+
+    def __init__(self, f_y: MPA) -> None:
+        r"""[$\epsilon$] Material factor used in the width-to-thickness limits of Table 5.2 [$-$].
+
+        EN 1993-1-1:2005 - Table 5.2
+
+        Parameters
+        ----------
+        f_y : MPA
+            [$f_y$] Yield strength of the steel [$MPa$].
+        """
+        super().__init__()
+        self.f_y = f_y
+
+    @staticmethod
+    def _evaluate(f_y: MPA) -> DIMENSIONLESS:
+        """Evaluates the formula, for more information see the __init__ method."""
+        raise_if_less_or_equal_to_zero(f_y=f_y)
+        return sqrt(235 / f_y)
+
+    def latex(self, n: int = 3) -> LatexFormula:
+        """Returns LatexFormula object for the material factor of Table 5.2."""
+        _equation: str = r"\sqrt{\frac{235}{f_y}}"
+        _numeric_equation: str = latex_replace_symbols(_equation, {"f_y": f"{self.f_y:.{n}f}"}, False)
+        _numeric_equation_with_units: str = latex_replace_symbols(_equation, {"f_y": rf"{self.f_y:.{n}f} \ MPa"}, False)
+        return LatexFormula(
+            return_symbol=r"\epsilon",
+            result=f"{self:.{n}f}",
+            equation=_equation,
+            numeric_equation=_numeric_equation,
+            numeric_equation_with_units=_numeric_equation_with_units,
+            comparison_operator_label="=",
+            unit="",
+        )

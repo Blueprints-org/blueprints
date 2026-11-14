@@ -8,6 +8,7 @@ import pytest
 from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.table_5_2 import (
     CrossSectionClass,
     Table5Dot2CompressionPart,
+    Table5Dot2Epsilon,
     Table5Dot2LoadingCondition,
     Table5Dot2MaximumWidthToThicknessRatio,
     _LimitSpecification,
@@ -21,42 +22,36 @@ class TestLimitSpecification:
 
     def test_raise_error_if_a_placeholder_is_not_a_declared_parameter(self) -> None:
         """A placeholder that is not declared would survive into the rendered latex."""
-        limit_spec = _LimitSpecification(
-            params=("c", "t"),
-            lhs_fn=lambda c, t, **_: c / t,
-            rhs_fn=lambda **_: 72.0,
-            lhs_latex=r"\frac{@c@}{@t@}",
-            rhs_latex=r"72 \cdot @epsilon@",
-        )
-
         with pytest.raises(ValueError, match=re.escape("use placeholders ['c', 'epsilon', 't'], but the criterion declares")):
-            limit_spec._validate_latex_rendering()  # noqa: SLF001
+            _LimitSpecification(
+                params=("c", "t"),
+                lhs_fn=lambda c, t, **_: c / t,
+                rhs_fn=lambda **_: 72.0,
+                lhs_latex=r"\frac{@c@}{@t@}",
+                rhs_latex=r"72 \cdot @epsilon@",
+            )
 
     def test_raise_error_if_a_declared_parameter_has_no_placeholder(self) -> None:
         """A declared parameter that never appears in the templates is a mistake as well."""
-        limit_spec = _LimitSpecification(
-            params=("c", "t", "epsilon"),
-            lhs_fn=lambda c, t, **_: c / t,
-            rhs_fn=lambda **_: 72.0,
-            lhs_latex=r"\frac{@c@}{@t@}",
-            rhs_latex=r"72",
-        )
-
         with pytest.raises(ValueError, match=re.escape("use placeholders ['c', 't'], but the criterion declares")):
-            limit_spec._validate_latex_rendering()  # noqa: SLF001
+            _LimitSpecification(
+                params=("c", "t", "epsilon"),
+                lhs_fn=lambda c, t, **_: c / t,
+                rhs_fn=lambda **_: 72.0,
+                lhs_latex=r"\frac{@c@}{@t@}",
+                rhs_latex=r"72",
+            )
 
     def test_raise_error_if_a_parameter_has_no_latex_symbol(self) -> None:
         """Every parameter must have a latex symbol to render the symbolic equation with."""
-        limit_spec = _LimitSpecification(
-            params=("gamma",),
-            lhs_fn=lambda gamma, **_: gamma,
-            rhs_fn=lambda **_: 1.0,
-            lhs_latex=r"@gamma@",
-            rhs_latex=r"1",
-        )
-
         with pytest.raises(ValueError, match=re.escape("No latex symbol is defined for gamma.")):
-            limit_spec._validate_latex_rendering()  # noqa: SLF001
+            _LimitSpecification(
+                params=("gamma",),
+                lhs_fn=lambda gamma, **_: gamma,
+                rhs_fn=lambda **_: 1.0,
+                lhs_latex=r"@gamma@",
+                rhs_latex=r"1",
+            )
 
 
 class TestTable5Dot2MaximumWidthToThicknessRatio:
@@ -68,7 +63,7 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
         ids=str,
     )
     def test_every_criterion_of_the_table_is_valid(self, cell: object, limit_specs: tuple[_LimitSpecification, ...]) -> None:
-        """Validation is not done on import, so check every cell of the table here instead."""
+        """Every cell holds at least one criterion with valid latex templates."""
         assert limit_specs, f"Cell {cell} has no criteria."
         for limit_spec in limit_specs:
             limit_spec._validate_latex_rendering()  # noqa: SLF001
@@ -176,6 +171,14 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
             {"c": 200, "t": 10, "k_sigma": 4.0, "epsilon": 1.0},
             True,
             20 / 42,
+        ),
+        (
+            Table5Dot2CompressionPart.OUTSTAND_FLANGE,
+            CrossSectionClass.CLASS_3,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION,
+            {"c": 300, "t": 10, "k_sigma": 0.43, "epsilon": 0.81},
+            False,
+            30 / (21 * 0.81 * 0.43**0.5),
         ),
         # Angles: both criteria satisfied
         (
@@ -366,7 +369,10 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
 
     def test_raise_error_if_the_combination_is_not_in_the_table(self) -> None:
         """Table 5.2 does not define a limit for every combination."""
-        with pytest.raises(ValueError, match=re.escape("Table 5.2 does not define a limit for Angle, class 1, compression.")):
+        with pytest.raises(
+            ValueError,
+            match=re.escape("Table 5.2 does not define a limit for Angle, class 1, compression. For classes 1 and 2 of angles, use OUTSTAND_FLANGE."),
+        ):
             Table5Dot2MaximumWidthToThicknessRatio(
                 CrossSectionClass.CLASS_1,
                 Table5Dot2CompressionPart.ANGLE,
@@ -376,6 +382,34 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
                 t=10,
                 epsilon=1.0,
             )
+
+    def test_raise_error_without_hint_if_the_combination_is_not_in_the_table(self) -> None:
+        """Only angles of class 1 and 2 get a hint to use outstand flanges instead."""
+        with pytest.raises(ValueError, match=r"Table 5.2 does not define a limit for Outstand flange, class 1, bending\.$"):
+            Table5Dot2MaximumWidthToThicknessRatio(
+                CrossSectionClass.CLASS_1,
+                Table5Dot2CompressionPart.OUTSTAND_FLANGE,
+                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING,
+                c=100,
+                t=10,
+                epsilon=1.0,
+            )
+
+    def test_latex_of_k_sigma_follows_the_order_of_the_code(self) -> None:
+        """The limit reads 21 * epsilon * sqrt(k_sigma), as in Table 5.2."""
+        form = Table5Dot2MaximumWidthToThicknessRatio(
+            CrossSectionClass.CLASS_3,
+            Table5Dot2CompressionPart.OUTSTAND_FLANGE,
+            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_TENSION,
+            c=200,
+            t=10,
+            k_sigma=4.0,
+            epsilon=1.0,
+        )
+        latex = form.latex()
+
+        assert latex.equation == r"\frac{c}{t} \le 21 \cdot \epsilon \cdot \sqrt{k_{\sigma}}"
+        assert latex.numeric_equation == r"\frac{200.000}{10.000} \le 21 \cdot 1.000 \cdot \sqrt{4.000}"
 
     def test_raise_error_if_a_required_parameter_is_missing(self) -> None:
         """A parameter needed by the selected cell must be provided."""
@@ -497,6 +531,19 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
 
         assert form.maximum_width_to_thickness_ratio == 0.0
 
+    def test_raise_error_if_required_psi_is_greater_than_one(self) -> None:
+        """Psi is a stress ratio and cannot exceed one."""
+        with pytest.raises(ValueError, match="Values for 'psi' cannot be greater than 1"):
+            Table5Dot2MaximumWidthToThicknessRatio(
+                CrossSectionClass.CLASS_3,
+                Table5Dot2CompressionPart.INTERNAL_COMPRESSION_PART,
+                Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION,
+                c=500,
+                t=10,
+                psi=1.1,
+                epsilon=1.0,
+            )
+
     def test_negative_psi_is_valid(self) -> None:
         """Negative psi remains valid, including the sqrt(-psi) branch at psi <= -1."""
         form = Table5Dot2MaximumWidthToThicknessRatio(
@@ -528,3 +575,35 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
         )
 
         assert bool(form) is True
+
+
+class TestTable5Dot2Epsilon:
+    """Validation for the material factor epsilon of table 5.2 from EN 1993-1-1:2005."""
+
+    @pytest.mark.parametrize(
+        ("f_y", "expected"),
+        [(235, 1.00), (275, 0.92), (355, 0.81), (420, 0.75), (460, 0.71)],
+    )
+    def test_evaluation_matches_the_table_values(self, f_y: float, expected: float) -> None:
+        """The values listed in Table 5.2 are the formula rounded to two decimals."""
+        assert Table5Dot2Epsilon(f_y=f_y) == pytest.approx(expected=expected, abs=5e-3)
+
+    @pytest.mark.parametrize("f_y", [0.0, -235.0])
+    def test_raise_error_if_f_y_is_not_positive(self, f_y: float) -> None:
+        """The yield strength must be positive."""
+        with pytest.raises(LessOrEqualToZeroError):
+            Table5Dot2Epsilon(f_y=f_y)
+
+    @pytest.mark.parametrize(
+        ("representation", "expected"),
+        [
+            ("complete", r"\epsilon = \sqrt{\frac{235}{f_y}} = \sqrt{\frac{235}{355.000}} = 0.814"),
+            ("complete_with_units", r"\epsilon = \sqrt{\frac{235}{f_y}} = \sqrt{\frac{235}{355.000 \ MPa}} = 0.814"),
+            ("short", r"\epsilon = 0.814"),
+        ],
+    )
+    def test_latex(self, representation: str, expected: str) -> None:
+        """Test the latex representation of epsilon."""
+        latex = Table5Dot2Epsilon(f_y=355).latex()
+
+        assert getattr(latex, representation) == expected
