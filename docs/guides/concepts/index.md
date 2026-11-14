@@ -8,4 +8,5 @@ If you’re looking for practical usage or want to get started quickly, see the 
 
 - [Formulas](formulas.md): The role and structure of formula objects in Blueprints.
 - [Library Organization](library_organization.md): How the codebase is structured and where to find key components.
+- [Coordinate System](coordinate_system.md): The Blueprints coordinate system for section properties and stresses, and how it relates to `sectionproperties`.
 - [Codes](codes/index.md): Supported codes and standards, and how they are integrated.

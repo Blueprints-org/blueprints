@@ -4,8 +4,8 @@ from collections.abc import Generator
 from unittest.mock import MagicMock, patch
 
 import pytest
-from sectionproperties.post.post import SectionProperties
 
+from blueprints.structural_sections import BPSectionProperties
 from blueprints.structural_sections.steel.profile_definitions.chs_profile import CHSProfile
 from blueprints.structural_sections.steel.profile_definitions.i_profile import IProfile
 from blueprints.structural_sections.steel.profile_definitions.lnp_profile import LNPProfile
@@ -29,7 +29,7 @@ from blueprints.structural_sections.steel.standard_profiles.unp import UNP
 def mock_section_properties() -> Generator[MagicMock, None, None]:
     """Fixture to mock section properties with default values."""
     with patch("blueprints.structural_sections.steel.profile_definitions.plotters.general_steel_plotter.Profile.section_properties") as mock:
-        mock.return_value = SectionProperties(ixx_c=1.0e6, iyy_c=1.0e6)
+        mock.return_value = BPSectionProperties(bp_iyy_c=1.0e6, bp_izz_c=1.0e6)
         yield mock
 
 

@@ -65,8 +65,8 @@ def plot_shapes(
     if include_moment_of_inertia:
         profile_section_properties = profile.section_properties(plastic=False, warping=False)
         legend_text += f"""
-    Moment of inertia about x: {profile_section_properties.ixx_c:.0f} mm⁴
-    Moment of inertia about y: {profile_section_properties.iyy_c:.0f} mm⁴
+    Moment of inertia about y: {profile_section_properties.bp_iyy_c:.0f} mm⁴
+    Moment of inertia about z: {profile_section_properties.bp_izz_c:.0f} mm⁴
     """
 
     # Get the boundaries of the plot
