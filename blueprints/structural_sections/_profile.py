@@ -178,6 +178,12 @@ class Profile(ABC):
             Whether to calculate plastic properties.
         warping: bool
             Whether to calculate warping properties.
+
+        Returns
+        -------
+        BPSectionProperties
+            The section properties expressed in the Blueprints coordinate system. All attributes are prefixed
+            with ``bp_`` (e.g. ``bp_area``, ``bp_iyy_c``). Properties that were not calculated are ``None``.
         """
         cache_key = (geometric, plastic, warping)
 
