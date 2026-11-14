@@ -15,7 +15,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.ta
     _TableCell,
 )
 from blueprints.codes.formula import ComparisonFormula
-from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
+from blueprints.validations import LessOrEqualToZeroError
 
 
 class TestLimitSpecification:
@@ -503,32 +503,19 @@ class TestTable5Dot2MaximumWidthToThicknessRatio:
 
         assert form.alpha == 1.0
 
-    def test_raise_error_if_required_k_sigma_is_negative(self) -> None:
-        """The buckling factor must be non-negative when the selected criterion uses it."""
-        with pytest.raises(NegativeValueError):
+    @pytest.mark.parametrize("k_sigma", [0.0, -1.0])
+    def test_raise_error_if_required_k_sigma_is_not_positive(self, k_sigma: float) -> None:
+        """The buckling factor must be positive when the selected criterion uses it; zero would give a zero limit."""
+        with pytest.raises(LessOrEqualToZeroError):
             Table5Dot2MaximumWidthToThicknessRatio(
                 CrossSectionClass.CLASS_3,
                 Table5Dot2CompressionPart.OUTSTAND_FLANGE,
                 Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION,
                 c=200,
                 t=10,
-                k_sigma=-1.0,
+                k_sigma=k_sigma,
                 epsilon=1.0,
             )
-
-    def test_required_k_sigma_may_equal_zero(self) -> None:
-        """Zero is valid for the criterion containing sqrt(k_sigma)."""
-        form = Table5Dot2MaximumWidthToThicknessRatio(
-            CrossSectionClass.CLASS_3,
-            Table5Dot2CompressionPart.OUTSTAND_FLANGE,
-            Table5Dot2LoadingCondition.SUBJECT_TO_BENDING_AND_COMPRESSION_TIP_IN_COMPRESSION,
-            c=20,
-            t=10,
-            k_sigma=0.0,
-            epsilon=1.0,
-        )
-
-        assert form.maximum_width_to_thickness_ratio == 0.0
 
     def test_raise_error_if_required_psi_is_greater_than_one(self) -> None:
         """Psi is a stress ratio and cannot exceed one."""

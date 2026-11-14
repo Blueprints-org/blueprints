@@ -12,7 +12,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
 from blueprints.codes.formula import AggregatedComparisonFormula, ComparisonFormula, Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MM, MPA
-from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
+from blueprints.validations import raise_if_less_or_equal_to_zero
 
 
 class CrossSectionClass(IntEnum):
@@ -196,15 +196,13 @@ class _LimitSpecification:
             raise ValueError(f"Table 5.2 check for {cell} requires {', '.join(self.params)}; missing: {', '.join(missing)}.")
 
         positive_parameters = {
-            name: required_parameters[name] for name in ("c", "h", "b", "d", "t", "epsilon", "alpha") if name in required_parameters
+            name: required_parameters[name] for name in ("c", "h", "b", "d", "t", "epsilon", "alpha", "k_sigma") if name in required_parameters
         }
-        non_negative_parameters = {name: required_parameters[name] for name in ("k_sigma",) if name in required_parameters}
         raise_if_less_or_equal_to_zero(**positive_parameters)
         if required_parameters.get("alpha", 0) > 1:
             raise ValueError(f"Invalid value for 'alpha': {required_parameters['alpha']}. Values for 'alpha' cannot be greater than 1.")
         if required_parameters.get("psi", 0) > 1:
             raise ValueError(f"Invalid value for 'psi': {required_parameters['psi']}. Values for 'psi' cannot be greater than 1.")
-        raise_if_negative(**non_negative_parameters)
         return required_parameters
 
     def render_latex_equation(self, replacements: dict[str, str]) -> str:
