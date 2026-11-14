@@ -1,18 +1,5 @@
 """Section properties container using the Blueprints coordinate system.
 
-Coordinate System:
-
-    z (vertical, usually strong axis)
-        ↑
-        |     x (longitudinal beam direction, into screen)
-        |    ↗
-        |   /
-        |  /
-        | /
-        |/
-    ←-----O
-    y (horizontal/side, usually weak axis)
-
 Blueprints coordinate system:
     x — longitudinal beam direction (into the screen)
     y — horizontal, positive to the left
@@ -28,9 +15,16 @@ Mapping between the two systems:
     bp_z =  sp_y
     bp_x =  sp_z
 
-This module wraps :class:`sectionproperties.post.post.SectionProperties` so that
-all attribute names, sign conventions and ``plus``/``minus`` fibre labels are
-expressed in the Blueprints frame as :class:`SectionProperties`.
+This module wraps :class:`sectionproperties.post.post.SectionProperties` so that all
+attribute names, sign conventions and ``plus``/``minus`` fibre labels are expressed in
+the Blueprints frame as :class:`BPSectionProperties`. Every attribute carries a ``bp_`` prefix, so a
+Blueprints value can never be mistaken for the identically named (but differently oriented)
+``sectionproperties`` value, e.g. ``bp_iyy_c`` is the second moment of area about the horizontal
+Blueprints y-axis, whereas ``iyy_c`` in ``sectionproperties`` is about the vertical axis.
+
+Properties that are plain scalars without any relation to the axes (e.g. the area or the torsion constant)
+are identical in both systems, so they are also available without the prefix: ``area`` and
+``bp_area`` return the same value.
 """
 
 from __future__ import annotations
@@ -65,277 +59,347 @@ class BPSectionProperties:
         ←-----O
         y (horizontal/side, usually weak axis)
 
+    All attributes are prefixed with ``bp_``. Only properties that are plain scalars without any
+    relation to the axes are also available without the prefix (``area`` and ``bp_area`` are the same):
+    ``area``, ``perimeter``, ``mass``, ``ea``, ``ga``, ``nu_eff``, ``e_eff``, ``g_eff``, ``j``,
+    ``gamma`` and ``delta_s``. The unprefixed names are read-only and are not included in :meth:`asdict`.
+
+    Units follow the geometry the section was
+    built from (Blueprints profiles use mm, so areas are in mm², moments of area in mm⁴,
+    section moduli in mm³). Properties that are not calculated (e.g. warping properties
+    when ``warping=False``) are ``None``.
+
+    The ``plus``/``minus`` suffix of a section modulus, shape factor or monosymmetry
+    constant refers to the side of the axis at which it is evaluated: ``plus`` is the
+    fibre at the positive coordinate, ``minus`` the fibre at the negative coordinate,
+    both in the Blueprints coordinate system (so ``y`` positive is to the left).
+
     Attributes
     ----------
-    area : float | None
+    bp_area : float | None
         Cross-sectional area.
-    perimeter : float | None
+    bp_perimeter : float | None
         Cross-sectional perimeter.
-    mass : float | None
+    bp_mass : float | None
         Cross-sectional mass.
-    ea : float | None
+    bp_ea : float | None
         Modulus weighted area (axial rigidity).
-    ga : float | None
+    bp_ga : float | None
         Modulus weighted product of shear modulus and area.
-    nu_eff : float | None
+    bp_nu_eff : float | None
         Effective Poisson's ratio.
-    e_eff : float | None
+    bp_e_eff : float | None
         Effective elastic modulus.
-    g_eff : float | None
+    bp_g_eff : float | None
         Effective shear modulus.
-    qy : float | None
+    bp_qy : float | None
         First moment of area about the y-axis (∫ z dA).
-    qz : float | None
+    bp_qz : float | None
         First moment of area about the z-axis (∫ y dA).
-    iyy_g : float | None
+    bp_iyy_g : float | None
         Second moment of area about the global y-axis.
-    izz_g : float | None
+    bp_izz_g : float | None
         Second moment of area about the global z-axis.
-    iyz_g : float | None
+    bp_iyz_g : float | None
         Product moment of area about the global yz-axes.
-    cy : float | None
+    bp_cy : float | None
         y-coordinate of the elastic centroid.
-    cz : float | None
+    bp_cz : float | None
         z-coordinate of the elastic centroid.
-    iyy_c : float | None
+    bp_iyy_c : float | None
         Second moment of area about the centroidal y-axis.
-    izz_c : float | None
+    bp_izz_c : float | None
         Second moment of area about the centroidal z-axis.
-    iyz_c : float | None
+    bp_iyz_c : float | None
         Product moment of area about the centroidal yz-axes.
-    zyy_plus : float | None
-        Section modulus about the centroidal y-axis for stresses at the
-        positive extreme of z (top fibre).
-    zyy_minus : float | None
-        Section modulus about the centroidal y-axis for stresses at the
-        negative extreme of z (bottom fibre).
-    zzz_plus : float | None
-        Section modulus about the centroidal z-axis for stresses at the
-        positive extreme of y.
-    zzz_minus : float | None
-        Section modulus about the centroidal z-axis for stresses at the
-        negative extreme of y.
-    ry_c : float | None
+    bp_zyy_plus : float | None
+        Elastic section modulus about the centroidal y-axis for the fibre at
+        positive z (top fibre).
+    bp_zyy_minus : float | None
+        Elastic section modulus about the centroidal y-axis for the fibre at
+        negative z (bottom fibre).
+    bp_zzz_plus : float | None
+        Elastic section modulus about the centroidal z-axis for the fibre at
+        positive y.
+    bp_zzz_minus : float | None
+        Elastic section modulus about the centroidal z-axis for the fibre at
+        negative y.
+    bp_ry_c : float | None
         Radius of gyration about the centroidal y-axis.
-    rz_c : float | None
+    bp_rz_c : float | None
         Radius of gyration about the centroidal z-axis.
-    i11_c : float | None
-        Second moment of area about the centroidal 11-axis.
-    i22_c : float | None
-        Second moment of area about the centroidal 22-axis.
-    phi : float | None
-        Principal axis angle [rad], measured counter-clockwise from the
+    bp_i11_c : float | None
+        Second moment of area about the centroidal principal 11-axis.
+    bp_i22_c : float | None
+        Second moment of area about the centroidal principal 22-axis.
+    bp_phi : float | None
+        Principal axis angle [degrees], measured counter-clockwise from the
         positive y-axis to the positive 11-axis in the Blueprints frame.
-    z11_plus : float | None
-        Section modulus about the principal 11-axis for stresses at the
-        positive extreme of the 22-axis.
-    z11_minus : float | None
-        Section modulus about the principal 11-axis for stresses at the
-        negative extreme of the 22-axis.
-    z22_plus : float | None
-        Section modulus about the principal 22-axis for stresses at the
-        positive extreme of the 11-axis.
-    z22_minus : float | None
-        Section modulus about the principal 22-axis for stresses at the
-        negative extreme of the 11-axis.
-    r11_c : float | None
+    bp_z11_plus : float | None
+        Elastic section modulus about the principal 11-axis for the fibre at
+        positive 22-coordinate.
+    bp_z11_minus : float | None
+        Elastic section modulus about the principal 11-axis for the fibre at
+        negative 22-coordinate.
+    bp_z22_plus : float | None
+        Elastic section modulus about the principal 22-axis for the fibre at
+        positive 11-coordinate.
+    bp_z22_minus : float | None
+        Elastic section modulus about the principal 22-axis for the fibre at
+        negative 11-coordinate.
+    bp_r11_c : float | None
         Radius of gyration about the principal 11-axis.
-    r22_c : float | None
+    bp_r22_c : float | None
         Radius of gyration about the principal 22-axis.
-    my_yy : float | None
+    bp_my_yy : float | None
         Yield moment about the y-axis.
-    my_zz : float | None
+    bp_my_zz : float | None
         Yield moment about the z-axis.
-    my_11 : float | None
+    bp_my_11 : float | None
         Yield moment about the 11-axis.
-    my_22 : float | None
+    bp_my_22 : float | None
         Yield moment about the 22-axis.
-    j : float | None
+    bp_j : float | None
         Torsion constant.
-    omega : npt.NDArray[np.float64] | None
+    bp_omega : npt.NDArray[np.float64] | None
         Warping function (per mesh node).
-    psi_shear : npt.NDArray[np.float64] | None
+    bp_psi_shear : npt.NDArray[np.float64] | None
         Psi shear function (per mesh node).
-    phi_shear : npt.NDArray[np.float64] | None
+    bp_phi_shear : npt.NDArray[np.float64] | None
         Phi shear function (per mesh node).
-    delta_s : float | None
+    bp_delta_s : float | None
         Shear factor.
-    y_se : float | None
+    bp_y_se : float | None
         y-coordinate of the shear centre (elasticity approach).
-    z_se : float | None
+    bp_z_se : float | None
         z-coordinate of the shear centre (elasticity approach).
-    y11_se : float | None
+    bp_y11_se : float | None
         11-coordinate of the shear centre (elasticity approach).
-    z22_se : float | None
+    bp_z22_se : float | None
         22-coordinate of the shear centre (elasticity approach).
-    y_st : float | None
+    bp_y_st : float | None
         y-coordinate of the shear centre (Trefftz's approach).
-    z_st : float | None
+    bp_z_st : float | None
         z-coordinate of the shear centre (Trefftz's approach).
-    gamma : float | None
+    bp_gamma : float | None
         Warping constant.
-    a_sy : float | None
+    bp_a_sy : float | None
         Shear area for shear in the y-direction.
-    a_sz : float | None
+    bp_a_sz : float | None
         Shear area for shear in the z-direction.
-    a_syz : float | None
+    bp_a_syz : float | None
         Shear area about the yz-axes.
-    a_s11 : float | None
+    bp_a_s11 : float | None
         Shear area about the 11-bending axis.
-    a_s22 : float | None
+    bp_a_s22 : float | None
         Shear area about the 22-bending axis.
-    beta_y_plus : float | None
+    bp_beta_y_plus : float | None
         Monosymmetry constant for bending about the y-axis with the top
         flange (positive z) in compression.
-    beta_y_minus : float | None
+    bp_beta_y_minus : float | None
         Monosymmetry constant for bending about the y-axis with the bottom
         flange (negative z) in compression.
-    beta_z_plus : float | None
+    bp_beta_z_plus : float | None
         Monosymmetry constant for bending about the z-axis with the flange
         at positive y in compression.
-    beta_z_minus : float | None
+    bp_beta_z_minus : float | None
         Monosymmetry constant for bending about the z-axis with the flange
         at negative y in compression.
-    beta_11_plus : float | None
+    bp_beta_11_plus : float | None
         Monosymmetry constant for bending about the 11-axis with the
         positive 22-side in compression.
-    beta_11_minus : float | None
+    bp_beta_11_minus : float | None
         Monosymmetry constant for bending about the 11-axis with the
         negative 22-side in compression.
-    beta_22_plus : float | None
+    bp_beta_22_plus : float | None
         Monosymmetry constant for bending about the 22-axis with the
         positive 11-side in compression.
-    beta_22_minus : float | None
+    bp_beta_22_minus : float | None
         Monosymmetry constant for bending about the 22-axis with the
         negative 11-side in compression.
-    y_pc : float | None
+    bp_y_pc : float | None
         y-coordinate of the global plastic centroid.
-    z_pc : float | None
+    bp_z_pc : float | None
         z-coordinate of the global plastic centroid.
-    y11_pc : float | None
+    bp_y11_pc : float | None
         11-coordinate of the principal plastic centroid.
-    z22_pc : float | None
+    bp_z22_pc : float | None
         22-coordinate of the principal plastic centroid.
-    syy : float | None
+    bp_syy : float | None
         Plastic section modulus about the centroidal y-axis.
-    szz : float | None
+    bp_szz : float | None
         Plastic section modulus about the centroidal z-axis.
-    sf_yy_plus : float | None
+    bp_sf_yy_plus : float | None
         Shape factor for bending about the y-axis with respect to the top
         fibre (positive z).
-    sf_yy_minus : float | None
+    bp_sf_yy_minus : float | None
         Shape factor for bending about the y-axis with respect to the
         bottom fibre (negative z).
-    sf_zz_plus : float | None
+    bp_sf_zz_plus : float | None
         Shape factor for bending about the z-axis with respect to the
         fibre at positive y.
-    sf_zz_minus : float | None
+    bp_sf_zz_minus : float | None
         Shape factor for bending about the z-axis with respect to the
         fibre at negative y.
-    s11 : float | None
+    bp_s11 : float | None
         Plastic section modulus about the 11-axis.
-    s22 : float | None
+    bp_s22 : float | None
         Plastic section modulus about the 22-axis.
-    sf_11_plus : float | None
+    bp_sf_11_plus : float | None
         Shape factor for bending about the 11-axis with respect to the
         positive 22-side.
-    sf_11_minus : float | None
+    bp_sf_11_minus : float | None
         Shape factor for bending about the 11-axis with respect to the
         negative 22-side.
-    sf_22_plus : float | None
+    bp_sf_22_plus : float | None
         Shape factor for bending about the 22-axis with respect to the
         positive 11-side.
-    sf_22_minus : float | None
+    bp_sf_22_minus : float | None
         Shape factor for bending about the 22-axis with respect to the
         negative 11-side.
     """
 
-    area: float | None = None
-    perimeter: float | None = None
-    mass: float | None = None
-    ea: float | None = None
-    ga: float | None = None
-    nu_eff: float | None = None
-    e_eff: float | None = None
-    g_eff: float | None = None
-    qy: float | None = None
-    qz: float | None = None
-    iyy_g: float | None = None
-    izz_g: float | None = None
-    iyz_g: float | None = None
-    cy: float | None = None
-    cz: float | None = None
-    iyy_c: float | None = None
-    izz_c: float | None = None
-    iyz_c: float | None = None
-    zyy_plus: float | None = None
-    zyy_minus: float | None = None
-    zzz_plus: float | None = None
-    zzz_minus: float | None = None
-    ry_c: float | None = None
-    rz_c: float | None = None
-    i11_c: float | None = None
-    i22_c: float | None = None
-    phi: float | None = None
-    z11_plus: float | None = None
-    z11_minus: float | None = None
-    z22_plus: float | None = None
-    z22_minus: float | None = None
-    r11_c: float | None = None
-    r22_c: float | None = None
-    my_yy: float | None = None
-    my_zz: float | None = None
-    my_11: float | None = None
-    my_22: float | None = None
-    j: float | None = None
-    omega: npt.NDArray[np.float64] | None = None
-    psi_shear: npt.NDArray[np.float64] | None = None
-    phi_shear: npt.NDArray[np.float64] | None = None
-    delta_s: float | None = None
-    y_se: float | None = None
-    z_se: float | None = None
-    y11_se: float | None = None
-    z22_se: float | None = None
-    y_st: float | None = None
-    z_st: float | None = None
-    gamma: float | None = None
-    a_sy: float | None = None
-    a_sz: float | None = None
-    a_syz: float | None = None
-    a_s11: float | None = None
-    a_s22: float | None = None
-    beta_y_plus: float | None = None
-    beta_y_minus: float | None = None
-    beta_z_plus: float | None = None
-    beta_z_minus: float | None = None
-    beta_11_plus: float | None = None
-    beta_11_minus: float | None = None
-    beta_22_plus: float | None = None
-    beta_22_minus: float | None = None
-    y_pc: float | None = None
-    z_pc: float | None = None
-    y11_pc: float | None = None
-    z22_pc: float | None = None
-    syy: float | None = None
-    szz: float | None = None
-    sf_yy_plus: float | None = None
-    sf_yy_minus: float | None = None
-    sf_zz_plus: float | None = None
-    sf_zz_minus: float | None = None
-    s11: float | None = None
-    s22: float | None = None
-    sf_11_plus: float | None = None
-    sf_11_minus: float | None = None
-    sf_22_plus: float | None = None
-    sf_22_minus: float | None = None
+    bp_area: float | None = None
+    bp_perimeter: float | None = None
+    bp_mass: float | None = None
+    bp_ea: float | None = None
+    bp_ga: float | None = None
+    bp_nu_eff: float | None = None
+    bp_e_eff: float | None = None
+    bp_g_eff: float | None = None
+    bp_qy: float | None = None
+    bp_qz: float | None = None
+    bp_iyy_g: float | None = None
+    bp_izz_g: float | None = None
+    bp_iyz_g: float | None = None
+    bp_cy: float | None = None
+    bp_cz: float | None = None
+    bp_iyy_c: float | None = None
+    bp_izz_c: float | None = None
+    bp_iyz_c: float | None = None
+    bp_zyy_plus: float | None = None
+    bp_zyy_minus: float | None = None
+    bp_zzz_plus: float | None = None
+    bp_zzz_minus: float | None = None
+    bp_ry_c: float | None = None
+    bp_rz_c: float | None = None
+    bp_i11_c: float | None = None
+    bp_i22_c: float | None = None
+    bp_phi: float | None = None
+    bp_z11_plus: float | None = None
+    bp_z11_minus: float | None = None
+    bp_z22_plus: float | None = None
+    bp_z22_minus: float | None = None
+    bp_r11_c: float | None = None
+    bp_r22_c: float | None = None
+    bp_my_yy: float | None = None
+    bp_my_zz: float | None = None
+    bp_my_11: float | None = None
+    bp_my_22: float | None = None
+    bp_j: float | None = None
+    bp_omega: npt.NDArray[np.float64] | None = None
+    bp_psi_shear: npt.NDArray[np.float64] | None = None
+    bp_phi_shear: npt.NDArray[np.float64] | None = None
+    bp_delta_s: float | None = None
+    bp_y_se: float | None = None
+    bp_z_se: float | None = None
+    bp_y11_se: float | None = None
+    bp_z22_se: float | None = None
+    bp_y_st: float | None = None
+    bp_z_st: float | None = None
+    bp_gamma: float | None = None
+    bp_a_sy: float | None = None
+    bp_a_sz: float | None = None
+    bp_a_syz: float | None = None
+    bp_a_s11: float | None = None
+    bp_a_s22: float | None = None
+    bp_beta_y_plus: float | None = None
+    bp_beta_y_minus: float | None = None
+    bp_beta_z_plus: float | None = None
+    bp_beta_z_minus: float | None = None
+    bp_beta_11_plus: float | None = None
+    bp_beta_11_minus: float | None = None
+    bp_beta_22_plus: float | None = None
+    bp_beta_22_minus: float | None = None
+    bp_y_pc: float | None = None
+    bp_z_pc: float | None = None
+    bp_y11_pc: float | None = None
+    bp_z22_pc: float | None = None
+    bp_syy: float | None = None
+    bp_szz: float | None = None
+    bp_sf_yy_plus: float | None = None
+    bp_sf_yy_minus: float | None = None
+    bp_sf_zz_plus: float | None = None
+    bp_sf_zz_minus: float | None = None
+    bp_s11: float | None = None
+    bp_s22: float | None = None
+    bp_sf_11_plus: float | None = None
+    bp_sf_11_minus: float | None = None
+    bp_sf_22_plus: float | None = None
+    bp_sf_22_minus: float | None = None
+
+    @property
+    def area(self) -> float | None:
+        """Cross-sectional area, same as ``bp_area``."""
+        return self.bp_area
+
+    @property
+    def perimeter(self) -> float | None:
+        """Cross-sectional perimeter, same as ``bp_perimeter``."""
+        return self.bp_perimeter
+
+    @property
+    def mass(self) -> float | None:
+        """Cross-sectional mass, same as ``bp_mass``."""
+        return self.bp_mass
+
+    @property
+    def ea(self) -> float | None:
+        """Modulus weighted area, same as ``bp_ea``."""
+        return self.bp_ea
+
+    @property
+    def ga(self) -> float | None:
+        """Modulus weighted product of shear modulus and area, same as ``bp_ga``."""
+        return self.bp_ga
+
+    @property
+    def nu_eff(self) -> float | None:
+        """Effective Poisson's ratio, same as ``bp_nu_eff``."""
+        return self.bp_nu_eff
+
+    @property
+    def e_eff(self) -> float | None:
+        """Effective elastic modulus, same as ``bp_e_eff``."""
+        return self.bp_e_eff
+
+    @property
+    def g_eff(self) -> float | None:
+        """Effective shear modulus, same as ``bp_g_eff``."""
+        return self.bp_g_eff
+
+    @property
+    def j(self) -> float | None:
+        """Torsion constant, same as ``bp_j``."""
+        return self.bp_j
+
+    @property
+    def gamma(self) -> float | None:
+        """Warping constant, same as ``bp_gamma``."""
+        return self.bp_gamma
+
+    @property
+    def delta_s(self) -> float | None:
+        """Shear factor, same as ``bp_delta_s``."""
+        return self.bp_delta_s
 
     def asdict(self) -> dict[str, Any]:
-        """Return the section properties as a dictionary."""
+        """Return the section properties as a dictionary, keyed by the ``bp_`` attribute names."""
         return asdict(self)
 
     @classmethod
     def from_sectionproperties(cls, props: SpSectionProperties) -> BPSectionProperties:
-        """Create a Blueprints ``BPSectionProperties`` from a raw ``sectionproperties`` result.
+        """Create a ``BPSectionProperties`` from a raw ``sectionproperties`` result.
 
         The values are re-labelled and their signs adjusted so that the returned
         object is expressed in the Blueprints coordinate system.
@@ -344,6 +408,11 @@ class BPSectionProperties:
         ----------
         props : SpSectionProperties
             Section properties as calculated by the ``sectionproperties`` library.
+
+        Returns
+        -------
+        BPSectionProperties
+            The same section properties, expressed in the Blueprints coordinate system.
         """
         # bp_y = -sp_x, bp_z = sp_y — see module docstring for the full mapping.
         # Axis-labelled scalars follow the axis rename (sp x/y ↔ bp y/z) with a
@@ -353,82 +422,82 @@ class BPSectionProperties:
         # keyed to the principal 22-axis (because the bp view mirrors sp
         # horizontally, so 90° CCW from +11 in bp points opposite to sp).
         return cls(
-            area=props.area,
-            perimeter=props.perimeter,
-            mass=props.mass,
-            ea=props.ea,
-            ga=props.ga,
-            nu_eff=props.nu_eff,
-            e_eff=props.e_eff,
-            g_eff=props.g_eff,
-            qy=props.qx,
-            qz=_neg(props.qy),
-            iyy_g=props.ixx_g,
-            izz_g=props.iyy_g,
-            iyz_g=_neg(props.ixy_g),
-            cy=_neg(props.cx),
-            cz=props.cy,
-            iyy_c=props.ixx_c,
-            izz_c=props.iyy_c,
-            iyz_c=_neg(props.ixy_c),
-            zyy_plus=props.zxx_plus,
-            zyy_minus=props.zxx_minus,
-            zzz_plus=props.zyy_minus,
-            zzz_minus=props.zyy_plus,
-            ry_c=props.rx_c,
-            rz_c=props.ry_c,
-            i11_c=props.i11_c,
-            i22_c=props.i22_c,
-            phi=_neg(props.phi),
-            z11_plus=props.z11_minus,
-            z11_minus=props.z11_plus,
-            z22_plus=props.z22_plus,
-            z22_minus=props.z22_minus,
-            r11_c=props.r11_c,
-            r22_c=props.r22_c,
-            my_yy=props.my_xx,
-            my_zz=props.my_yy,
-            my_11=props.my_11,
-            my_22=props.my_22,
-            j=props.j,
-            omega=props.omega,
-            psi_shear=props.psi_shear,
-            phi_shear=props.phi_shear,
-            delta_s=props.delta_s,
-            y_se=_neg(props.x_se),
-            z_se=props.y_se,
-            y11_se=props.x11_se,
-            z22_se=_neg(props.y22_se),
-            y_st=_neg(props.x_st),
-            z_st=props.y_st,
-            gamma=props.gamma,
-            a_sy=props.a_sx,
-            a_sz=props.a_sy,
-            a_syz=_neg(props.a_sxy),
-            a_s11=props.a_s11,
-            a_s22=props.a_s22,
-            beta_y_plus=props.beta_x_plus,
-            beta_y_minus=props.beta_x_minus,
-            beta_z_plus=props.beta_y_minus,
-            beta_z_minus=props.beta_y_plus,
-            beta_11_plus=props.beta_11_minus,
-            beta_11_minus=props.beta_11_plus,
-            beta_22_plus=props.beta_22_plus,
-            beta_22_minus=props.beta_22_minus,
-            y_pc=_neg(props.x_pc),
-            z_pc=props.y_pc,
-            y11_pc=props.x11_pc,
-            z22_pc=_neg(props.y22_pc),
-            syy=props.sxx,
-            szz=props.syy,
-            sf_yy_plus=props.sf_xx_plus,
-            sf_yy_minus=props.sf_xx_minus,
-            sf_zz_plus=props.sf_yy_minus,
-            sf_zz_minus=props.sf_yy_plus,
-            s11=props.s11,
-            s22=props.s22,
-            sf_11_plus=props.sf_11_minus,
-            sf_11_minus=props.sf_11_plus,
-            sf_22_plus=props.sf_22_plus,
-            sf_22_minus=props.sf_22_minus,
+            bp_area=props.area,
+            bp_perimeter=props.perimeter,
+            bp_mass=props.mass,
+            bp_ea=props.ea,
+            bp_ga=props.ga,
+            bp_nu_eff=props.nu_eff,
+            bp_e_eff=props.e_eff,
+            bp_g_eff=props.g_eff,
+            bp_qy=props.qx,
+            bp_qz=_neg(props.qy),
+            bp_iyy_g=props.ixx_g,
+            bp_izz_g=props.iyy_g,
+            bp_iyz_g=_neg(props.ixy_g),
+            bp_cy=_neg(props.cx),
+            bp_cz=props.cy,
+            bp_iyy_c=props.ixx_c,
+            bp_izz_c=props.iyy_c,
+            bp_iyz_c=_neg(props.ixy_c),
+            bp_zyy_plus=props.zxx_plus,
+            bp_zyy_minus=props.zxx_minus,
+            bp_zzz_plus=props.zyy_minus,
+            bp_zzz_minus=props.zyy_plus,
+            bp_ry_c=props.rx_c,
+            bp_rz_c=props.ry_c,
+            bp_i11_c=props.i11_c,
+            bp_i22_c=props.i22_c,
+            bp_phi=_neg(props.phi),
+            bp_z11_plus=props.z11_minus,
+            bp_z11_minus=props.z11_plus,
+            bp_z22_plus=props.z22_plus,
+            bp_z22_minus=props.z22_minus,
+            bp_r11_c=props.r11_c,
+            bp_r22_c=props.r22_c,
+            bp_my_yy=props.my_xx,
+            bp_my_zz=props.my_yy,
+            bp_my_11=props.my_11,
+            bp_my_22=props.my_22,
+            bp_j=props.j,
+            bp_omega=props.omega,
+            bp_psi_shear=props.psi_shear,
+            bp_phi_shear=props.phi_shear,
+            bp_delta_s=props.delta_s,
+            bp_y_se=_neg(props.x_se),
+            bp_z_se=props.y_se,
+            bp_y11_se=props.x11_se,
+            bp_z22_se=_neg(props.y22_se),
+            bp_y_st=_neg(props.x_st),
+            bp_z_st=props.y_st,
+            bp_gamma=props.gamma,
+            bp_a_sy=props.a_sx,
+            bp_a_sz=props.a_sy,
+            bp_a_syz=_neg(props.a_sxy),
+            bp_a_s11=props.a_s11,
+            bp_a_s22=props.a_s22,
+            bp_beta_y_plus=props.beta_x_plus,
+            bp_beta_y_minus=props.beta_x_minus,
+            bp_beta_z_plus=props.beta_y_minus,
+            bp_beta_z_minus=props.beta_y_plus,
+            bp_beta_11_plus=props.beta_11_minus,
+            bp_beta_11_minus=props.beta_11_plus,
+            bp_beta_22_plus=props.beta_22_plus,
+            bp_beta_22_minus=props.beta_22_minus,
+            bp_y_pc=_neg(props.x_pc),
+            bp_z_pc=props.y_pc,
+            bp_y11_pc=props.x11_pc,
+            bp_z22_pc=_neg(props.y22_pc),
+            bp_syy=props.sxx,
+            bp_szz=props.syy,
+            bp_sf_yy_plus=props.sf_xx_plus,
+            bp_sf_yy_minus=props.sf_xx_minus,
+            bp_sf_zz_plus=props.sf_yy_minus,
+            bp_sf_zz_minus=props.sf_yy_plus,
+            bp_s11=props.s11,
+            bp_s22=props.s22,
+            bp_sf_11_plus=props.sf_11_minus,
+            bp_sf_11_minus=props.sf_11_plus,
+            bp_sf_22_plus=props.sf_22_plus,
+            bp_sf_22_minus=props.sf_22_minus,
         )
