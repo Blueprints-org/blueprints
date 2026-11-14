@@ -85,7 +85,7 @@ def add_section_properties(
     section_properties: object,
     profile: object = None,
     n: int = 2,
-    properties: Sequence[str] = ("area",),
+    properties: Sequence[str] = ("bp_area",),
 ) -> None:
     """
     Add section properties to the report.
@@ -99,30 +99,30 @@ def add_section_properties(
     n : int, optional
         Number of decimals (default is 2).
     properties : Sequence[str], optional
-        List of property names to include (default is ("area",)).
+        List of property names to include (default is ("bp_area",)).
     """
     # Mini dictionary of common property labels used in section reports
-    # please note: sectionproperties uses x-y coordinates, while Blueprints y-z as in structural analysis
+    # property names follow BPSectionProperties (Blueprints y-z coordinate system, all prefixed with bp_)
     property_labels = {
         # mm^2
-        "area": "Area $A$ in $mm^{2}$",
-        "a_sx": "Shear area $A_{sy}$ in $mm^{2}$",
-        "a_sy": "Shear area $A_{sz}$ in $mm^{2}$",
+        "bp_area": "Area $A$ in $mm^{2}$",
+        "bp_a_sy": "Shear area $A_{sy}$ in $mm^{2}$",
+        "bp_a_sz": "Shear area $A_{sz}$ in $mm^{2}$",
         # mm
-        "perimeter": "Perimeter $P$ in $mm$",
+        "bp_perimeter": "Perimeter $P$ in $mm$",
         # kg/m
-        "mass": "Mass $W$ in $kg/m$",
+        "bp_mass": "Mass $W$ in $kg/m$",
         # mm^3
-        "zxx_plus": "Section modulus $W_{y,el+}$ in $mm^{3}$",
-        "zxx_minus": "Section modulus $W_{y,el-}$ in $mm^{3}$",
-        "zyy_plus": "Section modulus $W_{z,el+}$ in $mm^{3}$",
-        "zyy_minus": "Section modulus $W_{z,el-}$ in $mm^{3}$",
-        "sxx": "Plastic section modulus $W_{y,pl}$ in $mm^{3}$",
-        "syy": "Plastic section modulus $W_{z,pl}$ in $mm^{3}$",
+        "bp_zyy_plus": "Section modulus $W_{y,el+}$ in $mm^{3}$",
+        "bp_zyy_minus": "Section modulus $W_{y,el-}$ in $mm^{3}$",
+        "bp_zzz_plus": "Section modulus $W_{z,el+}$ in $mm^{3}$",
+        "bp_zzz_minus": "Section modulus $W_{z,el-}$ in $mm^{3}$",
+        "bp_syy": "Plastic section modulus $W_{y,pl}$ in $mm^{3}$",
+        "bp_szz": "Plastic section modulus $W_{z,pl}$ in $mm^{3}$",
         # mm^4
-        "ixx_c": "Second moment of area $I_{y}$ in $mm^{4}$",
-        "iyy_c": "Second moment of area $I_{z}$ in $mm^{4}$",
-        "j": "Torsion constant $I_{T}$ in $mm^{4}$",
+        "bp_iyy_c": "Second moment of area $I_{y}$ in $mm^{4}$",
+        "bp_izz_c": "Second moment of area $I_{z}$ in $mm^{4}$",
+        "bp_j": "Torsion constant $I_{T}$ in $mm^{4}$",
     }
 
     report.add_paragraph("The following section properties were used in this check:")
@@ -130,7 +130,7 @@ def add_section_properties(
     if profile is not None:
         rows.append(["Profile", str(getattr(profile, "name", profile))])
     for prop in properties:
-        label = property_labels[prop] if property_labels and prop in property_labels else prop.capitalize()
+        label = next((property_labels[key] for key in (prop, f"bp_{prop}") if key in property_labels), prop.capitalize())
         value = getattr(section_properties, prop, None)
         if value is None:
             rows.append([label, "Not calculated"])
