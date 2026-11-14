@@ -73,15 +73,15 @@ def test_add_section_properties_with_profile(fixture_report: Report) -> None:
     """Test add_section_properties with profile."""
 
     class DummySection:
-        area = 123.456
-        perimeter = 42.0
+        bp_area = 123.456
+        bp_perimeter = 42.0
 
     class DummyProfile:
         name = "IPE 200"
 
     section = DummySection()
     profile = DummyProfile()
-    report_helpers.add_section_properties(fixture_report, section, profile=profile, n=1, properties=["area", "perimeter", "not_existing"])
+    report_helpers.add_section_properties(fixture_report, section, profile=profile, n=1, properties=["bp_area", "bp_perimeter", "not_existing"])
     content = fixture_report.content
     assert "section properties" in content
     assert "Profile" in content
@@ -98,12 +98,24 @@ def test_add_section_properties_without_profile(fixture_report: Report) -> None:
     """Test add_section_properties without profile."""
 
     class DummySection:
-        area = 10.0
+        bp_area = 10.0
 
     section = DummySection()
-    report_helpers.add_section_properties(fixture_report, section, profile=None, n=2, properties=["area"])
+    report_helpers.add_section_properties(fixture_report, section, profile=None, n=2, properties=["bp_area"])
     content = fixture_report.content
     assert "Area" in content
+    assert "10.00" in content
+
+
+def test_add_section_properties_without_prefix(fixture_report: Report) -> None:
+    """Test add_section_properties with an orientation independent property without the bp_ prefix."""
+
+    class DummySection:
+        area = 10.0
+
+    report_helpers.add_section_properties(fixture_report, DummySection(), profile=None, n=2, properties=["area"])
+    content = fixture_report.content
+    assert "Area $A$" in content
     assert "10.00" in content
 
 
