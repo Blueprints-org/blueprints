@@ -56,13 +56,17 @@ class TestForm8Dot26AngleBetweenPrincipalShearForceAndXAxis:
         [
             (
                 "complete",
-                r"\alpha_v = \arctan\left(\frac{v_{Ed,y}}{v_{Ed,x}}\right) = "
-                r"\arctan\left(\frac{40.000}{100.000}\right) = 21.801 \ degrees",
+                (
+                    r"\alpha_v = \arctan\left(\frac{v_{Ed,y}}{v_{Ed,x}}\right) = "
+                    r"\arctan\left(\frac{40.000}{100.000}\right) = 21.801 \ degrees"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\alpha_v = \arctan\left(\frac{v_{Ed,y}}{v_{Ed,x}}\right) = "
-                r"\arctan\left(\frac{40.000 \ N/mm}{100.000 \ N/mm}\right) = 21.801 \ degrees",
+                (
+                    r"\alpha_v = \arctan\left(\frac{v_{Ed,y}}{v_{Ed,x}}\right) = "
+                    r"\arctan\left(\frac{40.000 \ N/mm}{100.000 \ N/mm}\right) = 21.801 \ degrees"
+                ),
             ),
             ("short", r"\alpha_v = 21.801 \ degrees"),
         ],

@@ -64,12 +64,12 @@ class TestForm12Dot1PlainConcreteTensileStrength:
         [
             (
                 "complete",
-                r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333",
+                (r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333"),
             ),
             ("short", r"f_{ctd,pl} = 1.333"),
             (
                 "string",
-                r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333",
+                (r"f_{ctd,pl} = \alpha_{ct,pl} \cdot \frac{f_{ctk,0.05}}{\gamma_{C}} = 0.800 \cdot \frac{2.500}{1.500} " r"= 1.333"),
             ),
         ],
     )

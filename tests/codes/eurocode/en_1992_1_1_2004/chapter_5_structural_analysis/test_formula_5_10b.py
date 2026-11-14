@@ -68,8 +68,10 @@ class TestForm5Dot10bRedistributionOfMomentsUpperFck:
         [
             (
                 "complete",
-                r"CHECK \rightarrow \delta \geq k_3 + k_4 \frac{x_u}{d} \rightarrow 0.500 \geq 0.44 + 1.25 \frac{"
-                r"0.2}{0.5} \rightarrow \text{Not OK}",
+                (
+                    r"CHECK \rightarrow \delta \geq k_3 + k_4 \frac{x_u}{d} \rightarrow 0.500 \geq 0.44 + 1.25 \frac{"
+                    r"0.2}{0.5} \rightarrow \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \rightarrow \text{Not OK}"),
         ],
@@ -98,7 +100,7 @@ class TestForm5Dot10bRedistributionOfMomentsUpperFck:
         [
             (
                 "complete",
-                r"CHECK \rightarrow \delta \geq k_3 + k_4 \frac{x_u}{d} \rightarrow 2000.000 \geq 0.44 + 1.25 \frac{" r"200}{50} \rightarrow OK",
+                (r"CHECK \rightarrow \delta \geq k_3 + k_4 \frac{x_u}{d} \rightarrow 2000.000 \geq 0.44 + 1.25 \frac{" r"200}{50} \rightarrow OK"),
             ),
             ("short", r"CHECK \rightarrow OK"),
         ],

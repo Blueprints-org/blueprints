@@ -117,73 +117,73 @@ Total of 602 formulas present.
 |      8.53      | :heavy_check_mark: |         | Form8Dot53TensileChordLimitForIntermediateSupportOrConcentratedLoads|
 |      8.54      | :heavy_check_mark: |         | Form8Dot54NominalWebWidth                                          |
 |      8.55      | :heavy_check_mark: |         | Form8Dot55EnhancedShearStressResistance                            |
-|      8.56      |        :x:         |         |                                                                    |
-|      8.57      |        :x:         |         |                                                                    |
-|      8.58      |        :x:         |         |                                                                    |
-|      8.59      |        :x:         |         |                                                                    |
-|      8.60      |        :x:         |         |                                                                    |
-|      8.61      |        :x:         |         |                                                                    |
-|      8.62      |        :x:         |         |                                                                    |
-|      8.63      |        :x:         |         |                                                                    |
-|      8.64      |        :x:         |         |                                                                    |
-|      8.65      |        :x:         |         |                                                                    |
-|      8.66      |        :x:         |         |                                                                    |
-|      8.67      |        :x:         |         |                                                                    |
-|      8.68      |        :x:         |         |                                                                    |
-|      8.69      |        :x:         |         |                                                                    |
-|      8.70      |        :x:         |         |                                                                    |
-|      8.71      |        :x:         |         |                                                                    |
-|      8.72      |        :x:         |         |                                                                    |
-|      8.73      |        :x:         |         |                                                                    |
-|      8.74      |        :x:         |         |                                                                    |
-|      8.75      |        :x:         |         |                                                                    |
-|      8.76      |        :x:         |         |                                                                    |
-|      8.77      |        :x:         |         |                                                                    |
-|      8.78      |        :x:         |         |                                                                    |
-|      8.79      |        :x:         |         |                                                                    |
-|      8.80      |        :x:         |         |                                                                    |
-|      8.81      |        :x:         |         |                                                                    |
-|      8.82      |        :x:         |         |                                                                    |
-|      8.83      |        :x:         |         |                                                                    |
-|      8.84      |        :x:         |         |                                                                    |
-|      8.85      |        :x:         |         |                                                                    |
-|      8.86      |        :x:         |         |                                                                    |
-|      8.87      |        :x:         |         |                                                                    |
-|      8.88      |        :x:         |         |                                                                    |
-|      8.89      |        :x:         |         |                                                                    |
-|      8.90      |        :x:         |         |                                                                    |
-|      8.91      |        :x:         |         |                                                                    |
-|      8.92      |        :x:         |         |                                                                    |
-|      8.93      |        :x:         |         |                                                                    |
-|      8.94      |        :x:         |         |                                                                    |
-|      8.95      |        :x:         |         |                                                                    |
-|      8.96      |        :x:         |         |                                                                    |
-|      8.97      |        :x:         |         |                                                                    |
-|      8.98      |        :x:         |         |                                                                    |
-|      8.99      |        :x:         |         |                                                                    |
-|     8.100      |        :x:         |         |                                                                    |
-|     8.101      |        :x:         |         |                                                                    |
-|     8.102      |        :x:         |         |                                                                    |
-|     8.103      |        :x:         |         |                                                                    |
+|      8.56      | :heavy_check_mark: |         | Form8Dot56StressInShearReinforcement                               |
+|      8.57      | :heavy_check_mark: |         | Form8Dot57AdditionalBendingMoment                                  |
+|      8.58      | :heavy_check_mark: |         | Form8Dot58CheckCotangentInclinedShearReinforcement                 |
+|      8.59      | :heavy_check_mark: |         | Form8Dot59ShearStressResistanceInclinedShearReinforcement          |
+|      8.60      | :heavy_check_mark: |         | Form8Dot60CheckCompressionFieldStressInclinedShearReinforcement    |
+|      8.61      | :heavy_check_mark: |         | Form8Dot61AdditionalTensileForceInclinedShearReinforcement         |
+|      8.62      | :heavy_check_mark: |         | Form8Dot62EnhancedShearStressResistanceInclinedShearReinforcement  |
+|      8.63      | :heavy_check_mark: |         | Form8Dot63StressInInclinedShearReinforcement                       |
+|      8.64      | :heavy_check_mark: |         | Form8Dot64ShearStressResistanceWithTransverseBending               |
+|      8.65      | :heavy_check_mark: |         | Form8Dot65LongitudinalShearStressFlangeWebJunction                 |
+|      8.66      | :heavy_check_mark: |         | Form8Dot66CheckOmissionOfShearVerification                         |
+|      8.67      | :heavy_check_mark: |         | Form8Dot67And68CheckCotangentFlangeCompressionField                |
+|      8.68      | :heavy_check_mark: |         | Form8Dot67And68CheckCotangentFlangeCompressionField                |
+|      8.69      | :heavy_check_mark: |         | Form8Dot69CheckTransverseReinforcementInFlange                     |
+|      8.70      | :heavy_check_mark: |         | Form8Dot70CheckPreventCrushingOfCompressionFieldInFlange           |
+|      8.71      | :heavy_check_mark: |         | Form8Dot71StrengthReductionFactor                                  |
+|      8.72      | :heavy_check_mark: |         | Form8Dot72LongitudinalStrainInTensileFlange                        |
+|      8.73      | :heavy_check_mark: |         | Form8Dot73CheckShearStressAtInterface                              |
+|      8.74      | :heavy_check_mark: |         | Form8Dot74DesignShearStressAtInterface                             |
+|      8.75      | :heavy_check_mark: |         | Form8Dot75LongitudinalShearStressDueToCompositeAction              |
+|      8.76      | :heavy_check_mark: |         | Form8Dot76ShearStressResistanceAtInterface                         |
+|      8.77      | :heavy_check_mark: |         | Form8Dot77ShearStressResistanceAtInterfaceWithoutYielding          |
+|      8.78      | :heavy_check_mark: |         | Form8Dot78MinimumInterfaceReinforcementAlongEdge                   |
+|      8.79      | :heavy_check_mark: |         | Form8Dot79TorsionalShearStressInWall                               |
+|      8.80      | :heavy_check_mark: |         | Form8Dot80ShearForceInWallDueToTorsion                             |
+|      8.81      | :heavy_check_mark: |         | Form8Dot81DesignTorsionalCapacity                                  |
+|      8.82      | :heavy_check_mark: |         | Form8Dot82TorsionalStressResistanceShearReinforcement              |
+|      8.83      | :heavy_check_mark: |         | Form8Dot83TorsionalStressResistanceLongitudinalReinforcement       |
+|      8.84      | :heavy_check_mark: |         | Form8Dot84TorsionalStressResistanceConcreteCrushing                |
+|      8.85      | :heavy_check_mark: |         | Form8Dot85CheckCotangentCompressionFieldTorsion                    |
+|      8.86      | :heavy_check_mark: |         | Form8Dot86CheckInteractionInternalForces                           |
+|      8.87      | :heavy_check_mark: |         | Form8Dot87CheckDetailedPunchingVerificationMayBeOmitted            |
+|      8.88      | :heavy_check_mark: |         | Form8Dot88CheckPunchingShearReinforcementMayBeOmitted              |
+|      8.89      | :heavy_check_mark: |         | Form8Dot89CheckMaximumPunchingShearResistance                      |
+|      8.90      | :heavy_check_mark: |         | Form8Dot90CheckPunchingShearResistanceWithReinforcement            |
+|      8.91      | :heavy_check_mark: |         | Form8Dot91ShearResistingEffectiveDepth                             |
+|      8.92      | :heavy_check_mark: |         | Form8Dot92DesignPunchingShearStress                                |
+|      8.93      | :heavy_check_mark: |         | Form8Dot93DesignPunchingShearStressFromDetailedAnalysis            |
+|      8.94      | :heavy_check_mark: |         | Form8Dot94PunchingShearStressResistance                            |
+|      8.95      | :heavy_check_mark: |         | Form8Dot95LongitudinalReinforcementRatioPunchingShear              |
+|      8.96      | :heavy_check_mark: |         | Form8Dot96PunchingShearGradientEnhancementCoefficient              |
+|      8.97      | :heavy_check_mark: |         | Form8Dot97ReplacementEffectiveDepth                                |
+|      8.98      | :heavy_check_mark: |         | Form8Dot98DistanceToPointOfContraflexure                           |
+|      8.99      | :heavy_check_mark: |         | Form8Dot99To100CoefficientAccountingForAxialForces                 |
+|     8.100      | :heavy_check_mark: |         | Form8Dot99To100CoefficientAccountingForAxialForces                 |
+|     8.101      | :heavy_check_mark: |         | Form8Dot101FactorKN                                                |
+|     8.102      | :heavy_check_mark: |         | Form8Dot102CoefficientAccountingForAxialForcesTwoDirections        |
+|     8.103      | :heavy_check_mark: |         | Form8Dot103FactorKNEccentricTendons                                |
 |     8.104      |        :x:         |         |                                                                    |
 |     8.105      |        :x:         |         |                                                                    |
 |     8.106      |        :x:         |         |                                                                    |
 |     8.107      |        :x:         |         |                                                                    |
-|     8.108      |        :x:         |         |                                                                    |
-|     8.109      |        :x:         |         |                                                                    |
-|     8.110      |        :x:         |         |                                                                    |
-|     8.111      |        :x:         |         |                                                                    |
+|     8.108      | :heavy_check_mark: |         | Form8Dot108ShearResistingEffectiveDepthOuterShearReinforcement     |
+|     8.109      | :heavy_check_mark: |         | Form8Dot109MaximumPunchingShearResistance                          |
+|     8.110      | :heavy_check_mark: |         | Form8Dot110To111CoefficientForPunchingShearReinforcingSystem       |
+|     8.111      | :heavy_check_mark: |         | Form8Dot110To111CoefficientForPunchingShearReinforcingSystem       |
 |     8.112      |        :x:         |         |                                                                    |
-|     8.113      |        :x:         |         |                                                                    |
-|     8.114      |        :x:         |         |                                                                    |
-|     8.115      |        :x:         |         |                                                                    |
-|     8.116      |        :x:         |         |                                                                    |
-|     8.117      |        :x:         |         |                                                                    |
-|     8.118      |        :x:         |         |                                                                    |
-|     8.119      |        :x:         |         |                                                                    |
-|     8.120      |        :x:         |         |                                                                    |
-|     8.121      |        :x:         |         |                                                                    |
-|     8.122      |        :x:         |         |                                                                    |
+|     8.113      | :heavy_check_mark: |         | Form8Dot113CompressiveStressInStrutOrCompressionField              |
+|     8.114      | :heavy_check_mark: |         | Form8Dot114CheckCompressiveStressInStrutOrCompressionField         |
+|     8.115      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.116      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.117      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.118      | :heavy_check_mark: |         | Form8Dot115To118StrengthReductionFactorCompressionFieldOrStrut     |
+|     8.119      | :heavy_check_mark: |         | Form8Dot119StrengthReductionFactorCompressionFieldOrStrutRefined   |
+|     8.120      | :heavy_check_mark: |         | Form8Dot120StrengthReductionFactorNoTransverseCracking             |
+|     8.121      | :heavy_check_mark: |         | Form8Dot121StrengthReductionFactorCrackedZone                      |
+|     8.122      | :heavy_check_mark: |         | Form8Dot122CheckTieResistance                                      |
 |     8.123      |        :x:         |         |                                                                    |
 |     8.124      |        :x:         |         |                                                                    |
 |     8.125      |        :x:         |         |                                                                    |

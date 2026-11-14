@@ -42,8 +42,10 @@ class TestForm6Dot70FatigueDamageFactor:
         [
             (
                 "complete",
-                r"CHECK \to \sum_{i} \frac{n(\Delta \sigma_i)}{N(\Delta \sigma_i)} < 1 \to \frac{100.000}{400.000} + "
-                r"\frac{200.000}{500.000} + \frac{300.000}{600.000} < 1 \to \text{Not OK}",
+                (
+                    r"CHECK \to \sum_{i} \frac{n(\Delta \sigma_i)}{N(\Delta \sigma_i)} < 1 \to \frac{100.000}{400.000} + "
+                    r"\frac{200.000}{500.000} + \frac{300.000}{600.000} < 1 \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

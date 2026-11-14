@@ -47,9 +47,11 @@ class TestForm5Dot44PrestressLoss:
         [
             (
                 "complete",
-                r"\Delta P_{el} = A_{p} \cdot E_{p} \cdot \sum_{i=1}^{n} \frac{j_{i} \cdot \Delta \sigma_{c,i}(t)}{E_{cm,i}(t)} = "
-                r"1000.000 \cdot 200000.000 \cdot \left( \frac{1 \cdot 10.000}{30000.000} + \frac{2 \cdot 20.000}{30000.000} \right) = "
-                r"333333.333 \ N",
+                (
+                    r"\Delta P_{el} = A_{p} \cdot E_{p} \cdot \sum_{i=1}^{n} \frac{j_{i} \cdot \Delta \sigma_{c,i}(t)}{E_{cm,i}(t)} = "
+                    r"1000.000 \cdot 200000.000 \cdot \left( \frac{1 \cdot 10.000}{30000.000} + \frac{2 \cdot 20.000}{30000.000} \right) = "
+                    r"333333.333 \ N"
+                ),
             ),
             ("short", r"\Delta P_{el} = 333333.333 \ N"),
         ],

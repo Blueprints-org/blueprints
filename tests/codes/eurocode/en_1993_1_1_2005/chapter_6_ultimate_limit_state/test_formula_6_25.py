@@ -43,8 +43,10 @@ class TestForm6Dot25CheckCombinedShearForceAndTorsionalMoment:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \right) \to "
-                r"\left( \frac{100.000}{150.000} \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{V_{Ed}}{V_{pl,T,Rd}} \leq 1.0 \right) \to "
+                    r"\left( \frac{100.000}{150.000} \leq 1.0 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

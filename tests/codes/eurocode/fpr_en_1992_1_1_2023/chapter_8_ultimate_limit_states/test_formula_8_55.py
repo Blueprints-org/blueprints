@@ -122,21 +122,25 @@ class TestForm8Dot55EnhancedShearStressResistance:
         [
             (
                 "complete",
-                r"\tau_{Rd} = \min\left(\nu \cdot f_{cd} \cdot \frac{\cot(\theta) - \cot(\beta_{incl})}"
-                r"{1 + \left(\cot(\theta)\right)^2} + \rho_w \cdot f_{ywd} \cdot \cot(\beta_{incl}), "
-                r"\nu \cdot f_{cd} \cdot \frac{\cot(\theta)}{1 + \left(\cot(\theta)\right)^2}\right) = "
-                r"\min\left(0.500 \cdot 20.000 \cdot \frac{\cot(26.565) - \cot(45.000)}"
-                r"{1 + \left(\cot(26.565)\right)^2} + 0.002 \cdot 435.000 \cdot \cot(45.000), "
-                r"0.500 \cdot 20.000 \cdot \frac{\cot(26.565)}{1 + \left(\cot(26.565)\right)^2}\right) = 2.870 \ MPa",
+                (
+                    r"\tau_{Rd} = \min\left(\nu \cdot f_{cd} \cdot \frac{\cot(\theta) - \cot(\beta_{incl})}"
+                    r"{1 + \left(\cot(\theta)\right)^2} + \rho_w \cdot f_{ywd} \cdot \cot(\beta_{incl}), "
+                    r"\nu \cdot f_{cd} \cdot \frac{\cot(\theta)}{1 + \left(\cot(\theta)\right)^2}\right) = "
+                    r"\min\left(0.500 \cdot 20.000 \cdot \frac{\cot(26.565) - \cot(45.000)}"
+                    r"{1 + \left(\cot(26.565)\right)^2} + 0.002 \cdot 435.000 \cdot \cot(45.000), "
+                    r"0.500 \cdot 20.000 \cdot \frac{\cot(26.565)}{1 + \left(\cot(26.565)\right)^2}\right) = 2.870 \ MPa"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rd} = \min\left(\nu \cdot f_{cd} \cdot \frac{\cot(\theta) - \cot(\beta_{incl})}"
-                r"{1 + \left(\cot(\theta)\right)^2} + \rho_w \cdot f_{ywd} \cdot \cot(\beta_{incl}), "
-                r"\nu \cdot f_{cd} \cdot \frac{\cot(\theta)}{1 + \left(\cot(\theta)\right)^2}\right) = "
-                r"\min\left(0.500 \cdot 20.000 \ MPa \cdot \frac{\cot(26.565 ^\circ) - \cot(45.000 ^\circ)}"
-                r"{1 + \left(\cot(26.565 ^\circ)\right)^2} + 0.002 \cdot 435.000 \ MPa \cdot \cot(45.000 ^\circ), "
-                r"0.500 \cdot 20.000 \ MPa \cdot \frac{\cot(26.565 ^\circ)}{1 + \left(\cot(26.565 ^\circ)\right)^2}\right) = 2.870 \ MPa",
+                (
+                    r"\tau_{Rd} = \min\left(\nu \cdot f_{cd} \cdot \frac{\cot(\theta) - \cot(\beta_{incl})}"
+                    r"{1 + \left(\cot(\theta)\right)^2} + \rho_w \cdot f_{ywd} \cdot \cot(\beta_{incl}), "
+                    r"\nu \cdot f_{cd} \cdot \frac{\cot(\theta)}{1 + \left(\cot(\theta)\right)^2}\right) = "
+                    r"\min\left(0.500 \cdot 20.000 \ MPa \cdot \frac{\cot(26.565 ^\circ) - \cot(45.000 ^\circ)}"
+                    r"{1 + \left(\cot(26.565 ^\circ)\right)^2} + 0.002 \cdot 435.000 \ MPa \cdot \cot(45.000 ^\circ), "
+                    r"0.500 \cdot 20.000 \ MPa \cdot \frac{\cot(26.565 ^\circ)}{1 + \left(\cot(26.565 ^\circ)\right)^2}\right) = 2.870 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Rd} = 2.870 \ MPa"),
         ],

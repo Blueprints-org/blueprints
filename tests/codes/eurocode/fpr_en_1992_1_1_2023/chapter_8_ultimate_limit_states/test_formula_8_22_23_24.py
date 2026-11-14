@@ -75,24 +75,28 @@ class TestForm8Dot22To24EffectiveDepth:
         [
             (
                 "complete",
-                r"d = \begin{cases} d_x & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
-                r"0.5 \cdot (d_x + d_y) & \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
-                r"d_y & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
-                r"\begin{cases} 300.000 & \text{if } \frac{\left|100.000\right|}{\left|100.000\right|} \leq 0.5 \\ "
-                r"0.5 \cdot (300.000 + 250.000) & \text{if } 0.5 < \frac{\left|100.000\right|}{\left|100.000\right|} < 2 \\ "
-                r"250.000 & \text{if } \frac{\left|100.000\right|}{\left|100.000\right|} \geq 2 \end{cases} = "
-                r"0.5 \cdot (300.000 + 250.000) = 275.000 \ mm",
+                (
+                    r"d = \begin{cases} d_x & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
+                    r"0.5 \cdot (d_x + d_y) & \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
+                    r"d_y & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
+                    r"\begin{cases} 300.000 & \text{if } \frac{\left|100.000\right|}{\left|100.000\right|} \leq 0.5 \\ "
+                    r"0.5 \cdot (300.000 + 250.000) & \text{if } 0.5 < \frac{\left|100.000\right|}{\left|100.000\right|} < 2 \\ "
+                    r"250.000 & \text{if } \frac{\left|100.000\right|}{\left|100.000\right|} \geq 2 \end{cases} = "
+                    r"0.5 \cdot (300.000 + 250.000) = 275.000 \ mm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"d = \begin{cases} d_x & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
-                r"0.5 \cdot (d_x + d_y) & \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
-                r"d_y & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
-                r"\begin{cases} 300.000 \ mm & \text{if } \frac{\left|100.000 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \leq 0.5 \\ "
-                r"0.5 \cdot (300.000 \ mm + 250.000 \ mm) & "
-                r"\text{if } 0.5 < \frac{\left|100.000 \ N/mm\right|}{\left|100.000 \ N/mm\right|} < 2 \\ "
-                r"250.000 \ mm & \text{if } \frac{\left|100.000 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \geq 2 \end{cases} = "
-                r"0.5 \cdot (300.000 + 250.000) = 275.000 \ mm",
+                (
+                    r"d = \begin{cases} d_x & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \leq 0.5 \\ "
+                    r"0.5 \cdot (d_x + d_y) & \text{if } 0.5 < \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} < 2 \\ "
+                    r"d_y & \text{if } \frac{\left|v_{Ed,y}\right|}{\left|v_{Ed,x}\right|} \geq 2 \end{cases} = "
+                    r"\begin{cases} 300.000 \ mm & \text{if } \frac{\left|100.000 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \leq 0.5 \\ "
+                    r"0.5 \cdot (300.000 \ mm + 250.000 \ mm) & "
+                    r"\text{if } 0.5 < \frac{\left|100.000 \ N/mm\right|}{\left|100.000 \ N/mm\right|} < 2 \\ "
+                    r"250.000 \ mm & \text{if } \frac{\left|100.000 \ N/mm\right|}{\left|100.000 \ N/mm\right|} \geq 2 \end{cases} = "
+                    r"0.5 \cdot (300.000 + 250.000) = 275.000 \ mm"
+                ),
             ),
             ("short", r"d = 275.000 \ mm"),
         ],

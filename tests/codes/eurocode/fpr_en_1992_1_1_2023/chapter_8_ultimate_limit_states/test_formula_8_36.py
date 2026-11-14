@@ -59,15 +59,19 @@ class TestForm8Dot36EffectiveDepthPrestressedMembers:
         [
             (
                 "complete",
-                r"d = \frac{\left(d_s\right)^2 \cdot A_s + \left(d_p\right)^2 \cdot A_p}{d_s \cdot A_s + d_p \cdot A_p} = "
-                r"\frac{\left(500.000\right)^2 \cdot 1500.000 + \left(450.000\right)^2 \cdot 800.000}"
-                r"{500.000 \cdot 1500.000 + 450.000 \cdot 800.000} = 483.784 \ mm",
+                (
+                    r"d = \frac{\left(d_s\right)^2 \cdot A_s + \left(d_p\right)^2 \cdot A_p}{d_s \cdot A_s + d_p \cdot A_p} = "
+                    r"\frac{\left(500.000\right)^2 \cdot 1500.000 + \left(450.000\right)^2 \cdot 800.000}"
+                    r"{500.000 \cdot 1500.000 + 450.000 \cdot 800.000} = 483.784 \ mm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"d = \frac{\left(d_s\right)^2 \cdot A_s + \left(d_p\right)^2 \cdot A_p}{d_s \cdot A_s + d_p \cdot A_p} = "
-                r"\frac{\left(500.000 \ mm\right)^2 \cdot 1500.000 \ mm^2 + \left(450.000 \ mm\right)^2 \cdot 800.000 \ mm^2}"
-                r"{500.000 \ mm \cdot 1500.000 \ mm^2 + 450.000 \ mm \cdot 800.000 \ mm^2} = 483.784 \ mm",
+                (
+                    r"d = \frac{\left(d_s\right)^2 \cdot A_s + \left(d_p\right)^2 \cdot A_p}{d_s \cdot A_s + d_p \cdot A_p} = "
+                    r"\frac{\left(500.000 \ mm\right)^2 \cdot 1500.000 \ mm^2 + \left(450.000 \ mm\right)^2 \cdot 800.000 \ mm^2}"
+                    r"{500.000 \ mm \cdot 1500.000 \ mm^2 + 450.000 \ mm \cdot 800.000 \ mm^2} = 483.784 \ mm"
+                ),
             ),
             ("short", r"d = 483.784 \ mm"),
         ],

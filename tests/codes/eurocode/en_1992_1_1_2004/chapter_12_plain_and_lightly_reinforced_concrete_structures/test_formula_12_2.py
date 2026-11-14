@@ -68,8 +68,10 @@ class TestForm12Dot2PlainConcreteBendingResistance:
         [
             (
                 "complete",
-                r"N_{Rd} = \eta f_{cd,pl} \cdot b \cdot h_w \cdot \left(1 - \frac{2e}{h_w}\right) = 30.000 \cdot "
-                r"300.000 \cdot 500.000 \cdot \left(1 - \frac{2 \cdot 100.000}{500.000}\right) = 2700000.000",
+                (
+                    r"N_{Rd} = \eta f_{cd,pl} \cdot b \cdot h_w \cdot \left(1 - \frac{2e}{h_w}\right) = 30.000 \cdot "
+                    r"300.000 \cdot 500.000 \cdot \left(1 - \frac{2 \cdot 100.000}{500.000}\right) = 2700000.000"
+                ),
             ),
             ("short", r"N_{Rd} = 2700000.000"),
         ],

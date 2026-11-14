@@ -8,7 +8,27 @@ from enum import StrEnum
 
 from blueprints.materials.steel import SteelMaterial
 from blueprints.structural_sections._profile import Profile
-from blueprints.structural_sections.steel.standard_profiles import HEA, HEB, HEM, IPE, RHS, RHSCF, SHS, SHSCF
+from blueprints.structural_sections.steel.standard_profiles import (
+    AU,
+    AZ,
+    CHS,
+    GU,
+    HEA,
+    HEB,
+    HEM,
+    IPE,
+    LNP,
+    PAL,
+    PAU,
+    PAZ,
+    PU,
+    RHS,
+    RHSCF,
+    SHS,
+    SHSCF,
+    UNP,
+    Strip,
+)
 from blueprints.type_alias import KG_M, MPA
 from blueprints.unit_conversion import MM2_TO_M2
 
@@ -53,15 +73,16 @@ class SteelCrossSection:
     def _set_fabrication_method(self) -> None:
         """
         Determines and sets the fabrication method based on the profile name and geometry.
-        IPE, RHS, SHS, HEB, HEA, HEM are hot-rolled. RHSCF, SHSCF are cold-formed.
+        AU, AZ, CHS, GU, HEB, HEA, HEM, IPE, LNP, PU, RHS, SHS, UNP are hot-rolled.
+        PAL, PAU, PAZ, RHSCF, SHSCF, Strip are cold-formed.
 
         Returns
         -------
         None
         """
         profile_name, corrosion, corrosion_inside, corrosion_outside = self._get_profile_name_and_corrosion_amount(self.profile.name)
-        hot_rolled_profiles = [(cls, "_database") for cls in (IPE, RHS, SHS, HEB, HEA, HEM)]
-        cold_formed_profiles = [(cls, "_database") for cls in (RHSCF, SHSCF)]
+        hot_rolled_profiles = [(cls, "_database") for cls in (AU, AZ, CHS, GU, HEA, HEB, HEM, IPE, LNP, PU, RHS, SHS, UNP)]
+        cold_formed_profiles = [(cls, "_database") for cls in (PAL, PAU, PAZ, RHSCF, SHSCF, Strip)]
         if self._set_fabrication_if_in_db(
             profile_name,
             corrosion,

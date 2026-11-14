@@ -82,20 +82,24 @@ class TestFormEDot10MaxShearStressInLayer2:
             (
                 FormE10Params(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 r"\tau_{2,max} = 1.50",
-                r"\tau_{2,max} = \left[\gamma_3 E_3 A_3 \alpha_3"
-                r" + 0.5 E_2 b_2 \left(\frac{\alpha_2 + h_2}{2}\right)^2\right] \frac{V_d}{b_{2} EI_{ef}}"
-                r" = \left[1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00"
-                r" + 0.5 \cdot 1.00 \cdot 1.00 \left(\frac{1.00 + 1.00}{2}\right)^2\right] \frac{1.00}{1.00 \cdot 1.00}"
-                r" = 1.50",
+                (
+                    r"\tau_{2,max} = \left[\gamma_3 E_3 A_3 \alpha_3"
+                    r" + 0.5 E_2 b_2 \left(\frac{\alpha_2 + h_2}{2}\right)^2\right] \frac{V_d}{b_{2} EI_{ef}}"
+                    r" = \left[1.00 \cdot 1.00 \cdot 1.00 \cdot 1.00"
+                    r" + 0.5 \cdot 1.00 \cdot 1.00 \left(\frac{1.00 + 1.00}{2}\right)^2\right] \frac{1.00}{1.00 \cdot 1.00}"
+                    r" = 1.50"
+                ),
             ),
             (
                 FormE10Params(0.767, 4000, 12000, 60000, 0, 70, 80, 1000, 10e03, 6015486104925.15),
                 r"\tau_{2,max} = 0.07",
-                r"\tau_{2,max} = \left[\gamma_3 E_3 A_3 \alpha_3"
-                r" + 0.5 E_2 b_2 \left(\frac{\alpha_2 + h_2}{2}\right)^2\right] \frac{V_d}{b_{2} EI_{ef}}"
-                r" = \left[0.77 \cdot 12000.00 \cdot 60000.00 \cdot 70.00"
-                r" + 0.5 \cdot 4000.00 \cdot 1000.00 \left(\frac{0.00 + 80.00}{2}\right)^2\right] \frac{10000.00}{1000.00 \cdot 6015486104925.15}"
-                r" = 0.07",
+                (
+                    r"\tau_{2,max} = \left[\gamma_3 E_3 A_3 \alpha_3"
+                    r" + 0.5 E_2 b_2 \left(\frac{\alpha_2 + h_2}{2}\right)^2\right] \frac{V_d}{b_{2} EI_{ef}}"
+                    r" = \left[0.77 \cdot 12000.00 \cdot 60000.00 \cdot 70.00"
+                    r" + 0.5 \cdot 4000.00 \cdot 1000.00 \left(\frac{0.00 + 80.00}{2}\right)^2\right] \frac{10000.00}{1000.00 \cdot 6015486104925.15}"
+                    r" = 0.07"
+                ),
             ),
         ],
         ids=["latex-test-1", "latex-test-2"],

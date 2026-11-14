@@ -33,6 +33,7 @@ fig = az_profile.plot(show=False)  # use show=True locally to open the plot dire
 
 from io import StringIO  # markdown-exec: hide
 import matplotlib.pyplot as plt  # markdown-exec: hide
+
 buffer = StringIO()  # markdown-exec: hide
 plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
@@ -60,6 +61,7 @@ fig = az_wall.plot(show=False)
 
 from io import StringIO  # markdown-exec: hide
 import matplotlib.pyplot as plt  # markdown-exec: hide
+
 buffer = StringIO()  # markdown-exec: hide
 plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
@@ -75,6 +77,7 @@ fig = az_corroded.plot(show=False)
 
 from io import StringIO  # markdown-exec: hide
 import matplotlib.pyplot as plt  # markdown-exec: hide
+
 buffer = StringIO()  # markdown-exec: hide
 plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
@@ -97,6 +100,7 @@ fig = paz_profile.plot(show=False)
 
 from io import StringIO  # markdown-exec: hide
 import matplotlib.pyplot as plt  # markdown-exec: hide
+
 buffer = StringIO()  # markdown-exec: hide
 plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
@@ -120,6 +124,7 @@ fig = custom_z_profile.plot(show=False)
 
 from io import StringIO  # markdown-exec: hide
 import matplotlib.pyplot as plt  # markdown-exec: hide
+
 buffer = StringIO()  # markdown-exec: hide
 plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide

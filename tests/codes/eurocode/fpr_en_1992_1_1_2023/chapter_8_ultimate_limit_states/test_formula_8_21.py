@@ -56,13 +56,17 @@ class TestForm8Dot21DesignShearForcePerUnitWidth:
         [
             (
                 "complete",
-                r"v_{Ed} = \sqrt{\left(v_{Ed,x}\right)^2 + \left(v_{Ed,y}\right)^2} = "
-                r"\sqrt{\left(100.000\right)^2 + \left(40.000\right)^2} = 107.703 \ N/mm",
+                (
+                    r"v_{Ed} = \sqrt{\left(v_{Ed,x}\right)^2 + \left(v_{Ed,y}\right)^2} = "
+                    r"\sqrt{\left(100.000\right)^2 + \left(40.000\right)^2} = 107.703 \ N/mm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"v_{Ed} = \sqrt{\left(v_{Ed,x}\right)^2 + \left(v_{Ed,y}\right)^2} = "
-                r"\sqrt{\left(100.000 \ N/mm\right)^2 + \left(40.000 \ N/mm\right)^2} = 107.703 \ N/mm",
+                (
+                    r"v_{Ed} = \sqrt{\left(v_{Ed,x}\right)^2 + \left(v_{Ed,y}\right)^2} = "
+                    r"\sqrt{\left(100.000 \ N/mm\right)^2 + \left(40.000 \ N/mm\right)^2} = 107.703 \ N/mm"
+                ),
             ),
             ("short", r"v_{Ed} = 107.703 \ N/mm"),
         ],

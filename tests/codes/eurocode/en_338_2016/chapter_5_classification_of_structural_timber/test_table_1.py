@@ -51,7 +51,7 @@ class TestTable1StrengthClassesSoftwoodBending:
             (SoftwoodStrengthClassBending.C50, 50, 33.5, 0.4, 30, 3.0, 4.0, 16000.0, 10700.0, 530.0, 1000.0, 430, 520),
         ],
     )
-    def test_timber_strength_values(  # noqa: PLR0913
+    def test_timber_strength_values(  # noqa: PLR0913, PLR0917
         self,
         timber_class: SoftwoodStrengthClassBending,
         expected_f_m_k: MPA,

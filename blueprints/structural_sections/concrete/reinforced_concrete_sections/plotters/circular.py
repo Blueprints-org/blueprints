@@ -39,7 +39,7 @@ class CircularCrossSectionPlotter:
         self.fig: plt.Figure | None = None
         self.axes: list[Axes] = []
 
-    def plot(
+    def plot(  # noqa: PLR0917
         self,
         figsize: tuple[float, float] = (15.0, 8.0),
         title: str | None = None,

@@ -72,8 +72,10 @@ class TestForm8Dot17CheckCompressionForce:
         [
             (
                 "complete",
-                r"CHECK \to \frac{N_{Ed}}{N_{c,Rd}} \leq 1.0 \to \frac{200.000}{150.000} "
-                r"\leq 1.0 \to \left( 1.333 \leq 1.0 \right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \frac{N_{Ed}}{N_{c,Rd}} \leq 1.0 \to \frac{200.000}{150.000} "
+                    r"\leq 1.0 \to \left( 1.333 \leq 1.0 \right) \to \text{Not OK}"
+                ),
             ),
         ],
     )

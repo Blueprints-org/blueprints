@@ -68,14 +68,18 @@ class TestForm6Dot36MomentReduction:
         [
             (
                 "complete",
-                r"M_{N,y,Rd} = \min\left(M_{pl,y,Rd}, M_{pl,y,Rd} \cdot (1 - n) / (1 - 0.5 \cdot a)\right) = "
-                r"\min\left(50000.000, 50000.000 \cdot (1 - 0.500) / (1 - 0.5 \cdot 0.400)\right) = 31250.000 \ Nmm",
+                (
+                    r"M_{N,y,Rd} = \min\left(M_{pl,y,Rd}, M_{pl,y,Rd} \cdot (1 - n) / (1 - 0.5 \cdot a)\right) = "
+                    r"\min\left(50000.000, 50000.000 \cdot (1 - 0.500) / (1 - 0.5 \cdot 0.400)\right) = 31250.000 \ Nmm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"M_{N,y,Rd} = \min\left(M_{pl,y,Rd}, M_{pl,y,Rd} \cdot (1 - n) / (1 - 0.5 \cdot a)\right) = "
-                r"\min\left(50000.000 \ Nmm, 50000.000 \ Nmm \cdot (1 - 0.500) / (1 - 0.5 \cdot 0.400)\right) = "
-                r"31250.000 \ Nmm",
+                (
+                    r"M_{N,y,Rd} = \min\left(M_{pl,y,Rd}, M_{pl,y,Rd} \cdot (1 - n) / (1 - 0.5 \cdot a)\right) = "
+                    r"\min\left(50000.000 \ Nmm, 50000.000 \ Nmm \cdot (1 - 0.500) / (1 - 0.5 \cdot 0.400)\right) = "
+                    r"31250.000 \ Nmm"
+                ),
             ),
             ("short", r"M_{N,y,Rd} = 31250.000 \ Nmm"),
         ],

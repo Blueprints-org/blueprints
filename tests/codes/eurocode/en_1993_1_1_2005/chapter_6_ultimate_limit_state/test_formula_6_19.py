@@ -46,8 +46,10 @@ class TestForm6Dot19CheckDesignElasticShearResistance:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{\tau_{Ed}}{f_{y} / (\sqrt{3} \cdot \gamma_{M0})} \leq 1.0 \right) \to "
-                r"\left( \frac{100.000}{355.000 / (\sqrt{3} \cdot 1.000)} \leq 1.0 \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{\tau_{Ed}}{f_{y} / (\sqrt{3} \cdot \gamma_{M0})} \leq 1.0 \right) \to "
+                    r"\left( \frac{100.000}{355.000 / (\sqrt{3} \cdot 1.000)} \leq 1.0 \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

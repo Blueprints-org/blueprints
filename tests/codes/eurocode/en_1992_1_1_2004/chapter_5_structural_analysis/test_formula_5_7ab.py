@@ -49,8 +49,10 @@ class TestForm5Dot7abFlangeEffectiveFlangeWidth:
         [
             (
                 "complete",
-                r"b_{eff,i} = 0.2b_{i}+0.1l_{0} \le 0.2l_{0}\text{ and }b_{eff,i}\le b_{i} = "
-                r"0.2\cdot0.4+0.1\cdot3.0 \le 0.2\cdot3.0\text{ and }b_{eff,i}\le 0.4 = 0.380",
+                (
+                    r"b_{eff,i} = 0.2b_{i}+0.1l_{0} \le 0.2l_{0}\text{ and }b_{eff,i}\le b_{i} = "
+                    r"0.2\cdot0.4+0.1\cdot3.0 \le 0.2\cdot3.0\text{ and }b_{eff,i}\le 0.4 = 0.380"
+                ),
             ),
             ("short", r"b_{eff,i} = 0.380"),
         ],

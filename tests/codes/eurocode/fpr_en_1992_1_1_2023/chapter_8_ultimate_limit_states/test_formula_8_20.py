@@ -62,13 +62,17 @@ class TestForm8Dot20MinimumShearStressResistance:
         [
             (
                 "complete",
-                r"\tau_{Rdc,min} = \frac{11}{\gamma_V} \cdot \sqrt{\frac{f_{ck}}{f_{yd}} \cdot \frac{d_{dg}}{d}} = "
-                r"\frac{11}{1.400} \cdot \sqrt{\frac{30.000}{435.000} \cdot \frac{32.000}{500.000}} = 0.522 \ MPa",
+                (
+                    r"\tau_{Rdc,min} = \frac{11}{\gamma_V} \cdot \sqrt{\frac{f_{ck}}{f_{yd}} \cdot \frac{d_{dg}}{d}} = "
+                    r"\frac{11}{1.400} \cdot \sqrt{\frac{30.000}{435.000} \cdot \frac{32.000}{500.000}} = 0.522 \ MPa"
+                ),
             ),
             (
                 "complete_with_units",
-                r"\tau_{Rdc,min} = \frac{11}{\gamma_V} \cdot \sqrt{\frac{f_{ck}}{f_{yd}} \cdot \frac{d_{dg}}{d}} = "
-                r"\frac{11}{1.400} \cdot \sqrt{\frac{30.000 \ MPa}{435.000 \ MPa} \cdot \frac{32.000 \ mm}{500.000 \ mm}} = 0.522 \ MPa",
+                (
+                    r"\tau_{Rdc,min} = \frac{11}{\gamma_V} \cdot \sqrt{\frac{f_{ck}}{f_{yd}} \cdot \frac{d_{dg}}{d}} = "
+                    r"\frac{11}{1.400} \cdot \sqrt{\frac{30.000 \ MPa}{435.000 \ MPa} \cdot \frac{32.000 \ mm}{500.000 \ mm}} = 0.522 \ MPa"
+                ),
             ),
             ("short", r"\tau_{Rdc,min} = 0.522 \ MPa"),
         ],

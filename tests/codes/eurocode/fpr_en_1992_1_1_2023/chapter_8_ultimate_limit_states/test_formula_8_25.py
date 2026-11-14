@@ -62,13 +62,17 @@ class TestForm8Dot25EffectiveDepthFromPrincipalShearForce:
         [
             (
                 "complete",
-                r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
-                r"300.000 \cdot \cos^2(45.000) + 250.000 \cdot \sin^2(45.000) = 275.000 \ mm",
+                (
+                    r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
+                    r"300.000 \cdot \cos^2(45.000) + 250.000 \cdot \sin^2(45.000) = 275.000 \ mm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
-                r"300.000 \ mm \cdot \cos^2(45.000 \ degrees) + 250.000 \ mm \cdot \sin^2(45.000 \ degrees) = 275.000 \ mm",
+                (
+                    r"d = d_x \cdot \cos^2(\alpha_v) + d_y \cdot \sin^2(\alpha_v) = "
+                    r"300.000 \ mm \cdot \cos^2(45.000 \ degrees) + 250.000 \ mm \cdot \sin^2(45.000 \ degrees) = 275.000 \ mm"
+                ),
             ),
             ("short", r"d = 275.000 \ mm"),
         ],

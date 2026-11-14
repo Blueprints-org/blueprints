@@ -48,8 +48,10 @@ class TestForm6Dot31CheckTorsionShearResistanceRectangular:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{T_{Ed}}{T_{Rd,c}} + \frac{V_{Ed}}{V_{Rd,c}} \leq 1 \right) \to "
-                r"\left( \frac{100.000}{150.000} + \frac{200.000}{250.000} \leq 1 \right) \to \text{Not OK}",
+                (
+                    r"CHECK \to \left( \frac{T_{Ed}}{T_{Rd,c}} + \frac{V_{Ed}}{V_{Rd,c}} \leq 1 \right) \to "
+                    r"\left( \frac{100.000}{150.000} + \frac{200.000}{250.000} \leq 1 \right) \to \text{Not OK}"
+                ),
             ),
             ("short", r"CHECK \to \text{Not OK}"),
         ],

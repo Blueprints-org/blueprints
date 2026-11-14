@@ -43,8 +43,10 @@ class TestForm6Dot11NcRdClass4:
         [
             (
                 "complete",
-                r"N_{c,Rd} = \frac{A_{eff} \cdot f_y}{\gamma_{M0}} = "
-                r"\frac{2000.000 \cdot 355.000}{1.000} = 710000.000 \ N",
+                (
+                    r"N_{c,Rd} = \frac{A_{eff} \cdot f_y}{\gamma_{M0}} = "
+                    r"\frac{2000.000 \cdot 355.000}{1.000} = 710000.000 \ N"
+                ),
             ),
             ("short", r"N_{c,Rd} = 710000.000 \ N"),
         ],

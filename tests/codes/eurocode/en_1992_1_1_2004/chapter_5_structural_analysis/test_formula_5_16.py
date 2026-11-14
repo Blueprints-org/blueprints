@@ -57,15 +57,17 @@ class TestForm5Dot16EffectiveLengthUnbraced:
         [
             (
                 "complete",
-                r"l_0 = l \cdot max\left\{"
-                r"\sqrt{1+10 \cdot \frac{k_1 \cdot k_2}{k_1+k_2}}; "
-                r"\left(1+\frac{k_1}{1 + k_1}\right) \cdot \left(1 + \frac{k_2}{1 + k_2}\right) \right\}"
-                r" = "
-                r"4.000 \cdot max\left\{"
-                r"\sqrt{1+10 \cdot \frac{2.000 \cdot 3.000}{2.000+3.000}}; "
-                r"\left(1+\frac{2.000}{1 + 2.000}\right) \cdot "
-                r"\left(1 + \frac{3.000}{1 + 3.000}\right) \right\}"
-                r" = 14.422",
+                (
+                    r"l_0 = l \cdot max\left\{"
+                    r"\sqrt{1+10 \cdot \frac{k_1 \cdot k_2}{k_1+k_2}}; "
+                    r"\left(1+\frac{k_1}{1 + k_1}\right) \cdot \left(1 + \frac{k_2}{1 + k_2}\right) \right\}"
+                    r" = "
+                    r"4.000 \cdot max\left\{"
+                    r"\sqrt{1+10 \cdot \frac{2.000 \cdot 3.000}{2.000+3.000}}; "
+                    r"\left(1+\frac{2.000}{1 + 2.000}\right) \cdot "
+                    r"\left(1 + \frac{3.000}{1 + 3.000}\right) \right\}"
+                    r" = 14.422"
+                ),
             ),
             ("short", r"l_0 = 14.422"),
         ],

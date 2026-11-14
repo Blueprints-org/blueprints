@@ -52,8 +52,10 @@ class TestForm6Dot16CheckFlangeWithFastenerHoles:
         [
             (
                 "complete",
-                r"CHECK \to \left( \frac{A_{f,net} \cdot 0.9 \cdot f_{u}}{\gamma_{M2}} \geq \frac{A_{f} \cdot f_{y}}{\gamma_{M0}} \right) \to "
-                r"\left( \frac{100.000 \cdot 0.9 \cdot 400.000}{1.100} \geq \frac{120.000 \cdot 250.000}{1.000} \right) \to OK",
+                (
+                    r"CHECK \to \left( \frac{A_{f,net} \cdot 0.9 \cdot f_{u}}{\gamma_{M2}} \geq \frac{A_{f} \cdot f_{y}}{\gamma_{M0}} \right) \to "
+                    r"\left( \frac{100.000 \cdot 0.9 \cdot 400.000}{1.100} \geq \frac{120.000 \cdot 250.000}{1.000} \right) \to OK"
+                ),
             ),
             ("short", r"CHECK \to OK"),
         ],

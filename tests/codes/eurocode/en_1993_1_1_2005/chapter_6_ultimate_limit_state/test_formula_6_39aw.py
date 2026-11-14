@@ -41,14 +41,18 @@ class TestForm6Dot39awHollowSections:
         [
             (
                 "complete",
-                r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t}{A}, 0.5 \right) = "
-                r"\min \left( \frac{7000.000 - 2 \cdot 200.000 \cdot 10.000}{7000.000}, 0.5 \right) = 0.429 \ -",
+                (
+                    r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t}{A}, 0.5 \right) = "
+                    r"\min \left( \frac{7000.000 - 2 \cdot 200.000 \cdot 10.000}{7000.000}, 0.5 \right) = 0.429 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t}{A}, 0.5 \right) = "
-                r"\min \left( \frac{7000.000 \ mm^2 - 2 \cdot 200.000 \ mm \cdot 10.000 \ mm}"
-                r"{7000.000 \ mm^2}, 0.5 \right) = 0.429 \ -",
+                (
+                    r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t}{A}, 0.5 \right) = "
+                    r"\min \left( \frac{7000.000 \ mm^2 - 2 \cdot 200.000 \ mm \cdot 10.000 \ mm}"
+                    r"{7000.000 \ mm^2}, 0.5 \right) = 0.429 \ -"
+                ),
             ),
             ("short", r"a_w = 0.429 \ -"),
         ],
@@ -102,14 +106,18 @@ class TestForm6Dot39awWeldedBoxSections:
         [
             (
                 "complete",
-                r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t_f}{A}, 0.5 \right) = "
-                r"\min \left( \frac{7000.000 - 2 \cdot 200.000 \cdot 10.000}{7000.000}, 0.5 \right) = 0.429 \ -",
+                (
+                    r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t_f}{A}, 0.5 \right) = "
+                    r"\min \left( \frac{7000.000 - 2 \cdot 200.000 \cdot 10.000}{7000.000}, 0.5 \right) = 0.429 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t_f}{A}, 0.5 \right) = "
-                r"\min \left( \frac{7000.000 \ mm^2 - 2 \cdot 200.000 \ mm \cdot 10.000 \ mm}"
-                r"{7000.000 \ mm^2}, 0.5 \right) = 0.429 \ -",
+                (
+                    r"a_w = \min \left( \frac{A - 2 \cdot b \cdot t_f}{A}, 0.5 \right) = "
+                    r"\min \left( \frac{7000.000 \ mm^2 - 2 \cdot 200.000 \ mm \cdot 10.000 \ mm}"
+                    r"{7000.000 \ mm^2}, 0.5 \right) = 0.429 \ -"
+                ),
             ),
             ("short", r"a_w = 0.429 \ -"),
         ],

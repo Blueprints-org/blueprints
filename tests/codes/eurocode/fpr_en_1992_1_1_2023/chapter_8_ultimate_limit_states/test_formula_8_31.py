@@ -69,14 +69,18 @@ class TestForm8Dot31AxialForceCoefficient:
         [
             (
                 "complete",
-                r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
-                r"\max\left(1 + \frac{-200000.000}{\left|150000.000\right|} \cdot \frac{500.000}{3 \cdot 1333.333}, 0.1\right) = 0.833 \ -",
+                (
+                    r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
+                    r"\max\left(1 + \frac{-200000.000}{\left|150000.000\right|} \cdot \frac{500.000}{3 \cdot 1333.333}, 0.1\right) = 0.833 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
-                r"\max\left(1 + \frac{-200000.000 \ N}{\left|150000.000 \ N\right|} \cdot "
-                r"\frac{500.000 \ mm}{3 \cdot 1333.333 \ mm}, 0.1\right) = 0.833 \ -",
+                (
+                    r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
+                    r"\max\left(1 + \frac{-200000.000 \ N}{\left|150000.000 \ N\right|} \cdot "
+                    r"\frac{500.000 \ mm}{3 \cdot 1333.333 \ mm}, 0.1\right) = 0.833 \ -"
+                ),
             ),
             ("short", r"k_{vp} = 0.833 \ -"),
         ],
@@ -105,15 +109,19 @@ class TestForm8Dot31AxialForceCoefficient:
         [
             (
                 "complete",
-                r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
-                r"\max\left(1 + \frac{-200000.000}{\left|-150000.000\right|} \cdot "
-                r"\frac{500.000}{3 \cdot 1333.333}, 0.1\right) = 0.833 \ -",
+                (
+                    r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
+                    r"\max\left(1 + \frac{-200000.000}{\left|-150000.000\right|} \cdot "
+                    r"\frac{500.000}{3 \cdot 1333.333}, 0.1\right) = 0.833 \ -"
+                ),
             ),
             (
                 "complete_with_units",
-                r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
-                r"\max\left(1 + \frac{-200000.000 \ N}{\left|-150000.000 \ N\right|} \cdot "
-                r"\frac{500.000 \ mm}{3 \cdot 1333.333 \ mm}, 0.1\right) = 0.833 \ -",
+                (
+                    r"k_{vp} = \max\left(1 + \frac{N_{Ed}}{\left|V_{Ed}\right|} \cdot \frac{d}{3 \cdot a_{cs}}, 0.1\right) = "
+                    r"\max\left(1 + \frac{-200000.000 \ N}{\left|-150000.000 \ N\right|} \cdot "
+                    r"\frac{500.000 \ mm}{3 \cdot 1333.333 \ mm}, 0.1\right) = 0.833 \ -"
+                ),
             ),
         ],
     )

@@ -53,13 +53,17 @@ class TestForm8Dot44MNrdRectangular:
         [
             (
                 "complete",
-                r"M_{N,Rd} = M_{pl,Rd} \cdot \left[ 1 - \left( \frac{N_{Ed}}{N_{pl,Rd}} \right)^2 \right] = "
-                r"5000.000 \cdot \left[ 1 - \left( \frac{1000.000}{2000.000} \right)^2 \right] = 3750.000 \ Nmm",
+                (
+                    r"M_{N,Rd} = M_{pl,Rd} \cdot \left[ 1 - \left( \frac{N_{Ed}}{N_{pl,Rd}} \right)^2 \right] = "
+                    r"5000.000 \cdot \left[ 1 - \left( \frac{1000.000}{2000.000} \right)^2 \right] = 3750.000 \ Nmm"
+                ),
             ),
             (
                 "complete_with_units",
-                r"M_{N,Rd} = M_{pl,Rd} \cdot \left[ 1 - \left( \frac{N_{Ed}}{N_{pl,Rd}} \right)^2 \right] = "
-                r"5000.000 \ Nmm \cdot \left[ 1 - \left( \frac{1000.000 \ N}{2000.000 \ N} \right)^2 \right] = 3750.000 \ Nmm",
+                (
+                    r"M_{N,Rd} = M_{pl,Rd} \cdot \left[ 1 - \left( \frac{N_{Ed}}{N_{pl,Rd}} \right)^2 \right] = "
+                    r"5000.000 \ Nmm \cdot \left[ 1 - \left( \frac{1000.000 \ N}{2000.000 \ N} \right)^2 \right] = 3750.000 \ Nmm"
+                ),
             ),
             ("short", r"M_{N,Rd} = 3750.000 \ Nmm"),
         ],
