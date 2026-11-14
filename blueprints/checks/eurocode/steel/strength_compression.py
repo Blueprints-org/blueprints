@@ -98,7 +98,7 @@ class CheckStrengthCompressionClass123:
         Formula
             The calculated compression force resistance.
         """
-        area = self.steel_cross_section.profile.section_properties().area
+        area = self.steel_cross_section.profile.section_properties().bp_area
         assert area is not None, "Cross-sectional area must be defined for the steel profile."
         f_y = self.steel_cross_section.yield_strength
         return formula_6_10.Form6Dot10NcRdClass1And2And3(a=area, f_y=f_y, gamma_m0=self.gamma_m0)
