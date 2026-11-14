@@ -12,6 +12,7 @@ from blueprints.codes.eurocode.en_1993_1_1_2005.chapter_5_structural_analysis.ta
     Table5Dot2LoadingCondition,
     Table5Dot2MaximumWidthToThicknessRatio,
     _LimitSpecification,
+    _TableCell,
 )
 from blueprints.codes.formula import ComparisonFormula
 from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
@@ -57,13 +58,11 @@ class TestLimitSpecification:
 class TestTable5Dot2MaximumWidthToThicknessRatio:
     """Validation for table 5.2 from EN 1993-1-1:2005."""
 
-    @pytest.mark.parametrize(
-        ("cell", "limit_specs"),
-        Table5Dot2MaximumWidthToThicknessRatio._ratio_factor_mapping.items(),  # noqa: SLF001
-        ids=str,
-    )
-    def test_every_criterion_of_the_table_is_valid(self, cell: object, limit_specs: tuple[_LimitSpecification, ...]) -> None:
+    # Parametrized on the cell only: the criteria contain lambdas, whose repr differs between pytest-xdist workers.
+    @pytest.mark.parametrize("cell", Table5Dot2MaximumWidthToThicknessRatio._ratio_factor_mapping, ids=str)  # noqa: SLF001
+    def test_every_criterion_of_the_table_is_valid(self, cell: _TableCell) -> None:
         """Every cell holds at least one criterion with valid latex templates."""
+        limit_specs = Table5Dot2MaximumWidthToThicknessRatio._ratio_factor_mapping[cell]  # noqa: SLF001
         assert limit_specs, f"Cell {cell} has no criteria."
         for limit_spec in limit_specs:
             limit_spec._validate_latex_rendering()  # noqa: SLF001
