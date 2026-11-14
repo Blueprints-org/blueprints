@@ -97,7 +97,7 @@ class CheckStrengthTensionClass1234:
         Formula
             The calculated tension force resistance.
         """
-        a = self.steel_cross_section.profile.section_properties().area
+        a = self.steel_cross_section.profile.section_properties().bp_area
         assert a is not None, "Cross-sectional area must be defined for the steel profile."
         f_y = self.steel_cross_section.yield_strength
         return formula_6_6.Form6Dot6DesignPlasticResistanceGrossCrossSection(a=a, f_y=f_y, gamma_m0=self.gamma_m0)
