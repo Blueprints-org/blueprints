@@ -441,14 +441,16 @@ class TestSectionOrientation:
     """The section panel shows the section as built, not mirrored."""
 
     def test_bar_on_the_right_is_drawn_on_the_right(self) -> None:
-        """With an upright section (pure axial force) the bar at the bottom right is drawn at the bottom right."""
+        """With an upright section (pure axial force) every bar is drawn at its own position."""
         cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
-        # point-symmetric pair: the transformed centroid stays at the outline centroid, so N does not bend the section
-        cs.add_longitudinal_rebar(Rebar(diameter=25, x=100, y=-240, material=ReinforcementSteelMaterial()))
-        cs.add_longitudinal_rebar(Rebar(diameter=25, x=-100, y=240, material=ReinforcementSteelMaterial()))
+        # three equal bars around the outline centroid, so N does not bend the section; the layout is neither
+        # mirror- nor point-symmetric, so a mirrored or upside-down drawing would move a bar
+        positions = {(120, -220), (-80, -20), (-40, 240)}
+        for x, y in positions:
+            cs.add_longitudinal_rebar(Rebar(diameter=25, x=x, y=y, material=ReinforcementSteelMaterial()))
         figure = CrossSectionAnalysis(cs).stress(SectionForces(n=-500), regime=Regime.SLS_UNCRACKED).plot()
         try:
             bars = {(round(line.get_xdata()[0]), round(line.get_ydata()[0])) for line in figure.axes[0].get_lines() if line.get_marker() == "o"}
-            assert bars == {(100, -240), (-100, 240)}
+            assert bars == positions
         finally:
             plt.close(figure)

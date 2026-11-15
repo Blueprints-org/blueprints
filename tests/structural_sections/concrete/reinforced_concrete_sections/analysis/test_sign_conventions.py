@@ -7,6 +7,7 @@ mandatory (issue #1061). Not marked slow on purpose — this is the coverage tha
 
 import warnings
 
+import numpy as np
 import pytest
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
@@ -118,3 +119,44 @@ class TestAxialMagnitude:
         result = CrossSectionAnalysis(cs).stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED)
         assert result.concrete_stress_min == pytest.approx(stress(250.0), rel=1e-2)  # top fibre, most compressed
         assert result.concrete_stress_max == pytest.approx(stress(-250.0), rel=1e-2)
+
+
+class TestUnsymmetricBiaxialReference:
+    """Pin both bending components on a section without any symmetry against an independent strain-plane solution."""
+
+    def test_uncracked_strain_plane_matches_the_transformed_section_equilibrium(self) -> None:
+        """Solve the strain plane eps = eps_0 + a x + b y of the transformed section by hand and compare.
+
+        Equilibrium about the outline centroid, in Blueprints conventions (tension positive):
+        n = integral of sigma, m_z = -integral of sigma * x (tension on the -x side), m_y = -integral of sigma * y
+        (tension at the bottom). The bars are lumped at their centres with (alpha_e - 1) * A_s.
+        """
+        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
+        steel = ReinforcementSteelMaterial()
+        width, height = 300.0, 500.0
+        bars = [(-100.0, -200.0, 25.0), (80.0, -210.0, 20.0), (60.0, 200.0, 16.0)]
+        cs = _bare_section()
+        for x, y, diameter in bars:
+            cs.add_longitudinal_rebar(Rebar(diameter=diameter, x=x, y=y, material=steel))
+        forces = SectionForces(n=-200, m_y=40, m_z=15)
+
+        added = [(steel.e_s / concrete.e_cm - 1) * np.pi / 4 * d**2 for _, _, d in bars]
+        area = width * height + sum(added)
+        q_x = sum(a * x for a, (x, _, _) in zip(added, bars, strict=True))
+        q_y = sum(a * y for a, (_, y, _) in zip(added, bars, strict=True))
+        i_xx = height * width**3 / 12 + sum(a * x**2 for a, (x, _, _) in zip(added, bars, strict=True))
+        i_xy = sum(a * x * y for a, (x, y, _) in zip(added, bars, strict=True))
+        i_yy = width * height**3 / 12 + sum(a * y**2 for a, (_, y, _) in zip(added, bars, strict=True))
+        stiffness = concrete.e_cm * np.array([[area, q_x, q_y], [q_x, i_xx, i_xy], [q_y, i_xy, i_yy]])
+        actions = np.array([forces.n * 1e3, -forces.m_z * 1e6, -forces.m_y * 1e6])  # N, Nmm
+        eps_0, a, b = np.linalg.solve(stiffness, actions)
+
+        def strain(x: float, y: float) -> float:
+            return (eps_0 + a * x + b * y) * 1e3  # per mille
+
+        result = CrossSectionAnalysis(cs).stress(forces, regime=Regime.SLS_UNCRACKED)
+        for rebar in result.rebar_results:
+            assert rebar.strain == pytest.approx(strain(rebar.x, rebar.y), rel=1e-2)
+        corners = [concrete.e_cm * strain(x, y) / 1e3 for x in (-150, 150) for y in (-250, 250)]
+        assert result.concrete_stress_min == pytest.approx(min(corners), rel=1e-2)
+        assert result.concrete_stress_max == pytest.approx(max(corners), rel=1e-2)
