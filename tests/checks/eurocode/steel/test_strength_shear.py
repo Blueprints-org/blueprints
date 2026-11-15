@@ -192,7 +192,19 @@ class TestCheckStrengthShearClass34:
         assert calc == calc_without_section_props
 
     def test_result_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
-        """Test result() for ok shear force in Vz direction."""
+        """Test result() for ok shear force in Vz direction.
+
+        Note
+        ----
+        The Vy resistance of an I-profile is a snapshot of the finite element mesh, not a
+        converged value. The check divides the yield stress by the peak elastic shear stress,
+        which for Vy sits at the flange-to-web fillet where the elastic solution is singular,
+        so the peak keeps climbing as the mesh is refined. Measured on this HEB300: 1365 kN at
+        a 0.5 mm² mesh, 1379 kN at the 2.0 mm² mesh this expectation was first taken from, and
+        1405 kN at the max_thickness² / 32 mesh in use now. The Vz resistance is unaffected - its
+        peak sits in the web, away from the fillet, and moves by less than 0.01% across all of
+        those meshes. See `benchmarks/shear_check_sensitivity.py`.
+        """
         v = 1405 * 0.99
         calc = CheckStrengthShearClass34(heb_steel_cross_section, v, axis="Vy", gamma_m0=1.0)
         result = calc.result()
@@ -209,7 +221,10 @@ class TestCheckStrengthShearClass34:
         assert pytest.approx(result.factor_of_safety, 0.005) == 1 / 0.99
 
     def test_result_not_ok(self, heb_steel_cross_section: SteelCrossSection) -> None:
-        """Test result() for not ok shear force."""
+        """Test result() for not ok shear force.
+
+        See `test_result_ok` for why the Vy resistance is mesh dependent.
+        """
         v = 1405 * 1.01
         calc = CheckStrengthShearClass34(heb_steel_cross_section, v, axis="Vy", gamma_m0=1.0)
         result = calc.result()

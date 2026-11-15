@@ -41,6 +41,10 @@ class Profile(ABC):
     """Cache for section properties to avoid recalculation."""
     _unit_stress_cache: dict[str, Any] | None = field(default=None, init=False, repr=False, compare=False, hash=False)
     """Cache for unit stress to avoid recalculation."""
+    _section_cache: list[Section] = field(default_factory=list, init=False, repr=False, compare=False, hash=False)
+    """Cache holding the meshed Section object, so the mesh is only generated once."""
+    _completed_analyses: set[str] = field(default_factory=set, init=False, repr=False, compare=False, hash=False)
+    """Analyses that have already been run on the cached Section object."""
 
     @property
     def mesh_creator(self) -> partial:
@@ -162,6 +166,45 @@ class Profile(ABC):
         """Section object representing the profile. This is used for section property calculations."""
         return Section(geometry=self._geometry())
 
+    def _analysed_section(
+        self,
+        geometric: bool = True,
+        plastic: bool = False,
+        warping: bool = False,
+    ) -> Section:
+        """Section object with the requested analyses applied.
+
+        The meshed Section and every analysis already performed on it are reused, so
+        asking for warping results after geometric ones re-runs neither the meshing nor
+        the geometric analysis.
+
+        Parameters
+        ----------
+        geometric : bool
+            Whether geometric properties are required.
+        plastic: bool
+            Whether plastic properties are required.
+        warping: bool
+            Whether warping properties are required.
+        """
+        if not self._section_cache:
+            self._section_cache.append(self._section())
+
+        section = self._section_cache[0]
+        completed = self._completed_analyses
+
+        if any([geometric, plastic, warping]) and "geometric" not in completed:
+            section.calculate_geometric_properties()
+            completed.add("geometric")
+        if warping and "warping" not in completed:
+            section.calculate_warping_properties()
+            completed.add("warping")
+        if plastic and "plastic" not in completed:
+            section.calculate_plastic_properties()
+            completed.add("plastic")
+
+        return section
+
     def section_properties(
         self,
         geometric: bool = True,
@@ -186,14 +229,7 @@ class Profile(ABC):
             return self._section_props_cache[cache_key]
 
         # Calculate section properties
-        section = self._section()
-
-        if any([geometric, plastic, warping]):
-            section.calculate_geometric_properties()
-        if warping:
-            section.calculate_warping_properties()
-        if plastic:
-            section.calculate_plastic_properties()
+        section = self._analysed_section(geometric=geometric, plastic=plastic, warping=warping)
 
         # Cache the result
         self._section_props_cache[cache_key] = section.section_props
@@ -240,11 +276,8 @@ class Profile(ABC):
         StressPost
             The stress distribution result object for the section under the given loads.
         """
-        section = self._section()
-        section.calculate_geometric_properties()
         # Warping properties are only needed for shear and torsion stresses.
-        if v_y != 0 or v_z != 0 or m_x != 0:
-            section.calculate_warping_properties()
+        section = self._analysed_section(geometric=True, warping=v_y != 0 or v_z != 0 or m_x != 0)
         # Note: The mapping of internal forces to sectionproperties parameters
         # Blueprints uses x for longitudinal axis, y for horizontal, z for vertical
         # sectionproperties uses x for horizontal, y for vertical, z for longitudinal
