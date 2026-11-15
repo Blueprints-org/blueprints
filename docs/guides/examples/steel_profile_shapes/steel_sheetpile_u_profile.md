@@ -42,13 +42,14 @@ print(buffer.getvalue())  # markdown-exec: hide
 ## 3. Access the Section Properties
 
 Retrieve the section properties (area, perimeter, moments of inertia, section moduli, etc.) of the single sheet using the `section_properties()` method.
+The properties are returned in the Blueprints coordinate system and all start with `bp_`, see [Coordinate System](../../concepts/coordinate_system.md).
 
 ```python exec="on" source="material-block" result="ansi" session="sheetpile"
 properties = pu_profile.section_properties()
-print(f"Area: {properties.area:.1f} mm²")
-print(f"Perimeter: {properties.perimeter:.1f} mm")
-print(f"Second moment of area about x-axis (ixx_c): {properties.ixx_c:.0f} mm⁴")
-print(f"Section modulus (zxx_plus): {properties.zxx_plus:.0f} mm³")
+print(f"Area: {properties.bp_area:.1f} mm²")
+print(f"Perimeter: {properties.bp_perimeter:.1f} mm")
+print(f"Second moment of area about the y-axis (bp_iyy_c): {properties.bp_iyy_c:.0f} mm⁴")
+print(f"Section modulus about the y-axis, top fibre (bp_zyy_plus): {properties.bp_zyy_plus:.0f} mm³")
 ```
 
 ## 4. Build a Wall from Multiple Interlocking Sheets

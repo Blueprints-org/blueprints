@@ -101,10 +101,8 @@ class CheckStrengthBendingClass12:
             The calculated plastic bending resistance.
 
         """
-        # For bending about y, the relevant section modulus is sxx; for bending about z, it is syy.
-        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
-        w = float(props.sxx or 0) if self.axis.lower() == "my" else float(props.syy or 0)
+        w = float(props.bp_syy or 0) if self.axis.lower() == "my" else float(props.bp_szz or 0)
 
         f_y = self.steel_cross_section.yield_strength
         return formula_6_13.Form6Dot13MCRdClass1And2(w_pl=w, f_y=f_y, gamma_m0=self.gamma_m0)
@@ -261,17 +259,15 @@ class CheckStrengthBendingClass3:
             The calculated elastic bending resistance.
 
         """
-        # For bending about y, the relevant section modulus is zxx; for bending about z, it is zyy.
-        # This is because of the orientation of the axes defined in Blueprints vs. SectionProperties.
         props = self.steel_cross_section.profile.section_properties()
         if self.axis.lower() == "my":
-            if props.zxx_plus is None or props.zxx_minus is None:
-                raise ValueError("Section properties zxx_plus and zxx_minus must not be None")
-            w = min(float(props.zxx_plus), float(props.zxx_minus))
+            if props.bp_zyy_plus is None or props.bp_zyy_minus is None:
+                raise ValueError("Section properties bp_zyy_plus and bp_zyy_minus must not be None")
+            w = min(float(props.bp_zyy_plus), float(props.bp_zyy_minus))
         else:
-            if props.zyy_plus is None or props.zyy_minus is None:
-                raise ValueError("Section properties zyy_plus and zyy_minus must not be None")
-            w = min(float(props.zyy_plus), float(props.zyy_minus))
+            if props.bp_zzz_plus is None or props.bp_zzz_minus is None:
+                raise ValueError("Section properties bp_zzz_plus and bp_zzz_minus must not be None")
+            w = min(float(props.bp_zzz_plus), float(props.bp_zzz_minus))
 
         f_y = self.steel_cross_section.yield_strength
         return formula_6_14.Form6Dot14MCRdClass3(w_el_min=w, f_y=f_y, gamma_m0=self.gamma_m0)

@@ -2,8 +2,8 @@
 
 import pytest
 from sectionproperties.analysis import Section
-from sectionproperties.post.post import SectionProperties
 
+from blueprints.structural_sections import BPSectionProperties
 from blueprints.structural_sections.geometric_profiles.rectangle import RectangularProfile
 
 
@@ -29,16 +29,16 @@ class TestRectangularProfile:
         polygon = rectangular_profile.polygon
         assert polygon.bounds == pytest.approx(expected=(50.0, 150.0, 150.0, 350.0), rel=1e-6)
 
-    def test_section_properties_geometric(self, rectangular_profile_section_properties: SectionProperties) -> None:
+    def test_section_properties_geometric(self, rectangular_profile_section_properties: BPSectionProperties) -> None:
         """Test the section properties of the RectangularProfile class."""
-        assert rectangular_profile_section_properties.area == pytest.approx(expected=20000.0, rel=1e-6)
-        assert rectangular_profile_section_properties.perimeter == pytest.approx(expected=600.0, rel=1e-6)
-        assert rectangular_profile_section_properties.ixx_g == pytest.approx(expected=1316666666.6, rel=1e-6)
+        assert rectangular_profile_section_properties.bp_area == pytest.approx(expected=20000.0, rel=1e-6)
+        assert rectangular_profile_section_properties.bp_perimeter == pytest.approx(expected=600.0, rel=1e-6)
+        assert rectangular_profile_section_properties.bp_iyy_g == pytest.approx(expected=1316666666.6, rel=1e-6)
 
-    def test_section_properties_plastic(self, rectangular_profile_section_properties: SectionProperties) -> None:
+    def test_section_properties_plastic(self, rectangular_profile_section_properties: BPSectionProperties) -> None:
         """Test the section properties of the RectangularProfile class."""
-        assert rectangular_profile_section_properties.syy == pytest.approx(expected=500000.0, rel=1e-6)
-        assert rectangular_profile_section_properties.sxx == pytest.approx(expected=1000000.0, rel=1e-6)
+        assert rectangular_profile_section_properties.bp_szz == pytest.approx(expected=500000.0, rel=1e-6)
+        assert rectangular_profile_section_properties.bp_syy == pytest.approx(expected=1000000.0, rel=1e-6)
 
     def test_section(self, rectangular_profile: RectangularProfile) -> None:
         """Test the geometry property of the RectangularProfile class."""

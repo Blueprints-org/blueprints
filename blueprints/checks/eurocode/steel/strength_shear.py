@@ -337,7 +337,7 @@ class CheckStrengthShearClass34:
             The unit shear stress in N/mm².
         """
         unit_stress = self.steel_cross_section.profile.unit_stress()
-        return float(np.max(np.abs(unit_stress["sig_zxy_vy"] if self.axis == "Vz" else unit_stress["sig_zxy_vx"])))
+        return float(np.max(np.abs(unit_stress["bp_sig_xyz_vz"] if self.axis == "Vz" else unit_stress["bp_sig_xyz_vy"])))
 
     def shear_stress(self) -> float:
         """Calculate the maximum shear stress in the steel cross-section using elastic theory.

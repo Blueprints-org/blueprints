@@ -4,10 +4,10 @@ from dataclasses import dataclass
 
 import numpy as np
 from matplotlib.figure import Figure, SubFigure
-from sectionproperties.post.stress_post import StressPost
 
 from blueprints.checks.check_result import CheckResult
 from blueprints.codes.eurocode.en_1993_1_1_2005 import EN_1993_1_1_2005
+from blueprints.structural_sections import BPStressPost
 from blueprints.structural_sections.steel.steel_cross_section import SteelCrossSection
 from blueprints.type_alias import DIMENSIONLESS, KN, KNM
 from blueprints.utils.report import Report
@@ -112,13 +112,13 @@ class CheckStrengthVonMises:
         """
         raise_if_less_or_equal_to_zero(gamma_m0=self.gamma_m0, yield_strength=self.steel_cross_section.yield_strength)
 
-    def _calculate_stress_post(self) -> StressPost:
+    def _calculate_stress_post(self) -> BPStressPost:
         """Calculate the stress distribution in the cross-section for the applied internal forces.
 
         Returns
         -------
-        StressPost
-            The stress distribution result object from sectionproperties.
+        BPStressPost
+            The stress distribution result object, expressed in the Blueprints coordinate system.
         """
         return self.steel_cross_section.profile.calculate_stress(
             n=self.n,
@@ -143,7 +143,7 @@ class CheckStrengthVonMises:
         stress_post = self._calculate_stress_post()
 
         stress_data = stress_post.get_stress()[0]
-        von_mises = stress_data["sig_vm"]
+        von_mises = stress_data["bp_sig_vm"]
         # Return the maximum von Mises stress
         return float(np.max(np.abs(von_mises)))
 

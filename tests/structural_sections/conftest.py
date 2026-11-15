@@ -1,8 +1,8 @@
 """Fixtures for structural sections tests."""
 
 import pytest
-from sectionproperties.post.post import SectionProperties
 
+from blueprints.structural_sections import BPSectionProperties
 from blueprints.structural_sections.geometric_profiles import (
     AnnularSectorProfile,
     CircularCorneredProfile,
@@ -21,8 +21,8 @@ def rectangular_profile() -> RectangularProfile:
 
 
 @pytest.fixture
-def rectangular_profile_section_properties() -> SectionProperties:
-    """Return a SectionProperties instance from RectangularProfile."""
+def rectangular_profile_section_properties() -> BPSectionProperties:
+    """Return a BPSectionProperties instance from RectangularProfile."""
     rect = RectangularProfile(name="Rectangle", width=100.0, height=200.0, x=100.0, y=250.0)
     # Calculate properties
     return rect.section_properties(geometric=True, plastic=True, warping=True)
