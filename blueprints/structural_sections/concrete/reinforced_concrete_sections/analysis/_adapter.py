@@ -10,7 +10,7 @@ analysis call site (added in a later step).
 
 import math
 import warnings
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from enum import Enum
 from types import ModuleType
@@ -415,7 +415,7 @@ def _to_backend_actions(forces: SectionForces) -> tuple[float, float, float]:
 
 
 @contextmanager
-def _suppress_pure_axial_warning() -> Iterator[None]:
+def _suppress_pure_axial_warning() -> Generator[None, None, None]:
     """Suppress the spurious runtime warnings the backend emits for pure-axial actions.
 
     With zero bending the neutral-axis gradient is computed as 0/0, which propagates NaN through the
@@ -429,7 +429,7 @@ def _suppress_pure_axial_warning() -> Iterator[None]:
 
 
 @contextmanager
-def _suppress_asymmetric_modulus_warning() -> Iterator[None]:
+def _suppress_asymmetric_modulus_warning() -> Generator[None, None, None]:
     """Suppress the backend warning about unequal tensile/compressive moduli for the no-tension profile.
 
     The cracked service concrete (:func:`_notension_service_concrete`) deliberately has a zero tensile
@@ -443,7 +443,7 @@ def _suppress_asymmetric_modulus_warning() -> Iterator[None]:
 
 
 @contextmanager
-def _wrap_backend_convergence_errors(description: str) -> Iterator[None]:
+def _wrap_backend_convergence_errors(description: str) -> Generator[None, None, None]:
     """Turn a backend solver failure into a clear Blueprints ``ValueError``.
 
     The backend's iterative cracked-section solver raises a backend-specific ``AnalysisError`` when the
@@ -462,7 +462,7 @@ def _wrap_backend_convergence_errors(description: str) -> Iterator[None]:
 
 
 @contextmanager
-def _wrap_backend_geometry_errors() -> Iterator[None]:
+def _wrap_backend_geometry_errors() -> Generator[None, None, None]:
     """Turn a raw backend geometry failure into a clear, actionable Blueprints error.
 
     The meshing backend raises a low-level ``shapely GEOSException`` when it cannot process the section
@@ -553,7 +553,7 @@ def _guarded_meshing_module(module: ModuleType) -> ModuleType:
 
 
 @contextmanager
-def _guard_degenerate_meshes() -> Iterator[None]:
+def _guard_degenerate_meshes() -> Generator[None, None, None]:
     """Protect every backend analysis against the meshing crash described in :func:`_deduplicate_pslg`.
 
     The backend meshes from a module-level ``cytriangle`` import, so the guard swaps that name in the backend's
