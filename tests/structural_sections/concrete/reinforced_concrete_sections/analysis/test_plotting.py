@@ -142,13 +142,22 @@ class TestProjectionAxes:
         plane = StrainPlane(eps_0=0.0, kappa_y=-4e-6, kappa_z=0.0, neutral_axis_depth=100.0, neutral_axis_angle=0.0)
         height_axis, across_axis = _projection_axes(plane)
         assert height_axis == pytest.approx([0.0, 1.0])
-        assert across_axis == pytest.approx([-1.0, 0.0])
+        assert across_axis == pytest.approx([1.0, 0.0])  # +x stays to the right
 
     def test_pure_axial_falls_back_to_vertical(self) -> None:
         """A flat strain plane (no curvature) falls back to the geometric vertical."""
         plane = StrainPlane(eps_0=-0.3, kappa_y=0.0, kappa_z=0.0, neutral_axis_depth=None, neutral_axis_angle=0.0)
         height_axis, _ = _projection_axes(plane)
         assert height_axis == pytest.approx([0.0, 1.0])
+
+    @pytest.mark.parametrize(("kappa_y", "kappa_z"), [(-4e-6, 0.0), (0.0, -5e-6), (-3e-6, 2e-6), (2e-6, 3e-6)])
+    def test_projection_turns_the_section_without_mirroring(self, kappa_y: float, kappa_z: float) -> None:
+        """The (across, height) frame is a rotation of (x, y): orthonormal with a positive determinant."""
+        plane = StrainPlane(eps_0=0.0, kappa_y=kappa_y, kappa_z=kappa_z, neutral_axis_depth=100.0, neutral_axis_angle=0.0)
+        height_axis, across_axis = _projection_axes(plane)
+        frame = np.vstack([across_axis, height_axis])
+        assert frame @ frame.T == pytest.approx(np.eye(2))
+        assert np.linalg.det(frame) == pytest.approx(1.0)
 
     def test_horizontal_gradient_orients_towards_positive_x(self) -> None:
         """A purely horizontal gradient orients the height axis toward +x when its y-component is zero."""
@@ -396,5 +405,21 @@ class TestHollowSection:
                 x, y = ax.transData.transform(point)
                 rgb = pixels[round(pixels.shape[0] - y), round(x), :3]
                 assert bool((rgb == 255).all()) is expect_white
+        finally:
+            plt.close(figure)
+
+
+class TestSectionOrientation:
+    """The section panel shows the section as built, not mirrored."""
+
+    def test_bar_on_the_right_is_drawn_on_the_right(self) -> None:
+        """With an upright section (pure axial force) a single bar at +x appears right of the centre line, at its own height."""
+        cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_rebar(Rebar(diameter=25, x=100, y=-240, material=ReinforcementSteelMaterial()))
+        figure = CrossSectionAnalysis(cs).stress(SectionForces(n=-500), regime=Regime.SLS_UNCRACKED).plot()
+        try:
+            [bar] = [line for line in figure.axes[0].get_lines() if line.get_marker() == "o"]
+            assert bar.get_xdata()[0] == pytest.approx(100.0)
+            assert bar.get_ydata()[0] == pytest.approx(-240.0)
         finally:
             plt.close(figure)

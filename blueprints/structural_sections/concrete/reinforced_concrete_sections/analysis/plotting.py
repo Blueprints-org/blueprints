@@ -72,7 +72,9 @@ def _projection_axes(plane: StrainPlane) -> tuple[np.ndarray, np.ndarray]:
     """Return the unit height axis (along the strain gradient) and the in-plane axis perpendicular to it.
 
     The height axis is oriented to point roughly "up" (positive y component) so the section is drawn
-    upright. For a flat strain plane (pure axial) it falls back to the geometric vertical.
+    upright. For a flat strain plane (pure axial) it falls back to the geometric vertical. The across axis
+    is the height axis turned a quarter clockwise, so the two form a rotation of the section's (x, y): the
+    section is drawn turned, never mirrored, and under bending about y it keeps +x to the right.
 
     Parameters
     ----------
@@ -92,7 +94,7 @@ def _projection_axes(plane: StrainPlane) -> tuple[np.ndarray, np.ndarray]:
         height_axis = gradient / magnitude
         if height_axis[1] < 0 or (height_axis[1] == 0 and height_axis[0] < 0):
             height_axis = -height_axis  # orient roughly upward for an upright section
-    across_axis = np.array([-height_axis[1], height_axis[0]])
+    across_axis = np.array([height_axis[1], -height_axis[0]])
     return height_axis, across_axis
 
 
