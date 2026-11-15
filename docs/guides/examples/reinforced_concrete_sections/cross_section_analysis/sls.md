@@ -1,26 +1,32 @@
 # SLS Stress/Strain Analysis
 
-This page shows how to compute the serviceability (SLS) stresses and strains of a reinforced concrete cross-section from its section forces with `CrossSectionAnalysis`. Blueprints decides whether the section is cracked and returns the matching concrete and reinforcement results.
+This page shows how to compute the serviceability (SLS) stresses and strains of a reinforced concrete cross-section from its section forces with `CrossSectionAnalysis`:
+
+```python exec="on" source="above" result="html" html="true" session="rc_sls_teaser"
+from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass  # markdown-exec: hide
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality  # markdown-exec: hide
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis  # markdown-exec: hide
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection  # markdown-exec: hide
+from blueprints.structural_sections.section_forces import SectionForces  # markdown-exec: hide
+concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C30_37)
+steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B)
+cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=concrete)
+cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", cover=50, material=steel)
+
+result = CrossSectionAnalysis(cs).stress(SectionForces(n=-100, m_y=150))
+result.plot()
+
+from io import StringIO  # markdown-exec: hide
+import matplotlib.pyplot as plt  # markdown-exec: hide
+
+buffer = StringIO()  # markdown-exec: hide
+plt.savefig(buffer, format="svg")  # markdown-exec: hide
+print(buffer.getvalue())  # markdown-exec: hide
+```
+
+Blueprints decides whether the section is cracked and returns the matching concrete and reinforcement results. The steps below build this result one piece at a time, then cover creep, sagging and hogging, biaxial bending and a circular section.
 
 The section forces and their signs are explained on the [guide overview](index.md#axes-signs-and-units): **tension positive, compression negative**, in kN, kNm, mm, MPa and ‰.
-
-We will:
-
-- Build a reinforced cross-section and analyse it
-- See how Blueprints decides between the cracked and uncracked state
-- Read the concrete, reinforcement and neutral-axis results
-- Draw the strain and stress state
-- Include creep through the effective modulus
-- Compare sagging and hogging, and analyse biaxial bending and a circular section
-
-<div id="assumptions"></div>
-
-???+ info "Assumptions"
-
-    - **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
-    - **Cracked or uncracked.** The section counts as cracked when the uncracked concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). A cracked section carries no concrete tension. See [section 2](#2-cracked-or-uncracked).
-    - **Creep** through the effective modulus `E_c,eff = E_cm / (1 + φ)` (EN 1992-1-1 formula 7.20), with the creep coefficient φ as an input. Shrinkage, the age-adjusted effective modulus and tension stiffening are not included.
-    - **Biaxial bending** is supported in the uncracked regime. A cracked analysis under biaxial bending raises a `NotImplementedError`.
 
 ## 1. Build the Cross-section
 
@@ -52,6 +58,15 @@ print(buffer.getvalue())  # markdown-exec: hide
 ```
 
 ## 2. Cracked or Uncracked
+
+<div id="assumptions"></div>
+
+??? info "Assumptions"
+
+    - **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
+    - **Cracked or uncracked.** The section counts as cracked when the uncracked concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). A cracked section carries no concrete tension.
+    - **Creep** through the effective modulus `E_c,eff = E_cm / (1 + φ)` (EN 1992-1-1 formula 7.20), with the creep coefficient φ as an input. Shrinkage, the age-adjusted effective modulus and tension stiffening are not included.
+    - **Biaxial bending** is supported in the uncracked regime. A cracked analysis under biaxial bending raises a `NotImplementedError`.
 
 `stress()` first analyses the uncracked section. If the largest concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23), the section is cracked and the cracked analysis is returned instead.
 
