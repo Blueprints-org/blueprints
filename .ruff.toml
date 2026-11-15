@@ -75,8 +75,21 @@ ignore = [
     "RUF002", # ambiguous-unicode-character-docstring
     "RUF003", # ambiguous-unicode-character-comment
 ]
-[lint.per-file-ignores] 
+[lint.per-file-ignores]
 "docs/*" = ["T201"]
+# Measurement scripts: they exist to print tables, they are run as scripts rather than
+# imported, and they deliberately reach into internals to time individual stages.
+"benchmarks/*" = [
+    "T201",    # print is the output of a benchmark
+    "INP001",  # run as scripts, not imported as a package
+    "SLF001",  # timing individual stages needs the private entry points
+    "ANN",     # annotations on throwaway helpers add noise
+    "ARG",     # timing wrappers take arguments they do not use
+    "PLW0603", # a module level accumulator is the simplest way to total up timings
+    "C901",    # report builders are long and flat
+    "PLR0912",
+    "PLR0915",
+]
 
 [format]
 quote-style = "double"
