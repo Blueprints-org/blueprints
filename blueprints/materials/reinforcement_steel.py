@@ -201,21 +201,21 @@ class ReinforcementSteelMaterial:
     def eps_uk(self) -> PER_MILLE:
         r"""[$\varepsilon_{uk}$] Characteristic strain of reinforcement at max. load [$‰$ (per mille)] (table C.1 Annex C from EN 1992-1-1:2004).
 
-        * 250 ‰ for steel class A
-        * 500 ‰ for steel class B
-        * 750 ‰ for steel class C
+        * 25 ‰ (2.5%) for steel class A
+        * 50 ‰ (5.0%) for steel class B
+        * 75 ‰ (7.5%) for steel class C
 
         Returns
         -------
         PER_MILLE
-            Example: 500 (for B500B)
+            Example: 50 (for B500B)
         """
         match self.steel_class.lower():
             case "a":
-                return 250
+                return 25
             case "b":
-                return 500
+                return 50
             case "c":
-                return 750
+                return 75
             case _:
                 raise ValueError(f"Unknown steel class: {self.steel_class}")

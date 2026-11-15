@@ -34,3 +34,9 @@ DEG_TO_RAD = math.pi / 180
 # <editor-fold desc="Length conversion">
 M_TO_MM = 1e3
 MM_TO_M = 1e-3
+# </editor-fold>
+
+# <editor-fold desc="Strain conversion">
+PER_MILLE_TO_RATIO = 1e-3
+RATIO_TO_PER_MILLE = 1e3
+# </editor-fold>
