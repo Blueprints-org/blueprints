@@ -160,11 +160,12 @@ def _ultimate_profile(concrete: ConcreteMaterial) -> ConcreteUltimateProfile:
 
 
 def effective_modulus(concrete: ConcreteMaterial, creep_coefficient: DIMENSIONLESS) -> MPA:
-    """Effective concrete elastic modulus E_c,eff = E_cm / (1 + phi) for a given creep coefficient.
+    """Effective concrete elastic modulus E_c,eff = E_c / (1 + phi) for a given creep coefficient.
 
-    EN 1992-1-1:2004 art. 7.4.3(5), formula (7.20). With ``creep_coefficient = 0`` (short-term) this is
-    simply the secant modulus e_cm. The creep coefficient phi is a user input; Blueprints does not derive
-    it from loading age or notional size.
+    EN 1992-1-1:2004 art. 7.4.3(5), formula (7.20), applied to the material's modulus ``e_c``: the secant
+    modulus e_cm, or ``custom_e_c`` when the material sets one. With ``creep_coefficient = 0`` (short-term)
+    this is simply that modulus. The creep coefficient phi is a user input; Blueprints does not derive it from
+    loading age or notional size.
 
     Parameters
     ----------
@@ -185,7 +186,7 @@ def effective_modulus(concrete: ConcreteMaterial, creep_coefficient: DIMENSIONLE
     """
     if creep_coefficient < 0.0:
         raise ValueError(f"The creep coefficient must be zero or positive, got {creep_coefficient}.")
-    return float(Form7Dot20EffectiveModulusCreep(e_cm=concrete.e_cm, phi_inf_t0=creep_coefficient))
+    return float(Form7Dot20EffectiveModulusCreep(e_cm=concrete.e_c, phi_inf_t0=creep_coefficient))
 
 
 def _service_concrete(concrete: ConcreteMaterial, flexural_tensile_strength: MPA, elastic_modulus: MPA | None = None) -> Concrete:
@@ -200,7 +201,7 @@ def _service_concrete(concrete: ConcreteMaterial, flexural_tensile_strength: MPA
         computed once per section from the member height (see ``build_concrete_section``).
     elastic_modulus : MPA | None
         The elastic modulus for the linear service profile: the effective modulus E_c,eff when
-        analyzing with creep, or ``None`` to use the short-term secant modulus e_cm.
+        analyzing with creep, or ``None`` to use the short-term modulus e_c.
 
     Returns
     -------
@@ -210,7 +211,7 @@ def _service_concrete(concrete: ConcreteMaterial, flexural_tensile_strength: MPA
     return Concrete(
         name=concrete.name,
         density=concrete.density * MM3_TO_M3,
-        stress_strain_profile=ConcreteLinear(elastic_modulus=elastic_modulus if elastic_modulus is not None else concrete.e_cm),
+        stress_strain_profile=ConcreteLinear(elastic_modulus=elastic_modulus if elastic_modulus is not None else concrete.e_c),
         colour=_CONCRETE_COLOUR,
         ultimate_stress_strain_profile=_ultimate_profile(concrete),
         flexural_tensile_strength=flexural_tensile_strength,
@@ -235,14 +236,14 @@ def _notension_service_concrete(concrete: ConcreteMaterial, flexural_tensile_str
         concretes but unused, since this profile is only ever driven by :func:`_cracked_stress_with_axial`.
     elastic_modulus : MPA | None
         The compression modulus of the linear branch: the effective modulus E_c,eff when analyzing with
-        creep, or ``None`` to use the short-term secant modulus e_cm.
+        creep, or ``None`` to use the short-term modulus e_c.
 
     Returns
     -------
     Concrete
         The backend concrete with a no-tension linear-compression service profile.
     """
-    modulus = elastic_modulus if elastic_modulus is not None else concrete.e_cm
+    modulus = elastic_modulus if elastic_modulus is not None else concrete.e_c
     profile = ConcreteServiceProfile(
         strains=[-_SERVICE_STRAIN_RANGE, 0.0, _SERVICE_STRAIN_RANGE],
         stresses=[0.0, 0.0, modulus * _SERVICE_STRAIN_RANGE],
@@ -327,7 +328,7 @@ def build_concrete_section(
         The material model level (SLS or SLS_CRACKED).
     elastic_modulus : MPA | None
         The concrete elastic modulus for the service profile: the effective modulus E_c,eff when
-        analyzing with creep, or ``None`` for the short-term secant modulus e_cm.
+        analyzing with creep, or ``None`` for the short-term modulus e_c.
 
     Returns
     -------
@@ -595,7 +596,7 @@ def analyse_uncracked(section: ConcreteSection, forces: SectionForces, elastic_m
     forces : SectionForces
         The section forces in Blueprints conventions.
     elastic_modulus : MPA
-        The concrete elastic modulus used for the analysis (e_cm or the effective modulus E_c,eff),
+        The concrete elastic modulus used for the analysis (e_c or the effective modulus E_c,eff),
         used to reconstruct concrete strains from stresses.
     geometry : Polygon
         The section profile polygon, carried on the result for plotting.
@@ -659,7 +660,7 @@ def _to_stress_strain_result(
     raw : StressResult
         The backend ``StressResult`` (concrete stresses compression-positive).
     elastic_modulus : MPA
-        The concrete elastic modulus used for the analysis (e_cm or the effective modulus E_c,eff),
+        The concrete elastic modulus used for the analysis (e_c or the effective modulus E_c,eff),
         used to reconstruct concrete strains from stresses in the SLS regimes.
     geometry : Polygon
         The section profile polygon, carried on the result for plotting.
@@ -764,7 +765,7 @@ def _reconstruct_strain_plane(
     raw : StressResult
         The backend stress result.
     elastic_modulus : MPA
-        The concrete elastic modulus used for the analysis (e_cm or the effective modulus E_c,eff).
+        The concrete elastic modulus used for the analysis (e_c or the effective modulus E_c,eff).
     is_cracked : bool
         Which regime produced the result.
     concrete_stress_min : MPA
@@ -863,7 +864,7 @@ def _validate_reconstruction(
     kappa_y : float
         Fitted strain gradient in y (ratio/mm).
     elastic_modulus : MPA
-        The concrete elastic modulus used for the analysis (e_cm or the effective modulus E_c,eff).
+        The concrete elastic modulus used for the analysis (e_c or the effective modulus E_c,eff).
     is_cracked : bool
         Which regime produced the result (cracked zeros the concrete tension stress).
     concrete_stress_min : MPA
@@ -987,7 +988,7 @@ def _cracked_results(section: ConcreteSection, forces: SectionForces, elastic_mo
         The section forces in Blueprints conventions.
     elastic_modulus : MPA
         Reference elastic modulus for the transformed cracked properties — the same modulus as the
-        service profile (e_cm or the effective modulus E_c,eff), so neutral-axis depth and strains stay
+        service profile (e_c or the effective modulus E_c,eff), so neutral-axis depth and strains stay
         consistent.
 
     Returns
@@ -1068,7 +1069,7 @@ def analyse_cracked(
     forces : SectionForces
         The section forces in Blueprints conventions.
     elastic_modulus : MPA
-        Reference elastic modulus (e_cm or the effective modulus E_c,eff, matching the service profile).
+        Reference elastic modulus (e_c or the effective modulus E_c,eff, matching the service profile).
     geometry : Polygon
         The section profile polygon, carried on the result for plotting.
     notension_section : Callable[[], ConcreteSection]
@@ -1130,7 +1131,7 @@ def _cracked_stress_with_axial(
     i_cracked : float
         The pure-bending cracked second moment of area [mm⁴], used only to size the curvature search.
     elastic_modulus : MPA
-        The concrete compression modulus (e_cm or E_c,eff), used only to size the curvature search.
+        The concrete compression modulus (e_c or E_c,eff), used only to size the curvature search.
 
     Returns
     -------

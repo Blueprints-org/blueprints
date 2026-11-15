@@ -42,6 +42,15 @@ class TestBuildConcreteSection:
         concrete_material = section.concrete_geometries[0].material
         assert concrete_material.stress_strain_profile.elastic_modulus == ConcreteMaterial(ConcreteStrengthClass.C30_37).e_cm
 
+    def test_custom_concrete_modulus_is_the_default_service_modulus(self) -> None:
+        """A material with custom_e_c uses that modulus instead of the strength-class e_cm."""
+        cs = RectangularReinforcedCrossSection(
+            width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37, custom_e_c=30000.0)
+        )
+        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=ReinforcementSteelMaterial(), edge="lower")
+        section = build_concrete_section(cs)
+        assert section.concrete_geometries[0].material.stress_strain_profile.elastic_modulus == 30000.0
+
     def test_explicit_elastic_modulus_overrides_service_modulus(self) -> None:
         """An explicit (effective) elastic modulus replaces e_cm in the service profile."""
         section = build_concrete_section(_section(), elastic_modulus=16000.0)

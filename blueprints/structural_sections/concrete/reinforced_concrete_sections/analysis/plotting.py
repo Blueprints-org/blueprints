@@ -106,7 +106,7 @@ def _concrete_stress(strain_per_mille: np.ndarray, elastic_modulus: MPA, *, is_c
     strain_per_mille : np.ndarray
         Strain samples [‰], compression negative.
     elastic_modulus : MPA
-        The concrete elastic modulus (e_cm or E_c,eff) [MPa].
+        The concrete elastic modulus (e_c or E_c,eff) [MPa].
     is_cracked : bool
         Whether the concrete tension stress must be dropped (cracked SLS regime).
 

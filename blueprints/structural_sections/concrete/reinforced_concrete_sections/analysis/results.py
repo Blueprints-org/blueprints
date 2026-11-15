@@ -166,8 +166,8 @@ class StressStrainResult:
         The reconstructed linear strain field over the section. Always populated by the analyzer; the
         default ``None`` exists only for lightweight construction in tests.
     elastic_modulus : MPA
-        The concrete elastic modulus used for the analysis — e_cm, or the effective modulus
-        e_cm / (1 + phi) when a creep coefficient was given — needed by :meth:`plot` to turn the
+        The concrete elastic modulus used for the analysis — e_c (e_cm, or the material's custom_e_c),
+        or the effective modulus e_c / (1 + phi) when a creep coefficient was given — needed by :meth:`plot` to turn the
         strain profile into a concrete-stress profile [MPa].
     geometry : Any
         The section profile polygon (shapely ``Polygon``), used by :meth:`plot` to draw the section

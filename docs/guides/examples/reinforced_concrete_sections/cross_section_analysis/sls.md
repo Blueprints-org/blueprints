@@ -64,7 +64,7 @@ print(buffer.getvalue())  # markdown-exec: hide
 
 ??? info "Assumptions"
 
-    - **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
+    - **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1), or the material's `custom_e_c` when it sets one (on this page `E_cm` stands for the modulus used); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
     - **Cracked or uncracked.** The section counts as cracked when the uncracked concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). A cracked section carries no concrete tension.
     - **Creep** through the effective modulus `E_c,eff = E_cm / (1 + φ)` (EN 1992-1-1 formula 7.20), with the creep coefficient φ as an input. Shrinkage, the age-adjusted effective modulus and tension stiffening are not included.
     - **Biaxial bending** is supported in the uncracked regime. The cracked regime requires the neutral axis to be perpendicular to the moment: biaxial bending, and bending about an axis the section is not symmetric about, raise a `NotImplementedError` (see [section 8](#8-biaxial-bending)).

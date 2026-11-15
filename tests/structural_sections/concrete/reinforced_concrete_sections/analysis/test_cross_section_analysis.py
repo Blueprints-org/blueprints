@@ -347,6 +347,22 @@ class TestCreep:
         result = _analysis().stress(SectionForces(m_y=20), creep_coefficient=1.0)
         assert result.elastic_modulus == pytest.approx(_CONCRETE.e_cm / 2.0)
 
+    @pytest.mark.parametrize("creep_coefficient", [0.0, 1.0])
+    def test_custom_concrete_modulus_drives_the_analysis(self, creep_coefficient: float) -> None:
+        """A material with custom_e_c is analysed with that modulus, and creep softens that modulus."""
+        custom = 30000.0
+        cs = RectangularReinforcedCrossSection(
+            width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37, custom_e_c=custom)
+        )
+        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=ReinforcementSteelMaterial(), edge="lower")
+        forces = SectionForces(m_y=150)
+        result = CrossSectionAnalysis(cs).stress(forces, regime=Regime.SLS_CRACKED, creep_coefficient=creep_coefficient)
+        default = _analysis().stress(forces, regime=Regime.SLS_CRACKED, creep_coefficient=creep_coefficient)
+        assert result.elastic_modulus == pytest.approx(custom / (1.0 + creep_coefficient))
+        # a softer concrete than e_cm raises the modular ratio: more steel stress, deeper neutral axis
+        assert result.rebar_results[0].stress > default.rebar_results[0].stress
+        assert result.strain_plane.neutral_axis_depth > default.strain_plane.neutral_axis_depth
+
 
 class TestBiaxialBending:
     """Biaxial bending is exact when uncracked but unsupported in the cracked regime."""
