@@ -237,6 +237,7 @@ def _draw_section(
 ) -> None:
     """Draw the section outline, the hatched compression zone and the reinforcement (projected frame)."""
     ax.add_patch(PathPatch(outline, facecolor=_CONCRETE_FACE, edgecolor="black", lw=1.2))
+    ax.autoscale_view()  # add_patch() alone leaves the limits at their default without bars to plot
     _shade_compression_zone(ax, outline, strain, hs)
     for rebar in result.rebar_results:
         point = np.array([rebar.x, rebar.y])

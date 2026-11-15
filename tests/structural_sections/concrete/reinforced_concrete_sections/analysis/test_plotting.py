@@ -110,6 +110,34 @@ class TestPlotStructure:
             result.plot()
 
 
+class TestSectionPanelLimits:
+    """The section panel frames the whole outline, also without bars to plot."""
+
+    def test_unreinforced_section_fits_the_panel(self) -> None:
+        """Under pure compression with no bars (no dimension line either) the outline still sets the limits."""
+        result = StressStrainResult(
+            forces=SectionForces(n=-500),
+            regime=Regime.SLS_UNCRACKED,
+            concrete_stress_min=-3.3,
+            concrete_stress_max=-3.3,
+            rebar_results=[],
+            raw=None,
+            strain_plane=StrainPlane(eps_0=-0.1, kappa_y=0.0, kappa_z=0.0, neutral_axis_depth=None, neutral_axis_angle=0.0),
+            elastic_modulus=33000.0,
+            geometry=Polygon([(-150, -250), (150, -250), (150, 250), (-150, 250)]),
+        )
+        figure = result.plot()
+        try:
+            left, right = figure.axes[0].get_xlim()
+            bottom, top = figure.axes[0].get_ylim()
+            assert left <= -150.0
+            assert right >= 150.0
+            assert bottom <= -250.0
+            assert top >= 250.0
+        finally:
+            plt.close(figure)
+
+
 class TestStressPanel:
     """The stress panel draws the concrete block and only adds a steel axis when there are bars."""
 
