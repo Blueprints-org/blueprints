@@ -8,6 +8,7 @@ from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial,
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis  # markdown-exec: hide
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection  # markdown-exec: hide
 from blueprints.structural_sections.section_forces import SectionForces  # markdown-exec: hide
+
 concrete = ConcreteMaterial(concrete_class=ConcreteStrengthClass.C30_37)
 steel = ReinforcementSteelMaterial(steel_quality=ReinforcementSteelQuality.B500B)
 cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=concrete)
