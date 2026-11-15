@@ -67,6 +67,21 @@ class TestStressStrainResult:
         assert result.concrete_stress_max == 2.0
         assert len(result.rebar_results) == 1
 
+    def test_rebar_results_cannot_be_changed_through_the_input_list(self) -> None:
+        """The per-bar results are copied into a tuple, so changing the passed list leaves the result intact."""
+        rebars = [RebarStressResult(x=0.0, y=-200.0, diameter=20.0, stress=35.0, strain=0.18, force=11.0)]
+        result = StressStrainResult(
+            forces=SectionForces(m_y=150.0),
+            regime=Regime.SLS_UNCRACKED,
+            concrete_stress_min=-7.5,
+            concrete_stress_max=2.0,
+            rebar_results=rebars,
+            raw=None,
+        )
+        rebars.clear()
+        assert isinstance(result.rebar_results, tuple)
+        assert len(result.rebar_results) == 1
+
     @pytest.mark.parametrize(
         ("regime", "expected"),
         [

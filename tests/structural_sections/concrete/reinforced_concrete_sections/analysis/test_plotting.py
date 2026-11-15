@@ -14,10 +14,12 @@ from shapely import Polygon
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
+from matplotlib.path import Path
 from matplotlib.text import Text
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
 from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial
+from blueprints.structural_sections.concrete.rebar import Rebar
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis, Regime
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.plotting import (
     _concrete_stress,
@@ -27,7 +29,9 @@ from blueprints.structural_sections.concrete.reinforced_concrete_sections.analys
     _shade_compression_zone,
 )
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import StrainPlane, StressStrainResult
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.base import ReinforcedCrossSection
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+from blueprints.structural_sections.geometric_profiles.tube import TubeProfile
 from blueprints.structural_sections.section_forces import SectionForces
 
 
@@ -170,14 +174,13 @@ class TestConcreteStressLaw:
 class TestCompressionZone:
     """The section panel hatches the concrete that is in compression (strain < 0)."""
 
-    _across = np.array([-150.0, 150.0, 150.0, -150.0])
-    _heights = np.array([-300.0, -300.0, 300.0, 300.0])
+    _outline = Path([(-150.0, -300.0), (150.0, -300.0), (150.0, 300.0), (-150.0, 300.0), (-150.0, -300.0)], closed=True)
 
     def test_full_tension_draws_no_hatch(self) -> None:
         """A section entirely in tension gets no compression hatch."""
         _, ax = plt.subplots()
         try:
-            _shade_compression_zone(ax, self._across, self._heights, strain=np.array([1.0, 2.0]), hs=np.array([-300.0, 300.0]))
+            _shade_compression_zone(ax, self._outline, strain=np.array([1.0, 2.0]), hs=np.array([-300.0, 300.0]))
             assert len(ax.patches) == 0
         finally:
             plt.close("all")
@@ -186,7 +189,7 @@ class TestCompressionZone:
         """A section entirely in compression is hatched whole, with no clip rectangle."""
         _, ax = plt.subplots()
         try:
-            _shade_compression_zone(ax, self._across, self._heights, strain=np.array([-2.0, -1.0]), hs=np.array([-300.0, 300.0]))
+            _shade_compression_zone(ax, self._outline, strain=np.array([-2.0, -1.0]), hs=np.array([-300.0, 300.0]))
             assert len(ax.patches) == 1
         finally:
             plt.close("all")
@@ -195,7 +198,7 @@ class TestCompressionZone:
         """A section with a neutral axis adds one hatched patch, clipped to the compressed band."""
         _, ax = plt.subplots()
         try:
-            _shade_compression_zone(ax, self._across, self._heights, strain=np.array([1.0, -1.0]), hs=np.array([-300.0, 300.0]))
+            _shade_compression_zone(ax, self._outline, strain=np.array([1.0, -1.0]), hs=np.array([-300.0, 300.0]))
             assert len(ax.patches) == 1  # the clip to the compressed band is verified visually
         finally:
             plt.close("all")
@@ -204,7 +207,7 @@ class TestCompressionZone:
         """A zero-strain end fibre leaves the full hatch (no interpolated neutral axis)."""
         _, ax = plt.subplots()
         try:
-            _shade_compression_zone(ax, self._across, self._heights, strain=np.array([-1.0, 0.0]), hs=np.array([-300.0, 300.0]))
+            _shade_compression_zone(ax, self._outline, strain=np.array([-1.0, 0.0]), hs=np.array([-300.0, 300.0]))
             assert len(ax.patches) == 1
         finally:
             plt.close("all")
@@ -368,5 +371,30 @@ class TestAppliedForcesBox:
             assert x_axis is not None
             assert extent.y0 >= 0.0
             assert extent.y1 <= x_axis.y0
+        finally:
+            plt.close(figure)
+
+
+class TestHollowSection:
+    """A section with a void is drawn and hatched with the void left open."""
+
+    def test_void_is_neither_filled_nor_hatched(self) -> None:
+        """The inside of a tube stays blank, while its wall is drawn as (hatched) concrete."""
+        cs = ReinforcedCrossSection(
+            profile=TubeProfile(outer_diameter=800, inner_diameter=500, x=0, y=0),
+            concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37),
+        )
+        for angle in np.linspace(0.0, 2.0 * np.pi, 8, endpoint=False):
+            cs.add_longitudinal_rebar(Rebar(diameter=20, x=325 * np.cos(angle), y=325 * np.sin(angle), material=ReinforcementSteelMaterial()))
+        figure = CrossSectionAnalysis(cs).stress(SectionForces(n=-3000), regime=Regime.SLS_UNCRACKED).plot()
+        try:
+            figure.canvas.draw()
+            pixels = np.asarray(figure.canvas.buffer_rgba())
+            ax = figure.axes[0]
+            wall = np.array([325 * np.cos(np.pi / 8), 325 * np.sin(np.pi / 8)])  # between two bars
+            for point, expect_white in (((0.0, 0.0), True), (tuple(wall), False)):
+                x, y = ax.transData.transform(point)
+                rgb = pixels[round(pixels.shape[0] - y), round(x), :3]
+                assert bool((rgb == 255).all()) is expect_white
         finally:
             plt.close(figure)

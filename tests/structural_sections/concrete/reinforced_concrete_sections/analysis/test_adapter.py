@@ -1,5 +1,7 @@
 """Tests for the concreteproperties adapter (material mapping and section building)."""
 
+import threading
+
 import pytest
 
 from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass, DiagramType
@@ -211,6 +213,25 @@ class TestGuardDegenerateMeshes:
         original = backend_analysis_section.triangle
         with pytest.raises(ValueError, match="boom"), _guard_degenerate_meshes():
             raise ValueError("boom")
+        assert backend_analysis_section.triangle is original
+
+    def test_another_thread_waits_until_the_guard_is_released(self) -> None:
+        """The swap is process-wide, so an analysis in another thread waits instead of meshing mid-swap."""
+        original = backend_analysis_section.triangle
+        entered: list[str] = []
+
+        def other_analysis() -> None:
+            with _guard_degenerate_meshes():
+                entered.append("other")
+
+        with _guard_degenerate_meshes():
+            thread = threading.Thread(target=other_analysis)
+            thread.start()
+            thread.join(timeout=0.2)
+            assert thread.is_alive()
+            assert entered == []
+        thread.join(timeout=5.0)
+        assert entered == ["other"]
         assert backend_analysis_section.triangle is original
 
     def test_serves_other_attributes_from_the_wrapped_module(self) -> None:

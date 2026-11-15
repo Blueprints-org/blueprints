@@ -139,7 +139,7 @@ print(f"strain at the bottom fibre: {plane.strain_at(0, -300):6.3f} per mille")
 A cracked result has two neutral-axis depths, and under combined N + M they differ:
 
 - `result.strain_plane.neutral_axis_depth` — the **actual** neutral axis under the applied forces. This is the depth of the compression zone in the stress state above.
-- `result.cracked_properties.neutral_axis_depth` — the neutral axis of the cracked section under **pure bending**. Together with the cracking moment `m_cr` and the cracked second moment of area `i_cracked`, it is a property of the section and does not depend on the forces.
+- `result.cracked_properties.neutral_axis_depth` — the neutral axis of the cracked section under **pure bending**. Together with the cracking moment `m_cr` and the cracked second moment of area `i_cracked`, it is a property of the section for the bending direction: it does not depend on the axial force or the size of the moment, but sagging and hogging give different values when the top and bottom reinforcement differ (see [section 7](#7-sagging-versus-hogging)).
 
 ```python exec="on" source="material-block" result="ansi" session="rc_analysis"
 cracked = result.cracked_properties

@@ -156,7 +156,8 @@ class StressStrainResult:
     concrete_stress_max : MPA
         Most tensile concrete stress (algebraic maximum), compression negative [MPa].
     rebar_results : Sequence[RebarStressResult]
-        Per-bar stress/strain results.
+        Per-bar stress/strain results. Stored as a tuple, so the frozen result cannot be changed through the
+        sequence that was passed in.
     raw : Any
         The underlying backend result object, kept as an escape hatch for advanced use.
     cracked_properties : CrackedProperties | None
@@ -184,6 +185,10 @@ class StressStrainResult:
     strain_plane: StrainPlane | None = None
     elastic_modulus: MPA = 0.0
     geometry: Any = None
+
+    def __post_init__(self) -> None:
+        """Store the per-bar results as a tuple, keeping the frozen result immutable."""
+        object.__setattr__(self, "rebar_results", tuple(self.rebar_results))
 
     @property
     def is_cracked(self) -> bool:

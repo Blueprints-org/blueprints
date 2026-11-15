@@ -73,6 +73,15 @@ class TestNeutralAxis:
         assert plane.neutral_axis_angle == 0.0
         assert plane.strain_at(0, 250) == pytest.approx(plane.strain_at(0, -250))
 
+    def test_cracked_without_forces_is_unstrained(self) -> None:
+        """Forcing the cracked regime with no section forces gives a flat, zero strain plane instead of an error."""
+        result = _analysis().stress(SectionForces(), regime=Regime.SLS_CRACKED)
+        plane = result.strain_plane
+        assert plane is not None
+        assert (plane.eps_0, plane.kappa_y, plane.kappa_z) == (0.0, 0.0, 0.0)
+        assert plane.neutral_axis_depth is None
+        assert all(rebar.strain == 0.0 for rebar in result.rebar_results)
+
     def test_all_tension_section_has_no_neutral_axis(self) -> None:
         """A large tensile force with slight bending keeps every fibre in tension: no neutral axis."""
         plane = _analysis().stress(SectionForces(n=3000, m_y=5), regime=Regime.SLS_UNCRACKED).strain_plane

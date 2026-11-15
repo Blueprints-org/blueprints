@@ -14,8 +14,9 @@ from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Polygon as MplPolygon
-from matplotlib.patches import Rectangle
+from matplotlib.patches import PathPatch, Rectangle
+from matplotlib.path import Path
+from shapely.geometry.polygon import orient
 
 from blueprints.structural_sections.concrete.reinforced_concrete_sections.plotters.rectangular import RCS_CROSS_SECTION_COLOR, REBAR_COLOR
 from blueprints.type_alias import MPA
@@ -25,6 +26,7 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
     from matplotlib.figure import Figure
     from matplotlib.text import Text
+    from shapely import Polygon
 
     from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis.results import StrainPlane, StressStrainResult
 
@@ -158,7 +160,8 @@ def plot_stress_strain(result: StressStrainResult, *, figsize: tuple[float, floa
         1, 3, figsize=figsize, sharey=True, gridspec_kw={"width_ratios": list(_PANEL_WIDTH_RATIOS)}
     )
 
-    _draw_section(ax_section, across, heights, strain, hs, result, across_axis, height_axis)
+    outline = _section_outline(result.geometry, across_axis, height_axis)
+    _draw_section(ax_section, outline, strain, hs, result, across_axis, height_axis)
     forces_box = _draw_forces(fig, result)
     if _shows_compression_depth(plane, strain, hs):
         _draw_compression_depth(ax_section, plane, across, strain, hs)
@@ -206,10 +209,24 @@ def _fit_section_panel_height(fig: Figure, ax_section: Axes, ax_reference: Axes,
             ax.set_position((position.x0, section.y0, position.width, section.height))
 
 
+def _section_outline(geometry: Polygon, across_axis: np.ndarray, height_axis: np.ndarray) -> Path:
+    """Project the section polygon into the plot frame as one path, keeping any voids as holes.
+
+    The exterior and the interior rings are oriented in opposite directions, so a void is left open when the
+    path is filled or hatched.
+    """
+    oriented = orient(geometry)
+    rings = [oriented.exterior, *oriented.interiors]
+    projected = []
+    for ring in rings:
+        coords = np.asarray(ring.coords, dtype=float)
+        projected.append(Path(np.column_stack([coords @ across_axis, coords @ height_axis]), closed=True))
+    return Path.make_compound_path(*projected)
+
+
 def _draw_section(
     ax: Axes,
-    across: np.ndarray,
-    heights: np.ndarray,
+    outline: Path,
     strain: np.ndarray,
     hs: np.ndarray,
     result: StressStrainResult,
@@ -217,8 +234,8 @@ def _draw_section(
     height_axis: np.ndarray,
 ) -> None:
     """Draw the section outline, the hatched compression zone and the reinforcement (projected frame)."""
-    ax.fill(across, heights, facecolor=_CONCRETE_FACE, edgecolor="black", lw=1.2)
-    _shade_compression_zone(ax, across, heights, strain, hs)
+    ax.add_patch(PathPatch(outline, facecolor=_CONCRETE_FACE, edgecolor="black", lw=1.2))
+    _shade_compression_zone(ax, outline, strain, hs)
     for rebar in result.rebar_results:
         point = np.array([rebar.x, rebar.y])
         ax.plot(point @ across_axis, point @ height_axis, "o", color=_REBAR_COLOUR, ms=7)
@@ -312,26 +329,26 @@ def _draw_compression_depth(ax: Axes, plane: StrainPlane, across: np.ndarray, st
     ax.set_xlim(left - _X_MARGIN * (right - left), x_dim + _DIMENSION_LABEL_ROOM * (right - left))
 
 
-def _shade_compression_zone(ax: Axes, across: np.ndarray, heights: np.ndarray, strain: np.ndarray, hs: np.ndarray) -> None:
+def _shade_compression_zone(ax: Axes, outline: Path, strain: np.ndarray, hs: np.ndarray) -> None:
     """Hatch the part of the section in compression (strain < 0), clipped to the section outline.
 
     The concrete carries compression where the strain is negative. Since strain is linear over the
-    height, that is a band bounded by the neutral axis; a hatched copy of the section outline is clipped
-    to that band. A fully tensioned section shows no hatch; a fully compressed one is hatched whole.
+    height, that is a band bounded by the neutral axis; a hatched copy of the section outline (voids
+    included) is clipped to that band. A fully tensioned section shows no hatch; a fully compressed one
+    is hatched whole.
     """
     if strain[0] >= 0 and strain[-1] >= 0:
         return  # entire section in tension: nothing compressed
-    hatch = MplPolygon(np.column_stack([across, heights]), closed=True, facecolor="none", edgecolor=_COMPRESSION_HATCH, hatch="//", lw=0.0)
+    hatch = PathPatch(outline, facecolor="none", edgecolor=_COMPRESSION_HATCH, hatch="//", lw=0.0)
     ax.add_patch(hatch)
     if strain[0] < 0 and strain[-1] < 0:
         return  # entire section in compression: hatch the whole outline, no clipping needed
     neutral_height = _neutral_axis_height(strain, hs)
     if neutral_height is None:
         return  # a zero-strain end fibre; leave the full hatch
-    low, high = float(heights.min()), float(heights.max())
-    left, right = float(across.min()), float(across.max())
-    y0, y1 = (low, neutral_height) if strain[0] < 0 else (neutral_height, high)
-    hatch.set_clip_path(Rectangle((left, y0), right - left, y1 - y0, transform=ax.transData))
+    bounds = outline.get_extents()
+    y0, y1 = (bounds.y0, neutral_height) if strain[0] < 0 else (neutral_height, bounds.y1)
+    hatch.set_clip_path(Rectangle((bounds.x0, y0), bounds.width, y1 - y0, transform=ax.transData))
 
 
 def _draw_strain(ax: Axes, strain: np.ndarray, hs: np.ndarray, result: StressStrainResult, height_axis: np.ndarray) -> None:

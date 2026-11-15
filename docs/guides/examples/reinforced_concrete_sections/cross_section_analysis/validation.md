@@ -240,7 +240,7 @@ The cracking moment `m_cr` and the cracked second moment of area `i_cracked` are
 
 !!! warning "Modelling differences"
 
-    Blueprints performs a **linear-elastic SLS** analysis: concrete is linear up to cracking with the secant modulus `E_cm`, reinforcement is elastic up to `f_yk` (no partial factor), tension stiffening is **not** included, and the cracking decision uses the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). IDEA StatiCa RCS can use other choices (an effective or long-term modulus, tension stiffening per EN 1992-1-1 art. 7.4.3). When comparing, set up the IDEA case as a short-term linear analysis without tension stiffening.
+    Blueprints performs a **linear-elastic SLS** analysis: concrete is linear up to cracking with the secant modulus `E_cm`, reinforcement is elastic up to `f_yk` (no partial factor), tension stiffening is **not** included, and the cracking decision uses the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). IDEA StatiCa RCS can use other choices (an effective or long-term modulus, tension stiffening per EN 1992-1-1 art. 7.4.3). When comparing, set up every case without tension stiffening: cases A, B and D as a short-term linear analysis, and case C with the long-term stiffness for `φ = 2`.
 
 ## Software versions
 

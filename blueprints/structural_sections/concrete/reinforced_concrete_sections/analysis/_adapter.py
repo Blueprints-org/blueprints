@@ -9,6 +9,7 @@ analysis call site (added in a later step).
 """
 
 import math
+import threading
 import warnings
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
@@ -90,6 +91,8 @@ _MIN_PSLG_VERTICES: int = 3
 
 # Marks the stand-in meshing module, so a nested guard recognises one that is already in place.
 _MESH_GUARD_FLAG = "__blueprints_mesh_guard__"
+# Serialises the process-wide meshing-module swap of :func:`_guard_degenerate_meshes` across threads.
+_MESH_GUARD_LOCK = threading.RLock()
 
 
 class AnalysisLevel(Enum):
@@ -558,20 +561,22 @@ def _guard_degenerate_meshes() -> Generator[None, None, None]:
 
     The backend meshes from a module-level ``cytriangle`` import, so the guard swaps that name in the backend's
     own namespace for the duration of the call and puts it back afterwards. Only the backend's view changes;
-    ``cytriangle`` itself is left alone for any other user in the same process. Nesting is a no-op, and the swap
-    is not thread-safe, which matches the rest of this adapter (the backend analyses are single-threaded).
+    ``cytriangle`` itself is left alone for any other user in the same process. Nesting is a no-op. The swap is
+    process-wide, so a reentrant lock is held for the whole guarded call: analyses in other threads wait, and
+    none of them can find the original module restored while it is still meshing.
     """
-    original = backend_analysis_section.triangle
-    if getattr(original, _MESH_GUARD_FLAG, False):
-        yield
-        return
+    with _MESH_GUARD_LOCK:
+        original = backend_analysis_section.triangle
+        if getattr(original, _MESH_GUARD_FLAG, False):
+            yield
+            return
 
-    # deliberately swapping the backend's meshing module for a stand-in, which its declared type disallows
-    backend_analysis_section.triangle = _guarded_meshing_module(original)  # ty: ignore[invalid-assignment]
-    try:
-        yield
-    finally:
-        backend_analysis_section.triangle = original
+        # deliberately swapping the backend's meshing module for a stand-in, which its declared type disallows
+        backend_analysis_section.triangle = _guarded_meshing_module(original)  # ty: ignore[invalid-assignment]
+        try:
+            yield
+        finally:
+            backend_analysis_section.triangle = original
 
 
 def analyse_uncracked(section: ConcreteSection, forces: SectionForces, elastic_modulus: MPA, geometry: Polygon) -> StressStrainResult:
@@ -751,6 +756,10 @@ def _reconstruct_strain_plane(
 
     if is_cracked:
         compression = node_stress > 0.0  # backend compression-positive; keep only compressed concrete
+        rebar_strains = np.asarray(raw.lumped_reinforcement_strains, dtype=float)
+        if not compression.any() and not rebar_strains.any():
+            # No section forces: the section is unstrained, which the samples cannot pin down (no compression zone).
+            return StrainPlane(eps_0=0.0, kappa_y=0.0, kappa_z=0.0, neutral_axis_depth=None, neutral_axis_angle=0.0)
         fit_coords = [node_coords[compression]]
         fit_strain = [node_strain[compression]]
     else:
