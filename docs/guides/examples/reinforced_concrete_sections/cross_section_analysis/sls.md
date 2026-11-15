@@ -67,7 +67,7 @@ print(buffer.getvalue())  # markdown-exec: hide
     - **Linear-elastic.** Concrete is linear with the secant modulus `E_cm` (EN 1992-1-1 table 3.1); reinforcement is elastic with `E_s` up to `f_yk`. There are no partial factors.
     - **Cracked or uncracked.** The section counts as cracked when the uncracked concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23). A cracked section carries no concrete tension.
     - **Creep** through the effective modulus `E_c,eff = E_cm / (1 + φ)` (EN 1992-1-1 formula 7.20), with the creep coefficient φ as an input. Shrinkage, the age-adjusted effective modulus and tension stiffening are not included.
-    - **Biaxial bending** is supported in the uncracked regime. A cracked analysis under biaxial bending raises a `NotImplementedError`.
+    - **Biaxial bending** is supported in the uncracked regime. The cracked regime requires the neutral axis to be perpendicular to the moment: biaxial bending, and bending about an axis the section is not symmetric about, raise a `NotImplementedError` (see [section 8](#8-biaxial-bending)).
 
 `stress()` first analyses the uncracked section. If the largest concrete tensile stress exceeds the flexural tensile strength `f_ctm,fl` (EN 1992-1-1 formula 3.23), the section is cracked and the cracked analysis is returned instead.
 
@@ -307,9 +307,14 @@ plt.savefig(buffer, format="svg")  # markdown-exec: hide
 print(buffer.getvalue())  # markdown-exec: hide
 ```
 
-!!! warning "Cracked biaxial bending is not supported"
+!!! warning "Cracked: only bending about an axis of symmetry"
 
-    Under biaxial bending the cracked neutral axis is generally not perpendicular to the moment vector; finding it requires an iterative biaxial solution that is not implemented. A cracked analysis under biaxial bending — forced with `Regime.SLS_CRACKED`, or reached with the default `Regime.AUTO` because the section cracks — therefore raises a `NotImplementedError` instead of returning an unreliable result. Larger moments on this column, such as `m_y=80, m_z=60`, crack it and raise this error.
+    The cracked analysis takes the neutral axis perpendicular to the moment. That holds when the section is symmetric about the bending plane. Otherwise the cracked neutral axis tilts and its angle has to be solved as well, which is not implemented yet ([#1187](https://github.com/Blueprints-org/blueprints/issues/1187)). A cracked analysis — forced with `Regime.SLS_CRACKED`, or reached with the default `Regime.AUTO` because the section cracks — therefore raises a `NotImplementedError` instead of returning an unreliable result:
+
+    - under **biaxial bending**: larger moments on this column, such as `m_y=80, m_z=60`, crack it and raise this error;
+    - under bending about an axis the section is **not symmetric about**, for example `m_z` on a beam with different top and bottom reinforcement, or a pure axial force on reinforcement that is unsymmetric in both directions.
+
+    Bending about an axis of symmetry, such as `m_y` on any of the beams above, is not affected.
 
 ## 9. Circular Section
 

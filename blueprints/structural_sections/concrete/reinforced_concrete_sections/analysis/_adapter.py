@@ -86,6 +86,11 @@ _CURVATURE_XTOL: float = 1e-12
 _CURVATURE_RTOL: float = 1e-8
 # Moment [Nmm] below which a pure axial force counts as acting at the outline centroid (a symmetric section).
 _PURE_AXIAL_MOMENT_TOL: float = 1.0
+# Largest moment about the transverse axis, as a fraction of the moment along the bending direction, that a
+# cracked state may carry before its neutral axis counts as tilted (see _reject_tilted_neutral_axis).
+_TRANSVERSE_MOMENT_TOL: float = 0.01
+# Follow-up issue for the cracked analysis with a free neutral-axis angle.
+_FREE_NEUTRAL_AXIS_ISSUE = "https://github.com/Blueprints-org/blueprints/issues/1187"
 
 # Fewest vertices the meshing backend accepts for a planar straight-line graph; below this it raises.
 _MIN_PSLG_VERTICES: int = 3
@@ -1001,10 +1006,10 @@ def _cracked_results(section: ConcreteSection, forces: SectionForces, elastic_mo
     """
     if forces.m_y != 0.0 and forces.m_z != 0.0:
         raise NotImplementedError(
-            "Cracked analysis under biaxial bending (both m_y and m_z non-zero) is not supported: the "
-            "cracked neutral-axis orientation is not perpendicular to the moment vector and requires an "
-            "iterative biaxial solution. Use uncracked_stress for biaxial bending, or apply bending about "
-            "a single axis."
+            "Cracked analysis under biaxial bending (both m_y and m_z non-zero) is not supported yet: the "
+            "cracked neutral axis is not perpendicular to the moment vector, so its angle has to be solved "
+            f"as well ({_FREE_NEUTRAL_AXIS_ISSUE}). Use Regime.SLS_UNCRACKED for biaxial bending, or apply "
+            "bending about a single axis."
         )
     n, theta, m = _to_cracked_actions(forces)
     with _guard_degenerate_meshes(), _wrap_backend_geometry_errors():
@@ -1079,6 +1084,7 @@ def analyse_cracked(
     if forces.n == 0.0:
         with _guard_degenerate_meshes(), _wrap_backend_geometry_errors():
             raw = section.calculate_cracked_stress(cracked_results=cracked, n=n, m=m)
+        _reject_tilted_neutral_axis(raw, theta=theta, moment=m, forces=forces)
     else:
         i_cracked = cracked.iuu_cr
         # populated by calculate_transformed_properties in _cracked_results, so never None here.
@@ -1143,12 +1149,14 @@ def _cracked_stress_with_axial(
         return section.calculate_service_stress(stub, m=0.0, kappa=curvature)
 
     description = f"cracked stress analysis for forces {forces}"
+    target_moment = m  # the moment along the bending direction the solved state has to carry
     with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         if m == 0.0:
             # pure axial: the force acts at the outline centroid, so the section still bends when the resultant of a
             # uniform strain lies elsewhere; bend in the direction of the moment the axial force carries there
             moment_x, moment_y, _ = stress_at(0.0, theta).sum_moments()
-            if math.hypot(moment_x, moment_y) <= _PURE_AXIAL_MOMENT_TOL:
+            target_moment = math.hypot(moment_x, moment_y)  # the moment of the axial force's eccentricity
+            if target_moment <= _PURE_AXIAL_MOMENT_TOL:
                 return stress_at(0.0, theta)
             theta = math.atan2(-moment_y, moment_x)
 
@@ -1159,7 +1167,48 @@ def _cracked_stress_with_axial(
             return moment_x * math.cos(theta) - moment_y * math.sin(theta) - m
 
         curvature = _solve_service_curvature(moment_error, stiffness=elastic_modulus * i_cracked)
-        return stress_at(curvature, theta)
+        raw = stress_at(curvature, theta)
+    _reject_tilted_neutral_axis(raw, theta=theta, moment=target_moment, forces=forces)
+    return raw
+
+
+def _reject_tilted_neutral_axis(raw: StressResult, *, theta: float, moment: float, forces: SectionForces) -> None:
+    """Refuse a cracked state whose neutral axis should not be perpendicular to the moment.
+
+    The cracked analysis fixes the neutral-axis angle from the direction of the moment and solves only the
+    curvature. That is exact when the section is symmetric about the bending plane. Otherwise the cracked
+    neutral axis tilts, and the solved state still carries a moment about the transverse axis: it is not in
+    equilibrium with the applied forces. Solving the angle as well is not supported yet (issue #1187), so such a
+    state is refused instead of returned.
+
+    Parameters
+    ----------
+    raw : StressResult
+        The backend stress result of the cracked state, with moments about the outline centroid.
+    theta : float
+        The neutral-axis angle the state was solved for, in the backend convention [rad].
+    moment : float
+        The moment along the bending direction the state should carry: the applied moment, or for a pure
+        axial force the moment its eccentricity causes [Nmm].
+    forces : SectionForces
+        The section forces in Blueprints conventions, echoed in the error message.
+
+    Raises
+    ------
+    NotImplementedError
+        If the moment about the transverse axis exceeds ``_TRANSVERSE_MOMENT_TOL`` of ``moment``.
+    """
+    moment_x, moment_y, _ = raw.sum_moments()
+    # the transverse direction is perpendicular to the bending direction (m_x, m_y) = (cos theta, -sin theta)
+    transverse = moment_x * math.sin(theta) + moment_y * math.cos(theta)
+    if abs(transverse) > _TRANSVERSE_MOMENT_TOL * moment:
+        raise NotImplementedError(
+            f"Cracked analysis for forces {forces} is not supported yet: the section is not symmetric about the "
+            f"bending plane, so its cracked neutral axis tilts and the state would carry {abs(transverse) * NMM_TO_KNM:.2f} "
+            "kNm about the transverse axis. This happens for example under m_z on a beam with different top and "
+            f"bottom reinforcement; solving the neutral-axis angle as well is planned ({_FREE_NEUTRAL_AXIS_ISSUE}). "
+            "Use Regime.SLS_UNCRACKED, or bend about an axis of symmetry of the section."
+        )
 
 
 def _solve_service_curvature(moment_error: Callable[[float], float], *, stiffness: float) -> float:

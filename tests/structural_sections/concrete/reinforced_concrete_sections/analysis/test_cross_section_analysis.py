@@ -368,6 +368,50 @@ class TestBiaxialBending:
             _analysis().stress(SectionForces(m_y=150, m_z=100))
 
 
+def _unsymmetric_top_bottom_analysis(extra_edge: str | None = None) -> CrossSectionAnalysis:
+    """A beam with heavy bottom and light top reinforcement: symmetric about its vertical axis only."""
+    cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+    cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=25, edge="lower", cover=50, material=ReinforcementSteelMaterial())
+    cs.add_longitudinal_reinforcement_by_quantity(n=2, diameter=12, edge="upper", cover=50, material=ReinforcementSteelMaterial())
+    if extra_edge is not None:
+        cs.add_longitudinal_reinforcement_by_quantity(n=2, diameter=12, edge=extra_edge, cover=50, material=ReinforcementSteelMaterial())
+    return CrossSectionAnalysis(cs)
+
+
+class TestTiltedCrackedNeutralAxis:
+    """A cracked state whose neutral axis would tilt away from the moment direction is refused (issue #1187)."""
+
+    @pytest.mark.parametrize(
+        "forces",
+        [
+            pytest.param(SectionForces(m_z=40), id="pure_bending_about_z"),
+            pytest.param(SectionForces(n=-200, m_z=40), id="axial_and_bending_about_z"),
+        ],
+    )
+    def test_bending_about_an_unsymmetric_axis_is_refused(self, forces: SectionForces) -> None:
+        """M_z on a beam with different top and bottom reinforcement would carry a transverse moment when cracked."""
+        with pytest.raises(NotImplementedError, match="issues/1187"):
+            _unsymmetric_top_bottom_analysis().stress(forces, regime=Regime.SLS_CRACKED)
+
+    def test_auto_refuses_when_the_section_cracks(self) -> None:
+        """AUTO surfaces the limitation once the uncracked analysis decides the section cracks."""
+        with pytest.raises(NotImplementedError, match="not symmetric about the bending plane"):
+            _unsymmetric_top_bottom_analysis().stress(SectionForces(m_z=100))
+
+    def test_pure_axial_with_reinforcement_unsymmetric_both_ways_is_refused(self) -> None:
+        """A pure axial force on reinforcement unsymmetric in both directions would bend about a tilted axis."""
+        with pytest.raises(NotImplementedError, match="issues/1187"):
+            _unsymmetric_top_bottom_analysis(extra_edge="right").stress(SectionForces(n=-1000), regime=Regime.SLS_CRACKED)
+
+    @pytest.mark.parametrize("forces", [SectionForces(m_y=150), SectionForces(n=-200, m_y=150), SectionForces(n=-200)])
+    def test_bending_about_the_axis_of_symmetry_is_solved(self, forces: SectionForces) -> None:
+        """About its vertical axis of symmetry the same beam cracks with a level neutral axis and no transverse moment."""
+        result = _unsymmetric_top_bottom_analysis().stress(forces, regime=Regime.SLS_CRACKED)
+        _, moment_y, _ = result.raw.sum_moments()
+        assert result.regime is Regime.SLS_CRACKED
+        assert moment_y == pytest.approx(0.0, abs=1e3)
+
+
 class TestCaching:
     """Tests for the per-configuration backend section cache."""
 
