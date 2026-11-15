@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -121,7 +121,6 @@ css = [
 name = "blue-prints"
 version = "0.8.0"
 source = { editable = "." }
-default-groups = ["dev", "test"]
 dependencies = [
     { name = "googletrans" },
     { name = "latex2mathml" },
@@ -211,7 +210,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.3.5" },
     { name = "python-docx", specifier = ">=1.2.0" },
     { name = "scipy", specifier = ">=1.17.1" },
-    { name = "sectionproperties", specifier = ">=3.10.0" },
+    { name = "sectionproperties", editable = "../section-properties" },
     { name = "shapely", specifier = ">=2.1.2" },
 ]
 
@@ -2448,7 +2447,7 @@ wheels = [
 [[package]]
 name = "sectionproperties"
 version = "3.10.2"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../section-properties" }
 dependencies = [
     { name = "cytriangle" },
     { name = "matplotlib" },
@@ -2458,9 +2457,50 @@ dependencies = [
     { name = "scipy" },
     { name = "shapely" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ae/e4/fb84349dce9641c24d3c56e0a0a44130e504aa0ce8232f1d30ddd4231bfb/sectionproperties-3.10.2.tar.gz", hash = "sha256:10b538662802b880ef275007f0500ebc5083ea8051fb75e6526b57fa28a6f26a", size = 2730576, upload-time = "2026-01-24T11:11:22.635Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/94/bc1ecee178a09d48a16e5cc1f5bf4755811659c9e6384e40057eaf9ba286/sectionproperties-3.10.2-py3-none-any.whl", hash = "sha256:e8a4d15127630b6fc5344b69283c3782e9aeee2da86ec78862ae722ea11687d7", size = 113723, upload-time = "2026-01-24T11:11:21.05Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "cad-to-shapely", marker = "extra == 'dxf'" },
+    { name = "cytriangle" },
+    { name = "matplotlib" },
+    { name = "more-itertools" },
+    { name = "numba", marker = "extra == 'numba'" },
+    { name = "numpy" },
+    { name = "pypardiso", marker = "(sys_platform == 'linux' and extra == 'pardiso') or (sys_platform == 'win32' and extra == 'pardiso')" },
+    { name = "rhino-shapley-interop", marker = "python_full_version < '3.14' and extra == 'rhino'" },
+    { name = "rhino3dm", marker = "python_full_version < '3.14' and extra == 'rhino'", specifier = ">=8.17.0" },
+    { name = "rich", extras = ["jupyter"] },
+    { name = "scipy" },
+    { name = "shapely" },
+]
+provides-extras = ["numba", "rhino", "dxf", "pardiso"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "ipympl", specifier = "==0.9.8" },
+    { name = "notebook", specifier = "==7.5.0" },
+    { name = "pyqt6", specifier = "==6.10.1" },
+    { name = "sphinx-autobuild", specifier = "==2025.8.25" },
+]
+docs = [
+    { name = "furo", specifier = "==2025.9.25" },
+    { name = "ipykernel", specifier = "==7.1.0" },
+    { name = "ipython", specifier = "==9.8.0" },
+    { name = "nbconvert", specifier = "==7.16.6" },
+    { name = "nbsphinx", specifier = "==0.9.8" },
+    { name = "sphinx", specifier = "==8.2.3" },
+    { name = "sphinx-copybutton", specifier = "==0.5.2" },
+    { name = "sphinxext-opengraph", specifier = "==0.13.0" },
+]
+lint = [
+    { name = "pre-commit", specifier = "==4.5.0" },
+    { name = "pyright", specifier = "==1.1.407" },
+]
+test = [
+    { name = "coverage", extras = ["toml"], specifier = "==7.13.0" },
+    { name = "pytest", specifier = "==9.0.2" },
+    { name = "pytest-benchmark", extras = ["histogram"], specifier = "==5.2.3" },
+    { name = "pytest-check", specifier = "==2.6.2" },
 ]
 
 [[package]]

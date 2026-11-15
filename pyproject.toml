@@ -96,6 +96,12 @@ changelog = "https://github.com/Blueprints-org/blueprints/releases"
 [tool.uv]
 default-groups = ["dev", "test"]
 
+[tool.uv.sources]
+# Local checkout of the vectorised sectionproperties branch, so that `uv run` picks it up
+# instead of the published build. Expects the repository to sit next to this one. Remove
+# this entry, or point it back at the index, once the branch is released upstream.
+sectionproperties = { path = "../section-properties", editable = true }
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
