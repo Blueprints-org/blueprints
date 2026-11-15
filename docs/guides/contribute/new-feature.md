@@ -89,9 +89,7 @@ The core team will discuss and review the proposal in bi-weekly meetings, provid
     The core team is responsible for reviewing and approving new feature proposals. The current core team members are:
 
     - Gerjan Dorgelo ([@GerjanDorgelo](https://github.com/GerjanDorgelo))
-    - Wichard Bron ([@bro-wi](https://github.com/bro-wi))
     - Enrique García Méndez ([@egarciamendez](https://github.com/egarciamendez))
-    - Sina Zel taat ([@SZeltaat](https://github.com/SZeltaat))
 
 
 ### 3. Implement the Approved Design and Submit a PR

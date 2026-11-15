@@ -44,8 +44,10 @@ class Profile(ABC):
 
     @property
     def mesh_creator(self) -> partial:
-        """Get the mesh creator for the profile."""
-        return partial(Geometry.create_mesh, mesh_sizes=2.0)
+        """Get the mesh creator for the profile. Mesh size is area, so when 4 elements
+        are used along the maximum thickness in a triangle, the mesh size is 0.5 * (max_thickness / 4)^2.
+        """
+        return partial(Geometry.create_mesh, mesh_sizes=self.max_thickness**2 / 32)
 
     @property
     def mesh_settings(self) -> dict[str, Any]:
@@ -240,8 +242,9 @@ class Profile(ABC):
         """
         section = self._section()
         section.calculate_geometric_properties()
-        section.calculate_plastic_properties()
-        section.calculate_warping_properties()
+        # Warping properties are only needed for shear and torsion stresses.
+        if v_y != 0 or v_z != 0 or m_x != 0:
+            section.calculate_warping_properties()
         # Note: The mapping of internal forces to sectionproperties parameters
         # Blueprints uses x for longitudinal axis, y for horizontal, z for vertical
         # sectionproperties uses x for horizontal, y for vertical, z for longitudinal
