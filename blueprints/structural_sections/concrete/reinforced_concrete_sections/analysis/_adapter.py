@@ -1111,8 +1111,10 @@ def _cracked_stress_with_axial(
         return section.calculate_service_stress(stub, m=0.0, kappa=curvature)
 
     def moment_error(curvature: float) -> float:
-        moments = stress_at(curvature).sum_moments()
-        return math.hypot(moments[0], moments[1]) - m
+        # the signed moment along the bending direction (m_x, m_y) = m (cos theta, -sin theta): at a small curvature
+        # under a large axial force it can act the other way, which a magnitude would hide from the bracket search
+        moment_x, moment_y, _ = stress_at(curvature).sum_moments()
+        return moment_x * math.cos(theta) - moment_y * math.sin(theta) - m
 
     description = f"cracked stress analysis for forces {forces}"
     with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):

@@ -116,6 +116,21 @@ class TestCrackedCombinedAxialMoment:
         assert result.concrete_stress_min == pytest.approx(result.concrete_stress_max, rel=1e-6)
         assert result.concrete_stress_min < 0.0
 
+    @pytest.mark.parametrize(("n", "m_y"), [(-2000, 30), (-3000, 60), (-100, 150), (200, 150)])
+    def test_solved_state_carries_the_applied_forces(self, n: float, m_y: float) -> None:
+        """The solved state is in equilibrium with N and M, also when the moment acts the other way at a small curvature.
+
+        With heavy bottom reinforcement a large compression acts below mid-height at zero curvature, giving a
+        hogging moment; the curvature search must still find the sagging state that carries the target.
+        """
+        cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_reinforcement_by_quantity(n=5, diameter=32, edge="lower", cover=40, material=ReinforcementSteelMaterial())
+        result = CrossSectionAnalysis(cs).stress(SectionForces(n=n, m_y=m_y), regime=Regime.SLS_CRACKED)
+        moment_x, moment_y, _ = result.raw.sum_moments()  # backend convention: compression positive, N and Nmm
+        assert -result.raw.sum_forces() / 1e3 == pytest.approx(n, rel=1e-4)
+        assert moment_x / 1e6 == pytest.approx(m_y, rel=1e-4)
+        assert moment_y == pytest.approx(0.0, abs=1e-3 * abs(m_y) * 1e6)
+
     def test_sagging_and_hogging_match_on_a_symmetric_section(self) -> None:
         """On a top-bottom symmetric section a sagging and the mirrored hogging state are identical."""
         cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
