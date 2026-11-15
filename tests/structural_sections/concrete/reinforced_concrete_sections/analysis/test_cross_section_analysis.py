@@ -108,13 +108,37 @@ class TestCrackedCombinedAxialMoment:
         assert result.concrete_stress_min == pytest.approx(-16.24, rel=1e-3)
         assert max(bar.stress for bar in result.rebar_results) == pytest.approx(212.3, rel=1e-3)
 
-    def test_pure_axial_returns_a_zero_curvature_state(self) -> None:
-        """With N != 0 and M = 0 there is no moment to solve for, so the state has uniform (zero-curvature) stress instead of crashing."""
-        result = _reference_beam_analysis().stress(SectionForces(n=-200), regime=Regime.SLS_CRACKED)
+    def test_pure_axial_on_a_symmetric_section_is_uniform(self) -> None:
+        """With N != 0 and M = 0 on a top-bottom symmetric section the force acts at the transformed centroid: no bending."""
+        cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, edge="lower", material=ReinforcementSteelMaterial())
+        cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, edge="upper", material=ReinforcementSteelMaterial())
+        result = CrossSectionAnalysis(cs).stress(SectionForces(n=-200), regime=Regime.SLS_CRACKED)
         assert result.regime is Regime.SLS_CRACKED
-        # zero curvature -> the concrete stress is uniform over the section (compression everywhere).
         assert result.concrete_stress_min == pytest.approx(result.concrete_stress_max, rel=1e-6)
         assert result.concrete_stress_min < 0.0
+
+    def test_pure_axial_bends_a_section_with_bottom_reinforcement_only(self) -> None:
+        """N acts at the outline centroid, above the transformed centroid of the reference beam: the section bends, with no net moment."""
+        result = _reference_beam_analysis().stress(SectionForces(n=-200), regime=Regime.SLS_CRACKED)
+        moment_x, moment_y, _ = result.raw.sum_moments()  # about the outline centroid [Nmm]
+        assert result.concrete_stress_min < result.concrete_stress_max < 0.0  # the top is compressed most
+        assert moment_x == pytest.approx(0.0, abs=1e3)
+        assert moment_y == pytest.approx(0.0, abs=1e3)
+
+    @pytest.mark.parametrize("forces", [SectionForces(n=-3000), SectionForces(n=-3000, m_y=20), SectionForces(n=-3000, m_y=-40)])
+    def test_fully_compressed_section_matches_the_uncracked_state(self, forces: SectionForces) -> None:
+        """Both regimes apply N at the outline centroid: with no concrete in tension they give the same stresses."""
+        cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        cs.add_longitudinal_reinforcement_by_quantity(n=5, diameter=32, edge="lower", cover=40, material=ReinforcementSteelMaterial())
+        analysis = CrossSectionAnalysis(cs)
+        uncracked = analysis.stress(forces, regime=Regime.SLS_UNCRACKED)
+        cracked = analysis.stress(forces, regime=Regime.SLS_CRACKED)
+        assert uncracked.concrete_stress_max < 0.0  # no tension anywhere
+        assert cracked.concrete_stress_min == pytest.approx(uncracked.concrete_stress_min, rel=1e-3)
+        assert cracked.concrete_stress_max == pytest.approx(uncracked.concrete_stress_max, rel=1e-3)
+        for cracked_bar, uncracked_bar in zip(cracked.rebar_results, uncracked.rebar_results, strict=True):
+            assert cracked_bar.stress == pytest.approx(uncracked_bar.stress, rel=1e-3)
 
     @pytest.mark.parametrize(("n", "m_y"), [(-2000, 30), (-3000, 60), (-100, 150), (200, 150)])
     def test_solved_state_carries_the_applied_forces(self, n: float, m_y: float) -> None:
@@ -211,25 +235,24 @@ class TestCrackedCombinedAxialMoment:
 class TestSolveServiceCurvature:
     """Unit tests for the curvature bracketing used by the combined N + M cracked solver."""
 
-    def test_raises_when_moment_stays_below_target(self) -> None:
-        """If the carried moment never reaches the target, the bracketing gives up with a clear error."""
-        with pytest.raises(ValueError, match="stays below the target"):
-            _solve_service_curvature(lambda _curvature: -1.0, curvature_guess=1e-6)
+    def test_raises_when_the_moment_never_reaches_the_target(self) -> None:
+        """If the carried moment stays on one side of the target, the bracketing gives up with a clear error."""
+        with pytest.raises(ValueError, match="does not reach the target"):
+            _solve_service_curvature(lambda _curvature: -1.0, stiffness=1.0)
 
-    def test_raises_when_moment_stays_above_target(self) -> None:
-        """If the carried moment already exceeds the target everywhere, the bracketing gives up with a clear error."""
-        with pytest.raises(ValueError, match="stays above the target"):
-            _solve_service_curvature(lambda _curvature: 1.0, curvature_guess=1e-6)
+    def test_zero_curvature_when_the_target_is_met_without_bending(self) -> None:
+        """A state that already carries the target moment at zero curvature needs no bending."""
+        assert _solve_service_curvature(lambda curvature: curvature, stiffness=1.0) == 0.0
 
-    def test_expands_the_bracket_upward_when_the_root_exceeds_the_guess(self) -> None:
-        """A root above the seed curvature makes the upper bound double outward until it straddles the root."""
-        root = 10.0
-        assert _solve_service_curvature(lambda curvature: curvature - root, curvature_guess=1.0) == pytest.approx(root)
+    @pytest.mark.parametrize("root", [10.0, -5.0])
+    def test_searches_toward_the_target_in_either_direction(self, root: float) -> None:
+        """A moment below the target is closed with a positive curvature, one above it with a negative curvature."""
+        assert _solve_service_curvature(lambda curvature: curvature - root, stiffness=1.0) == pytest.approx(root)
 
-    def test_shrinks_the_bracket_downward_when_the_root_is_below_the_guess(self) -> None:
-        """A root well below the seed curvature makes the lower bound halve inward until it straddles the root."""
-        root = 1e-9
-        assert _solve_service_curvature(lambda curvature: curvature - root, curvature_guess=1e-3) == pytest.approx(root)
+    def test_expands_the_bracket_until_it_straddles_the_root(self) -> None:
+        """A first step short of the root doubles outward until the bracket straddles it."""
+        root = 100.0
+        assert _solve_service_curvature(lambda curvature: curvature - root, stiffness=10.0) == pytest.approx(root)
 
 
 class TestBackendGeometryErrors:

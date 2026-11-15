@@ -79,12 +79,13 @@ _RECONSTRUCTION_REL_TOL: float = 1e-6
 # linear-elastic SLS strain (~1-2 per mille), so the profile stays exactly linear across every service state.
 _SERVICE_STRAIN_RANGE: float = 0.02
 
-# Curvature search for the combined N + M cracked stress (see _solve_service_curvature). The bracket seeds on
-# the pure-bending stiffness estimate and expands outward; the tolerances close it to well within round-off.
-_CURVATURE_BRACKET_START: float = 1e-3
+# Curvature search for the combined N + M cracked stress (see _solve_service_curvature). The bracket starts at
+# zero curvature and expands toward the target; the tolerances close it to well within round-off.
 _CURVATURE_BRACKET_STEPS: int = 60
 _CURVATURE_XTOL: float = 1e-12
 _CURVATURE_RTOL: float = 1e-8
+# Moment [Nmm] below which a pure axial force counts as acting at the outline centroid (a symmetric section).
+_PURE_AXIAL_MOMENT_TOL: float = 1.0
 
 # Fewest vertices the meshing backend accepts for a planar straight-line graph; below this it raises.
 _MIN_PSLG_VERTICES: int = 3
@@ -600,9 +601,39 @@ def analyse_uncracked(section: ConcreteSection, forces: SectionForces, elastic_m
         The uncracked stress/strain result, compression negative.
     """
     n, m_x, m_y = _to_backend_actions(forces)
+    m_x, m_y = _moments_about_elastic_centroid(section, n=n, m_x=m_x, m_y=m_y)
     with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors():
         raw = section.calculate_uncracked_stress(n=n, m_x=m_x, m_y=m_y)
     return _to_stress_strain_result(forces=forces, raw=raw, elastic_modulus=elastic_modulus, geometry=geometry, regime=Regime.SLS_UNCRACKED)
+
+
+def _moments_about_elastic_centroid(section: ConcreteSection, *, n: float, m_x: float, m_y: float) -> tuple[float, float]:
+    """Move the moments from the section's moment reference point to its elastic centroid.
+
+    The section forces act at the centroid of the concrete outline, the point the backend takes moments about
+    in its service analyses (``moment_centroid``). Its uncracked analysis instead applies the axial force and
+    the moments at the elastic (transformed) centroid, which lies elsewhere when the reinforcement is not
+    symmetric. Moving the moments by the axial force times the offset applies the same forces in both regimes.
+
+    Parameters
+    ----------
+    section : ConcreteSection
+        The backend section.
+    n : float
+        The axial force in the backend convention (compression positive) [N].
+    m_x : float
+        The moment about the backend x-axis through the moment reference point [Nmm].
+    m_y : float
+        The moment about the backend y-axis through the moment reference point [Nmm].
+
+    Returns
+    -------
+    tuple[float, float]
+        ``(m_x, m_y)`` about the elastic centroid [Nmm].
+    """
+    reference_x, reference_y = section.moment_centroid
+    elastic_x, elastic_y = section.gross_properties.cx, section.gross_properties.cy
+    return m_x + n * (reference_y - elastic_y), m_y + n * (reference_x - elastic_x)
 
 
 def _to_stress_strain_result(
@@ -1086,13 +1117,14 @@ def _cracked_stress_with_axial(
     n : float
         The target axial force in the backend convention (compression positive) [N].
     theta : float
-        The neutral-axis angle in the backend convention [rad].
+        The neutral-axis angle in the backend convention [rad]. For a pure axial force (``m == 0``) the angle
+        is instead taken from the moment the force carries about the outline centroid at zero curvature.
     m : float
         The target bending-moment magnitude about ``theta`` [Nmm].
     i_cracked : float
-        The pure-bending cracked second moment of area [mm⁴], used only to seed the curvature search.
+        The pure-bending cracked second moment of area [mm⁴], used only to size the curvature search.
     elastic_modulus : MPA
-        The concrete compression modulus (e_cm or E_c,eff), used only to seed the curvature search.
+        The concrete compression modulus (e_cm or E_c,eff), used only to size the curvature search.
 
     Returns
     -------
@@ -1106,37 +1138,45 @@ def _cracked_stress_with_axial(
         zone), or on a backend geometry failure.
     """
 
-    def stress_at(curvature: float) -> StressResult:
-        stub = MomentCurvatureResults(default_units=section.default_units, theta=theta, n_target=n)
+    def stress_at(curvature: float, angle: float) -> StressResult:
+        stub = MomentCurvatureResults(default_units=section.default_units, theta=angle, n_target=n)
         return section.calculate_service_stress(stub, m=0.0, kappa=curvature)
-
-    def moment_error(curvature: float) -> float:
-        # the signed moment along the bending direction (m_x, m_y) = m (cos theta, -sin theta): at a small curvature
-        # under a large axial force it can act the other way, which a magnitude would hide from the bracket search
-        moment_x, moment_y, _ = stress_at(curvature).sum_moments()
-        return moment_x * math.cos(theta) - moment_y * math.sin(theta) - m
 
     description = f"cracked stress analysis for forces {forces}"
     with _guard_degenerate_meshes(), _suppress_pure_axial_warning(), _wrap_backend_geometry_errors(), _wrap_backend_convergence_errors(description):
         if m == 0.0:
-            return stress_at(0.0)  # pure axial: no moment, so no curvature to solve for
-        curvature = _solve_service_curvature(moment_error, m / (elastic_modulus * i_cracked))
-        return stress_at(curvature)
+            # pure axial: the force acts at the outline centroid, so the section still bends when the resultant of a
+            # uniform strain lies elsewhere; bend in the direction of the moment the axial force carries there
+            moment_x, moment_y, _ = stress_at(0.0, theta).sum_moments()
+            if math.hypot(moment_x, moment_y) <= _PURE_AXIAL_MOMENT_TOL:
+                return stress_at(0.0, theta)
+            theta = math.atan2(-moment_y, moment_x)
+
+        def moment_error(curvature: float) -> float:
+            # the signed moment along the bending direction (m_x, m_y) = m (cos theta, -sin theta): at a small curvature
+            # under a large axial force it can act the other way, which a magnitude would hide from the bracket search
+            moment_x, moment_y, _ = stress_at(curvature, theta).sum_moments()
+            return moment_x * math.cos(theta) - moment_y * math.sin(theta) - m
+
+        curvature = _solve_service_curvature(moment_error, stiffness=elastic_modulus * i_cracked)
+        return stress_at(curvature, theta)
 
 
-def _solve_service_curvature(moment_error: Callable[[float], float], curvature_guess: float) -> float:
+def _solve_service_curvature(moment_error: Callable[[float], float], *, stiffness: float) -> float:
     """Bracket and solve the curvature whose no-tension service state carries the target moment.
 
-    The moment grows monotonically with curvature at a fixed axial force, so the pure-bending estimate
-    ``curvature_guess`` seeds a bracket that is expanded outward until it straddles the target, then closed
-    with a bracketing root finder.
+    The moment along the bending direction grows monotonically with the curvature at a fixed axial force. At
+    zero curvature it is the moment of the axial force about the outline centroid, which can lie on either side
+    of the target, so the search starts at zero and steps toward the target, to negative curvatures as well.
+    The first step is the curvature that closes the gap at the cracked stiffness; it doubles until the bracket
+    straddles the target, which a bracketing root finder then closes.
 
     Parameters
     ----------
     moment_error : Callable[[float], float]
         Signed difference between the moment carried at a trial curvature and the target moment.
-    curvature_guess : float
-        Curvature estimate from the pure-bending cracked stiffness (m / (E * I_cracked)) [1/mm].
+    stiffness : float
+        The pure-bending cracked flexural stiffness E * I_cracked [Nmm²], used only to size the first step.
 
     Returns
     -------
@@ -1148,17 +1188,13 @@ def _solve_service_curvature(moment_error: Callable[[float], float], curvature_g
     ValueError
         If a straddling bracket cannot be found within the iteration budget.
     """
-    low, high = curvature_guess * _CURVATURE_BRACKET_START, curvature_guess
+    error_at_zero = moment_error(0.0)
+    if error_at_zero == 0.0:
+        return 0.0
+    # a moment below the target needs a positive curvature, one above it a negative curvature
+    step = -error_at_zero / stiffness
     for _ in range(_CURVATURE_BRACKET_STEPS):
-        if moment_error(high) >= 0.0:
-            break
-        high *= 2.0
-    else:
-        raise ValueError("Could not bracket the cracked curvature: the moment stays below the target across the search range.")
-    for _ in range(_CURVATURE_BRACKET_STEPS):
-        if moment_error(low) <= 0.0:
-            break
-        low *= 0.5
-    else:
-        raise ValueError("Could not bracket the cracked curvature: the moment stays above the target across the search range.")
-    return brentq(moment_error, low, high, xtol=_CURVATURE_XTOL, rtol=_CURVATURE_RTOL)
+        if moment_error(step) * error_at_zero <= 0.0:
+            return brentq(moment_error, min(0.0, step), max(0.0, step), xtol=_CURVATURE_XTOL, rtol=_CURVATURE_RTOL)
+        step *= 2.0
+    raise ValueError("Could not bracket the cracked curvature: the moment does not reach the target across the search range.")

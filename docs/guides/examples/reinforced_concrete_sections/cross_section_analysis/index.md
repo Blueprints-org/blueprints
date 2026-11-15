@@ -66,7 +66,9 @@ kN and kNm, lengths in mm, stresses in MPa and strains in ‰ (per mille).
 The forces follow the member axes of
 the [SAF](https://www.saf.guide/en/stable/getting-started/introduction.html#coordinate-systems) format: `x` along the
 member, `y` horizontal and `z` vertical in the cross-section. The axial force acts at the centroid of the concrete
-outline (mid-height for a rectangle), and the moments are taken about that point.
+outline (mid-height for a rectangle), and the moments are taken about that point, in the cracked and the uncracked
+state alike. When the reinforcement is not symmetric, the centroid of the transformed section lies elsewhere, so a
+pure axial force also bends the section.
 
 | Quantity           | Code                | Unit | Positive means                     |
 |--------------------|---------------------|------|------------------------------------|

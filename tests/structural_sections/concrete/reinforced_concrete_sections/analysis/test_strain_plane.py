@@ -66,8 +66,11 @@ class TestNeutralAxis:
         assert plane.neutral_axis_depth == pytest.approx(result.cracked_properties.neutral_axis_depth, rel=0.02)
 
     def test_pure_axial_has_no_neutral_axis(self) -> None:
-        """A pure axial force gives a flat strain plane: no curvature, no neutral axis."""
-        plane = _analysis().stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED).strain_plane
+        """A pure axial force on a top-bottom symmetric section gives a flat strain plane: no curvature, no neutral axis."""
+        cs = RectangularReinforcedCrossSection(width=300, height=500, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        for edge in ("lower", "upper"):
+            cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=ReinforcementSteelMaterial(), edge=edge)
+        plane = CrossSectionAnalysis(cs).stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED).strain_plane
         assert plane is not None
         assert plane.neutral_axis_depth is None
         assert plane.neutral_axis_angle == 0.0

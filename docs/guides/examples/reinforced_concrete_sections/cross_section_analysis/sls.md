@@ -90,7 +90,7 @@ result = analysis.stress(forces)  # the default, Regime.AUTO
 print(f"Regime chosen by Blueprints:     {result.regime.value}")
 ```
 
-The uncracked tension of 6.74 MPa is well above `f_ctm,fl`, so the result is cracked. A compressive axial force lowers the tensile stress and therefore delays cracking; a tensile one does the opposite.
+The uncracked tension of 6.80 MPa is well above `f_ctm,fl`, so the result is cracked. A compressive axial force lowers the tensile stress and therefore delays cracking; a tensile one does the opposite.
 
 `f_ctm,fl = max((1.6 − h/1000)·f_ctm, f_ctm)` depends on the section height: for this 600 mm beam it equals `f_ctm`, while thinner members get a higher threshold.
 

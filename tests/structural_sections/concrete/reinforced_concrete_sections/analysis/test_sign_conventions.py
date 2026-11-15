@@ -22,8 +22,10 @@ def _bare_section() -> RectangularReinforcedCrossSection:
 
 
 def _symmetric_analysis() -> CrossSectionAnalysis:
+    """Top-bottom symmetric reinforcement: the transformed centroid coincides with the outline centroid."""
     cs = _bare_section()
     cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=ReinforcementSteelMaterial(), edge="lower")
+    cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=ReinforcementSteelMaterial(), edge="upper")
     return CrossSectionAnalysis(cs)
 
 
@@ -82,13 +84,37 @@ class TestAxialMagnitude:
     """Pin the unit conversion against a transformed-section hand calculation."""
 
     def test_uniform_axial_stress_matches_transformed_section(self) -> None:
-        """Pure axial stress equals N / A_transformed (compression negative)."""
+        """Pure axial stress on a symmetric section equals N / A_transformed (compression negative)."""
+        concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
+        steel = ReinforcementSteelMaterial()
+        bar_area = 3.141592653589793 / 4 * 20**2
+        a_transformed = 300 * 500 + (steel.e_s / concrete.e_cm - 1) * 8 * bar_area
+        expected = -1000e3 / a_transformed  # N / mm^2, compression negative
+        result = _symmetric_analysis().stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED)
+        assert result.concrete_stress_min == pytest.approx(expected, rel=1e-2)
+        assert result.concrete_stress_max == pytest.approx(expected, rel=1e-2)
+
+    def test_axial_force_acts_at_the_outline_centroid(self) -> None:
+        """With bottom bars only, N at mid-height sits above the transformed centroid and adds N * e of bending.
+
+        Hand calculation on the transformed section: sigma = N / A_tr + N * e * (y - y_tr) / I_tr, with e the
+        distance from the transformed centroid up to the outline centroid.
+        """
         concrete = ConcreteMaterial(ConcreteStrengthClass.C30_37)
         steel = ReinforcementSteelMaterial()
         cs = _bare_section()
         cs.add_longitudinal_reinforcement_by_quantity(n=4, diameter=20, material=steel, edge="lower")
-        bar_area = 3.141592653589793 / 4 * 20**2
-        a_transformed = 300 * 500 + (steel.e_s / concrete.e_cm - 1) * 4 * bar_area
-        expected = -1000e3 / a_transformed  # N / mm^2, compression negative
+        bar_y = cs.longitudinal_rebars[0].y
+        added = (steel.e_s / concrete.e_cm - 1) * 4 * 3.141592653589793 / 4 * 20**2  # bars, net of the displaced concrete
+        a_transformed = 300 * 500 + added
+        y_transformed = added * bar_y / a_transformed  # below mid-height
+        i_transformed = 300 * 500**3 / 12 + 300 * 500 * y_transformed**2 + added * (bar_y - y_transformed) ** 2
+        n = -1000e3
+        e = 0.0 - y_transformed
+
+        def stress(y: float) -> float:
+            return n / a_transformed + n * e * (y - y_transformed) / i_transformed
+
         result = CrossSectionAnalysis(cs).stress(SectionForces(n=-1000), regime=Regime.SLS_UNCRACKED)
-        assert result.concrete_stress_min == pytest.approx(expected, rel=1e-2)
+        assert result.concrete_stress_min == pytest.approx(stress(250.0), rel=1e-2)  # top fibre, most compressed
+        assert result.concrete_stress_max == pytest.approx(stress(-250.0), rel=1e-2)

@@ -441,13 +441,14 @@ class TestSectionOrientation:
     """The section panel shows the section as built, not mirrored."""
 
     def test_bar_on_the_right_is_drawn_on_the_right(self) -> None:
-        """With an upright section (pure axial force) a single bar at +x appears right of the centre line, at its own height."""
+        """With an upright section (pure axial force) the bar at the bottom right is drawn at the bottom right."""
         cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+        # point-symmetric pair: the transformed centroid stays at the outline centroid, so N does not bend the section
         cs.add_longitudinal_rebar(Rebar(diameter=25, x=100, y=-240, material=ReinforcementSteelMaterial()))
+        cs.add_longitudinal_rebar(Rebar(diameter=25, x=-100, y=240, material=ReinforcementSteelMaterial()))
         figure = CrossSectionAnalysis(cs).stress(SectionForces(n=-500), regime=Regime.SLS_UNCRACKED).plot()
         try:
-            [bar] = [line for line in figure.axes[0].get_lines() if line.get_marker() == "o"]
-            assert bar.get_xdata()[0] == pytest.approx(100.0)
-            assert bar.get_ydata()[0] == pytest.approx(-240.0)
+            bars = {(round(line.get_xdata()[0]), round(line.get_ydata()[0])) for line in figure.axes[0].get_lines() if line.get_marker() == "o"}
+            assert bars == {(100, -240), (-100, 240)}
         finally:
             plt.close(figure)
