@@ -1,32 +1,24 @@
 # Validation of the Cross-section Analysis
 
-The `CrossSectionAnalysis` results are validated in two independent ways: **hand calculations** that can be followed on paper, and a comparison with **IDEA StatiCa RCS** on precisely defined reference cases. The hand calculations are pinned in the automated test suite; the IDEA comparison is a validation and is not part of the tests.
+The `CrossSectionAnalysis` results agree with hand calculations and with IDEA StatiCa RCS on the reference beam of this guide:
 
-!!! note "Reference section and material values"
+| Case | Forces | Reference | Largest difference |
+|---|---|---|---|
+| [Pure bending (cracked)](#hand-calculation-pure-bending-cracked) | `M_y = 200 kNm` | hand calculation | 0.1% |
+| [Combined N + M (cracked)](#hand-calculation-combined-n-m-cracked) | `N = -300 kN`, `M_y = 200 kNm` | hand calculation | 0.2% |
+| [Uncracked](#hand-calculation-uncracked) | `M_y = 40 kNm` | hand calculation | < 0.1% |
+| [A — pure bending](#case-a-pure-bending) | `M_y = 200 kNm` | IDEA StatiCa RCS | 0.2% |
+| [B — combined N + M](#case-b-combined-n-m) | `N = -300 kN`, `M_y = 200 kNm` | IDEA StatiCa RCS | 0.2% |
+| [C — long-term (creep)](#case-c-long-term-creep) | `M_y = 200 kNm`, `φ = 2` | IDEA StatiCa RCS | 0.2% |
+| [D — uncracked](#case-d-uncracked) | `M_y = 40 kNm` | IDEA StatiCa RCS | 3%, from a [modelling choice](#case-d-uncracked) |
+
+The hand calculations can be followed on paper and are pinned in the automated test suite; the IDEA comparison is a validation and is not part of the tests.
+
+??? note "Reference section and material values"
 
     All cases use the **reference beam** of this guide: rectangular 300 × 600 mm, C30/37, 4⌀25 B500B on the lower edge with 50 mm cover (effective depth `d = 600 − 50 − 25/2 = 537.5 mm`, `A_s = 1963 mm²`).
 
     Material values: `E_cm = 32 836 MPa`, `E_s = 200 000 MPa` → modular ratio `α_e = E_s / E_cm = 6.09`.
-
-The Blueprints side of every hand calculation runs on this analyzer:
-
-```python exec="on" source="material-block" session="rc_validation"
-from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
-from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
-from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
-from blueprints.structural_sections.section_forces import SectionForces
-
-cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
-cs.add_longitudinal_reinforcement_by_quantity(
-    n=4, diameter=25, edge="lower", cover=50, material=ReinforcementSteelMaterial(ReinforcementSteelQuality.B500B)
-)
-analysis = CrossSectionAnalysis(cs)
-
-
-def compare(quantity, hand, blueprints):
-    print(f"{quantity:<8} hand {hand:8.2f}   Blueprints {blueprints:8.2f}   difference {100 * (blueprints / hand - 1):+.2f} %")
-```
 
 ## Hand calculation — pure bending (cracked)
 
@@ -49,6 +41,26 @@ $$ I_{cr} = \frac{b\,x^3}{3} + \alpha_e A_s\,(d - x)^2 = \frac{300 \times 171.0^
 $$ \sigma_c = -\frac{M\,x}{I_{cr}} = -\frac{200\times10^{6} \times 171.0}{2.106\times10^{9}} = -16.24\ \text{MPa} $$
 
 $$ \sigma_s = \frac{\alpha_e\,M\,(d - x)}{I_{cr}} = \frac{6.09 \times 200\times10^{6} \times 366.5}{2.106\times10^{9}} = 212.0\ \text{MPa} $$
+
+The Blueprints side of every hand calculation runs on this analyzer:
+
+```python exec="on" source="material-block" session="rc_validation"
+from blueprints.materials.concrete import ConcreteMaterial, ConcreteStrengthClass
+from blueprints.materials.reinforcement_steel import ReinforcementSteelMaterial, ReinforcementSteelQuality
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.analysis import CrossSectionAnalysis
+from blueprints.structural_sections.concrete.reinforced_concrete_sections.rectangular import RectangularReinforcedCrossSection
+from blueprints.structural_sections.section_forces import SectionForces
+
+cs = RectangularReinforcedCrossSection(width=300, height=600, concrete_material=ConcreteMaterial(ConcreteStrengthClass.C30_37))
+cs.add_longitudinal_reinforcement_by_quantity(
+    n=4, diameter=25, edge="lower", cover=50, material=ReinforcementSteelMaterial(ReinforcementSteelQuality.B500B)
+)
+analysis = CrossSectionAnalysis(cs)
+
+
+def compare(quantity, hand, blueprints):
+    print(f"{quantity:<8} hand {hand:8.2f}   Blueprints {blueprints:8.2f}   difference {100 * (blueprints / hand - 1):+.2f} %")
+```
 
 ```python exec="on" source="material-block" result="ansi" session="rc_validation"
 result = analysis.stress(SectionForces(m_y=200))  # pure bending, N = 0
