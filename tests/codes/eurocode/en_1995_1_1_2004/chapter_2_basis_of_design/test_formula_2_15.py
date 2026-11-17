@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1995_1_1_2004.chapter_2_basis_of_design.formula_2_15 import Form2Dot15DesignModulusElasticity
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm2Dot15DesignModulusElasticity:
@@ -23,8 +23,7 @@ class TestForm2Dot15DesignModulusElasticity:
     @pytest.mark.parametrize(
         ("e_mean", "gamma_m", "expected_exception"),
         [
-            (-13000.0, 1.3, LessOrEqualToZeroError),  # e_mean is negative
-            (0.0, 1.3, LessOrEqualToZeroError),  # e_mean is zero
+            (-13000.0, 1.3, NegativeValueError),  # e_mean is negative
             (13000.0, -1.3, LessOrEqualToZeroError),  # gamma_m is negative
             (13000.0, 0.0, LessOrEqualToZeroError),  # gamma_m is zero
         ],
@@ -44,13 +43,13 @@ class TestForm2Dot15DesignModulusElasticity:
         [
             (
                 "complete",
-                r"E_d = \frac{E_{mean}}{\gamma_M} = \frac{13000.000}{1.300} = 10000.000 \ MPA",
+                r"E_d = \frac{E_{mean}}{\gamma_M} = \frac{13000.000}{1.300} = 10000.000 \ MPa",
             ),
             (
                 "complete_with_units",
-                r"E_d = \frac{E_{mean}}{\gamma_M} = \frac{13000.000 \ MPA}{1.300} = 10000.000 \ MPA",
+                r"E_d = \frac{E_{mean}}{\gamma_M} = \frac{13000.000 \ MPa}{1.300} = 10000.000 \ MPa",
             ),
-            ("short", r"E_d = 10000.000 \ MPA"),
+            ("short", r"E_d = 10000.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

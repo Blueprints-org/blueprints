@@ -4,7 +4,7 @@ from blueprints.codes.eurocode.en_1995_1_1_2004 import EN_1995_1_1_2004
 from blueprints.codes.formula import Formula
 from blueprints.codes.latex_formula import LatexFormula, latex_replace_symbols
 from blueprints.type_alias import DIMENSIONLESS, MPA
-from blueprints.validations import raise_if_less_or_equal_to_zero
+from blueprints.validations import raise_if_less_or_equal_to_zero, raise_if_negative
 
 
 class Form2Dot16DesignShearModulus(Formula):
@@ -18,14 +18,14 @@ class Form2Dot16DesignShearModulus(Formula):
         g_mean: MPA,
         gamma_m: DIMENSIONLESS,
     ) -> None:
-        r"""[$G_d$] Design value of the shear modulus [$MPA$].
+        r"""[$G_d$] Design value of the shear modulus [$MPa$].
 
         EN 1995-1-1:2004 art.2.4.1(2) - Formula (2.16)
 
         Parameters
         ----------
         g_mean : MPA
-            [$G_{mean}$] Mean value of the shear modulus [$MPA$].
+            [$G_{mean}$] Mean value of the shear modulus [$MPa$].
         gamma_m : DIMENSIONLESS
             [$\gamma_M$] Partial factor for a material property [$-$].
         """
@@ -39,7 +39,7 @@ class Form2Dot16DesignShearModulus(Formula):
         gamma_m: DIMENSIONLESS,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_less_or_equal_to_zero(g_mean=g_mean)
+        raise_if_negative(g_mean=g_mean)
         raise_if_less_or_equal_to_zero(gamma_m=gamma_m)
         return g_mean / gamma_m
 
@@ -56,7 +56,7 @@ class Form2Dot16DesignShearModulus(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"G_{mean}": rf"{self.g_mean:.{n}f} \ MPA",
+                r"G_{mean}": rf"{self.g_mean:.{n}f} \ MPa",
                 r"\gamma_M": f"{self.gamma_m:.{n}f}",
             },
         )
@@ -67,5 +67,5 @@ class Form2Dot16DesignShearModulus(Formula):
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
-            unit="MPA",
+            unit="MPa",
         )

@@ -27,8 +27,7 @@ class TestForm2Dot17DesignValueResistance:
             (-260.0, 1.3, 0.50, NegativeValueError),  # r_k is negative
             (260.0, -1.3, 0.50, LessOrEqualToZeroError),  # gamma_m is negative
             (260.0, 0.0, 0.50, LessOrEqualToZeroError),  # gamma_m is zero
-            (260.0, 1.3, -0.50, LessOrEqualToZeroError),  # k_mod is negative
-            (260.0, 1.3, 0.0, LessOrEqualToZeroError),  # k_mod is zero
+            (260.0, 1.3, -0.50, NegativeValueError),  # k_mod is negative
         ],
     )
     def test_raise_error_when_invalid_values_are_given(

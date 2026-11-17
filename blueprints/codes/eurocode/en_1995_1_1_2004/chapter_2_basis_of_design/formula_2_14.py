@@ -19,14 +19,14 @@ class Form2Dot14DesignValueStrength(Formula):
         gamma_m: DIMENSIONLESS,
         k_mod: DIMENSIONLESS,
     ) -> None:
-        r"""[$X_d$] Design value of the strength property [$MPA$].
+        r"""[$X_d$] Design value of the strength property [$MPa$].
 
         EN 1995-1-1:2004 art.2.4.1(1) - Formula (2.14)
 
         Parameters
         ----------
         x_k : MPA
-            [$X_k$] Characteristic value of the strength property [$MPA$].
+            [$X_k$] Characteristic value of the strength property [$MPa$].
         gamma_m : DIMENSIONLESS
             [$\gamma_M$] Partial factor for a material property [$-$].
         k_mod : DIMENSIONLESS
@@ -44,9 +44,8 @@ class Form2Dot14DesignValueStrength(Formula):
         k_mod: DIMENSIONLESS,
     ) -> MPA:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(x_k=x_k)
+        raise_if_negative(x_k=x_k, k_mod=k_mod)
         raise_if_less_or_equal_to_zero(gamma_m=gamma_m)
-        raise_if_less_or_equal_to_zero(k_mod=k_mod)
         return k_mod * x_k / gamma_m
 
     def latex(self, n: int = 3) -> LatexFormula:
@@ -63,7 +62,7 @@ class Form2Dot14DesignValueStrength(Formula):
         _numeric_equation_with_units: str = latex_replace_symbols(
             _equation,
             {
-                r"X_k": rf"{self.x_k:.{n}f} \ MPA",
+                r"X_k": rf"{self.x_k:.{n}f} \ MPa",
                 r"\gamma_M": f"{self.gamma_m:.{n}f}",
                 r"k_{mod}": f"{self.k_mod:.{n}f}",
             },
@@ -75,5 +74,5 @@ class Form2Dot14DesignValueStrength(Formula):
             numeric_equation=_numeric_equation,
             numeric_equation_with_units=_numeric_equation_with_units,
             comparison_operator_label="=",
-            unit="MPA",
+            unit="MPa",
         )

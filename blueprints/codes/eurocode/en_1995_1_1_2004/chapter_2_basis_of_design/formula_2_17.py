@@ -44,9 +44,8 @@ class Form2Dot17DesignValueResistance(Formula):
         k_mod: DIMENSIONLESS,
     ) -> N:
         """Evaluates the formula, for more information see the __init__ method."""
-        raise_if_negative(r_k=r_k)
+        raise_if_negative(r_k=r_k, k_mod=k_mod)
         raise_if_less_or_equal_to_zero(gamma_m=gamma_m)
-        raise_if_less_or_equal_to_zero(k_mod=k_mod)
         return k_mod * r_k / gamma_m
 
     def latex(self, n: int = 3) -> LatexFormula:

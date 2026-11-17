@@ -3,7 +3,7 @@
 import pytest
 
 from blueprints.codes.eurocode.en_1995_1_1_2004.chapter_2_basis_of_design.formula_2_16 import Form2Dot16DesignShearModulus
-from blueprints.validations import LessOrEqualToZeroError
+from blueprints.validations import LessOrEqualToZeroError, NegativeValueError
 
 
 class TestForm2Dot16DesignShearModulus:
@@ -23,8 +23,7 @@ class TestForm2Dot16DesignShearModulus:
     @pytest.mark.parametrize(
         ("g_mean", "gamma_m", "expected_exception"),
         [
-            (-689.0, 1.3, LessOrEqualToZeroError),  # g_mean is negative
-            (0.0, 1.3, LessOrEqualToZeroError),  # g_mean is zero
+            (-689.0, 1.3, NegativeValueError),  # g_mean is negative
             (689.0, -1.3, LessOrEqualToZeroError),  # gamma_m is negative
             (689.0, 0.0, LessOrEqualToZeroError),  # gamma_m is zero
         ],
@@ -44,13 +43,13 @@ class TestForm2Dot16DesignShearModulus:
         [
             (
                 "complete",
-                r"G_d = \frac{G_{mean}}{\gamma_M} = \frac{689.000}{1.300} = 530.000 \ MPA",
+                r"G_d = \frac{G_{mean}}{\gamma_M} = \frac{689.000}{1.300} = 530.000 \ MPa",
             ),
             (
                 "complete_with_units",
-                r"G_d = \frac{G_{mean}}{\gamma_M} = \frac{689.000 \ MPA}{1.300} = 530.000 \ MPA",
+                r"G_d = \frac{G_{mean}}{\gamma_M} = \frac{689.000 \ MPa}{1.300} = 530.000 \ MPa",
             ),
-            ("short", r"G_d = 530.000 \ MPA"),
+            ("short", r"G_d = 530.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:

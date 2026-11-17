@@ -27,8 +27,7 @@ class TestForm2Dot14DesignValueStrength:
             (-26.0, 1.3, 0.50, NegativeValueError),  # x_k is negative
             (26.0, -1.3, 0.50, LessOrEqualToZeroError),  # gamma_m is negative
             (26.0, 0.0, 0.50, LessOrEqualToZeroError),  # gamma_m is zero
-            (26.0, 1.3, -0.50, LessOrEqualToZeroError),  # k_mod is negative
-            (26.0, 1.3, 0.0, LessOrEqualToZeroError),  # k_mod is zero
+            (26.0, 1.3, -0.50, NegativeValueError),  # k_mod is negative
         ],
     )
     def test_raise_error_when_invalid_values_are_given(
@@ -47,13 +46,13 @@ class TestForm2Dot14DesignValueStrength:
         [
             (
                 "complete",
-                r"X_d = k_{mod} \cdot \frac{X_k}{\gamma_M} = 0.500 \cdot \frac{26.000}{1.300} = 10.000 \ MPA",
+                r"X_d = k_{mod} \cdot \frac{X_k}{\gamma_M} = 0.500 \cdot \frac{26.000}{1.300} = 10.000 \ MPa",
             ),
             (
                 "complete_with_units",
-                r"X_d = k_{mod} \cdot \frac{X_k}{\gamma_M} = 0.500 \cdot \frac{26.000 \ MPA}{1.300} = 10.000 \ MPA",
+                r"X_d = k_{mod} \cdot \frac{X_k}{\gamma_M} = 0.500 \cdot \frac{26.000 \ MPa}{1.300} = 10.000 \ MPa",
             ),
-            ("short", r"X_d = 10.000 \ MPA"),
+            ("short", r"X_d = 10.000 \ MPa"),
         ],
     )
     def test_latex(self, representation: str, expected: str) -> None:
